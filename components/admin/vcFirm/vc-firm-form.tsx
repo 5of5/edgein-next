@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import {
   FileInput,
   ImageField,
@@ -10,21 +10,21 @@ import {
   useGetList,
   AutocompleteArrayInput,
   useGetOne,
-} from "react-admin";
-import { useParams } from "react-router-dom";
+} from 'react-admin';
+import { useParams } from 'react-router-dom';
 import {
   companyChoices,
   libraryChoices,
   status,
   validateNameAndSlugAndEmailAndDomain,
-} from "@/utils/constants";
-import ElemSlugInput from "../elem-slug-input";
-import ElemIconGroup from "../elem-icon-group";
-import useAdminHandleSlug from "@/hooks/use-admin-handle-slug";
-import ElemAddressInput from "../elem-address-input";
+} from '@/utils/constants';
+import ElemSlugInput from '../elem-slug-input';
+import ElemIconGroup from '../elem-icon-group';
+import useAdminHandleSlug from '@/hooks/use-admin-handle-slug';
+import ElemAddressInput from '../elem-address-input';
 
 type VcFirmFormProps = {
-  action: "create" | "edit";
+  action: 'create' | 'edit';
   toolbar?: ReactElement | false;
   slugValidate?: any;
   onCheckScreenHeight: () => void;
@@ -46,20 +46,20 @@ const VcFirmForm = ({
 }: VcFirmFormProps) => {
   const { id } = useParams();
   const { data: currentData } = useGetOne(
-    "vc_firms",
+    'vc_firms',
     { id },
-    { enabled: !!id }
+    { enabled: !!id },
   );
 
-  const { data: vcFirm } = useGetList("vc_firms", {});
+  const { data: vcFirm } = useGetList('vc_firms', {});
   const formRef = useRef<any>(null);
-  const [isIcon, setIsIcon] = useState(action === "edit");
-  const [keyword, setKeyword] = useState("");
+  const [isIcon, setIsIcon] = useState(action === 'edit');
+  const [keyword, setKeyword] = useState('');
 
   const { slug, onGenerateSlug } = useAdminHandleSlug(vcFirm);
 
   const textInputClassName =
-    "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   useEffect(() => {
     if (currentData) setKeyword(currentData.name);
@@ -71,18 +71,18 @@ const VcFirmForm = ({
   };
 
   return (
-    <div className="customForm" ref={formRef} style={{ position: "relative" }}>
+    <div className="customForm" ref={formRef} style={{ position: 'relative' }}>
       <SimpleForm
-        validate={(value) =>
+        validate={value =>
           validateNameAndSlugAndEmailAndDomain(
-            action !== "create",
+            action !== 'create',
             value,
-            vcFirm
+            vcFirm,
           )
         }
         toolbar={toolbar}
       >
-        {action === "edit" && (
+        {action === 'edit' && (
           <TextInput
             className={`w-full ${textInputClassName}`}
             disabled
@@ -94,11 +94,11 @@ const VcFirmForm = ({
             <TextInput
               className={`w-[49%] ${textInputClassName}`}
               source="name"
-              onBlur={(e) => onGenerateSlug(e.target.value, formData)}
+              onBlur={e => onGenerateSlug(e.target.value, formData)}
               onChange={handleIcon}
               sx={{
-                ".MuiFormHelperText-root": {
-                  display: "block !important",
+                '.MuiFormHelperText-root': {
+                  display: 'block !important',
                 },
               }}
               {...rest}
@@ -127,7 +127,7 @@ const VcFirmForm = ({
         >
           <ImageField source="src" title="title" />
         </FileInput>
-        {action === "edit" && !logo && !isImageUpdated && (
+        {action === 'edit' && !logo && !isImageUpdated && (
           <ImageField className="w-full" source="logo.url" title="Logo" />
         )}
         <TextInput
@@ -168,10 +168,10 @@ const VcFirmForm = ({
         <TextInput
           className={textInputClassName}
           source="geopoint"
-          format={(value) =>
+          format={value =>
             value?.coordinates
               ? `{Latitude: ${value.coordinates[1]}, Longitude: ${value.coordinates[0]}}`
-              : ""
+              : ''
           }
           label="Geopoint"
           disabled
@@ -184,7 +184,7 @@ const VcFirmForm = ({
           source="status_tags"
           className={`w-[49%] ${textInputClassName}`}
           choices={companyChoices}
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
         />
         <TextInput
           placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
@@ -196,8 +196,8 @@ const VcFirmForm = ({
           className={`w-[49%] ${textInputClassName}`}
           source="website"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -205,8 +205,8 @@ const VcFirmForm = ({
           className={`w-[49%] ${textInputClassName}`}
           source="linkedin"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -214,8 +214,8 @@ const VcFirmForm = ({
           className={`w-[49%] ${textInputClassName}`}
           source="twitter"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -223,7 +223,7 @@ const VcFirmForm = ({
           className={textInputClassName}
           source="library"
           choices={libraryChoices}
-          defaultValue={["Web3"]}
+          defaultValue={['Web3']}
         />
       </SimpleForm>
     </div>

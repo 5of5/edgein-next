@@ -1,11 +1,11 @@
-import React, { FC } from "react";
-import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
-import { ElemCarouselCard } from "@/components/elem-carousel-card";
-import { ElemPhoto } from "@/components/elem-photo";
-import { ElemReactions } from "@/components/elem-reactions";
-import { ElemSaveToList } from "@/components/elem-save-to-list";
-import { getLayerClass } from "@/utils/style";
-import { Resource_Links } from "@/graphql/types";
+import React, { FC } from 'react';
+import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
+import { ElemCarouselCard } from '@/components/elem-carousel-card';
+import { ElemPhoto } from '@/components/elem-photo';
+import { ElemReactions } from '@/components/elem-reactions';
+import { ElemSaveToList } from '@/components/elem-save-to-list';
+import { getLayerClass } from '@/utils/style';
+import { Resource_Links } from '@/graphql/types';
 
 type Props = {
   className?: string;
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const ElemSubOrganizations: FC<Props> = ({
-  className = "",
+  className = '',
   heading,
   subOrganizations,
 }) => {
@@ -24,7 +24,7 @@ export const ElemSubOrganizations: FC<Props> = ({
 
       <ElemCarouselWrap>
         {subOrganizations?.map((item: Resource_Links, index: number) => {
-          const resourceType = item.to_company ? "companies" : "vc_firms";
+          const resourceType = item.to_company ? 'companies' : 'vc_firms';
           const subOrganization = item.to_company || item.to_vc_firm;
 
           if (!subOrganization) {
@@ -35,7 +35,7 @@ export const ElemSubOrganizations: FC<Props> = ({
           const fundingTotal = item.to_company?.investment_rounds?.reduce(
             (total: number, currentValue: any) =>
               (total = total + currentValue.amount),
-            0
+            0,
           );
 
           return (
@@ -44,7 +44,9 @@ export const ElemSubOrganizations: FC<Props> = ({
               className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
             >
               <a
-                href={`/${item.to_company ? "companies" : "investors"}/${subOrganization.slug}`}
+                href={`/${item.to_company ? 'companies' : 'investors'}/${
+                  subOrganization.slug
+                }`}
                 className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
               >
                 <div className="flex items-center">
@@ -68,7 +70,7 @@ export const ElemSubOrganizations: FC<Props> = ({
                     {item.to_company?.layer && (
                       <div
                         className={`${getLayerClass(
-                          item.to_company?.layer
+                          item.to_company?.layer,
                         )} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
                       >
                         {item.to_company?.layer}
@@ -94,7 +96,7 @@ export const ElemSubOrganizations: FC<Props> = ({
                 </div>
                 <div
                   className="flex items-center justify-between mt-4 gap-x-5"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={e => e.stopPropagation()}
                 >
                   <ElemReactions
                     resource={subOrganization}

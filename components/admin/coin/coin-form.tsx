@@ -1,24 +1,24 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   SimpleForm,
   TextInput,
   ReferenceInput,
   SelectInput,
-} from "react-admin";
-import ElemIconGroup from "../elem-icon-group";
+} from 'react-admin';
+import ElemIconGroup from '../elem-icon-group';
 
 type CoinFormProps = {
-  action: "create" | "edit";
+  action: 'create' | 'edit';
   toolbar?: ReactElement | false;
   currentData?: any;
 };
 
 const CoinForm = ({ action, toolbar, currentData }: CoinFormProps) => {
-  const [isIcon, setIsIcon] = useState(action === "edit");
-  const [keyword, setKeyword] = useState("");
+  const [isIcon, setIsIcon] = useState(action === 'edit');
+  const [keyword, setKeyword] = useState('');
 
   const inputClassName =
-    "w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   useEffect(() => {
     if (currentData) setKeyword(currentData.name);
@@ -31,7 +31,7 @@ const CoinForm = ({ action, toolbar, currentData }: CoinFormProps) => {
 
   return (
     <SimpleForm toolbar={toolbar}>
-      {action === "edit" && (
+      {action === 'edit' && (
         <TextInput className={inputClassName} disabled source="id" />
       )}
       <TextInput
@@ -39,8 +39,8 @@ const CoinForm = ({ action, toolbar, currentData }: CoinFormProps) => {
         source="name"
         onChange={handleIcon}
         sx={{
-          ".MuiFormHelperText-root": {
-            display: "block !important",
+          '.MuiFormHelperText-root': {
+            display: 'block !important',
           },
         }}
       />

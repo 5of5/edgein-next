@@ -1,4 +1,4 @@
 export type AllowedEmail = {
-  id: number
-  email: string
-}
+  id: number;
+  email: string;
+};

@@ -1,7 +1,7 @@
-import React from "react";
-import { ReferenceField, TextField, NumberField } from "react-admin";
-import InvestmentDialog from "./investment-dialog";
-import ElemTable from "../elem-table";
+import React from 'react';
+import { ReferenceField, TextField, NumberField } from 'react-admin';
+import InvestmentDialog from './investment-dialog';
+import ElemTable from '../elem-table';
 
 const InvestmentTable = () => {
   return (
@@ -10,10 +10,10 @@ const InvestmentTable = () => {
       deleteUri="investments"
       parentId="round_id"
       createButtonLabel="Add Investment"
-      confirmContent={(recordData) =>
+      confirmContent={recordData =>
         `Are you sure you want to delete ${recordData?.id}?`
       }
-      formDialogComponent={(props) => (
+      formDialogComponent={props => (
         <InvestmentDialog
           selectedRecord={props.selectedRecord}
           onClose={props.onClose}

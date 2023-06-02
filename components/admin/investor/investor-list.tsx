@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -10,13 +10,13 @@ import {
   SelectField,
   AutocompleteInput,
   required,
-} from "react-admin";
+} from 'react-admin';
 import {
   investorFunctionChoices,
   investorSeniorityChoices,
-} from "@/utils/constants";
-import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/use-auth";
+} from '@/utils/constants';
+import ElemList from '../elem-list';
+import { useAuth } from '@/hooks/use-auth';
 
 const filters = [
   <TextInput key="search" source="title" label="Title" resettable alwaysOn />,
@@ -27,8 +27,8 @@ const filters = [
     validate={required()}
   >
     <AutocompleteInput
-      optionText={(choice) => `${choice.name}`}
-      filterToQuery={(search) => ({ name: search })}
+      optionText={choice => `${choice.name}`}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <ReferenceInput
@@ -38,8 +38,8 @@ const filters = [
     validate={required()}
   >
     <AutocompleteInput
-      optionText={(choice) => `${choice.name}`}
-      filterToQuery={(search) => ({ name: search })}
+      optionText={choice => `${choice.name}`}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <SelectInput
@@ -61,7 +61,7 @@ export const InvestorList = () => {
 
   return (
     <ElemList filters={filters}>
-      { user?.role !== "cms-readonly" && <EditButton /> }
+      {user?.role !== 'cms-readonly' && <EditButton />}
       <TextField source="id" />
       <ReferenceField label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <TextField source="name" />

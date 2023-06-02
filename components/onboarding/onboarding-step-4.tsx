@@ -1,27 +1,27 @@
-import React, { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { ElemButton } from "@/components/elem-button";
+import React, { Fragment, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { ElemButton } from '@/components/elem-button';
 import {
   FindPeopleByNameAndEmailQuery,
   useFindPeopleByNameAndEmailQuery,
-} from "@/graphql/types";
-import { useUser } from "@/context/user-context";
-import { ElemPhoto } from "../elem-photo";
-import { IconCheck } from "../icons";
-import { InputText } from "../input-text";
-import { urlPattern } from "@/utils/constants";
+} from '@/graphql/types';
+import { useUser } from '@/context/user-context';
+import { ElemPhoto } from '../elem-photo';
+import { IconCheck } from '../icons';
+import { InputText } from '../input-text';
+import { urlPattern } from '@/utils/constants';
 
 type Props = {
   show: boolean;
-  selectedPerson: FindPeopleByNameAndEmailQuery["people"][0] | undefined;
+  selectedPerson: FindPeopleByNameAndEmailQuery['people'][0] | undefined;
   linkedin: string;
   onBack: (
-    selectedPerson: FindPeopleByNameAndEmailQuery["people"][0] | undefined,
-    linkedin: string
+    selectedPerson: FindPeopleByNameAndEmailQuery['people'][0] | undefined,
+    linkedin: string,
   ) => void;
   onNext: (
-    selectedPerson: FindPeopleByNameAndEmailQuery["people"][0] | undefined,
-    linkedin: string
+    selectedPerson: FindPeopleByNameAndEmailQuery['people'][0] | undefined,
+    linkedin: string,
   ) => void;
 };
 
@@ -29,17 +29,17 @@ export default function OnboardingStep4(props: Props) {
   const { user } = useUser();
 
   const [selectedPerson, setSelectedPerson] = useState<
-    FindPeopleByNameAndEmailQuery["people"][0] | undefined
+    FindPeopleByNameAndEmailQuery['people'][0] | undefined
   >(props.selectedPerson);
 
   const [linkedin, setLinkedin] = useState<string>(props.linkedin);
 
-  const [linkedinError, setLinkedinError] = useState<string>("");
+  const [linkedinError, setLinkedinError] = useState<string>('');
 
   const { data: people, isLoading: isLoadingPeople } =
     useFindPeopleByNameAndEmailQuery(
-      { name: `%${user?.display_name}%`, email: `%${user?.email || ""}%` },
-      { enabled: !!user }
+      { name: `%${user?.display_name}%`, email: `%${user?.email || ''}%` },
+      { enabled: !!user },
     );
 
   const peopleList = people?.people;
@@ -48,9 +48,9 @@ export default function OnboardingStep4(props: Props) {
     const { value } = event.target;
     setLinkedin(value);
     if (!value || (value && urlPattern.test(value))) {
-      setLinkedinError("");
+      setLinkedinError('');
     } else {
-      setLinkedinError("Invalid URL");
+      setLinkedinError('Invalid URL');
     }
   };
 
@@ -106,14 +106,14 @@ export default function OnboardingStep4(props: Props) {
                     <Fragment>
                       <p className="font-bold">Are you any of these people?</p>
                       <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 py-4 max-h-[40vh] overflow-y-auto">
-                        {peopleList.map((item) => (
+                        {peopleList.map(item => (
                           <div
                             key={item.id}
                             className={`relative flex items-start p-1 rounded-lg transition-all hover:shadow hover:-translate-y-0.5 cursor-pointer
                         ${
                           selectedPerson?.id === item.id
-                            ? " border-primary-500 border-2"
-                            : "border-black/10 border"
+                            ? ' border-primary-500 border-2'
+                            : 'border-black/10 border'
                         }`}
                             onClick={() => setSelectedPerson(item)}
                           >
@@ -131,7 +131,7 @@ export default function OnboardingStep4(props: Props) {
                             <div className="overflow-hidden px-2">
                               <h3
                                 className="font-bold text-lg truncate"
-                                title={item.name || ""}
+                                title={item.name || ''}
                               >
                                 {item.name}
                               </h3>
@@ -159,12 +159,12 @@ export default function OnboardingStep4(props: Props) {
                         value={linkedin}
                         onChange={handleChangeLinkedin}
                         className={
-                          linkedinError === ""
-                            ? "ring-1 ring-slate-200"
-                            : "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+                          linkedinError === ''
+                            ? 'ring-1 ring-slate-200'
+                            : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                         }
                       />
-                      {linkedinError === "" ? null : (
+                      {linkedinError === '' ? null : (
                         <div className="mt-2 font-bold text-sm text-rose-400">
                           {linkedinError}
                         </div>

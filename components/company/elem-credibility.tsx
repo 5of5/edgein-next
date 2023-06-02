@@ -1,99 +1,99 @@
-import React from "react";
-import { ElemTooltip } from "../elem-tooltip";
+import React from 'react';
+import { ElemTooltip } from '../elem-tooltip';
 import {
-	IconProps,
-	IconBadgeCheckSolid,
-	IconGithub,
-	IconLinkedIn,
-	IconChartUp,
-} from "../icons";
+  IconProps,
+  IconBadgeCheckSolid,
+  IconGithub,
+  IconLinkedIn,
+  IconChartUp,
+} from '../icons';
 
 type Props = {
-	className?: string;
-	mini?: boolean;
-	heading?: string;
-	marketVerified?: string | null;
-	githubVerified?: string | null;
-	linkedInVerified?: string | null;
+  className?: string;
+  mini?: boolean;
+  heading?: string;
+  marketVerified?: string | null;
+  githubVerified?: string | null;
+  linkedInVerified?: string | null;
 };
 
 export const ElemCredibility: React.FC<Props> = ({
-	className,
-	mini = false,
-	heading,
-	marketVerified = null,
-	githubVerified = null,
-	linkedInVerified = null,
+  className,
+  mini = false,
+  heading,
+  marketVerified = null,
+  githubVerified = null,
+  linkedInVerified = null,
 }) => {
-	if (!marketVerified && !githubVerified && !linkedInVerified) {
-		return null;
-	}
+  if (!marketVerified && !githubVerified && !linkedInVerified) {
+    return null;
+  }
 
-	let credibilityItems: { text: string; icon: React.FC<IconProps> }[] = [];
+  const credibilityItems: { text: string; icon: React.FC<IconProps> }[] = [];
 
-	if (marketVerified) {
-		credibilityItems.push({ text: "Market Verified", icon: IconChartUp });
-	}
+  if (marketVerified) {
+    credibilityItems.push({ text: 'Market Verified', icon: IconChartUp });
+  }
 
-	if (githubVerified) {
-		credibilityItems.push({ text: "Github Verified", icon: IconGithub });
-	}
+  if (githubVerified) {
+    credibilityItems.push({ text: 'Github Verified', icon: IconGithub });
+  }
 
-	if (linkedInVerified) {
-		credibilityItems.push({ text: "LinkedIn Verified", icon: IconLinkedIn });
-	}
+  if (linkedInVerified) {
+    credibilityItems.push({ text: 'LinkedIn Verified', icon: IconLinkedIn });
+  }
 
-	return (
-		<section className={className}>
-			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
-			<div
-				className={`grid gap-2 overflow-visible ${
-					mini ? `grid-cols-${credibilityItems.length}` : "grid-cols-3 mt-3"
-				}`}
-			>
-				{credibilityItems.map((item, index: number) => {
-					const credibilityItem = (
-						<div
-							className={`${
-								mini ? "w-8 h-8" : "w-12 h-12"
-							} relative flex items-center justify-center bg-white rounded-lg border border-black/10`}
-						>
-							<IconBadgeCheckSolid
-								title="Verified"
-								className={`${
-									mini ? "-top-2 -right-2 h-5 w-5" : "-top-3 -right-3 h-7 w-7"
-								} absolute text-green-600`}
-							/>
-							<item.icon
-								className={`${mini ? "w-6 h-6" : "h-8 w-8"}  text-slate-600`}
-								title={item.text}
-							/>
-						</div>
-					);
+  return (
+    <section className={className}>
+      {heading && <h2 className="text-xl font-bold">{heading}</h2>}
+      <div
+        className={`grid gap-2 overflow-visible ${
+          mini ? `grid-cols-${credibilityItems.length}` : 'grid-cols-3 mt-3'
+        }`}
+      >
+        {credibilityItems.map((item, index: number) => {
+          const credibilityItem = (
+            <div
+              className={`${
+                mini ? 'w-8 h-8' : 'w-12 h-12'
+              } relative flex items-center justify-center bg-white rounded-lg border border-black/10`}
+            >
+              <IconBadgeCheckSolid
+                title="Verified"
+                className={`${
+                  mini ? '-top-2 -right-2 h-5 w-5' : '-top-3 -right-3 h-7 w-7'
+                } absolute text-green-600`}
+              />
+              <item.icon
+                className={`${mini ? 'w-6 h-6' : 'h-8 w-8'}  text-slate-600`}
+                title={item.text}
+              />
+            </div>
+          );
 
-					return (
-						<div
-							key={index}
-							className={`${
-								mini
-									? ""
-									: "pt-2 flex flex-col items-center justify-center h-full bg-white rounded-lg"
-							} text-slate-600`}
-						>
-							{mini ? (
-								<ElemTooltip content={item.text}>{credibilityItem}</ElemTooltip>
-							) : (
-								<>
-									{credibilityItem}
-									<div className="mt-2 text-center text-xs font-bold uppercase tracking-wider text-slate-600">
-										{item.text}
-									</div>
-								</>
-							)}
-						</div>
-					);
-				})}
-			</div>
-		</section>
-	);
+          return (
+            <div
+              key={index}
+              className={`${
+                mini
+                  ? ''
+                  : 'pt-2 flex flex-col items-center justify-center h-full bg-white rounded-lg'
+              } text-slate-600`}
+            >
+              {mini ? (
+                <ElemTooltip content={item.text}>{credibilityItem}</ElemTooltip>
+              ) : (
+                <>
+                  {credibilityItem}
+                  <div className="mt-2 text-center text-xs font-bold uppercase tracking-wider text-slate-600">
+                    {item.text}
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
 };

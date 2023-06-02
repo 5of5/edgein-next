@@ -445,7 +445,10 @@ query GetUserByAdditionalEmail($email: jsonb) {
   }
 }
 
-mutation UpdateUserOnboardingInformation($id: Int!, $onboarding_information: jsonb) {
+mutation UpdateUserOnboardingInformation(
+  $id: Int!
+  $onboarding_information: jsonb
+) {
   update_users(
     where: { id: { _eq: $id } }
     _set: { onboarding_information: $onboarding_information }
@@ -467,10 +470,7 @@ mutation UpdateUserOnboardingInformation($id: Int!, $onboarding_information: jso
 }
 
 mutation UpdateUserPersonId($id: Int!, $person_id: Int!) {
-  update_users(
-    where: { id: { _eq: $id } }
-    _set: { person_id: $person_id }
-  ) {
+  update_users(where: { id: { _eq: $id } }, _set: { person_id: $person_id }) {
     affected_rows
     returning {
       id

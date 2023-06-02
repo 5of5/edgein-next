@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 const sendMessage = async (webhookUrl: string, _payload: unknown) => {
-  if (webhookUrl === "") return;
+  if (webhookUrl === '') return;
   let payload = _payload;
-  if (typeof _payload === "string") {
+  if (typeof _payload === 'string') {
     payload = {
       text: _payload,
     };
@@ -12,7 +12,7 @@ const sendMessage = async (webhookUrl: string, _payload: unknown) => {
     withCredentials: false,
     transformRequest: [
       (data, headers) => {
-        delete headers?.["Content-Type"];
+        delete headers?.['Content-Type'];
         return data;
       },
     ],

@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { mutate, query } from "@/graphql/hasuraAdmin";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { mutate, query } from '@/graphql/hasuraAdmin';
 import {
   FindPeopleByLinkedinUrlDocument,
   FindPeopleByLinkedinUrlQuery,
@@ -10,10 +10,10 @@ import {
   UpdateUserPersonIdMutation,
   InsertOnboardingClaimProfileMutation,
   InsertOnboardingClaimProfileDocument,
-} from "@/graphql/types";
-import CookieService from "../../utils/cookie";
-import SlackServices from "@/utils/slack";
-import UserService from "@/utils/users";
+} from '@/graphql/types';
+import CookieService from '../../utils/cookie';
+import SlackServices from '@/utils/slack';
+import UserService from '@/utils/users';
 
 type QUESTION = {
   name: string;
@@ -21,7 +21,7 @@ type QUESTION = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end();
 
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const locationTags = req.body.locationTags;
   const industryTags = req.body.industryTags;
   const questions = req.body.questions;
-  const selectedPerson: FindPeopleByNameAndEmailQuery["people"][0] =
+  const selectedPerson: FindPeopleByNameAndEmailQuery['people'][0] =
     req.body.selectedPerson;
   const linkedin: string = req.body.linkedin;
 
@@ -46,9 +46,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await onLinkUserToPerson(user.id, personByLinkedin.id);
       } else {
         const insertedPerson = await onInsertProfile(
-          user.display_name || "",
+          user.display_name || '',
           user.email,
-          linkedin
+          linkedin,
         );
         await onLinkUserToPerson(user.id, insertedPerson?.id || 0);
       }
@@ -84,19 +84,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const messagePayload = {
       attachments: [
         {
-          color: "#2EB886",
-          title: "You have a new submission",
+          color: '#2EB886',
+          title: 'You have a new submission',
           fields: [
             {
-              title: "Username",
+              title: 'Username',
               value: user.display_name,
             },
             {
-              title: "Email",
+              title: 'Email',
               value: user.email,
             },
             {
-              title: "Claim Profile",
+              title: 'Claim Profile',
               value: selectedPerson
                 ? `Person: #${selectedPerson.id} | ${selectedPerson.name}`
                 : `Linkedin URL: ${linkedin}`,
@@ -111,8 +111,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     await SlackServices.sendMessage(
-      process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || "",
-      messagePayload
+      process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
+      messagePayload,
     );
 
     return res.status(200).send(response);
@@ -151,7 +151,7 @@ const onLinkUserToPerson = async (userId: number, personId: number) => {
 const onInsertProfile = async (
   name: string,
   email: string,
-  linkedin: string
+  linkedin: string,
 ) => {
   const {
     data: { insert_people_one },
@@ -160,12 +160,12 @@ const onInsertProfile = async (
     variables: {
       object: {
         name,
-        slug: `${name.trim().replace(/ /g, "-").toLowerCase()}-${Math.floor(
-          Date.now() / 1000
+        slug: `${name.trim().replace(/ /g, '-').toLowerCase()}-${Math.floor(
+          Date.now() / 1000,
         )}`,
         email,
         linkedin,
-        status: "draft",
+        status: 'draft',
       },
     },
   });

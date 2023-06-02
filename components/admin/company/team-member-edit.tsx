@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 
-import ContentEdit from "@mui/icons-material/Edit";
-import ContentSave from "@mui/icons-material/Save";
-import ContentDelete from "@mui/icons-material/Delete";
-import ContentCreate from "@mui/icons-material/Add";
+import ContentEdit from '@mui/icons-material/Edit';
+import ContentSave from '@mui/icons-material/Save';
+import ContentDelete from '@mui/icons-material/Delete';
+import ContentCreate from '@mui/icons-material/Add';
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 import {
   InputLabel,
@@ -19,9 +19,9 @@ import {
   FormControlLabel,
   Select,
   Switch,
-} from "@mui/material";
+} from '@mui/material';
 
-import MuiTextField from "@mui/material/TextField";
+import MuiTextField from '@mui/material/TextField';
 
 import {
   AutocompleteInput,
@@ -46,21 +46,21 @@ import {
   useGetOne,
   useRefresh,
   useEditContext,
-} from "react-admin";
+} from 'react-admin';
 
 import {
   functionChoicesTM,
   seniorityChoicesTM,
-} from "../../../utils/constants";
+} from '../../../utils/constants';
 
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -91,12 +91,11 @@ const CustomEditButton = ({ onEdit }: any) => {
   );
 };
 
-
 const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete("team_members", {
+  const [deleteOne] = useDelete('team_members', {
     id: record.id,
     previousData: record,
   });
@@ -111,7 +110,7 @@ const CustomDeleteButton = () => {
       <Button
         label="Delete"
         variant="text"
-        sx={{ color: "red" }}
+        sx={{ color: 'red' }}
         onClick={() => setOpen(true)}
         startIcon={<ContentDelete />}
       />
@@ -129,7 +128,9 @@ const CustomDeleteButton = () => {
 export const TeamMemberEdit = () => {
   const { record, isLoading } = useEditContext();
   const { id: currentId } = useParams();
-  const { data: member } = useGetList("team_members", { filter: { "company_id": parseInt(currentId!) } });
+  const { data: member } = useGetList('team_members', {
+    filter: { company_id: parseInt(currentId!) },
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currRecord, setCurrRecord] = useState<any>(null);
@@ -145,13 +146,13 @@ export const TeamMemberEdit = () => {
 
   const [teamData, setTeamData] = useState<any>({
     team_id: -1,
-    person_id: "",
+    person_id: '',
     founder: false,
-    function: "",
-    seniority: "",
+    function: '',
+    seniority: '',
     start_date: null,
     end_date: null,
-    title: "",
+    title: '',
   });
 
   const [filterData, setFilterData] = useState<any>([]);
@@ -176,13 +177,13 @@ export const TeamMemberEdit = () => {
     setIsError(false);
     setCurrRecord(null);
     setTeamData({
-      person_id: "",
+      person_id: '',
       founder: false,
-      function: "",
-      seniority: "",
+      function: '',
+      seniority: '',
       start_date: null,
       end_date: null,
-      title: "",
+      title: '',
     });
   };
 
@@ -210,9 +211,9 @@ export const TeamMemberEdit = () => {
         founder: teamData.founder,
       };
       if (!currRecord) {
-        create("team_members", { data });
+        create('team_members', { data });
       } else {
-        update("team_members", {
+        update('team_members', {
           id: currRecord.id,
           data,
           previousData: currRecord,
@@ -222,168 +223,194 @@ export const TeamMemberEdit = () => {
     }
   };
 
-  return (<><List
-    pagination={false}
-    actions={<ListActions onCreate={() => setIsOpen(true)} />}
-    sx={{
-      ".MuiToolbar-root": {
-        justifyContent: "start !important",
-        paddingTop: 0,
-        marginBottom: "4px",
-      },
-      ".RaBulkActionsToolbar-toolbar": {
-        justifyContent: "start !important",
-      },
-      ".MuiToolbar-root .MuiButtonBase-root": {
-        paddingTop: 0,
-        paddingBottom: 0,
-        margin: "4px",
-      },
-      ".RaBulkActionsToolbar-topToolbar": {
-        paddingTop: 0,
-        paddingBottom: 0,
-        marginBottom: 0,
-      },
-      ".MuiToolbar-root form": {
-        flex: "0 1 auto",
-      },
-      ".MuiToolbar-root form .MuiFormControl-root": {
-        margin: 0,
-      },
-    }}
-  >
-    <Datagrid bulkActionButtons={false}
-      data={member}
-    >
-      <ReferenceField
-        label="Person"
-        source="person_id"
-        reference="people"
-        sortable={false}
+  return (
+    <>
+      <List
+        pagination={false}
+        actions={<ListActions onCreate={() => setIsOpen(true)} />}
+        sx={{
+          '.MuiToolbar-root': {
+            justifyContent: 'start !important',
+            paddingTop: 0,
+            marginBottom: '4px',
+          },
+          '.RaBulkActionsToolbar-toolbar': {
+            justifyContent: 'start !important',
+          },
+          '.MuiToolbar-root .MuiButtonBase-root': {
+            paddingTop: 0,
+            paddingBottom: 0,
+            margin: '4px',
+          },
+          '.RaBulkActionsToolbar-topToolbar': {
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginBottom: 0,
+          },
+          '.MuiToolbar-root form': {
+            flex: '0 1 auto',
+          },
+          '.MuiToolbar-root form .MuiFormControl-root': {
+            margin: 0,
+          },
+        }}
       >
-        <TextField source="name"/>
-      </ReferenceField>
-      <SelectField source="function" choices={functionChoicesTM} sortable={false}/>
-      <DateField source="start_date" sortable={false} />
-      <DateField source="end_date" sortable={false} />
-      <SelectField source="seniority" choices={seniorityChoicesTM} sortable={false}/>
-      <TextField source="title" sortable={false} />
-      <BooleanField source="founder" sortable={false} />
-      <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
-      <CustomDeleteButton />
-    </Datagrid>
-  </List>
-  {isOpen && <Dialog
-    open={true}
-    TransitionComponent={Transition}
-    keepMounted
-    fullWidth
-    maxWidth="xs"
-    onClose={handleClose}
-  >
-    <DialogTitle>TeamMember</DialogTitle>
-    <DialogContent>
-      <Form>
-      <FormControl variant="filled" sx={{ width: "100%", ".MuiAutocomplete-root .MuiFormHelperText-root": { display: "none" }}}>
-        <ReferenceInput
-         label="Person" source="person_id" reference="people">
-          <AutocompleteInput
-            defaultValue={currRecord?.person_id}
-            optionText="name"
-            optionValue="id"
-            filterToQuery={search => ({ name: search })}
-            onChange={(person_id) => { handleChange(0, person_id)} }
-            onCreate={(person_id) => { handleChange(0, person_id)} }
+        <Datagrid bulkActionButtons={false} data={member}>
+          <ReferenceField
+            label="Person"
+            source="person_id"
+            reference="people"
+            sortable={false}
+          >
+            <TextField source="name" />
+          </ReferenceField>
+          <SelectField
+            source="function"
+            choices={functionChoicesTM}
+            sortable={false}
           />
-       </ReferenceInput>
-       {isError && (
-          <FormHelperText sx={{ color: "red" }}>
-            Person is required
-          </FormHelperText>
-        )}
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <InputLabel>Function</InputLabel>
-       <Select
-         value={teamData?.function}
-         onChange={(e) => handleChange(1, e.target.value)}
-       >
-         {functionChoicesTM?.map((r) => (
-           <MenuItem key={r.id} value={r.id}>
-             {r.name}
-           </MenuItem>
-         ))}
-       </Select>
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <InputLabel>Seniority</InputLabel>
-       <Select
-         value={teamData?.seniority}
-         onChange={(e) => handleChange(2, e.target.value)}
-       >
-         {seniorityChoicesTM?.map((r) => (
-           <MenuItem key={r.id} value={r.id}>
-             {r.name}
-           </MenuItem>
-         ))}
-       </Select>
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <MuiTextField
-         label="Start date"
-         type="date"
-         value={teamData?.start_date}
-         onChange={(e) => handleChange(3, e.target.value)}
-         InputLabelProps={{ shrink: true }}
-       />
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <MuiTextField
-         label="End date"
-         type="date"
-         value={teamData?.end_date}
-         onChange={(e) => handleChange(4, e.target.value)}
-         InputLabelProps={{ shrink: true }}
-       />
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <MuiTextField
-         label="Title"
-         value={teamData?.title}
-         onChange={(e) => handleChange(5, e.target.value)}
-         variant="filled"
-       />
-     </FormControl>
+          <DateField source="start_date" sortable={false} />
+          <DateField source="end_date" sortable={false} />
+          <SelectField
+            source="seniority"
+            choices={seniorityChoicesTM}
+            sortable={false}
+          />
+          <TextField source="title" sortable={false} />
+          <BooleanField source="founder" sortable={false} />
+          <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
+          <CustomDeleteButton />
+        </Datagrid>
+      </List>
+      {isOpen && (
+        <Dialog
+          open={true}
+          TransitionComponent={Transition}
+          keepMounted
+          fullWidth
+          maxWidth="xs"
+          onClose={handleClose}
+        >
+          <DialogTitle>TeamMember</DialogTitle>
+          <DialogContent>
+            <Form>
+              <FormControl
+                variant="filled"
+                sx={{
+                  width: '100%',
+                  '.MuiAutocomplete-root .MuiFormHelperText-root': {
+                    display: 'none',
+                  },
+                }}
+              >
+                <ReferenceInput
+                  label="Person"
+                  source="person_id"
+                  reference="people"
+                >
+                  <AutocompleteInput
+                    defaultValue={currRecord?.person_id}
+                    optionText="name"
+                    optionValue="id"
+                    filterToQuery={search => ({ name: search })}
+                    onChange={person_id => {
+                      handleChange(0, person_id);
+                    }}
+                    onCreate={person_id => {
+                      handleChange(0, person_id);
+                    }}
+                  />
+                </ReferenceInput>
+                {isError && (
+                  <FormHelperText sx={{ color: 'red' }}>
+                    Person is required
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
+                <InputLabel>Function</InputLabel>
+                <Select
+                  value={teamData?.function}
+                  onChange={e => handleChange(1, e.target.value)}
+                >
+                  {functionChoicesTM?.map(r => (
+                    <MenuItem key={r.id} value={r.id}>
+                      {r.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
+                <InputLabel>Seniority</InputLabel>
+                <Select
+                  value={teamData?.seniority}
+                  onChange={e => handleChange(2, e.target.value)}
+                >
+                  {seniorityChoicesTM?.map(r => (
+                    <MenuItem key={r.id} value={r.id}>
+                      {r.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
+                <MuiTextField
+                  label="Start date"
+                  type="date"
+                  value={teamData?.start_date}
+                  onChange={e => handleChange(3, e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
+                <MuiTextField
+                  label="End date"
+                  type="date"
+                  value={teamData?.end_date}
+                  onChange={e => handleChange(4, e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
+                <MuiTextField
+                  label="Title"
+                  value={teamData?.title}
+                  onChange={e => handleChange(5, e.target.value)}
+                  variant="filled"
+                />
+              </FormControl>
 
-     <FormControlLabel
-       control={
-         <Switch
-           checked={teamData?.founder}
-           onChange={(e) => handleChange(6, e.target.checked)}
-         />
-       }
-       label="Founder"
-     />
-     <FormControl
-       variant="filled"
-       sx={{
-         display: "flex",
-         justifyContent: "space-evenly",
-         alignItems: "center",
-         flexDirection: "row",
-         width: "100%",
-       }}
-     >
-       <Button label="Cancel" variant="text" onClick={handleClose} />
-       <Button
-         label="Save"
-         variant="contained"
-         onClick={handleSave}
-         startIcon={<ContentSave />}
-       />
-     </FormControl>
-    </Form>
-    </DialogContent>
-  </Dialog>}
-  </>);
-}
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={teamData?.founder}
+                    onChange={e => handleChange(6, e.target.checked)}
+                  />
+                }
+                label="Founder"
+              />
+              <FormControl
+                variant="filled"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  width: '100%',
+                }}
+              >
+                <Button label="Cancel" variant="text" onClick={handleClose} />
+                <Button
+                  label="Save"
+                  variant="contained"
+                  onClick={handleSave}
+                  startIcon={<ContentSave />}
+                />
+              </FormControl>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
+  );
+};

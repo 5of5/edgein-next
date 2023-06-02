@@ -15,27 +15,27 @@ export type FilterOptionMetadata = {
 };
 
 export type DateRangeOptions =
-  | "30-days"
-  | "60-days"
-  | "90-days"
-  | "year"
-  | "custom"
+  | '30-days'
+  | '60-days'
+  | '90-days'
+  | 'year'
+  | 'custom'
   | undefined;
 
 export type Filters = {
   country?: {
     open?: boolean;
-    condition: "any" | "none";
+    condition: 'any' | 'none';
     tags: Array<string>;
   };
   state?: {
     open?: boolean;
-    condition: "any" | "none";
+    condition: 'any' | 'none';
     tags: Array<string>;
   };
   city?: {
     open?: boolean;
-    condition: "any" | "none";
+    condition: 'any' | 'none';
     tags: Array<string>;
   };
   address?: {
@@ -70,7 +70,7 @@ export type Filters = {
   };
   fundingInvestors?: {
     open?: boolean;
-    condition: "any" | "none";
+    condition: 'any' | 'none';
     tags: Array<string>;
   };
   teamSize?: {
@@ -107,7 +107,7 @@ export type Filters = {
   };
   fundedCompanies?: {
     open?: boolean;
-    condition: "any" | "none";
+    condition: 'any' | 'none';
     tags: Array<string>;
   };
   eventType?: {
@@ -135,4 +135,4 @@ export type Filters = {
 
 export type FilterOptionKeys = keyof Filters;
 
-export type DateCondition = "past" | "next";
+export type DateCondition = 'past' | 'next';
