@@ -1,4 +1,9 @@
-export type CalendarType = 'Apple' | 'Google' | 'Outlook' | 'iCal File';
+import { IconProps } from '@/components/icons';
+
+export type CalendarType = {
+  type: string;
+  icon?: React.FC<IconProps>;
+};
 
 export type CalendarEvent = {
   name: string;

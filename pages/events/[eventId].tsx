@@ -351,7 +351,7 @@ const Event: NextPage<Props> = props => {
           </div>
           <div className="col-span-8">
             {event.overview && (
-              <div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
+              <div className="mt-7 w-full p-5 bg-white shadow rounded-lg lg:mt-0">
                 <h2 className="text-xl font-bold w-full mb-2 border-b border-black/10">
                   Overview
                 </h2>
