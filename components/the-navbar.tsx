@@ -412,6 +412,11 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
         myListsUrl={myListsUrl}
         myGroupsUrl={myGroupsUrl}
       />
+
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
     </header>
   );
 };
