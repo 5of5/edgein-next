@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useCreate, useRedirect } from "react-admin";
-import useWindowDimensions from "@/hooks/use-window-dimensions";
-import useAdminTransform from "@/hooks/use-admin-transform";
-import ElemFormBase from "../elem-form-base";
-import ElemToolbar from "../elem-toolbar";
-import VcFirmForm from "./vc-firm-form";
+import React, { useState, useRef, useEffect } from 'react';
+import { useCreate, useRedirect } from 'react-admin';
+import useWindowDimensions from '@/hooks/use-window-dimensions';
+import useAdminTransform from '@/hooks/use-admin-transform';
+import ElemFormBase from '../elem-form-base';
+import ElemToolbar from '../elem-toolbar';
+import VcFirmForm from './vc-firm-form';
 import {
   getMutationRootStyle,
   withImageTransformData,
   withoutImageTransformData,
-} from "./services";
+} from './services';
 
 export const VcFirmCreate = () => {
   const [create] = useCreate();
@@ -38,9 +38,9 @@ export const VcFirmCreate = () => {
   };
 
   const handleSaveDraft = (data: any) => {
-    data.status = "draft";
-    create("vc_firms", { data });
-    redirect("/vc_firms");
+    data.status = 'draft';
+    create('vc_firms', { data });
+    redirect('/vc_firms');
   };
 
   return (

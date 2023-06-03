@@ -1,373 +1,375 @@
-import React, { useEffect, useState, useRef, MutableRefObject } from "react";
-import { NextPage, GetServerSideProps } from "next";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { ElemPhoto } from "@/components/elem-photo";
-import { ElemKeyInfo } from "@/components/elem-key-info";
-import { ElemTabBar } from "@/components/elem-tab-bar";
-import { ElemTags } from "@/components/elem-tags";
-import { ElemSaveToList } from "@/components/elem-save-to-list";
-import { ElemReactions } from "@/components/elem-reactions";
-import { ElemInvestorGrid } from "@/components/investor/elem-investor-grid";
-import { ElemInvestments } from "@/components/investor/elem-investments";
-import { ElemSocialShare } from "@/components/elem-social-share";
-import { ElemOrganizationActivity } from "@/components/elem-organization-activity";
-import parse from "html-react-parser";
-import { newLineToP } from "@/utils/text";
+import React, { useEffect, useState, useRef, MutableRefObject } from 'react';
+import { NextPage, GetServerSideProps } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ElemPhoto } from '@/components/elem-photo';
+import { ElemKeyInfo } from '@/components/elem-key-info';
+import { ElemTabBar } from '@/components/elem-tab-bar';
+import { ElemTags } from '@/components/elem-tags';
+import { ElemSaveToList } from '@/components/elem-save-to-list';
+import { ElemReactions } from '@/components/elem-reactions';
+import { ElemInvestorGrid } from '@/components/investor/elem-investor-grid';
+import { ElemInvestments } from '@/components/investor/elem-investments';
+import { ElemSocialShare } from '@/components/elem-social-share';
+import { ElemOrganizationActivity } from '@/components/elem-organization-activity';
+import parse from 'html-react-parser';
+import { newLineToP } from '@/utils/text';
 
-import { runGraphQl } from "@/utils";
+import { runGraphQl } from '@/utils';
 import {
-	GetVcFirmDocument,
-	GetVcFirmQuery,
-	Investment_Rounds,
-	News,
-	useGetVcFirmQuery,
-	Vc_Firms,
-} from "@/graphql/types";
+  GetVcFirmDocument,
+  GetVcFirmQuery,
+  Investment_Rounds,
+  News,
+  useGetVcFirmQuery,
+  Vc_Firms,
+} from '@/graphql/types';
 
-import { useAuth } from "@/hooks/use-auth";
-import { uniq } from "lodash";
-import { ElemButton } from "@/components/elem-button";
-import { onTrackView } from "@/utils/track";
-import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
-import { IconEditPencil, IconAnnotation } from "@/components/icons";
-import ElemOrganizationNotes from "@/components/elem-organization-notes";
-import { Popups } from "@/components/the-navbar";
+import { useAuth } from '@/hooks/use-auth';
+import { uniq } from 'lodash';
+import { ElemButton } from '@/components/elem-button';
+import { onTrackView } from '@/utils/track';
+import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
+import { IconEditPencil, IconAnnotation } from '@/components/icons';
+import ElemOrganizationNotes from '@/components/elem-organization-notes';
+import { Popups } from '@/components/the-navbar';
+import ElemNewsList from '@/components/news/elem-news-list';
 
 type Props = {
-	vcfirm: Vc_Firms;
-	sortByDateAscInvestments: Array<Investment_Rounds>;
-	sortNews: Array<News>;
-	getInvestments: Array<Investment_Rounds>;
-	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
-	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
+  vcfirm: Vc_Firms;
+  sortByDateAscInvestments: Array<Investment_Rounds>;
+  sortNews: Array<News>;
+  getInvestments: Array<Investment_Rounds>;
+  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const VCFirm: NextPage<Props> = (props) => {
-	const { user } = useAuth();
-	const router = useRouter();
-	const { investorId } = router.query;
+const VCFirm: NextPage<Props> = props => {
+  const { user } = useAuth();
+  const router = useRouter();
+  const { investorId } = router.query;
 
-	const [vcfirm, setVcfirm] = useState(props.vcfirm);
+  const [vcfirm, setVcfirm] = useState(props.vcfirm);
 
-	const [overviewMore, setOverviewMore] = useState(false);
-	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
-	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
+  const [overviewMore, setOverviewMore] = useState(false);
+  const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
+  const [overviewDivHeight, setOverviewDivHeight] = useState(0);
 
-	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-	const {
-		data: vcFirmData,
-		error,
-		isLoading,
-	} = useGetVcFirmQuery({
-		slug: investorId as string,
-	});
+  const {
+    data: vcFirmData,
+    error,
+    isLoading,
+  } = useGetVcFirmQuery({
+    slug: investorId as string,
+  });
 
-	useEffect(() => {
-		if (vcfirm.overview) {
-			setOverviewDivHeight(overviewDiv.current.scrollHeight);
-		}
-	}, [vcfirm]);
+  useEffect(() => {
+    if (vcfirm.overview) {
+      setOverviewDivHeight(overviewDiv.current.scrollHeight);
+    }
+  }, [vcfirm]);
 
-	useEffect(() => {
-		if (vcFirmData) {
-			onTrackView({
-				resourceId: vcFirmData?.vc_firms[0]?.id,
-				resourceType: "vc_firms",
-				pathname: router.asPath,
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [vcFirmData]);
+  useEffect(() => {
+    if (vcFirmData) {
+      onTrackView({
+        resourceId: vcFirmData?.vc_firms[0]?.id,
+        resourceType: 'vc_firms',
+        pathname: router.asPath,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vcFirmData]);
 
-	useEffect(() => {
-		if (vcFirmData) setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);
-	}, [vcFirmData]);
+  useEffect(() => {
+    if (vcFirmData) setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);
+  }, [vcFirmData]);
 
-	if (!vcfirm) {
-		return <h1>Not Found</h1>;
-	}
+  if (!vcfirm) {
+    return <h1>Not Found</h1>;
+  }
 
-	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+  const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
-	const sortActivities =
-		[...sortedInvestmentRounds, ...props.sortNews]
-			?.slice()
-			.sort((a: any, b: any) => {
-				return (
-					new Date(a?.date || a?.round_date || "").getTime() -
-					new Date(b?.date || b?.round_date || "").getTime()
-				);
-			})
-			.reverse() || [];
+  //TabBar
+  const tabBarItems = [{ name: 'Overview', ref: overviewRef }];
+  if (props.sortNews.length > 0) {
+    tabBarItems.push({ name: 'News', ref: newsRef });
+  }
+  if (vcfirm.investors.length > 0) {
+    tabBarItems.push({ name: 'Team', ref: teamRef });
+  }
+  if (sortedInvestmentRounds.length > 0) {
+    tabBarItems.push({
+      name: 'Investments',
+      ref: investmentRef,
+    });
+  }
 
-	//TabBar
-	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
-	if (vcfirm.investors.length > 0) {
-		tabBarItems.push({ name: "Team", ref: teamRef });
-	}
-	if (sortedInvestmentRounds.length > 0) {
-		tabBarItems.push({
-			name: "Investments",
-			ref: investmentRef,
-		});
-	}
+  const parentLinks = vcfirm?.to_links?.find(
+    item => item.link_type === 'child',
+  );
+  const parentOrganization =
+    parentLinks?.from_company || parentLinks?.from_vc_firm;
+  const subOrganizations = vcfirm?.from_links?.filter(
+    item => item.link_type === 'child',
+  );
 
-	const parentLinks = vcfirm?.to_links?.find(
-		(item) => item.link_type === "child"
-	);
-	const parentOrganization =
-		parentLinks?.from_company || parentLinks?.from_vc_firm;
-	const subOrganizations = vcfirm?.from_links?.filter(
-		(item) => item.link_type === "child"
-	);
+  return (
+    <>
+      <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-11 lg:gap-7">
+            <div className="col-span-3">
+              <ElemPhoto
+                photo={vcfirm.logo}
+                wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
+                imgClass="object-contain w-full h-full"
+                imgAlt={vcfirm.name}
+                placeholderClass="text-slate-300"
+              />
+            </div>
 
-	return (
-		<>
-			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="lg:grid lg:grid-cols-11 lg:gap-7">
-						<div className="col-span-3">
-							<ElemPhoto
-								photo={vcfirm.logo}
-								wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
-								imgClass="object-contain w-full h-full"
-								imgAlt={vcfirm.name}
-								placeholderClass="text-slate-300"
-							/>
-						</div>
+            <div className="w-full col-span-5 mt-7 lg:mt-4">
+              <h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
+              {vcfirm.tags?.length > 0 && (
+                <ElemTags
+                  className="mt-4"
+                  resourceType={'investors'}
+                  tags={vcfirm.tags}
+                />
+              )}
 
-						<div className="w-full col-span-5 mt-7 lg:mt-4">
-							<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
-							{vcfirm.tags?.length > 0 && (
-								<ElemTags
-									className="mt-4"
-									resourceType={"investors"}
-									tags={vcfirm.tags}
-								/>
-							)}
+              {parentOrganization && (
+                <div className="mt-4">
+                  <div className="font-bold text-sm">Sub-organization of:</div>
+                  <Link
+                    href={`/${
+                      parentLinks?.from_company ? 'companies' : 'investors'
+                    }/${parentOrganization?.slug}`}
+                    passHref
+                  >
+                    <a className="flex items-center gap-2 mt-1 group">
+                      <ElemPhoto
+                        photo={parentOrganization?.logo}
+                        wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
+                        imgClass="object-contain w-full h-full"
+                        imgAlt={parentOrganization?.name}
+                        placeholderClass="text-slate-300"
+                      />
+                      <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                        {parentOrganization?.name}
+                      </h2>
+                    </a>
+                  </Link>
+                </div>
+              )}
 
-							{parentOrganization && (
-								<div className="mt-4">
-									<div className="font-bold text-sm">Sub-organization of:</div>
-									<Link href="#">
-										<a className="flex items-center gap-2 mt-1 group transition-all hover:-translate-y-0.5">
-											<ElemPhoto
-												photo={parentOrganization?.logo}
-												wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow"
-												imgClass="object-contain w-full h-full"
-												imgAlt={parentOrganization?.name}
-												placeholderClass="text-slate-300"
-											/>
-											<Link
-												href={`/${
-													parentLinks?.from_company ? "companies" : "investors"
-												}/${parentOrganization?.slug}`}
-												passHref
-											>
-												<h2 className="group-hover:text-primary-500">
-													{parentOrganization?.name}
-												</h2>
-											</Link>
-										</a>
-									</Link>
-								</div>
-							)}
+              {vcfirm.overview && (
+                <>
+                  <div
+                    ref={overviewDiv}
+                    className={`mt-4 text-base text-slate-600 prose ${
+                      overviewMore ? '' : 'line-clamp-3'
+                    }`}
+                  >
+                    {parse(newLineToP(vcfirm.overview))}
+                  </div>
+                  {overviewDivHeight > 84 && (
+                    <ElemButton
+                      onClick={() => setOverviewMore(!overviewMore)}
+                      btn="transparent"
+                      className="px-0 py-0 inline font-normal"
+                    >
+                      show {overviewMore ? 'less' : 'more'}
+                    </ElemButton>
+                  )}
+                </>
+              )}
+              <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+                <ElemReactions
+                  resource={vcfirm}
+                  resourceType={'vc_firms'}
+                  className="w-full sm:w-auto"
+                />
+                <ElemSaveToList
+                  resourceName={vcfirm.name}
+                  resourceId={vcfirm.id}
+                  resourceType={'vc_firms'}
+                  slug={vcfirm.slug!}
+                />
+                <ElemSocialShare
+                  resourceName={vcfirm.name}
+                  resourceTwitterUrl={vcfirm.twitter}
+                />
+              </div>
+            </div>
+          </div>
 
-							{vcfirm.overview && (
-								<>
-									<div
-										ref={overviewDiv}
-										className={`mt-4 text-base text-slate-600 prose ${
-											overviewMore ? "" : "line-clamp-3"
-										}`}
-									>
-										{parse(newLineToP(vcfirm.overview))}
-									</div>
-									{overviewDivHeight > 84 && (
-										<ElemButton
-											onClick={() => setOverviewMore(!overviewMore)}
-											btn="transparent"
-											className="px-0 py-0 inline font-normal"
-										>
-											show {overviewMore ? "less" : "more"}
-										</ElemButton>
-									)}
-								</>
-							)}
-							<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
-								<ElemReactions
-									resource={vcfirm}
-									resourceType={"vc_firms"}
-									className="w-full sm:w-auto"
-								/>
-								<ElemSaveToList
-									resourceName={vcfirm.name}
-									resourceId={vcfirm.id}
-									resourceType={"vc_firms"}
-									slug={vcfirm.slug!}
-								/>
-								<ElemSocialShare
-									resourceName={vcfirm.name}
-									resourceTwitterUrl={vcfirm.twitter}
-								/>
-							</div>
-						</div>
-					</div>
+          <ElemTabBar
+            className="mt-7 border-b-0"
+            tabs={tabBarItems}
+            resourceName={vcfirm.name}
+          />
+        </div>
+      </div>
 
-					<ElemTabBar
-						className="mt-7 border-b-0"
-						tabs={tabBarItems}
-						resourceName={vcfirm.name}
-					/>
-				</div>
-			</div>
+      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+        <div
+          className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+          ref={overviewRef}
+          id="overview"
+        >
+          <div className="col-span-3">
+            <ElemKeyInfo
+              className="sticky top-11"
+              heading="Key Info"
+              website={vcfirm.website}
+              investmentsLength={sortedInvestmentRounds.length}
+              yearFounded={vcfirm.year_founded}
+              linkedIn={vcfirm.linkedin}
+              location={vcfirm.location}
+              locationJson={vcfirm.location_json}
+              twitter={vcfirm.twitter}
+            />
+          </div>
+          <div className="col-span-8">
+            <div className="w-full mt-7 p-5 bg-slate-200 rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)] lg:mt-0">
+              <ElemOrganizationNotes
+                resourceId={vcfirm.id}
+                resourceType="vc_firms"
+                setShowPopup={props.setShowPopup}
+              />
+            </div>
+            {props.sortNews.length > 0 && (
+              <div
+                ref={newsRef}
+                className="w-full mt-7 p-5 bg-white shadow rounded-lg"
+              >
+                <ElemNewsList
+                  resourceType="vc_firms"
+                  resourceId={vcfirm.id}
+                  news={props.sortNews}
+                />
+              </div>
+            )}
+            <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+              <ElemOrganizationActivity
+                resourceType="vc_firms"
+                resourceInvestments={sortedInvestmentRounds}
+              />
+            </div>
+          </div>
+        </div>
+        {vcfirm.investors.length > 0 && (
+          <div
+            ref={teamRef}
+            className="mt-7 p-5 rounded-lg bg-white shadow"
+            id="team"
+          >
+            <ElemInvestorGrid
+              // tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
+              showEdit={false}
+              heading="Team"
+              people={vcfirm.investors}
+            />
+          </div>
+        )}
 
-			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				<div
-					className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
-					ref={overviewRef}
-					id="overview"
-				>
-					<div className="col-span-3">
-						<ElemKeyInfo
-							className="sticky top-11"
-							heading="Key Info"
-							website={vcfirm.website}
-							investmentsLength={sortedInvestmentRounds.length}
-							yearFounded={vcfirm.year_founded}
-							linkedIn={vcfirm.linkedin}
-							location={vcfirm.location}
-							locationJson={vcfirm.location_json}
-							twitter={vcfirm.twitter}
-						/>
-					</div>
-					<div className="col-span-8">
-						<div className="w-full mt-7 p-5 bg-slate-200 rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)] lg:mt-0">
-							<ElemOrganizationNotes
-								resourceId={vcfirm.id}
-								resourceType="vc_firms"
-								setShowPopup={props.setShowPopup}
-							/>
-						</div>
-						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
-							<ElemOrganizationActivity
-								resourceId={vcfirm.id}
-								resourceType="vc_firms"
-								resourceInvestments={sortActivities}
-								resourceName={vcfirm.name}
-							/>
-						</div>
-					</div>
-				</div>
-				{vcfirm.investors.length > 0 && (
-					<div
-						ref={teamRef}
-						className="mt-7 p-5 rounded-lg bg-white shadow"
-						id="team"
-					>
-						<ElemInvestorGrid
-							// tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
-							showEdit={false}
-							heading="Team"
-							people={vcfirm.investors}
-						/>
-					</div>
-				)}
+        {sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
+          <section
+            ref={investmentRef}
+            className="mt-7 p-5 rounded-lg bg-white shadow"
+            id="investments"
+          >
+            <ElemInvestments
+              showEdit={false}
+              heading="Investments"
+              investments={sortedInvestmentRounds.filter(n => n)}
+            />
+          </section>
+        )}
 
-				{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
-					<section
-						ref={investmentRef}
-						className="mt-7 p-5 rounded-lg bg-white shadow"
-						id="investments"
-					>
-						<ElemInvestments
-							showEdit={false}
-							heading="Investments"
-							investments={sortedInvestmentRounds.filter((n) => n)}
-						/>
-					</section>
-				)}
+        {subOrganizations?.length > 0 && (
+          <ElemSubOrganizations
+            className="mt-7"
+            heading={`${vcfirm?.name} Sub-Organizations (${subOrganizations.length})`}
+            subOrganizations={subOrganizations}
+          />
+        )}
 
-				{subOrganizations?.length > 0 && (
-					<ElemSubOrganizations
-						className="mt-7"
-						heading={`${vcfirm?.name} Sub-Organizations (${subOrganizations.length})`}
-						subOrganizations={subOrganizations}
-					/>
-				)}
-
-				{/* <div className="mt-7 rounded-lg bg-white shadow">
+        {/* <div className="mt-7 rounded-lg bg-white shadow">
 				{vcfirm && (
 					<ElemRecentInvestments heading="Similar Investors" />
 				)}
 			</div> */}
-			</div>
-		</>
-	);
+      </div>
+    </>
+  );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
-		GetVcFirmDocument,
-		{ slug: context.params?.investorId },
-		context.req.cookies
-	);
+export const getServerSideProps: GetServerSideProps = async context => {
+  const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
+    GetVcFirmDocument,
+    { slug: context.params?.investorId },
+    context.req.cookies,
+  );
 
-	if (!vc_firms?.vc_firms[0]) {
-		return {
-			notFound: true,
-		};
-	}
+  if (!vc_firms?.vc_firms[0]) {
+    return {
+      notFound: true,
+    };
+  }
 
-	const getInvestments = vc_firms.vc_firms[0].investments.map((round) => {
-		if (typeof round.investment_round === "object" && round.investment_round) {
-			return round.investment_round;
-		} else {
-			return null;
-		}
-	});
+  const getInvestments = vc_firms.vc_firms[0].investments.map(round => {
+    if (typeof round.investment_round === 'object' && round.investment_round) {
+      return round.investment_round;
+    } else {
+      return null;
+    }
+  });
 
-	const sortByDateAscInvestments = getInvestments
-		.slice()
-		.sort((a, b) => {
-			const distantPast = new Date("April 2, 1900 00:00:00");
-			let dateA = a?.round_date ? new Date(a.round_date) : distantPast;
-			let dateB = b?.round_date ? new Date(b.round_date) : distantPast;
-			return dateA.getTime() - dateB.getTime();
-		})
-		.reverse();
+  const sortByDateAscInvestments = getInvestments
+    .slice()
+    .sort((a, b) => {
+      const distantPast = new Date('April 2, 1900 00:00:00');
+      const dateA = a?.round_date ? new Date(a.round_date) : distantPast;
+      const dateB = b?.round_date ? new Date(b.round_date) : distantPast;
+      return dateA.getTime() - dateB.getTime();
+    })
+    .reverse();
 
-	const sortNews =
-		vc_firms.vc_firms[0].news_links
-			?.slice()
-			?.map((item) => ({ ...item.news, type: "news" }))
-			?.filter((item) => item.status === "published")
-			.sort((a, b) => {
-				return (
-					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
-				);
-			})
-			.reverse() || [];
+  const sortNews =
+    vc_firms.vc_firms[0].news_links
+      ?.slice()
+      ?.map(item => ({ ...item.news, type: 'news' }))
+      ?.filter(item => item.status === 'published')
+      .sort((a, b) => {
+        return (
+          new Date(a?.date ?? '').getTime() - new Date(b?.date ?? '').getTime()
+        );
+      })
+      .reverse() || [];
 
-	let metaTitle = null;
-	if (vc_firms.vc_firms[0].name) {
-		metaTitle =
-			vc_firms.vc_firms[0].name + " Investor Profile & Funding - EdgeIn.io";
-	}
+  let metaTitle = null;
+  if (vc_firms.vc_firms[0].name) {
+    metaTitle =
+      vc_firms.vc_firms[0].name + ' Investor Profile & Funding - EdgeIn.io';
+  }
 
-	return {
-		props: {
-			metaTitle,
-			vcfirm: vc_firms.vc_firms[0],
-			getInvestments,
-			sortByDateAscInvestments,
-			sortNews,
-		},
-	};
+  return {
+    props: {
+      metaTitle,
+      vcfirm: vc_firms.vc_firms[0],
+      getInvestments,
+      sortByDateAscInvestments,
+      sortNews,
+    },
+  };
 };
 
 export default VCFirm;

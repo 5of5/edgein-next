@@ -1,0 +1,3 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- ALTER TABLE vc_firms ALTER COLUMN latest_investment TYPE date USING latest_investment::date;

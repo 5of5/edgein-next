@@ -1,17 +1,17 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 
-import React, { useState } from "react";
-import { AppBar, useRedirect } from "react-admin";
-import { useHotkeys } from "react-hotkeys-hook";
-import ElemSearchBox from "../elem-search-box";
-import SearchModal from "../search-modal";
+import React, { useState } from 'react';
+import { AppBar, useRedirect } from 'react-admin';
+import { useHotkeys } from 'react-hotkeys-hook';
+import ElemSearchBox from '../elem-search-box';
+import SearchModal from '../search-modal';
 
 const ElemAppBar = (props: any) => {
   const [showSearchModal, setShowSearchModal] = useState(false);
 
   const redirect = useRedirect();
 
-  useHotkeys("ctrl+k, command+k", function (event) {
+  useHotkeys('ctrl+k, command+k', function (event) {
     event.preventDefault();
     setShowSearchModal(true);
   });
@@ -34,12 +34,12 @@ const ElemAppBar = (props: any) => {
       />
       <a
         href="/api/sync-algolia/"
-        target={"_blank"}
+        target={'_blank'}
         style={{
-          border: "1px white solid",
+          border: '1px white solid',
           borderRadius: 4,
-          padding: "0 8px",
-          margin: "0 4px",
+          padding: '0 8px',
+          margin: '0 4px',
         }}
       >
         Sync Algolia

@@ -1,3 +1,4 @@
 -- Could not auto-generate a down migration.
 -- Please write an appropriate down migration for the SQL below:
--- DELETE from "public"."application_meta" WHERE id = 2;
+-- alter table "public"."resource_links" add column "created_at" timestamptz
+--  not null default now();

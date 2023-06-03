@@ -1,6 +1,6 @@
-import { eventSizeChoices, eventTypeChoices } from "@/utils/constants";
-import { getFullAddress } from "@/utils/helpers";
-import React from "react";
+import { eventSizeChoices, eventTypeChoices } from '@/utils/constants';
+import { getFullAddress } from '@/utils/helpers';
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -11,8 +11,8 @@ import {
   NumberField,
   ImageField,
   BooleanField,
-} from "react-admin";
-import ElemList from "../elem-list";
+} from 'react-admin';
+import ElemList from '../elem-list';
 
 const filters = [
   <TextInput
@@ -67,7 +67,7 @@ export const EventList = () => {
         render={(record: any) =>
           Array.isArray(record.library)
             ? record.library.join()
-            : record.library ?? ""
+            : record.library ?? ''
         }
       />
       <TextField source="status" />

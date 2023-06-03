@@ -1,184 +1,200 @@
 query GetVCFirm($slug: String!) {
-	vc_firms(where: { slug: { _eq: $slug } }) {
-		id
-		name
-		slug
-		logo
-		website
-		linkedin
-		sentiment
-		tags
-		overview
-		year_founded
-		location
-		location_json
-		twitter
-		investors {
-			id
-			person {
-				id
-				slug
-				name
-				picture
-				linkedin
-				personal_email
-				work_email
-			}
-			function
-			start_date
-			end_date
-			seniority
-			title
-		}
-		investments {
-			investment_round {
-				id
-				round_date
-				round
-				amount
-				company {
-					id
-					slug
-					name
-					tags
-					logo
-				}
-			}
-		}
-		to_links {
-			link_type
-			from_company {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-			}
-			from_vc_firm {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-			}
-		}
-		from_links {
-			link_type
-			to_company {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-			}
-			to_vc_firm {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-			}
-		}
-		news_links {
-			id
-			news {
-				id
-				date
-				text
-				link
-				kind
-				status
+  vc_firms(where: { slug: { _eq: $slug } }) {
+    id
+    name
+    slug
+    logo
+    website
+    linkedin
+    sentiment
+    tags
+    overview
+    year_founded
+    location
+    location_json
+    twitter
+    investors {
+      id
+      person {
+        id
+        slug
+        name
+        picture
+        linkedin
+        personal_email
+        work_email
+      }
+      function
+      start_date
+      end_date
+      seniority
+      title
+    }
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          tags
+          logo
+        }
+        investments {
+          id
+          vc_firm {
+            id
+            slug
+            name
+            logo
+          }
+          person {
+            id
+            slug
+            name
+            picture
+          }
+        }
+      }
+    }
+    to_links {
+      link_type
+      from_company {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+      from_vc_firm {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+    }
+    from_links {
+      link_type
+      to_company {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+      to_vc_firm {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+    }
+    news_links {
+      id
+      news {
+        id
+        date
+        text
+        link
+        kind
+        source
+        status
         organizations {
-					id
-					type
-					company_id
-					vc_firm_id
-				}
-			}
-		}	
-	}
+          id
+          type
+          company_id
+          vc_firm_id
+        }
+      }
+    }
+  }
 }
 
 query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
-	vc_firms(
-		where: $where
-		order_by: { num_of_investments: desc }
-		limit: $limit
-		offset: $offset
-	) {
-		id
-		name
-		slug
-		logo
-		num_of_investments
-		sentiment
-		tags
-		overview
-		website
-	}
-	vc_firms_aggregate(where: $where) {
-		aggregate {
-			count
-		}
-	}
+  vc_firms(
+    where: $where
+    order_by: { num_of_investments: desc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    logo
+    num_of_investments
+    sentiment
+    tags
+    overview
+    website
+  }
+  vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
 }
 
 query GetVCFirmsRecentInvestments(
-	$limit: Int
-	$offset: Int
-	$where: vc_firms_bool_exp!
+  $limit: Int
+  $offset: Int
+  $where: vc_firms_bool_exp!
 ) {
-	vc_firms(
-		where: $where
-		order_by: { latest_investment: desc_nulls_last }
-		limit: $limit
-		offset: $offset
-	) {
-		id
-		name
-		slug
-		logo
-		tags
-		latest_investment
-		num_of_investments
-		sentiment
-		overview
-	}
+  vc_firms(
+    where: $where
+    order_by: { latest_investment: desc_nulls_last }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    logo
+    tags
+    latest_investment
+    num_of_investments
+    sentiment
+    overview
+  }
 }
 
 query GetVCFirmsPath {
-	vc_firms(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
-		id
-		name
-		slug
-	}
+  vc_firms(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
+    id
+    name
+    slug
+  }
 }
 
-query GetRelevantVCFirms($where: vc_firms_bool_exp!) {
-	vc_firms(where: $where) {
-		id
-		logo
-		name
-		slug
-		sentiment
-	}
+query GetRelevantVCFirms($where: vc_firms_bool_exp!, $limit: Int) {
+  vc_firms(where: $where, limit: $limit) {
+    id
+    logo
+    name
+    slug
+    sentiment
+  }
 }
 
 query GetAllVCFirms {
-	vc_firms {
-		id
-		name
-		logo
-		slug
-	}
+  vc_firms {
+    id
+    name
+    logo
+    slug
+  }
 }
 
 query GetSentimentByVcFirmId($vcFirmId: Int!) {
@@ -195,7 +211,7 @@ mutation UpdateSentimentByVcFirmId($vcFirmId: Int!, $sentiment: jsonb!) {
   ) {
     sentiment
   }
-}  
+}
 
 query GetVcFirmsByDate($date: timestamptz, $library: jsonb) {
   vc_firms(
@@ -215,9 +231,9 @@ query GetVcFirmsByDate($date: timestamptz, $library: jsonb) {
 }
 
 mutation UpdateVcFirmTagsByPk($id: Int!, $tags: jsonb) {
-	update_vc_firms_by_pk(_set: {tags: $tags}, pk_columns: {id: $id}) {
-		id
-	}
+  update_vc_firms_by_pk(_set: { tags: $tags }, pk_columns: { id: $id }) {
+    id
+  }
 }
 
 query GetVcFirmsInvestments {
@@ -232,4 +248,4 @@ query GetVcFirmsInvestments {
       }
     }
   }
-}  
+}

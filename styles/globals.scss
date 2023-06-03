@@ -5,7 +5,7 @@
 /* Fonts */
 @layer base {
   @font-face {
-    font-family: "Metropolis";
+    font-family: 'Metropolis';
     src: url('./fonts/Metropolis-Regular.woff2') format('woff2'),
       url('./fonts/Metropolis-Regular.woff') format('woff');
     font-weight: 400;
@@ -14,7 +14,7 @@
   }
 
   @font-face {
-    font-family: "Metropolis";
+    font-family: 'Metropolis';
     src: url('./fonts/Metropolis-Medium.woff2') format('woff2'),
       url('./fonts/Metropolis-Medium.woff') format('woff');
     font-weight: 500;
@@ -22,12 +22,11 @@
   }
 
   @font-face {
-    font-family: "Metropolis";
+    font-family: 'Metropolis';
     src: url('./fonts/Metropolis-Bold.woff2') format('woff2'),
       url('./fonts/Metropolis-Bold.woff') format('woff');
     font-weight: bold;
   }
-
 }
 
 @layer utilities {
@@ -71,13 +70,19 @@
     }
   }
 
-  input[type="checkbox"]::before {
+  input[type='checkbox']::before {
     transform-origin: bottom left;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
   }
-  
-  .dashes{
-    background: repeating-linear-gradient(to bottom, #ced6fe 0, #ced6fe 6px, transparent 6px, transparent 12px);
+
+  .dashes {
+    background: repeating-linear-gradient(
+      to bottom,
+      #ced6fe 0,
+      #ced6fe 6px,
+      transparent 6px,
+      transparent 12px
+    );
   }
 }
 
@@ -94,25 +99,26 @@
 
 .hamburger-inner {
   &::before {
-    transition: top .075s .12s ease, opacity .075s ease;
+    transition: top 0.075s 0.12s ease, opacity 0.075s ease;
     @apply top-[7px];
   }
 
   &::after {
-    transition: bottom .075s .12s ease, transform .075s cubic-bezier(.55, .055, .675, .19);
+    transition: bottom 0.075s 0.12s ease,
+      transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19);
     @apply bottom-[7px];
   }
 
-  &.hamburger-active{
+  &.hamburger-active {
     &::before {
-      transition: top .075s ease, opacity .075s .12s ease;
+      transition: top 0.075s ease, opacity 0.075s 0.12s ease;
     }
     &::after {
-      transition: bottom .075s ease, transform .075s .12s cubic-bezier(.215, .61, .355, 1);
+      transition: bottom 0.075s ease,
+        transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
   }
 }
-
 
 /* Range slider: replace default appearance */
 .thumb,
@@ -141,6 +147,6 @@
 /* Admin */
 .logoFile img,
 .logoFile .RaImageField-image {
-  height: 48px!important;
-  width: 48px!important;
+  height: 48px !important;
+  width: 48px !important;
 }

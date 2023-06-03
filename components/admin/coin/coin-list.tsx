@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -6,9 +6,9 @@ import {
   ReferenceInput,
   AutocompleteInput,
   ReferenceField,
-} from "react-admin";
-import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/use-auth";
+} from 'react-admin';
+import ElemList from '../elem-list';
+import { useAuth } from '@/hooks/use-auth';
 
 const filters = [
   <TextInput
@@ -23,7 +23,7 @@ const filters = [
     source="blockchain_id"
     reference="blockchains"
   >
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput optionText={choice => `${choice.name}`} />
   </ReferenceInput>,
 ];
 
@@ -32,7 +32,7 @@ export const CoinList = () => {
 
   return (
     <ElemList filters={filters}>
-      { user?.role !== "cms-readonly" && <EditButton /> }
+      {user?.role !== 'cms-readonly' && <EditButton />}
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="ticker" />

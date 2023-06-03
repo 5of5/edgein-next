@@ -1,12 +1,12 @@
-import { mutate } from "@/graphql/hasuraAdmin";
+import { mutate } from '@/graphql/hasuraAdmin';
 import {
   checkFollowExists,
   deleteFollowIfExists,
   upsertFollow,
   upsertList,
-} from "@/utils/lists";
-import type { NextApiRequest, NextApiResponse } from "next";
-import CookieService from "../../utils/cookie";
+} from '@/utils/lists';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import CookieService from '../../utils/cookie';
 
 interface Action {
   action: string;
@@ -21,12 +21,12 @@ interface Action {
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end();
 
   // params:
   const personIds: number[] = req.body.personIds;
   const listName: string = req.body.listName;
-  const action: "add" | "remove" = req.body.action;
+  const action: 'add' | 'remove' = req.body.action;
   const pathname: string = req.body.pathname;
 
   const token = CookieService.getAuthToken(req.cookies);
@@ -37,41 +37,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // upsertList
   const list = await upsertList(listName, user, token);
 
-  const isAddToList = action === "add";
+  const isAddToList = action === 'add';
 
   await Promise.all(
-    personIds.map(async (personId) => {
+    personIds.map(async personId => {
       if (isAddToList) {
         // check if person already follows
         const existsFollows = await checkFollowExists(
           list?.id || 0,
           personId,
-          "people",
-          user?.id
+          'people',
+          user?.id,
         );
         // insert follow only if the follows don't exists
         if (existsFollows.length === 0) {
-          await upsertFollow(list?.id || 0, personId, "people", user, token);
+          await upsertFollow(list?.id || 0, personId, 'people', user, token);
         }
       } else {
-        await deleteFollowIfExists(list?.id || 0, personId, "people", user, token);
+        await deleteFollowIfExists(
+          list?.id || 0,
+          personId,
+          'people',
+          user,
+          token,
+        );
       }
 
       const actionPayload: Action = {
-        action: `${isAddToList ? "Add" : "Remove"} ${
-          isAddToList ? "To" : "From"
+        action: `${isAddToList ? 'Add' : 'Remove'} ${
+          isAddToList ? 'To' : 'From'
         } List`,
         page: pathname,
         properties: {
           listId: list?.id || 0,
         },
         resource_id: personId,
-        resource: "people",
+        resource: 'people',
         user: user.id,
       };
 
       // create action
-      mutate({
+      await mutate({
         mutation: `
         mutation InsertAction($object: actions_insert_input!) {
           insert_actions_one(
@@ -85,7 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           object: actionPayload,
         },
       });
-    })
+    }),
   );
 
   res.send({ success: true });

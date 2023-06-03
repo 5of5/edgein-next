@@ -264,9 +264,7 @@ mutation DeleteUserGroupMemberById($id: Int!) {
 }
 
 mutation InsertUserGroupInvites($object: user_group_invites_insert_input!) {
-  insert_user_group_invites_one(
-    object: $object
-  ) {
+  insert_user_group_invites_one(object: $object) {
     id
     email
     user_group_id

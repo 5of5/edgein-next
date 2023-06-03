@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -10,14 +10,14 @@ import {
   SelectField,
   BooleanField,
   AutocompleteInput,
-} from "react-admin";
+} from 'react-admin';
 import {
   functionChoicesTM,
   seniorityChoicesTM,
   ADMIN_REFERENCE_INPUT_PER_PAGE,
-} from "@/utils/constants";
-import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/use-auth";
+} from '@/utils/constants';
+import ElemList from '../elem-list';
+import { useAuth } from '@/hooks/use-auth';
 
 const filters = [
   <TextInput key="search" source="title" label="Title" resettable alwaysOn />,
@@ -28,14 +28,14 @@ const filters = [
     perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
   >
     <AutocompleteInput
-      optionText={(choice) => `${choice.name}`}
-      filterToQuery={(search) => ({ name: search })}
+      optionText={choice => `${choice.name}`}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <ReferenceInput key="searchPerson" source="person_id" reference="people">
     <AutocompleteInput
-      optionText={(choice) => `${choice.name}`}
-      filterToQuery={(search) => ({ name: search })}
+      optionText={choice => `${choice.name}`}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <SelectInput
@@ -57,7 +57,7 @@ export const TeamMemberList = () => {
 
   return (
     <ElemList filters={filters}>
-      { user?.role !== "cms-readonly" && <EditButton /> }
+      {user?.role !== 'cms-readonly' && <EditButton />}
       <TextField source="id" />
       <ReferenceField label="Company" source="company_id" reference="companies">
         <TextField source="name" />

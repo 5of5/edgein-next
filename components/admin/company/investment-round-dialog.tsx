@@ -1,7 +1,7 @@
-import React from "react";
-import { SelectInput, DateInput, NumberInput } from "react-admin";
-import { roundChoices, currencyChoices, status } from "@/utils/constants";
-import ElemFormDialog from "../elem-form-dialog";
+import React from 'react';
+import { SelectInput, DateInput, NumberInput } from 'react-admin';
+import { roundChoices, currencyChoices, status } from '@/utils/constants';
+import ElemFormDialog from '../elem-form-dialog';
 
 type Props = {
   selectedRecord: any;
@@ -10,7 +10,7 @@ type Props = {
 
 const InvestmentRoundDialog = ({ selectedRecord, onClose }: Props) => {
   const inputClassName =
-    "w-full text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-full text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   return (
     <ElemFormDialog

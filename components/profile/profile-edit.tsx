@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { GetUserProfileQuery } from "@/graphql/types";
-import { EditSection } from "@/components/dashboard/edit-section";
+import { useState } from 'react';
+import { GetUserProfileQuery } from '@/graphql/types';
+import { EditSection } from '@/components/dashboard/edit-section';
 
 type Props = {
-	user: GetUserProfileQuery["users_by_pk"];
+  user: GetUserProfileQuery['users_by_pk'];
 };
 
 export const ProfileEdit: React.FC<Props> = ({ user }) => {
-	const [editLocation, setEditLocation] = useState(false);
-	const [editWebsite, setEditWebsite] = useState(false);
-	const [editLinkedIn, setEditLinkedIn] = useState(false);
-	const [editFacebook, setEditFacebook] = useState(false);
-	const [editTwitter, setEditTwitter] = useState(false);
-	const [editAbout, setEditAbout] = useState(false);
+  const [editLocation, setEditLocation] = useState(false);
+  const [editWebsite, setEditWebsite] = useState(false);
+  const [editLinkedIn, setEditLinkedIn] = useState(false);
+  const [editFacebook, setEditFacebook] = useState(false);
+  const [editTwitter, setEditTwitter] = useState(false);
+  const [editAbout, setEditAbout] = useState(false);
 
-	return (
-		<>
-			{/* <EditSection
+  return (
+    <>
+      {/* <EditSection
 				heading="Location"
 				right={
 					!editLocation ? (
@@ -75,7 +75,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 				)}
 			</EditSection> */}
 
-			{/* <EditSection
+      {/* <EditSection
 				heading="Website URL"
 				right={
 					!editWebsite ? (
@@ -117,7 +117,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 				)}
 			</EditSection> */}
 
-			{/* <EditSection
+      {/* <EditSection
 				heading="LinkedIn URL"
 				right={
 					!editLinkedIn ? (
@@ -162,7 +162,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 				)}
 			</EditSection> */}
 
-			{/* <EditSection
+      {/* <EditSection
 				heading="Facebook URL"
 				right={
 					!editFacebook ? (
@@ -207,7 +207,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 				)}
 			</EditSection> */}
 
-			{/* <EditSection
+      {/* <EditSection
 				heading="Twitter URL"
 				right={
 					!editTwitter ? (
@@ -249,7 +249,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 				)}
 			</EditSection> */}
 
-			{/* <EditSection
+      {/* <EditSection
 				heading="About You"
 				right={
 					!editAbout ? (
@@ -289,7 +289,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 				)}
 			</EditSection> */}
 
-			{/* <EditSection
+      {/* <EditSection
 						heading="Work"
 						right={
 							!editWorkspace ? (
@@ -318,6 +318,6 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 							)}
 						</div>
 					</EditSection> */}
-		</>
-	);
+    </>
+  );
 };

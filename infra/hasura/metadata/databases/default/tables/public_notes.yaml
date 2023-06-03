@@ -28,17 +28,14 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - audience
+        - created_at
         - created_by
         - id
-        - resource_id
-        - user_group_id
         - notes
+        - resource_id
         - resource_type
-        - created_at
         - updated_at
-      filter:
-        user_group:
-          user_group_members:
-            user_id:
-              _eq: X-Hasura-User-Id
+        - user_group_id
+      filter: {}
       limit: 50

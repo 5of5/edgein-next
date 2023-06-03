@@ -1,11 +1,11 @@
-import { NextApiResponse, NextApiRequest } from "next";
-import { mutate } from "@/graphql/hasuraAdmin";
-import CookieService from "../../utils/cookie";
-import { InsertActionDocument, InsertActionMutation } from "@/graphql/types";
+import { NextApiResponse, NextApiRequest } from 'next';
+import { mutate } from '@/graphql/hasuraAdmin';
+import CookieService from '../../utils/cookie';
+import { InsertActionDocument, InsertActionMutation } from '@/graphql/types';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   // params:
@@ -19,11 +19,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   // create action
-  mutate<InsertActionMutation>({
+  await mutate<InsertActionMutation>({
     mutation: InsertActionDocument,
     variables: {
       object: {
-        action: "View",
+        action: 'View',
         page: pathname,
         properties,
         resource_id: resourceId,

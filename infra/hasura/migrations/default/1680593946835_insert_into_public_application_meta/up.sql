@@ -1,1 +1,1 @@
-INSERT INTO "public"."application_meta"("id", "key", "value", "error", "created_at", "updated_at") VALUES (4, E'sync_events', E'2023-01-01T07:36:09.209+00:00', null, E'2023-01-01T07:36:09.209+00:00', E'2023-01-01T07:36:09.209+00:00');
+INSERT INTO "public"."application_meta"("key", "value", "error", "created_at", "updated_at") VALUES (E'sync_events', E'2023-01-01T07:36:09.209+00:00', null, E'2023-01-01T07:36:09.209+00:00', E'2023-01-01T07:36:09.209+00:00');

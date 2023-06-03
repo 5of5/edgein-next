@@ -1,122 +1,122 @@
-import moment from "moment-timezone";
+import moment from 'moment-timezone';
 
 export const formatDate = (
-	dateString: string | number,
-	options?: Intl.DateTimeFormatOptions
+  dateString: string | number,
+  options?: Intl.DateTimeFormatOptions,
 ): string => {
-	if (!dateString) {
-		return "";
-	}
+  if (!dateString) {
+    return '';
+  }
 
-	var date = new Date(dateString);
-	date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+  let date = new Date(dateString);
+  date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
 
-	if (!options) {
-		return date.toLocaleDateString("en-us", {
-			weekday: "short",
-			month: "short",
-			day: "2-digit",
-			hour: "2-digit",
-			minute: "2-digit",
-			timeZone: "America/Los_Angeles",
-		});
-	} else {
-		return date.toLocaleDateString("en-us", options);
-	}
+  if (!options) {
+    return date.toLocaleDateString('en-us', {
+      weekday: 'short',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'America/Los_Angeles',
+    });
+  } else {
+    return date.toLocaleDateString('en-us', options);
+  }
 };
 
 export const formatDateTime = (dateString: string | number): string => {
-	if (!dateString) {
-		return "";
-	}
-	const date = new Date(dateString);
+  if (!dateString) {
+    return '';
+  }
+  const date = new Date(dateString);
 
-	return date.toLocaleDateString("en-us", {
-		weekday: "short",
-		month: "short",
-		day: "2-digit",
-		hour: "2-digit",
-		minute: "2-digit",
-	});
+  return date.toLocaleDateString('en-us', {
+    weekday: 'short',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 };
 
 export const getDateToday = (): string => {
-	const date = new Date();
+  const date = new Date();
 
-	return date.toISOString().replace(/T.*/, "").split("-").join("-");
+  return date.toISOString().replace(/T.*/, '').split('-').join('-');
 };
 
 export const formatTime = (
-	dateString: string | number | Date,
-	options?: Intl.DateTimeFormatOptions
+  dateString: string | number | Date,
+  options?: Intl.DateTimeFormatOptions,
 ): string => {
-	if (!dateString) {
-		return "";
-	}
-	const date = new Date(dateString);
+  if (!dateString) {
+    return '';
+  }
+  const date = new Date(dateString);
 
-	if (!options) {
-		return date.toLocaleTimeString("en-us", {
-			hour: "2-digit",
-			minute: "2-digit",
-			timeZone: "America/Los_Angeles",
-		});
-	} else {
-		return date.toLocaleTimeString("en-us", options);
-	}
+  if (!options) {
+    return date.toLocaleTimeString('en-us', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'America/Los_Angeles',
+    });
+  } else {
+    return date.toLocaleTimeString('en-us', options);
+  }
 };
 
 export const convertToDollars = (amount: number) => {
-	if (!amount) {
-		return "";
-	}
+  if (!amount) {
+    return '';
+  }
 
-	const formatter = new Intl.NumberFormat(navigator.language, {
-		style: "currency",
-		currency: "USD",
-		maximumFractionDigits: 0,
-		// These options are needed to round to whole numbers if that's what you want.
-		// minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-		// maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-	});
+  const formatter = new Intl.NumberFormat(navigator.language, {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+    // These options are needed to round to whole numbers if that's what you want.
+    // minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    // maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
 
-	return formatter.format(amount);
+  return formatter.format(amount);
 };
 
 export const convertToInternationalCurrencySystem = (amount: number) => {
-	if (!amount) {
-		return "";
-	}
+  if (!amount) {
+    return '';
+  }
 
-	// Nine Zeroes for Billions
-	return Math.abs(Number(amount)) >= 1.0e9
-		? (Math.abs(Number(amount)) / 1.0e9).toFixed(1).replace(/\.0+$/, "") + "B"
-		: // Six Zeroes for Millions
-		Math.abs(Number(amount)) >= 1.0e6
-		? (Math.abs(Number(amount)) / 1.0e6).toFixed(2).replace(/\.0+$/, "") + "M"
-		: // Three Zeroes for Thousands
-		Math.abs(Number(amount)) >= 1.0e3
-		? (Math.abs(Number(amount)) / 1.0e3).toFixed(2).replace(/\.0+$/, "") + "K"
-		: Math.abs(Number(amount)).toFixed(2);
+  // Nine Zeroes for Billions
+  return Math.abs(Number(amount)) >= 1.0e9
+    ? (Math.abs(Number(amount)) / 1.0e9).toFixed(1).replace(/\.0+$/, '') + 'B'
+    : // Six Zeroes for Millions
+    Math.abs(Number(amount)) >= 1.0e6
+    ? (Math.abs(Number(amount)) / 1.0e6).toFixed(2).replace(/\.0+$/, '') + 'M'
+    : // Three Zeroes for Thousands
+    Math.abs(Number(amount)) >= 1.0e3
+    ? (Math.abs(Number(amount)) / 1.0e3).toFixed(2).replace(/\.0+$/, '') + 'K'
+    : Math.abs(Number(amount)).toFixed(2);
 };
 
 export const convertToIntNum = (amount: number) => {
-	if (!amount) {
-		return "";
-	}
+  if (!amount) {
+    return '';
+  }
 
-	return Intl.NumberFormat("en", {
-		notation: "compact",
-		minimumFractionDigits: 2,
-	}).format(amount);
+  return Intl.NumberFormat('en', {
+    notation: 'compact',
+    minimumFractionDigits: 2,
+  }).format(amount);
 };
 
 export const numberWithCommas = (num: number) => {
-	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export const inRange = (value: number, min: number, max: number) => {
-	return value >= min && value <= max;
+  return value >= min && value <= max;
 };
 
 // function inRange(value: number, min: number, max: number) {
@@ -124,33 +124,55 @@ export const inRange = (value: number, min: number, max: number) => {
 // }
 
 export const getWorkDurationFromAndTo = (
-	startDate: string,
-	endDate: string
+  startDate: string,
+  endDate: string,
 ) => {
-	const start = startDate ? moment(startDate) : null;
-	const end = endDate ? moment(endDate) : null;
+  const start = startDate ? moment(startDate) : null;
+  const end = endDate ? moment(endDate) : null;
 
-	return `${start ? start.format("MMM YYYY") : "from"} - ${
-		end ? end.format("MMM YYYY") : "Present"
-	}`;
+  return `${start ? start.format('MMM YYYY') : 'from'} - ${
+    end ? end.format('MMM YYYY') : 'Present'
+  }`;
 };
 
 export const getTimeOfWork = (startDate: string, endDate: string) => {
-	const today = moment();
-	const start = startDate ? moment(startDate) : null;
-	const end = endDate ? moment(endDate) : null;
+  const today = moment();
+  const start = startDate ? moment(startDate) : null;
+  const end = endDate ? moment(endDate) : null;
 
-	if (!start) return null;
+  if (!start) return null;
 
-	const timeDiff = end ? end.diff(start) : today.diff(start);
+  const timeDiff = end ? end.diff(start) : today.diff(start);
 
-	return `${moment.duration(timeDiff).years()} yrs ${moment
-		.duration(timeDiff)
-		.months()} mo`;
+  return `${moment.duration(timeDiff).years()} yrs ${moment
+    .duration(timeDiff)
+    .months()} mo`;
 };
 
 export const getTimeString = (value: Date) => {
-	const hour = new Date(value).getHours();
-	const mins = ("0" + new Date(value).getMinutes()).slice(-2);
-	return `${hour}:${mins}`;
+  const hour = new Date(value).getHours();
+  const mins = ('0' + new Date(value).getMinutes()).slice(-2);
+  return `${hour}:${mins}`;
+};
+
+export const convertCurrencyStringToIntNumber = (value: string) => {
+  return Number(
+    value
+      .toUpperCase()
+      .replace(/^(\d+(\.\d+)?)([K,M,B])?/, (_, n, __, suffix) => {
+        if (suffix === 'K') {
+          return n * 10 ** 3;
+        }
+
+        if (suffix === 'M') {
+          return n * 10 ** 6;
+        }
+
+        if (suffix === 'B') {
+          return n * 10 ** 9;
+        }
+
+        return n;
+      }),
+  );
 };

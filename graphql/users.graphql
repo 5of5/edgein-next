@@ -191,6 +191,7 @@ query GetUserByEmail($email: String) {
     }
     additional_emails
     active
+    onboarding_information
   }
 }
 
@@ -214,6 +215,7 @@ query GetUserById($id: Int) {
       picture
     }
     additional_emails
+    onboarding_information
   }
 }
 
@@ -440,5 +442,46 @@ query GetUserByAdditionalEmail($email: jsonb) {
     }
     additional_emails
     active
+  }
+}
+
+mutation UpdateUserOnboardingInformation(
+  $id: Int!
+  $onboarding_information: jsonb
+) {
+  update_users(
+    where: { id: { _eq: $id } }
+    _set: { onboarding_information: $onboarding_information }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      onboarding_information
+    }
+  }
+}
+
+mutation UpdateUserPersonId($id: Int!, $person_id: Int!) {
+  update_users(where: { id: { _eq: $id } }, _set: { person_id: $person_id }) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+    }
   }
 }
