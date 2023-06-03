@@ -235,7 +235,6 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     // 	href: "https://twitter.com/EdgeInio",
     // 	onClick: null,
     // },
-    ,
   ];
 
   return (
@@ -245,7 +244,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
       >
         {/* {visible ? "bottom-0" : "-bottom-12"} */}
 
-        <ul className="grid grid-cols-6 bg-white/80 backdrop-blur px-1 pb-0.5">
+        <ul className="grid grid-cols-6 bg-white/80 backdrop-blur px-0.5 pb-0.5">
           {nav.map((item, index) => (
             <li
               key={index}
