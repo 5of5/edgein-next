@@ -238,7 +238,7 @@ const Events: NextPage<Props> = ({
                         selectedTab.value === tab.value
                           ? 'text-primary-500 border-primary-500'
                           : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}}`}
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
                     >
                       {tab.title}
                     </button>
