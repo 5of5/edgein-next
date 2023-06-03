@@ -37,7 +37,6 @@ select_permissions:
         - read
         - company_id
         - id
-        - notification_resource_id
         - target_user_id
         - vc_firm_id
         - action_ids
