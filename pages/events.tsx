@@ -222,7 +222,7 @@ const Events: NextPage<Props> = ({
           <h2 className="text-xl font-bold">Events</h2>
 
           <div
-            className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+            className="mt-2 mb-4 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
             role="tablist"
           >
             <nav className="flex">
@@ -248,6 +248,7 @@ const Events: NextPage<Props> = ({
           </div>
 
           <ElemFilter
+            className="py-3"
             resourceType="events"
             filterValues={selectedFilters}
             dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
