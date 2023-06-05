@@ -242,7 +242,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 </a>
               </Link>
             </div>
-            {!isDisplaySelectLibrary && <ElemLibrarySelector />}
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
           </div>
           <ElemSearchBox
             onClick={() => {
