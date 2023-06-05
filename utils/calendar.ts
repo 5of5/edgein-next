@@ -21,13 +21,17 @@ const formatDatetime = (
   return datetime.toISOString().replace(regex, '');
 };
 
-const generateTime = (event: CalendarEvent, type: CalendarType) => {
-  const datetimeStyle = type === 'Outlook' ? 'delimiters' : 'clean';
+const generateTime = (event: CalendarEvent, item: CalendarType) => {
+  const datetimeStyle = item.type === 'Outlook' ? 'delimiters' : 'clean';
 
   let start = formatDatetime(new Date(), datetimeStyle);
 
   const endDate = event.startDate ? new Date(event.startDate) : new Date();
-  if (type === 'Google' || type === 'iCal File' || type === 'Apple') {
+  if (
+    item.type === 'Apple' ||
+    item.type === 'Google' ||
+    item.type === 'iCal File'
+  ) {
     endDate.setDate(endDate.getDate() + 1);
   }
   let end = formatDatetime(endDate, datetimeStyle);
@@ -53,7 +57,11 @@ const generateTime = (event: CalendarEvent, type: CalendarType) => {
       );
     } else {
       const newEndDate = new Date(event.endDate);
-      if (type === 'Google' || type === 'iCal File' || type === 'Apple') {
+      if (
+        item.type === 'Apple' ||
+        item.type === 'Google' ||
+        item.type === 'iCal File'
+      ) {
         newEndDate.setDate(newEndDate.getDate() + 1);
       }
       end = formatDatetime(newEndDate, datetimeStyle);
@@ -66,11 +74,11 @@ const generateTime = (event: CalendarEvent, type: CalendarType) => {
   };
 };
 
-const generateGoogle = (event: CalendarEvent, type: CalendarType) => {
+const generateGoogle = (event: CalendarEvent, item: CalendarType) => {
   const urlParts = [];
   urlParts.push('https://calendar.google.com/calendar/render?action=TEMPLATE');
   // generate and add date
-  const formattedDate = generateTime(event, type);
+  const formattedDate = generateTime(event, item);
   urlParts.push(
     'dates=' +
       encodeURIComponent(formattedDate.start) +
@@ -94,13 +102,13 @@ const generateGoogle = (event: CalendarEvent, type: CalendarType) => {
   return urlParts.join('&');
 };
 
-const generateOutlook = (event: CalendarEvent) => {
+const generateOutlook = (event: CalendarEvent, item: CalendarType) => {
   const urlParts = [];
   const baseUrl =
     'https://outlook.live.com/calendar/action/compose?rru=addevent';
   urlParts.push(baseUrl);
   // generate and add date
-  const formattedDate = generateTime(event, 'Outlook');
+  const formattedDate = generateTime(event, item); //'Outlook'
   urlParts.push('startdt=' + formattedDate.start);
   urlParts.push('enddt=' + formattedDate.end);
 
@@ -117,8 +125,8 @@ const generateOutlook = (event: CalendarEvent) => {
   return urlParts.join('&');
 };
 
-const generateApple = (event: CalendarEvent, type: CalendarType) => {
-  const formattedDate = generateTime(event, type);
+const generateApple = (event: CalendarEvent, item: CalendarType) => {
+  const formattedDate = generateTime(event, item);
 
   const ics_lines = ['BEGIN:VCALENDAR', 'VERSION:2.0'];
   ics_lines.push('BEGIN:VEVENT');
@@ -140,13 +148,13 @@ const generateApple = (event: CalendarEvent, type: CalendarType) => {
   return ics_lines.join('\r\n');
 };
 
-export const generateLink = (event: CalendarEvent, type: CalendarType) => {
-  switch (type) {
+export const generateLink = (event: CalendarEvent, item: CalendarType) => {
+  switch (item.type) {
     case 'Google':
-      return generateGoogle(event, type);
+      return generateGoogle(event, item);
     case 'Outlook':
-      return generateOutlook(event);
+      return generateOutlook(event, item);
     default:
-      return generateApple(event, type);
+      return generateApple(event, item);
   }
 };
