@@ -165,13 +165,40 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
     name
     slug
     layer
+    location
+    location_json
     tags
     coin {
       ticker
     }
     sentiment
     investor_amount
+    investment_rounds {
+      round
+      round_date
+      amount
+      investments {
+        person {
+          slug
+          name
+        }
+        vc_firm {
+          slug
+          name
+        }
+        amount
+      }
+    }
+    year_founded
     total_employees
+    teamMembers {
+      id
+      person {
+        id
+        slug
+        name
+      }
+    }
     logo
     overview
     github

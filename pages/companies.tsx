@@ -1,13 +1,21 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import type { NextPage, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import moment from 'moment-timezone';
 import { ElemHeading } from '@/components/elem-heading';
-import { PlaceholderCompanyCard } from '@/components/placeholders';
+import {
+  PlaceholderCompanyCard,
+  PlaceholderTable,
+} from '@/components/placeholders';
 import { ElemRecentCompanies } from '@/components/companies/elem-recent-companies';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconGrid,
+  IconTable,
+} from '@/components/icons';
+import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
   Companies,
   Companies_Bool_Exp,
@@ -27,6 +35,7 @@ import { useIntercom } from 'react-use-intercom';
 import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { useUser } from '@/context/user-context';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -50,6 +59,8 @@ const Companies: NextPage<Props> = ({
   companyStatusTags,
   setToggleFeedbackForm,
 }) => {
+  const { user } = useUser();
+
   const [initialLoad, setInitialLoad] = useState(true);
 
   const router = useRouter();
@@ -64,6 +75,8 @@ const Companies: NextPage<Props> = ({
     'statusTag',
   );
 
+  const [tableLayout, setTableLayout] = useState(false);
+
   const [page, setPage] = useStateParams<number>(
     0,
     'page',
@@ -71,8 +84,15 @@ const Companies: NextPage<Props> = ({
     pageIndex => Number(pageIndex) - 1,
   );
 
-  const limit = 50;
-  const offset = limit * page;
+  // limit shown companies on table layout for free users
+  const limit =
+    user?.entitlements.listsCount && tableLayout
+      ? user?.entitlements.listsCount
+      : 50;
+
+  // disable offset on table layout for free users
+  const offset =
+    user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
   const defaultFilters = [
     { slug: { _neq: '' } },
@@ -203,7 +223,7 @@ const Companies: NextPage<Props> = ({
           <h2 className="text-xl font-bold">Companies</h2>
 
           <div
-            className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+            className="mt-2 mb-4 flex flex-wrap items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
             role="tablist"
           >
             <nav className="flex">
@@ -226,21 +246,31 @@ const Companies: NextPage<Props> = ({
                   ),
                 )}
             </nav>
-          </div>
 
-          <ElemFilter
-            resourceType="companies"
-            filterValues={selectedFilters}
-            onApply={(name, filterParams) => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: filterParams });
-            }}
-            onClearOption={name => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: undefined });
-            }}
-            onReset={() => setSelectedFilters(null)}
-          />
+            <div className="flex items-center">
+              <div className="text-xs font-bold leading-sm uppercase pr-1">
+                Layout:
+              </div>
+              <div className="bg-slate-200 rounded-full p-0.5">
+                <button
+                  onClick={() => setTableLayout(false)}
+                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                    !tableLayout && 'bg-white shadow-sm text-primary-500'
+                  }`}
+                >
+                  <IconGrid className="w-5 h-5" title="Grid layout" />
+                </button>
+                <button
+                  onClick={() => setTableLayout(true)}
+                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                    tableLayout && 'bg-white shadow-sm text-primary-500'
+                  }`}
+                >
+                  <IconTable className="w-5 h-5" title="Table layout" />
+                </button>
+              </div>
+            </div>
+          </div>
 
           {companies?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -263,9 +293,7 @@ const Companies: NextPage<Props> = ({
             </div>
           )}
 
-          <div
-            className={`min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}
-          >
+          <div>
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
@@ -290,32 +318,90 @@ const Companies: NextPage<Props> = ({
               </div>
             ) : isLoading && !initialLoad ? (
               <>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <PlaceholderCompanyCard key={i} />
-                ))}
+                {tableLayout ? (
+                  <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
+                ) : (
+                  <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {Array.from({ length: 9 }, (_, i) => (
+                      <PlaceholderCompanyCard key={i} />
+                    ))}
+                  </div>
+                )}
               </>
+            ) : tableLayout && companies?.length != 0 ? (
+              <CompaniesTable
+                companies={companies}
+                pageNumber={page}
+                itemsPerPage={limit}
+                shownItems={companies?.length}
+                totalItems={companies_aggregate}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                filterByTag={filterByTag}
+                filterValues={selectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  setSelectedFilters({
+                    ...selectedFilters,
+                    [name]: filterParams,
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  setSelectedFilters({ ...selectedFilters, [name]: undefined });
+                }}
+                onReset={() => setSelectedFilters(null)}
+              />
             ) : (
-              companies?.map(company => {
-                return (
-                  <ElemCompanyCard
-                    key={company.id}
-                    company={company as Companies}
-                    tagOnClick={filterByTag}
-                  />
-                );
-              })
+              <>
+                <ElemFilter
+                  className="py-3"
+                  resourceType="companies"
+                  filterValues={selectedFilters}
+                  onApply={(name, filterParams) => {
+                    filters._and = defaultFilters;
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      [name]: filterParams,
+                    });
+                  }}
+                  onClearOption={name => {
+                    filters._and = defaultFilters;
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      [name]: undefined,
+                    });
+                  }}
+                  onReset={() => setSelectedFilters(null)}
+                />
+                {companies?.length != 0 && (
+                  <div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {companies?.map(company => {
+                      return (
+                        <ElemCompanyCard
+                          key={company.id}
+                          company={company as Companies}
+                          tagOnClick={filterByTag}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+                <Pagination
+                  shownItems={companies?.length}
+                  totalItems={companies_aggregate}
+                  page={page}
+                  itemsPerPage={limit}
+                  numeric
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
+              </>
             )}
           </div>
-          <Pagination
-            shownItems={companies?.length}
-            totalItems={companies_aggregate}
-            page={page}
-            itemsPerPage={limit}
-            numeric
-            onClickPrev={() => setPage(page - 1)}
-            onClickNext={() => setPage(page + 1)}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
         </div>
       </div>
       <Toaster />

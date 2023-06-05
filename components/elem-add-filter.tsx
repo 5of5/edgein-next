@@ -71,7 +71,7 @@ export const ElemAddFilter: FC<Props> = ({
         onClick={onOpen}
       >
         <IconPlus className="w-5 h-5 mr-1" />
-        Add Filter
+        Add filter
       </button>
       {open && (
         <div
