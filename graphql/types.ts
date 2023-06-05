@@ -24265,6 +24265,28 @@ export type UpdatePeopleByPkMutationVariables = Exact<{
 
 export type UpdatePeopleByPkMutation = { __typename?: 'mutation_root', update_people_by_pk: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null };
 
+export type FindPeopleByNameAndEmailQueryVariables = Exact<{
+  name: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindPeopleByNameAndEmailQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string }> };
+
+export type FindPeopleByLinkedinUrlQueryVariables = Exact<{
+  linkedin: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindPeopleByLinkedinUrlQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string }> };
+
+export type InsertOnboardingClaimProfileMutationVariables = Exact<{
+  object: People_Insert_Input;
+}>;
+
+
+export type InsertOnboardingClaimProfileMutation = { __typename?: 'mutation_root', insert_people_one: { __typename?: 'people', id: number, name: string | null, work_email: string | null, linkedin: string | null } | null };
+
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
 }>;
@@ -24414,6 +24436,14 @@ export type UpdateUserOnboardingInformationMutationVariables = Exact<{
 
 
 export type UpdateUserOnboardingInformationMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, onboarding_information: any | null, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserPersonIdMutationVariables = Exact<{
+  id: Scalars['Int'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type UpdateUserPersonIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -27973,6 +28003,87 @@ export const useUpdatePeopleByPkMutation = <
       options
     );
 useUpdatePeopleByPkMutation.fetcher = (variables: UpdatePeopleByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdatePeopleByPkMutation, UpdatePeopleByPkMutationVariables>(UpdatePeopleByPkDocument, variables, options);
+export const FindPeopleByNameAndEmailDocument = `
+    query FindPeopleByNameAndEmail($name: String, $email: String) {
+  people(
+    where: {_or: [{name: {_ilike: $name}}, {work_email: {_ilike: $email}}, {personal_email: {_ilike: $email}}]}
+    limit: 50
+  ) {
+    id
+    name
+    picture
+    slug
+  }
+}
+    `;
+export const useFindPeopleByNameAndEmailQuery = <
+      TData = FindPeopleByNameAndEmailQuery,
+      TError = Error
+    >(
+      variables?: FindPeopleByNameAndEmailQueryVariables,
+      options?: UseQueryOptions<FindPeopleByNameAndEmailQuery, TError, TData>
+    ) =>
+    useQuery<FindPeopleByNameAndEmailQuery, TError, TData>(
+      variables === undefined ? ['FindPeopleByNameAndEmail'] : ['FindPeopleByNameAndEmail', variables],
+      fetcher<FindPeopleByNameAndEmailQuery, FindPeopleByNameAndEmailQueryVariables>(FindPeopleByNameAndEmailDocument, variables),
+      options
+    );
+useFindPeopleByNameAndEmailQuery.document = FindPeopleByNameAndEmailDocument;
+
+
+useFindPeopleByNameAndEmailQuery.getKey = (variables?: FindPeopleByNameAndEmailQueryVariables) => variables === undefined ? ['FindPeopleByNameAndEmail'] : ['FindPeopleByNameAndEmail', variables];
+;
+
+useFindPeopleByNameAndEmailQuery.fetcher = (variables?: FindPeopleByNameAndEmailQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByNameAndEmailQuery, FindPeopleByNameAndEmailQueryVariables>(FindPeopleByNameAndEmailDocument, variables, options);
+export const FindPeopleByLinkedinUrlDocument = `
+    query FindPeopleByLinkedinUrl($linkedin: String) {
+  people(where: {linkedin: {_eq: $linkedin}}, limit: 1) {
+    id
+    name
+    picture
+    slug
+  }
+}
+    `;
+export const useFindPeopleByLinkedinUrlQuery = <
+      TData = FindPeopleByLinkedinUrlQuery,
+      TError = Error
+    >(
+      variables?: FindPeopleByLinkedinUrlQueryVariables,
+      options?: UseQueryOptions<FindPeopleByLinkedinUrlQuery, TError, TData>
+    ) =>
+    useQuery<FindPeopleByLinkedinUrlQuery, TError, TData>(
+      variables === undefined ? ['FindPeopleByLinkedinUrl'] : ['FindPeopleByLinkedinUrl', variables],
+      fetcher<FindPeopleByLinkedinUrlQuery, FindPeopleByLinkedinUrlQueryVariables>(FindPeopleByLinkedinUrlDocument, variables),
+      options
+    );
+useFindPeopleByLinkedinUrlQuery.document = FindPeopleByLinkedinUrlDocument;
+
+
+useFindPeopleByLinkedinUrlQuery.getKey = (variables?: FindPeopleByLinkedinUrlQueryVariables) => variables === undefined ? ['FindPeopleByLinkedinUrl'] : ['FindPeopleByLinkedinUrl', variables];
+;
+
+useFindPeopleByLinkedinUrlQuery.fetcher = (variables?: FindPeopleByLinkedinUrlQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByLinkedinUrlQuery, FindPeopleByLinkedinUrlQueryVariables>(FindPeopleByLinkedinUrlDocument, variables, options);
+export const InsertOnboardingClaimProfileDocument = `
+    mutation InsertOnboardingClaimProfile($object: people_insert_input!) {
+  insert_people_one(object: $object) {
+    id
+    name
+    work_email
+    linkedin
+  }
+}
+    `;
+export const useInsertOnboardingClaimProfileMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertOnboardingClaimProfileMutation, TError, InsertOnboardingClaimProfileMutationVariables, TContext>) =>
+    useMutation<InsertOnboardingClaimProfileMutation, TError, InsertOnboardingClaimProfileMutationVariables, TContext>(
+      ['InsertOnboardingClaimProfile'],
+      (variables?: InsertOnboardingClaimProfileMutationVariables) => fetcher<InsertOnboardingClaimProfileMutation, InsertOnboardingClaimProfileMutationVariables>(InsertOnboardingClaimProfileDocument, variables)(),
+      options
+    );
+useInsertOnboardingClaimProfileMutation.fetcher = (variables: InsertOnboardingClaimProfileMutationVariables, options?: RequestInit['headers']) => fetcher<InsertOnboardingClaimProfileMutation, InsertOnboardingClaimProfileMutationVariables>(InsertOnboardingClaimProfileDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {
@@ -28732,6 +28843,34 @@ export const useUpdateUserOnboardingInformationMutation = <
       options
     );
 useUpdateUserOnboardingInformationMutation.fetcher = (variables: UpdateUserOnboardingInformationMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserOnboardingInformationMutation, UpdateUserOnboardingInformationMutationVariables>(UpdateUserOnboardingInformationDocument, variables, options);
+export const UpdateUserPersonIdDocument = `
+    mutation UpdateUserPersonId($id: Int!, $person_id: Int!) {
+  update_users(where: {id: {_eq: $id}}, _set: {person_id: $person_id}) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+    }
+  }
+}
+    `;
+export const useUpdateUserPersonIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserPersonIdMutation, TError, UpdateUserPersonIdMutationVariables, TContext>) =>
+    useMutation<UpdateUserPersonIdMutation, TError, UpdateUserPersonIdMutationVariables, TContext>(
+      ['UpdateUserPersonId'],
+      (variables?: UpdateUserPersonIdMutationVariables) => fetcher<UpdateUserPersonIdMutation, UpdateUserPersonIdMutationVariables>(UpdateUserPersonIdDocument, variables)(),
+      options
+    );
+useUpdateUserPersonIdMutation.fetcher = (variables: UpdateUserPersonIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserPersonIdMutation, UpdateUserPersonIdMutationVariables>(UpdateUserPersonIdDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
