@@ -24,7 +24,8 @@ import {
   ResourceTypes,
   NODE_NAME,
   isResourceType,
-  tags,
+  web3Tags,
+  aiTags,
 } from './constants';
 
 export const partnerLookUp = async (apiKey: string) => {
@@ -313,7 +314,9 @@ const validateValue = (
     case 'vc_firms':
       if (
         field === 'tags' &&
-        !value.every((tag: string) => tags.map(item => item.id).includes(tag))
+        !value.every((tag: string) =>
+          [...web3Tags, ...aiTags].map(item => item.id).includes(tag),
+        )
       )
         isValidated = false;
       break;

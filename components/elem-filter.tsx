@@ -25,6 +25,7 @@ import { InputText } from './input-text';
 import { InputSelect } from './input-select';
 import { eventSizeChoices } from '@/utils/constants';
 import InputSwitch from './input-switch';
+import useLibrary from '@/hooks/use-library';
 
 type Props = {
   resourceType: 'companies' | 'vc_firms' | 'events';
@@ -43,6 +44,8 @@ export const ElemFilter: FC<Props> = ({
   onClearOption,
   onReset,
 }) => {
+  const { selectedLibrary } = useLibrary();
+
   const [openAddFilter, setOpenAddFilter] = useState<boolean>(false);
 
   const [filters, setFilters] = useState<Filters | null>(filterValues);
@@ -389,6 +392,7 @@ export const ElemFilter: FC<Props> = ({
             const optionMetadata = getFilterOptionMetadata(
               option,
               dateCondition,
+              selectedLibrary,
             );
             if (
               option === 'country' ||
@@ -544,13 +548,13 @@ export const ElemFilter: FC<Props> = ({
                       }
                     />
                   </div>
-                  <ul className="grid grid-cols-2 gap-x-5 overflow-y-auto scrollbar-hide lg:grid-cols-4">
+                  <ul className="grid grid-cols-2 gap-x-3 overflow-y-auto scrollbar-hide lg:grid-cols-4">
                     {optionMetadata.choices?.map(choice => (
                       <li
                         key={choice.id}
-                        className="flex items-center w-full min-w-max text-sm text-left font-medium"
+                        className="flex items-baseline w-full text-sm text-left font-medium"
                       >
-                        <label className="relative flex items-center gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100">
+                        <label className="relative flex items-baseline gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:text-primary-500 hover:bg-slate-100">
                           <input
                             id={choice.id}
                             name={choice.id}
@@ -559,9 +563,9 @@ export const ElemFilter: FC<Props> = ({
                               item => item === choice.id,
                             )}
                             onChange={e => onChangeCheckbox(e, option)}
-                            className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+                            className="appearance-none w-4 h-4 border rounded border-slate-300 translate-y-1 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
                           />
-                          <div>{choice.name}</div>
+                          <div className="break-words">{choice.name}</div>
                         </label>
                       </li>
                     ))}

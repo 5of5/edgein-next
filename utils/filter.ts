@@ -12,7 +12,12 @@ import {
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
-import { eventTypeChoices, roundChoices, tags } from '@/utils/constants';
+import {
+  aiTags,
+  eventTypeChoices,
+  roundChoices,
+  web3Tags,
+} from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 
 export const getDefaultFilter = (
@@ -98,6 +103,7 @@ export const getDefaultFilter = (
 export const getFilterOptionMetadata = (
   option: FilterOptionKeys,
   dateCondition: DateCondition = 'past',
+  selectedLibrary: string,
 ): FilterOptionMetadata => {
   switch (option) {
     case 'country':
@@ -139,16 +145,19 @@ export const getFilterOptionMetadata = (
       return {
         title: 'Tags',
         heading: 'Tags',
-        choices: tags.filter(
-          tag =>
-            tag.name !== 'Layer 0' &&
-            tag.name !== 'Layer 1' &&
-            tag.name !== 'Layer 2' &&
-            tag.name !== 'Layer 3' &&
-            tag.name !== 'Layer 4' &&
-            tag.name !== 'Layer 5' &&
-            tag.name !== 'Layer 6',
-        ),
+        choices:
+          selectedLibrary === 'AI'
+            ? aiTags
+            : web3Tags.filter(
+                tag =>
+                  tag.name !== 'Layer 0' &&
+                  tag.name !== 'Layer 1' &&
+                  tag.name !== 'Layer 2' &&
+                  tag.name !== 'Layer 3' &&
+                  tag.name !== 'Layer 4' &&
+                  tag.name !== 'Layer 5' &&
+                  tag.name !== 'Layer 6',
+              ),
       };
 
     case 'fundingType':

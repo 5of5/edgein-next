@@ -3,7 +3,7 @@ import { ElemButton } from '@/components/elem-button';
 import { TagInputText } from '@/components/tag-input-text';
 import { TagInputSelect } from '@/components/tag-input-select';
 import { Dialog, Transition } from '@headlessui/react';
-import { tags } from '@/utils/constants';
+import { web3Tags, aiTags } from '@/utils/constants';
 import ElemLocationTagInput from '../elem-location-tag-input';
 
 type Props = {
@@ -28,7 +28,7 @@ export default function OnboardingStep2(props: Props) {
     props.onBack(locationTags, industryTags);
   };
 
-  const getTags = tags.filter(
+  const getTags = [...web3Tags, ...aiTags].filter(
     tag =>
       tag.name !== 'Layer 0' &&
       tag.name !== 'Layer 1' &&

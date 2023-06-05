@@ -643,7 +643,7 @@ export const tokenInfoMetrics = [
   },
 ];
 
-export const tags = [
+export const web3Tags = [
   'Layer 0',
   'Layer 1',
   'Layer 2',
@@ -690,6 +690,23 @@ export const tags = [
   'Polkadot',
   'Metaverse',
   'News',
+].map(tag => ({ id: tag, name: tag }));
+
+export const aiTags = [
+  'API',
+  'Open Source',
+  'Model Creator',
+  'Model Hub',
+  'End 2 End',
+  'Infrastructure Provider',
+  'B2B',
+  'B2C',
+  'Image',
+  'Text',
+  'Code',
+  'Video',
+  'Audio',
+  'Multi-modal',
 ].map(tag => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;

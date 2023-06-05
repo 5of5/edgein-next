@@ -22,7 +22,8 @@ import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
   status,
-  tags,
+  web3Tags,
+  aiTags,
   companyChoices,
   libraryChoices,
 } from '../../../utils/constants';
@@ -226,7 +227,7 @@ const CompanyForm = ({
         <AutocompleteArrayInput
           className={inputClassName}
           source="tags"
-          choices={tags}
+          choices={[...web3Tags, ...aiTags]}
           style={{ padding: 0, border: 'none' }}
         />
         <AutocompleteArrayInput

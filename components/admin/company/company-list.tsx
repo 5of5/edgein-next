@@ -18,7 +18,11 @@ import {
   SelectArrayInput,
 } from 'react-admin';
 import { Chip } from '@mui/material';
-import { companyLayerChoices, tags } from '../../../utils/constants';
+import {
+  companyLayerChoices,
+  web3Tags,
+  aiTags,
+} from '../../../utils/constants';
 import ElemList from '../elem-list';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -58,7 +62,7 @@ const filters = [
     key="tags"
     source="tags@_contains"
     label="Tags"
-    choices={tags}
+    choices={[...web3Tags, ...aiTags]}
   />,
   <QuickFilter
     key="status_tags"

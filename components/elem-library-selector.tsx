@@ -25,7 +25,7 @@ const ElemLibrarySelector = () => {
   const handleSelectLibrary = (value: Library) => {
     setLibrary(value);
     onChangeLibrary(value?.id as 'Web3' | 'AI');
-    router.reload();
+    router.replace(router.pathname).then(() => router.reload);
   };
 
   if (library) {
