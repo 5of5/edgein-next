@@ -1,16 +1,16 @@
-import React, { CSSProperties, FC } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { useIntercom } from "react-use-intercom";
-import { GetNotificationsForUserQuery } from "@/graphql/types";
+import React, { CSSProperties, FC } from 'react';
+import { Popover, Transition } from '@headlessui/react';
+import { useIntercom } from 'react-use-intercom';
+import { GetNotificationsForUserQuery } from '@/graphql/types';
 import {
   IconCheck,
   IconEllipsisHorizontal,
   IconExclamationTriangle,
-} from "../icons";
+} from '../icons';
 
 type Props = {
   popoverStyle: CSSProperties;
-  notification: GetNotificationsForUserQuery["notifications"][0];
+  notification: GetNotificationsForUserQuery['notifications'][0];
   onMarkAsRead: (id: number) => void;
 };
 
@@ -61,7 +61,7 @@ const ElemNotificationPopover: FC<Props> = ({
               <button
                 onClick={() => {
                   showNewMessages(
-                    `Hi EdgeIn, I'd like to report an error on ${organization?.name} notifications`
+                    `Hi EdgeIn, I'd like to report an error on ${organization?.name} notifications`,
                   );
                   close();
                 }}

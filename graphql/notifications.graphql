@@ -1,43 +1,43 @@
 query GetNotificationsForUser($user: Int!) {
-	notifications(
-		where: {
+  notifications(
+    where: {
       _and: [
         { target_user_id: { _eq: $user } }
         { event_type: { _neq: "Delete Data" } }
       ]
     }
-		order_by: { created_at: desc }
-		limit: 100
-	) {
-		id
-		read
-		created_at
-		event_type
-		message
-		read_at
-		follow_resource_type
-		notification_resource_type
-		company {
-			id
-			name
-			slug
-			logo
-		}
-		vc_firm {
-			id
-			name
-			slug
-			logo
-		}
-		notification_actions {
-			id
-			action_id
-			action {
-				id
-				properties
-			}
-		}
-	}
+    order_by: { created_at: desc }
+    limit: 100
+  ) {
+    id
+    read
+    created_at
+    event_type
+    message
+    read_at
+    follow_resource_type
+    notification_resource_type
+    company {
+      id
+      name
+      slug
+      logo
+    }
+    vc_firm {
+      id
+      name
+      slug
+      logo
+    }
+    notification_actions {
+      id
+      action_id
+      action {
+        id
+        properties
+      }
+    }
+  }
 }
 
 mutation InsertNotifications($object: notifications_insert_input!) {

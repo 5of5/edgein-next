@@ -1,35 +1,35 @@
-import { mutate, query } from "@/graphql/hasuraAdmin";
+import { mutate, query } from '@/graphql/hasuraAdmin';
 import {
-	GetEventOrganizationByIdDocument,
-	GetEventOrganizationByIdQuery,
-	GetInvestmentByIdDocument,
-	GetInvestmentByIdQuery,
-	GetInvestmentRoundByIdDocument,
-	GetInvestmentRoundByIdQuery,
-	GetInvestorByIdDocument,
-	GetInvestorByIdQuery,
-	GetNotificationsForUserQuery,
-	GetTeamMemberByIdDocument,
-	GetTeamMemberByIdQuery,
-	InsertNotificationActionsDocument,
-	InsertNotificationActionsMutation,
-	InsertNotificationsDocument,
-	InsertNotificationsMutation,
-} from "@/graphql/types";
-import { flatten, startCase, unionBy } from "lodash";
-import { getFollowsByResource } from "./lists";
-import { ActionType, ResourceTypes } from "@/utils/constants";
+  GetEventOrganizationByIdDocument,
+  GetEventOrganizationByIdQuery,
+  GetInvestmentByIdDocument,
+  GetInvestmentByIdQuery,
+  GetInvestmentRoundByIdDocument,
+  GetInvestmentRoundByIdQuery,
+  GetInvestorByIdDocument,
+  GetInvestorByIdQuery,
+  GetNotificationsForUserQuery,
+  GetTeamMemberByIdDocument,
+  GetTeamMemberByIdQuery,
+  InsertNotificationActionsDocument,
+  InsertNotificationActionsMutation,
+  InsertNotificationsDocument,
+  InsertNotificationsMutation,
+} from '@/graphql/types';
+import { flatten, startCase, unionBy } from 'lodash';
+import { getFollowsByResource } from './lists';
+import { ActionType, ResourceTypes } from '@/utils/constants';
 
 type NotificationParamType = {
-	target_user_id: number;
-	event_type: ActionType;
-	follow_resource_type: string;
-	notification_resource_type: string;
-	message: string;
-	company_id?: number | null;
-	vc_firm_id?: number | null;
-	action_ids: number[];
-	notification_resource_id?: number | null;
+  target_user_id: number;
+  event_type: ActionType;
+  follow_resource_type: string;
+  notification_resource_type: string;
+  message: string;
+  company_id?: number | null;
+  vc_firm_id?: number | null;
+  action_ids: number[];
+  notification_resource_id?: number | null;
 };
 
 type GetMessageParamType = {
@@ -37,108 +37,108 @@ type GetMessageParamType = {
   resourceType: ResourceTypes;
   companyId?: number;
   vcFirmId?: number;
-  investmentRound?: GetInvestmentRoundByIdQuery["investment_rounds"][0];
-  teamMember?: GetTeamMemberByIdQuery["team_members"][0];
-  investor?: GetInvestorByIdQuery["investors"][0];
-  eventOrganization?: GetEventOrganizationByIdQuery["event_organization"][0];
+  investmentRound?: GetInvestmentRoundByIdQuery['investment_rounds'][0];
+  teamMember?: GetTeamMemberByIdQuery['team_members'][0];
+  investor?: GetInvestorByIdQuery['investors'][0];
+  eventOrganization?: GetEventOrganizationByIdQuery['event_organization'][0];
 };
 
 export const insertNotification = async ({
-	target_user_id,
-	event_type,
-	follow_resource_type,
-	notification_resource_type,
-	message,
-	company_id,
-	vc_firm_id,
-	action_ids,
-	notification_resource_id,
+  target_user_id,
+  event_type,
+  follow_resource_type,
+  notification_resource_type,
+  message,
+  company_id,
+  vc_firm_id,
+  action_ids,
+  notification_resource_id,
 }: NotificationParamType) => {
-	const {
-		data: { insert_notifications_one },
-	} = await mutate<InsertNotificationsMutation>({
-		mutation: InsertNotificationsDocument,
-		variables: {
-			object: {
-				target_user_id,
-				event_type,
-				follow_resource_type,
-				notification_resource_type,
-				company_id,
-				vc_firm_id,
-				message,
-				action_ids,
-				notification_resource_id,
-			},
-		},
-	});
-	return insert_notifications_one;
+  const {
+    data: { insert_notifications_one },
+  } = await mutate<InsertNotificationsMutation>({
+    mutation: InsertNotificationsDocument,
+    variables: {
+      object: {
+        target_user_id,
+        event_type,
+        follow_resource_type,
+        notification_resource_type,
+        company_id,
+        vc_firm_id,
+        message,
+        action_ids,
+        notification_resource_id,
+      },
+    },
+  });
+  return insert_notifications_one;
 };
 
 export const processNotification = async (
-	followResourceId: number,
-	followedResourceType: "companies" | "vc_firms",
-	notificationResourceType: ResourceTypes,
-	actionType: ActionType,
-	actionIds: number[],
-	message: string,
-	notificationResourceId?: number,
+  followResourceId: number,
+  followedResourceType: 'companies' | 'vc_firms',
+  notificationResourceType: ResourceTypes,
+  actionType: ActionType,
+  actionIds: number[],
+  message: string,
+  notificationResourceId?: number,
 ) => {
-	if (followResourceId && followedResourceType && actionType) {
-		const follows = await getFollowsByResource(
-			followResourceId,
-			followedResourceType
-		);
-		let targetUsers: any = follows.map((item) => item.list?.list_members);
-		targetUsers = unionBy(flatten(targetUsers), "user_id");
-		await Promise.all(
-			targetUsers.map(async (targetUser: any) => {
-				if (targetUser?.user_id) {
-					const notificationResponse = await insertNotification({
-						target_user_id: targetUser?.user_id,
-						event_type: actionType,
-						follow_resource_type: followedResourceType,
-						notification_resource_type: notificationResourceType,
-						message,
-						company_id:
-							followedResourceType === "companies" ? followResourceId : null,
-						vc_firm_id:
-							followedResourceType === "vc_firms" ? followResourceId : null,
-						action_ids: actionIds,
-						notification_resource_id: notificationResourceId,
+  if (followResourceId && followedResourceType && actionType) {
+    const follows = await getFollowsByResource(
+      followResourceId,
+      followedResourceType,
+    );
+    let targetUsers: any = follows.map(item => item.list?.list_members);
+    targetUsers = unionBy(flatten(targetUsers), 'user_id');
+    await Promise.all(
+      targetUsers.map(async (targetUser: any) => {
+        if (targetUser?.user_id) {
+          const notificationResponse = await insertNotification({
+            target_user_id: targetUser?.user_id,
+            event_type: actionType,
+            follow_resource_type: followedResourceType,
+            notification_resource_type: notificationResourceType,
+            message,
+            company_id:
+              followedResourceType === 'companies' ? followResourceId : null,
+            vc_firm_id:
+              followedResourceType === 'vc_firms' ? followResourceId : null,
+            action_ids: actionIds,
+            notification_resource_id: notificationResourceId,
           });
-					await Promise.all(
-						actionIds.map(async (actionId) => {
-							if (notificationResponse?.id) {
-								await insertNotificationAction(
-									notificationResponse?.id,
-									actionId
-								);
-							}
-						})
-					);
-				}
-			})
-		);
-	}
+          await Promise.all(
+            actionIds.map(async actionId => {
+              if (notificationResponse?.id) {
+                await insertNotificationAction(
+                  notificationResponse?.id,
+                  actionId,
+                );
+              }
+            }),
+          );
+        }
+      }),
+    );
+  }
 };
 
 export const getNotificationChangedData = (
   notification: GetNotificationsForUserQuery['notifications'][0],
 ) => {
-	if (
-    notification.event_type === "Change Data" &&
-    ["companies", "vc_firms"].includes(notification.notification_resource_type)
+  if (
+    notification.event_type === 'Change Data' &&
+    ['companies', 'vc_firms'].includes(notification.notification_resource_type)
   ) {
-    		if (notification.notification_actions.length > 1) {
-			return {
-				message: `has been updated`,
-				extensions: notification.notification_actions.map((item) => ({
-					field: Object.keys(item?.action?.properties)[0],
-					value: Object.values(item?.action?.properties)[0],
-				})),
-			};
-		}
+    if (notification.notification_actions.length > 1) {
+      return {
+        message: `has been updated`,
+        extensions: notification.notification_actions.map(item => ({
+          field: Object.keys(item?.action?.properties)[0],
+          value: Object.values(item?.action?.properties)[0],
+        })),
+      };
+    }
 
     const changedData =
       notification.notification_actions[0]?.action?.properties;
@@ -231,7 +231,7 @@ export const filterExcludeNotifications = (
 };
 
 export const getNotificationOrganizationLink = (
-  notification: GetNotificationsForUserQuery["notifications"][0]
+  notification: GetNotificationsForUserQuery['notifications'][0],
 ) =>
   notification.company
     ? `/${notification.follow_resource_type}/${notification.company?.slug}`
@@ -249,51 +249,51 @@ export const getMessage = ({
 }: GetMessageParamType) => {
   const organizationType = eventOrganization?.type;
 
-  if (actionType === "Insert Data") {
-    if (resourceType === "investment_rounds") {
+  if (actionType === 'Insert Data') {
+    if (resourceType === 'investment_rounds') {
       return `added **${investmentRound?.round}** funding round`;
     }
-    if (resourceType === "team_members") {
+    if (resourceType === 'team_members') {
       return `added [${teamMember?.person?.name}](/people/${teamMember?.person?.slug}/) to the team`;
     }
-    if (resourceType === "investors") {
+    if (resourceType === 'investors') {
       return `added [${investor?.person?.name}](/people/${investor?.person?.slug}/) to the team`;
     }
-    if (resourceType === "investments") {
+    if (resourceType === 'investments') {
       return companyId
-        ? "raised new capital"
-        : "invested in a new portfolio company";
+        ? 'raised new capital'
+        : 'invested in a new portfolio company';
     }
-    if (resourceType === "event_organization") {
+    if (resourceType === 'event_organization') {
       return `was added as ${
-        organizationType === "organizer" ? "an" : "a"
+        organizationType === 'organizer' ? 'an' : 'a'
       } **${organizationType}** of [${
         eventOrganization?.event?.name
       }](/events/${eventOrganization?.event?.slug}/)`;
     }
   }
 
-  if (actionType === "Change Data") {
-    if (resourceType === "investment_rounds") {
+  if (actionType === 'Change Data') {
+    if (resourceType === 'investment_rounds') {
       return `updated its **${investmentRound?.round}** funding round`;
     }
-    if (resourceType === "team_members") {
+    if (resourceType === 'team_members') {
       return `updated [${teamMember?.person?.name}](/people/${teamMember?.person?.slug}/)'s role on the team`;
     }
-    if (resourceType === "investors") {
+    if (resourceType === 'investors') {
       return `updated [${investor?.person?.name}](/people/${investor?.person?.slug}/)'s role on the team`;
     }
-    if (resourceType === "investments") {
+    if (resourceType === 'investments') {
       return companyId
-        ? "updated investment information to its profile"
-        : "updated investment information on their portfolio";
+        ? 'updated investment information to its profile'
+        : 'updated investment information on their portfolio';
     }
-    if (resourceType === "event_organization") {
+    if (resourceType === 'event_organization') {
       return `was updated to **${organizationType}** of [${eventOrganization?.event?.name}](/events/${eventOrganization?.event?.slug}/)`;
     }
   }
 
-  return "has been updated";
+  return 'has been updated';
 };
 
 export const processNotificationOnSubmitData = async (
@@ -301,13 +301,13 @@ export const processNotificationOnSubmitData = async (
   resourceObj: Record<string, any>,
   actionType: ActionType,
   actionIds: number[],
-  notificationResourceId: number
+  notificationResourceId: number,
 ) => {
   if (
-    actionType === "Change Data" &&
-    (resourceType === "companies" || resourceType === "vc_firms")
+    actionType === 'Change Data' &&
+    (resourceType === 'companies' || resourceType === 'vc_firms')
   ) {
-    const message = getMessage({actionType, resourceType});
+    const message = getMessage({ actionType, resourceType });
     await processNotification(
       notificationResourceId,
       resourceType,
@@ -318,66 +318,66 @@ export const processNotificationOnSubmitData = async (
     );
   }
 
-  if (resourceType === "investment_rounds") {
+  if (resourceType === 'investment_rounds') {
     let companyId = resourceObj?.company_id;
     const investmentRound = await getInvestmentRoundById(
-      notificationResourceId
+      notificationResourceId,
     );
-    if (actionType === "Change Data") {
+    if (actionType === 'Change Data') {
       companyId = investmentRound.company_id;
     }
-    const message = getMessage({actionType, resourceType, investmentRound});
+    const message = getMessage({ actionType, resourceType, investmentRound });
     await processNotification(
       companyId,
-      "companies",
+      'companies',
       resourceType,
       actionType,
       actionIds,
       message,
-      notificationResourceId
+      notificationResourceId,
     );
   }
 
-  if (resourceType === "team_members") {
+  if (resourceType === 'team_members') {
     let companyId = resourceObj?.company_id;
     const teamMember = await getTeamMemberById(notificationResourceId);
-    if (actionType === "Change Data") {
+    if (actionType === 'Change Data') {
       companyId = teamMember.company_id;
     }
-    const message = getMessage({actionType, resourceType, teamMember});
+    const message = getMessage({ actionType, resourceType, teamMember });
     await processNotification(
       companyId,
-      "companies",
+      'companies',
       resourceType,
       actionType,
       actionIds,
       message,
-      notificationResourceId
+      notificationResourceId,
     );
   }
 
-  if (resourceType === "investors") {
+  if (resourceType === 'investors') {
     let vcFirmId = resourceObj?.vc_firm_id;
     const investor = await getInvestorById(notificationResourceId);
-    if (actionType === "Change Data") {
+    if (actionType === 'Change Data') {
       vcFirmId = investor.vc_firm_id;
     }
-    const message = getMessage({actionType, resourceType, investor});
+    const message = getMessage({ actionType, resourceType, investor });
     await processNotification(
       vcFirmId,
-      "vc_firms",
+      'vc_firms',
       resourceType,
       actionType,
       actionIds,
       message,
-      notificationResourceId
+      notificationResourceId,
     );
   }
 
-  if (resourceType === "investments") {
+  if (resourceType === 'investments') {
     let vcFirmId = resourceObj?.vc_firm_id;
     let roundId = resourceObj?.round_id;
-    if (actionType === "Change Data") {
+    if (actionType === 'Change Data') {
       const investment = await getInvestmentById(notificationResourceId);
       vcFirmId = investment.vc_firm_id;
       roundId = investment.round_id;
@@ -385,64 +385,68 @@ export const processNotificationOnSubmitData = async (
 
     if (roundId) {
       const investmentRound = await getInvestmentRoundById(roundId);
-      const message = getMessage({actionType, resourceType, companyId: investmentRound?.company_id || 0});
+      const message = getMessage({
+        actionType,
+        resourceType,
+        companyId: investmentRound?.company_id || 0,
+      });
       await processNotification(
         investmentRound?.company_id || 0,
-        "companies",
+        'companies',
         resourceType,
         actionType,
         actionIds,
         message,
-        notificationResourceId
+        notificationResourceId,
       );
     }
 
-    const message = getMessage({actionType, resourceType});
+    const message = getMessage({ actionType, resourceType });
     await processNotification(
       vcFirmId,
-      "vc_firms",
+      'vc_firms',
       resourceType,
       actionType,
       actionIds,
       message,
-      notificationResourceId
+      notificationResourceId,
     );
   }
 
-  if (resourceType === "event_organization") {
+  if (resourceType === 'event_organization') {
     let companyId = resourceObj?.company_id;
     let vcFirmId = resourceObj?.vc_firm_id;
     const eventOrganization = await getEventOrganizationById(
-      notificationResourceId
+      notificationResourceId,
     );
     const organizationType = eventOrganization?.type;
-   
-    if (actionType === "Change Data") {
+
+    if (actionType === 'Change Data') {
       companyId = eventOrganization.company_id;
       vcFirmId = eventOrganization.vc_firm_id;
     }
 
-    const message = getMessage({actionType, resourceType, eventOrganization});
+    const message = getMessage({ actionType, resourceType, eventOrganization });
     if (companyId) {
       await processNotification(
         companyId,
-        "companies",
+        'companies',
         resourceType,
         actionType,
         actionIds,
         message,
-        notificationResourceId
+        notificationResourceId,
       );
     }
     if (vcFirmId) {
       await processNotification(
         vcFirmId,
-        "vc_firms",
+        'vc_firms',
         resourceType,
         actionType,
         actionIds,
         message,
-        notificationResourceId
+        notificationResourceId,
       );
     }
   }

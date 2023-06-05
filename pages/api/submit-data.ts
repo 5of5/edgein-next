@@ -1,6 +1,6 @@
-import * as dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
-import { processNotificationOnSubmitData } from "@/utils/notifications";
+import * as dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
+import { processNotificationOnSubmitData } from '@/utils/notifications';
 import {
   ActionType,
   ResourceTypes,
@@ -110,7 +110,7 @@ const handleResource = async (
     resourceObj,
     resourceId ? 'Change Data' : 'Insert Data',
     mainResult?.actions,
-    mainResult?.id
+    mainResult?.id,
   );
 
   const relationshipResults: Array<Record<string, any>> = [];
@@ -265,7 +265,7 @@ export const commonHandler = async (
               user?.id,
             );
             await markDataRawAsInactive(resourceType, resourceId);
-            return {id: resourceId, deleted: true};
+            return { id: resourceId, deleted: true };
           } catch (error: any) {
             return { id: resourceId, deleted: false, error };
           }

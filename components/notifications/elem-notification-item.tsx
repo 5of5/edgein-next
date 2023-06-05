@@ -1,12 +1,12 @@
-import React, { FC } from "react";
-import moment from "moment-timezone";
-import { GetNotificationsForUserQuery } from "@/graphql/types";
-import { ElemPhoto } from "../elem-photo";
-import ElemNotificationMessage from "./elem-notification-message";
-import { IconChevronDownMini } from "../icons";
+import React, { FC } from 'react';
+import moment from 'moment-timezone';
+import { GetNotificationsForUserQuery } from '@/graphql/types';
+import { ElemPhoto } from '../elem-photo';
+import ElemNotificationMessage from './elem-notification-message';
+import { IconChevronDownMini } from '../icons';
 
 type Props = {
-  notification: GetNotificationsForUserQuery["notifications"][0];
+  notification: GetNotificationsForUserQuery['notifications'][0];
   message: string | null;
   extensions: Record<string, any>[];
   onMarkAsRead: (id: number) => void;
@@ -29,8 +29,8 @@ const ElemNotificationItem: FC<Props> = ({
       onClick={() => onMarkAsRead(notification.id)}
       className={`flex items-center justify-between px-2 sm:px-2 py-2 shrink-0 w-full overflow-hidden sm:rounded-md group-hover:bg-gray-50 ${
         notification.read
-          ? "bg-transparent opacity-60"
-          : "bg-gray-50 lg:bg-transparent"
+          ? 'bg-transparent opacity-60'
+          : 'bg-gray-50 lg:bg-transparent'
       }`}
     >
       <div className="flex items-center space-x-2 sm:pr-20">
@@ -51,7 +51,7 @@ const ElemNotificationItem: FC<Props> = ({
             </div>
             {extensions.length > 0 && (
               <>
-                {" | "}
+                {' | '}
                 <span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
                   Details
                 </span>
@@ -63,7 +63,7 @@ const ElemNotificationItem: FC<Props> = ({
           <div className="text-left">
             <span
               className={`text-sm  ${
-                notification.read ? "" : "font-medium text-primary-500"
+                notification.read ? '' : 'font-medium text-primary-500'
               }`}
             >
               {notificationFromNow}
@@ -76,8 +76,8 @@ const ElemNotificationItem: FC<Props> = ({
         <div
           className={`w-3 h-3 rounded-full bg-gradient-to-r shrink-0 ${
             notification.read
-              ? "bg-transparent"
-              : "from-blue-800 via-primary-500 to-primary-400 "
+              ? 'bg-transparent'
+              : 'from-blue-800 via-primary-500 to-primary-400 '
           }`}
         ></div>
       </div>

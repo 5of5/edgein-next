@@ -1,11 +1,11 @@
-import React, { FC } from "react";
-import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import { GetNotificationsForUserQuery } from "@/graphql/types";
-import { getNotificationOrganizationLink } from "@/utils/notifications";
+import React, { FC } from 'react';
+import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import { GetNotificationsForUserQuery } from '@/graphql/types';
+import { getNotificationOrganizationLink } from '@/utils/notifications';
 
 type Props = {
-  notification: GetNotificationsForUserQuery["notifications"][0];
+  notification: GetNotificationsForUserQuery['notifications'][0];
   message: string | null;
 };
 
@@ -15,8 +15,8 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
   const organization = company || vc_firm;
 
   if (
-    notification.notification_resource_type === "companies" ||
-    notification.notification_resource_type === "vc_firms"
+    notification.notification_resource_type === 'companies' ||
+    notification.notification_resource_type === 'vc_firms'
   ) {
     return (
       <div>
@@ -45,8 +45,8 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
       }}
     >
       {`[${organization?.name}](${getNotificationOrganizationLink(
-        notification
-      )}) ${notification.message || ""}`}
+        notification,
+      )}) ${notification.message || ''}`}
     </ReactMarkdown>
   );
 };
