@@ -304,6 +304,19 @@ const CompanyForm = ({
           choices={libraryChoices}
           defaultValue={['Web3']}
         />
+        <SelectInput
+          className={inputClassName}
+          source="team_enrichment_status"
+          choices={['', 'skip']}
+        />
+        <TextInput
+          className={inputClassName}
+          source="web_domain"
+        />
+        <TextInput
+          className={inputClassName}
+          source="email_domain"
+        />
       </SimpleForm>
     </div>
   );
