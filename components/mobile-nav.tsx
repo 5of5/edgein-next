@@ -152,20 +152,23 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
       <div className={className}>
         <button
           onClick={onOpen}
-          className="hamburger relative w-8 h-[36px] px-[3px] py-4">
+          className="hamburger relative w-8 h-[36px] px-[3px] py-4"
+        >
           <span
             className={`${
               navOpen
                 ? 'hamburger-active rotate-45 before:top-0 before:opacity-0 after:bottom-0 after:rotate-90'
                 : ''
-            } hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-150 before:block before:content-[''] after:block after:content-['']`}></span>
+            } hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-150 before:block before:content-[''] after:block after:content-['']`}
+          ></span>
           <span className="sr-only">Toggle menu</span>
         </button>
         <Transition.Root show={navOpen} as={Fragment}>
           <Dialog
             as="div"
             className="relative z-40 lg:hidden"
-            onClose={onClose}>
+            onClose={onClose}
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -173,7 +176,8 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
               enterTo="opacity-100"
               leave="transition-opacity ease-linear duration-300"
               leaveFrom="opacity-100"
-              leaveTo="opacity-0">
+              leaveTo="opacity-0"
+            >
               <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
             </Transition.Child>
 
@@ -188,7 +192,8 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
                 enterTo="translate-x-0"
                 leave="transition ease-in-out duration-300 transform"
                 leaveFrom="translate-x-0"
-                leaveTo="translate-x-full">
+                leaveTo="translate-x-full"
+              >
                 <Dialog.Panel className="max-w-md w-full bg-white flex-1 flex flex-col">
                   <Dialog.Title className="flex items-center justify-end px-1 py-2">
                     <button type="button" onClick={onClose}>
@@ -209,7 +214,8 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
                                   onClick={
                                     item?.onClick ? item?.onClick : onClose
                                   }
-                                  className="flex items-center py-3 text-lg hover:text-primary-500">
+                                  className="flex items-center py-3 text-lg hover:text-primary-500"
+                                >
                                   {item?.icon && (
                                     <item.icon
                                       title={item.name}

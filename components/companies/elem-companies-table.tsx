@@ -448,7 +448,7 @@ export const CompaniesTable: FC<Props> = ({
   return (
     <div className={`${className}`}>
       <div className="flex flex-wrap items-center justify-between space-x-2 py-3">
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-col items-start space-y-3 lg:flex-row lg:items-center lg:space-x-3 lg:space-y-0">
           <TableColumnsFilter
             columns={allColumns}
             resetColumns={() => toggleHideAllColumns(false)}
@@ -462,7 +462,7 @@ export const CompaniesTable: FC<Props> = ({
           />
         </div>
 
-        <div className="flex">
+        <div className="flex mt-6 lg:mt-0">
           {shownItems === 0 ? (
             <></>
           ) : shownItems == totalItems ? (

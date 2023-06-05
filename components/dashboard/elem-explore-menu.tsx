@@ -29,7 +29,8 @@ const ElemExploreMenu: FC<Props> = ({ className = '' }) => {
               className="flex focus:outline-none hover:opacity-75"
               data-expanded={open}
               ref={btnRef}
-              onClick={onDisclosureButtonClick}>
+              onClick={onDisclosureButtonClick}
+            >
               <IconPolygonDown
                 className={`${
                   open ? 'rotate-0' : '-rotate-90 '

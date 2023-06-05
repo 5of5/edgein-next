@@ -210,7 +210,6 @@ const Companies: NextPage<Props> = ({
         <ElemHeading
           title={`${selectedLibrary} Companies`}
           subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
-          className=""
         ></ElemHeading>
       )}
 
@@ -223,10 +222,10 @@ const Companies: NextPage<Props> = ({
           <h2 className="text-xl font-bold">Companies</h2>
 
           <div
-            className="mt-2 mb-4 flex flex-wrap items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
+            className="relative mt-2 mb-4 flex items-center justify-between lg:border-y lg:border-black/10"
             role="tablist"
           >
-            <nav className="flex">
+            <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x border-y border-black/10 pr-32 sm:pr-0 lg:border-none">
               {companyStatusTags &&
                 companyStatusTags.map((tab: any, index: number) =>
                   tab.disabled === true ? (
@@ -247,8 +246,9 @@ const Companies: NextPage<Props> = ({
                 )}
             </nav>
 
-            <div className="flex items-center">
-              <div className="text-xs font-bold leading-sm uppercase pr-1">
+            <div className="absolute right-0 flex items-center py-1.5 sm:relative sm:right-auto">
+              <div className="w-6 h-10 bg-gradient-to-r from-transparent to-white sm:hidden"></div>
+              <div className="hidden text-xs font-bold leading-sm uppercase pr-1 sm:block">
                 Layout:
               </div>
               <div className="bg-slate-200 rounded-full p-0.5">
