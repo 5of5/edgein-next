@@ -237,6 +237,7 @@ export const getNotificationOrganizationLink = (
     ? `/${notification.follow_resource_type}/${notification.company?.slug}`
     : `/investors/${notification.vc_firm?.slug}`;
 
+/** Remember to run test when update getMessage function */
 export const getMessage = ({
   actionType,
   resourceType,
