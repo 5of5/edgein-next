@@ -91,6 +91,7 @@ export type Actions = {
   created_at: Scalars['timestamptz'];
   id: Scalars['Int'];
   page: Scalars['String'];
+  partner: Maybe<Scalars['Int']>;
   properties: Scalars['jsonb'];
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
@@ -142,6 +143,7 @@ export type Actions_Append_Input = {
 export type Actions_Avg_Fields = {
   __typename?: 'actions_avg_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -156,6 +158,7 @@ export type Actions_Bool_Exp = {
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   page: InputMaybe<String_Comparison_Exp>;
+  partner: InputMaybe<Int_Comparison_Exp>;
   properties: InputMaybe<Jsonb_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
@@ -186,6 +189,7 @@ export type Actions_Delete_Key_Input = {
 /** input type for incrementing numeric columns in table "actions" */
 export type Actions_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  partner: InputMaybe<Scalars['Int']>;
   resource_id: InputMaybe<Scalars['Int']>;
   user: InputMaybe<Scalars['Int']>;
 };
@@ -197,6 +201,7 @@ export type Actions_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   page: InputMaybe<Scalars['String']>;
+  partner: InputMaybe<Scalars['Int']>;
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -211,6 +216,7 @@ export type Actions_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['String']>;
+  partner: Maybe<Scalars['Int']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
   user: Maybe<Scalars['Int']>;
@@ -224,6 +230,7 @@ export type Actions_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['String']>;
+  partner: Maybe<Scalars['Int']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
   user: Maybe<Scalars['Int']>;
@@ -259,6 +266,7 @@ export type Actions_Order_By = {
   created_at: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   page: InputMaybe<Order_By>;
+  partner: InputMaybe<Order_By>;
   properties: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
@@ -288,6 +296,8 @@ export enum Actions_Select_Column {
   /** column name */
   Page = 'page',
   /** column name */
+  Partner = 'partner',
+  /** column name */
   Properties = 'properties',
   /** column name */
   Resource = 'resource',
@@ -304,6 +314,7 @@ export type Actions_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   page: InputMaybe<Scalars['String']>;
+  partner: InputMaybe<Scalars['Int']>;
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -314,6 +325,7 @@ export type Actions_Set_Input = {
 export type Actions_Stddev_Fields = {
   __typename?: 'actions_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -322,6 +334,7 @@ export type Actions_Stddev_Fields = {
 export type Actions_Stddev_Pop_Fields = {
   __typename?: 'actions_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -330,6 +343,7 @@ export type Actions_Stddev_Pop_Fields = {
 export type Actions_Stddev_Samp_Fields = {
   __typename?: 'actions_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -338,6 +352,7 @@ export type Actions_Stddev_Samp_Fields = {
 export type Actions_Sum_Fields = {
   __typename?: 'actions_sum_fields';
   id: Maybe<Scalars['Int']>;
+  partner: Maybe<Scalars['Int']>;
   resource_id: Maybe<Scalars['Int']>;
   user: Maybe<Scalars['Int']>;
 };
@@ -355,6 +370,8 @@ export enum Actions_Update_Column {
   /** column name */
   Page = 'page',
   /** column name */
+  Partner = 'partner',
+  /** column name */
   Properties = 'properties',
   /** column name */
   Resource = 'resource',
@@ -368,6 +385,7 @@ export enum Actions_Update_Column {
 export type Actions_Var_Pop_Fields = {
   __typename?: 'actions_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -376,6 +394,7 @@ export type Actions_Var_Pop_Fields = {
 export type Actions_Var_Samp_Fields = {
   __typename?: 'actions_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -384,6 +403,7 @@ export type Actions_Var_Samp_Fields = {
 export type Actions_Variance_Fields = {
   __typename?: 'actions_variance_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -1899,6 +1919,7 @@ export type Companies = {
   created_at: Scalars['timestamptz'];
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
+  email_domain: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
   facebook: Maybe<Scalars['String']>;
   /** An array relationship */
@@ -1947,6 +1968,7 @@ export type Companies = {
   teamMembers: Array<Team_Members>;
   /** An aggregate relationship */
   teamMembers_aggregate: Team_Members_Aggregate;
+  team_enrichment_status: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
   /** An array relationship */
   to_links: Array<Resource_Links>;
@@ -1959,6 +1981,7 @@ export type Companies = {
   updated_at: Scalars['timestamptz'];
   velocity_linkedin: Maybe<Scalars['String']>;
   velocity_token: Maybe<Scalars['String']>;
+  web_domain: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
   white_paper: Maybe<Scalars['String']>;
   year_founded: Maybe<Scalars['String']>;
@@ -2188,6 +2211,7 @@ export type Companies_Bool_Exp = {
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   date_added: InputMaybe<Date_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
+  email_domain: InputMaybe<String_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Companies_Bool_Exp>;
@@ -2221,6 +2245,7 @@ export type Companies_Bool_Exp = {
   status_tags: InputMaybe<Jsonb_Comparison_Exp>;
   tags: InputMaybe<Jsonb_Comparison_Exp>;
   teamMembers: InputMaybe<Team_Members_Bool_Exp>;
+  team_enrichment_status: InputMaybe<String_Comparison_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
   to_links: InputMaybe<Resource_Links_Bool_Exp>;
   total_employees: InputMaybe<Numeric_Comparison_Exp>;
@@ -2230,6 +2255,7 @@ export type Companies_Bool_Exp = {
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   velocity_linkedin: InputMaybe<String_Comparison_Exp>;
   velocity_token: InputMaybe<String_Comparison_Exp>;
+  web_domain: InputMaybe<String_Comparison_Exp>;
   website: InputMaybe<String_Comparison_Exp>;
   white_paper: InputMaybe<String_Comparison_Exp>;
   year_founded: InputMaybe<String_Comparison_Exp>;
@@ -2582,6 +2608,7 @@ export type Companies_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
+  email_domain: InputMaybe<Scalars['String']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
@@ -2615,6 +2642,7 @@ export type Companies_Insert_Input = {
   status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
   teamMembers: InputMaybe<Team_Members_Arr_Rel_Insert_Input>;
+  team_enrichment_status: InputMaybe<Scalars['String']>;
   telegram: InputMaybe<Scalars['String']>;
   to_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
   total_employees: InputMaybe<Scalars['numeric']>;
@@ -2624,6 +2652,7 @@ export type Companies_Insert_Input = {
   updated_at: InputMaybe<Scalars['timestamptz']>;
   velocity_linkedin: InputMaybe<Scalars['String']>;
   velocity_token: InputMaybe<Scalars['String']>;
+  web_domain: InputMaybe<Scalars['String']>;
   website: InputMaybe<Scalars['String']>;
   white_paper: InputMaybe<Scalars['String']>;
   year_founded: InputMaybe<Scalars['String']>;
@@ -2643,6 +2672,7 @@ export type Companies_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
+  email_domain: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
   facebook: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -2664,6 +2694,7 @@ export type Companies_Max_Fields = {
   search_count: Maybe<Scalars['Int']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  team_enrichment_status: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
@@ -2672,6 +2703,7 @@ export type Companies_Max_Fields = {
   updated_at: Maybe<Scalars['timestamptz']>;
   velocity_linkedin: Maybe<Scalars['String']>;
   velocity_token: Maybe<Scalars['String']>;
+  web_domain: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
   white_paper: Maybe<Scalars['String']>;
   year_founded: Maybe<Scalars['String']>;
@@ -2691,6 +2723,7 @@ export type Companies_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
+  email_domain: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
   facebook: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -2712,6 +2745,7 @@ export type Companies_Min_Fields = {
   search_count: Maybe<Scalars['Int']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  team_enrichment_status: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
@@ -2720,6 +2754,7 @@ export type Companies_Min_Fields = {
   updated_at: Maybe<Scalars['timestamptz']>;
   velocity_linkedin: Maybe<Scalars['String']>;
   velocity_token: Maybe<Scalars['String']>;
+  web_domain: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
   white_paper: Maybe<Scalars['String']>;
   year_founded: Maybe<Scalars['String']>;
@@ -2762,6 +2797,7 @@ export type Companies_Order_By = {
   created_at: InputMaybe<Order_By>;
   date_added: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
+  email_domain: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   facebook: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
@@ -2795,6 +2831,7 @@ export type Companies_Order_By = {
   status_tags: InputMaybe<Order_By>;
   tags: InputMaybe<Order_By>;
   teamMembers_aggregate: InputMaybe<Team_Members_Aggregate_Order_By>;
+  team_enrichment_status: InputMaybe<Order_By>;
   telegram: InputMaybe<Order_By>;
   to_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
   total_employees: InputMaybe<Order_By>;
@@ -2804,6 +2841,7 @@ export type Companies_Order_By = {
   updated_at: InputMaybe<Order_By>;
   velocity_linkedin: InputMaybe<Order_By>;
   velocity_token: InputMaybe<Order_By>;
+  web_domain: InputMaybe<Order_By>;
   website: InputMaybe<Order_By>;
   white_paper: InputMaybe<Order_By>;
   year_founded: InputMaybe<Order_By>;
@@ -2847,6 +2885,8 @@ export enum Companies_Select_Column {
   DateAdded = 'date_added',
   /** column name */
   Discord = 'discord',
+  /** column name */
+  EmailDomain = 'email_domain',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -2904,6 +2944,8 @@ export enum Companies_Select_Column {
   /** column name */
   Tags = 'tags',
   /** column name */
+  TeamEnrichmentStatus = 'team_enrichment_status',
+  /** column name */
   Telegram = 'telegram',
   /** column name */
   TotalEmployees = 'total_employees',
@@ -2919,6 +2961,8 @@ export enum Companies_Select_Column {
   VelocityLinkedin = 'velocity_linkedin',
   /** column name */
   VelocityToken = 'velocity_token',
+  /** column name */
+  WebDomain = 'web_domain',
   /** column name */
   Website = 'website',
   /** column name */
@@ -2941,6 +2985,7 @@ export type Companies_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
+  email_domain: InputMaybe<Scalars['String']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook: InputMaybe<Scalars['String']>;
   geopoint: InputMaybe<Scalars['geography']>;
@@ -2969,6 +3014,7 @@ export type Companies_Set_Input = {
   status: InputMaybe<Scalars['String']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
+  team_enrichment_status: InputMaybe<Scalars['String']>;
   telegram: InputMaybe<Scalars['String']>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
@@ -2977,6 +3023,7 @@ export type Companies_Set_Input = {
   updated_at: InputMaybe<Scalars['timestamptz']>;
   velocity_linkedin: InputMaybe<Scalars['String']>;
   velocity_token: InputMaybe<Scalars['String']>;
+  web_domain: InputMaybe<Scalars['String']>;
   website: InputMaybe<Scalars['String']>;
   white_paper: InputMaybe<Scalars['String']>;
   year_founded: InputMaybe<Scalars['String']>;
@@ -3050,6 +3097,8 @@ export enum Companies_Update_Column {
   /** column name */
   Discord = 'discord',
   /** column name */
+  EmailDomain = 'email_domain',
+  /** column name */
   ExternalId = 'external_id',
   /** column name */
   Facebook = 'facebook',
@@ -3106,6 +3155,8 @@ export enum Companies_Update_Column {
   /** column name */
   Tags = 'tags',
   /** column name */
+  TeamEnrichmentStatus = 'team_enrichment_status',
+  /** column name */
   Telegram = 'telegram',
   /** column name */
   TotalEmployees = 'total_employees',
@@ -3121,6 +3172,8 @@ export enum Companies_Update_Column {
   VelocityLinkedin = 'velocity_linkedin',
   /** column name */
   VelocityToken = 'velocity_token',
+  /** column name */
+  WebDomain = 'web_domain',
   /** column name */
   Website = 'website',
   /** column name */
