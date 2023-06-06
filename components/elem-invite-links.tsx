@@ -1,13 +1,14 @@
-import { Menu, Transition } from '@headlessui/react';
 import { ElemButton } from '@/components/elem-button';
 import {
   IconShare,
   IconLink,
   IconTelegramAlt,
+  IconTelegram,
   IconEmail,
   IconChatBubble,
+  IconTwitter,
 } from '@/components/icons';
-import { Fragment } from 'react';
+import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 type Props = {
@@ -16,6 +17,8 @@ type Props = {
 };
 
 export const ElemInviteLinks = ({ user, personSlug }: Props) => {
+  const [isCopied, setIsCopied] = useState(false);
+
   const getInviteLink = () => {
     const inviteCode = personSlug || user.reference_id;
     const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
@@ -26,7 +29,7 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
     window.open(
       `https://telegram.me/share/url?url=${getInviteLink()}&text=${
         user.display_name
-      } has invited you to join EdgeIn. Help democratize web3 data! Use this link for access`,
+      } has invited you to join EdgeIn. Help democratize Web3 data! Use this link for access`,
       '_blank',
     );
   };
@@ -35,7 +38,7 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
     window.open(
       `sms:?&body=${
         user.display_name
-      } has invited you to join EdgeIn. Help democratize web3 data! Use this link for access: ${getInviteLink()}`,
+      } has invited you to join EdgeIn. Help democratize Web3 data! Use this link for access: ${getInviteLink()}`,
       '',
     );
   };
@@ -44,23 +47,30 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
     window.open(
       `mailto:?subject=${
         user.display_name
-      } has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
+      } has invited you to join EdgeIn.&body=Hey there! %0D%0A %0D%0A
 	      	${
             user.display_name
-          } has invited you to join EdgeIn. Help democratize web3 data! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink()}`,
+          } has invited you to join EdgeIn. Help democratize Web3 data! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink()}`,
       '',
+    );
+  };
+
+  const onTwitter = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?url=${getInviteLink()}&text=Help democratize Web3 data on @edgeinio. Sign up for free!`,
+      '_blank',
     );
   };
 
   const onCopy = async () => {
     navigator.clipboard.writeText(getInviteLink());
+    setIsCopied(true);
     toast.custom(
       t => (
         <div
           className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
-          }`}
-        >
+          }`}>
           Copied Invite Link
         </div>
       ),
@@ -72,53 +82,51 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
   };
 
   const list = [
-    { icon: IconLink, text: 'Copy Invite Link', onClick: onCopy },
-    { icon: IconTelegramAlt, text: 'Invite via Telegram', onClick: onTelegram },
-    { icon: IconEmail, text: 'Invite via Email', onClick: onEmail },
-    { icon: IconChatBubble, text: 'Invite via SMS', onClick: onSMS },
+    { icon: IconTwitter, text: 'Twitter', onClick: onTwitter },
+    { icon: IconTelegramAlt, text: 'Telegram', onClick: onTelegram },
+    { icon: IconEmail, text: 'Email', onClick: onEmail },
+    { icon: IconChatBubble, text: 'SMS', onClick: onSMS },
   ];
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button as="div">
-          <ElemButton btn="purple">
-            <IconShare className="h-5 w-5 mr-1.5" aria-hidden="true" />
-            Share
+    <div>
+      <h3 className="font-bold mt-3">Your referral link</h3>
+      <div className="relative">
+        <div className="absolute right-1 top-1 z-10 pt-1 pr-1">
+          <ElemButton
+            onClick={() => onCopy()}
+            btn="primary"
+            size="sm"
+            roundedFull={true}
+            className="px-2.5">
+            {isCopied ? 'Link Copied' : 'Copy Link'}
           </ElemButton>
-        </Menu.Button>
+        </div>
+        <input
+          className={`w-full mt-1 px-3 py-2 text-dark-500 relative bg-white rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400`}
+          type="text"
+          name="share"
+          value={getInviteLink()}
+          readOnly
+        />
       </div>
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items
-          as="nav"
-          className="z-10 absolute overflow-hidden left-0 lg:left-auto lg:right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
-        >
-          {list.map(link => (
-            <Menu.Item key={link.text}>
-              {({ active }) => (
-                <button
-                  onClick={link.onClick}
-                  className={`${
-                    active ? 'bg-gray-50 text-primary-500' : ''
-                  } flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500`}
-                >
-                  <link.icon className="mr-2 h-5 w-5" aria-hidden="true" />
-                  {link.text}
-                </button>
-              )}
-            </Menu.Item>
-          ))}
-        </Menu.Items>
-      </Transition>
-      <Toaster />
-    </Menu>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2 lg:space-x-2 lg:gap-0">
+        <div>Share:</div>
+        {list.map(link => (
+          <div key={link.text}>
+            <ElemButton
+              onClick={link.onClick}
+              btn="slate"
+              size="sm"
+              roundedFull={true}
+              className="px-2.5">
+              <link.icon className="mr-2 h-5 w-5" aria-hidden="true" />
+              {link.text}
+            </ElemButton>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
