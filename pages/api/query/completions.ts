@@ -1,19 +1,19 @@
-import { getClient } from '@/scripts/postgres-helpers'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { InsertActionDocument, InsertActionMutation } from '@/graphql/types'
-import CookieService from '../../../utils/cookie'
-import { mutate } from '@/graphql/hasuraAdmin'
+import { getClient } from '@/scripts/postgres-helpers';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { InsertActionDocument, InsertActionMutation } from '@/graphql/types';
+import CookieService from '../../../utils/cookie';
+import { mutate } from '@/graphql/hasuraAdmin';
 
 interface Action {
-  action: string
-  page: string,
+  action: string;
+  page: string;
   properties: {
-    sqlquery: string,
-    query: string,
-    sqlresult: any,
-    answer?: string,
-  },
-  user: number,
+    sqlquery: string;
+    query: string;
+    sqlresult: any;
+    answer?: string;
+  };
+  user: number;
 }
 
 const DEFAULT_PROMPT = `Given the postgres sql schema:
@@ -169,7 +169,7 @@ ALTER TABLE ONLY public.team_members
 
 What is the postgres sql query to answer the following question, do not leave any ambiguous columns: {{PROMPT}}?
 
-Only response with postgres sql here:`
+Only response with postgres sql here:`;
 
 const DEFAULT_RESULT_PROMPT = `What is the sql query to answer the following question: {{PROMPT}}?
 
@@ -179,10 +179,10 @@ Result: {{RESULT}}
 
 What is the answer to the following question in natural language: {{PROMPT2}}?
 
-Answer:`
+Answer:`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'POST') return res.status(405).end()
+  if (req.method !== 'POST') return res.status(405).end();
 
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -191,7 +191,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const prompt = DEFAULT_PROMPT.replace('{{PROMPT}}', req.body.query);
   // console.log(prompt);
   const payload = {
-    model: "gpt-3.5-turbo-0301",
+    model: 'gpt-3.5-turbo-0301',
     temperature: 0,
     top_p: 1,
     frequency_penalty: 0,
@@ -201,7 +201,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     n: 1,
     messages: [{ role: 'user', content: prompt }],
   };
-  const result = await fetch("https://api.openai.com/v1/chat/completions", {
+  const result = await fetch('https://api.openai.com/v1/chat/completions', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}`,
@@ -209,38 +209,43 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     method: 'POST',
     body: JSON.stringify(payload),
   });
-  const json = await result.json()
+  const json = await result.json();
   // console.log(json.choices?.[0]);
   const sqlquery = json.choices?.[0]?.message?.content;
   // console.log(sqlquery);
   if (sqlquery.trim() === `I can't answer that.`) {
     return res.send({
-        sqlquery,
-        query: req.body.query,
-        answer: sqlquery
-    })
+      sqlquery,
+      query: req.body.query,
+      answer: sqlquery,
+    });
   }
-  const client = await getClient()
+  const client = await getClient();
   try {
-    const sqlrawresult = await client.query(sqlquery, []); 
-    const sqlresult = sqlrawresult.rows
-    const sqlresultstr = JSON.stringify(sqlresult)
-    const resultPrompt = DEFAULT_RESULT_PROMPT
-      .replace('{{PROMPT}}', req.body.query)
+    const sqlrawresult = await client.query(sqlquery, []);
+    const sqlresult = sqlrawresult.rows;
+    const sqlresultstr = JSON.stringify(sqlresult);
+    const resultPrompt = DEFAULT_RESULT_PROMPT.replace(
+      '{{PROMPT}}',
+      req.body.query,
+    )
       .replace('{{PROMPT2}}', req.body.query)
       .replace('{{QUERY}}', sqlquery)
       .replace('{{RESULT}}', sqlresultstr);
-    payload.messages = [{ role: 'user', content: resultPrompt }]
+    payload.messages = [{ role: 'user', content: resultPrompt }];
     // console.log(payload)
-    const answerresult = await fetch("https://api.openai.com/v1/chat/completions", {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}`,
+    const answerresult = await fetch(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}`,
+        },
+        method: 'POST',
+        body: JSON.stringify(payload),
       },
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
-    const answerjson = await answerresult.json()
+    );
+    const answerjson = await answerresult.json();
     // console.log(answerjson)
     const action: Action = {
       action: `Asked AI`,
@@ -252,7 +257,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         answer: answerjson.choices?.[0]?.message?.content,
       },
       user: user.id,
-    }  
+    };
     // create action
     await mutate<InsertActionMutation>({
       mutation: InsertActionDocument,
@@ -260,16 +265,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         object: action,
       },
     });
-  
+
     res.send({
       sqlquery,
       sqlresult,
       query: req.body.query,
-      answer: answerjson.choices?.[0]?.message?.content
-    })  
+      answer: answerjson.choices?.[0]?.message?.content,
+    });
   } catch (e) {
     console.log(e);
-    console.log((e as any).message)
+    console.log((e as any).message);
     const action: Action = {
       action: `Asked AI With Error`,
       page: 'ask-edgein',
@@ -279,7 +284,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         sqlresult: (e as any).message,
       },
       user: user.id,
-    }  
+    };
     // create action
     await mutate<InsertActionMutation>({
       mutation: InsertActionDocument,
@@ -287,8 +292,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         object: action,
       },
     });
-    return res.status(400).send({ message: (e as any).message, error: e, sqlquery })
+    return res
+      .status(400)
+      .send({ message: (e as any).message, error: e, sqlquery });
   }
-}
+};
 
-export default handler
+export default handler;

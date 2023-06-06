@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import debounce from "lodash/debounce";
+import { useState, useCallback } from 'react';
+import debounce from 'lodash/debounce';
 
 const useAddressAutocomplete = (layers: string[] = []) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -11,16 +11,16 @@ const useAddressAutocomplete = (layers: string[] = []) => {
       `${
         process.env.NEXT_PUBLIC_RADAR_URL
       }/v1/search/autocomplete?query=${encodeURIComponent(
-        keyword
-      )}&layers=${layers.join(",")}`,
+        keyword,
+      )}&layers=${layers.join(',')}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          Authorization: process.env.NEXT_PUBLIC_RADAR_PUBLIC_KEY || "",
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_RADAR_PUBLIC_KEY || '',
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
-      }
+      },
     );
     const data = await response.json();
     setOptions(data?.addresses || []);
@@ -29,8 +29,8 @@ const useAddressAutocomplete = (layers: string[] = []) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
-    debounce((query) => onSearchAddress(query), 700),
-    []
+    debounce(query => onSearchAddress(query), 700),
+    [],
   );
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

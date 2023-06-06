@@ -1,12 +1,12 @@
-import * as dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
-import { getClient } from "./postgres-helpers";
+import * as dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
+import { getClient } from './postgres-helpers';
 
 (async () => {
   const client = await getClient();
 
   const queryResults = await client.query(
-    "SELECT id, action_ids FROM notifications"
+    'SELECT id, action_ids FROM notifications',
   );
 
   for (let i = 0; i < queryResults.rows.length; i += 1) {
@@ -24,7 +24,7 @@ import { getClient } from "./postgres-helpers";
         `);
         if (existedRecords.rows.length === 0) {
           console.log(
-            `Migrate action_ids for notification #${record.id} with action #${actionIds[j]}`
+            `Migrate action_ids for notification #${record.id} with action #${actionIds[j]}`,
           );
 
           await client.query(`

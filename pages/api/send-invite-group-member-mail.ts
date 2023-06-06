@@ -1,6 +1,6 @@
-import { NextApiResponse, NextApiRequest } from "next";
-import AWS from "aws-sdk";
-import CookieService from "@/utils/cookie";
+import { NextApiResponse, NextApiRequest } from 'next';
+import AWS from 'aws-sdk';
+import CookieService from '@/utils/cookie';
 
 export type EmailResources = {
   isExistedUser: boolean;
@@ -24,10 +24,10 @@ AWS.config.update({
   secretAccessKey: process.env.AWS_SES_ACCESS_SECRET_KEY!,
   region: process.env.AWS_BUCKET_REGION!,
 });
-const SES_SOURCE = "EdgeIn Support <support@edgein.io>";
+const SES_SOURCE = 'EdgeIn Support <support@edgein.io>';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end();
 
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -38,14 +38,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const groupId = req.body.groupId;
 
   const response = await Promise.all(
-    emailResources.map(async (resource) => {
+    emailResources.map(async resource => {
       const mailParams: any = {
         email: resource.email,
-        senderName: user.display_name || "",
+        senderName: user.display_name || '',
         groupName,
         isExistedUser: resource.isExistedUser,
       };
-    
+
       if (resource.isExistedUser) {
         const groupUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/groups/${groupId}`;
         mailParams.groupUrl = groupUrl;
@@ -58,7 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const emailResponse = await sendInvitationMail(mailParams);
       return emailResponse;
-    })
+    }),
   );
 
   res.send(response);
@@ -96,20 +96,20 @@ const sendInvitationMail = async (mailParams: MailParams) => {
       Message: {
         Body: {
           Html: {
-            Charset: "UTF-8",
+            Charset: 'UTF-8',
             Data: html,
           },
         },
         Subject: {
-          Charset: "UTF-8",
+          Charset: 'UTF-8',
           Data: `${senderName} has invited you to join group ${groupName} in EdgeIn`,
         },
       },
       Source: SES_SOURCE,
     };
 
-    await new AWS.SES({ apiVersion: "2010-12-01" }).sendEmail(params).promise();
-    return { status: 200, message: "success" };
+    await new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+    return { status: 200, message: 'success' };
   } catch (err) {
     return {
       status: 500,

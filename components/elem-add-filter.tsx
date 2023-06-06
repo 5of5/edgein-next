@@ -1,13 +1,13 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import { IconPlus } from "@/components/icons";
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { IconPlus } from '@/components/icons';
 import {
   companiesFilterOptions,
   investorsFilterOptions,
   eventsFilterOptions,
-} from "@/utils/constants";
-import { useUser } from "@/context/user-context";
-import { IconContributor } from "@/components/icons";
-import { ElemUpgradeDialog } from "./elem-upgrade-dialog";
+} from '@/utils/constants';
+import { useUser } from '@/context/user-context';
+import { IconContributorSolid } from '@/components/icons';
+import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 
 type CategoryFilterOptionProps = {
   options: Array<{
@@ -19,7 +19,7 @@ type CategoryFilterOptionProps = {
 };
 
 type Props = {
-  resourceType: "companies" | "vc_firms" | "events";
+  resourceType: 'companies' | 'vc_firms' | 'events';
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
@@ -34,12 +34,13 @@ export const ElemAddFilter: FC<Props> = ({
   onSelectFilterOption,
 }) => {
   const filterOptions = {
-    "companies": companiesFilterOptions,
-    "vc_firms": investorsFilterOptions,
-    "events": eventsFilterOptions,
+    companies: companiesFilterOptions,
+    vc_firms: investorsFilterOptions,
+    events: eventsFilterOptions,
   }[resourceType];
 
-  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState<boolean>(false);
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] =
+    useState<boolean>(false);
 
   const onOpenUpgradeDialog = () => {
     setIsOpenUpgradeDialog(true);
@@ -57,9 +58,9 @@ export const ElemAddFilter: FC<Props> = ({
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   });
 
@@ -70,7 +71,7 @@ export const ElemAddFilter: FC<Props> = ({
         onClick={onOpen}
       >
         <IconPlus className="w-5 h-5 mr-1" />
-        Add Filter
+        Add filter
       </button>
       {open && (
         <div
@@ -80,14 +81,17 @@ export const ElemAddFilter: FC<Props> = ({
           <div className="grid lg:grid-cols-2 lg:gap-8">
             <div>
               <CategoryFilterOption
-                options={filterOptions.slice(0, resourceType === "events" ? 2 : 3)}
+                options={filterOptions.slice(
+                  0,
+                  resourceType === 'events' ? 2 : 3,
+                )}
                 onSelectFilterOption={onSelectFilterOption}
                 onOpenUpgradeDialog={onOpenUpgradeDialog}
               />
             </div>
             <div className="mt-6 lg:mt-0">
               <CategoryFilterOption
-                options={filterOptions.slice(resourceType === "events" ? 2 : 3)}
+                options={filterOptions.slice(resourceType === 'events' ? 2 : 3)}
                 onSelectFilterOption={onSelectFilterOption}
                 onOpenUpgradeDialog={onOpenUpgradeDialog}
               />
@@ -116,12 +120,12 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
 
   return (
     <div className="flex flex-col gap-y-6">
-      {options.map((option) => (
+      {options.map(option => (
         <div key={option.category}>
           <h3 className="font-bold text-sm">{option.category}</h3>
 
           <ul className="list-none text-slate-600 leading-tight">
-            {option.items.map((item) => (
+            {option.items.map(item => (
               <li key={item.value}>
                 {item.isPremium ? (
                   <div className="inline-flex">
@@ -135,7 +139,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                       className="text-left underline decoration-primary-500 transition-all px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100"
                     >
                       {!userCanUseFilter && (
-                        <IconContributor className="inline-block w-5 h-5 text-primary-500 shrink-0 mr-1" />
+                        <IconContributorSolid className="inline-block w-5 h-5 text-primary-500 shrink-0 mr-1" />
                       )}
 
                       {item.label}

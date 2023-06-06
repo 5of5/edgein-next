@@ -1,3 +1,3 @@
-export * from "./coin-list";
-export * from "./coin-create";
-export * from "./coin-edit";
+export * from './coin-list';
+export * from './coin-create';
+export * from './coin-edit';

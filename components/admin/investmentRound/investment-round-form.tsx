@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from 'react';
 import {
   SimpleForm,
   ReferenceInput,
@@ -6,13 +6,13 @@ import {
   DateInput,
   NumberInput,
   AutocompleteInput,
-} from "react-admin";
+} from 'react-admin';
 import {
   roundChoices,
   currencyChoices,
   status,
   ADMIN_REFERENCE_INPUT_PER_PAGE,
-} from "@/utils/constants";
+} from '@/utils/constants';
 
 type InvestmentRoundFormProps = {
   toolbar?: ReactElement | false;
@@ -20,7 +20,7 @@ type InvestmentRoundFormProps = {
 
 const InvestmentRoundForm = ({ toolbar }: InvestmentRoundFormProps) => {
   const inputClassName =
-    "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   return (
     <SimpleForm toolbar={toolbar}>
@@ -31,10 +31,10 @@ const InvestmentRoundForm = ({ toolbar }: InvestmentRoundFormProps) => {
         perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
       >
         <AutocompleteInput
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
           className={inputClassName}
           optionText="name"
-          filterToQuery={(search) => ({ name: search })}
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <DateInput className={inputClassName} source="round_date" />

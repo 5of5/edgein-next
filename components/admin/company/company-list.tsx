@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 import {
   Button,
   FunctionField,
@@ -16,17 +16,17 @@ import {
   ReferenceInput,
   SelectInput,
   SelectArrayInput,
-} from "react-admin";
+} from 'react-admin';
 import { Chip } from '@mui/material';
-import { companyLayerChoices, tags } from "../../../utils/constants";
-import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/use-auth";
+import { companyLayerChoices, tags } from '../../../utils/constants';
+import ElemList from '../elem-list';
+import { useAuth } from '@/hooks/use-auth';
 
 type QuickFilterProps = {
   label: string;
   source: string;
   defaultValue: any;
-}
+};
 
 const QuickFilter: FC<QuickFilterProps> = ({ label }) => {
   return <Chip label={label} />;
@@ -43,9 +43,9 @@ const filters = [
   />,
   <ReferenceInput key="searchCoins" source="coin_id" reference="coins">
     <AutocompleteInput
-      style={{ padding: 0, border: "none" }}
+      style={{ padding: 0, border: 'none' }}
       optionText="name"
-      filterToQuery={(search) => ({ name: search })}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <SelectInput
@@ -73,11 +73,11 @@ export const CompanyList = () => {
 
   return (
     <ElemList filters={filters}>
-      { user?.role !== "cms-readonly" && <EditButton /> }
+      {user?.role !== 'cms-readonly' && <EditButton />}
       <FunctionField
         render={(record: any) => (
           <a
-            target={"_blank"}
+            target={'_blank'}
             rel="noreferrer"
             href={`https://edgein.io/companies/${record.slug}`}
           >
@@ -167,11 +167,17 @@ export const CompanyList = () => {
       <TextField source="glassdoor" />
       <FunctionField
         source="library"
-        render={(record: any) => (Array.isArray(record.library) ? record.library.join() : record.library ?? "")}
+        render={(record: any) =>
+          Array.isArray(record.library)
+            ? record.library.join()
+            : record.library ?? ''
+        }
       />
       <FunctionField
         source="tags"
-        render={(record: any) => (Array.isArray(record.tags) ? record.tags.join() : record.tags ?? "")}
+        render={(record: any) =>
+          Array.isArray(record.tags) ? record.tags.join() : record.tags ?? ''
+        }
       />
       {/* <TextField source="counter" /> */}
     </ElemList>

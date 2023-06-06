@@ -1,18 +1,18 @@
-import React from "react";
-import { useCreate, useRedirect } from "react-admin";
-import ElemToolbar from "../elem-toolbar";
-import ElemFormBase from "../elem-form-base";
-import NewsForm from "./news-form";
-import { transformFormData } from "./services";
+import React from 'react';
+import { useCreate, useRedirect } from 'react-admin';
+import ElemToolbar from '../elem-toolbar';
+import ElemFormBase from '../elem-form-base';
+import NewsForm from './news-form';
+import { transformFormData } from './services';
 
 export const NewsCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
 
   const handleSaveDraft = (data: any) => {
-    data.status = "draft";
-    create("news", { data });
-    redirect("/news");
+    data.status = 'draft';
+    create('news', { data });
+    redirect('/news');
   };
 
   return (
