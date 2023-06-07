@@ -7,7 +7,7 @@ query GetNotificationsForUser($user: Int!) {
       ]
     }
     order_by: { created_at: desc }
-    limit: 100
+    limit: 10
   ) {
     id
     read

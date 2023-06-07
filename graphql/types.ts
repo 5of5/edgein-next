@@ -27715,7 +27715,7 @@ export const GetNotificationsForUserDocument = `
   notifications(
     where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}]}
     order_by: {created_at: desc}
-    limit: 100
+    limit: 10
   ) {
     id
     read
