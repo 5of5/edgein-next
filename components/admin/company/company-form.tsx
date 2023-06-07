@@ -14,23 +14,22 @@ import {
   useGetList,
   regex,
   required,
-  SelectArrayInput,
   useGetOne,
 } from 'react-admin';
 import { useParams } from 'react-router-dom';
+import { Tag } from '@/types/common';
 import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
   status,
-  web3Tags,
-  aiTags,
   companyChoices,
-  libraryChoices,
 } from '../../../utils/constants';
 import ElemSlugInput from '../elem-slug-input';
 import ElemIconGroup from '../elem-icon-group';
 import useAdminHandleSlug from '@/hooks/use-admin-handle-slug';
 import ElemAddressInput from '../elem-address-input';
+import ElemCompanyLibraryInput from './elem-company-library-input';
+import { getTagChoicesByLibraries } from '@/utils/helpers';
 
 type CompanyFormProps = {
   action: 'create' | 'edit';
@@ -224,12 +223,21 @@ const CompanyForm = ({
           label="Geopoint"
           disabled
         />
-        <AutocompleteArrayInput
-          className={inputClassName}
-          source="tags"
-          choices={[...web3Tags, ...aiTags]}
-          style={{ padding: 0, border: 'none' }}
-        />
+        <FormDataConsumer>
+          {({ formData }) => {
+            const tagChoices: Tag[] = getTagChoicesByLibraries(
+              formData.library,
+            );
+            return (
+              <AutocompleteArrayInput
+                className={inputClassName}
+                source="tags"
+                choices={tagChoices}
+                style={{ padding: 0, border: 'none' }}
+              />
+            );
+          }}
+        </FormDataConsumer>
         <AutocompleteArrayInput
           className={inputClassName}
           source="status_tags"
@@ -299,12 +307,7 @@ const CompanyForm = ({
             },
           }}
         />
-        <SelectArrayInput
-          className={inputClassName}
-          source="library"
-          choices={libraryChoices}
-          defaultValue={['Web3']}
-        />
+        <ElemCompanyLibraryInput className={inputClassName} />
       </SimpleForm>
     </div>
   );

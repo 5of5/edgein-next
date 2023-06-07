@@ -2,7 +2,9 @@ import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
+import { Library, Tag } from '@/types/common';
 import {
+  aiTags,
   eventBannerList,
   EXPLORE_MENU_OPEN_KEY,
   MY_EDGEIN_MENU_OPEN_KEY,
@@ -136,4 +138,18 @@ export const getSelectableWeb3Tags = () => {
   return web3Tags.filter(
     ({ name }) => !NON_SELECTABLE_WEB_3_TAGS.includes(name),
   );
+};
+
+export const getTagChoicesByLibraries = (libraries: Library[]) => {
+  let tagChoices: Tag[] = [];
+
+  if (libraries?.includes('AI')) {
+    tagChoices = tagChoices.concat(aiTags);
+  }
+
+  if (libraries?.includes('Web3')) {
+    tagChoices = tagChoices.concat(web3Tags);
+  }
+
+  return tagChoices;
 };
