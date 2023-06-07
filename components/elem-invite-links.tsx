@@ -95,7 +95,7 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
         <div className="absolute right-1 top-1 z-10 pt-1 pr-1">
           <ElemButton
             onClick={() => onCopy()}
-            btn="primary"
+            btn="slate"
             size="sm"
             roundedFull={true}
             className="px-2.5">
