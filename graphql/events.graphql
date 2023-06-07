@@ -207,6 +207,7 @@ query GetEventOrganizationById($id: Int!) {
       id
       name
       slug
+      status
     }
   }
 }

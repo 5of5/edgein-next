@@ -24,5 +24,6 @@ query GetInvestmentById($id: Int!) {
     id
     vc_firm_id
     round_id
+    status
   }
 }
