@@ -175,6 +175,14 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
               prepareRow(row);
               const { key, ...restRowProps } = row.getRowProps();
 
+              const rowAllValuesAreEmpty = row.cells.every(
+                item => item?.value === null,
+              );
+
+              if (rowAllValuesAreEmpty) {
+                return;
+              }
+
               return (
                 <tr
                   key={key}

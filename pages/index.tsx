@@ -36,7 +36,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
   return (
     <>
       <section className="relative overflow-hidden">
-        <FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
+        <FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80 -mb-64" />
         <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:pt-20 lg:pb-32">
           <div className="mx-auto max-w-5xl">
             <h1 className="font-bold text-center text-4xl sm:text-5xl">
