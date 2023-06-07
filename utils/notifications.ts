@@ -251,7 +251,9 @@ export const getMessage = ({
 
   if (actionType === 'Insert Data') {
     if (resourceType === 'investment_rounds') {
-      return `added **${investmentRound?.round}** funding round`;
+      return `added ${
+        investmentRound?.round != null ? `**${investmentRound?.round}**` : ''
+      } funding round`;
     }
     if (resourceType === 'team_members') {
       return `added [${teamMember?.person?.name}](/people/${teamMember?.person?.slug}/) to the team`;
@@ -275,7 +277,11 @@ export const getMessage = ({
 
   if (actionType === 'Change Data') {
     if (resourceType === 'investment_rounds') {
-      return `updated its **${investmentRound?.round}** funding round`;
+      return `updated ${
+        investmentRound?.round != null
+          ? `its **${investmentRound?.round}**`
+          : ''
+      } funding round`;
     }
     if (resourceType === 'team_members') {
       return `updated [${teamMember?.person?.name}](/people/${teamMember?.person?.slug}/)'s role on the team`;
