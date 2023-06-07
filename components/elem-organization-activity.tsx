@@ -114,10 +114,10 @@ const renderActivity = (
         )}
         {activity.investments && activity.investments?.length > 0 ? (
           <>
+            from{' '}
             {activity.investments.map((item: any, index: number) => {
               return (
                 <div key={index} className="inline">
-                  from{' '}
                   {index !== 0 &&
                     (index === activity.investments.length - 1
                       ? ', and '
