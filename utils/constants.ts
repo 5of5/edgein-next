@@ -709,6 +709,16 @@ export const aiTags = [
   'Multi-modal',
 ].map(tag => ({ id: tag, name: tag }));
 
+export const NON_SELECTABLE_WEB_3_TAGS = [
+  'Layer 0',
+  'Layer 1',
+  'Layer 2',
+  'Layer 3',
+  'Layer 4',
+  'Layer 5',
+  'Layer 6',
+];
+
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
 
 export const eventSizeChoices = [

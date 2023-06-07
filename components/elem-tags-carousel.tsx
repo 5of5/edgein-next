@@ -1,7 +1,8 @@
 import { FC, useEffect, useState, useRef } from 'react';
 import { IconChevronLeft, IconChevronRight } from '@/components/icons';
-import { web3Tags, aiTags } from '@/utils/constants';
+import { aiTags } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
+import { getSelectableWeb3Tags } from '@/utils/helpers';
 
 type Props = {
   onClick: (e: React.MouseEvent<HTMLDivElement>, name: string) => void;
@@ -15,19 +16,7 @@ export const ElemTagsCarousel: FC<Props> = ({ onClick, selectedTags }) => {
 
   const { selectedLibrary } = useLibrary();
 
-  const allTags =
-    selectedLibrary === 'AI'
-      ? aiTags
-      : web3Tags.filter(
-          tag =>
-            tag.name !== 'Layer 0' &&
-            tag.name !== 'Layer 1' &&
-            tag.name !== 'Layer 2' &&
-            tag.name !== 'Layer 3' &&
-            tag.name !== 'Layer 4' &&
-            tag.name !== 'Layer 5' &&
-            tag.name !== 'Layer 6',
-        );
+  const allTags = selectedLibrary === 'AI' ? aiTags : getSelectableWeb3Tags();
 
   const movePrev = () => {
     if (currentIndex > 0) {

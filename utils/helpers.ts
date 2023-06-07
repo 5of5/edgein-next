@@ -8,6 +8,8 @@ import {
   MY_EDGEIN_MENU_OPEN_KEY,
   MY_GROUPS_MENU_OPEN_KEY,
   MY_LISTS_MENU_OPEN_KEY,
+  NON_SELECTABLE_WEB_3_TAGS,
+  web3Tags,
 } from './constants';
 
 const makeObjectWithoutPrototype = () => Object.create(null);
@@ -128,4 +130,10 @@ export const isValidJsonString = (jsonString: string) => {
   } catch (e) {} // eslint-disable-line no-empty
 
   return false;
+};
+
+export const getSelectableWeb3Tags = () => {
+  return web3Tags.filter(
+    ({ name }) => !NON_SELECTABLE_WEB_3_TAGS.includes(name),
+  );
 };
