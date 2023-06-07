@@ -46,6 +46,7 @@
 - '!include public_user_groups.yaml'
 - '!include public_user_tokens.yaml'
 - '!include public_users.yaml'
+- '!include public_users_public.yaml'
 - '!include public_vc_firms.yaml'
 - '!include public_vc_firms_edit_access.yaml'
 - '!include public_waitlist_emails.yaml'
