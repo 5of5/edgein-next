@@ -27,6 +27,7 @@ query GetInvestmentRoundById($id: Int!) {
     id
     round
     company_id
+    status
     company {
       id
       name

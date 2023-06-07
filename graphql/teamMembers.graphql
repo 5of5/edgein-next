@@ -37,6 +37,7 @@ query GetTeamMemberById($id: Int!) {
       id
       name
       slug
+      status
     }
   }
 }

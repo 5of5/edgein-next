@@ -319,115 +319,15 @@ export const processNotificationOnSubmitData = async (
   }
 
   if (resourceType === 'investment_rounds') {
-    let companyId = resourceObj?.company_id;
     const investmentRound = await getInvestmentRoundById(
       notificationResourceId,
     );
-    if (actionType === 'Change Data') {
-      companyId = investmentRound.company_id;
-    }
-    const message = getMessage({ actionType, resourceType, investmentRound });
-    await processNotification(
-      companyId,
-      'companies',
-      resourceType,
-      actionType,
-      actionIds,
-      message,
-      notificationResourceId,
-    );
-  }
-
-  if (resourceType === 'team_members') {
-    let companyId = resourceObj?.company_id;
-    const teamMember = await getTeamMemberById(notificationResourceId);
-    if (actionType === 'Change Data') {
-      companyId = teamMember.company_id;
-    }
-    const message = getMessage({ actionType, resourceType, teamMember });
-    await processNotification(
-      companyId,
-      'companies',
-      resourceType,
-      actionType,
-      actionIds,
-      message,
-      notificationResourceId,
-    );
-  }
-
-  if (resourceType === 'investors') {
-    let vcFirmId = resourceObj?.vc_firm_id;
-    const investor = await getInvestorById(notificationResourceId);
-    if (actionType === 'Change Data') {
-      vcFirmId = investor.vc_firm_id;
-    }
-    const message = getMessage({ actionType, resourceType, investor });
-    await processNotification(
-      vcFirmId,
-      'vc_firms',
-      resourceType,
-      actionType,
-      actionIds,
-      message,
-      notificationResourceId,
-    );
-  }
-
-  if (resourceType === 'investments') {
-    let vcFirmId = resourceObj?.vc_firm_id;
-    let roundId = resourceObj?.round_id;
-    if (actionType === 'Change Data') {
-      const investment = await getInvestmentById(notificationResourceId);
-      vcFirmId = investment.vc_firm_id;
-      roundId = investment.round_id;
-    }
-
-    if (roundId) {
-      const investmentRound = await getInvestmentRoundById(roundId);
-      const message = getMessage({
-        actionType,
-        resourceType,
-        companyId: investmentRound?.company_id || 0,
-      });
-      await processNotification(
-        investmentRound?.company_id || 0,
-        'companies',
-        resourceType,
-        actionType,
-        actionIds,
-        message,
-        notificationResourceId,
-      );
-    }
-
-    const message = getMessage({ actionType, resourceType });
-    await processNotification(
-      vcFirmId,
-      'vc_firms',
-      resourceType,
-      actionType,
-      actionIds,
-      message,
-      notificationResourceId,
-    );
-  }
-
-  if (resourceType === 'event_organization') {
-    let companyId = resourceObj?.company_id;
-    let vcFirmId = resourceObj?.vc_firm_id;
-    const eventOrganization = await getEventOrganizationById(
-      notificationResourceId,
-    );
-    const organizationType = eventOrganization?.type;
-
-    if (actionType === 'Change Data') {
-      companyId = eventOrganization.company_id;
-      vcFirmId = eventOrganization.vc_firm_id;
-    }
-
-    const message = getMessage({ actionType, resourceType, eventOrganization });
-    if (companyId) {
+    if (investmentRound.status === 'published') {
+      let companyId = resourceObj?.company_id;
+      if (actionType === 'Change Data') {
+        companyId = investmentRound.company_id;
+      }
+      const message = getMessage({ actionType, resourceType, investmentRound });
       await processNotification(
         companyId,
         'companies',
@@ -438,7 +338,36 @@ export const processNotificationOnSubmitData = async (
         notificationResourceId,
       );
     }
-    if (vcFirmId) {
+  }
+
+  if (resourceType === 'team_members') {
+    const teamMember = await getTeamMemberById(notificationResourceId);
+    if (teamMember.person?.status === 'published') {
+      let companyId = resourceObj?.company_id;
+      if (actionType === 'Change Data') {
+        companyId = teamMember.company_id;
+      }
+      const message = getMessage({ actionType, resourceType, teamMember });
+      await processNotification(
+        companyId,
+        'companies',
+        resourceType,
+        actionType,
+        actionIds,
+        message,
+        notificationResourceId,
+      );
+    }
+  }
+
+  if (resourceType === 'investors') {
+    const investor = await getInvestorById(notificationResourceId);
+    if (investor.person?.status === 'published') {
+      let vcFirmId = resourceObj?.vc_firm_id;
+      if (actionType === 'Change Data') {
+        vcFirmId = investor.vc_firm_id;
+      }
+      const message = getMessage({ actionType, resourceType, investor });
       await processNotification(
         vcFirmId,
         'vc_firms',
@@ -448,6 +377,95 @@ export const processNotificationOnSubmitData = async (
         message,
         notificationResourceId,
       );
+    }
+  }
+
+  if (resourceType === 'investments') {
+    let vcFirmId = resourceObj?.vc_firm_id;
+    let roundId = resourceObj?.round_id;
+    let isInvestmentPublished = false;
+    if (actionType === 'Change Data') {
+      const investment = await getInvestmentById(notificationResourceId);
+      isInvestmentPublished = investment.status === 'published';
+      vcFirmId = investment.vc_firm_id;
+      roundId = investment.round_id;
+    }
+
+    if (roundId) {
+      const investmentRound = await getInvestmentRoundById(roundId);
+      if (isInvestmentPublished && investmentRound.status === 'published') {
+        const message = getMessage({
+          actionType,
+          resourceType,
+          companyId: investmentRound?.company_id || 0,
+        });
+        await processNotification(
+          investmentRound?.company_id || 0,
+          'companies',
+          resourceType,
+          actionType,
+          actionIds,
+          message,
+          notificationResourceId,
+        );
+      }
+    }
+
+    if (isInvestmentPublished) {
+      const message = getMessage({ actionType, resourceType });
+      await processNotification(
+        vcFirmId,
+        'vc_firms',
+        resourceType,
+        actionType,
+        actionIds,
+        message,
+        notificationResourceId,
+      );
+    }
+  }
+
+  if (resourceType === 'event_organization') {
+    const eventOrganization = await getEventOrganizationById(
+      notificationResourceId,
+    );
+
+    if (eventOrganization.event?.status === 'published') {
+      let companyId = resourceObj?.company_id;
+      let vcFirmId = resourceObj?.vc_firm_id;
+
+      if (actionType === 'Change Data') {
+        companyId = eventOrganization.company_id;
+        vcFirmId = eventOrganization.vc_firm_id;
+      }
+
+      const message = getMessage({
+        actionType,
+        resourceType,
+        eventOrganization,
+      });
+      if (companyId) {
+        await processNotification(
+          companyId,
+          'companies',
+          resourceType,
+          actionType,
+          actionIds,
+          message,
+          notificationResourceId,
+        );
+      }
+      if (vcFirmId) {
+        await processNotification(
+          vcFirmId,
+          'vc_firms',
+          resourceType,
+          actionType,
+          actionIds,
+          message,
+          notificationResourceId,
+        );
+      }
     }
   }
 };

@@ -115,6 +115,22 @@ describe('Get notification message', () => {
   });
 
   describe('when change data', () => {
+    it('resource type is "companies"', () => {
+      expect(
+        getMessage({
+          actionType: 'Change Data',
+          resourceType: 'companies',
+        }),
+      ).toBe(`has been updated`);
+    });
+    it('resource type is "vc_firms"', () => {
+      expect(
+        getMessage({
+          actionType: 'Change Data',
+          resourceType: 'vc_firms',
+        }),
+      ).toBe(`has been updated`);
+    });
     it('resource type is "investment_rounds"', () => {
       expect(
         getMessage({

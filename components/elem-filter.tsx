@@ -27,6 +27,7 @@ import { eventSizeChoices } from '@/utils/constants';
 import InputSwitch from './input-switch';
 
 type Props = {
+  className?: string;
   resourceType: 'companies' | 'vc_firms' | 'events';
   filterValues: Filters | null;
   dateCondition?: DateCondition;
@@ -36,6 +37,7 @@ type Props = {
 };
 
 export const ElemFilter: FC<Props> = ({
+  className = '',
   resourceType,
   filterValues,
   dateCondition = 'past',
@@ -374,7 +376,9 @@ export const ElemFilter: FC<Props> = ({
   };
 
   return (
-    <section className="w-full flex items-center justify-between mb-1 py-3">
+    <section
+      className={`w-full flex items-center justify-between ${className}`}
+    >
       <div className="flex flex-col flex-wrap w-full gap-3 items-start lg:flex-row lg:items-center">
         <ElemAddFilter
           resourceType={resourceType}

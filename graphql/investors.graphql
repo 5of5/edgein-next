@@ -19,6 +19,7 @@ query GetInvestorById($id: Int!) {
       id
       name
       slug
+      status
     }
   }
 }
