@@ -48,16 +48,16 @@ const ElemNotificationItem: FC<Props> = ({
                 message={message}
                 notification={notification}
               />
+              {extensions.length > 0 && (
+                <>
+                  {' | '}
+                  <span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
+                    Details
+                  </span>
+                  <IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
+                </>
+              )}
             </div>
-            {extensions.length > 0 && (
-              <>
-                {' | '}
-                <span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
-                  Details
-                </span>
-                <IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
-              </>
-            )}
           </div>
 
           <div className="text-left">

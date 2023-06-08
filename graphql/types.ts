@@ -1568,7 +1568,7 @@ export type Comments = {
   content: Scalars['String'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
-  created_by_user: Maybe<Users>;
+  created_by_user: Maybe<Users_Public>;
   created_by_user_id: Scalars['Int'];
   id: Scalars['Int'];
   /** An object relationship */
@@ -1650,7 +1650,7 @@ export type Comments_Bool_Exp = {
   _or: InputMaybe<Array<Comments_Bool_Exp>>;
   content: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user: InputMaybe<Users_Public_Bool_Exp>;
   created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   note: InputMaybe<Notes_Bool_Exp>;
@@ -1674,7 +1674,7 @@ export type Comments_Inc_Input = {
 export type Comments_Insert_Input = {
   content: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
-  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   created_by_user_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   note: InputMaybe<Notes_Obj_Rel_Insert_Input>;
@@ -1739,7 +1739,7 @@ export type Comments_On_Conflict = {
 export type Comments_Order_By = {
   content: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
-  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user: InputMaybe<Users_Public_Order_By>;
   created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   note: InputMaybe<Notes_Order_By>;
@@ -8948,7 +8948,7 @@ export type Likes = {
   __typename?: 'likes';
   created_at: Scalars['timestamptz'];
   /** An object relationship */
-  created_by_user: Maybe<Users>;
+  created_by_user: Maybe<Users_Public>;
   created_by_user_id: Scalars['Int'];
   id: Scalars['Int'];
   /** An object relationship */
@@ -9029,7 +9029,7 @@ export type Likes_Bool_Exp = {
   _not: InputMaybe<Likes_Bool_Exp>;
   _or: InputMaybe<Array<Likes_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user: InputMaybe<Users_Public_Bool_Exp>;
   created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   note: InputMaybe<Notes_Bool_Exp>;
@@ -9052,7 +9052,7 @@ export type Likes_Inc_Input = {
 /** input type for inserting data into table "likes" */
 export type Likes_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   created_by_user_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   note: InputMaybe<Notes_Obj_Rel_Insert_Input>;
@@ -9112,7 +9112,7 @@ export type Likes_On_Conflict = {
 /** Ordering options when selecting data from "likes". */
 export type Likes_Order_By = {
   created_at: InputMaybe<Order_By>;
-  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user: InputMaybe<Users_Public_Order_By>;
   created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   note: InputMaybe<Notes_Order_By>;
@@ -9271,7 +9271,7 @@ export type List_Members = {
   list_id: Scalars['Int'];
   member_type: Scalars['String'];
   /** An object relationship */
-  user: Maybe<Users>;
+  user: Maybe<Users_Public>;
   user_id: Scalars['Int'];
 };
 
@@ -9352,7 +9352,7 @@ export type List_Members_Bool_Exp = {
   list: InputMaybe<Lists_Bool_Exp>;
   list_id: InputMaybe<Int_Comparison_Exp>;
   member_type: InputMaybe<String_Comparison_Exp>;
-  user: InputMaybe<Users_Bool_Exp>;
+  user: InputMaybe<Users_Public_Bool_Exp>;
   user_id: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -9378,7 +9378,7 @@ export type List_Members_Insert_Input = {
   list: InputMaybe<Lists_Obj_Rel_Insert_Input>;
   list_id: InputMaybe<Scalars['Int']>;
   member_type: InputMaybe<Scalars['String']>;
-  user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  user: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   user_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -9450,7 +9450,7 @@ export type List_Members_Order_By = {
   list: InputMaybe<Lists_Order_By>;
   list_id: InputMaybe<Order_By>;
   member_type: InputMaybe<Order_By>;
-  user: InputMaybe<Users_Order_By>;
+  user: InputMaybe<Users_Public_Order_By>;
   user_id: InputMaybe<Order_By>;
 };
 
@@ -9924,7 +9924,7 @@ export type Lists = {
   __typename?: 'lists';
   created_at: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
-  created_by: Maybe<Users>;
+  created_by: Maybe<Users_Public>;
   created_by_id: Scalars['Int'];
   /** An array relationship */
   follows_companies: Array<Follows_Companies>;
@@ -10098,7 +10098,7 @@ export type Lists_Bool_Exp = {
   _not: InputMaybe<Lists_Bool_Exp>;
   _or: InputMaybe<Array<Lists_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  created_by: InputMaybe<Users_Bool_Exp>;
+  created_by: InputMaybe<Users_Public_Bool_Exp>;
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
   follows_people: InputMaybe<Follows_People_Bool_Exp>;
@@ -10130,7 +10130,7 @@ export type Lists_Inc_Input = {
 /** input type for inserting data into table "lists" */
 export type Lists_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   follows_people: InputMaybe<Follows_People_Arr_Rel_Insert_Input>;
@@ -10192,7 +10192,7 @@ export type Lists_On_Conflict = {
 /** Ordering options when selecting data from "lists". */
 export type Lists_Order_By = {
   created_at: InputMaybe<Order_By>;
-  created_by: InputMaybe<Users_Order_By>;
+  created_by: InputMaybe<Users_Public_Order_By>;
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   follows_people_aggregate: InputMaybe<Follows_People_Aggregate_Order_By>;
@@ -10495,6 +10495,8 @@ export type Mutation_Root = {
   delete_users: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
   delete_users_by_pk: Maybe<Users>;
+  /** delete data from the table: "users_public" */
+  delete_users_public: Maybe<Users_Public_Mutation_Response>;
   /** delete data from the table: "vc_firms" */
   delete_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** delete single row from the table: "vc_firms" */
@@ -10697,6 +10699,10 @@ export type Mutation_Root = {
   insert_users: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one: Maybe<Users>;
+  /** insert data into the table: "users_public" */
+  insert_users_public: Maybe<Users_Public_Mutation_Response>;
+  /** insert a single row into the table: "users_public" */
+  insert_users_public_one: Maybe<Users_Public>;
   /** insert data into the table: "vc_firms" */
   insert_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** insert data into the table: "vc_firms_edit_access" */
@@ -10893,6 +10899,8 @@ export type Mutation_Root = {
   update_users: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
   update_users_by_pk: Maybe<Users>;
+  /** update data of the table: "users_public" */
+  update_users_public: Maybe<Users_Public_Mutation_Response>;
   /** update data of the table: "vc_firms" */
   update_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** update single row of the table: "vc_firms" */
@@ -11455,6 +11463,12 @@ export type Mutation_RootDelete_UsersArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Users_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Users_PublicArgs = {
+  where: Users_Public_Bool_Exp;
 };
 
 
@@ -12149,6 +12163,18 @@ export type Mutation_RootInsert_UsersArgs = {
 export type Mutation_RootInsert_Users_OneArgs = {
   object: Users_Insert_Input;
   on_conflict: InputMaybe<Users_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Users_PublicArgs = {
+  objects: Array<Users_Public_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Users_Public_OneArgs = {
+  object: Users_Public_Insert_Input;
 };
 
 
@@ -13015,6 +13041,14 @@ export type Mutation_RootUpdate_Users_By_PkArgs = {
   _prepend: InputMaybe<Users_Prepend_Input>;
   _set: InputMaybe<Users_Set_Input>;
   pk_columns: Users_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Users_PublicArgs = {
+  _inc: InputMaybe<Users_Public_Inc_Input>;
+  _set: InputMaybe<Users_Public_Set_Input>;
+  where: Users_Public_Bool_Exp;
 };
 
 
@@ -14635,6 +14669,8 @@ export type Notes = {
   comments_aggregate: Comments_Aggregate;
   created_at: Scalars['timestamp'];
   created_by: Scalars['Int'];
+  /** An object relationship */
+  created_by_user: Maybe<Users_Public>;
   id: Scalars['Int'];
   /** An array relationship */
   likes: Array<Likes>;
@@ -14767,6 +14803,7 @@ export type Notes_Bool_Exp = {
   comments: InputMaybe<Comments_Bool_Exp>;
   created_at: InputMaybe<Timestamp_Comparison_Exp>;
   created_by: InputMaybe<Int_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Public_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   likes: InputMaybe<Likes_Bool_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
@@ -14797,6 +14834,7 @@ export type Notes_Insert_Input = {
   comments: InputMaybe<Comments_Arr_Rel_Insert_Input>;
   created_at: InputMaybe<Scalars['timestamp']>;
   created_by: InputMaybe<Scalars['Int']>;
+  created_by_user: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
   likes: InputMaybe<Likes_Arr_Rel_Insert_Input>;
   notes: InputMaybe<Scalars['String']>;
@@ -14890,6 +14928,7 @@ export type Notes_Order_By = {
   comments_aggregate: InputMaybe<Comments_Aggregate_Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Public_Order_By>;
   id: InputMaybe<Order_By>;
   likes_aggregate: InputMaybe<Likes_Aggregate_Order_By>;
   notes: InputMaybe<Order_By>;
@@ -16680,6 +16719,10 @@ export type Query_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk: Maybe<Users>;
+  /** fetch data from the table: "users_public" */
+  users_public: Array<Users_Public>;
+  /** fetch aggregated fields from the table: "users_public" */
+  users_public_aggregate: Users_Public_Aggregate;
   /** fetch data from the table: "vc_firms" */
   vc_firms: Array<Vc_Firms>;
   /** fetch aggregated fields from the table: "vc_firms" */
@@ -17780,6 +17823,24 @@ export type Query_RootUsers_AggregateArgs = {
 
 export type Query_RootUsers_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Query_RootUsers_PublicArgs = {
+  distinct_on: InputMaybe<Array<Users_Public_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Users_Public_Order_By>>;
+  where: InputMaybe<Users_Public_Bool_Exp>;
+};
+
+
+export type Query_RootUsers_Public_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Users_Public_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Users_Public_Order_By>>;
+  where: InputMaybe<Users_Public_Bool_Exp>;
 };
 
 
@@ -19012,6 +19073,10 @@ export type Subscription_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk: Maybe<Users>;
+  /** fetch data from the table: "users_public" */
+  users_public: Array<Users_Public>;
+  /** fetch aggregated fields from the table: "users_public" */
+  users_public_aggregate: Users_Public_Aggregate;
   /** fetch data from the table: "vc_firms" */
   vc_firms: Array<Vc_Firms>;
   /** fetch aggregated fields from the table: "vc_firms" */
@@ -20115,6 +20180,24 @@ export type Subscription_RootUsers_By_PkArgs = {
 };
 
 
+export type Subscription_RootUsers_PublicArgs = {
+  distinct_on: InputMaybe<Array<Users_Public_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Users_Public_Order_By>>;
+  where: InputMaybe<Users_Public_Bool_Exp>;
+};
+
+
+export type Subscription_RootUsers_Public_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Users_Public_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Users_Public_Order_By>>;
+  where: InputMaybe<Users_Public_Bool_Exp>;
+};
+
+
 export type Subscription_RootVc_FirmsArgs = {
   distinct_on: InputMaybe<Array<Vc_Firms_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20644,7 +20727,7 @@ export type User_Group_Invites = {
   __typename?: 'user_group_invites';
   created_at: Scalars['timestamptz'];
   /** An object relationship */
-  created_by: Maybe<Users>;
+  created_by: Maybe<Users_Public>;
   created_by_user_id: Maybe<Scalars['Int']>;
   email: Scalars['String'];
   id: Scalars['Int'];
@@ -20726,7 +20809,7 @@ export type User_Group_Invites_Bool_Exp = {
   _not: InputMaybe<User_Group_Invites_Bool_Exp>;
   _or: InputMaybe<Array<User_Group_Invites_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  created_by: InputMaybe<Users_Bool_Exp>;
+  created_by: InputMaybe<Users_Public_Bool_Exp>;
   created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   email: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
@@ -20750,7 +20833,7 @@ export type User_Group_Invites_Inc_Input = {
 /** input type for inserting data into table "user_group_invites" */
 export type User_Group_Invites_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   created_by_user_id: InputMaybe<Scalars['Int']>;
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
@@ -20815,7 +20898,7 @@ export type User_Group_Invites_On_Conflict = {
 /** Ordering options when selecting data from "user_group_invites". */
 export type User_Group_Invites_Order_By = {
   created_at: InputMaybe<Order_By>;
-  created_by: InputMaybe<Users_Order_By>;
+  created_by: InputMaybe<Users_Public_Order_By>;
   created_by_user_id: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -20976,7 +21059,7 @@ export type User_Group_Members = {
   created_at: Scalars['timestamptz'];
   id: Scalars['Int'];
   /** An object relationship */
-  user: Users;
+  user: Maybe<Users_Public>;
   /** An object relationship */
   user_group: User_Groups;
   user_group_id: Scalars['Int'];
@@ -21057,7 +21140,7 @@ export type User_Group_Members_Bool_Exp = {
   _or: InputMaybe<Array<User_Group_Members_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
-  user: InputMaybe<Users_Bool_Exp>;
+  user: InputMaybe<Users_Public_Bool_Exp>;
   user_group: InputMaybe<User_Groups_Bool_Exp>;
   user_group_id: InputMaybe<Int_Comparison_Exp>;
   user_id: InputMaybe<Int_Comparison_Exp>;
@@ -21080,7 +21163,7 @@ export type User_Group_Members_Inc_Input = {
 export type User_Group_Members_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
-  user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  user: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   user_group: InputMaybe<User_Groups_Obj_Rel_Insert_Input>;
   user_group_id: InputMaybe<Scalars['Int']>;
   user_id: InputMaybe<Scalars['Int']>;
@@ -21140,7 +21223,7 @@ export type User_Group_Members_On_Conflict = {
 export type User_Group_Members_Order_By = {
   created_at: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  user: InputMaybe<Users_Order_By>;
+  user: InputMaybe<Users_Public_Order_By>;
   user_group: InputMaybe<User_Groups_Order_By>;
   user_group_id: InputMaybe<Order_By>;
   user_id: InputMaybe<Order_By>;
@@ -21293,7 +21376,7 @@ export type User_Groups = {
   __typename?: 'user_groups';
   created_at: Scalars['timestamptz'];
   /** An object relationship */
-  created_by: Maybe<Users>;
+  created_by: Maybe<Users_Public>;
   created_by_user_id: Scalars['Int'];
   description: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
@@ -21420,7 +21503,7 @@ export type User_Groups_Bool_Exp = {
   _not: InputMaybe<User_Groups_Bool_Exp>;
   _or: InputMaybe<Array<User_Groups_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  created_by: InputMaybe<Users_Bool_Exp>;
+  created_by: InputMaybe<Users_Public_Bool_Exp>;
   created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   description: InputMaybe<String_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
@@ -21450,7 +21533,7 @@ export type User_Groups_Inc_Input = {
 /** input type for inserting data into table "user_groups" */
 export type User_Groups_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by: InputMaybe<Users_Public_Obj_Rel_Insert_Input>;
   created_by_user_id: InputMaybe<Scalars['Int']>;
   description: InputMaybe<Scalars['String']>;
   discord: InputMaybe<Scalars['String']>;
@@ -21519,7 +21602,7 @@ export type User_Groups_On_Conflict = {
 /** Ordering options when selecting data from "user_groups". */
 export type User_Groups_Order_By = {
   created_at: InputMaybe<Order_By>;
-  created_by: InputMaybe<Users_Order_By>;
+  created_by: InputMaybe<Users_Public_Order_By>;
   created_by_user_id: InputMaybe<Order_By>;
   description: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
@@ -22200,6 +22283,218 @@ export type Users_Pk_Columns_Input = {
 export type Users_Prepend_Input = {
   additional_emails: InputMaybe<Scalars['jsonb']>;
   onboarding_information: InputMaybe<Scalars['jsonb']>;
+};
+
+/** columns and relationships of "users_public" */
+export type Users_Public = {
+  __typename?: 'users_public';
+  display_name: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  person: Maybe<People>;
+  person_id: Maybe<Scalars['Int']>;
+  /** An array relationship */
+  user_group_members: Array<User_Group_Members>;
+  /** An aggregate relationship */
+  user_group_members_aggregate: User_Group_Members_Aggregate;
+};
+
+
+/** columns and relationships of "users_public" */
+export type Users_PublicUser_Group_MembersArgs = {
+  distinct_on: InputMaybe<Array<User_Group_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<User_Group_Members_Order_By>>;
+  where: InputMaybe<User_Group_Members_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users_public" */
+export type Users_PublicUser_Group_Members_AggregateArgs = {
+  distinct_on: InputMaybe<Array<User_Group_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<User_Group_Members_Order_By>>;
+  where: InputMaybe<User_Group_Members_Bool_Exp>;
+};
+
+/** aggregated selection of "users_public" */
+export type Users_Public_Aggregate = {
+  __typename?: 'users_public_aggregate';
+  aggregate: Maybe<Users_Public_Aggregate_Fields>;
+  nodes: Array<Users_Public>;
+};
+
+/** aggregate fields of "users_public" */
+export type Users_Public_Aggregate_Fields = {
+  __typename?: 'users_public_aggregate_fields';
+  avg: Maybe<Users_Public_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Users_Public_Max_Fields>;
+  min: Maybe<Users_Public_Min_Fields>;
+  stddev: Maybe<Users_Public_Stddev_Fields>;
+  stddev_pop: Maybe<Users_Public_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Users_Public_Stddev_Samp_Fields>;
+  sum: Maybe<Users_Public_Sum_Fields>;
+  var_pop: Maybe<Users_Public_Var_Pop_Fields>;
+  var_samp: Maybe<Users_Public_Var_Samp_Fields>;
+  variance: Maybe<Users_Public_Variance_Fields>;
+};
+
+
+/** aggregate fields of "users_public" */
+export type Users_Public_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Users_Public_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Users_Public_Avg_Fields = {
+  __typename?: 'users_public_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "users_public". All fields are combined with a logical 'AND'. */
+export type Users_Public_Bool_Exp = {
+  _and: InputMaybe<Array<Users_Public_Bool_Exp>>;
+  _not: InputMaybe<Users_Public_Bool_Exp>;
+  _or: InputMaybe<Array<Users_Public_Bool_Exp>>;
+  display_name: InputMaybe<String_Comparison_Exp>;
+  email: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  person: InputMaybe<People_Bool_Exp>;
+  person_id: InputMaybe<Int_Comparison_Exp>;
+  user_group_members: InputMaybe<User_Group_Members_Bool_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "users_public" */
+export type Users_Public_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "users_public" */
+export type Users_Public_Insert_Input = {
+  display_name: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  person: InputMaybe<People_Obj_Rel_Insert_Input>;
+  person_id: InputMaybe<Scalars['Int']>;
+  user_group_members: InputMaybe<User_Group_Members_Arr_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Users_Public_Max_Fields = {
+  __typename?: 'users_public_max_fields';
+  display_name: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Users_Public_Min_Fields = {
+  __typename?: 'users_public_min_fields';
+  display_name: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "users_public" */
+export type Users_Public_Mutation_Response = {
+  __typename?: 'users_public_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Users_Public>;
+};
+
+/** input type for inserting object relation for remote table "users_public" */
+export type Users_Public_Obj_Rel_Insert_Input = {
+  data: Users_Public_Insert_Input;
+};
+
+/** Ordering options when selecting data from "users_public". */
+export type Users_Public_Order_By = {
+  display_name: InputMaybe<Order_By>;
+  email: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person: InputMaybe<People_Order_By>;
+  person_id: InputMaybe<Order_By>;
+  user_group_members_aggregate: InputMaybe<User_Group_Members_Aggregate_Order_By>;
+};
+
+/** select columns of table "users_public" */
+export enum Users_Public_Select_Column {
+  /** column name */
+  DisplayName = 'display_name',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PersonId = 'person_id'
+}
+
+/** input type for updating data in table "users_public" */
+export type Users_Public_Set_Input = {
+  display_name: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Users_Public_Stddev_Fields = {
+  __typename?: 'users_public_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Users_Public_Stddev_Pop_Fields = {
+  __typename?: 'users_public_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Users_Public_Stddev_Samp_Fields = {
+  __typename?: 'users_public_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Users_Public_Sum_Fields = {
+  __typename?: 'users_public_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate var_pop on columns */
+export type Users_Public_Var_Pop_Fields = {
+  __typename?: 'users_public_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Users_Public_Var_Samp_Fields = {
+  __typename?: 'users_public_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Users_Public_Variance_Fields = {
+  __typename?: 'users_public_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** select columns of table "users" */
@@ -23807,7 +24102,7 @@ export type GetFollowsByUserQueryVariables = Exact<{
 }>;
 
 
-export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, public: boolean | null, created_by_id: number, created_at: any | null, updated_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }>, follows_people: Array<{ __typename?: 'follows_people', resource_id: number | null }> } }> };
+export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, public: boolean | null, created_by_id: number, created_at: any | null, updated_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }>, follows_people: Array<{ __typename?: 'follows_people', resource_id: number | null }> } }> };
 
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -23874,14 +24169,14 @@ export type GetGroupsOfUserQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
+export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users_public', id: number | null, email: string | null, display_name: string | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null } }> };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
+export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
 
 export type InsertUserGroupMutationVariables = Exact<{
   object: User_Groups_Insert_Input;
@@ -23896,7 +24191,7 @@ export type UpdateUserGroupMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserGroupMutation = { __typename?: 'mutation_root', update_user_groups: { __typename?: 'user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, twitter: string | null, telegram: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by_user_id: number, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> } | null };
+export type UpdateUserGroupMutation = { __typename?: 'mutation_root', update_user_groups: { __typename?: 'user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, twitter: string | null, telegram: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by_user_id: number, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }> } | null };
 
 export type DeleteUserGroupMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -23938,7 +24233,7 @@ export type GetUserGroupMemberByGroupIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserGroupMemberByGroupIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_group_id: number, user_id: number, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } }> };
+export type GetUserGroupMemberByGroupIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_group_id: number, user_id: number, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null }, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }> };
 
 export type GetUserGroupInviteByIdQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -23952,7 +24247,7 @@ export type InsertUserGroupMembersMutationVariables = Exact<{
 }>;
 
 
-export type InsertUserGroupMembersMutation = { __typename?: 'mutation_root', insert_user_group_members_one: { __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null }, user_group: { __typename?: 'user_groups', id: number, name: string } } | null };
+export type InsertUserGroupMembersMutation = { __typename?: 'mutation_root', insert_user_group_members_one: { __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } } | null };
 
 export type GetUserGroupInvitesByEmailQueryVariables = Exact<{
   email: Scalars['String'];
@@ -24060,14 +24355,14 @@ export type GetListUserGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type GetListMembersQueryVariables = Exact<{
   where: List_Members_Bool_Exp;
 }>;
 
 
-export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
+export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }> };
 
 export type GetListUserGroupsByListIdQueryVariables = Exact<{
   listId: Scalars['Int'];
@@ -24140,7 +24435,7 @@ export type InsertListMembersMutationVariables = Exact<{
 }>;
 
 
-export type InsertListMembersMutation = { __typename?: 'mutation_root', insert_list_members_one: { __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null };
+export type InsertListMembersMutation = { __typename?: 'mutation_root', insert_list_members_one: { __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null } | null };
 
 export type UpdateListByIdMutationVariables = Exact<{
   listId: Scalars['Int'];
@@ -24191,7 +24486,7 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number | null, audience: string | null, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null, likes: Array<{ __typename?: 'likes', id: number, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
+export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number | null, audience: string | null, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null, likes: Array<{ __typename?: 'likes', id: number, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
 
 export type GetNoteByIdQueryVariables = Exact<{
   id: Scalars['Int'];
