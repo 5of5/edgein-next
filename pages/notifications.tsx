@@ -7,7 +7,10 @@ import Link from 'next/link';
 import { IconCheck, IconBell } from '@/components/icons';
 import { Disclosure } from '@headlessui/react';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
-import { useGetNotificationsForUserQuery } from '@/graphql/types';
+import {
+  GetNotificationsForUserQuery,
+  useGetNotificationsForUserQuery,
+} from '@/graphql/types';
 import {
   filterExcludeNotifications,
   getNotificationChangedData,
@@ -16,9 +19,20 @@ import {
 import ElemNotificationItem from '@/components/notifications/elem-notification-item';
 import ElemNotificationPopover from '@/components/notifications/elem-notification-popover';
 
+const DEFAULT_LIMIT = 10;
+
 const Notifications: NextPage = () => {
   const { user } = useAuth();
+
   const [initialLoad, setInitialLoad] = useState(true);
+
+  const [notificationList, setNotificationList] = useState<
+    GetNotificationsForUserQuery['notifications']
+  >([]);
+
+  const [page, setPage] = useState<number>(0);
+
+  const offset = DEFAULT_LIMIT * page;
 
   useEffect(() => {
     if (initialLoad) {
@@ -35,31 +49,36 @@ const Notifications: NextPage = () => {
     return [];
   }, []);
 
-  const { data, error, isLoading, refetch } = useGetNotificationsForUserQuery({
-    user: user?.id || 0,
-  });
+  const { data, error, isLoading } = useGetNotificationsForUserQuery(
+    {
+      user: user?.id || 0,
+      limit: DEFAULT_LIMIT,
+      offset,
+    },
+    {
+      enabled: !!user?.id,
+      onSuccess: data => {
+        setNotificationList([...notificationList, ...data.notifications]);
+      },
+    },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
   }
 
-  const notifications = filterExcludeNotifications(
-    data?.notifications || [],
+  let displayedNotifications = user?.entitlements?.listsCount
+    ? notificationList.slice(0, user.entitlements.listsCount)
+    : notificationList;
+
+  displayedNotifications = filterExcludeNotifications(
+    displayedNotifications,
     excludeResourceTypes,
     excludeProperties,
   );
 
-  const displayedNotifications = notifications?.slice(
-    0,
-    user?.entitlements.listsCount
-      ? user?.entitlements.listsCount
-      : notifications?.length,
-  );
-
-  const [notificationsLimit, setNotificationsLimit] = useState(5);
-  const showMoreNotifications = () => {
-    setNotificationsLimit(notificationsLimit + 10);
-  };
+  const totalNotifications =
+    data?.notifications_aggregate?.aggregate?.count || 0;
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -82,7 +101,31 @@ const Notifications: NextPage = () => {
         all,
       }),
     });
-    refetch();
+    setNotificationList(prev =>
+      prev.map((item: any) =>
+        item.id === id || !id
+          ? {
+              ...item,
+              read: true,
+            }
+          : item,
+      ),
+    );
+  };
+
+  const showMoreNotifications = () => {
+    setPage(page + 1);
+  };
+
+  const handleClickShowMore = () => {
+    if (
+      user?.entitlements?.listsCount &&
+      displayedNotifications.length >= user.entitlements.listsCount
+    ) {
+      onOpenUpgradeDialog();
+    } else {
+      showMoreNotifications();
+    }
   };
 
   return (
@@ -121,82 +164,29 @@ const Notifications: NextPage = () => {
               </p>
             </div>
           ) : (
-            displayedNotifications
-              ?.slice(0, notificationsLimit)
-              .map((notification, index) => {
-                const { message, extensions } =
-                  getNotificationChangedData(notification);
+            displayedNotifications.map((notification, index) => {
+              const { message, extensions } =
+                getNotificationChangedData(notification);
 
-                const enableExpand =
-                  notification.event_type === 'Change Data' &&
-                  notification.notification_actions.length > 1;
+              const enableExpand =
+                notification.event_type === 'Change Data' &&
+                notification.notification_actions.length > 1;
 
-                if (enableExpand) {
-                  return (
-                    <Disclosure key={notification.id} as="div">
-                      <div className="relative flex items-center group">
-                        <Disclosure.Button
-                          as="div"
-                          className="w-full cursor-pointer"
-                        >
-                          <ElemNotificationItem
-                            notification={notification}
-                            message={message}
-                            extensions={extensions}
-                            onMarkAsRead={id => markAsRead(id)}
-                          />
-                        </Disclosure.Button>
-                        <ElemNotificationPopover
-                          popoverStyle={{
-                            zIndex: displayedNotifications.length - index,
-                          }}
+              if (enableExpand) {
+                return (
+                  <Disclosure key={notification.id} as="div">
+                    <div className="relative flex items-center group">
+                      <Disclosure.Button
+                        as="div"
+                        className="w-full cursor-pointer"
+                      >
+                        <ElemNotificationItem
                           notification={notification}
+                          message={message}
+                          extensions={extensions}
                           onMarkAsRead={id => markAsRead(id)}
                         />
-                      </div>
-                      {enableExpand && (
-                        <Disclosure.Panel className="pl-16 lg:pl-18 pr-6 pt-2 pb-6">
-                          <ul className="pl-1 list-disc list-inside space-y-2">
-                            {extensions.map((item: any) => (
-                              <li key={item.field} className="text-sm">
-                                {`Updated `}
-                                <Link
-                                  href={getNotificationOrganizationLink(
-                                    notification,
-                                  )}
-                                  passHref
-                                >
-                                  <a className="font-bold hover:text-primary-500">
-                                    {item.field === 'velocity_linkedin' ? (
-                                      <>velocity</>
-                                    ) : item.field === 'location_json' ? (
-                                      <>location</>
-                                    ) : (
-                                      <>{item.field.replace('_', ' ')}</>
-                                    )}
-                                  </a>
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </Disclosure.Panel>
-                      )}
-                    </Disclosure>
-                  );
-                } else {
-                  return (
-                    <div
-                      className={`relative flex items-center group ${
-                        notification.read ? 'cursor-auto' : 'cursor-pointer'
-                      }`}
-                      key={notification.id}
-                    >
-                      <ElemNotificationItem
-                        notification={notification}
-                        extensions={extensions}
-                        message={message}
-                        onMarkAsRead={id => markAsRead(id)}
-                      />
+                      </Disclosure.Button>
                       <ElemNotificationPopover
                         popoverStyle={{
                           zIndex: displayedNotifications.length - index,
@@ -205,35 +195,73 @@ const Notifications: NextPage = () => {
                         onMarkAsRead={id => markAsRead(id)}
                       />
                     </div>
-                  );
-                }
-              })
+                    {enableExpand && (
+                      <Disclosure.Panel className="pl-16 lg:pl-18 pr-6 pt-2 pb-6">
+                        <ul className="pl-1 list-disc list-inside space-y-2">
+                          {extensions.map((item: any) => (
+                            <li key={item.field} className="text-sm">
+                              {`Updated `}
+                              <Link
+                                href={getNotificationOrganizationLink(
+                                  notification,
+                                )}
+                                passHref
+                              >
+                                <a className="font-bold hover:text-primary-500">
+                                  {item.field === 'velocity_linkedin' ? (
+                                    <>velocity</>
+                                  ) : item.field === 'location_json' ? (
+                                    <>location</>
+                                  ) : (
+                                    <>{item.field.replace('_', ' ')}</>
+                                  )}
+                                </a>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </Disclosure.Panel>
+                    )}
+                  </Disclosure>
+                );
+              } else {
+                return (
+                  <div
+                    className={`relative flex items-center group ${
+                      notification.read ? 'cursor-auto' : 'cursor-pointer'
+                    }`}
+                    key={notification.id}
+                  >
+                    <ElemNotificationItem
+                      notification={notification}
+                      extensions={extensions}
+                      message={message}
+                      onMarkAsRead={id => markAsRead(id)}
+                    />
+                    <ElemNotificationPopover
+                      popoverStyle={{
+                        zIndex: displayedNotifications.length - index,
+                      }}
+                      notification={notification}
+                      onMarkAsRead={id => markAsRead(id)}
+                    />
+                  </div>
+                );
+              }
+            })
           )}
         </div>
 
-        {(notifications ? notifications.length : 0) >
-        (displayedNotifications ? displayedNotifications.length : 0) ? (
+        {displayedNotifications.length < totalNotifications && (
           <div className="p-5">
             <ElemButton
               btn="ol-primary"
-              onClick={onOpenUpgradeDialog}
+              onClick={handleClickShowMore}
               className="w-full"
             >
               Show more notifications
             </ElemButton>
           </div>
-        ) : (
-          notificationsLimit < (notifications ? notifications.length : 0) && (
-            <div className="p-5">
-              <ElemButton
-                btn="ol-primary"
-                onClick={showMoreNotifications}
-                className="w-full"
-              >
-                Show more notifications
-              </ElemButton>
-            </div>
-          )
         )}
       </div>
 

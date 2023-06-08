@@ -10,6 +10,8 @@ export const NotificationAlerts = () => {
 
   const { data } = useGetNotificationsForUserQuery({
     user: user?.id || 0,
+    limit: 10,
+    offset: 0,
   });
 
   const excludeProperties = useMemo(() => {

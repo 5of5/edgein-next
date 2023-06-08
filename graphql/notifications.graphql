@@ -1,4 +1,4 @@
-query GetNotificationsForUser($user: Int!) {
+query GetNotificationsForUser($limit: Int, $offset: Int, $user: Int!) {
   notifications(
     where: {
       _and: [
@@ -7,7 +7,8 @@ query GetNotificationsForUser($user: Int!) {
       ]
     }
     order_by: { created_at: desc }
-    limit: 10
+    limit: $limit
+    offset: $offset
   ) {
     id
     read
@@ -36,6 +37,18 @@ query GetNotificationsForUser($user: Int!) {
         id
         properties
       }
+    }
+  }
+  notifications_aggregate(
+    where: {
+      _and: [
+        { target_user_id: { _eq: $user } }
+        { event_type: { _neq: "Delete Data" } }
+      ]
+    }
+  ) {
+    aggregate {
+      count
     }
   }
 }

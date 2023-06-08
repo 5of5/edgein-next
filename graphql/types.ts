@@ -24228,11 +24228,13 @@ export type FindCommentByIdQueryVariables = Exact<{
 export type FindCommentByIdQuery = { __typename?: 'query_root', comments: Array<{ __typename?: 'comments', id: number, created_by_user_id: number }> };
 
 export type GetNotificationsForUserQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
   user: Scalars['Int'];
 }>;
 
 
-export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }> }> };
+export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }> }>, notifications_aggregate: { __typename?: 'notifications_aggregate', aggregate: { __typename?: 'notifications_aggregate_fields', count: number } | null } };
 
 export type InsertNotificationsMutationVariables = Exact<{
   object: Notifications_Insert_Input;
@@ -27774,11 +27776,12 @@ useFindCommentByIdQuery.getKey = (variables: FindCommentByIdQueryVariables) => [
 
 useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, options?: RequestInit['headers']) => fetcher<FindCommentByIdQuery, FindCommentByIdQueryVariables>(FindCommentByIdDocument, variables, options);
 export const GetNotificationsForUserDocument = `
-    query GetNotificationsForUser($user: Int!) {
+    query GetNotificationsForUser($limit: Int, $offset: Int, $user: Int!) {
   notifications(
     where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}]}
     order_by: {created_at: desc}
-    limit: 10
+    limit: $limit
+    offset: $offset
   ) {
     id
     read
@@ -27807,6 +27810,13 @@ export const GetNotificationsForUserDocument = `
         id
         properties
       }
+    }
+  }
+  notifications_aggregate(
+    where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}]}
+  ) {
+    aggregate {
+      count
     }
   }
 }
