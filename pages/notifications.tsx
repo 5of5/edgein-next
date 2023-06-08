@@ -123,7 +123,8 @@ const Notifications: NextPage = () => {
           <h2 className="text-xl font-bold">Notifications</h2>
           <button
             className="flex items-center text-sm hover:text-primary-500"
-            onClick={() => markAsRead(undefined, true)}>
+            onClick={() => markAsRead(undefined, true)}
+          >
             <IconCheck className="h-4 mr-1" />
             Mark all as read
           </button>
@@ -161,7 +162,8 @@ const Notifications: NextPage = () => {
                     <div className="relative flex items-center group">
                       <Disclosure.Button
                         as="div"
-                        className="w-full cursor-pointer">
+                        className="w-full cursor-pointer"
+                      >
                         <ElemNotificationItem
                           notification={notification}
                           message={message}
@@ -187,7 +189,8 @@ const Notifications: NextPage = () => {
                                 href={getNotificationOrganizationLink(
                                   notification,
                                 )}
-                                passHref>
+                                passHref
+                              >
                                 <a className="font-bold hover:text-primary-500">
                                   {item.field === 'velocity_linkedin' ? (
                                     <>velocity</>
@@ -211,7 +214,8 @@ const Notifications: NextPage = () => {
                     className={`relative flex items-center group ${
                       notification.read ? 'cursor-auto' : 'cursor-pointer'
                     }`}
-                    key={notification.id}>
+                    key={notification.id}
+                  >
                     <ElemNotificationItem
                       notification={notification}
                       extensions={extensions}
@@ -243,7 +247,8 @@ const Notifications: NextPage = () => {
             <ElemButton
               btn="ol-primary"
               onClick={handleClickShowMore}
-              className="w-full">
+              className="w-full"
+            >
               Show more notifications
             </ElemButton>
           </div>
