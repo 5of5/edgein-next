@@ -13,6 +13,14 @@ query GetNotes($where: notes_bool_exp!) {
       id
       name
     }
+    created_by_user {
+      id
+      person {
+        slug
+        name
+        picture
+      }
+    }
     likes {
       id
       created_at
