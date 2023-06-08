@@ -153,3 +153,5 @@ export const getTagChoicesByLibraries = (libraries: Library[]) => {
 
   return tagChoices;
 };
+
+export const getAllTags = () => [...web3Tags, ...aiTags];

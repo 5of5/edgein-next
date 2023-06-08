@@ -13,7 +13,7 @@ const useLibrary = () => {
         : 'Web3';
   }
 
-  const onChangeLibrary = (value: 'Web3' | 'AI') => {
+  const onChangeLibrary = (value: Library) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(LOCAL_STORAGE_LIBRARY_KEY, value);
     }

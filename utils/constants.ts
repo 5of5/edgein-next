@@ -1,3 +1,4 @@
+import { Tag } from '@/types/common';
 import {
   email,
   required,
@@ -643,7 +644,7 @@ export const tokenInfoMetrics = [
   },
 ];
 
-export const web3Tags = [
+export const web3Tags: Tag[] = [
   'Layer 0',
   'Layer 1',
   'Layer 2',
@@ -692,7 +693,7 @@ export const web3Tags = [
   'News',
 ].map(tag => ({ id: tag, name: tag }));
 
-export const aiTags = [
+export const aiTags: Tag[] = [
   'API',
   'Open Source',
   'Model Creator',
