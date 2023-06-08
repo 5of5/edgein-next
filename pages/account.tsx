@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useParams } from 'react-router-dom';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
-import { IconLinkedIn, IconSparkles } from '@/components/icons';
+import { IconLinkedIn, IconContributor } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemInviteLinks } from '@/components/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';
@@ -275,7 +275,7 @@ export default function Account() {
             {userProfile && userProfile.users_by_pk?.billing_org_id ? (
               <div>
                 <div className="flex items-center space-x-1">
-                  <IconSparkles className="h-6 w-6 text-primary-500" />
+                  <IconContributor className="h-6 w-6 text-primary-500" />
                   <p className="text-slate-600">EdgeIn Contributor</p>
                 </div>
                 <div className="flex items-center space-x-1">

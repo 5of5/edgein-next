@@ -157,7 +157,8 @@ query GetCompany($slug: String!) {
 query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
   companies(
     where: $where
-    order_by: { slug: asc }
+    # order_by: { slug: asc }
+    order_by: { updated_at: desc }
     limit: $limit
     offset: $offset
   ) {

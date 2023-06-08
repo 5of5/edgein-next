@@ -121,7 +121,7 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
       <div className="grow text-gray-400">
         {metadata?.description && (
           <div className="grow mt-4">
-            <div className="text-gray-400 line-clamp-5">
+            <div className="inline text-gray-400 line-clamp line-clamp-5">
               {link && (
                 <Link href={link}>
                   <a target="_blank">
