@@ -30,6 +30,30 @@ export const IconSpinner: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
+export const IconArrowRight: React.FC<IconProps> = ({
+  className,
+  strokeWidth,
+  title,
+}) => {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor"
+    >
+      <title>{title ? title : 'Arrow Right'}</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+      />
+    </svg>
+  );
+};
+
 export const IconArrowUp: React.FC<IconProps> = ({
   className,
   strokeWidth,

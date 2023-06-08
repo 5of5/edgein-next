@@ -70,7 +70,8 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
         <div
           className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
-          }`}>
+          }`}
+        >
           Copied Invite Link
         </div>
       ),
@@ -98,7 +99,8 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
             btn="slate"
             size="sm"
             roundedFull={true}
-            className="px-2.5">
+            className="px-2.5"
+          >
             {isCopied ? 'Link Copied' : 'Copy Link'}
           </ElemButton>
         </div>
@@ -120,7 +122,8 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
               btn="slate"
               size="sm"
               roundedFull={true}
-              className="px-2.5">
+              className="px-2.5"
+            >
               <link.icon className="mr-2 h-5 w-5" aria-hidden="true" />
               {link.text}
             </ElemButton>
