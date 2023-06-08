@@ -1,6 +1,7 @@
 import { Team_Members } from '@/graphql/types';
 import { IconEditPencil } from '@/components/icons';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
+import { ElemPhoto } from '@/components/elem-photo';
 import Link from 'next/link';
 type Props = {
   className?: string;
@@ -36,22 +37,24 @@ export const ElemJobsList: React.FC<Props> = ({
                 <div className="flex space-x-4 p-4" key={index}>
                   {team.company?.slug ? (
                     <Link href={`/companies/${team.company.slug}`}>
-                      <a className="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg border border-black/10">
-                        <img
-                          className="object-contain w-full h-full"
-                          src={team.company?.logo?.url}
-                          alt={team.company?.name || 'Logo'}
+                      <a>
+                        <ElemPhoto
+                          photo={team.company?.logo}
+                          wrapClass="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg border border-black/10"
+                          imgClass="object-fit max-w-full max-h-full"
+                          imgAlt={team.company?.name || 'Logo'}
+                          placeholderClass="text-slate-300"
                         />
                       </a>
                     </Link>
                   ) : (
-                    <div className="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg  border border-black/10">
-                      <img
-                        className="object-contain w-full h-full"
-                        src={team.company?.logo.url}
-                        alt={team.company?.name || 'Logo'}
-                      />
-                    </div>
+                    <ElemPhoto
+                      photo={team.company?.logo}
+                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+                      imgClass="object-fit max-w-full max-h-full"
+                      imgAlt={team.company?.name || 'Logo'}
+                      placeholderClass="text-slate-300"
+                    />
                   )}
 
                   <div className="text-slate-600">
