@@ -73,7 +73,7 @@ const Group: NextPage<Props> = (props: Props) => {
   );
 
   const isUserBelongToGroup = groupData.user_group_members.some(
-    mem => mem.user.id === user?.id,
+    mem => mem.user?.id === user?.id,
   );
 
   const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
