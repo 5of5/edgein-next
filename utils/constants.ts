@@ -1,4 +1,4 @@
-import { Tag } from '@/types/common';
+import { Library, LibraryTag, Tag } from '@/types/common';
 import {
   email,
   required,
@@ -761,7 +761,9 @@ export const eventOrganizationTypeChoices = [
 
 export type ActionType = 'Insert Data' | 'Change Data' | 'Delete Data';
 
-export const libraryChoices = ['Web3', 'AI'].map(item => ({
+const libraries: Library[] = ['Web3', 'AI'];
+
+export const libraryChoices: LibraryTag[] = libraries.map(item => ({
   id: item,
   name: item,
 }));

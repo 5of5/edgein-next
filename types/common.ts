@@ -6,6 +6,11 @@ export type DeepPartial<T> = T extends object
 
 export type Library = 'Web3' | 'AI';
 
+export type LibraryTag = {
+  id: Library;
+  name: Library;
+};
+
 export type Tag = {
   id: string;
   name: string;

@@ -4,17 +4,18 @@ import { Popover, Transition } from '@headlessui/react';
 import { IconChevronDown, IconCheck } from './icons';
 import useLibrary from '@/hooks/use-library';
 import { libraryChoices } from '@/utils/constants';
+import { Library } from '@/types/common';
 
-type Library = {
-  id: string;
-  name: string;
+type LibraryOption = {
+  id: Library;
+  name: Library;
 };
 
 const ElemLibrarySelector = () => {
   const router = useRouter();
 
   const { selectedLibrary, onChangeLibrary } = useLibrary();
-  const [library, setLibrary] = useState<Library | undefined>();
+  const [library, setLibrary] = useState<LibraryOption | undefined>();
 
   useEffect(() => {
     if (selectedLibrary && selectedLibrary !== library?.id) {
@@ -22,9 +23,9 @@ const ElemLibrarySelector = () => {
     }
   }, [selectedLibrary, library]);
 
-  const handleSelectLibrary = (value: Library) => {
+  const handleSelectLibrary = (value: LibraryOption) => {
     setLibrary(value);
-    onChangeLibrary(value?.id as 'Web3' | 'AI');
+    onChangeLibrary(value.id);
     router.replace(router.pathname).then(() => router.reload);
   };
 
