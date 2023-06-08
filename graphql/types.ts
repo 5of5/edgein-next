@@ -24322,6 +24322,20 @@ export type InsertTeamMemberMutationVariables = Exact<{
 
 export type InsertTeamMemberMutation = { __typename?: 'mutation_root', insert_team_members_one: { __typename?: 'team_members', id: number } | null };
 
+export type GetTeamMemberByPersonIdQueryVariables = Exact<{
+  person_id: Scalars['Int'];
+}>;
+
+
+export type GetTeamMemberByPersonIdQuery = { __typename?: 'query_root', team_members: Array<{ __typename?: 'team_members', id: number, company_id: number | null }> };
+
+export type GetTeamMemberByCompanyIdQueryVariables = Exact<{
+  company_id: Scalars['Int'];
+}>;
+
+
+export type GetTeamMemberByCompanyIdQuery = { __typename?: 'query_root', team_members: Array<{ __typename?: 'team_members', id: number, company_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null, personal_email: string | null, work_email: string | null } | null }> };
+
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -28207,6 +28221,69 @@ export const useInsertTeamMemberMutation = <
       options
     );
 useInsertTeamMemberMutation.fetcher = (variables?: InsertTeamMemberMutationVariables, options?: RequestInit['headers']) => fetcher<InsertTeamMemberMutation, InsertTeamMemberMutationVariables>(InsertTeamMemberDocument, variables, options);
+export const GetTeamMemberByPersonIdDocument = `
+    query GetTeamMemberByPersonId($person_id: Int!) {
+  team_members(where: {person_id: {_eq: $person_id}}, limit: 1) {
+    id
+    company_id
+  }
+}
+    `;
+export const useGetTeamMemberByPersonIdQuery = <
+      TData = GetTeamMemberByPersonIdQuery,
+      TError = Error
+    >(
+      variables: GetTeamMemberByPersonIdQueryVariables,
+      options?: UseQueryOptions<GetTeamMemberByPersonIdQuery, TError, TData>
+    ) =>
+    useQuery<GetTeamMemberByPersonIdQuery, TError, TData>(
+      ['GetTeamMemberByPersonId', variables],
+      fetcher<GetTeamMemberByPersonIdQuery, GetTeamMemberByPersonIdQueryVariables>(GetTeamMemberByPersonIdDocument, variables),
+      options
+    );
+useGetTeamMemberByPersonIdQuery.document = GetTeamMemberByPersonIdDocument;
+
+
+useGetTeamMemberByPersonIdQuery.getKey = (variables: GetTeamMemberByPersonIdQueryVariables) => ['GetTeamMemberByPersonId', variables];
+;
+
+useGetTeamMemberByPersonIdQuery.fetcher = (variables: GetTeamMemberByPersonIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetTeamMemberByPersonIdQuery, GetTeamMemberByPersonIdQueryVariables>(GetTeamMemberByPersonIdDocument, variables, options);
+export const GetTeamMemberByCompanyIdDocument = `
+    query GetTeamMemberByCompanyId($company_id: Int!) {
+  team_members(where: {company_id: {_eq: $company_id}}) {
+    id
+    company_id
+    person_id
+    person {
+      id
+      name
+      slug
+      picture
+      personal_email
+      work_email
+    }
+  }
+}
+    `;
+export const useGetTeamMemberByCompanyIdQuery = <
+      TData = GetTeamMemberByCompanyIdQuery,
+      TError = Error
+    >(
+      variables: GetTeamMemberByCompanyIdQueryVariables,
+      options?: UseQueryOptions<GetTeamMemberByCompanyIdQuery, TError, TData>
+    ) =>
+    useQuery<GetTeamMemberByCompanyIdQuery, TError, TData>(
+      ['GetTeamMemberByCompanyId', variables],
+      fetcher<GetTeamMemberByCompanyIdQuery, GetTeamMemberByCompanyIdQueryVariables>(GetTeamMemberByCompanyIdDocument, variables),
+      options
+    );
+useGetTeamMemberByCompanyIdQuery.document = GetTeamMemberByCompanyIdDocument;
+
+
+useGetTeamMemberByCompanyIdQuery.getKey = (variables: GetTeamMemberByCompanyIdQueryVariables) => ['GetTeamMemberByCompanyId', variables];
+;
+
+useGetTeamMemberByCompanyIdQuery.fetcher = (variables: GetTeamMemberByCompanyIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetTeamMemberByCompanyIdQuery, GetTeamMemberByCompanyIdQueryVariables>(GetTeamMemberByCompanyIdDocument, variables, options);
 export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {

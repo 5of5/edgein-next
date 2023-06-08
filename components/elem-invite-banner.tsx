@@ -4,6 +4,11 @@ import { IconX, IconArrowRight } from './icons';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { useUser } from '@/context/user-context';
+import {
+  useGetTeamMemberByCompanyIdQuery,
+  useGetTeamMemberByPersonIdQuery,
+} from '@/graphql/types';
+import ElemInviteEmails from './elem-invite-emails';
 
 type Props = {
   //isOpen: boolean;
@@ -22,6 +27,24 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
   const [showBanner, setShowBanner] = useState(true);
 
   const [isOpenInviteDialog, setIsOpenInviteDialog] = useState<boolean>(false);
+
+  const { data: teamMemberByPerson } = useGetTeamMemberByPersonIdQuery(
+    { person_id: user?.person?.id || 0 },
+    { enabled: !!user?.person?.id },
+  );
+
+  const { data: teamMemberByCompany } = useGetTeamMemberByCompanyIdQuery(
+    { company_id: teamMemberByPerson?.team_members[0]?.company_id || 0 },
+    {
+      enabled: !!teamMemberByPerson?.team_members[0]?.company_id,
+    },
+  );
+
+  const teamMembers =
+    teamMemberByCompany?.team_members?.filter(
+      mem => mem?.person_id !== user?.person?.id,
+    ) || [];
+  console.log('@teamMemberByCompany', teamMembers);
 
   const onOpenUpgradeDialog = () => {
     setIsOpenInviteDialog(true);
@@ -126,34 +149,38 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                   </Dialog.Title>
 
                   <div className="p-6">
-                    <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10">
-                      {Array.from({ length: 9 }, (_, i) => (
-                        <div
-                          className="flex items-center justify-between px-4 py-3 group"
-                          key={i}
-                        >
-                          <div className="flex items-center gap-x-2">
-                            <ElemPhoto
-                              wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
-                              imgClass="object-contain w-full h-full border border-slate-100 "
-                              photo={user?.person?.picture}
-                              placeholder="user2"
-                              placeholderClass="text-slate-300"
-                              imgAlt={user?.display_name}
-                            />
-                            <p className="font-bold capitalize">Person Name</p>
-                          </div>
-
-                          <ElemButton
-                            onClick={() => {}}
-                            btn="slate"
-                            className=""
+                    {teamMembers.length > 0 && (
+                      <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10">
+                        {teamMembers.map(mem => (
+                          <div
+                            className="flex items-center justify-between px-4 py-3 group"
+                            key={mem.id}
                           >
-                            Invite
-                          </ElemButton>
-                        </div>
-                      ))}
-                    </div>
+                            <div className="flex items-center gap-x-2">
+                              <ElemPhoto
+                                wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
+                                imgClass="object-contain w-full h-full border border-slate-100 "
+                                photo={mem?.person?.picture}
+                                placeholder={mem?.person?.name || ''}
+                                placeholderClass="text-slate-300"
+                                imgAlt={mem?.person?.name || ''}
+                              />
+                              <p className="font-bold capitalize">
+                                {mem?.person?.name || ''}
+                              </p>
+                            </div>
+
+                            <ElemButton
+                              onClick={() => {}}
+                              btn="slate"
+                              className=""
+                            >
+                              Invite
+                            </ElemButton>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {children && (
                       <div className="mt-4 text-slate-600">{children}</div>
@@ -162,18 +189,12 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                     <div className="mt-4">
                       <div className="relative p-5 bg-white rounded-lg border border-black/10">
                         <div className="flex flex-col gap-1">
-                          <label className="font-bold text-slate-600">
-                            Add emails to invite
-                          </label>
-                          <div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
-                            combobox input field to invite people via email will
-                            go here
-                          </div>
+                          <ElemInviteEmails label="Add emails to invite" />
                         </div>
                         <ElemButton
                           btn="purple"
                           onClick={() => {}}
-                          className="mt-2"
+                          className="mt-4"
                         >
                           Send invites
                         </ElemButton>
