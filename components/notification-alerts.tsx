@@ -8,11 +8,16 @@ import { filterExcludeNotifications } from '@/utils/notifications';
 export const NotificationAlerts = () => {
   const { user } = useAuth();
 
-  const { data } = useGetNotificationsForUserQuery({
-    user: user?.id || 0,
-    limit: 10,
-    offset: 0,
-  });
+  const { data } = useGetNotificationsForUserQuery(
+    {
+      user: user?.id || 0,
+      limit: 10,
+      offset: 0,
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const excludeProperties = useMemo(() => {
     return ['status_tags', 'logo'];

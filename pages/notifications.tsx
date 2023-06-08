@@ -242,7 +242,7 @@ const Notifications: NextPage = () => {
           )}
         </div>
 
-        {displayedNotifications.length < totalNotifications && (
+        {!isFetching && displayedNotifications.length < totalNotifications && (
           <div className="p-5">
             <ElemButton
               btn="ol-primary"
