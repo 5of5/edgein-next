@@ -195,7 +195,11 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
           ) : (
             groups?.map(group => {
               return (
-                <ElemGroupCard key={group.id} group={group as User_Groups} />
+                <ElemGroupCard
+                  key={group.id}
+                  group={group as User_Groups}
+                  selectedGroupTab={selectedGroupTab}
+                />
               );
             })
           )}
