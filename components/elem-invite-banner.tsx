@@ -9,6 +9,7 @@ import {
   useGetTeamMemberByPersonIdQuery,
 } from '@/graphql/types';
 import ElemInviteEmails from './elem-invite-emails';
+import Link from 'next/link';
 
 type Props = {
   //isOpen: boolean;
@@ -85,8 +86,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
               <svg
                 viewBox="0 0 2 2"
                 className="mx-2 inline h-0.5 w-0.5 fill-current"
-                aria-hidden="true"
-              >
+                aria-hidden="true">
                 <circle cx={1} cy={1} r={1} />
               </svg>
               Tell a friend and get $14.99 in credit for every person you
@@ -98,8 +98,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
             <button
               type="button"
               onClick={() => setShowBanner(false)}
-              className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
-            >
+              className="-m-3 p-3 focus-visible:outline-offset-[-4px]">
               <span className="sr-only">Dismiss</span>
               <IconX className="h-5 w-5 text-white" aria-hidden="true" />
             </button>
@@ -111,8 +110,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
         <Dialog
           as="div"
           className="relative z-40"
-          onClose={onCloseUpgradeDialog}
-        >
+          onClose={onCloseUpgradeDialog}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -120,8 +118,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -134,13 +131,12 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
+                leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title className="flex items-center justify-between px-6 pt-6 pb-2 rounded-t-2xl bg-white">
                     <div className="flex items-center justify-between gap-x-1">
                       <div className="text-xl font-bold capitalize">
-                        Invite your team
+                        Invite to EdgeIn
                       </div>
                     </div>
                     <button type="button" onClick={onCloseUpgradeDialog}>
@@ -150,31 +146,34 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
 
                   <div className="p-6">
                     {teamMembers.length > 0 && (
-                      <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10">
+                      <div className="relative bg-white rounded-lg border border-black/10 divide-y divide-black/10 max-h-96 overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
+                        <div className="sticky top-0 z-10 px-3 py-1.5 font-bold shadow text-slate-600 bg-white">
+                          <h3>Invite your team</h3>
+                        </div>
                         {teamMembers.map(mem => (
                           <div
-                            className="flex items-center justify-between px-4 py-3 group"
-                            key={mem.id}
-                          >
-                            <div className="flex items-center gap-x-2">
-                              <ElemPhoto
-                                wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
-                                imgClass="object-contain w-full h-full border border-slate-100 "
-                                photo={mem?.person?.picture}
-                                placeholder={mem?.person?.name || ''}
-                                placeholderClass="text-slate-300"
-                                imgAlt={mem?.person?.name || ''}
-                              />
-                              <p className="font-bold capitalize">
-                                {mem?.person?.name || ''}
-                              </p>
-                            </div>
+                            className="flex items-center justify-between px-4 py-3 group snap-start hover:text-primary-500"
+                            key={mem.id}>
+                            <Link href={`/people/${mem?.person?.slug}/`}>
+                              <a className="flex items-center gap-x-2 hover:opacity-75">
+                                <ElemPhoto
+                                  wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
+                                  imgClass="object-contain w-full h-full border border-slate-100 "
+                                  photo={mem?.person?.picture}
+                                  placeholder={mem?.person?.name || ''}
+                                  placeholderClass="text-slate-300"
+                                  imgAlt={mem?.person?.name || ''}
+                                />
+                                <p className="font-bold capitalize">
+                                  {mem?.person?.name || ''}
+                                </p>
+                              </a>
+                            </Link>
 
                             <ElemButton
                               onClick={() => {}}
                               btn="slate"
-                              className=""
-                            >
+                              className="">
                               Invite
                             </ElemButton>
                           </div>
@@ -189,13 +188,12 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                     <div className="mt-4">
                       <div className="relative p-5 bg-white rounded-lg border border-black/10">
                         <div className="flex flex-col gap-1">
-                          <ElemInviteEmails label="Add emails to invite" />
+                          <ElemInviteEmails label="Add work emails to invite" />
                         </div>
                         <ElemButton
                           btn="purple"
                           onClick={() => {}}
-                          className="mt-4"
-                        >
+                          className="mt-4">
                           Send invites
                         </ElemButton>
                       </div>
