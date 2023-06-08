@@ -17,6 +17,8 @@ export async function middleware(req: NextRequest) {
       `/contact/`,
       `/privacy/`,
       `/terms/`,
+      `/support/`,
+      `/pricing/`,
       `/brand-assets/`,
       `/team/`,
       `/404/`,
