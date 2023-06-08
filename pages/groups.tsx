@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import type { NextPage, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -18,12 +18,22 @@ import { Pagination } from '@/components/pagination';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { useIntercom } from 'react-use-intercom';
+import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 
 type Props = {
   groupsCount: number;
   initialGroups: GetGroupsQuery['user_groups'];
 };
+
+function useStateParamsFilter<T>(filters: T[], name: string) {
+  return useStateParams(
+    filters[0],
+    name,
+    id => filters.indexOf(id).toString(),
+    index => filters[Number(index)],
+  );
+}
 
 const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
   const { user } = useUser();
@@ -41,6 +51,12 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
   const limit = 12;
   const offset = limit * page;
 
+  const defaultFilters = [{ created_by_user_id: { _eq: user?.id || 0 } }];
+
+  const filters: DeepPartial<User_Groups_Bool_Exp> = {
+    _and: defaultFilters,
+  };
+
   useEffect(() => {
     if (!initialLoad) {
       setPage(0);
@@ -56,6 +72,25 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const groupsTabs = [
+    { id: 'My Groups', name: 'My Groups', value: 'My Groups' },
+    { id: 'Discover', name: 'Discover', value: 'Discover' },
+    { id: 'Joined', name: 'Joined', value: 'Joined' },
+  ];
+
+  const [selectedGroupTab, setSelectedGroupTab] = useStateParamsFilter(
+    groupsTabs,
+    'groupsTabs',
+  );
+
+  // processGroupsFilters(filters, selectedFilters, defaultFilters);
+
+  // if (selectedGroupTab.value) {
+  //   filters._and?.push({
+  //     status_tags: { _contains: selectedGroupTab.value },
+  //   });
+  // }
+
   const {
     data: groupsData,
     error,
@@ -63,15 +98,7 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
   } = useGetGroupsQuery({
     limit,
     offset,
-    where: {
-      _and: [
-        {
-          public: { _eq: true },
-          //   created_by_user_id: { _neq: user?.id || 0 },
-          //   user_group_members: { user: { id: { _neq: user?.id || 0 } } },
-        },
-      ],
-    } as User_Groups_Bool_Exp,
+    where: filters as User_Groups_Bool_Exp,
   });
 
   if (!isLoading && initialLoad) {
@@ -79,19 +106,39 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
   }
 
   const groups = initialLoad ? initialGroups : groupsData?.user_groups;
+  // const groups_aggregate = initialLoad ? initialGroups?.length : groupsData?.user_groups_aggregate?.aggregate?.count || 0;
   const groups_aggregate = initialLoad ? initialGroups?.length : 0;
-  //: groupsData?.user_groups_aggregate?.aggregate?.count || 0;
 
   const { showNewMessages } = useIntercom();
 
   return (
     <DashboardLayout>
       <div className="pb-20">
-        <div className="w-full mb-2">
-          <h1 className="h-6 mr-2 font-bold text-xl capitalize">
-            Discover Groups
+        <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x bg-white shadow rounded-lg shrink-0">
+          {groupsTabs &&
+            groupsTabs.map((tab: any, index: number) =>
+              tab.disabled === true ? (
+                <Fragment key={index}></Fragment>
+              ) : (
+                <button
+                  key={index}
+                  onClick={() => setSelectedGroupTab(tab)}
+                  className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+                    selectedGroupTab.value === tab.value
+                      ? 'text-primary-500 border-primary-500'
+                      : 'border-transparent  hover:bg-slate-200'
+                  } ${tab.disabled ? 'cursor-not-allowed' : ''}`}>
+                  {tab.name}
+                </button>
+              ),
+            )}
+        </nav>
+
+        <div className="w-full mt-6 mb-2">
+          <h1 className="font-bold text-xl capitalize">
+            {selectedGroupTab.name}
           </h1>
-          <p className="text-slate-600">Groups you might be interested in.</p>
+          {/* <p className="text-slate-600">Groups you manage.</p> */}
         </div>
         {groups?.length === 0 && (
           <div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -173,10 +220,11 @@ export const getStaticProps: GetStaticProps = async context => {
   const { data: group } = await runGraphQl<GetGroupsQuery>(GetGroupsDocument, {
     offset: 0,
     limit: 50,
-    where: {
-      public: { _eq: true },
-      //_and: [{ public: { _eq: true } }, { created_by_user_id: { _neq: user?.id || 0 } }],
-    },
+    // where: {
+    //   //public: { _eq: true },
+    //   created_by_user_id: { _eq: user?.id || 0 }
+    //   //_and: [{ public: { _eq: true } }, ],
+    // },
   });
 
   return {
