@@ -9,10 +9,15 @@ import { PlaceholderPerson } from './placeholders';
 
 type Props = {
   label: string;
+  description?: string;
   placeholder?: string;
 };
 
-const ElemInviteEmails: React.FC<Props> = ({ label, placeholder }) => {
+const ElemInviteEmails: React.FC<Props> = ({
+  label,
+  description,
+  placeholder,
+}) => {
   const [query, setQuery] = useState('');
   const [selectedUsers, setSelectedUsers] = useState<Record<string, any>[]>([]);
 
@@ -48,22 +53,23 @@ const ElemInviteEmails: React.FC<Props> = ({ label, placeholder }) => {
       <div className="relative">
         <div className="flex flex-col gap-1">
           <label className="font-bold text-slate-600">{label}</label>
+          {description && (
+            <p className="text-sm text-slate-600">{description}</p>
+          )}
           <div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
             {selectedUsers.length > 0 && (
               <ul className="flex flex-wrap gap-2">
                 {selectedUsers.map(item => (
                   <li
                     key={item.id}
-                    className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1"
-                  >
+                    className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1">
                     <div title={item.email && item.email}>
                       {item?.person?.name || item?.display_name}
                     </div>
                     <button
                       onClick={() => handleRemove(item.id)}
                       className="focus:outline-none"
-                      title="Remove"
-                    >
+                      title="Remove">
                       <IconX
                         className="w-3 h-3 ml-1 cursor-pointer hover:text-primary-500"
                         title="Remove"
@@ -96,8 +102,7 @@ const ElemInviteEmails: React.FC<Props> = ({ label, placeholder }) => {
                 <Combobox.Option
                   key={item.id}
                   value={item}
-                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
-                >
+                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500">
                   {item?.person?.picture ? (
                     <ElemPhoto
                       wrapClass="w-10 h-10 aspect-square shrink-0"
@@ -119,8 +124,7 @@ const ElemInviteEmails: React.FC<Props> = ({ label, placeholder }) => {
                   {item?.email && (
                     <div
                       className="text-sm text-slate-600 truncate"
-                      title={item.email}
-                    >
+                      title={item.email}>
                       {item.email}
                     </div>
                   )}
@@ -143,8 +147,7 @@ const ElemInviteEmails: React.FC<Props> = ({ label, placeholder }) => {
                       display_name: query,
                       email: query,
                     }}
-                    className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
-                  >
+                    className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500">
                     Send an invitation to email address{' '}
                     <span className="font-bold">{query}</span>
                   </Combobox.Option>

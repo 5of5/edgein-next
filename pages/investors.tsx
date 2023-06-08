@@ -36,6 +36,7 @@ import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
+import { ElemInviteBanner } from '@/components/elem-invite-banner';
 
 type Props = {
   vcFirmCount: number;
@@ -145,8 +146,7 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -160,8 +160,7 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -207,8 +206,7 @@ const Investors: NextPage<Props> = ({
       {!initialLoad && (
         <ElemHeading
           title="Investors"
-          subtitle={`We're tracking investments made in ${selectedLibrary} companies and projects to provide you with an index of the most active and influential capital in the industry.`}
-        ></ElemHeading>
+          subtitle={`We're tracking investments made in ${selectedLibrary} companies and projects to provide you with an index of the most active and influential capital in the industry.`}></ElemHeading>
       )}
 
       <div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
@@ -220,8 +218,7 @@ const Investors: NextPage<Props> = ({
 
           <div
             className="relative mt-2 mb-4 flex items-center justify-between lg:border-y lg:border-black/10"
-            role="tablist"
-          >
+            role="tablist">
             <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x border-y border-black/10 pr-32 sm:pr-0 lg:border-none">
               {investorsStatusTags &&
                 investorsStatusTags.map((tab: any, index: number) =>
@@ -235,8 +232,7 @@ const Investors: NextPage<Props> = ({
                         selectedStatusTag.value === tab.value
                           ? 'text-primary-500 border-primary-500'
                           : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
-                    >
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}>
                       {tab.title}
                     </button>
                   ),
@@ -253,21 +249,21 @@ const Investors: NextPage<Props> = ({
                   onClick={() => setTableLayout(false)}
                   className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
                     !tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
+                  }`}>
                   <IconGrid className="w-5 h-5" title="Grid layout" />
                 </button>
                 <button
                   onClick={() => setTableLayout(true)}
                   className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
                     tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
+                  }`}>
                   <IconTable className="w-5 h-5" title="Table layout" />
                 </button>
               </div>
             </div>
           </div>
+
+          <ElemInviteBanner />
 
           {vcFirms?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -281,8 +277,7 @@ const Investors: NextPage<Props> = ({
                 <ElemButton
                   onClick={() => setToggleFeedbackForm(true)}
                   btn="white"
-                  className="mt-3"
-                >
+                  className="mt-3">
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>
@@ -305,8 +300,7 @@ const Investors: NextPage<Props> = ({
                           `Hi EdgeIn, I'd like to report an error on investors page`,
                         )
                       }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
+                      className="inline underline decoration-primary-500 hover:text-primary-500">
                       <span>report error</span>
                     </button>
                     .

@@ -79,7 +79,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
   return (
     <>
       {showBanner && (
-        <div className="mb-6 flex items-center gap-x-6 px-6 py-2.5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg sm:px-3.5 sm:before:flex-1">
+        <div className="flex items-center gap-x-6 px-6 py-2.5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg sm:px-3.5 sm:before:flex-1">
           <p className="leading-6 text-white">
             <button onClick={onOpenUpgradeDialog}>
               <strong className="font-bold">Share and earn</strong>
@@ -146,38 +146,45 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
 
                   <div className="p-6">
                     {teamMembers.length > 0 && (
-                      <div className="relative bg-white rounded-lg border border-black/10 divide-y divide-black/10 max-h-96 overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
-                        <div className="sticky top-0 z-10 px-3 py-1.5 font-bold shadow text-slate-600 bg-white">
-                          <h3>Invite your team</h3>
+                      <div className="relative bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
+                        <div className="sticky top-0 z-10 px-3 py-1.5 shadow bg-white">
+                          <h3 className="font-bold text-slate-600">
+                            Invite your team
+                          </h3>
+                          <p className="text-sm text-slate-600">
+                            Invite people that are part of your team
+                          </p>
                         </div>
-                        {teamMembers.map(mem => (
-                          <div
-                            className="flex items-center justify-between px-4 py-3 group snap-start hover:text-primary-500"
-                            key={mem.id}>
-                            <Link href={`/people/${mem?.person?.slug}/`}>
-                              <a className="flex items-center gap-x-2 hover:opacity-75">
-                                <ElemPhoto
-                                  wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
-                                  imgClass="object-contain w-full h-full border border-slate-100 "
-                                  photo={mem?.person?.picture}
-                                  placeholder={mem?.person?.name || ''}
-                                  placeholderClass="text-slate-300"
-                                  imgAlt={mem?.person?.name || ''}
-                                />
-                                <p className="font-bold capitalize">
-                                  {mem?.person?.name || ''}
-                                </p>
-                              </a>
-                            </Link>
+                        <div className="max-h-[325px] overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
+                          {teamMembers.map(mem => (
+                            <div
+                              className="flex items-center justify-between px-4 py-3 group snap-start hover:text-primary-500"
+                              key={mem.id}>
+                              <Link href={`/people/${mem?.person?.slug}/`}>
+                                <a className="flex items-center gap-x-2 hover:opacity-75">
+                                  <ElemPhoto
+                                    wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
+                                    imgClass="object-contain w-full h-full border border-slate-100 "
+                                    photo={mem?.person?.picture}
+                                    placeholder={mem?.person?.name || ''}
+                                    placeholderClass="text-slate-300"
+                                    imgAlt={mem?.person?.name || ''}
+                                  />
+                                  <p className="font-bold capitalize">
+                                    {mem?.person?.name || ''}
+                                  </p>
+                                </a>
+                              </Link>
 
-                            <ElemButton
-                              onClick={() => {}}
-                              btn="slate"
-                              className="">
-                              Invite
-                            </ElemButton>
-                          </div>
-                        ))}
+                              <ElemButton
+                                onClick={() => {}}
+                                btn="slate"
+                                className="">
+                                Invite
+                              </ElemButton>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
 
@@ -188,7 +195,11 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                     <div className="mt-4">
                       <div className="relative p-5 bg-white rounded-lg border border-black/10">
                         <div className="flex flex-col gap-1">
-                          <ElemInviteEmails label="Add work emails to invite" />
+                          <ElemInviteEmails
+                            label="Invite with email"
+                            description="Send an email invite to people"
+                            placeholder="Enter multiple emails"
+                          />
                         </div>
                         <ElemButton
                           btn="purple"

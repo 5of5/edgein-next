@@ -10,6 +10,7 @@ import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import moment from 'moment-timezone';
 import { IconSearch, IconAnnotation } from '@/components/icons';
+import { ElemInviteBanner } from '@/components/elem-invite-banner';
 import {
   GetEventsDocument,
   GetEventsQuery,
@@ -128,8 +129,7 @@ const Events: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -143,8 +143,7 @@ const Events: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -205,8 +204,7 @@ const Events: NextPage<Props> = ({
             onClick={() =>
               showNewMessages(`Hi EdgeIn, I'd like to submit an event`)
             }
-            className="text-primary-500 hover:underline"
-          >
+            className="text-primary-500 hover:underline">
             Let us know
           </button>
           .
@@ -223,8 +221,7 @@ const Events: NextPage<Props> = ({
 
           <div
             className="mt-2 mb-4 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
-            role="tablist"
-          >
+            role="tablist">
             <nav className="flex">
               {eventTabs &&
                 eventTabs.map((tab: any, index: number) =>
@@ -238,14 +235,15 @@ const Events: NextPage<Props> = ({
                         selectedTab.value === tab.value
                           ? 'text-primary-500 border-primary-500'
                           : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
-                    >
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}>
                       {tab.title}
                     </button>
                   ),
                 )}
             </nav>
           </div>
+
+          <ElemInviteBanner />
 
           <ElemFilter
             className="py-3"
@@ -275,8 +273,7 @@ const Events: NextPage<Props> = ({
                 <ElemButton
                   onClick={() => setToggleFeedbackForm(true)}
                   btn="white"
-                  className="mt-3"
-                >
+                  className="mt-3">
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>
