@@ -3,6 +3,9 @@ import { ElemPhoto } from './elem-photo';
 import { IconEmail, IconLinkedIn } from './icons';
 import moment from 'moment-timezone';
 import { useAuth } from '@/hooks/use-auth';
+import { ElemTooltip } from '@/components/elem-tooltip';
+import { ElemUpgradeDialog } from './elem-upgrade-dialog';
+import { useState } from 'react';
 
 type Props = {
   href?: string;
@@ -30,6 +33,15 @@ export const ElemPersonCard: React.FC<Props> = ({
   organizationName,
 }) => {
   const { user } = useAuth();
+
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+  const onCloseUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(false);
+  };
 
   return (
     <div>
@@ -93,14 +105,19 @@ export const ElemPersonCard: React.FC<Props> = ({
                 </Link>
               </>
             ) : linkedin ? (
-              <Link href={href}>
-                <a>
-                  <IconLinkedIn
-                    title="LinkedIn"
-                    className="h-6 w-6 shrink-0 text-[#0077B5]"
-                  />
-                </a>
-              </Link>
+              <ElemTooltip
+                size="md"
+                content="Premium feature, start free trial"
+              >
+                <div>
+                  <button className="block" onClick={onOpenUpgradeDialog}>
+                    <IconLinkedIn
+                      title="LinkedIn"
+                      className="h-6 w-6 shrink-0 text-[#0077B5]"
+                    />
+                  </button>
+                </div>
+              </ElemTooltip>
             ) : (
               <></>
             )}
@@ -118,6 +135,10 @@ export const ElemPersonCard: React.FC<Props> = ({
           </div>
         </div>
       </div>
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
     </div>
   );
 };
