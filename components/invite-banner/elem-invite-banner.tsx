@@ -36,13 +36,13 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
 
   const { data: teamMemberByPerson } = useGetTeamMemberByPersonIdQuery(
     { person_id: user?.person?.id || 0 },
-    { enabled: !!user?.person?.id },
+    { enabled: Boolean(user?.person?.id) },
   );
 
   const { data: teamMemberByCompany } = useGetTeamMemberByCompanyIdQuery(
     { company_id: teamMemberByPerson?.team_members[0]?.company_id || 0 },
     {
-      enabled: !!teamMemberByPerson?.team_members[0]?.company_id,
+      enabled: Boolean(teamMemberByPerson?.team_members[0]?.company_id),
     },
   );
 

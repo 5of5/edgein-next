@@ -10,6 +10,7 @@ import { ElemButton } from '../elem-button';
 import { IconX, IconPaperAirplane } from '@/components/icons';
 import { PlaceholderPerson } from '../placeholders';
 import { EmailResources } from '@/pages/api/send-invite-group-member-mail';
+import { DEBOUNCE_TIME } from '@/utils/constants';
 
 type Props = {
   isOpen: boolean;
@@ -34,7 +35,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const debouncedQuery = useDebounce(query, 700);
+  const debouncedQuery = useDebounce(query, DEBOUNCE_TIME);
 
   const { data: searchedPeople, error } = useSWR(
     () => (debouncedQuery ? ['/api/search-people/', query] : null),

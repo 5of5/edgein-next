@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { useQuery } from 'react-query';
 import { Combobox } from '@headlessui/react';
 import validator from 'validator';
@@ -7,6 +7,7 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { IconX } from '@/components/icons';
 import { PlaceholderPerson } from './placeholders';
 import { isFreeEmail } from '@/utils/helpers';
+import { DEBOUNCE_TIME } from '@/utils/constants';
 
 type Props = {
   label: string;
@@ -33,7 +34,7 @@ const ElemInviteEmails: React.FC<Props> = ({
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const debouncedQuery = useDebounce(query, 700);
+  const debouncedQuery = useDebounce(query, DEBOUNCE_TIME);
 
   const { data: searchedPeople, isLoading } = useQuery(
     ['find-people', debouncedQuery],
@@ -43,7 +44,7 @@ const ElemInviteEmails: React.FC<Props> = ({
       ).then(res => res.json()),
   );
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
     setIsDuplicatedEmail(false);
     if (validator.isEmail(newQuery) && isFreeEmail(newQuery)) {
@@ -65,7 +66,7 @@ const ElemInviteEmails: React.FC<Props> = ({
   const handleSelect = (values: Record<string, any>[]) => {
     if (
       selectedUsers.some(
-        el => el.work_email === values[values.length - 1]?.work_email,
+        selectedUser => selectedUser.work_email === values[values.length - 1]?.work_email,
       )
     ) {
       setIsDuplicatedEmail(true);
