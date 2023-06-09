@@ -44,13 +44,14 @@ const ElemInviteEmails: React.FC<Props> = ({
   );
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = event.target.value;
     setIsDuplicatedEmail(false);
-    if (validator.isEmail(query) && isFreeEmail(query)) {
+    if (validator.isEmail(newQuery) && isFreeEmail(newQuery)) {
       setEmailError('Please enter a work email.');
     } else {
       setEmailError('');
     }
-    setQuery(event.target.value);
+    setQuery(newQuery);
   };
 
   const handleRemove = (id: number) => {
@@ -120,20 +121,21 @@ const ElemInviteEmails: React.FC<Props> = ({
           </div>
         </div>
 
-        {query && (
-          <Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
-            {isDuplicatedEmail && (
-              <div className=" text-center py-2 bg-red-600 font-semibold text-sm text-white">
-                Email already added
-              </div>
-            )}
+        {isDuplicatedEmail && (
+          <div className="text-center py-2 mt-2 bg-red-600 rounded-md font-semibold text-sm text-white">
+            Email already added
+          </div>
+        )}
 
-            {emailError && (
-              <div className=" text-center py-2 bg-red-600 font-semibold text-sm text-white">
-                {emailError}
-              </div>
-            )}
-            {isLoading && query != '' ? (
+        {emailError && (
+          <div className="text-center py-2 mt-2 bg-red-600 rounded-md font-semibold text-sm text-white">
+            {emailError}
+          </div>
+        )}
+
+        {query && !isDuplicatedEmail && !emailError && (
+          <Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
+            {isLoading && query !== '' ? (
               <div className="px-4 py-2">
                 {Array.from({ length: 3 }, (_, i) => (
                   <PlaceholderPerson key={i} />
