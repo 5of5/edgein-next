@@ -21,7 +21,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
   const pendingInvites = group.user_group_invites.filter(
     invite =>
       !group.user_group_members.some(
-        member => member.user.email === invite.email,
+        member => member.user?.email === invite.email,
       ),
   );
 
