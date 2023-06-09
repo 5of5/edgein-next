@@ -63,6 +63,13 @@ npm run hasura metadata apply
 ```
 npm run hasura console
 ```
+### Load seed data
+
+```
+cd scripts/db/
+sh ./load-seed-data.sh
+```
+
 
 ### Start Next App
 
