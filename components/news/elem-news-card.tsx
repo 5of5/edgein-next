@@ -169,13 +169,14 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
                         placeholderClass="text-slate-300"
                       />
                     }
-                    mode="light"
                   >
-                    <Link href={slug}>
-                      <a className="break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-                        {organization?.name}
-                      </a>
-                    </Link>
+                    <div className="inline-block">
+                      <Link href={slug}>
+                        <a className="break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                          {organization?.name}
+                        </a>
+                      </Link>
+                    </div>
                   </ElemTooltip>
                   {otherOrganizations.length === index + 1 ? '' : ', '}
                 </Fragment>

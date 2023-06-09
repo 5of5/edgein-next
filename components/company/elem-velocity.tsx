@@ -58,10 +58,12 @@ export const ElemVelocity: React.FC<Props> = ({
             size="md"
             content="Velocity trends based on the last 3 months of LinkedIn employment data, as well as token exchange values from Binance and Coinbase."
           >
-            <IconInformationCircle
-              className="h-5 w-5 text-primary-500"
-              title="What is Velocity?"
-            />
+            <div>
+              <IconInformationCircle
+                className="h-5 w-5 text-primary-500"
+                title="What is Velocity?"
+              />
+            </div>
           </ElemTooltip>
         </div>
       )}

@@ -447,7 +447,7 @@ const ElemNoteCard: React.FC<Props> = ({
                   </>
                 )}
 
-                <ElemTooltip
+                {/* <ElemTooltip
                   content={`${moment(data?.created_at).format(
                     'LL [at] h:mma',
                   )}`}
@@ -455,7 +455,7 @@ const ElemNoteCard: React.FC<Props> = ({
                   className="inline-flex items-center overflow-visible"
                 >
                   {formatDateShown(data?.created_at)}
-                </ElemTooltip>
+                </ElemTooltip> */}
 
                 <span aria-hidden="true"> · </span>
 

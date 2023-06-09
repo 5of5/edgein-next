@@ -82,9 +82,11 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                 </Disclosure.Button>
                 <ElemTooltip
                   content="Share lists and notes with others."
-                  className="ml-1"
+                  size="sm"
                 >
-                  <IconInformationCircle className="h-5 w-5 text-slate-600" />
+                  <div className="ml-1 cursor-pointer">
+                    <IconInformationCircle className="h-5 w-5 text-slate-600" />
+                  </div>
                 </ElemTooltip>
               </div>
               <div className="flex gap-x-1">
