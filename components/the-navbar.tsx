@@ -301,6 +301,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
           <UsageModal
             onSignUp={showSignUpModal}
+            onLogin={showLoginModal}
             show={showPopup === 'usage'}
             onClose={onModalClose}
           />

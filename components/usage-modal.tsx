@@ -7,6 +7,7 @@ import { Dialog, Transition } from '@headlessui/react';
 type Props = {
   show: boolean;
   onSignUp: (email: string, password: string) => void;
+  onLogin: () => void;
   onClose: () => void;
 };
 
@@ -22,6 +23,10 @@ const UsageModal: React.FC<Props> = (props: Props) => {
     props.onClose();
   };
 
+  const onLogin = () => {
+    props.onLogin();
+  };
+
   const features = [
     {
       text: 'Access unlimited companies',
@@ -34,6 +39,9 @@ const UsageModal: React.FC<Props> = (props: Props) => {
     },
     {
       text: 'Access unlimited events',
+    },
+    {
+      text: 'Access unlimited news',
     },
     {
       text: 'Access unlimited search',
@@ -100,7 +108,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
                             className="flex items-start lg:items-center"
                             key={index}
                           >
-                            <IconBadgeCheck className="shrink-0 w-5 h-5 mr-1 text-primary-500" />
+                            <IconBadgeCheck className="shrink-0 w-8 h-8 mr-1 text-primary-500" />
                             {feature.text}
                           </li>
                         ))}
@@ -108,18 +116,28 @@ const UsageModal: React.FC<Props> = (props: Props) => {
                     </div>
 
                     <div className="flex items-center justify-center">
-                      <ElemButton
-                        className=" my-2"
-                        onClick={() => onSignUp('', '')}
-                        btn="primary"
-                        loading={false}
-                      >
-                        <IconContributor
-                          className="w-5 h-5 mr-1"
-                          title="Free Access"
-                        />
-                        Sign up and get free access
-                      </ElemButton>
+                      <div className=" max-w-xs">
+                        <ElemButton
+                          className="w-full my-2"
+                          onClick={() => onSignUp('', '')}
+                          btn="primary"
+                          loading={false}
+                        >
+                          <IconContributor
+                            className="w-5 h-5 mr-1"
+                            title="Free Access"
+                          />
+                          Sign up and get free access
+                        </ElemButton>
+
+                        <ElemButton
+                          onClick={onLogin}
+                          btn="slate"
+                          className="w-full mt-5 mb-4"
+                        >
+                          Login
+                        </ElemButton>
+                      </div>
                     </div>
                   </div>
                 </div>
