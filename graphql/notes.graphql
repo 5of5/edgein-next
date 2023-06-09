@@ -15,6 +15,7 @@ query GetNotes($where: notes_bool_exp!) {
     }
     created_by_user {
       id
+      display_name
       person {
         slug
         name
