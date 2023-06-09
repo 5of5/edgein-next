@@ -66,7 +66,8 @@ const ElemInviteEmails: React.FC<Props> = ({
   const handleSelect = (values: Record<string, any>[]) => {
     if (
       selectedUsers.some(
-        selectedUser => selectedUser.work_email === values[values.length - 1]?.work_email,
+        selectedUser =>
+          selectedUser.work_email === values[values.length - 1]?.work_email,
       )
     ) {
       setIsDuplicatedEmail(true);
