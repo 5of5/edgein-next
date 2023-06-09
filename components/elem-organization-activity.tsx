@@ -84,7 +84,7 @@ const renderActivity = (
   activity: any,
   resourceType: 'companies' | 'vc_firms',
 ) => {
-  return resourceType === 'companies' ? (
+  return resourceType === 'companies' && activity ? (
     <div className="mb-4">
       <div className="inline leading-7 text-slate-600">
         {activity.round === 'Acquisition' ? (
@@ -155,7 +155,7 @@ const renderActivity = (
         })}
       </p>
     </div>
-  ) : resourceType === 'vc_firms' ? (
+  ) : resourceType === 'vc_firms' && activity ? (
     <div className="mb-4">
       <div className="inline leading-7 text-slate-600">
         {activity.company && (
