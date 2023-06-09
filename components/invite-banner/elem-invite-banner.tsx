@@ -1,15 +1,16 @@
 import { Fragment, PropsWithChildren, useState, useEffect } from 'react';
-import { Dialog, Transition, Combobox } from '@headlessui/react';
-import { IconX, IconArrowRight } from './icons';
-import { ElemButton } from './elem-button';
-import { ElemPhoto } from './elem-photo';
-import { useUser } from '@/context/user-context';
+import { Dialog, Transition } from '@headlessui/react';
 import {
   useGetTeamMemberByCompanyIdQuery,
   useGetTeamMemberByPersonIdQuery,
 } from '@/graphql/types';
-import ElemInviteEmails from './elem-invite-emails';
-import Link from 'next/link';
+import { useUser } from '@/context/user-context';
+import { IconX, IconArrowRight } from '../icons';
+import { ElemButton } from '../elem-button';
+import ElemInviteEmails from '../elem-invite-emails';
+import { useMutation } from 'react-query';
+import { ElemTeamMember } from './elem-team-member';
+import { toast } from 'react-hot-toast';
 
 type Props = {
   //isOpen: boolean;
@@ -29,6 +30,10 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
 
   const [isOpenInviteDialog, setIsOpenInviteDialog] = useState<boolean>(false);
 
+  const [selectedPeople, setSelectedPeople] = useState<Record<string, any>[]>(
+    [],
+  );
+
   const { data: teamMemberByPerson } = useGetTeamMemberByPersonIdQuery(
     { person_id: user?.person?.id || 0 },
     { enabled: !!user?.person?.id },
@@ -45,7 +50,39 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
     teamMemberByCompany?.team_members?.filter(
       mem => mem?.person_id !== user?.person?.id,
     ) || [];
-  console.log('@teamMemberByCompany', teamMembers);
+
+  const { mutate: sendInvitationEmail, isLoading } = useMutation(
+    (emails: string[]) =>
+      fetch('/api/send-invite-to-edgein-email/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          emails,
+        }),
+      }),
+    {
+      onSuccess: () => {
+        toast.custom(
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}
+            >
+              Sent invitations successfully
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
+      },
+    },
+  );
 
   const onOpenUpgradeDialog = () => {
     setIsOpenInviteDialog(true);
@@ -76,6 +113,10 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
     }
   }, [showBanner]);
 
+  const handleClickSendInvites = () => {
+    sendInvitationEmail(selectedPeople.map(item => item.work_email));
+  };
+
   return (
     <>
       {showBanner && (
@@ -86,7 +127,8 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
               <svg
                 viewBox="0 0 2 2"
                 className="mx-2 inline h-0.5 w-0.5 fill-current"
-                aria-hidden="true">
+                aria-hidden="true"
+              >
                 <circle cx={1} cy={1} r={1} />
               </svg>
               Tell a friend and get $14.99 in credit for every person you
@@ -97,8 +139,11 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
           <div className="flex flex-1 justify-end">
             <button
               type="button"
-              onClick={() => setShowBanner(false)}
-              className="-m-3 p-3 focus-visible:outline-offset-[-4px]">
+              onClick={() => {
+                setShowBanner(false);
+              }}
+              className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
+            >
               <span className="sr-only">Dismiss</span>
               <IconX className="h-5 w-5 text-white" aria-hidden="true" />
             </button>
@@ -110,7 +155,8 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
         <Dialog
           as="div"
           className="relative z-40"
-          onClose={onCloseUpgradeDialog}>
+          onClose={onCloseUpgradeDialog}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -118,7 +164,8 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0">
+            leaveTo="opacity-0"
+          >
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -131,7 +178,8 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95">
+                leaveTo="opacity-0 scale-95"
+              >
                 <Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title className="flex items-center justify-between px-6 pt-6 pb-2 rounded-t-2xl bg-white">
                     <div className="flex items-center justify-between gap-x-1">
@@ -157,32 +205,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                         </div>
                         <div className="max-h-[325px] overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
                           {teamMembers.map(mem => (
-                            <div
-                              className="flex items-center justify-between px-4 py-3 group snap-start hover:text-primary-500"
-                              key={mem.id}>
-                              <Link href={`/people/${mem?.person?.slug}/`}>
-                                <a className="flex items-center gap-x-2 hover:opacity-75">
-                                  <ElemPhoto
-                                    wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
-                                    imgClass="object-contain w-full h-full border border-slate-100 "
-                                    photo={mem?.person?.picture}
-                                    placeholder={mem?.person?.name || ''}
-                                    placeholderClass="text-slate-300"
-                                    imgAlt={mem?.person?.name || ''}
-                                  />
-                                  <p className="font-bold capitalize">
-                                    {mem?.person?.name || ''}
-                                  </p>
-                                </a>
-                              </Link>
-
-                              <ElemButton
-                                onClick={() => {}}
-                                btn="slate"
-                                className="">
-                                Invite
-                              </ElemButton>
-                            </div>
+                            <ElemTeamMember key={mem.id} teamMember={mem} />
                           ))}
                         </div>
                       </div>
@@ -199,12 +222,17 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                             label="Invite with email"
                             description="Send an email invite to people"
                             placeholder="Enter multiple emails"
+                            selected={selectedPeople}
+                            onChange={setSelectedPeople}
                           />
                         </div>
                         <ElemButton
                           btn="purple"
-                          onClick={() => {}}
-                          className="mt-4">
+                          onClick={handleClickSendInvites}
+                          loading={isLoading}
+                          disabled={selectedPeople.length === 0}
+                          className="mt-4"
+                        >
                           Send invites
                         </ElemButton>
                       </div>

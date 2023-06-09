@@ -24349,6 +24349,13 @@ export type InsertOnboardingClaimProfileMutationVariables = Exact<{
 
 export type InsertOnboardingClaimProfileMutation = { __typename?: 'mutation_root', insert_people_one: { __typename?: 'people', id: number, name: string | null, work_email: string | null, linkedin: string | null } | null };
 
+export type FindPeopleByEmailQueryVariables = Exact<{
+  query: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindPeopleByEmailQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, work_email: string | null, personal_email: string | null }> };
+
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
 }>;
@@ -28195,6 +28202,37 @@ export const useInsertOnboardingClaimProfileMutation = <
       options
     );
 useInsertOnboardingClaimProfileMutation.fetcher = (variables: InsertOnboardingClaimProfileMutationVariables, options?: RequestInit['headers']) => fetcher<InsertOnboardingClaimProfileMutation, InsertOnboardingClaimProfileMutationVariables>(InsertOnboardingClaimProfileDocument, variables, options);
+export const FindPeopleByEmailDocument = `
+    query FindPeopleByEmail($query: String) {
+  people(where: {work_email: {_ilike: $query}}, limit: 25) {
+    id
+    name
+    picture
+    slug
+    work_email
+    personal_email
+  }
+}
+    `;
+export const useFindPeopleByEmailQuery = <
+      TData = FindPeopleByEmailQuery,
+      TError = Error
+    >(
+      variables?: FindPeopleByEmailQueryVariables,
+      options?: UseQueryOptions<FindPeopleByEmailQuery, TError, TData>
+    ) =>
+    useQuery<FindPeopleByEmailQuery, TError, TData>(
+      variables === undefined ? ['FindPeopleByEmail'] : ['FindPeopleByEmail', variables],
+      fetcher<FindPeopleByEmailQuery, FindPeopleByEmailQueryVariables>(FindPeopleByEmailDocument, variables),
+      options
+    );
+useFindPeopleByEmailQuery.document = FindPeopleByEmailDocument;
+
+
+useFindPeopleByEmailQuery.getKey = (variables?: FindPeopleByEmailQueryVariables) => variables === undefined ? ['FindPeopleByEmail'] : ['FindPeopleByEmail', variables];
+;
+
+useFindPeopleByEmailQuery.fetcher = (variables?: FindPeopleByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByEmailQuery, FindPeopleByEmailQueryVariables>(FindPeopleByEmailDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {

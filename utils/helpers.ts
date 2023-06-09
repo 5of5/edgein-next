@@ -129,3 +129,8 @@ export const isValidJsonString = (jsonString: string) => {
 
   return false;
 };
+
+export const isFreeEmail = (email: string) => {
+  const pattern = /@(gmail|yahoo|hotmail)/i;
+  return pattern.test(email);
+};

@@ -10,7 +10,7 @@ import { PlaceholderNewsCard } from '@/components/placeholders';
 import { runGraphQl } from '../utils';
 import toast, { Toaster } from 'react-hot-toast';
 import { IconAnnotation, IconSearch } from '@/components/icons';
-import { ElemInviteBanner } from '@/components/elem-invite-banner';
+import { ElemInviteBanner } from '@/components/invite-banner/elem-invite-banner';
 
 import {
   News,
@@ -77,7 +77,8 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews }) => {
         <ElemHeading
           title="News"
           subtitle={`Get the latest news, guides, price and analysis on ${selectedLibrary}.`}
-          className=""></ElemHeading>
+          className=""
+        ></ElemHeading>
       )}
 
       <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
