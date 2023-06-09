@@ -128,7 +128,9 @@ const ElemMemberTab: React.FC<Props> = ({
                 </div>
               )}
 
-              <p className="font-bold capitalize">{member.user?.display_name}</p>
+              <p className="font-bold capitalize">
+                {member.user?.display_name}
+              </p>
               {member.user?.id === group.created_by_user_id && (
                 <span>(Admin)</span>
               )}

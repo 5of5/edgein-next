@@ -376,7 +376,11 @@ const ElemNoteCard: React.FC<Props> = ({
                     photo={data?.created_by_user?.person?.picture}
                     wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full shadow"
                     imgClass="object-fit max-w-full max-h-full rounded-full"
-                    imgAlt={data?.created_by_user?.person?.name || data?.created_by_user ?.display_name || `User: ${data?.created_by}`}
+                    imgAlt={
+                      data?.created_by_user?.person?.name ||
+                      data?.created_by_user?.display_name ||
+                      `User: ${data?.created_by}`
+                    }
                     placeholder="user"
                     placeholderClass="text-slate-400 bg-white p-0"
                   />
@@ -392,7 +396,10 @@ const ElemNoteCard: React.FC<Props> = ({
                     photo={data?.created_by_user?.person?.picture}
                     wrapClass=""
                     imgClass="object-fit h-7 w-7 border border-white rounded-full"
-                    imgAlt={data?.created_by_user?.person?.name || data?.created_by_user?.display_name}
+                    imgAlt={
+                      data?.created_by_user?.person?.name ||
+                      data?.created_by_user?.display_name
+                    }
                     placeholder="user"
                     placeholderClass="text-slate-400 bg-white p-0"
                   />
@@ -423,7 +430,9 @@ const ElemNoteCard: React.FC<Props> = ({
                 {(layout === 'organizationAndAuthor' ||
                   layout === 'groupAndAuthor') && (
                   <>
-                    <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
+                    <Link
+                      href={`/people/${data?.created_by_user?.person?.slug}`}
+                    >
                       <a className="underline-offset-1 hover:underline">
                         {data?.created_by_user?.person?.name}
                       </a>
@@ -536,7 +545,10 @@ const ElemNoteCard: React.FC<Props> = ({
                       photo={comment.created_by_user?.person?.picture}
                       wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
                       imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                      imgAlt={comment.created_by_user?.person?.name || data?.created_by_user ?.display_name}
+                      imgAlt={
+                        comment.created_by_user?.person?.name ||
+                        data?.created_by_user?.display_name
+                      }
                       placeholder="user"
                       placeholderClass="text-slate-300"
                     />
