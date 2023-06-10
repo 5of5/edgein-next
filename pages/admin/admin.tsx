@@ -110,7 +110,7 @@ const AdminApp = () => {
       // Fix nullable inputs for graphql
       setDataProvider({
         ...dataProvider,
-        getOne: async (type, obj) => {
+        getOne: async (type: string, obj: any) => {
           const { data, ...metadata } = await dataProvider.getOne(type, obj);
 
           if (type === 'users') {
@@ -177,8 +177,7 @@ const AdminApp = () => {
       layout={LayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
-      theme={theme}
-    >
+      theme={theme}>
       <CssBaseline />
       <Resource
         name="disabled_emails"
