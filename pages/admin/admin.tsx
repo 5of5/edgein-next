@@ -177,7 +177,8 @@ const AdminApp = () => {
       layout={LayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
-      theme={theme}>
+      theme={theme}
+    >
       <CssBaseline />
       <Resource
         name="disabled_emails"
