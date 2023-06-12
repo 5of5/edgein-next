@@ -39,7 +39,7 @@ type Props = {
 };
 
 const Group: NextPage<Props> = (props: Props) => {
-  const { user } = useUser();
+  const { user, refetchMyGroups } = useUser();
 
   const [groupData, setGroupData] = useState<User_Groups>(props.group);
 
@@ -135,6 +135,7 @@ const Group: NextPage<Props> = (props: Props) => {
             ...prev,
             user_group_members: [...prev.user_group_members, response],
           }));
+          refetchMyGroups();
         },
       },
     );

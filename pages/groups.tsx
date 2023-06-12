@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import type { NextPage, GetStaticProps } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
@@ -18,24 +18,20 @@ import { Pagination } from '@/components/pagination';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { useIntercom } from 'react-use-intercom';
-import { DeepPartial } from '@/types/common';
+import { GroupsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
+import { GROUPS_TABS } from '@/utils/constants';
+import { getGroupsFilters } from '@/utils/filter';
+import CookieService from '@/utils/cookie';
 
 type Props = {
-  groupsCount: number;
+  initialGroupsCount: number;
   initialGroups: GetGroupsQuery['user_groups'];
 };
 
-function useStateParamsFilter<T>(filters: T[], name: string) {
-  return useStateParams(
-    filters[0],
-    name,
-    id => filters.indexOf(id).toString(),
-    index => filters[Number(index)],
-  );
-}
+const LIMIT = 12;
 
-const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
+const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
   const { user } = useUser();
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -48,14 +44,16 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
     pageIndex => Number(pageIndex) - 1,
   );
 
-  const limit = 12;
-  const offset = limit * page;
+  const offset = LIMIT * page;
 
-  const defaultFilters = [{ created_by_user_id: { _eq: user?.id || 0 } }];
+  const [selectedGroupTab, setSelectedGroupTab] = useStateParams(
+    GROUPS_TABS[0],
+    'tab',
+    tab => tab.id,
+    tabId => GROUPS_TABS.find(grTab => grTab.id === tabId) || GROUPS_TABS[0],
+  );
 
-  const filters: DeepPartial<User_Groups_Bool_Exp> = {
-    _and: defaultFilters,
-  };
+  const filters = getGroupsFilters(selectedGroupTab.id, user?.id || 0);
 
   useEffect(() => {
     if (!initialLoad) {
@@ -66,37 +64,19 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
     }
 
     onTrackView({
-      //properties: filters,
+      properties: filters,
       pathname: router.pathname,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const groupsTabs = [
-    { id: 'My Groups', name: 'My Groups', value: 'My Groups' },
-    { id: 'Discover', name: 'Discover', value: 'Discover' },
-    { id: 'Joined', name: 'Joined', value: 'Joined' },
-  ];
-
-  const [selectedGroupTab, setSelectedGroupTab] = useStateParamsFilter(
-    groupsTabs,
-    'groupsTabs',
-  );
-
-  // processGroupsFilters(filters, selectedFilters, defaultFilters);
-
-  // if (selectedGroupTab.value) {
-  //   filters._and?.push({
-  //     status_tags: { _contains: selectedGroupTab.value },
-  //   });
-  // }
-
   const {
     data: groupsData,
     error,
     isLoading,
+    refetch,
   } = useGetGroupsQuery({
-    limit,
+    limit: LIMIT,
     offset,
     where: filters as User_Groups_Bool_Exp,
   });
@@ -106,8 +86,9 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
   }
 
   const groups = initialLoad ? initialGroups : groupsData?.user_groups;
-  // const groups_aggregate = initialLoad ? initialGroups?.length : groupsData?.user_groups_aggregate?.aggregate?.count || 0;
-  const groups_aggregate = initialLoad ? initialGroups?.length : 0;
+  const groups_aggregate = initialLoad
+    ? initialGroupsCount
+    : groupsData?.user_groups_aggregate?.aggregate?.count || 0;
 
   const { showNewMessages } = useIntercom();
 
@@ -115,8 +96,8 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
     <DashboardLayout>
       <div className="pb-20">
         <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x bg-white shadow rounded-lg shrink-0">
-          {groupsTabs &&
-            groupsTabs.map((tab: any, index: number) =>
+          {GROUPS_TABS &&
+            GROUPS_TABS.map((tab, index: number) =>
               tab.disabled === true ? (
                 <Fragment key={index}></Fragment>
               ) : (
@@ -124,10 +105,11 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
                   key={index}
                   onClick={() => setSelectedGroupTab(tab)}
                   className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-                    selectedGroupTab.value === tab.value
+                    selectedGroupTab.id === tab.id
                       ? 'text-primary-500 border-primary-500'
                       : 'border-transparent  hover:bg-slate-200'
-                  } ${tab.disabled ? 'cursor-not-allowed' : ''}`}>
+                  } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
+                >
                   {tab.name}
                 </button>
               ),
@@ -156,7 +138,8 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
                   )
                 }
                 btn="white"
-                className="mt-3">
+                className="mt-3"
+              >
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>
@@ -179,7 +162,8 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
                         `Hi EdgeIn, I'd like to report an error on groups page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
@@ -199,6 +183,7 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
                   key={group.id}
                   group={group as User_Groups}
                   selectedGroupTab={selectedGroupTab}
+                  refetchGroupsPage={refetch}
                 />
               );
             })
@@ -209,7 +194,7 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
           shownItems={groups?.length}
           totalItems={groups_aggregate}
           page={page}
-          itemsPerPage={limit}
+          itemsPerPage={LIMIT}
           numeric
           onClickPrev={() => setPage(page - 1)}
           onClickNext={() => setPage(page + 1)}
@@ -220,23 +205,32 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async context => {
-  const { data: group } = await runGraphQl<GetGroupsQuery>(GetGroupsDocument, {
-    offset: 0,
-    limit: 50,
-    // where: {
-    //   //public: { _eq: true },
-    //   created_by_user_id: { _eq: user?.id || 0 }
-    //   //_and: [{ public: { _eq: true } }, ],
-    // },
-  });
+export const getServerSideProps: GetServerSideProps = async context => {
+  const token = CookieService.getAuthToken(context.req.cookies);
+  const user = await CookieService.getUser(token);
+
+  const selectedTab = context.query.tab || 'my-groups';
+
+  const page =
+    context.query.page !== undefined ? Number(context.query.page) - 1 : 0;
+  const offset = LIMIT * page;
+
+  const { data: group } = await runGraphQl<GetGroupsQuery>(
+    GetGroupsDocument,
+    {
+      offset,
+      limit: LIMIT,
+      where: getGroupsFilters(selectedTab as GroupsTabType, user?.id || 0),
+    },
+    context.req.cookies,
+  );
 
   return {
     props: {
       metaTitle: 'Groups - EdgeIn.io',
       metaDescription:
         'Connect with people who share your interests. Meet new people, share knowledge or get support. Find the group for you.',
-      //groupsCount: group?.user_groups_aggregate?.aggregate?.count || 0,
+      initialGroupsCount: group?.user_groups_aggregate?.aggregate?.count || 0,
       initialGroups: group?.user_groups || [],
     },
   };

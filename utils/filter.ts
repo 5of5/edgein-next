@@ -9,9 +9,10 @@ import {
 import {
   Companies_Bool_Exp,
   Events_Bool_Exp,
+  User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
-import { DeepPartial } from '@/types/common';
+import { DeepPartial, GroupsTabType } from '@/types/common';
 import { eventTypeChoices, roundChoices, tags } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 
@@ -964,4 +965,44 @@ export const processEventsFilters = (
       ],
     });
   }
+};
+
+export const getGroupsFilters = (
+  selectedTab: GroupsTabType,
+  userId: number,
+) => {
+  let filters: DeepPartial<User_Groups_Bool_Exp> = {
+    created_by_user_id: { _eq: userId },
+  };
+
+  if (selectedTab === 'discover') {
+    filters = {
+      _and: [
+        { public: { _eq: true } },
+        {
+          _not: {
+            user_group_members: {
+              user: {
+                id: { _eq: userId },
+              },
+            },
+          },
+        },
+      ],
+    };
+    return filters;
+  }
+
+  if (selectedTab === 'joined') {
+    filters = {
+      user_group_members: {
+        user: {
+          id: { _eq: userId },
+        },
+      },
+    };
+    return filters;
+  }
+
+  return filters;
 };
