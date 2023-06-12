@@ -25,3 +25,23 @@ mutation MarkDataRawAsInactive($resourceType: String!, $resourceId: Int!) {
     affected_rows
   }
 }
+
+query GetIsOwnerVerifiedDataRawByResourceAndField(
+  $resourceType: String!
+  $resourceId: Int!
+  $field: String!
+) {
+  data_raw(
+    where: {
+      _and: [
+        { resource: { _eq: $resourceType } }
+        { resource_id: { _eq: $resourceId } }
+        { field: { _eq: $field } }
+      ]
+    }
+    order_by: { created_at: desc }
+    limit: 1
+  ) {
+    is_owner_verified
+  }
+}

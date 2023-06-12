@@ -4200,6 +4200,7 @@ export type Data_Raw = {
   field: Scalars['String'];
   id: Scalars['bigint'];
   is_active: Scalars['Boolean'];
+  is_owner_verified: Scalars['Boolean'];
   partner: Scalars['Int'];
   resource: Scalars['String'];
   resource_id: Scalars['Int'];
@@ -4268,6 +4269,7 @@ export type Data_Raw_Bool_Exp = {
   field: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Bigint_Comparison_Exp>;
   is_active: InputMaybe<Boolean_Comparison_Exp>;
+  is_owner_verified: InputMaybe<Boolean_Comparison_Exp>;
   partner: InputMaybe<Int_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
@@ -4312,6 +4314,7 @@ export type Data_Raw_Insert_Input = {
   field: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   is_active: InputMaybe<Scalars['Boolean']>;
+  is_owner_verified: InputMaybe<Scalars['Boolean']>;
   partner: InputMaybe<Scalars['Int']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -4368,6 +4371,7 @@ export type Data_Raw_Order_By = {
   field: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   is_active: InputMaybe<Order_By>;
+  is_owner_verified: InputMaybe<Order_By>;
   partner: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
@@ -4398,6 +4402,8 @@ export enum Data_Raw_Select_Column {
   /** column name */
   IsActive = 'is_active',
   /** column name */
+  IsOwnerVerified = 'is_owner_verified',
+  /** column name */
   Partner = 'partner',
   /** column name */
   Resource = 'resource',
@@ -4416,6 +4422,7 @@ export type Data_Raw_Set_Input = {
   field: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   is_active: InputMaybe<Scalars['Boolean']>;
+  is_owner_verified: InputMaybe<Scalars['Boolean']>;
   partner: InputMaybe<Scalars['Int']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -4475,6 +4482,8 @@ export enum Data_Raw_Update_Column {
   Id = 'id',
   /** column name */
   IsActive = 'is_active',
+  /** column name */
+  IsOwnerVerified = 'is_owner_verified',
   /** column name */
   Partner = 'partner',
   /** column name */
@@ -24035,6 +24044,15 @@ export type MarkDataRawAsInactiveMutationVariables = Exact<{
 
 export type MarkDataRawAsInactiveMutation = { __typename?: 'mutation_root', update_data_raw: { __typename?: 'data_raw_mutation_response', affected_rows: number } | null };
 
+export type GetIsOwnerVerifiedDataRawByResourceAndFieldQueryVariables = Exact<{
+  resourceType: Scalars['String'];
+  resourceId: Scalars['Int'];
+  field: Scalars['String'];
+}>;
+
+
+export type GetIsOwnerVerifiedDataRawByResourceAndFieldQuery = { __typename?: 'query_root', data_raw: Array<{ __typename?: 'data_raw', is_owner_verified: boolean }> };
+
 export type GetDisabledEmailByEmailOrDomainQueryVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
   domain: InputMaybe<Scalars['String']>;
@@ -25819,6 +25837,36 @@ export const useMarkDataRawAsInactiveMutation = <
       options
     );
 useMarkDataRawAsInactiveMutation.fetcher = (variables: MarkDataRawAsInactiveMutationVariables, options?: RequestInit['headers']) => fetcher<MarkDataRawAsInactiveMutation, MarkDataRawAsInactiveMutationVariables>(MarkDataRawAsInactiveDocument, variables, options);
+export const GetIsOwnerVerifiedDataRawByResourceAndFieldDocument = `
+    query GetIsOwnerVerifiedDataRawByResourceAndField($resourceType: String!, $resourceId: Int!, $field: String!) {
+  data_raw(
+    where: {_and: [{resource: {_eq: $resourceType}}, {resource_id: {_eq: $resourceId}}, {field: {_eq: $field}}]}
+    order_by: {created_at: desc}
+    limit: 1
+  ) {
+    is_owner_verified
+  }
+}
+    `;
+export const useGetIsOwnerVerifiedDataRawByResourceAndFieldQuery = <
+      TData = GetIsOwnerVerifiedDataRawByResourceAndFieldQuery,
+      TError = Error
+    >(
+      variables: GetIsOwnerVerifiedDataRawByResourceAndFieldQueryVariables,
+      options?: UseQueryOptions<GetIsOwnerVerifiedDataRawByResourceAndFieldQuery, TError, TData>
+    ) =>
+    useQuery<GetIsOwnerVerifiedDataRawByResourceAndFieldQuery, TError, TData>(
+      ['GetIsOwnerVerifiedDataRawByResourceAndField', variables],
+      fetcher<GetIsOwnerVerifiedDataRawByResourceAndFieldQuery, GetIsOwnerVerifiedDataRawByResourceAndFieldQueryVariables>(GetIsOwnerVerifiedDataRawByResourceAndFieldDocument, variables),
+      options
+    );
+useGetIsOwnerVerifiedDataRawByResourceAndFieldQuery.document = GetIsOwnerVerifiedDataRawByResourceAndFieldDocument;
+
+
+useGetIsOwnerVerifiedDataRawByResourceAndFieldQuery.getKey = (variables: GetIsOwnerVerifiedDataRawByResourceAndFieldQueryVariables) => ['GetIsOwnerVerifiedDataRawByResourceAndField', variables];
+;
+
+useGetIsOwnerVerifiedDataRawByResourceAndFieldQuery.fetcher = (variables: GetIsOwnerVerifiedDataRawByResourceAndFieldQueryVariables, options?: RequestInit['headers']) => fetcher<GetIsOwnerVerifiedDataRawByResourceAndFieldQuery, GetIsOwnerVerifiedDataRawByResourceAndFieldQueryVariables>(GetIsOwnerVerifiedDataRawByResourceAndFieldDocument, variables, options);
 export const GetDisabledEmailByEmailOrDomainDocument = `
     query GetDisabledEmailByEmailOrDomain($email: String, $domain: String) {
   disabled_emails(

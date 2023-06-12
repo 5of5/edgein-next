@@ -14,6 +14,8 @@ import {
   GetInvestmentRoundByRoundIdDocument,
   InsertDataDiscardMutation,
   InsertDataDiscardDocument,
+  GetIsOwnerVerifiedDataRawByResourceAndFieldDocument,
+  GetIsOwnerVerifiedDataRawByResourceAndFieldQuery,
 } from '@/graphql/types';
 import { User } from '@/models/user';
 import { Library } from '@/types/common';
@@ -477,6 +479,9 @@ export const mutateActionAndDataRaw = async (
         )
           setMainTableValues[field] = transformedValue;
 
+        const isOwnerVerified =
+          user?.person?.id === resourceId && resourceType === 'people';
+
         validData.push({
           created_at: currentTime,
           partner: partnerId,
@@ -486,6 +491,7 @@ export const mutateActionAndDataRaw = async (
           field,
           value: transformedValue === null ? '' : transformedValue,
           accuracy_weight: 1,
+          is_owner_verified: isOwnerVerified,
         });
 
         const actionResponse = await insertActionDataChange(
@@ -501,9 +507,29 @@ export const mutateActionAndDataRaw = async (
     }
   }
 
-  if (resourceId)
-    await updateMainTable(resourceType, resourceId, setMainTableValues);
-  else {
+  if (resourceId) {
+    // TODO: refactor to function
+    if (resourceType === 'people') {
+      for (const field in setMainTableValues) {
+        const isOwnerVerifiedField = (
+          await getIsOwnerVerifiedDataRawByResourceAndField(
+            resourceType,
+            resourceId,
+            field,
+          )
+        ).is_owner_verified;
+
+        if (isOwnerVerifiedField && resourceId !== user?.person?.id) {
+          delete setMainTableValues[field];
+        }
+      }
+    }
+
+    // update only allowed fields
+    if (Object.keys(setMainTableValues).length) {
+      await updateMainTable(resourceType, resourceId, setMainTableValues);
+    }
+  } else {
     const response = await insertResourceData(resourceType, setMainTableValues);
     resourceId = response?.id;
     validData.forEach(data => (data.resource_id = resourceId));
@@ -526,4 +552,18 @@ export const getCompanyByRoundId = async (round_id: number) => {
     variables: { round_id },
   });
   return investment_rounds[0];
+};
+
+const getIsOwnerVerifiedDataRawByResourceAndField = async (
+  resourceType: ResourceTypes,
+  resourceId: number,
+  field: string,
+) => {
+  const {
+    data: { data_raw },
+  } = await query<GetIsOwnerVerifiedDataRawByResourceAndFieldQuery>({
+    query: GetIsOwnerVerifiedDataRawByResourceAndFieldDocument,
+    variables: { resourceType, resourceId, field },
+  });
+  return data_raw[0];
 };
