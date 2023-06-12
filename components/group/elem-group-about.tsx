@@ -121,7 +121,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
             <ul className="mt-4 overflow-hidden border-t pt-2 border-black/10">
               {groupAdmins.map(mem => (
                 <li key={mem.id}>
-                  <Link href={`/people/${mem.user.person?.slug}/`}>
+                  <Link href={`/people/${mem.user?.person?.slug}/`}>
                     <a>
                       {mem.user?.person?.picture ? (
                         <ElemPhoto
@@ -137,7 +137,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                             mem.user?.display_name ? mem.user?.display_name : ''
                           }
                         >
-                          {mem.user.display_name?.charAt(0)}
+                          {mem.user?.display_name?.charAt(0)}
                         </div>
                       )}
                     </a>

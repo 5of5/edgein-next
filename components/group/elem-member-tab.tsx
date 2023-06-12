@@ -113,27 +113,29 @@ const ElemMemberTab: React.FC<Props> = ({
             key={member.id}
           >
             <div className="flex items-center gap-x-2">
-              {member.user.person?.picture ? (
+              {member.user?.person?.picture ? (
                 <ElemPhoto
                   wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
                   imgClass="object-contain w-full h-full border border-slate-100 "
-                  photo={member.user.person?.picture}
+                  photo={member.user?.person?.picture}
                   placeholder="user2"
                   placeholderClass="text-slate-300"
-                  imgAlt={member.user.display_name}
+                  imgAlt={member.user?.display_name}
                 />
               ) : (
                 <div className="flex items-center justify-center aspect-square w-10 rounded-lg bg-slate-200 text-dark-500 text-xl capitalize">
-                  {member.user.display_name?.charAt(0)}
+                  {member.user?.display_name?.charAt(0)}
                 </div>
               )}
 
-              <p className="font-bold capitalize">{member.user.display_name}</p>
-              {member.user.id === group.created_by_user_id && (
+              <p className="font-bold capitalize">
+                {member.user?.display_name}
+              </p>
+              {member.user?.id === group.created_by_user_id && (
                 <span>(Admin)</span>
               )}
             </div>
-            {isGroupManager && member.user.id !== group.created_by_user_id && (
+            {isGroupManager && member.user?.id !== group.created_by_user_id && (
               <Menu as="div" className="relative flex text-left">
                 {({ open }) => (
                   <>
@@ -155,7 +157,7 @@ const ElemMemberTab: React.FC<Props> = ({
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <Menu.Items className="absolute right-0 top-full mt-1 p-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {member.user.person?.slug && (
+                        {member.user?.person?.slug && (
                           <Menu.Item>
                             {({ active }) => (
                               <button
@@ -164,7 +166,7 @@ const ElemMemberTab: React.FC<Props> = ({
                                 } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
                                 onClick={e => {
                                   e.preventDefault();
-                                  handleViewProfile(member.user.person?.slug);
+                                  handleViewProfile(member.user?.person?.slug);
                                 }}
                               >
                                 View Profile
@@ -180,7 +182,7 @@ const ElemMemberTab: React.FC<Props> = ({
                               } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
                               onClick={e => {
                                 e.preventDefault();
-                                handleMakeGroupManager(member.user.id);
+                                handleMakeGroupManager(member.user!.id!);
                               }}
                             >
                               Make Group Manager
@@ -213,7 +215,7 @@ const ElemMemberTab: React.FC<Props> = ({
           </div>
         );
 
-        if (member.user.person?.slug) {
+        if (member.user?.person?.slug) {
           return (
             <Link href={`/people/${member.user.person?.slug}`} key={member.id}>
               <a className="block cursor-pointer hover:bg-slate-100">

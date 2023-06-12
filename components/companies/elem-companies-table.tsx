@@ -462,7 +462,7 @@ export const CompaniesTable: FC<Props> = ({
           />
         </div>
 
-        <div className="flex mt-6 lg:mt-0">
+        <div className="flex items-center mt-6 lg:mt-0">
           {shownItems === 0 ? (
             <></>
           ) : shownItems == totalItems ? (
@@ -485,7 +485,7 @@ export const CompaniesTable: FC<Props> = ({
                   onClick={onOpenUpgradeDialog}
                   btn="white"
                   roundedFull={true}
-                  className={`px-1 aspect-square ${
+                  className={`!p-1.5 aspect-square ${
                     pageNumber * itemsPerPage > 0
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
@@ -498,7 +498,7 @@ export const CompaniesTable: FC<Props> = ({
                   onClick={onOpenUpgradeDialog}
                   btn="white"
                   roundedFull={true}
-                  className={`px-1 aspect-square ${
+                  className={`!p-1.5 aspect-square ${
                     totalItems > shownItemsEnd
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
@@ -515,7 +515,7 @@ export const CompaniesTable: FC<Props> = ({
                   }
                   btn="white"
                   roundedFull={true}
-                  className={`px-1 aspect-square ${
+                  className={`!p-1.5 aspect-square ${
                     pageNumber * itemsPerPage > 0
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
@@ -528,7 +528,7 @@ export const CompaniesTable: FC<Props> = ({
                   onClick={totalItems > shownItemsEnd ? onClickNext : undefined}
                   btn="white"
                   roundedFull={true}
-                  className={`px-1 aspect-square ${
+                  className={`!p-1.5 aspect-square ${
                     totalItems > shownItemsEnd
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'

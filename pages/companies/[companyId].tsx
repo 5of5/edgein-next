@@ -34,7 +34,7 @@ import { companyLayerChoices, tokenInfoMetrics } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
 import parse from 'html-react-parser';
-import { newLineToP } from '@/utils/text';
+import { stripHtmlTags } from '@/utils/text';
 import { onTrackView } from '@/utils/track';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import { Popups } from '@/components/the-navbar';
@@ -246,13 +246,14 @@ const Company: NextPage<Props> = (props: Props) => {
                       overviewMore ? '' : 'line-clamp-3'
                     }`}
                   >
-                    {parse(newLineToP(company.overview))}
+                    {parse(stripHtmlTags(company.overview))}
                   </div>
+
                   {overviewDivHeight > 84 && (
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="px-0 py-0 inline font-normal"
+                      className="!px-0 !py-0 inline font-normal"
                     >
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>
