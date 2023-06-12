@@ -73,7 +73,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
   );
 
   const isDisplaySelectLibrary =
-    user?.email.endsWith('edgein.io') || user?.email.endsWith('techlist.com');
+    user?.email.endsWith('edgein.io') ||
+    user?.email.endsWith('techlist.com') ||
+    user?.email === 'mdinsdale@mac.com' ||
+    user?.email === 'dinghan@capital6.com';
 
   const { data: userProfile, isLoading: isFetchingUserProfile } =
     useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
@@ -298,6 +301,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
           <UsageModal
             onSignUp={showSignUpModal}
+            onLogin={showLoginModal}
             show={showPopup === 'usage'}
             onClose={onModalClose}
           />

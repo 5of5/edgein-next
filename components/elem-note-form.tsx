@@ -226,16 +226,20 @@ const ElemNoteForm: React.FC<Props> = ({
                         } on ${moment(selectedNote?.updated_at).format(
                           'LL h:mma',
                         )}`}
-                        className="cursor-pointer"
+                        direction="top-start"
                       >
-                        <ElemPhoto
-                          photo={user?.profilePicture || user?.person?.picture}
-                          wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
-                          imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                          imgAlt={user?.display_name}
-                          placeholder="user"
-                          placeholderClass="text-slate-300"
-                        />
+                        <div className="cursor-pointer">
+                          <ElemPhoto
+                            photo={
+                              user?.profilePicture || user?.person?.picture
+                            }
+                            wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+                            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                            imgAlt={user?.display_name}
+                            placeholder="user"
+                            placeholderClass="text-slate-300"
+                          />
+                        </div>
                       </ElemTooltip>
                     ) : (
                       <ElemPhoto

@@ -43,7 +43,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
               </h3>
               {coin && (
                 <ElemTooltip
-                  content={`Token / Value`}
+                  content={`Token`}
                   className="inline-flex items-center overflow-visible"
                 >
                   <span className="uppercase">{coin.ticker}</span>

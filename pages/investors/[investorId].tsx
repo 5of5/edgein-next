@@ -13,7 +13,7 @@ import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { ElemOrganizationActivity } from '@/components/elem-organization-activity';
 import parse from 'html-react-parser';
-import { newLineToP } from '@/utils/text';
+import { stripHtmlTags } from '@/utils/text';
 
 import { runGraphQl } from '@/utils';
 import {
@@ -177,13 +177,13 @@ const VCFirm: NextPage<Props> = props => {
                       overviewMore ? '' : 'line-clamp-3'
                     }`}
                   >
-                    {parse(newLineToP(vcfirm.overview))}
+                    {parse(stripHtmlTags(vcfirm.overview))}
                   </div>
                   {overviewDivHeight > 84 && (
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="px-0 py-0 inline font-normal"
+                      className="!px-0 !py-0 inline font-normal"
                     >
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>

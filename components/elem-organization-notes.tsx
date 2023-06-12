@@ -76,14 +76,17 @@ const ElemOrganizationNotes: FC<Props> = ({
             <IconLockClosed className="h-5 w-5 mr-1" title="Private" />
             Notes{` ${notes.length > 0 ? '(' + notes.length + ')' : ''}`}{' '}
           </h2>
+
           <ElemTooltip
             size="md"
             content="Notes are private to you, but you can change the audience of any note."
           >
-            <IconInformationCircle
-              className="h-5 w-5 text-primary-500"
-              title="About notes"
-            />
+            <div>
+              <IconInformationCircle
+                className="h-5 w-5 text-primary-500"
+                title="About notes"
+              />
+            </div>
           </ElemTooltip>
         </div>
         <ElemButton btn="purple" onClick={onOpenNoteForm} className="!pl-3">

@@ -305,8 +305,8 @@ const getAmberDexCoin = async (ticker: string) => {
       return {};
     }
     const payload = JSON.parse(await ret.text()).payload;
-
-    if (payload !== {}) {
+    //payload !== {}
+    if (JSON.stringify(payload) === JSON.stringify({})) {
       const rankInfo = await getAmberRanking();
       const rank = JSON.parse(rankInfo as string)[ticker];
       return {
