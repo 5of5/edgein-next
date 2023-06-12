@@ -105,11 +105,8 @@ export default function OnboardingStep1(props: Props) {
                   {selectedOption ? (
                     submitButtonComponent
                   ) : (
-                    <ElemTooltip
-                      content="Please click one of the options"
-                      className="cursor-auto"
-                    >
-                      {submitButtonComponent}
+                    <ElemTooltip content="Please click one of the options">
+                      <div className="cursor-auto">{submitButtonComponent}</div>
                     </ElemTooltip>
                   )}
                 </div>

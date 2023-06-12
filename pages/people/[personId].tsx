@@ -118,14 +118,13 @@ const Person: NextPage<Props> = props => {
                     </h1>
 
                     {claimedProfile && (
-                      <ElemTooltip
-                        content="Claimed profile"
-                        className="cursor-pointer"
-                      >
-                        <IconCheckBadgeSolid
-                          className="h-8 w-8 text-primary-500"
-                          title="Claimed profile"
-                        />
+                      <ElemTooltip content="Claimed profile">
+                        <div className="cursor-pointer">
+                          <IconCheckBadgeSolid
+                            className="h-8 w-8 text-primary-500"
+                            title="Claimed profile"
+                          />
+                        </div>
                       </ElemTooltip>
                     )}
                   </div>

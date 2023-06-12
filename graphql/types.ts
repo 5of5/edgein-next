@@ -87,6 +87,7 @@ export type String_Comparison_Exp = {
 export type Actions = {
   __typename?: 'actions';
   action: Scalars['String'];
+  api_key: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['Int'];
   page: Scalars['String'];
@@ -153,6 +154,7 @@ export type Actions_Bool_Exp = {
   _not: InputMaybe<Actions_Bool_Exp>;
   _or: InputMaybe<Array<Actions_Bool_Exp>>;
   action: InputMaybe<String_Comparison_Exp>;
+  api_key: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   page: InputMaybe<String_Comparison_Exp>;
@@ -195,6 +197,7 @@ export type Actions_Inc_Input = {
 /** input type for inserting data into table "actions" */
 export type Actions_Insert_Input = {
   action: InputMaybe<Scalars['String']>;
+  api_key: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   page: InputMaybe<Scalars['String']>;
@@ -209,6 +212,7 @@ export type Actions_Insert_Input = {
 export type Actions_Max_Fields = {
   __typename?: 'actions_max_fields';
   action: Maybe<Scalars['String']>;
+  api_key: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['String']>;
@@ -222,6 +226,7 @@ export type Actions_Max_Fields = {
 export type Actions_Min_Fields = {
   __typename?: 'actions_min_fields';
   action: Maybe<Scalars['String']>;
+  api_key: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['String']>;
@@ -257,6 +262,7 @@ export type Actions_On_Conflict = {
 /** Ordering options when selecting data from "actions". */
 export type Actions_Order_By = {
   action: InputMaybe<Order_By>;
+  api_key: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   page: InputMaybe<Order_By>;
@@ -282,6 +288,8 @@ export enum Actions_Select_Column {
   /** column name */
   Action = 'action',
   /** column name */
+  ApiKey = 'api_key',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
@@ -302,6 +310,7 @@ export enum Actions_Select_Column {
 /** input type for updating data in table "actions" */
 export type Actions_Set_Input = {
   action: InputMaybe<Scalars['String']>;
+  api_key: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   page: InputMaybe<Scalars['String']>;
@@ -352,6 +361,8 @@ export type Actions_Sum_Fields = {
 export enum Actions_Update_Column {
   /** column name */
   Action = 'action',
+  /** column name */
+  ApiKey = 'api_key',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1568,6 +1579,7 @@ export type Comments = {
   content: Scalars['String'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
+  created_by_user: Maybe<Users_Public>;
   created_by_user: Maybe<Users_Public>;
   created_by_user_id: Scalars['Int'];
   id: Scalars['Int'];
@@ -5765,7 +5777,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Scalars['String'];
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -15454,7 +15466,6 @@ export type Notifications = {
   notification_actions: Array<Notification_Actions>;
   /** An aggregate relationship */
   notification_actions_aggregate: Notification_Actions_Aggregate;
-  notification_resource_id: Maybe<Scalars['Int']>;
   notification_resource_type: Scalars['String'];
   read: Scalars['Boolean'];
   read_at: Maybe<Scalars['timestamptz']>;
@@ -15531,7 +15542,6 @@ export type Notifications_Avg_Fields = {
   __typename?: 'notifications_avg_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15550,7 +15560,6 @@ export type Notifications_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   message: InputMaybe<String_Comparison_Exp>;
   notification_actions: InputMaybe<Notification_Actions_Bool_Exp>;
-  notification_resource_id: InputMaybe<Int_Comparison_Exp>;
   notification_resource_type: InputMaybe<String_Comparison_Exp>;
   read: InputMaybe<Boolean_Comparison_Exp>;
   read_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -15585,7 +15594,6 @@ export type Notifications_Delete_Key_Input = {
 export type Notifications_Inc_Input = {
   company_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
-  notification_resource_id: InputMaybe<Scalars['Int']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
@@ -15601,7 +15609,6 @@ export type Notifications_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   message: InputMaybe<Scalars['String']>;
   notification_actions: InputMaybe<Notification_Actions_Arr_Rel_Insert_Input>;
-  notification_resource_id: InputMaybe<Scalars['Int']>;
   notification_resource_type: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
@@ -15620,7 +15627,6 @@ export type Notifications_Max_Fields = {
   follow_resource_type: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
-  notification_resource_id: Maybe<Scalars['Int']>;
   notification_resource_type: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
   target_user_id: Maybe<Scalars['Int']>;
@@ -15637,7 +15643,6 @@ export type Notifications_Min_Fields = {
   follow_resource_type: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
-  notification_resource_id: Maybe<Scalars['Int']>;
   notification_resource_type: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
   target_user_id: Maybe<Scalars['Int']>;
@@ -15679,7 +15684,6 @@ export type Notifications_Order_By = {
   id: InputMaybe<Order_By>;
   message: InputMaybe<Order_By>;
   notification_actions_aggregate: InputMaybe<Notification_Actions_Aggregate_Order_By>;
-  notification_resource_id: InputMaybe<Order_By>;
   notification_resource_type: InputMaybe<Order_By>;
   read: InputMaybe<Order_By>;
   read_at: InputMaybe<Order_By>;
@@ -15716,8 +15720,6 @@ export enum Notifications_Select_Column {
   /** column name */
   Message = 'message',
   /** column name */
-  NotificationResourceId = 'notification_resource_id',
-  /** column name */
   NotificationResourceType = 'notification_resource_type',
   /** column name */
   Read = 'read',
@@ -15740,7 +15742,6 @@ export type Notifications_Set_Input = {
   follow_resource_type: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   message: InputMaybe<Scalars['String']>;
-  notification_resource_id: InputMaybe<Scalars['Int']>;
   notification_resource_type: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
@@ -15754,7 +15755,6 @@ export type Notifications_Stddev_Fields = {
   __typename?: 'notifications_stddev_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15764,7 +15764,6 @@ export type Notifications_Stddev_Pop_Fields = {
   __typename?: 'notifications_stddev_pop_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15774,7 +15773,6 @@ export type Notifications_Stddev_Samp_Fields = {
   __typename?: 'notifications_stddev_samp_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15784,7 +15782,6 @@ export type Notifications_Sum_Fields = {
   __typename?: 'notifications_sum_fields';
   company_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
-  notification_resource_id: Maybe<Scalars['Int']>;
   target_user_id: Maybe<Scalars['Int']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
@@ -15806,8 +15803,6 @@ export enum Notifications_Update_Column {
   /** column name */
   Message = 'message',
   /** column name */
-  NotificationResourceId = 'notification_resource_id',
-  /** column name */
   NotificationResourceType = 'notification_resource_type',
   /** column name */
   Read = 'read',
@@ -15826,7 +15821,6 @@ export type Notifications_Var_Pop_Fields = {
   __typename?: 'notifications_var_pop_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15836,7 +15830,6 @@ export type Notifications_Var_Samp_Fields = {
   __typename?: 'notifications_var_samp_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15846,7 +15839,6 @@ export type Notifications_Variance_Fields = {
   __typename?: 'notifications_variance_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -24051,14 +24043,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -24066,7 +24058,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -24088,7 +24080,7 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -27775,6 +27767,15 @@ export const GetNotesDocument = `
     user_group {
       id
       name
+    }
+    created_by_user {
+      id
+      display_name
+      person {
+        slug
+        name
+        picture
+      }
     }
     likes {
       id

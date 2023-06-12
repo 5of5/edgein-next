@@ -10,16 +10,21 @@ import {
 } from '@/components/icons';
 import { GetNewsQuery } from '@/graphql/types';
 import Link from 'next/link';
-import { getCleanWebsiteUrl } from '@/utils/text';
+import { getCleanWebsiteUrl, stripHtmlTags } from '@/utils/text';
 import parse from 'html-react-parser';
 import moment from 'moment-timezone';
 
 type Props = {
+  className?: string;
   newsPost: GetNewsQuery['news'][0];
   tagOnClick?: any;
 };
 
-export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
+export const ElemNewsCard: FC<Props> = ({
+  className = '',
+  newsPost,
+  tagOnClick,
+}) => {
   const [postData, setPostData] = useState(newsPost);
 
   useEffect(() => {
@@ -52,7 +57,9 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
   };
 
   return (
-    <div className="flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all">
+    <div
+      className={`flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all ${className}`}
+    >
       <div className="flex items-start">
         {link && (
           <div>
@@ -120,23 +127,41 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
       </div>
       <div className="grow text-gray-400">
         {metadata?.description && (
-          <div className="grow mt-4">
-            <div className="inline text-gray-400 line-clamp line-clamp-5">
-              {link && (
-                <Link href={link}>
-                  <a target="_blank">
-                    {metadata?.image && (
-                      <img
-                        src={metadata?.image}
-                        alt={text}
-                        className="rounded-lg h-16 mr-3 float-left hover:opacity-75"
-                      />
-                    )}{' '}
-                  </a>
-                </Link>
-              )}
-              {parse(metadata?.description)}
-            </div>
+          <div className="mt-4 text-gray-400">
+            {link && metadata?.image && (
+              <Link href={link}>
+                <a target="_blank" className="block mb-2">
+                  {metadata?.image && (
+                    <img
+                      src={metadata?.image}
+                      alt={text}
+                      className="rounded-lg w-full h-auto mr-3  hover:opacity-75"
+                    />
+                  )}{' '}
+                </a>
+              </Link>
+            )}
+
+            {link ? (
+              <Link href={link}>
+                <a
+                  target="_blank"
+                  className={`${
+                    metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
+                  }`}
+                >
+                  {parse(stripHtmlTags(metadata?.description))}
+                </a>
+              </Link>
+            ) : (
+              <p
+                className={`${
+                  metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
+                }`}
+              >
+                {parse(stripHtmlTags(metadata?.description))}
+              </p>
+            )}
           </div>
         )}
 
@@ -169,13 +194,14 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
                         placeholderClass="text-slate-300"
                       />
                     }
-                    mode="light"
                   >
-                    <Link href={slug}>
-                      <a className="break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-                        {organization?.name}
-                      </a>
-                    </Link>
+                    <div className="inline-block">
+                      <Link href={slug}>
+                        <a className="break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                          {organization?.name}
+                        </a>
+                      </Link>
+                    </div>
                   </ElemTooltip>
                   {otherOrganizations.length === index + 1 ? '' : ', '}
                 </Fragment>

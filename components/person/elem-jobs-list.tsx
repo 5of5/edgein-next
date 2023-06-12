@@ -65,8 +65,10 @@ export const ElemJobsList: React.FC<Props> = ({
                           {team.company.name}
                         </a>
                       </Link>
-                    ) : (
+                    ) : team.company?.name ? (
                       <>{team.company?.name}</>
+                    ) : (
+                      <>Undisclosed company</>
                     )}
 
                     <div className="flex space-x-2">

@@ -81,7 +81,11 @@ export const ElemCredibility: React.FC<Props> = ({
               } text-slate-600`}
             >
               {mini ? (
-                <ElemTooltip content={item.text}>{credibilityItem}</ElemTooltip>
+                <>
+                  <ElemTooltip content={item.text}>
+                    <div className="inline-block">{credibilityItem}</div>
+                  </ElemTooltip>
+                </>
               ) : (
                 <>
                   {credibilityItem}
