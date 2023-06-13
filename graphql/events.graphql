@@ -199,3 +199,18 @@ query GetSubEvents($parent_event_id: Int!) {
     created_at
   }
 }
+
+query GetEventOrganizationById($id: Int!) {
+  event_organization(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    company_id
+    vc_firm_id
+    type
+    event {
+      id
+      name
+      slug
+      status
+    }
+  }
+}
