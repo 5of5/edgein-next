@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren, useState, useEffect } from 'react';
+import { FC, Fragment, ReactElement, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -14,22 +14,15 @@ import { ElemTeamMember } from './elem-team-member';
 import { toast } from 'react-hot-toast';
 
 type Props = {
-  //isOpen: boolean;
-  //onClose: () => void;
-  //title?: string;
+  children: ReactElement;
 };
 
-export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
-  //isOpen,
-  //onClose,
-  //title,
-  children,
-}) => {
+export const ElemInviteBanner: FC<Props> = ({ children }) => {
   const { user } = useUser();
 
   const [showBanner, setShowBanner] = useState(true);
 
-  const [isOpenInviteDialog, setIsOpenInviteDialog] = useState<boolean>(false);
+  const [isOpenInviteDialog, setIsOpenInviteDialog] = useState(false);
 
   const [selectedPeople, setSelectedPeople] = useState<Record<string, any>[]>(
     [],
