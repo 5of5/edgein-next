@@ -4,13 +4,11 @@ import {
   IconChevronDownMini,
   IconPlus,
   IconSettings,
-  IconChevronRight,
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { User_Groups } from '@/graphql/types';
 import { ElemMemberAvatarList } from '@/components/group/elem-member-avatar-list';
 import { SettingTabProps } from './elem-setting-dialog';
-import Link from 'next/link';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 
 type Props = {
@@ -65,6 +63,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 
             <div className="flex items-center mt-1 pl-1">
               <ElemMemberAvatarList
+                isUserBelongToGroup={isUserBelongToGroup}
                 members={group.user_group_members}
                 onClick={() => onOpenSettingDialog('members')}
               />
@@ -123,11 +122,12 @@ export const ElemGroupInformation: React.FC<Props> = ({
             {group.public && (
               <div className="flex items-center mt-1 pl-1">
                 <ElemMemberAvatarList
+                  isUserBelongToGroup={isUserBelongToGroup}
                   members={group.user_group_members}
                   onClick={() => onOpenSettingDialog('members')}
                 />
                 <h4
-                  className="font-medium text-sm text-slate-600 ml-1 cursor-pointer hover:underline"
+                  className="font-medium text-sm text-slate-600 ml-1"
                   onClick={() => onOpenSettingDialog('members')}
                 >
                   {group.user_group_members.length} Member
