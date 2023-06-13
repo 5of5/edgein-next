@@ -5,7 +5,7 @@ import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconLinkedIn, IconContributor } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ElemInviteLinks } from '@/components/elem-invite-links';
+import { ElemInviteLinks } from '@/components/invites/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';
 import { useGetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';

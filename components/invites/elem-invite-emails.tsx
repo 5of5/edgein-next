@@ -5,7 +5,7 @@ import validator from 'validator';
 import { useDebounce } from '@/hooks/use-debounce';
 import { ElemPhoto } from '@/components/elem-photo';
 import { IconX } from '@/components/icons';
-import { PlaceholderPerson } from './placeholders';
+import { PlaceholderPerson } from '../placeholders';
 import { isFreeEmail } from '@/utils/helpers';
 import { DEBOUNCE_TIME } from '@/utils/constants';
 

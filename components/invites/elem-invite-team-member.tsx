@@ -9,7 +9,7 @@ type Props = {
   teamMember: GetTeamMemberByCompanyIdQuery['team_members'][0];
 };
 
-export const ElemTeamMember: React.FC<Props> = ({ teamMember }) => {
+export const ElemInviteTeamMember: React.FC<Props> = ({ teamMember }) => {
   const {
     mutate: sendInvitationEmail,
     isLoading,

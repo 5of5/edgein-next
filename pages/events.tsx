@@ -10,7 +10,7 @@ import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import moment from 'moment-timezone';
 import { IconSearch, IconAnnotation } from '@/components/icons';
-import { ElemInviteBanner } from '@/components/invite-banner/elem-invite-banner';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import {
   GetEventsDocument,
   GetEventsQuery,

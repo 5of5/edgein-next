@@ -10,7 +10,7 @@ import { PlaceholderNewsCard } from '@/components/placeholders';
 import { runGraphQl } from '../utils';
 import toast, { Toaster } from 'react-hot-toast';
 import { IconAnnotation, IconSearch } from '@/components/icons';
-import { ElemInviteBanner } from '@/components/invite-banner/elem-invite-banner';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 import {
   News,

@@ -8,9 +8,9 @@ import {
 import { useUser } from '@/context/user-context';
 import { IconX, IconArrowRight } from '../icons';
 import { ElemButton } from '../elem-button';
-import ElemInviteEmails from '../elem-invite-emails';
+import ElemInviteEmails from './elem-invite-emails';
 import { useMutation } from 'react-query';
-import { ElemTeamMember } from './elem-team-member';
+import { ElemInviteTeamMember } from './elem-invite-team-member';
 import { toast } from 'react-hot-toast';
 
 type Props = {
@@ -202,7 +202,10 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
                         </div>
                         <div className="max-h-[325px] overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
                           {teamMembers.map(mem => (
-                            <ElemTeamMember key={mem.id} teamMember={mem} />
+                            <ElemInviteTeamMember
+                              key={mem.id}
+                              teamMember={mem}
+                            />
                           ))}
                         </div>
                       </div>

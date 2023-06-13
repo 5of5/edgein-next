@@ -5,6 +5,7 @@ import CookieService from '@/utils/cookie';
 type MailParams = {
   email: string;
   senderName: string;
+  senderEmail: string;
   signUpUrl?: string;
 };
 
@@ -32,6 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const mailParams: MailParams = {
         email,
         senderName: user.display_name || '',
+        senderEmail: user.email || '',
         signUpUrl: `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`,
       };
 
@@ -44,12 +46,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const sendInvitationMail = async (mailParams: MailParams) => {
-  const { email, senderName, signUpUrl } = mailParams;
+  const { email, senderName, senderEmail, signUpUrl } = mailParams;
   const html = `
       <b>You received an invitation to join EdgeIn</b>,
-      <p><b>${senderName}</b> invited you to use EdgeIn with them. </p> <br/>
+      <p><b>${senderName} (${senderEmail})</b> has invited you to use EdgeIn, start working with ${senderName}.</p> <br/>
 
-      <a href="${signUpUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">JOIN NOW</a>
+      <a href="${signUpUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">Accept Invitation</a>
     `;
 
   try {
@@ -66,7 +68,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
         },
         Subject: {
           Charset: 'UTF-8',
-          Data: `${senderName} invited you to join EdgeIn`,
+          Data: `${senderName} (${senderEmail}) invited you to EdgeIn`,
         },
       },
       Source: SES_SOURCE,

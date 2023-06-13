@@ -42,6 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const mailParams: any = {
         email: resource.email,
         senderName: user.display_name || '',
+        senderEmail: user.email || '',
         groupName,
         isExistedUser: resource.isExistedUser,
       };
@@ -69,6 +70,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     isExistedUser,
     email,
     senderName,
+    senderEmail,
     recipientName,
     groupName,
     groupUrl,
