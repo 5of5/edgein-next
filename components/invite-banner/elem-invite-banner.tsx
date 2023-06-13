@@ -14,7 +14,7 @@ import { ElemTeamMember } from './elem-team-member';
 import { toast } from 'react-hot-toast';
 
 type Props = {
-  children: ReactElement;
+  children?: ReactElement;
 };
 
 export const ElemInviteBanner: FC<Props> = ({ children }) => {
