@@ -517,7 +517,7 @@ export const mutateActionAndDataRaw = async (
             resourceId,
             field,
           )
-        ).is_owner_verified;
+        );
 
         if (isOwnerVerifiedField && resourceId !== user?.person?.id) {
           delete setMainTableValues[field];
@@ -565,5 +565,5 @@ const getIsOwnerVerifiedDataRawByResourceAndField = async (
     query: GetIsOwnerVerifiedDataRawByResourceAndFieldDocument,
     variables: { resourceType, resourceId, field },
   });
-  return data_raw[0];
+  return data_raw?.[0]?.is_owner_verified || false;
 };

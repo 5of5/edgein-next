@@ -37,9 +37,9 @@ query GetIsOwnerVerifiedDataRawByResourceAndField(
         { resource: { _eq: $resourceType } }
         { resource_id: { _eq: $resourceId } }
         { field: { _eq: $field } }
+        { is_owner_verified: { _eq: true }}
       ]
     }
-    order_by: { created_at: desc }
     limit: 1
   ) {
     is_owner_verified

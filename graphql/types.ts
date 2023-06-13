@@ -25840,8 +25840,7 @@ useMarkDataRawAsInactiveMutation.fetcher = (variables: MarkDataRawAsInactiveMuta
 export const GetIsOwnerVerifiedDataRawByResourceAndFieldDocument = `
     query GetIsOwnerVerifiedDataRawByResourceAndField($resourceType: String!, $resourceId: Int!, $field: String!) {
   data_raw(
-    where: {_and: [{resource: {_eq: $resourceType}}, {resource_id: {_eq: $resourceId}}, {field: {_eq: $field}}]}
-    order_by: {created_at: desc}
+    where: {_and: [{resource: {_eq: $resourceType}}, {resource_id: {_eq: $resourceId}}, {field: {_eq: $field}}, {is_owner_verified: {_eq: true}}]}
     limit: 1
   ) {
     is_owner_verified
