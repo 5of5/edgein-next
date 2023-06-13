@@ -2,12 +2,16 @@ import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
+import { Library, Tag } from '@/types/common';
 import {
+  aiTags,
   eventBannerList,
   EXPLORE_MENU_OPEN_KEY,
   MY_EDGEIN_MENU_OPEN_KEY,
   MY_GROUPS_MENU_OPEN_KEY,
   MY_LISTS_MENU_OPEN_KEY,
+  NON_SELECTABLE_WEB_3_TAGS,
+  web3Tags,
 } from './constants';
 
 const makeObjectWithoutPrototype = () => Object.create(null);
@@ -134,3 +138,25 @@ export const isFreeEmail = (email: string) => {
   const pattern = /@(gmail|yahoo|hotmail)/i;
   return pattern.test(email);
 };
+
+export const getSelectableWeb3Tags = () => {
+  return web3Tags.filter(
+    ({ name }) => !NON_SELECTABLE_WEB_3_TAGS.includes(name),
+  );
+};
+
+export const getTagChoicesByLibraries = (libraries: Library[]) => {
+  let tagChoices: Tag[] = [];
+
+  if (libraries?.includes('AI')) {
+    tagChoices = tagChoices.concat(aiTags);
+  }
+
+  if (libraries?.includes('Web3')) {
+    tagChoices = tagChoices.concat(web3Tags);
+  }
+
+  return tagChoices;
+};
+
+export const getAllTags = () => [...web3Tags, ...aiTags];
