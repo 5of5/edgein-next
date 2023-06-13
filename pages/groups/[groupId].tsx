@@ -91,6 +91,7 @@ const Group: NextPage<Props> = (props: Props) => {
   }, []);
 
   const onOpenInviteDialog = () => {
+    setIsOpenSettingDialog(false);
     setIsOpenInviteDialog(true);
   };
 

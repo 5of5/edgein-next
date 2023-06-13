@@ -33,7 +33,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" static className="relative z-40" onClose={() => null}>
+      <Dialog as="div" className="relative z-40" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
