@@ -8,6 +8,7 @@
 -- "phone" text NULL,
 -- "company_name" text NULL,
 -- "website" text NULL,
+-- "campaign_id" text NULL,
 -- "status" text NOT NULL DEFAULT 'draft'::text,
 -- "created_at" date NOT NULL DEFAULT now(),
 -- "updated_at" date NOT NULL DEFAULT now(),
