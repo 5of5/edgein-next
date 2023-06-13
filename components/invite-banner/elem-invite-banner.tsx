@@ -1,4 +1,5 @@
 import { Fragment, PropsWithChildren, useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   useGetTeamMemberByCompanyIdQuery,
@@ -121,7 +122,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
     <>
       {showBanner && (
         <div className="flex items-center gap-x-6 px-6 py-2.5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg sm:px-3.5 sm:before:flex-1">
-          <p className="leading-6 text-white">
+          <p className="leading-6 text-primary-100">
             <button onClick={onOpenUpgradeDialog}>
               <strong className="font-bold">Share and earn</strong>
               <svg
@@ -132,9 +133,12 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                 <circle cx={1} cy={1} r={1} />
               </svg>
               Tell a friend and get $14.99 in credit for every person you
-              invite.&nbsp;
+              invite.{' '}
               <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
             </button>
+            <Link href={'/account'}>
+              <a className="ml-2 text-primary-100 opacity-75">details.</a>
+            </Link>
           </p>
           <div className="flex flex-1 justify-end">
             <button
@@ -220,7 +224,7 @@ export const ElemInviteBanner: React.FC<PropsWithChildren<Props>> = ({
                         <div className="flex flex-col gap-1">
                           <ElemInviteEmails
                             label="Invite with email"
-                            description="Send an email invite to people"
+                            description="Send an email invite"
                             placeholder="Enter multiple emails"
                             selected={selectedPeople}
                             onChange={setSelectedPeople}

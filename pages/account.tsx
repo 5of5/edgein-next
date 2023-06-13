@@ -129,33 +129,35 @@ export default function Account() {
         <div className="flex justify-between items-center mb-2">
           <h2 className="font-bold text-xl">Referrals and credits</h2>
         </div>
-        <div className="py-4 lg:grid lg:grid-cols-5 lg:gap-6 lg:py-5 border-y border-black/10">
-          <div className="lg:col-span-4">
-            <div className="max-w-2xl">
-              <h3 className="font-bold text-xl">
-                Get $14.99 in credit for every person you refer to EdgeIn.
-              </h3>
-              <p className="mt-2 text-slate-600 text-sm">
-                You&rsquo;ll only receive credit when the person you invite
-                signs up and claims their profile. You can redeem this credit to
-                upgrade to a Contributor plan. Referring someone below will not
-                invite them to your account or share any of your content with
-                them. You&rsquo;ll receive credit once they sign up and claim
-                their profile.
-              </p>
-              {user && user.reference_id && (
-                <div className="mt-2 lg:mt-0">
-                  <ElemInviteLinks user={user} personSlug={personSlug} />
-                </div>
-              )}
-            </div>
-          </div>
 
-          <div className="mt-4 lg:col-span-1 lg:mt-0">
-            <h2 className="font-bold">Your credits</h2>
-            <p className="text-slate-600">No credit awarded yet.</p>
-          </div>
-        </div>
+        <EditSection
+          heading="Share and earn"
+          right={
+            <>
+              <div>
+                <h2 className="font-bold">Your credits</h2>
+                <p className="text-slate-600">No credit awarded yet.</p>
+              </div>
+            </>
+          }
+        >
+          <h3 className="font-bold">
+            Get $14.99 in credit for every person you refer to EdgeIn.
+          </h3>
+          <p className="mt-2 text-slate-600">
+            You&rsquo;ll only receive credit when the person you invite signs up
+            and claims their profile. You can redeem this credit to upgrade to
+            an EdgeIn plan. Referring someone below will not invite them to your
+            account or share any of your content with them. You&rsquo;ll receive
+            credit once they sign up and claim their profile.
+          </p>
+
+          {user && user.reference_id && (
+            <div className="mt-6">
+              <ElemInviteLinks user={user} personSlug={personSlug} />
+            </div>
+          )}
+        </EditSection>
       </div>
 
       <div className="bg-white shadow rounded-lg mt-5 p-5">
