@@ -92,99 +92,91 @@ export const validateNameAndSlugAndEmailAndDomain = async (
     if (filterSlug && filterSlug?.length > 0) {
       errors.slug = 'Slug already used';
     }
-    if (filterGithub && filterGithub?.length > 0 && values?.github !== '') {
+    if (filterGithub && filterGithub?.length > 0 && values?.github) {
       errors.github = 'Github already used';
     }
-    if (
-      filterLinkedin &&
-      filterLinkedin?.length > 0 &&
-      values?.linkedin !== ''
-    ) {
+    if (filterLinkedin && filterLinkedin?.length > 0 && values?.linkedin) {
       errors.linkedin = 'Linkedin already used';
     }
-    if (filterWebsite && filterWebsite?.length > 0 && values?.website !== '') {
+    if (filterWebsite && filterWebsite?.length > 0 && values?.website) {
       errors.website = 'Website already used';
     }
-    if (
-      filterGlassdoor &&
-      filterGlassdoor?.length > 0 &&
-      values?.glassdoor !== ''
-    ) {
+    if (filterGlassdoor && filterGlassdoor?.length > 0 && values?.glassdoor) {
       errors.glassdoor = 'Glassdoor already used';
     }
-    if (filterdiscord && filterdiscord?.length > 0 && values?.discord !== '') {
+    if (filterdiscord && filterdiscord?.length > 0 && values?.discord) {
       errors.discord = 'Discord already used';
     }
     if (
       filterCompanyLinkedin &&
       filterCompanyLinkedin?.length > 0 &&
-      values?.company_linkedin !== ''
+      values?.company_linkedin
     ) {
       errors.company_linkedin = 'Company Linkedin already used';
     }
-    if (filterTwitter && filterTwitter?.length > 0 && values?.twitter !== '') {
+    if (filterTwitter && filterTwitter?.length > 0 && values?.twitter) {
       errors.twitter = 'Twitter already used';
     }
 
     if (
       values.hasOwnProperty('website') &&
-      values?.website !== '' &&
+      values?.website &&
       !urlPattern.test(values?.website)
     ) {
       errors.website = 'Website URL is not valid';
     }
     if (
       values.hasOwnProperty('github') &&
-      values?.github !== '' &&
+      values?.github &&
       !urlPattern.test(values?.github)
     ) {
       errors.github = 'Github URL is not valid';
     }
     if (
       values.hasOwnProperty('twitter') &&
-      values?.twitter !== '' &&
+      values?.twitter &&
       !urlPattern.test(values?.twitter)
     ) {
       errors.twitter = 'Twitter URL is not valid';
     }
     if (
       values.hasOwnProperty('company_linkedin') &&
-      values?.company_linkedin !== '' &&
+      values?.company_linkedin &&
       !urlPattern.test(values?.company_linkedin)
     ) {
       errors.company_linkedin = 'Linkedin URL is not valid';
     }
     if (
       values.hasOwnProperty('linkedin') &&
-      values?.linkedin !== '' &&
+      values?.linkedin &&
       !urlPattern.test(values?.linkedin)
     ) {
       errors.linkedin = 'Linkedin URL is not valid';
     }
     if (
       values.hasOwnProperty('discord') &&
-      values?.discord !== '' &&
+      values?.discord &&
       !urlPattern.test(values?.discord)
     ) {
       errors.discord = 'Discord URL is not valid';
     }
     if (
       values.hasOwnProperty('glassdoor') &&
-      values?.glassdoor !== '' &&
+      values?.glassdoor &&
       !urlPattern.test(values?.glassdoor)
     ) {
       errors.glassdoor = 'Glassdoor URL is not valid';
     }
     if (
       values.hasOwnProperty('work_email') &&
-      values?.work_email !== '' &&
+      values?.work_email &&
       !emailPattern.test(values?.work_email)
     ) {
       errors.work_email = 'Work Email is not valid';
     }
     if (
       values.hasOwnProperty('personal_email') &&
-      values?.personal_email !== '' &&
+      values?.personal_email &&
       !emailPattern.test(values?.personal_email)
     ) {
       errors.personal_email = 'Personal Email is not valid';
