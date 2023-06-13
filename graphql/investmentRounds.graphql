@@ -21,3 +21,17 @@ query GetInvestmentRoundByRoundId($round_id: Int!) {
     company_id
   }
 }
+
+query GetInvestmentRoundById($id: Int!) {
+  investment_rounds(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    round
+    company_id
+    status
+    company {
+      id
+      name
+      slug
+    }
+  }
+}
