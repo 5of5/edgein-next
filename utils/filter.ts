@@ -12,9 +12,14 @@ import {
   User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
-import { DeepPartial, GroupsTabType } from '@/types/common';
-import { eventTypeChoices, roundChoices, tags } from '@/utils/constants';
+import { DeepPartial, GroupsTabType, Library } from '@/types/common';
+import {
+  aiTags,
+  eventTypeChoices,
+  roundChoices,
+} from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
+import { getSelectableWeb3Tags } from './helpers';
 
 export const getDefaultFilter = (
   name: FilterOptionKeys,
@@ -99,6 +104,7 @@ export const getDefaultFilter = (
 export const getFilterOptionMetadata = (
   option: FilterOptionKeys,
   dateCondition: DateCondition = 'past',
+  selectedLibrary: Library,
 ): FilterOptionMetadata => {
   switch (option) {
     case 'country':
@@ -140,16 +146,7 @@ export const getFilterOptionMetadata = (
       return {
         title: 'Tags',
         heading: 'Tags',
-        choices: tags.filter(
-          tag =>
-            tag.name !== 'Layer 0' &&
-            tag.name !== 'Layer 1' &&
-            tag.name !== 'Layer 2' &&
-            tag.name !== 'Layer 3' &&
-            tag.name !== 'Layer 4' &&
-            tag.name !== 'Layer 5' &&
-            tag.name !== 'Layer 6',
-        ),
+        choices: selectedLibrary === 'AI' ? aiTags : getSelectableWeb3Tags(),
       };
 
     case 'fundingType':

@@ -1,0 +1,1550 @@
+
+--
+-- Data for Name: temp_team_members; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.team_members (company_id, person_id, function, start_date, end_date, founder, seniority, title, id, external_id, created_at, email_address) FROM stdin;
+235691	4022	Operations	2022-04-01	\N	t	\N	Co-Founder	468942	\N	2023-05-25 09:17:25.224098+00	\N
+235691	691447	Operations	\N	\N	t	\N	Co-Founder	468940	\N	2023-05-25 09:17:25.088001+00	\N
+235691	691448	Operations	2022-08-01	\N	t	\N	Co-Founder	468943	\N	2023-05-25 09:17:25.241082+00	\N
+235691	691449	Operations	2022-01-01	\N	t	\N	Co-Founder	468941	\N	2023-05-25 09:17:25.214962+00	\N
+269712	776877	Advisor	2021-04-01	\N	f	\N	Investor	568114	\N	2023-05-28 22:54:42.103227+00	\N
+269712	785551	Engineering	2019-10-01	\N	f	\N	Software Developer	568108	\N	2023-05-28 22:54:42.061141+00	\N
+269712	785552	Engineering	2021-08-01	\N	f	\N	Software Engineer	568121	\N	2023-05-28 22:54:42.164054+00	\N
+269712	785553	Product	2022-02-01	\N	f	\N	Senior Product Manager	568111	\N	2023-05-28 22:54:42.080969+00	\N
+269712	785554	Operations	2021-06-01	\N	f	\N	Program Manager	568120	\N	2023-05-28 22:54:42.163713+00	\N
+269712	785555	Operations	2021-06-01	\N	f	\N	Chief Business Officer	568115	\N	2023-05-28 22:54:42.115137+00	\N
+269712	785556	Advisor	2021-02-01	\N	f	\N	Member of the Board of Directors	568105	\N	2023-05-28 22:54:42.026151+00	\N
+269712	785557	Advisor	2020-10-01	\N	f	\N	Board Member	568125	\N	2023-05-28 22:54:42.203156+00	\N
+269712	785558	Engineering	2021-09-01	2022-01-01	f	\N	Software Engineer	568124	\N	2023-05-28 22:54:42.184978+00	\N
+269712	785560	Engineering	2018-11-01	2019-04-01	f	\N	Senior Software Engineer	568128	\N	2023-05-28 22:54:42.240877+00	\N
+269712	785561	Engineering	2021-10-01	\N	f	\N	Software Engineer	568123	\N	2023-05-28 22:54:42.183087+00	\N
+269712	785562	Engineering	2021-03-01	2022-05-01	f	\N	Software Engineer	568127	\N	2023-05-28 22:54:42.223294+00	\N
+269712	785563	Engineering	2022-01-01	\N	f	\N	Senior Software Engineer Team Lead	568110	\N	2023-05-28 22:54:42.078994+00	\N
+269712	785564	Engineering	2020-11-01	\N	f	\N	Software Developer	568119	\N	2023-05-28 22:54:42.157689+00	\N
+269712	785565	Product	2022-02-01	\N	f	\N	Director of Product Management	568106	\N	2023-05-28 22:54:42.043033+00	\N
+269712	785567	Engineering	2021-11-01	\N	f	\N	Senior Software Engineer	568107	\N	2023-05-28 22:54:42.059244+00	\N
+269712	785568	People	2021-10-01	\N	f	\N	HR Manager	568112	\N	2023-05-28 22:54:42.080451+00	\N
+269712	785569	Operations	2022-02-01	\N	f	\N	Director Of Operations	568109	\N	2023-05-28 22:54:42.065019+00	\N
+269712	785570	Engineering	2020-11-01	\N	f	\N	Field Hardware Engineer	568113	\N	2023-05-28 22:54:42.084168+00	\N
+269712	785571	Engineering	2022-11-01	\N	f	\N	Hardware Technician	568118	\N	2023-05-28 22:54:42.154873+00	\N
+269712	785572	Advisor	2020-07-01	\N	f	\N	Advisor	568117	\N	2023-05-28 22:54:42.145917+00	\N
+269712	785573	Advisor	2021-01-01	\N	f	\N	Advisor	568126	\N	2023-05-28 22:54:42.200665+00	\N
+269712	785574	Engineering	2020-12-01	2021-05-01	f	\N	Software Engineer	568122	\N	2023-05-28 22:54:42.16647+00	\N
+269712	785575	Operations	2018-10-01	\N	t	\N	CEO & Founder	568116	\N	2023-05-28 22:54:42.14177+00	\N
+269662	783328	\N	\N	\N	f	\N	\N	565927	\N	2023-05-28 22:28:24.344607+00	\N
+269662	783329	Operations	2022-05-01	\N	t	\N	Co-Founder	565928	\N	2023-05-28 22:28:24.682551+00	\N
+2335	7465	Operations	2018-12-01	2022-01-01	t	\N	Founder & CEO	8322	recBVwppbTNWebk3I	2023-05-22 03:40:49.558088+00	\N
+2335	87548	Engineering	2018-12-01	\N	f	Executive / VP / C-Level	Chief Architect	54517	recJE7RXI6J71hkn3	2023-05-22 03:40:49.558088+00	\N
+2335	629000	Engineering	2020-10-01	2021-07-01	f	\N	Senior QA Engineer Lead	677945	\N	2023-06-03 09:48:41.923555+00	\N
+2335	862336	Engineering	2021-07-01	\N	f	\N	QA Engineer	710878	\N	2023-06-05 08:48:17.558373+00	\N
+2335	862337	Operations	2021-05-01	\N	f	\N	Senior Business Analyst	710882	\N	2023-06-05 08:48:17.603061+00	\N
+2335	862338	Marketing	2020-09-01	\N	f	\N	Chief Marketing Officer	710877	\N	2023-06-05 08:48:17.551231+00	\N
+2335	862339	Legal	2019-11-01	\N	f	\N	Chief Legal Officer / Compliance Officer	710880	\N	2023-06-05 08:48:17.583609+00	\N
+2335	862340	Legal	2022-06-01	\N	f	\N	LATAM Compliance Officer	710879	\N	2023-06-05 08:48:17.567376+00	\N
+2335	862342	Marketing	2022-11-01	\N	f	\N	Content Editor	710881	\N	2023-06-05 08:48:17.5898+00	\N
+268705	4367	Advisor	2022-01-01	\N	f	\N	Board Member	554653	\N	2023-05-28 19:02:05.746647+00	\N
+268705	633994	Operations	2019-06-01	\N	t	\N	Founder & CEO	410725	\N	2023-05-22 03:40:49.558088+00	\N
+268705	772148	Operations	\N	\N	t	\N	COO	554651	\N	2023-05-28 19:02:05.59397+00	\N
+268705	772151	Customer Success	2022-08-01	\N	f	\N	Staff Customer Success Engineer	554664	\N	2023-05-28 19:02:05.886001+00	\N
+268705	772152	Marketing	2023-03-01	\N	f	\N	Growth Engineer	554665	\N	2023-05-28 19:02:05.886667+00	\N
+268705	772153	Sales	2023-02-01	\N	f	\N	Vice President of Sales	554669	\N	2023-05-28 19:02:05.907885+00	\N
+268705	772154	\N	\N	\N	f	\N	\N	554650	\N	2023-05-28 19:02:04.767196+00	\N
+268705	772155	Engineering	2021-11-01	\N	f	\N	Principal Scientist	554672	\N	2023-05-28 19:02:05.913569+00	\N
+268705	772156	Engineering	2021-03-01	\N	f	\N	Software Engineer	554652	\N	2023-05-28 19:02:05.745849+00	\N
+268705	772157	Engineering	2021-08-01	\N	f	\N	Developer Advocate	554671	\N	2023-05-28 19:02:05.913413+00	\N
+268705	772158	Engineering	2022-09-01	\N	f	\N	Software Engineer	554655	\N	2023-05-28 19:02:05.773809+00	\N
+268705	772159	Engineering	2022-02-01	\N	f	\N	Software Engineer	554658	\N	2023-05-28 19:02:05.807114+00	\N
+268705	772160	Marketing	2021-01-01	\N	f	\N	VP of Marketing	554660	\N	2023-05-28 19:02:05.865768+00	\N
+268705	772161	Engineering	2022-01-01	\N	f	\N	Frontend Engineer	554659	\N	2023-05-28 19:02:05.807644+00	\N
+268705	772162	Advisor	2019-10-01	\N	f	\N	Advisor	554677	\N	2023-05-28 19:02:05.93567+00	\N
+268705	772163	Engineering	2022-05-01	\N	f	\N	Software Engineer Intern	554678	\N	2023-05-28 19:02:05.944124+00	\N
+268705	772164	Engineering	2022-11-01	\N	f	\N	Staff Developer Advocate	554675	\N	2023-05-28 19:02:05.932038+00	\N
+268705	772165	Product	2022-10-01	\N	f	\N	VP Product	554663	\N	2023-05-28 19:02:05.885152+00	\N
+268705	772166	Marketing	2022-02-01	\N	f	\N	Start up growth acceleration expert	554667	\N	2023-05-28 19:02:05.904769+00	\N
+268705	772167	Marketing	2022-04-01	\N	f	\N	Staff Technical Writer	554676	\N	2023-05-28 19:02:05.93586+00	\N
+268705	772168	Data	2022-08-01	\N	f	\N	Senior Research Scientist	554661	\N	2023-05-28 19:02:05.867449+00	\N
+268705	772169	Sales	2022-05-01	\N	f	\N	Enterprise Account Executive	554666	\N	2023-05-28 19:02:05.891508+00	\N
+268705	772170	\N	\N	\N	f	\N	\N	554649	\N	2023-05-28 19:02:04.752438+00	\N
+268705	772171	People	2021-08-01	\N	f	\N	HR & Ops Manager	554679	\N	2023-05-28 19:02:05.972743+00	\N
+268705	772172	Engineering	2023-02-01	\N	f	\N	Staff Software Engineer	554657	\N	2023-05-28 19:02:05.785383+00	\N
+268705	772173	Customer Success	2022-05-01	\N	f	\N	Customer Success Engineer	554673	\N	2023-05-28 19:02:05.914277+00	\N
+268705	772174	Engineering	2021-12-01	2022-12-01	f	\N	Distributed Systems Software Engineer	554681	\N	2023-05-28 19:02:06.246422+00	\N
+268705	772175	Advisor	2021-01-01	\N	f	\N	Investor	554674	\N	2023-05-28 19:02:05.932357+00	\N
+268705	772176	Engineering	2020-07-01	2021-06-01	f	\N	Software Engineer	554680	\N	2023-05-28 19:02:06.130588+00	\N
+268705	772177	Engineering	2021-05-01	\N	f	\N	Software Engineer	554656	\N	2023-05-28 19:02:05.773294+00	\N
+268705	772178	Engineering	2022-11-01	\N	f	\N	Staff Software Engineer	554670	\N	2023-05-28 19:02:05.906393+00	\N
+268705	772179	Engineering	2022-02-01	\N	f	\N	Engineering Manager	554654	\N	2023-05-28 19:02:05.768982+00	\N
+268705	772180	Advisor	2023-01-01	\N	f	\N	President, COO & Board Member	554662	\N	2023-05-28 19:02:05.870519+00	\N
+268705	772181	Data	2022-05-01	\N	f	\N	Data Science and Applied Science Intern	554668	\N	2023-05-28 19:02:05.907013+00	\N
+273	217640	Product	2022-04-01	2022-11-01	f	Individual Contributor	Web3 Product	112859	recdxG9UfQD7xBJAc	2023-05-22 03:40:49.558088+00	\N
+273	217641	Product	2022-05-01	\N	\N	Manager / Director	Head of Product	112860	rec83IY6XmbcOz9yA	2023-05-22 03:40:49.558088+00	\N
+273	217642	Training & Dev	2022-03-01	\N	f	Manager / Director	Head Of Education	112861	recVwLAZSDVtd3XYa	2023-05-22 03:40:49.558088+00	\N
+273	217643	Business Development	2021-06-01	\N	\N	Manager / Director	Head Of Asset Management	112862	recoecpACcERD9BGp	2023-05-22 03:40:49.558088+00	\N
+273	627704	Operations	2021-07-01	\N	f		Partner Relations	406876	\N	2023-05-22 03:40:49.558088+00	\N
+273	766050	\N	2022-05-01	\N	f	\N	Head of Product, Mantle Network	574246	\N	2023-05-29 01:13:11.409812+00	\N
+273	791630	\N	\N	\N	f	\N	\N	574244	\N	2023-05-29 01:13:11.070038+00	\N
+273	791631	\N	\N	\N	t	\N	\N	574245	\N	2023-05-29 01:13:11.095422+00	\N
+118560	633748	Operations	2021-12-01	2022-06-01	f	\N	Sub Manager	688493	\N	2023-06-04 08:37:09.571918+00	\N
+118560	633779	Operations	2021-10-01	\N	t	Executive/ VP / C-Level	Co-Founder & Indonesia Country Manager	410573	\N	2023-05-22 03:40:49.558088+00	\N
+118560	640842	Marketing	2021-12-01	\N	f	\N	Turkish Community Manager	596524	\N	2023-05-29 17:41:05.828764+00	\N
+118560	805203	Operations	2021-10-01	\N	f	\N	Co-Founder & Chief Executive Officer	596530	\N	2023-05-29 17:41:05.907667+00	\N
+118560	805204	Data	2022-01-01	\N	f	\N	Axie Infinity Scholar	596527	\N	2023-05-29 17:41:05.878523+00	\N
+118560	805205	Design	2022-04-01	\N	f	\N	Graphic Design & Digital Media Manager	596529	\N	2023-05-29 17:41:05.901654+00	\N
+118560	805207	People	2022-02-01	\N	f	\N	Vietnam Country Manager	596525	\N	2023-05-29 17:41:05.830193+00	\N
+118560	805208	Data	2022-01-01	\N	f	\N	Market Researcher	596526	\N	2023-05-29 17:41:05.835119+00	\N
+118560	805209	Marketing	2022-01-01	\N	f	\N	Marketing Manager	596528	\N	2023-05-29 17:41:05.895162+00	\N
+26801	35320	Operations	2018-01-01	\N	t	Executive / VP / C-Level	Co-Founder	23219	recgKE92EXKVxQMO8	2023-05-22 03:40:49.558088+00	\N
+26801	48272	Advisor	2019-01-01	\N	f	\N	Council Member - Signatory	592831	\N	2023-05-29 15:56:46.551863+00	\N
+26801	205081	Operations	2020-11-01	\N	f	\N	Chairman	592830	\N	2023-05-29 15:56:46.545874+00	\N
+1560	53	Operations	2021-11-01	\N	t	\N	Co-founder & CPO	7614	reckQv8ldHW6iqorS	2023-05-22 03:40:49.558088+00	\N
+1560	257	Finance	2022-02-01	\N	f	\N	Product Manager and Head Economist	1125	reclNb3YdYqWXhA5n	2023-05-22 03:40:49.558088+00	\N
+1560	548	Operations	2021-12-01	\N	f	\N	Product Manager	1128	recD5nGx1fyM7DkdV	2023-05-22 03:40:49.558088+00	\N
+1560	561	Operations	2022-03-01	\N	f	\N	Product Manager	1123	recyNcvZnGBNDgjMa	2023-05-22 03:40:49.558088+00	\N
+1560	893	Engineering	2022-02-01	2022-08-01	f	\N	Senior Software Engineer	1124	recF6emDzTQ1jSGIi	2023-05-22 03:40:49.558088+00	\N
+1560	1491	Operations	2021-09-01	\N	t	\N	Co-founder & CEO	7615	recApc2V7uoZRAUnP	2023-05-22 03:40:49.558088+00	\N
+1560	1556	Engineering	2021-11-01	2022-12-01	f	\N	Software Engineer	1121	recYIGjpOBRRwI61f	2023-05-22 03:40:49.558088+00	\N
+1560	1637	Engineering	2021-11-01	\N	t	\N	Co-founder & Chief Scientist	7617	receQA0N6lbl54Ydt	2023-05-22 03:40:49.558088+00	\N
+1560	2073	Marcomm	2022-02-01	\N	f	\N	Head of Social	1127	recvvzBJ3JUXiiplX	2023-05-22 03:40:49.558088+00	\N
+1560	2545	Marcomm	2022-01-01	2023-01-01	f	\N	Head of Ecosystem Partnerships and Marketing	1126	recwJw9papJnYrvwW	2023-05-22 03:40:49.558088+00	\N
+1560	3909	Operations	2021-11-01	\N	t	\N	Co-founder and CTO	7616	recWVytvbmo6P5Qwz	2023-05-22 03:40:49.558088+00	\N
+1560	4015	Operations	2021-06-01	\N	f	\N	Manager, Talent Acquisition	1122	rec9FY56NgcRjIXYJ	2023-05-22 03:40:49.558088+00	\N
+1560	4386	Engineering	2022-02-01	\N	t	\N	\N	1129	recp4tFhMB0YcPvh8	2023-05-22 03:40:49.558088+00	\N
+1560	217642	Engineering	2022-09-01	2022-12-01	f	\N	Dev Rel Engineer	431623	\N	2023-05-23 16:45:42.106481+00	\N
+1560	624310	Advisor	2022-09-01	\N	f	\N	Investor	413118	\N	2023-05-22 06:15:42.03435+00	\N
+1560	633942	Marketing	2022-01-01	2023-01-01	f	\N	Head of Ecosystem	689210	\N	2023-06-04 09:42:55.744364+00	\N
+1560	636464	Engineering	2022-01-01	2022-04-01	t	\N	Co-Founder & Chief Cryptographer	413107	\N	2023-05-22 06:14:37.31335+00	\N
+1560	636465	Legal	2022-06-01	\N	f	\N	Chief Legal Officer	413108	\N	2023-05-22 06:14:45.154283+00	\N
+1560	636466	Sales	2022-04-01	\N	f	\N	Executive Business Partner	413109	\N	2023-05-22 06:14:52.530779+00	\N
+1560	636467	Data	2022-01-01	\N	f	\N	Research Scientist	413110	\N	2023-05-22 06:14:56.584937+00	\N
+1560	636468	Design	2022-10-01	\N	f	\N	Brand Design	413111	\N	2023-05-22 06:15:04.305635+00	\N
+1560	636469	Advisor	2022-08-01	\N	f	\N	Investor	413112	\N	2023-05-22 06:15:08.515684+00	\N
+1560	636470	Engineering	2022-02-01	\N	f	\N	Fullstack UI Engineer	413113	\N	2023-05-22 06:15:16.258404+00	\N
+1560	636471	Sales	2023-03-01	\N	f	\N	Strategic Partnerships	413114	\N	2023-05-22 06:15:20.207065+00	\N
+1560	636472	Engineering	2022-03-01	\N	f	\N	Software Engineer	413115	\N	2023-05-22 06:15:24.115747+00	\N
+1560	636473	Engineering	2022-06-01	\N	f	\N	Software Engineer	413116	\N	2023-05-22 06:15:28.362287+00	\N
+1560	636474	\N	2022-09-01	\N	f	\N	Gaming Partnerships & Investments	413117	\N	2023-05-22 06:15:32.437416+00	\N
+1560	636476	Engineering	2022-04-01	\N	f	\N	Software Engineer	413119	\N	2023-05-22 06:15:46.63366+00	\N
+1560	636477	Operations	2022-05-01	\N	f	\N	Team Builder	413120	\N	2023-05-22 06:15:50.480357+00	\N
+1560	636478	Sales	2022-04-01	\N	f	\N	Dealmaker	413121	\N	2023-05-22 06:15:54.642939+00	\N
+1560	636479	Engineering	2022-04-01	\N	f	\N	Production Engineer	413122	\N	2023-05-22 06:15:58.327511+00	\N
+1560	636480	Engineering	2022-05-01	\N	f	\N	Software Engineer	413123	\N	2023-05-22 06:16:03.083438+00	\N
+1560	636481	Engineering	2022-06-01	\N	f	\N	Director, Developer Relations	413124	\N	2023-05-22 06:16:10.776684+00	\N
+1560	636482	Engineering	2022-01-01	\N	f	\N	Senior Software Engineer	413125	\N	2023-05-22 06:16:14.673332+00	\N
+1560	636483	\N	\N	\N	f	\N	\N	413126	\N	2023-05-22 06:16:18.161408+00	\N
+1560	636484	Operations	2022-02-01	\N	f	\N	Head Of Operations	413127	\N	2023-05-22 06:16:22.245752+00	\N
+1560	636485	Sales	2022-08-01	\N	f	\N	Dealmaker	413128	\N	2023-05-22 06:16:26.29991+00	\N
+1560	636487	Engineering	2022-08-01	\N	f	\N	Director Of Engineering	413129	\N	2023-05-22 06:16:35.37546+00	\N
+1560	636488	Marketing	2022-09-01	\N	f	\N	Social Media	413130	\N	2023-05-22 06:16:39.366978+00	\N
+1560	636489	Engineering	2022-01-01	\N	f	\N	Staff Software Developer	413131	\N	2023-05-22 06:16:43.48285+00	\N
+1560	636490	Engineering	2022-02-01	\N	f	\N	Staff Software Engineer	413132	\N	2023-05-22 06:16:51.158381+00	\N
+1560	636491	Sales	2022-05-01	\N	f	\N	Dealmaker - Consumer (Gaming, NFTs, Entertainment, Sports, Arts)	413133	\N	2023-05-22 06:16:55.196834+00	\N
+1560	636492	Engineering	2022-08-01	\N	f	\N	Senior Developer Relations Engineer	413134	\N	2023-05-22 06:16:59.353272+00	\N
+1560	636494	Operations	2022-01-01	\N	f	\N	Executive Assistant To CEO, CTO & COO	413135	\N	2023-05-22 06:17:09.224048+00	\N
+1560	636495	Engineering	2022-04-01	\N	f	\N	Engineer	413136	\N	2023-05-22 06:17:13.284243+00	\N
+1560	636496	Engineering	2022-01-01	\N	f	\N	Staff Engineer	413137	\N	2023-05-22 06:17:17.282565+00	\N
+1560	636497	Operations	2022-10-01	\N	f	\N	Ecosystem Ops Lead	413138	\N	2023-05-22 06:17:21.441718+00	\N
+1560	636498	Engineering	2022-01-01	\N	f	\N	Senior Software Engineer	413139	\N	2023-05-22 06:17:25.385922+00	\N
+1560	636499	People	2022-07-01	2022-10-01	f	\N	Recruiting Coordinator	413140	\N	2023-05-22 06:17:29.393519+00	\N
+1560	636500	Engineering	2022-04-01	\N	f	\N	Staff Software Engineer	413141	\N	2023-05-22 06:17:33.238841+00	\N
+1560	636501	Engineering	2023-01-01	\N	f	\N	Software Engineer	413142	\N	2023-05-22 06:17:40.915277+00	\N
+1560	636502	People	2022-07-01	\N	f	\N	Employee	413143	\N	2023-05-22 06:17:44.895193+00	\N
+1560	636503	Engineering	2021-11-01	\N	f	\N	Senior Staff Engineer	413144	\N	2023-05-22 06:17:49.10315+00	\N
+1560	636504	Engineering	2023-01-01	\N	f	\N	Production Engineer	413145	\N	2023-05-22 06:17:52.97557+00	\N
+1560	636506	Advisor	2022-01-01	\N	f	\N	Senior Research Advisor	413146	\N	2023-05-22 06:17:58.899621+00	\N
+1560	636507	People	2022-11-01	\N	f	\N	Senior Recruiter	413147	\N	2023-05-22 06:18:03.2266+00	\N
+1560	860493	\N	\N	\N	f	\N	\N	708243	\N	2023-06-05 06:24:24.195078+00	\N
+1560	860495	Data	2023-02-01	\N	f	\N	Researcher	708245	\N	2023-06-05 06:24:26.02778+00	\N
+1560	860497	\N	2023-04-01	\N	f	\N	Commerce Partnerships & Investments	708244	\N	2023-06-05 06:24:25.346053+00	\N
+235698	273572	Advisor	2022-05-01	\N	f	\N	Investor	468977	\N	2023-05-25 09:18:54.971895+00	\N
+235698	691476	Operations	2022-02-01	\N	t	\N	Co-Founder	468978	\N	2023-05-25 09:18:54.989656+00	\N
+235698	691477	Operations	2022-01-01	\N	t	\N	Co-Founder	468980	\N	2023-05-25 09:18:55.054831+00	\N
+235698	691478	Operations	2022-05-01	\N	t	\N	Co-Founder	468979	\N	2023-05-25 09:18:55.010014+00	\N
+181884	623021	Operations	2021-04-01	\N	t	Executive/ VP / C-Level	Founder and CEO	404192	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623022	Operations	2021-04-01	\N	t	Executive/ VP / C-Level	Co-Founder and CFO / COO	404193	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623023	Marcomm	2021-04-01	2022-11-01	t	Executive/ VP / C-Level	Co-Founder, Chief Marketing Officer	404194	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623024	Engineering	2022-06-01	2022-11-01	f		Frontend Engineer	404195	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623025	Business Development	2022-01-01	\N	f		Business Administrator	404196	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623026	Engineering	2022-05-01	2022-10-01	f		Software Engineer	404197	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623027	Marcomm	2022-02-01	2023-02-01	f		Marketing Manager	404198	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623028	Engineering	2021-10-01	\N	f		Back End Developer	404199	\N	2023-05-22 03:40:49.558088+00	\N
+181884	623029	Engineering	2022-03-01	\N	f		Tech Lead	404200	\N	2023-05-22 03:40:49.558088+00	\N
+181884	632181	Marketing	2022-02-01	2022-08-01	f	\N	Director of Community & Education	684002	\N	2023-06-03 22:44:07.987646+00	\N
+181884	632967	\N	2021-05-01	2023-01-01	f	\N	Advisor in Public Relations, BizDev, Marketing, Fundraising, Events	686256	\N	2023-06-04 03:44:32.250397+00	\N
+181884	637177	\N	\N	\N	f	\N	\N	448540	\N	2023-05-24 14:19:09.307663+00	\N
+181884	645166	Marketing	2021-11-01	\N	f	\N	Chief Marketing Officer	448541	\N	2023-05-24 14:19:09.747776+00	\N
+181884	646050	\N	\N	\N	f	\N	\N	632283	\N	2023-05-31 13:27:02.211016+00	\N
+181884	671237	Operations	2022-01-01	\N	f	\N	Business Administrator	448543	\N	2023-05-24 14:19:09.841903+00	\N
+181884	671238	Other	2022-01-01	\N	f	\N	Ambassador	448545	\N	2023-05-24 14:19:09.877333+00	\N
+181884	671239	Data	2022-07-01	\N	f	\N	Data Strategist / Data Consultant	448544	\N	2023-05-24 14:19:09.841635+00	\N
+181884	671240	Advisor	2022-01-01	\N	f	\N	Advisor	448542	\N	2023-05-24 14:19:09.794662+00	\N
+235661	7015	Operations	2022-02-01	\N	t	Executive/ VP / C-Level	Co-Founder	407436	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628697	Operations	2022-03-01	\N	t	Executive/ VP / C-Level	Co-Founder & CEO	407435	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628699	Business Development	2022-02-01	\N	f	Executive/ VP / C-Level	Co-Founder, COO / Head of Business Development	407437	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628700	Engineering	2022-06-01	\N	t	Executive/ VP / C-Level	Founding Engineer	407438	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628701	Engineering	2022-07-01	\N	t	Executive/ VP / C-Level	Founding Engineer	407439	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628702	Engineering	2022-11-01	\N	t	Executive/ VP / C-Level	Founding Engineer	407440	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628703	Engineering	2022-11-01	\N	f	\N	Senior Staff Software Engineer	407441	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628704	Engineering	\N	\N	f	\N	Software Engineer	407442	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628705	Engineering	2022-09-01	\N	f	\N	Software Engineer Intern	407443	\N	2023-05-22 03:40:49.558088+00	\N
+235661	628706	HR	2023-01-01	\N	f	\N	Recruiting	407444	\N	2023-05-22 03:40:49.558088+00	\N
+235661	691380	Engineering	2022-09-01	\N	f	\N	Software Engineer Intern	468873	\N	2023-05-25 08:40:09.680731+00	\N
+235661	691383	Engineering	2023-02-01	\N	f	\N	Incoming Software Engineer Intern	468872	\N	2023-05-25 08:40:09.669259+00	\N
+235661	691384	Engineering	2023-01-01	\N	f	\N	Software Engineer Intern	468871	\N	2023-05-25 08:40:09.668837+00	\N
+235661	691385	Engineering	2023-01-01	\N	f	\N	Software Engineer Intern	468870	\N	2023-05-25 08:40:09.663316+00	\N
+220468	204631	Advisor	2021-12-01	\N	f	\N	Board Member	468425	\N	2023-05-25 08:16:03.827266+00	\N
+220468	690940	Advisor	2022-10-01	\N	f	\N	Organizational Consultant	468426	\N	2023-05-25 08:16:03.864742+00	\N
+220468	690941	Advisor	2022-08-01	\N	f	\N	Investor	468423	\N	2023-05-25 08:16:03.788276+00	\N
+220468	690942	Design	2022-11-01	\N	f	\N	Head of Product Design	468424	\N	2023-05-25 08:16:03.814421+00	\N
+743	2173	Engineering	2017-09-01	\N	t	\N	Chief Architect, Founder, CEO	4852	recC5UcXOBirOnV1D	2023-05-22 03:40:49.558088+00	\N
+743	623491	Engineering	2018-08-01	2019-01-01	f	\N	Blockchain Solutions Architect	664291	\N	2023-06-02 06:39:05.046919+00	\N
+743	624357	Finance	2018-06-01	2019-06-01	f	\N	Senior Accounting & Finance Analyst	665437	\N	2023-06-02 08:41:37.81499+00	\N
+743	630016	Engineering	2017-09-01	2017-12-01	f	\N	Blockchain Engineer	680742	\N	2023-06-03 15:53:27.093933+00	\N
+743	723056	Finance	2019-11-01	\N	f	\N	Fellowship of Dragons	576870	\N	2023-05-29 02:41:30.439266+00	\N
+743	744542	Advisor	2017-10-01	\N	f	\N	Investor/Certified smart contract practitioner	576879	\N	2023-05-29 02:41:30.566348+00	\N
+743	793819	\N	2017-01-01	\N	f	\N	Founding Partner of Dragon Chain	576869	\N	2023-05-29 02:41:30.403792+00	\N
+743	793820	Marketing	2020-03-01	\N	f	\N	Social Media Coordinator	576873	\N	2023-05-29 02:41:30.535577+00	\N
+743	793821	Customer Success	2020-06-01	\N	f	\N	Customer Success Specialist at Dragonchain.com	576876	\N	2023-05-29 02:41:30.537996+00	\N
+743	793822	Operations	2020-11-01	\N	f	\N	Board Member | Partner | Chief Operating Officer	576877	\N	2023-05-29 02:41:30.552933+00	\N
+743	793823	Marketing	2018-05-01	\N	f	\N	Telegram Admin	576875	\N	2023-05-29 02:41:30.538003+00	\N
+743	793824	Marketing	2017-06-01	\N	f	\N	Social Media Manager	576878	\N	2023-05-29 02:41:30.560392+00	\N
+743	793825	Operations	2020-11-01	\N	f	\N	Board Member | Partner | Chief Operating Officer	576872	\N	2023-05-29 02:41:30.517166+00	\N
+743	793826	Sales	2018-02-01	\N	f	\N	Director of Business Development and Strategic Partnerships	576874	\N	2023-05-29 02:41:30.535168+00	\N
+743	793827	Marketing	2020-07-01	\N	f	\N	Co-Host	576871	\N	2023-05-29 02:41:30.479566+00	\N
+70	53423	Operations	2021-05-01	\N	t	\N	Co-Founder	28006	recfGcM1EwH17LVN1	2023-05-22 03:40:49.558088+00	\N
+70	54354	Marcomm	2022-05-01	\N	f	Executive / VP / C-Level	CMO	28004	rectMG9iwr8I9J8sc	2023-05-22 03:40:49.558088+00	\N
+70	55840	Operations	2021-10-01	\N	f	Individual Contributor	Operations and support management	28009	rec5enq7C26yWHMyp	2023-05-22 03:40:49.558088+00	\N
+70	57255	Engineering	2022-05-01	\N	f	Individual Contributor	Software Engineer	28005	recaH3nAPS5NLu9Co	2023-05-22 03:40:49.558088+00	\N
+70	57952	Operations	2021-05-01	\N	t	\N	Co-Founder	28003	recUoOCHCqn3nVIG3	2023-05-22 03:40:49.558088+00	\N
+70	58146	Operations	2021-07-01	\N	\N	Executive / VP / C-Level	CEO	28007	recBYqb29MNk2cbhj	2023-05-22 03:40:49.558088+00	\N
+70	58433	Engineering	2022-03-01	2022-10-01	f	Executive / VP / C-Level	Chief Technology Officer	28008	rec75FCJIjtDImkue	2023-05-22 03:40:49.558088+00	\N
+70	636210	Marketing	2021-03-01	\N	f	\N	Content Developer	572737	\N	2023-05-29 00:29:31.6932+00	\N
+70	790303	Marketing	2022-05-01	\N	f	\N	Chief Marketing Officer	572739	\N	2023-05-29 00:29:31.746502+00	\N
+70	790304	Engineering	2021-12-01	2022-08-01	f	\N	Software Engineer	572740	\N	2023-05-29 00:29:31.780885+00	\N
+70	790305	Other	2021-07-01	\N	f	\N	Ambassador	572738	\N	2023-05-29 00:29:31.726212+00	\N
+1898	288384	Advisor	2022-01-01	\N	f	\N	Advisory Board	709681	\N	2023-06-05 07:32:15.721271+00	\N
+1898	674037	Advisor	2021-04-01	\N	f	\N	Board Member	709680	\N	2023-06-05 07:32:15.715634+00	\N
+1898	677449	Advisor	2021-11-01	\N	f	\N	Investor	709683	\N	2023-06-05 07:32:15.726731+00	\N
+1898	861545	Operations	2021-08-01	\N	f	\N	Executive Assistant To Chief Executive Officer	709684	\N	2023-06-05 07:32:15.765708+00	\N
+1898	861546	Advisor	2021-10-01	\N	f	\N	Board Advisor	709679	\N	2023-06-05 07:32:15.713612+00	\N
+1898	861548	Advisor	2021-10-01	\N	f	\N	Advisor, Pool Advisor Network	709682	\N	2023-06-05 07:32:15.72453+00	\N
+1898	861549	\N	\N	\N	f	\N	\N	709678	\N	2023-06-05 07:32:15.402036+00	\N
+258875	624136	Operations	2022-09-01	\N	t		Co - Founder	404685	\N	2023-05-22 03:40:49.558088+00	\N
+258875	624137	Engineering	2022-05-01	\N	f		Software Engineer	404687	\N	2023-05-22 03:40:49.558088+00	\N
+258875	624140	Engineering	2022-07-01	\N	t		Co-Founder & Chief Technology Officer	404690	\N	2023-05-22 03:40:49.558088+00	\N
+258875	624142	Operations	2022-01-01	\N	t		Founder & CEO	404692	\N	2023-05-22 03:40:49.558088+00	\N
+258875	722002	Operations	2022-01-01	\N	t	\N	Founder & CEO	501675	\N	2023-05-27 09:25:58.582382+00	\N
+5843	1417	Operations	2017-03-01	2019-05-01	t	\N	Founder	583908	\N	2023-05-29 09:34:43.858032+00	\N
+5843	2037	Advisor	2018-01-01	\N	t	\N	Board Member	588034	\N	2023-05-29 13:35:41.004033+00	\N
+5843	2897	Engineering	2019-08-01	2021-07-01	f	\N	Software Engineer	598167	\N	2023-05-29 18:33:50.945257+00	\N
+5843	4865	Operations	2017-06-01	\N	t	\N	Founder	4275	recVFBnGu8pQLETdJ	2023-05-22 03:40:49.558088+00	\N
+5843	9674	Operations	2017-01-01	2019-06-01	t	\N	Co-founder and CTO	4276	rec0FZfMIQ1Dksi9Y	2023-05-22 03:40:49.558088+00	\N
+5843	10041	Operations	2017-01-01	\N	t	\N	CEO	4274	reckkDi4xy7inpqbh	2023-05-22 03:40:49.558088+00	\N
+5843	169693	\N	\N	\N	t	\N	\N	82228	recmtFaxDQ3EgszIr	2023-05-22 03:40:49.558088+00	\N
+5843	169695	Engineering	2021-11-01	\N	f	Individual Contributor	Software Engineer	82230	rec70yqnv3pFysliH	2023-05-22 03:40:49.558088+00	\N
+5843	169696	Engineering	2019-08-01	\N	f	Individual Contributor	Software Engineer	82231	recXjzR7qfWs4I4wH	2023-05-22 03:40:49.558088+00	\N
+5843	169697	HR	2018-07-01	\N	f	Manager / Director	HR Manager	82232	recFOZ0yjE4HWDSXF	2023-05-22 03:40:49.558088+00	\N
+5843	169698	Engineering	2018-11-01	\N	\N	Individual Contributor	Software Developer	82233	recWfICOQFajQbMxM	2023-05-22 03:40:49.558088+00	\N
+5843	169699	Engineering	2018-11-01	2022-01-01	f	Manager / Director	Head of Engineer	82234	recDaVnMDNg2j0pnU	2023-05-22 03:40:49.558088+00	\N
+5843	169700	Engineering	2021-09-01	\N	f	Individual Contributor	Software Engineer	82235	recccdES86pqoBLRe	2023-05-22 03:40:49.558088+00	\N
+5843	169701	Engineering	2019-08-01	\N	f	Individual Contributor	Software Developer	82236	recOAnph18HFysOGW	2023-05-22 03:40:49.558088+00	\N
+5843	169702	Product	\N	\N	\N	Manager / Director	Product Manager	82237	recW3NvW1E31UkGvG	2023-05-22 03:40:49.558088+00	\N
+5843	169703	Engineering	2021-09-01	\N	f	Individual Contributor	Software Engineer	82238	recubm9qcoY7Bbk0U	2023-05-22 03:40:49.558088+00	\N
+5843	169704	Engineering	2021-11-01	\N	f	Individual Contributor	Software Engineer	82239	recInOdW0wV9v8vhS	2023-05-22 03:40:49.558088+00	\N
+5843	169705	Engineering	\N	\N	\N	Individual Contributor	Software Engineer	82240	recJmp9Q6GFK5YZnM	2023-05-22 03:40:49.558088+00	\N
+5843	169706	Product	2022-01-01	\N	f	Manager / Director	Product Manager	82241	recEx5JJjetQghyMN	2023-05-22 03:40:49.558088+00	\N
+5843	169707	Operations	2022-01-01	\N	f	Individual Contributor	Sales	82242	recLpjaAfbS64Lsjb	2023-05-22 03:40:49.558088+00	\N
+5843	169708	Business Development	2022-01-01	\N	f	Manager / Director	Inside Sales Manager	82243	recQYtH7KBKDs0dbc	2023-05-22 03:40:49.558088+00	\N
+5843	169709	Engineering	2022-02-01	\N	f	Individual Contributor	Sr. Software Engineer	82244	recVM5YSJf9YpVtUG	2023-05-22 03:40:49.558088+00	\N
+5843	169710	Business Development	2022-03-01	\N	\N	Executive / VP / C-Level	Chief Business Officer	82245	recPm0qeZnC9v4qoa	2023-05-22 03:40:49.558088+00	\N
+5843	169711	Engineering	2020-06-01	\N	f	Executive / VP / C-Level	CTO	82246	recPDTlcHyaCjsUVJ	2023-05-22 03:40:49.558088+00	\N
+5843	169712	Engineering	2021-11-01	\N	\N	Individual Contributor	Support Engineer	82247	recdKYGegVsMRbVCy	2023-05-22 03:40:49.558088+00	\N
+5843	169713	Engineering	\N	\N	\N	Individual Contributor	DevOps Engineer	82248	rec94fhpDr4qPmlzF	2023-05-22 03:40:49.558088+00	\N
+5843	169714	HR	2022-02-01	\N	f	Manager / Director	HR Manager	82249	recRZ8C6ds5zibdiX	2023-05-22 03:40:49.558088+00	\N
+5843	169715	Engineering	2022-03-01	\N	f	Individual Contributor	Sr. Software Developer	82250	reciV8yf91V0yD2w5	2023-05-22 03:40:49.558088+00	\N
+5843	169716	Marcomm	2022-04-01	\N	f	Manager / Director	Sr. Marketing Manager	82251	rec3t27SRE1r4rOY5	2023-05-22 03:40:49.558088+00	\N
+5843	169717	Engineering	\N	\N	\N	Individual Contributor	Devops Engineer	82252	recfzkzdunL0Fs53z	2023-05-22 03:40:49.558088+00	\N
+5843	169718	Operations	2022-03-01	\N	\N	Manager / Director	Director of Operation	82253	recosCsgKZVKaA3vf	2023-05-22 03:40:49.558088+00	\N
+5843	169719	Finance	2022-04-01	\N	\N	Manager / Director	Head of Finance	82254	recXVB2tDR21CZw0b	2023-05-22 03:40:49.558088+00	\N
+5843	169720	HR	2022-03-01	\N	f	Manager / Director	Human Resources Director	82255	recWsk1oaXLyRy3EV	2023-05-22 03:40:49.558088+00	\N
+5843	169721	Engineering	2022-06-01	\N	f	Individual Contributor	Software Engineer	82256	reca8bhmTuGn8Alkz	2023-05-22 03:40:49.558088+00	\N
+5843	169722	Marcomm	2022-06-01	2023-02-01	f	Manager / Director	Marketing Manager	82257	recPwTuNOiIV26GAy	2023-05-22 03:40:49.558088+00	\N
+5843	169723	Business Development	2022-04-01	\N	f	Manager / Director	Head of Business Development	82258	recVOHDsFXnabu44e	2023-05-22 03:40:49.558088+00	\N
+5843	169724	Product	2022-03-01	\N	f	Manager / Director	Product Manager	82259	recuCypDCchPc9UQu	2023-05-22 03:40:49.558088+00	\N
+5843	169725	Engineering	2022-03-01	\N	f	Individual Contributor	Software Engineer	82260	recK1CVy8Gz5Gv66B	2023-05-22 03:40:49.558088+00	\N
+5843	169726	Engineering	2022-07-01	\N	f	Individual Contributor	Software Engineer	82261	receOdTYdRmMdsSRG	2023-05-22 03:40:49.558088+00	\N
+5843	191907	Engineering	2018-09-01	2021-11-01	f	Individual Contributor	Software Developer	82229	recltLiPDhFjCkI0O	2023-05-22 03:40:49.558088+00	\N
+5843	629591	Sales	2019-03-01	2021-12-01	f	\N	Global Business Development Director	679860	\N	2023-06-03 13:49:37.236159+00	\N
+5843	753799	Operations	2020-07-01	\N	f	\N	Head of Strategy and Operations	712157	\N	2023-06-05 10:08:28.474003+00	\N
+5843	764826	Advisor	2022-04-01	\N	f	\N	Investor, Board Observor	712155	\N	2023-06-05 10:08:28.438781+00	\N
+5843	773193	Advisor	2018-01-01	\N	f	\N	Investor	712161	\N	2023-06-05 10:08:28.551058+00	\N
+5843	790251	Advisor	2022-03-01	\N	f	\N	Board Member	712167	\N	2023-06-05 10:08:28.578021+00	\N
+5843	802436	Engineering	2021-01-01	\N	f	\N	Software Engineer	712160	\N	2023-06-05 10:08:28.531081+00	\N
+5843	863326	Engineering	2022-02-01	\N	f	\N	Software Engineer	712164	\N	2023-06-05 10:08:28.572203+00	\N
+5843	863327	Engineering	2023-01-01	\N	f	\N	Software Engineer	712165	\N	2023-06-05 10:08:28.578459+00	\N
+5843	863328	Advisor	2018-01-01	\N	f	\N	Advisor	712156	\N	2023-06-05 10:08:28.474443+00	\N
+5843	863329	Operations	2022-01-01	\N	f	\N	Team Lead Manager	712158	\N	2023-06-05 10:08:28.47637+00	\N
+5843	863330	Engineering	2020-01-01	\N	f	\N	Software Engineer	712162	\N	2023-06-05 10:08:28.554873+00	\N
+5843	863331	Customer Success	2022-02-01	\N	f	\N	CMO	712163	\N	2023-06-05 10:08:28.554523+00	\N
+5843	863332	Advisor	2021-01-01	\N	f	\N	Advisor	712166	\N	2023-06-05 10:08:28.581279+00	\N
+5843	863333	Engineering	2022-06-01	\N	f	\N	Software Engineer	712168	\N	2023-06-05 10:08:28.696685+00	\N
+5843	863334	Advisor	2018-01-01	\N	t	\N	Board Member	712159	\N	2023-06-05 10:08:28.497366+00	\N
+19345	798866	Engineering	2020-12-01	\N	f	\N	Empreendedor	588685	\N	2023-05-29 13:58:17.221147+00	\N
+19345	798867	Operations	2016-10-01	\N	f	\N	Miembro fundador	588677	\N	2023-05-29 13:58:17.183558+00	\N
+19345	798868	Operations	2016-10-01	\N	f	\N	Afiliados	588678	\N	2023-05-29 13:58:17.184694+00	\N
+19345	798869	Operations	2016-01-01	\N	f	\N	Afiliada independientemente	588673	\N	2023-05-29 13:58:17.178279+00	\N
+19345	798870	Finance	2019-01-01	\N	f	\N	Trader	588682	\N	2023-05-29 13:58:17.186774+00	\N
+19345	798871	Sales	2019-10-01	\N	f	\N	Consultor de vendas	588662	\N	2023-05-29 13:58:16.88816+00	\N
+19345	798872	Operations	2020-02-01	\N	f	\N	Afiliado	588668	\N	2023-05-29 13:58:17.137537+00	\N
+19345	798873	Other	2019-08-01	\N	f	\N	Member	588665	\N	2023-05-29 13:58:16.999939+00	\N
+19345	798874	Finance	2019-09-01	\N	f	\N	Investidor	588669	\N	2023-05-29 13:58:17.158474+00	\N
+19345	798875	Customer Success	2016-11-01	\N	f	\N	Account Manager	588674	\N	2023-05-29 13:58:17.1823+00	\N
+19345	798876	Engineering	2016-11-01	\N	f	\N	Emprendedor Independiente	588680	\N	2023-05-29 13:58:17.1859+00	\N
+19345	798877	Operations	2017-11-01	\N	f	\N	Operations Manager	588672	\N	2023-05-29 13:58:17.177506+00	\N
+19345	798878	Operations	2020-02-01	2020-12-01	f	\N	Gold Executive	588686	\N	2023-05-29 13:58:17.43715+00	\N
+19345	798879	Marketing	2019-12-01	\N	f	\N	Affiliate and Entrepreneur	588663	\N	2023-05-29 13:58:16.888752+00	\N
+19345	798880	Finance	2020-04-01	\N	f	\N	Consultora de investimento em Dólar e Bitcoin	588659	\N	2023-05-29 13:58:16.870701+00	\N
+19345	798881	Legal	2019-10-01	\N	f	\N	Diretora	588676	\N	2023-05-29 13:58:17.182037+00	\N
+19345	798882	Marketing	2019-11-01	\N	f	\N	International Relations Officer	588675	\N	2023-05-29 13:58:17.182978+00	\N
+19345	798883	Marketing	2017-11-01	\N	f	\N	Marketing	588664	\N	2023-05-29 13:58:16.997892+00	\N
+19345	798884	Sales	2017-05-01	\N	f	\N	Affilate	588660	\N	2023-05-29 13:58:16.878598+00	\N
+19345	798885	Finance	2020-03-01	\N	f	\N	Consultor de investimentos na Nui International	588658	\N	2023-05-29 13:58:16.859669+00	\N
+19345	798886	Operations	2016-12-01	\N	f	\N	Operations Manager	588661	\N	2023-05-29 13:58:16.87912+00	\N
+19345	798887	Finance	2019-12-01	\N	f	\N	Investidor	588684	\N	2023-05-29 13:58:17.20382+00	\N
+19345	798888	Finance	2020-06-01	\N	f	\N	Investidor	588667	\N	2023-05-29 13:58:17.057412+00	\N
+19345	798889	Operations	2019-06-01	\N	f	\N	Afiliado	588681	\N	2023-05-29 13:58:17.186688+00	\N
+19345	798890	Marketing	2019-10-01	\N	f	\N	Afiliado Desenvolvedor NUI Social	588657	\N	2023-05-29 13:58:16.7215+00	\N
+19345	798891	Engineering	2017-11-01	\N	f	\N	Networker	588666	\N	2023-05-29 13:58:17.040637+00	\N
+19345	798892	Customer Success	2021-06-01	\N	f	\N	Customer Service Representative	588670	\N	2023-05-29 13:58:17.159759+00	\N
+19345	798893	Other	2018-08-01	\N	f	\N	miner as well as facilitate you in securing your info.	588679	\N	2023-05-29 13:58:17.184128+00	\N
+19345	798894	Marketing	2020-01-01	\N	f	\N	Marketing para afiliados	588671	\N	2023-05-29 13:58:17.167481+00	\N
+19345	798895	Other	2020-02-01	\N	f	\N	mmn	588683	\N	2023-05-29 13:58:17.201572+00	\N
+269559	781067	Advisor	2022-04-01	\N	f	\N	Advisor	563679	\N	2023-05-28 21:46:45.630083+00	\N
+269559	781068	Operations	2021-02-01	\N	t	\N	Founder	563680	\N	2023-05-28 21:46:45.667516+00	\N
+269559	781069	\N	\N	\N	t	\N	\N	563677	\N	2023-05-28 21:46:45.353751+00	\N
+269559	781070	Engineering	2022-01-01	\N	f	\N	Blockchain Developer	563681	\N	2023-05-28 21:46:45.699841+00	\N
+269559	781071	Operations	2021-02-01	\N	t	\N	Co-Founder	563678	\N	2023-05-28 21:46:45.617123+00	\N
+40241	61659	Marcomm	\N	\N	\N	Executive / VP / C-Level	Chief Marketing Officer	37266	rec06LAMyvswl8Shd	2023-05-22 03:40:49.558088+00	\N
+40241	63773	Business Development	\N	\N	\N	Executive / VP / C-Level	Chief Business Development Office	37268	recj27zbQj31Tf9xb	2023-05-22 03:40:49.558088+00	\N
+40241	65282	Engineering	2020-07-01	\N	f	Executive / VP / C-Level	CTO	37267	recDaiQ8fsnZ6RnPE	2023-05-22 03:40:49.558088+00	\N
+40241	67148	Operations	\N	\N	\N	Executive / VP / C-Level	Chief Executive Officer	37265	rec1e0mhSXSwPk6Et	2023-05-22 03:40:49.558088+00	\N
+40241	67812	Operations	2020-02-01	\N	t	Executive / VP / C-Level	Co-Founder & COO	37264	rec6LkRlswJicCJ58	2023-05-22 03:40:49.558088+00	\N
+40241	125298	Advisor	2020-01-01	2022-12-01	f	\N	Strategic Advisor	417176	\N	2023-05-22 12:41:40.280535+00	\N
+40241	640530	Engineering	2022-05-01	\N	f	\N	Software Engineer	417175	\N	2023-05-22 12:41:36.135672+00	\N
+40241	640531	Operations	2021-11-01	\N	f	\N	Agile Coach	417177	\N	2023-05-22 12:41:44.297759+00	\N
+40241	640534	Support	2022-02-01	\N	f	\N	Head of Customer & Platform Support	417178	\N	2023-05-22 12:41:55.945646+00	\N
+40241	640535	Engineering	2022-01-01	\N	f	\N	Junior Blockchain Engineer	417179	\N	2023-05-22 12:42:00.441674+00	\N
+40241	640536	Design	2021-11-01	\N	f	\N	Senior UX/UI Designer	417180	\N	2023-05-22 12:42:04.471156+00	\N
+40241	640537	Engineering	2021-08-01	\N	f	\N	Frontend Developer	417181	\N	2023-05-22 12:42:08.252377+00	\N
+8456	6200	\N	\N	\N	t	\N	\N	4134	rec7ccn1bqct6R3eK	2023-05-22 03:40:49.558088+00	\N
+8456	8792	Operations	2022-01-01	\N	t	\N	Co-Founder and CEO	4132	recBqaW2ldcqefUyU	2023-05-22 03:40:49.558088+00	\N
+8456	9979	Operations	2022-03-01	\N	t	\N	Co-Founder and CTO	4133	recXUqM5GE2RGNF3G	2023-05-22 03:40:49.558088+00	\N
+8456	864153	Engineering	2022-04-01	\N	f	\N	Full Stack Developer	713062	\N	2023-06-05 10:35:08.159458+00	\N
+35428	54831	Business Development	2022-01-01	\N	\N	Executive / VP / C-Level	Chief Business Officer	30323	recVLfgkNuRVTjlAS	2023-05-22 03:40:49.558088+00	\N
+35428	54942	Operations	2022-01-01	\N	t	Executive / VP / C-Level	Co-Founder & CEO	30318	rec4KJob0gWFxQlnU	2023-05-22 03:40:49.558088+00	\N
+35428	55012	Business Development	2022-02-01	2023-01-01	f	Executive / VP / C-Level	Chief Growth Officer	30326	recFp7ZhQkXOnR9oE	2023-05-22 03:40:49.558088+00	\N
+35428	55970	Operations	2022-02-01	\N	f	Individual Contributor	Advisor	30322	recRT3HWkHrCPudYz	2023-05-22 03:40:49.558088+00	\N
+35428	55994	Business Development	2022-01-01	\N	\N	Manager / Director	Head of Partnerships & Business Development	30321	recUbaD9MNRXPpguM	2023-05-22 03:40:49.558088+00	\N
+35428	58303	Operations	2022-03-01	\N	f	Individual Contributor	Personal Assistant	30319	rec1YEMovS8P6Jabb	2023-05-22 03:40:49.558088+00	\N
+35428	58580	Engineering	2021-11-01	2022-11-01	f	Manager / Director	Guild & Data Manager	30324	recYcZOuOnQVq01NI	2023-05-22 03:40:49.558088+00	\N
+35428	58760	Design	2022-03-01	\N	f	Individual Contributor	UI/UX Designer	30325	recSq3HzwnLUO2vtJ	2023-05-22 03:40:49.558088+00	\N
+35428	60259	Operations	2022-01-01	\N	f	Manager / Director	Strategy Manager	30320	recZiihLXaH2aiPa9	2023-05-22 03:40:49.558088+00	\N
+35428	640394	Sales	2022-05-01	\N	f	\N	Partnership Intern & Assistant Director	417046	\N	2023-05-22 12:28:12.665393+00	\N
+35428	640395	Product	2021-08-01	\N	f	\N	Chief Product Officer	417047	\N	2023-05-22 12:28:19.83043+00	\N
+35428	640396	Marketing	2022-02-01	\N	f	\N	Community Manager + Growth Hacking	417048	\N	2023-05-22 12:28:23.8437+00	\N
+35428	640397	Data	2022-03-01	\N	f	\N	Data Analyst	417049	\N	2023-05-22 12:28:31.389114+00	\N
+35428	640398	Data	2021-12-01	\N	f	\N	Crypto research and analysis	417050	\N	2023-05-22 12:28:41.952272+00	\N
+108120	29443	Advisor	2021-01-01	\N	f	\N	General Partner	594799	\N	2023-05-29 16:46:39.693587+00	\N
+108120	244383	Advisor	2021-09-01	\N	f	\N	General Partner	594795	\N	2023-05-29 16:46:39.635971+00	\N
+108120	288360	Advisor	2022-02-01	\N	f	\N	Limited Partner	594796	\N	2023-05-29 16:46:39.638006+00	\N
+108120	625539	Operations	2021-12-01	\N	f		Partner	405721	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625540		\N	\N	f		Partner	405722	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625541	Advisor	2021-12-01	\N	f		Partner	405723	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625542	Finance	2022-02-01	\N	f		Investment Team Member	405724	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625543	Advisor	2022-02-01	\N	f		Partner	405725	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625544	Operations	2022-01-01	\N	f		Investor	405726	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625545	Advisor	2021-09-01	\N	f		Investor	405728	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625546	People	2021-01-01	\N	f		Investor	405729	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625547	Operations	2021-12-01	\N	f		Limited Partner	405730	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625548	Operations	2022-02-01	\N	f		Investor	405731	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625549		\N	\N	f		Limited Partner	405732	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625550		\N	\N	f		Investor	405733	\N	2023-05-22 03:40:49.558088+00	\N
+108120	625551	Operations	2022-01-01	\N	f		Senior Venture Partner	405734	\N	2023-05-22 03:40:49.558088+00	\N
+108120	633261	Advisor	2022-02-01	\N	t	\N	Limited Partner	594792	\N	2023-05-29 16:46:39.5324+00	\N
+108120	672106	\N	\N	\N	f	\N	\N	594785	\N	2023-05-29 16:46:38.470978+00	\N
+108120	672868	Operations	2022-07-01	\N	f	\N	Venture team	594794	\N	2023-05-29 16:46:39.554687+00	\N
+108120	731003	Operations	2022-10-01	\N	f	\N	Governance Committee	594793	\N	2023-05-29 16:46:39.55363+00	\N
+108120	754957	\N	2022-06-01	\N	f	\N	Helping Web3 startups grow	594787	\N	2023-05-29 16:46:39.38067+00	\N
+108120	757886	Operations	2022-10-01	\N	f	\N	Venture Team	594798	\N	2023-05-29 16:46:39.691232+00	\N
+108120	771096	Operations	2022-01-01	\N	f	\N	LP	594797	\N	2023-05-29 16:46:39.676671+00	\N
+108120	803744	\N	2022-09-01	\N	f	\N	Venture Team Builder	594788	\N	2023-05-29 16:46:39.381532+00	\N
+108120	803745	People	2022-05-01	2022-09-01	f	\N	Development Committee	594802	\N	2023-05-29 16:46:39.992263+00	\N
+108120	803746	\N	2021-09-01	\N	f	\N	Membership, Fund LP	594789	\N	2023-05-29 16:46:39.412791+00	\N
+108120	803747	Advisor	2021-10-01	\N	f	\N	Genesis Member / Limited Partner	594790	\N	2023-05-29 16:46:39.513329+00	\N
+108120	803748	Other	2022-09-01	\N	f	\N	Member	594791	\N	2023-05-29 16:46:39.51683+00	\N
+108120	803749	Operations	2022-09-01	\N	f	\N	COO & Managing Director	594801	\N	2023-05-29 16:46:39.745657+00	\N
+108120	803750	Sales	2023-02-01	\N	f	\N	Senior Venture Partner	594800	\N	2023-05-29 16:46:39.700492+00	\N
+108120	803751	Advisor	2021-11-01	\N	f	\N	Investor 🍊	594786	\N	2023-05-29 16:46:39.340108+00	\N
+2168	4029	Operations	2022-06-01	\N	f	Individual Contributor	Strategic Advisor	36639	recJn1YQeKvIG02qK	2023-05-22 03:40:49.558088+00	\N
+2168	60830	Product	2021-02-01	\N	t	\N	Co-Founder & Chief Product Officer	36637	recWxMrnhDNpUbx38	2023-05-22 03:40:49.558088+00	\N
+2168	61388	Operations	2021-04-01	\N	t	\N	Co-Founder & Chief Strategy Officer	36641	rec2L4NkBrFQEgeM4	2023-05-22 03:40:49.558088+00	\N
+2168	61844	Marcomm	2022-06-01	\N	\N	Manager / Director	Head of Marketing & Communications	36640	recqepoC8PvlV3FgU	2023-05-22 03:40:49.558088+00	\N
+2168	63499	HR	2022-04-01	\N	\N	Individual Contributor	Human Resources Coordinator	36635	recQvCwbLM4JwpZwA	2023-05-22 03:40:49.558088+00	\N
+2168	63763	Business Development	2021-10-01	\N	f	Individual Contributor	Strategy & Policy	36642	recrGTak1CNbUDNie	2023-05-22 03:40:49.558088+00	\N
+2168	63977	Operations	2022-06-01	\N	f	Individual Contributor	Product Strategy Consultant	36632	recTKCxyZuYRRzfOe	2023-05-22 03:40:49.558088+00	\N
+2168	64298	\N	\N	\N	t	\N	\N	36638	recCxs680nd9oHnxk	2023-05-22 03:40:49.558088+00	\N
+2168	64669	Marcomm	2021-06-01	\N	\N	Manager / Director	Head of Digital Identity	36634	recOfcQfh61x3wJAT	2023-05-22 03:40:49.558088+00	\N
+2168	67103	Design	2022-06-01	\N	f	Manager / Director	Head of Design	36644	rec9QMahKxZ9McRoC	2023-05-22 03:40:49.558088+00	\N
+2168	67284	Operations	2021-06-01	\N	t	Executive / VP / C-Level	COO	36633	recVQkaIIykhWgwjQ	2023-05-22 03:40:49.558088+00	\N
+2168	67774	Engineering	2022-05-01	\N	f	Executive / VP / C-Level	CTO	36643	reckJaO70t4QDqrBQ	2023-05-22 03:40:49.558088+00	\N
+2168	68347	Engineering	2022-05-01	\N	f	Manager / Director	Head of Data Science	36636	recDmCnEJzUwBzAuf	2023-05-22 03:40:49.558088+00	\N
+2168	636530	Advisor	2021-07-01	\N	f	\N	Investor	415183	\N	2023-05-22 09:21:33.781314+00	\N
+2168	638536	Advisor	2022-01-01	\N	f	\N	Investor	415184	\N	2023-05-22 09:21:41.770069+00	\N
+2168	638537	Design	2022-11-01	\N	f	\N	User Experience Researcher Intern	415185	\N	2023-05-22 09:21:49.331155+00	\N
+2168	638538	Advisor	2021-06-01	\N	f	\N	Advisor	415186	\N	2023-05-22 09:21:53.185799+00	\N
+2168	638539	Engineering	2021-10-01	\N	f	\N	Senior Software Engineer	415187	\N	2023-05-22 09:22:04.123148+00	\N
+2168	638540	Engineering	2021-09-01	\N	f	\N	Full Stack Blockchain Engineer	415188	\N	2023-05-22 09:22:08.254967+00	\N
+2168	638541	Marketing	2022-09-01	\N	f	\N	Corporate Strategy Associate	415189	\N	2023-05-22 09:22:12.160313+00	\N
+2168	638542	Operations	2021-06-01	\N	t	\N	CEO and Co-Founder	415190	\N	2023-05-22 09:22:16.16121+00	\N
+2168	638543	Engineering	2022-01-01	\N	f	\N	Distributed Systems Architect	415191	\N	2023-05-22 09:22:20.018274+00	\N
+2168	638544	Sales	2022-05-01	\N	f	\N	Head of Business Development	415192	\N	2023-05-22 09:22:24.038974+00	\N
+2168	638545	People	2022-04-01	\N	f	\N	Human Resources Coordinator	415193	\N	2023-05-22 09:22:28.126861+00	\N
+2168	638546	\N	\N	\N	f	\N	\N	415194	\N	2023-05-22 09:22:39.3795+00	\N
+2168	638547	Engineering	2022-01-01	\N	f	\N	Software Quality Assurance Engineer	415195	\N	2023-05-22 09:22:49.888442+00	\N
+2168	638548	Advisor	2022-06-01	\N	f	\N	Member Board Of Directors	415196	\N	2023-05-22 09:22:57.029903+00	\N
+2168	862101	Operations	2022-08-01	\N	f	\N	Executive Assistant	710450	\N	2023-06-05 08:38:16.843798+00	\N
+204199	690000	Data	2022-02-01	\N	f	\N	Senior Data Analyst and Engineer	467426	\N	2023-05-25 07:03:08.250786+00	\N
+204199	690001	Engineering	2017-07-01	\N	f	\N	Chief Scientist	467432	\N	2023-05-25 07:03:08.276116+00	\N
+204199	690002	Engineering	2022-02-01	\N	f	\N	Software Developer	467422	\N	2023-05-25 07:03:08.1956+00	\N
+204199	690003	Operations	2014-03-01	\N	f	\N	Business Manager	467428	\N	2023-05-25 07:03:08.255624+00	\N
+204199	690004	Other	2018-02-01	\N	f	\N	Cover Supervisor	467440	\N	2023-05-25 07:03:08.330042+00	\N
+204199	690005	Operations	2018-04-01	\N	f	\N	Impiegata	467443	\N	2023-05-25 07:03:08.352884+00	\N
+204199	690006	Engineering	2021-11-01	\N	f	\N	Senior Software Engineer	467431	\N	2023-05-25 07:03:08.275969+00	\N
+204199	690007	Sales	2017-10-01	2020-03-01	f	\N	Sales Manager	467451	\N	2023-05-25 07:03:08.951287+00	\N
+204199	690008	Engineering	2021-02-01	\N	f	\N	Front-End Technical Lead	467438	\N	2023-05-25 07:03:08.312675+00	\N
+204199	690009	Data	2021-06-01	\N	f	\N	Director of Data Engineering and Business Intelligence	467442	\N	2023-05-25 07:03:08.348429+00	\N
+204199	690010	Sales	2019-06-01	\N	f	\N	Sales Representative	467446	\N	2023-05-25 07:03:08.368399+00	\N
+204199	690011	Engineering	2019-10-01	\N	f	\N	Software Developer	467448	\N	2023-05-25 07:03:08.373507+00	\N
+204199	690012	Data	2021-11-01	\N	f	\N	Insurance Product Analyst	467433	\N	2023-05-25 07:03:08.305543+00	\N
+204199	690013	Sales	2021-08-01	\N	f	\N	Inside Sales Representative	467444	\N	2023-05-25 07:03:08.368312+00	\N
+204199	690014	Sales	2021-05-01	2021-05-01	f	\N	Senior Sales Agent	467447	\N	2023-05-25 07:03:08.372301+00	\N
+204199	690015	Sales	2021-08-01	\N	f	\N	Business Development Manager	467421	\N	2023-05-25 07:03:08.185638+00	\N
+204199	690016	Operations	2020-03-01	2021-03-01	f	\N	Business Analyst	467450	\N	2023-05-25 07:03:08.530463+00	\N
+204199	690017	Sales	2018-03-01	\N	f	\N	Inside Sales Representative	467420	\N	2023-05-25 07:03:08.175506+00	\N
+204199	690018	Customer Success	2021-06-01	\N	f	\N	Customer Experience Representative	467430	\N	2023-05-25 07:03:08.274702+00	\N
+204199	690019	Engineering	2019-09-01	\N	f	\N	Software Developer	467424	\N	2023-05-25 07:03:08.211052+00	\N
+204199	690020	Advisor	2021-08-01	\N	f	\N	Investor, Syndicate Lead	467435	\N	2023-05-25 07:03:08.310176+00	\N
+204199	690021	Sales	2017-03-01	\N	f	\N	Vice President of Operations and Sales	467434	\N	2023-05-25 07:03:08.309205+00	\N
+204199	690022	Engineering	2022-01-01	\N	f	\N	Frontend Developer	467439	\N	2023-05-25 07:03:08.330438+00	\N
+204199	690024	Advisor	2018-10-01	\N	f	\N	Board Observer	467449	\N	2023-05-25 07:03:08.391962+00	\N
+204199	690025	Customer Success	2019-05-01	\N	f	\N	Customer Service Representative	467427	\N	2023-05-25 07:03:08.250729+00	\N
+204199	690026	Customer Success	2021-04-01	\N	f	\N	Customer Sucess Representative	467437	\N	2023-05-25 07:03:08.311472+00	\N
+204199	690027	Operations	2016-01-01	\N	t	\N	Co-Founder	467441	\N	2023-05-25 07:03:08.333066+00	\N
+204199	690028	Data	2022-02-01	\N	f	\N	Senior Data Analyst	467445	\N	2023-05-25 07:03:08.37056+00	\N
+204199	690029	Operations	2015-12-01	\N	f	\N	Co Founder	467423	\N	2023-05-25 07:03:08.20527+00	\N
+204199	690030	Advisor	2016-01-01	\N	f	\N	Investor	467436	\N	2023-05-25 07:03:08.31113+00	\N
+204199	690031	Design	2019-07-01	\N	f	\N	Product Designer	467425	\N	2023-05-25 07:03:08.232829+00	\N
+204199	690032	Sales	2021-08-01	\N	f	\N	Inside Sales Representative	467429	\N	2023-05-25 07:03:08.274125+00	\N
+183891	4029	Advisor	2017-09-01	2021-06-01	f	\N	Advisory Board Member	605986	\N	2023-05-30 03:01:35.777713+00	\N
+183891	679352	Engineering	2021-01-01	\N	f	\N	Senior Software Engineer	456505	\N	2023-05-24 20:41:30.714098+00	\N
+183891	679353	Data	2020-02-01	2021-04-01	f	\N	Intern Analyst	456519	\N	2023-05-24 20:41:31.351822+00	\N
+183891	679354	Marketing	2022-04-01	\N	f	\N	Marketing Manager, Global	456492	\N	2023-05-24 20:41:30.516565+00	\N
+183891	679355	Engineering	2021-07-01	\N	f	\N	Software Engineer	456500	\N	2023-05-24 20:41:30.572863+00	\N
+183891	679356	Engineering	2022-04-01	\N	f	\N	Senior Software Engineer	456501	\N	2023-05-24 20:41:30.573513+00	\N
+183891	679357	Engineering	2021-05-01	\N	f	\N	Senior Software Engineer	456496	\N	2023-05-24 20:41:30.560951+00	\N
+183891	679358	Engineering	2021-11-01	\N	f	\N	Junior Software Developer	456516	\N	2023-05-24 20:41:31.238717+00	\N
+183891	679359	Finance	2021-01-01	\N	f	\N	Europe Representative - Grid Flexibility and Decentralized Energy Solutions	456504	\N	2023-05-24 20:41:30.618847+00	\N
+183891	679360	Support	2022-02-01	\N	f	\N	Representative	456514	\N	2023-05-24 20:41:31.183913+00	\N
+183891	679361	Product	2021-08-01	\N	f	\N	Product Specialist	456487	\N	2023-05-24 20:41:30.379759+00	\N
+183891	679362	Legal	2021-08-01	\N	f	\N	Administrative Assistant	456509	\N	2023-05-24 20:41:30.973727+00	\N
+183891	679363	Sales	2017-06-01	\N	f	\N	Global Head of Business Development & Partnerships	456502	\N	2023-05-24 20:41:30.576185+00	\N
+183891	679364	Marketing	2021-08-01	\N	f	\N	Communications Manager	456484	\N	2023-05-24 20:41:30.130916+00	\N
+183891	679365	Data	2021-12-01	\N	f	\N	Transactive Energy Analyst	456512	\N	2023-05-24 20:41:31.116427+00	\N
+183891	679366	Product	2021-09-01	\N	f	\N	Product Owner - Transactive Energy	456482	\N	2023-05-24 20:41:30.117035+00	\N
+183891	679367	Data	2021-04-01	2021-04-01	f	\N	Analyst	456486	\N	2023-05-24 20:41:30.372242+00	\N
+183891	679368	Product	2021-07-01	\N	f	\N	Product Specialist	456493	\N	2023-05-24 20:41:30.537663+00	\N
+183891	679369	Data	2021-05-01	\N	f	\N	Analyst	456507	\N	2023-05-24 20:41:30.758602+00	\N
+183891	679370	Operations	2016-05-01	\N	t	\N	Co-Founder & Executive Chairman	456503	\N	2023-05-24 20:41:30.600549+00	\N
+183891	679371	Sales	2020-04-01	2020-08-01	f	\N	Business Development	456508	\N	2023-05-24 20:41:30.952142+00	\N
+183891	679372	Product	2021-06-01	\N	f	\N	Product Owner -TraceX	456511	\N	2023-05-24 20:41:30.994642+00	\N
+183891	679373	Operations	2022-03-01	\N	f	\N	QA Manager	456497	\N	2023-05-24 20:41:30.561291+00	\N
+183891	679374	Engineering	2022-01-01	\N	f	\N	Software Engineer	456490	\N	2023-05-24 20:41:30.494543+00	\N
+183891	679375	Advisor	2019-08-01	\N	f	\N	Advisor	456489	\N	2023-05-24 20:41:30.491859+00	\N
+183891	679376	Advisor	2015-08-01	\N	f	\N	Writing Consultant	456515	\N	2023-05-24 20:41:31.198289+00	\N
+183891	679377	Operations	2022-03-01	\N	f	\N	Project Analyst	456517	\N	2023-05-24 20:41:31.248888+00	\N
+183891	679378	Design	2019-11-01	\N	f	\N	Junior Web Designer	456510	\N	2023-05-24 20:41:30.978748+00	\N
+183891	679379	Sales	2022-03-01	\N	f	\N	Business Development Manager NEM	456494	\N	2023-05-24 20:41:30.539487+00	\N
+183891	679380	Engineering	2021-04-01	\N	f	\N	Software Developer	456488	\N	2023-05-24 20:41:30.43217+00	\N
+183891	679381	Operations	2021-11-01	\N	f	\N	Intern	456485	\N	2023-05-24 20:41:30.310423+00	\N
+183891	679382	Engineering	2019-03-01	\N	f	\N	Senior Software Developer	456483	\N	2023-05-24 20:41:30.11661+00	\N
+183891	679383	Sales	2021-07-01	\N	f	\N	Corporate Development	456506	\N	2023-05-24 20:41:30.734474+00	\N
+183891	679384	Engineering	2021-08-01	\N	f	\N	Software Engineer	456495	\N	2023-05-24 20:41:30.540149+00	\N
+183891	679385	Engineering	2019-06-01	\N	f	\N	Senior Blockchain / Java Software Developer	456499	\N	2023-05-24 20:41:30.562917+00	\N
+183891	679386	Engineering	2021-06-01	\N	f	\N	Full Stack Engineer	456518	\N	2023-05-24 20:41:31.251764+00	\N
+183891	679387	Engineering	2016-05-01	\N	t	\N	Technical Director & Co-Founder	456513	\N	2023-05-24 20:41:31.132188+00	\N
+183891	679388	People	2021-10-01	\N	f	\N	Development Manager	456491	\N	2023-05-24 20:41:30.495471+00	\N
+183891	679389	Operations	2022-01-01	\N	f	\N	Business Analyst	456498	\N	2023-05-24 20:41:30.562111+00	\N
+11288	5941	Other	2020-03-01	\N	t	\N	Assistant Mascot	9047	rec7P9xVGxqDYpXvM	2023-05-22 03:40:49.558088+00	\N
+11288	6178	Operations	2020-04-01	\N	t	\N	Co-Creator	9046	recXV7FmU3xY4ogdJ	2023-05-22 03:40:49.558088+00	\N
+11288	6349	\N	\N	\N	t	\N	\N	9044	reckdmuVPLLLH5A6I	2023-05-22 03:40:49.558088+00	\N
+11288	6965	Operations	2020-04-01	\N	t	\N	Cofounder	9045	recv3J5SKcSIA7bi1	2023-05-22 03:40:49.558088+00	\N
+11288	9653	Operations	2020-03-01	\N	t	\N	Co-Founder	9048	rec8t0pHNVhr7ZCbg	2023-05-22 03:40:49.558088+00	\N
+11288	10033	Other	2022-07-01	2022-11-01	t	\N	Gas Station Attendant	9049	reccE5Jt7KdnpM4pV	2023-05-22 03:40:49.558088+00	\N
+11288	628017	Engineering	2020-10-01	2022-05-01	f	\N	senior software engineer	675337	\N	2023-06-03 03:47:57.872631+00	\N
+11288	866129	Engineering	2021-01-01	\N	f	\N	Software Engineer	715177	\N	2023-06-05 11:53:57.776483+00	\N
+11288	866130	Marketing	2022-06-01	\N	f	\N	Community Manager	715187	\N	2023-06-05 11:53:57.922987+00	\N
+11288	866131	Operations	2020-09-01	\N	f	\N	DM Specialist	715184	\N	2023-06-05 11:53:57.881741+00	\N
+11288	866133	Design	2023-02-01	\N	f	\N	Multimedia Designer	715180	\N	2023-06-05 11:53:57.784561+00	\N
+11288	866134	Engineering	2021-10-01	\N	f	\N	Software Engineer	715171	\N	2023-06-05 11:53:57.740267+00	\N
+11288	866135	Marketing	2021-05-01	\N	f	\N	zintern	715164	\N	2023-06-05 11:53:57.64212+00	\N
+11288	866136	Marketing	2021-08-01	\N	f	\N	Marketing Manager	715175	\N	2023-06-05 11:53:57.764277+00	\N
+11288	866137	Design	2021-11-01	\N	f	\N	Head Of Design	715178	\N	2023-06-05 11:53:57.782194+00	\N
+11288	866138	Operations	2020-11-01	\N	f	\N	Begeleider	715169	\N	2023-06-05 11:53:57.726068+00	\N
+11288	866139	Legal	2022-08-01	\N	f	\N	General Counsel	715167	\N	2023-06-05 11:53:57.721501+00	\N
+11288	866140	Sales	2020-11-01	\N	f	\N	Pretty big deal	715176	\N	2023-06-05 11:53:57.764009+00	\N
+11288	866142	Design	2020-08-01	\N	f	\N	Graphic Designer	715179	\N	2023-06-05 11:53:57.784564+00	\N
+11288	866143	Engineering	2022-03-01	\N	f	\N	Infrastructure Engineer	715182	\N	2023-06-05 11:53:57.822651+00	\N
+11288	866144	Operations	2019-07-01	\N	t	\N	Co-Founder	715186	\N	2023-06-05 11:53:57.911063+00	\N
+11288	866145	Operations	2022-12-01	\N	f	\N	Executive Assistant	715170	\N	2023-06-05 11:53:57.726232+00	\N
+11288	866146	Engineering	2021-11-01	\N	f	\N	Software Engineer	715183	\N	2023-06-05 11:53:57.866629+00	\N
+11288	866147	Engineering	2022-09-01	\N	f	\N	Backend Engineer	715181	\N	2023-06-05 11:53:57.80556+00	\N
+11288	866148	Data	2021-11-01	\N	f	\N	zorb collecting	715173	\N	2023-06-05 11:53:57.745077+00	\N
+11288	866149	Product	2021-09-01	\N	f	\N	Product Lead	715185	\N	2023-06-05 11:53:57.908818+00	\N
+11288	866150	Product	2022-10-01	\N	f	\N	Senior Product Manager	715166	\N	2023-06-05 11:53:57.681444+00	\N
+11288	866151	Engineering	2023-01-01	\N	f	\N	Interim Head of Engineering	715172	\N	2023-06-05 11:53:57.742041+00	\N
+11288	866152	Operations	2021-10-01	\N	f	\N	Editor	715174	\N	2023-06-05 11:53:57.746139+00	\N
+11288	866153	People	2022-05-01	\N	f	\N	People Ops Partner	715168	\N	2023-06-05 11:53:57.725149+00	\N
+11288	866154	Data	2023-01-01	\N	f	\N	Staff Data Scientist	715165	\N	2023-06-05 11:53:57.66481+00	\N
+46651	76392	Operations	2020-09-01	\N	t	Executive / VP / C-Level	Co-Founder & CEO	47517	recYoC8UkfV3QDeNx	2023-05-22 03:40:49.558088+00	\N
+46651	76707	Engineering	2022-04-01	\N	\N	\N	Blockchain Developer	47529	recyeIZSiDwmhXJB3	2023-05-22 03:40:49.558088+00	\N
+46651	77244	Operations	2020-10-01	\N	t	Executive / VP / C-Level	Co-Founder & COO	47516	rechtyBt5Sc8hJhPT	2023-05-22 03:40:49.558088+00	\N
+46651	77790	Marcomm	2020-10-01	2022-12-01	f	Manager / Director	Digital Marketing Manager	47519	recf98luWACdYqSZY	2023-05-22 03:40:49.558088+00	\N
+46651	78939	Marcomm	2021-10-01	\N	\N	\N	Community Coordinator	47520	recp541tHMjT5gfuD	2023-05-22 03:40:49.558088+00	\N
+46651	81762	Marcomm	2020-08-01	\N	f	\N	Senior Content Manager	47523	recJmc7eic3O6Dhcx	2023-05-22 03:40:49.558088+00	\N
+46651	81987	Engineering	2022-01-01	2021-12-01	f	Executive / VP / C-Level	Chief Technology Officer	47527	recToWGDSb8qjlwwb	2023-05-22 03:40:49.558088+00	\N
+46651	82206	Design	2020-12-01	\N	f	\N	Visual Designer	47522	recACMEGM0St1Mj1n	2023-05-22 03:40:49.558088+00	\N
+46651	82209	Engineering	2022-02-01	\N	\N	\N	Software Engineer	47525	recfuqJLXJmS13NGk	2023-05-22 03:40:49.558088+00	\N
+46651	82250	Design	2022-01-01	2022-01-01	f	\N	Lead Product Designer	47526	recScjsFipf8ZdNLo	2023-05-22 03:40:49.558088+00	\N
+46651	82252	Marcomm	2021-08-01	\N	f	Executive / VP / C-Level	Chief Marketing Officer	47521	recCujkRJ6VY8QqtW	2023-05-22 03:40:49.558088+00	\N
+46651	83555	Marcomm	2021-12-01	\N	f	Manager / Director	Community Manager	47518	recZtITdW8iY2MeuU	2023-05-22 03:40:49.558088+00	\N
+46651	84162	Marcomm	2021-03-01	2022-08-01	f	\N	UX Content Writer	47528	reccrmCJ34AUsyZoz	2023-05-22 03:40:49.558088+00	\N
+46651	84227	Engineering	2021-10-01	2023-02-01	f	\N	Software Engineer	47524	rec7HsoMtuD9hp1QJ	2023-05-22 03:40:49.558088+00	\N
+46651	640681	Operations	2022-09-01	\N	f	\N	Project Intern	417317	\N	2023-05-22 13:03:45.264427+00	\N
+101157	230578	Operations	2013-01-01	\N	t	Executive / VP / C-Level	CEO	121985	recgbf3PtT2sMuVt4	2023-05-22 03:40:49.558088+00	\N
+101157	230580	Operations	2013-01-01	\N	f	Executive / VP / C-Level	CTO	121986	reca5BeRxYVFcukoH	2023-05-22 03:40:49.558088+00	\N
+101157	230583	Operations	\N	\N	\N	Manager / Director	Project Director	121987	recR7cGHvFH03J1mD	2023-05-22 03:40:49.558088+00	\N
+101157	868017	Data	2022-02-01	\N	f	\N	Deep Learning Researcher/Developer	717455	\N	2023-06-05 15:39:36.414576+00	\N
+101157	868019	Engineering	2016-04-01	\N	f	\N	Backend Developer	717456	\N	2023-06-05 15:39:36.417263+00	\N
+101157	868020	Sales	2017-03-01	\N	f	\N	기획	717457	\N	2023-06-05 15:39:36.424031+00	\N
+101157	868021	Operations	2019-03-01	\N	f	\N	Businees Team Leader	717454	\N	2023-06-05 15:39:36.411293+00	\N
+101157	868022	Operations	2020-09-01	\N	f	\N	연구원	717453	\N	2023-06-05 15:39:36.333203+00	\N
+2544	1328	Sales	2016-09-01	2022-05-01	t	\N	Founding Partner (Acquired)	8558	recwvA8pdhCQubV17	2023-05-22 03:40:49.558088+00	\N
+2544	2591	Sales	2016-09-01	2022-05-01	t	\N	Partner, Co-founder	8557	recoQXUn4wgEpuprg	2023-05-22 03:40:49.558088+00	\N
+2544	4718	Sales	2016-09-01	2022-04-01	t	\N	Partner, Co-Founder	8559	rec2JB3VYrzeq3LGB	2023-05-22 03:40:49.558088+00	\N
+2544	630071	Operations	2021-08-01	2022-01-01	f	\N	Contractor	680935	\N	2023-06-03 16:37:34.538224+00	\N
+2544	639147	Engineering	2019-05-01	\N	f	\N	Software Engineer	415823	\N	2023-05-22 10:26:00.595361+00	\N
+2544	639148	Advisor	2019-04-01	\N	f	\N	Advisory Board Member	415824	\N	2023-05-22 10:26:04.761193+00	\N
+203470	288415	Operations	2022-01-01	\N	t	\N	CEO	467360	\N	2023-05-25 07:00:09.045214+00	\N
+203470	689935	Customer Success	2015-09-01	\N	f	\N	RTU Clinician	467355	\N	2023-05-25 07:00:09.004541+00	\N
+203470	689936	Other	2013-07-01	2016-06-01	f	\N	Director of Nursing	467362	\N	2023-05-25 07:00:09.330956+00	\N
+203470	689937	Engineering	2022-04-01	\N	f	\N	Director of Cyber Security	467354	\N	2023-05-25 07:00:08.991604+00	\N
+203470	689938	Other	2011-01-01	\N	f	\N	Licensed Practical Nurse	467358	\N	2023-05-25 07:00:09.036816+00	\N
+203470	689939	Finance	2020-01-01	2020-02-01	f	\N	Especialista en inversiones - DGPMI	467361	\N	2023-05-25 07:00:09.267588+00	\N
+203470	689940	Operations	2022-09-01	\N	f	\N	Executive Assistant	467352	\N	2023-05-25 07:00:08.963943+00	\N
+203470	689941	Other	2014-06-01	\N	f	\N	Registered Nurse	467357	\N	2023-05-25 07:00:09.005511+00	\N
+203470	689942	People	2022-12-01	\N	f	\N	Global Head of People	467353	\N	2023-05-25 07:00:08.97792+00	\N
+203470	689943	Operations	2013-07-01	\N	f	\N	LPN	467350	\N	2023-05-25 07:00:08.929131+00	\N
+203470	689944	Other	2013-06-01	\N	f	\N	Registered Nurse	467359	\N	2023-05-25 07:00:09.040311+00	\N
+203470	689945	Other	2013-07-01	\N	f	\N	Chief Nursing Officer	467356	\N	2023-05-25 07:00:09.006589+00	\N
+203470	689946	Operations	2019-01-01	\N	f	\N	Asistente de Estudios y Proyectos	467351	\N	2023-05-25 07:00:08.964665+00	\N
+45462	80027	Operations	2022-01-01	\N	t	Executive / VP / C-Level	Co-Founder & COO	45968	recXYZfSKutYOnZIu	2023-05-22 03:40:49.558088+00	\N
+45462	81236	Marcomm	2022-01-01	\N	f	Manager / Director	Head of Growth & Marketing	45971	recPiHw2okKTyBLgx	2023-05-22 03:40:49.558088+00	\N
+45462	82095	Engineering	2022-01-01	\N	f	\N	Software Engineer	45973	rec4krvSPsd5c5mjp	2023-05-22 03:40:49.558088+00	\N
+45462	82278	Engineering	2022-01-01	\N	t	Executive / VP / C-Level	Co-Founder & CTO	45969	rec4LyWgVkuAamxcI	2023-05-22 03:40:49.558088+00	\N
+45462	82784	Operations	2022-01-01	\N	t	Executive / VP / C-Level	Founder & CEO	45970	recMLRdpPMcx8HTgU	2023-05-22 03:40:49.558088+00	\N
+45462	84579	Operations	2022-01-01	\N	f	Manager / Director	Head of Special Projects	45972	recSvzXDU7dPtRlYc	2023-05-22 03:40:49.558088+00	\N
+45462	625543	\N	\N	\N	f	\N	\N	716073	\N	2023-06-05 13:11:31.786973+00	\N
+45462	640611	Engineering	2022-01-01	\N	f	\N	Senior Software Development Engineer	417247	\N	2023-05-22 12:54:49.684013+00	\N
+1025	3184	Operations	\N	\N	t	\N	Co-Founder & CEO	5153	recrFROkw7KMLGvuy	2023-05-22 03:40:49.558088+00	\N
+1025	3828	Operations	2020-05-01	\N	t	\N	Co-Founder	5154	rec3YOEiVaAwuSMtF	2023-05-22 03:40:49.558088+00	\N
+1025	795312	Engineering	2022-08-01	\N	f	\N	Senior Software Engineer	578733	\N	2023-05-29 03:54:05.175762+00	\N
+1025	795314	Product	2021-09-01	2022-03-01	f	\N	Product Management Intern	578736	\N	2023-05-29 03:54:05.349673+00	\N
+1025	795315	Product	2022-06-01	2023-01-01	f	\N	Product Manager	578735	\N	2023-05-29 03:54:05.268249+00	\N
+1025	795316	Advisor	2022-04-01	\N	f	\N	Investor	578734	\N	2023-05-29 03:54:05.181828+00	\N
+1025	795317	Customer Success	2021-05-01	\N	f	\N	Customer Delight	578731	\N	2023-05-29 03:54:05.132856+00	\N
+1025	795318	Engineering	2021-12-01	\N	f	\N	Senior Software Engineer	578730	\N	2023-05-29 03:54:05.097251+00	\N
+1025	795319	Engineering	2020-08-01	\N	f	\N	VP of Engineering	578732	\N	2023-05-29 03:54:05.152724+00	\N
+257077	630360	Engineering	2021-10-01	\N	f	\N	Senior Software Engineer	408945	\N	2023-05-22 03:40:49.558088+00	\N
+257077	633291	Operations	2021-02-01	\N	f	\N	Chief Executive Officer	687242	\N	2023-06-04 05:46:28.760763+00	\N
+257077	639944	Operations	2021-02-01	\N	f	\N	Chief Executive Officer	493856	\N	2023-05-27 03:02:17.997648+00	\N
+257077	714307	\N	2022-09-01	\N	f	\N	Content & Research/Biz Ops	493855	\N	2023-05-27 03:02:17.933341+00	\N
+257077	714309	People	2021-08-01	\N	f	\N	Chief Of Staff	493857	\N	2023-05-27 03:02:18.003554+00	\N
+257077	714310	Operations	2021-09-01	\N	f	\N	Editor	493858	\N	2023-05-27 03:02:18.008071+00	\N
+265966	754235	\N	\N	\N	f	\N	\N	534540	\N	2023-05-28 09:50:32.983906+00	\N
+113340	623269	Operations	2021-07-01	\N	t	Executive/ VP / C-Level	Founder & CEO	404412	\N	2023-05-22 03:40:49.558088+00	\N
+113340	623270	Operations	2021-03-01	\N	t	Executive/ VP / C-Level	Founder & COO	404413	\N	2023-05-22 03:40:49.558088+00	\N
+113340	804511	Advisor	2021-08-01	\N	f	\N	Strategic Advisor	595686	\N	2023-05-29 17:12:13.761326+00	\N
+113340	804512	Design	2022-12-01	\N	f	\N	UX Research Intern	595685	\N	2023-05-29 17:12:13.760023+00	\N
+113340	804514	Marketing	2022-09-01	\N	f	\N	Growth Marketing Intern	595689	\N	2023-05-29 17:12:13.823678+00	\N
+113340	804515	Finance	2022-09-01	\N	f	\N	Investment	595688	\N	2023-05-29 17:12:13.811401+00	\N
+113340	804516	Engineering	2022-04-01	\N	f	\N	Founding Engineer	595683	\N	2023-05-29 17:12:13.743462+00	\N
+113340	804517	Marketing	2023-01-01	\N	f	\N	Marketing Growth Intern	595684	\N	2023-05-29 17:12:13.745709+00	\N
+113340	804518	Marketing	2022-06-01	\N	f	\N	Marketing Intern	595687	\N	2023-05-29 17:12:13.761719+00	\N
+113340	804519	Marketing	2022-02-01	\N	f	\N	Growth Marketing Intern	595682	\N	2023-05-29 17:12:13.700078+00	\N
+113340	804520	Marketing	2022-01-01	2022-08-01	f	\N	Marketing Team Lead	595690	\N	2023-05-29 17:12:13.853315+00	\N
+258478	721031	Operations	2021-01-01	\N	f	\N	Head of Operations and Product	500593	\N	2023-05-27 08:02:28.410894+00	\N
+258478	721032	Marketing	2022-08-01	2023-01-01	f	\N	NFT & web3 Community Lead	500596	\N	2023-05-27 08:02:28.470465+00	\N
+258478	721033	Design	2022-01-01	\N	f	\N	Head Of Design	500595	\N	2023-05-27 08:02:28.463735+00	\N
+258478	721034	Operations	2021-01-01	\N	t	\N	CEO	500594	\N	2023-05-27 08:02:28.441032+00	\N
+107277	646059	Sales	2021-04-01	\N	t	\N	Sales Director & Co-founder	718840	\N	2023-06-05 16:11:02.75173+00	\N
+107277	713235	Operations	2021-07-01	\N	f	\N	Administration Manager	718841	\N	2023-06-05 16:11:02.758604+00	\N
+107277	800262	Advisor	2021-07-01	\N	f	\N	Investor & Board Member	718848	\N	2023-06-05 16:11:02.873653+00	\N
+107277	868946	Operations	2020-10-01	\N	t	\N	CEO & Founder	718842	\N	2023-06-05 16:11:02.760573+00	\N
+107277	868947	Data	2022-05-01	\N	f	\N	Product Analyst	718834	\N	2023-06-05 16:11:02.670396+00	\N
+107277	868948	Operations	2021-01-01	\N	f	\N	Venture Partner	718835	\N	2023-06-05 16:11:02.672503+00	\N
+107277	868949	Sales	2021-09-01	\N	f	\N	Director of Business Development	718838	\N	2023-06-05 16:11:02.735319+00	\N
+107277	868950	Operations	2021-11-01	\N	f	\N	Project & Test manager	718836	\N	2023-06-05 16:11:02.697418+00	\N
+107277	868951	Operations	2021-09-01	\N	f	\N	IT Security Assistant	718843	\N	2023-06-05 16:11:02.772519+00	\N
+107277	868952	People	2021-05-01	\N	f	\N	Head of People & Culture	718845	\N	2023-06-05 16:11:02.773121+00	\N
+107277	868953	Operations	2022-03-01	\N	f	\N	Business Development Analyst	718847	\N	2023-06-05 16:11:02.872143+00	\N
+107277	868954	Engineering	2022-05-01	\N	f	\N	Senior Backend Developer	718839	\N	2023-06-05 16:11:02.748911+00	\N
+107277	868955	Product	2021-02-01	2021-05-01	f	\N	Product Manager	718849	\N	2023-06-05 16:11:02.932562+00	\N
+107277	868956	Customer Success	2022-03-01	\N	f	\N	Customer Due Diligence Manager	718844	\N	2023-06-05 16:11:02.772121+00	\N
+107277	868957	Product	2022-02-01	\N	f	\N	Product Owner	718837	\N	2023-06-05 16:11:02.697056+00	\N
+107277	868958	Customer Success	2021-01-01	\N	t	\N	CMO	718846	\N	2023-06-05 16:11:02.796278+00	\N
+50	1061	\N	\N	\N	t	\N	\N	3936	recmHGnqFybPL9Uhg	2023-05-22 03:40:49.558088+00	\N
+50	1164	Operations	2021-04-01	\N	t	\N	Founder	3937	recvfXm7BVWaIhlmP	2023-05-22 03:40:49.558088+00	\N
+50	1505	Operations	2021-08-01	\N	t	\N	Co-founder, Afterparty	3938	recXI3bT1Unfuq5Ii	2023-05-22 03:40:49.558088+00	\N
+50	3736	Advisor	2021-07-01	\N	f	Executive / VP / C-Level	Chief Executive Officer	116	recWyrix77dV5V7XC	2023-05-22 03:40:49.558088+00	\N
+50	3761	Marketing	2021-03-01	\N	t	Executive / VP / C-Level	Chief Community Officer	117	reckz7CriBOasgfh1	2023-05-22 03:40:49.558088+00	\N
+50	258444	Advisor	2021-12-01	\N	f	\N	Investor	572333	\N	2023-05-29 00:24:14.338671+00	\N
+50	690994	Advisor	2021-12-01	\N	f	\N	Investor	572330	\N	2023-05-29 00:24:14.304707+00	\N
+50	760551	Advisor	2023-02-01	\N	f	\N	Strategic Advisor	572328	\N	2023-05-29 00:24:14.243313+00	\N
+50	789941	Sales	2011-01-01	\N	f	\N	Partner	572335	\N	2023-05-29 00:24:14.365838+00	\N
+50	789942	Operations	2022-01-01	\N	f	\N	Vice President Operations	572331	\N	2023-05-29 00:24:14.308426+00	\N
+50	789943	Marketing	2022-04-01	\N	f	\N	Director of Digital	572332	\N	2023-05-29 00:24:14.314775+00	\N
+50	789944	People	2022-02-01	\N	f	\N	Chief Of Staff	572334	\N	2023-05-29 00:24:14.35678+00	\N
+50	789945	\N	\N	\N	f	\N	\N	572327	\N	2023-05-29 00:24:13.865705+00	\N
+50	789946	Marketing	2022-11-01	\N	f	\N	Director of Marketing	572329	\N	2023-05-29 00:24:14.278362+00	\N
+8767	2190	Marketing	2017-09-01	\N	f	\N	Marketing Technology	713137	\N	2023-06-05 10:38:48.337349+00	\N
+8767	2606	Advisor	2018-03-01	\N	f	\N	Investor	713131	\N	2023-06-05 10:38:48.301139+00	\N
+8767	3152	Advisor	2017-09-01	\N	f	\N	Advisory Board Member	713134	\N	2023-06-05 10:38:48.324964+00	\N
+8767	3890	Operations	2017-06-01	\N	t	Executive/ VP / C-Level	Founder and CSO	404478	\N	2023-05-22 03:40:49.558088+00	\N
+8767	8735	Operations	2017-09-01	\N	t	\N	Co-Founder and CTO	4440	recNLWemQs4XogYIj	2023-05-22 03:40:49.558088+00	\N
+8767	169754	Other	2021-03-01	\N	f	\N	Ambassador	713128	\N	2023-06-05 10:38:48.297797+00	\N
+8767	637322	Advisor	2020-06-01	\N	f	\N	Investor	713126	\N	2023-06-05 10:38:48.282067+00	\N
+8767	864195	Operations	2020-12-01	\N	f	\N	Chief Strategy Officer at Celsius Mining	713141	\N	2023-06-05 10:38:48.345696+00	\N
+8767	864196	Finance	2022-03-01	2022-07-01	f	\N	Head of FP&A and Investor Relations	713151	\N	2023-06-05 10:38:48.780796+00	\N
+8767	864197	Legal	2022-06-01	\N	f	\N	Chief Administrative Officer	713147	\N	2023-06-05 10:38:48.424209+00	\N
+8767	864198	Product	2020-12-01	\N	f	\N	Product Manager	713142	\N	2023-06-05 10:38:48.34644+00	\N
+8767	864199	Operations	2021-11-01	\N	f	\N	Project Manager	713136	\N	2023-06-05 10:38:48.336514+00	\N
+8767	864200	Operations	2021-05-01	\N	f	\N	Head of operational technology	713139	\N	2023-06-05 10:38:48.345264+00	\N
+8767	864202	\N	\N	\N	f	\N	\N	713123	\N	2023-06-05 10:38:47.164227+00	\N
+8767	864203	Finance	2021-06-01	\N	f	\N	Retail Lending Associate & VIP Loan Advisor	713135	\N	2023-06-05 10:38:48.323978+00	\N
+8767	864204	Data	2020-09-01	\N	f	\N	Data Protection Officer	713132	\N	2023-06-05 10:38:48.31753+00	\N
+8767	864205	Finance	2021-03-01	\N	f	\N	Chief Credit Officer	713140	\N	2023-06-05 10:38:48.346536+00	\N
+8767	864206	Operations	2021-02-01	\N	f	\N	Senior Director Of Operations	713133	\N	2023-06-05 10:38:48.321338+00	\N
+8767	864207	Operations	2022-01-01	\N	f	\N	General Manager - Serbia	713145	\N	2023-06-05 10:38:48.382588+00	\N
+8767	864208	Engineering	2021-06-01	\N	f	\N	Software Engineer	713146	\N	2023-06-05 10:38:48.405543+00	\N
+8767	864210	Legal	2021-02-01	\N	t	\N	Head Of Innovation and Chief Compliance Officer	713124	\N	2023-06-05 10:38:48.21662+00	\N
+8767	864212	Marketing	2021-01-01	\N	f	\N	Marketing Advisor	713130	\N	2023-06-05 10:38:48.302056+00	\N
+8767	864213	Sales	2021-10-01	\N	f	\N	Director Of Partnerships	713125	\N	2023-06-05 10:38:48.280547+00	\N
+8767	864214	Finance	2021-11-01	\N	f	\N	CFO, Celsius Mining	713138	\N	2023-06-05 10:38:48.342439+00	\N
+8767	864216	Engineering	2021-05-01	\N	f	\N	Software Engineer	713127	\N	2023-06-05 10:38:48.297505+00	\N
+8767	864219	Finance	2021-11-01	\N	f	\N	VP Lending	713148	\N	2023-06-05 10:38:48.424209+00	\N
+8767	864220	People	2021-09-01	\N	f	\N	Global Vice President of Employee Experience	713144	\N	2023-06-05 10:38:48.380059+00	\N
+8767	864221	People	2022-04-01	\N	f	\N	VP of Total Rewards	713143	\N	2023-06-05 10:38:48.379367+00	\N
+8767	864222	People	2021-01-01	\N	f	\N	VP of HR/ Executive Business Partner at Celsius	713150	\N	2023-06-05 10:38:48.490338+00	\N
+8767	864223	Operations	2020-03-01	\N	f	\N	Chief Security Officer & Head of IT	713149	\N	2023-06-05 10:38:48.486359+00	\N
+8767	864224	Data	2022-05-01	\N	f	\N	VP of Business Initiatives & Data Science	713129	\N	2023-06-05 10:38:48.301508+00	\N
+8767	\N	\N	\N	\N	t	\N	\N	275302	rec1tr3DskJ1KPzRS	2023-05-22 03:40:49.558088+00	\N
+269859	634057	Advisor	2021-07-01	\N	f	\N	Seed Investor	569436	\N	2023-05-28 23:23:57.268558+00	\N
+269859	773296	\N	\N	\N	f	\N	\N	569431	\N	2023-05-28 23:23:56.963462+00	\N
+269859	773925	Advisor	2021-01-01	\N	f	\N	Pre Seed Investor	569440	\N	2023-05-28 23:23:57.318215+00	\N
+269859	779487	Advisor	2021-06-01	\N	f	\N	Investor (The Flying Whale Ventures)	569433	\N	2023-05-28 23:23:57.250714+00	\N
+269859	784821	Advisor	2021-01-01	\N	f	\N	Investor, Advisor	569434	\N	2023-05-28 23:23:57.255927+00	\N
+269859	786933	Operations	2020-08-01	\N	t	\N	Co-Founder, CTO	569432	\N	2023-05-28 23:23:57.231416+00	\N
+269859	786934	Design	2020-08-01	\N	t	\N	Chief Design Officer	569437	\N	2023-05-28 23:23:57.277604+00	\N
+269859	786935	Marketing	2021-06-01	\N	f	\N	Technical Writer	569439	\N	2023-05-28 23:23:57.294031+00	\N
+269859	786936	Engineering	2022-05-01	\N	f	\N	Senior Backend Engineer	569438	\N	2023-05-28 23:23:57.289537+00	\N
+269859	786937	\N	\N	\N	f	\N	\N	569430	\N	2023-05-28 23:23:56.945915+00	\N
+269859	786938	Engineering	2022-03-01	\N	f	\N	Platform Team Lead	569442	\N	2023-05-28 23:23:57.365638+00	\N
+269859	786939	Engineering	2021-09-01	\N	f	\N	Software Engineer	569441	\N	2023-05-28 23:23:57.346569+00	\N
+269859	786940	Marketing	2021-09-01	\N	f	\N	Blogger	569443	\N	2023-05-28 23:23:57.405342+00	\N
+269859	786941	Engineering	2022-01-01	\N	f	\N	Developer Advocate	569435	\N	2023-05-28 23:23:57.267539+00	\N
+663	244327	Operations	2017-06-01	\N	t	\N	Co-Founder DeNet	576465	\N	2023-05-29 02:27:39.813179+00	\N
+663	244334	Operations	2016-09-01	\N	t	\N	Co-Founder	576466	\N	2023-05-29 02:27:39.82944+00	\N
+663	650992	Advisor	2018-02-01	\N	f	\N	Advisor	576464	\N	2023-05-29 02:27:39.805345+00	\N
+98899	867873	Operations	2022-01-01	\N	f	\N	Corporate Secretary	717307	\N	2023-06-05 15:34:29.371563+00	\N
+98899	867874	Operations	2019-05-01	\N	f	\N	Executive Chairman	717306	\N	2023-06-05 15:34:29.332526+00	\N
+98899	867875	Operations	2018-09-01	\N	f	\N	Chief Executive Officer	717309	\N	2023-06-05 15:34:29.414683+00	\N
+98899	867876	Operations	2022-01-01	\N	f	\N	President	717308	\N	2023-06-05 15:34:29.398067+00	\N
+98899	867877	Operations	2022-01-01	\N	f	\N	Chief Operating Officer	717305	\N	2023-06-05 15:34:29.303536+00	\N
+30388	47006	Operations	2021-01-01	\N	t	Executive / VP / C-Level	Co-Founder & CEO	28339	recWoGBdzVm2cVbeG	2023-05-22 03:40:49.558088+00	\N
+30388	50052	Engineering	2021-02-01	\N	t	Executive / VP / C-Level	Co-Founder & CTO	28340	rec7DykG2C0QOiFU5	2023-05-22 03:40:49.558088+00	\N
+30388	640165	Advisor	2022-01-01	\N	f	\N	Seed Investor	416814	\N	2023-05-22 12:06:44.436027+00	\N
+30388	640166	\N	\N	\N	f	\N	\N	416815	\N	2023-05-22 12:06:48.105162+00	\N
+30388	640167	Operations	2021-01-01	\N	t	\N	Co-founder & CEO	416816	\N	2023-05-22 12:06:51.822503+00	\N
+30388	640168	Engineering	2015-04-01	\N	f	\N	Senior Mining Engineer	416817	\N	2023-05-22 12:06:55.874839+00	\N
+30388	640169	Advisor	2022-01-01	\N	f	\N	Seed Investor	416818	\N	2023-05-22 12:06:59.953316+00	\N
+30388	640170	Engineering	2022-04-01	\N	f	\N	Software Engineer	416819	\N	2023-05-22 12:07:04.03861+00	\N
+30388	640171	Advisor	2022-09-01	\N	f	\N	Investor	416820	\N	2023-05-22 12:07:07.83272+00	\N
+202887	663664	Marketing	2021-07-01	\N	f	\N	Content Writer	467230	\N	2023-05-25 06:56:00.549859+00	\N
+202887	689804	Marketing	2021-03-01	\N	f	\N	Senior Content Manager | SEO + Copy	467224	\N	2023-05-25 06:56:00.472724+00	\N
+202887	689805	Marketing	2021-09-01	\N	f	\N	Freelance Contributor	467234	\N	2023-05-25 06:56:00.586629+00	\N
+202887	689806	Marketing	2022-03-01	\N	f	\N	Community Manager	467220	\N	2023-05-25 06:56:00.449403+00	\N
+202887	689807	Product	2021-03-01	\N	f	\N	Product Manager	467221	\N	2023-05-25 06:56:00.451457+00	\N
+202887	689808	Customer Success	2022-01-01	\N	f	\N	Customer Success Specialist	467228	\N	2023-05-25 06:56:00.504883+00	\N
+202887	689809	Engineering	2020-06-01	\N	f	\N	Software Engineer	467214	\N	2023-05-25 06:56:00.404908+00	\N
+202887	689810	Marketing	2021-05-01	\N	f	\N	Content Writer	467237	\N	2023-05-25 06:56:00.632095+00	\N
+202887	689811	Engineering	2020-01-01	\N	f	\N	Software Development Engineer	467225	\N	2023-05-25 06:56:00.489701+00	\N
+202887	689812	Engineering	2021-06-01	\N	f	\N	SDE	467218	\N	2023-05-25 06:56:00.425677+00	\N
+202887	689813	Customer Success	2021-05-01	\N	f	\N	Customer Success Specialist	467229	\N	2023-05-25 06:56:00.507049+00	\N
+202887	689814	Engineering	2020-02-01	\N	f	\N	Software Engineer	467226	\N	2023-05-25 06:56:00.502911+00	\N
+202887	689815	Design	2020-10-01	\N	f	\N	Product Designer	467217	\N	2023-05-25 06:56:00.411413+00	\N
+202887	689816	Engineering	2019-12-01	\N	f	\N	Technical Lead	467216	\N	2023-05-25 06:56:00.407273+00	\N
+202887	689817	People	2021-01-01	2021-08-01	f	\N	Talent Acquisition Manager, India	467236	\N	2023-05-25 06:56:00.591439+00	\N
+202887	689818	Data	2021-05-01	\N	f	\N	Quality Analyst	467231	\N	2023-05-25 06:56:00.562836+00	\N
+202887	689819	Engineering	2021-10-01	2021-10-01	f	\N	iOS Developer	467223	\N	2023-05-25 06:56:00.45235+00	\N
+202887	689820	Engineering	2021-08-01	\N	f	\N	QA Engineer	467213	\N	2023-05-25 06:56:00.389553+00	\N
+202887	689821	Operations	2021-09-01	\N	f	\N	Fraud Operations	467215	\N	2023-05-25 06:56:00.406518+00	\N
+202887	689823	Marketing	2022-11-01	\N	f	\N	Growth	467219	\N	2023-05-25 06:56:00.427779+00	\N
+202887	689824	Engineering	2020-09-01	\N	f	\N	Senior Software Engineer	467227	\N	2023-05-25 06:56:00.504612+00	\N
+202887	689825	Marketing	2022-11-01	\N	f	\N	Growth	467235	\N	2023-05-25 06:56:00.590326+00	\N
+202887	689826	Customer Success	2020-12-01	\N	f	\N	Customer Success Manager	467222	\N	2023-05-25 06:56:00.451817+00	\N
+202887	689827	Operations	2019-09-01	\N	t	\N	Co-Founder	467232	\N	2023-05-25 06:56:00.563346+00	\N
+202887	689828	Operations	2019-09-01	\N	t	\N	Co-Founder	467233	\N	2023-05-25 06:56:00.587208+00	\N
+203370	689930	Operations	2022-03-01	\N	t	\N	Co-Founder & CTO	467345	\N	2023-05-25 06:59:13.12629+00	\N
+269756	783669	Engineering	2022-04-01	\N	f	\N	Research And Development Engineer	566257	\N	2023-05-28 22:32:11.151391+00	\N
+269756	783670	Operations	2019-01-01	2017-12-01	f	\N	Project Manager	566254	\N	2023-05-28 22:32:11.12149+00	\N
+269756	783672	Operations	2017-10-01	\N	f	\N	VP Quality Assurance at Evigence Sensors	566256	\N	2023-05-28 22:32:11.141005+00	\N
+269756	783673	Operations	2017-01-01	\N	f	\N	VP Operations	566261	\N	2023-05-28 22:32:11.174781+00	\N
+269756	783674	Finance	2017-01-01	\N	f	\N	VP Finance & Strategy	566263	\N	2023-05-28 22:32:11.216076+00	\N
+269756	783675	Sales	2019-04-01	\N	f	\N	Vice President Of Business Development	566262	\N	2023-05-28 22:32:11.203912+00	\N
+269756	783676	Operations	2015-01-01	\N	t	\N	Co-Founder and CEO	566255	\N	2023-05-28 22:32:11.140478+00	\N
+269756	783677	Engineering	2018-10-01	2018-09-01	f	\N	CTO	566260	\N	2023-05-28 22:32:11.175389+00	\N
+269756	783678	Engineering	2022-01-01	\N	f	\N	R&D Engineer	566259	\N	2023-05-28 22:32:11.164344+00	\N
+269756	783679	Operations	2021-12-01	\N	f	\N	Project Manager	566258	\N	2023-05-28 22:32:11.162501+00	\N
+269756	783680	Data	2016-04-01	2017-03-01	f	\N	Research Chemist	566264	\N	2023-05-28 22:32:11.255822+00	\N
+181864	638014	Advisor	2022-06-01	\N	f	\N	Board Member	448246	\N	2023-05-24 14:11:55.43364+00	\N
+181864	670941	Operations	2021-10-01	\N	f	\N	Team Agile Coach	448238	\N	2023-05-24 14:11:55.411536+00	\N
+181864	670942	Engineering	2019-02-01	\N	f	\N	Senior Software Engineer	448237	\N	2023-05-24 14:11:55.399948+00	\N
+181864	670943	Engineering	2021-12-01	\N	f	\N	Angular Developer	448245	\N	2023-05-24 14:11:55.432539+00	\N
+181864	670944	Design	2020-07-01	2022-01-01	f	\N	UX/UI Designer Senior	448220	\N	2023-05-24 14:11:55.268578+00	\N
+181864	670945	Design	2021-01-01	\N	f	\N	Diseñadora Ui/Ux	448261	\N	2023-05-24 14:11:55.553721+00	\N
+181864	670946	Engineering	2020-10-01	\N	f	\N	Site Reliability Engineer	448257	\N	2023-05-24 14:11:55.492946+00	\N
+181864	670947	Product	2018-12-01	\N	f	\N	Product Manager	448222	\N	2023-05-24 14:11:55.315783+00	\N
+181864	670948	Operations	2017-12-01	\N	f	\N	VP of Business Strategy and Operations	448256	\N	2023-05-24 14:11:55.49126+00	\N
+181864	670949	Engineering	2022-04-01	\N	f	\N	Full Stack Developer	448227	\N	2023-05-24 14:11:55.354714+00	\N
+181864	670950	Engineering	2018-11-01	\N	f	\N	DevOps Engineer	448262	\N	2023-05-24 14:11:55.554398+00	\N
+181864	670951	Operations	2017-01-01	\N	t	\N	CEO & Founder	448226	\N	2023-05-24 14:11:55.355086+00	\N
+181864	670952	Engineering	2021-08-01	\N	f	\N	QA Engineer	448234	\N	2023-05-24 14:11:55.38359+00	\N
+181864	670953	People	2019-04-01	2021-03-01	f	\N	Recruiter IT	448269	\N	2023-05-24 14:11:55.91249+00	\N
+181864	670954	Engineering	2020-08-01	\N	f	\N	Angular Developer	448240	\N	2023-05-24 14:11:55.414496+00	\N
+181864	670955	Engineering	2021-07-01	\N	f	\N	React Developer	448232	\N	2023-05-24 14:11:55.380811+00	\N
+181864	670956	Marketing	2019-11-01	\N	f	\N	Director of Marketing	448230	\N	2023-05-24 14:11:55.380885+00	\N
+181864	670957	Data	2021-06-01	\N	f	\N	System Analyst	448264	\N	2023-05-24 14:11:55.577184+00	\N
+181864	670958	Engineering	2022-04-01	\N	f	\N	Angular Developer	448248	\N	2023-05-24 14:11:55.433504+00	\N
+181864	670959	Engineering	2021-12-01	\N	f	\N	React Developer	448263	\N	2023-05-24 14:11:55.555372+00	\N
+181864	670960	Data	2020-01-01	\N	f	\N	Service Desk Analyst & Manual tester	448224	\N	2023-05-24 14:11:55.351797+00	\N
+181864	670961	Engineering	2019-05-01	\N	f	\N	Director General de Tecnología	448235	\N	2023-05-24 14:11:55.382248+00	\N
+181864	670962	Engineering	2021-01-01	\N	f	\N	React Developer	448267	\N	2023-05-24 14:11:55.617871+00	\N
+181864	670963	Support	2017-01-01	\N	f	\N	Chief Information Security Officer	448252	\N	2023-05-24 14:11:55.458572+00	\N
+181864	670964	Operations	2018-08-01	\N	f	\N	QA Tester	448253	\N	2023-05-24 14:11:55.489182+00	\N
+181864	670965	Engineering	2021-12-01	\N	f	\N	React Native Developer	448229	\N	2023-05-24 14:11:55.37868+00	\N
+181864	670966	Engineering	2020-06-01	2020-06-01	f	\N	Arquitecto de software	448247	\N	2023-05-24 14:11:55.434113+00	\N
+181864	670967	Operations	2021-11-01	\N	f	\N	QA Tester	448255	\N	2023-05-24 14:11:55.491977+00	\N
+181864	670968	Engineering	2020-07-01	\N	f	\N	Site Reliability Engineer - DevOps	448251	\N	2023-05-24 14:11:55.458492+00	\N
+181864	670969	Engineering	2021-08-01	\N	f	\N	Quality Assurance Engineer	448236	\N	2023-05-24 14:11:55.382535+00	\N
+181864	670970	Engineering	2021-11-01	\N	f	\N	Angular Developer	448265	\N	2023-05-24 14:11:55.578763+00	\N
+181864	670971	Engineering	2021-07-01	\N	f	\N	Tester Manual Jr.	448225	\N	2023-05-24 14:11:55.353908+00	\N
+181864	670972	Design	2020-11-01	\N	f	\N	UX/UI Designer	448219	\N	2023-05-24 14:11:55.258409+00	\N
+181864	670973	People	2019-01-01	\N	f	\N	Chief Human Resources Officer	448254	\N	2023-05-24 14:11:55.489941+00	\N
+181864	670974	Engineering	2021-05-01	\N	f	\N	Python Developer	448268	\N	2023-05-24 14:11:55.650432+00	\N
+181864	670975	Engineering	2021-07-01	\N	f	\N	Backend Developer	448244	\N	2023-05-24 14:11:55.431514+00	\N
+181864	670976	Operations	2020-10-01	\N	f	\N	Assistant Director	448250	\N	2023-05-24 14:11:55.458573+00	\N
+181864	670977	Operations	2021-09-01	\N	f	\N	QA Tester	448243	\N	2023-05-24 14:11:55.430479+00	\N
+181864	670978	Design	2019-11-01	\N	f	\N	UX Designer	448242	\N	2023-05-24 14:11:55.430041+00	\N
+181864	670979	Engineering	2021-07-01	\N	f	\N	Tester Manual	448239	\N	2023-05-24 14:11:55.412544+00	\N
+181864	670980	Engineering	2022-05-01	\N	f	\N	Tester Manual	448258	\N	2023-05-24 14:11:55.51066+00	\N
+181864	670981	Design	2019-07-01	\N	f	\N	UI / UX Senior Designer | Chapter Lead Designer	448266	\N	2023-05-24 14:11:55.588627+00	\N
+181864	670982	Engineering	2021-08-01	\N	f	\N	Software Architect	448259	\N	2023-05-24 14:11:55.51122+00	\N
+181864	670984	Engineering	2021-06-01	\N	f	\N	QA Automation Engineer	448241	\N	2023-05-24 14:11:55.415212+00	\N
+181864	670985	Operations	2021-07-01	\N	f	\N	Team Agile Coac	448223	\N	2023-05-24 14:11:55.340947+00	\N
+181864	670986	Engineering	2020-10-01	\N	f	\N	Senior Frontend Developer	448249	\N	2023-05-24 14:11:55.458463+00	\N
+181864	670987	Engineering	2020-11-01	\N	f	\N	Frontend developer	448231	\N	2023-05-24 14:11:55.380912+00	\N
+181864	670988	Sales	2019-11-01	\N	f	\N	Desarrollador sénior	448228	\N	2023-05-24 14:11:55.361405+00	\N
+181864	670989	Data	2021-10-01	\N	f	\N	System Analyst	448260	\N	2023-05-24 14:11:55.511728+00	\N
+181864	670990	People	2020-04-01	\N	f	\N	IT Recruiter	448221	\N	2023-05-24 14:11:55.316495+00	\N
+181864	670991	Engineering	2020-08-01	\N	f	\N	iOS Developer	448233	\N	2023-05-24 14:11:55.381246+00	\N
+184922	626572	Operations	2021-03-01	\N	f	Manager / Director	Director	405889	\N	2023-05-22 03:40:49.558088+00	\N
+184922	626573	Operations	2017-09-01	\N	f		Chairman and CEO	405890	\N	2023-05-22 03:40:49.558088+00	\N
+184922	626574	Advisor	2022-03-01	\N	f		Strategic Advisor	405891	\N	2023-05-22 03:40:49.558088+00	\N
+184922	626575	Advisor	2021-03-01	\N	f		Member Board of Directors	405892	\N	2023-05-22 03:40:49.558088+00	\N
+184922	626576	Advisor	2017-09-01	\N	f		Vice President Global Sales & Board Member	405893	\N	2023-05-22 03:40:49.558088+00	\N
+184922	626578		2022-01-01	\N	f		Senior Software Architect	405895	\N	2023-05-22 03:40:49.558088+00	\N
+184922	626584	Advisor	2022-03-01	\N	f	\N	Investor	642942	\N	2023-06-01 00:17:47.375383+00	\N
+184922	833345	Advisor	2021-03-01	\N	f	\N	Member Board Of Directors	642943	\N	2023-06-01 00:17:47.462397+00	\N
+184922	833346	Advisor	2020-01-01	\N	f	\N	Strategic Advisor, Crypto wallet	642944	\N	2023-06-01 00:17:47.476383+00	\N
+266018	3849	Operations	2022-10-01	\N	f		Board Member	404731	\N	2023-05-22 03:40:49.558088+00	\N
+266018	624178	Operations	2022-07-01	\N	t	Executive/ VP / C-Level	Co-Founder & COO	404730	\N	2023-05-22 03:40:49.558088+00	\N
+266018	625350	Operations	2022-08-01	\N	f		Chief Executive Officer	405594	\N	2023-05-22 03:40:49.558088+00	\N
+266018	625351	Engineering	2022-11-01	\N	f		Solidity Engineer	405595	\N	2023-05-22 03:40:49.558088+00	\N
+266018	679457	Advisor	2022-10-01	\N	f	\N	Board Member	535296	\N	2023-05-28 10:25:22.575265+00	\N
+266018	754997	Data	2023-02-01	\N	f	\N	Researcher	535295	\N	2023-05-28 10:25:22.563542+00	\N
+190200	689260	Engineering	2019-08-01	\N	f	\N	Principal Software Engineer	466678	\N	2023-05-25 06:39:15.397679+00	\N
+190200	689261	Engineering	2019-08-01	\N	f	\N	Senior Software Engineer	466697	\N	2023-05-25 06:39:15.739187+00	\N
+190200	689262	Engineering	2021-08-01	\N	f	\N	Software Quality Assurance Engineer	466690	\N	2023-05-25 06:39:15.667668+00	\N
+190200	689263	Engineering	2019-08-01	\N	f	\N	Senior Gameplay Programmer	466700	\N	2023-05-25 06:39:15.740124+00	\N
+190200	689264	Product	2019-08-01	2021-05-01	f	\N	Product Manager	466718	\N	2023-05-25 06:39:16.197245+00	\N
+190200	689265	Design	2019-10-01	\N	f	\N	Production Artist	466695	\N	2023-05-25 06:39:15.71904+00	\N
+190200	689266	Design	2021-07-01	\N	f	\N	UI/UX Designer	466680	\N	2023-05-25 06:39:15.597264+00	\N
+190200	689267	Engineering	2019-01-01	\N	f	\N	DevOps Engineer	466681	\N	2023-05-25 06:39:15.598263+00	\N
+190200	689268	Engineering	2019-08-01	\N	f	\N	Gameplay Programmer	466704	\N	2023-05-25 06:39:15.758056+00	\N
+190200	689269	Design	2022-03-01	\N	f	\N	Concept Artist / Production Artist	466707	\N	2023-05-25 06:39:15.763198+00	\N
+190200	689270	Engineering	2019-07-01	\N	f	\N	Vice President Of Engineering	466691	\N	2023-05-25 06:39:15.676867+00	\N
+190200	689271	Data	2019-08-01	\N	f	\N	QA Analyst	466715	\N	2023-05-25 06:39:15.797029+00	\N
+190200	689272	Engineering	2019-08-01	\N	f	\N	Principal Software Engineer	466693	\N	2023-05-25 06:39:15.685622+00	\N
+190200	689273	Operations	2021-11-01	\N	f	\N	Technical Project Manager	466694	\N	2023-05-25 06:39:15.685941+00	\N
+190200	689274	Engineering	2021-02-01	\N	f	\N	Game Developer	466703	\N	2023-05-25 06:39:15.756754+00	\N
+190200	689275	Design	2019-07-01	\N	f	\N	Senior 3D Artist	466669	\N	2023-05-25 06:39:15.32641+00	\N
+190200	689276	Engineering	2020-07-01	\N	f	\N	Principal Software Quality Assurance Engineer	466670	\N	2023-05-25 06:39:15.327614+00	\N
+190200	689277	Engineering	2019-08-01	\N	f	\N	Principal Server Engineer	466696	\N	2023-05-25 06:39:15.722368+00	\N
+190200	689278	Engineering	2021-07-01	\N	f	\N	Principal Software Engineer	466688	\N	2023-05-25 06:39:15.639984+00	\N
+190200	689279	Engineering	2019-08-01	\N	f	\N	Software Engineer	466712	\N	2023-05-25 06:39:15.786727+00	\N
+190200	689280	Design	2019-08-01	\N	f	\N	Senior Environment Artist	466684	\N	2023-05-25 06:39:15.601332+00	\N
+190200	689282	Engineering	2022-06-01	\N	f	\N	Game Developer	466685	\N	2023-05-25 06:39:15.603942+00	\N
+190200	689284	Engineering	2019-07-01	\N	f	\N	Principal Software Engineer	466698	\N	2023-05-25 06:39:15.739353+00	\N
+190200	689285	Engineering	2019-08-01	\N	f	\N	Software Engineer	466683	\N	2023-05-25 06:39:15.600667+00	\N
+190200	689286	Design	2022-02-01	\N	f	\N	UX Director	466716	\N	2023-05-25 06:39:15.816201+00	\N
+190200	689287	People	2021-10-01	\N	f	\N	Talent Acquisition Specialist	466676	\N	2023-05-25 06:39:15.380602+00	\N
+190200	689288	Design	2021-10-01	\N	f	\N	Art Director	466666	\N	2023-05-25 06:39:15.298433+00	\N
+190200	689289	Design	2019-05-01	\N	f	\N	Senior Environment Artist	466673	\N	2023-05-25 06:39:15.360641+00	\N
+190200	689290	Design	2022-01-01	\N	f	\N	Director of Design	466714	\N	2023-05-25 06:39:15.798985+00	\N
+190200	689291	Design	2020-01-01	\N	f	\N	Senior Content Designer	466699	\N	2023-05-25 06:39:15.741873+00	\N
+190200	689292	Operations	2019-06-01	\N	t	\N	Co-Founder & Co-CEO	466668	\N	2023-05-25 06:39:15.304366+00	\N
+190200	689293	Engineering	2019-11-01	\N	f	\N	Senior Software Engineer	466667	\N	2023-05-25 06:39:15.302999+00	\N
+190200	689294	Design	2022-04-01	\N	f	\N	Game Designer	466677	\N	2023-05-25 06:39:15.380915+00	\N
+190200	689295	Operations	2019-06-01	\N	t	\N	Co-Founder & co-CEO	466665	\N	2023-05-25 06:39:15.297152+00	\N
+190200	689296	Data	2021-09-01	\N	f	\N	VP Product and Analytics	466701	\N	2023-05-25 06:39:15.742713+00	\N
+190200	689297	Engineering	2019-12-01	\N	f	\N	Software Engineer	466674	\N	2023-05-25 06:39:15.360763+00	\N
+190200	689298	Product	2022-01-01	\N	f	\N	VP of Product, GM (Canada)	466706	\N	2023-05-25 06:39:15.760251+00	\N
+190200	689299	Design	2022-04-01	\N	f	\N	Lead Concept Artist	466689	\N	2023-05-25 06:39:15.640848+00	\N
+190200	689300	Engineering	2022-01-01	\N	f	\N	Senior Software Engineer	466679	\N	2023-05-25 06:39:15.397592+00	\N
+190200	689301	Design	2019-08-01	\N	f	\N	Principal Art Director	466708	\N	2023-05-25 06:39:15.762973+00	\N
+190200	689302	Engineering	2019-11-01	\N	f	\N	Lead Front End Engineer	466692	\N	2023-05-25 06:39:15.678271+00	\N
+190200	689303	Operations	2020-06-01	\N	f	\N	Software Quality Assurance	466710	\N	2023-05-25 06:39:15.78579+00	\N
+190200	689304	Operations	2019-07-01	\N	t	\N	Co-Founder & President of Worldwide Studios	466702	\N	2023-05-25 06:39:15.747008+00	\N
+190200	689305	Product	2019-08-01	\N	f	\N	Senior Product Manager, Community Development	466686	\N	2023-05-25 06:39:15.603519+00	\N
+190200	689306	Design	2021-01-01	2022-07-01	f	\N	2D Contract Artist	466717	\N	2023-05-25 06:39:16.180853+00	\N
+190200	689308	Design	2020-09-01	\N	f	\N	Senior 3D Artist	466672	\N	2023-05-25 06:39:15.33749+00	\N
+190200	689309	Design	2019-07-01	\N	f	\N	Art Director	466687	\N	2023-05-25 06:39:15.604292+00	\N
+190200	689310	Engineering	2021-06-01	\N	f	\N	Gameplay/AI Programmer	466671	\N	2023-05-25 06:39:15.328519+00	\N
+190200	689311	Design	2019-11-01	\N	f	\N	Production Artist	466705	\N	2023-05-25 06:39:15.759004+00	\N
+190200	689312	Engineering	2020-04-01	\N	f	\N	Senior Software Engineer	466713	\N	2023-05-25 06:39:15.789044+00	\N
+190200	689313	Design	2019-12-01	\N	f	\N	Senior Environment Artist	466675	\N	2023-05-25 06:39:15.361625+00	\N
+190200	689314	Operations	2021-10-01	\N	f	\N	Project Coordinator	466711	\N	2023-05-25 06:39:15.78579+00	\N
+190200	689315	Engineering	2021-09-01	\N	f	\N	Software Engineer	466709	\N	2023-05-25 06:39:15.782984+00	\N
+190200	689316	Engineering	2020-04-01	2020-04-01	f	\N	Staff Software Engineer	466719	\N	2023-05-25 06:39:16.206601+00	\N
+190200	689317	Engineering	2022-05-01	\N	f	\N	Software Quality Assurance Engineer	466682	\N	2023-05-25 06:39:15.599402+00	\N
+2204	59670	\N	2021-02-01	\N	t	\N	Co-founder	31494	recAI3y0siAPf7HL7	2023-05-22 03:40:49.558088+00	\N
+2204	60231	Operations	2021-05-01	\N	t	Executive / VP / C-Level	Co-founder & CTO	31495	rec285lZxe77qpCm4	2023-05-22 03:40:49.558088+00	\N
+2204	66856	Marcomm	2021-03-01	2022-07-01	f	Manager / Director	Head of growth	36688	rec0AYFmcg3uRHpQU	2023-05-22 03:40:49.558088+00	\N
+2204	636262	Marketing	2021-10-01	\N	f	\N	Community Manager	415311	\N	2023-05-22 09:33:54.207361+00	\N
+2469	7935	Operations	2021-05-01	\N	t	\N	CoFounder & CEO	8467	recGrWBsauczMnoN1	2023-05-22 03:40:49.558088+00	\N
+2469	9788	\N	\N	\N	t	\N	\N	8468	recFLlUfUfHAqkcNh	2023-05-22 03:40:49.558088+00	\N
+2469	755610	Marketing	2022-06-01	\N	f	\N	Marketing Intern	711861	\N	2023-06-05 09:20:47.09704+00	\N
+2	2256	\N	\N	\N	t	\N	\N	3788	rec83QYgqpVqBdszB	2023-05-22 03:40:49.558088+00	\N
+241073	5304	Design	2016-01-01	2019-01-01	f	\N	VR Producer	611109	\N	2023-05-30 07:51:15.342712+00	\N
+241073	626253	Marketing	2020-08-01	\N	f	\N	Chief Marketing Officer	405800	\N	2023-05-22 03:40:49.558088+00	\N
+241073	692423	\N	2022-01-01	\N	f	\N	WAEMU Head of Finance	469982	\N	2023-05-25 10:30:07.091222+00	\N
+241073	692424	People	2021-09-01	\N	f	\N	People Operations Manager	470030	\N	2023-05-25 10:30:07.519299+00	\N
+241073	692425	Operations	2021-03-01	\N	f	\N	Agent quality officer	470018	\N	2023-05-25 10:30:07.40406+00	\N
+241073	692426	Sales	2021-12-01	\N	f	\N	Head of BTL and Distribution at Wave Mobile Money	469981	\N	2023-05-25 10:30:06.975042+00	\N
+241073	692427	Operations	2021-07-01	\N	f	\N	Assistant administratif	469986	\N	2023-05-25 10:30:07.21396+00	\N
+241073	692428	Engineering	2019-07-01	\N	f	\N	Software Engineer	470017	\N	2023-05-25 10:30:07.404104+00	\N
+241073	692429	Operations	2020-05-01	2020-07-01	f	\N	Head Of Risk Operations	470002	\N	2023-05-25 10:30:07.302899+00	\N
+241073	692430	Operations	2022-01-01	\N	f	\N	General Manager Senegal I Gambie	469994	\N	2023-05-25 10:30:07.253247+00	\N
+241073	692431	Marketing	2022-01-01	\N	f	\N	Distribution Supervisor	469989	\N	2023-05-25 10:30:07.232462+00	\N
+241073	692432	Support	2021-11-01	\N	f	\N	Support representatives customers	470026	\N	2023-05-25 10:30:07.498678+00	\N
+241073	692433	Operations	2018-01-01	\N	t	\N	Founder & CEO	469988	\N	2023-05-25 10:30:07.230848+00	\N
+241073	692434	Finance	2021-09-01	\N	f	\N	Agent Liquidity Country Head	470004	\N	2023-05-25 10:30:07.317521+00	\N
+241073	692435	Legal	2021-12-01	\N	f	\N	Risk and Compliance Manager	469980	\N	2023-05-25 10:30:06.921813+00	\N
+241073	692436	Support	2021-08-01	\N	f	\N	Customer Support Representative	469990	\N	2023-05-25 10:30:07.24059+00	\N
+241073	692437	Sales	2021-08-01	\N	f	\N	Cash Recovery Assistant	470012	\N	2023-05-25 10:30:07.357785+00	\N
+241073	692438	Support	2021-01-01	\N	f	\N	Senior Customer Support Representative	470009	\N	2023-05-25 10:30:07.33511+00	\N
+241073	692439	Support	2021-08-01	\N	f	\N	Customer Support Representative	470022	\N	2023-05-25 10:30:07.47641+00	\N
+241073	692440	Sales	2020-12-01	2020-12-01	f	\N	Distributor	470034	\N	2023-05-25 10:30:07.989901+00	\N
+241073	692441	Finance	2020-03-01	\N	f	\N	liquidity admin and communication Manager	469993	\N	2023-05-25 10:30:07.253165+00	\N
+241073	692442	People	2021-03-01	\N	f	\N	HR Admin and Payroll	469984	\N	2023-05-25 10:30:07.211354+00	\N
+241073	692443	Marketing	2021-08-01	\N	f	\N	AGENT BRANDING OFFICER	470031	\N	2023-05-25 10:30:07.571096+00	\N
+241073	692444	Operations	2021-07-01	\N	f	\N	Agent Operations Territory Lead	469999	\N	2023-05-25 10:30:07.295657+00	\N
+241073	692445	Sales	2021-06-01	\N	f	\N	PREMIUM CASH OFFICER	470008	\N	2023-05-25 10:30:07.339072+00	\N
+241073	692446	Operations	2018-01-01	\N	t	\N	Founder	470005	\N	2023-05-25 10:30:07.333182+00	\N
+241073	692447	Operations	2019-11-01	2019-11-01	f	\N	City lead	470001	\N	2023-05-25 10:30:07.302018+00	\N
+241073	692448	\N	\N	\N	f	\N	\N	469979	\N	2023-05-25 10:30:05.575709+00	\N
+241073	692449	Operations	2022-02-01	\N	f	\N	Agent Opener	470025	\N	2023-05-25 10:30:07.496933+00	\N
+241073	692450	Engineering	2019-07-01	\N	f	\N	Software Engineer	469997	\N	2023-05-25 10:30:07.269877+00	\N
+241073	692451	Support	2020-11-01	\N	f	\N	Customer Support Representative	470028	\N	2023-05-25 10:30:07.512075+00	\N
+241073	692452	Support	2021-07-01	\N	f	\N	Customer support representative	470003	\N	2023-05-25 10:30:07.323291+00	\N
+241073	692453	Operations	2021-11-01	\N	f	\N	Agent Operations Territory Lead	469987	\N	2023-05-25 10:30:07.214116+00	\N
+241073	692454	Operations	2022-03-01	\N	f	\N	AGENT OPERATIONS TERRITORY LEAD AT WAVE	470010	\N	2023-05-25 10:30:07.334392+00	\N
+241073	692455	Customer Success	2022-02-01	\N	f	\N	Customer Service Representative	469996	\N	2023-05-25 10:30:07.272089+00	\N
+241073	692456	Operations	2018-04-01	\N	f	\N	General Manager Wave WAEMU	469991	\N	2023-05-25 10:30:07.249821+00	\N
+241073	692457	Marketing	2021-12-01	\N	f	\N	Distribution supervisor	470021	\N	2023-05-25 10:30:07.456752+00	\N
+241073	692458	People	2021-11-01	\N	f	\N	Talent Operations Lead	470016	\N	2023-05-25 10:30:07.382807+00	\N
+241073	692459	Sales	2021-07-01	\N	f	\N	Chef équipe de ventes	470024	\N	2023-05-25 10:30:07.497228+00	\N
+241073	692460	Operations	2021-10-01	\N	f	\N	Team Supervisor	470006	\N	2023-05-25 10:30:07.331914+00	\N
+241073	692461	Support	2020-02-01	\N	f	\N	Customer Support Lead at Wave	470027	\N	2023-05-25 10:30:07.500834+00	\N
+241073	692462	Operations	2021-12-01	\N	f	\N	Territory Lead	470020	\N	2023-05-25 10:30:07.431557+00	\N
+241073	692463	Marketing	2021-11-01	\N	f	\N	Premium Agent Assistant	470007	\N	2023-05-25 10:30:07.338909+00	\N
+241073	692464	Finance	2021-11-01	2021-11-01	f	\N	Fraud Communication Officer	470032	\N	2023-05-25 10:30:07.636297+00	\N
+241073	692465	Product	2021-05-01	2021-04-01	f	\N	Product Manager	470011	\N	2023-05-25 10:30:07.358251+00	\N
+241073	692466	Sales	2020-01-01	\N	f	\N	Agent commercial	469985	\N	2023-05-25 10:30:07.213944+00	\N
+241073	692467	Customer Success	2021-07-01	\N	f	\N	Provider	470029	\N	2023-05-25 10:30:07.516323+00	\N
+241073	692468	Support	2021-12-01	\N	f	\N	Customer support representative	470013	\N	2023-05-25 10:30:07.379379+00	\N
+241073	692469	Support	2020-12-01	2020-12-01	f	\N	Customer Support Representative	470019	\N	2023-05-25 10:30:07.419211+00	\N
+241073	692470	Marketing	2021-12-01	\N	f	\N	Distribution Supervisor	470023	\N	2023-05-25 10:30:07.494112+00	\N
+241073	692471	Support	2022-01-01	\N	f	\N	Support Representative	470000	\N	2023-05-25 10:30:07.300925+00	\N
+241073	692472	Sales	2022-02-01	\N	f	\N	SN Agent Liquidity Lead	470014	\N	2023-05-25 10:30:07.38071+00	\N
+241073	692473	Operations	2021-05-01	\N	f	\N	Territory Agents Operations Lead	469998	\N	2023-05-25 10:30:07.295136+00	\N
+241073	692474	Sales	2019-01-01	\N	f	\N	Head of Business	469992	\N	2023-05-25 10:30:07.250625+00	\N
+241073	692475	Operations	2020-08-01	2021-04-01	f	\N	Responsable territoire	470035	\N	2023-05-25 10:30:08.056137+00	\N
+241073	692476	Support	2021-06-01	\N	f	\N	Support Representative Front Office	469995	\N	2023-05-25 10:30:07.271695+00	\N
+241073	692477	People	2021-08-01	\N	f	\N	People Operations Manager	470015	\N	2023-05-25 10:30:07.383607+00	\N
+241073	692478	Marketing	2021-10-01	\N	f	\N	Distributeur	469983	\N	2023-05-25 10:30:07.112922+00	\N
+241073	692479	Operations	2021-10-01	2022-07-01	f	\N	General Manager	470033	\N	2023-05-25 10:30:07.962095+00	\N
+268904	624239	Marketing	2005-09-01	2008-07-01	f	\N	Head of Convergence	665154	\N	2023-06-02 08:30:51.77619+00	\N
+268904	774118	Operations	\N	\N	t	\N	Founder & CEO	556609	\N	2023-05-28 19:36:09.727122+00	\N
+268904	774119	\N	\N	\N	t	\N	\N	556608	\N	2023-05-28 19:36:09.359414+00	\N
+268904	774120	Engineering	2022-02-01	\N	f	\N	Blockchain Lead	556610	\N	2023-05-28 19:36:09.844217+00	\N
+178864	823010	Operations	2021-10-01	\N	t	\N	Co-Founder	623694	\N	2023-05-31 03:04:53.421244+00	\N
+267896	765918	\N	\N	\N	f	\N	\N	547438	\N	2023-05-28 16:15:38.306337+00	\N
+118161	631916	Operations	2022-01-01	\N	t	Executive/ VP / C-Level	Founder & Chief Executive Officer	410210	\N	2023-05-22 03:40:49.558088+00	\N
+118161	805133	Sales	\N	\N	f	\N	Business Development Executive	596436	\N	2023-05-29 17:38:14.83082+00	\N
+118161	805134	Finance	2022-01-01	\N	t	\N	Co-Founder and Chief Financial Officer	596439	\N	2023-05-29 17:38:14.962446+00	\N
+118161	805135	Operations	2022-06-01	\N	f	\N	Chief Operating Officer	596440	\N	2023-05-29 17:38:14.97497+00	\N
+118161	805136	Engineering	2022-01-01	\N	t	\N	Web3 Developer, Product Team	596437	\N	2023-05-29 17:38:14.934358+00	\N
+118161	805137	Marketing	2023-02-01	\N	f	\N	Marketing and Communications Manager	596438	\N	2023-05-29 17:38:14.949164+00	\N
+96450	633435	Marketing	2023-03-01	\N	f	\N	Social Media Marketing Manager	687645	\N	2023-06-04 06:41:49.954987+00	\N
+96450	839214	Operations	2022-04-01	\N	t	\N	Founder & CEO	717151	\N	2023-06-05 15:29:35.740536+00	\N
+96450	867749	Engineering	2022-08-01	2022-11-01	f	\N	Jr. Blockchain Developer	717153	\N	2023-06-05 15:29:35.901201+00	\N
+96450	867750	Marketing	2022-03-01	\N	f	\N	Marketing Director	717152	\N	2023-06-05 15:29:35.770187+00	\N
+344	822	Operations	2020-06-01	\N	t	\N	Co-Founder	574800	\N	2023-05-29 01:25:38.950178+00	\N
+344	1876	Operations	2020-06-01	\N	f	\N	Co-Founder	586638	\N	2023-05-29 12:36:03.167556+00	\N
+344	627481	Marketing	2021-06-01	\N	f	\N	Social Media Manager	574799	\N	2023-05-29 01:25:38.941636+00	\N
+189592	65537	Advisor	2022-04-01	\N	f	\N	Investor	466605	\N	2023-05-25 06:36:30.80926+00	\N
+189592	689198	Engineering	2022-05-01	\N	f	\N	Software Engineer	466604	\N	2023-05-25 06:36:30.800135+00	\N
+189592	689199	Advisor	2022-05-01	\N	f	\N	Angel Investor and Advisor	466608	\N	2023-05-25 06:36:30.842585+00	\N
+189592	689200	Legal	2022-05-01	\N	f	\N	Head Of Compliance	466607	\N	2023-05-25 06:36:30.826173+00	\N
+189592	689201	Operations	2021-06-01	\N	t	\N	Co-Founder & CEO	466606	\N	2023-05-25 06:36:30.813661+00	\N
+2276	768	Operations	2015-01-01	\N	t	\N	Co-Founder	8243	recdHfXL9BUeR2ZrD	2023-05-22 03:40:49.558088+00	\N
+2276	1003	Operations	2020-07-01	2020-01-01	f	\N	Chief Security Officer	1490	rec23ubnEqwDYi42q	2023-05-22 03:40:49.558088+00	\N
+2276	1872	Operations	2018-04-01	2020-05-01	f	\N	Chief Research Officer	1489	recnY6MUQpfDsLDjy	2023-05-22 03:40:49.558088+00	\N
+2276	1966	Operations	2015-01-01	\N	t	\N	Cofounder	8242	recFkXOrcMNcdvDq3	2023-05-22 03:40:49.558088+00	\N
+2276	3854	Operations	2020-08-01	\N	\N	\N	Chief Financial Officer	1488	recm3p9W1hFN9DoAh	2023-05-22 03:40:49.558088+00	\N
+2276	624649	Design	2017-04-01	2019-03-01	f	\N	Senior UI/UX Designer	666667	\N	2023-06-02 10:45:04.331101+00	\N
+2276	629268	People	2018-02-01	2021-12-01	f	\N	Head of People	678900	\N	2023-06-03 11:41:35.657634+00	\N
+2276	629957	Design	2018-08-01	2018-11-01	f	\N	Web Designer	680562	\N	2023-06-03 15:45:10.721046+00	\N
+2276	637520	Advisor	2017-03-01	\N	f	\N	Advisor	710236	\N	2023-06-05 08:31:15.271296+00	\N
+2276	641589	Operations	2018-03-01	\N	f	\N	Project ambassador	710219	\N	2023-06-05 08:31:15.176619+00	\N
+2276	652214	Other	2020-05-01	\N	f	\N	Ambassador	710248	\N	2023-06-05 08:31:15.429799+00	\N
+2276	655969	Other	2020-01-01	\N	f	\N	Ambassador	710218	\N	2023-06-05 08:31:15.176466+00	\N
+2276	685364	Engineering	2021-05-01	\N	f	\N	Security Engineer (Core Contributor)	710249	\N	2023-06-05 08:31:15.431164+00	\N
+2276	697906	Other	2020-09-01	\N	f	\N	Ambassador	710237	\N	2023-06-05 08:31:15.295405+00	\N
+2276	700611	Marketing	2020-08-01	\N	f	\N	Head of Community	710244	\N	2023-06-05 08:31:15.308643+00	\N
+2276	794244	Engineering	2018-01-01	\N	f	\N	Lead Developer - Embark Framework	710233	\N	2023-06-05 08:31:15.270809+00	\N
+2276	861962	Engineering	2012-01-01	\N	f	\N	electrician	710238	\N	2023-06-05 08:31:15.296104+00	\N
+2276	861963	Marketing	2020-06-01	2021-04-01	f	\N	Brazil Marketing Manager	710250	\N	2023-06-05 08:31:15.654612+00	\N
+2276	861964	Engineering	2018-12-01	\N	f	\N	Nim Developer	710241	\N	2023-06-05 08:31:15.305983+00	\N
+2276	861965	Marketing	2006-08-01	\N	f	\N	Luxury Communications	710204	\N	2023-06-05 08:31:15.031175+00	\N
+2276	861966	Engineering	2016-03-01	\N	f	\N	Clojure Developer	710206	\N	2023-06-05 08:31:15.067276+00	\N
+2276	861967	Operations	2019-08-01	\N	f	\N	libp2p and Dagger projects head	710243	\N	2023-06-05 08:31:15.308075+00	\N
+2276	861968	Engineering	2021-03-01	\N	f	\N	Waku Connect Team Lead	710223	\N	2023-06-05 08:31:15.208787+00	\N
+2276	861969	Engineering	2018-01-01	\N	f	\N	Senior Quality Assurance Test Engineer	710215	\N	2023-06-05 08:31:15.153878+00	\N
+2276	861970	Engineering	2017-08-01	2019-07-01	f	\N	C++/Qt/QML developer	710251	\N	2023-06-05 08:31:15.757428+00	\N
+2276	861971	Engineering	2018-02-01	\N	f	\N	Ethereum 2.0 - Blockchain R&D, Cryptography engineering	710230	\N	2023-06-05 08:31:15.246361+00	\N
+2276	861972	Operations	2013-07-01	2015-05-01	f	\N	Showroom Manager	710254	\N	2023-06-05 08:31:16.109897+00	\N
+2276	861973	Operations	2018-01-01	\N	f	\N	Nimbus Team Lead	710228	\N	2023-06-05 08:31:15.233155+00	\N
+2276	861974	Marketing	2015-10-01	\N	f	\N	Online Manager	710247	\N	2023-06-05 08:31:15.41403+00	\N
+2276	861975	Design	2021-12-01	\N	f	\N	UX Designer	710235	\N	2023-06-05 08:31:15.272627+00	\N
+2276	861977	Other	2020-08-01	\N	f	\N	Ambassador	710231	\N	2023-06-05 08:31:15.25231+00	\N
+2276	861978	People	2018-03-01	\N	f	\N	Work for the Dole Manager WA	710227	\N	2023-06-05 08:31:15.230938+00	\N
+2276	861979	Design	2019-07-01	\N	f	\N	Product Designer	710245	\N	2023-06-05 08:31:15.326572+00	\N
+2276	861980	Engineering	2022-01-01	\N	f	\N	Distributed Systems Engineer	710216	\N	2023-06-05 08:31:15.172441+00	\N
+2276	861981	Other	2014-03-01	\N	f	\N	Instrutor Técnico	710229	\N	2023-06-05 08:31:15.233536+00	\N
+2276	861982	Marketing	2020-11-01	\N	f	\N	Latam Community Lead	710212	\N	2023-06-05 08:31:15.129036+00	\N
+2276	861983	Engineering	2018-10-01	\N	f	\N	Software Engineer - EmbarkLabs Team	710221	\N	2023-06-05 08:31:15.17572+00	\N
+2276	861984	People	2020-04-01	\N	f	\N	HR & People Ops	710224	\N	2023-06-05 08:31:15.208252+00	\N
+2276	861985	Engineering	2013-08-01	\N	f	\N	C.V.- Business Engineer Communication and talent of knowing how to be listening to people are ultim	710210	\N	2023-06-05 08:31:15.094041+00	\N
+2276	861986	Engineering	2021-08-01	\N	f	\N	UI Developer	710225	\N	2023-06-05 08:31:15.229151+00	\N
+2276	861987	People	2020-12-01	\N	f	\N	Employment Consultant	710220	\N	2023-06-05 08:31:15.175047+00	\N
+2276	861988	Product	2018-08-01	\N	f	\N	Product Manager	710217	\N	2023-06-05 08:31:15.172824+00	\N
+2276	861989	Design	2018-01-01	\N	f	\N	Freelance UX researcher at Status	710240	\N	2023-06-05 08:31:15.297931+00	\N
+2276	861990	Engineering	2019-04-01	\N	f	\N	Software R&D	710207	\N	2023-06-05 08:31:15.088491+00	\N
+2276	861991	Other	2013-09-01	\N	f	\N	vendedora	710214	\N	2023-06-05 08:31:15.126188+00	\N
+2276	861992	People	2020-01-01	2020-08-01	f	\N	Remote Recruiter	710253	\N	2023-06-05 08:31:16.094467+00	\N
+2276	861993	Engineering	2020-02-01	\N	f	\N	Engineering Security Consultant	710222	\N	2023-06-05 08:31:15.207608+00	\N
+2276	861994	Operations	2015-01-01	\N	t	\N	Cofounder	710205	\N	2023-06-05 08:31:15.03833+00	\N
+2276	861995	Engineering	2020-03-01	\N	f	\N	Software Engineer - Nim (Ethereum Implementation)	710213	\N	2023-06-05 08:31:15.130092+00	\N
+2276	861996	Marketing	2019-01-01	\N	f	\N	Community Contributor	710246	\N	2023-06-05 08:31:15.328037+00	\N
+2276	861997	Engineering	2020-09-01	\N	f	\N	Protocol Engineer	710209	\N	2023-06-05 08:31:15.092963+00	\N
+2276	861998	Operations	2020-02-01	\N	f	\N	Dap.ps Contractor	710234	\N	2023-06-05 08:31:15.270061+00	\N
+2276	861999	Other	2014-11-01	\N	f	\N	Instrutora no curso de Auxiliar de Farmácia na Status	710239	\N	2023-06-05 08:31:15.297593+00	\N
+2276	862000	People	2022-01-01	\N	f	\N	Core Contributor in Recruitment (Contract)	710232	\N	2023-06-05 08:31:15.268957+00	\N
+2276	862001	Advisor	2020-02-01	\N	f	\N	Advisor	710208	\N	2023-06-05 08:31:15.090141+00	\N
+2276	862002	Operations	2011-09-01	\N	f	\N	Owner	710242	\N	2023-06-05 08:31:15.307476+00	\N
+2276	862003	Other	2020-01-01	\N	f	\N	Ambassador	710226	\N	2023-06-05 08:31:15.232075+00	\N
+2276	862004	Design	2018-09-01	2018-12-01	f	\N	Lead Graphic Designer	710252	\N	2023-06-05 08:31:16.05018+00	\N
+2276	862005	Engineering	2021-03-01	\N	f	\N	Core UI Mobile Engineer	710211	\N	2023-06-05 08:31:15.117144+00	\N
+2276	862006	Other	2019-11-01	\N	f	\N	Ambassador	710203	\N	2023-06-05 08:31:14.88955+00	\N
+117845	258333	Advisor	2019-04-01	\N	f	\N	Advisor (prev. Editor) - PoS, Staking, Generalized Mining	596369	\N	2023-05-29 17:35:47.041656+00	\N
+117845	805075	Operations	2021-06-01	2021-12-01	f	\N	Sales & Operations Manager	596372	\N	2023-05-29 17:35:47.249629+00	\N
+117845	805076	Product	2022-01-01	\N	f	\N	Product Manager	596361	\N	2023-05-29 17:35:46.786387+00	\N
+117845	805077	Sales	2021-11-01	\N	f	\N	Head Of Business Development	596370	\N	2023-05-29 17:35:47.053722+00	\N
+117845	805078	Engineering	2021-10-01	\N	f	\N	Software Engineer	596363	\N	2023-05-29 17:35:46.968839+00	\N
+117845	805079	Operations	2017-12-01	\N	t	\N	Co-Founder & CEO	596366	\N	2023-05-29 17:35:46.989372+00	\N
+117845	805080	Marketing	2022-12-01	\N	f	\N	Product Owner - Research Content	596359	\N	2023-05-29 17:35:46.771137+00	\N
+117845	805081	Engineering	2020-04-01	\N	f	\N	Senior Frontend Developer	596362	\N	2023-05-29 17:35:46.94844+00	\N
+117845	805082	Engineering	2021-10-01	\N	f	\N	Lead Frontend Engineer	596368	\N	2023-05-29 17:35:47.038918+00	\N
+117845	805083	Operations	2017-12-01	\N	t	\N	Co-Founder & CTO	596365	\N	2023-05-29 17:35:46.989761+00	\N
+117845	805084	Advisor	2020-09-01	\N	f	\N	Board Member	596367	\N	2023-05-29 17:35:47.027522+00	\N
+117845	805085	Product	2021-03-01	\N	f	\N	Product Manager	596360	\N	2023-05-29 17:35:46.785767+00	\N
+117845	805086	Engineering	2022-04-01	\N	f	\N	Senior Software Engineer	596371	\N	2023-05-29 17:35:47.067709+00	\N
+117845	805087	Data	2022-02-01	\N	f	\N	Research Analyst	596364	\N	2023-05-29 17:35:46.98435+00	\N
+22350	28083	Operations	2021-05-01	\N	t	Executive / VP / C-Level	Founder & President	18270	reclemxzHQYu2x7rJ	2023-05-22 03:40:49.558088+00	\N
+22350	623240	Operations	2021-10-01	\N	t	Executive/ VP / C-Level	Co-Founder & COO	404382	\N	2023-05-22 03:40:49.558088+00	\N
+22350	631975	Marketing	2021-09-01	\N	f	\N	VP of Growth	683457	\N	2023-06-03 21:39:50.437432+00	\N
+22350	632947	Operations	2022-01-01	\N	f	Executive/ VP / C-Level	VP of Operations	410296	\N	2023-05-22 03:40:49.558088+00	\N
+22350	633376	Legal	2022-02-01	\N	f	\N	General Counsel	590625	\N	2023-05-29 14:59:25.99224+00	\N
+22350	634385	Product	2021-12-01	2022-09-01	f	\N	Director of Product	691144	\N	2023-06-04 12:46:04.184322+00	\N
+22350	800633	Operations	2018-03-01	\N	f	\N	Propietario	590633	\N	2023-05-29 14:59:26.090276+00	\N
+22350	800634	Engineering	2021-02-01	\N	f	\N	Senior Software Engineer	590626	\N	2023-05-29 14:59:26.051497+00	\N
+22350	800636	Operations	2021-11-01	\N	f	\N	Project Manager & QA Manager	590630	\N	2023-05-29 14:59:26.074782+00	\N
+22350	800637	Legal	2022-06-01	\N	f	\N	Chief Compliance & Regulatory Officer | Crypto, NFTs, Blockchain | Payments | Risk Management	590623	\N	2023-05-29 14:59:25.853847+00	\N
+22350	800638	Operations	2014-02-01	\N	f	\N	Spedytor/pracownik biura	590632	\N	2023-05-29 14:59:26.084092+00	\N
+22350	800639	People	2022-02-01	\N	f	\N	Talent Partner	590636	\N	2023-05-29 14:59:26.13164+00	\N
+22350	800640	Engineering	2021-11-01	\N	f	\N	Engineering Manager	590627	\N	2023-05-29 14:59:26.06882+00	\N
+22350	800641	Engineering	2022-10-01	\N	f	\N	VP of Engineering	590628	\N	2023-05-29 14:59:26.069482+00	\N
+22350	800642	Product	2020-06-01	\N	f	\N	Product Manager	590637	\N	2023-05-29 14:59:26.132493+00	\N
+22350	800643	Sales	2022-03-01	\N	f	\N	Head Of Business Development	590629	\N	2023-05-29 14:59:26.071413+00	\N
+22350	800644	Engineering	2022-03-01	2022-03-01	f	\N	Senior Blockchain Lead	590634	\N	2023-05-29 14:59:26.109365+00	\N
+22350	800645	Customer Success	2022-08-01	\N	f	\N	Customer Success Associate	590624	\N	2023-05-29 14:59:25.950955+00	\N
+22350	800646	Engineering	2021-12-01	\N	f	\N	Senior Frontend Engineer / Architect	590635	\N	2023-05-29 14:59:26.111403+00	\N
+22350	800647	Legal	2022-06-01	\N	f	\N	Legal Associate	590631	\N	2023-05-29 14:59:26.082347+00	\N
+1078	795555	Support	2021-12-01	\N	f	\N	Support Specialist	578984	\N	2023-05-29 04:02:20.284864+00	\N
+1078	795556	Finance	2021-10-01	\N	f	\N	Settlement	578978	\N	2023-05-29 04:02:20.229039+00	\N
+1078	795557	People	2021-07-01	\N	f	\N	Human Resources Assistant	578985	\N	2023-05-29 04:02:20.288905+00	\N
+1078	795558	Marketing	2021-06-01	\N	f	\N	Head Of Marketing	578977	\N	2023-05-29 04:02:20.045887+00	\N
+1078	795559	Operations	2022-03-01	\N	f	\N	Project Owner (Contractor)	578988	\N	2023-05-29 04:02:20.326874+00	\N
+1078	795560	Marketing	2021-12-01	\N	f	\N	Email Marketing Specialist	578982	\N	2023-05-29 04:02:20.267976+00	\N
+1078	795561	Other	2021-10-01	\N	f	\N	Member Service Officer	578983	\N	2023-05-29 04:02:20.282768+00	\N
+1078	795562	Marketing	2021-07-01	\N	f	\N	Community Developer	578974	\N	2023-05-29 04:02:19.986638+00	\N
+1078	795563	Operations	2021-05-01	\N	f	\N	Head Of Quality Assurance (Founding Member)	578981	\N	2023-05-29 04:02:20.262773+00	\N
+1078	795564	Engineering	2021-07-01	\N	f	\N	Quantitative Developer	578975	\N	2023-05-29 04:02:20.025353+00	\N
+1078	795565	\N	\N	\N	t	\N	\N	578973	\N	2023-05-29 04:02:19.530114+00	\N
+1078	795566	Design	2006-01-01	\N	f	\N	Hip Hop Artist	578990	\N	2023-05-29 04:02:20.346887+00	\N
+1078	795567	Finance	2021-07-01	\N	f	\N	Head of Finance and Research	578992	\N	2023-05-29 04:02:20.368936+00	\N
+1078	795568	Engineering	2022-03-01	\N	f	\N	Software QA Engineer	578980	\N	2023-05-29 04:02:20.260506+00	\N
+1078	795569	Legal	2021-08-01	\N	f	\N	Associate Director of Compliance	578976	\N	2023-05-29 04:02:20.046315+00	\N
+1078	795570	People	2022-03-01	\N	f	\N	HR Manager	578979	\N	2023-05-29 04:02:20.248442+00	\N
+1078	795571	Marketing	2021-06-01	\N	f	\N	Junior Marketing Manager	578991	\N	2023-05-29 04:02:20.369379+00	\N
+1078	795572	Marketing	2022-01-01	\N	f	\N	Junior Marketing Manager	578989	\N	2023-05-29 04:02:20.346234+00	\N
+1078	795573	Operations	2021-06-01	\N	f	\N	QA Lead	578986	\N	2023-05-29 04:02:20.293522+00	\N
+1078	795574	Product	2022-04-01	\N	f	\N	Product Owner	578987	\N	2023-05-29 04:02:20.307137+00	\N
+1078	860104	Sales	2017-05-01	\N	f	\N	Sales And Marketing Specialist	708006	\N	2023-06-05 03:57:00.871777+00	\N
+1078	860108	Customer Success	2019-01-01	\N	f	\N	Hospitality Account Manager	708018	\N	2023-06-05 03:57:00.967314+00	\N
+1078	860109	Design	2018-05-01	\N	f	\N	Creative Manager	707999	\N	2023-06-05 03:57:00.784641+00	\N
+1078	860110	Engineering	2018-05-01	\N	f	\N	Head Of Engineering	708025	\N	2023-06-05 03:57:01.020206+00	\N
+1078	860111	Support	2018-01-01	\N	f	\N	Tech support & Hub Assistent	708004	\N	2023-06-05 03:57:00.851331+00	\N
+1078	860112	Customer Success	2016-11-01	\N	f	\N	Head of Global After Service	708011	\N	2023-06-05 03:57:00.93147+00	\N
+1078	860113	Engineering	2018-10-01	\N	f	\N	Software Engineer	708017	\N	2023-06-05 03:57:00.969124+00	\N
+1078	860114	Data	2018-11-01	\N	f	\N	Data Engineer	708000	\N	2023-06-05 03:57:00.810987+00	\N
+1078	860115	Finance	2019-01-01	\N	f	\N	Accountant	708012	\N	2023-06-05 03:57:00.944451+00	\N
+1078	860116	Design	2017-12-01	\N	f	\N	Graphic Design Intern	708022	\N	2023-06-05 03:57:00.980699+00	\N
+1078	860117	Engineering	2018-06-01	\N	f	\N	Senior Software Engineer	708008	\N	2023-06-05 03:57:00.908791+00	\N
+1078	860118	Marketing	2013-01-01	\N	f	\N	PR, Communication and Events Director	708005	\N	2023-06-05 03:57:00.871769+00	\N
+1078	860119	Customer Success	2016-12-01	\N	f	\N	Billing Services System Manager	708026	\N	2023-06-05 03:57:01.020588+00	\N
+1078	860120	Marketing	2020-02-01	\N	f	\N	Digital Marketing Director	708024	\N	2023-06-05 03:57:01.007247+00	\N
+1078	860121	Sales	2016-01-01	\N	f	\N	Senior Account Executive	708023	\N	2023-06-05 03:57:00.981098+00	\N
+1078	860122	Marketing	2017-06-01	\N	f	\N	Marketing and Editorial Intern	708016	\N	2023-06-05 03:57:00.966155+00	\N
+1078	860123	Engineering	2018-05-01	\N	f	\N	QA Engineer	708013	\N	2023-06-05 03:57:00.947394+00	\N
+1078	860124	Sales	2017-04-01	\N	f	\N	Hospitality Sales Manager	708014	\N	2023-06-05 03:57:00.95222+00	\N
+1078	860125	Operations	2019-01-01	2020-08-01	f	\N	Operations Assistant Part time	708027	\N	2023-06-05 03:57:01.377484+00	\N
+1078	860126	Marketing	2018-11-01	\N	f	\N	Digital Marketing Manager	708002	\N	2023-06-05 03:57:00.830937+00	\N
+1078	860127	Marketing	2016-09-01	\N	f	\N	Director Advertising Luxury / France & Benelux	708021	\N	2023-06-05 03:57:00.981789+00	\N
+1078	860128	Operations	2016-07-01	\N	f	\N	Vice President Operations	708010	\N	2023-06-05 03:57:00.931469+00	\N
+1078	860129	Data	2018-07-01	\N	f	\N	Advertising Operations Analyst	708015	\N	2023-06-05 03:57:00.96574+00	\N
+1078	860130	Operations	2014-01-01	\N	f	\N	pnb	708003	\N	2023-06-05 03:57:00.849617+00	\N
+1078	860131	Engineering	2017-06-01	\N	f	\N	Engineer Internship	708020	\N	2023-06-05 03:57:00.97125+00	\N
+1078	860132	Engineering	2018-09-01	\N	f	\N	Frontend engineer	708019	\N	2023-06-05 03:57:00.975732+00	\N
+1078	860133	Marketing	2012-01-01	\N	f	\N	Community	708001	\N	2023-06-05 03:57:00.828746+00	\N
+1078	860134	Engineering	2019-04-01	\N	f	\N	Senior Software Development Engineer	708009	\N	2023-06-05 03:57:00.911725+00	\N
+1078	860135	Engineering	2018-05-01	\N	f	\N	Automation Test Engineer	708007	\N	2023-06-05 03:57:00.903183+00	\N
+246938	2129	Advisor	2018-01-01	\N	f	\N	Advisor	716243	\N	2023-06-05 13:53:20.651958+00	\N
+246938	4180	Advisor	2018-09-01	\N	f	\N	Seed Investor	470993	\N	2023-05-25 13:21:14.144382+00	\N
+246938	6790	Operations	2018-09-01	\N	t	\N	Co-Founder	471005	\N	2023-05-25 13:21:14.183577+00	\N
+246938	628203	Engineering	2022-06-01	2022-06-01	f	\N	Technical Lead	470994	\N	2023-05-25 13:21:14.145409+00	\N
+246938	628215	Product	2020-09-01	\N	f	\N	Product Lead	470991	\N	2023-05-25 13:21:14.124753+00	\N
+246938	693259	Marketing	2021-01-01	\N	f	\N	Community Manager	471008	\N	2023-05-25 13:21:14.280911+00	\N
+246938	693260	Marketing	2020-08-01	\N	f	\N	Community Liaison	470996	\N	2023-05-25 13:21:14.16154+00	\N
+246938	693261	Sales	2017-07-01	\N	f	\N	Representante de ventas	470999	\N	2023-05-25 13:21:14.164193+00	\N
+246938	693264	Engineering	2021-07-01	\N	f	\N	Tech Evangelist	471006	\N	2023-05-25 13:21:14.201709+00	\N
+246938	693265	Operations	2022-05-01	2022-05-01	f	\N	Chief Operating Officer	470997	\N	2023-05-25 13:21:14.163496+00	\N
+246938	693266	Marketing	2020-06-01	\N	f	\N	Head of Community Development	471001	\N	2023-05-25 13:21:14.181406+00	\N
+246938	693267	Engineering	2021-03-01	\N	f	\N	Frontend Engineer	470992	\N	2023-05-25 13:21:14.126354+00	\N
+246938	693268	Engineering	2020-07-01	\N	f	\N	Senior Engineer	470990	\N	2023-05-25 13:21:14.103218+00	\N
+246938	693271	Finance	2020-07-01	\N	f	\N	Treasurer	470989	\N	2023-05-25 13:21:14.102719+00	\N
+246938	693272	People	2021-08-01	\N	f	\N	Talent Acquisition Specialist	471000	\N	2023-05-25 13:21:14.165378+00	\N
+246938	693273	Marketing	2021-01-01	\N	f	\N	Growth Strategist	470998	\N	2023-05-25 13:21:14.163293+00	\N
+246938	693274	Engineering	2022-08-01	\N	f	\N	Frontend Engineer	470995	\N	2023-05-25 13:21:14.161096+00	\N
+246938	693275	Engineering	2020-12-01	\N	f	\N	Senior Engineer	470988	\N	2023-05-25 13:21:14.081519+00	\N
+246938	693276	Marketing	2022-01-01	\N	f	\N	Communications Manager	471007	\N	2023-05-25 13:21:14.202774+00	\N
+246938	693277	Engineering	2021-02-01	\N	f	\N	Cloud Engineer	471004	\N	2023-05-25 13:21:14.182991+00	\N
+246938	693278	Engineering	2021-01-01	2021-01-01	f	\N	CTO	471003	\N	2023-05-25 13:21:14.182318+00	\N
+246938	693279	People	2023-01-01	\N	f	\N	Admissions Representative	471002	\N	2023-05-25 13:21:14.181689+00	\N
+534	500	Operations	2021-01-01	\N	\N	\N	Head of Intelligence	559	recIdcP48yGikPQPb	2023-05-22 03:40:49.558088+00	\N
+534	687	Operations	2020-10-01	\N	\N	\N	Venture Creation Associate	564	recCHB3URxg2RnKux	2023-05-22 03:40:49.558088+00	\N
+534	1800	Operations	2020-01-01	\N	t	\N	\N	567	recKYaETXHrmDgGiO	2023-05-22 03:40:49.558088+00	\N
+534	1918	Operations	2021-06-01	\N	\N	\N	Venture Creation	557	recxoEO2yiztQoABw	2023-05-22 03:40:49.558088+00	\N
+534	2455	Operations	2021-02-01	\N	f	\N	Chief of Staff	558	recuWUt166Xyl1fSD	2023-05-22 03:40:49.558088+00	\N
+534	2706	Operations	2019-10-01	\N	\N	\N	CEO	556	recRhUgtP2BoLqA8H	2023-05-22 03:40:49.558088+00	\N
+534	3419	Operations	2021-06-01	\N	\N	\N	Head of Science and Technology	561	rec3egP7vridDVMqV	2023-05-22 03:40:49.558088+00	\N
+534	3507	Operations	\N	\N	\N	\N	Head of Incubation	560	reciz9XmCYdih7Mab	2023-05-22 03:40:49.558088+00	\N
+534	3988	Operations	2021-07-01	\N	\N	\N	Manager of Talent Engagement and Operations	563	reclTxbAZfxG2C7Dw	2023-05-22 03:40:49.558088+00	\N
+534	4071	Operations	2021-05-01	\N	\N	\N	Talent Engagement and Operations	566	recTJYofw2SPZhsms	2023-05-22 03:40:49.558088+00	\N
+534	4318	Operations	2020-09-01	\N	\N	\N	Head of Talent Development & Coaching	562	recMKMQqkYn76Wmfn	2023-05-22 03:40:49.558088+00	\N
+534	4525	Operations	2021-06-01	\N	\N	\N	Talent Engagement and Operations	565	recySDgmEoWOsFMDO	2023-05-22 03:40:49.558088+00	\N
+534	649076	Operations	2021-05-01	\N	f	\N	Entrepreneur In Residence	575997	\N	2023-05-29 02:09:45.116758+00	\N
+534	675306	Advisor	2020-04-01	\N	f	\N	Advisor	575999	\N	2023-05-29 02:09:45.180057+00	\N
+534	793043	Advisor	2019-10-01	\N	f	\N	Advisor	575998	\N	2023-05-29 02:09:45.116758+00	\N
+534	793044	Advisor	2020-09-01	2021-09-01	f	\N	Fund Advisor	576000	\N	2023-05-29 02:09:45.29796+00	\N
+117041	628825	Marketing	2021-11-01	2022-05-01	f	\N	Growth	677438	\N	2023-06-03 08:47:03.707515+00	\N
+117041	805056	Marketing	2022-05-01	\N	f	\N	Blockchain marketer	596345	\N	2023-05-29 17:33:51.517341+00	\N
+2140	22514	Engineering	\N	\N	\N	Executive / VP / C-Level	Chief AI Scientist	36532	recqBDuoiZYjQPReQ	2023-05-22 03:40:49.558088+00	\N
+2140	57581	Operations	2021-01-01	\N	t	Executive / VP / C-Level	CEO & Co-Founder	31389	recYz5uAKqB1sTeAC	2023-05-22 03:40:49.558088+00	\N
+2140	62007	Engineering	2021-08-01	2022-10-01	\N	Executive / VP / C-Level	CTO	36531	recK2GiOG9bMycvXZ	2023-05-22 03:40:49.558088+00	\N
+2140	63514	Finance	2021-08-01	2022-01-01	f	Manager / Director	AI Finance Lead	36533	recux9JY9qwjiPpL6	2023-05-22 03:40:49.558088+00	\N
+2140	63547	Marcomm	2021-02-01	2022-05-01	f	Executive / VP / C-Level	VP of Marketing	36534	recj8tIxjlzeTecej	2023-05-22 03:40:49.558088+00	\N
+2140	66764	Product	2021-07-01	\N	f	Manager / Director	Head of Products	36535	rechU29GWH6YO7ont	2023-05-22 03:40:49.558088+00	\N
+2140	633830	Business Development	2022-07-01	2022-12-01	f	Manager / Director	Digital Marketing Director	410607	\N	2023-05-22 03:40:49.558088+00	\N
+2140	638300	Finance	2022-01-01	2022-11-01	f	\N	Investor Relations & Portfolio Manager	414958	\N	2023-05-22 09:00:27.335361+00	\N
+2140	638301	Operations	2021-05-01	\N	f	\N	Ops/Comms Leader	414959	\N	2023-05-22 09:00:32.081557+00	\N
+2140	638302	Data	2021-12-01	\N	f	\N	Lead Data Engineer	414960	\N	2023-05-22 09:00:40.891612+00	\N
+2140	638303	Design	2022-01-01	\N	f	\N	Senior User Experience Designer	414961	\N	2023-05-22 09:00:45.096862+00	\N
+2140	638304	\N	\N	\N	t	\N	\N	414962	\N	2023-05-22 09:00:53.71933+00	\N
+2140	638305	Sales	2021-07-01	\N	f	\N	Partnership Manager	414963	\N	2023-05-22 09:01:04.115155+00	\N
+2140	638306	Product	2021-11-01	\N	f	\N	Product manager	414964	\N	2023-05-22 09:01:08.297449+00	\N
+2140	638307	Marketing	2022-04-01	\N	f	\N	SingularityDAO Ambassador	414965	\N	2023-05-22 09:01:13.539416+00	\N
+2140	638308	Finance	2021-06-01	\N	f	\N	Quantitative financial modeler	414966	\N	2023-05-22 09:01:18.054276+00	\N
+2140	638309	Operations	2021-07-01	\N	f	\N	Executive Assistant	414967	\N	2023-05-22 09:01:23.049054+00	\N
+2140	638310	Advisor	2022-01-01	\N	f	\N	Growth Advisor	414968	\N	2023-05-22 09:01:28.540123+00	\N
+2140	638311	Marketing	2021-10-01	\N	f	\N	Marketing - BSC & Polygon ecosystems	414969	\N	2023-05-22 09:01:33.57647+00	\N
+103149	868257	Operations	2022-08-01	\N	f	\N	Head of BD Operations	717734	\N	2023-06-05 15:48:32.092428+00	\N
+103149	868258	Engineering	2022-04-01	\N	f	\N	Chief Technology Officer	717738	\N	2023-06-05 15:48:32.148503+00	\N
+103149	868259	Engineering	\N	\N	f	\N	React Native Engineer	717733	\N	2023-06-05 15:48:32.020995+00	\N
+103149	868260	Engineering	2022-02-01	\N	f	\N	Hardware Lead	717736	\N	2023-06-05 15:48:32.111329+00	\N
+103149	868261	Other	2022-03-01	\N	f	\N	Chief Medical Officer	717735	\N	2023-06-05 15:48:32.109055+00	\N
+103149	868262	\N	\N	\N	f	\N	\N	717732	\N	2023-06-05 15:48:31.723566+00	\N
+103149	868263	Sales	2023-01-01	\N	f	\N	Vice President of Strategy & Business Operations	717739	\N	2023-06-05 15:48:32.159066+00	\N
+103149	868264	Advisor	2022-11-01	\N	f	\N	Advisor	717740	\N	2023-06-05 15:48:32.267736+00	\N
+103149	868265	Engineering	2022-01-01	\N	f	\N	Software Engineer	717737	\N	2023-06-05 15:48:32.124269+00	\N
+8563	7447	Operations	2013-11-01	\N	t	\N	CEO	4190	recj2prIitM8o2rOJ	2023-05-22 03:40:49.558088+00	\N
+8563	864167	Marketing	2021-09-01	\N	f	\N	Marketing Intern	713098	\N	2023-06-05 10:36:43.240145+00	\N
+8563	864168	Customer Success	2022-02-01	\N	f	\N	Account Manager	713092	\N	2023-06-05 10:36:43.187835+00	\N
+8563	864169	Marketing	2017-11-01	\N	f	\N	Outbound Marketing Consultant	713100	\N	2023-06-05 10:36:43.250289+00	\N
+8563	864170	Customer Success	2017-08-01	2018-03-01	f	\N	Account Director	713103	\N	2023-06-05 10:36:43.372784+00	\N
+8563	864171	People	2016-02-01	\N	f	\N	Office Manager	713095	\N	2023-06-05 10:36:43.228209+00	\N
+8563	864172	Marketing	2018-01-01	\N	f	\N	Digital Marketing Specialist	713093	\N	2023-06-05 10:36:43.198523+00	\N
+8563	864173	Data	2020-09-01	\N	f	\N	Growth Marketing Analyst	713096	\N	2023-06-05 10:36:43.232258+00	\N
+8563	864174	Customer Success	2020-11-01	\N	f	\N	Account Manager	713097	\N	2023-06-05 10:36:43.234164+00	\N
+8563	864175	Engineering	2017-06-01	\N	f	\N	Chief Technology Officer	713099	\N	2023-06-05 10:36:43.24196+00	\N
+8563	864176	Customer Success	2021-05-01	\N	f	\N	Account Manager	713102	\N	2023-06-05 10:36:43.25714+00	\N
+8563	864177	Marketing	2021-01-01	\N	f	\N	Social Media Specialist	713094	\N	2023-06-05 10:36:43.217137+00	\N
+8563	864179	Marketing	2021-12-01	\N	f	\N	Content Manager	713101	\N	2023-06-05 10:36:43.256638+00	\N
+1595	273166	Operations	2021-07-01	\N	t	\N	Co-Founder	413277	\N	2023-05-22 06:29:42.355142+00	\N
+1595	636639	Other	2018-05-01	\N	f	\N	Escritora	413278	\N	2023-05-22 06:29:46.423035+00	\N
+1595	636640	Operations	2023-02-01	\N	f	\N	Core Team Member	413279	\N	2023-05-22 06:29:50.311938+00	\N
+1595	636641	Design	2020-06-01	\N	f	\N	Escritora criativa	413280	\N	2023-05-22 06:29:54.236728+00	\N
+1595	636642	Finance	2019-03-01	\N	f	\N	Escritor contribuinte	413281	\N	2023-05-22 06:29:58.368551+00	\N
+1595	636643	Operations	2012-01-01	\N	f	\N	Event Coordinator	413282	\N	2023-05-22 06:30:04.166886+00	\N
+658	793420	Operations	2012-10-01	\N	f	\N	Security Officer	576457	\N	2023-05-29 02:27:13.90052+00	\N
+658	793421	Operations	2015-01-01	\N	f	\N	Directeur	576456	\N	2023-05-29 02:27:13.89152+00	\N
+178796	665544	Finance	2022-04-01	\N	f	\N	Finance Manager	442796	\N	2023-05-24 02:38:47.229335+00	\N
+178796	665546	\N	\N	\N	f	\N	\N	442798	\N	2023-05-24 02:38:50.402838+00	\N
+178796	665547	Operations	2011-04-01	\N	f	\N	Owner	442799	\N	2023-05-24 02:38:54.007904+00	\N
+178796	665550	Engineering	2021-10-01	\N	f	\N	Mobile Developer	442802	\N	2023-05-24 02:38:57.957738+00	\N
+178796	665552	Engineering	2021-06-01	\N	f	\N	Mobile Application Developer	442804	\N	2023-05-24 02:39:01.544623+00	\N
+178796	665554	Operations	2021-04-01	\N	f	\N	Chief Operating Officer	442806	\N	2023-05-24 02:39:05.483755+00	\N
+178796	665556	Operations	2018-07-01	\N	t	\N	Co-founder	442808	\N	2023-05-24 02:39:09.347979+00	\N
+178796	665558	Sales	2021-02-01	\N	f	\N	Business development	442810	\N	2023-05-24 02:39:13.016618+00	\N
+178796	665560	Engineering	2022-07-01	\N	f	\N	Senior Software Engineer	442812	\N	2023-05-24 02:39:16.939024+00	\N
+178796	665562	Engineering	2021-05-01	2021-10-01	f	\N	Software Developer	442814	\N	2023-05-24 02:39:20.85932+00	\N
+178796	665564	Sales	2021-07-01	\N	f	\N	Business Development & Success Associate	442816	\N	2023-05-24 02:39:24.440233+00	\N
+178796	665566	Engineering	2021-06-01	\N	f	\N	Software Engineer	442818	\N	2023-05-24 02:39:29.224279+00	\N
+178796	665568	Operations	2017-10-01	\N	f	\N	CEO	442820	\N	2023-05-24 02:39:33.134686+00	\N
+178796	665570	Sales	2022-02-01	\N	f	\N	Junior OTC Sales Trader	442822	\N	2023-05-24 02:39:36.630332+00	\N
+178796	665572	Engineering	2022-04-01	\N	f	\N	Chief Technology Officer	442824	\N	2023-05-24 02:39:40.264596+00	\N
+178796	665574	Engineering	2021-06-01	\N	f	\N	Full Stack Developer	442827	\N	2023-05-24 02:39:44.390078+00	\N
+178796	665576	Finance	2021-07-01	\N	f	\N	OTC Trader	442828	\N	2023-05-24 02:39:47.943292+00	\N
+178796	665578	Marketing	2021-04-01	\N	f	\N	Community Manager	442829	\N	2023-05-24 02:39:51.569963+00	\N
+178796	665579	Finance	2021-07-01	\N	f	\N	Financial Accountant	442831	\N	2023-05-24 02:39:54.941907+00	\N
+178796	665581	Finance	2021-05-01	2021-08-01	f	\N	Senior Finance Manager	442833	\N	2023-05-24 02:39:58.518087+00	\N
+178796	665583	Engineering	2021-01-01	\N	f	\N	Full Stack Engineer	442835	\N	2023-05-24 02:40:02.552913+00	\N
+178796	665585	Legal	2022-04-01	\N	f	\N	Compliance Officer	442837	\N	2023-05-24 02:40:06.341537+00	\N
+178796	665587	Engineering	2021-08-01	\N	f	\N	Software Engineer	442839	\N	2023-05-24 02:40:09.908225+00	\N
+11158	865858	Product	2022-05-01	\N	f	\N	Product Owner	714879	\N	2023-06-05 11:44:37.331658+00	\N
+265953	683909	Customer Success	2020-01-01	\N	f	\N	Director, Customer Experience	534477	\N	2023-05-28 09:48:30.613315+00	\N
+265953	754159	Marketing	2020-02-01	\N	f	\N	Marketing Director	534476	\N	2023-05-28 09:48:30.613299+00	\N
+265953	754160	Operations	2019-11-01	\N	t	\N	Founder & CTO	534469	\N	2023-05-28 09:48:30.559671+00	\N
+265953	754161	Engineering	2020-05-01	\N	f	\N	Quality Engineer	534472	\N	2023-05-28 09:48:30.588091+00	\N
+265953	754162	Operations	2019-11-01	\N	f	\N	Manager	534478	\N	2023-05-28 09:48:30.619423+00	\N
+265953	754163	Sales	2022-04-01	\N	f	\N	Vice President Sales	534475	\N	2023-05-28 09:48:30.613282+00	\N
+265953	754164	Product	2020-03-01	\N	f	\N	Product Manager	534474	\N	2023-05-28 09:48:30.600431+00	\N
+265953	754165	Operations	2020-02-01	\N	f	\N	Co-Founder and Chief Executive Officer	534468	\N	2023-05-28 09:48:30.545977+00	\N
+265953	754166	Engineering	2022-08-01	\N	f	\N	Vice President of Engineering	534470	\N	2023-05-28 09:48:30.573964+00	\N
+265953	754167	Operations	2019-11-01	\N	f	\N	Co-Founder & Director Operations	534471	\N	2023-05-28 09:48:30.579385+00	\N
+265953	754168	Sales	2022-02-01	\N	f	\N	Manager - Sales	534473	\N	2023-05-28 09:48:30.593375+00	\N
+25461	36125	Operations	2018-09-01	\N	t	Executive / VP / C-Level	Company Owner / CEO	21880	recuxySHhGMSm8Y74	2023-05-22 03:40:49.558088+00	\N
+25461	230799	Finance	2018-07-01	2018-10-01	f	\N	Investor Relations Consultant	649163	\N	2023-06-01 09:26:26.276066+00	\N
+25461	640008	Advisor	2019-07-01	\N	f	\N	Investor	592347	\N	2023-05-29 15:44:10.836573+00	\N
+25461	655971	\N	\N	\N	f	\N	\N	592346	\N	2023-05-29 15:44:10.297117+00	\N
+25461	673138	Engineering	2021-01-01	\N	f	\N	Node operator	592352	\N	2023-05-29 15:44:10.898301+00	\N
+25461	683691	Other	2020-12-01	\N	f	\N	Ambassador	592359	\N	2023-05-29 15:44:10.957324+00	\N
+25461	767715	Engineering	2020-12-01	\N	f	\N	Open source contributor	592367	\N	2023-05-29 15:44:11.014527+00	\N
+25461	802150	Operations	2020-10-01	\N	f	\N	Соучредитель, директор по развитию бизнеса	592354	\N	2023-05-29 15:44:10.900582+00	\N
+25461	802152	Support	2012-01-01	\N	f	\N	TV and Film Support Actor	592361	\N	2023-05-29 15:44:10.977288+00	\N
+25461	802153	Engineering	2022-02-01	\N	f	\N	Blockchain Developer	592366	\N	2023-05-29 15:44:11.011893+00	\N
+25461	802154	Marketing	1995-04-01	\N	f	\N	Public Education Information Management System Clerk (PEIMS)	592356	\N	2023-05-29 15:44:10.929962+00	\N
+25461	802155	Operations	2018-01-01	\N	f	\N	Président	592364	\N	2023-05-29 15:44:11.002168+00	\N
+25461	802156	Operations	2018-01-01	\N	t	\N	Co-Founder	592358	\N	2023-05-29 15:44:10.934966+00	\N
+25461	802157	Engineering	2020-09-01	\N	f	\N	Lead Software Engineer	592357	\N	2023-05-29 15:44:10.931806+00	\N
+25461	802158	Engineering	2021-07-01	\N	f	\N	Software Developer	592368	\N	2023-05-29 15:44:11.016591+00	\N
+25461	802159	Engineering	2020-09-01	\N	f	\N	Software Engineer	592349	\N	2023-05-29 15:44:10.892822+00	\N
+25461	802160	Marketing	2019-09-01	\N	f	\N	Marketing	592348	\N	2023-05-29 15:44:10.874914+00	\N
+25461	802161	Engineering	2019-10-01	\N	f	\N	Software Engineer	592353	\N	2023-05-29 15:44:10.899234+00	\N
+25461	802162	Engineering	2021-12-01	\N	f	\N	Software Engineer	592351	\N	2023-05-29 15:44:10.893547+00	\N
+25461	802163	Engineering	2021-12-01	\N	f	\N	Software Engineer	592362	\N	2023-05-29 15:44:10.977611+00	\N
+25461	802164	Engineering	2021-01-01	\N	f	\N	Blockchain Engineer	592350	\N	2023-05-29 15:44:10.892319+00	\N
+25461	802165	Customer Success	2015-10-01	\N	f	\N	Manager, ECS Customer Care	592363	\N	2023-05-29 15:44:10.990895+00	\N
+25461	802166	People	2017-03-01	\N	f	\N	Looking for a change	592365	\N	2023-05-29 15:44:11.008768+00	\N
+25461	802167	Sales	2015-10-01	\N	f	\N	Asst Account Executive	592360	\N	2023-05-29 15:44:10.958394+00	\N
+25461	802168	Operations	2018-01-01	\N	f	\N	Project Lead	592355	\N	2023-05-29 15:44:10.909437+00	\N
+8941	5381	Operations	2020-09-01	\N	t	\N	Co-Founder & Co-CEO	4661	rec27R2xCSFyQn6pq	2023-05-22 03:40:49.558088+00	\N
+8941	9161	Operations	2020-08-01	\N	t	\N	Co-Founder and Co-CEO	4660	rech1nZHIRKHGYuGF	2023-05-22 03:40:49.558088+00	\N
+8941	18913	Operations	2020-01-01	\N	f	\N	CEO, BLOCKS by Curio	724583	\N	2023-06-06 14:02:02.340563+00	\N
+8941	627792	Advisor	2021-05-01	\N	f	\N	Investor	674413	\N	2023-06-03 02:59:08.750332+00	\N
+8941	632449	Marketing	2021-07-01	2021-11-01	f	\N	Head Of Brand	684606	\N	2023-06-04 00:34:49.446247+00	\N
+8941	632984	Marketing	2021-06-01	2022-08-01	f	\N	Growth & Operations Manager	686285	\N	2023-06-04 03:44:32.736452+00	\N
+8941	633620	Marketing	2021-02-01	2021-05-01	f	\N	Community Development Manager	688121	\N	2023-06-04 07:53:07.524297+00	\N
+8941	696634	Operations	2020-01-01	\N	f	\N	Chief Executive Officer	713284	\N	2023-06-05 10:43:45.282617+00	\N
+8941	864341	Engineering	2021-06-01	\N	f	\N	Senior Back-End Developer (Remote)	713283	\N	2023-06-05 10:43:45.27838+00	\N
+8941	864342	Advisor	2021-04-01	\N	f	\N	Investor	713286	\N	2023-06-05 10:43:45.293847+00	\N
+8941	864343	Marketing	2021-03-01	\N	f	\N	Head of Film & Television NFT Global Partnerships	713285	\N	2023-06-05 10:43:45.283753+00	\N
+8941	864344	Marketing	2021-03-01	\N	f	\N	Head of Music & Influencer NFT Global Partnerships	713280	\N	2023-06-05 10:43:45.218056+00	\N
+8941	864345	Operations	2020-09-01	\N	t	\N	Chief Operating Officer	713282	\N	2023-06-05 10:43:45.249578+00	\N
+8941	864346	Advisor	2021-04-01	\N	f	\N	Investor	713288	\N	2023-06-05 10:43:45.329121+00	\N
+8941	864349	Advisor	2021-04-01	\N	f	\N	Advisor	713281	\N	2023-06-05 10:43:45.246115+00	\N
+8941	864350	Advisor	2021-05-01	\N	f	\N	Investor	713287	\N	2023-06-05 10:43:45.304566+00	\N
+22743	3848	Advisor	2021-01-01	\N	f	\N	Advisor	590777	\N	2023-05-29 15:04:08.679612+00	\N
+22743	30130	Operations	2020-10-01	\N	t	Executive / VP / C-Level	inder@pixelynx.io	18658	rec4M5J6BKz6RzgCq	2023-05-22 03:40:49.558088+00	\N
+22743	52085	Advisor	2021-04-01	\N	f	\N	Strategic Advisor	590789	\N	2023-05-29 15:04:08.790815+00	\N
+22743	800790	Design	2021-11-01	\N	f	\N	Creative Lead	590787	\N	2023-05-29 15:04:08.77379+00	\N
+22743	800791	Marketing	2022-02-01	\N	f	\N	Marketing and Partnerships Manager	590790	\N	2023-05-29 15:04:08.79494+00	\N
+22743	800792	Sales	2022-01-01	\N	f	\N	Vice President, Global Partnerships	590775	\N	2023-05-29 15:04:08.630123+00	\N
+22743	800793	Product	2021-11-01	\N	f	\N	Product Owner - Mobile App (in partnership with Niantic)	590781	\N	2023-05-29 15:04:08.756113+00	\N
+22743	800795	Design	2022-03-01	\N	f	\N	Creative Director	590783	\N	2023-05-29 15:04:08.7561+00	\N
+22743	800796	Other	2022-06-01	\N	f	\N	Vice President of Audio Systems & Music	590784	\N	2023-05-29 15:04:08.772821+00	\N
+22743	800797	Design	2021-08-01	\N	f	\N	Creative Director	590776	\N	2023-05-29 15:04:08.657322+00	\N
+22743	800798	Finance	2022-08-01	\N	f	\N	VP of Investments	590779	\N	2023-05-29 15:04:08.733041+00	\N
+22743	800799	Advisor	2021-10-01	\N	f	\N	Strategic Advisor	590778	\N	2023-05-29 15:04:08.690795+00	\N
+22743	800800	Design	2022-05-01	\N	f	\N	Tech Art Intern	590785	\N	2023-05-29 15:04:08.770657+00	\N
+22743	800801	Marketing	2022-06-01	\N	f	\N	Chief Marketing Officer	590788	\N	2023-05-29 15:04:08.791393+00	\N
+22743	800802	Product	2022-07-01	\N	f	\N	Producer	590780	\N	2023-05-29 15:04:08.754033+00	\N
+22743	800803	Product	2022-07-01	\N	f	\N	Head Of Production	590791	\N	2023-05-29 15:04:08.812034+00	\N
+22743	800804	Other	2021-11-01	\N	f	\N	Audio Director	590782	\N	2023-05-29 15:04:08.756095+00	\N
+22743	800805	Product	2021-12-01	\N	f	\N	Product Management Director	590786	\N	2023-05-29 15:04:08.773131+00	\N
+267929	158391	People	2019-08-01	2021-08-01	f	\N	Chief People & Administration Officer	634042	\N	2023-05-31 16:38:02.313955+00	\N
+267929	629564	Operations	2022-01-01	\N	t	Executive/ VP / C-Level	Co-Founder	408226	\N	2023-05-22 03:40:49.558088+00	\N
+267929	629565	Marcomm	2023-02-01	\N	f	\N	Marketing Lead	408227	\N	2023-05-22 03:40:49.558088+00	\N
+267929	629566	Operations	2022-04-01	\N	t	Executive/ VP / C-Level	Co-Founder	408228	\N	2023-05-22 03:40:49.558088+00	\N
+267929	629567	Operations	2022-04-01	\N	t	Executive/ VP / C-Level	Co-Founder	408229	\N	2023-05-22 03:40:49.558088+00	\N
+267929	629568	Operations	2022-04-01	\N	t	Executive/ VP / C-Level	Co-Founder	408230	\N	2023-05-22 03:40:49.558088+00	\N
+267929	629569	Engineering	2022-04-01	\N	t	Executive/ VP / C-Level	Founding Engineer	408231	\N	2023-05-22 03:40:49.558088+00	\N
+160	192487	Technical	2021-10-01	\N	f	Executive / VP / C-Level	Chief Technology Officer	100048	recuGUyn7awN1s1Yj	2023-05-22 03:40:49.558088+00	\N
+160	738842	Advisor	2021-10-01	\N	f	\N	Advisor	573551	\N	2023-05-29 00:50:12.287281+00	\N
+160	791049	Operations	2021-09-01	\N	f	\N	Team Leader	573550	\N	2023-05-29 00:50:12.256103+00	\N
+160	791050	Operations	2021-09-01	\N	f	\N	General Manager	573543	\N	2023-05-29 00:50:12.19353+00	\N
+160	791051	Design	2021-01-01	\N	f	\N	Head of Creatives	573547	\N	2023-05-29 00:50:12.220065+00	\N
+160	791052	Data	2021-09-01	\N	f	\N	Data Entry Discord Representative	573545	\N	2023-05-29 00:50:12.197207+00	\N
+160	791053	Other	2021-09-01	\N	f	\N	Moderator	573546	\N	2023-05-29 00:50:12.219019+00	\N
+160	791054	Operations	2021-09-01	\N	f	\N	Team Leader	573541	\N	2023-05-29 00:50:12.187191+00	\N
+160	791055	Marketing	2021-11-01	\N	f	\N	Content Writer	573540	\N	2023-05-29 00:50:12.177732+00	\N
+160	791056	Operations	2021-11-01	\N	f	\N	Team Lead	573544	\N	2023-05-29 00:50:12.196341+00	\N
+160	791057	Operations	2021-11-01	\N	f	\N	Team Manager	573549	\N	2023-05-29 00:50:12.254457+00	\N
+160	791058	Operations	2021-09-01	\N	f	\N	AGV Team Leader	573552	\N	2023-05-29 00:50:12.293311+00	\N
+160	791059	Marketing	2021-10-01	\N	f	\N	Head of Community & Partnerships	573548	\N	2023-05-29 00:50:12.237689+00	\N
+160	791060	Marketing	2021-10-01	\N	f	\N	Discord moderator	573554	\N	2023-05-29 00:50:12.300039+00	\N
+160	791061	Marketing	2022-03-01	\N	f	\N	Community Manager	573542	\N	2023-05-29 00:50:12.188603+00	\N
+160	791062	Marketing	2021-10-01	2022-04-01	f	\N	Chief Marketing Officer	573553	\N	2023-05-29 00:50:12.297484+00	\N
+2721	53578	Marcomm	2022-05-01	\N	\N	Individual Contributor	Technical Writer	32448	rec3ZEh7MNREadwWc	2023-05-22 03:40:49.558088+00	\N
+2721	56265	Engineering	2019-12-01	\N	\N	Executive / VP / C-Level	Chief Technology Officer	32447	recrugGnwl1l90bra	2023-05-22 03:40:49.558088+00	\N
+2721	60114	Operations	\N	\N	t	Executive / VP / C-Level	Co-Founder & CEO	32449	reci4BDX1GtHbfuXv	2023-05-22 03:40:49.558088+00	\N
+2721	639978	Engineering	2022-04-01	\N	f	\N	Software Engineer	416636	\N	2023-05-22 11:40:58.812998+00	\N
+824	169	Operations	2018-10-01	\N	t	\N	CEO	4955	reczZnD3SHUzNBAGm	2023-05-22 03:40:49.558088+00	\N
+824	29998	Advisor	2021-03-01	\N	f	\N	Investor	725570	\N	2023-06-06 15:50:42.448803+00	\N
+824	624203	Advisor	2019-10-01	\N	f	\N	Advisor	577329	\N	2023-05-29 03:14:33.018901+00	\N
+824	626885	Advisor	2019-03-01	2020-01-01	t	\N	Advisor to the Founder	671730	\N	2023-06-02 20:35:05.875428+00	\N
+824	636210	Other	2020-10-01	\N	f	\N	Ambassador	577330	\N	2023-05-29 03:14:33.021956+00	\N
+824	636274	Other	2020-02-01	\N	f	\N	Ambassador	577328	\N	2023-05-29 03:14:33.000194+00	\N
+824	637950	Advisor	2021-03-01	\N	f	\N	Investor	577340	\N	2023-05-29 03:14:33.129568+00	\N
+824	794171	\N	\N	\N	f	\N	\N	577327	\N	2023-05-29 03:14:32.299216+00	\N
+824	794172	Engineering	2019-10-01	\N	f	\N	Frontend Engineer	577331	\N	2023-05-29 03:14:33.038188+00	\N
+824	794173	Marketing	2020-11-01	\N	f	\N	telegram community manager	577337	\N	2023-05-29 03:14:33.097569+00	\N
+824	794174	Engineering	2018-11-01	\N	f	\N	DevOps Team Lead	577336	\N	2023-05-29 03:14:33.098772+00	\N
+824	794175	Sales	2020-06-01	\N	f	\N	Director of Business Development	577341	\N	2023-05-29 03:14:33.131301+00	\N
+824	794176	Engineering	2018-10-01	\N	f	\N	Tech Lead	577338	\N	2023-05-29 03:14:33.101447+00	\N
+824	794177	Operations	2018-06-01	\N	f	\N	Sr Project Manager Tech Team	577342	\N	2023-05-29 03:14:33.159301+00	\N
+824	794178	Engineering	2020-06-01	\N	f	\N	Middle software developer	577339	\N	2023-05-29 03:14:33.112054+00	\N
+824	794179	People	2022-01-01	\N	f	\N	HR Business Partner	577332	\N	2023-05-29 03:14:33.039056+00	\N
+824	794180	Engineering	2021-08-01	\N	f	\N	Frontend Engineer	577333	\N	2023-05-29 03:14:33.059691+00	\N
+824	794181	Engineering	2021-03-01	\N	f	\N	Rust Developer	577335	\N	2023-05-29 03:14:33.080639+00	\N
+824	794182	Operations	2021-11-01	\N	f	\N	MEI	577334	\N	2023-05-29 03:14:33.078451+00	\N
+177553	5346	Operations	2023-01-01	\N	t	\N	Co-Founder & Co-CEO	621803	\N	2023-05-30 22:00:06.432898+00	\N
+357	43981	Operations	2021-01-01	\N	t	Executive / VP / C-Level	Co-Founder	24373	rectozfcW3yu8jI0p	2023-05-22 03:40:49.558088+00	\N
+357	44182	Operations	2021-09-01	\N	t	Executive / VP / C-Level	Co-Founder	24372	recuIJOo4vJM2IWOa	2023-05-22 03:40:49.558088+00	\N
+357	230897	Operations	2022-02-01	\N	f	Executive / VP / C-Level	VP, Head of Business Operations	123352	recGcl38Gl36eI3On	2023-05-22 03:40:49.558088+00	\N
+357	230898	Engineering	2022-01-01	2022-09-01	f	Individual Contributor	Software Engineer	123353	recP4wntNNZmOMmhp	2023-05-22 03:40:49.558088+00	\N
+357	230899	Engineering	2022-05-01	\N	f	Individual Contributor	Software Engineer	123354	recVklpbjyARWPzFl	2023-05-22 03:40:49.558088+00	\N
+357	230900	Engineering	2021-11-01	\N	f	Individual Contributor	Founding Engineer	123355	rec6gYedVwD8NDjE7	2023-05-22 03:40:49.558088+00	\N
+357	230902	Engineering	2022-05-01	2022-12-01	f	Individual Contributor	Smart Contract Engineer	123356	recXs8SueGMR5uHd6	2023-05-22 03:40:49.558088+00	\N
+357	637869	Advisor	2022-04-01	\N	f	\N	Investor	574838	\N	2023-05-29 01:27:29.157261+00	\N
+357	693777	Engineering	2022-01-01	2022-09-01	f	\N	Software Engineer	574841	\N	2023-05-29 01:27:29.303756+00	\N
+357	693778	Engineering	2022-05-01	\N	f	\N	Software Engineer	574840	\N	2023-05-29 01:27:29.172495+00	\N
+357	693779	Marketing	2022-03-01	\N	f	\N	Head of Community	574839	\N	2023-05-29 01:27:29.159965+00	\N
+357	693780	Operations	2021-09-01	\N	f	\N	Team	574837	\N	2023-05-29 01:27:29.10939+00	\N
+267396	763544	Operations	2017-06-01	\N	t	\N	CEO & Co-founder	544883	\N	2023-05-28 15:40:25.095606+00	\N
+267396	763545	Customer Success	2022-11-01	\N	f	\N	Customer Success Manager, Mid-Market	544864	\N	2023-05-28 15:40:24.97044+00	\N
+267396	763546	Other	2006-11-01	\N	f	\N	Translator, Indexer, Proofreader	544882	\N	2023-05-28 15:40:25.090123+00	\N
+267396	763547	People	2023-01-01	\N	f	\N	Senior R&D Recruiter	544866	\N	2023-05-28 15:40:24.972129+00	\N
+267396	763548	\N	\N	\N	f	\N	\N	544862	\N	2023-05-28 15:40:24.15413+00	\N
+267396	763549	Engineering	2022-01-01	\N	f	\N	VP Engineering	544869	\N	2023-05-28 15:40:24.996991+00	\N
+267396	763550	People	2021-09-01	\N	f	\N	Head of People	544886	\N	2023-05-28 15:40:25.116597+00	\N
+267396	763551	Advisor	2018-01-01	\N	f	\N	Investor	544876	\N	2023-05-28 15:40:25.038968+00	\N
+267396	763552	Sales	2022-03-01	\N	f	\N	Mid Market Account Executive	544877	\N	2023-05-28 15:40:25.054544+00	\N
+267396	763553	Engineering	2022-05-01	\N	f	\N	Frontend Engineer	544888	\N	2023-05-28 15:40:25.118713+00	\N
+267396	763554	Design	2023-03-01	\N	f	\N	Product Designer	544880	\N	2023-05-28 15:40:25.073683+00	\N
+267396	763555	People	2022-11-01	\N	f	\N	People Operations Associate	544875	\N	2023-05-28 15:40:25.039398+00	\N
+267396	763556	People	2022-10-01	\N	f	\N	Recruiter	544872	\N	2023-05-28 15:40:25.017682+00	\N
+267396	763557	Sales	2022-04-01	\N	f	\N	Sales	544865	\N	2023-05-28 15:40:24.969048+00	\N
+267396	763558	\N	\N	\N	f	\N	\N	544861	\N	2023-05-28 15:40:24.117221+00	\N
+267396	763559	Marketing	2022-02-01	\N	f	\N	Head of Product Marketing	544881	\N	2023-05-28 15:40:25.089742+00	\N
+267396	763560	Marketing	2021-10-01	\N	f	\N	VP of Marketing	544887	\N	2023-05-28 15:40:25.119988+00	\N
+267396	763561	Legal	2022-12-01	\N	f	\N	General Counsel	544885	\N	2023-05-28 15:40:25.098521+00	\N
+267396	763562	Marketing	2021-11-01	\N	f	\N	Head Of Content	544873	\N	2023-05-28 15:40:25.017827+00	\N
+267396	763563	Engineering	2017-06-01	\N	t	\N	CTO & Co-founder	544867	\N	2023-05-28 15:40:24.973347+00	\N
+267396	763564	Finance	2023-03-01	\N	f	\N	Vice President Finance	544878	\N	2023-05-28 15:40:25.057902+00	\N
+267396	763565	Engineering	2021-10-01	2021-10-01	f	\N	Engineering Manager	544863	\N	2023-05-28 15:40:24.936842+00	\N
+267396	763566	Other	2010-05-01	\N	f	\N	Medical Transcriptionist	544884	\N	2023-05-28 15:40:25.098145+00	\N
+267396	763567	Customer Success	2022-09-01	\N	f	\N	Head of Customer Success	544879	\N	2023-05-28 15:40:25.072184+00	\N
+267396	763568	Operations	2015-07-01	\N	f	\N	CEO	544874	\N	2023-05-28 15:40:25.03318+00	\N
+267396	763569	People	2021-09-01	\N	f	\N	Chief Of Staff	544871	\N	2023-05-28 15:40:25.016002+00	\N
+267396	763570	Sales	2022-03-01	\N	f	\N	Enterprise Account Executive	544870	\N	2023-05-28 15:40:24.998083+00	\N
+267396	763571	Advisor	2018-09-01	\N	f	\N	Board Observer	544868	\N	2023-05-28 15:40:24.974972+00	\N
+1143	55041	Operations	2021-01-01	\N	t	Executive / VP / C-Level	CTO	30035	recY1XElyZHntE8ZS	2023-05-22 03:40:49.558088+00	\N
+1143	55396	Engineering	2021-12-01	\N	t	Manager / Director	Co-founder & Lead Developper	30039	recvr7tjgButQamHW	2023-05-22 03:40:49.558088+00	\N
+1143	55795	Finance	2021-01-01	\N	t	Manager / Director	Co-founder & Head of Partnership	30036	recA45JpkmbMNFwDD	2023-05-22 03:40:49.558088+00	\N
+1143	56428	Engineering	\N	\N	\N	Manager / Director	Head of infrastructure	30037	recjiLPMQcipBAE1e	2023-05-22 03:40:49.558088+00	\N
+1143	56935	Engineering	\N	\N	\N	Manager / Director	Lead Game designer	30041	recAOhQjcEVfElqtv	2023-05-22 03:40:49.558088+00	\N
+1143	57742	Sales	2022-01-01	\N	f	\N	Lead Partnerships	30040	recfBhMO2tlISgw74	2023-05-22 03:40:49.558088+00	\N
+1143	58358	Product	2022-06-01	\N	f	Executive / VP / C-Level	Chief of product	30038	recDR6QaQQhhiG3K4	2023-05-22 03:40:49.558088+00	\N
+1143	58759	Design	2022-06-01	\N	f	Manager / Director	Lead Designer	30042	rec32joDDjrh6XOiM	2023-05-22 03:40:49.558088+00	\N
+1143	58872	Engineering	\N	\N	\N	\N	Backend Engineer	30043	recLTOLBqLmip89XN	2023-05-22 03:40:49.558088+00	\N
+1143	59957	Operations	2021-01-01	\N	t	Executive / VP / C-Level	Co-founder & CEO	30034	rec0BpbknxmfqJVhX	2023-05-22 03:40:49.558088+00	\N
+1143	61184	HR	2022-05-01	\N	\N	\N	People Officer	35047	rec9co6pZ5492VxIM	2023-05-22 03:40:49.558088+00	\N
+1143	61247	Engineering	2022-06-01	\N	f	\N	Developer	35046	recnAgfzBrN7uv5ev	2023-05-22 03:40:49.558088+00	\N
+1143	65501	Operations	2022-06-01	\N	f	Executive / VP / C-Level	Chief of Staff	35048	rec68jQn4FpLxfuWq	2023-05-22 03:40:49.558088+00	\N
+1143	258336	Advisor	2022-09-01	\N	f	\N	Board Member	652037	\N	2023-06-01 13:41:44.123148+00	\N
+1143	273307	Advisor	2022-04-01	\N	f	\N	Angel Investor	579316	\N	2023-05-29 04:21:27.316625+00	\N
+1143	627667	Advisor	2022-01-01	\N	f	\N	Angel Investor	674069	\N	2023-06-03 02:15:15.556687+00	\N
+1143	632299	Business Development	2022-10-01	\N	f	Individual Contributor	Partnerships	410393	\N	2023-05-22 03:40:49.558088+00	\N
+1143	778512	Advisor	2022-01-01	\N	f	\N	Angel Investor	579315	\N	2023-05-29 04:21:27.317429+00	\N
+1143	795845	Advisor	2022-09-01	\N	f	\N	Board Member	579317	\N	2023-05-29 04:21:27.354259+00	\N
+176959	629831	Operations	2021-03-01	\N	t	Executive/ VP / C-Level	Co-founder & Chief Operating Officer	408491	\N	2023-05-22 03:40:49.558088+00	\N
+176959	633153	Operations	2021-01-01	\N	t	Executive/ VP / C-Level	Founder & CEO	410335	\N	2023-05-22 03:40:49.558088+00	\N
+176959	820111	Engineering	2020-12-01	\N	f	\N	Backend & Lead Blockchain Engineer	620167	\N	2023-05-30 19:55:46.058748+00	\N
+176959	820112	Design	2021-10-01	\N	f	\N	Graphic Designer	620161	\N	2023-05-30 19:55:45.784411+00	\N
+176959	820113	Marketing	2022-08-01	\N	f	\N	Content Specialist	620169	\N	2023-05-30 19:55:46.073736+00	\N
+176959	820114	People	2022-08-01	\N	f	\N	People Operations Manager	620165	\N	2023-05-30 19:55:46.051069+00	\N
+176959	820115	Engineering	2020-07-01	\N	f	\N	Software Engineer - Mobile and Web	620171	\N	2023-05-30 19:55:46.180281+00	\N
+176959	820116	Engineering	2021-03-01	\N	f	\N	Full-stack Developer	620162	\N	2023-05-30 19:55:45.879076+00	\N
+176959	820117	Marketing	2021-08-01	\N	f	\N	Content marketing Manager	620160	\N	2023-05-30 19:55:45.77971+00	\N
+176959	820118	Engineering	2022-04-01	\N	f	\N	Senior Software Engineer	620166	\N	2023-05-30 19:55:46.051768+00	\N
+176959	820119	Data	2021-09-01	\N	f	\N	Researcher	620170	\N	2023-05-30 19:55:46.089665+00	\N
+176959	820120	Product	2021-09-01	\N	f	\N	Product Manager	620163	\N	2023-05-30 19:55:46.036415+00	\N
+176959	820121	Marketing	2021-12-01	\N	f	\N	Digital Marketing Manager	620164	\N	2023-05-30 19:55:46.04113+00	\N
+176959	820123	Product	2021-02-01	\N	f	\N	Product Manager	620168	\N	2023-05-30 19:55:46.072266+00	\N
+173062	5351	Operations	2020-09-01	\N	t	\N	Co-Founder & CEO	410624	\N	2023-05-22 03:40:49.558088+00	\N
+173062	9807	\N	\N	\N	t	\N	\N	410623	\N	2023-05-22 03:40:49.558088+00	\N
+173062	637950	Advisor	2021-04-01	\N	f	\N	Investor & Advisor	610586	\N	2023-05-30 06:57:16.649561+00	\N
+173062	811521	Other	2021-04-01	\N	f	\N	MD Milan	610589	\N	2023-05-30 06:57:16.665722+00	\N
+173062	811523	Other	2022-05-01	\N	f	\N	Ambassador	610590	\N	2023-05-30 06:57:16.676624+00	\N
+173062	811524	Operations	2020-10-01	\N	t	\N	Co-Founder & CTO	610588	\N	2023-05-30 06:57:16.662328+00	\N
+173062	811525	Sales	2020-11-01	\N	f	\N	Sales And Marketing Associate	610584	\N	2023-05-30 06:57:16.61762+00	\N
+173062	811526	Product	2021-10-01	\N	f	\N	Product and Growth Strategy	610585	\N	2023-05-30 06:57:16.633607+00	\N
+173062	811527	Engineering	2020-12-01	\N	f	\N	Full Stack Web Developer Intern (MERN)	610582	\N	2023-05-30 06:57:16.602306+00	\N
+173062	811528	Product	2021-04-01	\N	f	\N	VP - Product & Growth	610583	\N	2023-05-30 06:57:16.616302+00	\N
+173062	811529	Engineering	2021-07-01	2022-04-01	f	\N	Software Engineer Intern	610591	\N	2023-05-30 06:57:16.772744+00	\N
+173062	811530	Operations	2020-12-01	\N	f	\N	BUIDLer	610587	\N	2023-05-30 06:57:16.660013+00	\N
+173062	870432	Sales	2023-04-01	\N	f	\N	US Business Development	720658	\N	2023-06-06 06:15:00.097705+00	\N
+769	319166	Operations	2021-05-01	\N	t	Executive / VP / C-Level	Co-Founder	190115	recyiUWb0RTUCP2Hd	2023-05-22 03:40:49.558088+00	\N
+769	319167	Business Development	2022-05-01	\N	f	Manager / Director	Director Of Business Development	190116	recrNNBgesg2q7pOP	2023-05-22 03:40:49.558088+00	\N
+769	319168	Marcomm	2021-02-01	\N	f	Individual Contributor	Marketing & Comms Consultant	190117	recoI4lTUTly2aA2y	2023-05-22 03:40:49.558088+00	\N
+769	319169	Operations	2021-06-01	\N	\N	Manager / Director	Operations Lead	190118	reclrCADSRpnNasXO	2023-05-22 03:40:49.558088+00	\N
+769	319170	Engineering	2021-05-01	\N	t	Executive / VP / C-Level	Co-Founder / Engineering Director	190119	recNYcRd4xWnoDVym	2023-05-22 03:40:49.558088+00	\N
+190112	54620	Marketing	2022-08-01	\N	f	\N	Corporate Communications	466645	\N	2023-05-25 06:37:37.716127+00	\N
+190112	55877	Sales	2022-08-01	\N	f	\N	Head of Partnerships	466642	\N	2023-05-25 06:37:37.697138+00	\N
+190112	689230	Operations	2021-09-01	\N	t	\N	Founder, CEO	466641	\N	2023-05-25 06:37:37.696598+00	\N
+190112	689231	Design	2022-01-01	\N	f	\N	Lead Concept Artist	466640	\N	2023-05-25 06:37:37.696126+00	\N
+190112	689232	Marketing	2022-01-01	\N	f	\N	Marketing Strategist	466638	\N	2023-05-25 06:37:37.682003+00	\N
+190112	689233	Design	2022-02-01	\N	f	\N	Art Director	466643	\N	2023-05-25 06:37:37.705909+00	\N
+190112	689234	Operations	2022-05-01	\N	f	\N	Story Editor	466644	\N	2023-05-25 06:37:37.710992+00	\N
+190112	689235	Operations	2022-02-01	\N	f	\N	Storyverse Director	466637	\N	2023-05-25 06:37:37.670839+00	\N
+190112	689236	Engineering	2022-01-01	\N	f	\N	Lead Tech Artist / Gameplay Engineer	466636	\N	2023-05-25 06:37:37.653759+00	\N
+190112	689237	Operations	2022-05-01	\N	f	\N	President	466639	\N	2023-05-25 06:37:37.684458+00	\N
+266020	624138	Operations	2022-08-01	\N	t	Executive/ VP / C-Level	Co-Founder	404686	\N	2023-05-22 03:40:49.558088+00	\N
+266020	624139	Operations	2022-08-01	\N	t	Executive/ VP / C-Level	Co-founder	404689	\N	2023-05-22 03:40:49.558088+00	\N
+266020	624141	Engineering	2022-09-01	2023-03-01	f		Software Engineer	404691	\N	2023-05-22 03:40:49.558088+00	\N
+266020	624143	Operations	2022-09-01	\N	f		Operations	404693	\N	2023-05-22 03:40:49.558088+00	\N
+266020	624144	Engineering	2022-10-01	\N	f		Software Engineer	404694	\N	2023-05-22 03:40:49.558088+00	\N
+266020	656502	Advisor	2022-01-01	\N	f	\N	Angel Investor	535299	\N	2023-05-28 10:25:41.091625+00	\N
+266	204583	Advisor	2021-11-01	\N	f	\N	Investor	574211	\N	2023-05-29 01:12:13.547347+00	\N
+266	217568	Operations	2019-01-01	\N	t	Executive / VP / C-Level	CEO	112821	recNDk9m9aJpCIGLa	2023-05-22 03:40:49.558088+00	\N
+266	217569	Marcomm	\N	\N	\N	Manager / Director	Partnership Manager	112822	recNCP0HT0wcKfNfF	2023-05-22 03:40:49.558088+00	\N
+266	217570	Technical	\N	\N	\N	Executive / VP / C-Level	CTO Game	112823	recRRWkEjEJFa8vRJ	2023-05-22 03:40:49.558088+00	\N
+266	217571	Engineering	\N	\N	\N	Executive / VP / C-Level	CTO Blockchain Lead	112824	recv9xEwr6ojtvOAz	2023-05-22 03:40:49.558088+00	\N
+266	217572	Marcomm	\N	\N	\N	Individual Contributor	Community/ Education	112825	rec95mTMSwOY3INSb	2023-05-22 03:40:49.558088+00	\N
+266	217573	Engineering	\N	\N	\N	Individual Contributor	Senior Developer/ Architect	112826	recDG17YfOn1AQz0j	2023-05-22 03:40:49.558088+00	\N
+266	217574	Design	\N	\N	\N	Individual Contributor	Senior UX/UI Designer	112827	recJwPv2pnRv91l6B	2023-05-22 03:40:49.558088+00	\N
+266	217575	Engineering	\N	\N	\N	Individual Contributor	Senior Development	112828	recbJWiIpbMiZA30V	2023-05-22 03:40:49.558088+00	\N
+266	217576	Engineering	\N	\N	\N	Individual Contributor	Software Developer	112829	recgOG1P8ri6GRDhX	2023-05-22 03:40:49.558088+00	\N
+266	217579	Engineering	\N	\N	\N	Individual Contributor	Software Developer	112830	recCVkxOqBqqq44AK	2023-05-22 03:40:49.558088+00	\N
+266	217580	Engineering	\N	\N	\N	Individual Contributor	Software Engineer	112831	recKStOZZEaySplW7	2023-05-22 03:40:49.558088+00	\N
+266	217582	Technical	\N	\N	\N	Manager / Director	Technical Lead	112832	recmott2wxWRo9bnk	2023-05-22 03:40:49.558088+00	\N
+266	217583	Engineering	\N	\N	\N	Individual Contributor	Game Developer	112833	recbPsMZDANRYNbbH	2023-05-22 03:40:49.558088+00	\N
+266	217585	Design	\N	\N	\N	Individual Contributor	3D Artist	112834	recgM8Mk7gUpAT0mX	2023-05-22 03:40:49.558088+00	\N
+266	217586	Design	\N	\N	\N	Individual Contributor	3D Artist	112835	recAzof5bUgzYyHjA	2023-05-22 03:40:49.558088+00	\N
+266	217588	Design	\N	\N	\N	Individual Contributor	3D Artist	112836	rec1YTQMv8904etXN	2023-05-22 03:40:49.558088+00	\N
+266	217590	Engineering	\N	\N	\N	Individual Contributor	Game Developer	112837	recpRV2OzP8F4qWUZ	2023-05-22 03:40:49.558088+00	\N
+266	217592	Design	\N	\N	\N	Manager / Director	Art Director	112838	recXJf9kkIEBupvA6	2023-05-22 03:40:49.558088+00	\N
+266	217595	Engineering	\N	\N	\N	Individual Contributor	Software Engineer	112839	recfbcgP3f4sWOBof	2023-05-22 03:40:49.558088+00	\N
+266	791607	Support	2022-01-01	\N	f	\N	Head of Community and Support	574214	\N	2023-05-29 01:12:13.568452+00	\N
+266	791609	Engineering	2020-02-01	\N	f	\N	Web Developer	574218	\N	2023-05-29 01:12:13.612972+00	\N
+266	791610	Operations	2020-10-01	\N	f	\N	Co-Founder	574220	\N	2023-05-29 01:12:13.63256+00	\N
+266	791612	Other	2021-01-01	\N	f	\N	Ambassador	574215	\N	2023-05-29 01:12:13.586086+00	\N
+266	791613	Engineering	2020-10-01	\N	t	\N	Technical Lead	574219	\N	2023-05-29 01:12:13.623204+00	\N
+266	791614	Engineering	2022-01-01	\N	f	\N	Software Developer	574217	\N	2023-05-29 01:12:13.599454+00	\N
+266	791615	Engineering	2022-03-01	\N	f	\N	Blockchain Developer	574212	\N	2023-05-29 01:12:13.555421+00	\N
+266	791616	Design	2022-03-01	\N	f	\N	Architect and 3D Visualize	574216	\N	2023-05-29 01:12:13.598644+00	\N
+266	791617	Customer Success	2021-06-01	\N	f	\N	CMO	574213	\N	2023-05-29 01:12:13.567438+00	\N
+18673	27039	Operations	2018-07-01	2019-06-01	t	Executive / VP / C-Level	Founder, Partner	12564	recaX3fIumN2JQUai	2023-05-22 03:40:49.558088+00	\N
+267389	756	Advisor	2018-01-01	\N	f	\N	Investor - Board Observer	544442	\N	2023-05-28 15:35:25.746631+00	\N
+267389	1722	Advisor	2020-01-01	\N	f	\N	Board Observer	544444	\N	2023-05-28 15:35:25.746692+00	\N
+267389	763106	Engineering	2021-05-01	\N	f	\N	Software Developer	544446	\N	2023-05-28 15:35:25.761085+00	\N
+267389	763107	Sales	2022-04-01	\N	f	\N	Vice President of Partnerships	544435	\N	2023-05-28 15:35:25.609499+00	\N
+267389	763108	Operations	2017-03-01	\N	t	\N	Co-Founder and CEO	544439	\N	2023-05-28 15:35:25.666839+00	\N
+267389	763109	\N	\N	\N	f	\N	\N	544433	\N	2023-05-28 15:35:25.23353+00	\N
+267389	763110	Data	2022-03-01	\N	f	\N	Lead Datascientist	544443	\N	2023-05-28 15:35:25.74681+00	\N
+267389	763111	Operations	2016-05-01	\N	f	\N	Co-Founder	544436	\N	2023-05-28 15:35:25.663997+00	\N
+267389	763113	Engineering	2020-04-01	\N	f	\N	Software Engineer	544440	\N	2023-05-28 15:35:25.717499+00	\N
+267389	763115	Sales	2022-08-01	\N	f	\N	Partnerships Manager	544445	\N	2023-05-28 15:35:25.746741+00	\N
+267389	763116	Advisor	2019-08-01	\N	f	\N	Board Member	544437	\N	2023-05-28 15:35:25.670272+00	\N
+267389	763117	\N	2022-02-01	\N	f	\N	Recruiting Strategy Lead	544434	\N	2023-05-28 15:35:25.553666+00	\N
+267389	763121	Engineering	2020-09-01	\N	f	\N	Vice President Of Engineering	544438	\N	2023-05-28 15:35:25.685647+00	\N
+267389	763122	Engineering	2022-03-01	\N	f	\N	Director of Engineering at Secure AI Labs	544441	\N	2023-05-28 15:35:25.717499+00	\N
+113420	756212	Engineering	2022-01-01	\N	f	\N	DeFi Architect	595710	\N	2023-05-29 17:13:05.124896+00	\N
+113420	760722	Marketing	2022-07-01	\N	f	\N	Content Strategist	595711	\N	2023-05-29 17:13:05.141537+00	\N
+113420	804538	Design	2022-11-01	\N	f	\N	Lead Product Designer	595712	\N	2023-05-29 17:13:05.156934+00	\N
+113420	804539	Operations	2021-08-01	\N	t	\N	CEO, Co-Founder	595714	\N	2023-05-29 17:13:05.215931+00	\N
+113420	804540	Marketing	2022-04-01	\N	f	\N	Director of Growth	595713	\N	2023-05-29 17:13:05.163495+00	\N
+251874	623316	Advisor	2019-08-01	\N	f	\N	Board Observer	476012	\N	2023-05-26 07:21:08.964029+00	\N
+251874	625378	Engineering	2020-01-01	\N	f	\N	User Experience Engineer	669172	\N	2023-06-02 15:42:38.750691+00	\N
+251874	625379	\N	2022-07-01	\N	f	\N	Web 3 Marketing Content Creator	475998	\N	2023-05-26 07:21:08.619253+00	\N
+251874	625385	Sales	2023-05-01	2022-04-01	f	\N	Head Of Business Development	475999	\N	2023-05-26 07:21:08.706066+00	\N
+251874	630115	Sales	2021-08-01	2022-07-01	f	\N	Business Development	476010	\N	2023-05-26 07:21:08.886448+00	\N
+251874	637322	Advisor	2019-12-01	\N	f	\N	Investor	476013	\N	2023-05-26 07:21:08.992659+00	\N
+251874	642370	Engineering	2021-04-01	\N	f	\N	Test Automation Engineer	476011	\N	2023-05-26 07:21:08.940751+00	\N
+251874	649816	Operations	2019-12-01	\N	f	\N	Managing Director	476009	\N	2023-05-26 07:21:08.883622+00	\N
+251874	671286	Advisor	2022-12-01	\N	f	\N	Member Board of Directors	476014	\N	2023-05-26 07:21:08.99322+00	\N
+251874	697208	Sales	2021-04-01	\N	f	\N	Strategic Partnerships	476005	\N	2023-05-26 07:21:08.860568+00	\N
+251874	697244	Advisor	2020-02-01	\N	f	\N	Board Member	476001	\N	2023-05-26 07:21:08.822722+00	\N
+251874	697245	Marketing	2020-08-01	2021-09-01	f	\N	Head of Marketing	476015	\N	2023-05-26 07:21:09.303872+00	\N
+251874	697246	Engineering	2020-12-01	\N	f	\N	Software Architect and Senior Blockchain Developer	476000	\N	2023-05-26 07:21:08.804805+00	\N
+251874	697247	Finance	2021-12-01	\N	f	\N	NFT & P2E Research & Development / Advisor	476003	\N	2023-05-26 07:21:08.839973+00	\N
+251874	697248	Marketing	2020-11-01	\N	f	\N	Public Relations Advisor	476007	\N	2023-05-26 07:21:08.864485+00	\N
+251874	697249	Marketing	2021-09-01	\N	f	\N	Head of Marketing	476002	\N	2023-05-26 07:21:08.839973+00	\N
+251874	697251	Engineering	2020-12-01	\N	f	\N	Senior Blockchain Engineer	476006	\N	2023-05-26 07:21:08.864456+00	\N
+251874	697252	\N	\N	\N	f	\N	\N	475997	\N	2023-05-26 07:21:08.303242+00	\N
+251874	697254	Advisor	2020-10-01	\N	f	\N	Investor	476008	\N	2023-05-26 07:21:08.881434+00	\N
+251874	697255	Product	2020-12-01	\N	f	\N	Head of Product	476004	\N	2023-05-26 07:21:08.852462+00	\N
+14757	17177	Operations	1998-01-01	\N	t	Executive / VP / C-Level	Co-Founder & Chief Administrative Officer	9613	recr9P6wMxCrctGQv	2023-05-22 03:40:49.558088+00	\N
+14757	17632	Operations	1998-01-01	\N	t	Executive / VP / C-Level	CEO	9612	recrQgxI4MtbSFq4h	2023-05-22 03:40:49.558088+00	\N
+14757	18700	Operations	\N	\N	t	Executive / VP / C-Level	President & Co-Founder	9611	reciiYX2iMKKrtIdO	2023-05-22 03:40:49.558088+00	\N
+14757	797915	Engineering	2015-10-01	\N	f	\N	Chief Technology Officer	586557	\N	2023-05-29 12:32:52.64659+00	\N
+14757	797916	Operations	2022-05-01	\N	f	\N	Chief Operating Officer	586561	\N	2023-05-29 12:32:52.692409+00	\N
+14757	797917	Operations	2019-07-01	\N	f	\N	VP Customer Delivery & Cloud Operations	586556	\N	2023-05-29 12:32:52.643502+00	\N
+14757	797918	Operations	2016-05-01	\N	f	\N	Vice President	586536	\N	2023-05-29 12:32:52.408482+00	\N
+14757	797919	People	2021-05-01	2021-05-01	f	\N	Vice President, Talent Management and Organizational Development	586544	\N	2023-05-29 12:32:52.468033+00	\N
+14757	797920	Operations	1991-01-01	\N	f	\N	Vice President	586563	\N	2023-05-29 12:32:52.726291+00	\N
+14757	797921	Finance	2021-01-01	\N	f	\N	Vice President Securities Services	586526	\N	2023-05-29 12:32:52.364719+00	\N
+14757	797922	Product	1998-09-01	\N	f	\N	VP, Product Development	586529	\N	2023-05-29 12:32:52.382419+00	\N
+14757	797923	Finance	2013-04-01	\N	f	\N	Vice President Finance, Global Technology and Operations	586523	\N	2023-05-29 12:32:52.304459+00	\N
+14757	797924	Operations	1986-01-01	\N	f	\N	Vice President	586533	\N	2023-05-29 12:32:52.404124+00	\N
+14757	797925	Sales	2018-07-01	\N	f	\N	SVP & Account Leader	586550	\N	2023-05-29 12:32:52.584123+00	\N
+14757	797926	People	2020-07-01	2016-06-01	f	\N	VP, Technology Service Delivery - Wealth Management Americas Platform (WMAP)	586562	\N	2023-05-29 12:32:52.707708+00	\N
+14757	797927	Finance	2016-06-01	\N	f	\N	Head of Investor Relations	586524	\N	2023-05-29 12:32:52.346406+00	\N
+14757	797928	Marketing	2013-07-01	\N	f	\N	Vice President of Information Security	586531	\N	2023-05-29 12:32:52.384812+00	\N
+14757	797929	Operations	2000-04-01	\N	f	\N	Senior Director	586535	\N	2023-05-29 12:32:52.409892+00	\N
+14757	797930	Finance	2007-01-01	\N	f	\N	Vice President - Global Finance & Accounting	586534	\N	2023-05-29 12:32:52.405726+00	\N
+14757	797931	Customer Success	2021-04-01	2022-07-01	f	\N	Senior Director - Strategic Wealth Solutions	586528	\N	2023-05-29 12:32:52.381653+00	\N
+14757	797932	Finance	2021-09-01	\N	f	\N	CFO Technology	586538	\N	2023-05-29 12:32:52.410831+00	\N
+14757	797933	People	2018-01-01	2022-02-01	f	\N	Associate Vice President, Admin & Facilities	586570	\N	2023-05-29 12:32:53.062274+00	\N
+14757	797934	Sales	2022-05-01	2022-06-01	f	\N	Vice President Corporate Development	586530	\N	2023-05-29 12:32:52.383508+00	\N
+14757	797935	Finance	2015-09-01	2020-08-01	f	\N	Chief Financial Officer - Global Technology & Operations	586564	\N	2023-05-29 12:32:52.872537+00	\N
+14757	797936	Customer Success	2019-10-01	\N	f	\N	VP - GM US Client Relations - Broadridge Customer Communications	586540	\N	2023-05-29 12:32:52.428312+00	\N
+14757	797937	Product	2021-02-01	\N	f	\N	Vice President - Product Management	586559	\N	2023-05-29 12:32:52.670797+00	\N
+14757	797938	Operations	2012-04-01	2014-07-01	f	\N	Director	586568	\N	2023-05-29 12:32:53.046519+00	\N
+14757	797939	Operations	2019-05-01	\N	f	\N	Senior Executive Vice President	586558	\N	2023-05-29 12:32:52.648575+00	\N
+14757	797940	Finance	2005-01-01	\N	f	\N	Senior Vice President - Securities Clearing & Operations Control	586542	\N	2023-05-29 12:32:52.466011+00	\N
+14757	797941	Finance	2008-03-01	\N	f	\N	Director - Credit and Collections	586541	\N	2023-05-29 12:32:52.441964+00	\N
+14757	797942	Customer Success	2021-05-01	\N	f	\N	Vice President, Account Management	586539	\N	2023-05-29 12:32:52.424529+00	\N
+14757	797943	Operations	2018-04-01	\N	f	\N	Vice President	586532	\N	2023-05-29 12:32:52.388061+00	\N
+14757	797944	Engineering	2004-09-01	\N	f	\N	EVP & CTO	586545	\N	2023-05-29 12:32:52.488934+00	\N
+14757	797945	Marketing	2021-05-01	\N	f	\N	Vice President, Global Marketing Events and Multimedia Experiences	586554	\N	2023-05-29 12:32:52.622536+00	\N
+14757	797946	Product	2003-01-01	2012-03-01	f	\N	VP Product Development	586567	\N	2023-05-29 12:32:53.026793+00	\N
+14757	797947	Sales	2021-04-01	\N	f	\N	SVP	586546	\N	2023-05-29 12:32:52.490934+00	\N
+14757	797948	Customer Success	2008-04-01	\N	f	\N	Vice President - Business Line CTO, Head of Application Infrastructure & Service Delivery	586551	\N	2023-05-29 12:32:52.603696+00	\N
+14757	797950	Operations	2012-04-01	2014-07-01	f	\N	Consultant (Business Analyst / Project Manager)	586571	\N	2023-05-29 12:32:53.066531+00	\N
+14757	797951	Engineering	1995-02-01	\N	f	\N	Vice President Application Development	586547	\N	2023-05-29 12:32:52.492156+00	\N
+14757	797952	Operations	2018-03-01	\N	f	\N	Vice President	586537	\N	2023-05-29 12:32:52.409964+00	\N
+14757	797953	Operations	2018-03-01	\N	f	\N	Vice President	586549	\N	2023-05-29 12:32:52.548677+00	\N
+14757	797954	Operations	2006-08-01	2012-11-01	f	\N	Senior Director	586565	\N	2023-05-29 12:32:52.930362+00	\N
+14757	797955	Operations	2018-04-01	\N	f	\N	Vice President	586553	\N	2023-05-29 12:32:52.621799+00	\N
+14757	797956	Engineering	2021-03-01	\N	f	\N	Vice President, ICS Quality Engineering	586543	\N	2023-05-29 12:32:52.467729+00	\N
+14757	797957	Engineering	2014-06-01	2016-10-01	f	\N	Sr. Director Technical Services	586566	\N	2023-05-29 12:32:52.990265+00	\N
+14757	797958	Legal	2018-01-01	\N	f	\N	Vice President, Corporate Counsel	586560	\N	2023-05-29 12:32:52.689803+00	\N
+14757	797959	Engineering	2019-11-01	\N	f	\N	VP of Software Engineering	586555	\N	2023-05-29 12:32:52.633271+00	\N
+14757	797960	Product	2016-11-01	\N	f	\N	Vice President Product Management	586522	\N	2023-05-29 12:32:52.304727+00	\N
+14757	797961	Product	2021-05-01	\N	f	\N	Vice President Of Product Management	586548	\N	2023-05-29 12:32:52.546812+00	\N
+14757	797962	Operations	1996-02-01	\N	f	\N	Vice President Operations	586552	\N	2023-05-29 12:32:52.605322+00	\N
+14757	797963	Sales	2016-11-01	2021-05-01	f	\N	VP Conversions	586572	\N	2023-05-29 12:32:53.085381+00	\N
+14757	797964	Customer Success	2013-04-01	\N	f	\N	VP, Client Relations	586525	\N	2023-05-29 12:32:52.34978+00	\N
+14757	797965	Operations	2019-07-01	2019-07-01	f	\N	Chief of Staff to COO GTO IT	586527	\N	2023-05-29 12:32:52.363901+00	\N
+14757	797966	Sales	2019-01-01	2020-01-01	f	\N	Vice President Strategy and Business Development	586569	\N	2023-05-29 12:32:53.049993+00	\N
+\.
+
+
+--
+-- PostgreSQL database dump complete
+--
+

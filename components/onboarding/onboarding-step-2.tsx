@@ -3,8 +3,9 @@ import { ElemButton } from '@/components/elem-button';
 import { TagInputText } from '@/components/tag-input-text';
 import { TagInputSelect } from '@/components/tag-input-select';
 import { Dialog, Transition } from '@headlessui/react';
-import { tags } from '@/utils/constants';
+import { aiTags } from '@/utils/constants';
 import ElemLocationTagInput from '../elem-location-tag-input';
+import { getSelectableWeb3Tags } from '@/utils/helpers';
 
 type Props = {
   selectedOption: string;
@@ -28,16 +29,7 @@ export default function OnboardingStep2(props: Props) {
     props.onBack(locationTags, industryTags);
   };
 
-  const getTags = tags.filter(
-    tag =>
-      tag.name !== 'Layer 0' &&
-      tag.name !== 'Layer 1' &&
-      tag.name !== 'Layer 2' &&
-      tag.name !== 'Layer 3' &&
-      tag.name !== 'Layer 4' &&
-      tag.name !== 'Layer 5' &&
-      tag.name !== 'Layer 6',
-  );
+  const getTags = [...getSelectableWeb3Tags(), ...aiTags];
 
   const interestsSuggestions: string[] = [];
   getTags.forEach(item => interestsSuggestions.push(item.name));
