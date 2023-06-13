@@ -120,7 +120,6 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
           <h1 className="font-bold text-xl capitalize">
             {selectedGroupTab.name}
           </h1>
-          {/* <p className="text-slate-600">Groups you manage.</p> */}
         </div>
         {groups?.length === 0 && (
           <div className="flex items-center justify-center mx-auto min-h-[40vh]">
