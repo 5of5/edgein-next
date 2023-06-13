@@ -28,9 +28,9 @@ const ElemInviteEmails: React.FC<Props> = ({
   const [selectedUsers, setSelectedUsers] =
     useState<Record<string, any>[]>(selected);
 
-  const [isDuplicatedEmail, setIsDuplicatedEmail] = useState<boolean>(false);
+  const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
 
-  const [emailError, setEmailError] = useState<string>('');
+  const [emailError, setEmailError] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
 
