@@ -1,3 +1,4 @@
+import { Library, LibraryTag, Tag } from '@/types/common';
 import {
   email,
   required,
@@ -635,7 +636,7 @@ export const tokenInfoMetrics = [
   },
 ];
 
-export const tags = [
+export const web3Tags: Tag[] = [
   'Layer 0',
   'Layer 1',
   'Layer 2',
@@ -684,6 +685,33 @@ export const tags = [
   'News',
 ].map(tag => ({ id: tag, name: tag }));
 
+export const aiTags: Tag[] = [
+  'API',
+  'Open Source',
+  'Model Creator',
+  'Model Hub',
+  'End 2 End',
+  'Infrastructure Provider',
+  'B2B',
+  'B2C',
+  'Image',
+  'Text',
+  'Code',
+  'Video',
+  'Audio',
+  'Multi-modal',
+].map(tag => ({ id: tag, name: tag }));
+
+export const NON_SELECTABLE_WEB_3_TAGS = [
+  'Layer 0',
+  'Layer 1',
+  'Layer 2',
+  'Layer 3',
+  'Layer 4',
+  'Layer 5',
+  'Layer 6',
+];
+
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
 
 export const eventSizeChoices = [
@@ -725,7 +753,9 @@ export const eventOrganizationTypeChoices = [
 
 export type ActionType = 'Insert Data' | 'Change Data' | 'Delete Data';
 
-export const libraryChoices = ['Web3', 'AI'].map(item => ({
+const libraries: Library[] = ['Web3', 'AI'];
+
+export const libraryChoices: LibraryTag[] = libraries.map(item => ({
   id: item,
   name: item,
 }));
