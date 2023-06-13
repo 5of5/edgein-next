@@ -140,11 +140,8 @@ export const ElemGroupCard: FC<Props> = ({
 				</p> */}
 
         <div className="flex items-center mt-4 pl-1">
-          <ul
-            className="flex -space-x-3 overflow-hidden cursor-pointer"
-            //onClick={onClick}
-          >
-            {user_group_members.slice(0, 6).map((mem, index) => (
+          <ul className="flex -space-x-3 overflow-hidden cursor-pointer">
+            {user_group_members.slice(0, 6).map(mem => (
               <li key={mem.id}>
                 {mem?.user?.person?.picture ? (
                   <ElemPhoto
@@ -183,10 +180,7 @@ export const ElemGroupCard: FC<Props> = ({
 					</div>
 				)} */}
       </div>
-      <div
-        className="mt-4"
-        // onClick={(e) => e.stopPropagation()}
-      >
+      <div className="mt-4">
         {selectedGroupTab.id === 'my-groups' ||
         selectedGroupTab.id === 'joined' ? (
           <ElemButton
