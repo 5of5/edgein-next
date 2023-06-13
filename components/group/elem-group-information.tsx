@@ -4,11 +4,14 @@ import {
   IconChevronDownMini,
   IconPlus,
   IconSettings,
+  IconChevronRight,
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { User_Groups } from '@/graphql/types';
 import { ElemMemberAvatarList } from '@/components/group/elem-member-avatar-list';
 import { SettingTabProps } from './elem-setting-dialog';
+import Link from 'next/link';
+import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 
 type Props = {
   isUserBelongToGroup: boolean;
@@ -34,15 +37,31 @@ export const ElemGroupInformation: React.FC<Props> = ({
       {isUserBelongToGroup ? (
         <>
           <div>
-            <button
-              type="button"
-              className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
-              onClick={() => onOpenSettingDialog('settings')}
-            >
-              <IconGroup className="w-6 h-6 mr-1" />
-              <span className="font-bold text-xl capitalize">{group.name}</span>
-              <IconChevronDownMini className="h-5 w-5" />
-            </button>
+            <ElemDashboardBreadcrumb
+              breadcrumbs={[
+                {
+                  name: 'my-groups',
+                  to: '/groups',
+                  component: 'My groups',
+                },
+                {
+                  name: 'current',
+                  component: (
+                    <button
+                      type="button"
+                      className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
+                      onClick={() => onOpenSettingDialog('settings')}
+                    >
+                      <IconGroup className="w-6 h-6 mr-1" />
+                      <span className="font-bold text-xl capitalize">
+                        {group.name}
+                      </span>
+                      <IconChevronDownMini className="h-5 w-5" />
+                    </button>
+                  ),
+                },
+              ]}
+            />
 
             <div className="flex items-center mt-1 pl-1">
               <ElemMemberAvatarList
@@ -81,10 +100,26 @@ export const ElemGroupInformation: React.FC<Props> = ({
       ) : (
         <>
           <div>
-            <div className="flex items-center">
-              <IconGroup className="w-6 h-6 mr-1" />
-              <span className="font-bold text-xl capitalize">{group.name}</span>
-            </div>
+            <ElemDashboardBreadcrumb
+              breadcrumbs={[
+                {
+                  name: 'my-groups',
+                  to: '/groups',
+                  component: 'My groups',
+                },
+                {
+                  name: 'current',
+                  component: (
+                    <div className="flex items-center">
+                      <IconGroup className="w-6 h-6 mr-1" />
+                      <span className="font-bold text-xl capitalize">
+                        {group.name}
+                      </span>
+                    </div>
+                  ),
+                },
+              ]}
+            />
             {group.public && (
               <div className="flex items-center mt-1 pl-1">
                 <ElemMemberAvatarList
