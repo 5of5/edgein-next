@@ -13,11 +13,7 @@ import {
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
 import { DeepPartial, GroupsTabType, Library } from '@/types/common';
-import {
-  aiTags,
-  eventTypeChoices,
-  roundChoices,
-} from '@/utils/constants';
+import { aiTags, eventTypeChoices, roundChoices } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { getSelectableWeb3Tags } from './helpers';
 

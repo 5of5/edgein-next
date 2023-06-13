@@ -18,7 +18,7 @@ export type Breadcrumb = {
   name: string;
   to?: string;
   component: string | ReactNode | JSX.Element;
-}
+};
 
 export type Library = 'Web3' | 'AI';
 
