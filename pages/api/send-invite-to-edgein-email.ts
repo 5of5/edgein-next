@@ -237,7 +237,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
                         <tr>
                           <td>
                             <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; line-height: 16px; font-weight: normal; text-align: left; color: #525f7f;">
-                              New to EdgeIn? With EdgeIn, you and your team
+                              New to EdgeIn? With EdgeIn you and your team
                               can gain clear, accessible, alpha market
                               knowledge.
                               <a
@@ -285,7 +285,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
                                               target="_blank"
                                             >
                                               <img src="https://www.edgein.io/email-edgein-text.png" alt="EdgeIn" width="50" style="display: block" border="0" />
-                                              &copy; 2023
+                                              &copy; EdgeIn.io 2023
                                             </a>
                                           </td>
                                         </tr>
