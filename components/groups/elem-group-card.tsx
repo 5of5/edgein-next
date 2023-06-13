@@ -39,16 +39,7 @@ export const ElemGroupCard: FC<Props> = ({
     return moment(local_date).format('LL');
   };
 
-  const {
-    id,
-    name,
-    created_at,
-    description,
-    created_by,
-    updated_at,
-    user_group_members,
-    notes,
-  } = groupData;
+  const { id, name, updated_at, user_group_members, notes } = groupData;
 
   const { data: lists } = useGetListUserGroupsQuery(
     {
@@ -134,11 +125,6 @@ export const ElemGroupCard: FC<Props> = ({
           Updated {formatDateShown(updated_at)}
         </p>
 
-        {/* <p className="text-slate-600 text-sm">
-					Created {formatDateShown(group.created_at)} by{" "}
-					{created_by?.display_name}
-				</p> */}
-
         <div className="flex items-center mt-4 pl-1">
           <ul className="flex -space-x-3 overflow-hidden cursor-pointer">
             {user_group_members.slice(0, 6).map(mem => (
@@ -171,14 +157,6 @@ export const ElemGroupCard: FC<Props> = ({
             </a>
           </Link>
         </div>
-
-        {/* {description && (
-					<div className="grow mt-2">
-						<div className="text-slate-600 text-sm line-clamp-5">
-							{description}
-						</div>
-					</div>
-				)} */}
       </div>
       <div className="mt-4">
         {selectedGroupTab.id === 'my-groups' ||
