@@ -1,4 +1,9 @@
-import React, { MutableRefObject, useState, PropsWithChildren } from 'react';
+import React, {
+  MutableRefObject,
+  useState,
+  PropsWithChildren,
+  useEffect,
+} from 'react';
 import {
   IconEllipsisHorizontal,
   IconExclamationTriangle,
@@ -20,6 +25,8 @@ type Props = {
   resourceName?: string | null;
 };
 
+const SECTION_OFFSET_TOP_SPACING = 60;
+
 export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
   className,
   tabsClassName,
@@ -30,6 +37,28 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 }) => {
   const [isActive, setActive] = useState(0);
   const [dropdownIsOpen, setDropdownIsOpen] = useState(true);
+
+  useEffect(() => {
+    if (tabs) {
+      const handleScroll = () => {
+        const scrollPosition = window.scrollY;
+
+        tabs.forEach((tab, tabIndex) => {
+          if (
+            scrollPosition >=
+            tab.ref.current.offsetTop - SECTION_OFFSET_TOP_SPACING
+          ) {
+            setActive(tabIndex);
+          }
+        });
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [tabs]);
 
   const onClick = (index: number, ref: any) => {
     setActive(index);
