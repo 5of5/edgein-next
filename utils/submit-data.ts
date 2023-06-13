@@ -157,6 +157,46 @@ export const deleteMainTableRecord = async (
   });
 };
 
+const getIsOwnerVerifiedDataRawByResourceAndField = async (
+  resourceType: ResourceTypes,
+  resourceId: number,
+  field: string,
+) => {
+  const {
+    data: { data_raw },
+  } = await query<GetIsOwnerVerifiedDataRawByResourceAndFieldQuery>({
+    query: GetIsOwnerVerifiedDataRawByResourceAndFieldDocument,
+    variables: { resourceType, resourceId, field },
+  });
+  return data_raw?.[0]?.is_owner_verified || false;
+};
+
+const updateAllowedFieldsInMainTable = async (
+  resourceType: ResourceTypes,
+  resourceId: number,
+  user: User | null,
+  setMainTableValues: Record<string, any>,
+) => {
+  if (resourceType === 'people') {
+    for (const field in setMainTableValues) {
+      const isOwnerVerifiedField =
+        await getIsOwnerVerifiedDataRawByResourceAndField(
+          resourceType,
+          resourceId,
+          field,
+        );
+
+      if (isOwnerVerifiedField && resourceId !== user?.person?.id) {
+        delete setMainTableValues[field];
+      }
+    }
+  }
+
+  if (Object.keys(setMainTableValues).length) {
+    await updateMainTable(resourceType, resourceId, setMainTableValues);
+  }
+};
+
 export const markDataRawAsInactive = async (
   resourceType: ResourceTypes,
   resourceId: Number,
@@ -508,27 +548,12 @@ export const mutateActionAndDataRaw = async (
   }
 
   if (resourceId) {
-    // TODO: refactor to function
-    if (resourceType === 'people') {
-      for (const field in setMainTableValues) {
-        const isOwnerVerifiedField = (
-          await getIsOwnerVerifiedDataRawByResourceAndField(
-            resourceType,
-            resourceId,
-            field,
-          )
-        );
-
-        if (isOwnerVerifiedField && resourceId !== user?.person?.id) {
-          delete setMainTableValues[field];
-        }
-      }
-    }
-
-    // update only allowed fields
-    if (Object.keys(setMainTableValues).length) {
-      await updateMainTable(resourceType, resourceId, setMainTableValues);
-    }
+    await updateAllowedFieldsInMainTable(
+      resourceType,
+      resourceId,
+      user,
+      setMainTableValues,
+    );
   } else {
     const response = await insertResourceData(resourceType, setMainTableValues);
     resourceId = response?.id;
@@ -552,18 +577,4 @@ export const getCompanyByRoundId = async (round_id: number) => {
     variables: { round_id },
   });
   return investment_rounds[0];
-};
-
-const getIsOwnerVerifiedDataRawByResourceAndField = async (
-  resourceType: ResourceTypes,
-  resourceId: number,
-  field: string,
-) => {
-  const {
-    data: { data_raw },
-  } = await query<GetIsOwnerVerifiedDataRawByResourceAndFieldQuery>({
-    query: GetIsOwnerVerifiedDataRawByResourceAndFieldDocument,
-    variables: { resourceType, resourceId, field },
-  });
-  return data_raw?.[0]?.is_owner_verified || false;
 };
