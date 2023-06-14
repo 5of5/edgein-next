@@ -1928,3 +1928,10 @@ export const newsPersonTypes = [
 export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
 
 export const ONBOARDING_QUESTION = 'Where did you hear about us?';
+
+export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
+  'companies',
+  'vc_firms',
+  'people',
+  'news',
+];
