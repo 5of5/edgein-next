@@ -1,12 +1,8 @@
 import { FC, Fragment, ReactElement, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { Dialog, Transition, Disclosure } from '@headlessui/react';
 import groupBy from 'lodash/groupBy';
-import {
-  useGetTeamMemberByCompanyIdsQuery,
-  useGetTeamMemberByPersonIdQuery,
-} from '@/graphql/types';
 import { InviteToEdgeInResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
 import {
@@ -35,24 +31,12 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
     [],
   );
 
-  const { data: teamMemberByPerson } = useGetTeamMemberByPersonIdQuery(
-    { person_id: user?.person?.id || 0 },
+  const { data: teamMembers = [] } = useQuery(
+    ['get-team-member-to-invite'],
+    async () =>
+      await fetch(`/api/get-team-member-to-invite/`).then(res => res.json()),
     { enabled: Boolean(user?.person?.id) },
   );
-
-  const personTeamMembers = teamMemberByPerson?.team_members || [];
-
-  const { data: teamMemberByCompany } = useGetTeamMemberByCompanyIdsQuery(
-    { company_ids: personTeamMembers.map(mem => mem?.company_id || 0) },
-    {
-      enabled: personTeamMembers.length > 0,
-    },
-  );
-
-  const teamMembers =
-    teamMemberByCompany?.team_members?.filter(
-      mem => mem?.person_id !== user?.person?.id,
-    ) || [];
 
   const membersGroupByCompany = groupBy(teamMembers, 'company_id');
 

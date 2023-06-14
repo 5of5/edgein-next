@@ -24860,6 +24860,13 @@ export type UpdateUserPersonIdMutationVariables = Exact<{
 
 export type UpdateUserPersonIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
+export type GetUserByPersonIdsQueryVariables = Exact<{
+  person_ids: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type GetUserByPersonIdsQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, person_id: number | null }> };
+
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -29606,6 +29613,35 @@ export const useUpdateUserPersonIdMutation = <
       options
     );
 useUpdateUserPersonIdMutation.fetcher = (variables: UpdateUserPersonIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserPersonIdMutation, UpdateUserPersonIdMutationVariables>(UpdateUserPersonIdDocument, variables, options);
+export const GetUserByPersonIdsDocument = `
+    query GetUserByPersonIds($person_ids: [Int!]) {
+  users(where: {person_id: {_in: $person_ids}}) {
+    id
+    email
+    display_name
+    person_id
+  }
+}
+    `;
+export const useGetUserByPersonIdsQuery = <
+      TData = GetUserByPersonIdsQuery,
+      TError = Error
+    >(
+      variables?: GetUserByPersonIdsQueryVariables,
+      options?: UseQueryOptions<GetUserByPersonIdsQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByPersonIdsQuery, TError, TData>(
+      variables === undefined ? ['GetUserByPersonIds'] : ['GetUserByPersonIds', variables],
+      fetcher<GetUserByPersonIdsQuery, GetUserByPersonIdsQueryVariables>(GetUserByPersonIdsDocument, variables),
+      options
+    );
+useGetUserByPersonIdsQuery.document = GetUserByPersonIdsDocument;
+
+
+useGetUserByPersonIdsQuery.getKey = (variables?: GetUserByPersonIdsQueryVariables) => variables === undefined ? ['GetUserByPersonIds'] : ['GetUserByPersonIds', variables];
+;
+
+useGetUserByPersonIdsQuery.fetcher = (variables?: GetUserByPersonIdsQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByPersonIdsQuery, GetUserByPersonIdsQueryVariables>(GetUserByPersonIdsDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
