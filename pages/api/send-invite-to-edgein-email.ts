@@ -1,13 +1,7 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
 import CookieService from '@/utils/cookie';
-
-type MailParams = {
-  email: string;
-  senderName: string;
-  senderEmail: string;
-  signUpUrl?: string;
-};
+import { InviteToEdgeInMailParams, InviteToEdgeInResponse } from '@/types/api';
 
 //AWS config set
 AWS.config.update({
@@ -30,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const response = await Promise.all(
     emails.map(async email => {
-      const mailParams: MailParams = {
+      const mailParams: InviteToEdgeInMailParams = {
         email,
         senderName: user.display_name || '',
         senderEmail: user.email || '',
@@ -45,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.send(response);
 };
 
-const sendInvitationMail = async (mailParams: MailParams) => {
+const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
   const { email, senderName, senderEmail, signUpUrl } = mailParams;
   const html = `
   <div style="background-color: #f2f5fa; table-layout: fixed; width: 100%; vertical-align: top; padding: 0 10px;">
@@ -285,7 +279,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
                                               target="_blank"
                                             >
                                               <img src="https://www.edgein.io/email-edgein-text.png" alt="EdgeIn" width="50" style="display: block" border="0" />
-                                              &copy; EdgeIn.io 2023
+                                              &copy; EdgeIn.io ${new Date().getFullYear()}
                                             </a>
                                           </td>
                                         </tr>
@@ -383,12 +377,19 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     };
 
     await new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
-    return { status: 200, message: 'success' };
+    const res: InviteToEdgeInResponse = {
+      status: 200,
+      message: 'success',
+      email,
+    };
+    return res;
   } catch (err) {
-    return {
+    const res: InviteToEdgeInResponse = {
       status: 500,
       message: `Failed to send verification email to ${email}. ${err}`,
+      email,
     };
+    return res;
   }
 };
 

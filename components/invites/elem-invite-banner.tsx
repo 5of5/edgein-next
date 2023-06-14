@@ -1,17 +1,17 @@
 import { FC, Fragment, ReactElement, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useMutation } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   useGetTeamMemberByCompanyIdQuery,
   useGetTeamMemberByPersonIdQuery,
 } from '@/graphql/types';
+import { InviteToEdgeInResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
-import { IconX, IconArrowRight } from '../icons';
+import { IconX, IconArrowRight, IconPaperAirplane } from '../icons';
 import { ElemButton } from '../elem-button';
 import ElemInviteEmails from './elem-invite-emails';
-import { useMutation } from 'react-query';
 import { ElemInviteTeamMember } from './elem-invite-team-member';
-import { toast } from 'react-hot-toast';
 
 type Props = {
   children?: ReactElement;
@@ -45,38 +45,31 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
       mem => mem?.person_id !== user?.person?.id,
     ) || [];
 
-  const { mutate: sendInvitationEmail, isLoading } = useMutation(
-    (emails: string[]) =>
-      fetch('/api/send-invite-to-edgein-email/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          emails,
-        }),
-      }),
-    {
-      onSuccess: () => {
-        toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Sent invitations successfully
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+  const {
+    data: sendInvitationEmailResponse,
+    mutate: sendInvitationEmail,
+    reset: resetInvitation,
+    isLoading,
+  } = useMutation(async (emails: string[]) => {
+    const res = await fetch('/api/send-invite-to-edgein-email/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    },
-  );
+      body: JSON.stringify({
+        emails,
+      }),
+    });
+    const apiResponse = await res.json();
+    if (!res.ok) {
+      throw apiResponse;
+    } else {
+      return apiResponse;
+    }
+  });
+
+  console.log('@sendInvitationEmailResponse', sendInvitationEmailResponse);
 
   const onOpenUpgradeDialog = () => {
     setIsOpenInviteDialog(true);
@@ -217,24 +210,89 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
 
                     <div className="mt-4">
                       <div className="relative p-5 bg-white rounded-lg border border-black/10">
-                        <div className="flex flex-col gap-1">
-                          <ElemInviteEmails
-                            label="Invite with email"
-                            description="Send an email invite"
-                            placeholder="Enter multiple emails"
-                            selected={selectedPeople}
-                            onChange={setSelectedPeople}
-                          />
-                        </div>
-                        <ElemButton
-                          btn="purple"
-                          onClick={handleClickSendInvites}
-                          loading={isLoading}
-                          disabled={selectedPeople.length === 0}
-                          className="mt-4"
-                        >
-                          Send invites
-                        </ElemButton>
+                        {sendInvitationEmailResponse &&
+                        sendInvitationEmailResponse.length > 0 ? (
+                          <>
+                            <div className="w-full text-center">
+                              <IconPaperAirplane
+                                className="mx-auto h-12 w-12 text-slate-300"
+                                title="Invitation Sent"
+                              />
+                              <h3 className="mt-2 text-lg font-bold">
+                                Invitation details
+                              </h3>
+                              <p className="mt-1 text-primary-500 hover:underline"></p>
+                            </div>
+
+                            <ul className="mt-4 list-disc list-outside pl-4">
+                              {sendInvitationEmailResponse.map(
+                                (
+                                  res: InviteToEdgeInResponse,
+                                  index: number,
+                                ) => {
+                                  if (res.status === 500) {
+                                    return (
+                                      <li
+                                        className="text-red-500 text-sm"
+                                        key={index}
+                                      >
+                                        {`Failed to send invitation to email `}
+                                        <span className="font-bold">
+                                          {res.email}
+                                        </span>
+                                        . Please try again later.
+                                      </li>
+                                    );
+                                  }
+                                  return (
+                                    <li
+                                      className="text-slate-500 text-sm"
+                                      key={index}
+                                    >
+                                      {`Invitation has been sent to `}
+                                      <span className="font-bold">
+                                        {res.email}
+                                      </span>{' '}
+                                      successfully.
+                                    </li>
+                                  );
+                                },
+                              )}
+                            </ul>
+
+                            <ElemButton
+                              btn="ol-primary"
+                              onClick={() => {
+                                setSelectedPeople([]);
+                                resetInvitation();
+                              }}
+                              className="mt-4 w-full"
+                            >
+                              Invite more people
+                            </ElemButton>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex flex-col gap-1">
+                              <ElemInviteEmails
+                                label="Invite with email"
+                                description="Send an email invite"
+                                placeholder="Enter multiple emails"
+                                selected={selectedPeople}
+                                onChange={setSelectedPeople}
+                              />
+                            </div>
+                            <ElemButton
+                              btn="purple"
+                              onClick={handleClickSendInvites}
+                              loading={isLoading}
+                              disabled={selectedPeople.length === 0}
+                              className="mt-4"
+                            >
+                              Send invites
+                            </ElemButton>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
