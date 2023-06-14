@@ -147,7 +147,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -161,7 +162,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -206,7 +208,8 @@ const Companies: NextPage<Props> = ({
       {!initialLoad && (
         <ElemHeading
           title={`${selectedLibrary} Companies`}
-          subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}></ElemHeading>
+          subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
+        ></ElemHeading>
       )}
 
       <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
@@ -219,7 +222,8 @@ const Companies: NextPage<Props> = ({
 
           <div
             className="relative mt-2 mb-4 flex items-center justify-between lg:border-y lg:border-black/10"
-            role="tablist">
+            role="tablist"
+          >
             <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x border-y border-black/10 pr-32 sm:pr-0 lg:border-none">
               {companyStatusTags &&
                 companyStatusTags.map((tab: any, index: number) =>
@@ -233,7 +237,8 @@ const Companies: NextPage<Props> = ({
                         selectedStatusTag.value === tab.value
                           ? 'text-primary-500 border-primary-500'
                           : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}>
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
+                    >
                       {tab.title}
                     </button>
                   ),
@@ -250,14 +255,16 @@ const Companies: NextPage<Props> = ({
                   onClick={() => setTableLayout(false)}
                   className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
                     !tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}>
+                  }`}
+                >
                   <IconGrid className="w-5 h-5" title="Grid layout" />
                 </button>
                 <button
                   onClick={() => setTableLayout(true)}
                   className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
                     tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}>
+                  }`}
+                >
                   <IconTable className="w-5 h-5" title="Table layout" />
                 </button>
               </div>
@@ -281,7 +288,8 @@ const Companies: NextPage<Props> = ({
                           `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                         )
                       }
-                      className="inline underline decoration-primary-500 hover:text-primary-500">
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
                       <span>report error</span>
                     </button>
                     .
@@ -391,7 +399,8 @@ const Companies: NextPage<Props> = ({
                     )
                   }
                   btn="white"
-                  className="mt-3">
+                  className="mt-3"
+                >
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>
