@@ -50,14 +50,12 @@ type Props = {
   companiesCount: number;
   initialCompanies: GetCompaniesQuery['companies'];
   companyStatusTags: TextFilter[];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Companies: NextPage<Props> = ({
   companiesCount,
   initialCompanies,
   companyStatusTags,
-  setToggleFeedbackForm,
 }) => {
   const { user } = useUser();
 
@@ -272,27 +270,6 @@ const Companies: NextPage<Props> = ({
             </div>
           </div>
 
-          {companies?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() => setToggleFeedbackForm(true)}
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
-
           <div>
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
@@ -305,7 +282,7 @@ const Companies: NextPage<Props> = ({
                     <button
                       onClick={() =>
                         showNewMessages(
-                          `Hi EdgeIn, I'd like to report an error on companies page`,
+                          `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                         )
                       }
                       className="inline underline decoration-primary-500 hover:text-primary-500"
@@ -402,6 +379,31 @@ const Companies: NextPage<Props> = ({
               </>
             )}
           </div>
+
+          {companies?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Toaster />

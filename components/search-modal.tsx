@@ -24,6 +24,7 @@ import Link from 'next/link';
 import { getEventBanner, randomImageOfCity } from '@/utils/helpers';
 import { formatDate } from '@/utils/numbers';
 import useLibrary from '@/hooks/use-library';
+import { parseIndexName } from '@/utils/algolia';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -445,11 +446,9 @@ export default function SearchModal(props: any) {
             No results for “{results.query}“.{' '}
             <Link href={`/contact/`} passHref>
               <a onClick={onClose} className="text-primary-500">
-                Tell us about missing{' '}
-                {results._state.index === 'vc_firms'
-                  ? ' investors'
-                  : ' ' + results._state.index}
-                .
+                {`Tell us about missing ${parseIndexName(
+                  results._state.index,
+                )}.`}
               </a>
             </Link>
           </p>
