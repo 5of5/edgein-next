@@ -380,7 +380,7 @@ export const mutateActionAndDataRaw = async (
   const setMainTableValues: Record<string, any> = {};
   const actions: number[] = [];
 
-  let existedData;
+  let existedData: Record<string, any> = {};
   if (resourceId) {
     existedData = await mainTableLookup(resourceType, resourceId, [
       ...Object.keys(resourceObj),
@@ -400,6 +400,7 @@ export const mutateActionAndDataRaw = async (
           value = await resourceIdLookup(lookupResourceType, [
             { field: lookupField, value },
           ]);
+          console.log(value);
           field =
             lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
           if (!value && !resourceId) {
