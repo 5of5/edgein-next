@@ -220,27 +220,16 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
                                       } h-6 w-6 transform transition-all`}
                                     />
                                   </Disclosure.Button>
-                                  <Transition
-                                    show={open}
-                                    className="overflow-hidden"
-                                    enter="transition transition-[max-height] duration-400 ease-in"
-                                    enterFrom="transform max-h-0"
-                                    enterTo="transform max-h-screen"
-                                    leave="transition transition-[max-height] duration-400 ease-out"
-                                    leaveFrom="transform max-h-screen"
-                                    leaveTo="transform max-h-0"
-                                  >
-                                    <Disclosure.Panel>
-                                      {membersGroupByCompany[companyId].map(
-                                        mem => (
-                                          <ElemInviteTeamMember
-                                            key={mem.id}
-                                            teamMember={mem}
-                                          />
-                                        ),
-                                      )}
-                                    </Disclosure.Panel>
-                                  </Transition>
+                                  <Disclosure.Panel>
+                                    {membersGroupByCompany[companyId].map(
+                                      mem => (
+                                        <ElemInviteTeamMember
+                                          key={mem.id}
+                                          teamMember={mem}
+                                        />
+                                      ),
+                                    )}
+                                  </Disclosure.Panel>
                                 </>
                               )}
                             </Disclosure>
