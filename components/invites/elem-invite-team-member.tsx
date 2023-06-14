@@ -1,12 +1,11 @@
-import Link from 'next/link';
 import { useMutation } from 'react-query';
-import { GetTeamMemberByCompanyIdQuery } from '@/graphql/types';
+import { GetTeamMemberByCompanyIdsQuery } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
 import { ElemPhoto } from '../elem-photo';
 import { ElemTooltip } from '../elem-tooltip';
 
 type Props = {
-  teamMember: GetTeamMemberByCompanyIdQuery['team_members'][0];
+  teamMember: GetTeamMemberByCompanyIdsQuery['team_members'][0];
 };
 
 export const ElemInviteTeamMember: React.FC<Props> = ({ teamMember }) => {
@@ -32,7 +31,7 @@ export const ElemInviteTeamMember: React.FC<Props> = ({ teamMember }) => {
   };
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 group snap-start hover:text-primary-500">
+    <div className="flex items-center justify-between px-8 py-3 group snap-start hover:text-primary-500">
       <ElemTooltip
         content={
           <>

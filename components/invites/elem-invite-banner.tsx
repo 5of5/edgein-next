@@ -2,8 +2,9 @@ import { FC, Fragment, ReactElement, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useMutation } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
+import groupBy from 'lodash/groupBy';
 import {
-  useGetTeamMemberByCompanyIdQuery,
+  useGetTeamMemberByCompanyIdsQuery,
   useGetTeamMemberByPersonIdQuery,
 } from '@/graphql/types';
 import { InviteToEdgeInResponse } from '@/types/api';
@@ -12,6 +13,7 @@ import { IconX, IconArrowRight, IconPaperAirplane } from '../icons';
 import { ElemButton } from '../elem-button';
 import ElemInviteEmails from './elem-invite-emails';
 import { ElemInviteTeamMember } from './elem-invite-team-member';
+import { ElemInviteCompanyGroup } from './elem-invite-company-group';
 
 type Props = {
   children?: ReactElement;
@@ -33,10 +35,12 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
     { enabled: Boolean(user?.person?.id) },
   );
 
-  const { data: teamMemberByCompany } = useGetTeamMemberByCompanyIdQuery(
-    { company_id: teamMemberByPerson?.team_members[0]?.company_id || 0 },
+  const personTeamMembers = teamMemberByPerson?.team_members || [];
+
+  const { data: teamMemberByCompany } = useGetTeamMemberByCompanyIdsQuery(
+    { company_ids: personTeamMembers.map(mem => mem?.company_id || 0) },
     {
-      enabled: Boolean(teamMemberByPerson?.team_members[0]?.company_id),
+      enabled: personTeamMembers.length > 0,
     },
   );
 
@@ -44,6 +48,8 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
     teamMemberByCompany?.team_members?.filter(
       mem => mem?.person_id !== user?.person?.id,
     ) || [];
+
+  const membersGroupByCompany = groupBy(teamMembers, 'company_id');
 
   const {
     data: sendInvitationEmailResponse,
@@ -68,8 +74,6 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
       return apiResponse;
     }
   });
-
-  console.log('@sendInvitationEmailResponse', sendInvitationEmailResponse);
 
   const onOpenUpgradeDialog = () => {
     setIsOpenInviteDialog(true);
@@ -194,11 +198,20 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
                           </p>
                         </div>
                         <div className="max-h-[325px] overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
-                          {teamMembers.map(mem => (
-                            <ElemInviteTeamMember
-                              key={mem.id}
-                              teamMember={mem}
-                            />
+                          {Object.keys(membersGroupByCompany).map(companyId => (
+                            <div key={companyId}>
+                              <ElemInviteCompanyGroup
+                                company={
+                                  membersGroupByCompany[companyId][0].company
+                                }
+                              />
+                              {membersGroupByCompany[companyId].map(mem => (
+                                <ElemInviteTeamMember
+                                  key={mem.id}
+                                  teamMember={mem}
+                                />
+                              ))}
+                            </div>
                           ))}
                         </div>
                       </div>
