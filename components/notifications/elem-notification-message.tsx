@@ -19,7 +19,7 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
     notification.notification_resource_type === 'vc_firms'
   ) {
     return (
-      <div>
+      <div className="inline">
         <Link href={getNotificationOrganizationLink(notification)} passHref>
           <a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
             {organization?.name}

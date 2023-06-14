@@ -66,7 +66,7 @@ const ElemExploreMenu: FC<Props> = ({ className = '' }) => {
               </Link>
             </li>
             <li role="button">
-              <Link href={`/events`}>
+              <Link href={`/news`}>
                 <a className="flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
                   <IconNewspaper className="w-6 h-6" />
                   <span>News</span>

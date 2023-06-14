@@ -51,14 +51,12 @@ type Props = {
   companiesCount: number;
   initialCompanies: GetCompaniesQuery['companies'];
   companyStatusTags: TextFilter[];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Companies: NextPage<Props> = ({
   companiesCount,
   initialCompanies,
   companyStatusTags,
-  setToggleFeedbackForm,
 }) => {
   const { user } = useUser();
 
@@ -149,8 +147,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -164,8 +161,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -210,8 +206,7 @@ const Companies: NextPage<Props> = ({
       {!initialLoad && (
         <ElemHeading
           title={`${selectedLibrary} Companies`}
-          subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
-        ></ElemHeading>
+          subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}></ElemHeading>
       )}
 
       <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
@@ -224,8 +219,7 @@ const Companies: NextPage<Props> = ({
 
           <div
             className="relative mt-2 mb-4 flex items-center justify-between lg:border-y lg:border-black/10"
-            role="tablist"
-          >
+            role="tablist">
             <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x border-y border-black/10 pr-32 sm:pr-0 lg:border-none">
               {companyStatusTags &&
                 companyStatusTags.map((tab: any, index: number) =>
@@ -239,8 +233,7 @@ const Companies: NextPage<Props> = ({
                         selectedStatusTag.value === tab.value
                           ? 'text-primary-500 border-primary-500'
                           : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
-                    >
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}>
                       {tab.title}
                     </button>
                   ),
@@ -257,16 +250,14 @@ const Companies: NextPage<Props> = ({
                   onClick={() => setTableLayout(false)}
                   className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
                     !tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
+                  }`}>
                   <IconGrid className="w-5 h-5" title="Grid layout" />
                 </button>
                 <button
                   onClick={() => setTableLayout(true)}
                   className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
                     tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
+                  }`}>
                   <IconTable className="w-5 h-5" title="Table layout" />
                 </button>
               </div>
@@ -274,27 +265,6 @@ const Companies: NextPage<Props> = ({
           </div>
 
           <ElemInviteBanner />
-
-          {companies?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() => setToggleFeedbackForm(true)}
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
 
           <div>
             {error ? (
@@ -308,11 +278,10 @@ const Companies: NextPage<Props> = ({
                     <button
                       onClick={() =>
                         showNewMessages(
-                          `Hi EdgeIn, I'd like to report an error on companies page`,
+                          `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                         )
                       }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
+                      className="inline underline decoration-primary-500 hover:text-primary-500">
                       <span>report error</span>
                     </button>
                     .
@@ -405,6 +374,30 @@ const Companies: NextPage<Props> = ({
               </>
             )}
           </div>
+
+          {companies?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3">
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Toaster />
