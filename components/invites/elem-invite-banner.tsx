@@ -1,7 +1,7 @@
 import { FC, Fragment, ReactElement, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useMutation } from 'react-query';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Transition, Disclosure } from '@headlessui/react';
 import groupBy from 'lodash/groupBy';
 import {
   useGetTeamMemberByCompanyIdsQuery,
@@ -9,7 +9,12 @@ import {
 } from '@/graphql/types';
 import { InviteToEdgeInResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
-import { IconX, IconArrowRight, IconPaperAirplane } from '../icons';
+import {
+  IconX,
+  IconArrowRight,
+  IconPaperAirplane,
+  IconChevronDownMini,
+} from '../icons';
 import { ElemButton } from '../elem-button';
 import ElemInviteEmails from './elem-invite-emails';
 import { ElemInviteTeamMember } from './elem-invite-team-member';
@@ -199,19 +204,46 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
                         </div>
                         <div className="max-h-[325px] overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
                           {Object.keys(membersGroupByCompany).map(companyId => (
-                            <div key={companyId}>
-                              <ElemInviteCompanyGroup
-                                company={
-                                  membersGroupByCompany[companyId][0].company
-                                }
-                              />
-                              {membersGroupByCompany[companyId].map(mem => (
-                                <ElemInviteTeamMember
-                                  key={mem.id}
-                                  teamMember={mem}
-                                />
-                              ))}
-                            </div>
+                            <Disclosure key={companyId} defaultOpen>
+                              {({ open }) => (
+                                <>
+                                  <Disclosure.Button className="flex justify-between items-center w-full px-4 py-1 bg-slate-100 focus:outline-none hover:opacity-75">
+                                    <ElemInviteCompanyGroup
+                                      company={
+                                        membersGroupByCompany[companyId][0]
+                                          .company
+                                      }
+                                    />
+                                    <IconChevronDownMini
+                                      className={`${
+                                        open ? 'rotate-0' : '-rotate-90 '
+                                      } h-6 w-6 transform transition-all`}
+                                    />
+                                  </Disclosure.Button>
+                                  <Transition
+                                    show={open}
+                                    className="overflow-hidden"
+                                    enter="transition transition-[max-height] duration-400 ease-in"
+                                    enterFrom="transform max-h-0"
+                                    enterTo="transform max-h-screen"
+                                    leave="transition transition-[max-height] duration-400 ease-out"
+                                    leaveFrom="transform max-h-screen"
+                                    leaveTo="transform max-h-0"
+                                  >
+                                    <Disclosure.Panel>
+                                      {membersGroupByCompany[companyId].map(
+                                        mem => (
+                                          <ElemInviteTeamMember
+                                            key={mem.id}
+                                            teamMember={mem}
+                                          />
+                                        ),
+                                      )}
+                                    </Disclosure.Panel>
+                                  </Transition>
+                                </>
+                              )}
+                            </Disclosure>
                           ))}
                         </div>
                       </div>

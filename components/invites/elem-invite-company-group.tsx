@@ -8,7 +8,7 @@ type Props = {
 
 export const ElemInviteCompanyGroup: React.FC<Props> = ({ company }) => {
   return (
-    <div className="flex items-center justify-between px-4 py-2 group snap-start bg-slate-100 hover:text-primary-500">
+    <div className="flex items-center justify-between group snap-start hover:text-primary-500">
       <ElemTooltip content={company?.name} direction="top-start">
         <div className="flex grow items-center gap-x-2 cursor-pointer hover:opacity-75">
           <ElemPhoto
