@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -7,9 +7,9 @@ import {
   AutocompleteInput,
   NumberField,
   TextInput,
-} from "react-admin";
-import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/use-auth";
+} from 'react-admin';
+import ElemList from '../elem-list';
+import { useAuth } from '@/hooks/use-auth';
 
 const filters = [
   <TextInput
@@ -22,9 +22,9 @@ const filters = [
   />,
   <ReferenceInput key="searchPeople" source="person_id" reference="people">
     <AutocompleteInput
-      style={{ padding: 0, border: "none" }}
+      style={{ padding: 0, border: 'none' }}
       optionText="name"
-      filterToQuery={(search) => ({ name: search })}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <ReferenceInput
@@ -33,16 +33,16 @@ const filters = [
     reference="investment_rounds"
   >
     <AutocompleteInput
-      style={{ padding: 0, border: "none" }}
+      style={{ padding: 0, border: 'none' }}
       optionText="name"
-      filterToQuery={(search) => ({ name: search })}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms">
     <AutocompleteInput
-      style={{ padding: 0, border: "none" }}
+      style={{ padding: 0, border: 'none' }}
       optionText="name"
-      filterToQuery={(search) => ({ name: search })}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
 ];
@@ -52,7 +52,7 @@ export const InvestmentList = () => {
 
   return (
     <ElemList filters={filters}>
-      { user?.role !== "cms-readonly" && <EditButton /> }
+      {user?.role !== 'cms-readonly' && <EditButton />}
       <TextField source="id" />
       <ReferenceField label="Partner" source="person_id" reference="people">
         <TextField source="name" />

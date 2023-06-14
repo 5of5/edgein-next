@@ -1,12 +1,12 @@
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useUser } from "@/context/user-context";
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useUser } from '@/context/user-context';
 
 const VerifyAdditionalEmail = () => {
   const { user, refreshUser } = useUser();
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -15,16 +15,16 @@ const VerifyAdditionalEmail = () => {
     const userId = router.query.uid as string;
     if (userId && user) {
       if (+userId !== user?.id) {
-        setError("You are not allowed to access this link.");
+        setError('You are not allowed to access this link.');
       } else {
         if (user?.additional_emails?.includes(email)) {
-          setError("This link is expired.");
+          setError('This link is expired.');
         } else {
-          const response = await fetch("/api/update-additional-emails/", {
-            method: "POST",
+          const response = await fetch('/api/update-additional-emails/', {
+            method: 'POST',
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               additionalEmails: [...(user?.additional_emails ?? []), email],
@@ -33,7 +33,7 @@ const VerifyAdditionalEmail = () => {
 
           if (response.ok) {
             refreshUser();
-            router.push("/profile");
+            router.push('/profile');
             return;
           }
 
@@ -41,7 +41,7 @@ const VerifyAdditionalEmail = () => {
             setError((await response.json()).message);
 
           if (response.status === 500)
-            setError("Some server error, please contact edgein.io support!");
+            setError('Some server error, please contact edgein.io support!');
         }
       }
     }

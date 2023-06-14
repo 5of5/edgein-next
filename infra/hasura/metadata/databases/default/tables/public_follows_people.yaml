@@ -11,3 +11,14 @@ object_relationships:
         insertion_order: null
         column_mapping:
           resource_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - created_by_user_id
+        - resource_id
+        - id
+        - resource_type
+        - list_id
+      filter: {}
+      limit: 50

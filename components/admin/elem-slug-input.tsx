@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { TextInput } from "react-admin";
-import { useFormContext } from "react-hook-form";
+import React, { useEffect } from 'react';
+import { TextInput } from 'react-admin';
+import { useFormContext } from 'react-hook-form';
 
 type Props = {
   slug: any;
@@ -11,7 +11,7 @@ const ElemSlugInput = ({ slug, validate }: Props) => {
   const { setValue } = useFormContext();
 
   useEffect(() => {
-    if (slug !== "") setValue("slug", slug);
+    if (slug !== '') setValue('slug', slug);
   }, [slug, setValue]);
 
   return (
@@ -20,8 +20,8 @@ const ElemSlugInput = ({ slug, validate }: Props) => {
       source="slug"
       validate={validate}
       sx={{
-        ".MuiFormHelperText-root": {
-          display: "block !important",
+        '.MuiFormHelperText-root': {
+          display: 'block !important',
         },
       }}
     />

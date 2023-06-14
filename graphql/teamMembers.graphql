@@ -28,3 +28,16 @@ mutation InsertTeamMember($personId: Int, $companyId: Int, $vcFirmId: Int) {
     id
   }
 }
+
+query GetTeamMemberById($id: Int!) {
+  team_members(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    company_id
+    person {
+      id
+      name
+      slug
+      status
+    }
+  }
+}

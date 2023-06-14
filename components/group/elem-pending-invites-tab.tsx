@@ -1,10 +1,10 @@
-import { Fragment } from "react";
-import { useMutation } from "react-query";
-import { Menu, Transition } from "@headlessui/react";
-import { IconEllipsisHorizontal } from "@/components/icons";
-import { User_Groups, User_Group_Invites } from "@/graphql/types";
-import { ElemPhoto } from "@/components/elem-photo";
-import { useUser } from "@/context/user-context";
+import { Fragment } from 'react';
+import { useMutation } from 'react-query';
+import { Menu, Transition } from '@headlessui/react';
+import { IconEllipsisHorizontal } from '@/components/icons';
+import { User_Groups, User_Group_Invites } from '@/graphql/types';
+import { ElemPhoto } from '@/components/elem-photo';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   group: User_Groups;
@@ -19,19 +19,19 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
   const isGroupManager = user?.id === group.created_by_user_id;
 
   const pendingInvites = group.user_group_invites.filter(
-    (invite) =>
+    invite =>
       !group.user_group_members.some(
-        (member) => member.user.email === invite.email
-      )
+        member => member.user?.email === invite.email,
+      ),
   );
 
   const { mutate: deleteInvite } = useMutation(
     (inviteId: number) =>
-      fetch("/api/delete-group-invite/", {
-        method: "DELETE",
+      fetch('/api/delete-group-invite/', {
+        method: 'DELETE',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           id: inviteId,
@@ -42,11 +42,11 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
         onUpdateGroupData((prev: User_Groups) => ({
           ...prev,
           user_group_invites: prev.user_group_invites.filter(
-            (item) => item.id !== inviteId
+            item => item.id !== inviteId,
           ),
         }));
       },
-    }
+    },
   );
 
   const handleRemoveInvite = (memberId: number) => {
@@ -82,7 +82,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
                     <>
                       <Menu.Button
                         className={`${
-                          open ? "opacity-100" : ""
+                          open ? 'opacity-100' : ''
                         } self-center justify-self-center w-6 h-6 bg-slate-200 rounded-full cursor-pointer opacity-0 hover:bg-slate-300 group-hover:opacity-100`}
                       >
                         <IconEllipsisHorizontal className="" />
@@ -103,8 +103,8 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
                               <button
                                 className={`${
                                   active
-                                    ? "bg-red-500 text-white"
-                                    : "text-red-500"
+                                    ? 'bg-red-500 text-white'
+                                    : 'text-red-500'
                                 } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
                                 onClick={() => handleRemoveInvite(invite.id)}
                               >

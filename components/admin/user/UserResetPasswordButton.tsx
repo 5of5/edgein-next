@@ -1,13 +1,13 @@
-import { generatePassword } from "@/utils";
-import { useState } from "react";
+import { generatePassword } from '@/utils';
+import { useState } from 'react';
 import {
   Button,
   Confirm,
   useRecordContext,
   useNotify,
   useRefresh,
-} from "react-admin";
-import { useMutation } from "react-query";
+} from 'react-admin';
+import { useMutation } from 'react-query';
 
 const UserResetPasswordButton = () => {
   const record = useRecordContext();
@@ -22,11 +22,11 @@ const UserResetPasswordButton = () => {
 
   const { mutate, isLoading } = useMutation(
     () =>
-      fetch("/api/reset-password/", {
-        method: "POST",
+      fetch('/api/reset-password/', {
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userId: record.id,
@@ -35,17 +35,17 @@ const UserResetPasswordButton = () => {
         }),
       }),
     {
-      onSuccess: async (response) => {
+      onSuccess: async response => {
         if (response.status !== 200) {
           const err = await response.json();
-          notify(err.message, { type: "error" });
+          notify(err.message, { type: 'error' });
         } else {
           refresh();
-          notify("Reset password successful", { type: "info" });
+          notify('Reset password successful', { type: 'info' });
         }
         handleDialogClose();
       },
-    }
+    },
   );
 
   const handleConfirm = () => {
@@ -56,7 +56,7 @@ const UserResetPasswordButton = () => {
     <>
       <Button
         label="Reset password"
-        sx={{ marginLeft: "1rem", padding: "6px 16px", fontSize: "0.9rem" }}
+        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem' }}
         onClick={handleClick}
       />
       <Confirm

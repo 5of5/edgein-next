@@ -1,38 +1,36 @@
 // in posts.js
-import * as React from "react";
+import * as React from 'react';
 import {
-	List,
-	Datagrid,
-	TextField,
+  List,
+  Datagrid,
+  TextField,
   FilterButton,
   TopToolbar,
   TextInput,
   FilterForm,
   ListBase,
-} from "react-admin";
+} from 'react-admin';
 
-const postFilters = [
-  <TextInput key={2} label="Action" source="action" />,
-];
+const postFilters = [<TextInput key={2} label="Action" source="action" />];
 
 const ListToolbar = () => (
   <div>
-      <FilterForm filters={postFilters} />
-      <div>
-          <FilterButton filters={postFilters} />
-      </div>
+    <FilterForm filters={postFilters} />
+    <div>
+      <FilterButton filters={postFilters} />
+    </div>
   </div>
-)
+);
 
 export const ActionsList = () => (
-	<ListBase>
+  <ListBase>
     <ListToolbar />
-		<Datagrid>
-			<TextField source="id" />
-			<TextField source="action" />
-			<TextField source="page" />
-			<TextField source="user" />
-			<TextField source="properties" />
-		</Datagrid>
-	</ListBase>
+    <Datagrid>
+      <TextField source="id" />
+      <TextField source="action" />
+      <TextField source="page" />
+      <TextField source="user" />
+      <TextField source="properties" />
+    </Datagrid>
+  </ListBase>
 );

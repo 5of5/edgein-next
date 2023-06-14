@@ -1,10 +1,10 @@
-import React, { FC, ReactElement, PropsWithChildren, useState } from "react";
-import { TopToolbar, List, Datagrid, useGetList, Button } from "react-admin";
-import { useParams } from "react-router-dom";
-import ContentCreate from "@mui/icons-material/Add";
-import useDialog from "@/hooks/use-dialog";
-import ElemEditButton from "./elem-edit-button";
-import ElemDeleteButton from "./elem-delete-button";
+import React, { FC, ReactElement, PropsWithChildren, useState } from 'react';
+import { TopToolbar, List, Datagrid, useGetList, Button } from 'react-admin';
+import { useParams } from 'react-router-dom';
+import ContentCreate from '@mui/icons-material/Add';
+import useDialog from '@/hooks/use-dialog';
+import ElemEditButton from './elem-edit-button';
+import ElemDeleteButton from './elem-delete-button';
 
 type Props = {
   listUri: string;
@@ -64,10 +64,10 @@ const ElemTable: FC<PropsWithChildren<Props>> = ({
           </TopToolbar>
         }
         sx={{
-          ".MuiToolbar-root": {
-            justifyContent: "start !important",
+          '.MuiToolbar-root': {
+            justifyContent: 'start !important',
             paddingTop: 0,
-            marginBottom: "4px",
+            marginBottom: '4px',
           },
         }}
       >
