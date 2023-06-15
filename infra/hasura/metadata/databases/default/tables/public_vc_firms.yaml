@@ -57,12 +57,13 @@ insert_permissions:
     permission:
       check: {}
       columns:
-        - id
-        - logo
         - external_id
+        - id
         - linkedin
+        - logo
         - name
         - slug
+        - urls
         - website
 select_permissions:
   - role: api_viewer
@@ -92,6 +93,7 @@ select_permissions:
         - twitter
         - updated_at
         - web3_address
+        - urls
         - website
         - year_founded
       filter:
@@ -110,6 +112,7 @@ select_permissions:
         - logo
         - name
         - slug
+        - urls
         - telegram
         - twitter
         - web3_address
@@ -146,6 +149,7 @@ select_permissions:
         - twitter
         - updated_at
         - web3_address
+        - urls
         - website
         - year_founded
       filter:

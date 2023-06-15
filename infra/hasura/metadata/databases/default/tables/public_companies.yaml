@@ -74,6 +74,7 @@ insert_permissions:
         - github
         - id
         - investor_amount
+        - key_info
         - layer
         - layer_detail
         - logo
@@ -84,6 +85,7 @@ insert_permissions:
         - slug
         - total_employees
         - total_valuation
+        - urls
         - velocity_linkedin
         - velocity_token
         - website
@@ -112,6 +114,7 @@ select_permissions:
         - id
         - instagram
         - investor_amount
+        - key_info
         - layer
         - layer_detail
         - library
@@ -134,6 +137,7 @@ select_permissions:
         - trajectory
         - twitter
         - updated_at
+        - urls
         - velocity_linkedin
         - velocity_token
         - web3_address
@@ -160,6 +164,7 @@ select_permissions:
         - ico_start
         - id
         - investor_amount
+        - key_info
         - layer
         - layer_detail
         - logo
@@ -172,6 +177,7 @@ select_permissions:
         - telegram
         - total_employees
         - total_valuation
+        - urls
         - velocity_linkedin
         - velocity_token
         - web3_address
@@ -204,6 +210,7 @@ select_permissions:
         - id
         - instagram
         - investor_amount
+        - key_info
         - layer
         - layer_detail
         - library
@@ -228,6 +235,7 @@ select_permissions:
         - trajectory
         - twitter
         - updated_at
+        - urls
         - velocity_linkedin
         - velocity_token
         - web3_address
