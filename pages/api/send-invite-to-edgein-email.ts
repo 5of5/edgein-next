@@ -246,8 +246,7 @@ const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
                           <td>
                             <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; line-height: 16px; font-weight: normal; text-align: left; color: #525f7f;">
                               New to EdgeIn? With EdgeIn you and your team
-                              can gain clear, accessible, alpha market
-                              knowledge.
+                              can gain clear, accessible, Web3 knowledge.
                               <a
                                 href="https://edgein.io/"
                                 target="_blank"
