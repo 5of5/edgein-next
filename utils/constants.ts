@@ -414,6 +414,10 @@ export const companyChoices = [
     disabled: true,
   },
   {
+    id: 'Raising',
+    name: 'Raising',
+  },
+  {
     id: 'Acquired',
     name: 'Acquired',
   },
