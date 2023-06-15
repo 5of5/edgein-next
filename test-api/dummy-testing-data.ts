@@ -15,7 +15,7 @@ export const insertOneNews = {
     kind: 'news',
     metadata: { image: 'imageUrl.com' },
     status: 'published',
-    library: ['Web3'],
+    library: ['AI'],
   },
 };
 

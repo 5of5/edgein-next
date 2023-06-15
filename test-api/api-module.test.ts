@@ -27,7 +27,7 @@ describe('POST / - Unit test', () => {
     // query to compare
     const queryString = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNews {
         news(where: {id: {_eq: "${retData[0].id}"}}) {
           id,link
         }
@@ -56,7 +56,7 @@ describe('POST / - Unit test', () => {
     // query to compare
     const queryString = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNews {
         news(where: {id: {_eq: "${id}"}}) {
           id,link
         }
@@ -85,7 +85,7 @@ describe('POST / - Unit test', () => {
     // query to compare
     const queryString = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNews {
         news(where: {id: {_eq: "${id}"}}) {
           id,link
         }
@@ -113,7 +113,7 @@ describe('POST / - Unit test', () => {
     // query to compare
     const queryString = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNews {
         news(where: {id: {_eq: "${id}"}}) {
           id,link
         }
@@ -218,7 +218,7 @@ describe('POST / - Combined test', () => {
     // query to compare
     const queryString1 = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNewsOrg {
         news_organizations(where: {company_id: {_eq: "${companyId}"},news_id: {_eq: "${idList[0]}"}}) {
           id
         }
@@ -231,7 +231,7 @@ describe('POST / - Combined test', () => {
     const personId = retData[1].relationshipResults[0].resources[0].value;
     const queryString2 = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNewsPerson {
         news_person(where: {person_id: {_eq: "${personId}"},news_id: {_eq: "${idList[1]}"}}) {
           id
         }
@@ -243,7 +243,7 @@ describe('POST / - Combined test', () => {
     // query 3
     const queryString3 = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNewsRelatedPerson {
         news_related_person(where: {name: {_eq: "Rita Liao"},news_id: {_eq: "${idList[2]}"}}) {
           id
         }
@@ -255,7 +255,7 @@ describe('POST / - Combined test', () => {
     // query 4
     const queryString4 = JSON.stringify({
       query: `
-      query MyQuery {
+      query FetchNewsPerson {
         news_person(where: {news_id: {_eq: "${idList[2]}"}}) {
           id,person_id
         }
