@@ -1,7 +1,16 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
 import CookieService from '@/utils/cookie';
-import { InviteToEdgeInMailParams, InviteToEdgeInResponse } from '@/types/api';
+import {
+  InviteToEdgeInMailParams,
+  InviteToEdgeInPayload,
+  InviteToEdgeInResponse,
+} from '@/types/api';
+import { mutate } from '@/graphql/hasuraAdmin';
+import {
+  InsertInvitedPeopleDocument,
+  InsertInvitedPeopleMutation,
+} from '@/graphql/types';
 
 //AWS config set
 AWS.config.update({
@@ -18,12 +27,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  const emails: string[] = req.body.emails;
+  const payload: InviteToEdgeInPayload[] = req.body.payload;
 
   const inviteCode = user.person?.slug || user.reference_id;
 
   const response = await Promise.all(
-    emails.map(async email => {
+    payload.map(async ({ email, personId }) => {
       const mailParams: InviteToEdgeInMailParams = {
         email,
         senderName: user.display_name || '',
@@ -32,6 +41,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
 
       const emailResponse = await sendInvitationMail(mailParams);
+
+      if (personId) {
+        await insertInvitedPeople(personId, user.id);
+      }
+
       return emailResponse;
     }),
   );
@@ -391,6 +405,19 @@ const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
     };
     return res;
   }
+};
+
+const insertInvitedPeople = async (personId: number, userId: number) => {
+  const {
+    data: { insert_invited_people_one },
+  } = await mutate<InsertInvitedPeopleMutation>({
+    mutation: InsertInvitedPeopleDocument,
+    variables: {
+      personId,
+      userId,
+    },
+  });
+  return insert_invited_people_one;
 };
 
 export default handler;

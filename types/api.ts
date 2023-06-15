@@ -1,3 +1,8 @@
+export type InviteToEdgeInPayload = {
+  email: string;
+  personId?: number;
+};
+
 export type InviteToEdgeInMailParams = {
   email: string;
   senderName: string;

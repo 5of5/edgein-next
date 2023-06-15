@@ -8915,6 +8915,220 @@ export type Investors_Variance_Order_By = {
   vc_firm_id: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "invited_people" */
+export type Invited_People = {
+  __typename?: 'invited_people';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  inviter_user_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+};
+
+/** aggregated selection of "invited_people" */
+export type Invited_People_Aggregate = {
+  __typename?: 'invited_people_aggregate';
+  aggregate: Maybe<Invited_People_Aggregate_Fields>;
+  nodes: Array<Invited_People>;
+};
+
+/** aggregate fields of "invited_people" */
+export type Invited_People_Aggregate_Fields = {
+  __typename?: 'invited_people_aggregate_fields';
+  avg: Maybe<Invited_People_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Invited_People_Max_Fields>;
+  min: Maybe<Invited_People_Min_Fields>;
+  stddev: Maybe<Invited_People_Stddev_Fields>;
+  stddev_pop: Maybe<Invited_People_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Invited_People_Stddev_Samp_Fields>;
+  sum: Maybe<Invited_People_Sum_Fields>;
+  var_pop: Maybe<Invited_People_Var_Pop_Fields>;
+  var_samp: Maybe<Invited_People_Var_Samp_Fields>;
+  variance: Maybe<Invited_People_Variance_Fields>;
+};
+
+
+/** aggregate fields of "invited_people" */
+export type Invited_People_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Invited_People_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Invited_People_Avg_Fields = {
+  __typename?: 'invited_people_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  inviter_user_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "invited_people". All fields are combined with a logical 'AND'. */
+export type Invited_People_Bool_Exp = {
+  _and: InputMaybe<Array<Invited_People_Bool_Exp>>;
+  _not: InputMaybe<Invited_People_Bool_Exp>;
+  _or: InputMaybe<Array<Invited_People_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  inviter_user_id: InputMaybe<Int_Comparison_Exp>;
+  person_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "invited_people" */
+export enum Invited_People_Constraint {
+  /** unique or primary key constraint */
+  InvitedPeoplePkey = 'invited_people_pkey'
+}
+
+/** input type for incrementing numeric columns in table "invited_people" */
+export type Invited_People_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  inviter_user_id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "invited_people" */
+export type Invited_People_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  inviter_user_id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Invited_People_Max_Fields = {
+  __typename?: 'invited_people_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  inviter_user_id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Invited_People_Min_Fields = {
+  __typename?: 'invited_people_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  inviter_user_id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "invited_people" */
+export type Invited_People_Mutation_Response = {
+  __typename?: 'invited_people_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Invited_People>;
+};
+
+/** on_conflict condition type for table "invited_people" */
+export type Invited_People_On_Conflict = {
+  constraint: Invited_People_Constraint;
+  update_columns: Array<Invited_People_Update_Column>;
+  where: InputMaybe<Invited_People_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "invited_people". */
+export type Invited_People_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  inviter_user_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: invited_people */
+export type Invited_People_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "invited_people" */
+export enum Invited_People_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  InviterUserId = 'inviter_user_id',
+  /** column name */
+  PersonId = 'person_id'
+}
+
+/** input type for updating data in table "invited_people" */
+export type Invited_People_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  inviter_user_id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Invited_People_Stddev_Fields = {
+  __typename?: 'invited_people_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  inviter_user_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Invited_People_Stddev_Pop_Fields = {
+  __typename?: 'invited_people_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  inviter_user_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Invited_People_Stddev_Samp_Fields = {
+  __typename?: 'invited_people_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  inviter_user_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Invited_People_Sum_Fields = {
+  __typename?: 'invited_people_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  inviter_user_id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "invited_people" */
+export enum Invited_People_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  InviterUserId = 'inviter_user_id',
+  /** column name */
+  PersonId = 'person_id'
+}
+
+/** aggregate var_pop on columns */
+export type Invited_People_Var_Pop_Fields = {
+  __typename?: 'invited_people_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  inviter_user_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Invited_People_Var_Samp_Fields = {
+  __typename?: 'invited_people_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  inviter_user_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Invited_People_Variance_Fields = {
+  __typename?: 'invited_people_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  inviter_user_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
 export type Jsonb_Cast_Exp = {
   String: InputMaybe<String_Comparison_Exp>;
 };
@@ -10407,6 +10621,10 @@ export type Mutation_Root = {
   delete_investors: Maybe<Investors_Mutation_Response>;
   /** delete single row from the table: "investors" */
   delete_investors_by_pk: Maybe<Investors>;
+  /** delete data from the table: "invited_people" */
+  delete_invited_people: Maybe<Invited_People_Mutation_Response>;
+  /** delete single row from the table: "invited_people" */
+  delete_invited_people_by_pk: Maybe<Invited_People>;
   /** delete data from the table: "likes" */
   delete_likes: Maybe<Likes_Mutation_Response>;
   /** delete single row from the table: "likes" */
@@ -10611,6 +10829,10 @@ export type Mutation_Root = {
   insert_investors: Maybe<Investors_Mutation_Response>;
   /** insert a single row into the table: "investors" */
   insert_investors_one: Maybe<Investors>;
+  /** insert data into the table: "invited_people" */
+  insert_invited_people: Maybe<Invited_People_Mutation_Response>;
+  /** insert a single row into the table: "invited_people" */
+  insert_invited_people_one: Maybe<Invited_People>;
   /** insert data into the table: "likes" */
   insert_likes: Maybe<Likes_Mutation_Response>;
   /** insert a single row into the table: "likes" */
@@ -10811,6 +11033,10 @@ export type Mutation_Root = {
   update_investors: Maybe<Investors_Mutation_Response>;
   /** update single row of the table: "investors" */
   update_investors_by_pk: Maybe<Investors>;
+  /** update data of the table: "invited_people" */
+  update_invited_people: Maybe<Invited_People_Mutation_Response>;
+  /** update single row of the table: "invited_people" */
+  update_invited_people_by_pk: Maybe<Invited_People>;
   /** update data of the table: "likes" */
   update_likes: Maybe<Likes_Mutation_Response>;
   /** update single row of the table: "likes" */
@@ -11198,6 +11424,18 @@ export type Mutation_RootDelete_InvestorsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Investors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Invited_PeopleArgs = {
+  where: Invited_People_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Invited_People_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -11855,6 +12093,20 @@ export type Mutation_RootInsert_InvestorsArgs = {
 export type Mutation_RootInsert_Investors_OneArgs = {
   object: Investors_Insert_Input;
   on_conflict: InputMaybe<Investors_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Invited_PeopleArgs = {
+  objects: Array<Invited_People_Insert_Input>;
+  on_conflict: InputMaybe<Invited_People_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Invited_People_OneArgs = {
+  object: Invited_People_Insert_Input;
+  on_conflict: InputMaybe<Invited_People_On_Conflict>;
 };
 
 
@@ -12649,6 +12901,22 @@ export type Mutation_RootUpdate_Investors_By_PkArgs = {
   _inc: InputMaybe<Investors_Inc_Input>;
   _set: InputMaybe<Investors_Set_Input>;
   pk_columns: Investors_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Invited_PeopleArgs = {
+  _inc: InputMaybe<Invited_People_Inc_Input>;
+  _set: InputMaybe<Invited_People_Set_Input>;
+  where: Invited_People_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Invited_People_By_PkArgs = {
+  _inc: InputMaybe<Invited_People_Inc_Input>;
+  _set: InputMaybe<Invited_People_Set_Input>;
+  pk_columns: Invited_People_Pk_Columns_Input;
 };
 
 
@@ -16587,6 +16855,12 @@ export type Query_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** fetch data from the table: "invited_people" */
+  invited_people: Array<Invited_People>;
+  /** fetch aggregated fields from the table: "invited_people" */
+  invited_people_aggregate: Invited_People_Aggregate;
+  /** fetch data from the table: "invited_people" using primary key columns */
+  invited_people_by_pk: Maybe<Invited_People>;
   /** An array relationship */
   likes: Array<Likes>;
   /** An aggregate relationship */
@@ -17316,6 +17590,29 @@ export type Query_RootInvestors_AggregateArgs = {
 
 
 export type Query_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootInvited_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Invited_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Invited_People_Order_By>>;
+  where: InputMaybe<Invited_People_Bool_Exp>;
+};
+
+
+export type Query_RootInvited_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Invited_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Invited_People_Order_By>>;
+  where: InputMaybe<Invited_People_Bool_Exp>;
+};
+
+
+export type Query_RootInvited_People_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -18941,6 +19238,12 @@ export type Subscription_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** fetch data from the table: "invited_people" */
+  invited_people: Array<Invited_People>;
+  /** fetch aggregated fields from the table: "invited_people" */
+  invited_people_aggregate: Invited_People_Aggregate;
+  /** fetch data from the table: "invited_people" using primary key columns */
+  invited_people_by_pk: Maybe<Invited_People>;
   /** An array relationship */
   likes: Array<Likes>;
   /** An aggregate relationship */
@@ -19670,6 +19973,29 @@ export type Subscription_RootInvestors_AggregateArgs = {
 
 
 export type Subscription_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootInvited_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Invited_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Invited_People_Order_By>>;
+  where: InputMaybe<Invited_People_Bool_Exp>;
+};
+
+
+export type Subscription_RootInvited_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Invited_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Invited_People_Order_By>>;
+  where: InputMaybe<Invited_People_Bool_Exp>;
+};
+
+
+export type Subscription_RootInvited_People_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -24350,6 +24676,21 @@ export type GetInvestorByIdQueryVariables = Exact<{
 
 export type GetInvestorByIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null }> };
 
+export type GetInvitedPeopleByUserIdQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type GetInvitedPeopleByUserIdQuery = { __typename?: 'query_root', invited_people: Array<{ __typename?: 'invited_people', id: number, person_id: number, inviter_user_id: number, created_at: any }> };
+
+export type InsertInvitedPeopleMutationVariables = Exact<{
+  personId: Scalars['Int'];
+  userId: Scalars['Int'];
+}>;
+
+
+export type InsertInvitedPeopleMutation = { __typename?: 'mutation_root', insert_invited_people_one: { __typename?: 'invited_people', id: number, person_id: number, inviter_user_id: number, created_at: any } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -27280,6 +27621,57 @@ useGetInvestorByIdQuery.getKey = (variables: GetInvestorByIdQueryVariables) => [
 ;
 
 useGetInvestorByIdQuery.fetcher = (variables: GetInvestorByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestorByIdQuery, GetInvestorByIdQueryVariables>(GetInvestorByIdDocument, variables, options);
+export const GetInvitedPeopleByUserIdDocument = `
+    query GetInvitedPeopleByUserId($userId: Int!) {
+  invited_people(where: {inviter_user_id: {_eq: $userId}}) {
+    id
+    person_id
+    inviter_user_id
+    created_at
+  }
+}
+    `;
+export const useGetInvitedPeopleByUserIdQuery = <
+      TData = GetInvitedPeopleByUserIdQuery,
+      TError = Error
+    >(
+      variables: GetInvitedPeopleByUserIdQueryVariables,
+      options?: UseQueryOptions<GetInvitedPeopleByUserIdQuery, TError, TData>
+    ) =>
+    useQuery<GetInvitedPeopleByUserIdQuery, TError, TData>(
+      ['GetInvitedPeopleByUserId', variables],
+      fetcher<GetInvitedPeopleByUserIdQuery, GetInvitedPeopleByUserIdQueryVariables>(GetInvitedPeopleByUserIdDocument, variables),
+      options
+    );
+useGetInvitedPeopleByUserIdQuery.document = GetInvitedPeopleByUserIdDocument;
+
+
+useGetInvitedPeopleByUserIdQuery.getKey = (variables: GetInvitedPeopleByUserIdQueryVariables) => ['GetInvitedPeopleByUserId', variables];
+;
+
+useGetInvitedPeopleByUserIdQuery.fetcher = (variables: GetInvitedPeopleByUserIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvitedPeopleByUserIdQuery, GetInvitedPeopleByUserIdQueryVariables>(GetInvitedPeopleByUserIdDocument, variables, options);
+export const InsertInvitedPeopleDocument = `
+    mutation InsertInvitedPeople($personId: Int!, $userId: Int!) {
+  insert_invited_people_one(
+    object: {person_id: $personId, inviter_user_id: $userId}
+  ) {
+    id
+    person_id
+    inviter_user_id
+    created_at
+  }
+}
+    `;
+export const useInsertInvitedPeopleMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertInvitedPeopleMutation, TError, InsertInvitedPeopleMutationVariables, TContext>) =>
+    useMutation<InsertInvitedPeopleMutation, TError, InsertInvitedPeopleMutationVariables, TContext>(
+      ['InsertInvitedPeople'],
+      (variables?: InsertInvitedPeopleMutationVariables) => fetcher<InsertInvitedPeopleMutation, InsertInvitedPeopleMutationVariables>(InsertInvitedPeopleDocument, variables)(),
+      options
+    );
+useInsertInvitedPeopleMutation.fetcher = (variables: InsertInvitedPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertInvitedPeopleMutation, InsertInvitedPeopleMutationVariables>(InsertInvitedPeopleDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {

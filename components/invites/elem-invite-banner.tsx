@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { useMutation, useQuery } from 'react-query';
 import { Dialog, Transition, Disclosure } from '@headlessui/react';
 import groupBy from 'lodash/groupBy';
-import { InviteToEdgeInResponse } from '@/types/api';
+import { InviteToEdgeInPayload, InviteToEdgeInResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
+import { useGetInvitedPeopleByUserIdQuery } from '@/graphql/types';
 import {
   IconX,
   IconArrowRight,
@@ -31,6 +32,13 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
     [],
   );
 
+  const { data: invitedPeopleData, refetch: refetchInvitedPeople } =
+    useGetInvitedPeopleByUserIdQuery(
+      { userId: user?.id || 0 },
+      { enabled: Boolean(user?.id) },
+    );
+  const invitedPeople = invitedPeopleData?.invited_people || [];
+
   const { data: teamMembers = [] } = useQuery(
     ['get-team-member-to-invite'],
     async () =>
@@ -45,7 +53,7 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
     mutate: sendInvitationEmail,
     reset: resetInvitation,
     isLoading,
-  } = useMutation(async (emails: string[]) => {
+  } = useMutation(async (payload: InviteToEdgeInPayload[]) => {
     const res = await fetch('/api/send-invite-to-edgein-email/', {
       method: 'POST',
       headers: {
@@ -53,7 +61,7 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        emails,
+        payload,
       }),
     });
     const apiResponse = await res.json();
@@ -94,7 +102,12 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
   }, [showBanner]);
 
   const handleClickSendInvites = () => {
-    sendInvitationEmail(selectedPeople.map(item => item.work_email));
+    sendInvitationEmail(
+      selectedPeople.map(item => ({
+        email: item.work_email,
+        personId: item.id && item.slug ? item.id : null,
+      })),
+    );
   };
 
   return (
@@ -210,6 +223,14 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
                                         <ElemInviteTeamMember
                                           key={mem.id}
                                           teamMember={mem}
+                                          isInvited={invitedPeople.some(
+                                            invitedPerson =>
+                                              invitedPerson.person_id ===
+                                              mem.person_id,
+                                          )}
+                                          refetchInvitedPeople={
+                                            refetchInvitedPeople
+                                          }
                                         />
                                       ),
                                     )}

@@ -1,33 +1,53 @@
 import { useMutation } from 'react-query';
 import { GetTeamMemberByCompanyIdsQuery } from '@/graphql/types';
+import { InviteToEdgeInPayload } from '@/types/api';
 import { ElemButton } from '../elem-button';
 import { ElemPhoto } from '../elem-photo';
 import { ElemTooltip } from '../elem-tooltip';
 
 type Props = {
+  isInvited: boolean;
   teamMember: GetTeamMemberByCompanyIdsQuery['team_members'][0];
+  refetchInvitedPeople: () => void;
 };
 
-export const ElemInviteTeamMember: React.FC<Props> = ({ teamMember }) => {
+export const ElemInviteTeamMember: React.FC<Props> = ({
+  isInvited,
+  teamMember,
+  refetchInvitedPeople,
+}) => {
   const {
     mutate: sendInvitationEmail,
     isLoading,
     isSuccess,
-  } = useMutation((emails: string[]) =>
-    fetch('/api/send-invite-to-edgein-email/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        emails,
+  } = useMutation(
+    (payload: InviteToEdgeInPayload[]) =>
+      fetch('/api/send-invite-to-edgein-email/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          payload,
+        }),
       }),
-    }),
+    {
+      onSuccess: () => {
+        refetchInvitedPeople();
+      },
+    },
   );
 
+  const isInvitationSent = isInvited || isSuccess;
+
   const handleClickInvite = () => {
-    sendInvitationEmail([teamMember.person?.work_email || '']);
+    sendInvitationEmail([
+      {
+        email: teamMember.person?.work_email || '',
+        personId: teamMember.person?.id,
+      },
+    ]);
   };
 
   return (
@@ -64,9 +84,9 @@ export const ElemInviteTeamMember: React.FC<Props> = ({ teamMember }) => {
         onClick={handleClickInvite}
         btn="slate"
         loading={isLoading}
-        className={isSuccess ? ' cursor-auto pointer-events-none' : ''}
+        className={isInvitationSent ? ' cursor-auto pointer-events-none' : ''}
       >
-        {isSuccess ? 'Sent' : 'Invite'}
+        {isInvitationSent ? 'Sent' : 'Invite'}
       </ElemButton>
     </div>
   );
