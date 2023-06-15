@@ -364,3 +364,26 @@ export const syncNews = async (params: SyncParams) => {
   }
   return output;
 };
+
+export const parseIndexName = (indexName: string) => {
+  switch (indexName) {
+    case 'vc_firms':
+    case 'ai_vc_firms':
+      return 'investors';
+
+    case 'ai_companies':
+      return 'companies';
+
+    case 'ai_people':
+      return 'people';
+
+    case 'ai_events':
+      return 'events';
+
+    case 'ai_news':
+      return 'news';
+
+    default:
+      return indexName;
+  }
+};

@@ -41,14 +41,12 @@ type Props = {
   vcFirmCount: number;
   initialVCFirms: GetVcFirmsQuery['vc_firms'];
   investorsStatusTags: TextFilter[];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Investors: NextPage<Props> = ({
   vcFirmCount,
   initialVCFirms,
   investorsStatusTags,
-  setToggleFeedbackForm,
 }) => {
   const { user } = useUser();
 
@@ -269,27 +267,6 @@ const Investors: NextPage<Props> = ({
             </div>
           </div>
 
-          {vcFirms?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() => setToggleFeedbackForm(true)}
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
-
           <div>
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
@@ -398,6 +375,31 @@ const Investors: NextPage<Props> = ({
               </>
             )}
           </div>
+
+          {vcFirms?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Toaster />

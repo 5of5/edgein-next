@@ -6,6 +6,7 @@ import {
   ResourceTypes,
   isResourceType,
   NODE_NAME,
+  RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from '@/utils/constants';
 import { User } from '@/models/user';
 import {
@@ -90,7 +91,7 @@ const handleResource = async (
   if (
     !resourceId &&
     !resourceObj?.library &&
-    ['companies', 'vc_firms', 'people', 'news'].includes(resourceType)
+    RESOURCE_TYPES_CONTAIN_LIBRARY.includes(resourceType)
   ) {
     resourceObj.library = ['Web3'];
   }

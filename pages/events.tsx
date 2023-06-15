@@ -31,15 +31,9 @@ type Props = {
   eventTabs: TextFilter[];
   eventsCount: number;
   initialEvents: GetEventsQuery['events'];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Events: NextPage<Props> = ({
-  eventTabs,
-  eventsCount,
-  initialEvents,
-  setToggleFeedbackForm,
-}) => {
+const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
 
   const router = useRouter();
@@ -273,7 +267,11 @@ const Events: NextPage<Props> = ({
                   missing data.
                 </div>
                 <ElemButton
-                  onClick={() => setToggleFeedbackForm(true)}
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
                   btn="white"
                   className="mt-3"
                 >

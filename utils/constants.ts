@@ -779,7 +779,8 @@ export type ResourceTypes =
   | 'news_organizations'
   | 'news_person'
   | 'news_related_person'
-  | 'news_related_organizations';
+  | 'news_related_organizations'
+  | 'leads';
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
   companies: 'company',
@@ -800,6 +801,7 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   news_person: 'news_person',
   news_related_person: 'news_related_person',
   news_related_organizations: 'news_related_organizations',
+  leads: 'leads',
 };
 
 export const isResourceType = (
@@ -824,6 +826,7 @@ export const isResourceType = (
     'news_person',
     'news_related_person',
     'news_related_organizations',
+    'leads',
   ].includes(resourceType);
 };
 
@@ -1934,4 +1937,11 @@ export const GROUPS_TABS: GroupsTabItem[] = [
   { id: 'my-groups', name: 'My Groups' },
   { id: 'discover', name: 'Discover' },
   { id: 'joined', name: 'Joined' },
+];
+
+export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
+  'companies',
+  'vc_firms',
+  'people',
+  'news',
 ];

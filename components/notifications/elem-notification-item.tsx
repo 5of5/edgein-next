@@ -28,9 +28,7 @@ const ElemNotificationItem: FC<Props> = ({
     <div
       onClick={() => onMarkAsRead(notification.id)}
       className={`flex items-center justify-between px-2 sm:px-2 py-2 shrink-0 w-full overflow-hidden sm:rounded-md group-hover:bg-gray-50 ${
-        notification.read
-          ? 'bg-transparent opacity-60'
-          : 'bg-gray-50 lg:bg-transparent'
+        notification.read ? 'bg-transparent' : 'bg-gray-50'
       }`}
     >
       <div className="flex items-center space-x-2 sm:pr-20">
@@ -41,23 +39,21 @@ const ElemNotificationItem: FC<Props> = ({
           imgAlt="Company Name"
           placeholderClass="text-slate-300"
         />
-        <div>
+        <div className={notification.read ? 'opacity-60' : ''}>
           <div className="inline text-sm leading-tight text-left lg:text-base">
-            <div className="">
-              <ElemNotificationMessage
-                message={message}
-                notification={notification}
-              />
-              {extensions.length > 0 && (
-                <>
-                  {' | '}
-                  <span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
-                    Details
-                  </span>
-                  <IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
-                </>
-              )}
-            </div>
+            <ElemNotificationMessage
+              message={message}
+              notification={notification}
+            />
+            {extensions.length > 0 && (
+              <>
+                {' | '}
+                <span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
+                  Details
+                </span>
+                <IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
+              </>
+            )}
           </div>
 
           <div className="text-left">

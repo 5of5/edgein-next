@@ -25,6 +25,7 @@ import {
   ResourceTypes,
   NODE_NAME,
   isResourceType,
+  RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from './constants';
 
 export const partnerLookUp = async (apiKey: string) => {
@@ -382,10 +383,11 @@ export const mutateActionAndDataRaw = async (
 
   let existedData;
   if (resourceId) {
-    existedData = await mainTableLookup(resourceType, resourceId, [
-      ...Object.keys(resourceObj),
-      'library',
-    ]);
+    const returnFields = [...Object.keys(resourceObj)];
+    if (RESOURCE_TYPES_CONTAIN_LIBRARY.includes(resourceType)) {
+      returnFields.push('library');
+    }
+    existedData = await mainTableLookup(resourceType, resourceId, returnFields);
   }
 
   for (let field in resourceObj) {
@@ -450,7 +452,7 @@ export const mutateActionAndDataRaw = async (
             resourceType,
             field,
             transformedValue,
-            resourceObj.library || existedData.library,
+            resourceObj?.library || existedData?.library,
           )
         ) {
           const dataObject = [
