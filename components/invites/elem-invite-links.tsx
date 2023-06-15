@@ -8,15 +8,15 @@ import {
   IconChatBubble,
   IconTwitter,
 } from '@/components/icons';
-import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 
 type Props = {
   user: any;
   personSlug?: string | null | undefined;
 };
 
-export const ElemInviteLinks = ({ user, personSlug }: Props) => {
+export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const getInviteLink = () => {

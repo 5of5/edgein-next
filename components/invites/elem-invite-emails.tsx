@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent } from 'react';
+import { FC, useState, useRef, ChangeEvent } from 'react';
 import { useQuery } from 'react-query';
 import { Combobox } from '@headlessui/react';
 import validator from 'validator';
@@ -17,7 +17,7 @@ type Props = {
   onChange: (values: Record<string, any>[]) => void;
 };
 
-const ElemInviteEmails: React.FC<Props> = ({
+const ElemInviteEmails: FC<Props> = ({
   label,
   description,
   placeholder,

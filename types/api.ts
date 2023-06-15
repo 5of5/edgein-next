@@ -7,7 +7,7 @@ export type InviteToEdgeInMailParams = {
   email: string;
   senderName: string;
   senderEmail: string;
-  signUpUrl?: string;
+  signUpUrl: string;
 };
 
 export type InviteToEdgeInResponse = {

@@ -269,30 +269,30 @@ export const ElemInviteBanner: FC<Props> = ({ children }) => {
                                   res: InviteToEdgeInResponse,
                                   index: number,
                                 ) => {
-                                  if (res.status === 500) {
+                                  if (res.status === 200) {
                                     return (
                                       <li
-                                        className="text-red-500 text-sm"
+                                        className="text-slate-500 text-sm"
                                         key={index}
                                       >
-                                        {`Failed to send invitation to email `}
+                                        {`Invitation has been sent to `}
                                         <span className="font-bold">
                                           {res.email}
-                                        </span>
-                                        . Please try again later.
+                                        </span>{' '}
+                                        successfully.
                                       </li>
                                     );
                                   }
                                   return (
                                     <li
-                                      className="text-slate-500 text-sm"
+                                      className="text-red-500 text-sm"
                                       key={index}
                                     >
-                                      {`Invitation has been sent to `}
+                                      {`Failed to send invitation to email `}
                                       <span className="font-bold">
                                         {res.email}
-                                      </span>{' '}
-                                      successfully.
+                                      </span>
+                                      . Please try again later.
                                     </li>
                                   );
                                 },

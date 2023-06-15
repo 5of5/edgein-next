@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { GetTeamMemberByCompanyIdsQuery } from '@/graphql/types';
 import { ElemPhoto } from '../elem-photo';
 import { ElemTooltip } from '../elem-tooltip';
@@ -6,7 +7,7 @@ type Props = {
   company: GetTeamMemberByCompanyIdsQuery['team_members'][0]['company'];
 };
 
-export const ElemInviteCompanyGroup: React.FC<Props> = ({ company }) => {
+export const ElemInviteCompanyGroup: FC<Props> = ({ company }) => {
   return (
     <div className="flex items-center justify-between group snap-start hover:text-primary-500">
       <ElemTooltip content={company?.name} direction="top-start">

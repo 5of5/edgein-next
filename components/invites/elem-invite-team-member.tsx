@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useMutation } from 'react-query';
 import { GetTeamMemberByCompanyIdsQuery } from '@/graphql/types';
 import { InviteToEdgeInPayload } from '@/types/api';
@@ -11,7 +12,7 @@ type Props = {
   refetchInvitedPeople: () => void;
 };
 
-export const ElemInviteTeamMember: React.FC<Props> = ({
+export const ElemInviteTeamMember: FC<Props> = ({
   isInvited,
   teamMember,
   refetchInvitedPeople,
