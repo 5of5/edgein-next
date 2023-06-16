@@ -280,7 +280,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     className="w-full flex items-center justify-center rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconListPlus className="h-6 w-6" title="Create List" />
-                    <span>Create new list</span>
+                    <span>Create New List</span>
                   </ElemButton>
                 </li>
               )}

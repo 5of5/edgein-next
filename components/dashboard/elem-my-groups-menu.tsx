@@ -173,7 +173,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     className="w-full flex items-center justify-center rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconGroupPlus className="h-6 w-6" title="Create Group" />
-                    <span>Create Group</span>
+                    <span>Create New Group</span>
                   </ElemButton>
                 </li>
               )}
