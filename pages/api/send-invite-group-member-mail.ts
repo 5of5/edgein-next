@@ -1,6 +1,8 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
+import { render } from '@react-email/render';
 import CookieService from '@/utils/cookie';
+import EmailWelcome from '@/emails/index';
 
 export type EmailResources = {
   isExistedUser: boolean;
@@ -87,6 +89,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
 
       <a href="${signUpUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">JOIN NOW</a>
     `;
+    const emailHtml = render(EmailWelcome());
 
   try {
     const params = {
@@ -97,7 +100,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {
