@@ -83,6 +83,7 @@ query GetCompany($slug: String!) {
         sentiment
         overview
         logo
+        status_tags
       }
       from_vc_firm {
         id
@@ -105,6 +106,7 @@ query GetCompany($slug: String!) {
         sentiment
         overview
         logo
+        status_tags
       }
       to_vc_firm {
         id
@@ -208,6 +210,7 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
     velocity_linkedin
     velocity_token
     website
+    status_tags
   }
   companies_aggregate(where: $where) {
     aggregate {
@@ -238,6 +241,7 @@ query GetCompaniesRecent(
     investor_amount
     date_added
     sentiment
+    status_tags
     investment_rounds {
       id
       amount
