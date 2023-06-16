@@ -26,7 +26,7 @@ const ElemCompanyTags: FC<Props> = ({ company }) => {
         )}
 
         {isRaisingCompany && (
-          <div className="shrink-0 bg-rose-200 text-rose-600 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full">
+          <div className="shrink-0 bg-rose-100 text-rose-500 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full">
             Raising
           </div>
         )}
