@@ -139,3 +139,25 @@ export const upsertNews = {
     library: ['Web3'],
   },
 };
+
+export const insertOnePerson = {
+  partner_api_key: process.env.PARTNER_API_KEY,
+  resource_type: 'people',
+  resource_identifier: [{ field: 'id' }],
+  resource: {
+    name: 'Unit test person',
+    slug: 'unit-test-person',
+    status: 'published',
+  },
+};
+
+export const insertPersonToUpdate = {
+  partner_api_key: process.env.PARTNER_API_KEY,
+  resource_type: 'people',
+  resource_identifier: [{ field: 'id' }],
+  resource: {
+    name: 'Unit test person to update',
+    slug: 'unit-test-person-to-update',
+    status: 'published',
+  },
+};

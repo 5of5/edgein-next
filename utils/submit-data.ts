@@ -29,6 +29,7 @@ import {
   isResourceType,
   RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from './constants';
+import { isUndefined } from 'lodash';
 
 export const partnerLookUp = async (apiKey: string) => {
   const {
@@ -520,7 +521,10 @@ export const mutateActionAndDataRaw = async (
           setMainTableValues[field] = transformedValue;
 
         const isOwnerVerified =
-          user?.person?.id === resourceId && resourceType === 'people';
+          !isUndefined(user?.person?.id) &&
+          !isUndefined(resourceId) &&
+          user?.person?.id === resourceId &&
+          resourceType === 'people';
 
         validData.push({
           created_at: currentTime,

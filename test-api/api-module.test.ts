@@ -13,8 +13,11 @@ import {
   upsertOneNews,
   upsertNews,
   insertThreeNewsRelationship,
+  insertOnePerson,
+  insertPersonToUpdate,
 } from './dummy-testing-data';
 
+const TEST_TIMEOUT_IN_MS = 3000;
 let ret: Record<string, any> = [];
 let retQuery: Record<string, any> = {};
 
@@ -272,4 +275,79 @@ describe('POST / - Combined test', () => {
     expect(retQueryData3.data.news_related_person[0].id).toBeGreaterThan(0);
     expect(retQueryData4.data.news_person).toHaveLength(0);
   });
+});
+
+describe('POST / - is owner verified feature for people', () => {
+  test(
+    '1. Insert a not owner verified person into DB',
+    async () => {
+      ret = await submitData(insertOnePerson, 'POST');
+      const responseData = JSON.parse(ret.text);
+
+      const queryString = JSON.stringify({
+        query: `
+      query FetchPerson {
+        people(where: {id: {_eq: "${responseData[0].id}"}}) {
+          id, name, slug
+        }
+      }
+      `,
+      });
+
+      retQuery = await graphqlQuery(queryString);
+      const responseQueryData = JSON.parse(retQuery.text);
+
+      expect(ret.statusCode).toBe(200);
+      expect(ret.callSubmitdata).toEqual({ status: 'successful' });
+      expect(retQuery.callGraphql).toEqual({ status: 'successful' });
+      expect(responseQueryData.data.people[0].name).toEqual('Unit test person');
+      expect(responseQueryData.data.people[0].slug).toEqual('unit-test-person');
+    },
+    TEST_TIMEOUT_IN_MS,
+  );
+
+  test(
+    '2. Update one not owner verified person (force update)',
+    async () => {
+      ret = await submitData(insertPersonToUpdate, 'POST');
+      const responseData = JSON.parse(ret.text);
+
+      const updateOneIsOwnerVerifiedPerson = {
+        partner_api_key: process.env.PARTNER_API_KEY,
+        resource_type: 'people',
+        force_update: true,
+        resource_identifier: [{ field: 'id', value: responseData[0].id }],
+        resource: {
+          name: 'Unit test person updated',
+          slug: 'unit-test-person-updated',
+        },
+      };
+
+      await submitData(updateOneIsOwnerVerifiedPerson, 'POST');
+
+      const queryString = JSON.stringify({
+        query: `
+      query FetchPerson {
+        people(where: {id: {_eq: "${responseData[0].id}"}}) {
+          id, name, slug
+        }
+      }
+      `,
+      });
+
+      retQuery = await graphqlQuery(queryString);
+      const responseQueryData = JSON.parse(retQuery.text);
+
+      expect(ret.statusCode).toBe(200);
+      expect(ret.callSubmitdata).toEqual({ status: 'successful' });
+      expect(retQuery.callGraphql).toEqual({ status: 'successful' });
+      expect(responseQueryData.data.people[0].name).toEqual(
+        'Unit test person updated',
+      );
+      expect(responseQueryData.data.people[0].slug).toEqual(
+        'unit-test-person-updated',
+      );
+    },
+    TEST_TIMEOUT_IN_MS,
+  );
 });
