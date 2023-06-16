@@ -6,7 +6,7 @@ import { PlaceholderCompanyCard } from '@/components/placeholders';
 import { ElemGroupCard } from '@/components/groups/elem-group-card';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import { IconGroup, IconGroupPlus } from '@/components/icons';
 import {
   User_Groups,
   GetGroupsDocument,
@@ -23,6 +23,8 @@ import { useUser } from '@/context/user-context';
 import { GROUPS_TABS } from '@/utils/constants';
 import { getGroupsFilters } from '@/utils/filter';
 import CookieService from '@/utils/cookie';
+import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
+import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
 
 type Props = {
   initialGroupsCount: number;
@@ -32,8 +34,11 @@ type Props = {
 const LIMIT = 12;
 
 const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
-  const { user } = useUser();
+  const { user, myGroups } = useUser();
   const [initialLoad, setInitialLoad] = useState(true);
+
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+  const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
   const router = useRouter();
 
@@ -92,6 +97,33 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
 
   const { showNewMessages } = useIntercom();
 
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+
+  const onCloseUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(false);
+  };
+
+  const onOpenCreateGroupDialog = () => {
+    setIsOpenCreateGroupDialog(true);
+  };
+
+  const onCloseCreateGroupDialog = () => {
+    setIsOpenCreateGroupDialog(false);
+  };
+
+  const onClickCreateGroup = () => {
+    if (
+      user?.entitlements.groupsCount &&
+      myGroups.length > user?.entitlements.groupsCount
+    ) {
+      onOpenUpgradeDialog();
+    } else {
+      onOpenCreateGroupDialog();
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="pb-20">
@@ -124,23 +156,19 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
         {groups?.length === 0 && (
           <div className="flex items-center justify-center mx-auto min-h-[40vh]">
             <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+              <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
+              <h1 className="mt-5 text-3xl font-bold">No groups yet</h1>
               <div className="mt-1 text-lg text-slate-600">
-                Please check spelling, try different filters, or tell us about
-                missing data.
+                Groups allow you to collaborate on notes, share insights, and
+                track leads with other people.
               </div>
               <ElemButton
-                onClick={() =>
-                  showNewMessages(
-                    `Hi EdgeIn, I'd like to report an issue on groups page`,
-                  )
-                }
-                btn="white"
+                onClick={onClickCreateGroup}
+                btn="primary"
                 className="mt-3"
               >
-                <IconAnnotation className="w-6 h-6 mr-1" />
-                Tell us about missing data
+                <IconGroupPlus className="w-6 h-6 mr-1" />
+                Create Group
               </ElemButton>
             </div>
           </div>
@@ -200,6 +228,16 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
           onClickToPage={selectedPage => setPage(selectedPage)}
         />
       </div>
+
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
+
+      <ElemCreateGroupDialog
+        isOpen={isOpenCreateGroupDialog}
+        onClose={onCloseCreateGroupDialog}
+      />
     </DashboardLayout>
   );
 };

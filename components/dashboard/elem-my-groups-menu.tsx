@@ -16,6 +16,7 @@ import { ElemTooltip } from '../elem-tooltip';
 import useDisclosureState from '@/hooks/use-disclosure-state';
 import { MY_GROUPS_MENU_OPEN_KEY } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
+import { ElemButton } from '../elem-button';
 
 type Props = {
   className?: string;
@@ -150,26 +151,30 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             <Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
               {myGroups.length > displayedGroups.length ? (
                 <li role="button">
-                  <button
+                  <ElemButton
                     onClick={onOpenUpgradeDialog}
-                    className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+                    btn="primary-light"
+                    size="sm"
+                    className="w-full flex items-center justify-center rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconContributorSolid
                       className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
                       title="Unlock groups"
                     />
                     <span>Unlock All Groups</span>
-                  </button>
+                  </ElemButton>
                 </li>
               ) : (
                 <li role="button">
-                  <button
+                  <ElemButton
                     onClick={onOpenCreateGroupDialog}
-                    className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+                    btn="primary-light"
+                    size="sm"
+                    className="w-full flex items-center justify-center rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconGroupPlus className="h-6 w-6" title="Create Group" />
                     <span>Create Group</span>
-                  </button>
+                  </ElemButton>
                 </li>
               )}
               {displayedGroups?.map(group => (

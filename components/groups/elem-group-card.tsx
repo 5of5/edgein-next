@@ -165,17 +165,17 @@ export const ElemGroupCard: FC<Props> = ({
             href={`/groups/${id}`}
             btn="primary-light"
             size="sm"
-            className="w-full block"
+            className="w-full block rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
           >
             View group
           </ElemButton>
         ) : (
           <ElemButton
             onClick={() => addGroupMember()}
-            btn="slate"
+            btn="primary-light"
             size="sm"
             loading={isJoiningGroup}
-            className="w-full"
+            className="w-full block rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
           >
             Join group
           </ElemButton>
