@@ -54,7 +54,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
         </div>
 
         <div className="grow">
-          <ElemCompanyTags company={company} />
+          <ElemCompanyTags company={company} tagOnClick={tagOnClick} />
 
           {overview && (
             <div className="grow mt-4">

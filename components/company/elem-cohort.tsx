@@ -129,7 +129,10 @@ export const ElemCohort: FC<Props> = ({
                       </div>
                     </div>
 
-                    <ElemCompanyTags company={company} />
+                    <ElemCompanyTags
+                      company={company}
+                      tagOnClick={onClickType}
+                    />
 
                     <div className="mt-4 grow">
                       <div className="text-gray-400 line-clamp-3">

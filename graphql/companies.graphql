@@ -32,6 +32,7 @@ query GetCompany($slug: String!) {
     location_json
     discord
     glassdoor
+    status_tags
     teamMembers {
       id
       person {
