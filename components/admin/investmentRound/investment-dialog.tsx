@@ -30,15 +30,12 @@ const InvestmentDialog = ({ selectedRecord, onClose }: Props) => {
         source="person_id"
         reference="people"
         resettable
-        allowEmpty
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
           optionText="name"
           filterToQuery={search => ({ name: search })}
-          emptyValue={null}
         />
       </ReferenceInput>
 
@@ -47,15 +44,12 @@ const InvestmentDialog = ({ selectedRecord, onClose }: Props) => {
         source="vc_firm_id"
         reference="vc_firms"
         resettable
-        allowEmpty
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
           optionText="name"
           filterToQuery={search => ({ name: search })}
-          emptyValue={null}
         />
       </ReferenceInput>
       <NumberInput className={inputClassName} source="amount" />
