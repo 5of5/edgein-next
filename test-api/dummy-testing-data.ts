@@ -161,3 +161,14 @@ export const insertPersonToUpdate = {
     status: 'published',
   },
 };
+
+export const insertOwnerVerifiedPersonToUpdate = {
+  partner_api_key: process.env.PARTNER_API_KEY,
+  resource_type: 'people',
+  resource_identifier: [{ field: 'id' }],
+  resource: {
+    name: 'Owner verified person',
+    slug: 'owner-verified-person',
+    status: 'published',
+  },
+};

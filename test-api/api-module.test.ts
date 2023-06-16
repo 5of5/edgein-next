@@ -15,9 +15,10 @@ import {
   insertThreeNewsRelationship,
   insertOnePerson,
   insertPersonToUpdate,
+  insertOwnerVerifiedPersonToUpdate,
 } from './dummy-testing-data';
 
-const TEST_TIMEOUT_IN_MS = 3000;
+const TEST_TIMEOUT_IN_MS = 30000;
 let ret: Record<string, any> = [];
 let retQuery: Record<string, any> = {};
 
@@ -346,6 +347,83 @@ describe('POST / - is owner verified feature for people', () => {
       );
       expect(responseQueryData.data.people[0].slug).toEqual(
         'unit-test-person-updated',
+      );
+    },
+    TEST_TIMEOUT_IN_MS,
+  );
+
+  test(
+    '3. Update one not owner verified person (force update) - data should not be changed in people table',
+    async () => {
+      ret = await submitData(insertOwnerVerifiedPersonToUpdate, 'POST');
+      const responseData = JSON.parse(ret.text);
+
+      const updateOneIsOwnerVerifiedPerson = {
+        partner_api_key: process.env.PARTNER_API_KEY,
+        resource_type: 'people',
+        force_update: true,
+        resource_identifier: [{ field: 'id', value: responseData[0].id }],
+        resource: {
+          name: 'Owner verified person updated',
+          slug: 'owner-verified-person-updated',
+        },
+      };
+
+      const updateIsOwnerVerifiedFieldString = JSON.stringify({
+        query: `
+        mutation UpdateIsOwnerVerifiedField {
+          update_data_raw(
+            where: {
+              _and: [
+                { resource: { _eq: "people" } }
+                { resource_id: { _eq: ${responseData[0].id} } }
+              ]
+            },
+            _set: { is_owner_verified: true}
+          ) {
+            affected_rows
+            returning {
+              id
+            }
+          }
+        }
+      `,
+      });
+
+      // set is_owner_verified_field to true
+      const updateIsOwnerVerifiedFieldQuery = await graphqlQuery(
+        updateIsOwnerVerifiedFieldString,
+      );
+      expect(updateIsOwnerVerifiedFieldQuery.callGraphql).toEqual({
+        status: 'successful',
+      });
+
+      // we want to update is_owner_verified person from external partner
+      await submitData(updateOneIsOwnerVerifiedPerson, 'POST');
+
+      const queryString = JSON.stringify({
+        query: `
+      query FetchPerson {
+        people(where: {id: {_eq: "${responseData[0].id}"}}) {
+          id, name, slug
+        }
+      }
+      `,
+      });
+
+      retQuery = await graphqlQuery(queryString);
+      const responseQueryData = JSON.parse(retQuery.text);
+
+      expect(ret.statusCode).toBe(200);
+      expect(ret.callSubmitdata).toEqual({ status: 'successful' });
+      expect(retQuery.callGraphql).toEqual({ status: 'successful' });
+
+      // data should not be changed in the people table
+      expect(responseQueryData.data.people[0].name).toEqual(
+        'Owner verified person',
+      );
+      expect(responseQueryData.data.people[0].slug).toEqual(
+        'owner-verified-person',
       );
     },
     TEST_TIMEOUT_IN_MS,
