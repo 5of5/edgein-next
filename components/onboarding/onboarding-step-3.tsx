@@ -131,7 +131,7 @@ export default function OnboardingStep3(props: Props) {
                 <h3 className="text-2xl font-bold">
                   We started your first list
                 </h3>
-                <p className="text-sm text-slate-500">Step 2 of 4</p>
+                <p className="text-sm text-slate-500">Step 3 of 5</p>
                 <div className="mt-4 text-slate-600">
                   {`Based on your area of interest here is a list of organizations we think you might like. You can add or remove organizations by going to "My First List".`}
                 </div>
