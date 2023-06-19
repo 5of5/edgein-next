@@ -7,7 +7,6 @@
     "dev:production": "next dev",
     "build": "NODE_OPTIONS=\"--max_old_space_size=4096\" next build",
     "start": "next start",
-    "email": "email dev --port 3030",
     "test": "jest --watch",
     "lint": "next lint",
     "lint:fix": "npm run eslint-and-fix && npm run prettier-fix",

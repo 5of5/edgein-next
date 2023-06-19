@@ -2,7 +2,7 @@ import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
 import { render } from '@react-email/render';
 import CookieService from '@/utils/cookie';
-import EmailWelcome from '@/emails/index';
+import InviteGroupMemberEmail from '@/react-email-starter/emails/invite-group-member';
 
 export type EmailResources = {
   isExistedUser: boolean;
@@ -76,20 +76,15 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     groupUrl,
     signUpUrl,
   } = mailParams;
-  const html = isExistedUser
-    ? `
-      <b>Hi ${recipientName}</b>,
-      <p><b>${senderName}</b> has invited you to join group <b>${groupName}</b>. </p> <br/>
 
-      <a href="${groupUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">VIEW GROUP</a>
-    `
-    : `
-      <b>Join your group on EdgeIn</b>,
-      <p><b>${senderName}</b> has invited you to use EdgeIn with them, in a group called <b>${groupName}</b>. </p> <br/>
-
-      <a href="${signUpUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">JOIN NOW</a>
-    `;
-    const emailHtml = render(EmailWelcome());
+  const emailHtml = render(InviteGroupMemberEmail({
+    isExistedUser,
+    senderName,
+    recipientName,
+    groupName,
+    groupUrl,
+    signUpUrl,
+  }));
 
   try {
     const params = {
