@@ -12,77 +12,109 @@ Learn more at [EdgeIn.io](http://edgein.io/)
 
 https://nodejs.org/en/download/
 
-### Install Docker-Desktop 
+### Install Docker-Desktop
 
-https://docs.docker.com/desktop/ 
+https://docs.docker.com/desktop/
 
-If you already have docker installed make sure the following command runs: 
+If you already have docker installed make sure the following command runs:
+
 ```
 docker compose version
 ```
+
 any issues and you probably have an outdated docker install (command used to be docker-compose)
 
-### Start Docker Containers 
+### Start Docker Containers
+
 ```
 npm run docker:start
 ```
+
 this should build a local database and hasura engine. Check they are up with:
+
 ```
 docker ps
 ```
+
 your output should look something like:
+
 ```
 872fe454e029   redis:6.2-alpine               "docker-entrypoint.s…"   5 minutes ago  Up 5 minutes           0.0.0.0:6379->6379/tcp   infra-cache-1
 968caa7ae2fe   postgres:14.1                  "docker-entrypoint.s…"   23 hours ago   Up 23 hours (healthy)   0.0.0.0:5432->5432/tcp   infra-postgres-1
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
+
 The Hasura web console should now be available at `http://localhost:8080`. Check `/infra/hasura/config.yaml` for the password.
 The redis server is running on `127.0.0.1:6379` for applying rate limit. Now can test graphql_query api locally.
+
 ### Load Schema and Initial Data
+
 This is taken care of using the `docker-entrypoint-initdb.d` directory populated from `infra/hasura/bootstrap-dev`. No further action should be required.
 
 ### Run Migrations
+
 ```
 npm run hasura migrate apply
 npm run hasura metadata apply
 ```
 
-### Start Next App 
+### Load Hasura Console to check metadata status
+
+```
+npm run hasura console
+```
+
+### Load seed data
+
+```
+cd scripts/db/
+sh ./load-seed-data.sh
+```
+
+### Start Next App
+
 ```
 npm install
 npm run dev
-``` 
+```
 
 ### Creating a User
-- Open the Hasura admin panel and navigate to the "allowed_emails" table, then add a row with your email address. 
-- Return to the local site and signup as normal
+
+- Open local site and signup as normal
 - Check your email and validate the email address with Auth0
+- Open hasura console and can role in the users table to admin
 - Open the local app admin at
+
 ```
-http://localhost:3000/admin/app
+http://localhost:3000/admin/app/
 ```
-- Find your user in the users table, click edit and change the role to admin
-- Login!!!
 
 NOTE: once an email is registed with Auth0 if you delete the user from the local database and try to use it again the signup will fail. You will need to use another address.
 
-
 ### Companies
+
 Although the database will be initialized with some seed data all the companies are in draft. To change this in bulk connect to the PG instance in docker using:
+
 ```
 docker exec -it bash [CONTAINER_ID found from docker ps]
 ```
+
 Once logged into the instance run:
+
 ```
 psql -U edgeu -d edgedb
 ```
+
 This will log you into the postgres cli, then you can update all the companies using:
+
 ```
 UPDATE companies SET status='published' WHERE status='draft';
 ```
 
 ## Local Scripts
+
 There are multiple helper scripts in the scripts directory. To run these you will need a .env file. Ask for this. You can then run:
+
 ```
 npx ts-node ./awesome-script.ts
 ```
@@ -122,110 +154,91 @@ applied, and deletes them so that we don't reapply them.
 ## AWS
 
 ### DNS / Domains
+
 Managed in Route 53 and vercel
 
 ### GraphQL
+
 ELB and EC2 cluster hosted in US-East-2
 
 ### Jenkins
+
 ELB and EC2 hosted in US-West-2
 
 ### redis server
+
 EC2 hosted in US-West-2
 
 ## API
 
 ### submit-data
-This API allows partners insert/update/delete edgein data.
-Partner need to be added in data_partners table, then using their api_key o request
 
-#### Insert data
+This API allows partners upsert/delete edgein data.
+Partner need to be added in data_partners table, then using their api_key to request
+
+#### Upsert data
+
 curl --location --request POST 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
-    "partner_api_key": "<api_key>",
-    "resource_type": "<resource_type>",
-    "resource_identifier":[{"field": "id"}],
-    "resource": {<resource_obj>}
+"partner_api_key": "<api_key>",
+"resource_type": "<resource_type>",
+"resource_identifier": <list_of_filters>,
+"resource": {<resource_obj>}
 }'
 
-<resource_obj> is a json {"< field >": < value >} or it can be an array of json [ {"< field >": < value >} , {"< field >": < value >} , ...]
-Support allowing a list input of resource field. The value in array should have the same resource type. If any object in array fails validation, The result will respond the failed object and remaining elements which locate after failed object still not yet validate and insert into database.
+Each filter of <list_of_filters> is a json: {"field": <column_name>, "value": <value_to_filter>, "method": "<graphql_filter_method>"}
+method is optional, default value is "\_eq"
+
+<resource_obj> is a json {"< field >": < value >}
 
 Only support for < resource_type >.< field > that's available in data_fields table.
 The value can be transform if transform pattern is set in data_fields table for this field.
-If "< field >" is "< other_resource_type >:< other_field >" pattern, the "< field >" will be converted into "< other_resource_type >_id"
+If "< field >" is "< other_resource_type >:< other_field >" pattern, the "< field >" will be converted into "< other_resource_type >\_id"
 and new < value > will be changed to id of other_resource_type record which contains input < value >
 For example: Before using resource data, {"companies:name": "TEST_NAME"} will be converted into {"company_id": "1"}
-where company 1 name is "TEST_NAME"
+where company#1 name is "TEST_NAME"
 
-Support for allowing to create relationships when submitting a news item user can specific tickers or other identifiers for people and companies and the api should automatically do the lookup and create the news_organisations record. Only support to create relationships for people and team_members , news and news_organizations.
+<list_of_filters> and <resource_obj> can be an array also (their lenghts must be equal), then each item is one record
 
-For example: when creating a new person in people table. Also providing team_members's values object. Api will automatically create new item record in team_members table. {<resource_obj>} looks like as below:
-"resource":{
-  <people_obj>,
-  "team_members":{
-     "companies:name": "TEST_NAME",
-  }
-}
-
-Support for allowing to create relationships with relationship field can be a string or an array of strings.
-"resource":{
-  <people_obj>,
-  "team_members":{
-     "companies:name": ["TEST_NAME", "TEST_NAME", ...],
-  }
-}
+Allow relationship in resource object, if <field> is other resource type. New record of other resource will be inserted with relation to main resource id
 
 For example: When input a list of resource field with relationship field for creating news that support creating relationship looks like as below:
 curl --location 'https://edgein.io/api/submit_data' \
 --header 'Content-Type: application/json' \
 --data '{
 "partner_api_key": "<api_key>",
-"resource_type": "<resource_type>",
-"resource_identifier":[{"field": "id"}],
-"resource":[{
-  "text": "<value>",
-  "link": "<value>",
-  "date": "<value>",
-  "status": "<value>",
-  "news_organizations":{
-  "companies:name": [ "<value>" , "<value>" , ... ], "vc_firms:name": [ "<value>" , "<value>" , ... ] }
+"resource_type": "news",
+"resource_identifier":[[{"field": "id"}], [{"field": "id"}]],
+"resource":[
+{
+"text": "test1",
+"metadata": {"description": "Li Ning bought 10 Bitcoin"},
+"news_person": {"people:name": "Jacob Abraham"}
 },
 {
-  "text": "<value>",
-  "link": "<value>",
-  "date": "<value>",
-  "status": "<value>",
-  "news_organizations":{
-  "companies:name": [ "<value>" , "<value>" , ... ], "vc_firms:name": [ "<value>" , "<value>" , ... ] }
-},...
+"text": "test2",
+"metadata": {"description": "Peter Wuffli bouhgt 9 Bitcoin"}
+}
 ]
 }'
 
-#### Update data
-curl --location --request POST 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
-    "partner_api_key": "<api_key>",
-    "resource_type": "<resource_type>",
-    "resource_identifier":[<list_of_filters>],
-    "resource":{<resource_obj>}
-}'
-
-Each filter of <list_of_filters> is a json: {"field": <column_name>, "value": <value_to_filter>, "method": "<graphql_filter_method>"}
-method is optional, default value is "_eq"
-
 #### Delete data
+
 curl --location --request DELETE 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
-    "partner_api_key": "<api_key>",
-    "resource_type": "<resource_type>",
-    "resource_identifier":[<list_of_filters>]
+"partner_api_key": "<api_key>",
+"resource_type": "<resource_type>",
+"resource_identifier":[<list_of_filters>]
 }'
 
+<list_of_filters> can be an array also, then each item is one to be deleted record
 
 ## Scripts
 
 ### Prerequisite
+
 Create .env in scripts directory then cd this directory and run npx ts-node < scripts >
 
 ### Update data fields table
+
 Add below env variables
 PG_USER=< PG_USER >
 PG_HOST=< PG_HOST >
@@ -235,6 +248,7 @@ PG_PORT=< PG_PORT >
 Then run the script update_data_fields.ts
 
 ### Clone prodution DB to staging DB
+
 git checkout to target branch
 export PGPASSWORD='PGPASSWORD'
 export ADMIN_SECRET='HASURA_ADMIN_SECRET'

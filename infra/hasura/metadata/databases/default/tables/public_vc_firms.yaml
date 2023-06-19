@@ -127,6 +127,7 @@ select_permissions:
         - overview
         - sentiment
         - slug
+        - status
         - status_tags
         - tags
         - team_size

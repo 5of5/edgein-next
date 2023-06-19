@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from 'react';
 import {
   SimpleForm,
   ReferenceInput,
@@ -6,8 +6,8 @@ import {
   AutocompleteInput,
   NumberInput,
   required,
-} from "react-admin";
-import { status } from "@/utils/constants";
+} from 'react-admin';
+import { status } from '@/utils/constants';
 
 type InvestmentFormProps = {
   toolbar?: ReactElement | false;
@@ -15,7 +15,7 @@ type InvestmentFormProps = {
 
 const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
   const inputClassName =
-    "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   return (
     <SimpleForm toolbar={toolbar}>
@@ -24,15 +24,12 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         source="person_id"
         reference="people"
         resettable
-        allowEmpty
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
           optionText="name"
-          filterToQuery={(search) => ({ name: search })}
-          emptyValue={null}
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <ReferenceInput
@@ -41,14 +38,12 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         reference="investment_rounds"
         resettable
         validate={required()}
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
-          style={{ padding: 0, border: "none" }}
-          optionText={(rec) => `${rec?.company?.name} ${rec?.round}`}
-          filterToQuery={(search) => ({ "company#name@_ilike": search })}
-          emptyValue={null}
+          style={{ padding: 0, border: 'none' }}
+          optionText={rec => `${rec?.company?.name} ${rec?.round}`}
+          filterToQuery={search => ({ 'company#name@_ilike': search })}
         />
       </ReferenceInput>
 
@@ -57,15 +52,12 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         source="vc_firm_id"
         reference="vc_firms"
         resettable
-        allowEmpty
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
           optionText="name"
-          filterToQuery={(search) => ({ name: search })}
-          emptyValue={null}
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <NumberInput className={inputClassName} source="amount" />

@@ -1,6 +1,6 @@
-import React from "react";
-import { Button, useRecordContext } from "react-admin";
-import ContentEdit from "@mui/icons-material/Edit";
+import React from 'react';
+import { Button, useRecordContext } from 'react-admin';
+import ContentEdit from '@mui/icons-material/Edit';
 
 type Props = {
   onClickEdit?: any;

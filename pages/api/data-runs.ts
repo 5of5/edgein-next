@@ -1,15 +1,15 @@
-import { getClient } from "@/scripts/postgres-helpers";
-import { NextApiResponse, NextApiRequest } from "next";
+import { getClient } from '@/scripts/postgres-helpers';
+import { NextApiResponse, NextApiRequest } from 'next';
 
-const DATA_RAW = 'data_raw'
-const DATA_RUNS = 'data_runs'
-const now = Date.now()
-const REDUCED_DATA_RAW = `reduced_data_raw_${now}`
-const TOTAL_WEIGHT_DATA = `total_weight_data_${now}`
-const DATA_SET = `data_set_${now}`
-const TOTAL_WEIGTH_TABLE = `total_weight_${now}`
-const WINNERS_TABLE = `winners_${now}`
-const CLASSIFIED_DATA = `classified_data_${now}`
+const DATA_RAW = 'data_raw';
+const DATA_RUNS = 'data_runs';
+const now = Date.now();
+const REDUCED_DATA_RAW = `reduced_data_raw_${now}`;
+const TOTAL_WEIGHT_DATA = `total_weight_data_${now}`;
+const DATA_SET = `data_set_${now}`;
+const TOTAL_WEIGTH_TABLE = `total_weight_${now}`;
+const WINNERS_TABLE = `winners_${now}`;
+const CLASSIFIED_DATA = `classified_data_${now}`;
 
 const CREATE_TEMP_REDUCED_DATA_RUN = `
 CREATE TEMP TABLE ${REDUCED_DATA_RAW} AS (
@@ -22,7 +22,7 @@ CREATE TEMP TABLE ${REDUCED_DATA_RAW} AS (
   FROM ${DATA_RAW} WHERE is_active = true) AS t1
   WHERE t1.row_number = 1
 )
-`
+`;
 
 const CREATE_TEMP_TOTAL_WEIGHT_DATA = `
 -- build total weight data from data raw
@@ -31,7 +31,7 @@ CREATE TEMP TABLE ${TOTAL_WEIGHT_DATA} AS (
   FROM ${REDUCED_DATA_RAW}
   GROUP BY resource, resource_id, field, value
 )
-`
+`;
 
 const CREATE_TEMP_DATA_SET = `
 CREATE TEMP TABLE ${DATA_SET} AS (
@@ -49,7 +49,7 @@ CREATE TEMP TABLE ${DATA_SET} AS (
     ) AS ROW_NUMBER
   FROM ${TOTAL_WEIGHT_DATA}
 )
-`
+`;
 
 const CREATE_TEMP_TOTAL_WEIGHT_TABLE = `
 CREATE TEMP TABLE ${TOTAL_WEIGTH_TABLE} AS 
@@ -92,7 +92,7 @@ CREATE TEMP TABLE ${TOTAL_WEIGTH_TABLE} AS
     USING (resource, resource_id, field)
   ) AS T USING (resource, resource_id, field)
 )
-`
+`;
 
 const CREATE_TEMP_WINNERS_TABLE = `
 CREATE TEMP TABLE ${WINNERS_TABLE} AS (
@@ -108,8 +108,7 @@ CREATE TEMP TABLE ${WINNERS_TABLE} AS (
        USING (resource, resource_id, field, value)) AS t3
     WHERE row_number = 1
 )
-`
-
+`;
 
 const CREATE_TEMP_CLASSIFIED_DATA = `
 CREATE TEMP TABLE ${CLASSIFIED_DATA} AS (
@@ -139,7 +138,7 @@ CREATE TEMP TABLE ${CLASSIFIED_DATA} AS (
   FROM ${REDUCED_DATA_RAW} AS t1 LEFT JOIN ${WINNERS_TABLE} AS t2
   USING (resource, resource_id, field, value)
   )
-`
+`;
 
 const INSERT_DATA_RUN = `
 INSERT INTO ${DATA_RUNS} (data_raw, classification, run_at, weight, weight_normalized, max_weight, ambiguity_score)
@@ -157,11 +156,11 @@ FROM (
 ) AS t1
 LEFT JOIN (SELECT resource, resource_id, field, value, ambiguity_score FROM ${TOTAL_WEIGTH_TABLE} WHERE total_weight = second_max) AS t2
 USING (resource, resource_id, field, value)
-`
+`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "GET") {
-    return res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'GET') {
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 
   const client = await getClient();
@@ -194,6 +193,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await client.end();
 
   res.send({ success: true });
-}
+};
 
 export default handler;

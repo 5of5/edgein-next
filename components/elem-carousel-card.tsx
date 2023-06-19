@@ -1,12 +1,12 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren } from 'react';
 
 type Props = {
-	className?: string;
+  className?: string;
 };
 
 export const ElemCarouselCard: React.FC<PropsWithChildren<Props>> = ({
-	className,
-	children,
+  className,
+  children,
 }) => {
-	return <div className={`snap-start shrink-0 ${className}`}>{children}</div>;
+  return <div className={`snap-start shrink-0 ${className}`}>{children}</div>;
 };
