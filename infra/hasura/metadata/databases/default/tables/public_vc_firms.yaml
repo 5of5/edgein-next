@@ -90,6 +90,7 @@ select_permissions:
         - team_size
         - twitter
         - updated_at
+        - urls
         - website
         - year_founded
       filter:
@@ -133,6 +134,7 @@ select_permissions:
         - team_size
         - twitter
         - updated_at
+        - urls
         - website
         - year_founded
       filter:
