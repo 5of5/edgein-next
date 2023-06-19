@@ -227,7 +227,7 @@ const Group: NextPage<Props> = (props: Props) => {
               <div className="bg-white shadow rounded-lg max-w-2xl w-full p-12 text-center">
                 <IconUsers
                   className="mx-auto h-12 w-12 text-slate-300"
-                  title="Join group"
+                  title="Join Group"
                 />
                 <h3 className="mt-2 text-lg font-bold">
                   Join this group to view and participate.

@@ -40,7 +40,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 {
                   name: 'my-groups',
                   to: '/groups',
-                  component: 'My groups',
+                  component: 'My Groups',
                 },
                 {
                   name: 'current',
