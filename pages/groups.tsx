@@ -148,29 +148,50 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
             )}
         </nav>
 
-        <div className="w-full mt-6 mb-2">
-          <h1 className="font-bold text-xl capitalize">
-            {selectedGroupTab.name}
-          </h1>
-        </div>
-        {groups?.length === 0 && (
+        {groups?.length === 0 ? (
           <div className="flex items-center justify-center mx-auto min-h-[40vh]">
             <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
               <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
-              <h1 className="mt-5 text-3xl font-bold">No groups yet</h1>
+              <h1 className="mt-5 text-3xl font-bold">
+                {selectedGroupTab.id === 'my-groups'
+                  ? 'Create a group'
+                  : 'Join a group'}
+              </h1>
               <div className="mt-1 text-lg text-slate-600">
                 Groups allow you to collaborate on notes, share insights, and
                 track leads with other people.
               </div>
-              <ElemButton
-                onClick={onClickCreateGroup}
-                btn="primary"
-                className="mt-3"
-              >
-                <IconGroupPlus className="w-6 h-6 mr-1" />
-                Create New Group
-              </ElemButton>
+              {selectedGroupTab.id === 'my-groups' ? (
+                <ElemButton
+                  onClick={onClickCreateGroup}
+                  btn="primary"
+                  className="mt-3"
+                >
+                  <IconGroupPlus className="w-6 h-6 mr-1" />
+                  Create New Group
+                </ElemButton>
+              ) : (
+                <ElemButton
+                  onClick={() =>
+                    setSelectedGroupTab({
+                      id: 'discover',
+                      name: 'Discover',
+                    })
+                  }
+                  btn="primary"
+                  className="mt-3"
+                >
+                  <IconGroupPlus className="w-6 h-6 mr-1" />
+                  Discover groups
+                </ElemButton>
+              )}
             </div>
+          </div>
+        ) : (
+          <div className="w-full mt-6 mb-2">
+            <h1 className="font-bold text-xl capitalize">
+              {selectedGroupTab.name}
+            </h1>
           </div>
         )}
 

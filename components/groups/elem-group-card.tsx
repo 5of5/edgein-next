@@ -5,6 +5,7 @@ import { useUser } from '@/context/user-context';
 import { User_Groups } from '@/graphql/types';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
+import { ElemTooltip } from '@/components/elem-tooltip';
 import moment from 'moment-timezone';
 import Link from 'next/link';
 import {
@@ -39,7 +40,8 @@ export const ElemGroupCard: FC<Props> = ({
     return moment(local_date).format('LL');
   };
 
-  const { id, name, updated_at, user_group_members, notes } = groupData;
+  const { id, name, updated_at, user_group_members, notes, description } =
+    groupData;
 
   const { data: lists } = useGetListUserGroupsQuery(
     {
@@ -83,13 +85,15 @@ export const ElemGroupCard: FC<Props> = ({
 
   return (
     <div className="flex flex-col mx-auto w-full p-4 bg-white border border-black/10 rounded-lg shadow">
-      <div className="flex shrink-0 w-full mb-2">
-        <Link href={`/groups/${id}`} passHref>
-          <a className="font-bold break-words leading-none line-clamp-2 border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-            {name}
-          </a>
-        </Link>
-      </div>
+      <ElemTooltip content={description}>
+        <div className="flex shrink-0 mb-2">
+          <Link href={`/groups/${id}`} passHref>
+            <a className="block font-bold break-words leading-none line-clamp-2 border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+              {name} name
+            </a>
+          </Link>
+        </div>
+      </ElemTooltip>
 
       <div className="grow">
         <p className="inline text-slate-600 text-sm">
