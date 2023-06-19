@@ -96,7 +96,7 @@ const ElemInviteDialog: React.FC<Props> = ({
               user_group_members: [...prev.user_group_members, item.member],
             }));
             const userOne = selectedUsers.find(
-              opt => opt.email === item.member.email,
+              opt => opt.email === item.member?.user?.email,
             );
             emailResources.push({
               isExistedUser: true,
