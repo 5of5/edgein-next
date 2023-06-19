@@ -13,7 +13,7 @@ import { getClient } from './postgres-helpers';
     const record = queryResults.rows[i];
 
     console.log(
-      `Update urls column for data row id ${record.id} name ${record.name}`,
+      `Update key_info column for data row id ${record.id} name ${record.name}`,
     );
 
     const urls = {
