@@ -168,7 +168,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                 className="mt-3"
               >
                 <IconGroupPlus className="w-6 h-6 mr-1" />
-                Create Group
+                Create New Group
               </ElemButton>
             </div>
           </div>

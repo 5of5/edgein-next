@@ -165,7 +165,7 @@ export const ElemGroupCard: FC<Props> = ({
             href={`/groups/${id}`}
             btn="primary-light"
             size="sm"
-            className="w-full block rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
+            className="w-full block rounded-md transition ease-in-out duration-150 group"
           >
             View Group
           </ElemButton>
@@ -175,7 +175,7 @@ export const ElemGroupCard: FC<Props> = ({
             btn="slate"
             size="sm"
             loading={isJoiningGroup}
-            className="w-full block rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
+            className="w-full block rounded-md transition ease-in-out duration-150 group"
           >
             Join Group
           </ElemButton>
