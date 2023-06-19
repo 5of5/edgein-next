@@ -11,7 +11,8 @@ export const EmailButton = ({ text, url }: EmailButtonProps) => {
       pX={24}
       pY={12}
       className="bg-[#5e41fe] rounded-[100px] text-white text-[14px] font-semibold no-underline text-center"
-      href={url}>
+      href={url}
+    >
       {text}
     </Button>
   );

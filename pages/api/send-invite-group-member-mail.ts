@@ -77,14 +77,16 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     signUpUrl,
   } = mailParams;
 
-  const emailHtml = render(InviteGroupMemberEmail({
-    isExistedUser,
-    senderName,
-    recipientName,
-    groupName,
-    groupUrl,
-    signUpUrl,
-  }));
+  const emailHtml = render(
+    InviteGroupMemberEmail({
+      isExistedUser,
+      senderName,
+      recipientName,
+      groupName,
+      groupUrl,
+      signUpUrl,
+    }),
+  );
 
   try {
     const params = {
