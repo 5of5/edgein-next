@@ -161,7 +161,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                       className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
                       title="Unlock groups"
                     />
-                    <span>Unlock All Groups</span>
+                    <span>Unlock Unlimited Groups</span>
                   </ElemButton>
                 </li>
               ) : (

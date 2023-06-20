@@ -268,7 +268,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                       className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
                       title="Unlock lists"
                     />
-                    <span>Unlock All Lists</span>
+                    <span>Unlock Unlimited Lists</span>
                   </ElemButton>
                 </li>
               ) : (
