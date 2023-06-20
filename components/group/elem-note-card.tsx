@@ -451,8 +451,6 @@ const ElemNoteCard: React.FC<Props> = ({
                   {formatDateShown(data?.created_at)}
                 </ElemTooltip> */}
 
-                <span aria-hidden="true"> · </span>
-
                 {layout === 'organizationAndAuthor' ||
                 layout === 'groupAndAuthor' ? (
                   <IconUsers
