@@ -89,7 +89,7 @@ export const ElemGroupCard: FC<Props> = ({
         <div className="flex shrink-0 mb-2">
           <Link href={`/groups/${id}`} passHref>
             <a className="block font-bold break-words leading-none line-clamp-2 border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-              {name} name
+              {name}
             </a>
           </Link>
         </div>
