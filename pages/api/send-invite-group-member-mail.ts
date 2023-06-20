@@ -72,7 +72,7 @@ const sendInvitationMail = async (mailParams: InviteGroupMemberMailParams) => {
 
   if (invalidParams) {
     return {
-      status: 500,
+      status: 400,
       message: `Failed to send verification email to ${email}. Missing parameters`,
     };
   }

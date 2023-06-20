@@ -13,3 +13,9 @@ export type InviteGroupMemberMailParams = {
   signUpUrl?: string;
   isExistedUser?: boolean;
 };
+
+export type ConfirmAdditionalMailParams = {
+  email: string;
+  username: string;
+  verifyUrl: string;
+};
