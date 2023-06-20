@@ -19,3 +19,10 @@ export type ConfirmAdditionalMailParams = {
   username: string;
   verifyUrl: string;
 };
+
+export type ResourceVerificationMailParams = {
+  verifyUrl: string;
+  companyName: string;
+  email: string;
+  username: string;
+};
