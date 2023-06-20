@@ -384,7 +384,6 @@ const MyList: NextPage<Props> = () => {
             >
               Follow
             </ElemButton>
-            <PlaceholderTable />
           </div>
         </div>
       )}
