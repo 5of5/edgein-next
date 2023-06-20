@@ -57,12 +57,13 @@ insert_permissions:
     permission:
       check: {}
       columns:
-        - id
-        - logo
         - external_id
+        - id
         - linkedin
+        - logo
         - name
         - slug
+        - urls
         - website
       backend_only: false
 select_permissions:
@@ -101,12 +102,13 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - id
-        - logo
         - external_id
+        - id
         - linkedin
+        - logo
         - name
         - slug
+        - urls
         - website
       filter: {}
   - role: viewer
