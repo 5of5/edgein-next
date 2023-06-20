@@ -3,22 +3,10 @@ import AWS from 'aws-sdk';
 import { render } from '@react-email/render';
 import CookieService from '@/utils/cookie';
 import InviteGroupMemberEmail from '@/react-email-starter/emails/invite-group-member';
-
-export type EmailResources = {
-  isExistedUser: boolean;
-  email: string;
-  recipientName: string;
-}[];
-
-type MailParams = {
-  email: string;
-  senderName: string;
-  recipientName?: string;
-  groupName: string;
-  groupUrl?: string;
-  signUpUrl?: string;
-  isExistedUser?: boolean;
-};
+import {
+  InviteGroupMemberMailParams,
+  InviteGroupMemberPayloadEmailResource,
+} from '@/types/api';
 
 //AWS config set
 AWS.config.update({
@@ -35,7 +23,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  const emailResources: EmailResources = req.body.emailResources;
+  const emailResources: InviteGroupMemberPayloadEmailResource[] =
+    req.body.emailResources;
   const groupName = req.body.groupName;
   const groupId = req.body.groupId;
 
@@ -66,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.send(response);
 };
 
-const sendInvitationMail = async (mailParams: MailParams) => {
+const sendInvitationMail = async (mailParams: InviteGroupMemberMailParams) => {
   const {
     isExistedUser,
     email,
@@ -76,6 +65,17 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     groupUrl,
     signUpUrl,
   } = mailParams;
+
+  const invalidExistedUser = isExistedUser && (!recipientName || !groupUrl);
+  const invalidSignUpUrl = !isExistedUser && !signUpUrl;
+  const invalidParams = invalidExistedUser || invalidSignUpUrl;
+
+  if (invalidParams) {
+    return {
+      status: 500,
+      message: `Failed to send verification email to ${email}. Missing parameters`,
+    };
+  }
 
   const emailHtml = render(
     InviteGroupMemberEmail({

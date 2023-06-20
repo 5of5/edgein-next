@@ -1,15 +1,17 @@
+import { InviteGroupMemberMailParams } from '@/types/api';
 import { Heading, Section, Text } from '@react-email/components';
 import EmailButton from '../components/button';
 import EmailLayout from '../components/layout';
 
-interface InviteGroupMemberEmailProps {
-  isExistedUser?: boolean;
-  senderName: string;
-  recipientName?: string;
-  groupName: string;
-  groupUrl?: string;
-  signUpUrl?: string;
-}
+type InviteGroupMemberEmailProps = Pick<
+  InviteGroupMemberMailParams,
+  | 'isExistedUser'
+  | 'senderName'
+  | 'recipientName'
+  | 'groupName'
+  | 'groupUrl'
+  | 'signUpUrl'
+>;
 
 export const InviteGroupMemberEmail = ({
   isExistedUser = false,
