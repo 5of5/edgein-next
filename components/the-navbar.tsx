@@ -253,7 +253,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
             }}
           />
 
-          <div className="flex items-center group space-x-4 lg:space-x-3 lg:ml-auto">
+          <div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-auto">
             {siteNav.map((link, index) => (
               <Link href={link.path} key={index} passHref>
                 <a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
@@ -278,16 +278,16 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 <ElemButton
                   onClick={() => setShowPopup('login')}
                   btn="ol-primary"
-                  className="px-2.5 sm:px-3"
+                  className="!px-2.5 whitespace-nowrap sm:px-3"
                 >
                   Log In
                 </ElemButton>
                 <ElemButton
                   onClick={() => setShowPopup('signup')}
                   btn="primary"
-                  className="px-2.5 sm:px-3"
+                  className="!px-2.5 whitespace-nowrap sm:px-3"
                 >
-                  Sign Up
+                  Start for free
                 </ElemButton>
               </>
             )}
