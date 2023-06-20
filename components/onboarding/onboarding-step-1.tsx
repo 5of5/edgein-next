@@ -44,7 +44,7 @@ export default function OnboardingStep1(props: Props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
+            <div className="fixed z-10 inset-0 bg-white/90 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
           <div className="fixed inset-0 z-[50] m-6 min-h-0 flex flex-col items-center justify-center">
@@ -57,7 +57,7 @@ export default function OnboardingStep1(props: Props) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
+              <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl shadow-primary-500/30 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
                 <h3 className="text-2xl font-bold">
                   Hi{' '}
                   <span className="capitalize">
