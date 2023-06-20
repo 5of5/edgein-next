@@ -218,6 +218,9 @@ const MyList: NextPage<Props> = () => {
     if (response.status === 200) {
       refetch();
       refreshProfile();
+      refetchCompanies();
+      refetchVcFirms();
+      refetchPeople();
     }
   };
 
@@ -285,6 +288,7 @@ const MyList: NextPage<Props> = () => {
     data: companiesData,
     error: companiesError,
     isLoading: companiesLoading,
+    refetch: refetchCompanies,
   } = useGetCompaniesByListIdQuery({
     list_id: theListId,
   });
@@ -293,6 +297,7 @@ const MyList: NextPage<Props> = () => {
     data: vcFirms,
     error: vcFirmsError,
     isLoading: vcFirmsLoading,
+    refetch: refetchVcFirms,
   } = useGetVcFirmsByListIdQuery({
     list_id: theListId,
   });
@@ -301,6 +306,7 @@ const MyList: NextPage<Props> = () => {
     data: listPeople,
     error: listPeopleError,
     isLoading: listPeopleLoading,
+    refetch: refetchPeople,
   } = useGetPeopleByListIdQuery({
     list_id: theListId,
   });
