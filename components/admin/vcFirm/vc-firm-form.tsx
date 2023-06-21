@@ -13,7 +13,7 @@ import {
 } from 'react-admin';
 import { useParams } from 'react-router-dom';
 import {
-  companyChoices,
+  investorChoices,
   libraryChoices,
   status,
   validateNameAndSlugAndEmailAndDomain,
@@ -183,7 +183,7 @@ const VcFirmForm = ({
         <AutocompleteArrayInput
           source="status_tags"
           className={`w-[49%] ${textInputClassName}`}
-          choices={companyChoices}
+          choices={investorChoices}
           style={{ padding: 0, border: 'none' }}
         />
         <TextInput
