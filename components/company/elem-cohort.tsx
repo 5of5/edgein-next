@@ -5,7 +5,6 @@ import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
-import { getLayerClass } from '@/utils/style';
 import { useRouter } from 'next/router';
 import {
   Companies_Bool_Exp,
@@ -14,6 +13,7 @@ import {
 } from '@/graphql/types';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import ElemCompanyTags from '../elem-company-tags';
 
 type Props = {
   className?: string;
@@ -129,35 +129,11 @@ export const ElemCohort: FC<Props> = ({
                       </div>
                     </div>
 
-                    {(company.layer || company.tags) && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {company.layer && (
-                          <div
-                            className={`${getLayerClass(
-                              company.layer,
-                            )} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
-                          >
-                            {company.layer}
-                          </div>
-                        )}
+                    <ElemCompanyTags
+                      company={company}
+                      tagOnClick={onClickType}
+                    />
 
-                        {company.tags?.map((tag: string, index: number) => {
-                          return (
-                            <div
-                              key={index}
-                              className="shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300"
-                              onClick={e => {
-                                if (onClickType) {
-                                  onClickType(e, tag);
-                                }
-                              }}
-                            >
-                              {tag}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
                     <div className="mt-4 grow">
                       <div className="text-gray-400 line-clamp-3">
                         {company.overview}
