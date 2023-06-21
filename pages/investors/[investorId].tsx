@@ -232,7 +232,6 @@ const VCFirm: NextPage<Props> = props => {
               investmentsLength={sortedInvestmentRounds.length}
               yearFounded={vcfirm.year_founded}
               linkedIn={vcfirm.linkedin}
-              location={vcfirm.location}
               locationJson={vcfirm.location_json}
               twitter={vcfirm.twitter}
             />

@@ -217,13 +217,28 @@ export const InvestorsList: FC<Props> = ({
         width: 200,
       },
       {
-        Header: 'Location',
-        accessor: 'vc_firm.location' as const,
+        Header: 'City',
+        accessor: 'vc_firm.location_json.city' as const,
         Cell: (props: any) => {
           return <div>{props.value ? props.value : emptyCell}</div>;
         },
-        disableSortBy: true,
-        minWidth: 180,
+        width: 120,
+      },
+      {
+        Header: 'State',
+        accessor: 'vc_firm.location_json.state' as const,
+        Cell: (props: any) => {
+          return <div>{props.value ? props.value : emptyCell}</div>;
+        },
+        width: 120,
+      },
+      {
+        Header: 'Country',
+        accessor: 'vc_firm.location_json.country' as const,
+        Cell: (props: any) => {
+          return <div>{props.value ? props.value : emptyCell}</div>;
+        },
+        width: 120,
       },
       {
         Header: 'Description',

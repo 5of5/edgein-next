@@ -215,15 +215,6 @@ export const CompaniesList: FC<Props> = ({
         width: 400,
         minWidth: 300,
       },
-      // {
-      // 	Header: "Location",
-      // 	accessor: "company.location" as const,
-      // 	Cell: (props: any) => {
-      // 		return <div>{props.value ? props.value : emptyCell}</div>;
-      // 	},
-      // 	disableSortBy: true,
-      // 	minWidth: 180,
-      // },
       {
         Header: 'City',
         accessor: 'company.location_json.city' as const,

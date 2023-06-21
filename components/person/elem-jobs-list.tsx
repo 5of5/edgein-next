@@ -3,6 +3,7 @@ import { IconEditPencil } from '@/components/icons';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import { ElemPhoto } from '@/components/elem-photo';
 import Link from 'next/link';
+import { getFullAddress } from '@/utils/helpers';
 type Props = {
   className?: string;
   heading?: string;
@@ -83,8 +84,8 @@ export const ElemJobsList: React.FC<Props> = ({
                         {getTimeOfWork(team.start_date, team.end_date)}
                       </span>
                     </div>
-                    {team.company?.location && (
-                      <span>{team.company?.location}</span>
+                    {team.company?.location_json && (
+                      <span>{getFullAddress(team.company?.location_json)}</span>
                     )}
                   </div>
                 </div>

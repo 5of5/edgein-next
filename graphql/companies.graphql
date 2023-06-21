@@ -28,7 +28,6 @@ query GetCompany($slug: String!) {
     audit_file
     sentiment
     twitter
-    location
     location_json
     discord
     glassdoor
@@ -169,7 +168,6 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
     name
     slug
     layer
-    location
     location_json
     tags
     coin {

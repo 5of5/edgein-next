@@ -119,7 +119,6 @@ select_permissions:
         - layer
         - layer_detail
         - library
-        - location
         - location_json
         - logo
         - market_verified
@@ -212,7 +211,6 @@ select_permissions:
         - layer
         - layer_detail
         - library
-        - location
         - location_json
         - logo
         - market_verified

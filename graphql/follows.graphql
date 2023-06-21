@@ -39,7 +39,6 @@ query GetCompaniesByListId($list_id: Int = 0) {
       name
       logo
       sentiment
-      location
       location_json
       twitter
       year_founded
@@ -74,7 +73,7 @@ query GetVcFirmsByListId($list_id: Int = 0) {
       sentiment
       logo
       slug
-      location
+      location_json
       year_founded
       overview
       tags
