@@ -5,6 +5,8 @@ import { getLoginPayload } from './factories/auth';
 
 export * from '@playwright/test';
 
+const URL = 'http://localhost:3000/';
+
 export const test = base.extend<{}, { workerStorageState: string }>({
   storageState: ({ workerStorageState }, use) => use(workerStorageState),
 
@@ -22,18 +24,22 @@ export const test = base.extend<{}, { workerStorageState: string }>({
 
       const page = await browser.newPage({ storageState: undefined });
 
-      const data = await getLoginPayload();
+      const loginPayloadData = await getLoginPayload();
 
-      await page.goto('http://localhost:3000/');
+      await page.goto(URL);
 
       await page.getByRole('button', { name: 'Log In' }).click();
 
-      await page.getByRole('textbox', { name: 'email' }).fill(data.email);
-      await page.getByRole('textbox', { name: 'password' }).fill(data.password);
+      await page
+        .getByRole('textbox', { name: 'email' })
+        .fill(loginPayloadData.email);
+      await page
+        .getByRole('textbox', { name: 'password' })
+        .fill(loginPayloadData.password);
 
       await page.getByRole('button', { name: /^Login$/i }).click();
 
-      await page.waitForURL('http://localhost:3000');
+      await page.waitForURL(URL);
 
       await page.waitForLoadState('domcontentloaded');
 
