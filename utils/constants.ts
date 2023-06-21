@@ -8,7 +8,7 @@ import {
   maxValue,
   regex,
 } from 'react-admin';
-import { GroupsTabItem } from '@/types/common';
+import { GroupsTabItem, ListsTabItem } from '@/types/common';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -1939,6 +1939,12 @@ export const ONBOARDING_QUESTION = 'Where did you hear about us?';
 
 export const GROUPS_TABS: GroupsTabItem[] = [
   { id: 'my-groups', name: 'My Groups' },
+  { id: 'discover', name: 'Discover' },
+  { id: 'joined', name: 'Joined' },
+];
+
+export const LISTS_TABS: ListsTabItem[] = [
+  { id: 'my-lists', name: 'My Lists' },
   { id: 'discover', name: 'Discover' },
   { id: 'joined', name: 'Joined' },
 ];

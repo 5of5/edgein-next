@@ -9,10 +9,16 @@ import {
 import {
   Companies_Bool_Exp,
   Events_Bool_Exp,
+  Lists_Bool_Exp,
   User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
-import { DeepPartial, GroupsTabType, Library } from '@/types/common';
+import {
+  DeepPartial,
+  GroupsTabType,
+  Library,
+  ListsTabType,
+} from '@/types/common';
 import { aiTags, eventTypeChoices, roundChoices } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { getSelectableWeb3Tags } from './helpers';
@@ -992,6 +998,39 @@ export const getGroupsFilters = (
         user: {
           id: { _eq: userId },
         },
+      },
+    };
+    return filters;
+  }
+
+  return filters;
+};
+
+export const getListsFilters = (selectedTab: ListsTabType, userId: number) => {
+  let filters: DeepPartial<Lists_Bool_Exp> = {
+    created_by_id: { _eq: userId },
+  };
+
+  if (selectedTab === 'discover') {
+    filters = {
+      _and: [
+        { public: { _eq: true } },
+        {
+          _not: {
+            list_members: {
+              user_id: { _eq: userId },
+            },
+          },
+        },
+      ],
+    };
+    return filters;
+  }
+
+  if (selectedTab === 'joined') {
+    filters = {
+      list_members: {
+        user_id: { _eq: userId },
       },
     };
     return filters;
