@@ -218,6 +218,9 @@ const MyList: NextPage<Props> = () => {
     if (response.status === 200) {
       refetch();
       refreshProfile();
+      refetchCompanies();
+      refetchVcFirms();
+      refetchPeople();
     }
   };
 
@@ -285,6 +288,7 @@ const MyList: NextPage<Props> = () => {
     data: companiesData,
     error: companiesError,
     isLoading: companiesLoading,
+    refetch: refetchCompanies,
   } = useGetCompaniesByListIdQuery({
     list_id: theListId,
   });
@@ -293,6 +297,7 @@ const MyList: NextPage<Props> = () => {
     data: vcFirms,
     error: vcFirmsError,
     isLoading: vcFirmsLoading,
+    refetch: refetchVcFirms,
   } = useGetVcFirmsByListIdQuery({
     list_id: theListId,
   });
@@ -301,6 +306,7 @@ const MyList: NextPage<Props> = () => {
     data: listPeople,
     error: listPeopleError,
     isLoading: listPeopleLoading,
+    refetch: refetchPeople,
   } = useGetPeopleByListIdQuery({
     list_id: theListId,
   });
@@ -372,7 +378,7 @@ const MyList: NextPage<Props> = () => {
           <div className="bg-white shadow rounded-lg w-full p-12 text-center">
             <IconCustomList
               className="mx-auto h-12 w-12 text-slate-300"
-              title="Join group"
+              title="Join Group"
             />
             <h3 className="mt-2 text-lg font-bold">
               Follow this list to access and view updates.
@@ -384,7 +390,6 @@ const MyList: NextPage<Props> = () => {
             >
               Follow
             </ElemButton>
-            <PlaceholderTable />
           </div>
         </div>
       )}

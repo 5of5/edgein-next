@@ -30,8 +30,13 @@ select_permissions:
         - email
         - person_id
       filter:
-        user_group_members:
-          user_group:
-            user_group_members:
-              user_id:
-                _eq: X-Hasura-User-Id
+        _or:
+          - user_group_members:
+              user_group:
+                public:
+                  _eq: true
+          - user_group_members:
+              user_group:
+                user_group_members:
+                  user_id:
+                    _eq: X-Hasura-User-Id
