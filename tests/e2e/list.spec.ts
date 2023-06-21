@@ -1,10 +1,10 @@
 import { toLower } from 'lodash';
 import { getCreateListPayload } from '../factories/lists';
-import { test, expect } from '../fixtures';
+import { test, expect } from '@playwright/test';
 
 test.describe('Lists', () => {
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/profile/`);
+    await page.goto(`${baseURL}/profile/`, { timeout: 15000 });
   });
 
   test.afterEach(async ({ page }) => {
