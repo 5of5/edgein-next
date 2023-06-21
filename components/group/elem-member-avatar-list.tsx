@@ -3,17 +3,24 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { User_Group_Members } from '@/graphql/types';
 
 type Props = {
+  isUserBelongToGroup: boolean;
   members: Array<User_Group_Members>;
   onClick: () => void;
 };
 
-export const ElemMemberAvatarList: React.FC<Props> = ({ members, onClick }) => {
+export const ElemMemberAvatarList: React.FC<Props> = ({
+  isUserBelongToGroup,
+  members,
+  onClick,
+}) => {
   return (
     <ul
-      className="flex -space-x-3 overflow-hidden cursor-pointer"
+      className={`flex -space-x-3 overflow-hidden ${
+        isUserBelongToGroup ? 'cursor-pointer' : ''
+      }`}
       onClick={onClick}
     >
-      {members.slice(0, 6).map((mem, index) => (
+      {members.slice(0, 6).map(mem => (
         <li key={mem.id}>
           {mem.user?.person?.picture ? (
             <ElemPhoto

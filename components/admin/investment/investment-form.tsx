@@ -24,15 +24,12 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         source="person_id"
         reference="people"
         resettable
-        allowEmpty
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
           optionText="name"
           filterToQuery={search => ({ name: search })}
-          emptyValue={null}
         />
       </ReferenceInput>
       <ReferenceInput
@@ -41,14 +38,12 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         reference="investment_rounds"
         resettable
         validate={required()}
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
           optionText={rec => `${rec?.company?.name} ${rec?.round}`}
           filterToQuery={search => ({ 'company#name@_ilike': search })}
-          emptyValue={null}
         />
       </ReferenceInput>
 
@@ -57,15 +52,12 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         source="vc_firm_id"
         reference="vc_firms"
         resettable
-        allowEmpty
-        emptyValue={null}
       >
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
           optionText="name"
           filterToQuery={search => ({ name: search })}
-          emptyValue={null}
         />
       </ReferenceInput>
       <NumberInput className={inputClassName} source="amount" />
