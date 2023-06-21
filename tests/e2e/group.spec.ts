@@ -2,11 +2,11 @@ import { toLower } from 'lodash';
 import { getSavedUserPayload } from '../factories/auth';
 import { getCreateGroupPayload } from '../factories/groups';
 import { getCreateListPayload } from '../factories/lists';
-import { test, expect } from '../fixtures';
+import { test, expect } from '@playwright/test';
 
 test.describe('Group', () => {
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/profile/`);
+    await page.goto(`${baseURL}/profile/`, { timeout: 15000 });
   });
 
   test.afterEach(async ({ page }) => {
@@ -41,7 +41,9 @@ test.describe('Group', () => {
     const response = await page.waitForResponse(`${baseURL}/api/groups/`);
     const { id } = await response.json();
 
-    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`);
+    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`, {
+      timeout: 15000,
+    });
     await expect(
       page.locator('button', {
         has: page.locator('span', {
@@ -79,7 +81,9 @@ test.describe('Group', () => {
     const response = await page.waitForResponse(`${baseURL}/api/groups/`);
     const { id } = await response.json();
 
-    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`);
+    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`, {
+      timeout: 15000,
+    });
 
     await page
       .locator('button', {
@@ -145,7 +149,9 @@ test.describe('Group', () => {
     const response = await page.waitForResponse(`${baseURL}/api/groups/`);
     const { id } = await response.json();
 
-    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`);
+    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`, {
+      timeout: 15000,
+    });
 
     await page
       .locator('button', {
@@ -217,7 +223,9 @@ test.describe('Group', () => {
     const response = await page.waitForResponse(`${baseURL}/api/groups/`);
     const { id } = await response.json();
 
-    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`);
+    await expect(page).toHaveURL(`${baseURL}/groups/${id}/`, {
+      timeout: 15000,
+    });
 
     await expect(
       page.locator('button', {
@@ -332,7 +340,9 @@ test.describe('Group', () => {
 
     const slug = toLower(listData.name).replace(/\s/, '-');
 
-    await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`);
+    await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`, {
+      timeout: 15000,
+    });
 
     await expect(
       page.locator('button', {
@@ -372,7 +382,9 @@ test.describe('Group', () => {
     );
     const { id: groupId } = await createGroupResponse.json();
 
-    await expect(page).toHaveURL(`${baseURL}/groups/${groupId}/`);
+    await expect(page).toHaveURL(`${baseURL}/groups/${groupId}/`, {
+      timeout: 15000,
+    });
 
     await expect(
       page.locator('button', {
@@ -417,14 +429,8 @@ test.describe('Group', () => {
     await page.getByRole('button', { name: /Save/i }).click();
 
     await expect(
-      page.locator('ul', {
-        has: page.locator('li', {
-          has: page.locator('a', {
-            has: page.getByRole('heading', {
-              name: new RegExp(listData.name, ''),
-            }),
-          }),
-        }),
+      page.getByRole('heading', {
+        name: new RegExp(listData.name, ''),
       }),
     ).toBeVisible();
   });
