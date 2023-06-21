@@ -278,14 +278,14 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 <ElemButton
                   onClick={() => setShowPopup('login')}
                   btn="ol-primary"
-                  className="!px-2.5 whitespace-nowrap sm:px-3"
+                  className="!px-2.5 whitespace-nowrap sm:!px-3"
                 >
                   Log In
                 </ElemButton>
                 <ElemButton
                   onClick={() => setShowPopup('signup')}
                   btn="primary"
-                  className="!px-2.5 whitespace-nowrap sm:px-3"
+                  className="!px-2.5 whitespace-nowrap sm:!px-3"
                 >
                   Start for free
                 </ElemButton>
