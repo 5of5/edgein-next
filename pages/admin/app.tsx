@@ -2,14 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import buildHasuraProvider, { BuildFields, buildFields } from 'ra-data-hasura';
 
-import {
-  Admin,
-  DataProvider,
-  Resource,
-  AuthProvider,
-  Layout,
-  defaultTheme,
-} from 'react-admin';
+import { Admin, DataProvider, Resource, AuthProvider } from 'react-admin';
 
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -26,7 +19,6 @@ import {
   EventEdit,
 } from '../../components/admin/event';
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
-import ElemAppBar from '@/components/admin/elem-app-bar';
 import { getParentSubOrganizations } from '@/utils/resource-link';
 import {
   InvestmentRoundCreate,
@@ -66,14 +58,9 @@ import {
 import { NewsList, NewsEdit, NewsCreate } from '../../components/admin/news';
 import { useAuth } from '../../hooks/use-auth';
 import { onSubmitData } from '@/utils/submit-data';
-
-const MyLogin = () => {
-  useEffect(() => {
-    window.location.href = '/';
-  }, []);
-
-  return <div />;
-};
+import ElemMyLogin from '@/components/admin/elem-my-login';
+import ElemLayoutApp from '@/components/admin/elem-layout-app';
+import { theme } from '@/theme/admin';
 
 type NullableInputs = {
   [key: string]: Array<string>;
@@ -189,10 +176,6 @@ const customBuildFields: BuildFields = (type, fetchType) => {
 
   return defaultFields;
 };
-
-export const LayoutApp = (props: any) => (
-  <Layout {...props} appBar={ElemAppBar} />
-);
 
 const AdminApp = () => {
   const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(
@@ -317,38 +300,6 @@ const AdminApp = () => {
 
   if (!dataProvider || !user) return <p>Loading...</p>;
 
-  const theme = {
-    ...defaultTheme,
-    palette: {
-      primary: {
-        main: '#5E41FE',
-      },
-      secondary: {
-        main: '#5E41FE',
-        light: '#A05FFE',
-      },
-      error: {
-        main: '#ff0000',
-      },
-      background: {
-        default: '#F2F5FA',
-      },
-      contrastThreshold: 3,
-      tonalOffset: 0.2,
-    },
-    typography: {
-      // Use the system font instead of the default Roboto font.
-      fontFamily: [
-        'Metropolis',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Arial',
-        'sans-serif',
-      ].join(','),
-    },
-  };
-
   const getResourceProps = (name: string, list: any, edit: any, create: any) =>
     user.role !== 'cms-readonly'
       ? {
@@ -361,8 +312,8 @@ const AdminApp = () => {
 
   return (
     <Admin
-      loginPage={MyLogin}
-      layout={LayoutApp}
+      loginPage={ElemMyLogin}
+      layout={ElemLayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
       theme={theme}
