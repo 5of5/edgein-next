@@ -43,6 +43,7 @@ import ElemNewsArticles, {
 } from '@/components/news/elem-news-articles';
 import { getQueryBySource } from '@/utils/news';
 import ElemNewsList from '@/components/news/elem-news-list';
+import ElemCompanyTags from '@/components/elem-company-tags';
 
 type Props = {
   company: Companies;
@@ -178,6 +179,20 @@ const Company: NextPage<Props> = (props: Props) => {
     item => item.link_type === 'child',
   );
 
+  const handleTagClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    tag: string,
+  ) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    router.push(
+      `/companies/?filters=${encodeURIComponent(
+        `{"industry":{"tags":["${tag}"]}}`,
+      )}`,
+    );
+  };
+
   return (
     <>
       <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
@@ -207,13 +222,14 @@ const Company: NextPage<Props> = (props: Props) => {
                   </div>
                 )}
               </div>
-              {companyTags.length > 0 && (
-                <ElemTags
-                  className="mt-4"
-                  resourceType={'companies'}
-                  tags={companyTags}
-                />
-              )}
+
+              <ElemCompanyTags
+                company={company}
+                className="mt-4"
+                hideLayer
+                tagOnClick={handleTagClick}
+              />
+
               {parentOrganization && (
                 <div className="mt-4">
                   <div className="font-bold text-sm">Sub-organization of:</div>

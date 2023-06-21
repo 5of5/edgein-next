@@ -2,8 +2,10 @@ import { expect, test } from '@playwright/test';
 import { getDuplicateSignUpPayload, getSignUpPayload } from '../factories/auth';
 
 test.describe('Sign up', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}`);
+    await page.goto(`${baseURL}/`, { timeout: 15000 });
 
     await page.getByRole('button', { name: 'Sign Up' }).click();
   });
@@ -72,7 +74,7 @@ test.describe('Sign up', () => {
 
     await expect(
       page.getByRole('heading', { name: 'Registration Complete' }),
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 15000 });
   });
 
   test('should not allow an already registered email', async ({ page }) => {

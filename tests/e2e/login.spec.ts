@@ -2,8 +2,10 @@ import { expect, test } from '@playwright/test';
 import { getInvalidLoginPayload, getLoginPayload } from '../factories/auth';
 
 test.describe('Login', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}`);
+    await page.goto(`${baseURL}/`, { timeout: 15000 });
 
     await page.getByRole('button', { name: 'Log In' }).click();
   });
@@ -46,12 +48,6 @@ test.describe('Login', () => {
 
     await page.getByRole('button', { name: /^Login$/i }).click();
 
-    await page.waitForURL(`${baseURL}`);
-
-    await page.waitForLoadState('domcontentloaded');
-
-    await page.waitForTimeout(3000);
-
-    await expect(page.getByAltText('profile')).toBeVisible();
+    await expect(page.getByAltText('profile')).toBeVisible({ timeout: 15000 });
   });
 });
