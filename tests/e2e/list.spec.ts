@@ -12,9 +12,12 @@ test.describe('Lists', () => {
   });
 
   test('should have a default lists', async ({ page, baseURL }) => {
-    await expect(page.getByText(/My Lists/i)).toBeVisible();
+    await page
+      .getByRole('navigation', { name: 'Global' })
+      .getByRole('img', { name: 'profile' })
+      .click();
 
-    await page.getByRole('link', { name: /My Lists/i }).click();
+    await page.getByRole('menuitem', { name: /My Lists/ }).click();
 
     await expect(page).toHaveURL(`${baseURL}/lists/0/hot/`);
 
