@@ -3,7 +3,6 @@ import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
-import { ElemGroupCard } from '@/components/groups/elem-group-card';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
 import { IconGroup, IconGroupPlus } from '@/components/icons';
@@ -12,7 +11,6 @@ import {
   GetListsDocument,
   useGetListsQuery,
   Lists_Bool_Exp,
-  Lists,
 } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { useStateParams } from '@/hooks/use-state-params';
@@ -155,9 +153,9 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
               <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
               <h1 className="mt-5 text-3xl font-bold">
                 {selectedListTab.id === 'my-lists'
-                  ? 'Create a group'
-                  : selectedListTab.id === 'joined'
-                  ? 'Join a group'
+                  ? 'Create a list'
+                  : selectedListTab.id === 'followed'
+                  ? 'Follow a list'
                   : selectedListTab.id === 'discover'
                   ? 'Discover'
                   : ''}
@@ -176,7 +174,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                   <IconGroupPlus className="w-6 h-6 mr-1" />
                   Create New List
                 </ElemButton>
-              ) : selectedListTab.id === 'joined' ? (
+              ) : selectedListTab.id === 'followed' ? (
                 <ElemButton
                   onClick={() =>
                     setSelectedListTab({

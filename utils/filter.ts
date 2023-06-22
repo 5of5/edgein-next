@@ -1027,7 +1027,7 @@ export const getListsFilters = (selectedTab: ListsTabType, userId: number) => {
     return filters;
   }
 
-  if (selectedTab === 'joined') {
+  if (selectedTab === 'followed') {
     filters = {
       list_members: {
         user_id: { _eq: userId },

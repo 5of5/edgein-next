@@ -23,6 +23,7 @@ import { toLabel } from '@/utils';
 import moment from 'moment-timezone';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
+import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 
 type Props = {
   list: any;
@@ -84,25 +85,37 @@ export const ElemListInformation: FC<Props> = ({
       <div className="flex flex-wrap space-y-2 items-end justify-between mb-4 lg:space-y-0 lg:border-b lg:pb-2 lg:border-black/10">
         {isCustomList ? (
           <div>
-            {isListCreator ? (
-              <button
-                onClick={onOpenSettingsDialog}
-                className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
-              >
-                <IconCustomList className="w-6 h-6 mr-1" />
-                <div className="font-bold text-xl capitalize">
-                  {getNameFromListName(list)}
-                </div>
-                <IconChevronDownMini className="h-5 w-5" />
-              </button>
-            ) : (
-              <h1 className="mr-2 font-bold text-xl capitalize leading-tight">
-                Previewing:{' '}
-                {list
-                  ? getNameFromListName(list)
-                  : toLabel(router.query.slug as string)}
-              </h1>
-            )}
+            <ElemDashboardBreadcrumb
+              breadcrumbs={[
+                {
+                  name: 'my-lists',
+                  to: '/lists',
+                  component: 'My Lists',
+                },
+                {
+                  name: 'current',
+                  component: isListCreator ? (
+                    <button
+                      onClick={onOpenSettingsDialog}
+                      className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
+                    >
+                      <IconCustomList className="w-6 h-6 mr-1" />
+                      <div className="font-bold text-xl capitalize">
+                        {getNameFromListName(list)}
+                      </div>
+                      <IconChevronDownMini className="h-5 w-5" />
+                    </button>
+                  ) : (
+                    <h1 className="mr-2 font-bold text-xl capitalize leading-tight">
+                      Previewing:{' '}
+                      {list
+                        ? getNameFromListName(list)
+                        : toLabel(router.query.slug as string)}
+                    </h1>
+                  ),
+                },
+              ]}
+            />
 
             {list?.created_by && (
               <p className="pt-1 text-slate-600">

@@ -1,11 +1,16 @@
 import { FC } from 'react';
 import Link from 'next/link';
 import moment from 'moment-timezone';
-import { GetGroupsQuery, GetListsQuery } from '@/graphql/types';
-import { GroupsTabItem, ListsTabItem } from '@/types/common';
+import { kebabCase, startCase } from 'lodash';
+import { getNameFromListName } from '@/utils/reaction';
+import { GetGroupsQuery, GetListsQuery, Lists } from '@/graphql/types';
+import { DeepPartial, GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
+import { useMutation } from 'react-query';
+import { useUser } from '@/context/user-context';
+import { useRouter } from 'next/router';
 
 type ResourceDataType<T> = T;
 
@@ -25,13 +30,28 @@ type Props = {
 };
 
 const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
+  const router = useRouter();
+
+  const { user, refreshProfile, refetchMyGroups } = useUser();
+
+  const getListName = (listData: DeepPartial<Lists>) => {
+    const name = getNameFromListName(listData);
+    if (['hot', 'like', 'crap'].includes(name)) {
+      return startCase(name);
+    }
+
+    return name;
+  };
+
   const isResourceList = resource.resourceType === 'list';
 
-  const description = isResourceList ? resource.name : resource.description;
+  const name = isResourceList ? getListName(resource) : resource.name;
+
+  const description = isResourceList ? name : resource.description;
 
   const resourceUrl = isResourceList
-    ? `/groups/${resource.id}`
-    : `/lists/${resource.id}`;
+    ? `/lists/${resource.id}/${kebabCase(getNameFromListName(resource))}`
+    : `/groups/${resource.id}`;
 
   const numOfNotes = !isResourceList && resource.notes.length;
 
@@ -44,6 +64,59 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     return moment(local_date).format('LL');
   };
 
+  const { mutate: followList, isLoading: isFollowingList } = useMutation(
+    async () => {
+      await fetch('/api/toggle-follow-list', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          listId: resource.id,
+          userId: user?.id,
+        }),
+      });
+    },
+    {
+      onSuccess: () => {
+        refreshProfile();
+        router.push(resourceUrl);
+      },
+    },
+  );
+
+  const { mutate: joinGroup, isLoading: isJoiningGroup } = useMutation(
+    async () => {
+      await fetch('/api/add-group-member/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          groupId: resource.id,
+          userId: user?.id,
+        }),
+      });
+    },
+    {
+      onSuccess: () => {
+        refetchMyGroups();
+        refetchList();
+        router.push(resourceUrl);
+      },
+    },
+  );
+
+  const handleClickJoin = () => {
+    if (isResourceList) {
+      followList();
+    } else {
+      joinGroup();
+    }
+  };
+
   return (
     <div className="flex flex-col mx-auto w-full p-4 bg-white border border-black/10 rounded-lg shadow">
       <div>
@@ -51,7 +124,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
           <div className="inline-block">
             <Link href={resourceUrl} passHref>
               <a className="inline-block font-bold break-words line-clamp-2 transition-all hover:text-primary-500 hover:underline">
-                {resource?.name}
+                {name}
               </a>
             </Link>
           </div>
@@ -127,12 +200,13 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
       <div className="mt-4">
         {selectedTab.id === 'discover' ? (
           <ElemButton
-            onClick={() => {}}
+            onClick={handleClickJoin}
             btn="slate"
             size="sm"
+            loading={isFollowingList || isJoiningGroup}
             className="w-full block rounded-md transition ease-in-out duration-150 group"
           >
-            {`Join ${isResourceList ? 'List' : 'Group'}`}
+            {`${isResourceList ? 'Follow List' : 'Join Group'}`}
           </ElemButton>
         ) : (
           <ElemButton
