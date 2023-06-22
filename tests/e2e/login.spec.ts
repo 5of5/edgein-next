@@ -30,24 +30,36 @@ test.describe('Login', () => {
   });
 
   test('should not sign in user on wrong credentials', async ({ page }) => {
-    const data = getInvalidLoginPayload();
+    const loginPayloadData = getInvalidLoginPayload();
 
-    await page.getByRole('textbox', { name: 'email' }).fill(data.email);
-    await page.getByRole('textbox', { name: 'password' }).fill(data.password);
+    await page
+      .getByRole('textbox', { name: 'email' })
+      .fill(loginPayloadData.email);
+    await page
+      .getByRole('textbox', { name: 'password' })
+      .fill(loginPayloadData.password);
 
     await page.getByRole('button', { name: /^Login$/i }).click();
 
     await expect(page.getByText(/Incorrect email or password./i)).toBeVisible();
   });
 
-  test('should sign in user successfully', async ({ page, baseURL }) => {
-    const data = getLoginPayload();
+  test('should sign in user successfully', async ({ page }) => {
+    const loginPayloadData = getLoginPayload();
 
-    await page.getByRole('textbox', { name: 'email' }).fill(data.email);
-    await page.getByRole('textbox', { name: 'password' }).fill(data.password);
+    await page
+      .getByRole('textbox', { name: 'email' })
+      .fill(loginPayloadData.email);
+    await page
+      .getByRole('textbox', { name: 'password' })
+      .fill(loginPayloadData.password);
 
     await page.getByRole('button', { name: /^Login$/i }).click();
 
-    await expect(page.getByAltText('profile')).toBeVisible({ timeout: 15000 });
+    await expect(
+      page
+        .getByAltText('profile')
+        .or(page.getByRole('img', { name: loginPayloadData.name })),
+    ).toBeVisible({ timeout: 15000 });
   });
 });

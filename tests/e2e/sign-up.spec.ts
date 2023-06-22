@@ -17,7 +17,7 @@ test.describe('Sign up', () => {
   test('should display an error message when an invalid email is used', async ({
     page,
   }) => {
-    const data = getSignUpPayload();
+    const signupPayloadData = getSignUpPayload();
 
     await page
       .getByRole('textbox', { name: 'email' })
@@ -31,7 +31,9 @@ test.describe('Sign up', () => {
       page.getByText(/Please enter valid work email./i),
     ).toBeVisible();
 
-    await page.getByRole('textbox', { name: 'email' }).fill(data.email); // Valid email
+    await page
+      .getByRole('textbox', { name: 'email' })
+      .fill(signupPayloadData.email); // Valid email
     await expect(
       page.getByText(
         /(Please enter a work email. | Please enter valid work email.)/i,
@@ -42,7 +44,7 @@ test.describe('Sign up', () => {
   test('should display an error message when the inputted password is invalid', async ({
     page,
   }) => {
-    const data = getSignUpPayload();
+    const signupPayloadData = getSignUpPayload();
 
     await page.getByRole('textbox', { name: 'password' }).fill('password'); // Invalid password
     await expect(
@@ -53,7 +55,9 @@ test.describe('Sign up', () => {
 
     await page.getByRole('textbox', { name: 'password' }).clear();
 
-    await page.getByRole('textbox', { name: 'password' }).fill(data.password); // Valid password
+    await page
+      .getByRole('textbox', { name: 'password' })
+      .fill(signupPayloadData.password); // Valid password
     await expect(
       page.getByText(
         /Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, and a special character/i,
@@ -62,11 +66,17 @@ test.describe('Sign up', () => {
   });
 
   test('should allow user register successfully', async ({ page }) => {
-    const data = getSignUpPayload();
+    const signupPayloadData = getSignUpPayload();
 
-    await page.getByRole('textbox', { name: 'name' }).fill(data.name);
-    await page.getByRole('textbox', { name: 'email' }).fill(data.email);
-    await page.getByRole('textbox', { name: 'password' }).fill(data.password);
+    await page
+      .getByRole('textbox', { name: 'name' })
+      .fill(signupPayloadData.name);
+    await page
+      .getByRole('textbox', { name: 'email' })
+      .fill(signupPayloadData.email);
+    await page
+      .getByRole('textbox', { name: 'password' })
+      .fill(signupPayloadData.password);
 
     await page
       .getByRole('button', { name: /Sign up\s+(with referral|and explore)$/i })
@@ -78,11 +88,17 @@ test.describe('Sign up', () => {
   });
 
   test('should not allow an already registered email', async ({ page }) => {
-    const data = getDuplicateSignUpPayload();
+    const duplicateSignupPayloadData = getDuplicateSignUpPayload();
 
-    await page.getByRole('textbox', { name: 'name' }).fill(data.name);
-    await page.getByRole('textbox', { name: 'email' }).fill(data.email);
-    await page.getByRole('textbox', { name: 'password' }).fill(data.password);
+    await page
+      .getByRole('textbox', { name: 'name' })
+      .fill(duplicateSignupPayloadData.name);
+    await page
+      .getByRole('textbox', { name: 'email' })
+      .fill(duplicateSignupPayloadData.email);
+    await page
+      .getByRole('textbox', { name: 'password' })
+      .fill(duplicateSignupPayloadData.password);
 
     await page
       .getByRole('button', { name: /Sign up\s+(with referral|and explore)$/i })
@@ -91,7 +107,7 @@ test.describe('Sign up', () => {
     await expect(
       page.getByText(
         new RegExp(
-          `Email ${data.email} already registered, please try signing in`,
+          `Email ${duplicateSignupPayloadData.email} already registered, please try signing in`,
           'i',
         ),
       ),
