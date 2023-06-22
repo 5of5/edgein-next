@@ -134,14 +134,14 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
           <div className="relative h-[500px] w-full bg-gradient-to-br from-[#F8DA4B] to-[#FE33D0] opacity-50"></div>
         </div>
         <div className="mx-auto max-w-4xl pt-32 pb-20 sm:pt-36 sm:pb-24">
-          <div className="mb-6 flex justify-center">
+          {/* <div className="mb-6 flex justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm font-bold uppercase leading-6 text-zinc-500">
               Web3 and AI data intelligence.
             </div>
-          </div>
+          </div> */}
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-              Unlock personalized alpha market knowledge.
+              Web3 and AI data intelligence.
             </h1>
             <p className="mt-6 text-lg leading-8 text-zinc-500 sm:text-xl sm:px-8">
               By leveraging powerful AI and personalized human intelligence,
@@ -175,8 +175,8 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 
       <section className="mx-auto max-w-7xl px-2 pt-24 pb-20 lg:px-6">
         <h2 className="mx-auto max-w-lg text-center text-lg text-zinc-500 leading-8 lg:px-4">
-          The most innovative companies are already using EdgeIn to find
-          superior data and context.
+          Leading companies around the world are using EdgeIn to find superior
+          data and context.
         </h2>
         <div className="mt-10 grid grid-cols-4 items-center gap-x-8 gap-y-10 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-7">
           {logos.map((organization: any, index: number) => {
@@ -342,9 +342,9 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
             Empowering the community with better data.
           </h2>
           <p className="mt-6 leading-8 text-zinc-500 sm:text-lg sm:px-6">
-            EdgeIn is the largest on/off-chain database in Web3 and AI, and the
-            only community-driven data platform for teams, investors, event
-            organizers, and media to gain an edge in trending markets.
+            EdgeIn is the largest, community-driven data platform built
+            exclusively for teams, investors, event organizers, and media in
+            Web3 and AI.
           </p>
         </div>
 
@@ -501,7 +501,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
         <div className="relative overflow-hidden p-8 sm:p-16 bg-gradient-to-b from-[#A05FFE] via-primary-500 to-primary-500  rounded-xl text-center">
           <div className="max-w-xl mx-auto relative z-10">
             <h2 className="text-3xl font-bold text-white sm:text-5xl">
-              Explore the biggest Web3 and AI database
+              Work smarter, not harder
             </h2>
             <ul className="mt-8 mx-auto w-fit text-left text-lg text-white grid grid-cols-2 gap-2">
               <li className="flex items-start sm:items-center col-span-2 lg:col-span-1">
