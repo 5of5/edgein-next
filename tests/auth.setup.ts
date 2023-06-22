@@ -21,7 +21,11 @@ setup('Authenticate', async ({ page }) => {
 
   await page.getByRole('button', { name: /^Login$/i }).click();
 
-  await expect(page.getByAltText('profile')).toBeVisible({ timeout: 15000 });
+  await expect(
+    page
+      .getByAltText('profile')
+      .or(page.getByRole('img', { name: loginPayloadData.name })),
+  ).toBeVisible({ timeout: 15000 });
 
   await page.context().storageState({ path: file });
 });
