@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const ElemMyLogin = () => {
+const ElemAdminLogin = () => {
   useEffect(() => {
     window.location.href = '/';
   }, []);
@@ -8,4 +8,4 @@ const ElemMyLogin = () => {
   return <div />;
 };
 
-export default ElemMyLogin;
+export default ElemAdminLogin;

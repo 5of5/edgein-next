@@ -5,7 +5,6 @@ import { SimpleForm, TextInput, SelectInput } from 'react-admin';
 type LeadSegmentationFormProps = {
   action: 'create' | 'edit';
   toolbar?: ReactElement | false;
-  currentData?: any;
 };
 
 const LeadSegmentationForm = ({
