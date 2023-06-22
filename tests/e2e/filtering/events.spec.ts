@@ -270,7 +270,6 @@ test.describe('Events', () => {
   });
 
   test('should filter upcoming events by size', async ({ page }) => {
-
     await page.getByRole('button', { name: /Upcoming/i }).click();
 
     await expect(page.getByRole('button', { name: /Upcoming/i })).toHaveClass(
@@ -308,7 +307,6 @@ test.describe('Events', () => {
   });
 
   test('should filter past events by size', async ({ page }) => {
-
     await page.getByRole('button', { name: /Past/i }).click();
 
     await expect(page.getByRole('button', { name: /Past/i })).toHaveClass(
