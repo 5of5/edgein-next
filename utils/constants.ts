@@ -8,6 +8,7 @@ import {
   maxValue,
   regex,
 } from 'react-admin';
+import { GroupsTabItem } from '@/types/common';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -412,6 +413,10 @@ export const companyChoices = [
     id: 'Following',
     name: 'Following (Upcoming)',
     disabled: true,
+  },
+  {
+    id: 'Raising',
+    name: 'Raising',
   },
   {
     id: 'Acquired',
@@ -1934,6 +1939,12 @@ export const newsPersonTypes = [
 export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
 
 export const ONBOARDING_QUESTION = 'Where did you hear about us?';
+
+export const GROUPS_TABS: GroupsTabItem[] = [
+  { id: 'my-groups', name: 'My Groups' },
+  { id: 'discover', name: 'Discover' },
+  { id: 'joined', name: 'Joined' },
+];
 
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
   'companies',
