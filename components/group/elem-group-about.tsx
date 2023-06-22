@@ -119,37 +119,47 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
           {groupAdmins && (
             <ul className="mt-4 overflow-hidden border-t pt-2 border-black/10">
-              {groupAdmins.map(mem => (
-                <li key={mem.id}>
-                  <Link href={`/people/${mem.user?.person?.slug}/`}>
-                    <a>
-                      {mem.user?.person?.picture ? (
-                        <ElemPhoto
-                          photo={mem.user?.person?.picture}
-                          wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                          imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                          imgAlt={mem.user?.display_name}
-                        />
-                      ) : (
-                        <div
-                          className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
-                          title={
-                            mem.user?.display_name ? mem.user?.display_name : ''
-                          }
-                        >
-                          {mem.user?.display_name?.charAt(0)}
-                        </div>
-                      )}
-                    </a>
-                  </Link>
-                  <p className="text-sm text-gray-400">
-                    <span className="capitalize">
-                      {mem.user?.display_name ? mem.user?.display_name : ''}
-                    </span>{' '}
-                    is an admin.
-                  </p>
-                </li>
-              ))}
+              {groupAdmins.map(mem => {
+                const admin = (
+                  <div>
+                    {mem.user?.person?.picture ? (
+                      <ElemPhoto
+                        photo={mem.user?.person?.picture}
+                        wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                        imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                        imgAlt={mem.user?.display_name}
+                      />
+                    ) : (
+                      <div
+                        className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
+                        title={
+                          mem.user?.display_name ? mem.user?.display_name : ''
+                        }
+                      >
+                        {mem.user?.display_name?.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                );
+
+                return (
+                  <li key={mem.id}>
+                    {mem.user?.person?.slug ? (
+                      <Link href={`/people/${mem.user?.person?.slug}/`}>
+                        <a>{admin}</a>
+                      </Link>
+                    ) : (
+                      admin
+                    )}
+                    <p className="text-sm text-gray-400">
+                      <span className="capitalize">
+                        {mem.user?.display_name ? mem.user?.display_name : ''}
+                      </span>{' '}
+                      is an admin.
+                    </p>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
