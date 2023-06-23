@@ -163,7 +163,7 @@ const Group: NextPage<Props> = (props: Props) => {
         <div className="lg:flex lg:gap-x-4">
           <div ref={notesRef} className="mt-4 flex justify-center flex-1">
             <ElemNotes
-              className="flex flex-col max-w-2xl w-full"
+              className="flex flex-col max-w-2xl w-full lg:max-w-none"
               notes={notes?.notes || []}
               refetchNotes={refetchNotes}
             />
@@ -232,9 +232,6 @@ const Group: NextPage<Props> = (props: Props) => {
                 <h3 className="mt-2 text-lg font-bold">
                   Join this group to view and participate.
                 </h3>
-                {/* <p className="mt-1 text-slate-600">
-									placeholder text
-								</p> */}
                 <ElemButton
                   btn="primary"
                   loading={isAddingGroupMember}

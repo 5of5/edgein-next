@@ -8943,6 +8943,314 @@ export type Jsonb_Comparison_Exp = {
   _nin: InputMaybe<Array<Scalars['jsonb']>>;
 };
 
+/** columns and relationships of "leads" */
+export type Leads = {
+  __typename?: 'leads';
+  campaign_id: Maybe<Scalars['String']>;
+  company_name: Maybe<Scalars['String']>;
+  created_at: Scalars['date'];
+  email: Scalars['String'];
+  first_name: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  instantly_id: Maybe<Scalars['String']>;
+  last_name: Maybe<Scalars['String']>;
+  linkedin_url: Maybe<Scalars['String']>;
+  phone: Maybe<Scalars['String']>;
+  source: Maybe<Scalars['String']>;
+  status: Scalars['String'];
+  updated_at: Scalars['date'];
+  website: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "leads" */
+export type Leads_Aggregate = {
+  __typename?: 'leads_aggregate';
+  aggregate: Maybe<Leads_Aggregate_Fields>;
+  nodes: Array<Leads>;
+};
+
+/** aggregate fields of "leads" */
+export type Leads_Aggregate_Fields = {
+  __typename?: 'leads_aggregate_fields';
+  avg: Maybe<Leads_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Leads_Max_Fields>;
+  min: Maybe<Leads_Min_Fields>;
+  stddev: Maybe<Leads_Stddev_Fields>;
+  stddev_pop: Maybe<Leads_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Leads_Stddev_Samp_Fields>;
+  sum: Maybe<Leads_Sum_Fields>;
+  var_pop: Maybe<Leads_Var_Pop_Fields>;
+  var_samp: Maybe<Leads_Var_Samp_Fields>;
+  variance: Maybe<Leads_Variance_Fields>;
+};
+
+
+/** aggregate fields of "leads" */
+export type Leads_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Leads_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Leads_Avg_Fields = {
+  __typename?: 'leads_avg_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "leads". All fields are combined with a logical 'AND'. */
+export type Leads_Bool_Exp = {
+  _and: InputMaybe<Array<Leads_Bool_Exp>>;
+  _not: InputMaybe<Leads_Bool_Exp>;
+  _or: InputMaybe<Array<Leads_Bool_Exp>>;
+  campaign_id: InputMaybe<String_Comparison_Exp>;
+  company_name: InputMaybe<String_Comparison_Exp>;
+  created_at: InputMaybe<Date_Comparison_Exp>;
+  email: InputMaybe<String_Comparison_Exp>;
+  first_name: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  instantly_id: InputMaybe<String_Comparison_Exp>;
+  last_name: InputMaybe<String_Comparison_Exp>;
+  linkedin_url: InputMaybe<String_Comparison_Exp>;
+  phone: InputMaybe<String_Comparison_Exp>;
+  source: InputMaybe<String_Comparison_Exp>;
+  status: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Date_Comparison_Exp>;
+  website: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "leads" */
+export enum Leads_Constraint {
+  /** unique or primary key constraint */
+  LeadsEmailKey = 'leads_email_key',
+  /** unique or primary key constraint */
+  LeadsPkey = 'leads_pkey'
+}
+
+/** input type for incrementing numeric columns in table "leads" */
+export type Leads_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "leads" */
+export type Leads_Insert_Input = {
+  campaign_id: InputMaybe<Scalars['String']>;
+  company_name: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  first_name: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  instantly_id: InputMaybe<Scalars['String']>;
+  last_name: InputMaybe<Scalars['String']>;
+  linkedin_url: InputMaybe<Scalars['String']>;
+  phone: InputMaybe<Scalars['String']>;
+  source: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['date']>;
+  website: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Leads_Max_Fields = {
+  __typename?: 'leads_max_fields';
+  campaign_id: Maybe<Scalars['String']>;
+  company_name: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['date']>;
+  email: Maybe<Scalars['String']>;
+  first_name: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  instantly_id: Maybe<Scalars['String']>;
+  last_name: Maybe<Scalars['String']>;
+  linkedin_url: Maybe<Scalars['String']>;
+  phone: Maybe<Scalars['String']>;
+  source: Maybe<Scalars['String']>;
+  status: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['date']>;
+  website: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Leads_Min_Fields = {
+  __typename?: 'leads_min_fields';
+  campaign_id: Maybe<Scalars['String']>;
+  company_name: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['date']>;
+  email: Maybe<Scalars['String']>;
+  first_name: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  instantly_id: Maybe<Scalars['String']>;
+  last_name: Maybe<Scalars['String']>;
+  linkedin_url: Maybe<Scalars['String']>;
+  phone: Maybe<Scalars['String']>;
+  source: Maybe<Scalars['String']>;
+  status: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['date']>;
+  website: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "leads" */
+export type Leads_Mutation_Response = {
+  __typename?: 'leads_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Leads>;
+};
+
+/** on_conflict condition type for table "leads" */
+export type Leads_On_Conflict = {
+  constraint: Leads_Constraint;
+  update_columns: Array<Leads_Update_Column>;
+  where: InputMaybe<Leads_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "leads". */
+export type Leads_Order_By = {
+  campaign_id: InputMaybe<Order_By>;
+  company_name: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  email: InputMaybe<Order_By>;
+  first_name: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  instantly_id: InputMaybe<Order_By>;
+  last_name: InputMaybe<Order_By>;
+  linkedin_url: InputMaybe<Order_By>;
+  phone: InputMaybe<Order_By>;
+  source: InputMaybe<Order_By>;
+  status: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+  website: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: leads */
+export type Leads_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "leads" */
+export enum Leads_Select_Column {
+  /** column name */
+  CampaignId = 'campaign_id',
+  /** column name */
+  CompanyName = 'company_name',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  FirstName = 'first_name',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  InstantlyId = 'instantly_id',
+  /** column name */
+  LastName = 'last_name',
+  /** column name */
+  LinkedinUrl = 'linkedin_url',
+  /** column name */
+  Phone = 'phone',
+  /** column name */
+  Source = 'source',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Website = 'website'
+}
+
+/** input type for updating data in table "leads" */
+export type Leads_Set_Input = {
+  campaign_id: InputMaybe<Scalars['String']>;
+  company_name: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  first_name: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  instantly_id: InputMaybe<Scalars['String']>;
+  last_name: InputMaybe<Scalars['String']>;
+  linkedin_url: InputMaybe<Scalars['String']>;
+  phone: InputMaybe<Scalars['String']>;
+  source: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['date']>;
+  website: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Leads_Stddev_Fields = {
+  __typename?: 'leads_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Leads_Stddev_Pop_Fields = {
+  __typename?: 'leads_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Leads_Stddev_Samp_Fields = {
+  __typename?: 'leads_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Leads_Sum_Fields = {
+  __typename?: 'leads_sum_fields';
+  id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "leads" */
+export enum Leads_Update_Column {
+  /** column name */
+  CampaignId = 'campaign_id',
+  /** column name */
+  CompanyName = 'company_name',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  FirstName = 'first_name',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  InstantlyId = 'instantly_id',
+  /** column name */
+  LastName = 'last_name',
+  /** column name */
+  LinkedinUrl = 'linkedin_url',
+  /** column name */
+  Phone = 'phone',
+  /** column name */
+  Source = 'source',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Website = 'website'
+}
+
+/** aggregate var_pop on columns */
+export type Leads_Var_Pop_Fields = {
+  __typename?: 'leads_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Leads_Var_Samp_Fields = {
+  __typename?: 'leads_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Leads_Variance_Fields = {
+  __typename?: 'leads_variance_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "likes" */
 export type Likes = {
   __typename?: 'likes';
@@ -10407,6 +10715,10 @@ export type Mutation_Root = {
   delete_investors: Maybe<Investors_Mutation_Response>;
   /** delete single row from the table: "investors" */
   delete_investors_by_pk: Maybe<Investors>;
+  /** delete data from the table: "leads" */
+  delete_leads: Maybe<Leads_Mutation_Response>;
+  /** delete single row from the table: "leads" */
+  delete_leads_by_pk: Maybe<Leads>;
   /** delete data from the table: "likes" */
   delete_likes: Maybe<Likes_Mutation_Response>;
   /** delete single row from the table: "likes" */
@@ -10611,6 +10923,10 @@ export type Mutation_Root = {
   insert_investors: Maybe<Investors_Mutation_Response>;
   /** insert a single row into the table: "investors" */
   insert_investors_one: Maybe<Investors>;
+  /** insert data into the table: "leads" */
+  insert_leads: Maybe<Leads_Mutation_Response>;
+  /** insert a single row into the table: "leads" */
+  insert_leads_one: Maybe<Leads>;
   /** insert data into the table: "likes" */
   insert_likes: Maybe<Likes_Mutation_Response>;
   /** insert a single row into the table: "likes" */
@@ -10811,6 +11127,10 @@ export type Mutation_Root = {
   update_investors: Maybe<Investors_Mutation_Response>;
   /** update single row of the table: "investors" */
   update_investors_by_pk: Maybe<Investors>;
+  /** update data of the table: "leads" */
+  update_leads: Maybe<Leads_Mutation_Response>;
+  /** update single row of the table: "leads" */
+  update_leads_by_pk: Maybe<Leads>;
   /** update data of the table: "likes" */
   update_likes: Maybe<Likes_Mutation_Response>;
   /** update single row of the table: "likes" */
@@ -11198,6 +11518,18 @@ export type Mutation_RootDelete_InvestorsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Investors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LeadsArgs = {
+  where: Leads_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Leads_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -11855,6 +12187,20 @@ export type Mutation_RootInsert_InvestorsArgs = {
 export type Mutation_RootInsert_Investors_OneArgs = {
   object: Investors_Insert_Input;
   on_conflict: InputMaybe<Investors_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LeadsArgs = {
+  objects: Array<Leads_Insert_Input>;
+  on_conflict: InputMaybe<Leads_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Leads_OneArgs = {
+  object: Leads_Insert_Input;
+  on_conflict: InputMaybe<Leads_On_Conflict>;
 };
 
 
@@ -12649,6 +12995,22 @@ export type Mutation_RootUpdate_Investors_By_PkArgs = {
   _inc: InputMaybe<Investors_Inc_Input>;
   _set: InputMaybe<Investors_Set_Input>;
   pk_columns: Investors_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeadsArgs = {
+  _inc: InputMaybe<Leads_Inc_Input>;
+  _set: InputMaybe<Leads_Set_Input>;
+  where: Leads_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Leads_By_PkArgs = {
+  _inc: InputMaybe<Leads_Inc_Input>;
+  _set: InputMaybe<Leads_Set_Input>;
+  pk_columns: Leads_Pk_Columns_Input;
 };
 
 
@@ -16587,6 +16949,12 @@ export type Query_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** fetch data from the table: "leads" */
+  leads: Array<Leads>;
+  /** fetch aggregated fields from the table: "leads" */
+  leads_aggregate: Leads_Aggregate;
+  /** fetch data from the table: "leads" using primary key columns */
+  leads_by_pk: Maybe<Leads>;
   /** An array relationship */
   likes: Array<Likes>;
   /** An aggregate relationship */
@@ -17316,6 +17684,29 @@ export type Query_RootInvestors_AggregateArgs = {
 
 
 export type Query_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootLeadsArgs = {
+  distinct_on: InputMaybe<Array<Leads_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Leads_Order_By>>;
+  where: InputMaybe<Leads_Bool_Exp>;
+};
+
+
+export type Query_RootLeads_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Leads_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Leads_Order_By>>;
+  where: InputMaybe<Leads_Bool_Exp>;
+};
+
+
+export type Query_RootLeads_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -18941,6 +19332,12 @@ export type Subscription_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** fetch data from the table: "leads" */
+  leads: Array<Leads>;
+  /** fetch aggregated fields from the table: "leads" */
+  leads_aggregate: Leads_Aggregate;
+  /** fetch data from the table: "leads" using primary key columns */
+  leads_by_pk: Maybe<Leads>;
   /** An array relationship */
   likes: Array<Likes>;
   /** An aggregate relationship */
@@ -19670,6 +20067,29 @@ export type Subscription_RootInvestors_AggregateArgs = {
 
 
 export type Subscription_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootLeadsArgs = {
+  distinct_on: InputMaybe<Array<Leads_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Leads_Order_By>>;
+  where: InputMaybe<Leads_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeads_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Leads_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Leads_Order_By>>;
+  where: InputMaybe<Leads_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeads_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -24634,7 +25054,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }> }> };
 
 export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -28462,7 +28882,7 @@ export const GetPersonDocument = `
         name
         logo
         overview
-        location
+        location_json
         tags
       }
     }
@@ -28479,7 +28899,7 @@ export const GetPersonDocument = `
         name
         logo
         overview
-        location
+        location_json
         tags
       }
     }
