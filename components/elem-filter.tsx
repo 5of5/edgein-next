@@ -381,15 +381,17 @@ export const ElemFilter: FC<Props> = ({
   const onApplyFilterTags = (name: FilterOptionKeys, tags: string[]) => {
     onChangeTags(tags, name);
     if (
-      name === 'country' ||
-      name === 'state' ||
-      name === 'city' ||
-      name === 'fundingInvestors' ||
-      name === 'fundedCompanies' ||
-      name === 'keywords'
+      [
+        'country',
+        'state',
+        'city',
+        'fundingInvestors',
+        'fundedCompanies',
+        'keywords',
+      ].includes(name)
     ) {
       const filterParams = cloneDeep(filters?.[name]);
-      if (filterParams) {
+      if (filterParams && 'tags' in filterParams) {
         filterParams.tags = tags;
         delete filterParams.open;
         onApply(name, filterParams as Filters);
