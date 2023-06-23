@@ -1,6 +1,7 @@
-import { status } from '@/utils/constants';
 import React, { ReactElement } from 'react';
 import { SimpleForm, TextInput, SelectInput } from 'react-admin';
+import { status } from '@/utils/constants';
+import { validateLeadSegmentation } from '@/utils/admin';
 
 type LeadSegmentationFormProps = {
   action: 'create' | 'edit';
@@ -15,7 +16,7 @@ const LeadSegmentationForm = ({
     'w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   return (
-    <SimpleForm toolbar={toolbar}>
+    <SimpleForm toolbar={toolbar} validate={validateLeadSegmentation}>
       {action === 'edit' && (
         <TextInput className={inputClassName} disabled source="id" />
       )}

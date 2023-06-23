@@ -1952,3 +1952,12 @@ export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
   'people',
   'news',
 ];
+
+export const SQL_BLOCK_WORDS = [
+  'drop',
+  'insert into',
+  'update',
+  'delete',
+  'create',
+  'alter',
+];
