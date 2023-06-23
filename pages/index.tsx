@@ -198,7 +198,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
               return (
                 <div
                   key={index}
-                  className={`absolute w-fit px-4 py-1.5 rounded-full whitespace-nowrap bg-gradient-to-b from-white to-primary-100 font-bold shadow-xl ${
+                  className={`hidden absolute w-fit px-4 py-1.5 rounded-full whitespace-nowrap bg-gradient-to-b from-white to-primary-100 font-bold shadow-xl lg:block ${
                     className ? className : ''
                   }`}
                 >
@@ -207,7 +207,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
               );
             })}
 
-            <div className="bg-white w-full rounded-xl shadow-xl shadow-primary-800/10 overflow-hidden">
+            <div className="bg-white w-full rounded-md lg:rounded-xl shadow-xl shadow-primary-800/10 overflow-hidden">
               <img
                 src="/images/features/hero.png"
                 alt="Web3 and AI data intelligence"
