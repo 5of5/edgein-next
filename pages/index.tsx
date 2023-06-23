@@ -1,12 +1,8 @@
 import type { NextPage } from 'next';
 import Script from 'next/script';
-import React, { useState, Fragment, useRef } from 'react';
+import React, { useState } from 'react';
 import { ElemButton } from '@/components/elem-button';
-import {
-  IconChevronDown,
-  IconCheck,
-  IconChevronDownMini,
-} from '@/components/icons';
+import { IconCheck, IconChevronDownMini } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { FigureConnect } from '@/components/figures';
 import { Tab, Transition } from '@headlessui/react';
@@ -23,6 +19,39 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
   const { show } = useIntercom();
 
   const [tabIndex, setTabIndex] = useState(0);
+  const [selectedFeature, setSelectedFeature] = useState(0);
+  const [selectedFeature2, setSelectedFeature2] = useState(0);
+
+  const highlights = [
+    {
+      text: 'Custom notes',
+      className: '-top-4 left-20',
+    },
+    {
+      text: 'Custom groups',
+      className: 'top-28 -left-32',
+    },
+    {
+      text: 'Custom lists',
+      className: 'top-1/2 -left-28',
+    },
+    {
+      text: 'Advanced filters',
+      className: '-top-6 right-56',
+    },
+    {
+      text: 'Unlimited search',
+      className: 'top-4 -right-8',
+    },
+    {
+      text: 'Personalized insights',
+      className: 'top-56 -right-24',
+    },
+    {
+      text: 'Real-time data',
+      className: 'bottom-16 -right-20',
+    },
+  ];
 
   const logos = [
     {
@@ -55,9 +84,6 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
       className: 'hidden sm:block',
     },
   ];
-
-  const [selectedFeature, setSelectedFeature] = useState(0);
-  const [selectedFeature2, setSelectedFeature2] = useState(0);
 
   const features = [
     {
@@ -148,27 +174,46 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
               EdgeIn gathers, refines and tailors the investor, company, event,
               and media data you need to get an edge.
             </p>
-            {!user && (
-              <div className="mt-6">
-                <ElemButton
-                  arrow
-                  onClick={() => setShowPopup('signup')}
-                  btn="primary"
-                  size="lg"
-                >
-                  Start for free
-                </ElemButton>
 
-                <p className="mt-2 italic text-xs text-zinc-500">
-                  *no credit card required
-                </p>
-              </div>
-            )}
+            <div className="mt-6">
+              <ElemButton
+                arrow
+                onClick={() => setShowPopup('signup')}
+                btn="primary"
+                size="lg"
+              >
+                Start for free
+              </ElemButton>
+
+              <p className="mt-2 italic text-xs text-zinc-500">
+                *no credit card required
+              </p>
+            </div>
           </div>
         </div>
         <div className="relative -mb-12 z-0 mx-auto max-w-4xl">
-          <div className="mt-10 mx-0 sm:mx-20 flex flex-col justify-center lg:mt-0 lg:mx-0">
-            <div className="bg-white h-[500px] w-full rounded-xl shadow-xl"></div>
+          <div className="relative mt-10 mx-0 sm:mx-20 flex flex-col justify-center lg:mt-0 lg:mx-0">
+            {highlights.map((highlight: any, index: number) => {
+              const { text, className } = highlight;
+              return (
+                <div
+                  key={index}
+                  className={`absolute w-fit px-4 py-1.5 rounded-full whitespace-nowrap bg-gradient-to-b from-white to-primary-100 font-bold shadow-xl ${
+                    className ? className : ''
+                  }`}
+                >
+                  {text}
+                </div>
+              );
+            })}
+
+            <div className="bg-white w-full rounded-xl shadow-xl shadow-primary-800/10 overflow-hidden">
+              <img
+                src="/images/features/hero.png"
+                alt="Web3 and AI data intelligence"
+                className={`w-full object-contain`}
+              />
+            </div>
           </div>
         </div>
       </section>
