@@ -159,13 +159,13 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
         >
           <div className="relative h-[500px] w-full bg-gradient-to-br from-[#F8DA4B] to-[#FE33D0] opacity-50"></div>
         </div>
-        <div className="mx-auto max-w-4xl pt-32 pb-20 sm:pt-36 sm:pb-24">
+        <div className="mx-auto max-w-4xl py-20 sm:py-36">
           {/* <div className="mb-6 flex justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm font-bold uppercase leading-6 text-zinc-500">
               Web3 and AI data intelligence.
             </div>
           </div> */}
-          <div className="text-center">
+          <div className="text-center px-2">
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
               Web3 and AI data intelligence.
             </h1>
@@ -382,11 +382,11 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
       </section>
 
       <section className="">
-        <div className="mx-auto max-w-2xl text-center pt-24 pb-16 px-2 lg:px-0">
+        <div className="mx-auto max-w-2xl text-center pt-24 pb-16 px-4 lg:px-0">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
             Empowering the community with better data.
           </h2>
-          <p className="mt-6 leading-8 text-zinc-500 sm:text-lg sm:px-6">
+          <p className="mt-6 text-zinc-500 sm:text-lg sm:px-6">
             EdgeIn is the largest, community-driven data platform built
             exclusively for teams, investors, event organizers, and media in
             Web3 and AI.
