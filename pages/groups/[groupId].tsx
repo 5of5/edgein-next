@@ -147,7 +147,6 @@ const Group: NextPage<Props> = (props: Props) => {
     return null;
   }
 
-  //if (isUserBelongToGroup || isPublicGroup || !isUserBelongToGroup) {
   return (
     <DashboardLayout>
       <ElemGroupInformation
@@ -157,7 +156,7 @@ const Group: NextPage<Props> = (props: Props) => {
         onOpenSettingDialog={onOpenSettingDialog}
       />
 
-      {(isUserBelongToGroup || isPublicGroup) && (
+      {isUserBelongToGroup && (
         <ElemTabBar
           className="border-t-transparent lg:hidden"
           tabs={tabBarItems}
@@ -165,8 +164,8 @@ const Group: NextPage<Props> = (props: Props) => {
         />
       )}
 
-      <div className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7">
-        <div className="col-span-7">
+      <div className="mt-7 grid lg:grid-cols-11 lg:gap-7">
+        <div className="mt-4 lg:mt-0 lg:col-span-7">
           <div ref={notesRef}>
             {isUserBelongToGroup && (
               <ElemNotes
@@ -177,7 +176,7 @@ const Group: NextPage<Props> = (props: Props) => {
             )}
           </div>
 
-          {isPublicGroup && (
+          {isPublicGroup && !isUserBelongToGroup && (
             <div className="bg-white shadow rounded-lg px-5 py-4">
               <div className="p-12 text-center">
                 <IconUsers
@@ -199,7 +198,7 @@ const Group: NextPage<Props> = (props: Props) => {
             </div>
           )}
 
-          {isPrivateGroup && (
+          {isPrivateGroup && !isUserBelongToGroup && (
             <div className="bg-white shadow rounded-lg px-5 py-4">
               <div className="p-12 text-center">
                 <IconLockClosed
@@ -214,11 +213,10 @@ const Group: NextPage<Props> = (props: Props) => {
             </div>
           )}
         </div>
-        <div className="col-span-4 order-1 lg:order-none">
+        <div className="order-first lg:order-none lg:col-span-4">
           <div className="flex flex-col space-y-4">
             <div>
               <ElemGroupAbout
-                className="mt-4 lg:mt-0"
                 isUserBelongToGroup={isUserBelongToGroup}
                 onOpenSettingDialog={onOpenSettingDialog}
                 group={groupData}
@@ -259,75 +257,6 @@ const Group: NextPage<Props> = (props: Props) => {
       )}
     </DashboardLayout>
   );
-  // }
-
-  // if (groupData.public) {
-  //   return (
-  //     <DashboardLayout>
-  //       <ElemGroupInformation
-  //         isUserBelongToGroup={isUserBelongToGroup}
-  //         group={groupData}
-  //         onInvite={onOpenInviteDialog}
-  //         onOpenSettingDialog={onOpenSettingDialog}
-  //         isAddingGroupMember={isAddingGroupMember}
-  //         onAddGroupMember={() => addGroupMember()}
-  //       />
-  //       <div className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7">
-  //         <div className="col-span-7">
-  //           <div className="bg-white shadow rounded-lg px-5 py-4">
-  //             <div className="p-12 text-center">
-  //               <IconUsers
-  //                 className="mx-auto h-12 w-12 text-slate-300"
-  //                 title="Join Group"
-  //               />
-  //               <h3 className="mt-2 text-lg font-bold">
-  //                 Join this group to view and participate.
-  //               </h3>
-  //               <ElemButton
-  //                 btn="primary"
-  //                 loading={isAddingGroupMember}
-  //                 onClick={() => addGroupMember()}
-  //                 className="mt-2">
-  //                 Join group
-  //               </ElemButton>
-  //             </div>
-  //           </div>
-  //         </div>
-
-  //         <div className="col-span-4">
-  //           <div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
-  //             <ElemGroupAbout
-  //               className="mt-4 lg:mt-0"
-  //               isUserBelongToGroup={isUserBelongToGroup}
-  //               onOpenSettingDialog={onOpenSettingDialog}
-  //               group={groupData}
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </DashboardLayout>
-  //   );
-  // } else {
-  //   return (
-  //     <DashboardLayout>
-  //       <ElemGroupInformation
-  //         isUserBelongToGroup={isUserBelongToGroup}
-  //         group={groupData}
-  //         onInvite={onOpenInviteDialog}
-  //         onOpenSettingDialog={onOpenSettingDialog}
-  //       />
-
-  //       <div className="w-full mx-auto max-w-2xl lg:max-w-lg">
-  //         <ElemGroupAbout
-  //           className="mt-4 lg:mt-0"
-  //           isUserBelongToGroup={isUserBelongToGroup}
-  //           onOpenSettingDialog={onOpenSettingDialog}
-  //           group={groupData}
-  //         />
-  //       </div>
-  //     </DashboardLayout>
-  //   );
-  // }
 };
 
 export const getServerSideProps: GetServerSideProps = async context => {
