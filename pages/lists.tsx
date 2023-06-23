@@ -5,7 +5,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import { IconGroup, IconGroupPlus } from '@/components/icons';
+import { IconList, IconListPlus } from '@/components/icons';
 import {
   GetListsQuery,
   GetListsDocument,
@@ -22,8 +22,8 @@ import { LISTS_TABS } from '@/utils/constants';
 import { getListsFilters } from '@/utils/filter';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
-import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
 import ElemListCard from '@/components/elem-list-card';
+import { CreateListDialog } from '@/components/my-list/create-list-dialog';
 
 type Props = {
   initialListsCount: number;
@@ -33,11 +33,11 @@ type Props = {
 const LIMIT = 12;
 
 const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
-  const { user, myGroups } = useUser();
+  const { user, listAndFollows } = useUser();
   const [initialLoad, setInitialLoad] = useState(true);
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-  const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
+  const [isOpenCreateListDialog, setIsOpenCreateListDialog] = useState(false);
 
   const router = useRouter();
 
@@ -104,22 +104,22 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
     setIsOpenUpgradeDialog(false);
   };
 
-  const onOpenCreateGroupDialog = () => {
-    setIsOpenCreateGroupDialog(true);
+  const onOpenCreateListDialog = () => {
+    setIsOpenCreateListDialog(true);
   };
 
-  const onCloseCreateGroupDialog = () => {
-    setIsOpenCreateGroupDialog(false);
+  const onCloseCreateListDialog = () => {
+    setIsOpenCreateListDialog(false);
   };
 
-  const onClickCreateGroup = () => {
+  const onClickCreateList = () => {
     if (
-      user?.entitlements.groupsCount &&
-      myGroups.length > user?.entitlements.groupsCount
+      user?.entitlements.listsCount &&
+      listAndFollows.length > user?.entitlements.listsCount
     ) {
       onOpenUpgradeDialog();
     } else {
-      onOpenCreateGroupDialog();
+      onOpenCreateListDialog();
     }
   };
 
@@ -150,7 +150,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
         {lists?.length === 0 ? (
           <div className="flex items-center justify-center mx-auto min-h-[40vh]">
             <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
+              <IconList className="w-12 h-12 mx-auto text-slate-300" />
               <h1 className="mt-5 text-3xl font-bold">
                 {selectedListTab.id === 'my-lists'
                   ? 'Create a list'
@@ -167,11 +167,11 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
               </div>
               {selectedListTab.id === 'my-lists' ? (
                 <ElemButton
-                  onClick={onClickCreateGroup}
+                  onClick={onClickCreateList}
                   btn="primary"
                   className="mt-3"
                 >
-                  <IconGroupPlus className="w-6 h-6 mr-1" />
+                  <IconListPlus className="w-6 h-6 mr-1" />
                   Create New List
                 </ElemButton>
               ) : selectedListTab.id === 'followed' ? (
@@ -185,7 +185,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                   btn="primary"
                   className="mt-3"
                 >
-                  <IconGroupPlus className="w-6 h-6 mr-1" />
+                  <IconListPlus className="w-6 h-6 mr-1" />
                   Discover lists
                 </ElemButton>
               ) : (
@@ -259,9 +259,9 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
         onClose={onCloseUpgradeDialog}
       />
 
-      <ElemCreateGroupDialog
-        isOpen={isOpenCreateGroupDialog}
-        onClose={onCloseCreateGroupDialog}
+      <CreateListDialog
+        isOpen={isOpenCreateListDialog}
+        onClose={onCloseCreateListDialog}
       />
     </DashboardLayout>
   );
@@ -291,7 +291,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     props: {
       metaTitle: 'Lists - EdgeIn.io',
       metaDescription:
-        'Connect with people who share your interests. Meet new people, share knowledge or get support. Find the group for you.',
+        'Connect with people who share your interests. Meet new people, share knowledge or get support. Find the list for you.',
       initialListsCount: listsData?.lists_aggregate?.aggregate?.count || 0,
       initialLists: listsData?.lists || [],
     },

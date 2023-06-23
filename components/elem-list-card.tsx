@@ -1,16 +1,16 @@
 import { FC } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useMutation } from 'react-query';
 import moment from 'moment-timezone';
 import { kebabCase, startCase } from 'lodash';
+import { useUser } from '@/context/user-context';
 import { getNameFromListName } from '@/utils/reaction';
 import { GetGroupsQuery, GetListsQuery, Lists } from '@/graphql/types';
 import { DeepPartial, GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
-import { useMutation } from 'react-query';
-import { useUser } from '@/context/user-context';
-import { useRouter } from 'next/router';
 
 type ResourceDataType<T> = T;
 
@@ -53,7 +53,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     ? `/lists/${resource.id}/${kebabCase(getNameFromListName(resource))}`
     : `/groups/${resource.id}`;
 
-  const numOfNotes = !isResourceList && resource.notes.length;
+  const numOfNotes = isResourceList ? 0 : resource.notes.length;
 
   const members = isResourceList
     ? resource.list_members
