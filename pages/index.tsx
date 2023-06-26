@@ -297,8 +297,8 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
               <div className="mt-4 md:mt-0 md:col-span-7">
                 <div className="relative flex items-center rounded-xl overflow-hidden">
                   <div className="bg-primary-500/10">
-                    {selectedFeature === 3 && (
-                      <div className="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-r from-transparent to-[#E5E3F7]"></div>
+                    {(selectedFeature === 1 || selectedFeature === 3) && (
+                      <div className="absolute top-0 bottom-0 right-0 w-10 bg-gradient-to-r from-transparent to-[#E5E3F7]"></div>
                     )}
 
                     <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-b from-transparent to-[#E5E3F7]"></div>
@@ -362,10 +362,6 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
               <div className="mt-4 md:mt-0 md:col-span-7">
                 <div className="relative flex items-center rounded-xl overflow-hidden">
                   <div className="bg-primary-500/10">
-                    {/* {selectedFeature2 === 3 && (
-                      <div className="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-r from-transparent to-[#E5E3F7]"></div>
-                    )} */}
-
                     <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-b from-transparent to-[#E5E3F7]"></div>
 
                     <img
@@ -395,7 +391,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 
         <div className="mx-auto max-w-7xl lg:px-6">
           <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
-            <Tab.List className="scrollbar-hide overflow-x-scroll pb-px flex shrink-0 gap-x-6 px-6 font-bold text-lg border-b border-black/10 transition-all lg:justify-center">
+            <Tab.List className="scrollbar-hide overflow-x-scroll pb-px flex shrink-0 gap-x-6 px-6 font-bold text-lg border-b border-black/10 transition-all sm:justify-center">
               <Tab
                 className={({ selected }) =>
                   `${
@@ -432,111 +428,80 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
             </Tab.List>
 
             <div className="px-6 py-8 lg:flex lg:items-center lg:px-8 lg:py-16 lg:space-x-24">
-              <Tab.Panels className="max-w-md">
-                <Tab.Panel unmount={false}>
-                  <Transition
-                    show={tabIndex == 0}
-                    enter="transition-all duration-300"
-                    enterFrom="opacity-0 h-0"
-                    enterTo="opacity-100 h-auto"
-                    leave="transition-all duration-300"
-                    leaveFrom="opacity-100 h-auto"
-                    leaveTo="opacity-0 h-0"
-                  >
-                    <h3 className="font-bold text-2xl">For Investors</h3>
-                    <ul className="mt-4 flex flex-col space-y-4">
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
-                        Track your competitors&apos; latest investments and news
-                        coverage at a fraction of the cost of Pitchbook and
-                        Crunchbase.
-                      </li>
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
-                        Connect with the right Founders looking to raise through
-                        our proprietary tagging system.
-                      </li>
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
-                        Explore the industry&apos;s hottest events in Web3 and
-                        AI and make connections before the event to make better
-                        use of your time at the show.
-                      </li>
-                    </ul>
-                  </Transition>
+              <Tab.Panels className="w-full max-w-md mx-auto lg:mx-0">
+                <Tab.Panel className="w-full">
+                  <h3 className="font-bold text-2xl">For Investors</h3>
+                  <ul className="mt-4 flex flex-col space-y-4">
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
+                      Track your competitors&apos; latest investments and news
+                      coverage at a fraction of the cost of Pitchbook and
+                      Crunchbase.
+                    </li>
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
+                      Connect with the right Founders looking to raise through
+                      our proprietary tagging system.
+                    </li>
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
+                      Explore the industry&apos;s hottest events in Web3 and AI
+                      and make connections before the event to make better use
+                      of your time at the show.
+                    </li>
+                  </ul>
                 </Tab.Panel>
-                <Tab.Panel unmount={false}>
-                  <Transition
-                    show={tabIndex == 1}
-                    enter="transition-all duration-300"
-                    enterFrom="opacity-0 h-0"
-                    enterTo="opacity-100 h-auto"
-                    leave="transition-all duration-300"
-                    leaveFrom="opacity-100 h-auto"
-                    leaveTo="opacity-0 h-0"
-                  >
-                    <h3 className="font-bold text-2xl">For Teams</h3>
-                    <ul className="mt-4 flex flex-col space-y-4">
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
-                        Increase your visibility and join the growing EdgeIn
-                        community of more than 100K builders in Web3 and AI.
-                      </li>
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
-                        Get key insights into your competitors&apos; latest
-                        investment rounds, team comps and recent news coverage.
-                      </li>
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
-                        Source quality leads and increase your deal flow
-                        instantly with emails and social data for your specified
-                        targets.
-                      </li>
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
-                        Identify the right industry targets at the world’s
-                        largest brands in just seconds.
-                      </li>
-                    </ul>
-                  </Transition>
+                <Tab.Panel className="w-full">
+                  <h3 className="font-bold text-2xl">For Teams</h3>
+                  <ul className="mt-4 flex flex-col space-y-4">
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
+                      Increase your visibility and join the growing EdgeIn
+                      community of more than 100K builders in Web3 and AI.
+                    </li>
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
+                      Get key insights into your competitors&apos; latest
+                      investment rounds, team comps and recent news coverage.
+                    </li>
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
+                      Source quality leads and increase your deal flow instantly
+                      with emails and social data for your specified targets.
+                    </li>
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
+                      Identify the right industry targets at the world’s largest
+                      brands in just seconds.
+                    </li>
+                  </ul>
                 </Tab.Panel>
-                <Tab.Panel unmount={false}>
-                  <Transition
-                    show={tabIndex == 2}
-                    enter="transition-all duration-300"
-                    enterFrom="opacity-0 h-0"
-                    enterTo="opacity-100 h-auto"
-                    leave="transition-all duration-300"
-                    leaveFrom="opacity-100 h-auto"
-                    leaveTo="opacity-0 h-0"
-                  >
-                    <h3 className="font-bold text-2xl">
-                      For Event Organizers and Media
-                    </h3>
-                    <ul className="mt-4 flex flex-col space-y-4">
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
-                        Partner with EdgeIn to promote your event, sponsors, and
-                        speakers to our community - all tagged by role, company,
-                        and industry.
-                      </li>
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
-                        Forge strategic relationships with Founders and key SMEs
-                        before your event.
-                      </li>
-                      <li className="flex items-start">
-                        <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
-                        Identify thought leaders, content contributors, and
-                        sources directly on our platform.
-                      </li>
-                    </ul>
-                  </Transition>
+                <Tab.Panel className="w-full">
+                  <h3 className="font-bold text-2xl">
+                    For Event Organizers and Media
+                  </h3>
+                  <ul className="mt-4 flex flex-col space-y-4">
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
+                      Partner with EdgeIn to promote your event, sponsors, and
+                      speakers to our community - all tagged by role, company,
+                      and industry.
+                    </li>
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
+                      Forge strategic relationships with Founders and key SMEs
+                      before your event.
+                    </li>
+                    <li className="flex items-start">
+                      <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500" />{' '}
+                      Identify thought leaders, content contributors, and
+                      sources directly on our platform.
+                    </li>
+                  </ul>
                 </Tab.Panel>
               </Tab.Panels>
 
-              <FigureConnect className="h-auto w-full mt-8 lg:mt-0 " />
+              <FigureConnect className="h-auto w-full mx-auto max-w-md mt-8 lg:mt-0 lg:max-w-none" />
             </div>
           </Tab.Group>
         </div>
@@ -548,7 +513,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
             <h2 className="text-3xl font-bold text-white sm:text-5xl">
               Work smarter, not harder
             </h2>
-            <ul className="mt-8 mx-auto w-fit text-left text-lg text-white grid grid-cols-2 gap-2">
+            <ul className="mt-8 mx-auto w-fit text-left text-lg text-white grid grid-cols-2 gap-4">
               <li className="flex items-start sm:items-center col-span-2 lg:col-span-1">
                 <IconCheck className="w-6 h-6 mr-2" /> Real-time Web3 and AI
                 data
