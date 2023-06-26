@@ -27,7 +27,8 @@ export const validateLeadSegmentation: ValidateForm = (values: FieldValues) => {
       v => values.sql && values.sql.toLowerCase().indexOf(v) >= 0,
     )
   ) {
-    errors.sql = 'Vulnerable to SQL injection';
+    errors.sql =
+      'Invalid SQL. SQL statement can only be SELECT statements. DROP, INSERT INTO, UPDATE, DELETE, CREATE, ALTER are all invalid. If you think your SQL statement should be valid please contact #dev-chat';
   }
 
   return errors;

@@ -5,7 +5,7 @@ const ElemAdminLogin = () => {
     window.location.href = '/';
   }, []);
 
-  return <div />;
+  return <div>Please log in to main app.</div>;
 };
 
 export default ElemAdminLogin;
