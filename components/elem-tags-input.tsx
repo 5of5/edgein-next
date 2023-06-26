@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  FC,
+  ChangeEventHandler,
+  KeyboardEvent,
+  useEffect,
+} from 'react';
 import { IconX } from './icons';
 
 type Props = {
+  inputValue: string;
   value: Array<string>;
   placeholder?: string;
+  onChangeInput: ChangeEventHandler<HTMLInputElement>;
   onChange: (tags: Array<string>) => void;
   subtext?: string;
 };
 
-export const ElemTagsInput: React.FC<Props> = ({
+export const ElemTagsInput: FC<Props> = ({
+  inputValue,
   value,
   placeholder = '',
+  onChangeInput,
   onChange,
   subtext = '',
 }) => {
   const [tags, setTags] = useState<Array<string>>(value);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    setTags(value);
+  }, [value]);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== 'Enter') return;
     const target = event.target as HTMLInputElement;
     const data = target.value;
@@ -56,10 +70,12 @@ export const ElemTagsInput: React.FC<Props> = ({
           </div>
         )}
         <input
-          onKeyDown={handleKeyDown}
           type="text"
           className="appearance-none p-0 border-none w-full placeholder:text-slate-400 focus:outline-none focus:ring-0"
           placeholder={placeholder}
+          value={inputValue}
+          onChange={onChangeInput}
+          onKeyDown={handleKeyDown}
         />
       </div>
       {subtext && <p className="mt-0.5 text-xs text-slate-600">{subtext}</p>}

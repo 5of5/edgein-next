@@ -118,7 +118,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
   };
 
   return (
-    <div className="flex flex-col mx-auto w-full p-4 bg-white border border-black/10 rounded-lg shadow">
+    <div className="flex flex-col mx-auto w-full p-4 bg-white rounded-lg shadow">
       <div>
         <ElemTooltip content={description} direction="top">
           <div className="inline-block">

@@ -10,16 +10,20 @@ import {
 import { User_Groups } from '@/graphql/types';
 import Link from 'next/link';
 import { ElemPhoto } from '@/components/elem-photo';
+import { ElemMemberAvatarList } from '@/components/group/elem-member-avatar-list';
+import { SettingTabProps } from './elem-setting-dialog';
 
 type Props = {
   className?: string;
   isUserBelongToGroup: boolean;
+  onOpenSettingDialog: (tab?: SettingTabProps) => void;
   group: User_Groups;
 };
 
 export const ElemGroupAbout: React.FC<Props> = ({
   className = '',
   isUserBelongToGroup,
+  onOpenSettingDialog,
   group,
 }) => {
   const isPublicGroup = group.public;
@@ -62,9 +66,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
     <>
       <div className={className}>
         <div className="bg-white shadow rounded-lg px-4 py-4 shrink-0">
-          <div>
-            <h2 className="text-lg font-bold">About Group</h2>
-          </div>
+          <h2 className="text-lg font-bold">About Group</h2>
           {group?.description && (
             <p className="text-gray-400 mb-3">{group?.description}</p>
           )}
@@ -117,50 +119,76 @@ export const ElemGroupAbout: React.FC<Props> = ({
             </ul>
           )}
 
-          {groupAdmins && (
-            <ul className="mt-4 overflow-hidden border-t pt-2 border-black/10">
-              {groupAdmins.map(mem => {
-                const admin = (
-                  <div>
-                    {mem.user?.person?.picture ? (
-                      <ElemPhoto
-                        photo={mem.user?.person?.picture}
-                        wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                        imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                        imgAlt={mem.user?.display_name}
-                      />
-                    ) : (
-                      <div
-                        className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
-                        title={
-                          mem.user?.display_name ? mem.user?.display_name : ''
-                        }
-                      >
-                        {mem.user?.display_name?.charAt(0)}
-                      </div>
-                    )}
-                  </div>
-                );
+          {(isPublicGroup || isUserBelongToGroup) && (
+            <div className="mt-4 pt-2 border-t border-black/10">
+              <div className="flex justify-between items-center">
+                <h3 className="font-bold">People</h3>
+                {isUserBelongToGroup && (
+                  <button
+                    onClick={() => onOpenSettingDialog('members')}
+                    className="text-primary-500"
+                  >
+                    See all
+                  </button>
+                )}
+              </div>
+              <div className="mt-2 flex items-center">
+                <ElemMemberAvatarList
+                  isUserBelongToGroup={isUserBelongToGroup}
+                  members={group.user_group_members}
+                />
+                <div className="text-sm text-slate-600 ml-1">
+                  {group.user_group_members.length} Member
+                  {group.user_group_members.length > 1 ? 's' : ''}
+                </div>
+              </div>
+            </div>
+          )}
 
-                return (
-                  <li key={mem.id}>
-                    {mem.user?.person?.slug ? (
-                      <Link href={`/people/${mem.user?.person?.slug}/`}>
-                        <a>{admin}</a>
-                      </Link>
-                    ) : (
-                      admin
-                    )}
-                    <p className="text-sm text-gray-400">
-                      <span className="capitalize">
-                        {mem.user?.display_name ? mem.user?.display_name : ''}
-                      </span>{' '}
-                      is an admin.
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
+          {(groupAdmins.length > 0 || isUserBelongToGroup) && (
+            <div className="mt-4 flex items-center">
+              <ul>
+                {groupAdmins.map(mem => {
+                  const admin = (
+                    <div>
+                      {mem.user?.person?.picture ? (
+                        <ElemPhoto
+                          photo={mem.user?.person?.picture}
+                          wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                          imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                          imgAlt={mem.user?.display_name}
+                        />
+                      ) : (
+                        <div
+                          className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
+                          title={
+                            mem.user?.display_name ? mem.user?.display_name : ''
+                          }
+                        >
+                          {mem.user?.display_name?.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                  );
+
+                  return (
+                    <li key={mem.id}>
+                      {mem.user?.person?.slug ? (
+                        <Link href={`/people/${mem.user?.person?.slug}/`}>
+                          <a>{admin}</a>
+                        </Link>
+                      ) : (
+                        admin
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="text-sm text-slate-600 ml-1">
+                Admin
+                {groupAdmins.length > 1 ? 's' : ''}
+              </div>
+            </div>
           )}
         </div>
       </div>

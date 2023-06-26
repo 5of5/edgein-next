@@ -90,6 +90,7 @@ export default function LoginModal(props: Props) {
         try {
           const res = await response.clone().json();
           if (res.nextStep && res.nextStep === 'SIGNUP') {
+            setIsLoading(false);
             onSignUp(email, password);
           } else {
             setIsLoading(false);

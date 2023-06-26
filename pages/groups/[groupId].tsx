@@ -30,7 +30,7 @@ import {
   Notes_Bool_Exp,
   User_Group_Members,
 } from '@/graphql/types';
-import { IconUsers } from '@/components/icons';
+import { IconUsers, IconLockClosed } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { useUser } from '@/context/user-context';
 
@@ -75,6 +75,8 @@ const Group: NextPage<Props> = (props: Props) => {
   const isUserBelongToGroup = groupData.user_group_members.some(
     mem => mem.user?.id === user?.id,
   );
+  const isPublicGroup = groupData.public;
+  const isPrivateGroup = !groupData.public && !isUserBelongToGroup;
 
   const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
   const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -145,86 +147,38 @@ const Group: NextPage<Props> = (props: Props) => {
     return null;
   }
 
-  if (isUserBelongToGroup) {
-    return (
-      <DashboardLayout>
-        <ElemGroupInformation
-          isUserBelongToGroup={isUserBelongToGroup}
-          group={groupData}
-          onInvite={onOpenInviteDialog}
-          onOpenSettingDialog={onOpenSettingDialog}
-        />
+  return (
+    <DashboardLayout>
+      <ElemGroupInformation
+        isUserBelongToGroup={isUserBelongToGroup}
+        group={groupData}
+        onInvite={onOpenInviteDialog}
+        onOpenSettingDialog={onOpenSettingDialog}
+      />
 
+      {isUserBelongToGroup && (
         <ElemTabBar
           className="border-t-transparent lg:hidden"
           tabs={tabBarItems}
           showDropdown={false}
         />
-        <div className="lg:flex lg:gap-x-4">
-          <div ref={notesRef} className="mt-4 flex justify-center flex-1">
-            <ElemNotes
-              className="flex flex-col max-w-2xl w-full lg:max-w-none"
-              notes={notes?.notes || []}
-              refetchNotes={refetchNotes}
-            />
-          </div>
-          <div className="flex justify-center flex-1 lg:block lg:max-w-lg">
-            <div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
-              <div>
-                <ElemGroupAbout
-                  className="mt-4 lg:mt-12"
-                  isUserBelongToGroup={isUserBelongToGroup}
-                  group={groupData}
-                />
-              </div>
+      )}
 
-              <div ref={listsRef}>
-                <ElemLists
-                  group={groupData}
-                  lists={
-                    (lists?.list_user_groups?.map(
-                      item => item.list,
-                    ) as Array<Lists>) || []
-                  }
-                  refetchLists={refetchLists}
-                />
-              </div>
-            </div>
+      <div className="mt-7 grid lg:grid-cols-11 lg:gap-7">
+        <div className="mt-4 lg:mt-0 lg:col-span-7">
+          <div ref={notesRef}>
+            {isUserBelongToGroup && (
+              <ElemNotes
+                className="flex flex-col"
+                notes={notes?.notes || []}
+                refetchNotes={refetchNotes}
+              />
+            )}
           </div>
-        </div>
-        <ElemInviteDialog
-          isOpen={isOpenInviteDialog}
-          group={groupData}
-          onUpdateGroupData={setGroupData}
-          onClose={onCloseInviteDialog}
-        />
-        <ElemSettingDialog
-          isOpen={isOpenSettingDialog}
-          selectedTab={selectedSettingTab}
-          group={groupData}
-          onClose={onCloseSettingDialog}
-          onUpdateGroupData={setGroupData}
-          onInvite={onOpenInviteDialog}
-        />
-      </DashboardLayout>
-    );
-  }
 
-  if (groupData.public) {
-    return (
-      <DashboardLayout>
-        <ElemGroupInformation
-          isUserBelongToGroup={isUserBelongToGroup}
-          group={groupData}
-          onInvite={onOpenInviteDialog}
-          onOpenSettingDialog={onOpenSettingDialog}
-          isAddingGroupMember={isAddingGroupMember}
-          onAddGroupMember={() => addGroupMember()}
-        />
-        <div className="lg:flex lg:gap-x-4">
-          <div className="mt-4 flex justify-center flex-1">
-            <div className="flex flex-col max-w-2xl w-full">
-              <div className="bg-white shadow rounded-lg max-w-2xl w-full p-12 text-center">
+          {isPublicGroup && !isUserBelongToGroup && (
+            <div className="bg-white shadow rounded-lg px-5 py-4">
+              <div className="p-12 text-center">
                 <IconUsers
                   className="mx-auto h-12 w-12 text-slate-300"
                   title="Join Group"
@@ -242,40 +196,67 @@ const Group: NextPage<Props> = (props: Props) => {
                 </ElemButton>
               </div>
             </div>
-          </div>
+          )}
 
-          <div className="flex justify-center flex-1 lg:block lg:max-w-lg">
-            <div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
+          {isPrivateGroup && !isUserBelongToGroup && (
+            <div className="bg-white shadow rounded-lg px-5 py-4">
+              <div className="p-12 text-center">
+                <IconLockClosed
+                  className="mx-auto h-12 w-12 text-slate-300"
+                  title="Join Group"
+                />
+                <h3 className="mt-2 text-lg font-bold">Private Group</h3>
+                <p>
+                  Only members can see who’s in the group and what they post.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="order-first lg:order-none lg:col-span-4">
+          <div className="flex flex-col space-y-4">
+            <div>
               <ElemGroupAbout
-                className="mt-4"
                 isUserBelongToGroup={isUserBelongToGroup}
+                onOpenSettingDialog={onOpenSettingDialog}
                 group={groupData}
               />
             </div>
+
+            <div ref={listsRef}>
+              {isUserBelongToGroup && (
+                <ElemLists
+                  group={groupData}
+                  lists={
+                    (lists?.list_user_groups?.map(
+                      item => item.list,
+                    ) as Array<Lists>) || []
+                  }
+                  refetchLists={refetchLists}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </DashboardLayout>
-    );
-  } else {
-    return (
-      <DashboardLayout>
-        <ElemGroupInformation
-          isUserBelongToGroup={isUserBelongToGroup}
+      </div>
+      <ElemInviteDialog
+        isOpen={isOpenInviteDialog}
+        group={groupData}
+        onUpdateGroupData={setGroupData}
+        onClose={onCloseInviteDialog}
+      />
+      {(isUserBelongToGroup || isPublicGroup) && (
+        <ElemSettingDialog
+          isOpen={isOpenSettingDialog}
+          selectedTab={selectedSettingTab}
           group={groupData}
+          onClose={onCloseSettingDialog}
+          onUpdateGroupData={setGroupData}
           onInvite={onOpenInviteDialog}
-          onOpenSettingDialog={onOpenSettingDialog}
         />
-
-        <div className="w-full mx-auto max-w-2xl lg:max-w-lg">
-          <ElemGroupAbout
-            className="mt-4"
-            isUserBelongToGroup={isUserBelongToGroup}
-            group={groupData}
-          />
-        </div>
-      </DashboardLayout>
-    );
-  }
+      )}
+    </DashboardLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async context => {
