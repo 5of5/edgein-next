@@ -72,6 +72,10 @@ query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
       created_at
       created_by_user_id
     }
+    list_user_groups {
+      id
+      list_id
+    }
   }
   user_groups_aggregate(where: $where) {
     aggregate {

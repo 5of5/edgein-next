@@ -139,6 +139,7 @@ const Group: NextPage<Props> = (props: Props) => {
             user_group_members: [...prev.user_group_members, response],
           }));
           refetchMyGroups();
+          refetchLists();
         },
       },
     );

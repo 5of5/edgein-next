@@ -53,6 +53,8 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     ? `/lists/${resource.id}/${kebabCase(getNameFromListName(resource))}`
     : `/groups/${resource.id}`;
 
+  const numOfLists = isResourceList ? 0 : resource.list_user_groups.length;
+
   const numOfNotes = isResourceList ? 0 : resource.notes.length;
 
   const members = isResourceList
@@ -146,6 +148,14 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
                 <>
                   {members.length}
                   {members.length > 1 ? ' Members' : ' Member'}
+                </>
+              )}
+
+              {numOfLists > 0 && (
+                <>
+                  {' • '}
+                  {numOfLists}
+                  {numOfLists > 1 ? ' Lists' : ' List'}
                 </>
               )}
 
