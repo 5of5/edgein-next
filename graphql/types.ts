@@ -24655,7 +24655,7 @@ export type GetUserGroupMemberByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserGroupMemberByIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number }> };
+export type GetUserGroupMemberByIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users_public', id: number | null, email: string | null } | null }> };
 
 export type GetUserGroupMemberByGroupIdQueryVariables = Exact<{
   user_group_id: Scalars['Int'];
@@ -27275,6 +27275,10 @@ export const GetUserGroupMemberByIdDocument = `
     id
     user_id
     user_group_id
+    user {
+      id
+      email
+    }
   }
 }
     `;
