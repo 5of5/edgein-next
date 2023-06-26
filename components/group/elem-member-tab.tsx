@@ -185,7 +185,7 @@ const ElemMemberTab: React.FC<Props> = ({
                                 handleMakeGroupManager(member.user!.id!);
                               }}
                             >
-                              Make Group Manager
+                              Make Group Admin
                             </button>
                           )}
                         </Menu.Item>
