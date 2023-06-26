@@ -27,16 +27,15 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
           Sidebar
         </ElemButton>
 
-        <div className="max-w-9xl mx-auto px-4 sm:px-6 md:px-8">
-          <div className="hidden lg:block fixed z-10 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-50rem))] right-auto w-[22rem] pb-10 px-8 overflow-y-auto">
-            <DashboardSidebar />
-          </div>
+        <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-72 mt-12 overflow-y-auto scrollbar-hide lg:block">
+          <DashboardSidebar />
+        </div>
 
-          <div className="min-h-[calc(100vh_-_3rem)] py-5 lg:pl-[22rem]">
-            {children}
-          </div>
+        <div className="min-h-[calc(100vh_-_3rem)] lg:pl-72">
+          <div className="p-4">{children}</div>
         </div>
       </div>
+
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog as="div" className="relative z-40" onClose={setSidebarOpen}>
           <Transition.Child
@@ -60,7 +59,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative max-w-xs w-full bg-white py-3 flex-1 flex flex-col">
+              <Dialog.Panel className="relative max-w-xs w-full bg-white flex-1 flex flex-col">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -85,7 +84,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
                   </div>
                 </Transition.Child>
 
-                <div className="px-4 flex-1 h-0 overflow-y-auto scrollbar-hide">
+                <div className="flex-1 h-0 overflow-y-auto scrollbar-hide">
                   <DashboardSidebar />
                 </div>
               </Dialog.Panel>

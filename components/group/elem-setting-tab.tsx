@@ -154,7 +154,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
     {
       onSuccess: () => {
         refetchMyGroups();
-        router.push('/account');
+        router.push('/groups');
       },
     },
   );

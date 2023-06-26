@@ -15,7 +15,6 @@ import {
 } from '@/models/Filter';
 import { ElemButton } from './elem-button';
 import { InputRadio } from './input-radio';
-import { ElemTagsInput } from './elem-tags-input';
 import { ElemMultiRangeSlider } from './elem-multi-range-slider';
 import { InputDate } from './input-date';
 import { ElemFilterPopup } from './elem-filter-popup';
@@ -26,6 +25,7 @@ import { InputSelect } from './input-select';
 import { eventSizeChoices } from '@/utils/constants';
 import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
+import ElemFilterTagsInput from './elem-filter-tags-input';
 
 type Props = {
   className?: string;
@@ -378,6 +378,28 @@ export const ElemFilter: FC<Props> = ({
     onReset();
   };
 
+  const onApplyFilterTags = (name: FilterOptionKeys, tags: string[]) => {
+    onChangeTags(tags, name);
+    if (
+      [
+        'country',
+        'state',
+        'city',
+        'fundingInvestors',
+        'fundedCompanies',
+        'keywords',
+      ].includes(name)
+    ) {
+      const filterParams = cloneDeep(filters?.[name]);
+      if (filterParams && 'tags' in filterParams) {
+        filterParams.tags = tags;
+        delete filterParams.open;
+        onApply(name, filterParams as Filters);
+      }
+    }
+    onCloseFilterPopup(name);
+  };
+
   return (
     <section
       className={`w-full flex items-center justify-between ${className}`}
@@ -406,49 +428,25 @@ export const ElemFilter: FC<Props> = ({
               option === 'fundedCompanies'
             ) {
               return (
-                <ElemFilterPopup
+                <ElemFilterTagsInput
                   key={option}
                   open={!!filters[option]?.open}
-                  name={option}
+                  option={option}
                   title={`${optionMetadata.title} (${
                     filters?.[option]?.tags?.length || 0
                   })`}
-                  onOpen={onOpenFilterPopup}
-                  onClose={onCloseFilterPopup}
-                  onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                >
-                  <div className="font-bold text-sm">
-                    {optionMetadata.heading}
-                  </div>
-                  <div className="flex flex-col gap-4 mt-2">
-                    <div>
-                      <InputRadio
-                        name={option}
-                        value="any"
-                        checked={filters?.[option]?.condition === 'any'}
-                        label="is any of these"
-                        onChange={event => onChangeCondition(event, option)}
-                      />
-
-                      <ElemTagsInput
-                        value={filters?.[option]?.tags || []}
-                        placeholder={optionMetadata.placeholder}
-                        onChange={tags => onChangeTags(tags, option)}
-                      />
-                    </div>
-                    <div>
-                      <InputRadio
-                        name={option}
-                        value="none"
-                        checked={filters?.[option]?.condition === 'none'}
-                        label="is none of these"
-                        onChange={event => onChangeCondition(event, option)}
-                        labelClass="mb-0.5"
-                      />
-                    </div>
-                  </div>
-                </ElemFilterPopup>
+                  heading={optionMetadata.heading}
+                  checkedAny={filters?.[option]?.condition === 'any'}
+                  checkedNone={filters?.[option]?.condition === 'none'}
+                  tags={filters?.[option]?.tags || []}
+                  placeholder={optionMetadata.placeholder}
+                  onOpenFilterPopup={onOpenFilterPopup}
+                  onCloseFilterPopup={onCloseFilterPopup}
+                  onClearFilterOption={onClearFilterOption}
+                  onApplyFilter={onApplyFilterTags}
+                  onChangeCondition={onChangeCondition}
+                  onChangeTags={onChangeTags}
+                />
               );
             }
 
@@ -489,30 +487,23 @@ export const ElemFilter: FC<Props> = ({
 
             if (option === 'keywords') {
               return (
-                <ElemFilterPopup
+                <ElemFilterTagsInput
                   key={option}
                   open={!!filters[option]?.open}
-                  name={option}
+                  option={option}
                   title={`${optionMetadata.title} (${
                     filters?.[option]?.tags?.length || 0
                   })`}
-                  onOpen={onOpenFilterPopup}
-                  onClose={onCloseFilterPopup}
-                  onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                >
-                  <div className="font-bold text-sm">
-                    {optionMetadata.heading}
-                  </div>
-                  <div className="mt-1">
-                    <ElemTagsInput
-                      value={filters?.[option]?.tags || []}
-                      placeholder={optionMetadata.placeholder}
-                      onChange={tags => onChangeTags(tags, option)}
-                      subtext={optionMetadata.subtext}
-                    />
-                  </div>
-                </ElemFilterPopup>
+                  heading={optionMetadata.heading}
+                  subtext={optionMetadata.subtext}
+                  tags={filters?.[option]?.tags || []}
+                  placeholder={optionMetadata.placeholder}
+                  onOpenFilterPopup={onOpenFilterPopup}
+                  onCloseFilterPopup={onCloseFilterPopup}
+                  onClearFilterOption={onClearFilterOption}
+                  onApplyFilter={onApplyFilterTags}
+                  onChangeTags={onChangeTags}
+                />
               );
             }
 
