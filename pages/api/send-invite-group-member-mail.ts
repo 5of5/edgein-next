@@ -69,7 +69,6 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     groupUrl,
     signUpUrl,
   } = mailParams;
-  console.log('sendInvitationMail');
   const html = isExistedUser
     ? `
       <b>Hi ${recipientName}</b>,
