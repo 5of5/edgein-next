@@ -1,15 +1,8 @@
 // Initialize the dataProvider before rendering react-admin resources.
-import React, { useState, useEffect } from 'react';
-import buildHasuraProvider, { BuildFields, buildFields } from 'ra-data-hasura';
+import React, { useCallback } from 'react';
+import { BuildFields, buildFields } from 'ra-data-hasura';
 
-import {
-  Admin,
-  DataProvider,
-  Resource,
-  AuthProvider,
-  Layout,
-  defaultTheme,
-} from 'react-admin';
+import { Admin, DataProvider, Resource } from 'react-admin';
 
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -25,8 +18,7 @@ import {
   EventCreate,
   EventEdit,
 } from '../../components/admin/event';
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
-import ElemAppBar from '@/components/admin/elem-app-bar';
+import { gql } from '@apollo/client';
 import { getParentSubOrganizations } from '@/utils/resource-link';
 import {
   InvestmentRoundCreate,
@@ -66,18 +58,13 @@ import {
 import { NewsList, NewsEdit, NewsCreate } from '../../components/admin/news';
 import { useAuth } from '../../hooks/use-auth';
 import { onSubmitData } from '@/utils/submit-data';
-
-const MyLogin = () => {
-  useEffect(() => {
-    window.location.href = '/';
-  }, []);
-
-  return <div />;
-};
-
-type NullableInputs = {
-  [key: string]: Array<string>;
-};
+import ElemAdminLogin from '@/components/admin/elem-admin-login';
+import ElemLayoutApp from '@/components/admin/elem-layout-app';
+import { theme } from '@/theme/admin';
+import useAdminDataProvider from '@/hooks/use-admin-data-provider';
+import { NullableInputs } from '@/types/admin';
+import { nullInputTransform } from '@/utils/admin';
+import useAdminAuthProvider from '@/hooks/use-admin-auth-provider';
 
 const nullableInputs: NullableInputs = {
   investments: ['person_id', 'vc_firm_id', 'round_id'],
@@ -190,70 +177,24 @@ const customBuildFields: BuildFields = (type, fetchType) => {
   return defaultFields;
 };
 
-export const LayoutApp = (props: any) => (
-  <Layout {...props} appBar={ElemAppBar} />
-);
-
 const AdminApp = () => {
-  const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(
-    null,
-  );
   const { user } = useAuth();
 
-  const authProvider = {
-    // authentication
-    login: () => Promise.resolve(),
-    checkError: () => Promise.resolve(),
-    checkAuth: () => {
-      if (user) {
-        if (
-          user.role === 'admin' ||
-          user.role === 'cms' ||
-          user.role === 'cms-readonly'
-        ) {
-          return Promise.resolve();
-        } else {
-          return Promise.reject(new Error('User is not an admin'));
-        }
-      }
-      return Promise.reject();
-    },
-    logout: () => Promise.resolve(),
-    getIdentity: () => Promise.resolve().then(res => res),
-    // authorization
-    getPermissions: () => Promise.resolve(),
-  } as AuthProvider;
+  const authProvider = useAdminAuthProvider(
+    ['admin', 'cms', 'cms-readonly'],
+    user,
+  );
 
-  const nullInputTransform = (type: string, obj: any): any => {
-    const nullableInputsForType = nullableInputs[type];
-    if (nullableInputsForType && obj.data) {
-      nullableInputsForType.forEach(input => {
-        if (obj.data[input] == '') {
-          obj.data[input] = null;
-        }
-      });
-    }
-    return obj;
-  };
-
-  useEffect(() => {
-    const buildDataProvider = async () => {
-      const myClientWithAuth = new ApolloClient({
-        uri: '/api/graphql/',
-        cache: new InMemoryCache(),
-      });
-      const dataProvider = await buildHasuraProvider(
-        {
-          client: myClientWithAuth,
-        },
-        { buildFields: customBuildFields },
-      );
-      // Fix nullable inputs for graphql
-      setDataProvider({
-        ...dataProvider,
+  const onTransformData = useCallback(
+    (adminDataProvider: DataProvider<string>) =>
+      ({
+        ...adminDataProvider,
         getList: async (type, obj) => {
           // eslint-disable-next-line prefer-const
-          let { data, ...metadata } = await dataProvider.getList(type, obj);
+          let { data, ...metadata } = await adminDataProvider.getList(
+            type,
+            obj,
+          );
           if (isTypeReferenceToResourceLink(type)) {
             data = data.map(val => ({
               ...val,
@@ -278,7 +219,7 @@ const AdminApp = () => {
         },
         getOne: async (type, obj) => {
           // eslint-disable-next-line prefer-const
-          let { data, ...metadata } = await dataProvider.getOne(type, obj);
+          let { data, ...metadata } = await adminDataProvider.getOne(type, obj);
           if (type === 'news') {
             data = {
               ...data,
@@ -292,15 +233,26 @@ const AdminApp = () => {
           };
         },
         create: (type, obj) =>
-          onSubmitData(type, nullInputTransform(type, obj), 'POST'),
+          onSubmitData(
+            type,
+            nullInputTransform(nullableInputs, type, obj),
+            'POST',
+          ),
         update: (type, obj) =>
-          onSubmitData(type, nullInputTransform(type, obj), 'PUT'),
+          onSubmitData(
+            type,
+            nullInputTransform(nullableInputs, type, obj),
+            'PUT',
+          ),
         deleteMany: async (type, obj: any) => {
           const response = await Promise.all(
             obj.ids.map(async (id: number) => {
               await onSubmitData(
                 type,
-                nullInputTransform(type, { id, previousData: { id } }),
+                nullInputTransform(nullableInputs, type, {
+                  id,
+                  previousData: { id },
+                }),
                 'DELETE',
               );
               return { id };
@@ -309,45 +261,21 @@ const AdminApp = () => {
           return { data: response };
         },
         delete: (type, obj) =>
-          onSubmitData(type, nullInputTransform(type, obj), 'DELETE'),
-      });
-    };
-    buildDataProvider();
-  }, []);
+          onSubmitData(
+            type,
+            nullInputTransform(nullableInputs, type, obj),
+            'DELETE',
+          ),
+      } as DataProvider<string>),
+    [],
+  );
+
+  const { dataProvider } = useAdminDataProvider(
+    onTransformData,
+    customBuildFields,
+  );
 
   if (!dataProvider || !user) return <p>Loading...</p>;
-
-  const theme = {
-    ...defaultTheme,
-    palette: {
-      primary: {
-        main: '#5E41FE',
-      },
-      secondary: {
-        main: '#5E41FE',
-        light: '#A05FFE',
-      },
-      error: {
-        main: '#ff0000',
-      },
-      background: {
-        default: '#F2F5FA',
-      },
-      contrastThreshold: 3,
-      tonalOffset: 0.2,
-    },
-    typography: {
-      // Use the system font instead of the default Roboto font.
-      fontFamily: [
-        'Metropolis',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Arial',
-        'sans-serif',
-      ].join(','),
-    },
-  };
 
   const getResourceProps = (name: string, list: any, edit: any, create: any) =>
     user.role !== 'cms-readonly'
@@ -361,8 +289,8 @@ const AdminApp = () => {
 
   return (
     <Admin
-      loginPage={MyLogin}
-      layout={LayoutApp}
+      loginPage={ElemAdminLogin}
+      layout={ElemLayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
       theme={theme}
