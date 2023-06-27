@@ -4,20 +4,12 @@ import { User_Group_Members } from '@/graphql/types';
 import Link from 'next/link';
 
 type Props = {
-  isUserBelongToGroup: boolean;
   members: Array<User_Group_Members>;
 };
 
-export const ElemMemberAvatarList: React.FC<Props> = ({
-  isUserBelongToGroup,
-  members,
-}) => {
+export const ElemMemberAvatarList: React.FC<Props> = ({ members }) => {
   return (
-    <ul
-      className={`flex -space-x-3 overflow-hidden ${
-        isUserBelongToGroup ? 'cursor-pointer' : ''
-      }`}
-    >
+    <ul className="flex -space-x-3 overflow-hidden">
       {members.slice(0, 10).map(mem => {
         const member = (
           <div>
