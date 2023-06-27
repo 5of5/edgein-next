@@ -1961,3 +1961,14 @@ export const SQL_BLOCK_WORDS = [
   'create',
   'alter',
 ];
+
+export const leadSegmentationStatusChoices = [
+  {
+    id: 'active',
+    name: 'Active',
+  },
+  {
+    id: 'inactive',
+    name: 'Inactive',
+  },
+];
