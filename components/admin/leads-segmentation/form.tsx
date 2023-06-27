@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { SimpleForm, TextInput, SelectInput } from 'react-admin';
-import { status } from '@/utils/constants';
+import { leadSegmentationStatusChoices } from '@/utils/constants';
 import { validateLeadSegmentation } from '@/utils/admin';
 
 type LeadSegmentationFormProps = {
@@ -31,7 +31,7 @@ const LeadSegmentationForm = ({
       <SelectInput
         className={inputClassName}
         source="status"
-        choices={status}
+        choices={leadSegmentationStatusChoices}
       />
     </SimpleForm>
   );
