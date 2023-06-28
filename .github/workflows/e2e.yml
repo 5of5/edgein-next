@@ -1,0 +1,61 @@
+name: Check e2e tests
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:14-3.3
+        env:
+          POSTGRES_USER: 'edgeu'
+          POSTGRES_DB: 'edgedb'
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      graphql-engine:
+        image: hasura/graphql-engine:v2.7.0
+        env:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://edgeu:@postgres:5432/edgedb
+          HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+          HASURA_GRAPHQL_DEV_MODE: 'true'
+          HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+          HASURA_GRAPHQL_ADMIN_SECRET: devsecret
+          HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "you-should-create-your-own-secret-to-use-for-encryption"}'
+        ports:
+          - 8080:8080
+      cache:
+        image: redis:6.2-alpine
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: npm ci
+      - name: Apply Hasura Migrations
+        run: cd infra/hasura && hasura --skip-update-check migrate apply
+      - name: Apply Hasura Metadata
+        run: cd infra/hasura && hasura --skip-update-check metadata apply
+      - name: Load Seed Data
+        run: cd scripts/db/ && sh ./load-seed-data.sh
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
