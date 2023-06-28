@@ -50,6 +50,12 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
+      - name: Load environment variables from .env file
+        uses: falti/dotenv-action@v1.0.4
+      - name: Install PostgreSQL client
+        run: sudo apt-get install -y postgresql-client
+      - name: Push schema to Postgres
+        run: psql -h postgres -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
       - name: Apply Hasura Migrations
         run: npm run hasura migrate apply
       - name: Apply Hasura Metadata
