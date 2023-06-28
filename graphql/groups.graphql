@@ -204,6 +204,10 @@ query GetUserGroupMemberById($id: Int!) {
     id
     user_id
     user_group_id
+    user {
+      id
+      email
+    }
   }
 }
 

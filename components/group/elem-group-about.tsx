@@ -133,10 +133,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                 )}
               </div>
               <div className="mt-2 flex items-center">
-                <ElemMemberAvatarList
-                  isUserBelongToGroup={isUserBelongToGroup}
-                  members={group.user_group_members}
-                />
+                <ElemMemberAvatarList members={group.user_group_members} />
                 <div className="text-sm text-slate-600 ml-1">
                   {group.user_group_members.length} Member
                   {group.user_group_members.length > 1 ? 's' : ''}
