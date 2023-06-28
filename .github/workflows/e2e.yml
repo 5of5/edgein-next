@@ -16,11 +16,17 @@ jobs:
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+      graphql-engine:
+        image: hasura/graphql-engine:v2.7.0
+        env:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://edgeu:@postgres:5432/edgedb
+          HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+          HASURA_GRAPHQL_DEV_MODE: 'true'
+          HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+          HASURA_GRAPHQL_ADMIN_SECRET: devsecret
+          HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "you-should-create-your-own-secret-to-use-for-encryption"}'
+        ports:
+          - 8080:8080
       cache:
         image: redis:6.2-alpine
         ports:
@@ -45,16 +51,6 @@ jobs:
         run: sudo apt-get install -y postgresql-client
       - name: Push schema to Postgres
         run: psql -h localhost -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
-      - name: Start Hasura Service
-        run: |
-          docker run -d --net=host \
-            -e HASURA_GRAPHQL_DATABASE_URL=postgres://edgeu:@localhost:5432/edgedb \
-            -e HASURA_GRAPHQL_ENABLE_CONSOLE=true \
-            -e HASURA_GRAPHQL_DEV_MODE=true \
-            -e HASURA_GRAPHQL_ENABLED_LOG_TYPES="startup, http-log, webhook-log, websocket-log, query-log" \
-            -e HASURA_GRAPHQL_ADMIN_SECRET=${{ env.HASURA_ADMIN_SECRET }} \
-            -e HASURA_GRAPHQL_JWT_SECRET=${{ env.HASURA_JWT_SECRET }} \
-            hasura/graphql-engine:v2.7.0
       - name: Apply Hasura Migrations
         run: npm run hasura migrate apply
       - name: Apply Hasura Metadata
