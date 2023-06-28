@@ -1972,3 +1972,14 @@ export const leadSegmentationStatusChoices = [
     name: 'Inactive',
   },
 ];
+
+export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
+  'edgein.io',
+  'techlist.com',
+  'sudolabs.io',
+];
+
+export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
+  'mdinsdale@mac.com',
+  'dinghan@capital6.com',
+];
