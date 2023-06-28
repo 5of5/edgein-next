@@ -6,3 +6,4 @@ psql -U edgeu -h localhost -d edgedb < 6-investment_rounds_file.sql
 psql -U edgeu -h localhost -d edgedb < 7-investments_file.sql
 psql -U edgeu -h localhost -d edgedb < 8-events_file.sql
 psql -U edgeu -h localhost -d edgedb < 9-news_file.sql
+psql -U edgeu -h localhost -d edgedb < 10-users_file.sql
