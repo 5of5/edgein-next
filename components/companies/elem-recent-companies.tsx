@@ -88,6 +88,8 @@ export const ElemRecentCompanies: FC<Props> = ({
                 >
                   <a
                     href={`/companies/${company.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
                     className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
                   >
                     <div className="flex items-center">

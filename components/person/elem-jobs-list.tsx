@@ -3,6 +3,9 @@ import { IconEditPencil } from '@/components/icons';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import { ElemPhoto } from '@/components/elem-photo';
 import Link from 'next/link';
+import { getFullAddress } from '@/utils/helpers';
+import { values, isEmpty } from 'lodash';
+
 type Props = {
   className?: string;
   heading?: string;
@@ -33,62 +36,69 @@ export const ElemJobsList: React.FC<Props> = ({
             {!team_members || team_members.length === 0 ? (
               <div className="flex space-x-4 p-4">No job info listed.</div>
             ) : (
-              team_members.map((team, index: number) => (
-                <div className="flex space-x-4 p-4" key={index}>
-                  {team.company?.slug ? (
-                    <Link href={`/companies/${team.company.slug}`}>
-                      <a>
-                        <ElemPhoto
-                          photo={team.company?.logo}
-                          wrapClass="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg border border-black/10"
-                          imgClass="object-fit max-w-full max-h-full"
-                          imgAlt={team.company?.name || 'Logo'}
-                          placeholderClass="text-slate-300"
-                        />
-                      </a>
-                    </Link>
-                  ) : (
-                    <ElemPhoto
-                      photo={team.company?.logo}
-                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
-                      imgClass="object-fit max-w-full max-h-full"
-                      imgAlt={team.company?.name || 'Logo'}
-                      placeholderClass="text-slate-300"
-                    />
-                  )}
+              team_members.map((team, index: number) => {
+                const isEmptyLocationJson = values(
+                  team.company?.location_json,
+                ).every(isEmpty);
+                let locationText = '';
+                if (!isEmptyLocationJson) {
+                  locationText = getFullAddress(team.company?.location_json);
+                }
 
-                  <div className="text-slate-600">
-                    <h3 className="font-bold">{team.title}</h3>
+                return (
+                  <div className="flex space-x-4 p-4" key={index}>
                     {team.company?.slug ? (
                       <Link href={`/companies/${team.company.slug}`}>
-                        <a className="block hover:text-primary-500">
-                          {team.company.name}
+                        <a>
+                          <ElemPhoto
+                            photo={team.company?.logo}
+                            wrapClass="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg border border-black/10"
+                            imgClass="object-fit max-w-full max-h-full"
+                            imgAlt={team.company?.name || 'Logo'}
+                            placeholderClass="text-slate-300"
+                          />
                         </a>
                       </Link>
-                    ) : team.company?.name ? (
-                      <>{team.company?.name}</>
                     ) : (
-                      <>Undisclosed company</>
+                      <ElemPhoto
+                        photo={team.company?.logo}
+                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+                        imgClass="object-fit max-w-full max-h-full"
+                        imgAlt={team.company?.name || 'Logo'}
+                        placeholderClass="text-slate-300"
+                      />
                     )}
 
-                    <div className="flex space-x-2">
-                      <span>
-                        {getWorkDurationFromAndTo(
-                          team.start_date,
-                          team.end_date,
-                        )}
-                      </span>
-                      <span>&middot;</span>
-                      <span>
-                        {getTimeOfWork(team.start_date, team.end_date)}
-                      </span>
+                    <div className="text-slate-600">
+                      <h3 className="font-bold">{team.title}</h3>
+                      {team.company?.slug ? (
+                        <Link href={`/companies/${team.company.slug}`}>
+                          <a className="block hover:text-primary-500">
+                            {team.company.name}
+                          </a>
+                        </Link>
+                      ) : team.company?.name ? (
+                        <>{team.company?.name}</>
+                      ) : (
+                        <>Undisclosed company</>
+                      )}
+                      <div className="flex space-x-2">
+                        <span>
+                          {getWorkDurationFromAndTo(
+                            team.start_date,
+                            team.end_date,
+                          )}
+                        </span>
+                        <span>&middot;</span>
+                        <span>
+                          {getTimeOfWork(team.start_date, team.end_date)}
+                        </span>
+                      </div>
+                      {locationText}
                     </div>
-                    {team.company?.location && (
-                      <span>{team.company?.location}</span>
-                    )}
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>

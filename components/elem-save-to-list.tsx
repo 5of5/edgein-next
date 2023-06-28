@@ -1,5 +1,8 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
-import { GetFollowsByUserQuery } from '@/graphql/types';
+import {
+  GetFollowsByUserQuery,
+  useGetFollowsByResourceQuery,
+} from '@/graphql/types';
 import {
   getNameFromListName,
   isOnList,
@@ -7,7 +10,7 @@ import {
 } from '@/utils/reaction';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
-import { IconX, IconListPlus, IconCustomList } from '@/components/icons';
+import { IconX, IconListPlus, IconListSaved } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
@@ -48,6 +51,21 @@ export const ElemSaveToList: FC<Props> = ({
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+
+  const { data: followsByResource, refetch: refetchFollows } =
+    useGetFollowsByResourceQuery({
+      resourceId,
+      resourceType,
+    });
+
+  const isSaved = followsByResource?.follows?.some(followItem =>
+    listsData?.some(listItem => listItem.id === followItem.list_id),
+  );
+
+  const savedButtonStyle =
+    buttonStyle === 'white'
+      ? 'text-dark-500 !bg-slate-200 hover:bg-slate-300'
+      : 'bg-primary-800';
 
   useEffect(() => {
     setListName(listName);
@@ -145,6 +163,7 @@ export const ElemSaveToList: FC<Props> = ({
         pathname: `/companies/${slug}`,
       });
       refreshProfile();
+      refetchFollows();
       toast.custom(
         t => (
           <div
@@ -204,10 +223,14 @@ export const ElemSaveToList: FC<Props> = ({
         btn={buttonStyle}
         // btn="white"
         roundedFull={true}
-        className="px-2.5"
+        className={`px-2.5 ${isSaved ? savedButtonStyle : ''}`}
       >
-        <IconListPlus className="w-5 h-5 mr-1" />
-        Save
+        {isSaved ? (
+          <IconListSaved className="w-5 h-5 mr-1" />
+        ) : (
+          <IconListPlus className="w-5 h-5 mr-1" />
+        )}
+        {isSaved ? 'Saved' : 'Save'}
       </ElemButton>
 
       <Transition.Root show={isOpen} as={Fragment}>

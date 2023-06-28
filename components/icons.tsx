@@ -2048,6 +2048,29 @@ export const IconListPlus: React.FC<IconProps> = ({
   );
 };
 
+export const IconListSaved: React.FC<IconProps> = ({
+  className,
+  strokeWidth,
+  title,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor"
+    >
+      <title>{title ? title : 'Save To List'}</title>
+      <path d="M13.2,13.9l3.1,2.5L21,10" />
+      <line x1="2.42554" y1="16" x2="11.4255" y2="16" />
+      <line x1="2.42554" y1="11" x2="11.4255" y2="11" />
+      <line x1="2.42554" y1="6" x2="22.4255" y2="6" />
+    </svg>
+  );
+};
+
 export const IconColumns: React.FC<IconProps> = ({
   className,
   strokeWidth,
