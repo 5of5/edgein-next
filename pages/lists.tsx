@@ -250,7 +250,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     props: {
       metaTitle: 'Lists - EdgeIn.io',
       metaDescription:
-        'Connect with people who share your interests. Meet new people, share knowledge or get support. Find the list for you.',
+        'Level up your research, due diligence, or portfolio management. Start with lists to monitor organizations and people of your interests.',
       initialListsCount: listsData?.lists_aggregate?.aggregate?.count || 0,
       initialLists: listsData?.lists || [],
     },
