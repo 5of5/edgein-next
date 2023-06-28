@@ -65,7 +65,7 @@ jobs:
       - name: Hasura migrate
         uses: tibotiber/hasura-action@v3.0
         with:
-          args: migrate apply --database-name edgedb
+          args: migrate apply --database-name default
         env:
           HASURA_WORKDIR: ./infra/hasura
           HASURA_ENGINE_VERSION: v2.7.0
