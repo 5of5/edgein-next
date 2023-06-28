@@ -7,7 +7,6 @@ import {
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { User_Groups } from '@/graphql/types';
-import { ElemMemberAvatarList } from '@/components/group/elem-member-avatar-list';
 import { SettingTabProps } from './elem-setting-dialog';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 
@@ -51,7 +50,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                       onClick={() => onOpenSettingDialog('settings')}
                     >
                       <IconGroup className="w-6 h-6 mr-1" />
-                      <span className="font-bold text-xl capitalize">
+                      <span className="font-bold text-lg capitalize">
                         {group.name}
                       </span>
                       <IconChevronDownMini className="h-5 w-5" />
@@ -60,21 +59,6 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 },
               ]}
             />
-
-            <div className="flex items-center mt-1 pl-1">
-              <ElemMemberAvatarList
-                isUserBelongToGroup={isUserBelongToGroup}
-                members={group.user_group_members}
-                onClick={() => onOpenSettingDialog('members')}
-              />
-              <h4
-                className="font-medium text-sm text-slate-600 ml-1 cursor-pointer hover:underline"
-                onClick={() => onOpenSettingDialog('members')}
-              >
-                {group.user_group_members.length} Member
-                {group.user_group_members.length > 1 ? 's' : ''}
-              </h4>
-            </div>
           </div>
 
           <div className="flex items-center gap-x-2 shrink-0">
@@ -111,7 +95,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                   component: (
                     <div className="flex items-center">
                       <IconGroup className="w-6 h-6 mr-1" />
-                      <span className="font-bold text-xl capitalize">
+                      <span className="font-bold text-lg capitalize">
                         {group.name}
                       </span>
                     </div>
@@ -119,23 +103,8 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 },
               ]}
             />
-            {group.public && (
-              <div className="flex items-center mt-1 pl-1">
-                <ElemMemberAvatarList
-                  isUserBelongToGroup={isUserBelongToGroup}
-                  members={group.user_group_members}
-                  onClick={() => onOpenSettingDialog('members')}
-                />
-                <h4
-                  className="font-medium text-sm text-slate-600 ml-1"
-                  onClick={() => onOpenSettingDialog('members')}
-                >
-                  {group.user_group_members.length} Member
-                  {group.user_group_members.length > 1 ? 's' : ''}
-                </h4>
-              </div>
-            )}
           </div>
+
           {group.public && (
             <div className="flex items-center gap-x-2 shrink-0">
               <ElemButton
