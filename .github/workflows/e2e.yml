@@ -51,9 +51,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Apply Hasura Migrations
-        run: cd infra/hasura && hasura --skip-update-check migrate apply
+        run: npm run hasura migrate apply
       - name: Apply Hasura Metadata
-        run: cd infra/hasura && hasura --skip-update-check metadata apply
+        run: npm run hasura metadata apply
       - name: Load Seed Data
         run: cd scripts/db/ && sh ./load-seed-data.sh
       - name: Install Playwright Browsers
