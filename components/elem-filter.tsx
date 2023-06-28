@@ -26,6 +26,7 @@ import { eventSizeChoices } from '@/utils/constants';
 import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
+import ElemFilterLocation from './elem-filter-location';
 
 type Props = {
   className?: string;
@@ -47,6 +48,8 @@ export const ElemFilter: FC<Props> = ({
   onReset,
 }) => {
   const { selectedLibrary } = useLibrary();
+
+  const [locationTags, setLocationTags] = useState<any[]>([]);
 
   const [openAddFilter, setOpenAddFilter] = useState<boolean>(false);
 
@@ -423,10 +426,33 @@ export const ElemFilter: FC<Props> = ({
             if (
               option === 'country' ||
               option === 'state' ||
-              option === 'city' ||
-              option === 'fundingInvestors' ||
-              option === 'fundedCompanies'
+              option === 'city'
             ) {
+              return (
+                <ElemFilterLocation
+                  key={option}
+                  open={!!filters[option]?.open}
+                  option={option}
+                  title={`${optionMetadata.title} (${
+                    filters?.[option]?.tags?.length || 0
+                  })`}
+                  heading={optionMetadata.heading}
+                  checkedAny={filters?.[option]?.condition === 'any'}
+                  checkedNone={filters?.[option]?.condition === 'none'}
+                  tags={filters?.[option]?.tags || []}
+                  placeholder={optionMetadata.placeholder}
+                  onOpenFilterPopup={onOpenFilterPopup}
+                  onCloseFilterPopup={onCloseFilterPopup}
+                  onClearFilterOption={onClearFilterOption}
+                  onApplyFilter={onApplyFilter}
+                  onChangeCondition={onChangeCondition}
+                  onChangeTags={onChangeTags}
+                  value=""
+                  onChange={() => {}}
+                />
+              );
+            }
+            if (option === 'fundingInvestors' || option === 'fundedCompanies') {
               return (
                 <ElemFilterTagsInput
                   key={option}
