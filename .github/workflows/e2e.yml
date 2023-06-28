@@ -14,6 +14,7 @@ jobs:
           POSTGRES_USER: 'edgeu'
           POSTGRES_DB: 'edgedb'
           POSTGRES_HOST_AUTH_METHOD: trust
+        options: --health-cmd pg_isready --health-interval 30s --health-retries 12
         ports:
           - 5432:5432
       graphql-engine:
@@ -23,6 +24,7 @@ jobs:
           HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
           HASURA_GRAPHQL_DEV_MODE: 'true'
           HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+          HASURA_GRAPHQL_ENABLED_APIS: 'metadata,graphql'
           HASURA_GRAPHQL_ADMIN_SECRET: devsecret
           HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "you-should-create-your-own-secret-to-use-for-encryption"}'
         ports:
@@ -51,10 +53,24 @@ jobs:
         run: sudo apt-get install -y postgresql-client
       - name: Push schema to Postgres
         run: psql -h localhost -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
-      - name: Apply Hasura Migrations
-        run: npm run hasura migrate apply
-      - name: Apply Hasura Metadata
-        run: npm run hasura metadata apply
+      - name: Hasura apply
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: metadata apply
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.7.0
+          HASURA_ENDPOINT: http://172.17.0.1:8080
+          HASURA_ADMIN_SECRET: devsecret
+      - name: Hasura migrate
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: migrate apply --database-name edgedb
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.7.0
+          HASURA_ENDPOINT: http://172.17.0.1:8080
+          HASURA_ADMIN_SECRET: devsecret
       - name: Load Seed Data
         run: cd scripts/db/ && sh ./load-seed-data.sh
       - name: Install Playwright Browsers
