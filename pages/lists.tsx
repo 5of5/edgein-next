@@ -146,7 +146,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
             )}
         </nav>
 
-        {lists?.length !== 0 ? (
+        {lists?.length === 0 ? (
           <ElemEmptyState
             selectedTab={selectedListTab}
             onChangeTab={setSelectedListTab}
