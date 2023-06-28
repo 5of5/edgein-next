@@ -16,11 +16,11 @@ export const ResourceVerificationEmail = ({
   return (
     <EmailLayout>
       <Section className="px-[40px] py-[12px]">
-        <Heading className="text-black text-[24px] font-normal p-0 m-0">
+        <Heading className="text-black text-[24px] text-center font-normal p-0 m-0">
           Hi <strong>{username}</strong>
         </Heading>
         <Section>
-          <Text className="text-[#525f7f] text-[18px] leading-[24px] m-0 mt-1">
+          <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mt-1">
             Please verify you work for <strong>{companyName}</strong>.
           </Text>
           <Section className="text-center mt-[32px] mb-[32px]">

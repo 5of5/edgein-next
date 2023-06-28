@@ -29,10 +29,10 @@ export const InviteGroupMemberEmail = ({
         </Heading>
         {isExistedUser ? (
           <Section>
-            <Text className="text-[#525f7f] text-[18px] leading-[24px] m-0">
+            <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0">
               Hi {recipientName},
             </Text>
-            <Text className="text-[#525f7f] text-[18px] leading-[24px] m-0 mt-1">
+            <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mt-1">
               <strong>{senderName}</strong> has invited you to join group{' '}
               <strong>{groupName}</strong> on <strong>EdgeIn</strong>.
             </Text>
@@ -42,7 +42,7 @@ export const InviteGroupMemberEmail = ({
           </Section>
         ) : (
           <Section>
-            <Text className="text-[#525f7f] text-[18px] leading-[24px] m-0 mt-1">
+            <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mt-1">
               <strong>{senderName}</strong> has invited you to join group{' '}
               <strong>{groupName}</strong> on <strong>EdgeIn</strong>.
             </Text>

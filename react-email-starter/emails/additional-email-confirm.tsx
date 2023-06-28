@@ -19,7 +19,7 @@ export const AdditionalEmailConfirmEmail = ({
           Verify your email on EdgeIn
         </Heading>
         <Section>
-          <Text className="text-[#525f7f] text-[18px] leading-[24px] m-0 mt-1">
+          <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mt-1">
             <strong>{username}</strong> has added you to additional emails on{' '}
             <strong>EdgeIn</strong>.
           </Text>
