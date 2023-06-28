@@ -1,7 +1,7 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import CookieService from '@/utils/cookie';
-import {makeEmailService} from "@/services/email.service";
-import {env} from "@/services/config.service";
+import { makeEmailService } from '@/services/email.service';
+import { env } from '@/services/config.service';
 
 const emailService = makeEmailService();
 
@@ -20,7 +20,6 @@ type MailParams = {
   signUpUrl?: string;
   isExistedUser?: boolean;
 };
-
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();

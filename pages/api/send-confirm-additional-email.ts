@@ -1,7 +1,7 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import CookieService from '@/utils/cookie';
-import {env} from "@/services/config.service";
-import {makeEmailService} from "@/services/email.service";
+import { env } from '@/services/config.service';
+import { makeEmailService } from '@/services/email.service';
 
 const emailService = makeEmailService();
 

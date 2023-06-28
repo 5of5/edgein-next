@@ -2,8 +2,8 @@ import { NextApiResponse, NextApiRequest } from 'next';
 import CookieService from '../../utils/cookie';
 import { generateVerifyWorkplaceToken, saveToken } from '@/utils/tokens';
 import { tokenTypes } from '@/utils/constants';
-import {makeEmailService} from "@/services/email.service";
-import {env} from "@/services/config.service";
+import { makeEmailService } from '@/services/email.service';
+import { env } from '@/services/config.service';
 
 const emailService = makeEmailService();
 
