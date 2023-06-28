@@ -4,11 +4,13 @@ export type Entitlements = {
   groupsCount?: number;
 };
 
+export type UserRole = 'user' | 'admin' | 'cms' | 'cms-readonly';
+
 export type User = {
   id: number;
   email: string;
   display_name?: string | null;
-  role: 'user' | 'admin' | 'cms' | 'cms-readonly';
+  role: UserRole;
   is_auth0_verified: boolean;
   isFirstLogin?: boolean;
   intercomUserHash?: string;

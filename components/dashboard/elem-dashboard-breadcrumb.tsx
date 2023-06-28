@@ -15,7 +15,7 @@ const ElemDashboardBreadcrumb: FC<Props> = ({ breadcrumbs }) => {
       {breadcrumbs.slice(0, -1).map(breadcrumbItem => (
         <Fragment key={breadcrumbItem.name}>
           <Link href={breadcrumbItem.to || ''}>
-            <a className="font-bold text-xl hover:text-primary-500">
+            <a className="font-bold text-lg capitalize hover:text-primary-500">
               {breadcrumbItem.component}
             </a>
           </Link>
