@@ -3,9 +3,7 @@ import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
-import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import { IconList, IconListPlus } from '@/components/icons';
 import {
   GetListsQuery,
   GetListsDocument,
@@ -24,6 +22,7 @@ import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemListCard from '@/components/elem-list-card';
 import { CreateListDialog } from '@/components/my-list/create-list-dialog';
+import ElemEmptyState from '@/components/lists/elem-empty-state';
 
 type Props = {
   initialListsCount: number;
@@ -147,52 +146,12 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
             )}
         </nav>
 
-        {lists?.length === 0 ? (
-          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconList className="w-12 h-12 mx-auto text-slate-300" />
-              <h1 className="mt-5 text-3xl font-bold">
-                {selectedListTab.id === 'my-lists'
-                  ? 'Create a list'
-                  : selectedListTab.id === 'followed'
-                  ? 'Follow a list'
-                  : selectedListTab.id === 'discover'
-                  ? 'Discover'
-                  : ''}
-              </h1>
-              <div className="mt-1 text-lg text-slate-600">
-                {selectedListTab.id === 'discover'
-                  ? 'There are no lists that are visible to the public yet, if you make your list public it will appear here.'
-                  : 'Lists allow you to collaborate on notes, share insights, and track leads with other people.'}
-              </div>
-              {selectedListTab.id === 'my-lists' ? (
-                <ElemButton
-                  onClick={onClickCreateList}
-                  btn="primary"
-                  className="mt-3"
-                >
-                  <IconListPlus className="w-6 h-6 mr-1" />
-                  Create New List
-                </ElemButton>
-              ) : selectedListTab.id === 'followed' ? (
-                <ElemButton
-                  onClick={() =>
-                    setSelectedListTab({
-                      id: 'discover',
-                      name: 'Discover',
-                    })
-                  }
-                  btn="primary"
-                  className="mt-3"
-                >
-                  <IconListPlus className="w-6 h-6 mr-1" />
-                  Discover lists
-                </ElemButton>
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
+        {lists?.length !== 0 ? (
+          <ElemEmptyState
+            selectedTab={selectedListTab}
+            onChangeTab={setSelectedListTab}
+            onClickCreateList={onClickCreateList}
+          />
         ) : (
           <div className="w-full mt-6 mb-2">
             <h1 className="font-bold text-xl capitalize">
