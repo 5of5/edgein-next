@@ -1,8 +1,7 @@
 name: Check e2e tests
 on:
   pull_request:
-    branches:
-      - main
+
 jobs:
   test:
     timeout-minutes: 60
