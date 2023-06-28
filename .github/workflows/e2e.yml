@@ -55,7 +55,7 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get install -y postgresql-client
       - name: Push schema to Postgres
-        run: psql -h postgres -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
+        run: psql -h localhost -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
       - name: Apply Hasura Migrations
         run: npm run hasura migrate apply
       - name: Apply Hasura Metadata
