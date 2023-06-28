@@ -2,6 +2,8 @@ import { mutate } from '@/graphql/hasuraAdmin';
 import {
   DeleteUserGroupMemberByIdDocument,
   DeleteUserGroupMemberByIdMutation,
+  DeleteUserGroupInviteByIdDocument,
+  DeleteUserGroupInviteByIdMutation,
 } from '@/graphql/types';
 import GroupService from '@/utils/groups';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -39,6 +41,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       id,
     },
   });
+
+  const existedInvites = await GroupService.onCheckGroupInviteExists(
+    userGroupMember.user?.email || '',
+    userGroupMember.user_group_id,
+  );
+
+  if (existedInvites.id) {
+    await mutate<DeleteUserGroupInviteByIdMutation>({
+      mutation: DeleteUserGroupInviteByIdDocument,
+      variables: {
+        id: existedInvites.id,
+      },
+    });
+  }
 
   return res.send(delete_user_group_members?.returning[0]);
 };
