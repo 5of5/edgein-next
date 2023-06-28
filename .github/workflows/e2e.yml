@@ -57,9 +57,9 @@ jobs:
       - name: Push schema to Postgres
         run: psql -h localhost -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
       - name: Apply Hasura Migrations
-        run: npm run hasura migrate apply
+        run: npm run hasura migrate apply --database-name edgedb
       - name: Apply Hasura Metadata
-        run: npm run hasura metadata apply
+        run: npm run hasura metadata apply --database-name edgedb
       - name: Load Seed Data
         run: cd scripts/db/ && sh ./load-seed-data.sh
       - name: Install Playwright Browsers
