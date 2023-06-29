@@ -4,6 +4,7 @@ import { generateVerifyWorkplaceToken, saveToken } from '@/utils/tokens';
 import { tokenTypes } from '@/utils/constants';
 import { makeEmailService } from '@/services/email.service';
 import { env } from '@/services/config.service';
+import { AuthService } from '@/services/auth.service';
 
 const emailService = makeEmailService();
 
@@ -28,8 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     personId,
   );
 
-  const url = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?vtoken=${verifyWorkToken}`;
-
+  const url = AuthService.verifyWorkplaceUrl(verifyWorkToken);
   await saveToken(
     verifyWorkToken,
     tokenTypes.verifyWorkHereToken,

@@ -2,6 +2,7 @@ import { NextApiResponse, NextApiRequest } from 'next';
 import CookieService from '@/utils/cookie';
 import { makeEmailService } from '@/services/email.service';
 import { env } from '@/services/config.service';
+import { AuthService } from '@/services/auth.service';
 
 const emailService = makeEmailService();
 
@@ -42,12 +43,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
 
       if (resource.isExistedUser) {
-        const groupUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/groups/${groupId}`;
+        const groupUrl = AuthService.groupUrl(groupId);
         mailParams.groupUrl = groupUrl;
         mailParams.recipientName = resource.recipientName;
       } else {
         const inviteCode = user.reference_id;
-        const signUpUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
+        const signUpUrl = AuthService.signUpUrl(inviteCode);
         mailParams.signUpUrl = signUpUrl;
       }
 
