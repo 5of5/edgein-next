@@ -1949,7 +1949,7 @@ export const GROUPS_TABS: GroupsTabItem[] = [
 export const LISTS_TABS: ListsTabItem[] = [
   { id: 'my-lists', name: 'My Lists' },
   { id: 'discover', name: 'Discover' },
-  { id: 'followed', name: 'Followed' },
+  { id: 'following', name: 'Following' },
 ];
 
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [

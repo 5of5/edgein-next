@@ -17,7 +17,7 @@ const ElemEmptyState: FC<Props> = ({
   const heading = {
     'my-lists': 'Create a list',
     discover: 'Discover',
-    followed: 'Follow a list',
+    following: 'Follow a list',
   }[selectedTab.id];
 
   const caption = {
@@ -25,7 +25,7 @@ const ElemEmptyState: FC<Props> = ({
       'Lists help you track and follow companies, investors, and people of your interest. We will even keep you notified about all their updates.',
     discover:
       'There are no public lists yet. If you create a new list and make it public, it will appear here.',
-    followed: `You're not following any public lists yet. Start by browsing them and follow anything you find interesting.`,
+    following: `You're not following any public lists yet. Start by browsing them and follow anything you find interesting.`,
   }[selectedTab.id];
 
   return (
@@ -34,7 +34,7 @@ const ElemEmptyState: FC<Props> = ({
         <IconList className="w-12 h-12 mx-auto text-slate-300" />
         <h1 className="mt-5 text-3xl font-bold">{heading}</h1>
         <div className="mt-1 text-lg text-slate-600">{caption}</div>
-        {selectedTab.id === 'followed' ? (
+        {selectedTab.id === 'following' ? (
           <ElemButton
             onClick={() =>
               onChangeTab({

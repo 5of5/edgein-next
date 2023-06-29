@@ -119,18 +119,26 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     }
   };
 
+  const nameComponent = (
+    <div className="inline-block">
+      <Link href={resourceUrl} passHref>
+        <a className="inline-block font-bold break-words line-clamp-2 transition-all hover:text-primary-500 hover:underline">
+          {name}
+        </a>
+      </Link>
+    </div>
+  );
+
   return (
     <div className="flex flex-col mx-auto w-full p-4 bg-white rounded-lg shadow">
       <div>
-        <ElemTooltip content={description} direction="top">
-          <div className="inline-block">
-            <Link href={resourceUrl} passHref>
-              <a className="inline-block font-bold break-words line-clamp-2 transition-all hover:text-primary-500 hover:underline">
-                {name}
-              </a>
-            </Link>
-          </div>
-        </ElemTooltip>
+        {isResourceList ? (
+          nameComponent
+        ) : (
+          <ElemTooltip content={description} direction="top">
+            {nameComponent}
+          </ElemTooltip>
+        )}
       </div>
 
       <div className="grow">
@@ -175,7 +183,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
         </p>
 
         <div className="flex items-center mt-4 pl-1">
-          <ul className="flex -space-x-3 overflow-hidden cursor-pointer">
+          <ul className="flex -space-x-3 overflow-hidden">
             {members.slice(0, 6).map(mem => (
               <li key={mem.id}>
                 {mem?.user?.person?.picture ? (
@@ -201,8 +209,10 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
           <Link href={resourceUrl} passHref>
             <a className="font-medium text-sm text-slate-600 ml-1 hover:underline">
               {members.length > 1
-                ? `${members.length} Members`
-                : `${members.length} Member`}
+                ? `${members.length} ${
+                    isResourceList ? 'Followers' : 'Members'
+                  }`
+                : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
             </a>
           </Link>
         </div>

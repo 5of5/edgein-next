@@ -14,7 +14,7 @@ export type GroupsTabItem = {
   disabled?: boolean;
 };
 
-export type ListsTabType = 'my-lists' | 'discover' | 'followed';
+export type ListsTabType = 'my-lists' | 'discover' | 'following';
 
 export type ListsTabItem = {
   id: ListsTabType;
