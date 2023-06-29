@@ -12,6 +12,11 @@ import { env } from '@/services/config.service';
 export const LINKEDIN_PROVIDER = 'linkedin';
 export const AUTH0_PROVIDER = 'auth0';
 
+export enum ErrorCode {
+  USER_NOT_EXISTS = 404,
+  LINKED_IN_ACCOUNT = 406,
+}
+
 export interface AuthData {
   userId: string;
   email: string;

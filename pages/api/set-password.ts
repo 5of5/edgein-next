@@ -10,9 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const password = req.body.password;
   if (!password) return res.status(404).send('Invalid request');
   const token = CookieService.getAuthToken(req.cookies);
-  console.log(token);
   const user = await CookieService.getUser(token);
-  console.log(JSON.stringify(user));
   if (!user) return res.status(403).end();
 
   // only user password user can set the password

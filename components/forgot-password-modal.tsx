@@ -1,7 +1,10 @@
 import { useState, Fragment } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { Dialog, Transition } from '@headlessui/react';
-import { IconCheck } from '@/components/icons';
+
+export enum ErrorCode {
+  LINKED_IN_ACCOUNT = 406,
+}
 
 type Props = {
   show: boolean;
@@ -13,6 +16,7 @@ export default function ForgotPasswordModal(props: Props) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isMailSent, setIsMailSent] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async () => {
     if (!email) {
@@ -28,7 +32,11 @@ export default function ForgotPasswordModal(props: Props) {
         },
         body: JSON.stringify({ email }),
       }).then(res => res.json());
-      if (response.success === true) {
+      if (!response.status && response.success === true) {
+        setIsMailSent(true);
+      }
+      if (response.status === ErrorCode.LINKED_IN_ACCOUNT) {
+        setError(response.message);
         setIsMailSent(true);
       }
     } catch (e) {
@@ -58,8 +66,7 @@ export default function ForgotPasswordModal(props: Props) {
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
@@ -71,26 +78,30 @@ export default function ForgotPasswordModal(props: Props) {
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-300"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
               <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
                 <div className="max-w-md mx-auto w-full">
                   {isMailSent ? (
                     <>
                       <h1 className="text-2xl font-bold lg:text-3xl">
-                        Password reset email sent
+                        {error === ''
+                          ? 'Password reset email sent'
+                          : 'Cannot send reset password email.'}
                       </h1>
-                      <p className="mt-2">
-                        Look for an email from{' '}
-                        <span className="font-bold">support@edgein.io</span>.
-                        Check your Spam or Bulk Mail folders.
-                      </p>
+                      {error === '' ? (
+                        <p className="mt-2">
+                          Look for an email from{' '}
+                          <span className="font-bold">support@edgein.io</span>.
+                          Check your Spam or Bulk Mail folders.
+                        </p>
+                      ) : (
+                        <p className="mt-2">{error}</p>
+                      )}
                       <div className="sm:col-span-3 mt-4">
                         <ElemButton
                           onClick={onBack}
                           btn="primary"
-                          loading={isLoading}
-                        >
+                          loading={isLoading}>
                           Return to login
                         </ElemButton>
                       </div>
@@ -121,16 +132,14 @@ export default function ForgotPasswordModal(props: Props) {
                             className="mt-4"
                             onClick={handleSubmit}
                             btn="primary"
-                            loading={isLoading}
-                          >
+                            loading={isLoading}>
                             Reset Password
                           </ElemButton>
                           <ElemButton
                             onClick={onBack}
                             btn="transparent"
                             loading={isLoading}
-                            className="px-0 ml-2 sm:ml-4"
-                          >
+                            className="px-0 ml-2 sm:ml-4">
                             Cancel
                           </ElemButton>
                         </div>
