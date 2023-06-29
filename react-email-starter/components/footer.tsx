@@ -2,13 +2,16 @@ import { Link, Section, Text, Img, Row, Column } from '@react-email/components';
 
 export const EmailFooter = () => {
   return (
-    <Section className="bg-[#e8ecf2] p-[40px] pb-[64px]">
+    <Section className="bg-[#e8ecf2] p-[40px] pb-[8px]">
       <Section>
         <Text className="text-[#525f7f] text-[12px] leading-[16px] m-0">
-          New to EdgeIn? With EdgeIn you and your team can gain clear,
-          accessible, Web3 knowledge.
+          Got this email by mistake? Don&apos;t worry, you can safely ignore it.
         </Text>
-        <Text className="text-[#525f7f] text-[12px] leading-[16px] m-0">
+        <Text className="text-[#525f7f] text-[12px] leading-[16px] m-0 mt-[2px]">
+          EdgeIn gathers, refines, and tailors the Web3 and AI data you need to
+          get an edge.
+        </Text>
+        <Text className="text-[#525f7f] text-[12px] leading-[16px] m-0 mt-[2px]">
           <Link
             href="https://edgein.io/"
             target="_blank"
@@ -41,8 +44,10 @@ export const EmailFooter = () => {
                 alt="EdgeIn"
                 width="50"
               />
-              <span>&copy;{` EdgeIn.io ${new Date().getFullYear()}`}</span>
             </Link>
+            <Text className="text-[#838faf] text-[12px] leading-[16px] mt-[8px]">
+              &copy;{` EdgeIn.io ${new Date().getFullYear()}`}
+            </Text>
           </Column>
 
           <Column align="right">
@@ -59,7 +64,7 @@ export const EmailFooter = () => {
             </Link>
             <Link
               href="https://twitter.com/EdgeInio"
-              className="inline-block no-underline ml-[4px]"
+              className="inline-block no-underline ml-[12px]"
               target="_blank"
             >
               <Img
