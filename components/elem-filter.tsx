@@ -447,8 +447,6 @@ export const ElemFilter: FC<Props> = ({
                   onApplyFilter={onApplyFilter}
                   onChangeCondition={onChangeCondition}
                   onChangeTags={onChangeTags}
-                  value=""
-                  onChange={() => {}}
                 />
               );
             }

@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
+import { RadarAddressResponse } from '@/types/common';
 
 const useAddressAutocomplete = (layers: string[] = []) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [options, setOptions] = useState<any[]>([]);
+  const [options, setOptions] = useState<RadarAddressResponse[]>([]);
 
   const onSearchAddress = async (keyword: string) => {
     const response = await fetch(

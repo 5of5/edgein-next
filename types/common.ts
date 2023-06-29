@@ -31,3 +31,22 @@ export type Tag = {
   id: string;
   name: string;
 };
+
+export type RadarAddressResponse = {
+  latitude: number;
+  longitude: number;
+  country: string;
+  countryCode: string;
+  county: string;
+  borough: string;
+  city: string;
+  number: string;
+  neighborhood: string;
+  postalCode: string;
+  stateCode: string;
+  state: string;
+  street: string;
+  layer: string;
+  formattedAddress: string;
+  placeLabel: string;
+};

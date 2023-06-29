@@ -1,6 +1,7 @@
 import { FC, ChangeEvent, useRef } from 'react';
 import { Combobox } from '@headlessui/react';
 import { FilterOptionKeys } from '@/models/Filter';
+import { RadarAddressResponse } from '@/types/common';
 import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
 import { ElemFilterPopup } from './elem-filter-popup';
 import { InputRadio } from './input-radio';
@@ -8,7 +9,7 @@ import { IconX } from './icons';
 
 type Props = {
   open: boolean;
-  option: FilterOptionKeys;
+  option: Extract<FilterOptionKeys, 'country' | 'state' | 'city'>;
   title: string;
   heading?: string;
   checkedAny?: boolean;
@@ -24,8 +25,6 @@ type Props = {
     name: string,
   ) => void;
   onChangeTags: (selectedTags: string[], name: string) => void;
-  value: any;
-  onChange: (data: any) => void;
 };
 
 const ElemFilterLocation: FC<Props> = ({
@@ -35,24 +34,29 @@ const ElemFilterLocation: FC<Props> = ({
   heading,
   checkedAny = false,
   checkedNone = false,
+  tags,
   placeholder,
   onOpenFilterPopup,
   onCloseFilterPopup,
   onClearFilterOption,
   onApplyFilter,
   onChangeCondition,
-  tags,
   onChangeTags,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { isLoading, options, onInputChange } = useAddressAutocomplete([
-    'country',
-  ]);
+  const layers = {
+    country: ['country'],
+    state: ['state'],
+    city: ['locality'],
+  }[option];
 
-  const handleSelect = (values: any[]) => {
-    console.log('@values', values);
-    const newTags: string[] = values.map(item => item.country || item);
+  const { isLoading, options, onInputChange } = useAddressAutocomplete(layers);
+
+  const comboboxValue = [...tags].map(tagItem => ({ [option]: tagItem }));
+
+  const handleSelect = (values: Partial<RadarAddressResponse>[]) => {
+    const newTags = values.map(item => item[option] || '');
     onChangeTags(newTags, option);
     if (inputRef.current) {
       inputRef.current.value = '';
@@ -93,7 +97,7 @@ const ElemFilterLocation: FC<Props> = ({
           )}
 
           <div className="relative">
-            <Combobox multiple value={tags} onChange={handleSelect}>
+            <Combobox multiple value={comboboxValue} onChange={handleSelect}>
               <div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
                 {tags.length > 0 && (
                   <ul className="flex flex-wrap gap-2">
@@ -117,7 +121,9 @@ const ElemFilterLocation: FC<Props> = ({
                 <Combobox.Input
                   ref={inputRef}
                   className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
-                  displayValue={(value: any) => value?.addressLabel}
+                  displayValue={(value: RadarAddressResponse) =>
+                    value?.[option]
+                  }
                   placeholder={placeholder}
                   onChange={onInputChange}
                 />
@@ -126,21 +132,23 @@ const ElemFilterLocation: FC<Props> = ({
                 {isLoading ? (
                   <p className="text-sm p-2 animate-pulse">Searching...</p>
                 ) : (
-                  options.map((item: any) => (
-                    <Combobox.Option
-                      className={({ active }) =>
-                        `${
-                          active
-                            ? 'text-primary-500 bg-primary-100'
-                            : 'text-dark-500'
-                        }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
-                      }
-                      key={item.addressLabel}
-                      value={item}
-                    >
-                      {item.addressLabel}
-                    </Combobox.Option>
-                  ))
+                  options
+                    .filter(item => item[option])
+                    .map(item => (
+                      <Combobox.Option
+                        className={({ active }) =>
+                          `${
+                            active
+                              ? 'text-primary-500 bg-primary-100'
+                              : 'text-dark-500'
+                          }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
+                        }
+                        key={item[option]}
+                        value={item}
+                      >
+                        {item[option]}
+                      </Combobox.Option>
+                    ))
                 )}
               </Combobox.Options>
             </Combobox>

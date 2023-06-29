@@ -107,21 +107,21 @@ export const getFilterOptionMetadata = (
       return {
         title: 'Country',
         heading: 'Country',
-        placeholder: 'Add country name, press enter ⏎',
+        placeholder: 'Enter country name',
       };
 
     case 'state':
       return {
         title: 'State',
         heading: 'State',
-        placeholder: 'Add state name, press enter ⏎',
+        placeholder: 'Enter state name',
       };
 
     case 'city':
       return {
         title: 'City',
         heading: 'City',
-        placeholder: 'Add city name, press enter ⏎',
+        placeholder: 'Enter city name',
       };
 
     case 'address':
