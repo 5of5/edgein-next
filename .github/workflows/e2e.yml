@@ -9,11 +9,11 @@ jobs:
     services:
       postgres:
         image: postgis/postgis:14-3.3
+        options: --health-cmd pg_isready --health-interval 30s --health-retries 12
         env:
           POSTGRES_USER: 'edgeu'
           POSTGRES_DB: 'edgedb'
           POSTGRES_HOST_AUTH_METHOD: trust
-        options: --health-cmd pg_isready -U edgeu -d edgedb --health-interval 30s --health-retries 12
         ports:
           - 5432:5432
       graphql-engine:
@@ -51,16 +51,7 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get install -y postgresql-client
       - name: Push schema to Postgres
-        run: psql -h localhost -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
-      - name: Hasura apply
-        uses: tibotiber/hasura-action@v3.0
-        with:
-          args: metadata apply
-        env:
-          HASURA_WORKDIR: ./infra/hasura
-          HASURA_ENGINE_VERSION: v2.7.0
-          HASURA_ENDPOINT: http://localhost:8080
-          HASURA_ADMIN_SECRET: devsecret
+        run: psql -h 172.17.0.1 -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
       - name: Hasura migrate
         uses: tibotiber/hasura-action@v3.0
         with:
@@ -68,13 +59,30 @@ jobs:
         env:
           HASURA_WORKDIR: ./infra/hasura
           HASURA_ENGINE_VERSION: v2.7.0
-          HASURA_ENDPOINT: http://localhost:8080
+          HASURA_ENDPOINT: http://172.17.0.1:8080
+          HASURA_ADMIN_SECRET: devsecret
+      - name: Hasura apply
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: metadata apply
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.7.0
+          HASURA_ENDPOINT: http://172.17.0.1:8080
           HASURA_ADMIN_SECRET: devsecret
       - name: Load Seed Data
+        env:
+          PG_HOST: 172.17.0.1
         run: cd scripts/db/ && sh ./load-seed-data.sh
+      - name: Build NextJS
+        run: npm run build
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
+        env:
+          GRAPHQL_ENDPOINT: 'http://172.17.0.1:8080/v1/graphql'
+          GRAPHQL_ENDPOINT_ADMIN: 'http://172.17.0.1:8080/v1/graphql'
+          PG_HOST: 172.17.0.1
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
