@@ -28,6 +28,10 @@ import { find, kebabCase, first } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import ElemLibrarySelector from './elem-library-selector';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
+import {
+  SWITCH_LIBRARY_ALLOWED_DOMAINS,
+  SWITCH_LIBRARY_ALLOWED_EMAILS,
+} from '@/utils/constants';
 
 export type Popups =
   | 'login'
@@ -73,10 +77,11 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
   );
 
   const isDisplaySelectLibrary =
-    user?.email.endsWith('edgein.io') ||
-    user?.email.endsWith('techlist.com') ||
-    user?.email === 'mdinsdale@mac.com' ||
-    user?.email === 'dinghan@capital6.com';
+    user?.email &&
+    (SWITCH_LIBRARY_ALLOWED_EMAILS.includes(user.email) ||
+      SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
+        user.email.endsWith(domain),
+      ));
 
   const { data: userProfile, isLoading: isFetchingUserProfile } =
     useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });

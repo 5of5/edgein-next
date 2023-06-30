@@ -84,16 +84,18 @@ export const ElemGroupCard: FC<Props> = ({
   );
 
   return (
-    <div className="flex flex-col mx-auto w-full p-4 bg-white border border-black/10 rounded-lg shadow">
-      <ElemTooltip content={description}>
-        <div className="flex shrink-0 mb-2">
-          <Link href={`/groups/${id}`} passHref>
-            <a className="block font-bold break-words leading-none line-clamp-2 border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-              {name}
-            </a>
-          </Link>
-        </div>
-      </ElemTooltip>
+    <div className="flex flex-col mx-auto w-full p-4 bg-white rounded-lg shadow">
+      <div>
+        <ElemTooltip content={description} direction="top">
+          <div className="inline-block">
+            <Link href={`/groups/${id}`} passHref>
+              <a className="inline-block font-bold break-words line-clamp-2 transition-all hover:text-primary-500 hover:underline">
+                {name}
+              </a>
+            </Link>
+          </div>
+        </ElemTooltip>
+      </div>
 
       <div className="grow">
         <p className="inline text-slate-600 text-sm">

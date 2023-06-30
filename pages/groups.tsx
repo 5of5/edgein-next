@@ -155,11 +155,16 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
               <h1 className="mt-5 text-3xl font-bold">
                 {selectedGroupTab.id === 'my-groups'
                   ? 'Create a group'
-                  : 'Join a group'}
+                  : selectedGroupTab.id === 'joined'
+                  ? 'Join a group'
+                  : selectedGroupTab.id === 'discover'
+                  ? 'Discover'
+                  : ''}
               </h1>
               <div className="mt-1 text-lg text-slate-600">
-                Groups allow you to collaborate on notes, share insights, and
-                track leads with other people.
+                {selectedGroupTab.id === 'discover'
+                  ? 'There are no groups that are visible to the public yet, if you make your group public it will appear here.'
+                  : 'Groups allow you to collaborate on notes, share insights, and track leads with other people.'}
               </div>
               {selectedGroupTab.id === 'my-groups' ? (
                 <ElemButton
@@ -170,7 +175,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                   <IconGroupPlus className="w-6 h-6 mr-1" />
                   Create New Group
                 </ElemButton>
-              ) : (
+              ) : selectedGroupTab.id === 'joined' ? (
                 <ElemButton
                   onClick={() =>
                     setSelectedGroupTab({
@@ -184,6 +189,8 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                   <IconGroupPlus className="w-6 h-6 mr-1" />
                   Discover groups
                 </ElemButton>
+              ) : (
+                <></>
               )}
             </div>
           </div>

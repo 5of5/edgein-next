@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { ElemPhoto } from '@/components/elem-photo';
 import { formatDate, convertToInternationalCurrencySystem } from '@/utils';
-import { getLayerClass } from '@/utils/style';
 import {
   Companies_Bool_Exp,
   useGetCompaniesRecentQuery,
@@ -13,6 +12,7 @@ import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import ElemCompanyTags from '../elem-company-tags';
 
 type Props = {
   className?: string;
@@ -88,6 +88,8 @@ export const ElemRecentCompanies: FC<Props> = ({
                 >
                   <a
                     href={`/companies/${company.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
                     className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
                   >
                     <div className="flex items-center">
@@ -130,30 +132,8 @@ export const ElemRecentCompanies: FC<Props> = ({
                       </span>
                     </div>
 
-                    {(company.layer || company.tags) && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {company.layer && (
-                          <div
-                            className={`${getLayerClass(
-                              company.layer,
-                            )} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
-                          >
-                            {company.layer}
-                          </div>
-                        )}
+                    <ElemCompanyTags company={company} />
 
-                        {company.tags?.map((tag: string, index: number) => {
-                          return (
-                            <div
-                              key={index}
-                              className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
-                            >
-                              {tag}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
                     <div className="mt-4 grow">
                       <div className="text-gray-400 line-clamp-3">
                         {company.overview}

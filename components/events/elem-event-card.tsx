@@ -33,6 +33,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
     <Link key={event.id} href={`/events/${event.slug}`}>
       <a
         key={event.id}
+        target="_blank"
         className="flex flex-col box-border mx-auto h-full w-full cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
       >
         <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-32 mb-4 rounded-tl-lg rounded-tr-lg overflow-hidden shadow">
