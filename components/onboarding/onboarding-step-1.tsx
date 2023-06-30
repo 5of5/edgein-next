@@ -9,11 +9,11 @@ type Props = {
   show: boolean;
   onClose: () => void;
   onNext: (selectedOption: string) => void;
-  user: {
+  user?: {
     display_name?: string | null;
     email?: string | null;
     id: number;
-  } | null;
+  };
 };
 
 export default function OnboardingStep1(props: Props) {

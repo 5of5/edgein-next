@@ -344,7 +344,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 setSelectedOption(selectedOption);
                 setOnboardingStep(2);
               }}
-              user={user}
+              user={userProfile?.users?.[0]}
             />
           )}
           {onboardingStep === 2 && (
