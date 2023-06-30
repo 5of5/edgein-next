@@ -70,7 +70,8 @@ export default function ForgotPasswordModal(props: Props) {
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0">
+            leaveTo="opacity-0"
+          >
             <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
@@ -82,7 +83,8 @@ export default function ForgotPasswordModal(props: Props) {
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-300"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
               <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
                 <div className="max-w-md mx-auto w-full">
                   {isMailSent ? (
@@ -105,7 +107,8 @@ export default function ForgotPasswordModal(props: Props) {
                         <ElemButton
                           onClick={onBack}
                           btn="primary"
-                          loading={isLoading}>
+                          loading={isLoading}
+                        >
                           Return to login
                         </ElemButton>
                       </div>
@@ -136,14 +139,16 @@ export default function ForgotPasswordModal(props: Props) {
                             className="mt-4"
                             onClick={handleSubmit}
                             btn="primary"
-                            loading={isLoading}>
+                            loading={isLoading}
+                          >
                             Reset Password
                           </ElemButton>
                           <ElemButton
                             onClick={onBack}
                             btn="transparent"
                             loading={isLoading}
-                            className="px-0 ml-2 sm:ml-4">
+                            className="px-0 ml-2 sm:ml-4"
+                          >
                             Cancel
                           </ElemButton>
                         </div>
