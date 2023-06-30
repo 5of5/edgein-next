@@ -89,7 +89,7 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
         {user?.person?.picture ? (
           <ElemPhoto
             photo={user?.person?.picture}
-            wrapClass="flex items-center justify-center shrink-0 w-8 h-8 bg-white rounded-full shadow border border-black/10"
+            wrapClass="flex items-center justify-center shrink-0 w-9 h-9 bg-white rounded-full shadow border border-black/10"
             imgClass="object-cover max-w-full max-h-full rounded-full"
             imgAlt={'profile'}
             placeholder="user"
