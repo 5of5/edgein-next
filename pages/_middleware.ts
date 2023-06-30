@@ -42,6 +42,7 @@ export async function middleware(req: NextRequest) {
     ].includes(url.pathname) ||
     url.pathname.endsWith('.png') ||
     url.pathname.endsWith('.jpg') ||
+    url.pathname.endsWith('.svg') ||
     url.pathname.endsWith('.ico') || //||
     // process.env.DEV_MODE
     req.method === 'HEAD'

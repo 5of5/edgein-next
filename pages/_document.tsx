@@ -7,7 +7,7 @@ export default function Document() {
       className="scroll-smooth [--scroll-mt:9.875rem] lg:[--scroll-mt:6.3125rem] js-focus-visible font-sans antialiased"
     >
       <Head />
-      <body className="bg-gray-50 custom-text-color">
+      <body className="bg-gray-50 text-dark-500">
         <Main />
         <NextScript />
       </body>
