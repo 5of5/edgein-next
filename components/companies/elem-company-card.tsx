@@ -23,7 +23,10 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 
   return (
     <Link href={`/companies/${slug}`}>
-      <a className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow">
+      <a
+        target="_blank"
+        className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
+      >
         <div className="flex shrink-0 w-full">
           <ElemPhoto
             photo={logo}

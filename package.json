@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.7",
+    "@aws-sdk/client-ses": "^3.360.0",
     "@formspark/use-formspark": "^0.1.39",
     "@fusionworks/ra-s3-input": "^0.1.6",
     "@graphql-codegen/cli": "^2.6.2",
@@ -97,7 +98,8 @@
     "sass": "^1.51.0",
     "stripe": "^10.12.0",
     "swr": "^1.3.0",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.6.2",

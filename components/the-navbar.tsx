@@ -28,6 +28,10 @@ import { find, kebabCase, first } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import ElemLibrarySelector from './elem-library-selector';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
+import {
+  SWITCH_LIBRARY_ALLOWED_DOMAINS,
+  SWITCH_LIBRARY_ALLOWED_EMAILS,
+} from '@/utils/constants';
 
 export type Popups =
   | 'login'
@@ -73,10 +77,11 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
   );
 
   const isDisplaySelectLibrary =
-    user?.email.endsWith('edgein.io') ||
-    user?.email.endsWith('techlist.com') ||
-    user?.email === 'mdinsdale@mac.com' ||
-    user?.email === 'dinghan@capital6.com';
+    user?.email &&
+    (SWITCH_LIBRARY_ALLOWED_EMAILS.includes(user.email) ||
+      SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
+        user.email.endsWith(domain),
+      ));
 
   const { data: userProfile, isLoading: isFetchingUserProfile } =
     useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
@@ -253,7 +258,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
             }}
           />
 
-          <div className="flex items-center group space-x-4 lg:space-x-3 lg:ml-auto">
+          <div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-auto">
             {siteNav.map((link, index) => (
               <Link href={link.path} key={index} passHref>
                 <a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">

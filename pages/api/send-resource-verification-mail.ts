@@ -3,16 +3,12 @@ import { render } from '@react-email/render';
 import CookieService from '../../utils/cookie';
 import { generateVerifyWorkplaceToken, saveToken } from '@/utils/tokens';
 import { tokenTypes } from '@/utils/constants';
-import AWS from 'aws-sdk';
 import { ResourceVerificationMailParams } from '@/types/api';
 import ResourceVerificationEmail from '@/react-email-starter/emails/resource-verification';
+import { makeEmailService } from '@/services/email.service';
+import { env } from '@/services/config.service';
 
-//AWS config set
-AWS.config.update({
-  accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID!,
-  secretAccessKey: process.env.AWS_SES_ACCESS_SECRET_KEY!,
-});
-const SES_SOURCE = 'support@edgein.io';
+const emailService = makeEmailService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -85,10 +81,10 @@ const sendVerificationMail = async (
           Data: `Verify you work for ${companyName}`,
         },
       },
-      Source: SES_SOURCE,
+      Source: env.SES_SOURCE,
     };
 
-    await new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+    await emailService.sendEmail(params);
     return { status: 200, message: 'success' };
   } catch (err) {
     return {
