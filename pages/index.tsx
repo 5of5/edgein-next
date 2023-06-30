@@ -37,7 +37,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
     },
     {
       text: 'Advanced filters',
-      className: '-top-8 left-2 sm:-top-6 sm:left-auto sm:right-56',
+      className: '-top-4 left-[20px] lg:-top-6 lg:left-auto lg:right-56',
     },
     {
       text: 'Unlimited search',
@@ -45,11 +45,12 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
     },
     {
       text: 'Personalized insights',
-      className: 'top-1/2 right-32 lg:top-56 lg:-right-24',
+      className:
+        'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:left-auto lg:translate-x-0 lg:translate-y-0 lg:top-56 lg:-right-24',
     },
     {
       text: 'Real-time data',
-      className: '-bottom-6 right-8 lg:bottom-16 lg:-right-20',
+      className: '-bottom-4 right-[20px] lg:bottom-16 lg:-right-20',
     },
   ];
 
@@ -134,7 +135,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
     {
       title: 'Events',
       content:
-        'Discover and RSVP for the hottest events in Web3 and AI(coming soon).',
+        'Discover and RSVP for the hottest events in Web3 and AI coming soon.',
       src: '/images/features/events.png',
     },
     {
@@ -237,7 +238,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
       </section>
 
       <section className="mx-auto max-w-7xl px-2 pt-24 pb-20 lg:px-6">
-        <h2 className="mx-auto max-w-lg text-center text-lg text-zinc-500 leading-8 lg:px-4">
+        <h2 className="mx-auto max-w-lg text-center text-lg text-zinc-500 lg:px-4">
           Leading companies around the world are using EdgeIn to find superior
           data and context.
         </h2>
@@ -283,7 +284,9 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                       <button
                         onClick={() => setSelectedFeature(index)}
                         className={`whitespace-nowrap flex items-center w-full font-bold text-lg transition-all ${
-                          selectedFeature === index ? 'text-primary-500' : ''
+                          selectedFeature === index
+                            ? 'text-primary-500'
+                            : 'hover:text-primary-500'
                         }`}
                       >
                         {title}
@@ -298,11 +301,11 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                       <Transition
                         show={selectedFeature === index}
                         className="overflow-hidden"
-                        enter="transition-all ease-in-out duration-1000"
+                        enter="transition-all ease-in-out duration-100"
                         enterFrom="transform max-h-0"
-                        enterTo="transform max-h-screen"
-                        leave="transition-all ease-linear duration-75"
-                        leaveFrom="transform max-h-screen"
+                        enterTo="transform max-h-fit"
+                        leave="transition-all ease-in-out duration-100"
+                        leaveFrom="transform max-h-fit"
                         leaveTo="transform max-h-0"
                       >
                         <div className="pt-1">{content}</div>
@@ -348,7 +351,9 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                       <button
                         onClick={() => setSelectedFeature2(index)}
                         className={`whitespace-nowrap flex items-center w-full font-bold text-lg transition-all ${
-                          selectedFeature2 === index ? 'text-primary-500' : ''
+                          selectedFeature2 === index
+                            ? 'text-primary-500'
+                            : 'hover:text-primary-500'
                         }`}
                       >
                         {title}
@@ -363,11 +368,11 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                       <Transition
                         show={selectedFeature2 === index}
                         className="overflow-hidden"
-                        enter="transition-all ease-in-out duration-1000"
+                        enter="transition-all ease-in-out duration-100"
                         enterFrom="transform max-h-0"
-                        enterTo="transform max-h-screen"
-                        leave="transition-all ease-linear duration-75"
-                        leaveFrom="transform max-h-screen"
+                        enterTo="transform max-h-fit"
+                        leave="transition-all ease-in-out duration-100"
+                        leaveFrom="transform max-h-fit"
                         leaveTo="transform max-h-0"
                       >
                         <div className="pt-1">{content}</div>
@@ -415,7 +420,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                   `${
                     selected
                       ? 'text-primary-500 border-primary-500'
-                      : ' border-transparent'
+                      : ' border-transparent hover:text-primary-500'
                   }  whitespace-nowrap flex -mb-px border-box py-2 outline-none border-b transition-all`
                 }
               >
@@ -426,7 +431,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                   `${
                     selected
                       ? 'text-primary-500 border-primary-500'
-                      : ' border-transparent'
+                      : ' border-transparent hover:text-primary-500'
                   }  whitespace-nowrap flex -mb-px py-2 outline-none border-b transition-all`
                 }
               >
@@ -437,7 +442,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                   `${
                     selected
                       ? 'text-primary-500 border-primary-500'
-                      : ' border-transparent'
+                      : ' border-transparent hover:text-primary-500'
                   }  whitespace-nowrap flex -mb-px py-2 outline-none border-b transition-all`
                 }
               >
