@@ -8,6 +8,7 @@ import { FigureConnect } from '@/components/figures';
 import { Tab, Transition } from '@headlessui/react';
 import { Popups } from '@/components/the-navbar';
 import { useIntercom } from 'react-use-intercom';
+import parse from 'html-react-parser';
 
 type Props = {
   setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
@@ -134,8 +135,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
     },
     {
       title: 'Events',
-      content:
-        'Discover and RSVP for the hottest events in Web3 and AI coming soon.',
+      content: `Discover and RSVP for the hottest events in Web3 and AI <div className="inline-block shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full">Coming soon</div>`,
       src: '/images/features/events.png',
     },
     {
@@ -308,7 +308,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                         leaveFrom="transform max-h-fit"
                         leaveTo="transform max-h-0"
                       >
-                        <div className="pt-1">{content}</div>
+                        <div className="pt-1">{parse(content)}</div>
                       </Transition>
                     </div>
                   );
@@ -375,7 +375,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                         leaveFrom="transform max-h-fit"
                         leaveTo="transform max-h-0"
                       >
-                        <div className="pt-1">{content}</div>
+                        <div className="pt-1">{parse(content)}</div>
                       </Transition>
                     </div>
                   );
