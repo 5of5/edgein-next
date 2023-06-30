@@ -3,6 +3,7 @@ import { ElemButton } from '@/components/elem-button';
 import { Dialog, Transition } from '@headlessui/react';
 
 export enum ErrorCode {
+  USER_NOT_EXISTS = 404,
   LINKED_IN_ACCOUNT = 406,
 }
 
@@ -33,6 +34,9 @@ export default function ForgotPasswordModal(props: Props) {
         body: JSON.stringify({ email }),
       }).then(res => res.json());
       if (!response.status && response.success === true) {
+        setIsMailSent(true);
+      }
+      if (response.status === ErrorCode.USER_NOT_EXISTS) {
         setIsMailSent(true);
       }
       if (response.status === ErrorCode.LINKED_IN_ACCOUNT) {
