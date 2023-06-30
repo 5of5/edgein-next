@@ -8,12 +8,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
   if (!req.body.email) return res.status(400).end();
   const email = req.body.email;
-  const user = await UserService.findOneUserByEmail(email);
-  if (!user)
+  const accounts = await authService.getAccountsByEmail(email);
+  if (!accounts.length)
     return res
       .status(200)
       .send({ status: ErrorCode.USER_NOT_EXISTS, message: 'User not exists.' });
-  if (!user.auth0_linkedin_id) {
+  if (!authService.canUserResetPassword(accounts)) {
     return res.status(200).send({
       status: ErrorCode.LINKED_IN_ACCOUNT,
       message:

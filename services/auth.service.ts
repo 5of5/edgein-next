@@ -92,6 +92,18 @@ export class AuthService {
     return this.auth.getProfile(accessToken);
   }
 
+  public getAccountsByEmail(email: string): Promise<UserInfo[]> {
+    return this.management.getUsersByEmail(email);
+  }
+
+  public canUserResetPassword(accounts: UserInfo[]): boolean {
+    return (
+      accounts.filter(
+        account => !account.user_id?.startsWith(LINKEDIN_PROVIDER),
+      ).length > 0
+    );
+  }
+
   public async linkAccounts(
     isUserPassPrimaryAccount: boolean,
     isLinkedInPrimaryAccount: boolean,
