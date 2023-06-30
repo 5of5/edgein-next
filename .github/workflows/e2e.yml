@@ -51,7 +51,7 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get install -y postgresql-client
       - name: Push schema to Postgres
-        run: psql -h localhost -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
+        run: psql -h 172.17.0.1 -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
       - name: Hasura apply
         uses: tibotiber/hasura-action@v3.0
         with:
@@ -78,6 +78,7 @@ jobs:
         env:
           GRAPHQL_ENDPOINT: 'http://172.17.0.1:8080/v1/graphql'
           GRAPHQL_ENDPOINT_ADMIN: 'http://172.17.0.1:8080/v1/graphql'
+          PG_HOST: 172.17.0.1
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
