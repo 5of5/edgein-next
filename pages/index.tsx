@@ -25,31 +25,31 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
   const highlights = [
     {
       text: 'Custom notes',
-      className: '-top-4 left-20',
+      className: 'hidden lg:block -top-4 left-20',
     },
     {
       text: 'Custom groups',
-      className: 'top-28 -left-32',
+      className: 'hidden lg:block top-28 -left-32',
     },
     {
       text: 'Custom lists',
-      className: 'top-1/2 -left-28',
+      className: 'hidden lg:block top-1/2 -left-28',
     },
     {
       text: 'Advanced filters',
-      className: '-top-6 right-56',
+      className: '-top-8 left-2 sm:-top-6 sm:left-auto sm:right-56',
     },
     {
       text: 'Unlimited search',
-      className: 'top-4 -right-8',
+      className: 'hidden lg:block top-4 -right-8',
     },
     {
       text: 'Personalized insights',
-      className: 'top-56 -right-24',
+      className: 'top-1/2 right-32 lg:top-56 lg:-right-24',
     },
     {
       text: 'Real-time data',
-      className: 'bottom-16 -right-20',
+      className: '-bottom-6 right-8 lg:bottom-16 lg:-right-20',
     },
   ];
 
@@ -150,6 +150,24 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
     },
   ];
 
+  const ctaBenefits = [
+    {
+      text: 'Real-time Web3 and AI data',
+    },
+    {
+      text: 'Personalized, actionable insights',
+    },
+    {
+      text: 'Custom lists, notes and groups',
+    },
+    {
+      text: 'Unlimited, advanced search',
+    },
+    // {
+    //   text: 'Community data model',
+    // },
+  ];
+
   return (
     <>
       <section className="relative px-2 lg:px-6 border-b border-slate-300 bg-gradient-to-b from-transparent to-white">
@@ -159,7 +177,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
         >
           <div className="relative h-[500px] w-full bg-gradient-to-br from-[#F8DA4B] to-[#FE33D0] opacity-50"></div>
         </div>
-        <div className="mx-auto max-w-4xl py-20 sm:py-36">
+        <div className="mx-auto max-w-4xl pt-20 pb-8 sm:py-36">
           {/* <div className="mb-6 flex justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm font-bold uppercase leading-6 text-zinc-500">
               Web3 and AI data intelligence.
@@ -170,9 +188,9 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
               Web3 and AI data intelligence.
             </h1>
             <p className="mt-6 text-lg leading-8 text-zinc-500 sm:text-xl sm:px-8">
-              By leveraging powerful AI and personalized human intelligence,
-              EdgeIn gathers, refines and tailors the investor, company, event,
-              and media data you need to get an edge.
+              EdgeIn leverages the power of AI and personalized human
+              intelligence to gather, refine, and deliver the investor, company,
+              event and news data you need to get an edge.
             </p>
 
             <div className="mt-6">
@@ -198,7 +216,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
               return (
                 <div
                   key={index}
-                  className={`hidden absolute w-fit px-4 py-1.5 rounded-full whitespace-nowrap bg-gradient-to-b from-white to-primary-100 font-bold shadow-xl lg:block ${
+                  className={`absolute w-fit px-4 py-1.5 rounded-full whitespace-nowrap bg-gradient-to-b from-white to-primary-100 font-bold shadow-xl lg:block ${
                     className ? className : ''
                   }`}
                 >
@@ -241,13 +259,13 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
       </section>
 
       <section className="relative">
-        <h2 className="text-3xl text-center text-white py-16 font-bold tracking-tight sm:text-5xl">
+        <h2 className="text-3xl text-center text-white font-bold tracking-tight py-8 sm:py-16 sm:text-5xl">
           How EdgeIn works
         </h2>
         <div className="absolute top-0 left-0 right-0 h-[28rem] bg-gradient-to-b from-primary-400 via-primary-500 to-primary-500 -z-10"></div>
 
         <div className="mx-auto max-w-7xl px-2 lg:px-6">
-          <div className="bg-gray-50 rounded-xl p-6 lg:p-14">
+          <div className="bg-gray-50 rounded-xl px-4 py-6 lg:p-14">
             {/* Features Section 1 */}
             <div className="md:grid md:grid-cols-12 md:gap-16">
               <div className="flex flex-col sm:space-y-4 md:col-span-5">
@@ -378,7 +396,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
       </section>
 
       <section className="">
-        <div className="mx-auto max-w-2xl text-center pt-24 pb-16 px-4 lg:px-0">
+        <div className="mx-auto max-w-2xl text-left lg:text-center pt-24 pb-16 px-6 lg:px-0">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
             Empowering the community with better data.
           </h2>
@@ -430,7 +448,9 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
             <div className="px-6 py-8 lg:flex lg:items-center lg:px-8 lg:py-16 lg:space-x-24">
               <Tab.Panels className="w-full max-w-md mx-auto lg:mx-0">
                 <Tab.Panel className="w-full">
-                  <h3 className="font-bold text-2xl">For Investors</h3>
+                  <h3 className="font-bold text-xl sm:text-2xl">
+                    For Investors
+                  </h3>
                   <ul className="mt-4 flex flex-col space-y-4">
                     <li className="flex items-start">
                       <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
@@ -452,7 +472,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                   </ul>
                 </Tab.Panel>
                 <Tab.Panel className="w-full">
-                  <h3 className="font-bold text-2xl">For Teams</h3>
+                  <h3 className="font-bold text-xl sm:text-2xl">For Teams</h3>
                   <ul className="mt-4 flex flex-col space-y-4">
                     <li className="flex items-start">
                       <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
@@ -477,7 +497,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
                   </ul>
                 </Tab.Panel>
                 <Tab.Panel className="w-full">
-                  <h3 className="font-bold text-2xl">
+                  <h3 className="font-bold text-xl sm:text-2xl">
                     For Event Organizers and Media
                   </h3>
                   <ul className="mt-4 flex flex-col space-y-4">
@@ -509,28 +529,21 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 
       <section className="mx-auto max-w-7xl px-6 mt-8 lg:mt-20 lg:px-8">
         <div className="relative overflow-hidden p-8 sm:p-16 bg-gradient-to-b from-[#A05FFE] via-primary-500 to-primary-500  rounded-xl text-center">
-          <div className="max-w-xl mx-auto relative z-10">
-            <h2 className="text-3xl font-bold text-white sm:text-5xl">
+          <div className=" relative z-10">
+            <h2 className="max-w-2xl mx-auto text-3xl font-bold text-white sm:text-5xl">
               Work smarter, not harder
             </h2>
             <ul className="mt-8 mx-auto w-fit text-left text-lg text-white grid grid-cols-2 gap-4">
-              <li className="flex items-start sm:items-center col-span-2 lg:col-span-1">
-                <IconCheck className="w-6 h-6 mr-2" /> Real-time Web3 and AI
-                data
-              </li>
-              <li className="flex items-start sm:items-center col-span-2 lg:col-span-1">
-                <IconCheck className="w-6 h-6 mr-2" /> Unlimited search
-              </li>
-              <li className="flex items-start sm:items-center col-span-2 lg:col-span-1">
-                <IconCheck className="w-6 h-6 mr-2" /> Personalized insights
-              </li>
-              <li className="flex items-start sm:items-center col-span-2 lg:col-span-1">
-                <IconCheck className="w-6 h-6 mr-2" /> Community pricing
-              </li>
-              <li className="flex items-start sm:items-center col-span-2 lg:col-span-1">
-                <IconCheck className="w-6 h-6 mr-2" /> Custom lists, notes and
-                groups
-              </li>
+              {ctaBenefits.map((benefit: any, index: number) => {
+                return (
+                  <li
+                    key={index}
+                    className="flex items-start sm:items-center col-span-2 lg:col-span-1"
+                  >
+                    <IconCheck className="w-6 h-6 mr-2" /> {benefit.text}
+                  </li>
+                );
+              })}
             </ul>
 
             <div className="mt-8 flex flex-col justify-center space-y-6 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
