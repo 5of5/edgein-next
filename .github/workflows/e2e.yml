@@ -52,15 +52,6 @@ jobs:
         run: sudo apt-get install -y postgresql-client
       - name: Push schema to Postgres
         run: psql -h 172.17.0.1 -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
-      - name: Hasura apply
-        uses: tibotiber/hasura-action@v3.0
-        with:
-          args: metadata apply
-        env:
-          HASURA_WORKDIR: ./infra/hasura
-          HASURA_ENGINE_VERSION: v2.7.0
-          HASURA_ENDPOINT: http://172.17.0.1:8080
-          HASURA_ADMIN_SECRET: devsecret
       - name: Hasura migrate
         uses: tibotiber/hasura-action@v3.0
         with:
@@ -70,10 +61,10 @@ jobs:
           HASURA_ENGINE_VERSION: v2.7.0
           HASURA_ENDPOINT: http://172.17.0.1:8080
           HASURA_ADMIN_SECRET: devsecret
-      - name: Hasura schema
+      - name: Hasura apply
         uses: tibotiber/hasura-action@v3.0
         with:
-          args: metadata export --output -
+          args: metadata apply
         env:
           HASURA_WORKDIR: ./infra/hasura
           HASURA_ENGINE_VERSION: v2.7.0
