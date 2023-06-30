@@ -59,7 +59,7 @@ jobs:
         env:
           HASURA_WORKDIR: ./infra/hasura
           HASURA_ENGINE_VERSION: v2.7.0
-          HASURA_ENDPOINT: http://localhost:8080
+          HASURA_ENDPOINT: http://172.17.0.1:8080
           HASURA_ADMIN_SECRET: devsecret
       - name: Hasura migrate
         uses: tibotiber/hasura-action@v3.0
@@ -68,13 +68,16 @@ jobs:
         env:
           HASURA_WORKDIR: ./infra/hasura
           HASURA_ENGINE_VERSION: v2.7.0
-          HASURA_ENDPOINT: http://localhost:8080
+          HASURA_ENDPOINT: http://172.17.0.1:8080
           HASURA_ADMIN_SECRET: devsecret
       - name: Load Seed Data
         run: cd scripts/db/ && sh ./load-seed-data.sh
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
+        env:
+          GRAPHQL_ENDPOINT: 'http://172.17.0.1:8080/v1/graphql'
+          GRAPHQL_ENDPOINT_ADMIN: 'http://172.17.0.1:8080/v1/graphql'
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
