@@ -13,7 +13,6 @@ jobs:
           POSTGRES_USER: 'edgeu'
           POSTGRES_DB: 'edgedb'
           POSTGRES_HOST_AUTH_METHOD: trust
-        options: --health-cmd pg_isready -U edgeu -d edgedb --health-interval 30s --health-retries 12
         ports:
           - 5432:5432
       graphql-engine:
