@@ -71,6 +71,8 @@ jobs:
           HASURA_ENDPOINT: http://172.17.0.1:8080
           HASURA_ADMIN_SECRET: devsecret
       - name: Load Seed Data
+        env:
+          PG_HOST: 172.17.0.1
         run: cd scripts/db/ && sh ./load-seed-data.sh
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
