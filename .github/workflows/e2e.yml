@@ -74,6 +74,8 @@ jobs:
         env:
           PG_HOST: 172.17.0.1
         run: cd scripts/db/ && sh ./load-seed-data.sh
+      - name: Build NextJS
+        run: npm run build
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
