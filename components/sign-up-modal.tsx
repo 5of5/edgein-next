@@ -239,7 +239,6 @@ export default function SignUpModal(props: Props) {
                       Welcome to EdgeIn
                     </h1>
                     <ElemButton
-                      roundedFull={false}
                       onClick={onLinkedInClick}
                       className="w-full mt-5 gap-x-2 text-center rounded-full bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]"
                     >
