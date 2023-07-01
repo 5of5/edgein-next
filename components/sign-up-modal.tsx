@@ -67,10 +67,10 @@ export default function SignUpModal(props: Props) {
   const validateEmail = (value: string) => {
     setEmail(value);
     if (validator.isEmail(value)) {
-      if (isFreeEmail(value)) {
-        setEmailError('Please enter a work email.');
-        return true;
-      }
+      // if (isFreeEmail(value)) {
+      //   setEmailError('Please enter a work email.');
+      //   return true;
+      // }
       setEmailError('');
     } else {
       setEmailError('Please enter valid work email.');
