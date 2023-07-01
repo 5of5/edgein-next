@@ -241,8 +241,7 @@ export default function SignUpModal(props: Props) {
                     <ElemButton
                       roundedFull={false}
                       onClick={onLinkedInClick}
-                      btn="transparent"
-                      className="w-full mt-5 gap-x-2 text-center rounded-md text-[#0077B5] ring-1 ring-inset ring-black/10 hover:ring-2 hover:ring-[#0077B5] hover:text-[#0077B5] hover:bg-slate-50"
+                      className="w-full mt-5 gap-x-2 text-center rounded-full bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]"
                     >
                       <IconLinkedIn
                         title="LinkedIn"
