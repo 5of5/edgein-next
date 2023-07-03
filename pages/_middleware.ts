@@ -63,14 +63,24 @@ export async function middleware(req: NextRequest) {
   try {
     user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
     if (!user) {
-      // const usage = await CookieService.getUsage(CookieService.getUsageToken(req.cookies))
-      // if (!usage || usage.pages < USAGE_LIMIT || (url.pathname.startsWith('/api/') && usage.pages === USAGE_LIMIT)) {
-      // 	return CookieService.setUsageCookie(NextResponse.next(), await CookieService.createUsageToken({pages: (usage?.pages || 0) + (url.pathname.startsWith('/api/') ? 0 : 1)}))
-      // } else {
-      return NextResponse.redirect(
-        new URL(`/login/?usage=true&${redirectPath}`, req.url),
+      const usage = await CookieService.getUsage(
+        CookieService.getUsageToken(req.cookies),
       );
-      // }
+      if (
+        !usage ||
+        usage.pages < USAGE_LIMIT ||
+        (url.pathname.startsWith('/api/') && usage.pages === USAGE_LIMIT)
+      ) {
+        const newUsageToken = await CookieService.createUsageToken({
+          pages:
+            (usage?.pages || 0) + (url.pathname.startsWith('/api/') ? 0 : 1),
+        });
+        return CookieService.setUsageCookie(NextResponse.next(), newUsageToken);
+      } else {
+        return NextResponse.redirect(
+          new URL(`/login/?usage=true&${redirectPath}`, req.url),
+        );
+      }
     }
     // if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
     // 	return NextResponse.redirect(
