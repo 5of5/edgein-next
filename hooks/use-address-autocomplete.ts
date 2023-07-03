@@ -42,6 +42,7 @@ const useAddressAutocomplete = (layers: string[] = []) => {
   return {
     isLoading,
     options,
+    setOptions,
     onInputChange,
   };
 };

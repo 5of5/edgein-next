@@ -51,13 +51,15 @@ const ElemFilterLocation: FC<Props> = ({
     city: ['locality'],
   }[option];
 
-  const { isLoading, options, onInputChange } = useAddressAutocomplete(layers);
+  const { isLoading, options, onInputChange, setOptions } =
+    useAddressAutocomplete(layers);
 
   const comboboxValue = [...tags].map(tagItem => ({ [option]: tagItem }));
 
   const handleSelect = (values: Partial<RadarAddressResponse>[]) => {
     const newTags = values.map(item => item[option] || '');
     onChangeTags(newTags, option);
+    setOptions([]);
     if (inputRef.current) {
       inputRef.current.value = '';
     }
@@ -128,29 +130,31 @@ const ElemFilterLocation: FC<Props> = ({
                   onChange={onInputChange}
                 />
               </div>
-              <Combobox.Options className=" absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
-                {isLoading ? (
-                  <p className="text-sm p-2 animate-pulse">Searching...</p>
-                ) : (
-                  options
-                    .filter(item => item[option])
-                    .map(item => (
-                      <Combobox.Option
-                        className={({ active }) =>
-                          `${
-                            active
-                              ? 'text-primary-500 bg-primary-100'
-                              : 'text-dark-500'
-                          }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
-                        }
-                        key={item[option]}
-                        value={item}
-                      >
-                        {item[option]}
-                      </Combobox.Option>
-                    ))
-                )}
-              </Combobox.Options>
+              {(isLoading || options.length > 0) && (
+                <Combobox.Options className=" absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+                  {isLoading ? (
+                    <p className="text-sm p-2 animate-pulse">Searching...</p>
+                  ) : (
+                    options
+                      .filter(item => item[option])
+                      .map(item => (
+                        <Combobox.Option
+                          className={({ active }) =>
+                            `${
+                              active
+                                ? 'text-primary-500 bg-primary-100'
+                                : 'text-dark-500'
+                            }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
+                          }
+                          key={item[option]}
+                          value={item}
+                        >
+                          {item[option]}
+                        </Combobox.Option>
+                      ))
+                  )}
+                </Combobox.Options>
+              )}
             </Combobox>
           </div>
         </div>
