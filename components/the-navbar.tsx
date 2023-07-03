@@ -234,7 +234,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
   return (
     <header className="overflow-y-visible z-40 block fixed top-0 left-0 right-0">
-      <div className="px-1 py-1 sm:px-3 shadow bg-white/80 backdrop-blur">
+      <div className="px-1 py-1 sm:px-3 sm:py-2 shadow bg-white/80 backdrop-blur">
         <nav
           className="flex items-center justify-between lg:justify-start w-full mx-auto transition-all"
           aria-label="Global"
@@ -283,16 +283,16 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 <ElemButton
                   onClick={() => setShowPopup('login')}
                   btn="ol-primary"
-                  className="px-2.5 sm:px-3"
+                  className="!px-2.5 whitespace-nowrap sm:!px-3"
                 >
                   Log In
                 </ElemButton>
                 <ElemButton
                   onClick={() => setShowPopup('signup')}
                   btn="primary"
-                  className="px-2.5 sm:px-3"
+                  className="!px-2.5 whitespace-nowrap sm:!px-3"
                 >
-                  Sign Up
+                  Start for free
                 </ElemButton>
               </>
             )}
