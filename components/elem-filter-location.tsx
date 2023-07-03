@@ -1,5 +1,6 @@
 import { FC, ChangeEvent, useRef } from 'react';
 import { Combobox } from '@headlessui/react';
+import uniqBy from 'lodash/uniqBy';
 import { FilterOptionKeys } from '@/models/Filter';
 import { RadarAddressResponse } from '@/types/common';
 import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
@@ -55,6 +56,8 @@ const ElemFilterLocation: FC<Props> = ({
     useAddressAutocomplete(layers);
 
   const comboboxValue = [...tags].map(tagItem => ({ [option]: tagItem }));
+
+  const locationOptions = uniqBy(options, option);
 
   const handleSelect = (values: Partial<RadarAddressResponse>[]) => {
     const newTags = values.map(item => item[option] || '');
@@ -130,12 +133,12 @@ const ElemFilterLocation: FC<Props> = ({
                   onChange={onInputChange}
                 />
               </div>
-              {(isLoading || options.length > 0) && (
+              {(isLoading || locationOptions.length > 0) && (
                 <Combobox.Options className=" absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
                   {isLoading ? (
                     <p className="text-sm p-2 animate-pulse">Searching...</p>
                   ) : (
-                    options
+                    locationOptions
                       .filter(item => item[option])
                       .map(item => (
                         <Combobox.Option
