@@ -65,7 +65,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
   return (
     <>
       <div className={className}>
-        <div className="bg-white shadow rounded-lg px-4 py-4 shrink-0">
+        <div className="bg-white shadow rounded-lg px-4 py-3 shrink-0">
           <h2 className="text-lg font-bold">About Group</h2>
           {group?.description && (
             <p className="text-gray-400 mb-3">{group?.description}</p>
@@ -73,7 +73,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
           {isPublicGroup ? (
             <div className="flex text-sm">
-              <IconGlobe className="w-5 h-5 mr-2 text-gray-400" />
+              <IconGlobe className="w-5 h-5 shrink-0 mr-2 text-gray-400" />
               <div>
                 <h4 className="font-bold">Public</h4>
                 <p className="text-gray-400">Anyone can find this group.</p>
@@ -81,7 +81,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
             </div>
           ) : (
             <div className="flex text-sm">
-              <IconLockClosed className="w-5 h-5 mr-2 text-gray-400" />
+              <IconLockClosed className="w-5 h-5 shrink-0 mr-2 text-gray-400" />
               <div>
                 <h4 className="font-bold">Private</h4>
                 <p className="text-gray-400">
@@ -106,7 +106,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                       {item.icon && (
                         <item.icon
                           title={item.text}
-                          className="w-5 h-5 mr-2 text-gray-400"
+                          className="w-5 h-5 shrink-0 mr-2 text-gray-400"
                         />
                       )}
                       <span className="text-sm text-slate-600 hover:text-primary-500">
