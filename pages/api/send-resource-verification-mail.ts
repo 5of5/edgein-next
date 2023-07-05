@@ -1,7 +1,10 @@
 import { NextApiResponse, NextApiRequest } from 'next';
+import { render } from '@react-email/render';
 import CookieService from '../../utils/cookie';
 import { generateVerifyWorkplaceToken, saveToken } from '@/utils/tokens';
 import { tokenTypes } from '@/utils/constants';
+import { ResourceVerificationMailParams } from '@/types/api';
+import ResourceVerificationEmail from '@/react-email-starter/emails/resource-verification';
 import { makeEmailService } from '@/services/email.service';
 import { env } from '@/services/config.service';
 
@@ -28,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     personId,
   );
 
-  const url = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?vtoken=${verifyWorkToken}`;
+  const verifyUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?vtoken=${verifyWorkToken}`;
 
   await saveToken(
     verifyWorkToken,
@@ -37,29 +40,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     token,
   );
 
-  const ret = await sendVerificationMail(
-    url,
-    companyName,
+  const mailParams: ResourceVerificationMailParams = {
     email,
-    user.display_name || '',
-  );
+    username: user.display_name || '',
+    verifyUrl,
+    companyName,
+  };
+
+  const ret = await sendVerificationMail(mailParams);
 
   res.send(ret);
 };
 
 const sendVerificationMail = async (
-  url: string,
-  companyName: string,
-  email: string,
-  userName?: string,
+  mailParams: ResourceVerificationMailParams,
 ) => {
+  const { email, username, companyName, verifyUrl } = mailParams;
   try {
-    const html = `
-      <b>Hi ${userName}</b>,
-      <p>Please verify you work for <b>${companyName}</b> </p> <br/>
-
-      <a href="${url}">${url}</a>
-    `;
+    const emailHtml = render(
+      ResourceVerificationEmail({
+        username,
+        verifyUrl,
+        companyName,
+      }),
+    );
 
     const params = {
       Destination: {
@@ -69,7 +73,7 @@ const sendVerificationMail = async (
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {

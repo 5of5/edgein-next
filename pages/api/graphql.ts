@@ -16,13 +16,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     //let headers: {'x-hasura-role'?: string} & { Authorization: string } |
     | { 'x-hasura-admin-secret': string };
-  if (!user) {
-    return res.status(401).end();
-  }
+
   if (
-    user.role === 'user' ||
-    req.headers['is-viewer'] === 'true' ||
-    isAdminHideDraftData
+    user &&
+    (user.role === 'user' ||
+      req.headers['is-viewer'] === 'true' ||
+      isAdminHideDraftData)
   ) {
     headers = {
       Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
