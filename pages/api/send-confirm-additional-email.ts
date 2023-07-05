@@ -1,20 +1,12 @@
 import { NextApiResponse, NextApiRequest } from 'next';
-import AWS from 'aws-sdk';
+import { render } from '@react-email/render';
 import CookieService from '@/utils/cookie';
+import { ConfirmAdditionalMailParams } from '@/types/api';
+import AdditionalEmailConfirmEmail from '@/react-email-starter/emails/additional-email-confirm';
+import { env } from '@/services/config.service';
+import { makeEmailService } from '@/services/email.service';
 
-type MailParams = {
-  email: string;
-  username: string;
-  verifyUrl: string;
-};
-
-//AWS config set
-AWS.config.update({
-  accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID!,
-  secretAccessKey: process.env.AWS_SES_ACCESS_SECRET_KEY!,
-  region: process.env.AWS_BUCKET_REGION!,
-});
-const SES_SOURCE = 'EdgeIn Support <support@edgein.io>';
+const emailService = makeEmailService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -25,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const email: string = req.body.email;
 
-  const mailParams: MailParams = {
+  const mailParams: ConfirmAdditionalMailParams = {
     email,
     username: user.display_name || '',
     verifyUrl: `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-additional-email/?email=${email}&uid=${user.id}`,
@@ -35,14 +27,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.send(emailResponse);
 };
 
-const sendInvitationMail = async (mailParams: MailParams) => {
+const sendInvitationMail = async (mailParams: ConfirmAdditionalMailParams) => {
   const { email, username, verifyUrl } = mailParams;
-  const html = `
-  <b>Verify your email on EdgeIn</b>
-  <p><b>${username}</b> has added you to additional emails on EdgeIn.</p> <br/>
 
-  <a href="${verifyUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">VERIFY YOUR EMAIL</a>
-`;
+  const emailHtml = render(
+    AdditionalEmailConfirmEmail({
+      username,
+      verifyUrl,
+    }),
+  );
 
   try {
     const params = {
@@ -53,7 +46,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {
@@ -61,10 +54,10 @@ const sendInvitationMail = async (mailParams: MailParams) => {
           Data: `Verify your email`,
         },
       },
-      Source: SES_SOURCE,
+      Source: env.SES_SOURCE,
     };
 
-    await new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+    await emailService.sendEmail(params);
     return { status: 200, message: 'success' };
   } catch (err) {
     return {

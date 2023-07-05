@@ -78,8 +78,9 @@ const Group: NextPage<Props> = (props: Props) => {
   const isPublicGroup = groupData.public;
   const isPrivateGroup = !groupData.public && !isUserBelongToGroup;
 
-  const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
   const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const aboutRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const [isOpenInviteDialog, setIsOpenInviteDialog] = useState(false);
 
@@ -87,8 +88,9 @@ const Group: NextPage<Props> = (props: Props) => {
 
   const tabBarItems = useMemo(() => {
     return [
-      { name: 'Notes', ref: notesRef },
+      { name: 'About', ref: aboutRef },
       { name: 'Lists', ref: listsRef },
+      { name: 'Notes', ref: notesRef },
     ];
   }, []);
 
@@ -150,20 +152,24 @@ const Group: NextPage<Props> = (props: Props) => {
 
   return (
     <DashboardLayout>
-      <ElemGroupInformation
-        isUserBelongToGroup={isUserBelongToGroup}
-        group={groupData}
-        onInvite={onOpenInviteDialog}
-        onOpenSettingDialog={onOpenSettingDialog}
-      />
-
-      {isUserBelongToGroup && (
-        <ElemTabBar
-          className="border-t-transparent lg:hidden"
-          tabs={tabBarItems}
-          showDropdown={false}
+      <div className="mt-4 border-b border-black/10">
+        <ElemGroupInformation
+          isUserBelongToGroup={isUserBelongToGroup}
+          group={groupData}
+          onInvite={onOpenInviteDialog}
+          onOpenSettingDialog={onOpenSettingDialog}
+          isAddingGroupMember={isAddingGroupMember}
+          onAddGroupMember={() => addGroupMember()}
         />
-      )}
+
+        {isUserBelongToGroup && (
+          <ElemTabBar
+            className="mt-3 border-b-transparent lg:hidden"
+            tabs={tabBarItems}
+            showDropdown={false}
+          />
+        )}
+      </div>
 
       <div className="mt-7 grid lg:grid-cols-11 lg:gap-7">
         <div className="mt-4 lg:mt-0 lg:col-span-7">
@@ -216,7 +222,7 @@ const Group: NextPage<Props> = (props: Props) => {
         </div>
         <div className="order-first lg:order-none lg:col-span-4">
           <div className="flex flex-col space-y-4">
-            <div>
+            <div ref={aboutRef}>
               <ElemGroupAbout
                 isUserBelongToGroup={isUserBelongToGroup}
                 onOpenSettingDialog={onOpenSettingDialog}

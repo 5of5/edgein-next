@@ -4,12 +4,12 @@ import { Dialog, Transition, Combobox } from '@headlessui/react';
 import useSWR from 'swr';
 import { useMutation } from 'react-query';
 import { User_Groups } from '@/graphql/types';
+import { InviteGroupMemberPayloadEmailResource } from '@/types/api';
 import { useDebounce } from '@/hooks/use-debounce';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemButton } from '../elem-button';
 import { IconX, IconPaperAirplane } from '@/components/icons';
 import { PlaceholderPerson } from '../placeholders';
-import { EmailResources } from '@/pages/api/send-invite-group-member-mail';
 
 type Props = {
   isOpen: boolean;
@@ -43,7 +43,9 @@ const ElemInviteDialog: React.FC<Props> = ({
 
   const isLoading = !error && !searchedPeople;
 
-  const onSendInvitationMail = async (emailResources: EmailResources) => {
+  const onSendInvitationMail = async (
+    emailResources: InviteGroupMemberPayloadEmailResource[],
+  ) => {
     await fetch('/api/send-invite-group-member-mail/', {
       method: 'POST',
       headers: {
@@ -88,7 +90,7 @@ const ElemInviteDialog: React.FC<Props> = ({
     },
     {
       onSuccess: async response => {
-        const emailResources: EmailResources = [];
+        const emailResources: InviteGroupMemberPayloadEmailResource[] = [];
         response.forEach((item: any) => {
           if (item.member) {
             onUpdateGroupData((prev: User_Groups) => ({

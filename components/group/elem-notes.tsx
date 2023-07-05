@@ -1,8 +1,12 @@
 import React from 'react';
 import { GetNotesQuery } from '@/graphql/types';
-import { IconDocumentDownload } from '@/components/icons';
+import {
+  IconDocumentDownload,
+  IconInformationCircle,
+} from '@/components/icons';
 import { orderBy } from 'lodash';
 import ElemNoteCard from './elem-note-card';
+import { ElemTooltip } from '@/components/elem-tooltip';
 
 type Props = {
   className?: string;
@@ -40,8 +44,19 @@ export const ElemNotes: React.FC<Props> = props => {
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-lg font-bold">{`Notes (${props.notes.length})`}</h2>
+          <div className="flex items-center mb-4 bg-white shadow rounded-lg px-4 py-2 shrink-0">
+            <h2 className="text-lg font-bold mr-1">{`Notes (${props.notes.length})`}</h2>
+            <ElemTooltip
+              size="md"
+              content="Notes are added on a Company or Investor profile and shared with a selected audience."
+            >
+              <div>
+                <IconInformationCircle
+                  className="h-5 w-5 text-primary-500"
+                  title="About notes"
+                />
+              </div>
+            </ElemTooltip>
           </div>
           <div className="flex flex-col gap-y-4">
             {sortedNotes.map(item => (
