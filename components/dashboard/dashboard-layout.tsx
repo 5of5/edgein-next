@@ -20,7 +20,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
           btn="slate"
           roundedFull={false}
           onClick={() => setSidebarOpen(true)}
-          className="-ml-4 mt-6 mb-4 rounded-tr-lg rounded-br-lg pl-8 sm:pl-10  md:pl-12 hover:border-primary-500 lg:hidden "
+          className="-ml-4 mt-4 mb-2 rounded-tr-lg rounded-br-lg pl-8 sm:pl-10 md:pl-12 hover:border-primary-500 lg:hidden"
         >
           <span className="sr-only">Dashboard Menu</span>
           <IconWindowSidebar className="w-6 h-6 mr-2" />

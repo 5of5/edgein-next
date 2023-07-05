@@ -97,12 +97,12 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
               },
             ]
           : []),
-        ...(myGroupsUrl
+        ...(user
           ? [
               {
                 icon: IconGroup,
                 name: 'My Groups',
-                href: myGroupsUrl,
+                href: '/groups',
                 onClick: null,
               },
             ]
