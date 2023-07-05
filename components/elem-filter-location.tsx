@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useRef } from 'react';
+import { FC, PropsWithChildren, ChangeEvent, useRef } from 'react';
 import { Combobox } from '@headlessui/react';
 import uniqBy from 'lodash/uniqBy';
 import { FilterOptionKeys } from '@/models/Filter';
@@ -28,7 +28,7 @@ type Props = {
   onChangeTags: (selectedTags: string[], name: string) => void;
 };
 
-const ElemFilterLocation: FC<Props> = ({
+export const ElemFilterLocation: FC<Props> = ({
   open,
   option,
   title,
@@ -55,7 +55,7 @@ const ElemFilterLocation: FC<Props> = ({
   const { isLoading, options, onInputChange, setOptions } =
     useAddressAutocomplete(layers);
 
-  const comboboxValue = [...tags].map(tagItem => ({ [option]: tagItem }));
+  const comboboxValues = [...tags].map(tagItem => ({ [option]: tagItem }));
 
   const locationOptions = uniqBy(options, option);
 
@@ -102,7 +102,7 @@ const ElemFilterLocation: FC<Props> = ({
           )}
 
           <div className="relative">
-            <Combobox multiple value={comboboxValue} onChange={handleSelect}>
+            <Combobox multiple value={comboboxValues} onChange={handleSelect}>
               <div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
                 {tags.length > 0 && (
                   <ul className="flex flex-wrap gap-2">
@@ -133,31 +133,11 @@ const ElemFilterLocation: FC<Props> = ({
                   onChange={onInputChange}
                 />
               </div>
-              {(isLoading || locationOptions.length > 0) && (
-                <Combobox.Options className=" absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
-                  {isLoading ? (
-                    <p className="text-sm p-2 animate-pulse">Searching...</p>
-                  ) : (
-                    locationOptions
-                      .filter(item => item[option])
-                      .map(item => (
-                        <Combobox.Option
-                          className={({ active }) =>
-                            `${
-                              active
-                                ? 'text-primary-500 bg-primary-100'
-                                : 'text-dark-500'
-                            }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
-                          }
-                          key={item[option]}
-                          value={item}
-                        >
-                          {item[option]}
-                        </Combobox.Option>
-                      ))
-                  )}
-                </Combobox.Options>
-              )}
+              <ComboboxResults
+                isLoading={isLoading}
+                name={option}
+                options={locationOptions}
+              />
             </Combobox>
           </div>
         </div>
@@ -178,4 +158,55 @@ const ElemFilterLocation: FC<Props> = ({
   );
 };
 
-export default ElemFilterLocation;
+const Dropdown: FC<PropsWithChildren<unknown>> = ({ children }) => {
+  return (
+    <Combobox.Options className="absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+      {children}
+    </Combobox.Options>
+  );
+};
+
+type ComboboxResultsProps = {
+  isLoading: boolean;
+  name: Extract<FilterOptionKeys, 'country' | 'state' | 'city'>;
+  options: RadarAddressResponse[];
+};
+
+const ComboboxResults: FC<ComboboxResultsProps> = ({
+  isLoading,
+  name,
+  options,
+}) => {
+  console.log('@options', options);
+  if (isLoading) {
+    return (
+      <Dropdown>
+        <p className="text-sm p-2 animate-pulse">Searching...</p>
+      </Dropdown>
+    );
+  }
+
+  if (options.length > 0) {
+    return (
+      <Dropdown>
+        {options
+          .filter(item => item[name])
+          .map(item => (
+            <Combobox.Option
+              className={({ active }) =>
+                `${
+                  active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
+                }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
+              }
+              key={item[name]}
+              value={item}
+            >
+              {item[name]}
+            </Combobox.Option>
+          ))}
+      </Dropdown>
+    );
+  }
+
+  return null;
+};

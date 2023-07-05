@@ -26,7 +26,7 @@ import { eventSizeChoices } from '@/utils/constants';
 import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
-import ElemFilterLocation from './elem-filter-location';
+import { ElemFilterLocation } from './elem-filter-location';
 
 type Props = {
   className?: string;
@@ -431,7 +431,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterLocation
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   option={option}
                   title={`${optionMetadata.title} (${
                     filters?.[option]?.tags?.length || 0
@@ -454,7 +454,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterTagsInput
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   option={option}
                   title={`${optionMetadata.title} (${
                     filters?.[option]?.tags?.length || 0
@@ -477,7 +477,7 @@ export const ElemFilter: FC<Props> = ({
             if (option === 'address') {
               return (
                 <ElemFilterPopup
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={optionMetadata.title || ''}
                   onOpen={onOpenFilterPopup}
@@ -513,7 +513,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterTagsInput
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   option={option}
                   title={`${optionMetadata.title} (${
                     filters?.[option]?.tags?.length || 0
@@ -544,7 +544,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={`${optionMetadata.title} (${
                     filters?.[option]?.tags?.length || 0
@@ -601,7 +601,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={optionMetadata.title || ''}
                   onOpen={onOpenFilterPopup}
@@ -665,7 +665,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={optionMetadata.title || ''}
                   onOpen={onOpenFilterPopup}
@@ -766,7 +766,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={optionMetadata.title || ''}
                   onOpen={onOpenFilterPopup}
@@ -824,7 +824,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={optionMetadata.title || ''}
                   onOpen={onOpenFilterPopup}
