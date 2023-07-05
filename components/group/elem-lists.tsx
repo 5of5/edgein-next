@@ -146,7 +146,7 @@ export const ElemLists: React.FC<Props> = ({
 
   return (
     <div className={`${className ? className : ''}`}>
-      <div className="bg-white shadow rounded-lg px-4 py-4 shrink-0">
+      <div className="bg-white shadow rounded-lg px-4 py-3 shrink-0">
         <div className="flex items-center justify-between pb-1 border-b border-black/10">
           <div>
             <h2 className="text-lg font-bold">{`Lists (${lists.length})`}</h2>
@@ -154,7 +154,7 @@ export const ElemLists: React.FC<Props> = ({
           <ElemButton
             btn="transparent"
             onClick={() => setIsOpenAddList(true)}
-            className="px-0 py-0"
+            className="!px-0 !py-0"
           >
             <IconPlus className="w-5 h-5 mr-1" />
             <span>Add List</span>
@@ -182,7 +182,7 @@ export const ElemLists: React.FC<Props> = ({
           <ul className="mt-4 flex flex-col space-y-5">
             {lists.map(item => {
               if (!item) {
-                return <></>;
+                return;
               }
               const isFollowing = listMembers.some(
                 mem => mem.list_id === item.id,
