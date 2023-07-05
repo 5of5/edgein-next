@@ -23,7 +23,7 @@ import { getGroupsFilters } from '@/utils/filter';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
-import ElemListCard from '@/components/elem-list-card';
+import { ElemListCard } from '@/components/elem-list-card';
 
 type Props = {
   initialGroupsCount: number;

@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemTags } from '@/components/elem-tags';
-import { runGraphQl } from '@/utils';
+import { formatDateShown, runGraphQl } from '@/utils';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -174,12 +174,6 @@ const Event: NextPage<Props> = props => {
     ['created_at'],
     ['desc'],
   );
-
-  const formatDateShown = (date: Date, timezone?: string) => {
-    const local_date = moment(date).local().format('YYYY-MM-DD');
-
-    return moment(local_date).format('LL');
-  };
 
   return (
     <>

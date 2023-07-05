@@ -9,7 +9,7 @@ type Props = {
   onClickCreateList: () => void;
 };
 
-const ElemEmptyState: FC<Props> = ({
+export const ElemEmptyState: FC<Props> = ({
   selectedTab,
   onChangeTab,
   onClickCreateList,
@@ -62,5 +62,3 @@ const ElemEmptyState: FC<Props> = ({
     </div>
   );
 };
-
-export default ElemEmptyState;

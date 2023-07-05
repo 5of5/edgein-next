@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 import { kebabCase, startCase } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { getNameFromListName } from '@/utils/reaction';
+import { formatDateShown } from '@/utils';
 import { GetGroupsQuery, GetListsQuery, Lists } from '@/graphql/types';
 import { DeepPartial, GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ElemButton } from './elem-button';
@@ -29,7 +30,11 @@ type Props = {
   refetchList: () => void;
 };
 
-const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
+export const ElemListCard: FC<Props> = ({
+  selectedTab,
+  resource,
+  refetchList,
+}) => {
   const router = useRouter();
 
   const { user, refreshProfile, refetchMyGroups } = useUser();
@@ -61,12 +66,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     ? resource.list_members
     : resource.user_group_members;
 
-  const formatDateShown = (date: Date) => {
-    const local_date = moment(date).local().format('YYYY-MM-DD');
-    return moment(local_date).format('LL');
-  };
-
-  const { mutate: followList, isLoading: isFollowingList } = useMutation(
+  const { mutate: followList, isLoading: isFollowingListLoading } = useMutation(
     async () => {
       await fetch('/api/toggle-follow-list', {
         method: 'POST',
@@ -88,7 +88,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     },
   );
 
-  const { mutate: joinGroup, isLoading: isJoiningGroup } = useMutation(
+  const { mutate: joinGroup, isLoading: isJoiningGroupLoading } = useMutation(
     async () => {
       await fetch('/api/add-group-member/', {
         method: 'POST',
@@ -119,7 +119,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     }
   };
 
-  const nameComponent = (
+  const ListItemName = (
     <div className="inline-block">
       <Link href={resourceUrl} passHref>
         <a className="inline-block font-bold break-words line-clamp-2 transition-all hover:text-primary-500 hover:underline">
@@ -133,10 +133,10 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     <div className="flex flex-col mx-auto w-full p-4 bg-white rounded-lg shadow">
       <div>
         {isResourceList ? (
-          nameComponent
+          ListItemName
         ) : (
           <ElemTooltip content={description} direction="top">
-            {nameComponent}
+            {ListItemName}
           </ElemTooltip>
         )}
       </div>
@@ -184,23 +184,25 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
 
         <div className="flex items-center mt-4 pl-1">
           <ul className="flex -space-x-3 overflow-hidden">
-            {members.slice(0, 6).map(mem => (
-              <li key={mem.id}>
-                {mem?.user?.person?.picture ? (
+            {members.slice(0, 6).map(member => (
+              <li key={member.id}>
+                {member?.user?.person?.picture ? (
                   <ElemPhoto
-                    photo={mem?.user.person?.picture}
+                    photo={member?.user.person?.picture}
                     wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
                     imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                    imgAlt={mem?.user.display_name}
+                    imgAlt={member?.user.display_name}
                   />
                 ) : (
                   <div
                     className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
                     title={
-                      mem?.user?.display_name ? mem?.user?.display_name : ''
+                      member?.user?.display_name
+                        ? member?.user?.display_name
+                        : ''
                     }
                   >
-                    {mem?.user?.display_name?.charAt(0)}
+                    {member?.user?.display_name?.charAt(0)}
                   </div>
                 )}
               </li>
@@ -223,7 +225,7 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
             onClick={handleClickJoin}
             btn="slate"
             size="sm"
-            loading={isFollowingList || isJoiningGroup}
+            loading={isFollowingListLoading || isJoiningGroupLoading}
             className="w-full block rounded-md transition ease-in-out duration-150 group"
           >
             {`${isResourceList ? 'Follow List' : 'Join Group'}`}
@@ -242,5 +244,3 @@ const ElemListCard: FC<Props> = ({ selectedTab, resource, refetchList }) => {
     </div>
   );
 };
-
-export default ElemListCard;

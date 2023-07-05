@@ -332,9 +332,7 @@ export const ElemListInformation: FC<Props> = ({
                   <ModalListName
                     isOpen={listNameModal}
                     onCloseModal={() => setListNameModal(false)}
-                    theListName={
-                      getNameFromListName(list) ? getNameFromListName(list) : ''
-                    }
+                    theListName={getNameFromListName(list) ?? ''}
                     onSave={onSaveListName}
                   />
                   <ElemDeleteConfirmModal

@@ -20,9 +20,9 @@ import { LISTS_TABS } from '@/utils/constants';
 import { getListsFilters } from '@/utils/filter';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
-import ElemListCard from '@/components/elem-list-card';
+import { ElemListCard } from '@/components/elem-list-card';
 import { CreateListDialog } from '@/components/my-list/create-list-dialog';
-import ElemEmptyState from '@/components/lists/elem-empty-state';
+import { ElemEmptyState } from '@/components/lists/elem-empty-state';
 
 type Props = {
   initialListsCount: number;

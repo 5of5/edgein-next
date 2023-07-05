@@ -66,6 +66,11 @@ export const formatTime = (
   }
 };
 
+export const formatDateShown = (date: Date) => {
+  const localDate = moment(date).local().format('YYYY-MM-DD');
+  return moment(localDate).format('LL');
+};
+
 export const convertToDollars = (amount: number) => {
   if (!amount) {
     return '';
