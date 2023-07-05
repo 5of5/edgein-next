@@ -6,8 +6,9 @@ export const runGraphQl = async <QueryType>(
   cookies?: any,
 ): Promise<{ data?: QueryType; errors?: any }> => {
   let headers: Record<string, string> = {};
-  if (cookies) {
-    const authToken = CookieService.getAuthToken(cookies || {});
+  const authToken = CookieService.getAuthToken(cookies || {});
+
+  if (authToken) {
     headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -22,10 +23,8 @@ export const runGraphQl = async <QueryType>(
     };
   }
 
-  if (cookies) {
-    const user = await CookieService.getUser(
-      CookieService.getAuthToken(cookies),
-    );
+  if (authToken) {
+    const user = await CookieService.getUser(authToken);
     headers['x-hasura-user-id'] = user?.id?.toString() ?? '';
     // Allow admin to access draft records
     // Set default showDraftData is true
