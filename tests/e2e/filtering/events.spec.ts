@@ -43,7 +43,7 @@ test.describe('Events', () => {
 
     await page.getByRole('button', { name: /Apply/i }).click();
 
-    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(4);
+    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(3);
   });
 
   test('should filter upcoming events by location', async ({ page }) => {
@@ -81,13 +81,13 @@ test.describe('Events', () => {
 
     await page.getByRole('button', { name: /Apply/i }).click();
 
-    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(2);
+    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(1);
 
     await page.getByRole('button', { name: /Reset/i }).click();
 
     selected = 0;
 
-    // state e.g Berlin
+    // state e.g California
     await page.getByRole('button', { name: /Add filter/i }).click();
 
     await expect(
@@ -101,7 +101,9 @@ test.describe('Events', () => {
 
     await expect(page.getByText(`State (${selected})`)).toBeVisible();
 
-    await page.getByPlaceholder(/Add state name, press enter/i).fill('Berlin');
+    await page
+      .getByPlaceholder(/Add state name, press enter/i)
+      .fill('California');
 
     await page.keyboard.press('Enter');
 
@@ -111,7 +113,7 @@ test.describe('Events', () => {
 
     await page.getByRole('button', { name: /Apply/i }).click();
 
-    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(1);
+    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(5);
 
     await page.getByRole('button', { name: /Reset/i }).click();
 
@@ -170,7 +172,7 @@ test.describe('Events', () => {
 
     await page.getByRole('button', { name: /Apply/i }).click();
 
-    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(7);
+    await expect(page.getByTestId('events').getByRole('link')).toHaveCount(8);
   });
 
   test('should filter past events by location', async ({ page }) => {
