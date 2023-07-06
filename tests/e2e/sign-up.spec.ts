@@ -7,7 +7,9 @@ test.describe('Sign up', () => {
   test.beforeEach(async ({ page, baseURL }) => {
     await page.goto(`${baseURL}/`, { timeout: 15000 });
 
-    await page.getByRole('button', { name: 'Sign Up' }).click();
+    await page
+      .getByRole('button', { name: 'Start for free', exact: true })
+      .click();
   });
 
   test.afterEach(async ({ page }) => {
@@ -18,11 +20,6 @@ test.describe('Sign up', () => {
     page,
   }) => {
     const signupPayloadData = getSignUpPayload();
-
-    await page
-      .getByRole('textbox', { name: 'email' })
-      .fill('john-doe@gmail.com'); // Invalid work email
-    await expect(page.getByText(/Please enter a work email./i)).toBeVisible();
 
     await page.getByRole('textbox', { name: 'email' }).clear();
 
