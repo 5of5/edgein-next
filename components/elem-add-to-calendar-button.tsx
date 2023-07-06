@@ -13,6 +13,7 @@ import {
 import { ElemButton } from './elem-button';
 
 type Props = {
+  className?: string;
   event: CalendarEvent;
 };
 
@@ -23,7 +24,7 @@ const options: CalendarType[] = [
   { type: 'iCal File', icon: IconCalendar },
 ];
 
-const ElemAddToCalendarButton: FC<Props> = ({ event }) => {
+const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
   const handleClick = (item: CalendarType) => {
     const url = generateLink(event, item);
 
@@ -45,12 +46,17 @@ const ElemAddToCalendarButton: FC<Props> = ({ event }) => {
 
   return (
     <div>
-      <Menu as="div" className="relative inline-block text-left">
+      <Menu
+        as="div"
+        className={`relative inline-block text-left ${
+          className ? className : ''
+        }`}
+      >
         <div>
           <Menu.Button as="div">
-            <ElemButton btn="slate" className="flex items-center">
-              <IconCalendarAdd className="w-5 h-5 mr-1" />
-              Add to Calendar
+            <ElemButton btn="slate" className="flex items-center w-full">
+              <IconCalendarAdd className="w-5 h-5 mr-1 shrink-0" />
+              <div className="whitespace-nowrap">Add to Calendar</div>
             </ElemButton>
           </Menu.Button>
         </div>
@@ -75,7 +81,10 @@ const ElemAddToCalendarButton: FC<Props> = ({ event }) => {
                     className="flex w-full items-center px-4 py-2 hover:bg-gray-50 group"
                   >
                     {item.icon && (
-                      <item.icon className="mr-2 h-5 w-5" aria-hidden="true" />
+                      <item.icon
+                        className="mr-2 h-5 w-5 shrink-0"
+                        aria-hidden="true"
+                      />
                     )}
                     <span
                       className={`${
