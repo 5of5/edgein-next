@@ -14,11 +14,13 @@ import toast, { Toaster } from 'react-hot-toast';
 import { getTwitterHandle } from '@/utils';
 
 type Props = {
+  btnClass?: string;
   resourceName: string | null;
   resourceTwitterUrl: string | null;
 };
 
 export const ElemSocialShare: FC<Props> = ({
+  btnClass,
   resourceName,
   resourceTwitterUrl,
 }) => {
@@ -114,7 +116,7 @@ export const ElemSocialShare: FC<Props> = ({
         onClick={onShareButton}
         btn="slate"
         roundedFull={true}
-        className="px-2.5"
+        className={`px-2.5 ${btnClass ? btnClass : ''}`}
       >
         <IconShare3 className="w-5 h-5 mr-1" />
         Share
