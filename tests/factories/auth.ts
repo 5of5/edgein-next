@@ -1,11 +1,9 @@
-import { random } from 'lodash';
+import { Page, expect } from '@playwright/test';
 
 export const getSignUpPayload = () => {
-  const uniqueId = random(1, 800);
-
   return {
     name: 'Jessica Taggart',
-    email: `jessica${uniqueId}@iluma.xyz`,
+    email: 'jessica3@iluma.xyz',
     password: `Password123!`,
     reference_id: '',
   };
@@ -39,4 +37,25 @@ export const getSavedUserPayload = () => {
     name: 'Kurt Steven Laxamana',
     email: 'kurt@xld.finance',
   };
+};
+
+export const loginUser = async (page: Page) => {
+  const loginPayloadData = getLoginPayload();
+
+  await page.getByRole('button', { name: 'Log In' }).click();
+
+  await page
+    .getByRole('textbox', { name: 'email' })
+    .fill(loginPayloadData.email);
+  await page
+    .getByRole('textbox', { name: 'password' })
+    .fill(loginPayloadData.password);
+
+  await page.getByRole('button', { name: /^Login$/i }).click();
+
+  await expect(
+    page
+      .getByAltText('profile')
+      .or(page.getByRole('img', { name: loginPayloadData.name })),
+  ).toBeVisible({ timeout: 15000 });
 };

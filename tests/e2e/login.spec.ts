@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { getInvalidLoginPayload, getLoginPayload } from '../factories/auth';
+import {
+  getInvalidLoginPayload,
+  getLoginPayload,
+  loginUser,
+} from '../factories/auth';
 
 test.describe('Login', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
@@ -45,21 +49,6 @@ test.describe('Login', () => {
   });
 
   test('should sign in user successfully', async ({ page }) => {
-    const loginPayloadData = getLoginPayload();
-
-    await page
-      .getByRole('textbox', { name: 'email' })
-      .fill(loginPayloadData.email);
-    await page
-      .getByRole('textbox', { name: 'password' })
-      .fill(loginPayloadData.password);
-
-    await page.getByRole('button', { name: /^Login$/i }).click();
-
-    await expect(
-      page
-        .getByAltText('profile')
-        .or(page.getByRole('img', { name: loginPayloadData.name })),
-    ).toBeVisible({ timeout: 15000 });
+    await loginUser(page);
   });
 });
