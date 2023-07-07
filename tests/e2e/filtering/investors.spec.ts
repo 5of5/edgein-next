@@ -15,6 +15,8 @@ test.describe('Investors', () => {
   });
 
   test('should filter by tags', async ({ page }) => {
+    const EXPECTED_COMPANIES_FILTERED_BY_TAG = 50;
+
     let selected = 0;
 
     const tags = getSelectableWeb3Tags();
@@ -41,11 +43,17 @@ test.describe('Investors', () => {
     await page.getByRole('button', { name: /Apply/i }).click();
 
     await expect(page.getByTestId('investors').getByRole('link')).toHaveCount(
-      50,
+      EXPECTED_COMPANIES_FILTERED_BY_TAG,
     );
   });
 
   test('should filter by location', async ({ page }) => {
+    const EXPECTED_COMPANIES_FILTERED_BY_COUNTRY = 50;
+
+    const EXPECTED_COMPANIES_FILTERED_BY_STATE = 2;
+
+    const EXPECTED_COMPANIES_FILTERED_BY_CITY = 10;
+
     let selected = 0;
 
     // country e.g United States
@@ -73,7 +81,7 @@ test.describe('Investors', () => {
     await page.getByRole('button', { name: /Apply/i }).click();
 
     await expect(page.getByTestId('investors').getByRole('link')).toHaveCount(
-      50,
+      EXPECTED_COMPANIES_FILTERED_BY_COUNTRY,
     );
 
     await page.getByRole('button', { name: /Reset/i }).click();
@@ -105,7 +113,7 @@ test.describe('Investors', () => {
     await page.getByRole('button', { name: /Apply/i }).click();
 
     await expect(page.getByTestId('investors').getByRole('link')).toHaveCount(
-      2,
+      EXPECTED_COMPANIES_FILTERED_BY_STATE,
     );
 
     await page.getByRole('button', { name: /Reset/i }).click();
@@ -137,7 +145,7 @@ test.describe('Investors', () => {
     await page.getByRole('button', { name: /Apply/i }).click();
 
     await expect(page.getByTestId('investors').getByRole('link')).toHaveCount(
-      10,
+      EXPECTED_COMPANIES_FILTERED_BY_CITY,
     );
   });
 });
