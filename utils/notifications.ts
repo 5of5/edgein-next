@@ -233,7 +233,7 @@ export const filterExcludeNotifications = (
 export const getNotificationOrganizationLink = (
   notification: GetNotificationsForUserQuery['notifications'][0],
 ) =>
-  notification.company
+  notification.company?.slug
     ? `/${notification.follow_resource_type}/${notification.company?.slug}`
     : `/investors/${notification.vc_firm?.slug}`;
 
