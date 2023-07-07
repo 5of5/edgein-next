@@ -1,9 +1,12 @@
 import { Page, expect } from '@playwright/test';
+import { random } from 'lodash';
 
 export const getSignUpPayload = () => {
+  const uniqueId = random(1, 800);
+
   return {
     name: 'Jessica Taggart',
-    email: 'jessica3@iluma.xyz',
+    email: `jessica${uniqueId}@iluma.xyz`,
     password: `Password123!`,
     reference_id: '',
   };

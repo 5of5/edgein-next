@@ -1,17 +1,11 @@
 import { expect, test } from '@playwright/test';
-import {
-  getInvalidLoginPayload,
-  getLoginPayload,
-  loginUser,
-} from '../factories/auth';
+import { getInvalidLoginPayload, loginUser } from '../factories/auth';
 
 test.describe('Login', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test.beforeEach(async ({ page, baseURL }) => {
     await page.goto(`${baseURL}/`, { timeout: 15000 });
-
-    await page.getByRole('button', { name: 'Log In' }).click();
   });
 
   test.afterEach(async ({ page }) => {
@@ -21,6 +15,8 @@ test.describe('Login', () => {
   test('should display an error message if input is empty', async ({
     page,
   }) => {
+    await page.getByRole('button', { name: 'Log In' }).click();
+
     await expect(page.getByRole('textbox', { name: 'email' })).toBeEmpty();
     await expect(page.getByRole('textbox', { name: 'password' })).toBeEmpty();
 
@@ -35,6 +31,8 @@ test.describe('Login', () => {
 
   test('should not sign in user on wrong credentials', async ({ page }) => {
     const loginPayloadData = getInvalidLoginPayload();
+
+    await page.getByRole('button', { name: 'Log In' }).click();
 
     await page
       .getByRole('textbox', { name: 'email' })
