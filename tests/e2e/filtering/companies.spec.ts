@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { getSelectableWeb3Tags } from '@/utils/helpers';
+import {
+  applyFilterByCity,
+  applyFilterByCountry,
+  applyFilterByState,
+  applyFilterByTag,
+} from '@/tests/factories/filtering';
 
 test.describe('Companies', () => {
   test.beforeEach(async ({ page, baseURL }) => {
@@ -15,32 +21,9 @@ test.describe('Companies', () => {
   test('should filter by tags', async ({ page }) => {
     const EXPECTED_COMPANIES_FILTERED_BY_TAG = 23;
 
-    let selected = 0;
-
     const tags = getSelectableWeb3Tags();
 
-    await page.getByRole('button', { name: /Add filter/i }).click();
-
-    await expect(page.locator('h3', { hasText: /Tags/i })).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: /Select Tags/i }),
-    ).toBeVisible();
-
-    await page.getByRole('button', { name: /Select Tags/i }).click();
-
-    await expect(page.getByText(`Tags (${selected})`)).toBeVisible();
-
-    await expect(
-      page.getByRole('checkbox', { name: tags[0].name }),
-    ).toBeVisible();
-
-    await page.getByRole('checkbox', { name: tags[0].name }).check();
-
-    selected = 1;
-
-    await expect(page.getByText(`Tags (${selected})`)).toBeVisible();
-
-    await page.getByRole('button', { name: /Apply/i }).click();
+    await applyFilterByTag(page, tags[0]);
 
     await expect(page.getByTestId('companies').getByRole('link')).toHaveCount(
       EXPECTED_COMPANIES_FILTERED_BY_TAG,
@@ -56,27 +39,8 @@ test.describe('Companies', () => {
 
     let selected = 0;
 
-    await page.getByRole('button', { name: /Add filter/i }).click();
-
     // country e.g India
-    await expect(page.locator('h3', { hasText: /Location/i })).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: /Add country/i }),
-    ).toBeVisible();
-
-    await page.getByRole('button', { name: /Add country/i }).click();
-
-    await expect(page.getByText(`Country (${selected})`)).toBeVisible();
-
-    await page.getByPlaceholder(/Add country name, press enter/i).fill('India');
-
-    await page.keyboard.press('Enter');
-
-    selected = 1;
-
-    await expect(page.getByText(`Country (${selected})`)).toBeVisible();
-
-    await page.getByRole('button', { name: /Apply/i }).click();
+    await applyFilterByCountry(page, 'India', selected);
 
     await expect(page.getByTestId('companies').getByRole('link')).toHaveCount(
       EXPECTED_COMPANIES_FILTERED_BY_COUNTRY,
@@ -87,28 +51,7 @@ test.describe('Companies', () => {
     selected = 0;
 
     // state e.g California
-    await page.getByRole('button', { name: /Add filter/i }).click();
-
-    await expect(page.locator('h3', { hasText: /Location/i })).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: /Add state/i }),
-    ).toBeVisible();
-
-    await page.getByRole('button', { name: /Add state/i }).click();
-
-    await expect(page.getByText(`State (${selected})`)).toBeVisible();
-
-    await page
-      .getByPlaceholder(/Add state name, press enter/i)
-      .fill('California');
-
-    await page.keyboard.press('Enter');
-
-    selected = 1;
-
-    await expect(page.getByText(`State (${selected})`)).toBeVisible();
-
-    await page.getByRole('button', { name: /Apply/i }).click();
+    await applyFilterByState(page, 'California', selected);
 
     await expect(page.getByTestId('companies').getByRole('link')).toHaveCount(
       EXPECTED_COMPANIES_FILTERED_BY_STATE,
@@ -119,24 +62,7 @@ test.describe('Companies', () => {
     selected = 0;
 
     // city e.g Berlin
-    await page.getByRole('button', { name: /Add filter/i }).click();
-
-    await expect(page.locator('h3', { hasText: /Location/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /Add city/i })).toBeVisible();
-
-    await page.getByRole('button', { name: /Add city/i }).click();
-
-    await expect(page.getByText(`City (${selected})`)).toBeVisible();
-
-    await page.getByPlaceholder(/Add city name, press enter/i).fill('Berlin');
-
-    await page.keyboard.press('Enter');
-
-    selected = 1;
-
-    await expect(page.getByText(`City (${selected})`)).toBeVisible();
-
-    await page.getByRole('button', { name: /Apply/i }).click();
+    await applyFilterByCity(page, 'Berlin', selected);
 
     await expect(page.getByTestId('companies').getByRole('link')).toHaveCount(
       EXPECTED_COMPANIES_FILTERED_BY_CITY,
