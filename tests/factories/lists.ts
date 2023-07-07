@@ -2,7 +2,7 @@ import { Page, expect } from '@playwright/test';
 import { random, toLower } from 'lodash';
 
 interface ListInfo {
-  id: number;
+  id?: number;
   name: string;
 }
 
@@ -12,6 +12,36 @@ export const getCreateListPayload = () => {
   return {
     name: `List ${uniqueId}`,
   };
+};
+
+export const createList = async (
+  page: Page,
+  baseURL: string | undefined,
+  listInfo: ListInfo,
+): Promise<number> => {
+  await page
+    .locator('li', {
+      has: page.locator('button', { hasText: /Create new list/i }),
+    })
+    .click();
+
+  await expect(
+    page.getByRole('heading', { name: /Create List/i }),
+  ).toBeVisible();
+  await expect(page.getByRole('textbox', { name: 'name' })).toBeEmpty();
+
+  await page.getByRole('textbox', { name: 'name' }).fill(listInfo.name);
+
+  await page.getByRole('button', { name: /^Create$/i }).click();
+
+  const createListResponse = await page.waitForResponse(
+    `${baseURL}/api/add-list/`,
+  );
+  const {
+    list: { id: listId },
+  } = await createListResponse.json();
+
+  return listId;
 };
 
 export const deleteList = async (
