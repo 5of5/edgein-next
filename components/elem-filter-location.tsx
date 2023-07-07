@@ -177,7 +177,6 @@ const ComboboxResults: FC<ComboboxResultsProps> = ({
   name,
   options,
 }) => {
-  console.log('@options', options);
   if (isLoading) {
     return (
       <Dropdown>
@@ -186,27 +185,31 @@ const ComboboxResults: FC<ComboboxResultsProps> = ({
     );
   }
 
-  if (options.length > 0) {
+  if (options.length === 0) {
     return (
       <Dropdown>
-        {options
-          .filter(item => item[name])
-          .map(item => (
-            <Combobox.Option
-              className={({ active }) =>
-                `${
-                  active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
-                }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
-              }
-              key={item[name]}
-              value={item}
-            >
-              {item[name]}
-            </Combobox.Option>
-          ))}
+        <p className="text-sm p-2 animate-pulse">No option was found</p>
       </Dropdown>
     );
   }
 
-  return null;
+  return (
+    <Dropdown>
+      {options
+        .filter(item => item[name])
+        .map(item => (
+          <Combobox.Option
+            className={({ active }) =>
+              `${
+                active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
+              }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
+            }
+            key={item[name]}
+            value={item}
+          >
+            {item[name]}
+          </Combobox.Option>
+        ))}
+    </Dropdown>
+  );
 };

@@ -49,8 +49,6 @@ export const ElemFilter: FC<Props> = ({
 }) => {
   const { selectedLibrary } = useLibrary();
 
-  const [locationTags, setLocationTags] = useState<any[]>([]);
-
   const [openAddFilter, setOpenAddFilter] = useState<boolean>(false);
 
   const [filters, setFilters] = useState<Filters | null>(filterValues);
