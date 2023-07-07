@@ -1,5 +1,9 @@
 import { toLower } from 'lodash';
-import { deleteList, getCreateListPayload } from '../factories/lists';
+import {
+  createList,
+  deleteList,
+  getCreateListPayload,
+} from '../factories/lists';
 import { test, expect } from '@playwright/test';
 
 let listToDelete: { name: string; id: number } | undefined;
@@ -80,27 +84,7 @@ test.describe('Lists', () => {
   test('should create a new list', async ({ page, baseURL }) => {
     const listData = getCreateListPayload();
 
-    await page
-      .locator('li', {
-        has: page.locator('button', { hasText: /Create new list/i }),
-      })
-      .click();
-
-    await expect(
-      page.getByRole('heading', { name: /Create List/i }),
-    ).toBeVisible();
-    await expect(page.getByRole('textbox', { name: 'name' })).toBeEmpty();
-
-    await page.getByRole('textbox', { name: 'name' }).fill(listData.name);
-
-    await page.getByRole('button', { name: /^Create$/i }).click();
-
-    const createListResponse = await page.waitForResponse(
-      `${baseURL}/api/add-list/`,
-    );
-    const {
-      list: { id: listId },
-    } = await createListResponse.json();
+    const listId = await createList(page, baseURL, listData);
 
     const slug = toLower(listData.name).replace(/\s/, '-');
 
@@ -123,54 +107,16 @@ test.describe('Lists', () => {
   test('should delete a new list', async ({ page, baseURL }) => {
     const listData = getCreateListPayload();
 
-    await page
-      .locator('li', {
-        has: page.locator('button', { hasText: /Create new list/i }),
-      })
-      .click();
+    const listId = await createList(page, baseURL, listData);
 
-    await expect(
-      page.getByRole('heading', { name: /Create List/i }),
-    ).toBeVisible();
-    await expect(page.getByRole('textbox', { name: 'name' })).toBeEmpty();
-
-    await page.getByRole('textbox', { name: 'name' }).fill(listData.name);
-
-    await page.getByRole('button', { name: /^Create$/i }).click();
-
-    const response = await page.waitForResponse(`${baseURL}/api/add-list/`);
-    const {
-      list: { id },
-    } = await response.json();
-
-    await deleteList(page, baseURL, { id, name: listData.name });
+    await deleteList(page, baseURL, { id: listId, name: listData.name });
   });
 
   test('should add companies to list', async ({ page, baseURL }) => {
     // Create new list
     const listData = getCreateListPayload();
 
-    await page
-      .locator('li', {
-        has: page.locator('button', { hasText: /Create new list/i }),
-      })
-      .click();
-
-    await expect(
-      page.getByRole('heading', { name: /Create List/i }),
-    ).toBeVisible();
-    await expect(page.getByRole('textbox', { name: 'name' })).toBeEmpty();
-
-    await page.getByRole('textbox', { name: 'name' }).fill(listData.name);
-
-    await page.getByRole('button', { name: /^Create$/i }).click();
-
-    const createListResponse = await page.waitForResponse(
-      `${baseURL}/api/add-list/`,
-    );
-    const {
-      list: { id: listId },
-    } = await createListResponse.json();
+    const listId = await createList(page, baseURL, listData);
 
     const slug = toLower(listData.name).replace(/\s/, '-');
 
