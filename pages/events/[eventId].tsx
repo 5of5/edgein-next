@@ -283,12 +283,13 @@ const Event: NextPage<Props> = props => {
           <ElemTabBar
             className="flex-wrap gap-y-2 pb-2 mt-4 border-b-0 sm:flex-nowrap sm:gap-y-0 sm:pb-0"
             tabs={tabBarItems}
-            tabsClassName="border-b border-black/10 lg:border-b-0"
+            tabsClassName="w-full border-b border-black/10 sm:w-auto lg:border-b-0"
             resourceName={event.name}
             showDropdown={false}
           >
-            <div className="flex items-center space-x-2">
+            <div className="w-full space-y-2 sm:w-auto sm:flex sm:items-center sm:space-y-0 sm:space-x-2">
               <ElemAddToCalendarButton
+                className="w-full sm:w-auto"
                 event={{
                   name: event.name,
                   startDate: event.start_date,
@@ -300,16 +301,20 @@ const Event: NextPage<Props> = props => {
                 }}
               />
               <ElemSocialShare
+                btnClass="w-full sm:w-auto"
                 resourceName={event.name}
                 resourceTwitterUrl={event.twitter}
               />
               {attendees.some(item => item.person?.id === user?.person?.id) ? (
-                <ElemButton btn="primary">Joined</ElemButton>
+                <ElemButton btn="primary" className="w-full">
+                  Joined
+                </ElemButton>
               ) : (
                 <ElemButton
                   btn="primary"
                   onClick={handleClickGoingEvent}
                   loading={isLoadingGoingEvent}
+                  className="w-full"
                 >
                   Going
                 </ElemButton>
