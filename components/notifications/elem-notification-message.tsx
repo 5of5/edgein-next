@@ -46,7 +46,8 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
             </Link>
           );
         },
-      }}>
+      }}
+    >
       {`[${name}](${getNotificationOrganizationLink(notification)}) ${
         notification.message || ''
       }`}
