@@ -2,6 +2,7 @@ import { Fragment, ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
+import { startCase } from 'lodash';
 import { IconX } from '@/components/icons';
 import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
@@ -18,6 +19,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   const { refetchMyGroups } = useUser();
 
   const [values, setValues] = useState({ name: '', description: '' });
+  const [error, setError] = useState({ name: '', description: '' });
 
   const { mutate, isLoading } = useMutation(
     () =>
@@ -38,10 +40,22 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   );
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setValues(prev => ({
       ...prev,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
+    if (value.length > 255) {
+      setError(prev => ({
+        ...prev,
+        [name]: `${startCase(name)} should be maximum of 255 characters.`,
+      }));
+    } else {
+      setError(prev => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
   };
 
   const handleCreate = () => {
@@ -101,8 +115,17 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                       value={values.name}
                       onChange={handleChange}
                       placeholder="e.g: EdgeIn Wizards"
-                      className="ring-1 ring-slate-200"
+                      className={`${
+                        error.name === ''
+                          ? 'ring-1 ring-slate-200'
+                          : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                      }`}
                     />
+                    {error.name === '' ? null : (
+                      <div className="mt-2 font-bold text-sm text-rose-400">
+                        {error.name}
+                      </div>
+                    )}
                   </label>
                   <label>
                     <InputText
@@ -112,15 +135,28 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                       value={values.description}
                       onChange={handleChange}
                       placeholder="What is the group about?"
-                      className="ring-1 ring-slate-200"
+                      className={`${
+                        error.description === ''
+                          ? 'ring-1 ring-slate-200'
+                          : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                      }`}
                     />
+                    {error.description === '' ? null : (
+                      <div className="mt-2 font-bold text-sm text-rose-400">
+                        {error.description}
+                      </div>
+                    )}
                   </label>
                 </div>
 
                 <div className="mt-6 float-right">
                   <ElemButton
                     btn="primary"
-                    disabled={!values.name}
+                    disabled={
+                      !values.name ||
+                      Boolean(error.name) ||
+                      Boolean(error.description)
+                    }
                     loading={isLoading}
                     onClick={handleCreate}
                   >

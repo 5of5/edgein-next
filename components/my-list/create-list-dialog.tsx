@@ -25,6 +25,8 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
     setListName(listName);
     if (listName && listName.length < 3) {
       setError('List name should have at least 3 characters.');
+    } else if (listName.length > 255) {
+      setError('List name should be maximum of 255 characters.');
     } else {
       setError('');
     }

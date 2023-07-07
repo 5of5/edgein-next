@@ -35,6 +35,8 @@ const ElemEditDialog: FC<Props> = ({
     setValue(value);
     if (required && !value) {
       setError(`${fieldName} is required.`);
+    } else if (fieldName === 'Description' && value.length > 255) {
+      setError('Description should be maximum of 255 characters.');
     } else {
       setError('');
     }

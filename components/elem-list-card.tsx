@@ -2,11 +2,10 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import moment from 'moment-timezone';
 import { kebabCase, startCase } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { getNameFromListName } from '@/utils/reaction';
-import { formatDateShown } from '@/utils';
+import { formatDateShown, truncateWords } from '@/utils';
 import { GetGroupsQuery, GetListsQuery, Lists } from '@/graphql/types';
 import { DeepPartial, GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ElemButton } from './elem-button';
@@ -135,7 +134,10 @@ export const ElemListCard: FC<Props> = ({
         {isResourceList ? (
           ListItemName
         ) : (
-          <ElemTooltip content={description} direction="top">
+          <ElemTooltip
+            content={truncateWords(description ?? '')}
+            direction="top"
+          >
             {ListItemName}
           </ElemTooltip>
         )}

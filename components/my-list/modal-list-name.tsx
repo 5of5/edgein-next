@@ -27,10 +27,12 @@ export const ModalListName: FC<Props> = ({
 
   const validateName = (value: string) => {
     setName(value);
-    if (value.length >= 3) {
-      setError('');
-    } else {
+    if (value.length < 3) {
       setError('List name should have at least 3 characters.');
+    } else if (value.length > 255) {
+      setError('List name should be maximum of 255 characters.');
+    } else {
+      setError('');
     }
   };
 
@@ -108,7 +110,12 @@ export const ModalListName: FC<Props> = ({
                     <ElemButton onClick={onCloseModal} roundedFull btn="slate">
                       Cancel
                     </ElemButton>
-                    <ElemButton onClick={onSaveBtn} roundedFull btn="primary">
+                    <ElemButton
+                      onClick={onSaveBtn}
+                      disabled={name === '' || Boolean(error)}
+                      roundedFull
+                      btn="primary"
+                    >
                       Save
                     </ElemButton>
                   </div>
