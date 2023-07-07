@@ -1,5 +1,5 @@
 import { toLower } from 'lodash';
-import { getCreateListPayload } from '../factories/lists';
+import { deleteList, getCreateListPayload } from '../factories/lists';
 import { test, expect } from '@playwright/test';
 
 let listToDelete: { name: string; id: number } | undefined;
@@ -11,41 +11,7 @@ test.describe('Lists', () => {
 
   test.afterEach(async ({ page, baseURL }) => {
     if (listToDelete !== undefined) {
-      const slug = toLower(listToDelete.name).replace(/\s/, '-');
-
-      await page.goto(`${baseURL}/lists/${listToDelete.id}/${slug}/`, {
-        timeout: 15000,
-      });
-
-      await page
-        .locator('button', {
-          has: page.locator('div', {
-            hasText: new RegExp(`${listToDelete.name}`, 'i'),
-          }),
-        })
-        .click();
-
-      await page
-        .locator('button', {
-          has: page.locator('h3', { hasText: /Delete List/i }),
-        })
-        .click();
-
-      await expect(
-        page.getByRole('heading', { name: /Delete this list/i }),
-      ).toBeVisible();
-
-      await page.getByRole('button', { name: /Delete/i }).click();
-
-      await expect(page).toHaveURL(`${baseURL}/lists/0/hot/`);
-
-      await expect(
-        page.locator('button', {
-          has: page.locator('div', {
-            hasText: new RegExp(`${listToDelete.name}`, 'i'),
-          }),
-        }),
-      ).not.toBeVisible({ timeout: 15000 });
+      await deleteList(page, baseURL, listToDelete);
 
       listToDelete = undefined;
     }
@@ -177,39 +143,7 @@ test.describe('Lists', () => {
       list: { id },
     } = await response.json();
 
-    const slug = toLower(listData.name).replace(/\s/, '-');
-
-    await expect(page).toHaveURL(`${baseURL}/lists/${id}/${slug}/`);
-
-    await page
-      .locator('button', {
-        has: page.locator('div', {
-          hasText: new RegExp(`${listData.name}`, 'i'),
-        }),
-      })
-      .click();
-
-    await page
-      .locator('button', {
-        has: page.locator('h3', { hasText: /Delete List/i }),
-      })
-      .click();
-
-    await expect(
-      page.getByRole('heading', { name: /Delete this list/i }),
-    ).toBeVisible();
-
-    await page.getByRole('button', { name: /Delete/i, exact: true }).click();
-
-    await expect(page).toHaveURL(`${baseURL}/lists/0/hot/`);
-
-    await expect(
-      page.locator('button', {
-        has: page.locator('div', {
-          hasText: new RegExp(`${listData.name}`, 'i'),
-        }),
-      }),
-    ).not.toBeVisible({ timeout: 15000 });
+    await deleteList(page, baseURL, { id, name: listData.name });
   });
 
   test('should add companies to list', async ({ page, baseURL }) => {
