@@ -1,7 +1,7 @@
 import { toLower } from 'lodash';
 import { getSavedUserPayload } from '../factories/auth';
-import { getCreateGroupPayload } from '../factories/groups';
-import { getCreateListPayload } from '../factories/lists';
+import { deleteGroup, getCreateGroupPayload } from '../factories/groups';
+import { deleteList, getCreateListPayload } from '../factories/lists';
 import { test, expect } from '@playwright/test';
 
 let groupToDelete: { name: string; id: number } | undefined;
@@ -14,84 +14,13 @@ test.describe('Group', () => {
 
   test.afterEach(async ({ page, baseURL }) => {
     if (groupToDelete !== undefined) {
-      await page.goto(`${baseURL}/groups/${groupToDelete.id}`, {
-        timeout: 15000,
-      });
-
-      await page
-        .getByRole('button', { name: `${groupToDelete.name}`, exact: true })
-        .click();
-
-      await expect(
-        page.locator('h2', {
-          has: page.locator('div', {
-            hasText: new RegExp(`${groupToDelete.name}`, 'i'),
-          }),
-        }),
-      ).toBeVisible();
-
-      await page.getByRole('tab', { name: /Settings/i }).click();
-
-      await expect(page.locator('p', { hasText: /Group Name/i })).toBeVisible();
-      await expect(
-        page.locator('p', { hasText: /Description/i }),
-      ).toBeVisible();
-
-      await page.locator('p', { hasText: /Delete Group/i }).click();
-
-      await expect(
-        page.getByRole('heading', { name: /Delete This Group/i }),
-      ).toBeVisible();
-
-      await page.getByRole('button', { name: /Delete/i }).click();
-
-      await expect(page).toHaveURL(`${baseURL}/account/`);
-
-      await expect(
-        page.locator('span', {
-          hasText: new RegExp(`${groupToDelete.name}`, 'i'),
-        }),
-      ).not.toBeVisible({ timeout: 15000 });
+      await deleteGroup(page, baseURL, groupToDelete);
 
       groupToDelete = undefined;
     }
 
     if (listToDelete !== undefined) {
-      const slug = toLower(listToDelete.name).replace(/\s/, '-');
-
-      await page.goto(`${baseURL}/lists/${listToDelete.id}/${slug}/`, {
-        timeout: 15000,
-      });
-
-      await page
-        .locator('button', {
-          has: page.locator('div', {
-            hasText: new RegExp(`${listToDelete.name}`, 'i'),
-          }),
-        })
-        .click();
-
-      await page
-        .locator('button', {
-          has: page.locator('h3', { hasText: /Delete List/i }),
-        })
-        .click();
-
-      await expect(
-        page.getByRole('heading', { name: /Delete this list/i }),
-      ).toBeVisible();
-
-      await page.getByRole('button', { name: /Delete/i }).click();
-
-      await expect(page).toHaveURL(`${baseURL}/lists/0/hot/`);
-
-      await expect(
-        page.locator('button', {
-          has: page.locator('div', {
-            hasText: new RegExp(`${listToDelete.name}`, 'i'),
-          }),
-        }),
-      ).not.toBeVisible({ timeout: 15000 });
+      await deleteList(page, baseURL, listToDelete);
 
       listToDelete = undefined;
     }
@@ -162,38 +91,10 @@ test.describe('Group', () => {
 
     await page.getByRole('button', { name: /^Create$/i }).click();
 
-    await page.waitForResponse(`${baseURL}/api/groups/`);
+    const response = await page.waitForResponse(`${baseURL}/api/groups/`);
+    const { id } = await response.json();
 
-    await page
-      .getByRole('button', { name: `${groupData.name}`, exact: true })
-      .click();
-
-    await expect(
-      page.locator('h2', {
-        has: page.locator('div', {
-          hasText: new RegExp(`${groupData.name}`, 'i'),
-        }),
-      }),
-    ).toBeVisible();
-
-    await page.getByRole('tab', { name: /Settings/i }).click();
-
-    await expect(page.locator('p', { hasText: /Group Name/i })).toBeVisible();
-    await expect(page.locator('p', { hasText: /Description/i })).toBeVisible();
-
-    await page.locator('p', { hasText: /Delete Group/i }).click();
-
-    await expect(
-      page.getByRole('heading', { name: /Delete This Group/i }),
-    ).toBeVisible();
-
-    await page.getByRole('button', { name: /Delete/i }).click();
-
-    await expect(page).toHaveURL(`${baseURL}/account/`);
-
-    await expect(
-      page.locator('span', { hasText: new RegExp(`${groupData.name}`, 'i') }),
-    ).not.toBeVisible({ timeout: 15000 });
+    await deleteGroup(page, baseURL, { id, name: groupData.name });
   });
 
   test('should create a new public group', async ({ page, baseURL }) => {
