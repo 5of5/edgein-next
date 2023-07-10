@@ -25521,6 +25521,21 @@ export type GetInvestorByIdQueryVariables = Exact<{
 
 export type GetInvestorByIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null }> };
 
+export type GetInvitedPeopleByUserIdQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type GetInvitedPeopleByUserIdQuery = { __typename?: 'query_root', invited_people: Array<{ __typename?: 'invited_people', id: number, person_id: number, inviter_user_id: number, created_at: any }> };
+
+export type InsertInvitedPeopleMutationVariables = Exact<{
+  personId: Scalars['Int'];
+  userId: Scalars['Int'];
+}>;
+
+
+export type InsertInvitedPeopleMutation = { __typename?: 'mutation_root', insert_invited_people_one: { __typename?: 'invited_people', id: number, person_id: number, inviter_user_id: number, created_at: any } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -28533,6 +28548,57 @@ useGetInvestorByIdQuery.getKey = (variables: GetInvestorByIdQueryVariables) => [
 ;
 
 useGetInvestorByIdQuery.fetcher = (variables: GetInvestorByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestorByIdQuery, GetInvestorByIdQueryVariables>(GetInvestorByIdDocument, variables, options);
+export const GetInvitedPeopleByUserIdDocument = `
+    query GetInvitedPeopleByUserId($userId: Int!) {
+  invited_people(where: {inviter_user_id: {_eq: $userId}}) {
+    id
+    person_id
+    inviter_user_id
+    created_at
+  }
+}
+    `;
+export const useGetInvitedPeopleByUserIdQuery = <
+      TData = GetInvitedPeopleByUserIdQuery,
+      TError = Error
+    >(
+      variables: GetInvitedPeopleByUserIdQueryVariables,
+      options?: UseQueryOptions<GetInvitedPeopleByUserIdQuery, TError, TData>
+    ) =>
+    useQuery<GetInvitedPeopleByUserIdQuery, TError, TData>(
+      ['GetInvitedPeopleByUserId', variables],
+      fetcher<GetInvitedPeopleByUserIdQuery, GetInvitedPeopleByUserIdQueryVariables>(GetInvitedPeopleByUserIdDocument, variables),
+      options
+    );
+useGetInvitedPeopleByUserIdQuery.document = GetInvitedPeopleByUserIdDocument;
+
+
+useGetInvitedPeopleByUserIdQuery.getKey = (variables: GetInvitedPeopleByUserIdQueryVariables) => ['GetInvitedPeopleByUserId', variables];
+;
+
+useGetInvitedPeopleByUserIdQuery.fetcher = (variables: GetInvitedPeopleByUserIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvitedPeopleByUserIdQuery, GetInvitedPeopleByUserIdQueryVariables>(GetInvitedPeopleByUserIdDocument, variables, options);
+export const InsertInvitedPeopleDocument = `
+    mutation InsertInvitedPeople($personId: Int!, $userId: Int!) {
+  insert_invited_people_one(
+    object: {person_id: $personId, inviter_user_id: $userId}
+  ) {
+    id
+    person_id
+    inviter_user_id
+    created_at
+  }
+}
+    `;
+export const useInsertInvitedPeopleMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertInvitedPeopleMutation, TError, InsertInvitedPeopleMutationVariables, TContext>) =>
+    useMutation<InsertInvitedPeopleMutation, TError, InsertInvitedPeopleMutationVariables, TContext>(
+      ['InsertInvitedPeople'],
+      (variables?: InsertInvitedPeopleMutationVariables) => fetcher<InsertInvitedPeopleMutation, InsertInvitedPeopleMutationVariables>(InsertInvitedPeopleDocument, variables)(),
+      options
+    );
+useInsertInvitedPeopleMutation.fetcher = (variables: InsertInvitedPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertInvitedPeopleMutation, InsertInvitedPeopleMutationVariables>(InsertInvitedPeopleDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
