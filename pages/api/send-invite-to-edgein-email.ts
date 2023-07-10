@@ -1,17 +1,18 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
+import { render } from '@react-email/render';
 import CookieService from '@/utils/cookie';
 import {
   InviteToEdgeInMailParams,
   InviteToEdgeInPayload,
   InviteToEdgeInResponse,
 } from '@/types/api';
+import InviteUserEmail from '@/react-email-starter/emails/invite-user';
 import { mutate } from '@/graphql/hasuraAdmin';
 import {
   InsertInvitedPeopleDocument,
   InsertInvitedPeopleMutation,
 } from '@/graphql/types';
-import { inviteToEdgeInTemplate } from '@/email-templates';
 
 //AWS config set
 AWS.config.update({
@@ -57,11 +58,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
   const { email, senderName, senderEmail, signUpUrl } = mailParams;
 
-  const html = inviteToEdgeInTemplate({
-    senderName,
-    senderEmail,
-    signUpUrl,
-  });
+  const emailHtml = render(
+    InviteUserEmail({
+      senderName,
+      senderEmail,
+      signUpUrl,
+    }),
+  );
 
   try {
     const params = {
@@ -72,7 +75,7 @@ const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {
