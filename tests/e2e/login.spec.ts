@@ -1,9 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  getInvalidLoginPayload,
-  getLoginPayload,
-  loginUser,
-} from '../factories/auth';
+import { getInvalidLoginPayload, loginUser } from '../factories/auth';
 
 test.describe('Login', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
@@ -35,19 +31,22 @@ test.describe('Login', () => {
 
   test('should not sign in user on wrong credentials', async ({ page }) => {
     const loginPayloadData = getInvalidLoginPayload();
-    await loginUser(page, loginPayloadData);
+
+    await page.getByRole('button', { name: 'Log In' }).click();
+
+    await page
+      .getByRole('textbox', { name: 'email' })
+      .fill(loginPayloadData.email);
+    await page
+      .getByRole('textbox', { name: 'password' })
+      .fill(loginPayloadData.password);
+
+    await page.getByRole('button', { name: /^Login$/i }).click();
 
     await expect(page.getByText(/Incorrect email or password./i)).toBeVisible();
   });
 
   test('should sign in user successfully', async ({ page }) => {
-    const loginPayloadData = getLoginPayload();
-    await loginUser(page, loginPayloadData);
-
-    await expect(
-      page
-        .getByAltText('profile')
-        .or(page.getByRole('img', { name: loginPayloadData.name })),
-    ).toBeVisible({ timeout: 15000 });
+    await loginUser(page);
   });
 });

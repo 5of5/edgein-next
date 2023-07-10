@@ -137,11 +137,14 @@ test.describe('Lists', () => {
       page.getByRole('heading', { name: /Web3 Companies/i }),
     ).toBeVisible({ timeout: 15000 });
 
-    const a = await page.getByTestId('companies').getByRole('link').first();
+    const companyLink = await page
+      .getByTestId('companies')
+      .getByRole('link')
+      .first();
 
-    const companyName = await a.locator('h3').textContent();
+    const companyName = await companyLink.locator('h3').textContent();
 
-    await a.getByRole('button', { name: /Save/i }).click();
+    await companyLink.getByRole('button', { name: /Save/i }).click();
 
     await expect(
       page.getByRole('heading', { name: /Save to List/i }),
