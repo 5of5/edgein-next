@@ -91,7 +91,7 @@ export const ElemPersonCard: React.FC<Props> = ({
             />
           </a>
         </Link>
-        <div className="grow">
+        <div className="grow min-w-0 truncate">
           <Link href={href}>
             <a className="block">
               {heading && (

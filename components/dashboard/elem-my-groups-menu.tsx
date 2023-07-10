@@ -155,7 +155,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     onClick={onOpenUpgradeDialog}
                     btn="primary-light"
                     size="sm"
-                    className="w-full flex items-center justify-center rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
+                    className="w-full flex items-center justify-center rounded-md space-x-1 !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconContributorSolid
                       className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
@@ -170,7 +170,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     onClick={onOpenCreateGroupDialog}
                     btn="primary-light"
                     size="sm"
-                    className="w-full flex items-center justify-center rounded-md !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
+                    className="w-full flex items-center justify-center rounded-md space-x-1 !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconGroupPlus className="h-6 w-6" title="Create Group" />
                     <span>Create New Group</span>
