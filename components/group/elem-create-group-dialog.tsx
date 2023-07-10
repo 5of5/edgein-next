@@ -7,6 +7,10 @@ import { IconX } from '@/components/icons';
 import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
+import {
+  GROUP_DESCRIPTION_MAX_LENGTH,
+  GROUP_NAME_MAX_LENGTH,
+} from '@/utils/constants';
 
 type Props = {
   isOpen: boolean;
@@ -45,10 +49,22 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
       ...prev,
       [name]: value,
     }));
-    if (value.length > 255) {
+    if (name === 'name' && value.length > GROUP_NAME_MAX_LENGTH) {
       setError(prev => ({
         ...prev,
-        [name]: `${startCase(name)} should be maximum of 255 characters.`,
+        [name]: `${startCase(
+          name,
+        )} should be maximum of ${GROUP_NAME_MAX_LENGTH} characters.`,
+      }));
+    } else if (
+      name === 'description' &&
+      value.length > GROUP_DESCRIPTION_MAX_LENGTH
+    ) {
+      setError(prev => ({
+        ...prev,
+        [name]: `${startCase(
+          name,
+        )} should be maximum of ${GROUP_DESCRIPTION_MAX_LENGTH} characters.`,
       }));
     } else {
       setError(prev => ({
@@ -121,7 +137,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                           : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                       }`}
                     />
-                    {error.name === '' ? null : (
+                    {error.name && (
                       <div className="mt-2 font-bold text-sm text-rose-400">
                         {error.name}
                       </div>
@@ -141,7 +157,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                           : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                       }`}
                     />
-                    {error.description === '' ? null : (
+                    {error.description && (
                       <div className="mt-2 font-bold text-sm text-rose-400">
                         {error.description}
                       </div>

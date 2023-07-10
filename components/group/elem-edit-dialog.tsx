@@ -3,6 +3,10 @@ import { Dialog, Transition } from '@headlessui/react';
 import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
 import { ElemButton } from '../elem-button';
+import {
+  GROUP_DESCRIPTION_MAX_LENGTH,
+  GROUP_NAME_MAX_LENGTH,
+} from '@/utils/constants';
 
 type Props = {
   isOpen: boolean;
@@ -35,8 +39,20 @@ const ElemEditDialog: FC<Props> = ({
     setValue(value);
     if (required && !value) {
       setError(`${fieldName} is required.`);
-    } else if (fieldName === 'Description' && value.length > 255) {
-      setError('Description should be maximum of 255 characters.');
+    } else if (
+      fieldName === 'Group Name' &&
+      value.length > GROUP_NAME_MAX_LENGTH
+    ) {
+      setError(
+        `Name should be maximum of ${GROUP_NAME_MAX_LENGTH} characters.`,
+      );
+    } else if (
+      fieldName === 'Description' &&
+      value.length > GROUP_DESCRIPTION_MAX_LENGTH
+    ) {
+      setError(
+        `Description should be maximum of ${GROUP_DESCRIPTION_MAX_LENGTH} characters.`,
+      );
     } else {
       setError('');
     }
@@ -102,7 +118,7 @@ const ElemEditDialog: FC<Props> = ({
                           : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                       }`}
                     />
-                    {error === '' ? null : (
+                    {error && (
                       <div className="mt-2 font-bold text-sm text-rose-400">
                         {error}
                       </div>

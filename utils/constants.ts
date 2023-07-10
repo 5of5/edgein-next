@@ -1989,3 +1989,6 @@ export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
   'mdinsdale@mac.com',
   'dinghan@capital6.com',
 ];
+
+export const GROUP_NAME_MAX_LENGTH = 255;
+export const GROUP_DESCRIPTION_MAX_LENGTH = 1000;

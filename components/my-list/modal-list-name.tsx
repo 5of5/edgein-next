@@ -3,6 +3,7 @@ import { FC, Fragment, useState, useEffect } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
+import { GROUP_NAME_MAX_LENGTH } from '@/utils/constants';
 
 type Props = {
   isOpen: boolean;
@@ -29,8 +30,10 @@ export const ModalListName: FC<Props> = ({
     setName(value);
     if (value.length < 3) {
       setError('List name should have at least 3 characters.');
-    } else if (value.length > 255) {
-      setError('List name should be maximum of 255 characters.');
+    } else if (value.length > GROUP_NAME_MAX_LENGTH) {
+      setError(
+        `List name should be maximum of ${GROUP_NAME_MAX_LENGTH} characters.`,
+      );
     } else {
       setError('');
     }
@@ -100,7 +103,7 @@ export const ModalListName: FC<Props> = ({
                           : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                       }`}
                     />
-                    {error === '' ? null : (
+                    {error && (
                       <div className="mt-2 font-bold text-sm text-rose-400">
                         {error}
                       </div>
