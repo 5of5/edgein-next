@@ -3,7 +3,6 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { Menu, Transition } from '@headlessui/react';
 import React, { Fragment, FC } from 'react';
 import {
-  IconChevronDownMini,
   IconUserCircle,
   IconSignOut,
   IconGroup,
@@ -90,12 +89,14 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
             placeholderClass="text-slate-400 hover:text-slate-400"
           />
         ) : (
-          <ElemButton btn="slate" className="h-9 w-auto px-1 py-1.5 group">
+          <ElemButton
+            btn="slate"
+            className="h-9 aspect-square !px-1 !py-1.5 group"
+          >
             <IconUserCircle
-              className="h-6 w-6"
+              className="h-6 w-6 shrink-0"
               title={user?.display_name ? user.display_name : ''}
             />
-            <IconChevronDownMini className="h-5 w-5" aria-hidden="true" />
           </ElemButton>
         )}
       </Menu.Button>
@@ -133,7 +134,6 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
               <button
                 onClick={onShowUpgrade}
                 className="flex w-full items-center px-2 py-2 text-primary-500 hover:bg-gray-50"
-                // hover:bg-primary-200 hover:bg-opacity-50
               >
                 <IconContributor className="mr-2 h-6 w-6" title="Upgrade" />
                 Upgrade
