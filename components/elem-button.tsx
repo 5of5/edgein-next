@@ -12,6 +12,7 @@ type Props = {
     | 'danger'
     | 'dark'
     | 'primary'
+    | 'secondary'
     | 'purple'
     | 'primary-light'
     | 'transparent'
@@ -47,7 +48,10 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   // button styles
   if (btn === 'primary') {
     btnClass =
-      'text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:opacity-80';
+      'text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:from-primary-500 hover:to-primary-400';
+  } else if (btn === 'secondary') {
+    btnClass =
+      'text-primary-700 from-amber-300 to-amber-500 bg-gradient-to-r hover:to-amber-400';
   } else if (btn === 'purple') {
     btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
   } else if (btn === 'primary-light') {
@@ -57,7 +61,8 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
       'text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:text-white hover:bg-primary-500 focus:outline-none focus:ring-1';
   } else if (btn === 'ol-white') {
     btnClass =
-      'text-white bg-transparent ring-inset ring-1 ring-white hover:ring-2 focus:!ring-2 active:ring-2';
+      'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-white hover:text-primary-500 focus:outline-none focus:ring-1';
+    // 'text-white bg-transparent ring-inset ring-1 ring-white hover:ring-2 focus:!ring-2 active:ring-2';
   } else if (btn === 'transparent') {
     btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
   } else if (btn === 'white') {

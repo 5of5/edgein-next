@@ -4,8 +4,8 @@ import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
-import { getLayerClass } from '@/utils/style';
 import { Resource_Links } from '@/graphql/types';
+import ElemCompanyTags from './elem-company-tags';
 
 type Props = {
   className?: string;
@@ -65,30 +65,10 @@ export const ElemSubOrganizations: FC<Props> = ({
                   </div>
                 </div>
 
-                {(item.to_company?.layer || subOrganization.tags) && (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {item.to_company?.layer && (
-                      <div
-                        className={`${getLayerClass(
-                          item.to_company?.layer,
-                        )} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
-                      >
-                        {item.to_company?.layer}
-                      </div>
-                    )}
-
-                    {subOrganization.tags?.map((tag: string, index: number) => {
-                      return (
-                        <div
-                          key={index}
-                          className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
-                        >
-                          {tag}
-                        </div>
-                      );
-                    })}
-                  </div>
+                {item.to_company && (
+                  <ElemCompanyTags company={item.to_company} />
                 )}
+
                 <div className="mt-4 grow">
                   <div className="text-gray-400 line-clamp-3">
                     {subOrganization.overview}

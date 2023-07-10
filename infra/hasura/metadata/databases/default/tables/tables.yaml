@@ -26,6 +26,7 @@
 - '!include public_investors.yaml'
 - '!include public_invited_people.yaml'
 - '!include public_leads.yaml'
+- '!include public_leads_segmentation.yaml'
 - '!include public_likes.yaml'
 - '!include public_list_members.yaml'
 - '!include public_list_user_groups.yaml'

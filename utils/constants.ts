@@ -8,6 +8,7 @@ import {
   maxValue,
   regex,
 } from 'react-admin';
+import { GroupsTabItem } from '@/types/common';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -414,6 +415,10 @@ export const companyChoices = [
     disabled: true,
   },
   {
+    id: 'Raising',
+    name: 'Raising',
+  },
+  {
     id: 'Acquired',
     name: 'Acquired',
   },
@@ -779,7 +784,8 @@ export type ResourceTypes =
   | 'news_person'
   | 'news_related_person'
   | 'news_related_organizations'
-  | 'leads';
+  | 'leads'
+  | 'leads_segmentation';
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
   companies: 'company',
@@ -801,6 +807,7 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   news_related_person: 'news_related_person',
   news_related_organizations: 'news_related_organizations',
   leads: 'leads',
+  leads_segmentation: 'leads_segmentation',
 };
 
 export const isResourceType = (
@@ -826,6 +833,7 @@ export const isResourceType = (
     'news_related_person',
     'news_related_organizations',
     'leads',
+    'leads_segmentation',
   ].includes(resourceType);
 };
 
@@ -1934,9 +1942,46 @@ export const ONBOARDING_QUESTION = 'Where did you hear about us?';
 
 export const DEBOUNCE_TIME = 700;
 
+export const GROUPS_TABS: GroupsTabItem[] = [
+  { id: 'my-groups', name: 'My Groups' },
+  { id: 'discover', name: 'Discover' },
+  { id: 'joined', name: 'Joined' },
+];
+
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
   'companies',
   'vc_firms',
   'people',
   'news',
+];
+
+export const SQL_BLOCK_WORDS = [
+  'drop',
+  'insert into',
+  'update',
+  'delete',
+  'create',
+  'alter',
+];
+
+export const leadSegmentationStatusChoices = [
+  {
+    id: 'active',
+    name: 'Active',
+  },
+  {
+    id: 'inactive',
+    name: 'Inactive',
+  },
+];
+
+export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
+  'edgein.io',
+  'techlist.com',
+  'sudolabs.io',
+];
+
+export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
+  'mdinsdale@mac.com',
+  'dinghan@capital6.com',
 ];

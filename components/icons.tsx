@@ -898,7 +898,31 @@ export const IconUsers: React.FC<IconProps> = ({
   );
 };
 
-export const IconUser: React.FC<IconProps> = ({ className, title }) => {
+export const IconUser: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor"
+    >
+      <title>{title ? title : 'User'}</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+      />
+    </svg>
+  );
+};
+
+export const IconUserSolid: React.FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -2065,6 +2089,29 @@ export const IconListPlus: React.FC<IconProps> = ({
     >
       <title>{title ? title : 'Save To List'}</title>
       <path d="M17.9255 8V17M13.4255 12.5H22.4255" />
+      <line x1="2.42554" y1="16" x2="11.4255" y2="16" />
+      <line x1="2.42554" y1="11" x2="11.4255" y2="11" />
+      <line x1="2.42554" y1="6" x2="22.4255" y2="6" />
+    </svg>
+  );
+};
+
+export const IconListSaved: React.FC<IconProps> = ({
+  className,
+  strokeWidth,
+  title,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor"
+    >
+      <title>{title ? title : 'Save To List'}</title>
+      <path d="M13.2,13.9l3.1,2.5L21,10" />
       <line x1="2.42554" y1="16" x2="11.4255" y2="16" />
       <line x1="2.42554" y1="11" x2="11.4255" y2="11" />
       <line x1="2.42554" y1="6" x2="22.4255" y2="6" />

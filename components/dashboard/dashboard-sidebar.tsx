@@ -59,12 +59,8 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   }, [users]);
 
   return (
-    <nav className={`relative  ${className}`}>
-      <div className="sticky top-0 -ml-0.5 pointer-events-none">
-        <div className="h-8 bg-gradient-to-b from-white lg:from-gray-50"></div>
-      </div>
-
-      <div className="-mt-5">
+    <nav className={`p-4 ${className}`}>
+      <div>
         <ElemMyEdgeInMenu />
         <ElemMyNotesMenu className="mt-6" />
         <ElemMyGroupsMenu className="mt-6" />

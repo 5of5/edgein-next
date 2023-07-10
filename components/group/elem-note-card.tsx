@@ -343,7 +343,7 @@ const ElemNoteCard: React.FC<Props> = ({
 
   return (
     <>
-      <div className="flex flex-col bg-white shadow rounded-lg px-5 py-4">
+      <div className="flex flex-col bg-white shadow rounded-lg px-4 py-3">
         <div className="relative flex items-center space-x-3">
           <div className="flex-shrink-0 relative">
             {layout === 'organizationAndAuthor' ? (
@@ -450,8 +450,6 @@ const ElemNoteCard: React.FC<Props> = ({
                 >
                   {formatDateShown(data?.created_at)}
                 </ElemTooltip> */}
-
-                <span aria-hidden="true"> · </span>
 
                 {layout === 'organizationAndAuthor' ||
                 layout === 'groupAndAuthor' ? (

@@ -21,6 +21,7 @@ import { CreateListDialog } from '../my-list/create-list-dialog';
 import { Disclosure, Popover, Transition } from '@headlessui/react';
 import useDisclosureState from '@/hooks/use-disclosure-state';
 import { listsSortOptions, MY_LISTS_MENU_OPEN_KEY } from '@/utils/constants';
+import { ElemButton } from '../elem-button';
 
 type Props = {
   className?: string;
@@ -257,26 +258,30 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             <Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
               {getCustomLists.length > totalListCount ? (
                 <li role="button">
-                  <button
+                  <ElemButton
                     onClick={onOpenUpgradeDialog}
-                    className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+                    btn="primary-light"
+                    size="sm"
+                    className="w-full flex items-center justify-center rounded-md space-x-1 !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconContributorSolid
                       className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
                       title="Unlock lists"
                     />
-                    <span>Unlock All Lists</span>
-                  </button>
+                    <span>Unlock Unlimited Lists</span>
+                  </ElemButton>
                 </li>
               ) : (
                 <li role="button">
-                  <button
+                  <ElemButton
                     onClick={onOpenCreateListDialog}
-                    className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+                    btn="primary-light"
+                    size="sm"
+                    className="w-full flex items-center justify-center rounded-md space-x-1 !bg-primary-100 hover:!bg-primary-200 hover:!bg-opacity-50"
                   >
                     <IconListPlus className="h-6 w-6" title="Create List" />
-                    <span>Create new list</span>
-                  </button>
+                    <span>Create New List</span>
+                  </ElemButton>
                 </li>
               )}
 

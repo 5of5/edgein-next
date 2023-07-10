@@ -22,7 +22,10 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
 
   return (
     <Link href={`/investors/${slug}`} passHref>
-      <a className="flex flex-col mx-auto w-full p-5 cursor-pointer rounded-lg border border-dark-500/10 transition-all hover:scale-102 hover:shadow md:h-full">
+      <a
+        target="_blank"
+        className="flex flex-col mx-auto w-full p-5 cursor-pointer rounded-lg border border-dark-500/10 transition-all hover:scale-102 hover:shadow md:h-full"
+      >
         <div className="flex shrink-0 w-full">
           <ElemPhoto
             photo={logo}

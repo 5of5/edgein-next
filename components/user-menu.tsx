@@ -2,10 +2,9 @@ import { ElemButton } from './elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
 import { Menu, Transition } from '@headlessui/react';
 import React, { Fragment, FC } from 'react';
-import { find, first } from 'lodash';
+import find from 'lodash/find';
 import { getNameFromListName } from '@/utils/reaction';
 import {
-  IconChevronDownMini,
   IconUserCircle,
   IconSignOut,
   IconGroup,
@@ -23,20 +22,13 @@ type Props = {
 };
 
 export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
-  const { listAndFollows, user, myGroups } = useUser();
+  const { listAndFollows, user } = useUser();
 
   const showUpgradeLink = user?.entitlements.viewEmails === false;
 
   const hotListId =
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
   const myListsUrl = `/lists/${hotListId}/hot`;
-
-  const firstCustomGroup = first(myGroups ? myGroups : null);
-
-  let myGroupsUrl = '';
-  if (firstCustomGroup) {
-    myGroupsUrl = `/groups/${firstCustomGroup.id}/`;
-  }
 
   const logout = async () => {
     clearLocalStorage();
@@ -62,13 +54,13 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
       icon: IconCustomList,
     });
   }
-  if (myGroups.length > 0) {
-    navigation.push({
-      name: 'My Groups',
-      href: myGroupsUrl,
-      icon: IconGroup,
-    });
-  }
+
+  navigation.push({
+    name: 'My Groups',
+    href: '/groups',
+    icon: IconGroup,
+  });
+
   navigation.push({
     name: 'Account Settings',
     href: '/account',
@@ -96,19 +88,21 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
         {user?.person?.picture ? (
           <ElemPhoto
             photo={user?.person?.picture}
-            wrapClass="flex items-center justify-center shrink-0 w-8 h-8 bg-white rounded-full shadow border border-black/10"
+            wrapClass="flex items-center justify-center shrink-0 w-9 h-9 bg-white rounded-full shadow border border-black/10"
             imgClass="object-cover max-w-full max-h-full rounded-full"
             imgAlt={'profile'}
             placeholder="user"
             placeholderClass="text-slate-400 hover:text-slate-400"
           />
         ) : (
-          <ElemButton btn="slate" className="h-9 w-auto px-1 py-1.5 group">
+          <ElemButton
+            btn="slate"
+            className="h-9 aspect-square !px-1 !py-1.5 group"
+          >
             <IconUserCircle
-              className="h-6 w-6"
+              className="h-6 w-6 shrink-0"
               title={user?.display_name ? user.display_name : ''}
             />
-            <IconChevronDownMini className="h-5 w-5" aria-hidden="true" />
           </ElemButton>
         )}
       </Menu.Button>
@@ -146,7 +140,6 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
               <button
                 onClick={onShowUpgrade}
                 className="flex w-full items-center px-2 py-2 text-primary-500 hover:bg-gray-50"
-                // hover:bg-primary-200 hover:bg-opacity-50
               >
                 <IconContributor className="mr-2 h-6 w-6" title="Upgrade" />
                 Upgrade
