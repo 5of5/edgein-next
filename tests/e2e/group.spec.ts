@@ -11,7 +11,7 @@ import {
   getCreateListPayload,
 } from '../factories/lists';
 import { test, expect } from '@playwright/test';
-import { slugify } from '@/utils';
+import { kebabCase } from '@/utils';
 
 let groupToDelete: { name: string; id: number } | undefined;
 let listToDelete: { name: string; id: number } | undefined;
@@ -201,7 +201,7 @@ test.describe('Group', () => {
     // Create new list
     const listId = await createList(page, baseURL, listData);
 
-    const slug = slugify(listData.name);
+    const slug = kebabCase(listData.name);
 
     await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`, {
       timeout: 15000,
