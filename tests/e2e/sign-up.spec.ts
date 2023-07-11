@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { getDuplicateSignUpPayload, getSignUpPayload } from '../factories/auth';
+import {
+  getDuplicateSignUpPayload,
+  getSignUpPayload,
+  signupUser,
+} from '../factories/auth';
 
 test.describe('Sign up', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
@@ -63,21 +67,7 @@ test.describe('Sign up', () => {
   });
 
   test('should allow user register successfully', async ({ page }) => {
-    const signupPayloadData = getSignUpPayload();
-
-    await page
-      .getByRole('textbox', { name: 'name' })
-      .fill(signupPayloadData.name);
-    await page
-      .getByRole('textbox', { name: 'email' })
-      .fill(signupPayloadData.email);
-    await page
-      .getByRole('textbox', { name: 'password' })
-      .fill(signupPayloadData.password);
-
-    await page
-      .getByRole('button', { name: /Sign up\s+(with referral|and explore)$/i })
-      .click();
+    await signupUser(page, getSignUpPayload());
 
     await expect(
       page.getByRole('heading', { name: 'Registration Complete' }),
@@ -86,20 +76,7 @@ test.describe('Sign up', () => {
 
   test('should not allow an already registered email', async ({ page }) => {
     const duplicateSignupPayloadData = getDuplicateSignUpPayload();
-
-    await page
-      .getByRole('textbox', { name: 'name' })
-      .fill(duplicateSignupPayloadData.name);
-    await page
-      .getByRole('textbox', { name: 'email' })
-      .fill(duplicateSignupPayloadData.email);
-    await page
-      .getByRole('textbox', { name: 'password' })
-      .fill(duplicateSignupPayloadData.password);
-
-    await page
-      .getByRole('button', { name: /Sign up\s+(with referral|and explore)$/i })
-      .click();
+    await signupUser(page, duplicateSignupPayloadData);
 
     await expect(
       page.getByText(
