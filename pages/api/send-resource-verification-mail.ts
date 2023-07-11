@@ -40,12 +40,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     token,
   );
 
-  const ret = await sendVerificationMail(
+  const ret = await sendVerificationMail({
     verifyUrl,
     companyName,
     email,
-    user.display_name || '',
-  );
+    username: user.display_name || '',
+  });
 
   res.send(ret);
 };
