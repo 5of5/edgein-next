@@ -111,7 +111,8 @@ const ElemSettingEditableField: React.FC<Props> = ({
       <ElemEditDialog
         isOpen={editMode}
         loading={isLoading}
-        fieldName={label}
+        fieldName={field}
+        fieldLabel={label}
         fieldValue={group[field]}
         required={field === 'name'}
         onClose={handleCloseEditMode}

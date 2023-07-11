@@ -7,6 +7,7 @@ import {
   UpdateListByIdDocument,
   UpdateListByIdMutation,
 } from '@/graphql/types';
+import { listSchema } from '@/utils/validation';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'PUT') {
@@ -21,7 +22,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.body.payload;
 
   if (payload.name) {
-    payload.name = `sentiment-${user.id}-${payload.name}`;
+    const result = listSchema.safeParse({ name: payload.name });
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+      return res
+        .status(400)
+        .send({ error: fieldErrors['name']?.[0] || 'Invalid parameters' });
+    } else {
+      payload.name = `sentiment-${user.id}-${payload.name}`;
+    }
   }
 
   try {

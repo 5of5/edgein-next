@@ -16,6 +16,7 @@ import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { find } from 'lodash';
+import { listSchema } from '@/utils/validation';
 
 type Props = {
   resourceName: string | null;
@@ -69,8 +70,14 @@ export const ElemSaveToList: FC<Props> = ({
 
   useEffect(() => {
     setListName(listName);
-    if (listName && listName.length < 3) {
-      setError('List name should have at least 3 characters.');
+    if (listName) {
+      const result = listSchema.safeParse({ name: listName });
+      if (!result.success) {
+        const { fieldErrors } = result.error.flatten();
+        setError(fieldErrors['name']?.[0] || '');
+      } else {
+        setError('');
+      }
     } else {
       setError('');
     }

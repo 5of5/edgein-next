@@ -2,15 +2,15 @@ import { Fragment, ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
-import { startCase } from 'lodash';
 import { IconX } from '@/components/icons';
 import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
 import {
-  GROUP_DESCRIPTION_MAX_LENGTH,
-  GROUP_NAME_MAX_LENGTH,
-} from '@/utils/constants';
+  extractErrors,
+  GroupSchemaType,
+  groupSchema,
+} from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -23,7 +23,10 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   const { refetchMyGroups } = useUser();
 
   const [values, setValues] = useState({ name: '', description: '' });
-  const [error, setError] = useState({ name: '', description: '' });
+  const [error, setError] = useState<Partial<GroupSchemaType>>({
+    name: '',
+    description: '',
+  });
 
   const { mutate, isLoading } = useMutation(
     () =>
@@ -49,28 +52,12 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
       ...prev,
       [name]: value,
     }));
-    if (name === 'name' && value.length > GROUP_NAME_MAX_LENGTH) {
-      setError(prev => ({
-        ...prev,
-        [name]: `${startCase(
-          name,
-        )} should be maximum of ${GROUP_NAME_MAX_LENGTH} characters.`,
-      }));
-    } else if (
-      name === 'description' &&
-      value.length > GROUP_DESCRIPTION_MAX_LENGTH
-    ) {
-      setError(prev => ({
-        ...prev,
-        [name]: `${startCase(
-          name,
-        )} should be maximum of ${GROUP_DESCRIPTION_MAX_LENGTH} characters.`,
-      }));
+    const result = groupSchema.safeParse({ ...values, [name]: value });
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+      setError(extractErrors<GroupSchemaType>(fieldErrors));
     } else {
-      setError(prev => ({
-        ...prev,
-        [name]: '',
-      }));
+      setError({ name: '', description: '' });
     }
   };
 
@@ -132,9 +119,9 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                       onChange={handleChange}
                       placeholder="e.g: EdgeIn Wizards"
                       className={`${
-                        error.name === ''
-                          ? 'ring-1 ring-slate-200'
-                          : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                        error.name
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
                       }`}
                     />
                     {error.name && (
@@ -152,9 +139,9 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                       onChange={handleChange}
                       placeholder="What is the group about?"
                       className={`${
-                        error.description === ''
-                          ? 'ring-1 ring-slate-200'
-                          : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                        error.description
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
                       }`}
                     />
                     {error.description && (

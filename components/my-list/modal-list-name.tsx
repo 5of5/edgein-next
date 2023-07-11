@@ -3,7 +3,7 @@ import { FC, Fragment, useState, useEffect } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
-import { GROUP_NAME_MAX_LENGTH } from '@/utils/constants';
+import { listSchema } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -28,12 +28,10 @@ export const ModalListName: FC<Props> = ({
 
   const validateName = (value: string) => {
     setName(value);
-    if (value.length < 3) {
-      setError('List name should have at least 3 characters.');
-    } else if (value.length > GROUP_NAME_MAX_LENGTH) {
-      setError(
-        `List name should be maximum of ${GROUP_NAME_MAX_LENGTH} characters.`,
-      );
+    const result = listSchema.safeParse({ name: value });
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+      setError(fieldErrors['name']?.[0] || '');
     } else {
       setError('');
     }

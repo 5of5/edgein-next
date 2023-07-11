@@ -7,7 +7,7 @@ import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
 import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
-import { GROUP_NAME_MAX_LENGTH } from '@/utils/constants';
+import { listSchema } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -24,12 +24,14 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     setListName(listName);
-    if (listName && listName.length < 3) {
-      setError('List name should have at least 3 characters.');
-    } else if (listName.length > GROUP_NAME_MAX_LENGTH) {
-      setError(
-        `List name should be maximum of ${GROUP_NAME_MAX_LENGTH} characters.`,
-      );
+    if (listName) {
+      const result = listSchema.safeParse({ name: listName });
+      if (!result.success) {
+        const { fieldErrors } = result.error.flatten();
+        setError(fieldErrors['name']?.[0] || '');
+      } else {
+        setError('');
+      }
     } else {
       setError('');
     }

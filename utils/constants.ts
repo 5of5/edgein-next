@@ -1990,5 +1990,8 @@ export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
   'dinghan@capital6.com',
 ];
 
+export const LIST_NAME_MIN_LENGTH = 3;
+export const LIST_NAME_MAX_LENGTH = 255;
+
 export const GROUP_NAME_MAX_LENGTH = 255;
 export const GROUP_DESCRIPTION_MAX_LENGTH = 1000;

@@ -3,15 +3,14 @@ import { Dialog, Transition } from '@headlessui/react';
 import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
 import { ElemButton } from '../elem-button';
-import {
-  GROUP_DESCRIPTION_MAX_LENGTH,
-  GROUP_NAME_MAX_LENGTH,
-} from '@/utils/constants';
+import { User_Groups } from '@/graphql/types';
+import { groupSchema } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
   loading?: boolean;
-  fieldName: string;
+  fieldName: Partial<keyof User_Groups>;
+  fieldLabel: string;
   fieldValue?: string;
   required?: boolean;
   onClose: () => void;
@@ -22,6 +21,7 @@ const ElemEditDialog: FC<Props> = ({
   isOpen,
   loading = false,
   fieldName,
+  fieldLabel,
   fieldValue,
   required,
   onClose,
@@ -37,22 +37,14 @@ const ElemEditDialog: FC<Props> = ({
 
   const onValidate = (value: string) => {
     setValue(value);
-    if (required && !value) {
-      setError(`${fieldName} is required.`);
-    } else if (
-      fieldName === 'Group Name' &&
-      value.length > GROUP_NAME_MAX_LENGTH
-    ) {
-      setError(
-        `Name should be maximum of ${GROUP_NAME_MAX_LENGTH} characters.`,
-      );
-    } else if (
-      fieldName === 'Description' &&
-      value.length > GROUP_DESCRIPTION_MAX_LENGTH
-    ) {
-      setError(
-        `Description should be maximum of ${GROUP_DESCRIPTION_MAX_LENGTH} characters.`,
-      );
+    const result = groupSchema.safeParse({ [fieldName]: value });
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+      if (fieldName === 'name' || fieldName === 'description') {
+        setError(fieldErrors[fieldName]?.[0] || '');
+      } else {
+        setError('');
+      }
     } else {
       setError('');
     }
@@ -95,7 +87,7 @@ const ElemEditDialog: FC<Props> = ({
               <Dialog.Panel className="w-full max-w-md transform rounded-lg bg-slate-100 shadow-xl transition-all overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
                   <h2 className="text-xl font-bold capitalize">
-                    {`Edit ${fieldName}`}
+                    {`Edit ${fieldLabel}`}
                   </h2>
                   <button
                     onClick={onClose}
@@ -113,9 +105,9 @@ const ElemEditDialog: FC<Props> = ({
                       type="text"
                       value={value}
                       className={`${
-                        error === ''
-                          ? 'ring-1 ring-slate-200'
-                          : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                        error
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
                       }`}
                     />
                     {error && (
@@ -133,7 +125,7 @@ const ElemEditDialog: FC<Props> = ({
                       roundedFull
                       btn="primary"
                       loading={loading}
-                      disabled={!!error}
+                      disabled={(required && !value) || Boolean(error)}
                     >
                       Save
                     </ElemButton>
