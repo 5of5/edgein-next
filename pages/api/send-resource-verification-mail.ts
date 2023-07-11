@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   const ret = await sendVerificationMail(
-      verifyUrl,
+    verifyUrl,
     companyName,
     email,
     user.display_name || '',
@@ -50,9 +50,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.send(ret);
 };
 
-const sendVerificationMail = async (
-    { email, username, companyName, verifyUrl }: ResourceVerificationMailParams,
-) => {
+const sendVerificationMail = async ({
+  email,
+  username,
+  companyName,
+  verifyUrl,
+}: ResourceVerificationMailParams) => {
   try {
     const emailHtml = render(
       ResourceVerificationEmail({
