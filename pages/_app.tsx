@@ -145,7 +145,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     showPopup={showPopup}
                     setShowPopup={setShowPopup}
                   />
-                  <main className="mt-11 grow selection:bg-primary-200">
+                  <main className="mt-12 grow selection:bg-primary-200">
                     {pageLoading ? (
                       <LoaderPlasma />
                     ) : (

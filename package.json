@@ -22,7 +22,9 @@
     "api:test": "jest --config=test-api/api-test.config.js --testPathPattern=test-api",
     "api:build": "cd server-api/ && rimraf build && npx tsc && cp .env build/server-api",
     "api:dev": "cd server-api/ && set NODE_ENV=development && nodemon -e ts --exec ts-node -r tsconfig-paths/register index.ts",
-    "api:start": "cd server-api/ && pm2 start --interpreter none 'node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js'"
+    "api:start": "cd server-api/ && pm2 start --interpreter none 'node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js'",
+    "playwright:test": "npx playwright test",
+    "test:e2e": "npm run docker:start && npm run playwright:test"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
@@ -39,6 +41,9 @@
     "@graphql-codegen/introspection": "^2.1.1",
     "@graphql-codegen/typescript-react-query": "^3.5.14",
     "@headlessui/react": "^1.7.3",
+    "@playwright/test": "^1.35.0",
+    "@react-email/components": "^0.0.7",
+    "@react-email/render": "^0.0.7",
     "@tailwindcss/forms": "^0.5.3",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
@@ -79,6 +84,7 @@
     "react": "18.1.0",
     "react-admin": "^4.3.1",
     "react-dom": "18.1.0",
+    "react-email": "1.9.3",
     "react-fullstory": "^1.4.0",
     "react-gtm-module": "^2.0.11",
     "react-hook-form": "^7.34.2",

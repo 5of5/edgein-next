@@ -2,6 +2,7 @@
 import React, { useCallback } from 'react';
 import { Admin, DataProvider, Resource } from 'react-admin';
 import CssBaseline from '@mui/material/CssBaseline';
+import { LeadList, LeadCreate, LeadEdit } from '../../components/admin/leads';
 import {
   LeadSegmentationList,
   LeadSegmentationCreate,
@@ -53,6 +54,12 @@ const AdminData = () => {
       theme={theme}
     >
       <CssBaseline />
+      <Resource
+        name="leads"
+        list={LeadList}
+        create={LeadCreate}
+        edit={LeadEdit}
+      />
       <Resource
         name="leads_segmentation"
         list={LeadSegmentationList}

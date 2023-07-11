@@ -1,7 +1,10 @@
 import { NextApiResponse, NextApiRequest } from 'next';
+import { render } from '@react-email/render';
 import CookieService from '../../utils/cookie';
 import { generateVerifyWorkplaceToken, saveToken } from '@/utils/tokens';
 import { tokenTypes } from '@/utils/constants';
+import { ResourceVerificationMailParams } from '@/types/api';
+import ResourceVerificationEmail from '@/react-email-starter/emails/resource-verification';
 import { makeEmailService } from '@/services/email.service';
 import { env } from '@/services/config.service';
 import { AuthService } from '@/services/auth.service';
@@ -29,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     personId,
   );
 
-  const url = AuthService.verifyWorkplaceUrl(verifyWorkToken);
+  const verifyUrl = AuthService.verifyWorkplaceUrl(verifyWorkToken);
   await saveToken(
     verifyWorkToken,
     tokenTypes.verifyWorkHereToken,
@@ -38,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   const ret = await sendVerificationMail(
-    url,
+      verifyUrl,
     companyName,
     email,
     user.display_name || '',
@@ -48,18 +51,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const sendVerificationMail = async (
-  url: string,
-  companyName: string,
-  email: string,
-  userName?: string,
+    { email, username, companyName, verifyUrl }: ResourceVerificationMailParams,
 ) => {
   try {
-    const html = `
-      <b>Hi ${userName}</b>,
-      <p>Please verify you work for <b>${companyName}</b> </p> <br/>
-
-      <a href="${url}">${url}</a>
-    `;
+    const emailHtml = render(
+      ResourceVerificationEmail({
+        username,
+        verifyUrl,
+        companyName,
+      }),
+    );
 
     const params = {
       Destination: {
@@ -69,7 +70,7 @@ const sendVerificationMail = async (
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {

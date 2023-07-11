@@ -1,16 +1,13 @@
 import { NextApiResponse, NextApiRequest } from 'next';
+import { render } from '@react-email/render';
 import CookieService from '@/utils/cookie';
+import { ConfirmAdditionalMailParams } from '@/types/api';
+import AdditionalEmailConfirmEmail from '@/react-email-starter/emails/additional-email-confirm';
 import { env } from '@/services/config.service';
 import { makeEmailService } from '@/services/email.service';
 import { AuthService } from '@/services/auth.service';
 
 const emailService = makeEmailService();
-
-type MailParams = {
-  email: string;
-  username: string;
-  verifyUrl: string;
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -21,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const email: string = req.body.email;
 
-  const mailParams: MailParams = {
+  const mailParams: ConfirmAdditionalMailParams = {
     email,
     username: user.display_name || '',
     verifyUrl: AuthService.verifyUrl({
@@ -34,14 +31,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.send(emailResponse);
 };
 
-const sendInvitationMail = async (mailParams: MailParams) => {
+const sendInvitationMail = async (mailParams: ConfirmAdditionalMailParams) => {
   const { email, username, verifyUrl } = mailParams;
-  const html = `
-  <b>Verify your email on EdgeIn</b>
-  <p><b>${username}</b> has added you to additional emails on EdgeIn.</p> <br/>
 
-  <a href="${verifyUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">VERIFY YOUR EMAIL</a>
-`;
+  const emailHtml = render(
+    AdditionalEmailConfirmEmail({
+      username,
+      verifyUrl,
+    }),
+  );
 
   try {
     const params = {
@@ -52,7 +50,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {

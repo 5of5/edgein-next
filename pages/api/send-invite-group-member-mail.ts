@@ -1,26 +1,16 @@
 import { NextApiResponse, NextApiRequest } from 'next';
+import { render } from '@react-email/render';
+import InviteGroupMemberEmail from '@/react-email-starter/emails/invite-group-member';
+import {
+  InviteGroupMemberMailParams,
+  InviteGroupMemberPayloadEmailResource,
+} from '@/types/api';
 import CookieService from '@/utils/cookie';
 import { makeEmailService } from '@/services/email.service';
 import { env } from '@/services/config.service';
 import { AuthService } from '@/services/auth.service';
 
 const emailService = makeEmailService();
-
-export type EmailResources = {
-  isExistedUser: boolean;
-  email: string;
-  recipientName: string;
-}[];
-
-type MailParams = {
-  email: string;
-  senderName: string;
-  recipientName?: string;
-  groupName: string;
-  groupUrl?: string;
-  signUpUrl?: string;
-  isExistedUser?: boolean;
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -29,7 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  const emailResources: EmailResources = req.body.emailResources;
+  const emailResources: InviteGroupMemberPayloadEmailResource[] =
+    req.body.emailResources;
   const groupName = req.body.groupName;
   const groupId = req.body.groupId;
 
@@ -59,7 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.send(response);
 };
 
-const sendInvitationMail = async (mailParams: MailParams) => {
+const sendInvitationMail = async (mailParams: InviteGroupMemberMailParams) => {
   const {
     isExistedUser,
     email,
@@ -69,19 +60,28 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     groupUrl,
     signUpUrl,
   } = mailParams;
-  const html = isExistedUser
-    ? `
-      <b>Hi ${recipientName}</b>,
-      <p><b>${senderName}</b> has invited you to join group <b>${groupName}</b>. </p> <br/>
 
-      <a href="${groupUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">VIEW GROUP</a>
-    `
-    : `
-      <b>Join your group on EdgeIn</b>,
-      <p><b>${senderName}</b> has invited you to use EdgeIn with them, in a group called <b>${groupName}</b>. </p> <br/>
+  const invalidExistedUser = isExistedUser && (!recipientName || !groupUrl);
+  const invalidSignUpUrl = !isExistedUser && !signUpUrl;
+  const invalidParams = invalidExistedUser || invalidSignUpUrl;
 
-      <a href="${signUpUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">JOIN NOW</a>
-    `;
+  if (invalidParams) {
+    return {
+      status: 400,
+      message: `Failed to send verification email to ${email}. Missing parameters`,
+    };
+  }
+
+  const emailHtml = render(
+    InviteGroupMemberEmail({
+      isExistedUser,
+      senderName,
+      recipientName,
+      groupName,
+      groupUrl,
+      signUpUrl,
+    }),
+  );
 
   try {
     const params = {
@@ -92,7 +92,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {
