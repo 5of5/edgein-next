@@ -1,6 +1,7 @@
 import { Page, expect } from '@playwright/test';
 import { toLower } from 'lodash';
 import { uniqueId } from '@/tests/utils';
+import { slugify } from '@/utils';
 
 interface ListInfo {
   id?: number;
@@ -48,7 +49,7 @@ export const deleteList = async (
   baseURL: string | undefined,
   listInfo: ListInfo,
 ) => {
-  const slug = toLower(listInfo.name).replace(/\s/, '-');
+  const slug = slugify(listInfo.name);
 
   await page.goto(`${baseURL}/lists/${listInfo.id}/${slug}/`, {
     timeout: 15000,
