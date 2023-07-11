@@ -1,6 +1,5 @@
 import { Page } from '@playwright/test';
-import { random } from 'lodash';
-
+import { v4 as uuidv4 } from 'uuid';
 export interface LoginPayload {
   email: string;
   password: string;
@@ -12,7 +11,7 @@ export interface SignUpPayload extends LoginPayload {
 }
 
 export const getSignUpPayload = (): SignUpPayload => {
-  const uniqueId = random(1, 800);
+  const uniqueId = uuidv4();
 
   return {
     name: 'Jessica Taggart',

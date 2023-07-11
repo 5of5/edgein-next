@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { random } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 interface GroupInfo {
   id?: number;
@@ -8,7 +8,7 @@ interface GroupInfo {
 }
 
 export const getCreateGroupPayload = () => {
-  const uniqueId = random(1, 800);
+  const uniqueId = uuidv4();
 
   return {
     name: `Edgein wizards ${uniqueId}`,
