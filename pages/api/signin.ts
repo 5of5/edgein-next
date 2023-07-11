@@ -54,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         isFirstLogin = true;
         await UserService.updateEmailVerifiedStatus(
           userInfo.email,
-          userInfo.email_verified == true,
+          userInfo.email_verified === true,
         );
       }
 
