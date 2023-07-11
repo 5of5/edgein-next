@@ -292,13 +292,6 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 </ElemButton>
               </>
             )}
-
-            <TheMobileNav
-              className="flex lg:hidden items-center"
-              setShowPopup={setShowPopup}
-              myListsUrl={myListsUrl}
-              myGroupsUrl={myGroupsUrl}
-            />
           </div>
 
           <UsageModal

@@ -52,10 +52,16 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   const { user } = useUser();
   const router = useRouter();
 
-  //Notifications
-  const { data } = useGetNotificationsForUserQuery({
-    user: user?.id || 0,
-  });
+  const { data } = useGetNotificationsForUserQuery(
+    {
+      user: user?.id || 0,
+      limit: 10,
+      offset: 0,
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const excludeProperties = useMemo(() => {
     return ['status_tags', 'logo'];
@@ -158,28 +164,24 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   ];
 
   const menuPanel = [
-    {
-      icon: IconDocumentDownload,
-      name: 'Notes',
-      href: '/notes',
-      onClick: null,
-    },
-    ...(myGroupsUrl
-      ? [
-          {
-            icon: IconGroup,
-            name: 'Groups',
-            href: myGroupsUrl,
-            onClick: null,
-          },
-        ]
-      : []),
     ...(user
       ? [
           {
+            icon: IconDocumentDownload,
+            name: 'Notes',
+            href: '/notes',
+            onClick: null,
+          },
+          {
+            icon: IconGroup,
+            name: 'Groups',
+            href: '/groups',
+            onClick: null,
+          },
+          {
             icon: IconCustomList,
             name: 'Lists',
-            href: myListsUrl,
+            href: '/lists',
             onClick: null,
           },
         ]
@@ -213,7 +215,8 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
           {
             icon: IconSettings,
             name: 'Account Settings',
-            //href: "/account",
+            // href: '/account',
+            href: '/account',
             onClick: () => {
               router.push('/account');
               setNavOpen(false);
@@ -240,11 +243,8 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   return (
     <>
       <div
-        className={`fixed z-50 w-full items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
-      >
-        {/* {visible ? "bottom-0" : "-bottom-12"} */}
-
-        <ul className="grid grid-cols-6 bg-white/80 backdrop-blur px-0.5 pb-0.5">
+        className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}>
+        <ul className="grid grid-cols-6 w-full bg-white px-0.5 pb-0.5">
           {nav.map((item, index) => (
             <li
               key={index}
@@ -252,13 +252,11 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 router.pathname == item?.href && navOpen === false
                   ? 'border-t-2 border-primary-500'
                   : 'border-t-2 border-transparent'
-              }`}
-            >
+              }`}>
               <Link href={item?.href ? item.href : ''}>
                 <a
                   onClick={item?.onClick ? item?.onClick : onClose}
-                  className="flex flex-col items-center h-full text-[11px]"
-                >
+                  className="flex flex-col items-center h-full text-[11px]">
                   {item?.icon && (
                     <div className="relative flex items-center justify-center h-7 aspect-square">
                       {notificationsCount > 0 &&
@@ -282,12 +280,10 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
               navOpen
                 ? 'border-t-2 border-primary-500'
                 : 'border-t-2 border-transparent'
-            }`}
-          >
+            }`}>
             <a
               onClick={onOpen}
-              className="flex flex-col items-center h-full text-[11px] cursor-pointer"
-            >
+              className="flex flex-col items-center h-full text-[11px] cursor-pointer">
               {user?.person?.picture ? (
                 <ElemPhoto
                   photo={user?.person?.picture}
@@ -311,7 +307,10 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
         </ul>
       </div>
       <Transition.Root show={navOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-40 lg:hidden" onClose={onClose}>
+        <Dialog
+          as="div"
+          className={`relative lg:hidden ${navOpen && 'z-30'}`}
+          onClose={onClose}>
           <div className="fixed inset-0 flex justify-end">
             <Transition.Child
               as={Fragment}
@@ -320,8 +319,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
               enterTo="translate-x-0"
               leave="transition ease-in-out duration-300 transform"
               leaveFrom="translate-x-0"
-              leaveTo="translate-x-full"
-            >
+              leaveTo="translate-x-full">
               <Dialog.Panel className="w-full bg-gray-50">
                 <div className="flex justify-between items-center px-4 py-3">
                   <Dialog.Title className="text-xl font-bold">
@@ -334,15 +332,13 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                     <ElemButton
                       onClick={onClose}
                       btn="slate"
-                      className="h-9 w-9 !px-0 !py-0 outline-none"
-                    >
+                      className="h-9 w-9 !px-0 !py-0 outline-none">
                       <IconSettings className="h-5 w-5" />
                     </ElemButton>
                     <ElemButton
                       onClick={onOpenSearch}
                       btn="slate"
-                      className="h-9 w-9 !px-0 !py-0"
-                    >
+                      className="h-9 w-9 !px-0 !py-0">
                       <IconSearch className="h-5 w-5" strokeWidth={1.5} />
                     </ElemButton>
                   </div>
@@ -353,9 +349,8 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                     <li key={index}>
                       <Link href={item?.href ? item.href : ''}>
                         <a
-                          onClick={item?.onClick ? item?.onClick : onClose}
-                          className="block p-3 outline-none bg-white shadow rounded-lg"
-                        >
+                          onClick={item.onClick ? item.onClick : onClose}
+                          className="block p-3 outline-none bg-white shadow rounded-lg">
                           {item?.icon && (
                             <item.icon
                               title={item.name}
@@ -369,16 +364,24 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                   ))}
                 </ul>
                 <div className="p-4">
-                  <ElemButton
-                    btn="slate"
-                    roundedFull={false}
-                    onClick={() => {
-                      logout(), setNavOpen(false);
-                    }}
-                    className="w-full rounded-lg"
-                  >
-                    Sign out
-                  </ElemButton>
+                  {user ? (
+                    <ElemButton
+                      btn="slate"
+                      roundedFull={false}
+                      onClick={() => {
+                        logout(), setNavOpen(false);
+                      }}
+                      className="w-full">
+                      Sign out
+                    </ElemButton>
+                  ) : (
+                    <ElemButton
+                      onClick={() => setShowPopup('signup')}
+                      btn="primary"
+                      className="w-full">
+                      Start for free
+                    </ElemButton>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
