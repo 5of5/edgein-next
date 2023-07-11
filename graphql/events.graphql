@@ -77,6 +77,7 @@ query GetEvent($slug: String!) {
         linkedin
         personal_email
         work_email
+        status
         investors {
           id
           title
@@ -108,12 +109,14 @@ query GetEvent($slug: String!) {
         name
         slug
         logo
+        status
       }
       vc_firm {
         id
         name
         slug
         logo
+        status
       }
     }
     parent_event {
@@ -194,5 +197,20 @@ query GetSubEvents($parent_event_id: Int!) {
     timezone
     is_featured
     created_at
+  }
+}
+
+query GetEventOrganizationById($id: Int!) {
+  event_organization(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    company_id
+    vc_firm_id
+    type
+    event {
+      id
+      name
+      slug
+      status
+    }
   }
 }

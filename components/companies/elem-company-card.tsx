@@ -1,11 +1,11 @@
 import { Companies } from '@/graphql/types';
-import { getLayerClass } from '@/utils/style';
 import { FC, useEffect, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
+import ElemCompanyTags from '../elem-company-tags';
 
 type Props = {
   company: Companies;
@@ -19,11 +19,14 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
     setCompanyData(company);
   }, [company]);
 
-  const { id, slug, logo, name, coin, layer, tags, overview } = companyData;
+  const { id, slug, logo, name, coin, overview } = companyData;
 
   return (
     <Link href={`/companies/${slug}`}>
-      <a className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow">
+      <a
+        target="_blank"
+        className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
+      >
         <div className="flex shrink-0 w-full">
           <ElemPhoto
             photo={logo}
@@ -43,7 +46,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
               </h3>
               {coin && (
                 <ElemTooltip
-                  content={`Token / Value`}
+                  content={`Token`}
                   className="inline-flex items-center overflow-visible"
                 >
                   <span className="uppercase">{coin.ticker}</span>
@@ -54,34 +57,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
         </div>
 
         <div className="grow">
-          {(layer || tags) && (
-            <div
-              className="mt-4 flex flex-wrap gap-2"
-              onClick={e => e.stopPropagation()}
-            >
-              {layer && (
-                <div
-                  className={`${getLayerClass(
-                    layer,
-                  )} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-default`}
-                >
-                  {layer}
-                </div>
-              )}
-
-              {tags?.map((tag: string, index: number) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={e => tagOnClick(e, tag)}
-                    className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
-                  >
-                    {tag}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <ElemCompanyTags company={company} tagOnClick={tagOnClick} />
 
           {overview && (
             <div className="grow mt-4">

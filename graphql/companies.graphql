@@ -32,6 +32,7 @@ query GetCompany($slug: String!) {
     location_json
     discord
     glassdoor
+    status_tags
     teamMembers {
       id
       person {
@@ -83,6 +84,7 @@ query GetCompany($slug: String!) {
         sentiment
         overview
         logo
+        status_tags
       }
       from_vc_firm {
         id
@@ -105,6 +107,7 @@ query GetCompany($slug: String!) {
         sentiment
         overview
         logo
+        status_tags
       }
       to_vc_firm {
         id
@@ -157,7 +160,8 @@ query GetCompany($slug: String!) {
 query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
   companies(
     where: $where
-    order_by: { slug: asc }
+    # order_by: { slug: asc }
+    order_by: { updated_at: desc }
     limit: $limit
     offset: $offset
   ) {
@@ -165,13 +169,40 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
     name
     slug
     layer
+    location
+    location_json
     tags
     coin {
       ticker
     }
     sentiment
     investor_amount
+    investment_rounds {
+      round
+      round_date
+      amount
+      investments {
+        person {
+          slug
+          name
+        }
+        vc_firm {
+          slug
+          name
+        }
+        amount
+      }
+    }
+    year_founded
     total_employees
+    teamMembers {
+      id
+      person {
+        id
+        slug
+        name
+      }
+    }
     logo
     overview
     github
@@ -180,6 +211,7 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
     velocity_linkedin
     velocity_token
     website
+    status_tags
   }
   companies_aggregate(where: $where) {
     aggregate {
@@ -210,6 +242,7 @@ query GetCompaniesRecent(
     investor_amount
     date_added
     sentiment
+    status_tags
     investment_rounds {
       id
       amount

@@ -1,14 +1,12 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
-import {
-  processNotification,
-  processNotificationOnDelete,
-} from '@/utils/notifications';
+import { processNotificationOnSubmitData } from '@/utils/notifications';
 import {
   ActionType,
   ResourceTypes,
   isResourceType,
   NODE_NAME,
+  RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from '@/utils/constants';
 import { User } from '@/models/user';
 import {
@@ -16,7 +14,6 @@ import {
   resourceIdLookup,
   fieldLookup,
   mutateActionAndDataRaw,
-  getCompanyByRoundId,
   deleteMainTableRecord,
   insertActionDataChange,
   markDataRawAsInactive,
@@ -30,94 +27,6 @@ import {
   CommonRequest,
   CommonResponse,
 } from '@/utils/api';
-
-const sendNotification = async (
-  resourceId: number | undefined,
-  resourceType: ResourceTypes,
-  resourceObj: Record<string, any>,
-  insertResult: Record<string, any>,
-) => {
-  let actionType: ActionType = 'Insert Data';
-  if (resourceId === undefined) {
-    if (
-      resourceType === 'investment_rounds' ||
-      resourceType === 'team_members'
-    ) {
-      await processNotification(
-        resourceObj?.company_id,
-        'companies',
-        resourceType,
-        actionType,
-        insertResult?.actions,
-      );
-    }
-
-    if (resourceType === 'investors') {
-      await processNotification(
-        resourceObj?.vc_firm_id,
-        'vc_firms',
-        resourceType,
-        actionType,
-        insertResult?.actions,
-      );
-    }
-
-    if (resourceType === 'investments') {
-      if (resourceObj?.round_id) {
-        const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
-        await processNotification(
-          investmentRound?.company_id || 0,
-          'companies',
-          resourceType,
-          actionType,
-          insertResult?.actions,
-        );
-      }
-
-      await processNotification(
-        resourceObj?.vc_firm_id,
-        'vc_firms',
-        resourceType,
-        actionType,
-        insertResult?.actions,
-      );
-    }
-
-    if (resourceType === 'event_organization') {
-      if (resourceObj?.company_id) {
-        await processNotification(
-          resourceObj.company_id,
-          'companies',
-          resourceType,
-          actionType,
-          insertResult?.actions,
-        );
-      }
-      if (resourceObj?.vc_firm_id) {
-        await processNotification(
-          resourceObj.vc_firm_id,
-          'vc_firms',
-          resourceType,
-          actionType,
-          insertResult?.actions,
-        );
-      }
-    }
-  } else {
-    // updated exists one
-    actionType = 'Change Data';
-    if (resourceType === 'companies' || resourceType === 'vc_firms') {
-      /** Insert notification */
-      await processNotification(
-        resourceId,
-        resourceType,
-        resourceType,
-        actionType,
-        insertResult?.actions,
-      );
-    }
-  }
-};
 
 const addSpecialRelationships = async (
   resourceType: ResourceTypes,
@@ -182,7 +91,7 @@ const handleResource = async (
   if (
     !resourceId &&
     !resourceObj?.library &&
-    ['companies', 'vc_firms', 'people', 'news'].includes(resourceType)
+    RESOURCE_TYPES_CONTAIN_LIBRARY.includes(resourceType)
   ) {
     resourceObj.library = ['Web3'];
   }
@@ -197,7 +106,13 @@ const handleResource = async (
     forceUpdate,
   );
 
-  await sendNotification(resourceId, resourceType, resourceObj, mainResult);
+  await processNotificationOnSubmitData(
+    resourceType,
+    resourceObj,
+    resourceId ? 'Change Data' : 'Insert Data',
+    mainResult?.actions,
+    mainResult?.id,
+  );
 
   const relationshipResults: Array<Record<string, any>> = [];
   for (const resourceRelationship of resourceRelationships) {
@@ -351,12 +266,6 @@ export const commonHandler = async (
               user?.id,
             );
             await markDataRawAsInactive(resourceType, resourceId);
-            await processNotificationOnDelete(
-              resourceType,
-              resourceId,
-              action?.id || 0,
-              resourceObjs[index],
-            );
             return { id: resourceId, deleted: true };
           } catch (error: any) {
             return { id: resourceId, deleted: false, error };

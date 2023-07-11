@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: git-pull
         run:
-          cd /home/ubuntu/edgein-next/ && git pull
+          cd /home/ubuntu/edgein-next/ && git reset --hard origin/main && git pull
       - name: apply-migration
         env:
           # Add HASURA_ADMIN_SECRET in repo setting

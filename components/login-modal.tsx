@@ -90,6 +90,7 @@ export default function LoginModal(props: Props) {
         try {
           const res = await response.clone().json();
           if (res.nextStep && res.nextStep === 'SIGNUP') {
+            setIsLoading(false);
             onSignUp(email, password);
           } else {
             setIsLoading(false);
@@ -158,10 +159,8 @@ export default function LoginModal(props: Props) {
                     Login
                   </h1>
                   <ElemButton
-                    roundedFull={false}
                     onClick={onLinkedInClick}
-                    btn="transparent"
-                    className="w-full mt-5 gap-x-2 text-center rounded-full text-[#0077B5] bg-white ring-1 ring-slate-200 hover:bg-slate-200 hover:!text-[#0077B5]"
+                    className="w-full mt-5 gap-x-2 text-center bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]"
                   >
                     <IconLinkedIn
                       title="LinkedIn"

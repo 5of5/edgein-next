@@ -40,3 +40,12 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+/test-results/
+/playwright-report/
+/playwright/.cache/
+playwright/.auth
+# react-email preview
+.react-email
+
+.idea

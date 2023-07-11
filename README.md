@@ -64,6 +64,13 @@ npm run hasura metadata apply
 npm run hasura console
 ```
 
+### Load seed data
+
+```
+cd scripts/db/
+sh ./load-seed-data.sh
+```
+
 ### Start Next App
 
 ```
@@ -242,7 +249,18 @@ Then run the script update_data_fields.ts
 
 ### Clone prodution DB to staging DB
 
-git checkout to target branch
+#### Run at local
+
 export PGPASSWORD='PGPASSWORD'
 export ADMIN_SECRET='HASURA_ADMIN_SECRET'
-bash clone_db_from_production_to_staging.sh
+bash clone-db-from-production-to-staging.sh
+
+#### Trigger jenkins job
+
+Trigger job at https://jenkins.edgein.dev/job/Clone%20DB%20from%20production%20tp%20staging/
+
+### Apply hasura of working branch to staging
+
+git checkout to target branch
+export ADMIN_SECRET='HASURA_ADMIN_SECRET'
+bash apply-hasura-to-staging.sh

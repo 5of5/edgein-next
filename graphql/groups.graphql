@@ -27,6 +27,59 @@ query GetGroupsOfUser($user_id: Int!) {
   }
 }
 
+query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
+  user_groups(
+    where: $where
+    order_by: { created_at: desc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    description
+    telegram
+    twitter
+    discord
+    public
+    created_by_user_id
+    created_by {
+      id
+      display_name
+      email
+    }
+    notes {
+      id
+      notes
+    }
+    created_at
+    updated_at
+    user_group_members {
+      id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          picture
+        }
+      }
+    }
+    user_group_invites {
+      id
+      email
+      created_at
+      created_by_user_id
+    }
+  }
+  user_groups_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
 query GetGroup($id: Int!) {
   user_groups(where: { id: { _eq: $id } }) {
     id
@@ -147,6 +200,10 @@ query GetUserGroupMemberById($id: Int!) {
     id
     user_id
     user_group_id
+    user {
+      id
+      email
+    }
   }
 }
 

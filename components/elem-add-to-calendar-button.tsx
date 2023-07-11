@@ -4,21 +4,27 @@ import kebabCase from 'lodash/kebabCase';
 import { CalendarEvent, CalendarType } from '@/models/calendar';
 import { generateLink } from '@/utils/calendar';
 import {
-  IconApple,
-  IconCalendarDays,
-  IconGoogle,
-  IconIcalFile,
-  IconOutlook,
+  IconCalendarAdd,
+  IconAppleCalendar,
+  IconGoogleCalendar,
+  IconMicrosoftOutlook,
+  IconCalendar,
 } from './icons';
 import { ElemButton } from './elem-button';
 
 type Props = {
+  className?: string;
   event: CalendarEvent;
 };
 
-const options: CalendarType[] = ['Apple', 'Google', 'Outlook', 'iCal File'];
+const options: CalendarType[] = [
+  { type: 'Apple', icon: IconAppleCalendar },
+  { type: 'Google', icon: IconGoogleCalendar },
+  { type: 'Outlook', icon: IconMicrosoftOutlook },
+  { type: 'iCal File', icon: IconCalendar },
+];
 
-const ElemAddToCalendarButton: FC<Props> = ({ event }) => {
+const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
   const handleClick = (item: CalendarType) => {
     const url = generateLink(event, item);
 
@@ -38,33 +44,19 @@ const ElemAddToCalendarButton: FC<Props> = ({ event }) => {
     }
   };
 
-  const renderIcon = (type: CalendarType) => {
-    switch (type) {
-      case 'Apple':
-        return <IconApple className="w-5 h-5 -translate-y-[2px]" />;
-
-      case 'Google':
-        return <IconGoogle className="w-4 h-4" />;
-
-      case 'Outlook':
-        return <IconOutlook className="w-5 h-5" />;
-
-      case 'iCal File':
-        return <IconIcalFile className="w-4 h-4" />;
-
-      default:
-        return null;
-    }
-  };
-
   return (
     <div>
-      <Menu as="div" className="relative inline-block text-left">
+      <Menu
+        as="div"
+        className={`relative inline-block text-left ${
+          className ? className : ''
+        }`}
+      >
         <div>
           <Menu.Button as="div">
-            <ElemButton btn="slate" className="flex items-center gap-2">
-              <IconCalendarDays className="w-5 h-5" />
-              Add to Calendar
+            <ElemButton btn="slate" className="flex items-center w-full">
+              <IconCalendarAdd className="w-5 h-5 mr-1 shrink-0" />
+              <div className="whitespace-nowrap">Add to Calendar</div>
             </ElemButton>
           </Menu.Button>
         </div>
@@ -79,19 +71,28 @@ const ElemAddToCalendarButton: FC<Props> = ({ event }) => {
         >
           <Menu.Items
             as="nav"
-            className="z-10 absolute overflow-hidden left-0 lg:left-auto lg:right-0 mt-1 w-full origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+            className="z-10 absolute overflow-hidden left-0 mt-1 w-full origin-top-left divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
           >
             {options.map(item => (
-              <Menu.Item key={item}>
+              <Menu.Item key={item.type}>
                 {({ active }) => (
                   <button
                     onClick={() => handleClick(item)}
-                    className={`${
-                      active ? 'bg-gray-50 text-primary-500' : ''
-                    } flex w-full items-center gap-x-2 px-4 py-2 text-sm font-medium hover:bg-gray-50 hover:text-primary-500`}
+                    className="flex w-full items-center px-4 py-2 hover:bg-gray-50 group"
                   >
-                    {renderIcon(item)}
-                    {item}
+                    {item.icon && (
+                      <item.icon
+                        className="mr-2 h-5 w-5 shrink-0"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span
+                      className={`${
+                        active ? 'bg-gray-50 text-primary-500' : ''
+                      } group-hover:text-primary-500`}
+                    >
+                      {item.type}
+                    </span>
                   </button>
                 )}
               </Menu.Item>

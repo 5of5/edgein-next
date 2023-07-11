@@ -1,30 +1,15 @@
 import { NextApiResponse, NextApiRequest } from 'next';
-import AWS from 'aws-sdk';
+import { render } from '@react-email/render';
+import InviteGroupMemberEmail from '@/react-email-starter/emails/invite-group-member';
+import {
+  InviteGroupMemberMailParams,
+  InviteGroupMemberPayloadEmailResource,
+} from '@/types/api';
 import CookieService from '@/utils/cookie';
+import { makeEmailService } from '@/services/email.service';
+import { env } from '@/services/config.service';
 
-export type EmailResources = {
-  isExistedUser: boolean;
-  email: string;
-  recipientName: string;
-}[];
-
-type MailParams = {
-  email: string;
-  senderName: string;
-  recipientName?: string;
-  groupName: string;
-  groupUrl?: string;
-  signUpUrl?: string;
-  isExistedUser?: boolean;
-};
-
-//AWS config set
-AWS.config.update({
-  accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID!,
-  secretAccessKey: process.env.AWS_SES_ACCESS_SECRET_KEY!,
-  region: process.env.AWS_BUCKET_REGION!,
-});
-const SES_SOURCE = 'EdgeIn Support <support@edgein.io>';
+const emailService = makeEmailService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -33,7 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  const emailResources: EmailResources = req.body.emailResources;
+  const emailResources: InviteGroupMemberPayloadEmailResource[] =
+    req.body.emailResources;
   const groupName = req.body.groupName;
   const groupId = req.body.groupId;
 
@@ -60,11 +46,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return emailResponse;
     }),
   );
-
   res.send(response);
 };
 
-const sendInvitationMail = async (mailParams: MailParams) => {
+const sendInvitationMail = async (mailParams: InviteGroupMemberMailParams) => {
   const {
     isExistedUser,
     email,
@@ -74,19 +59,28 @@ const sendInvitationMail = async (mailParams: MailParams) => {
     groupUrl,
     signUpUrl,
   } = mailParams;
-  const html = isExistedUser
-    ? `
-      <b>Hi ${recipientName}</b>,
-      <p><b>${senderName}</b> has invited you to join group <b>${groupName}</b>. </p> <br/>
 
-      <a href="${groupUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">VIEW GROUP</a>
-    `
-    : `
-      <b>Join your group on EdgeIn</b>,
-      <p><b>${senderName}</b> has invited you to use EdgeIn with them, in a group called <b>${groupName}</b>. </p> <br/>
+  const invalidExistedUser = isExistedUser && (!recipientName || !groupUrl);
+  const invalidSignUpUrl = !isExistedUser && !signUpUrl;
+  const invalidParams = invalidExistedUser || invalidSignUpUrl;
 
-      <a href="${signUpUrl}" style="background-color:#5E41FE;padding: 10px 24px;color: #ffffff;font-weight: 600;display: inline-block;border-radius: 4px;text-decoration: none;">JOIN NOW</a>
-    `;
+  if (invalidParams) {
+    return {
+      status: 400,
+      message: `Failed to send verification email to ${email}. Missing parameters`,
+    };
+  }
+
+  const emailHtml = render(
+    InviteGroupMemberEmail({
+      isExistedUser,
+      senderName,
+      recipientName,
+      groupName,
+      groupUrl,
+      signUpUrl,
+    }),
+  );
 
   try {
     const params = {
@@ -97,7 +91,7 @@ const sendInvitationMail = async (mailParams: MailParams) => {
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: emailHtml,
           },
         },
         Subject: {
@@ -105,10 +99,10 @@ const sendInvitationMail = async (mailParams: MailParams) => {
           Data: `${senderName} has invited you to join group ${groupName} in EdgeIn`,
         },
       },
-      Source: SES_SOURCE,
+      Source: env.SES_SOURCE,
     };
 
-    await new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+    await emailService.sendEmail(params);
     return { status: 200, message: 'success' };
   } catch (err) {
     return {

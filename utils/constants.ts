@@ -1,3 +1,4 @@
+import { Library, LibraryTag, Tag } from '@/types/common';
 import {
   email,
   required,
@@ -7,6 +8,7 @@ import {
   maxValue,
   regex,
 } from 'react-admin';
+import { GroupsTabItem } from '@/types/common';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -92,99 +94,91 @@ export const validateNameAndSlugAndEmailAndDomain = async (
     if (filterSlug && filterSlug?.length > 0) {
       errors.slug = 'Slug already used';
     }
-    if (filterGithub && filterGithub?.length > 0 && values?.github !== '') {
+    if (filterGithub && filterGithub?.length > 0 && values?.github) {
       errors.github = 'Github already used';
     }
-    if (
-      filterLinkedin &&
-      filterLinkedin?.length > 0 &&
-      values?.linkedin !== ''
-    ) {
+    if (filterLinkedin && filterLinkedin?.length > 0 && values?.linkedin) {
       errors.linkedin = 'Linkedin already used';
     }
-    if (filterWebsite && filterWebsite?.length > 0 && values?.website !== '') {
+    if (filterWebsite && filterWebsite?.length > 0 && values?.website) {
       errors.website = 'Website already used';
     }
-    if (
-      filterGlassdoor &&
-      filterGlassdoor?.length > 0 &&
-      values?.glassdoor !== ''
-    ) {
+    if (filterGlassdoor && filterGlassdoor?.length > 0 && values?.glassdoor) {
       errors.glassdoor = 'Glassdoor already used';
     }
-    if (filterdiscord && filterdiscord?.length > 0 && values?.discord !== '') {
+    if (filterdiscord && filterdiscord?.length > 0 && values?.discord) {
       errors.discord = 'Discord already used';
     }
     if (
       filterCompanyLinkedin &&
       filterCompanyLinkedin?.length > 0 &&
-      values?.company_linkedin !== ''
+      values?.company_linkedin
     ) {
       errors.company_linkedin = 'Company Linkedin already used';
     }
-    if (filterTwitter && filterTwitter?.length > 0 && values?.twitter !== '') {
+    if (filterTwitter && filterTwitter?.length > 0 && values?.twitter) {
       errors.twitter = 'Twitter already used';
     }
 
     if (
       values.hasOwnProperty('website') &&
-      values?.website !== '' &&
+      values?.website &&
       !urlPattern.test(values?.website)
     ) {
       errors.website = 'Website URL is not valid';
     }
     if (
       values.hasOwnProperty('github') &&
-      values?.github !== '' &&
+      values?.github &&
       !urlPattern.test(values?.github)
     ) {
       errors.github = 'Github URL is not valid';
     }
     if (
       values.hasOwnProperty('twitter') &&
-      values?.twitter !== '' &&
+      values?.twitter &&
       !urlPattern.test(values?.twitter)
     ) {
       errors.twitter = 'Twitter URL is not valid';
     }
     if (
       values.hasOwnProperty('company_linkedin') &&
-      values?.company_linkedin !== '' &&
+      values?.company_linkedin &&
       !urlPattern.test(values?.company_linkedin)
     ) {
       errors.company_linkedin = 'Linkedin URL is not valid';
     }
     if (
       values.hasOwnProperty('linkedin') &&
-      values?.linkedin !== '' &&
+      values?.linkedin &&
       !urlPattern.test(values?.linkedin)
     ) {
       errors.linkedin = 'Linkedin URL is not valid';
     }
     if (
       values.hasOwnProperty('discord') &&
-      values?.discord !== '' &&
+      values?.discord &&
       !urlPattern.test(values?.discord)
     ) {
       errors.discord = 'Discord URL is not valid';
     }
     if (
       values.hasOwnProperty('glassdoor') &&
-      values?.glassdoor !== '' &&
+      values?.glassdoor &&
       !urlPattern.test(values?.glassdoor)
     ) {
       errors.glassdoor = 'Glassdoor URL is not valid';
     }
     if (
       values.hasOwnProperty('work_email') &&
-      values?.work_email !== '' &&
+      values?.work_email &&
       !emailPattern.test(values?.work_email)
     ) {
       errors.work_email = 'Work Email is not valid';
     }
     if (
       values.hasOwnProperty('personal_email') &&
-      values?.personal_email !== '' &&
+      values?.personal_email &&
       !emailPattern.test(values?.personal_email)
     ) {
       errors.personal_email = 'Personal Email is not valid';
@@ -421,6 +415,10 @@ export const companyChoices = [
     disabled: true,
   },
   {
+    id: 'Raising',
+    name: 'Raising',
+  },
+  {
     id: 'Acquired',
     name: 'Acquired',
   },
@@ -643,7 +641,7 @@ export const tokenInfoMetrics = [
   },
 ];
 
-export const tags = [
+export const web3Tags: Tag[] = [
   'Layer 0',
   'Layer 1',
   'Layer 2',
@@ -692,6 +690,33 @@ export const tags = [
   'News',
 ].map(tag => ({ id: tag, name: tag }));
 
+export const aiTags: Tag[] = [
+  'API',
+  'Open Source',
+  'Model Creator',
+  'Model Hub',
+  'End 2 End',
+  'Infrastructure Provider',
+  'B2B',
+  'B2C',
+  'Image',
+  'Text',
+  'Code',
+  'Video',
+  'Audio',
+  'Multi-modal',
+].map(tag => ({ id: tag, name: tag }));
+
+export const NON_SELECTABLE_WEB_3_TAGS = [
+  'Layer 0',
+  'Layer 1',
+  'Layer 2',
+  'Layer 3',
+  'Layer 4',
+  'Layer 5',
+  'Layer 6',
+];
+
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
 
 export const eventSizeChoices = [
@@ -733,7 +758,9 @@ export const eventOrganizationTypeChoices = [
 
 export type ActionType = 'Insert Data' | 'Change Data' | 'Delete Data';
 
-export const libraryChoices = ['Web3', 'AI'].map(item => ({
+const libraries: Library[] = ['Web3', 'AI'];
+
+export const libraryChoices: LibraryTag[] = libraries.map(item => ({
   id: item,
   name: item,
 }));
@@ -756,7 +783,9 @@ export type ResourceTypes =
   | 'news_organizations'
   | 'news_person'
   | 'news_related_person'
-  | 'news_related_organizations';
+  | 'news_related_organizations'
+  | 'leads'
+  | 'leads_segmentation';
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
   companies: 'company',
@@ -777,6 +806,8 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   news_person: 'news_person',
   news_related_person: 'news_related_person',
   news_related_organizations: 'news_related_organizations',
+  leads: 'leads',
+  leads_segmentation: 'leads_segmentation',
 };
 
 export const isResourceType = (
@@ -801,6 +832,8 @@ export const isResourceType = (
     'news_person',
     'news_related_person',
     'news_related_organizations',
+    'leads',
+    'leads_segmentation',
   ].includes(resourceType);
 };
 
@@ -1906,3 +1939,47 @@ export const newsPersonTypes = [
 export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
 
 export const ONBOARDING_QUESTION = 'Where did you hear about us?';
+
+export const GROUPS_TABS: GroupsTabItem[] = [
+  { id: 'my-groups', name: 'My Groups' },
+  { id: 'discover', name: 'Discover' },
+  { id: 'joined', name: 'Joined' },
+];
+
+export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
+  'companies',
+  'vc_firms',
+  'people',
+  'news',
+];
+
+export const SQL_BLOCK_WORDS = [
+  'drop',
+  'insert into',
+  'update',
+  'delete',
+  'create',
+  'alter',
+];
+
+export const leadSegmentationStatusChoices = [
+  {
+    id: 'active',
+    name: 'Active',
+  },
+  {
+    id: 'inactive',
+    name: 'Inactive',
+  },
+];
+
+export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
+  'edgein.io',
+  'techlist.com',
+  'sudolabs.io',
+];
+
+export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
+  'mdinsdale@mac.com',
+  'dinghan@capital6.com',
+];

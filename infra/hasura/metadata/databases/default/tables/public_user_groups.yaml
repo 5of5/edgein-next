@@ -7,7 +7,7 @@ object_relationships:
       manual_configuration:
         remote_table:
           schema: public
-          name: users
+          name: users_public
         insertion_order: null
         column_mapping:
           created_by_user_id: id
@@ -49,3 +49,4 @@ select_permissions:
         - updated_at
       filter: {}
       limit: 50
+      allow_aggregations: true

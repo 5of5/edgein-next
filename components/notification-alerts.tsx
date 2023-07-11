@@ -8,9 +8,16 @@ import { filterExcludeNotifications } from '@/utils/notifications';
 export const NotificationAlerts = () => {
   const { user } = useAuth();
 
-  const { data } = useGetNotificationsForUserQuery({
-    user: user?.id || 0,
-  });
+  const { data } = useGetNotificationsForUserQuery(
+    {
+      user: user?.id || 0,
+      limit: 10,
+      offset: 0,
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const excludeProperties = useMemo(() => {
     return ['status_tags', 'logo'];
@@ -30,10 +37,15 @@ export const NotificationAlerts = () => {
 
   return (
     <Link href="/notifications" passHref>
-      <a className="relative flex items-center group-hover:opacity-50 hover:!opacity-100">
+      <a className="relative flex items-center justify-center w-9 h-9 rounded-full bg-slate-200 group-hover:opacity-50 hover:!opacity-100">
         {notificationsCount > 0 && (
-          <div className="absolute -top-[6px] -right-[6px] w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
+          <div className="absolute flex items-center justify-center -top-[4px] -right-[4px] w-5 h-5 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border border-white">
+            <div className="text-white font-bold text-[10px] text-center">
+              {notificationsCount > 99 ? '99+' : notificationsCount}
+            </div>
+          </div>
         )}
+
         <IconBell className="h-5 w-5" strokeWidth={2} />
       </a>
     </Link>

@@ -19,15 +19,14 @@ import {
   UpdateApplicationMetaValueDocument,
   UpdateApplicationMetaValueMutation,
 } from '@/graphql/types';
+import { Library } from '@/types/common';
 import { SearchClient } from 'algoliasearch';
-
-type LibraryTypes = 'Web3' | 'AI';
 
 type SyncParams = {
   client: SearchClient;
   lastSyncArray: GetLastSyncQuery['application_meta'];
   key: string;
-  library: LibraryTypes;
+  library: Library;
   index: string;
 };
 
@@ -39,7 +38,7 @@ export const queryForLastSync = async () => {
   return data.data.application_meta;
 };
 
-const queryForCompanyList = async (date: any, library: LibraryTypes) => {
+const queryForCompanyList = async (date: any, library: Library) => {
   const data = await query<GetCompaniesByDateQuery>({
     query: GetCompaniesByDateDocument,
     variables: { date, library },
@@ -47,7 +46,7 @@ const queryForCompanyList = async (date: any, library: LibraryTypes) => {
   return data.data.companies;
 };
 
-const queryForVcFirmsList = async (date: any, library: LibraryTypes) => {
+const queryForVcFirmsList = async (date: any, library: Library) => {
   const data = await query<GetVcFirmsByDateQuery>({
     query: GetVcFirmsByDateDocument,
     variables: { date, library },
@@ -55,7 +54,7 @@ const queryForVcFirmsList = async (date: any, library: LibraryTypes) => {
   return data.data.vc_firms;
 };
 
-const queryForPeopleList = async (date: any, library: LibraryTypes) => {
+const queryForPeopleList = async (date: any, library: Library) => {
   const data = await query<GetPeopleByDateQuery>({
     query: GetPeopleByDateDocument,
     variables: { date, library },
@@ -63,7 +62,7 @@ const queryForPeopleList = async (date: any, library: LibraryTypes) => {
   return data.data.people;
 };
 
-const queryForEventList = async (date: any, library: LibraryTypes) => {
+const queryForEventList = async (date: any, library: Library) => {
   const data = await query<GetEventsByDateQuery>({
     query: GetEventsByDateDocument,
     variables: { date, library },
@@ -71,7 +70,7 @@ const queryForEventList = async (date: any, library: LibraryTypes) => {
   return data.data.events;
 };
 
-const queryForNewsList = async (date: any, library: LibraryTypes) => {
+const queryForNewsList = async (date: any, library: Library) => {
   const data = await query<GetNewsByDateQuery>({
     query: GetNewsByDateDocument,
     variables: { date, library },
@@ -364,4 +363,27 @@ export const syncNews = async (params: SyncParams) => {
     }
   }
   return output;
+};
+
+export const parseIndexName = (indexName: string) => {
+  switch (indexName) {
+    case 'vc_firms':
+    case 'ai_vc_firms':
+      return 'investors';
+
+    case 'ai_companies':
+      return 'companies';
+
+    case 'ai_people':
+      return 'people';
+
+    case 'ai_events':
+      return 'events';
+
+    case 'ai_news':
+      return 'news';
+
+    default:
+      return indexName;
+  }
 };

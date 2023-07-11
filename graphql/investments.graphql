@@ -18,3 +18,12 @@ mutation DeleteInvestment($investmentId: Int!) {
     id
   }
 }
+
+query GetInvestmentById($id: Int!) {
+  investments(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    vc_firm_id
+    round_id
+    status
+  }
+}

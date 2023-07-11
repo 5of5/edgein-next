@@ -81,6 +81,8 @@ export const ElemRecentInvestments: FC<Props> = ({
                 >
                   <a
                     href={`/investors/${investor.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
                     className="z-0 flex flex-col w-full h-full p-5 transition-all border rounded-lg border-dark-500/10 hover:scale-102 hover:shadow"
                   >
                     <div className="flex">

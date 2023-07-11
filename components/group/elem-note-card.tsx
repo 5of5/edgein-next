@@ -24,7 +24,7 @@ import {
   IconPaperAirplaneSolid,
 } from '@/components/icons';
 import { ElemTooltip } from '@/components/elem-tooltip';
-import { GetNotesQuery, People, useGetUserProfileQuery } from '@/graphql/types';
+import { GetNotesQuery, People } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
 import { Popover, Transition } from '@headlessui/react';
 import { InputTextarea } from '../input-textarea';
@@ -74,9 +74,6 @@ const ElemNoteCard: React.FC<Props> = ({
 
   const [commentContent, setCommentContent] = useState<string>('');
 
-  const [noteAuthor, setNoteAuthor] = useState<People>();
-  const [noteAuthorID, setNoteAuthorID] = useState<Number>();
-
   const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
     useState<boolean>(false);
 
@@ -100,10 +97,6 @@ const ElemNoteCard: React.FC<Props> = ({
     onOpenNoteForm();
   };
 
-  const { data: users } = useGetUserProfileQuery({
-    id: data?.created_by,
-  });
-
   const onOpenLinkPersonDialog = () => {
     setIsOpenLinkPersonDialog(true);
   };
@@ -119,14 +112,6 @@ const ElemNoteCard: React.FC<Props> = ({
       setShowPopup('search');
     }
   };
-
-  // set note author
-  useEffect(() => {
-    if (users) {
-      setNoteAuthor(users.users_by_pk?.person as People);
-      setNoteAuthorID(users.users_by_pk?.id);
-    }
-  }, [users]);
 
   // note content see more
   const [contentShowAll, setContentShowAll] = useState(false);
@@ -358,7 +343,7 @@ const ElemNoteCard: React.FC<Props> = ({
 
   return (
     <>
-      <div className="flex flex-col bg-white shadow rounded-lg px-5 py-4">
+      <div className="flex flex-col bg-white shadow rounded-lg px-4 py-3">
         <div className="relative flex items-center space-x-3">
           <div className="flex-shrink-0 relative">
             {layout === 'organizationAndAuthor' ? (
@@ -385,13 +370,17 @@ const ElemNoteCard: React.FC<Props> = ({
               </Link>
             ) : (
               // layout === "author"
-              <Link href={`/people/${noteAuthor?.slug}`}>
+              <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
                 <a>
                   <ElemPhoto
-                    photo={noteAuthor?.picture}
+                    photo={data?.created_by_user?.person?.picture}
                     wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full shadow"
                     imgClass="object-fit max-w-full max-h-full rounded-full"
-                    imgAlt={noteAuthor?.name}
+                    imgAlt={
+                      data?.created_by_user?.person?.name ||
+                      data?.created_by_user?.display_name ||
+                      `User: ${data?.created_by}`
+                    }
                     placeholder="user"
                     placeholderClass="text-slate-400 bg-white p-0"
                   />
@@ -401,13 +390,16 @@ const ElemNoteCard: React.FC<Props> = ({
 
             {(layout === 'organizationAndAuthor' ||
               layout === 'groupAndAuthor') && (
-              <Link href={`/people/${noteAuthor?.slug}`}>
+              <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
                 <a className="absolute -right-1 -bottom-1">
                   <ElemPhoto
-                    photo={noteAuthor?.picture}
+                    photo={data?.created_by_user?.person?.picture}
                     wrapClass=""
                     imgClass="object-fit h-7 w-7 border border-white rounded-full"
-                    imgAlt={noteAuthor?.name}
+                    imgAlt={
+                      data?.created_by_user?.person?.name ||
+                      data?.created_by_user?.display_name
+                    }
                     placeholder="user"
                     placeholderClass="text-slate-400 bg-white p-0"
                   />
@@ -429,8 +421,8 @@ const ElemNoteCard: React.FC<Props> = ({
                   </Link>
                 ) : (
                   // layout === "author"
-                  <Link href={`/people/${noteAuthor?.slug}`}>
-                    <a>{noteAuthor?.name}</a>
+                  <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
+                    <a>{data?.created_by_user?.person?.name}</a>
                   </Link>
                 )}
               </h2>
@@ -438,16 +430,18 @@ const ElemNoteCard: React.FC<Props> = ({
                 {(layout === 'organizationAndAuthor' ||
                   layout === 'groupAndAuthor') && (
                   <>
-                    <Link href={`/people/${noteAuthor?.slug}`}>
+                    <Link
+                      href={`/people/${data?.created_by_user?.person?.slug}`}
+                    >
                       <a className="underline-offset-1 hover:underline">
-                        {noteAuthor?.name}
+                        {data?.created_by_user?.person?.name}
                       </a>
                     </Link>
                     <span aria-hidden="true"> · </span>
                   </>
                 )}
 
-                <ElemTooltip
+                {/* <ElemTooltip
                   content={`${moment(data?.created_at).format(
                     'LL [at] h:mma',
                   )}`}
@@ -455,9 +449,7 @@ const ElemNoteCard: React.FC<Props> = ({
                   className="inline-flex items-center overflow-visible"
                 >
                   {formatDateShown(data?.created_at)}
-                </ElemTooltip>
-
-                <span aria-hidden="true"> · </span>
+                </ElemTooltip> */}
 
                 {layout === 'organizationAndAuthor' ||
                 layout === 'groupAndAuthor' ? (
@@ -485,7 +477,7 @@ const ElemNoteCard: React.FC<Props> = ({
               </div>
             </div>
           </div>
-          <div>{noteAuthorID === user?.id && noteOptions}</div>
+          <div>{data?.created_by_user?.id === user?.id && noteOptions}</div>
         </div>
 
         <div className="grow py-2 min-h-fit">
@@ -551,7 +543,10 @@ const ElemNoteCard: React.FC<Props> = ({
                       photo={comment.created_by_user?.person?.picture}
                       wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
                       imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                      imgAlt={comment.created_by_user?.person?.name}
+                      imgAlt={
+                        comment.created_by_user?.person?.name ||
+                        data?.created_by_user?.display_name
+                      }
                       placeholder="user"
                       placeholderClass="text-slate-300"
                     />
@@ -618,7 +613,7 @@ const ElemNoteCard: React.FC<Props> = ({
             photo={user?.person?.picture}
             wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
             imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-            imgAlt={user?.person?.name}
+            imgAlt={user?.person?.name || user?.display_name}
             placeholder="user"
             placeholderClass="text-slate-300"
           />

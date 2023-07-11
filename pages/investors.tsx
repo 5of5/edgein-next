@@ -2,12 +2,21 @@ import React, { Fragment, useEffect, useState } from 'react';
 import type { NextPage, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { ElemHeading } from '@/components/elem-heading';
-import { PlaceholderInvestorCard } from '@/components/placeholders';
+import {
+  PlaceholderInvestorCard,
+  PlaceholderTable,
+} from '@/components/placeholders';
 import { ElemRecentInvestments } from '@/components/investors/elem-recent-investments';
 import { ElemButton } from '@/components/elem-button';
 import { Pagination } from '@/components/pagination';
 import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconGrid,
+  IconTable,
+} from '@/components/icons';
+import { InvestorsTable } from '@/components/investors/elem-investors-table';
 import {
   GetVcFirmsDocument,
   GetVcFirmsQuery,
@@ -26,20 +35,21 @@ import { useIntercom } from 'react-use-intercom';
 import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   vcFirmCount: number;
   initialVCFirms: GetVcFirmsQuery['vc_firms'];
   investorsStatusTags: TextFilter[];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Investors: NextPage<Props> = ({
   vcFirmCount,
   initialVCFirms,
   investorsStatusTags,
-  setToggleFeedbackForm,
 }) => {
+  const { user } = useUser();
+
   const [initialLoad, setInitialLoad] = useState(true);
 
   const router = useRouter();
@@ -54,6 +64,8 @@ const Investors: NextPage<Props> = ({
     index => investorsStatusTags[Number(index)],
   );
 
+  const [tableLayout, setTableLayout] = useState(false);
+
   // Filters
   const { selectedFilters, setSelectedFilters } = useFilterParams();
 
@@ -63,8 +75,16 @@ const Investors: NextPage<Props> = ({
     pageIndex => pageIndex + 1 + '',
     pageIndex => Number(pageIndex) - 1,
   );
-  const limit = 50;
-  const offset = limit * page;
+
+  // limit shown investors on table layout for free users
+  const limit =
+    user?.entitlements.listsCount && tableLayout
+      ? user?.entitlements.listsCount
+      : 50;
+
+  // disable offset on table layout for free users
+  const offset =
+    user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
   const defaultFilters = [
     { slug: { _neq: '' } },
@@ -197,10 +217,10 @@ const Investors: NextPage<Props> = ({
           <h2 className="text-xl font-bold">Investors</h2>
 
           <div
-            className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+            className="relative mt-2 mb-4 flex items-center justify-between lg:border-y lg:border-black/10"
             role="tablist"
           >
-            <nav className="flex">
+            <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x border-y border-black/10 pr-32 sm:pr-0 lg:border-none">
               {investorsStatusTags &&
                 investorsStatusTags.map((tab: any, index: number) =>
                   tab.disabled === true ? (
@@ -213,51 +233,41 @@ const Investors: NextPage<Props> = ({
                         selectedStatusTag.value === tab.value
                           ? 'text-primary-500 border-primary-500'
                           : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}}`}
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
                     >
                       {tab.title}
                     </button>
                   ),
                 )}
             </nav>
-          </div>
 
-          <ElemFilter
-            resourceType="vc_firms"
-            filterValues={selectedFilters}
-            onApply={(name, filterParams) => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: filterParams });
-            }}
-            onClearOption={name => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: undefined });
-            }}
-            onReset={() => setSelectedFilters(null)}
-          />
-
-          {vcFirms?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() => setToggleFeedbackForm(true)}
-                  btn="white"
-                  className="mt-3"
+            <div className="absolute right-0 flex items-center py-1.5 sm:relative sm:right-auto">
+              <div className="w-6 h-10 bg-gradient-to-r from-transparent to-white sm:hidden"></div>
+              <div className="hidden text-xs font-bold leading-sm uppercase pr-1 sm:block">
+                Layout:
+              </div>
+              <div className="bg-slate-200 rounded-full p-0.5">
+                <button
+                  onClick={() => setTableLayout(false)}
+                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                    !tableLayout && 'bg-white shadow-sm text-primary-500'
+                  }`}
                 >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
+                  <IconGrid className="w-5 h-5" title="Grid layout" />
+                </button>
+                <button
+                  onClick={() => setTableLayout(true)}
+                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                    tableLayout && 'bg-white shadow-sm text-primary-500'
+                  }`}
+                >
+                  <IconTable className="w-5 h-5" title="Table layout" />
+                </button>
               </div>
             </div>
-          )}
+          </div>
 
-          <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div>
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
@@ -282,30 +292,117 @@ const Investors: NextPage<Props> = ({
               </div>
             ) : isLoading && !initialLoad ? (
               <>
-                {Array.from({ length: 15 }, (_, i) => (
-                  <PlaceholderInvestorCard key={i} />
-                ))}
+                {tableLayout ? (
+                  <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
+                ) : (
+                  <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {Array.from({ length: 9 }, (_, i) => (
+                      <PlaceholderInvestorCard key={i} />
+                    ))}
+                  </div>
+                )}
               </>
+            ) : tableLayout && vcFirms?.length != 0 ? (
+              <InvestorsTable
+                investors={vcFirms}
+                pageNumber={page}
+                itemsPerPage={limit}
+                shownItems={vcFirms?.length}
+                totalItems={vcfirms_aggregate}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                filterByTag={filterByTag}
+                filterValues={selectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  setSelectedFilters({
+                    ...selectedFilters,
+                    [name]: filterParams,
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  setSelectedFilters({ ...selectedFilters, [name]: undefined });
+                }}
+                onReset={() => setSelectedFilters(null)}
+              />
             ) : (
-              vcFirms?.map(vcfirm => (
-                <ElemInvestorCard
-                  key={vcfirm.id}
-                  vcFirm={vcfirm as Vc_Firms}
-                  tagOnClick={filterByTag}
+              <>
+                <ElemFilter
+                  className="py-3"
+                  resourceType="vc_firms"
+                  filterValues={selectedFilters}
+                  onApply={(name, filterParams) => {
+                    filters._and = defaultFilters;
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      [name]: filterParams,
+                    });
+                  }}
+                  onClearOption={name => {
+                    filters._and = defaultFilters;
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      [name]: undefined,
+                    });
+                  }}
+                  onReset={() => setSelectedFilters(null)}
                 />
-              ))
+
+                {vcFirms?.length != 0 && (
+                  <div
+                    data-testid="investors"
+                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                  >
+                    {vcFirms?.map(vcfirm => (
+                      <ElemInvestorCard
+                        key={vcfirm.id}
+                        vcFirm={vcfirm as Vc_Firms}
+                        tagOnClick={filterByTag}
+                      />
+                    ))}
+                  </div>
+                )}
+                <Pagination
+                  shownItems={vcFirms?.length}
+                  totalItems={vcfirms_aggregate}
+                  page={page}
+                  itemsPerPage={limit}
+                  numeric
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
+              </>
             )}
           </div>
-          <Pagination
-            shownItems={vcFirms?.length}
-            totalItems={vcfirms_aggregate}
-            page={page}
-            itemsPerPage={limit}
-            numeric
-            onClickPrev={() => setPage(page - 1)}
-            onClickNext={() => setPage(page + 1)}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
+
+          {vcFirms?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Toaster />

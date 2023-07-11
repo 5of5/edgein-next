@@ -31,15 +31,9 @@ type Props = {
   eventTabs: TextFilter[];
   eventsCount: number;
   initialEvents: GetEventsQuery['events'];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Events: NextPage<Props> = ({
-  eventTabs,
-  eventsCount,
-  initialEvents,
-  setToggleFeedbackForm,
-}) => {
+const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
 
   const router = useRouter();
@@ -222,7 +216,7 @@ const Events: NextPage<Props> = ({
           <h2 className="text-xl font-bold">Events</h2>
 
           <div
-            className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+            className="mt-2 mb-4 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
             role="tablist"
           >
             <nav className="flex">
@@ -238,7 +232,7 @@ const Events: NextPage<Props> = ({
                         selectedTab.value === tab.value
                           ? 'text-primary-500 border-primary-500'
                           : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}}`}
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
                     >
                       {tab.title}
                     </button>
@@ -248,6 +242,7 @@ const Events: NextPage<Props> = ({
           </div>
 
           <ElemFilter
+            className="py-3"
             resourceType="events"
             filterValues={selectedFilters}
             dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
@@ -272,7 +267,11 @@ const Events: NextPage<Props> = ({
                   missing data.
                 </div>
                 <ElemButton
-                  onClick={() => setToggleFeedbackForm(true)}
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
                   btn="white"
                   className="mt-3"
                 >
@@ -283,7 +282,10 @@ const Events: NextPage<Props> = ({
             </div>
           )}
 
-          <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            data-testid="events"
+            className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          >
             {error ? (
               <h4>Error loading events</h4>
             ) : isLoading && !initialLoad ? (

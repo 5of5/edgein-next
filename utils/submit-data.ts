@@ -16,15 +16,16 @@ import {
   InsertDataDiscardDocument,
 } from '@/graphql/types';
 import { User } from '@/models/user';
+import { Library } from '@/types/common';
 import { HttpError } from 'react-admin';
-import { getUpdatedDiff } from './helpers';
+import { getTagChoicesByLibraries, getUpdatedDiff } from './helpers';
 import * as util from 'util';
 import {
   ActionType,
   ResourceTypes,
   NODE_NAME,
   isResourceType,
-  tags,
+  RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from './constants';
 
 export const partnerLookUp = async (apiKey: string) => {
@@ -306,17 +307,22 @@ const validateValue = (
   resourceType: ResourceTypes,
   field: string,
   value: any,
+  library: Library[],
 ) => {
   let isValidated = true;
   switch (resourceType) {
     case 'companies':
-    case 'vc_firms':
+    case 'vc_firms': {
+      const tagChoices = getTagChoicesByLibraries(library);
       if (
         field === 'tags' &&
-        !value.every((tag: string) => tags.map(item => item.id).includes(tag))
+        !value.every((tag: string) =>
+          tagChoices.map(item => item.id).includes(tag),
+        )
       )
         isValidated = false;
       break;
+    }
   }
 
   return isValidated;
@@ -377,11 +383,11 @@ export const mutateActionAndDataRaw = async (
 
   let existedData;
   if (resourceId) {
-    existedData = await mainTableLookup(
-      resourceType,
-      resourceId,
-      Object.keys(resourceObj),
-    );
+    const returnFields = [...Object.keys(resourceObj)];
+    if (RESOURCE_TYPES_CONTAIN_LIBRARY.includes(resourceType)) {
+      returnFields.push('library');
+    }
+    existedData = await mainTableLookup(resourceType, resourceId, returnFields);
   }
 
   for (let field in resourceObj) {
@@ -441,7 +447,14 @@ export const mutateActionAndDataRaw = async (
           );
         if (dataField.data_type)
           transformedValue = formatValue(transformedValue, dataField.data_type);
-        if (!validateValue(resourceType, field, transformedValue)) {
+        if (
+          !validateValue(
+            resourceType,
+            field,
+            transformedValue,
+            resourceObj?.library || existedData?.library,
+          )
+        ) {
           const dataObject = [
             {
               resource: resourceType,

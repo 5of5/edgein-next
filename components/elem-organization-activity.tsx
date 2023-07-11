@@ -84,7 +84,7 @@ const renderActivity = (
   activity: any,
   resourceType: 'companies' | 'vc_firms',
 ) => {
-  return resourceType === 'companies' ? (
+  return resourceType === 'companies' && activity ? (
     <div className="mb-4">
       <div className="inline leading-7 text-slate-600">
         {activity.round === 'Acquisition' ? (
@@ -110,34 +110,40 @@ const renderActivity = (
                 </div>
               )}
             </div>
-            from{' '}
           </>
         )}
-        {activity.investments.map((item: any, index: number) => {
-          return (
-            <div key={index} className="inline">
-              {index !== 0 &&
-                (index === activity.investments.length - 1 ? ', and ' : ', ')}
-
-              {item.vc_firm && (
-                <Link href={`/investors/${item.vc_firm?.slug}`}>
-                  <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-                    {item.vc_firm['name']}
-                  </a>
-                </Link>
-              )}
-              {item.vc_firm && item.person && <>/</>}
-
-              {item.person && (
-                <Link href={`/people/${item.person['slug']}`}>
-                  <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-                    {item.person['name']}
-                  </a>
-                </Link>
-              )}
-            </div>
-          );
-        })}
+        {activity.investments && activity.investments?.length > 0 ? (
+          <>
+            from{' '}
+            {activity.investments.map((item: any, index: number) => {
+              return (
+                <div key={index} className="inline">
+                  {index !== 0 &&
+                    (index === activity.investments.length - 1
+                      ? ', and '
+                      : ', ')}
+                  {item.vc_firm && (
+                    <Link href={`/investors/${item.vc_firm?.slug}`}>
+                      <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                        {item.vc_firm['name']}
+                      </a>
+                    </Link>
+                  )}
+                  {item.vc_firm && item.person && <>/</>}
+                  {item.person && (
+                    <Link href={`/people/${item.person['slug']}`}>
+                      <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                        {item.person['name']}
+                      </a>
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          'from undisclosed investor'
+        )}
         .
       </div>
 
@@ -149,7 +155,7 @@ const renderActivity = (
         })}
       </p>
     </div>
-  ) : resourceType === 'vc_firms' ? (
+  ) : resourceType === 'vc_firms' && activity ? (
     <div className="mb-4">
       <div className="inline leading-7 text-slate-600">
         {activity.company && (

@@ -154,7 +154,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
     {
       onSuccess: () => {
         refetchMyGroups();
-        router.push('/account');
+        router.push('/groups');
       },
     },
   );
@@ -164,7 +164,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
       setLeaveError(true);
     } else {
       const memberId = group.user_group_members.find(
-        mem => mem.user.id === user?.id,
+        mem => mem.user?.id === user?.id,
       );
       leaveGroup(memberId?.id);
     }

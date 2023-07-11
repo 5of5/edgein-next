@@ -19,6 +19,19 @@ const primary = {
   900: '#20123A',
 };
 
+const dark = {
+  50: '#f4f4f4',
+  100: '#e8e8e9',
+  200: '#c7c7c7',
+  300: '#a5a5a5',
+  400: '#616162',
+  500: '#1D1D1F',
+  600: '#1a1a1c',
+  700: '#161617',
+  800: '#111113',
+  900: '#0e0e0f',
+};
+
 const darkBlue = {
   50: '#f3f2f7',
   100: '#e7e6f0',
@@ -77,7 +90,7 @@ module.exports = {
       colors: {
         ...colors,
         primary,
-        dark: darkBlue,
+        dark: dark,
         gray,
         blue,
         transparent: 'transparent',
@@ -146,9 +159,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/line-clamp'),
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 };

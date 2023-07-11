@@ -48,11 +48,10 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
                   />
                   <span className="text-lg font-bold">Notes</span>
                 </Disclosure.Button>
-                <ElemTooltip
-                  content="Monitor your notes on EdgeIn."
-                  className="ml-1"
-                >
-                  <IconInformationCircle className="h-5 w-5 text-slate-600" />
+                <ElemTooltip content="Monitor your notes on EdgeIn." size="sm">
+                  <div className="ml-1 cursor-pointer">
+                    <IconInformationCircle className="h-5 w-5 text-slate-600" />
+                  </div>
                 </ElemTooltip>
               </div>
             </div>

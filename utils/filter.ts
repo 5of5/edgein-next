@@ -9,11 +9,13 @@ import {
 import {
   Companies_Bool_Exp,
   Events_Bool_Exp,
+  User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
-import { DeepPartial } from '@/types/common';
-import { eventTypeChoices, roundChoices, tags } from '@/utils/constants';
+import { DeepPartial, GroupsTabType, Library } from '@/types/common';
+import { aiTags, eventTypeChoices, roundChoices } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
+import { getSelectableWeb3Tags } from './helpers';
 
 export const getDefaultFilter = (
   name: FilterOptionKeys,
@@ -98,6 +100,7 @@ export const getDefaultFilter = (
 export const getFilterOptionMetadata = (
   option: FilterOptionKeys,
   dateCondition: DateCondition = 'past',
+  selectedLibrary: Library,
 ): FilterOptionMetadata => {
   switch (option) {
     case 'country':
@@ -139,16 +142,7 @@ export const getFilterOptionMetadata = (
       return {
         title: 'Tags',
         heading: 'Tags',
-        choices: tags.filter(
-          tag =>
-            tag.name !== 'Layer 0' &&
-            tag.name !== 'Layer 1' &&
-            tag.name !== 'Layer 2' &&
-            tag.name !== 'Layer 3' &&
-            tag.name !== 'Layer 4' &&
-            tag.name !== 'Layer 5' &&
-            tag.name !== 'Layer 6',
-        ),
+        choices: selectedLibrary === 'AI' ? aiTags : getSelectableWeb3Tags(),
       };
 
     case 'fundingType':
@@ -964,4 +958,44 @@ export const processEventsFilters = (
       ],
     });
   }
+};
+
+export const getGroupsFilters = (
+  selectedTab: GroupsTabType,
+  userId: number,
+) => {
+  let filters: DeepPartial<User_Groups_Bool_Exp> = {
+    created_by_user_id: { _eq: userId },
+  };
+
+  if (selectedTab === 'discover') {
+    filters = {
+      _and: [
+        { public: { _eq: true } },
+        {
+          _not: {
+            user_group_members: {
+              user: {
+                id: { _eq: userId },
+              },
+            },
+          },
+        },
+      ],
+    };
+    return filters;
+  }
+
+  if (selectedTab === 'joined') {
+    filters = {
+      user_group_members: {
+        user: {
+          id: { _eq: userId },
+        },
+      },
+    };
+    return filters;
+  }
+
+  return filters;
 };

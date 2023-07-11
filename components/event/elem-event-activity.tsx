@@ -30,6 +30,30 @@ export const ElemEventActivity: React.FC<Props> = ({
           <>
             <ul className="flex flex-col">
               {activities.slice(0, activityLimit).map((activity, index) => {
+                const isPublishedCompany =
+                  activity?.company && activity?.company?.status === 'published'
+                    ? true
+                    : false;
+
+                const isPublishedPerson =
+                  activity?.person && activity?.person?.status === 'published'
+                    ? true
+                    : false;
+
+                const isPublishedVcfirm =
+                  activity?.vc_firm && activity?.vc_firm?.status === 'published'
+                    ? true
+                    : false;
+
+                // Hide activity item with unpublished company/person/vcfirm
+                if (
+                  !isPublishedCompany &&
+                  !isPublishedPerson &&
+                  !isPublishedVcfirm
+                ) {
+                  return;
+                }
+
                 return (
                   <li
                     key={index}
@@ -43,6 +67,13 @@ export const ElemEventActivity: React.FC<Props> = ({
                     <div className="mb-4">
                       <div className="inline leading-7 text-slate-600">
                         <div className="inline">
+                          {/* isPublishedCompany: {isPublishedCompany && 'company'}{' '}
+                          <br />
+                          isPublishedCompany: {isPublishedPerson &&
+                            'person'}{' '}
+                          <br />
+                          isPublishedVcfirm: {isPublishedVcfirm && 'Vcfirm'}
+                          <br /> */}
                           {activity?.type === 'attendee' ? (
                             <>
                               <Link href={`/people/${activity?.person?.slug}`}>
@@ -63,7 +94,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                                 </a>
                               </Link>
                               {` was added as a `}
-                              <span className="font-bold capitalize">
+                              <span className="capitalize">
                                 {activity?.type}
                               </span>
                             </>
@@ -85,7 +116,29 @@ export const ElemEventActivity: React.FC<Props> = ({
                                 </a>
                               </Link>
                               {` was added as an `}
-                              <span className="font-bold capitalize">
+                              <span className="capitalize">
+                                {activity?.type}
+                              </span>
+                            </>
+                          ) : activity?.type === 'sponsor' ? (
+                            <>
+                              <Link
+                                href={
+                                  activity?.company
+                                    ? `/companies/${activity?.company?.slug}`
+                                    : activity?.vc_firm
+                                    ? `/investors/${activity?.vc_firm?.slug}`
+                                    : `/people/${activity?.person?.slug}`
+                                }
+                              >
+                                <a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                                  {activity?.company?.name ||
+                                    activity?.vc_firm?.name ||
+                                    activity?.person?.name}
+                                </a>
+                              </Link>
+                              {` was added as a `}
+                              <span className="capitalize">
                                 {activity?.type}
                               </span>
                             </>

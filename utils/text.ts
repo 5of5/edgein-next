@@ -129,6 +129,12 @@ export const newLineToP = (text?: any): string => {
   return out;
 };
 
+export const stripHtmlTags = (str: any) => {
+  if (str === null || str === '') return false;
+  else str = str.toString().replace(/<\/?[^>]+(>|$)/g, '');
+  return str;
+};
+
 export const generatePassword = () => {
   const chars =
     '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ';

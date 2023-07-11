@@ -4,7 +4,13 @@ table:
 object_relationships:
   - name: user
     using:
-      foreign_key_constraint_on: user_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: users_public
+        insertion_order: null
+        column_mapping:
+          user_id: id
   - name: user_group
     using:
       foreign_key_constraint_on: user_group_id
@@ -16,6 +22,12 @@ select_permissions:
         - user_group_id
         - user_id
       filter:
-        user_id:
-          _eq: X-Hasura-User-Id
+        _or:
+          - user_group:
+              public:
+                _eq: true
+          - user_group:
+              user_group_members:
+                user_id:
+                  _eq: X-Hasura-User-Id
       limit: 50

@@ -10,8 +10,7 @@ export const IconSpinner: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="none"
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Loading'}</title>
       <circle
         className="opacity-25"
@@ -19,13 +18,11 @@ export const IconSpinner: React.FC<IconProps> = ({ className, title }) => {
         cy="12"
         r="10"
         stroke="currentColor"
-        strokeWidth="4"
-      ></circle>
+        strokeWidth="4"></circle>
       <path
         className="opacity-75 ring-4 ring-primary-500"
         fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      ></path>
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
     </svg>
   );
 };
@@ -42,8 +39,7 @@ export const IconArrowUp: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Arrow Up'}</title>
       <path
         strokeLinecap="round"
@@ -66,8 +62,7 @@ export const IconEye: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'View'}</title>
       <path
         strokeLinecap="round"
@@ -95,8 +90,7 @@ export const IconEyeSlash: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Hide'}</title>
       <path
         strokeLinecap="round"
@@ -119,8 +113,7 @@ export const IconWindowSidebar: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Sidebar'}</title>
       <path
         d="M9.5 3.75H5.25C4.65326 3.75 4.08097 3.98705 3.65901 4.40901C3.23705 4.83097 3 5.40326 3 6V18C3 18.5967 3.23705 19.169 3.65901 19.591C4.08097 20.0129 4.65326 20.25 5.25 20.25H9.5M9.5 3.75H18.75C19.3467 3.75 19.919 3.98705 20.341 4.40901C20.7629 4.83097 21 5.40326 21 6V18C21 18.5967 20.7629 19.169 20.341 19.591C19.919 20.0129 19.3467 20.25 18.75 20.25H9.5M9.5 3.75V20.25M4.75 6H7.5M4.75 8.5H7.5M4.75 11H7.5"
@@ -143,8 +136,7 @@ export const IconArrowDown: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Arrow Down'}</title>
       <path
         strokeLinecap="round"
@@ -165,8 +157,7 @@ export const IconCurrencyDollar: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={2}
-    >
+      strokeWidth={2}>
       <title>{title ? title : 'Currency Dollar'}</title>
       <path
         d="M12 8C10.343 8 9 8.895 9 10C9 11.105 10.343 12 12 12C13.657 12 15 12.895 15 14C15 15.105 13.657 16 12 16V8ZM12 8C13.11 8 14.08 8.402 14.599 9L12 8ZM12 8V7V8ZM12 8V16V8ZM12 16V17V16ZM12 16C10.89 16 9.92 15.598 9.401 15L12 16ZM21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z"
@@ -204,8 +195,7 @@ export const IconInformationCircle: React.FC<IconProps> = ({
       className={className}
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Info'}</title>
       <path
         strokeLinecap="round"
@@ -222,8 +212,7 @@ export const IconChartUp: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="currentColor"
       viewBox="0 0 20 20"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Chart Up'}</title>
       <path d="M2 12.9053C2 12.6819 2.08872 12.4677 2.24665 12.3098C2.40457 12.1519 2.61877 12.0632 2.84211 12.0632H4.52632C4.74966 12.0632 4.96385 12.1519 5.12177 12.3098C5.2797 12.4677 5.36842 12.6819 5.36842 12.9053V17.1158C5.36842 17.3391 5.2797 17.5533 5.12177 17.7112C4.96385 17.8692 4.74966 17.9579 4.52632 17.9579H2.84211C2.61877 17.9579 2.40457 17.8692 2.24665 17.7112C2.08872 17.5533 2 17.3391 2 17.1158V12.9053ZM6.21053 9.53684C6.21053 9.3135 6.29925 9.09931 6.45717 8.94138C6.6151 8.78346 6.82929 8.69474 7.05263 8.69474H8.73684C8.96018 8.69474 9.17438 8.78346 9.3323 8.94138C9.49023 9.09931 9.57895 9.3135 9.57895 9.53684V17.1158C9.57895 17.3391 9.49023 17.5533 9.3323 17.7112C9.17438 17.8692 8.96018 17.9579 8.73684 17.9579H7.05263C6.82929 17.9579 6.6151 17.8692 6.45717 17.7112C6.29925 17.5533 6.21053 17.3391 6.21053 17.1158V9.53684ZM10.4211 11.2211C10.4211 10.9977 10.5098 10.7835 10.6677 10.6256C10.8256 10.4677 11.0398 10.3789 11.2632 10.3789H12.9474C13.1707 10.3789 13.3849 10.4677 13.5428 10.6256C13.7008 10.7835 13.7895 10.9977 13.7895 11.2211V17.1158C13.7895 17.3391 13.7008 17.5533 13.5428 17.7112C13.3849 17.8692 13.1707 17.9579 12.9474 17.9579H11.2632C11.0398 17.9579 10.8256 17.8692 10.6677 17.7112C10.5098 17.5533 10.4211 17.3391 10.4211 17.1158V11.2211Z" />
       <path d="M14.8782 7.25717C14.7203 7.4151 14.6316 7.62929 14.6316 7.85263V17.1158C14.6316 17.3391 14.7203 17.5533 14.8782 17.7112C15.0362 17.8692 15.2503 17.9579 15.4737 17.9579H17.1579C17.3812 17.9579 17.5954 17.8692 17.7534 17.7112C17.9113 17.5533 18 17.3391 18 17.1158V7.85263C18 7.62929 17.9113 7.4151 17.7534 7.25717C17.5954 7.09925 17.3812 7.01053 17.1579 7.01053H15.4737C15.2503 7.01053 15.0362 7.09925 14.8782 7.25717Z" />
@@ -245,8 +234,7 @@ export const IconBadgeCheckSolid: React.FC<IconProps> = ({
       className={className}
       fill="currentColor"
       viewBox="0 0 20 20"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Badge Check'}</title>
       <path
         fillRule="evenodd"
@@ -268,8 +256,7 @@ export const IconBadgeCheck: React.FC<IconProps> = ({
       className={className}
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Badge Check'}</title>
       <path
         strokeLinecap="round"
@@ -291,8 +278,7 @@ export const IconLockClosed: React.FC<IconProps> = ({
       className={className}
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Lock Closed'}</title>
       <path
         strokeLinecap="round"
@@ -311,8 +297,7 @@ export const IconMinus: React.FC<IconProps> = ({ className, title }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       stroke="currentColor"
-      strokeWidth="2"
-    >
+      strokeWidth="2">
       <title>{title ? title : 'Minus'}</title>
       <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
     </svg>
@@ -330,8 +315,7 @@ export const IconAnnotation: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Annotation'}</title>
       <path
         strokeLinecap="round"
@@ -354,8 +338,7 @@ export const IconThumbUp: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Like'}</title>
       <path
         strokeLinecap="round"
@@ -387,8 +370,7 @@ export const IconPaperAirplane: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Send'}</title>
       <path
         strokeLinecap="round"
@@ -408,8 +390,7 @@ export const IconPaperAirplaneSolid: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className}`}
-    >
+      className={`${className}`}>
       <title>{title ? title : 'Send'}</title>
       <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
     </svg>
@@ -424,8 +405,7 @@ export const IconSelector: React.FC<IconProps> = ({ className, title }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       stroke="currentColor"
-      strokeWidth="2"
-    >
+      strokeWidth="2">
       <title>{title ? title : 'Selector'}</title>
       <path
         strokeLinecap="round"
@@ -444,8 +424,7 @@ export const IconCheck: React.FC<IconProps> = ({ className, title }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       stroke="currentColor"
-      strokeWidth="2"
-    >
+      strokeWidth="2">
       <title>{title ? title : 'Check'}</title>
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
     </svg>
@@ -463,8 +442,7 @@ export const IconCheckBadge: React.FC<IconProps> = ({
       className={className}
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Check Badge'}</title>
       <path
         strokeLinecap="round"
@@ -502,8 +480,7 @@ export const IconSearch: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 2}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 2}>
       <title>{title ? title : 'Search'}</title>
       <path
         strokeLinecap="round"
@@ -523,8 +500,7 @@ export const IconFilter: React.FC<IconProps> = ({ className, title }) => {
       strokeLinecap="round"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className}`}
-    >
+      className={`${className}`}>
       <title>{title ? title : 'Filter'}</title>
       <line x1="9.75" y1="16.25" x2="14.25" y2="16.25" />
       <line x1="5.75" y1="11.25" x2="18.25" y2="11.25" />
@@ -539,8 +515,7 @@ export const IconGrid: React.FC<IconProps> = ({ className, title }) => {
       viewBox="0 0 20 20"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className}`}
-    >
+      className={`${className}`}>
       <title>{title ? title : 'Grid'}</title>
       <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
     </svg>
@@ -553,8 +528,7 @@ export const IconList: React.FC<IconProps> = ({ className, title }) => {
       viewBox="0 0 20 20"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className}`}
-    >
+      className={`${className}`}>
       <title>{title ? title : 'List'}</title>
       <path
         fillRule="evenodd"
@@ -577,8 +551,7 @@ export const IconGroup: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Group'}</title>
       <path
         strokeLinecap="round"
@@ -601,8 +574,7 @@ export const IconGroupPlus: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={`${className}`}
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Add Group'}</title>
       <path
         strokeLinecap="round"
@@ -625,8 +597,7 @@ export const IconEllipsisVertical: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Options'}</title>
       <path
         d="M11.75 6.5C11.5511 6.5 11.3603 6.42098 11.2197 6.28033C11.079 6.13968 11 5.94891 11 5.75C11 5.55109 11.079 5.36032 11.2197 5.21967C11.3603 5.07902 11.5511 5 11.75 5C11.9489 5 12.1397 5.07902 12.2803 5.21967C12.421 5.36032 12.5 5.55109 12.5 5.75C12.5 5.94891 12.421 6.13968 12.2803 6.28033C12.1397 6.42098 11.9489 6.5 11.75 6.5ZM11.75 12.5C11.5511 12.5 11.3603 12.421 11.2197 12.2803C11.079 12.1397 11 11.9489 11 11.75C11 11.5511 11.079 11.3603 11.2197 11.2197C11.3603 11.079 11.5511 11 11.75 11C11.9489 11 12.1397 11.079 12.2803 11.2197C12.421 11.3603 12.5 11.5511 12.5 11.75C12.5 11.9489 12.421 12.1397 12.2803 12.2803C12.1397 12.421 11.9489 12.5 11.75 12.5ZM11.75 18.5C11.5511 18.5 11.3603 18.421 11.2197 18.2803C11.079 18.1397 11 17.9489 11 17.75C11 17.5511 11.079 17.3603 11.2197 17.2197C11.3603 17.079 11.5511 17 11.75 17C11.9489 17 12.1397 17.079 12.2803 17.2197C12.421 17.3603 12.5 17.5511 12.5 17.75C12.5 17.9489 12.421 18.1397 12.2803 18.2803C12.1397 18.421 11.9489 18.5 11.75 18.5Z"
@@ -649,8 +620,7 @@ export const IconEllipsisHorizontal: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Options'}</title>
       <path
         strokeLinecap="round"
@@ -673,8 +643,7 @@ export const IconTrash: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Trash'}</title>
       <path
         strokeLinecap="round"
@@ -697,8 +666,7 @@ export const IconCustomList: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'List'}</title>
       <rect x="14" y="10" width="7" height="7" />
       <line x1="2" y1="16" x2="11" y2="16" />
@@ -716,8 +684,7 @@ export const IconCash: React.FC<IconProps> = ({ className, title }) => {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={1.5}
-    >
+      strokeWidth={1.5}>
       <title>{title ? title : 'Cash'}</title>
       <path
         strokeLinecap="round"
@@ -740,8 +707,7 @@ export const IconDocumentDownload: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Document Download'}</title>
       <path
         strokeLinecap="round"
@@ -764,8 +730,7 @@ export const IconDocument: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Document'}</title>
       <path
         strokeLinecap="round"
@@ -788,8 +753,7 @@ export const IconDocumentText: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Document Text'}</title>
       <path
         strokeLinecap="round"
@@ -812,8 +776,7 @@ export const IconNewspaper: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'News'}</title>
       <path
         strokeLinecap="round"
@@ -836,8 +799,7 @@ export const IconPlayCircle: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Play Circle'}</title>
       <path
         strokeLinecap="round"
@@ -865,8 +827,7 @@ export const IconUsers: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Users'}</title>
       <path
         strokeLinecap="round"
@@ -877,15 +838,37 @@ export const IconUsers: React.FC<IconProps> = ({
   );
 };
 
-export const IconUser: React.FC<IconProps> = ({ className, title }) => {
+export const IconUser: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor">
+      <title>{title ? title : 'User'}</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+      />
+    </svg>
+  );
+};
+
+export const IconUserSolid: React.FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
       stroke="none"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <title>{title ? title : 'User'}</title>
       <path
         fillRule="evenodd"
@@ -908,8 +891,7 @@ export const IconExclamationTriangle: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Warning'}</title>
       <path
         strokeLinecap="round"
@@ -932,8 +914,7 @@ export const IconUserPlus: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Add User'}</title>
       <path
         strokeLinecap="round"
@@ -956,8 +937,7 @@ export const IconUserCircle: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'User'}</title>
       <path
         strokeLinecap="round"
@@ -977,8 +957,7 @@ export const IconUserCircleSolid: React.FC<IconProps> = ({
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <title>{title ? title : 'User'}</title>
       <path
         fillRule="evenodd"
@@ -1001,8 +980,7 @@ export const IconAlert: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Alert'}</title>
       <path
         strokeLinecap="round"
@@ -1019,8 +997,7 @@ export const IconAlertSolid: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <title>{title ? title : 'Alert'}</title>
       <path d="M5.85 3.5a.75.75 0 00-1.117-1 9.719 9.719 0 00-2.348 4.876.75.75 0 001.479.248A8.219 8.219 0 015.85 3.5zM19.267 2.5a.75.75 0 10-1.118 1 8.22 8.22 0 011.987 4.124.75.75 0 001.48-.248A9.72 9.72 0 0019.266 2.5z" />
       <path
@@ -1038,8 +1015,7 @@ export const IconImage: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill="currentColor"
-    >
+      fill="currentColor">
       <title>{title ? title : 'Image'}</title>
       <path
         fillRule="evenodd"
@@ -1062,8 +1038,7 @@ export const IconFlag: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Flag'}</title>
       <path
         strokeLinecap="round"
@@ -1082,8 +1057,7 @@ export const IconLink: React.FC<IconProps> = ({ className, title }) => {
       fill="none"
       strokeWidth={1.5}
       stroke="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'Link'}</title>
       <path
         strokeLinecap="round"
@@ -1106,8 +1080,7 @@ export const IconExternalLink: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'External Link'}</title>
       <path
         strokeLinecap="round"
@@ -1126,8 +1099,7 @@ export const IconChatBubble: React.FC<IconProps> = ({ className, title }) => {
       fill="none"
       strokeWidth={1.5}
       stroke="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'SMS'}</title>
       <path
         strokeLinecap="round"
@@ -1144,8 +1116,7 @@ export const IconTelegram: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       viewBox="0 0 24 24"
       fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'Telegram'}</title>
       <path
         fillRule="evenodd"
@@ -1165,8 +1136,7 @@ export const IconTelegramAlt: React.FC<IconProps> = ({ className, title }) => {
       strokeWidth={1.5}
       stroke="currentColor"
       strokeLinejoin="round"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'Telegram'}</title>
       <path d="M8 14L3.09674 11.957C2.68806 11.7867 2.68601 11.2084 3.09348 11.0353L21.1443 3.36369C21.511 3.20784 21.9037 3.52258 21.8316 3.91444L18.6584 21.1401C18.5883 21.5204 18.1315 21.6806 17.8392 21.4273L13 17.2333M8 14L19 6.5L11 15.5M8 14L10 20.5M11 15.5L10 20.5M11 15.5L13 17.2333M10 20.5L13 17.2333" />
     </svg>
@@ -1179,8 +1149,7 @@ export const IconWhatsApp: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       viewBox="0 0 24 24"
       fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'WhatsApp'}</title>
       <path
         fillRule="evenodd"
@@ -1197,8 +1166,7 @@ export const IconLinkedIn: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       viewBox="0 0 24 24"
       fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'LinkedIn'}</title>
       <path d="M19.619 2H4.38095C3.06667 2 2 3.06667 2 4.38095V19.619C2 20.9333 3.06667 22 4.38095 22H19.619C20.9333 22 22 20.9333 22 19.619V4.38095C22 3.06667 20.9333 2 19.619 2ZM8.19048 9.61905V18.6667H5.33333V9.61905H8.19048ZM5.33333 6.98571C5.33333 6.31905 5.90476 5.80952 6.7619 5.80952C7.61905 5.80952 8.15714 6.31905 8.19048 6.98571C8.19048 7.65238 7.65714 8.19048 6.7619 8.19048C5.90476 8.19048 5.33333 7.65238 5.33333 6.98571ZM18.6667 18.6667H15.8095C15.8095 18.6667 15.8095 14.2571 15.8095 13.9048C15.8095 12.9524 15.3333 12 14.1429 11.981H14.1048C12.9524 11.981 12.4762 12.9619 12.4762 13.9048C12.4762 14.3381 12.4762 18.6667 12.4762 18.6667H9.61905V9.61905H12.4762V10.8381C12.4762 10.8381 13.3952 9.61905 15.2429 9.61905C17.1333 9.61905 18.6667 10.919 18.6667 13.5524V18.6667Z" />
     </svg>
@@ -1211,8 +1179,7 @@ export const IconLinkedInAlt: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       viewBox="0 0 24 24"
       fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'LinkedIn'}</title>
       <path
         fillRule="evenodd"
@@ -1229,8 +1196,7 @@ export const IconGithub: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Github'}</title>
       <path
         fillRule="evenodd"
@@ -1247,8 +1213,7 @@ export const IconDiscord: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Discord'}</title>
       <path
         fillRule="evenodd"
@@ -1265,8 +1230,7 @@ export const IconGlassdoor: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="none"
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Glassdoor'}</title>
       <path
         fillRule="evenodd"
@@ -1284,8 +1248,7 @@ export const IconTwitter: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Twitter'}</title>
       <path d="M8.29 20.2534C15.837 20.2534 19.965 14.0004 19.965 8.5784C19.965 8.4004 19.965 8.2234 19.953 8.0484C20.7562 7.46693 21.4493 6.74701 22 5.9224C21.2511 6.2544 20.4566 6.47216 19.643 6.5684C20.4996 6.05546 21.1408 5.24875 21.447 4.2984C20.6417 4.77628 19.7607 5.11313 18.842 5.2944C18.2234 4.63616 17.405 4.20023 16.5136 4.0541C15.6222 3.90797 14.7075 4.0598 13.9111 4.48607C13.1147 4.91234 12.4811 5.58927 12.1083 6.41206C11.7355 7.23485 11.6444 8.15758 11.849 9.0374C10.2176 8.95564 8.6216 8.53172 7.16465 7.79317C5.70769 7.05461 4.42233 6.01792 3.392 4.7504C2.86732 5.6536 2.70659 6.72282 2.94254 7.74036C3.17848 8.75791 3.79337 9.64728 4.662 10.2274C4.00926 10.2085 3.37065 10.0329 2.8 9.7154V9.7674C2.80039 10.7147 3.1284 11.6327 3.7284 12.3658C4.3284 13.0988 5.16347 13.6018 6.092 13.7894C5.48781 13.9541 4.85389 13.9781 4.239 13.8594C4.50116 14.6749 5.01168 15.388 5.69913 15.899C6.38658 16.41 7.21657 16.6934 8.073 16.7094C7.22212 17.378 6.24779 17.8722 5.20573 18.1639C4.16367 18.4556 3.07432 18.539 2 18.4094C3.8766 19.6137 6.06019 20.2525 8.29 20.2494" />
     </svg>
@@ -1298,14 +1261,12 @@ export const IconInstagram: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Instagram'}</title>
       <path
         fillRule="evenodd"
         d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-        clipRule="evenodd"
-      ></path>
+        clipRule="evenodd"></path>
     </svg>
   );
 };
@@ -1316,14 +1277,12 @@ export const IconFacebook: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       fill="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Facebook'}</title>
       <path
         fillRule="evenodd"
         d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-        clipRule="evenodd"
-      ></path>
+        clipRule="evenodd"></path>
     </svg>
   );
 };
@@ -1342,8 +1301,7 @@ export const IconTicket: React.FC<IconProps> = ({
       stroke="currentColor"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <title>{title ? title : 'Ticket'}</title>
       <path
         strokeLinecap="round"
@@ -1366,8 +1324,7 @@ export const IconBriefcase: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Briefcase'}</title>
       <path
         strokeLinecap="round"
@@ -1392,8 +1349,7 @@ export const IconRole: React.FC<IconProps> = ({
       stroke="currentColor"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <title>{title ? title : 'Role'}</title>
       <path d="M9.58333 6.25H4.16667C3.59203 6.25 3.04093 6.47827 2.6346 6.8846C2.22827 7.29093 2 7.84203 2 8.41667V18.1667C2 18.7413 2.22827 19.2924 2.6346 19.6987C3.04093 20.1051 3.59203 20.3333 4.16667 20.3333H19.3333C19.908 20.3333 20.4591 20.1051 20.8654 19.6987C21.2717 19.2924 21.5 18.7413 21.5 18.1667V8.41667C21.5 7.84203 21.2717 7.29093 20.8654 6.8846C20.4591 6.47827 19.908 6.25 19.3333 6.25H13.9167M9.58333 6.25V5.16667C9.58333 4.59203 9.81161 4.04093 10.2179 3.6346C10.6243 3.22827 11.1754 3 11.75 3C12.3246 3 12.8757 3.22827 13.2821 3.6346C13.6884 4.04093 13.9167 4.59203 13.9167 5.16667V6.25M9.58333 6.25C9.58333 6.82464 9.81161 7.37574 10.2179 7.78206C10.6243 8.18839 11.1754 8.41667 11.75 8.41667C12.3246 8.41667 12.8757 8.18839 13.2821 7.78206C13.6884 7.37574 13.9167 6.82464 13.9167 6.25M8.5 14.9167C9.91483 14.9167 11.1184 15.8213 11.5658 17.0833M8.5 14.9167C7.82766 14.9165 7.17181 15.1247 6.62274 15.5128C6.07368 15.9008 5.65843 16.4495 5.43417 17.0833M15 11.6667H18.25M15 16H17.1667M8.5 14.9167C9.07464 14.9167 9.62574 14.6884 10.0321 14.2821C10.4384 13.8757 10.6667 13.3246 10.6667 12.75C10.6667 12.1754 10.4384 11.6243 10.0321 11.2179C9.62574 10.8116 9.07464 10.5833 8.5 10.5833C7.92536 10.5833 7.37426 10.8116 6.96794 11.2179C6.56161 11.6243 6.33333 12.1754 6.33333 12.75C6.33333 13.3246 6.56161 13.8757 6.96794 14.2821C7.37426 14.6884 7.92536 14.9167 8.5 14.9167Z" />
     </svg>
@@ -1412,8 +1368,7 @@ export const IconGlobe: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Globe'}</title>
       <path
         strokeLinecap="round"
@@ -1438,11 +1393,33 @@ export const IconBell: React.FC<IconProps> = ({
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <title>{title ? title : 'Notification'}</title>
       <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
       <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+    </svg>
+  );
+};
+
+export const IconCopy: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor">
+      <title>{title ? title : 'Copy'}</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
+      />
     </svg>
   );
 };
@@ -1459,8 +1436,7 @@ export const IconEmail: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       aria-hidden="true"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Email'}</title>
       <path
         strokeLinecap="round"
@@ -1483,8 +1459,7 @@ export const IconCompanies: React.FC<IconProps> = ({
       stroke="currentColor"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Companies'}</title>
       <path
         strokeLinecap="round"
@@ -1507,8 +1482,7 @@ export const IconCalendar: React.FC<IconProps> = ({
       stroke="currentColor"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Calendar'}</title>
       <path
         strokeLinecap="round"
@@ -1531,9 +1505,110 @@ export const IconCalendarDays: React.FC<IconProps> = ({
       stroke="currentColor"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <title>{title ? title : 'Calendar'}</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+      />
+    </svg>
+  );
+};
+
+export const IconCalendarAdd: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      viewBox="0 0 24 24"
+      aria-hidden="true">
+      <title>{title ? title : 'Add to Calendar'}</title>
+      <path
+        d="M6.75 3V5.25M17.25 3V5.25M3 18.75V7.5C3 6.90326 3.23705 6.33097 3.65901 5.90901C4.08097 5.48705 4.65326 5.25 5.25 5.25H18.75C19.3467 5.25 19.919 5.48705 20.341 5.90901C20.7629 6.33097 21 6.90326 21 7.5V18.75M3 18.75C3 19.3467 3.23705 19.919 3.65901 20.341C4.08097 20.7629 4.65326 21 5.25 21H18.75C19.3467 21 19.919 20.7629 20.341 20.341C20.7629 19.919 21 19.3467 21 18.75M3 18.75V11.25C3 10.6533 3.23705 10.081 3.65901 9.65901C4.08097 9.23705 4.65326 9 5.25 9H18.75C19.3467 9 19.919 9.23705 20.341 9.65901C20.7629 10.081 21 10.6533 21 11.25V18.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 12V18M15 15H9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const IconCalendar: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      viewBox="0 0 24 24"
+      aria-hidden="true">
+      <title>{title ? title : 'Add to Calendar'}</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+      />
+    </svg>
+  );
+};
+
+export const IconCalendarAdd: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      viewBox="0 0 24 24"
+      aria-hidden="true">
+      <title>{title ? title : 'Add to Calendar'}</title>
+      <path
+        d="M6.75 3V5.25M17.25 3V5.25M3 18.75V7.5C3 6.90326 3.23705 6.33097 3.65901 5.90901C4.08097 5.48705 4.65326 5.25 5.25 5.25H18.75C19.3467 5.25 19.919 5.48705 20.341 5.90901C20.7629 6.33097 21 6.90326 21 7.5V18.75M3 18.75C3 19.3467 3.23705 19.919 3.65901 20.341C4.08097 20.7629 4.65326 21 5.25 21H18.75C19.3467 21 19.919 20.7629 20.341 20.341C20.7629 19.919 21 19.3467 21 18.75M3 18.75V11.25C3 10.6533 3.23705 10.081 3.65901 9.65901C4.08097 9.23705 4.65326 9 5.25 9H18.75C19.3467 9 19.919 9.23705 20.341 9.65901C20.7629 10.081 21 10.6533 21 11.25V18.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 12V18M15 15H9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const IconCalendar: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      viewBox="0 0 24 24"
+      aria-hidden="true">
+      <title>{title ? title : 'Add to Calendar'}</title>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1554,8 +1629,7 @@ export const IconPlus: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Plus'}</title>
       <path
         strokeLinecap="round"
@@ -1578,15 +1652,18 @@ export const IconChevronLeft: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Left'}</title>
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
     </svg>
   );
 };
 
-export const IconChevronRight: React.FC<IconProps> = ({ className, title }) => {
+export const IconChevronRight: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1594,8 +1671,7 @@ export const IconChevronRight: React.FC<IconProps> = ({ className, title }) => {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={2}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Right'}</title>
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
     </svg>
@@ -1610,8 +1686,7 @@ export const IconChevronDown: React.FC<IconProps> = ({ className, title }) => {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={2}
-    >
+      strokeWidth={2}>
       <title>{title ? title : 'Down'}</title>
       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
     </svg>
@@ -1627,8 +1702,7 @@ export const IconChevronDownMini: React.FC<IconProps> = ({
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
-      fill="currentColor"
-    >
+      fill="currentColor">
       <title>{title ? title : 'Down'}</title>
       <path
         fillRule="evenodd"
@@ -1645,15 +1719,18 @@ export const IconPolygonDown: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill="currentColor"
-    >
+      fill="currentColor">
       <title>{title ? title : 'Down'}</title>
       <path d="M11.4816 16.0643C11.7594 16.3705 12.2406 16.3705 12.5184 16.0643L17.0004 11.1243C17.4085 10.6745 17.0893 9.95392 16.4819 9.95392H7.51807C6.9107 9.95392 6.59153 10.6745 6.99964 11.1243L11.4816 16.0643Z" />
     </svg>
   );
 };
 
-export const IconChevronUp: React.FC<IconProps> = ({ className, title }) => {
+export const IconChevronUp: React.FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1661,8 +1738,7 @@ export const IconChevronUp: React.FC<IconProps> = ({ className, title }) => {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={2}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Down'}</title>
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
     </svg>
@@ -1681,8 +1757,7 @@ export const IconHome: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
       <title>{title ? title : 'Home'}</title>
       <path
         strokeLinecap="round"
@@ -1699,8 +1774,7 @@ export const IconDashboard: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       viewBox="0 0 24 24"
       fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'Dashboard'}</title>
       <path
         fillRule="evenodd"
@@ -1723,8 +1797,7 @@ export const IconSettings: React.FC<IconProps> = ({
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'Settings'}</title>
       <path
         strokeLinecap="round"
@@ -1752,8 +1825,7 @@ export const IconOrganization: React.FC<IconProps> = ({
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'Settings'}</title>
       <path
         strokeLinecap="round"
@@ -1776,8 +1848,7 @@ export const IconSignOut: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <title>{title ? title : 'Sign out'}</title>
       <path
         strokeLinecap="round"
@@ -1800,8 +1871,7 @@ export const IconX: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 2}
-    >
+      strokeWidth={strokeWidth ? strokeWidth : 2}>
       <title>{title ? title : 'Close'}</title>
       <path
         strokeLinecap="round"
@@ -1824,8 +1894,7 @@ export const IconLocation: React.FC<IconProps> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Location'}</title>
       <path
         strokeLinecap="round"
@@ -1852,8 +1921,7 @@ export const IconEditPencilOLD: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={2}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Edit'}</title>
       <path
         strokeLinecap="round"
@@ -1876,8 +1944,7 @@ export const IconEditPencil: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Edit'}</title>
       <path
         d="M13.6765 5.62489L16.0706 3.22978C16.7928 2.50756 17.41 1.9173 19.4297 3.93689C21.4493 5.95648 20.859 6.57377 20.1368 7.296L7.8891 19.5437C7.36043 20.072 6.70847 20.4604 5.99211 20.6737L2.6 20.7666L2.69289 17.3745C2.90617 16.6581 3.29453 16.0061 3.82289 15.4775L13.6775 5.62489H13.6765ZM13.6765 5.62489L17.7287 9.6771"
@@ -1900,8 +1967,7 @@ export const IconPencilSquare: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Edit'}</title>
       <path
         strokeLinecap="round"
@@ -1918,8 +1984,7 @@ export const IconSortDown: React.FC<IconProps> = ({ className, title }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       viewBox="0 0 24 24"
-      fill="currentColor"
-    >
+      fill="currentColor">
       <title>{title ? title : 'Sort'}</title>
       <path
         fillRule="evenodd"
@@ -1936,8 +2001,7 @@ export const IconSortUp: React.FC<IconProps> = ({ className, title }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       viewBox="0 0 24 24"
-      fill="currentColor"
-    >
+      fill="currentColor">
       <title>{title ? title : 'Sort'}</title>
       <path
         fillRule="evenodd"
@@ -1955,8 +2019,7 @@ export const IconSave: React.FC<IconProps> = ({ className, title }) => {
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <title>{title ? title : 'Save'}</title>
       <path
         d="M20.4258 6.5H16.4258V10.5H14.4258V6.5H10.4258V4.5H14.4258V0.5H16.4258V4.5H20.4258V6.5ZM12.4258 0.5H0.425781V1.5H12.4258V0.5ZM0.425781 5.5H8.42578V4.5H0.425781V5.5ZM0.425781 9.5H8.42578V8.5H0.425781V9.5Z"
@@ -1978,10 +2041,31 @@ export const IconListPlus: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Save To List'}</title>
       <path d="M17.9255 8V17M13.4255 12.5H22.4255" />
+      <line x1="2.42554" y1="16" x2="11.4255" y2="16" />
+      <line x1="2.42554" y1="11" x2="11.4255" y2="11" />
+      <line x1="2.42554" y1="6" x2="22.4255" y2="6" />
+    </svg>
+  );
+};
+
+export const IconListSaved: React.FC<IconProps> = ({
+  className,
+  strokeWidth,
+  title,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor">
+      <title>{title ? title : 'Save To List'}</title>
+      <path d="M13.2,13.9l3.1,2.5L21,10" />
       <line x1="2.42554" y1="16" x2="11.4255" y2="16" />
       <line x1="2.42554" y1="11" x2="11.4255" y2="11" />
       <line x1="2.42554" y1="6" x2="22.4255" y2="6" />
@@ -2001,13 +2085,35 @@ export const IconColumns: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'columns'}</title>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125z"
+      />
+    </svg>
+  );
+};
+
+export const IconTable: React.FC<IconProps> = ({
+  className,
+  strokeWidth,
+  title,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor">
+      <title>{title ? title : 'Table'}</title>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"
       />
     </svg>
   );
@@ -2024,8 +2130,7 @@ export const IconShare: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Share'}</title>
       <path
         strokeLinecap="round"
@@ -2048,8 +2153,7 @@ export const IconShareAlt: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Share'}</title>
       <path
         strokeLinecap="round"
@@ -2072,8 +2176,7 @@ export const IconShare3: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Share'}</title>
       <path
         fillRule="evenodd"
@@ -2097,8 +2200,7 @@ export const IconFindCompanies: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 2}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Find Companies'}</title>
       <path
         d="M19 21V5C19 4.46957 18.7893 3.96086 18.4142 3.58579C18.0391 3.21071 17.5304 3 17 3H7C6.46957 3 5.96086 3.21071 5.58579 3.58579C5.21071 3.96086 5 4.46957 5 5V21M19 21H5M19 21H21M19 21H14M5 21H3M5 21H10M14 21V16C14 15.7348 13.8946 15.4804 13.7071 15.2929C13.5196 15.1054 13.2652 15 13 15H11C10.7348 15 10.4804 15.1054 10.2929 15.2929C10.1054 15.4804 10 15.7348 10 16V21M14 21H10M9 7H10M9 11H10M14 7H15M14 11H15"
@@ -2118,8 +2220,7 @@ export const IconFindInvestors: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Find Investors'}</title>
       <path d="M6 19V20V19ZM18 19V20V19ZM21 16H22H21ZM21 8H22H21ZM3 8H2H3ZM3 16H2H3ZM13 15.75C13 15.1977 12.5523 14.75 12 14.75C11.4477 14.75 11 15.1977 11 15.75H13ZM11 16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16H11ZM12.5 11.9998L12.7425 11.0296L12.7194 11.0239L12.6961 11.0192L12.5 11.9998ZM13 7.75C13 7.19772 12.5523 6.75 12 6.75C11.4477 6.75 11 7.19772 11 7.75H13ZM11 8C11 8.55228 11.4477 9 12 9C12.5523 9 13 8.55228 13 8H11ZM6 20H18V18H6V20ZM18 20C19.0609 20 20.0783 19.5786 20.8284 18.8284L19.4142 17.4142C19.0391 17.7893 18.5304 18 18 18V20ZM20.8284 18.8284C21.5786 18.0783 22 17.0609 22 16H20C20 16.5304 19.7893 17.0391 19.4142 17.4142L20.8284 18.8284ZM22 16V8H20V16H22ZM22 8C22 6.93913 21.5786 5.92172 20.8284 5.17157L19.4142 6.58579C19.7893 6.96086 20 7.46957 20 8H22ZM20.8284 5.17157C20.0783 4.42143 19.0609 4 18 4V6C18.5304 6 19.0391 6.21071 19.4142 6.58579L20.8284 5.17157ZM18 4H6V6H18V4ZM6 4C4.93913 4 3.92172 4.42143 3.17157 5.17157L4.58579 6.58579C4.96086 6.21071 5.46957 6 6 6V4ZM3.17157 5.17157C2.42143 5.92172 2 6.93913 2 8H4C4 7.46957 4.21071 6.96086 4.58579 6.58579L3.17157 5.17157ZM2 8V16H4V8H2ZM2 16C2 17.0609 2.42143 18.0783 3.17157 18.8284L4.58579 17.4142C4.21071 17.0391 4 16.5304 4 16H2ZM3.17157 18.8284C3.92172 19.5786 4.93913 20 6 20V18C5.46957 18 4.96086 17.7893 4.58579 17.4142L3.17157 18.8284ZM11 15.75V16H13V15.75H11ZM12.2575 12.97C13.0809 13.1757 13.3041 13.4994 13.3499 13.6099C13.3833 13.6902 13.3937 13.8167 13.2304 13.9801C12.9215 14.2889 11.6553 14.7982 9.61394 13.2104L8.38606 14.7892C10.8447 16.7014 13.3285 16.7105 14.6446 15.3943C15.2938 14.7451 15.5854 13.7779 15.1969 12.8426C14.8209 11.9375 13.9191 11.3237 12.7425 11.0296L12.2575 12.97ZM15.5548 8.66786C13.0967 7.02887 10.5557 7.1624 9.40115 8.63191C8.79577 9.40247 8.71799 10.4425 9.3222 11.3288C9.88137 12.1489 10.9259 12.7048 12.3039 12.9804L12.6961 11.0192C11.5741 10.7949 11.1186 10.4133 10.9747 10.2021C10.8758 10.057 10.8917 9.97201 10.9738 9.86749C11.1943 9.58684 12.4033 8.9703 14.4452 10.3319L15.5548 8.66786ZM11 7.75V8H13V7.75H11Z" />
     </svg>
@@ -2132,8 +2233,7 @@ export const IconFollowing: React.FC<IconProps> = ({ className, title }) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Following'}</title>
       <path
         d="M9 12.75L11.25 15L15 9.75M21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z"
@@ -2152,8 +2252,7 @@ export const IconAcquired: React.FC<IconProps> = ({ className, title }) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Acquired'}</title>
       <path
         d="M21 7.42105H21.75V6.67105H21V7.42105ZM21 13.1053L21.206 13.8264L21.75 13.671V13.1053H21ZM7.26316 11.2105L6.79464 10.6249C6.58625 10.7916 6.48214 11.0565 6.52126 11.3205C6.56038 11.5845 6.73683 11.8078 6.98461 11.9069L7.26316 11.2105ZM12.4737 10.2632L13.0737 9.81316C12.9503 9.64869 12.7649 9.54207 12.5607 9.51822C12.3565 9.49437 12.1515 9.55538 11.9935 9.68699L12.4737 10.2632ZM10.5789 19.2632L10.1814 18.6272L10.1814 18.6272L10.5789 19.2632ZM4.42105 13.5789L4.9905 13.0909L4.92316 13.0123L4.83708 12.9549L4.42105 13.5789ZM3 12.6316H2.25V13.033L2.58397 13.2556L3 12.6316ZM3 7.42105L3.10607 6.67859L2.25 6.5563V7.42105H3ZM7.73684 6.47368L7.40143 5.80286L7.29257 5.85729L7.20651 5.94335L7.73684 6.47368ZM12 18.3825L12.3929 19.0214L12 18.3825ZM14.1355 17.0893L14.5174 17.7347L14.5174 17.7347L14.1355 17.0893ZM20.25 7.42105V13.1053H21.75V7.42105H20.25ZM20.794 12.3841C20.2243 12.5469 19.3049 12.8373 18.3797 13.1847C17.4711 13.5259 16.4928 13.9455 15.8471 14.376L16.6792 15.624C17.1704 15.2966 18.0078 14.9267 18.9071 14.589C19.7898 14.2575 20.6704 13.9794 21.206 13.8264L20.794 12.3841ZM21 6.67105C19.4782 6.67105 18.6325 6.35313 17.7851 6.01417C16.8894 5.65587 15.9446 5.25 14.3684 5.25V6.75C15.6344 6.75 16.3475 7.05465 17.228 7.40688C18.1569 7.77844 19.206 8.17105 21 8.17105V6.67105ZM6.98461 11.9069C7.2648 12.019 8.05459 12.4693 9.08125 12.4932C10.157 12.5182 11.433 12.1067 12.9538 10.8393L11.9935 9.68699C10.6723 10.788 9.73776 11.0081 9.11612 10.9936C8.44541 10.978 8.05099 10.7179 7.5417 10.5142L6.98461 11.9069ZM11.8737 10.7132C13.0155 12.2356 13.3045 12.6207 15.2038 14.9948L16.3751 14.0578C14.4849 11.6951 14.2055 11.3223 13.0737 9.81316L11.8737 10.7132ZM15.2038 14.9948C15.2994 15.1143 15.3539 15.2698 15.3457 15.3786C15.3425 15.4214 15.33 15.4648 15.2932 15.5152C15.2539 15.5691 15.1675 15.6566 14.9804 15.7502L15.6512 17.0919C16.3903 16.7223 16.792 16.1481 16.8415 15.4912C16.886 14.8992 16.6326 14.3797 16.3751 14.0578L15.2038 14.9948ZM10.1814 18.6272C10.0316 18.7208 10.0096 18.7135 10.047 18.7075C10.1328 18.6937 10.1976 18.7263 10.1906 18.7221C10.1513 18.6992 10.0679 18.6354 9.88959 18.4625C9.71433 18.2927 9.5127 18.0836 9.21454 17.7855L8.15388 18.8461C8.42414 19.1164 8.66157 19.3612 8.84566 19.5396C9.02665 19.7151 9.2229 19.8939 9.43324 20.0169C9.67575 20.1588 9.96011 20.2407 10.285 20.1885C10.5616 20.144 10.7983 20.0105 10.9764 19.8992L10.1814 18.6272ZM9.21454 17.7855C8.10149 16.6724 5.94109 14.1999 4.9905 13.0909L3.85161 14.067C4.79576 15.1685 6.99325 17.6855 8.15388 18.8461L9.21454 17.7855ZM4.83708 12.9549L3.41603 12.0075L2.58397 13.2556L4.00503 14.203L4.83708 12.9549ZM3.75 12.6316V7.42105H2.25V12.6316H3.75ZM2.89393 8.16351C3.50237 8.25043 4.47048 8.3011 5.4508 8.17695C6.40485 8.05613 7.51939 7.75179 8.26717 7.00401L7.20651 5.94335C6.81745 6.33242 6.11621 6.58071 5.26235 6.68884C4.43478 6.79364 3.6029 6.74957 3.10607 6.67859L2.89393 8.16351ZM14.3684 5.25C13.3742 5.25 12.408 5.73909 11.5591 6.33274L12.4187 7.562C13.1911 7.0219 13.8425 6.75 14.3684 6.75V5.25ZM11.5591 6.33274C10.6457 6.97148 9.74699 7.81944 8.94127 8.60617C8.11203 9.41587 7.40004 10.1405 6.79464 10.6249L7.73168 11.7962C8.41297 11.2511 9.20613 10.444 9.98922 9.6794C10.7958 8.89179 11.6167 8.12285 12.4187 7.562L11.5591 6.33274ZM8.07225 7.1445C8.83116 6.76505 9.58786 6.76107 10.2221 6.90822C10.8811 7.06114 11.3388 7.36074 11.4647 7.48381L12.513 6.41093C12.1542 6.06032 11.4332 5.64939 10.5611 5.44704C9.66419 5.23893 8.53727 5.23495 7.40143 5.80286L8.07225 7.1445ZM11.6071 17.7437C11.0633 18.0781 10.5582 18.3917 10.1814 18.6272L10.9764 19.8992C11.3502 19.6656 11.8522 19.3539 12.3929 19.0214L11.6071 17.7437ZM12.6037 17.9375L9.76163 14.0813L8.55416 14.9713L11.3963 18.8275L12.6037 17.9375ZM14.9804 15.7502C14.716 15.8824 14.2654 16.141 13.7536 16.4438L14.5174 17.7347C15.0362 17.4278 15.4419 17.1965 15.6512 17.0919L14.9804 15.7502ZM13.7536 16.4438C13.1047 16.8277 12.3211 17.3046 11.6071 17.7437L12.3929 19.0214C13.1039 18.5841 13.8793 18.1123 14.5174 17.7347L13.7536 16.4438ZM14.7287 16.6303L11.6458 12.6463L10.4595 13.5643L13.5424 17.5483L14.7287 16.6303Z"
@@ -2175,8 +2274,7 @@ export const IconTrending: React.FC<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Trending'}</title>
       <path
         d="M2.25 18.0001L9 11.2501L13.306 15.5571C14.5507 13.1029 16.6044 11.1535 19.12 10.0381L21.86 8.81809M21.86 8.81809L15.92 6.53809M21.86 8.81809L19.58 14.7591"
@@ -2201,8 +2299,7 @@ export const IconSparkles: React.FC<IconProps> = ({
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Sparkles'}</title>
       <path
         strokeLinecap="round"
@@ -2225,8 +2322,7 @@ export const IconContributor: React.FC<IconProps> = ({
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Contributor'}</title>
       <path
         strokeLinecap="round"
@@ -2259,8 +2355,7 @@ export const IconDead: React.FC<IconProps> = ({ className, title }) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Dead'}</title>
       <mask
         id="path-1-outside-1_5067_11599"
@@ -2269,8 +2364,7 @@ export const IconDead: React.FC<IconProps> = ({ className, title }) => {
         y="1.71924"
         width="18"
         height="21"
-        fill="black"
-      >
+        fill="black">
         <rect fill="white" x="2.69519" y="1.71924" width="18" height="21" />
         <path
           fillRule="evenodd"
@@ -2335,8 +2429,7 @@ export const IconHide: React.FC<IconProps> = ({
       fill="none"
       viewBox="0 0 32 32"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      stroke="currentColor"
-    >
+      stroke="currentColor">
       <title>{title ? title : 'Hide'}</title>
       <path d="M16,9.5c-3.443,0 -6.493,1.022 -8.386,2.57c-1.342,1.099 -2.114,2.465 -2.114,3.93c0,1.465 0.772,2.831 2.114,3.93c1.893,1.548 4.943,2.57 8.386,2.57c3.443,0 6.493,-1.022 8.386,-2.57c1.342,-1.099 2.114,-2.465 2.114,-3.93c0,-1.465 -0.772,-2.831 -2.114,-3.93c-1.893,-1.548 -4.943,-2.57 -8.386,-2.57Zm0,1c3.18,0 6.005,0.914 7.753,2.344c1.085,0.888 1.747,1.972 1.747,3.156c0,1.184 -0.662,2.268 -1.747,3.156c-1.748,1.43 -4.573,2.344 -7.753,2.344c-3.18,0 -6.005,-0.914 -7.753,-2.344c-1.085,-0.888 -1.747,-1.972 -1.747,-3.156c0,-1.184 0.662,-2.268 1.747,-3.156c1.748,-1.43 4.573,-2.344 7.753,-2.344Z" />
       <path d="M16,12.78c-1.777,0 -3.22,1.443 -3.22,3.22c0,1.777 1.443,3.22 3.22,3.22c1.777,-0 3.22,-1.443 3.22,-3.22c-0,-1.777 -1.443,-3.22 -3.22,-3.22Zm0,1c1.225,0 2.22,0.995 2.22,2.22c-0,1.225 -0.995,2.22 -2.22,2.22c-1.225,-0 -2.22,-0.995 -2.22,-2.22c0,-1.225 0.995,-2.22 2.22,-2.22Z" />
@@ -2344,135 +2437,273 @@ export const IconHide: React.FC<IconProps> = ({
     </svg>
   );
 };
-export const IconApple: React.FC<IconProps> = ({ className }) => {
+
+export const IconApple: React.FC<IconProps> = ({ className, title }) => {
   return (
     <svg
+      viewBox="0 0 24 24"
       className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 200 245.657"
-    >
-      <path d="M167.084 130.514c-.308-31.099 25.364-46.022 26.511-46.761-14.429-21.107-36.91-24.008-44.921-24.335-19.13-1.931-37.323 11.27-47.042 11.27-9.692 0-24.67-10.98-40.532-10.689-20.849.308-40.07 12.126-50.818 30.799-21.661 37.581-5.54 93.281 15.572 123.754 10.313 14.923 22.612 31.688 38.764 31.089 15.549-.612 21.433-10.073 40.242-10.073s24.086 10.073 40.546 9.751c16.737-.308 27.34-15.214 37.585-30.187 11.855-17.318 16.714-34.064 17.009-34.925-.372-.168-32.635-12.525-32.962-49.68l.045-.013zm-30.917-91.287C144.735 28.832 150.524 14.402 148.942 0c-12.344.503-27.313 8.228-36.176 18.609-7.956 9.216-14.906 23.904-13.047 38.011 13.786 1.075 27.862-7.004 36.434-17.376z" />
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg">
+      <title>{title ? title : 'Apple'}</title>
+      <path d="M12.2725 7.74663C11.4825 7.74663 10.26 6.8483 8.97248 6.87997C7.27249 6.90247 5.71417 7.86579 4.83834 9.39162C3.07418 12.4541 4.38334 16.9774 6.10416 19.4665C6.94832 20.6782 7.94415 22.0415 9.26414 21.999C10.5308 21.9449 11.0058 21.1765 12.5433 21.1765C14.0691 21.1765 14.5016 21.999 15.8433 21.9665C17.2074 21.9449 18.0732 20.7332 18.9066 19.5099C19.8699 18.1032 20.2699 16.7391 20.2916 16.6641C20.2591 16.6532 17.6399 15.6466 17.6083 12.6166C17.5866 10.0833 19.6749 8.87162 19.7724 8.81745C18.5816 7.0758 16.7533 6.8808 16.1141 6.83747C14.4474 6.70747 13.0516 7.74663 12.2725 7.74663ZM15.0874 5.19164C15.7899 4.34832 16.2541 3.16916 16.1249 2C15.1191 2.04333 13.9066 2.67083 13.1816 3.51499C12.5316 4.26165 11.97 5.46331 12.1208 6.60997C13.2358 6.69663 14.3833 6.03664 15.0866 5.19248" />
     </svg>
   );
 };
 
-export const IconGoogle: React.FC<IconProps> = ({ className }) => {
+export const IconAppleCalendar: React.FC<IconProps> = ({
+  className,
+  title,
+}) => {
   return (
     <svg
+      viewBox="0 0 24 24"
       className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 200 200"
-    >
-      <path d="M152.637 47.363H47.363v105.273h105.273z" fill="#fff" />
-      <path d="M152.637 200L200 152.637h-47.363z" fill="#f72a25" />
-      <path d="M200 47.363h-47.363v105.273H200z" fill="#fbbc04" />
-      <path d="M152.637 152.637H47.363V200h105.273z" fill="#34a853" />
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <title>{title ? title : 'Apple Calendar'}</title>
+
+      <g filter="url(#filter0_dd_6767_24082)">
+        <path
+          fill="url(#paint0_linear_6767_24082)"
+          d="M22 8.256V7.54a26.42 26.42 0 0 0-.01-.604 8.805 8.805 0 0 0-.116-1.314 4.42 4.42 0 0 0-.412-1.249 4.206 4.206 0 0 0-1.836-1.836 4.402 4.402 0 0 0-1.248-.411 8.812 8.812 0 0 0-1.314-.116c-.201-.005-.403-.007-.604-.01H7.54c-.201.002-.403.005-.604.01-.438.012-.88.038-1.314.116a4.43 4.43 0 0 0-1.248.411 4.207 4.207 0 0 0-1.836 1.836c-.204.4-.332.81-.412 1.25a8.69 8.69 0 0 0-.115 1.313c-.005.201-.008.403-.01.604L2 8.256v7.487c0 .24 0 .478.002.717 0 .201.004.403.01.604.011.438.037.88.115 1.314.079.44.208.85.412 1.249a4.203 4.203 0 0 0 1.836 1.836c.4.204.808.332 1.248.411.433.078.876.104 1.314.116.201.005.403.007.604.01h8.92c.201-.002.403-.005.604-.01.438-.012.88-.038 1.314-.116a4.43 4.43 0 0 0 1.248-.411 4.203 4.203 0 0 0 1.836-1.836c.204-.4.332-.81.412-1.25.078-.433.104-.874.116-1.313.005-.201.007-.403.009-.604V8.256Z"
+        />
+      </g>
       <path
-        d="M0 152.637v31.576A15.788 15.788 0 0 0 15.788 200h31.576v-47.363z"
-        fill="#188038"
+        fill="#EC5E57"
+        d="M22 8.256V7.54a26.42 26.42 0 0 0-.01-.604 8.805 8.805 0 0 0-.116-1.314 4.42 4.42 0 0 0-.412-1.249 4.206 4.206 0 0 0-1.836-1.836 4.402 4.402 0 0 0-1.248-.411 8.812 8.812 0 0 0-1.314-.116c-.201-.005-.403-.007-.604-.01H7.54c-.201.002-.403.005-.604.01-.438.012-.88.038-1.314.116a4.43 4.43 0 0 0-1.248.411 4.207 4.207 0 0 0-1.836 1.836c-.204.4-.332.81-.412 1.25a8.69 8.69 0 0 0-.115 1.313c-.005.201-.008.403-.01.604L2 8.256h20Z"
       />
       <path
-        d="M200 47.363V15.788A15.79 15.79 0 0 0 184.212 0h-31.575v47.363z"
-        fill="#1967d2"
+        fill="#2C2C2C"
+        d="M8.886 19v-7.916H8.86c-.195.122-2.105 1.428-2.362 1.587v-.849c.244-.152 2.112-1.47 2.375-1.63h.817V19h-.805Zm3.738 0 4.083-8.038v-.025h-4.9v-.744h5.737v.78L13.509 19h-.885Z"
       />
       <path
-        d="M15.788 0A15.79 15.79 0 0 0 0 15.788v136.849h47.363V47.363h105.274V0z"
-        fill="#4285f4"
+        fill="#F6F5F5"
+        d="M8.441 5.87h.573c.004.228.152.379.375.379.246 0 .379-.153.379-.436V3.882h.59v1.935c0 .6-.36.94-.963.94-.577 0-.954-.348-.954-.887Zm2.999-1.988v1.763c0 .362.212.598.591.598.377 0 .59-.236.59-.598V3.882h.59v1.822c0 .621-.459 1.043-1.18 1.043-.722 0-1.181-.422-1.181-1.043V3.882h.59Zm4.064 2.33V6.7h-1.822V3.882h.59v2.33h1.232Z"
       />
-      <path
-        d="M68.962 129.02c-3.939-2.653-6.657-6.543-8.138-11.67l9.131-3.76c.83 3.158 2.279 5.599 4.346 7.341 2.051 1.742 4.557 2.588 7.471 2.588 2.995 0 5.55-.911 7.699-2.718 2.148-1.823 3.223-4.134 3.223-6.934 0-2.865-1.139-5.208-3.402-7.031s-5.111-2.718-8.496-2.718h-5.273v-9.033h4.736c2.913 0 5.387-.781 7.389-2.376 2.002-1.579 2.995-3.743 2.995-6.494 0-2.441-.895-4.395-2.686-5.859s-4.053-2.197-6.803-2.197c-2.686 0-4.818.716-6.396 2.148s-2.767 3.255-3.451 5.273l-9.033-3.76c1.204-3.402 3.402-6.396 6.624-8.984s7.34-3.89 12.337-3.89c3.695 0 7.031.716 9.977 2.148s5.257 3.418 6.934 5.941c1.676 2.539 2.507 5.387 2.507 8.545 0 3.223-.781 5.941-2.327 8.187-1.546 2.23-3.467 3.955-5.729 5.143v.537a17.39 17.39 0 0 1 7.34 5.729c1.904 2.572 2.865 5.632 2.865 9.212s-.911 6.771-2.718 9.57c-1.823 2.799-4.329 5.013-7.52 6.624s-6.787 2.425-10.775 2.425c-4.622 0-8.887-1.318-12.826-3.988zm56.087-45.312l-10.026 7.243-5.013-7.601 17.985-12.972h6.901v61.198h-9.847z"
-        fill="#1a73e8"
-      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_6767_24082"
+          x1="12.001"
+          x2="12.001"
+          y1="8.5"
+          y2="22"
+          gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FCFCFB" />
+          <stop offset="1" stopColor="#F1EFEC" />
+        </linearGradient>
+        <filter
+          id="filter0_dd_6767_24082"
+          width="21.001"
+          height="21"
+          x="1.5"
+          y="1.8"
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse">
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          />
+          <feOffset dy=".3" />
+          <feGaussianBlur stdDeviation=".25" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+          <feBlend
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_6767_24082"
+          />
+          <feColorMatrix
+            in="SourceAlpha"
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          />
+          <feOffset dy=".3" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" />
+          <feBlend
+            in2="effect1_dropShadow_6767_24082"
+            result="effect2_dropShadow_6767_24082"
+          />
+          <feBlend
+            in="SourceGraphic"
+            in2="effect2_dropShadow_6767_24082"
+            result="shape"
+          />
+        </filter>
+      </defs>
     </svg>
   );
 };
 
-export const IconOutlook: React.FC<IconProps> = ({ className }) => {
+export const IconGoogleCalendar: React.FC<IconProps> = ({
+  className,
+  title,
+}) => {
   return (
     <svg
+      viewBox="0 0 24 24"
       className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 200 175"
-    >
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg">
+      <title>{title ? title : 'Google Calendar'}</title>
       <path
-        d="M178.725 0H71.275A8.775 8.775 0 0 0 62.5 8.775v9.975l60.563 18.75L187.5 18.75V8.775A8.775 8.775 0 0 0 178.725 0z"
-        fill="#0364b8"
-      />
-      <path
-        d="M197.813 96.281c.915-2.878 2.187-5.855 2.187-8.781-.002-1.485-.795-2.857-1.491-3.26l-68.434-38.99a9.37 9.37 0 0 0-9.244-.519c-.312.154-.614.325-.906.512l-67.737 38.6-.025.013-.075.044a4.16 4.16 0 0 0-2.088 3.6c.541 2.971 1.272 5.904 2.188 8.781l71.825 52.532z"
-        fill="#0a2767"
-      />
-      <path
-        d="M150 18.75h-43.75L93.619 37.5l12.631 18.75L150 93.75h37.5v-37.5z"
-        fill="#28a8ea"
-      />
-      <path d="M150 18.75h37.5v37.5H150z" fill="#50d9ff" />
-      <path
-        d="M150 93.75l-43.75-37.5H62.5v37.5l43.75 37.5 67.7 11.05z"
-        fill="#0364b8"
-      />
-      <path
-        d="M106.25 56.25v37.5H150v-37.5zM150 93.75v37.5h37.5v-37.5zm-87.5-75h43.75v37.5H62.5z"
-        fill="#0078d4"
-      />
-      <path d="M62.5 93.75h43.75v37.5H62.5z" fill="#064a8c" />
-      <path
-        d="M126.188 145.113l-73.706-53.75 3.094-5.438 68.181 38.825a3.3 3.3 0 0 0 2.625-.075l68.331-38.937 3.1 5.431z"
-        fill="#0a2767"
-        opacity=".5"
-      />
-      <path
-        d="M197.919 91.106l-.088.05-.019.013-67.738 38.588c-2.736 1.764-6.192 1.979-9.125.569l23.588 31.631 51.588 11.257v-.001c2.434-1.761 3.876-4.583 3.875-7.587V87.5c.001 1.488-.793 2.862-2.081 3.606z"
-        fill="#1490df"
-      />
-      <path
-        d="M200 165.625v-4.613l-62.394-35.55-7.531 4.294a9.356 9.356 0 0 1-9.125.569l23.588 31.631 51.588 11.231v.025a9.362 9.362 0 0 0 3.875-7.588z"
-        opacity=".05"
-      />
-      <path
-        d="M199.688 168.019l-68.394-38.956-1.219.688c-2.734 1.766-6.19 1.984-9.125.575l23.588 31.631 51.587 11.256v.001a9.38 9.38 0 0 0 3.562-5.187z"
-        opacity=".1"
-      />
-      <path
-        d="M51.455 90.721c-.733-.467-1.468-1.795-1.455-3.221v78.125c-.007 5.181 4.194 9.382 9.375 9.375h131.25c1.395-.015 2.614-.366 3.813-.813.638-.258 1.252-.652 1.687-.974z"
-        fill="#28a8ea"
-      />
-      <path
-        d="M112.5 141.669V39.581a8.356 8.356 0 0 0-8.331-8.331H62.687v46.6l-10.5 5.987-.031.012-.075.044A4.162 4.162 0 0 0 50 87.5v.031-.031V150h54.169a8.356 8.356 0 0 0 8.331-8.331z"
-        opacity=".1"
-      />
-      <path
-        d="M106.25 147.919V45.831a8.356 8.356 0 0 0-8.331-8.331H62.687v40.35l-10.5 5.987-.031.012-.075.044A4.162 4.162 0 0 0 50 87.5v.031-.031 68.75h47.919a8.356 8.356 0 0 0 8.331-8.331z"
-        opacity=".2"
-      />
-      <path
-        d="M106.25 135.419V45.831a8.356 8.356 0 0 0-8.331-8.331H62.687v40.35l-10.5 5.987-.031.012-.075.044A4.162 4.162 0 0 0 50 87.5v.031-.031 56.25h47.919a8.356 8.356 0 0 0 8.331-8.331z"
-        opacity=".2"
-      />
-      <path
-        d="M100 135.419V45.831a8.356 8.356 0 0 0-8.331-8.331H62.687v40.35l-10.5 5.987-.031.012-.075.044A4.162 4.162 0 0 0 50 87.5v.031-.031 56.25h41.669a8.356 8.356 0 0 0 8.331-8.331z"
-        opacity=".2"
-      />
-      <path
-        d="M8.331 37.5h83.337A8.331 8.331 0 0 1 100 45.831v83.338a8.331 8.331 0 0 1-8.331 8.331H8.331A8.331 8.331 0 0 1 0 129.169V45.831A8.331 8.331 0 0 1 8.331 37.5z"
-        fill="#0078d4"
-      />
-      <path
-        d="M24.169 71.675a26.131 26.131 0 0 1 10.263-11.337 31.031 31.031 0 0 1 16.313-4.087 28.856 28.856 0 0 1 15.081 3.875 25.875 25.875 0 0 1 9.988 10.831 34.981 34.981 0 0 1 3.5 15.938 36.881 36.881 0 0 1-3.606 16.662 26.494 26.494 0 0 1-10.281 11.213 30 30 0 0 1-15.656 3.981 29.556 29.556 0 0 1-15.425-3.919 26.275 26.275 0 0 1-10.112-10.85 34.119 34.119 0 0 1-3.544-15.744 37.844 37.844 0 0 1 3.481-16.563zm10.938 26.613a16.975 16.975 0 0 0 5.769 7.463 15.069 15.069 0 0 0 9.019 2.719 15.831 15.831 0 0 0 9.631-2.806 16.269 16.269 0 0 0 5.606-7.481 28.913 28.913 0 0 0 1.787-10.406 31.644 31.644 0 0 0-1.687-10.538 16.681 16.681 0 0 0-5.413-7.75 14.919 14.919 0 0 0-9.544-2.956 15.581 15.581 0 0 0-9.231 2.744 17.131 17.131 0 0 0-5.9 7.519 29.85 29.85 0 0 0-.044 21.5z"
         fill="#fff"
+        d="m17.263 6.737-4.737-.527-5.79.527L6.21 12l.527 5.263 5.263.658 5.263-.658.526-5.395-.526-5.131Z"
+      />
+      <path
+        fill="#1A73E8"
+        d="M8.896 14.903c-.393-.266-.666-.654-.814-1.168l.913-.376c.083.316.227.56.434.734.205.174.455.26.747.26.299 0 .556-.091.77-.273a.87.87 0 0 0 .322-.693.86.86 0 0 0-.34-.703c-.225-.181-.51-.272-.85-.272h-.527v-.904h.474c.292 0 .538-.079.738-.237.2-.158.3-.374.3-.649 0-.244-.09-.44-.268-.585a1.044 1.044 0 0 0-.68-.22c-.269 0-.482.071-.64.215-.158.143-.272.32-.345.527l-.904-.376c.12-.34.34-.64.662-.899.323-.259.734-.39 1.234-.39.37 0 .703.072.998.215.294.144.526.342.693.595.167.254.25.538.25.854 0 .322-.078.595-.233.818a1.606 1.606 0 0 1-.572.515v.054c.299.125.542.316.734.572a1.5 1.5 0 0 1 .287.921c0 .358-.091.678-.273.958-.181.28-.433.501-.75.662-.32.16-.68.242-1.079.242a2.23 2.23 0 0 1-1.281-.397Zm5.604-4.532-.998.725-.5-.76L14.8 9.038h.69v6.12h-.99V10.37Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M17.263 22 22 17.263l-2.368-1.052-2.369 1.052-1.052 2.369L17.263 22Z"
+      />
+      <path
+        fill="#34A853"
+        d="M5.684 19.632 6.737 22h10.526v-4.737H6.737l-1.053 2.369Z"
+      />
+      <path
+        fill="#4285F4"
+        d="M3.579 2A1.58 1.58 0 0 0 2 3.579v13.684l2.368 1.053 2.369-1.053V6.737h10.526l1.053-2.369L17.263 2H3.58Z"
+      />
+      <path
+        fill="#188038"
+        d="M2 17.263v3.158C2 21.294 2.707 22 3.579 22h3.158v-4.737H2Z"
+      />
+      <path
+        fill="#FBBC04"
+        d="M17.263 6.737v10.526H22V6.737l-2.368-1.053-2.369 1.053Z"
+      />
+      <path
+        fill="#1967D2"
+        d="M22 6.737V3.579C22 2.706 21.293 2 20.421 2h-3.158v4.737H22Z"
       />
     </svg>
   );
 };
 
-export const IconIcalFile: React.FC<IconProps> = ({ className }) => {
+export const IconMicrosoftOutlook: React.FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 200 200.016"
-    >
-      <path d="M132.829 7.699c0-4.248 4.199-7.699 9.391-7.699s9.391 3.451 9.391 7.699v33.724c0 4.248-4.199 7.699-9.391 7.699s-9.391-3.451-9.391-7.699zm-25.228 161.263c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm-81.803-59.766c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm40.902 0c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm40.902 0c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm40.918 0c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zM25.798 139.079c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm40.902 0c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm40.902 0c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm40.918 0c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zM25.798 168.962c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zm40.902 0c-.553 0-.993-2.327-.993-5.208s.439-5.208.993-5.208h25.7c.553 0 .993 2.327.993 5.208s-.439 5.208-.993 5.208zM48.193 7.699C48.193 3.451 52.393 0 57.585 0s9.391 3.451 9.391 7.699v33.724c0 4.248-4.199 7.699-9.391 7.699s-9.391-3.451-9.391-7.699zM10.417 73.763h179.15V34.945c0-1.302-.537-2.49-1.4-3.369-.863-.863-2.051-1.4-3.369-1.4h-17.155c-2.881 0-5.208-2.327-5.208-5.208s2.327-5.208 5.208-5.208h17.171c4.183 0 7.975 1.709 10.726 4.46S200 30.762 200 34.945v44.043 105.843c0 4.183-1.709 7.975-4.46 10.726s-6.543 4.46-10.726 4.46H15.186c-4.183 0-7.975-1.709-10.726-4.46C1.709 192.79 0 188.997 0 184.814V78.971 34.945c0-4.183 1.709-7.975 4.46-10.726s6.543-4.46 10.726-4.46h18.343c2.881 0 5.208 2.327 5.208 5.208s-2.327 5.208-5.208 5.208H15.186c-1.302 0-2.49.537-3.369 1.4-.863.863-1.4 2.051-1.4 3.369zm179.167 10.433H10.417v100.618c0 1.302.537 2.49 1.4 3.369.863.863 2.051 1.4 3.369 1.4h169.629c1.302 0 2.49-.537 3.369-1.4.863-.863 1.4-2.051 1.4-3.369zM82.08 30.176c-2.881 0-5.208-2.327-5.208-5.208s2.327-5.208 5.208-5.208h34.977c2.881 0 5.208 2.327 5.208 5.208s-2.327 5.208-5.208 5.208z" />
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M22.0001 12.7675C22.0012 12.6111 21.9204 12.4656 21.7871 12.3838H21.7847L21.7764 12.3791L14.8461 8.2768C14.8162 8.25658 14.7851 8.2381 14.7531 8.22146C14.4855 8.08341 14.1677 8.08341 13.9001 8.22146C13.868 8.23811 13.837 8.25658 13.8071 8.2768L6.87683 12.3791L6.86847 12.3838C6.65666 12.5155 6.59172 12.794 6.72344 13.0058C6.76225 13.0682 6.8157 13.1202 6.87916 13.1573L13.8094 17.2596C13.8394 17.2796 13.8705 17.2981 13.9024 17.315C14.17 17.453 14.4879 17.453 14.7555 17.315C14.7874 17.2981 14.8184 17.2796 14.8485 17.2596L21.7787 13.1573C21.9172 13.0766 22.0017 12.9278 22.0001 12.7675Z"
+        fill="#0A2767"
+      />
+      <path
+        d="M7.68478 10.0284H12.2327V14.1972H7.68478V10.0284ZM21.0699 5.7907V3.88372C21.0808 3.40693 20.7034 3.01142 20.2267 3H8.42479C7.948 3.01142 7.57061 3.40693 7.58153 3.88372V5.7907L14.5583 7.65116L21.0699 5.7907Z"
+        fill="#0364B8"
+      />
+      <path
+        d="M7.58154 5.79077H12.2327V9.97682H7.58154V5.79077Z"
+        fill="#0078D4"
+      />
+      <path
+        d="M16.8838 5.79077H12.2327V9.97682L16.8838 14.1629H21.0699V9.97682L16.8838 5.79077Z"
+        fill="#28A8EA"
+      />
+      <path
+        d="M12.2327 9.97668H16.8838V14.1627H12.2327V9.97668Z"
+        fill="#0078D4"
+      />
+      <path
+        d="M12.2327 14.1628H16.8838V18.3489H12.2327V14.1628Z"
+        fill="#0364B8"
+      />
+      <path
+        d="M7.68457 14.1973H12.2325V17.987H7.68457V14.1973Z"
+        fill="#14447D"
+      />
+      <path
+        d="M16.8835 14.1628H21.0696V18.3489H16.8835V14.1628Z"
+        fill="#0078D4"
+      />
+      <path
+        d="M21.7869 13.1316L21.7781 13.1363L14.8479 17.034C14.8176 17.0526 14.7869 17.0702 14.7548 17.0861C14.6371 17.1421 14.5093 17.1738 14.379 17.1791L14.0004 16.9577C13.9684 16.9416 13.9374 16.9238 13.9074 16.9042L6.88414 12.8958H6.88089L6.65112 12.7675V20.6577C6.65471 21.1841 7.08423 21.608 7.61065 21.6047H21.0553C21.0632 21.6047 21.0702 21.601 21.0786 21.601C21.1898 21.5938 21.2994 21.571 21.4041 21.533C21.4494 21.5139 21.4931 21.4912 21.5348 21.4651C21.566 21.4475 21.6195 21.4089 21.6195 21.4089C21.8578 21.2326 21.9988 20.9541 22 20.6577V12.7675C21.9998 12.9184 21.9184 13.0575 21.7869 13.1316Z"
+        fill="url(#paint0_linear_6766_24005)"
+      />
+      <path
+        opacity="0.5"
+        d="M21.6279 12.7363V13.22L14.3814 18.2093L6.87906 12.8991C6.87906 12.8965 6.87697 12.8944 6.8744 12.8944L6.18604 12.4804V12.1316L6.46976 12.127L7.06975 12.4711L7.0837 12.4758L7.13486 12.5084C7.13486 12.5084 14.186 16.5316 14.2046 16.5409L14.4744 16.699C14.4977 16.6897 14.5209 16.6804 14.5488 16.6711C14.5628 16.6618 21.5488 12.7316 21.5488 12.7316L21.6279 12.7363Z"
+        fill="#0A2767"
+      />
+      <path
+        d="M21.7869 13.1316L21.7781 13.1368L14.8479 17.0344C14.8176 17.053 14.7869 17.0707 14.7548 17.0865C14.4857 17.218 14.1709 17.218 13.9018 17.0865C13.8699 17.0707 13.8389 17.0533 13.8088 17.0344L6.87856 13.1368L6.8702 13.1316C6.73639 13.0591 6.65251 12.9197 6.65112 12.7675V20.6577C6.65445 21.184 7.08383 21.608 7.61015 21.6047C7.61015 21.6047 7.61017 21.6047 7.61019 21.6047H21.0409C21.5672 21.608 21.9966 21.1841 22 20.6577C22 20.6577 22 20.6577 22 20.6577V12.7675C21.9998 12.9184 21.9184 13.0575 21.7869 13.1316Z"
+        fill="#1490DF"
+      />
+      <path
+        opacity="0.1"
+        d="M14.9488 16.9768L14.8451 17.0349C14.815 17.0541 14.784 17.0716 14.7521 17.0875C14.6378 17.1436 14.5135 17.1765 14.3865 17.1842L17.0232 20.3024L21.6228 21.4108C21.7488 21.3156 21.849 21.1904 21.9144 21.0466L14.9488 16.9768Z"
+        fill="black"
+      />
+      <path
+        opacity="0.05"
+        d="M15.4186 16.7125L14.8451 17.0348C14.815 17.054 14.784 17.0715 14.7521 17.0874C14.6378 17.1435 14.5135 17.1764 14.3865 17.1841L15.6218 20.5902L21.6241 21.4093C21.8606 21.2317 21.9998 20.9533 22 20.6576V20.5558L15.4186 16.7125Z"
+        fill="black"
+      />
+      <path
+        d="M7.62321 21.6047H21.0395C21.2459 21.6057 21.4473 21.5405 21.6139 21.4186L14 16.9586C13.968 16.9426 13.9369 16.9247 13.9069 16.9051L6.88367 12.8968H6.88042L6.65112 12.7675V20.6307C6.6506 21.1681 7.08582 21.6042 7.62321 21.6047V21.6047Z"
+        fill="#28A8EA"
+      />
+      <path
+        opacity="0.1"
+        d="M13.1628 7.5735V17.4944C13.1619 17.8423 12.9504 18.1549 12.6279 18.2851C12.528 18.3281 12.4203 18.3502 12.3116 18.3503H6.65112V7.18606H7.58136V6.72095H12.3116C12.7815 6.72273 13.1617 7.10362 13.1628 7.5735Z"
+        fill="black"
+      />
+      <path
+        opacity="0.2"
+        d="M12.6976 8.03863V17.9596C12.6988 18.0719 12.675 18.1831 12.6279 18.2851C12.4987 18.6035 12.1901 18.8124 11.8465 18.814H6.65112V7.18607H11.8465C11.9814 7.18472 12.1144 7.21838 12.2325 7.28375C12.5176 7.4274 12.6975 7.71938 12.6976 8.03863Z"
+        fill="black"
+      />
+      <path
+        opacity="0.2"
+        d="M12.6976 8.03863V17.0293C12.6954 17.499 12.3161 17.8797 11.8465 17.8837H6.65112V7.18607H11.8465C11.9814 7.18472 12.1144 7.21838 12.2325 7.28375C12.5176 7.4274 12.6975 7.71938 12.6976 8.03863Z"
+        fill="black"
+      />
+      <path
+        opacity="0.2"
+        d="M12.2325 8.03859V17.0293C12.232 17.4997 11.8518 17.8814 11.3814 17.8837H6.65112V7.18604H11.3814C11.8517 7.18629 12.2328 7.56779 12.2325 8.03813C12.2325 8.03828 12.2325 8.03844 12.2325 8.03859Z"
+        fill="black"
+      />
+      <path
+        d="M2.85256 7.18604H11.38C11.8509 7.18604 12.2326 7.56774 12.2326 8.03859V16.566C12.2326 17.0369 11.8509 17.4186 11.38 17.4186H2.85256C2.3817 17.4186 2 17.0369 2 16.566V8.03859C2 7.56774 2.38171 7.18604 2.85256 7.18604Z"
+        fill="url(#paint1_linear_6766_24005)"
+      />
+      <path
+        d="M4.66475 10.7618C4.87487 10.3141 5.21404 9.93947 5.63871 9.686C6.109 9.41675 6.64446 9.28253 7.18615 9.29809C7.6882 9.2872 8.1836 9.41447 8.61824 9.66599C9.0269 9.9097 9.35603 10.2668 9.56568 10.6939C9.79401 11.1645 9.9078 11.6825 9.89778 12.2055C9.90885 12.7521 9.79177 13.2937 9.55592 13.7869C9.34127 14.2293 9.0017 14.5991 8.57917 14.8506C8.12778 15.1099 7.61398 15.2405 7.09359 15.2283C6.58081 15.2407 6.07449 15.112 5.62987 14.8562C5.21768 14.6122 4.88442 14.2547 4.66987 13.8264C4.44019 13.3626 4.32505 12.8505 4.33406 12.333C4.32449 11.791 4.43754 11.2539 4.66475 10.7618ZM5.70289 13.2874C5.81492 13.5704 6.0049 13.8159 6.25079 13.9953C6.50124 14.1703 6.80114 14.2607 7.1066 14.253C7.43191 14.2658 7.75256 14.1725 8.02009 13.9869C8.26287 13.8081 8.44786 13.5619 8.55218 13.279C8.6688 12.963 8.72635 12.6283 8.72195 12.2916C8.72556 11.9516 8.67146 11.6135 8.56195 11.2916C8.46523 11.001 8.2862 10.7447 8.0466 10.5539C7.78577 10.3596 7.46598 10.261 7.14102 10.2748C6.82894 10.2668 6.52232 10.3578 6.26521 10.5348C6.01516 10.715 5.82157 10.9626 5.70707 11.2488C5.45307 11.9047 5.45174 12.6315 5.70334 13.2883L5.70289 13.2874Z"
+        fill="white"
+      />
+      <path
+        d="M16.8835 5.79077H21.0696V9.97682H16.8835V5.79077Z"
+        fill="#50D9FF"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_6766_24005"
+          x1="14.3255"
+          y1="12.7675"
+          x2="14.3255"
+          y2="21.6047"
+          gradientUnits="userSpaceOnUse">
+          <stop stopColor="#35B8F1" />
+          <stop offset="1" stopColor="#28A8EA" />
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_6766_24005"
+          x1="3.7776"
+          y1="6.51986"
+          x2="10.455"
+          y2="18.0848"
+          gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1784D9" />
+          <stop offset="0.5" stopColor="#107AD5" />
+          <stop offset="1" stopColor="#0A63C9" />
+        </linearGradient>
+      </defs>
     </svg>
   );
 };

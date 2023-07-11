@@ -34,7 +34,7 @@ import { companyLayerChoices, tokenInfoMetrics } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
 import parse from 'html-react-parser';
-import { newLineToP } from '@/utils/text';
+import { stripHtmlTags } from '@/utils/text';
 import { onTrackView } from '@/utils/track';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import { Popups } from '@/components/the-navbar';
@@ -43,6 +43,7 @@ import ElemNewsArticles, {
 } from '@/components/news/elem-news-articles';
 import { getQueryBySource } from '@/utils/news';
 import ElemNewsList from '@/components/news/elem-news-list';
+import ElemCompanyTags from '@/components/elem-company-tags';
 
 type Props = {
   company: Companies;
@@ -178,6 +179,20 @@ const Company: NextPage<Props> = (props: Props) => {
     item => item.link_type === 'child',
   );
 
+  const handleTagClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    tag: string,
+  ) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    router.push(
+      `/companies/?filters=${encodeURIComponent(
+        `{"industry":{"tags":["${tag}"]}}`,
+      )}`,
+    );
+  };
+
   return (
     <>
       <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
@@ -207,13 +222,14 @@ const Company: NextPage<Props> = (props: Props) => {
                   </div>
                 )}
               </div>
-              {companyTags.length > 0 && (
-                <ElemTags
-                  className="mt-4"
-                  resourceType={'companies'}
-                  tags={companyTags}
-                />
-              )}
+
+              <ElemCompanyTags
+                company={company}
+                className="mt-4"
+                hideLayer
+                tagOnClick={handleTagClick}
+              />
+
               {parentOrganization && (
                 <div className="mt-4">
                   <div className="font-bold text-sm">Sub-organization of:</div>
@@ -246,13 +262,14 @@ const Company: NextPage<Props> = (props: Props) => {
                       overviewMore ? '' : 'line-clamp-3'
                     }`}
                   >
-                    {parse(newLineToP(company.overview))}
+                    {parse(stripHtmlTags(company.overview))}
                   </div>
+
                   {overviewDivHeight > 84 && (
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="px-0 py-0 inline font-normal"
+                      className="!px-0 !py-0 inline font-normal"
                     >
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>
