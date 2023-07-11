@@ -79,12 +79,7 @@ test.describe('Sign up', () => {
     await signupUser(page, duplicateSignupPayloadData);
 
     await expect(
-      page.getByText(
-        new RegExp(
-          `Email ${duplicateSignupPayloadData.email} already registered, please try signing in`,
-          'i',
-        ),
-      ),
+      page.getByText(new RegExp(`The user already exists`, 'i')),
     ).toBeVisible();
   });
 });
