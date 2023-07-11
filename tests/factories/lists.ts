@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 import { toLower } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
+import { uniqueId } from '@/tests/utils';
 
 interface ListInfo {
   id?: number;
@@ -8,10 +8,8 @@ interface ListInfo {
 }
 
 export const getCreateListPayload = () => {
-  const uniqueId = uuidv4();
-
   return {
-    name: `List ${uniqueId}`,
+    name: `List ${uniqueId()}`,
   };
 };
 

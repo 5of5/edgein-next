@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
-import { v4 as uuidv4 } from 'uuid';
+import { uniqueId } from '@/tests/utils';
+
 export interface LoginPayload {
   email: string;
   password: string;
@@ -11,11 +12,9 @@ export interface SignUpPayload extends LoginPayload {
 }
 
 export const getSignUpPayload = (): SignUpPayload => {
-  const uniqueId = uuidv4();
-
   return {
     name: 'Jessica Taggart',
-    email: `jessica${uniqueId}@iluma.xyz`,
+    email: `jessica${uniqueId()}@iluma.xyz`,
     password: `Password123!`,
     reference_id: '',
   };

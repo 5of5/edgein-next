@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { v4 as uuidv4 } from 'uuid';
+import { uniqueId } from '@/tests/utils';
 
 interface GroupInfo {
   id?: number;
@@ -8,10 +8,8 @@ interface GroupInfo {
 }
 
 export const getCreateGroupPayload = () => {
-  const uniqueId = uuidv4();
-
   return {
-    name: `Edgein wizards ${uniqueId}`,
+    name: `Edgein wizards ${uniqueId()}`,
     description:
       'orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
   };
