@@ -93,7 +93,7 @@ export default function ForgotPasswordModal(props: Props) {
                       <h1 className="text-2xl font-bold lg:text-3xl">
                         {error === ''
                           ? 'Password reset email sent'
-                          : 'Cannot send reset password email.'}
+                          : 'Looks like you signed up through LinkedIn'}
                       </h1>
                       {error === '' ? (
                         <p className="mt-2">
