@@ -152,7 +152,7 @@ const Group: NextPage<Props> = (props: Props) => {
 
   return (
     <DashboardLayout>
-      <div className="mt-4 border-b border-black/10">
+      <div className="border-b border-black/10">
         <ElemGroupInformation
           isUserBelongToGroup={isUserBelongToGroup}
           group={groupData}
