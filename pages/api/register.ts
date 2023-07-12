@@ -1,9 +1,15 @@
-import UserService from '../../utils/users';
-import { linkTwoAccount } from '../../utils/auth0-library';
-import CookieService from '../../utils/cookie';
+import UserService from '@/utils/users';
+import CookieService from '@/utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { GetUserGroupInvitesByEmailQuery } from '@/graphql/types';
 import GroupService from '@/utils/groups';
+import {
+  AuthService,
+  makeAuthService,
+  UserInfo,
+} from '@/services/auth.service';
+
+const authService = makeAuthService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -28,42 +34,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let isUserPassPrimaryAccount = false;
   let isLinkedInPrimaryAccount = true;
 
-  const data = JSON.stringify({
-    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
+  const data = {
     email,
     password: req.body.password,
     name: req.body.name,
     user_metadata: { role: 'user' },
-    connection: 'Username-Password-Authentication',
-  });
+  };
 
-  let result;
-  const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
+  let result: UserInfo & {
+    groupInvites?: GetUserGroupInvitesByEmailQuery['user_group_invites'];
+  };
 
   try {
-    const fetchRequest = await fetch(
-      `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/dbconnections/signup`,
-      {
-        method: 'POST',
-        headers: myHeaders,
-        body: data,
-        redirect: 'follow',
-      },
-    );
-    if (!fetchRequest.ok) {
-      const errorResponse = JSON.parse(await fetchRequest.text());
-      if (errorResponse.code === 'invalid_signup') {
-        return res.status(fetchRequest.status).send({
-          message: `Email ${email} already registered, please try signing in`,
-        });
-      } else {
-        return res
-          .status(fetchRequest.status)
-          .send({ message: errorResponse.description });
-      }
-    }
-    result = JSON.parse(await fetchRequest.text());
+    result = await authService.createUser(data);
 
     let userData: any = await UserService.findOneUserByEmail(email);
     if (!userData) {
@@ -111,29 +94,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isLinkedInPrimaryAccount = true;
       isUserPassPrimaryAccount = false;
       userData = await UserService.updateAuth0UserPassId(
-        result.email,
-        result._id,
+        result.email!,
+        result._id!,
       );
     }
 
-    if (userData && userData.auth0_linkedin_id && userData.auth0_user_pass_id) {
-      let primaryId = '';
-      let secondayProvider = '';
-      let secondayId = '';
-      if (isUserPassPrimaryAccount) {
-        primaryId = `auth0|${userData.auth0_user_pass_id}`;
-        secondayProvider = 'linkedin';
-        secondayId = `linkedin|${userData.auth0_linkedin_id}`;
-      }
-      if (isLinkedInPrimaryAccount) {
-        primaryId = `linkedin|${userData.auth0_linkedin_id}`;
-        secondayProvider = 'auth0';
-        secondayId = `auth0|${userData.auth0_user_pass_id}`;
-      }
-      if (primaryId !== '' && secondayId !== '') {
-        await linkTwoAccount(primaryId, secondayId, secondayProvider);
-      }
-    }
+    await authService.linkAccounts(
+      isUserPassPrimaryAccount,
+      isLinkedInPrimaryAccount,
+      userData,
+    );
 
     const userToken = UserService.createToken(userData, true);
 

@@ -7,6 +7,7 @@ import { ResourceVerificationMailParams } from '@/types/api';
 import ResourceVerificationEmail from '@/react-email-starter/emails/resource-verification';
 import { makeEmailService } from '@/services/email.service';
 import { env } from '@/services/config.service';
+import { AuthService } from '@/services/auth.service';
 
 const emailService = makeEmailService();
 
@@ -31,8 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     personId,
   );
 
-  const verifyUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?vtoken=${verifyWorkToken}`;
-
+  const verifyUrl = AuthService.verifyWorkplaceUrl(verifyWorkToken);
   await saveToken(
     verifyWorkToken,
     tokenTypes.verifyWorkHereToken,
@@ -40,22 +40,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     token,
   );
 
-  const mailParams: ResourceVerificationMailParams = {
-    email,
-    username: user.display_name || '',
+  const ret = await sendVerificationMail({
     verifyUrl,
     companyName,
-  };
-
-  const ret = await sendVerificationMail(mailParams);
+    email,
+    username: user.display_name || '',
+  });
 
   res.send(ret);
 };
 
-const sendVerificationMail = async (
-  mailParams: ResourceVerificationMailParams,
-) => {
-  const { email, username, companyName, verifyUrl } = mailParams;
+const sendVerificationMail = async ({
+  email,
+  username,
+  companyName,
+  verifyUrl,
+}: ResourceVerificationMailParams) => {
   try {
     const emailHtml = render(
       ResourceVerificationEmail({
