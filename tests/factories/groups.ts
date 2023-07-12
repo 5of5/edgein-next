@@ -51,9 +51,7 @@ export const deleteGroup = async (
   baseURL: string | undefined,
   groupInfo: GroupInfo,
 ) => {
-  await page.goto(`${baseURL}/groups/${groupInfo.id}`, {
-    timeout: 15000,
-  });
+  await page.goto(`${baseURL}/groups/${groupInfo.id}`);
 
   await page
     .getByRole('button', { name: `${groupInfo.name}`, exact: true })
@@ -86,5 +84,5 @@ export const deleteGroup = async (
     page.locator('span', {
       hasText: new RegExp(`${groupInfo.name}`, 'i'),
     }),
-  ).not.toBeVisible({ timeout: 15000 });
+  ).not.toBeVisible();
 };

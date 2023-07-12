@@ -1,4 +1,3 @@
-import { toLower } from 'lodash';
 import { getSavedUserPayload } from '../factories/auth';
 import {
   createGroup,
@@ -18,7 +17,7 @@ let listToDelete: { name: string; id: number } | undefined;
 
 test.describe('Group', () => {
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/profile/`, { timeout: 15000 });
+    await page.goto(`${baseURL}/profile/`);
   });
 
   test.afterEach(async ({ page, baseURL }) => {
@@ -44,7 +43,7 @@ test.describe('Group', () => {
 
     await expect(
       page.getByRole('button', { name: `${groupData.name}`, exact: true }),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
 
     groupToDelete = {
       id: groupId,
@@ -115,7 +114,7 @@ test.describe('Group', () => {
 
     await expect(
       page.getByRole('button', { name: `${groupData.name}`, exact: true }),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
 
     await page
       .locator('button', { has: page.locator('span', { hasText: /Invite/i }) })
@@ -203,9 +202,7 @@ test.describe('Group', () => {
 
     const slug = kebabCase(listData.name);
 
-    await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`, {
-      timeout: 15000,
-    });
+    await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`);
 
     await expect(
       page.locator('button', {
@@ -227,7 +224,7 @@ test.describe('Group', () => {
 
     await expect(
       page.getByRole('button', { name: `${groupData.name}`, exact: true }),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
 
     await page.getByRole('button', { name: /Add List/i }).click();
 
@@ -267,7 +264,7 @@ test.describe('Group', () => {
       page.getByRole('heading', {
         name: new RegExp(listData.name, ''),
       }),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
 
     groupToDelete = {
       id: groupId,
