@@ -38,7 +38,11 @@ const MyList: NextPage<Props> = () => {
   const { listAndFollows: lists, refreshProfile, user } = useUser();
   const router = useRouter();
 
-  const { data, refetch } = useGetListMembersQuery(
+  const {
+    data,
+    refetch,
+    isRefetching: isListMembersReFetching,
+  } = useGetListMembersQuery(
     {
       where: {
         user_id: { _eq: user?.id },
@@ -46,6 +50,7 @@ const MyList: NextPage<Props> = () => {
     },
     {
       enabled: Boolean(user?.id),
+      refetchOnWindowFocus: false,
     },
   );
   const listMembers = data?.list_members || [];
@@ -324,6 +329,8 @@ const MyList: NextPage<Props> = () => {
     if (listPeople) setPeople(listPeople?.follows_people as Follows_People[]);
   }, [companiesData, vcFirms, listPeople]);
 
+  const isFollowButtonLoading = isFollowListLoading || isListMembersReFetching;
+
   return (
     <DashboardLayout>
       <ElemListInformation
@@ -334,7 +341,7 @@ const MyList: NextPage<Props> = () => {
         onAddGroups={onAddGroups}
         onChangePublic={onChangePublic}
         isFollowing={isFollowing}
-        isFollowListLoading={isFollowListLoading}
+        isFollowButtonLoading={isFollowButtonLoading}
         onFollowList={handleFollowList}
       />
 
@@ -392,7 +399,7 @@ const MyList: NextPage<Props> = () => {
             </h3>
             <ElemButton
               btn="primary"
-              loading={isFollowListLoading}
+              loading={isFollowButtonLoading}
               onClick={handleFollowList}
               className="mt-2 mb-12"
             >

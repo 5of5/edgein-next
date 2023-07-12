@@ -33,7 +33,7 @@ type Props = {
   onAddGroups: (ids: Array<number>) => void;
   onChangePublic: (value: boolean) => void;
   isFollowing: boolean;
-  isFollowListLoading: boolean;
+  isFollowButtonLoading: boolean;
   onFollowList: () => void;
 };
 
@@ -45,7 +45,7 @@ export const ElemListInformation: FC<Props> = ({
   onAddGroups,
   onChangePublic,
   isFollowing,
-  isFollowListLoading,
+  isFollowButtonLoading,
   onFollowList,
 }) => {
   const { user } = useUser();
@@ -160,7 +160,7 @@ export const ElemListInformation: FC<Props> = ({
           {isCustomList && !isFollowing && (
             <ElemButton
               btn="primary"
-              loading={isFollowListLoading}
+              loading={isFollowButtonLoading}
               onClick={onFollowList}
             >
               Follow
@@ -169,7 +169,7 @@ export const ElemListInformation: FC<Props> = ({
           {isCustomList && isFollowing && !isListCreator && (
             <ElemButton
               btn="slate"
-              loading={isFollowListLoading}
+              loading={isFollowButtonLoading}
               onClick={onFollowList}
             >
               <IconCheck className="w-5 h-5 mr-1" />
