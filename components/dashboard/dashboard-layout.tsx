@@ -15,19 +15,19 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative mt-2">
         <ElemButton
           btn="slate"
           roundedFull={false}
           onClick={() => setSidebarOpen(true)}
-          className="-ml-4 mt-6 mb-4 rounded-tr-lg rounded-br-lg pl-8 sm:pl-10  md:pl-12 hover:border-primary-500 lg:hidden "
+          className="-ml-4 mt-4 mb-2 rounded-tr-lg rounded-br-lg pl-8 sm:pl-10 md:pl-12 hover:border-primary-500 lg:hidden"
         >
           <span className="sr-only">Dashboard Menu</span>
           <IconWindowSidebar className="w-6 h-6 mr-2" />
           Sidebar
         </ElemButton>
 
-        <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-72 mt-12 overflow-y-auto scrollbar-hide lg:block">
+        <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-72 mt-14 overflow-y-auto scrollbar-hide lg:block">
           <DashboardSidebar />
         </div>
 

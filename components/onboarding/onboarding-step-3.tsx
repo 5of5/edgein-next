@@ -7,7 +7,6 @@ import {
   useGetRelevantCompaniesQuery,
   useGetRelevantVcFirmsQuery,
 } from '@/graphql/types';
-import { User } from '@/models/user';
 import { DeepPartial } from '@/types/common';
 import ElemOrganizationItem from './elem-organization-item';
 
@@ -19,7 +18,6 @@ type Props = {
   list: any[];
   onNext: (list: any[]) => void;
   onBack: () => void;
-  user: User | null;
 };
 
 export default function OnboardingStep3(props: Props) {
