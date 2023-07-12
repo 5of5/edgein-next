@@ -1,5 +1,5 @@
 export const generateRandomString = (stringLength = 20): string => {
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const alphabet = '0123456789';
 
   let result = '';
   for (let i = 0; i < stringLength; i++) {
