@@ -151,7 +151,11 @@ export const TagInputSelect: React.FC<Props> = ({
               >
                 Add &ldquo;{inputValue}&rdquo;
               </div>
-            ) : null}
+            ) : (
+              <p className="p-2 text-sm text-slate-500">
+                We don&apos;t have this tag yet
+              </p>
+            )}
           </div>
         )}
       </div>
