@@ -45,7 +45,7 @@ export const applyFilterByCountry = async (
 
   await page.getByPlaceholder(/Enter country name/i).fill(country);
 
-  await page.keyboard.press('Enter');
+  await page.locator('li', { hasText: country }).click();
 
   selected = 1;
 
@@ -70,7 +70,7 @@ export const applyFilterByState = async (
 
   await page.getByPlaceholder(/Enter state name/i).fill(state);
 
-  await page.keyboard.press('Enter');
+  await page.locator('li', { hasText: state }).click();
 
   selected = 1;
 
@@ -95,7 +95,7 @@ export const applyFilterByCity = async (
 
   await page.getByPlaceholder(/Enter city name/i).fill(city);
 
-  await page.keyboard.press('Enter');
+  await page.locator('li', { hasText: city }).click();
 
   selected = 1;
 
