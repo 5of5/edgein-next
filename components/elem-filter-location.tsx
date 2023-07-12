@@ -1,6 +1,7 @@
-import { FC, PropsWithChildren, ChangeEvent, useRef } from 'react';
+import { FC, ChangeEvent, useState } from 'react';
 import { Combobox } from '@headlessui/react';
 import uniqBy from 'lodash/uniqBy';
+import uniq from 'lodash/uniq';
 import { FilterOptionKeys } from '@/models/Filter';
 import { RadarAddressResponse } from '@/types/common';
 import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
@@ -44,7 +45,7 @@ export const ElemFilterLocation: FC<Props> = ({
   onChangeCondition,
   onChangeTags,
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState('');
 
   const layers = {
     country: ['country'],
@@ -59,13 +60,16 @@ export const ElemFilterLocation: FC<Props> = ({
 
   const locationOptions = uniqBy(options, option);
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+    onInputChange(event);
+  };
+
   const handleSelect = (values: Partial<RadarAddressResponse>[]) => {
-    const newTags = values.map(item => item[option] || '');
+    const newTags = uniq(values.map(item => item[option] || ''));
     onChangeTags(newTags, option);
     setOptions([]);
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
+    setInputValue('');
   };
 
   const handleRemove = (tag: string) => {
@@ -124,20 +128,24 @@ export const ElemFilterLocation: FC<Props> = ({
                   </ul>
                 )}
                 <Combobox.Input
-                  ref={inputRef}
                   className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
                   displayValue={(value: RadarAddressResponse) =>
                     value?.[option]
                   }
                   placeholder={placeholder}
-                  onChange={onInputChange}
+                  value={inputValue}
+                  onChange={handleInputChange}
                 />
               </div>
-              <ComboboxResults
-                isLoading={isLoading}
-                name={option}
-                options={locationOptions}
-              />
+              {inputValue && (
+                <Combobox.Options className="absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+                  <ComboboxResults
+                    isLoading={isLoading}
+                    name={option}
+                    options={locationOptions}
+                  />
+                </Combobox.Options>
+              )}
             </Combobox>
           </div>
         </div>
@@ -158,14 +166,6 @@ export const ElemFilterLocation: FC<Props> = ({
   );
 };
 
-const Dropdown: FC<PropsWithChildren<unknown>> = ({ children }) => {
-  return (
-    <Combobox.Options className="absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
-      {children}
-    </Combobox.Options>
-  );
-};
-
 type ComboboxResultsProps = {
   isLoading: boolean;
   name: Extract<FilterOptionKeys, 'country' | 'state' | 'city'>;
@@ -178,23 +178,17 @@ const ComboboxResults: FC<ComboboxResultsProps> = ({
   options,
 }) => {
   if (isLoading) {
-    return (
-      <Dropdown>
-        <p className="text-sm p-2 animate-pulse">Searching...</p>
-      </Dropdown>
-    );
+    return <p className="text-sm text-slate-500 p-2">Searching...</p>;
   }
 
   if (options.length === 0) {
     return (
-      <Dropdown>
-        <p className="text-sm p-2 animate-pulse">No option was found</p>
-      </Dropdown>
+      <p className="text-sm text-slate-500 p-2">{`We don't cover this ${name} yet`}</p>
     );
   }
 
   return (
-    <Dropdown>
+    <>
       {options
         .filter(item => item[name])
         .map(item => (
@@ -210,6 +204,6 @@ const ComboboxResults: FC<ComboboxResultsProps> = ({
             {item[name]}
           </Combobox.Option>
         ))}
-    </Dropdown>
+    </>
   );
 };
