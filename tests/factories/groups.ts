@@ -24,12 +24,16 @@ export const createGroup = async (
 ): Promise<number> => {
   await page
     .locator('li', {
-      has: page.getByRole('button', { name: /Create Group/i }),
+      has: page.getByRole('button', { name: /Create New Group/i }),
     })
     .click();
 
   await expect(
-    page.getByRole('heading', { name: /Create Group/i }),
+    page.locator('h2', {
+      has: page.locator('span', {
+        hasText: 'Create Group',
+      }),
+    }),
   ).toBeVisible();
 
   await expect(page.getByRole('textbox', { name: 'name' })).toBeEmpty();
@@ -82,7 +86,7 @@ export const deleteGroup = async (
 
   await page.getByRole('button', { name: /Delete/i }).click();
 
-  await expect(page).toHaveURL(`${baseURL}/account/`);
+  await expect(page).toHaveURL(`${baseURL}/groups/`);
 
   await expect(
     page.locator('span', {
