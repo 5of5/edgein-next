@@ -1,5 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
+export const generateRandomString = (stringLength = 20): string => {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+  let result = '';
+  for (let i = 0; i < stringLength; i++) {
+    const randomIndex = Math.floor(Math.random() * alphabet.length);
+    const randomChar = alphabet.charAt(randomIndex);
+    result += randomChar;
+  }
+
+  return result;
+};
 
 export const uniqueId = () => {
-  return uuidv4().replaceAll('-', '');
+  return generateRandomString();
 };
