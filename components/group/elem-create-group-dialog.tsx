@@ -6,11 +6,8 @@ import { IconX } from '@/components/icons';
 import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
-import {
-  extractErrors,
-  GroupSchemaType,
-  groupSchema,
-} from '@/utils/validation';
+import { Group, groupSchema } from '@/utils/schema';
+import { extractErrors, zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -23,7 +20,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   const { refetchMyGroups } = useUser();
 
   const [values, setValues] = useState({ name: '', description: '' });
-  const [error, setError] = useState<Partial<GroupSchemaType>>({
+  const [error, setError] = useState<Partial<Group>>({
     name: '',
     description: '',
   });
@@ -52,10 +49,10 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
       ...prev,
       [name]: value,
     }));
-    const result = groupSchema.safeParse({ ...values, [name]: value });
-    if (!result.success) {
-      const { fieldErrors } = result.error.flatten();
-      setError(extractErrors<GroupSchemaType>(fieldErrors));
+
+    const { errors } = zodValidate({ ...values, [name]: value }, groupSchema);
+    if (errors) {
+      setError(extractErrors<Group>(errors));
     } else {
       setError({ name: '', description: '' });
     }

@@ -4,7 +4,8 @@ import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
 import { ElemButton } from '../elem-button';
 import { User_Groups } from '@/graphql/types';
-import { groupSchema } from '@/utils/validation';
+import { groupSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -37,11 +38,11 @@ const ElemEditDialog: FC<Props> = ({
 
   const onValidate = (value: string) => {
     setValue(value);
-    const result = groupSchema.safeParse({ [fieldName]: value });
-    if (!result.success) {
-      const { fieldErrors } = result.error.flatten();
+
+    const { errors } = zodValidate({ [fieldName]: value }, groupSchema);
+    if (errors) {
       if (fieldName === 'name' || fieldName === 'description') {
-        setError(fieldErrors[fieldName]?.[0] || '');
+        setError(errors[fieldName]?.[0] || '');
       } else {
         setError('');
       }

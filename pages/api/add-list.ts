@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { upsertList } from '@/utils/lists';
-import { listSchema } from '@/utils/validation';
+import { listSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 import CookieService from '../../utils/cookie';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,12 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check if user has a list for sentiment
   // upsertList
 
-  const result = listSchema.safeParse({ name: listName });
-  if (!result.success) {
-    const { fieldErrors } = result.error.flatten();
+  const { errors } = zodValidate({ ...req.body, name: listName }, listSchema);
+  if (errors) {
     return res
       .status(400)
-      .send({ error: fieldErrors['name']?.[0] || 'Invalid parameters' });
+      .send({ error: errors['name']?.[0] || 'Invalid parameters' });
   } else {
     const list = await upsertList(req.body.listName, user, token);
     return res.send({ list });

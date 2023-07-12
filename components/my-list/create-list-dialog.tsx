@@ -7,7 +7,8 @@ import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
 import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
-import { listSchema } from '@/utils/validation';
+import { listSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -25,10 +26,9 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   useEffect(() => {
     setListName(listName);
     if (listName) {
-      const result = listSchema.safeParse({ name: listName });
-      if (!result.success) {
-        const { fieldErrors } = result.error.flatten();
-        setError(fieldErrors['name']?.[0] || '');
+      const { errors } = zodValidate({ name: listName }, listSchema);
+      if (errors) {
+        setError(errors['name']?.[0] || '');
       } else {
         setError('');
       }

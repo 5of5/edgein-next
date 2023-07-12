@@ -3,7 +3,8 @@ import { FC, Fragment, useState, useEffect } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
-import { listSchema } from '@/utils/validation';
+import { listSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -28,10 +29,9 @@ export const ModalListName: FC<Props> = ({
 
   const validateName = (value: string) => {
     setName(value);
-    const result = listSchema.safeParse({ name: value });
-    if (!result.success) {
-      const { fieldErrors } = result.error.flatten();
-      setError(fieldErrors['name']?.[0] || '');
+    const { errors } = zodValidate({ name: value }, listSchema);
+    if (errors) {
+      setError(errors['name']?.[0] || '');
     } else {
       setError('');
     }

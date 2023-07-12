@@ -29,8 +29,16 @@ const ElemSettingEditableField: React.FC<Props> = ({
   const isGroupManager = user?.id === group.created_by_user_id;
 
   const { mutate, isLoading } = useMutation(
-    (value: string) =>
-      fetch('/api/groups/', {
+    (value: string) => {
+      const payload = {
+        [field]: value,
+      };
+
+      if (field !== 'name') {
+        payload.name = group.name;
+      }
+
+      return fetch('/api/groups/', {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -38,11 +46,11 @@ const ElemSettingEditableField: React.FC<Props> = ({
         },
         body: JSON.stringify({
           id: group.id,
-          payload: {
-            [field]: value,
-          },
+          payload,
         }),
-      }),
+      });
+    },
+
     {
       onSuccess: async (response, value) => {
         if (response.status !== 200) {
