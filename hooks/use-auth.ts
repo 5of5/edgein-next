@@ -34,7 +34,7 @@ export function useAuth() {
     data: user,
     error,
     isValidating,
-  } = useSWR<User>('/api/user/', fetcher, { revalidateOnFocus: false });
+  } = useSWR<User>('/api/user/', fetcher);
   const { mutate } = useSWRConfig();
   const loading = isValidating;
 
