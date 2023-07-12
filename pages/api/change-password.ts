@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send({
       status: ErrorCode.LINKED_IN_ACCOUNT,
       message:
-        'Use LinkedIn for login. Password cannot be reset for LinkedIn account.',
+        'We can\'t change your password if you have signed up through LinkedIn. To use EdgeIn, simply log in with LinkedIn.',
     });
   }
   try {
