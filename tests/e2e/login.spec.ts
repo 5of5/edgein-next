@@ -9,7 +9,7 @@ test.describe('Login', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/`, { timeout: 15000 });
+    await page.goto(`${baseURL}/`);
   });
 
   test.afterEach(async ({ page }) => {
@@ -48,6 +48,6 @@ test.describe('Login', () => {
       page
         .getByAltText('profile')
         .or(page.getByRole('img', { name: loginPayloadData.name })),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
   });
 });

@@ -15,7 +15,7 @@ setup('Authenticate', async ({ page }) => {
     page
       .getByAltText('profile')
       .or(page.getByRole('img', { name: loginPayloadData.name })),
-  ).toBeVisible({ timeout: 15000 });
+  ).toBeVisible();
 
   await page.context().storageState({ path: file });
 });
