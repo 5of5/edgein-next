@@ -23,45 +23,15 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Setup steps
+        uses: 5of5/edgein-next/.github/actions/setup.yml@${{ github.head_ref }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - uses: actions/checkout@v3
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-
-      - name: Config Terraform plugin cache
-        working-directory: infra/terraform/application
-        run: |
-          echo 'plugin_cache_dir="$HOME/.terraform.d/plugin-cache"' >~/.terraformrc
-          mkdir --parents ~/.terraform.d/plugin-cache
-
-      - name: Cache Terraform
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.terraform.d/plugin-cache
-          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
-          restore-keys: |
-            ${{ runner.os }}-terraform-
-
-      - name: Setup TF variables
-        working-directory: infra/terraform/application
-        run: |
-          touch input.tfvars
-          echo 'vercel_commit = "${{ GITHUB_SHA::8 }}"' >> input.tfvars
-          echo 'vercel_team = ${{ secrets.VERCEL_TEAM }}' >> input.tfvars
-          echo 'vercel_api_token = ${{ secrets.VERCEL_API_TOKEN }}' >> input.tfvars
-
-      - name: Terraform Init
-        id: init
-        working-directory: infra/terraform/application
-        run: terraform init
+          aws-region: ${{ var.AWS_REGION }}
+          vercel-commit: ${{ GITHUB_SHA::8 }}
+          vercel-team: ${{ secrets.VERCEL_TEAM }}
+          vercel-api-token: ${{ secrets.VERCEL_API_TOKEN }}
 
       - name: Set workspace
         run: |

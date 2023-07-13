@@ -1,19 +1,11 @@
-name: Deploy to preview environment
+name: Drop stage env and create new one from last prod DB snapshot
 on:
-  pull_request:
-    branches:
-      - stage
-    types:
-      - opened
-      - synchronize
   workflow_dispatch:
-    inputs:
-      workspace:
-        description: 'Workspace to deploy'
-        required: true
-        default: preview
 
 env:
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_REGION: ${{vars.AWS_REGION}}
   PROJECT_NAME: edgein
 
 jobs:
@@ -31,25 +23,21 @@ jobs:
           vercel-team: ${{ secrets.VERCEL_TEAM }}
           vercel-api-token: ${{ secrets.VERCEL_API_TOKEN }}
 
-      - name: Set workspace
-        run: |
-          if [[ "${{ github.event.inputs.workspace }}" == "preview" ]]; then
-            echo WORKSPACE=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
-          else
-            echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
-          fi
+      - name: Terraform select workspace
+        id: select-workspace
+        working-directory: infra/terraform/application
+        run: terraform workspace select -or-create stage
 
       - name: Terraform Validate
         id: validate
         working-directory: infra/terraform/application
         run: terraform validate -no-color
 
-      - name: Terraform select workspace
-        id: select-workspace
+      - name: Destroy stage environment
         working-directory: infra/terraform/application
-        run: terraform workspace select -or-create ${{ env.WORKSPACE }}
-        
-      - name: Create preview environment
+        run: terraform destroy --auto-approve -var-file="input.tfvars"
+
+      - name: Create stage environment
         working-directory: infra/terraform/application
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
