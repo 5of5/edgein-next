@@ -287,6 +287,7 @@ const Company: NextPage<Props> = (props: Props) => {
                   resourceId={company.id}
                   resourceType={'companies'}
                   slug={company.slug!}
+                  follows={company.follows}
                 />
                 <ElemSocialShare
                   resourceName={company.name}
