@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { random } from 'lodash';
+import { uniqueId } from '@/tests/utils';
 
 interface GroupInfo {
   id?: number;
@@ -8,10 +8,8 @@ interface GroupInfo {
 }
 
 export const getCreateGroupPayload = () => {
-  const uniqueId = random(1, 800);
-
   return {
-    name: `Edgein wizards ${uniqueId}`,
+    name: `Edgein wizards ${uniqueId()}`,
     description:
       'orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
   };
@@ -57,9 +55,7 @@ export const deleteGroup = async (
   baseURL: string | undefined,
   groupInfo: GroupInfo,
 ) => {
-  await page.goto(`${baseURL}/groups/${groupInfo.id}`, {
-    timeout: 15000,
-  });
+  await page.goto(`${baseURL}/groups/${groupInfo.id}`);
 
   await page
     .getByRole('button', { name: `${groupInfo.name}`, exact: true })
@@ -92,5 +88,5 @@ export const deleteGroup = async (
     page.locator('span', {
       hasText: new RegExp(`${groupInfo.name}`, 'i'),
     }),
-  ).not.toBeVisible({ timeout: 15000 });
+  ).not.toBeVisible();
 };

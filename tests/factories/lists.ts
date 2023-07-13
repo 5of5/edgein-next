@@ -1,5 +1,6 @@
 import { Page, expect } from '@playwright/test';
-import { random, toLower } from 'lodash';
+import { uniqueId } from '@/tests/utils';
+import { kebabCase } from '@/utils';
 
 interface ListInfo {
   id?: number;
@@ -7,10 +8,8 @@ interface ListInfo {
 }
 
 export const getCreateListPayload = () => {
-  const uniqueId = random(1, 800);
-
   return {
-    name: `List ${uniqueId}`,
+    name: `List ${uniqueId()}`,
   };
 };
 
@@ -41,6 +40,16 @@ export const createList = async (
     list: { id: listId },
   } = await createListResponse.json();
 
+  const slug = kebabCase(listInfo.name);
+  await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`);
+  await expect(
+    page.locator('button', {
+      has: page.locator('div', {
+        hasText: new RegExp(`${listInfo.name}`, 'i'),
+      }),
+    }),
+  ).toBeVisible();
+
   return listId;
 };
 
@@ -49,11 +58,9 @@ export const deleteList = async (
   baseURL: string | undefined,
   listInfo: ListInfo,
 ) => {
-  const slug = toLower(listInfo.name).replace(/\s/, '-');
+  const slug = kebabCase(listInfo.name);
 
-  await page.goto(`${baseURL}/lists/${listInfo.id}/${slug}/`, {
-    timeout: 15000,
-  });
+  await page.goto(`${baseURL}/lists/${listInfo.id}/${slug}/`);
 
   await page
     .locator('button', {
@@ -83,5 +90,5 @@ export const deleteList = async (
         hasText: new RegExp(`${listInfo.name}`, 'i'),
       }),
     }),
-  ).not.toBeVisible({ timeout: 15000 });
+  ).not.toBeVisible();
 };

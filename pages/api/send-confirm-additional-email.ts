@@ -5,6 +5,7 @@ import { ConfirmAdditionalMailParams } from '@/types/api';
 import AdditionalEmailConfirmEmail from '@/react-email-starter/emails/additional-email-confirm';
 import { env } from '@/services/config.service';
 import { makeEmailService } from '@/services/email.service';
+import { AuthService } from '@/services/auth.service';
 
 const emailService = makeEmailService();
 
@@ -20,7 +21,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const mailParams: ConfirmAdditionalMailParams = {
     email,
     username: user.display_name || '',
-    verifyUrl: `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-additional-email/?email=${email}&uid=${user.id}`,
+    verifyUrl: AuthService.verifyUrl({
+      email,
+      userId: AuthService.auth0UserId(user.auth0_user_pass_id),
+    }),
   };
 
   const emailResponse = await sendInvitationMail(mailParams);

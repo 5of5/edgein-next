@@ -1,4 +1,3 @@
-import { toLower } from 'lodash';
 import {
   createList,
   deleteList,
@@ -10,7 +9,7 @@ let listToDelete: { name: string; id: number } | undefined;
 
 test.describe('Lists', () => {
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/profile/`, { timeout: 15000 });
+    await page.goto(`${baseURL}/profile/`);
   });
 
   test.afterEach(async ({ page, baseURL }) => {
@@ -83,20 +82,7 @@ test.describe('Lists', () => {
 
   test('should create a new list', async ({ page, baseURL }) => {
     const listData = getCreateListPayload();
-
     const listId = await createList(page, baseURL, listData);
-
-    const slug = toLower(listData.name).replace(/\s/, '-');
-
-    await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`);
-
-    await expect(
-      page.locator('button', {
-        has: page.locator('div', {
-          hasText: new RegExp(`${listData.name}`, 'i'),
-        }),
-      }),
-    ).toBeVisible({ timeout: 15000 });
 
     listToDelete = {
       id: listId,
@@ -106,7 +92,6 @@ test.describe('Lists', () => {
 
   test('should delete a new list', async ({ page, baseURL }) => {
     const listData = getCreateListPayload();
-
     const listId = await createList(page, baseURL, listData);
 
     await deleteList(page, baseURL, { id: listId, name: listData.name });
@@ -115,27 +100,14 @@ test.describe('Lists', () => {
   test('should add companies to list', async ({ page, baseURL }) => {
     // Create new list
     const listData = getCreateListPayload();
-
     const listId = await createList(page, baseURL, listData);
 
-    const slug = toLower(listData.name).replace(/\s/, '-');
-
-    await expect(page).toHaveURL(`${baseURL}/lists/${listId}/${slug}/`);
-
-    await expect(
-      page.locator('button', {
-        has: page.locator('div', {
-          hasText: new RegExp(`${listData.name}`, 'i'),
-        }),
-      }),
-    ).toBeVisible();
-
     // Add companies
-    await page.goto(`${baseURL}/companies/`, { timeout: 15000 });
+    await page.goto(`${baseURL}/companies/`);
 
     await expect(
       page.getByRole('heading', { name: /Web3 Companies/i }),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
 
     const companyLink = await page
       .getByTestId('companies')
@@ -173,7 +145,7 @@ test.describe('Lists', () => {
       page.locator('a', {
         has: page.locator('p', { hasText: `${companyName}` }),
       }),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
 
     listToDelete = {
       id: listId,

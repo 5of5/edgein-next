@@ -1,8 +1,10 @@
 import qs from 'qs';
-import UserService from '../../utils/users';
-import { getUserInfoFromToken } from '../../utils/auth0-library';
-import CookieService from '../../utils/cookie';
+import UserService from '@/utils/users';
+import CookieService from '@/utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { makeAuthService } from '@/services/auth.service';
+
+const authService = makeAuthService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -33,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const emailExist = await UserService.findOneUserByEmail(email);
   // if email does not exist, then redirect user for registartion
   if (!emailExist) return res.status(404).send({ nextStep: 'SIGNUP' });
-  if (emailExist.active === false) {
+  if (!emailExist.active) {
     return res.status(403).send({ message: 'Error: Please try again' });
   }
   if (!emailExist.auth0_user_pass_id)
@@ -42,59 +44,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         'Email is already registered with another provider, try LinkedIn or signing up with this email and a password',
     });
 
-  // send data to auth0 to make user login
-  const data = qs.stringify({
-    grant_type: 'password',
-    username: email,
-    scope: 'offline_access',
-    password: password,
-    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-    client_secret: process.env.AUTH0_CLIENT_SECRET,
-  });
-
-  const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-
   try {
-    const fetchRequest = await fetch(
-      `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`,
-      {
-        method: 'POST',
-        headers: myHeaders,
-        body: data,
-        redirect: 'follow',
-      },
-    );
-    if (!fetchRequest.ok) {
-      const errorResponse = JSON.parse(await fetchRequest.text());
-      return res
-        .status(fetchRequest.status)
-        .send({ message: errorResponse.error_description });
-    }
-    const tokenResponse = JSON.parse(await fetchRequest.text());
+    const { access_token } = await authService.signIn({ email, password });
+    const userInfo = await authService.getProfile(access_token);
 
-    // get user info
-    myHeaders.append('Authorization', `Bearer ${tokenResponse.access_token}`);
-    const userInfoFetchRequest = await getUserInfoFromToken(
-      tokenResponse.access_token,
-    );
-    if (!userInfoFetchRequest.ok) {
-      const userInfoErrorResponse = JSON.parse(
-        await userInfoFetchRequest.text(),
-      );
-      return res
-        .status(userInfoFetchRequest.status)
-        .send({ message: userInfoErrorResponse.error_description });
-    }
-    const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
-
-    if (userInfoInJson && userInfoInJson.email) {
+    if (userInfo && userInfo.email) {
       if (!emailExist.is_auth0_verified) {
         // update userInfo
         isFirstLogin = true;
         await UserService.updateEmailVerifiedStatus(
-          userInfoInJson.email,
-          userInfoInJson.email_verified,
+          userInfo.email,
+          userInfo.email_verified === true,
         );
       }
 

@@ -9,7 +9,7 @@ test.describe('Sign up', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/`, { timeout: 15000 });
+    await page.goto(`${baseURL}/`);
 
     await page
       .getByRole('button', { name: 'Start for free', exact: true })
@@ -71,7 +71,7 @@ test.describe('Sign up', () => {
 
     await expect(
       page.getByRole('heading', { name: 'Registration Complete' }),
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible();
   });
 
   test('should not allow an already registered email', async ({ page }) => {
@@ -79,12 +79,7 @@ test.describe('Sign up', () => {
     await signupUser(page, duplicateSignupPayloadData);
 
     await expect(
-      page.getByText(
-        new RegExp(
-          `Email ${duplicateSignupPayloadData.email} already registered, please try signing in`,
-          'i',
-        ),
-      ),
+      page.getByText(new RegExp(`The user already exists`, 'i')),
     ).toBeVisible();
   });
 });
