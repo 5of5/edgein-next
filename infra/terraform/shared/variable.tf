@@ -18,11 +18,16 @@ variable "domain_name" {
 variable "db_name" {
   type        = string
   description = "Database name in RDS. Only alphanumeric."
-  default     = "edgein"
+  default     = "edgedb"
 }
 
 variable "db_username" {
   type        = string
   description = "User name for root account in RDS"
-  default     = "root"
+  default     = "postgres"
+}
+
+variable "db_password" {
+  type        = string
+  description = "Password for root account in RDS"
 }

@@ -1,9 +1,8 @@
 locals {
-  az_count         = 2
-  project_name     = "${var.project}-${terraform.workspace}"
-  path             = "/${var.project}/${terraform.workspace}"
-  domain_name      = "${terraform.workspace}.${data.terraform_remote_state.shared.outputs.domain_name}"
-  base_url         = "https://${local.domain_name}"
+  project_name = "${var.project}-${terraform.workspace}"
+  path         = "/${var.project}/${terraform.workspace}"
+  domain_name  = "${terraform.workspace}.${data.terraform_remote_state.shared.outputs.domain_name}"
+  base_url     = "https://${local.domain_name}"
 }
 
 # Reference `shared` terraform state between environments

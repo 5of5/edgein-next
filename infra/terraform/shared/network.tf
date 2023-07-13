@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${local.project_name} VPC"
+    Name = "${var.project} VPC"
   }
 }
 
@@ -16,7 +16,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${local.project_name} Internet Gateway"
+    Name = "${var.project} Internet Gateway"
   }
 }
 
@@ -37,18 +37,18 @@ resource "aws_subnet" "public" {
 
 # Create local.az_count private subnets, each in a different AZ
 resource "aws_subnet" "private" {
-  count             = local.az_count
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, local.az_count + count.index)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-  vpc_id            = aws_vpc.main.id
+  count                   = local.az_count
+  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, local.az_count + count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  vpc_id                  = aws_vpc.main.id
   map_public_ip_on_launch = true
 }
 
 # Create local.az_count database subnets, each in a different AZ
 resource "aws_subnet" "database" {
-  count             = local.az_count
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, (2 * local.az_count) + count.index)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-  vpc_id            = aws_vpc.main.id
+  count                   = local.az_count
+  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, (2 * local.az_count) + count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  vpc_id                  = aws_vpc.main.id
   map_public_ip_on_launch = true
 }

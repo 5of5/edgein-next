@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "resources" {
-  bucket        = local.project_name
+  bucket        = "${var.project}-resources"
   force_destroy = true
 
   tags = {

@@ -19,6 +19,11 @@ terraform {
       source  = "hashicorp/random"
       version = "3.5.1"
     }
+
+    vercel = {
+      source  = "vercel/vercel"
+      version = "0.14.0"
+    }
   }
 
   backend "s3" {
@@ -44,3 +49,12 @@ provider "aws" {
 }
 
 data "aws_caller_identity" "current" {}
+
+provider "vercel" {
+  # Or omit this for the api_token to be read
+  # from the VERCEL_API_TOKEN environment variable
+  api_token = var.vercel_api_token
+
+  # Optional default team for all resources
+  team = "your_team_slug_or_id"
+}

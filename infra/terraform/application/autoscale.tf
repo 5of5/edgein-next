@@ -1,6 +1,6 @@
 resource "aws_appautoscaling_target" "hasura" {
   service_namespace  = "ecs"
-  resource_id        = "service/${aws_ecs_cluster.edgein.name}/${aws_ecs_service.hasura.name}"
+  resource_id        = "service/${data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.name}/${aws_ecs_service.hasura.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = 1
   max_capacity       = var.server_max_capacity
@@ -10,7 +10,7 @@ resource "aws_appautoscaling_target" "hasura" {
 resource "aws_appautoscaling_policy" "up" {
   name               = "${local.project_name}-scale-up"
   service_namespace  = "ecs"
-  resource_id        = "service/${aws_ecs_cluster.edgein.name}/${aws_ecs_service.hasura.name}"
+  resource_id        = "service/${data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.name}/${aws_ecs_service.hasura.name}"
   scalable_dimension = "ecs:service:DesiredCount"
 
   step_scaling_policy_configuration {
@@ -31,7 +31,7 @@ resource "aws_appautoscaling_policy" "up" {
 resource "aws_appautoscaling_policy" "down" {
   name               = "${local.project_name}-scale-down"
   service_namespace  = "ecs"
-  resource_id        = "service/${aws_ecs_cluster.edgein.name}/${aws_ecs_service.hasura.name}"
+  resource_id        = "service/${data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.name}/${aws_ecs_service.hasura.name}"
   scalable_dimension = "ecs:service:DesiredCount"
 
   step_scaling_policy_configuration {
@@ -60,7 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "service_cpu_high" {
   threshold           = "85"
 
   dimensions = {
-    ClusterName = aws_ecs_cluster.edgein.name
+    ClusterName = data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.name
     ServiceName = aws_ecs_service.hasura.name
   }
 
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "service_cpu_low" {
   threshold           = "10"
 
   dimensions = {
-    ClusterName = aws_ecs_cluster.edgein.name
+    ClusterName = data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.name
     ServiceName = aws_ecs_service.hasura.name
   }
 

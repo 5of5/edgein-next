@@ -30,6 +30,14 @@ data "aws_iam_policy_document" "s3_resources_bucket_policy" {
   }
 }
 
+data "aws_iam_policy_document" "ses_policy" {
+  statement {
+    actions = ["SES:SendEmail", "SES:SendRawEmail"]
+
+    resources = [aws_ses_domain_identity.edgein.arn]
+  }
+}
+
 resource "aws_iam_policy" "ssm_policy" {
   name   = "ssm_fargate_policy_${terraform.workspace}"
   path   = "${local.path}/"
@@ -40,6 +48,12 @@ resource "aws_iam_policy" "s3_resources_bucket_policy" {
   name   = "s3_resources_bucket_policy_${terraform.workspace}"
   path   = "${local.path}/"
   policy = data.aws_iam_policy_document.s3_resources_bucket_policy.json
+}
+
+resource "aws_iam_policy" "ses_policy" {
+  name   = "ses_fargate_policy_${terraform.workspace}"
+  path   = "${local.path}/"
+  policy = data.aws_iam_policy_document.ses_policy.json
 }
 
 resource "aws_iam_role" "edgein" {
@@ -56,6 +70,11 @@ resource "aws_iam_role_policy_attachment" "ssm_policy" {
 resource "aws_iam_role_policy_attachment" "s3_resources_bucket_policy" {
   role       = aws_iam_role.edgein.name
   policy_arn = aws_iam_policy.s3_resources_bucket_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ses_policy" {
+  role       = aws_iam_role.edgein.name
+  policy_arn = aws_iam_policy.ses_policy.arn
 }
 
 # ECS task execution role policy attachment

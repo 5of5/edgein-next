@@ -11,15 +11,15 @@ variable "project" {
 # hasura server
 
 variable "hasura_image" {
-  type = string
+  type        = string
   description = "Used hasura image"
-  default = "hasura/graphql-engine:v2.29.1.ubuntu.arm64"
+  default     = "hasura/graphql-engine:v2.29.1.ubuntu.arm64"
 }
 
 variable "hasura_log_types" {
-  type = string
+  type        = string
   description = "Allowed hasura logs"
-  default = "startup, http-log, webhook-log, websocket-log, query-log"
+  default     = "startup, http-log, webhook-log, websocket-log, query-log"
 }
 
 variable "server_cpu" {
@@ -50,4 +50,19 @@ variable "db_allocated_storage" {
 variable "db_instance_class" {
   type    = string
   default = "db.t4g.micro"
+}
+
+variable "prod_db_identifier" {
+  type    = string
+  default = "edgein-1"
+}
+
+variable "vercel_api_token" {
+  type = string
+  description = "API token for Vercel"
+}
+
+variable "vercel_team" {
+  type = string
+  description = "Vercel team for all resources"
 }

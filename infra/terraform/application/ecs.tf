@@ -3,37 +3,6 @@ locals {
   hasura_path = "/healthz?strict=false"
 }
 
-resource "aws_ecs_cluster" "edgein" {
-  name = local.project_name
-
-  setting {
-    name  = "containerInsights"
-    value = "enabled"
-  }
-
-  configuration {
-    execute_command_configuration {
-      logging = "OVERRIDE"
-
-      log_configuration {
-        cloud_watch_log_group_name = aws_cloudwatch_log_group.hasura.name
-      }
-    }
-  }
-}
-
-resource "aws_ecs_cluster_capacity_providers" "hasura" {
-  cluster_name = aws_ecs_cluster.edgein.name
-
-  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
-
-  default_capacity_provider_strategy {
-    base              = 1
-    weight            = 10
-    capacity_provider = "FARGATE"
-  }
-}
-
 resource "random_password" "hasura_admin_secret" {
   length  = 32
   special = false
@@ -46,14 +15,14 @@ resource "random_password" "hasura_jwt_secret" {
 
 locals {
   ecr_environment = [
-    { name : "AWS_S3_RESOURCES_BUCKET", value : aws_s3_bucket.resources.bucket },
     { name : "ENVIRONMENT", value : terraform.workspace },
     { name : "HASURA_GRAPHQL_ENABLE_CONSOLE", value : "true" },
     { name : "HASURA_GRAPHQL_ENABLED_LOG_TYPES", value : var.hasura_log_types }
   ]
   ecr_secrets = [
-    { name : "HASURA_GRAPHQL_METADATA_DATABASE_URL", valueFrom : aws_ssm_parameter.db_url.arn },
-    { name : "PG_DATABASE_URL", valueFrom : aws_ssm_parameter.db_url.arn },
+    { name : "HASURA_GRAPHQL_METADATA_DATABASE_URL", valueFrom : aws_ssm_parameter.db_uri.arn },
+    { name : "HASURA_GRAPHQL_DATABASE_URL", valueFrom : aws_ssm_parameter.db_uri.arn },
+    { name : "PG_DATABASE_URL", valueFrom : aws_ssm_parameter.db_uri.arn },
     { name : "HASURA_GRAPHQL_ADMIN_SECRET", valueFrom : aws_ssm_parameter.hasura_admin_secret.arn },
     { name : "HASURA_GRAPHQL_JWT_SECRET", valueFrom : aws_ssm_parameter.hasura_jwt_secret.arn }
   ]
@@ -84,9 +53,9 @@ locals {
       logConfiguration : {
         logDriver : "awslogs",
         options : {
-          "awslogs-group" : aws_cloudwatch_log_group.hasura.name,
+          "awslogs-group" : data.terraform_remote_state.shared.outputs.aws_cloudwatch_log_group_ecs.name,
           "awslogs-region" : var.region,
-          "awslogs-stream-prefix" : "hasura"
+          "awslogs-stream-prefix" : "${terraform.workspace}-hasura"
         }
       },
       essential : true
@@ -101,15 +70,20 @@ resource "aws_ecs_task_definition" "hasura" {
   cpu                      = var.server_cpu
   memory                   = var.server_memory
 
-  execution_role_arn = aws_iam_role.edgein.arn
-  task_role_arn      = aws_iam_role.edgein.arn
+  runtime_platform {
+    cpu_architecture        = "ARM64"
+    operating_system_family = "LINUX"
+  }
+
+  execution_role_arn = data.terraform_remote_state.shared.outputs.aws_iam_role_edgein.arn
+  task_role_arn      = data.terraform_remote_state.shared.outputs.aws_iam_role_edgein.arn
 
   container_definitions = jsonencode(local.hasura_container_definition)
 }
 
 resource "aws_ecs_service" "hasura" {
   name                              = "hasura"
-  cluster                           = aws_ecs_cluster.edgein.id
+  cluster                           = data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.id
   task_definition                   = aws_ecs_task_definition.hasura.arn
   desired_count                     = 1
   health_check_grace_period_seconds = 30
@@ -131,7 +105,7 @@ resource "aws_ecs_service" "hasura" {
   }
 
   network_configuration {
-    subnets          =  aws_subnet.private.*.id
+    subnets          = data.terraform_remote_state.shared.outputs.aws_subnet_private.*.id
     security_groups  = [aws_security_group.ecs_tasks.id]
     assign_public_ip = true
   }
@@ -141,6 +115,4 @@ resource "aws_ecs_service" "hasura" {
     container_name   = "hasura"
     container_port   = local.hasura_port
   }
-
-  depends_on = [aws_lb_listener.hasura, aws_iam_role_policy_attachment.ecs_task_execution_role]
 }
