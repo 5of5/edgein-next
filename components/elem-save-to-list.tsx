@@ -172,7 +172,9 @@ export const ElemSaveToList: FC<Props> = ({
           }
 
           return [
-            ...prev.filter(followItem => followItem.list_id !== newSentiment.id),
+            ...prev.filter(
+              followItem => followItem.list_id !== newSentiment.id,
+            ),
           ];
         });
       }
