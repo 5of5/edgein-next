@@ -201,6 +201,7 @@ const VCFirm: NextPage<Props> = props => {
                   resourceId={vcfirm.id}
                   resourceType={'vc_firms'}
                   slug={vcfirm.slug!}
+                  follows={vcfirm.follows}
                 />
                 <ElemSocialShare
                   resourceName={vcfirm.name}
