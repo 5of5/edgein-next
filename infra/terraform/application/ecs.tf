@@ -1,9 +1,16 @@
 locals {
-  hasura_port = 8080
-  hasura_path = "/healthz?strict=false"
+  hasura_port       = 8080
+  hasura_path       = "/healthz?strict=false"
+  hasura_api_viewer = "api_viewer"
+  hasura_viewer     = "viewer"
 }
 
 resource "random_password" "hasura_admin_secret" {
+  length  = 32
+  special = false
+}
+
+resource "random_password" "hasura_secret" {
   length  = 32
   special = false
 }
@@ -16,6 +23,8 @@ resource "random_password" "hasura_jwt_secret" {
 locals {
   ecr_environment = [
     { name : "ENVIRONMENT", value : terraform.workspace },
+    { name : "HASURA_API_VIEWER", value : local.hasura_api_viewer },
+    { name : "HASURA_VIEWER", value : local.hasura_viewer },
     { name : "HASURA_GRAPHQL_ENABLE_CONSOLE", value : "true" },
     { name : "HASURA_GRAPHQL_ENABLED_LOG_TYPES", value : var.hasura_log_types }
   ]
@@ -24,7 +33,8 @@ locals {
     { name : "HASURA_GRAPHQL_DATABASE_URL", valueFrom : aws_ssm_parameter.db_uri.arn },
     { name : "PG_DATABASE_URL", valueFrom : aws_ssm_parameter.db_uri.arn },
     { name : "HASURA_GRAPHQL_ADMIN_SECRET", valueFrom : aws_ssm_parameter.hasura_admin_secret.arn },
-    { name : "HASURA_GRAPHQL_JWT_SECRET", valueFrom : aws_ssm_parameter.hasura_jwt_secret.arn }
+    { name : "HASURA_GRAPHQL_JWT_SECRET", valueFrom : aws_ssm_parameter.hasura_jwt_secret.arn },
+    { name : "HASURA_SECRET", valueFrom : aws_ssm_parameter.hasura_secret.arn }
   ]
   hasura_container_definition = [
     {

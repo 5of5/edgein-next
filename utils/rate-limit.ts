@@ -24,7 +24,11 @@ export const getRateLimitMiddlewares = ({
   delayAfter = Number(process.env.DELAY_AFTER),
   delayMs = Number(process.env.DELAYMS),
 } = {}) => {
-  const url = `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+  const url = `redis://${
+    process.env.REDIS_USER !== '' ? `${process.env.REDIS_USER}:` : ''
+  }${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${
+    process.env.REDIS_PORT
+  }`;
   const client = createClient({
     url: url,
   });

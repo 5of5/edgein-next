@@ -11,6 +11,13 @@ resource "aws_ssm_parameter" "hasura_admin_secret" {
   value       = random_password.hasura_admin_secret.result
 }
 
+resource "aws_ssm_parameter" "hasura_secret" {
+  name        = "${local.path}/hasura/secrets/secret"
+  description = "The hasura secret"
+  type        = "SecureString"
+  value       = random_password.hasura_secret.result
+}
+
 resource "aws_ssm_parameter" "hasura_jwt_secret" {
   name        = "${local.path}/hasura/secrets/jwt"
   description = "The hasura jwt secret"

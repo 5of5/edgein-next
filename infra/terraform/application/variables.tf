@@ -58,11 +58,16 @@ variable "prod_db_identifier" {
 }
 
 variable "vercel_api_token" {
-  type = string
+  type        = string
   description = "API token for Vercel"
 }
 
 variable "vercel_team" {
-  type = string
+  type        = string
   description = "Vercel team for all resources"
+}
+
+variable "vercel_commit" {
+  type        = string
+  description = "Commit used for deployment"
 }
