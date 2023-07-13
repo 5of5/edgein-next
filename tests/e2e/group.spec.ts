@@ -85,7 +85,7 @@ test.describe('Group', () => {
       page.locator('button', {
         has: page.locator('span', { hasText: /Set group public/i }),
       }),
-    ).not.toBeChecked();
+    ).toHaveAttribute('aria-checked', 'false');
 
     await page
       .locator('button', {
@@ -97,7 +97,7 @@ test.describe('Group', () => {
       page.locator('button', {
         has: page.locator('span', { hasText: /Set group public/i }),
       }),
-    ).toBeChecked();
+    ).toHaveAttribute('aria-checked', 'true');
 
     groupToDelete = {
       id: groupId,
