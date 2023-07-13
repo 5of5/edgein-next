@@ -2,10 +2,6 @@ data "vercel_project" "edgein" {
   name = "edgein"
 }
 
-data "vercel_project_directory" "edgein" {
-  path = "../../"
-}
-
 resource "random_password" "encryption_secret" {
   length  = 32
   special = false
@@ -25,7 +21,7 @@ resource "vercel_deployment" "edgein" {
     AWS_SES_ACCESS_KEY_ID     = aws_iam_access_key.ses_user_key.id
     AWS_SES_ACCESS_SECRET_KEY = aws_iam_access_key.ses_user_key.secret
     ENCRYPTION_SECRET         = random_password.encryption_secret.result
-    GRAPHQL_ENDPOINT          = "htts://${local.domain_name}/v1/graphql"
+    GRAPHQL_ENDPOINT          = "https://${local.domain_name}/v1/graphql"
     HASURA_ADMIN_SECRET       = aws_ssm_parameter.hasura_admin_secret.value
     HASURA_JWT_SECRET         = aws_ssm_parameter.hasura_jwt_secret.value
     HASURA_SECRET             = aws_ssm_parameter.hasura_secret.value

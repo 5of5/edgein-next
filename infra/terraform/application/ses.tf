@@ -1,6 +1,6 @@
 resource "aws_iam_user" "ses_full_access" {
   name = "ses_full_access_user"
-  path = local.path
+  path = "${local.path}/"
 }
 
 resource "aws_iam_access_key" "ses_user_key" {
