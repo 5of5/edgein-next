@@ -43,7 +43,7 @@ export const applyFilterByCountry = async (
 
   await expect(page.getByText(`Country (${selected})`)).toBeVisible();
 
-  await page.getByPlaceholder(/Enter country name/i).fill(country);
+  await page.getByPlaceholder(/Enter country name/i).type(country);
 
   await page.getByRole('option', { name: country, exact: true }).click();
 
@@ -68,7 +68,7 @@ export const applyFilterByState = async (
 
   await expect(page.getByText(`State (${selected})`)).toBeVisible();
 
-  await page.getByPlaceholder(/Enter state name/i).fill(state);
+  await page.getByPlaceholder(/Enter state name/i).type(state);
 
   await page.getByRole('option', { name: state, exact: true }).click();
 
@@ -93,7 +93,7 @@ export const applyFilterByCity = async (
 
   await expect(page.getByText(`City (${selected})`)).toBeVisible();
 
-  await page.getByPlaceholder(/Enter city name/i).fill(city);
+  await page.getByPlaceholder(/Enter city name/i).type(city);
 
   await page.getByRole('option', { name: city, exact: true }).click();
 
