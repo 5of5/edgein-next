@@ -28,6 +28,13 @@ resource "aws_ssm_parameter" "hasura_jwt_secret" {
   })
 }
 
+resource "aws_ssm_parameter" "hasura_endpoint" {
+  name        = "${local.path}/hasura/endpoint"
+  description = "The hasura endpoint"
+  type        = "String"
+  value       = local.hasura_endpoint
+}
+
 data "aws_ssm_parameter" "db_name" {
   name = data.terraform_remote_state.shared.outputs.db_name
 }
