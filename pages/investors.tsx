@@ -352,7 +352,10 @@ const Investors: NextPage<Props> = ({
                 />
 
                 {vcFirms?.length != 0 && (
-                  <div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  <div
+                    data-testid="investors"
+                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                  >
                     {vcFirms?.map(vcfirm => (
                       <ElemInvestorCard
                         key={vcfirm.id}

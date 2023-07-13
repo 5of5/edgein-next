@@ -9,6 +9,7 @@ import { ElemButton } from '@/components/elem-button';
 import { User_Groups } from '@/graphql/types';
 import { SettingTabProps } from './elem-setting-dialog';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   className?: string;
@@ -31,6 +32,15 @@ export const ElemGroupInformation: React.FC<Props> = ({
   isAddingGroupMember,
   onAddGroupMember,
 }) => {
+  const { user } = useUser();
+  const getUserId = user?.id;
+
+  const groupAdmins = group.user_group_members.filter(
+    member => member?.user?.id === group?.created_by_user_id,
+  );
+
+  const isGroupAdmin = groupAdmins.some(user => user.user?.id === getUserId);
+
   return (
     <>
       <div
@@ -43,11 +53,21 @@ export const ElemGroupInformation: React.FC<Props> = ({
             <div>
               <ElemDashboardBreadcrumb
                 breadcrumbs={[
-                  {
-                    name: 'my-groups',
-                    to: '/groups',
-                    component: 'My Groups',
-                  },
+                  ...(isGroupAdmin
+                    ? [
+                        {
+                          name: 'my-groups',
+                          to: '/groups',
+                          component: 'My Groups',
+                        },
+                      ]
+                    : [
+                        {
+                          name: 'joined-groups',
+                          to: '/groups?tab=joined',
+                          component: 'Joined Groups',
+                        },
+                      ]),
                   {
                     name: 'current',
                     component: (
@@ -104,14 +124,6 @@ export const ElemGroupInformation: React.FC<Props> = ({
                     name: 'my-groups',
                     to: '/groups?tab=discover',
                     component: 'Discover Groups',
-                    // component: (
-                    //   <div className="flex items-center rounded-full aspect-square p-1.5 bg-slate-200 ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-300">
-                    //     <IconArrowLeft
-                    //       className="w-5 h-5 shrink-0"
-                    //       title="Back to Groups"
-                    //     />
-                    //   </div>
-                    // ),
                   },
                   {
                     name: 'current',

@@ -59,6 +59,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
       title={content}
       placement={direction}
       arrow={arrow}
+      enterTouchDelay={0}
       classes={{
         tooltip: `${className} ${sizeClasses} ${modeClasses} !px-2 !py-0.5 !text-sm !font-medium !font-sans`,
         arrow: `${classNameArrow} ${modeArrowClasses}`,
