@@ -83,19 +83,19 @@ test.describe('Group', () => {
 
     await expect(
       page.locator('button', {
-        has: page.locator('span', { hasText: /Set group public/ }),
+        has: page.locator('span', { hasText: /Set group public/i }),
       }),
     ).not.toBeChecked();
 
     await page
       .locator('button', {
-        has: page.locator('span', { hasText: /Set group public/ }),
+        has: page.locator('span', { hasText: /Set group public/i }),
       })
       .click();
 
     await expect(
       page.locator('button', {
-        has: page.locator('span', { hasText: /Set group public/ }),
+        has: page.locator('span', { hasText: /Set group public/i }),
       }),
     ).toBeChecked();
 

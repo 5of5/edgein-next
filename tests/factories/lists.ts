@@ -82,7 +82,7 @@ export const deleteList = async (
 
   await page.getByRole('button', { name: /Delete/i }).click();
 
-  await expect(page).toHaveURL(`${baseURL}/lists/`);
+  await expect(page).toHaveURL(`${baseURL}/lists/0/hot/`);
 
   await expect(
     page.locator('button', {
