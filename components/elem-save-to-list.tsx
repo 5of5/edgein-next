@@ -12,7 +12,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
-import { find } from 'lodash';
+import { find, isEqual } from 'lodash';
 
 type Props = {
   resourceName: string | null;
@@ -55,9 +55,11 @@ export const ElemSaveToList: FC<Props> = ({
   >([]);
 
   useEffect(() => {
-    setFollowsByResource(follows);
+    if (!isEqual(follows, followsByResource)) {
+      setFollowsByResource(follows);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(follows)]);
+  }, [follows]);
 
   const isSaved = followsByResource?.some(followItem =>
     listsData?.some(listItem => listItem.id === followItem.list_id),
@@ -163,15 +165,17 @@ export const ElemSaveToList: FC<Props> = ({
         listName,
         pathname: `/companies/${slug}`,
       });
-      setFollowsByResource(prev => {
-        if (action === 'add') {
-          return [...prev, { list_id: newSentiment?.id }];
-        }
+      if (newSentiment?.id) {
+        setFollowsByResource(prev => {
+          if (action === 'add') {
+            return [...prev, { list_id: newSentiment.id }];
+          }
 
-        return [
-          ...prev.filter(followItem => followItem.list_id !== newSentiment?.id),
-        ];
-      });
+          return [
+            ...prev.filter(followItem => followItem.list_id !== newSentiment.id),
+          ];
+        });
+      }
       refreshProfile();
       toast.custom(
         t => (
