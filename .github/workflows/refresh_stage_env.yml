@@ -59,7 +59,7 @@ jobs:
         working-directory: infra/terraform/application
         run: |
           touch input.tfvars
-          echo vercel_commit = \"$GITHUB_SHA\" >> input.tfvars
+          echo vercel_commit = \"GITHUB_WORKFLOW_SHA\" >> input.tfvars
           echo 'vercel_team = ${{ secrets.VERCEL_TEAM }}' >> input.tfvars
           echo 'vercel_api_token = ${{ secrets.VERCEL_API_TOKEN }}' >> input.tfvars
 

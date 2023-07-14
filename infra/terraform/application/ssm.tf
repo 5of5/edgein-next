@@ -32,7 +32,7 @@ resource "aws_ssm_parameter" "hasura_endpoint" {
   name        = "${local.path}/hasura/endpoint"
   description = "The hasura endpoint"
   type        = "String"
-  value       = local.hasura_endpoint
+  value       = local.hasura_graphql_endpoint
 }
 
 data "aws_ssm_parameter" "db_name" {

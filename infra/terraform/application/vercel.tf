@@ -21,7 +21,7 @@ resource "vercel_deployment" "edgein" {
     AWS_SES_ACCESS_KEY_ID     = aws_iam_access_key.ses_user_key.id
     AWS_SES_ACCESS_SECRET_KEY = aws_iam_access_key.ses_user_key.secret
     ENCRYPTION_SECRET         = random_password.encryption_secret.result
-    GRAPHQL_ENDPOINT          = local.hasura_endpoint
+    GRAPHQL_ENDPOINT          = local.hasura_graphql_endpoint
     HASURA_ADMIN_SECRET       = aws_ssm_parameter.hasura_admin_secret.value
     HASURA_JWT_SECRET         = aws_ssm_parameter.hasura_jwt_secret.value
     HASURA_SECRET             = aws_ssm_parameter.hasura_secret.value

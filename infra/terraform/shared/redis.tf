@@ -1,6 +1,6 @@
 locals {
   redis_hostname = "redis-shared.${var.domain_name}"
-  redis_uri = "redis://${random_password.redis_password.result}@${local.redis_hostname}:6379"
+  redis_uri      = "redis://${random_password.redis_password.result}@${local.redis_hostname}:6379"
 }
 
 resource "aws_security_group" "allow_redis" {
@@ -18,7 +18,7 @@ resource "aws_security_group" "allow_redis" {
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"  // "-1" stands for all
+    protocol    = "-1" // "-1" stands for all
     cidr_blocks = ["0.0.0.0/0"]
   }
 

@@ -112,7 +112,7 @@ resource "aws_route53_record" "cloudfront" {
 resource "aws_route53_record" "redis" {
   zone_id = data.aws_route53_zone.edgein.zone_id
   name    = local.redis_hostname
-  ttl = "600"
+  ttl     = "600"
   type    = "A"
   records = [aws_instance.redis.public_ip]
 }

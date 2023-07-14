@@ -1,9 +1,10 @@
 locals {
-  hasura_port       = 8080
-  hasura_path       = "/healthz?strict=false"
-  hasura_api_viewer = "api_viewer"
-  hasura_viewer     = "viewer"
-  hasura_endpoint   = "https://${local.domain_name}/v1/graphql"
+  hasura_port             = 8080
+  hasura_path             = "/healthz?strict=false"
+  hasura_api_viewer       = "api_viewer"
+  hasura_viewer           = "viewer"
+  hasura_endpoint         = "https://${local.domain_name}"
+  hasura_graphql_endpoint = "${local.hasura_endpoint}/v1/graphql"
 }
 
 resource "random_password" "hasura_admin_secret" {

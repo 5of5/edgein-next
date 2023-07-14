@@ -24,7 +24,7 @@ resource "aws_db_instance" "main" {
   skip_final_snapshot = true
   publicly_accessible = true
   apply_immediately   = true
-  storage_encrypted = true
+  storage_encrypted   = true
 
   vpc_security_group_ids = [aws_security_group.ecs_tasks.id, data.terraform_remote_state.shared.outputs.aws_security_group_lb.id]
   db_subnet_group_name   = aws_db_subnet_group.main.id
