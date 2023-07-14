@@ -76,7 +76,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "hasura" {
-  family                   = "hasura"
+  family                   = "${local.project_name}-hasura"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.server_cpu
@@ -94,7 +94,7 @@ resource "aws_ecs_task_definition" "hasura" {
 }
 
 resource "aws_ecs_service" "hasura" {
-  name                              = "hasura"
+  name                              = "${local.project_name}-hasura"
   cluster                           = data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.id
   task_definition                   = aws_ecs_task_definition.hasura.arn
   desired_count                     = 1

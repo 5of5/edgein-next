@@ -120,7 +120,15 @@ jobs:
           value=$(aws ssm get-parameter --name ${{ steps.tf-outputs.outputs.hasura_admin_secrete_ssm_path }} --with-decryption --query 'Parameter.Value' --output text)
           echo "HASURA_ADMIN_SECRET=$value" >> $GITHUB_ENV
 
+      - uses: dorny/paths-filter@v2
+        id: changes-in-hasura
+        with:
+          filters: |
+            src:
+              - 'infra/hasura/**'
+
       - name: Hasura migrate
+        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: migrate apply --database-name default
@@ -131,6 +139,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura clear
+        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: metadata clear
@@ -141,6 +150,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura apply
+        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: metadata apply
@@ -151,8 +161,30 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Update data fields
+        if: steps.changes-in-hasura.outputs.src == 'true'
         working-directory: ./scripts
         env:
           PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}
         shell: bash
         run: npx ts-node update_data_fields.ts
+
+      - name: View context attributes
+        uses: actions/github-script@v6
+        with:
+          script: console.log(context)
+
+      - name: Expose Vercel URL for preview environment
+        uses: actions/github-script@v6
+        env:
+          VERCEL_URL: ${{ steps.tf-outputs.outputs.vercel_url }}
+          HASURA_URL: ${{ steps.tf-outputs.outputs.hasura_endpoint }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+        with:
+          script: |
+            const body = `You can find your preview environment on URL: [Vercel](${VERCEL_URL})\nYour Hasura console is on URL: [Hasura](${HASURA_URL})\nYour Hasura admin secrete is **${HASURA_ADMIN_SECRET}**`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });

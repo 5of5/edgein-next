@@ -1,6 +1,13 @@
 name: Drop stage env and create new one from last prod DB snapshot
 on:
+  push:
+    branches:
+      - stage
   workflow_dispatch:
+    inputs:
+      refresh:
+        description: 'Reset DB to the latest prod data'
+        default: false
 
 env:
   PROJECT_NAME: edgein
@@ -74,14 +81,23 @@ jobs:
         run: terraform validate -no-color
 
       - name: Destroy stage environment
+        if: ${{ github.event.inputs.refresh == 'true' }}
         working-directory: infra/terraform/application
         run: terraform destroy --auto-approve -var-file="input.tfvars"
 
-      - name: Create stage environment
+      - name: Update stage environment
         working-directory: infra/terraform/application
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
+      - uses: dorny/paths-filter@v2
+        id: changes-in-hasura
+        with:
+          filters: |
+            src:
+              - 'infra/hasura/**'
+
       - name: Get outputs
+        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: dflook/terraform-output@v1
         id: tf-outputs
         with:
@@ -89,11 +105,13 @@ jobs:
           workspace: ${{ env.WORKSPACE }}
 
       - name: Fetch Terraform hasura endpoint output
+        if: steps.changes-in-hasura.outputs.src == 'true'
         working-directory: infra/terraform/application
         id: tf-hasura-endpoint-output
         run: echo "TF_OUT_HASURA_ENDPOINT=${{ steps.tf-outputs.outputs.hasura_endpoint }}" >> $GITHUB_ENV
 
       - name: Fetch Hasura admin secrete
+        if: steps.changes-in-hasura.outputs.src == 'true'
         working-directory: infra/terraform/application
         id: hasura-admin-secret
         run: |
@@ -101,6 +119,7 @@ jobs:
           echo "HASURA_ADMIN_SECRET=$value" >> $GITHUB_ENV
 
       - name: Hasura migrate
+        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: migrate apply --database-name default
@@ -111,6 +130,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura clear
+        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: metadata clear
@@ -121,6 +141,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura apply
+        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: metadata apply
@@ -131,6 +152,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Update data fields
+        if: steps.changes-in-hasura.outputs.src == 'true'
         working-directory: ./scripts
         env:
           PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}

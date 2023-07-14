@@ -14,3 +14,7 @@ output "pg_connection_string" {
   sensitive = true
   value     = local.db_url
 }
+
+output "vercel_url" {
+  value = vercel_deployment.edgein.url
+}
