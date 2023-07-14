@@ -23,12 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: benjlevesque/short-sha@v2.2
-        id: short-sha
-
-      - name: Set SHA
-        run: echo SHA=${{ steps.short-sha.outputs.sha }} >> $GITHUB_ENV
-
       - name: Set workspace
         run: |
           if [[ "${{ github.event.inputs.workspace }}" == "preview" || -z "${{ github.event.inputs.workspace }}" ]]; then
@@ -84,7 +78,7 @@ jobs:
         working-directory: infra/terraform/application
         run: |
           touch input.tfvars
-          echo 'vercel_commit = "${{ env.SHA }}"' >> input.tfvars
+          echo 'vercel_commit = "${{ env.GITHUB_SHA }}"' >> input.tfvars
           echo 'vercel_team = "${{ secrets.VERCEL_TEAM }}"' >> input.tfvars
           echo 'vercel_api_token = "${{ secrets.VERCEL_API_TOKEN }}"' >> input.tfvars
 
@@ -107,25 +101,23 @@ jobs:
         working-directory: infra/terraform/application
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
-      - name: Fetch Terraform hasura admin secret path output
-        working-directory: infra/terraform/application
-        id: tf-hasura-admin-output
-        run: |
-          output=$(terraform output -raw hasura_admin_secrete_ssm_path)
-          echo "TF_OUT_HASURA_ADMIN_SECRET_SSM_PATH=$output" >> $GITHUB_ENV
+      - name: Get outputs
+        uses: dflook/terraform-output@v1
+        id: tf-outputs
+        with:
+          path: infra/terraform/application
+          workspace: ${{ env.WORKSPACE }}
 
       - name: Fetch Terraform hasura endpoint output
         working-directory: infra/terraform/application
         id: tf-hasura-endpoint-output
-        run: |
-          output=$(terraform output -raw hasura_endpoint)
-          echo "TF_OUT_HASURA_ENDPOINT=$output" >> $GITHUB_ENV
+        run: echo "TF_OUT_HASURA_ENDPOINT=${{ steps.tf-outputs.outputs.hasura_endpoint }}" >> $GITHUB_ENV
 
       - name: Fetch Hasura admin secrete
         working-directory: infra/terraform/application
         id: hasura-admin-secret
         run: |
-          value=$(aws ssm get-parameter --name ${{ env.TF_OUT_HASURA_ADMIN_SECRET_SSM_PATH }} --with-decryption --query 'Parameter.Value' --output text)
+          value=$(aws ssm get-parameter --name ${{ steps.tf-outputs.outputs.hasura_admin_secrete_ssm_path }} --with-decryption --query 'Parameter.Value' --output text)
           echo "HASURA_ADMIN_SECRET=$value" >> $GITHUB_ENV
 
       - name: Hasura migrate
