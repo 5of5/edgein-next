@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { random } from 'lodash';
+import { uniqueId } from '@/tests/utils';
 
 export interface LoginPayload {
   email: string;
@@ -12,11 +12,9 @@ export interface SignUpPayload extends LoginPayload {
 }
 
 export const getSignUpPayload = (): SignUpPayload => {
-  const uniqueId = random(1, 800);
-
   return {
     name: 'Jessica Taggart',
-    email: `jessica${uniqueId}@iluma.xyz`,
+    email: `jessica${uniqueId()}@iluma.xyz`,
     password: `Password123!`,
     reference_id: '',
   };
