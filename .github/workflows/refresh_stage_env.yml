@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup steps
-        uses: 5of5/edgein-next/.github/actions/setup.yml@${{ github.head_ref }}
+        uses: 5of5/edgein-next/.github/actions/setup.yml@${{ github.ref }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -42,4 +42,4 @@ jobs:
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
       - name: Hasura steps
-        uses: 5of5/edgein-next/.github/actions/hasura.yml@${{ github.head_ref }}
+        uses: 5of5/edgein-next/.github/actions/hasura.yml@${{ github.ref }}
