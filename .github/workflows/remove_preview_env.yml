@@ -27,7 +27,7 @@ jobs:
         id: short-sha
 
       - name: Setup steps
-        uses: 5of5/edgein-next/.github/actions/setup.yml@improve/641-staging-env
+        uses: 5of5/edgein-next/.github/setup.yml@improve/641-staging-env
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

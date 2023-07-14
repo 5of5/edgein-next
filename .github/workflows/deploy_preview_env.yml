@@ -27,7 +27,7 @@ jobs:
         run: echo SHA=${{ steps.short-sha.outputs.sha }} >> $GITHUB_ENV
 
   setup:
-    uses: 5of5/edgein-next/.github/actions/setup.yml@improve/641-staging-env
+    uses: 5of5/edgein-next/.github/setup.yml@improve/641-staging-env
     secrets:
       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -63,4 +63,4 @@ jobs:
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
   hasura:
-    uses: 5of5/edgein-next/.github/actions/hasura.yml@improve/641-staging-env
+    uses: 5of5/edgein-next/.github/hasura.yml@improve/641-staging-env
