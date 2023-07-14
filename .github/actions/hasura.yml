@@ -1,9 +1,11 @@
 name: 'Hasura Steps'
 description: 'Clear and apply Hasura metadata, update data fields'
-inputs:
+
+on:
+  workflow_call:
+    inputs:
 
 runs:
-  using: "composite"
   steps:
     - name: Fetch Terraform hasura admin secret path output
       working-directory: infra/terraform/application

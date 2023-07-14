@@ -17,23 +17,29 @@ env:
   PROJECT_NAME: edgein
 
 jobs:
-  init:
+  sha:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - uses: benjlevesque/short-sha@v2.2
         id: short-sha
+      - name: Set SHA
+        run: echo SHA=${{ steps.short-sha.outputs.sha }} >> $GITHUB_ENV
 
-      - name: Setup steps
-        uses: 5of5/edgein-next/.github/actions/setup.yml@improve/641-staging-env
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
-          vercel-commit: ${{ steps.short-sha.outputs.sha }}
-          vercel-team: ${{ secrets.VERCEL_TEAM }}
-          vercel-api-token: ${{ secrets.VERCEL_API_TOKEN }}
+  setup:
+    uses: 5of5/edgein-next/.github/actions/setup.yml@improve/641-staging-env
+    secrets:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ vars.AWS_REGION }}
+      vercel-commit: ${{ env.SHA }}
+      vercel-team: ${{ secrets.VERCEL_TEAM }}
+      vercel-api-token: ${{ secrets.VERCEL_API_TOKEN }}
 
+  deploy:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
       - name: Set workspace
         run: |
           if [[ "${{ github.event.inputs.workspace }}" == "preview" ]]; then
@@ -56,5 +62,5 @@ jobs:
         working-directory: infra/terraform/application
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
-      - name: Hasura steps
-        uses: 5of5/edgein-next/.github/actions/hasura.yml@improve/641-staging-env
+  hasura:
+    uses: 5of5/edgein-next/.github/actions/hasura.yml@improve/641-staging-env
