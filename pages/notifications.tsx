@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useAuth } from '@/hooks/use-auth';
 import { ElemButton } from '@/components/elem-button';
@@ -18,6 +18,7 @@ import {
 } from '@/utils/notifications';
 import ElemNotificationItem from '@/components/notifications/elem-notification-item';
 import ElemNotificationPopover from '@/components/notifications/elem-notification-popover';
+import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
 
 const DEFAULT_LIMIT = 10;
 
@@ -31,14 +32,6 @@ const Notifications: NextPage = () => {
   const [page, setPage] = useState<number>(0);
 
   const offset = DEFAULT_LIMIT * page;
-
-  const excludeProperties = useMemo(() => {
-    return ['status_tags', 'logo', 'trajectory', 'search_count'];
-  }, []);
-
-  const excludeResourceTypes = useMemo(() => {
-    return [];
-  }, []);
 
   const { data, error, isFetching } = useGetNotificationsForUserQuery(
     {
@@ -57,8 +50,7 @@ const Notifications: NextPage = () => {
 
   let displayedNotifications = filterExcludeNotifications(
     notificationList,
-    excludeResourceTypes,
-    excludeProperties,
+    NOTIFICATION_EXCLUDE_PROPERTIES,
   );
 
   if (user?.entitlements?.listsCount) {

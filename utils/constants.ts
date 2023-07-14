@@ -1983,3 +1983,10 @@ export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
   'mdinsdale@mac.com',
   'dinghan@capital6.com',
 ];
+
+export const NOTIFICATION_EXCLUDE_PROPERTIES = [
+  'status_tags',
+  'logo',
+  'trajectory',
+  'search_count',
+];

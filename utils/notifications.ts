@@ -213,19 +213,17 @@ export const insertNotificationAction = async (
 
 export const filterExcludeNotifications = (
   notifications: GetNotificationsForUserQuery['notifications'],
-  excludeResourceTypes: string[],
   excludeProperties: string[],
 ) => {
   const results = notifications?.filter(
     item =>
-      !excludeResourceTypes.includes(item.notification_resource_type) &&
-      (item.notification_actions.length > 1 ||
-        (item.notification_actions.length === 1 &&
-          !excludeProperties.includes(
-            Object.keys(
-              item.notification_actions[0]?.action?.properties || {},
-            )[0],
-          ))),
+      item.notification_actions.length > 1 ||
+      (item.notification_actions.length === 1 &&
+        !excludeProperties.includes(
+          Object.keys(
+            item.notification_actions[0]?.action?.properties || {},
+          )[0],
+        )),
   );
 
   results.forEach(item => {
