@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import type { NextPage, GetStaticProps } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ElemHeading } from '@/components/elem-heading';
 import {
@@ -410,7 +410,7 @@ const Investors: NextPage<Props> = ({
   );
 };
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
     GetVcFirmsDocument,
     {
@@ -420,6 +420,7 @@ export const getStaticProps: GetStaticProps = async context => {
         _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
       },
     },
+    context.req.cookies,
   );
 
   return {

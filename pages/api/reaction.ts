@@ -115,7 +115,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  return res.send({ ...sentimentReturn });
+  return res.send({ ...sentimentReturn, ...list });
 };
 
 export default handler;
