@@ -10,6 +10,7 @@ on:
     inputs:
       workspace:
         description: 'Workspace to deploy'
+        required: true
         default: preview
 
 env:
@@ -24,8 +25,17 @@ jobs:
 
       - uses: benjlevesque/short-sha@v2.2
         id: short-sha
+
       - name: Set SHA
         run: echo SHA=${{ steps.short-sha.outputs.sha }} >> $GITHUB_ENV
+
+      - name: Set workspace
+        run: |
+          if [[ "${{ github.event.inputs.workspace }}" == "preview" || -z "${{ github.event.inputs.workspace }}" ]]; then
+            echo WORKSPACE=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
+          else
+            echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
+          fi
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -82,13 +92,6 @@ jobs:
         id: init
         working-directory: infra/terraform/application
         run: terraform init
-      - name: Set workspace
-        run: |
-          if [[ "${{ github.event.inputs.workspace }}" == "preview" ]]; then
-            echo WORKSPACE=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
-          else
-            echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
-          fi
 
       - name: Terraform Validate
         id: validate
