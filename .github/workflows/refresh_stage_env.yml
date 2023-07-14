@@ -3,9 +3,6 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  AWS_REGION: ${{vars.AWS_REGION}}
   PROJECT_NAME: edgein
 
 jobs:
@@ -13,18 +10,63 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - uses: benjlevesque/short-sha@v2.2
         id: short-sha
+      - name: Set SHA
+        run: echo SHA=${{ steps.short-sha.outputs.sha }} >> $GITHUB_ENV
 
-      - name: Setup steps
-        uses: 5of5/edgein-next/.github/workflows/setup.yml@improve/641-staging-env
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
-          vercel-commit: ${{ steps.short-sha.outputs.sha }}
-          vercel-team: ${{ secrets.VERCEL_TEAM }}
-          vercel-api-token: ${{ secrets.VERCEL_API_TOKEN }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Load environment variables from .env file
+        uses: falti/dotenv-action@v1.0.4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Config Terraform plugin cache
+        working-directory: infra/terraform/application
+        run: |
+          echo 'plugin_cache_dir="$HOME/.terraform.d/plugin-cache"' >~/.terraformrc
+          mkdir --parents ~/.terraform.d/plugin-cache
+
+      - name: Cache Terraform
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      - name: Setup TF variables
+        working-directory: infra/terraform/application
+        run: |
+          touch input.tfvars
+          echo 'vercel_commit = "${{ env.SHA }}"' >> input.tfvars
+          echo 'vercel_team = ${{ secrets.VERCEL_TEAM }}' >> input.tfvars
+          echo 'vercel_api_token = ${{ secrets.VERCEL_API_TOKEN }}' >> input.tfvars
 
       - name: Terraform select workspace
         id: select-workspace
@@ -44,5 +86,58 @@ jobs:
         working-directory: infra/terraform/application
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
-      - name: Hasura steps
-        uses: 5of5/edgein-next/.github/workflows/hasura.yml@improve/641-staging-env
+      - name: Fetch Terraform hasura admin secret path output
+        working-directory: infra/terraform/application
+        id: tf-hasura-admin-output
+        run: |
+          output=$(terraform output -raw hasura_admin_secrete_ssm_path)
+          echo "TF_OUT_HASURA_ADMIN_SECRET_SSM_PATH=$output" >> $GITHUB_ENV
+
+      - name: Fetch Terraform hasura endpoint output
+        working-directory: infra/terraform/application
+        id: tf-hasura-endpoint-output
+        run: |
+          output=$(terraform output -raw hasura_endpoint)
+          echo "TF_OUT_HASURA_ENDPOINT=$output" >> $GITHUB_ENV
+
+      - name: Fetch Hasura admin secrete
+        working-directory: infra/terraform/application
+        id: hasura-admin-secret
+        run: |
+          value=$(aws ssm get-parameter --name ${{ env.TF_OUT_HASURA_ADMIN_SECRET_SSM_PATH }} --with-decryption --query 'Parameter.Value' --output text)
+          echo "HASURA_ADMIN_SECRET=$value" >> $GITHUB_ENV
+
+      - name: Hasura migrate
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: migrate apply --database-name default
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.29.1
+          HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+
+      - name: Hasura clear
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: metadata clear
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.29.1
+          HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+
+      - name: Hasura apply
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: metadata apply
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.29.1
+          HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+
+      - name: Update data fields
+        working-directory: ./scripts
+        shell: bash
+        run: npx ts-node update_data_fields.ts
