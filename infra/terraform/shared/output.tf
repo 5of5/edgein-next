@@ -70,5 +70,6 @@ output "aws_lb_listener_edgein" {
 }
 
 output "redis_connection_string" {
-  value = local.redis_uri
+  sensitive = true
+  value     = local.redis_uri
 }

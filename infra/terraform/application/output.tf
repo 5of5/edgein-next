@@ -11,5 +11,6 @@ output "hasura_admin_secrete_ssm_path" {
 }
 
 output "pg_connection_string" {
-  value = local.db_url
+  sensitive = true
+  value     = local.db_url
 }
