@@ -57,4 +57,4 @@ jobs:
         run: terraform apply --auto-approve -var-file="input.tfvars"
 
       - name: Hasura steps
-        uses: 5of5/edgein-next/.github/actions/hasura.yml@${{ github.ref }}
+        uses: 5of5/edgein-next/.github/actions/hasura.yml@improve/641-staging-env
