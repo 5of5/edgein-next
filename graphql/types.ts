@@ -24806,6 +24806,13 @@ export type UpdateCompanyByPkMutationVariables = Exact<{
 
 export type UpdateCompanyByPkMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', id: number } | null };
 
+export type GetCompanyByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetCompanyByIdQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, status: string }> };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -25734,6 +25741,13 @@ export type GetVcFirmsInvestmentsQueryVariables = Exact<{ [key: string]: never; 
 
 export type GetVcFirmsInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, tags: any | null } | null } | null }> }> };
 
+export type GetVcFirmByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetVcFirmByIdQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, status: string }> };
+
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
 }>;
@@ -26508,6 +26522,34 @@ export const useUpdateCompanyByPkMutation = <
       options
     );
 useUpdateCompanyByPkMutation.fetcher = (variables: UpdateCompanyByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables, options);
+export const GetCompanyByIdDocument = `
+    query GetCompanyById($id: Int!) {
+  companies(where: {id: {_eq: $id}}) {
+    id
+    name
+    status
+  }
+}
+    `;
+export const useGetCompanyByIdQuery = <
+      TData = GetCompanyByIdQuery,
+      TError = Error
+    >(
+      variables: GetCompanyByIdQueryVariables,
+      options?: UseQueryOptions<GetCompanyByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetCompanyByIdQuery, TError, TData>(
+      ['GetCompanyById', variables],
+      fetcher<GetCompanyByIdQuery, GetCompanyByIdQueryVariables>(GetCompanyByIdDocument, variables),
+      options
+    );
+useGetCompanyByIdQuery.document = GetCompanyByIdDocument;
+
+
+useGetCompanyByIdQuery.getKey = (variables: GetCompanyByIdQueryVariables) => ['GetCompanyById', variables];
+;
+
+useGetCompanyByIdQuery.fetcher = (variables: GetCompanyByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyByIdQuery, GetCompanyByIdQueryVariables>(GetCompanyByIdDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -29044,7 +29086,7 @@ useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, opt
 export const GetNotificationsForUserDocument = `
     query GetNotificationsForUser($limit: Int, $offset: Int, $user: Int!) {
   notifications(
-    where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}]}
+    where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}, {_or: [{_and: [{company_id: {_is_null: false}}, {company: {status: {_neq: "draft"}}}]}, {_and: [{vc_firm_id: {_is_null: false}}, {vc_firm: {status: {_neq: "draft"}}}]}]}]}
     order_by: {created_at: desc}
     limit: $limit
     offset: $offset
@@ -30862,6 +30904,34 @@ useGetVcFirmsInvestmentsQuery.getKey = (variables?: GetVcFirmsInvestmentsQueryVa
 ;
 
 useGetVcFirmsInvestmentsQuery.fetcher = (variables?: GetVcFirmsInvestmentsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsInvestmentsQuery, GetVcFirmsInvestmentsQueryVariables>(GetVcFirmsInvestmentsDocument, variables, options);
+export const GetVcFirmByIdDocument = `
+    query GetVcFirmById($id: Int!) {
+  vc_firms(where: {id: {_eq: $id}}) {
+    id
+    name
+    status
+  }
+}
+    `;
+export const useGetVcFirmByIdQuery = <
+      TData = GetVcFirmByIdQuery,
+      TError = Error
+    >(
+      variables: GetVcFirmByIdQueryVariables,
+      options?: UseQueryOptions<GetVcFirmByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmByIdQuery, TError, TData>(
+      ['GetVcFirmById', variables],
+      fetcher<GetVcFirmByIdQuery, GetVcFirmByIdQueryVariables>(GetVcFirmByIdDocument, variables),
+      options
+    );
+useGetVcFirmByIdQuery.document = GetVcFirmByIdDocument;
+
+
+useGetVcFirmByIdQuery.getKey = (variables: GetVcFirmByIdQueryVariables) => ['GetVcFirmById', variables];
+;
+
+useGetVcFirmByIdQuery.fetcher = (variables: GetVcFirmByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmByIdQuery, GetVcFirmByIdQueryVariables>(GetVcFirmByIdDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

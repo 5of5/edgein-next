@@ -1,5 +1,7 @@
 import { mutate, query } from '@/graphql/hasuraAdmin';
 import {
+  GetCompanyByIdDocument,
+  GetCompanyByIdQuery,
   GetEventOrganizationByIdDocument,
   GetEventOrganizationByIdQuery,
   GetInvestmentByIdDocument,
@@ -11,6 +13,8 @@ import {
   GetNotificationsForUserQuery,
   GetTeamMemberByIdDocument,
   GetTeamMemberByIdQuery,
+  GetVcFirmByIdDocument,
+  GetVcFirmByIdQuery,
   InsertNotificationActionsDocument,
   InsertNotificationActionsMutation,
   InsertNotificationsDocument,
@@ -85,41 +89,49 @@ export const processNotification = async (
   notificationResourceId?: number,
 ) => {
   if (followResourceId && followedResourceType && actionType) {
-    const follows = await getFollowsByResource(
+    // Check if company or vc_firm status is draft
+    const isDraftOrganization = await checkDraftOrganization(
       followResourceId,
       followedResourceType,
     );
-    let targetUsers: any = follows.map(item => item.list?.list_members);
-    targetUsers = unionBy(flatten(targetUsers), 'user_id');
-    await Promise.all(
-      targetUsers.map(async (targetUser: any) => {
-        if (targetUser?.user_id) {
-          const notificationResponse = await insertNotification({
-            target_user_id: targetUser?.user_id,
-            event_type: actionType,
-            follow_resource_type: followedResourceType,
-            notification_resource_type: notificationResourceType,
-            message,
-            company_id:
-              followedResourceType === 'companies' ? followResourceId : null,
-            vc_firm_id:
-              followedResourceType === 'vc_firms' ? followResourceId : null,
-            action_ids: actionIds,
-            notification_resource_id: notificationResourceId,
-          });
-          await Promise.all(
-            actionIds.map(async actionId => {
-              if (notificationResponse?.id) {
-                await insertNotificationAction(
-                  notificationResponse?.id,
-                  actionId,
-                );
-              }
-            }),
-          );
-        }
-      }),
-    );
+
+    if (!isDraftOrganization) {
+      const follows = await getFollowsByResource(
+        followResourceId,
+        followedResourceType,
+      );
+      let targetUsers: any = follows.map(item => item.list?.list_members);
+      targetUsers = unionBy(flatten(targetUsers), 'user_id');
+      await Promise.all(
+        targetUsers.map(async (targetUser: any) => {
+          if (targetUser?.user_id) {
+            const notificationResponse = await insertNotification({
+              target_user_id: targetUser?.user_id,
+              event_type: actionType,
+              follow_resource_type: followedResourceType,
+              notification_resource_type: notificationResourceType,
+              message,
+              company_id:
+                followedResourceType === 'companies' ? followResourceId : null,
+              vc_firm_id:
+                followedResourceType === 'vc_firms' ? followResourceId : null,
+              action_ids: actionIds,
+              notification_resource_id: notificationResourceId,
+            });
+            await Promise.all(
+              actionIds.map(async actionId => {
+                if (notificationResponse?.id) {
+                  await insertNotificationAction(
+                    notificationResponse?.id,
+                    actionId,
+                  );
+                }
+              }),
+            );
+          }
+        }),
+      );
+    }
   }
 };
 
@@ -476,6 +488,22 @@ export const processNotificationOnSubmitData = async (
   }
 };
 
+const checkDraftOrganization = async (
+  followResourceId: number,
+  followedResourceType: 'companies' | 'vc_firms',
+) => {
+  let isDraftOrganization = false;
+  if (followedResourceType === 'companies') {
+    const company = await getCompanyById(followResourceId);
+    isDraftOrganization = company?.status === 'draft';
+  } else {
+    const vcFirm = await getVcFirmById(followResourceId);
+    isDraftOrganization = vcFirm?.status === 'draft';
+  }
+
+  return isDraftOrganization;
+};
+
 const getInvestorById = async (id: number) => {
   const {
     data: { investors },
@@ -524,4 +552,24 @@ const getEventOrganizationById = async (id: number) => {
     variables: { id },
   });
   return event_organization[0];
+};
+
+const getCompanyById = async (id: number) => {
+  const {
+    data: { companies },
+  } = await query<GetCompanyByIdQuery>({
+    query: GetCompanyByIdDocument,
+    variables: { id },
+  });
+  return companies[0];
+};
+
+const getVcFirmById = async (id: number) => {
+  const {
+    data: { vc_firms },
+  } = await query<GetVcFirmByIdQuery>({
+    query: GetVcFirmByIdDocument,
+    variables: { id },
+  });
+  return vc_firms[0];
 };

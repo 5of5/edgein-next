@@ -55,15 +55,18 @@ const Notifications: NextPage = () => {
     },
   );
 
-  let displayedNotifications = user?.entitlements?.listsCount
-    ? notificationList.slice(0, user.entitlements.listsCount)
-    : notificationList;
-
-  displayedNotifications = filterExcludeNotifications(
-    displayedNotifications,
+  let displayedNotifications = filterExcludeNotifications(
+    notificationList,
     excludeResourceTypes,
     excludeProperties,
   );
+
+  if (user?.entitlements?.listsCount) {
+    displayedNotifications = displayedNotifications.slice(
+      0,
+      user.entitlements.listsCount,
+    );
+  }
 
   const totalNotifications =
     data?.notifications_aggregate?.aggregate?.count || 0;

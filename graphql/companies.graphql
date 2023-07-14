@@ -313,3 +313,11 @@ mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
     id
   }
 }
+
+query GetCompanyById($id: Int!) {
+  companies(where: { id: { _eq: $id } }) {
+    id
+    name
+    status
+  }
+}
