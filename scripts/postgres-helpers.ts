@@ -1,5 +1,5 @@
 import { Client, ClientConfig } from 'pg';
-import { env } from '@/services/config.service';
+import { env } from '../services/config.service';
 
 export const getClient = async () => {
   const config: ClientConfig = env.PG_CONNECTION_STRING
