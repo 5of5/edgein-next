@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useAuth } from '@/hooks/use-auth';
 import { ElemButton } from '@/components/elem-button';
@@ -245,17 +245,19 @@ const Notifications: NextPage = () => {
           )}
         </div>
 
-        {!isFetching && displayedNotifications.length < totalNotifications && (
-          <div className="p-5">
-            <ElemButton
-              btn="ol-primary"
-              onClick={handleClickShowMore}
-              className="w-full"
-            >
-              Show more notifications
-            </ElemButton>
-          </div>
-        )}
+        {!isFetching &&
+          displayedNotifications.length > 0 &&
+          displayedNotifications.length < totalNotifications && (
+            <div className="p-5">
+              <ElemButton
+                btn="ol-primary"
+                onClick={handleClickShowMore}
+                className="w-full"
+              >
+                Show more notifications
+              </ElemButton>
+            </div>
+          )}
       </div>
 
       <ElemUpgradeDialog
