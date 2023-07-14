@@ -9,3 +9,7 @@ output "hasura_endpoint" {
 output "hasura_admin_secrete_ssm_path" {
   value = aws_ssm_parameter.hasura_admin_secret.name
 }
+
+output "pg_connection_string" {
+  value = local.db_url
+}

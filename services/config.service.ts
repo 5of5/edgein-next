@@ -5,6 +5,8 @@ const EnvSchema = z.object({
   AWS_SES_ACCESS_SECRET_KEY: z.string(),
   AWS_SES_REGION: z.string().default('us-east-1'),
   SES_SOURCE: z.string().default('EdgeIn Support <support@edgein.io>'),
+  PG_CONNECTION_STRING: z.string().optional(),
+  REDIS_CONNECTION_STRING: z.string().optional(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

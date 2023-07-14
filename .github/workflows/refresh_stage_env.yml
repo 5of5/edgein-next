@@ -132,5 +132,7 @@ jobs:
 
       - name: Update data fields
         working-directory: ./scripts
+        env:
+          PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}
         shell: bash
         run: npx ts-node update_data_fields.ts

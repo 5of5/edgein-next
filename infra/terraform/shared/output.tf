@@ -68,3 +68,7 @@ output "aws_lb_edgein" {
 output "aws_lb_listener_edgein" {
   value = aws_lb_listener.edgein
 }
+
+output "redis_connection_string" {
+  value = local.redis_uri
+}
