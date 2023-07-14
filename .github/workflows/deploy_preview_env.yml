@@ -10,7 +10,6 @@ on:
     inputs:
       workspace:
         description: 'Workspace to deploy'
-        required: true
         default: preview
 
 env:
