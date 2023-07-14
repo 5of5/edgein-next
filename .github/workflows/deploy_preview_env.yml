@@ -85,8 +85,8 @@ jobs:
         run: |
           touch input.tfvars
           echo 'vercel_commit = "${{ env.SHA }}"' >> input.tfvars
-          echo 'vercel_team = ${{ secrets.VERCEL_TEAM }}' >> input.tfvars
-          echo 'vercel_api_token = ${{ secrets.VERCEL_API_TOKEN }}' >> input.tfvars
+          echo 'vercel_team = "${{ secrets.VERCEL_TEAM }}"' >> input.tfvars
+          echo 'vercel_api_token = "${{ secrets.VERCEL_API_TOKEN }}"' >> input.tfvars
 
       - name: Terraform Init
         id: init
