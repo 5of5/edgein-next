@@ -153,6 +153,7 @@ export const ElemCohort: FC<Props> = ({
                         resourceType={'companies'}
                         slug={company.slug!}
                         buttonStyle="white"
+                        follows={company.follows}
                       />
                     </div>
                   </a>

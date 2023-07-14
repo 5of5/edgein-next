@@ -1,8 +1,5 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
-import {
-  GetFollowsByUserQuery,
-  useGetFollowsByResourceQuery,
-} from '@/graphql/types';
+import { Follows, GetFollowsByUserQuery } from '@/graphql/types';
 import {
   getNameFromListName,
   isOnList,
@@ -15,7 +12,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
-import { find } from 'lodash';
+import { find, isEqual } from 'lodash';
 
 type Props = {
   resourceName: string | null;
@@ -34,6 +31,7 @@ type Props = {
     | 'ol-white'
     | 'ol-primary'
     | '';
+  follows?: Pick<Follows, 'list_id'>[];
 };
 
 type List = GetFollowsByUserQuery['list_members'][0]['list'];
@@ -44,6 +42,7 @@ export const ElemSaveToList: FC<Props> = ({
   resourceType,
   slug,
   buttonStyle = 'purple',
+  follows = [],
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
@@ -51,14 +50,18 @@ export const ElemSaveToList: FC<Props> = ({
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [followsByResource, setFollowsByResource] = useState<
+    Pick<Follows, 'list_id'>[]
+  >([]);
 
-  const { data: followsByResource, refetch: refetchFollows } =
-    useGetFollowsByResourceQuery({
-      resourceId,
-      resourceType,
-    });
+  useEffect(() => {
+    if (!isEqual(follows, followsByResource)) {
+      setFollowsByResource(follows);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [follows]);
 
-  const isSaved = followsByResource?.follows?.some(followItem =>
+  const isSaved = followsByResource?.some(followItem =>
     listsData?.some(listItem => listItem.id === followItem.list_id),
   );
 
@@ -162,8 +165,20 @@ export const ElemSaveToList: FC<Props> = ({
         listName,
         pathname: `/companies/${slug}`,
       });
+      if (newSentiment?.id) {
+        setFollowsByResource(prev => {
+          if (action === 'add') {
+            return [...prev, { list_id: newSentiment.id }];
+          }
+
+          return [
+            ...prev.filter(
+              followItem => followItem.list_id !== newSentiment.id,
+            ),
+          ];
+        });
+      }
       refreshProfile();
-      refetchFollows();
       toast.custom(
         t => (
           <div

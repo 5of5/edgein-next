@@ -87,6 +87,7 @@ export const ElemSubOrganizations: FC<Props> = ({
                     resourceId={subOrganization.id}
                     resourceType={resourceType}
                     slug={subOrganization.slug!}
+                    follows={subOrganization.follows}
                   />
                 </div>
               </a>
