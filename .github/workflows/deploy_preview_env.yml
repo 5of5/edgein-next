@@ -181,7 +181,8 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
         with:
           script: |
-            const body = `You can find your preview environment on URL: [Vercel](${VERCEL_URL})\nYour Hasura console is on URL: [Hasura](${HASURA_URL})\nYour Hasura admin secrete is **${HASURA_ADMIN_SECRET}**`;
+            const { VERCEL_URL, HASURA_URL, HASURA_ADMIN_SECRET } = process.env
+            const body = `You can find your preview environment on URL: [Vercel](https://${VERCEL_URL})\nYour Hasura console is on URL: [Hasura](${HASURA_URL})\nYour Hasura admin secrete is **${HASURA_ADMIN_SECRET}**`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
