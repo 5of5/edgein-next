@@ -19,6 +19,7 @@ import {
   InsertNotificationActionsMutation,
   InsertNotificationsDocument,
   InsertNotificationsMutation,
+  Notifications,
 } from '@/graphql/types';
 import { flatten, startCase, unionBy } from 'lodash';
 import { getFollowsByResource } from './lists';
@@ -214,7 +215,7 @@ export const insertNotificationAction = async (
 };
 
 export const filterExcludeNotifications = (
-  notifications: GetNotificationsForUserQuery['notifications'],
+  notifications: Notifications[],
   excludeProperties: string[],
 ) => {
   const results = notifications?.filter(

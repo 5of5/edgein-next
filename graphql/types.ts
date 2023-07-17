@@ -25434,6 +25434,13 @@ export type InsertNotificationActionsMutationVariables = Exact<{
 
 export type InsertNotificationActionsMutation = { __typename?: 'mutation_root', insert_notification_actions_one: { __typename?: 'notification_actions', id: number } | null };
 
+export type GetUnreadNotificationsQueryVariables = Exact<{
+  user_id: Scalars['Int'];
+}>;
+
+
+export type GetUnreadNotificationsQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }> }> };
+
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -29241,6 +29248,44 @@ export const useInsertNotificationActionsMutation = <
       options
     );
 useInsertNotificationActionsMutation.fetcher = (variables: InsertNotificationActionsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNotificationActionsMutation, InsertNotificationActionsMutationVariables>(InsertNotificationActionsDocument, variables, options);
+export const GetUnreadNotificationsDocument = `
+    query GetUnreadNotifications($user_id: Int!) {
+  notifications(
+    where: {_and: [{target_user_id: {_eq: $user_id}}, {event_type: {_neq: "Delete Data"}}, {read: {_eq: false}}, {_or: [{_and: [{company_id: {_is_null: false}}, {company: {status: {_neq: "draft"}}}]}, {_and: [{vc_firm_id: {_is_null: false}}, {vc_firm: {status: {_neq: "draft"}}}]}]}]}
+    limit: 100
+  ) {
+    id
+    read
+    notification_actions {
+      id
+      action_id
+      action {
+        id
+        properties
+      }
+    }
+  }
+}
+    `;
+export const useGetUnreadNotificationsQuery = <
+      TData = GetUnreadNotificationsQuery,
+      TError = Error
+    >(
+      variables: GetUnreadNotificationsQueryVariables,
+      options?: UseQueryOptions<GetUnreadNotificationsQuery, TError, TData>
+    ) =>
+    useQuery<GetUnreadNotificationsQuery, TError, TData>(
+      ['GetUnreadNotifications', variables],
+      fetcher<GetUnreadNotificationsQuery, GetUnreadNotificationsQueryVariables>(GetUnreadNotificationsDocument, variables),
+      options
+    );
+useGetUnreadNotificationsQuery.document = GetUnreadNotificationsDocument;
+
+
+useGetUnreadNotificationsQuery.getKey = (variables: GetUnreadNotificationsQueryVariables) => ['GetUnreadNotifications', variables];
+;
+
+useGetUnreadNotificationsQuery.fetcher = (variables: GetUnreadNotificationsQueryVariables, options?: RequestInit['headers']) => fetcher<GetUnreadNotificationsQuery, GetUnreadNotificationsQueryVariables>(GetUnreadNotificationsDocument, variables, options);
 export const GetPersonDocument = `
     query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {
