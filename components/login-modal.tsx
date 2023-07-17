@@ -5,7 +5,8 @@ import { ElemLogo } from './elem-logo';
 import { IconLinkedIn, IconExclamationTriangle } from './icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
-import { redirect_url } from '@/services/config.service';
+
+import { redirect_url } from '@/utils/auth';
 const validator = require('validator');
 
 type Props = {

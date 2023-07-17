@@ -9,7 +9,8 @@ import {
 } from '@/components/icons';
 import { Fragment } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { redirect_url } from '@/services/config.service';
+
+import { redirect_url } from '@/utils/auth';
 
 type Props = {
   user: any;

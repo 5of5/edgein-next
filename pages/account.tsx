@@ -11,7 +11,8 @@ import { useGetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
-import { redirect_url } from '@/services/config.service';
+
+import { redirect_url } from '@/utils/auth';
 
 const validator = require('validator');
 

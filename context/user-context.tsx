@@ -13,7 +13,8 @@ import { hotjar } from 'react-hotjar';
 import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
-import { redirect_url } from '@/services/config.service';
+
+import { redirect_url } from '@/utils/auth';
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 const CLARITY_ID = 'epusnauses';
 

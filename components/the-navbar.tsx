@@ -32,7 +32,8 @@ import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
-import { redirect_url } from '@/services/config.service';
+
+import { redirect_url } from '@/utils/auth';
 
 export type Popups =
   | 'login'

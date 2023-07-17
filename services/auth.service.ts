@@ -7,7 +7,8 @@ import {
   User,
   UserMetadata,
 } from 'auth0';
-import { env, redirect_url } from '@/services/config.service';
+import { env } from '@/services/config.service';
+import { redirect_url } from '@/utils/auth';
 
 export const LINKEDIN_PROVIDER = 'linkedin';
 export const AUTH0_PROVIDER = 'auth0';

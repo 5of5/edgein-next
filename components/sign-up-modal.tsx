@@ -6,7 +6,8 @@ import { InputText } from '@/components/input-text';
 import { ElemLogo } from './elem-logo';
 import { IconLinkedIn, IconCheck, IconExclamationTriangle } from './icons';
 import { Dialog, Transition } from '@headlessui/react';
-import { redirect_url } from '@/services/config.service';
+
+import { redirect_url } from '@/utils/auth';
 const validator = require('validator');
 
 type Props = {
