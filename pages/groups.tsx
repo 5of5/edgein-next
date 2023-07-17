@@ -79,11 +79,14 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
     error,
     isLoading,
     refetch,
-  } = useGetGroupsQuery({
-    limit: LIMIT,
-    offset,
-    where: filters as User_Groups_Bool_Exp,
-  });
+  } = useGetGroupsQuery(
+    {
+      limit: LIMIT,
+      offset,
+      where: filters as User_Groups_Bool_Exp,
+    },
+    { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);

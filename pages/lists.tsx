@@ -78,11 +78,14 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
     error,
     isLoading,
     refetch,
-  } = useGetListsQuery({
-    limit: LIMIT,
-    offset,
-    where: filters as Lists_Bool_Exp,
-  });
+  } = useGetListsQuery(
+    {
+      limit: LIMIT,
+      offset,
+      where: filters as Lists_Bool_Exp,
+    },
+    { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
