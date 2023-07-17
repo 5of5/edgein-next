@@ -105,13 +105,7 @@ async function getUser(
     }
     return { ...(user as User), _iat: payload.iat };
   } catch (err) {
-    throw new Error(
-      JSON.stringify(
-        { err: err, token, secret: process.env.ENCRYPTION_SECRET },
-        null,
-        2,
-      ),
-    );
+    throw new Error(JSON.stringify({ err: err, token }, null, 2));
   }
 }
 

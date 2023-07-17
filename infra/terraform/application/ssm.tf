@@ -35,13 +35,6 @@ resource "aws_ssm_parameter" "hasura_endpoint" {
   value       = local.hasura_endpoint
 }
 
-resource "aws_ssm_parameter" "jwt_secret" {
-  name        = "${local.path}/jwt/secret"
-  description = "The JWT encryption secret"
-  type        = "String"
-  value       = random_password.encryption_secret.result
-}
-
 data "aws_ssm_parameter" "db_name" {
   name = data.terraform_remote_state.shared.outputs.db_name
 }

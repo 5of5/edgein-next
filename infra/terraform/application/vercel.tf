@@ -7,11 +7,6 @@ data "vercel_project" "edgein" {
   name = "edgein"
 }
 
-resource "random_password" "encryption_secret" {
-  length  = 32
-  special = false
-}
-
 resource "vercel_deployment" "edgein" {
   project_id = data.vercel_project.edgein.id
   ref        = var.vercel_commit
@@ -28,7 +23,7 @@ resource "vercel_deployment" "edgein" {
     AWS_SES_ACCESS_SECRET_KEY         = aws_iam_access_key.ses_user_key.secret
     AWS_SES_REGION                    = var.region
     SES_SOURCE                        = "EdgeIn Support <support@edgein.dev>"
-    ENCRYPTION_SECRET                 = random_password.encryption_secret.result
+    ENCRYPTION_SECRET                 = random_password.hasura_secret.result
     GRAPHQL_ENDPOINT                  = local.hasura_graphql_endpoint
     HASURA_ADMIN_SECRET               = aws_ssm_parameter.hasura_admin_secret.value
     HASURA_JWT_SECRET                 = aws_ssm_parameter.hasura_jwt_secret.value
@@ -43,7 +38,7 @@ resource "vercel_deployment" "edgein" {
     AUTH0_CLIENT_SECRET               = auth0_client.edgein.client_secret
     NEXT_PUBLIC_AUTH0_CLIENT_ID       = auth0_client.edgein.client_id
     NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL = "https://${var.auth0_domain}"
-    NEXT_PUBLIC_AUTH0_REDIRECT_URL    = ""
+    NEXT_PUBLIC_AUTH0_REDIRECT_URL    = local.vercel_url
   }
 }
 
