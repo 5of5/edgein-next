@@ -84,29 +84,25 @@ async function getUser(
   if (!token) {
     return null;
   }
-  try {
-    const verified = await jwtVerify(
-      token,
-      new TextEncoder().encode(process.env.ENCRYPTION_SECRET),
-    );
-    const payload = verified.payload;
+  const verified = await jwtVerify(
+    token,
+    new TextEncoder().encode(process.env.ENCRYPTION_SECRET),
+  );
+  const payload = verified.payload;
 
-    if (!payload) {
+  if (!payload) {
+    return null;
+  }
+  const userStr = payload.user as string;
+  let user: UserToken | null = null;
+  if (userStr.startsWith('{')) {
+    try {
+      user = JSON.parse(userStr);
+    } catch (e) {
       return null;
     }
-    const userStr = payload.user as string;
-    let user: UserToken | null = null;
-    if (userStr.startsWith('{')) {
-      try {
-        user = JSON.parse(userStr);
-      } catch (e) {
-        return null;
-      }
-    }
-    return { ...(user as User), _iat: payload.iat };
-  } catch (err) {
-    throw new Error(JSON.stringify({ err: err, token }, null, 2));
   }
+  return { ...(user as User), _iat: payload.iat };
 }
 
 async function getUsage(token: string) {

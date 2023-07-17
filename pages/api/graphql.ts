@@ -39,13 +39,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     headers,
   };
 
-  try {
-    const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? '', opts);
-    const json = await proxyRes.json();
-    res.send(json);
-  } catch (err) {
-    res.status(500).json({ err, opts });
-  }
+  const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? '', opts);
+
+  const json = await proxyRes.json();
+  res.send(json);
 };
 
 export default handler;
