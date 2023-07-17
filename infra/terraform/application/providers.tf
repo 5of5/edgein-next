@@ -24,6 +24,11 @@ terraform {
       source  = "vercel/vercel"
       version = "0.14.0"
     }
+
+    auth0 = {
+      source  = "auth0/auth0"
+      version = "0.50.0"
+    }
   }
 
   backend "s3" {
@@ -51,10 +56,12 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 provider "vercel" {
-  # Or omit this for the api_token to be read
-  # from the VERCEL_API_TOKEN environment variable
   api_token = var.vercel_api_token
-
-  # Optional default team for all resources
   team = var.vercel_team
+}
+
+provider "auth0" {
+  domain = var.auth0_domain
+  client_id = var.auth0_client_id
+  client_secret = var.auth0_client_secret
 }

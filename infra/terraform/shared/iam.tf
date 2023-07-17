@@ -20,16 +20,6 @@ data "aws_iam_policy_document" "ssm_policy" {
   }
 }
 
-data "aws_iam_policy_document" "s3_resources_bucket_policy" {
-  statement {
-    actions = [
-      "s3:*"
-    ]
-
-    resources = ["${aws_s3_bucket.resources.arn}/*"]
-  }
-}
-
 data "aws_iam_policy_document" "ses_policy" {
   statement {
     actions = ["SES:SendEmail", "SES:SendRawEmail"]
@@ -42,12 +32,6 @@ resource "aws_iam_policy" "ssm_policy" {
   name   = "ssm_fargate_policy_${terraform.workspace}"
   path   = "${local.path}/"
   policy = data.aws_iam_policy_document.ssm_policy.json
-}
-
-resource "aws_iam_policy" "s3_resources_bucket_policy" {
-  name   = "s3_resources_bucket_policy_${terraform.workspace}"
-  path   = "${local.path}/"
-  policy = data.aws_iam_policy_document.s3_resources_bucket_policy.json
 }
 
 resource "aws_iam_policy" "ses_policy" {
@@ -65,11 +49,6 @@ resource "aws_iam_role" "edgein" {
 resource "aws_iam_role_policy_attachment" "ssm_policy" {
   role       = aws_iam_role.edgein.name
   policy_arn = aws_iam_policy.ssm_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "s3_resources_bucket_policy" {
-  role       = aws_iam_role.edgein.name
-  policy_arn = aws_iam_policy.s3_resources_bucket_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "ses_policy" {

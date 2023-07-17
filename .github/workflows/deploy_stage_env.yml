@@ -1,8 +1,8 @@
-name: Drop stage env and create new one from last prod DB snapshot
+name: Drop staging env and create new one from last prod DB snapshot
 on:
   push:
     branches:
-      - stage
+      - staging
   workflow_dispatch:
     inputs:
       refresh:
@@ -69,18 +69,21 @@ jobs:
           echo vercel_commit = \"$GITHUB_SHA\" >> input.tfvars
           echo 'vercel_team = ${{ secrets.VERCEL_TEAM }}' >> input.tfvars
           echo 'vercel_api_token = ${{ secrets.VERCEL_API_TOKEN }}' >> input.tfvars
+          echo 'auth0_domain = "${{ var.AUTH0_DOMAIN }}"' >> input.tfvars
+          echo 'auth0_client_id = "${{ secrets.AUTH0_CLIENT_ID }}"' >> input.tfvars
+          echo 'auth0_client_secret = "${{ secrets.AUTH0_CLIENT_SECRET }}"' >> input.tfvars
 
       - name: Terraform select workspace
         id: select-workspace
         working-directory: infra/terraform/application
-        run: terraform workspace select -or-create stage
+        run: terraform workspace select -or-create staging
 
       - name: Terraform Validate
         id: validate
         working-directory: infra/terraform/application
         run: terraform validate -no-color
 
-      - name: Destroy stage environment
+      - name: Destroy staging environment
         if: ${{ github.event.inputs.refresh == 'true' }}
         working-directory: infra/terraform/application
         run: terraform destroy --auto-approve -var-file="input.tfvars"

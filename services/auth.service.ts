@@ -30,16 +30,24 @@ export class AuthService {
   private readonly management: ManagementClient;
   private readonly auth: AuthenticationClient;
 
+  public static redirect_url(): string {
+    return env.VERCEL_ENV !== 'production'
+      ? `https://${env.VERCEL_URL}`
+      : env.NEXT_PUBLIC_AUTH0_REDIRECT_URL;
+  }
+
   public static logoutUrl(): string {
-    return `${env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/v2/logout?client_id=${env.NEXT_PUBLIC_AUTH0_CLIENT_ID}`;
+    return `${AuthService.redirect_url()}/v2/logout?client_id=${
+      env.NEXT_PUBLIC_AUTH0_CLIENT_ID
+    }`;
   }
 
   public static groupUrl(groupId: string): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/groups/${groupId}`;
+    return `${AuthService.redirect_url()}/groups/${groupId}`;
   }
 
   public static signUpUrl(inviteCode: string): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
+    return `${AuthService.redirect_url()}/?invite=${inviteCode}`;
   }
 
   public static auth0UserId(auth0_user_pass_id?: string | null): string {
@@ -53,11 +61,11 @@ export class AuthService {
     userId,
     email,
   }: Pick<AuthData, 'userId' | 'email'>): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-additional-email/?email=${email}&uid=${userId}`;
+    return `${AuthService.redirect_url()}/verify-additional-email/?email=${email}&uid=${userId}`;
   }
 
   public static verifyWorkplaceUrl(verifyWorkToken: string): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?vtoken=${verifyWorkToken}`;
+    return `${AuthService.redirect_url()}/verify-workplace?vtoken=${verifyWorkToken}`;
   }
 
   constructor() {

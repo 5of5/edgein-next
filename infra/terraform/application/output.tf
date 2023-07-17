@@ -16,5 +16,5 @@ output "pg_connection_string" {
 }
 
 output "vercel_url" {
-  value = vercel_deployment.edgein.url
+  value = local.vercel_url
 }

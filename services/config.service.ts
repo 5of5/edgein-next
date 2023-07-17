@@ -13,6 +13,9 @@ const EnvSchema = z.object({
   AUTH0_MANAGEMENT_CLIENT_ID: z.string(),
   AUTH0_MANAGEMENT_CLIENT_SECRET: z.string(),
   AUTH0_MANAGEMENT_DOMAIN: z.string(),
+  //vercel
+  VERCEL_URL: z.string().optional(),
+  VERCEL_ENV: z.string().optional(),
   // NextJS + Auth0
   NEXT_PUBLIC_AUTH0_CLIENT_ID: z.string(),
   NEXT_PUBLIC_AUTH0_REDIRECT_URL: z.string(),

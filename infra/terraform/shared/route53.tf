@@ -97,18 +97,6 @@ resource "aws_route53_record" "edgein_amazonses_verification_record" {
   records = [aws_ses_domain_identity.edgein.verification_token]
 }
 
-resource "aws_route53_record" "cloudfront" {
-  zone_id = data.aws_route53_zone.edgein.zone_id
-  name    = local.cdn_hostname
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.cdn.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
-
 resource "aws_route53_record" "redis" {
   zone_id = data.aws_route53_zone.edgein.zone_id
   name    = local.redis_hostname

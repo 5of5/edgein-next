@@ -2,7 +2,7 @@ name: Remove preview environment
 on:
   pull_request:
     branches:
-      - stage
+      - staging
     types:
       - closed
   workflow_dispatch:

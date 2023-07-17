@@ -71,3 +71,16 @@ variable "vercel_commit" {
   type        = string
   description = "Commit used for deployment"
 }
+
+variable "auth0_domain" {
+  type    = string
+  default = "edgein.us.auth0.com"
+}
+
+variable "auth0_client_id" {
+  type = string
+}
+
+variable "auth0_client_secret" {
+  type = string
+}
