@@ -9,7 +9,7 @@ import {
 } from '@/components/icons';
 import { Fragment } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { AuthService } from '@/services/auth.service';
+import { redirect_url } from '@/services/config.service';
 
 type Props = {
   user: any;
@@ -19,7 +19,7 @@ type Props = {
 export const ElemInviteLinks = ({ user, personSlug }: Props) => {
   const getInviteLink = () => {
     const inviteCode = personSlug || user.reference_id;
-    const inviteLink = `${AuthService.redirect_url()}/?invite=${inviteCode}`;
+    const inviteLink = `${redirect_url()}/?invite=${inviteCode}`;
     return inviteLink;
   };
 

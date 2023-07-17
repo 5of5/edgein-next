@@ -24,3 +24,9 @@ const EnvSchema = z.object({
 
 export type Env = z.infer<typeof EnvSchema>;
 export const env = EnvSchema.parse(process.env);
+
+export const redirect_url = (): string => {
+  return env.VERCEL_ENV !== 'production'
+    ? `https://${env.VERCEL_URL}`
+    : env.NEXT_PUBLIC_AUTH0_REDIRECT_URL;
+};

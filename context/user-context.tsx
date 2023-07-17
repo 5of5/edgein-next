@@ -13,7 +13,7 @@ import { hotjar } from 'react-hotjar';
 import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
-import { AuthService } from '@/services/auth.service';
+import { redirect_url } from '@/services/config.service';
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 const CLARITY_ID = 'epusnauses';
 
@@ -107,7 +107,7 @@ const UserProvider: React.FC<Props> = props => {
           customAttributes: {
             isClaimedProfile: !!user.person, // If a profile is claimed or not
             profileUrl: user.person
-              ? `${AuthService.redirect_url()}/people/${user.person.slug}`
+              ? `${redirect_url()}/people/${user.person.slug}`
               : null, // User profile url
           },
         });

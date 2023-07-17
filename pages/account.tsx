@@ -11,7 +11,7 @@ import { useGetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
-import { AuthService } from '@/services/auth.service';
+import { redirect_url } from '@/services/config.service';
 
 const validator = require('validator');
 
@@ -74,7 +74,7 @@ export default function Account() {
       process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL
     }/authorize?response_type=code&client_id=${
       process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID
-    }&connection=linkedin&redirect_uri=${AuthService.redirect_url()}&scope=openid%20profile%20email%20offline_access`;
+    }&connection=linkedin&redirect_uri=${redirect_url()}&scope=openid%20profile%20email%20offline_access`;
     window.location.href = url;
   };
 

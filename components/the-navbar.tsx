@@ -24,7 +24,7 @@ import {
   useGetUserByIdQuery,
 } from '@/graphql/types';
 import ElemSearchBox from './elem-search-box';
-import { find, kebabCase, first } from 'lodash';
+import { find, first } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import ElemLibrarySelector from './elem-library-selector';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
@@ -32,7 +32,7 @@ import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
-import { AuthService } from '@/services/auth.service';
+import { redirect_url } from '@/services/config.service';
 
 export type Popups =
   | 'login'
@@ -169,7 +169,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
         },
         body: JSON.stringify({
           code,
-          redirect_uri: AuthService.redirect_url(),
+          redirect_uri: redirect_url(),
         }),
       }); //.then((res) => res.json());
       if (response.status !== 200) {

@@ -7,7 +7,7 @@ import {
   User,
   UserMetadata,
 } from 'auth0';
-import { env } from '@/services/config.service';
+import { env, redirect_url } from '@/services/config.service';
 
 export const LINKEDIN_PROVIDER = 'linkedin';
 export const AUTH0_PROVIDER = 'auth0';
@@ -30,24 +30,18 @@ export class AuthService {
   private readonly management: ManagementClient;
   private readonly auth: AuthenticationClient;
 
-  public static redirect_url(): string {
-    return env.VERCEL_ENV !== 'production'
-      ? `https://${env.VERCEL_URL}`
-      : env.NEXT_PUBLIC_AUTH0_REDIRECT_URL;
-  }
-
   public static logoutUrl(): string {
-    return `${AuthService.redirect_url()}/v2/logout?client_id=${
+    return `${redirect_url()}/v2/logout?client_id=${
       env.NEXT_PUBLIC_AUTH0_CLIENT_ID
     }`;
   }
 
   public static groupUrl(groupId: string): string {
-    return `${AuthService.redirect_url()}/groups/${groupId}`;
+    return `${redirect_url()}/groups/${groupId}`;
   }
 
   public static signUpUrl(inviteCode: string): string {
-    return `${AuthService.redirect_url()}/?invite=${inviteCode}`;
+    return `${redirect_url()}/?invite=${inviteCode}`;
   }
 
   public static auth0UserId(auth0_user_pass_id?: string | null): string {
@@ -61,11 +55,11 @@ export class AuthService {
     userId,
     email,
   }: Pick<AuthData, 'userId' | 'email'>): string {
-    return `${AuthService.redirect_url()}/verify-additional-email/?email=${email}&uid=${userId}`;
+    return `${redirect_url()}/verify-additional-email/?email=${email}&uid=${userId}`;
   }
 
   public static verifyWorkplaceUrl(verifyWorkToken: string): string {
-    return `${AuthService.redirect_url()}/verify-workplace?vtoken=${verifyWorkToken}`;
+    return `${redirect_url()}/verify-workplace?vtoken=${verifyWorkToken}`;
   }
 
   constructor() {
