@@ -26,7 +26,7 @@ const ElemLibrarySelector = () => {
   const handleSelectLibrary = (value: LibraryOption) => {
     setLibrary(value);
     onChangeLibrary(value.id);
-    router.replace(router.pathname).then(() => router.reload);
+    router.replace(router.asPath).then(() => router.reload);
   };
 
   if (library) {
