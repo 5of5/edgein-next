@@ -6,6 +6,7 @@ function exportEnvVariables() {
   for (const key in process.env) {
     if (process.env.hasOwnProperty(key)) {
       const envLine = `${key}=${process.env[key]}`;
+      console.log(envLine);
       envData.push(envLine);
     }
   }
