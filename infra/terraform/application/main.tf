@@ -11,7 +11,7 @@ data "terraform_remote_state" "shared" {
   config = {
     region = "us-east-2"
     bucket = "edgein-terraform-state"
-    key    = "env:/production/edgein/shared.tfstate"
+    key    = "env:/staging/edgein/shared.tfstate"
   }
 }
 

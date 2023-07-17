@@ -1,6 +1,6 @@
 locals {
   vercel_alias = "${terraform.workspace}-edgein.vercel.app"
-  vercel_url = "https://${local.vercel_alias}"
+  vercel_url   = "https://${local.vercel_alias}"
 }
 
 data "vercel_project" "edgein" {
@@ -40,10 +40,10 @@ resource "vercel_deployment" "edgein" {
     AUTH0_MANAGEMENT_CLIENT_ID        = var.auth0_client_id
     AUTH0_MANAGEMENT_CLIENT_SECRET    = var.auth0_client_secret
     AUTH0_MANAGEMENT_DOMAIN           = var.auth0_domain
-    AUTH0_CLIENT_SECRET = auth0_client.edgein.client_secret
+    AUTH0_CLIENT_SECRET               = auth0_client.edgein.client_secret
     NEXT_PUBLIC_AUTH0_CLIENT_ID       = auth0_client.edgein.client_id
     NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL = "https://${var.auth0_domain}"
-    NEXT_PUBLIC_AUTH0_REDIRECT_URL = ""
+    NEXT_PUBLIC_AUTH0_REDIRECT_URL    = ""
   }
 }
 

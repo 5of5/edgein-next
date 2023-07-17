@@ -57,11 +57,11 @@ data "aws_caller_identity" "current" {}
 
 provider "vercel" {
   api_token = var.vercel_api_token
-  team = var.vercel_team
+  team      = var.vercel_team
 }
 
 provider "auth0" {
-  domain = var.auth0_domain
-  client_id = var.auth0_client_id
+  domain        = var.auth0_domain
+  client_id     = var.auth0_client_id
   client_secret = var.auth0_client_secret
 }
