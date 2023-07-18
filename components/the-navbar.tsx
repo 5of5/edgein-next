@@ -371,7 +371,6 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 setOnboardingStep(4);
               }}
               onBack={() => setOnboardingStep(2)}
-              user={user}
             />
           )}
 

@@ -30,6 +30,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { PeopleList } from '@/components/my-list/people-list';
+import { useMutation } from 'react-query';
 
 type Props = {};
 
@@ -37,7 +38,11 @@ const MyList: NextPage<Props> = () => {
   const { listAndFollows: lists, refreshProfile, user } = useUser();
   const router = useRouter();
 
-  const { data, refetch } = useGetListMembersQuery(
+  const {
+    data,
+    refetch,
+    isRefetching: isListMembersReFetching,
+  } = useGetListMembersQuery(
     {
       where: {
         user_id: { _eq: user?.id },
@@ -45,6 +50,7 @@ const MyList: NextPage<Props> = () => {
     },
     {
       enabled: Boolean(user?.id),
+      refetchOnWindowFocus: false,
     },
   );
   const listMembers = data?.list_members || [];
@@ -201,27 +207,32 @@ const MyList: NextPage<Props> = () => {
       );
     }
   };
-
-  const onFollowList = async () => {
-    const response = await fetch('/api/toggle-follow-list', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        listId: theListId,
-        userId: user?.id,
+  const { mutate: followList, isLoading: isFollowListLoading } = useMutation(
+    () =>
+      fetch('/api/toggle-follow-list', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          listId: theListId,
+          userId: user?.id,
+        }),
       }),
-    });
+    {
+      onSuccess: () => {
+        refetch();
+        refreshProfile();
+        refetchCompanies();
+        refetchVcFirms();
+        refetchPeople();
+      },
+    },
+  );
 
-    if (response.status === 200) {
-      refetch();
-      refreshProfile();
-      refetchCompanies();
-      refetchVcFirms();
-      refetchPeople();
-    }
+  const handleFollowList = () => {
+    followList();
   };
 
   const [theListId, setTheListId] = useState(0);
@@ -318,6 +329,8 @@ const MyList: NextPage<Props> = () => {
     if (listPeople) setPeople(listPeople?.follows_people as Follows_People[]);
   }, [companiesData, vcFirms, listPeople]);
 
+  const isFollowButtonLoading = isFollowListLoading || isListMembersReFetching;
+
   return (
     <DashboardLayout>
       <ElemListInformation
@@ -328,7 +341,8 @@ const MyList: NextPage<Props> = () => {
         onAddGroups={onAddGroups}
         onChangePublic={onChangePublic}
         isFollowing={isFollowing}
-        onFollowList={onFollowList}
+        isFollowButtonLoading={isFollowButtonLoading}
+        onFollowList={handleFollowList}
       />
 
       {(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
@@ -385,7 +399,8 @@ const MyList: NextPage<Props> = () => {
             </h3>
             <ElemButton
               btn="primary"
-              onClick={onFollowList}
+              loading={isFollowButtonLoading}
+              onClick={handleFollowList}
               className="mt-2 mb-12"
             >
               Follow

@@ -1,7 +1,11 @@
 import { useState, Fragment } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { Dialog, Transition } from '@headlessui/react';
-import { IconCheck } from '@/components/icons';
+
+export enum ErrorCode {
+  USER_NOT_EXISTS = 404,
+  LINKED_IN_ACCOUNT = 406,
+}
 
 type Props = {
   show: boolean;
@@ -13,6 +17,7 @@ export default function ForgotPasswordModal(props: Props) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isMailSent, setIsMailSent] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async () => {
     if (!email) {
@@ -20,6 +25,7 @@ export default function ForgotPasswordModal(props: Props) {
       return;
     }
     try {
+      setError('');
       const response = await fetch('/api/change-password/', {
         method: 'POST',
         headers: {
@@ -28,7 +34,14 @@ export default function ForgotPasswordModal(props: Props) {
         },
         body: JSON.stringify({ email }),
       }).then(res => res.json());
-      if (response.success === true) {
+      if (!response.status && response.success === true) {
+        setIsMailSent(true);
+      }
+      if (response.status === ErrorCode.USER_NOT_EXISTS) {
+        setIsMailSent(true);
+      }
+      if (response.status === ErrorCode.LINKED_IN_ACCOUNT) {
+        setError(response.message);
         setIsMailSent(true);
       }
     } catch (e) {
@@ -78,13 +91,19 @@ export default function ForgotPasswordModal(props: Props) {
                   {isMailSent ? (
                     <>
                       <h1 className="text-2xl font-bold lg:text-3xl">
-                        Password reset email sent
+                        {error === ''
+                          ? 'Password reset email sent'
+                          : 'Looks like you signed up through LinkedIn'}
                       </h1>
-                      <p className="mt-2">
-                        Look for an email from{' '}
-                        <span className="font-bold">support@edgein.io</span>.
-                        Check your Spam or Bulk Mail folders.
-                      </p>
+                      {error === '' ? (
+                        <p className="mt-2">
+                          Look for an email from{' '}
+                          <span className="font-bold">support@edgein.io</span>.
+                          Check your Spam or Bulk Mail folders.
+                        </p>
+                      ) : (
+                        <p className="mt-2">{error}</p>
+                      )}
                       <div className="sm:col-span-3 mt-4">
                         <ElemButton
                           onClick={onBack}

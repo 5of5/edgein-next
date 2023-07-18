@@ -9,7 +9,7 @@ import {
 
 test.describe('Investors', () => {
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto(`${baseURL}/`, { timeout: 15000 });
+    await page.goto(`${baseURL}/`);
 
     await page.getByRole('link', { name: /Investors/ }).click();
   });

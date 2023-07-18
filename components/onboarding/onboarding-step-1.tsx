@@ -44,7 +44,7 @@ export default function OnboardingStep1(props: Props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed z-10 inset-0 bg-white/90 transition-opacity backdrop-blur-sm" />
+            <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
           <div className="fixed inset-0 z-[50] m-6 min-h-0 flex flex-col items-center justify-center">

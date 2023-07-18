@@ -19,7 +19,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
     setCompanyData(company);
   }, [company]);
 
-  const { id, slug, logo, name, coin, overview } = companyData;
+  const { id, slug, logo, name, coin, overview, follows } = companyData;
 
   return (
     <Link href={`/companies/${slug}`}>
@@ -76,6 +76,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
             resourceType={'companies'}
             slug={slug!}
             buttonStyle="white"
+            follows={follows}
           />
         </div>
       </a>
