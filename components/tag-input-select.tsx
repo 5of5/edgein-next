@@ -13,6 +13,7 @@ type Props = {
   placeholder?: string;
   required?: boolean;
   defaultTags?: string[];
+  allowCreate?: boolean;
 };
 
 export const TagInputSelect: React.FC<Props> = ({
@@ -27,6 +28,7 @@ export const TagInputSelect: React.FC<Props> = ({
   placeholder = '',
   required = false,
   defaultTags = [],
+  allowCreate = false,
 }) => {
   const [tags, setTags] = useState(defaultTags);
   const [inputValue, setInputValue] = useState(value);
@@ -78,7 +80,7 @@ export const TagInputSelect: React.FC<Props> = ({
   });
 
   function onEnterTag(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key == 'Enter') {
+    if (e.key == 'Enter' && allowCreate) {
       setShowDropdown(false);
       const tagAlreadyAdded = tags.some(tag => {
         return (
@@ -142,13 +144,17 @@ export const TagInputSelect: React.FC<Props> = ({
                   </div>
                 ))}
               </Fragment>
-            ) : (
+            ) : allowCreate ? (
               <div
                 className="p-2 text-slate-600 cursor-pointer hover:bg-primary-500 hover:text-slate-100"
                 onClick={e => handleClickSuggestion(e, inputValue)}
               >
                 Add &ldquo;{inputValue}&rdquo;
               </div>
+            ) : (
+              <p className="p-2 text-sm text-slate-500">
+                We don&apos;t have this tag yet
+              </p>
             )}
           </div>
         )}

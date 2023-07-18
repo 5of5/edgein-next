@@ -17,7 +17,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
     setVcFirmData(vcFirm);
   }, [vcFirm]);
 
-  const { id, slug, logo, name, num_of_investments, tags, overview } =
+  const { id, slug, logo, name, num_of_investments, tags, overview, follows } =
     vcFirmData;
 
   return (
@@ -102,6 +102,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
             resourceType={'vc_firms'}
             slug={slug!}
             buttonStyle="white"
+            follows={follows}
           />
         </div>
       </a>

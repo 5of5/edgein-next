@@ -1,63 +1,35 @@
-import qs from 'qs';
-import UserService from '../../utils/users';
-import CookieService from '../../utils/cookie';
-import {
-  getUserInfoFromToken,
-  linkTwoAccount,
-} from '../../utils/auth0-library';
+import UserService from '@/utils/users';
+import CookieService from '@/utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { makeAuthService } from '@/services/auth.service';
+
+const authService = makeAuthService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
 
   // check email exist in allowedEmail table or not
   const code = req.body.code;
-  const redirect_uri = req.body.redirect_uri;
   const reference_id = req.body.reference_id;
-  if (!code || !redirect_uri) return res.status(404).send('Invalid request');
+  //TODO: fix code to 400
+  if (!code) return res.status(404).send('Invalid request');
 
   let isFirstLogin = false;
-  const userTokenHeader = new Headers();
-  userTokenHeader.append('Content-Type', 'application/x-www-form-urlencoded');
   try {
-    const userTokenResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`,
-      {
-        method: 'POST',
-        headers: userTokenHeader,
-        body: qs.stringify({
-          grant_type: 'authorization_code',
-          client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-          client_secret: process.env.AUTH0_CLIENT_SECRET,
-          code,
-          redirect_uri,
-        }),
-      },
-    );
-    if (!userTokenResponse.ok) {
-      const errorResponse = JSON.parse(await userTokenResponse.text());
-      return res
-        .status(userTokenResponse.status)
-        .send(errorResponse.error_description);
-    }
-    const userTokenResult = JSON.parse(await userTokenResponse.text());
+    const userTokenResult = await authService.verifyEmailCode({
+      email: req.body.email,
+      otp: code,
+    });
     // get the user info from auth0
-    const userInfo = await getUserInfoFromToken(userTokenResult.access_token);
-    if (!userInfo.ok) {
-      const userInfoErrorResponse = JSON.parse(await userInfo.text());
-      return res
-        .status(userInfo.status)
-        .send(userInfoErrorResponse.error_description);
-    }
-    const userInfoInJson = JSON.parse(await userInfo.text());
+    const userInfo = await authService.getProfile(userTokenResult.access_token);
 
-    if (userInfoInJson && userInfoInJson.email) {
+    if (userInfo && userInfo.email) {
       // get the domain from the email
-      const domain = userInfoInJson.email.split('@').pop();
+      const domain = userInfo.email.split('@').pop();
       // check email is in allowed_emails or not
       const isEmailAllowed = await UserService.queryForAllowedEmailCheck(
-        userInfoInJson.email,
-        domain,
+        userInfo.email,
+        domain!,
       );
 
       // when email does not exist in the allowed emails
@@ -73,20 +45,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (loggedInUser && loggedInUser.active === false) {
         return res.status(403).send({ message: 'Error: Please try again' });
       }
-      const auth0SubInfo = userInfoInJson.sub.split('|');
+      const auth0SubInfo = userInfo.sub.split('|');
       const connectionType = auth0SubInfo[0];
       let userData: any = {};
       let isUserPassPrimaryAccount = false;
       let isLinkedInPrimaryAccount = false;
       if (!loggedInUser || !loggedInUser.email) {
         // get the user info from the user table
-        userData = await UserService.findOneUserByEmail(userInfoInJson.email);
+        userData = await UserService.findOneUserByEmail(userInfo.email);
         // create the user and return the response
         const auth0Id = auth0SubInfo[1];
         if (!userData) {
           // check user exist in additional_emails or not
           userData = await UserService.findOneUserByAdditionalEmail(
-            userInfoInJson.email,
+            userInfo.email,
           );
           if (!userData) {
             let referenceUserId = null;
@@ -100,8 +72,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             const objectData = {
-              email: userInfoInJson.email,
-              name: userInfoInJson.name,
+              email: userInfo.email,
+              name: userInfo.name,
               _id: auth0SubInfo.pop(), // get Id from sub
               auth0_linkedin_id: connectionType === 'linkedin' ? auth0Id : '',
               reference_user_id: referenceUserId,
@@ -112,11 +84,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       } else {
         userData = await UserService.findOneUserByEmail(loggedInUser.email);
         // check if loggedin email and linkedin email is same or not
-        if (loggedInUser.email !== userInfoInJson.email) {
+        if (loggedInUser.email !== userInfo.email) {
           // update in email array as additional email
           userData = await UserService.findOneUserByEmail(loggedInUser.email);
-          if (!userData.additional_emails.includes(userInfoInJson.email)) {
-            userData.additional_emails.push(userInfoInJson.email);
+          if (!userData.additional_emails.includes(userInfo.email)) {
+            userData.additional_emails.push(userInfo.email);
             userData = await UserService.updateAllowedEmailArray(
               userData.id,
               userData.additional_emails,
@@ -132,9 +104,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         connectionType === 'linkedin'
       ) {
         isUserPassPrimaryAccount = true;
+        const auth_linkedin_id = auth0SubInfo.pop();
         userData = await UserService.updateAuth0LinkedInId(
           userData.email,
-          auth0SubInfo.pop(),
+          auth_linkedin_id!,
         );
       }
       // update the auth0_verified
@@ -143,28 +116,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await UserService.updateEmailVerifiedStatus(userData.email, true);
       }
 
-      if (
-        userData &&
-        userData.auth0_linkedin_id &&
-        userData.auth0_user_pass_id
-      ) {
-        let primaryId = '';
-        let secondayProvider = '';
-        let secondayId = '';
-        if (isUserPassPrimaryAccount) {
-          primaryId = `auth0|${userData.auth0_user_pass_id}`;
-          secondayProvider = 'linkedin';
-          secondayId = `linkedin|${userData.auth0_linkedin_id}`;
-        }
-        if (isLinkedInPrimaryAccount) {
-          primaryId = `linkedin|${userData.auth0_linkedin_id}`;
-          secondayProvider = 'auth0';
-          secondayId = `auth0|${userData.auth0_user_pass_id}`;
-        }
-        if (primaryId !== '' && secondayId !== '') {
-          await linkTwoAccount(primaryId, secondayId, secondayProvider);
-        }
-      }
+      await authService.linkAccounts(
+        isUserPassPrimaryAccount,
+        isLinkedInPrimaryAccount,
+        userData,
+      );
 
       const newUserToken = UserService.createToken(userData, isFirstLogin);
 

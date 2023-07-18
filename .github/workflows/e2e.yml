@@ -1,0 +1,97 @@
+name: Check e2e tests
+on:
+  #pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:14-3.3
+        options: --health-cmd pg_isready --health-interval 30s --health-retries 12
+        env:
+          POSTGRES_USER: 'edgeu'
+          POSTGRES_DB: 'edgedb'
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+      graphql-engine:
+        image: hasura/graphql-engine:v2.7.0
+        env:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://edgeu:@postgres:5432/edgedb
+          HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+          HASURA_GRAPHQL_DEV_MODE: 'true'
+          HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+          HASURA_GRAPHQL_ENABLED_APIS: 'metadata,graphql'
+          HASURA_GRAPHQL_ADMIN_SECRET: devsecret
+          HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "you-should-create-your-own-secret-to-use-for-encryption"}'
+        ports:
+          - 8080:8080
+      cache:
+        image: redis:6.2-alpine
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: npm ci
+      - name: Load environment variables from .env file
+        uses: falti/dotenv-action@v1.0.4
+      - name: Install PostgreSQL client
+        run: sudo apt-get install -y postgresql-client
+      - name: Push schema to Postgres
+        run: psql -h 172.17.0.1 -U edgeu -d edgedb -f ./infra/hasura/bootstrap-dev/1-schema.sql
+      - name: Hasura migrate
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: migrate apply --database-name default
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.7.0
+          HASURA_ENDPOINT: http://172.17.0.1:8080
+          HASURA_ADMIN_SECRET: devsecret
+      - name: Hasura apply
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: metadata apply
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.7.0
+          HASURA_ENDPOINT: http://172.17.0.1:8080
+          HASURA_ADMIN_SECRET: devsecret
+      - name: Load Seed Data
+        env:
+          PG_HOST: 172.17.0.1
+        run: cd scripts/db/ && sh ./load-seed-data.sh
+      - name: Build NextJS
+        run: npm run build
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        uses: knicknic/os-specific-run@v1.0.3
+        with:
+          linux: npx playwright test --project=setup --project=chromium --project=firefox
+          windows: npx playwright test --project=setup --project=chromium --project=firefox
+          macos: npx playwright test
+        env:
+          GRAPHQL_ENDPOINT: 'http://172.17.0.1:8080/v1/graphql'
+          GRAPHQL_ENDPOINT_ADMIN: 'http://172.17.0.1:8080/v1/graphql'
+          PG_HOST: 172.17.0.1
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

@@ -85,6 +85,10 @@ query GetCompany($slug: String!) {
         overview
         logo
         status_tags
+        follows {
+          id
+          list_id
+        }
       }
       from_vc_firm {
         id
@@ -94,6 +98,10 @@ query GetCompany($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
     }
     from_links {
@@ -108,6 +116,10 @@ query GetCompany($slug: String!) {
         overview
         logo
         status_tags
+        follows {
+          id
+          list_id
+        }
       }
       to_vc_firm {
         id
@@ -117,6 +129,10 @@ query GetCompany($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
     }
     news_links {
@@ -153,6 +169,10 @@ query GetCompany($slug: String!) {
           vc_firm_id
         }
       }
+    }
+    follows {
+      id
+      list_id
     }
   }
 }
@@ -212,6 +232,10 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
     velocity_token
     website
     status_tags
+    follows {
+      id
+      list_id
+    }
   }
   companies_aggregate(where: $where) {
     aggregate {
@@ -246,6 +270,10 @@ query GetCompaniesRecent(
     investment_rounds {
       id
       amount
+    }
+    follows {
+      id
+      list_id
     }
   }
 }
@@ -311,5 +339,13 @@ query GetCompaniesByDate($date: timestamptz, $library: jsonb) {
 mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
   update_companies_by_pk(pk_columns: { id: $companyId }, _set: $data) {
     id
+  }
+}
+
+query GetCompanyById($id: Int!) {
+  companies(where: { id: { _eq: $id } }) {
+    id
+    name
+    status
   }
 }

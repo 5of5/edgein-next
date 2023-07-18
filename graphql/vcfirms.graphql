@@ -70,6 +70,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
       from_vc_firm {
         id
@@ -79,6 +83,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
     }
     from_links {
@@ -91,6 +99,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
       to_vc_firm {
         id
@@ -100,6 +112,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
     }
     news_links {
@@ -119,6 +135,10 @@ query GetVCFirm($slug: String!) {
           vc_firm_id
         }
       }
+    }
+    follows {
+      id
+      list_id
     }
   }
 }
@@ -177,6 +197,10 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
       }
     }
     sentiment
+    follows {
+      id
+      list_id
+    }
   }
   vc_firms_aggregate(where: $where) {
     aggregate {
@@ -205,6 +229,10 @@ query GetVCFirmsRecentInvestments(
     num_of_investments
     sentiment
     overview
+    follows {
+      id
+      list_id
+    }
   }
 }
 
@@ -285,5 +313,13 @@ query GetVcFirmsInvestments {
         }
       }
     }
+  }
+}
+
+query GetVcFirmById($id: Int!) {
+  vc_firms(where: { id: { _eq: $id } }) {
+    id
+    name
+    status
   }
 }
