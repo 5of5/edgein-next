@@ -1,33 +1,21 @@
-import {
-  FC,
-  PropsWithChildren,
-  Fragment,
-  useState,
-  useEffect,
-  useMemo,
-} from 'react';
+import { FC, PropsWithChildren, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { ElemButton } from './elem-button';
 import {
-  IconX,
-  IconLinkedIn,
-  IconTwitter,
   IconCash,
   IconCompanies,
-  IconUsers,
-  IconEmail,
   IconSettings,
   IconCustomList,
   IconGroup,
-  IconSignOut,
   IconCalendar,
   IconNewspaper,
   IconBell,
   IconDocumentDownload,
   IconUserCircle,
   IconSearch,
+  IconX,
 } from '@/components/icons';
-import { Transition, Dialog } from '@headlessui/react';
+import { Transition } from '@headlessui/react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useUser } from '@/context/user-context';
 import { clearLocalStorage } from '@/utils/helpers';
@@ -38,15 +26,11 @@ import { filterExcludeNotifications } from '@/utils/notifications';
 
 type Props = {
   className?: string;
-  myListsUrl?: string;
-  myGroupsUrl?: string;
   setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   className = '',
-  myListsUrl,
-  myGroupsUrl,
   setShowPopup,
 }) => {
   const { user } = useUser();
@@ -89,31 +73,14 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     setNavOpen(false);
   };
 
+  const onToggleMenu = () => {
+    setNavOpen(!navOpen);
+  };
+
   const onOpenSearch = () => {
     setShowPopup('search');
     setNavOpen(false);
   };
-
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [visible, setVisible] = useState(true);
-
-  const handleScroll = () => {
-    const currentScrollPos = window.scrollY;
-
-    if (currentScrollPos > prevScrollPos) {
-      setVisible(false);
-    } else {
-      setVisible(true);
-    }
-
-    setPrevScrollPos(currentScrollPos);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
 
   const logout = async () => {
     clearLocalStorage();
@@ -215,7 +182,6 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
           {
             icon: IconSettings,
             name: 'Account Settings',
-            // href: '/account',
             href: '/account',
             onClick: () => {
               router.push('/account');
@@ -224,26 +190,13 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
           },
         ]
       : []),
-    // { icon: IconUsers, name: "Team", href: "/team", onClick: null },
-    // { icon: IconEmail, name: "Contact", href: "/contact", onClick: null },
-    // {
-    // 	icon: IconLinkedIn,
-    // 	name: "LinkedIn",
-    // 	href: "https://www.linkedin.com/company/edgein/",
-    // 	onClick: null,
-    // },
-    // {
-    // 	icon: IconTwitter,
-    // 	name: "Twitter",
-    // 	href: "https://twitter.com/EdgeInio",
-    // 	onClick: null,
-    // },
   ];
 
   return (
     <>
       <div
-        className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}>
+        className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
+      >
         <ul className="grid grid-cols-6 w-full bg-white px-0.5 pb-0.5">
           {nav.map((item, index) => (
             <li
@@ -252,11 +205,13 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 router.pathname == item?.href && navOpen === false
                   ? 'border-t-2 border-primary-500'
                   : 'border-t-2 border-transparent'
-              }`}>
+              }`}
+            >
               <Link href={item?.href ? item.href : ''}>
                 <a
                   onClick={item?.onClick ? item?.onClick : onClose}
-                  className="flex flex-col items-center h-full text-[11px]">
+                  className="flex flex-col items-center h-full text-[11px]"
+                >
                   {item?.icon && (
                     <div className="relative flex items-center justify-center h-7 aspect-square">
                       {notificationsCount > 0 &&
@@ -280,10 +235,12 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
               navOpen
                 ? 'border-t-2 border-primary-500'
                 : 'border-t-2 border-transparent'
-            }`}>
+            }`}
+          >
             <a
-              onClick={onOpen}
-              className="flex flex-col items-center h-full text-[11px] cursor-pointer">
+              onClick={onToggleMenu}
+              className="flex flex-col items-center h-full text-[11px] cursor-pointer"
+            >
               {user?.person?.picture ? (
                 <ElemPhoto
                   photo={user?.person?.picture}
@@ -306,88 +263,81 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
           </li>
         </ul>
       </div>
-      <Transition.Root show={navOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className={`relative lg:hidden ${navOpen && 'z-30'}`}
-          onClose={onClose}>
-          <div className="fixed inset-0 flex justify-end">
-            <Transition.Child
-              as={Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="translate-x-full">
-              <Dialog.Panel className="w-full bg-gray-50">
-                <div className="flex justify-between items-center px-4 py-3">
-                  <Dialog.Title className="text-xl font-bold">
-                    Menu
-                    {/* <button type="button" onClick={onClose}>
-										<IconX className="h-8 w-8" title="close" />
-									</button> */}
-                  </Dialog.Title>
-                  <div className="flex space-x-2">
-                    <ElemButton
-                      onClick={onClose}
-                      btn="slate"
-                      className="h-9 w-9 !px-0 !py-0 outline-none">
-                      <IconSettings className="h-5 w-5" />
-                    </ElemButton>
-                    <ElemButton
-                      onClick={onOpenSearch}
-                      btn="slate"
-                      className="h-9 w-9 !px-0 !py-0">
-                      <IconSearch className="h-5 w-5" strokeWidth={1.5} />
-                    </ElemButton>
-                  </div>
-                </div>
-
-                <ul className="grid grid-cols-2 gap-4 px-4">
-                  {menuPanel.map((item, index) => (
-                    <li key={index}>
-                      <Link href={item?.href ? item.href : ''}>
-                        <a
-                          onClick={item.onClick ? item.onClick : onClose}
-                          className="block p-3 outline-none bg-white shadow rounded-lg">
-                          {item?.icon && (
-                            <item.icon
-                              title={item.name}
-                              className="h-6 w-6 shrink-0"
-                            />
-                          )}
-                          <span className="leading-tight">{item?.name}</span>
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <div className="p-4">
-                  {user ? (
-                    <ElemButton
-                      btn="slate"
-                      roundedFull={false}
-                      onClick={() => {
-                        logout(), setNavOpen(false);
-                      }}
-                      className="w-full">
-                      Sign out
-                    </ElemButton>
-                  ) : (
-                    <ElemButton
-                      onClick={() => setShowPopup('signup')}
-                      btn="primary"
-                      className="w-full">
-                      Start for free
-                    </ElemButton>
-                  )}
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+      <Transition
+        show={navOpen}
+        enter="transition ease-in-out duration-300 transform"
+        enterFrom="translate-x-full"
+        enterTo="translate-x-0"
+        leave="transition ease-in-out duration-300 transform"
+        leaveFrom="translate-x-0"
+        leaveTo="translate-x-full"
+      >
+        <div className="fixed -top-12 left-0 right-0 bottom-0 z-40">
+          <div className="bg-gray-50 h-screen">
+            <div className="flex justify-between items-center px-4 py-3">
+              <p className="font-bold">Menu</p>
+              <div className="flex space-x-2">
+                <ElemButton
+                  onClick={onOpenSearch}
+                  btn="slate"
+                  className="h-9 w-9 !px-0 !py-0"
+                >
+                  <IconSearch className="h-5 w-5" strokeWidth={1.5} />
+                </ElemButton>
+                <ElemButton
+                  onClick={onClose}
+                  btn="slate"
+                  className="h-9 w-9 !px-0 !py-0 outline-none"
+                >
+                  <IconX className="h-5 w-5" />
+                </ElemButton>
+              </div>
+            </div>
+            <ul className="grid grid-cols-2 gap-4 px-4">
+              {menuPanel.map((item, index) => (
+                <li key={index}>
+                  <Link href={item?.href ? item.href : ''}>
+                    <a
+                      onClick={item.onClick ? item.onClick : onClose}
+                      className="block p-3 outline-none bg-white shadow rounded-lg"
+                    >
+                      {item?.icon && (
+                        <item.icon
+                          title={item.name}
+                          className="h-6 w-6 shrink-0"
+                        />
+                      )}
+                      <span className="leading-tight">{item?.name}</span>
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="p-4">
+              {user ? (
+                <ElemButton
+                  btn="slate"
+                  roundedFull={false}
+                  onClick={() => {
+                    logout(), setNavOpen(false);
+                  }}
+                  className="w-full"
+                >
+                  Sign out
+                </ElemButton>
+              ) : (
+                <ElemButton
+                  onClick={() => setShowPopup('signup')}
+                  btn="primary"
+                  className="w-full"
+                >
+                  Start for free
+                </ElemButton>
+              )}
+            </div>
           </div>
-        </Dialog>
-      </Transition.Root>
+        </div>
+      </Transition>
     </>
   );
 };
