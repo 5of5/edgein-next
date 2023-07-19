@@ -1,0 +1,194 @@
+name: Deploy to preview environment
+on:
+  pull_request:
+    branches:
+      - staging
+    types:
+      - opened
+      - synchronize
+  workflow_dispatch:
+    inputs:
+      workspace:
+        description: 'Workspace to deploy'
+        required: true
+        default: preview
+
+env:
+  PROJECT_NAME: edgein
+
+jobs:
+  deploy:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set workspace
+        run: |
+          if [[ "${{ github.event.inputs.workspace }}" == "preview" || -z "${{ github.event.inputs.workspace }}" ]]; then
+            echo WORKSPACE=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
+          else
+            echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
+          fi
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Load environment variables from .env file
+        uses: falti/dotenv-action@v1.0.4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Config Terraform plugin cache
+        working-directory: infra/terraform/application
+        run: |
+          echo 'plugin_cache_dir="$HOME/.terraform.d/plugin-cache"' >~/.terraformrc
+          mkdir --parents ~/.terraform.d/plugin-cache
+
+      - name: Cache Terraform
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      - name: Setup TF variables
+        working-directory: infra/terraform/application
+        run: |
+          touch input.tfvars
+          echo vercel_commit = \"$GITHUB_SHA\" >> input.tfvars
+          echo 'vercel_team = "${{ secrets.VERCEL_TEAM }}"' >> input.tfvars
+          echo 'vercel_api_token = "${{ secrets.VERCEL_API_TOKEN }}"' >> input.tfvars
+          echo 'auth0_domain = "${{ var.AUTH0_DOMAIN }}"' >> input.tfvars
+          echo 'auth0_client_id = "${{ secrets.AUTH0_CLIENT_ID }}"' >> input.tfvars
+          echo 'auth0_client_secret = "${{ secrets.AUTH0_CLIENT_SECRET }}"' >> input.tfvars
+
+      - name: Terraform Init
+        id: init
+        working-directory: infra/terraform/application
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        working-directory: infra/terraform/application
+        run: terraform validate -no-color
+
+      - name: Terraform select workspace
+        id: select-workspace
+        working-directory: infra/terraform/application
+        run: terraform workspace select -or-create ${{ env.WORKSPACE }}
+        
+      - name: Create preview environment
+        working-directory: infra/terraform/application
+        run: terraform apply --auto-approve -var-file="input.tfvars"
+
+      - name: Get outputs
+        uses: dflook/terraform-output@v1
+        id: tf-outputs
+        with:
+          path: infra/terraform/application
+          workspace: ${{ env.WORKSPACE }}
+
+      - name: Fetch Terraform hasura endpoint output
+        working-directory: infra/terraform/application
+        id: tf-hasura-endpoint-output
+        run: echo "TF_OUT_HASURA_ENDPOINT=${{ steps.tf-outputs.outputs.hasura_endpoint }}" >> $GITHUB_ENV
+
+      - name: Fetch Hasura admin secrete
+        working-directory: infra/terraform/application
+        id: hasura-admin-secret
+        run: |
+          value=$(aws ssm get-parameter --name ${{ steps.tf-outputs.outputs.hasura_admin_secrete_ssm_path }} --with-decryption --query 'Parameter.Value' --output text)
+          echo "HASURA_ADMIN_SECRET=$value" >> $GITHUB_ENV
+
+      - uses: dorny/paths-filter@v2
+        id: changes-in-hasura
+        with:
+          filters: |
+            src:
+              - 'infra/hasura/**'
+
+      - name: Hasura migrate
+        if: steps.changes-in-hasura.outputs.src == 'true'
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: migrate apply --database-name default
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.29.1
+          HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+
+      - name: Hasura clear
+        if: steps.changes-in-hasura.outputs.src == 'true'
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: metadata clear
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.29.1
+          HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+
+      - name: Hasura apply
+        if: steps.changes-in-hasura.outputs.src == 'true'
+        uses: tibotiber/hasura-action@v3.0
+        with:
+          args: metadata apply
+        env:
+          HASURA_WORKDIR: ./infra/hasura
+          HASURA_ENGINE_VERSION: v2.29.1
+          HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+
+      - name: Update data fields
+        if: steps.changes-in-hasura.outputs.src == 'true'
+        working-directory: ./scripts
+        env:
+          PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}
+        shell: bash
+        run: npx ts-node update_data_fields.ts
+
+      - name: View context attributes
+        uses: actions/github-script@v6
+        with:
+          script: console.log(context)
+
+      - name: Expose Vercel URL for preview environment
+        uses: actions/github-script@v6
+        env:
+          VERCEL_URL: ${{ steps.tf-outputs.outputs.vercel_url }}
+          HASURA_URL: ${{ steps.tf-outputs.outputs.hasura_endpoint }}
+          HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
+        with:
+          script: |
+            const { VERCEL_URL, HASURA_URL, HASURA_ADMIN_SECRET } = process.env
+            const body = `You can find your preview environment on URL: [Vercel](https://${VERCEL_URL})\nYour Hasura console is on URL: [Hasura](${HASURA_URL})\nYour Hasura admin secrete is **${HASURA_ADMIN_SECRET}**`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
