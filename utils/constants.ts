@@ -1995,3 +1995,10 @@ export const LIST_NAME_MAX_LENGTH = 255;
 
 export const GROUP_NAME_MAX_LENGTH = 255;
 export const GROUP_DESCRIPTION_MAX_LENGTH = 1000;
+
+export const NOTIFICATION_EXCLUDE_PROPERTIES = [
+  'status_tags',
+  'logo',
+  'trajectory',
+  'search_count',
+];

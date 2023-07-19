@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
-import { useAuth } from '@/hooks/use-auth';
+import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { PlaceholderNotification } from '@/components/placeholders';
 import Link from 'next/link';
@@ -10,6 +10,7 @@ import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import {
   GetNotificationsForUserQuery,
   useGetNotificationsForUserQuery,
+  Notifications,
 } from '@/graphql/types';
 import {
   filterExcludeNotifications,
@@ -18,11 +19,12 @@ import {
 } from '@/utils/notifications';
 import ElemNotificationItem from '@/components/notifications/elem-notification-item';
 import ElemNotificationPopover from '@/components/notifications/elem-notification-popover';
+import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
 
 const DEFAULT_LIMIT = 10;
 
 const Notifications: NextPage = () => {
-  const { user } = useAuth();
+  const { user, unreadNotifications, refetchUnreadNotifications } = useUser();
 
   const [notificationList, setNotificationList] = useState<
     GetNotificationsForUserQuery['notifications']
@@ -31,14 +33,6 @@ const Notifications: NextPage = () => {
   const [page, setPage] = useState<number>(0);
 
   const offset = DEFAULT_LIMIT * page;
-
-  const excludeProperties = useMemo(() => {
-    return ['status_tags', 'logo', 'trajectory', 'search_count'];
-  }, []);
-
-  const excludeResourceTypes = useMemo(() => {
-    return [];
-  }, []);
 
   const { data, error, isFetching } = useGetNotificationsForUserQuery(
     {
@@ -55,15 +49,17 @@ const Notifications: NextPage = () => {
     },
   );
 
-  let displayedNotifications = user?.entitlements?.listsCount
-    ? notificationList.slice(0, user.entitlements.listsCount)
-    : notificationList;
-
-  displayedNotifications = filterExcludeNotifications(
-    displayedNotifications,
-    excludeResourceTypes,
-    excludeProperties,
+  let displayedNotifications = filterExcludeNotifications(
+    notificationList as Notifications[],
+    NOTIFICATION_EXCLUDE_PROPERTIES,
   );
+
+  if (user?.entitlements?.listsCount) {
+    displayedNotifications = displayedNotifications.slice(
+      0,
+      user.entitlements.listsCount,
+    );
+  }
 
   const totalNotifications =
     data?.notifications_aggregate?.aggregate?.count || 0;
@@ -99,6 +95,7 @@ const Notifications: NextPage = () => {
           : item,
       ),
     );
+    refetchUnreadNotifications();
   };
 
   const showMoreNotifications = () => {
@@ -121,13 +118,15 @@ const Notifications: NextPage = () => {
       <div className="bg-white shadow rounded-lg ring-2 ring-white">
         <div className="flex items-center justify-between mb-2 pt-4 px-4">
           <h2 className="text-xl font-bold">Notifications</h2>
-          <button
-            className="flex items-center text-sm hover:text-primary-500"
-            onClick={() => markAsRead(undefined, true)}
-          >
-            <IconCheck className="h-4 mr-1" />
-            Mark all as read
-          </button>
+          {unreadNotifications.length > 0 && (
+            <button
+              className="flex items-center text-sm hover:text-primary-500"
+              onClick={() => markAsRead(undefined, true)}
+            >
+              <IconCheck className="h-4 mr-1" />
+              Mark all as read
+            </button>
+          )}
         </div>
 
         <div className="relative flex flex-col space-y-1 z-10 mx-2">
@@ -242,17 +241,19 @@ const Notifications: NextPage = () => {
           )}
         </div>
 
-        {!isFetching && displayedNotifications.length < totalNotifications && (
-          <div className="p-5">
-            <ElemButton
-              btn="ol-primary"
-              onClick={handleClickShowMore}
-              className="w-full"
-            >
-              Show more notifications
-            </ElemButton>
-          </div>
-        )}
+        {!isFetching &&
+          displayedNotifications.length > 0 &&
+          displayedNotifications.length < totalNotifications && (
+            <div className="p-5">
+              <ElemButton
+                btn="ol-primary"
+                onClick={handleClickShowMore}
+                className="w-full"
+              >
+                Show more notifications
+              </ElemButton>
+            </div>
+          )}
       </div>
 
       <ElemUpgradeDialog

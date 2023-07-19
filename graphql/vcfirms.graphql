@@ -315,3 +315,11 @@ query GetVcFirmsInvestments {
     }
   }
 }
+
+query GetVcFirmById($id: Int!) {
+  vc_firms(where: { id: { _eq: $id } }) {
+    id
+    name
+    status
+  }
+}
