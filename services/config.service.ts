@@ -6,11 +6,16 @@ const EnvSchema = z.object({
   AWS_SES_ACCESS_SECRET_KEY: z.string(),
   AWS_SES_REGION: z.string().default('us-east-1'),
   SES_SOURCE: z.string().default('EdgeIn Support <support@edgein.io>'),
+  PG_CONNECTION_STRING: z.string().optional(),
+  REDIS_CONNECTION_STRING: z.string().optional(),
   // auth0
   AUTH0_CLIENT_SECRET: z.string(),
   AUTH0_MANAGEMENT_CLIENT_ID: z.string(),
   AUTH0_MANAGEMENT_CLIENT_SECRET: z.string(),
   AUTH0_MANAGEMENT_DOMAIN: z.string(),
+  //vercel
+  VERCEL_URL: z.string().optional(),
+  VERCEL_ENV: z.string().optional(),
   // NextJS + Auth0
   NEXT_PUBLIC_AUTH0_CLIENT_ID: z.string(),
   NEXT_PUBLIC_AUTH0_REDIRECT_URL: z.string(),

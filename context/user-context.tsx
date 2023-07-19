@@ -15,6 +15,8 @@ import { hotjar } from 'react-hotjar';
 import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
+
+import { redirect_url } from '@/utils/auth';
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 const CLARITY_ID = 'epusnauses';
 
@@ -118,7 +120,7 @@ const UserProvider: React.FC<Props> = props => {
           customAttributes: {
             isClaimedProfile: !!user.person, // If a profile is claimed or not
             profileUrl: user.person
-              ? `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/people/${user.person.slug}`
+              ? `${redirect_url()}/people/${user.person.slug}`
               : null, // User profile url
           },
         });
@@ -158,8 +160,7 @@ const UserProvider: React.FC<Props> = props => {
         refetchMyGroups,
         refetchUnreadNotifications,
         refreshUser,
-      }}
-    >
+      }}>
       {user && !user.email.endsWith('@edgein.io') ? (
         <FullStory org={FULLSTORY_ORG_ID} />
       ) : null}

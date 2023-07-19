@@ -8,7 +8,7 @@ Learn more at [EdgeIn.io](http://edgein.io/)
 
 ## Getting Started
 
-### Install Node 16
+### Install Node 18
 
 https://nodejs.org/en/download/
 
@@ -118,6 +118,18 @@ There are multiple helper scripts in the scripts directory. To run these you wil
 ```
 npx ts-node ./awesome-script.ts
 ```
+
+## Staging environment
+
+Staging is an environment that mimics the production environment, where developers can test their applications before deploying them to the live environment. It is a replica of the production environment, with similar hardware and software configurations.
+
+The purpose of staging is to ensure that the application works as expected in a real-world scenario. It allows developers to test their applications in an environment that is similar to the production environment, which increases the chances of identifying any issues before the application is released to the public.
+
+Using a staging environment also helps improve the quality of the application. It enables developers to test new features, updates, or changes made to the application before they are deployed to the live environment. This ensures that the application is fully functional and meets the requirements of the end-users.
+
+In conclusion, staging is an essential part of the development process. It allows developers to test their applications in a safe and controlled environment, reducing the risk of potential issues when deploying to the live environment. Using a staging environment improves the quality of the application and ensures that it meets the requirements of the end-users.
+
+More information about the staging environment can be found in a [Notion documentation](https://www.notion.so/edgeinio/Staging-af8a640ce2854a199a2dc754891aa810).
 
 ## Hasura / GraphQL
 

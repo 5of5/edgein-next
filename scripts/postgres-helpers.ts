@@ -1,13 +1,16 @@
-import { Client } from 'pg';
+import { Client, ClientConfig } from 'pg';
 
 export const getClient = async () => {
-  const client = new Client({
-    user: process.env.PG_USER,
-    host: process.env.PG_HOST,
-    database: process.env.PG_DATABASE,
-    password: process.env.PG_PASSWORD,
-    port: Number(process.env.PG_PORT),
-  });
+  const config: ClientConfig = process.env.PG_CONNECTION_STRING
+    ? { connectionString: process.env.PG_CONNECTION_STRING }
+    : {
+        user: process.env.PG_USER,
+        host: process.env.PG_HOST,
+        database: process.env.PG_DATABASE,
+        password: process.env.PG_PASSWORD,
+        port: Number(process.env.PG_PORT),
+      };
+  const client = new Client(config);
   await client.connect();
   return client;
 };
