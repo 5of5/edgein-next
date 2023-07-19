@@ -6,6 +6,8 @@ import { IconX } from '@/components/icons';
 import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
+import { Group, groupSchema } from '@/utils/schema';
+import { extractErrors, zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -18,6 +20,10 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   const { refetchMyGroups } = useUser();
 
   const [values, setValues] = useState({ name: '', description: '' });
+  const [error, setError] = useState<Partial<Group>>({
+    name: '',
+    description: '',
+  });
 
   const { mutate, isLoading } = useMutation(
     () =>
@@ -38,10 +44,18 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   );
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setValues(prev => ({
       ...prev,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
+
+    const { errors } = zodValidate({ ...values, [name]: value }, groupSchema);
+    if (errors) {
+      setError(extractErrors<Group>(errors));
+    } else {
+      setError({ name: '', description: '' });
+    }
   };
 
   const handleCreate = () => {
@@ -101,8 +115,17 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                       value={values.name}
                       onChange={handleChange}
                       placeholder="e.g: EdgeIn Wizards"
-                      className="ring-1 ring-slate-200"
+                      className={`${
+                        error.name
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
+                      }`}
                     />
+                    {error.name && (
+                      <div className="mt-2 font-bold text-sm text-rose-400">
+                        {error.name}
+                      </div>
+                    )}
                   </label>
                   <label>
                     <InputText
@@ -112,15 +135,28 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                       value={values.description}
                       onChange={handleChange}
                       placeholder="What is the group about?"
-                      className="ring-1 ring-slate-200"
+                      className={`${
+                        error.description
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
+                      }`}
                     />
+                    {error.description && (
+                      <div className="mt-2 font-bold text-sm text-rose-400">
+                        {error.description}
+                      </div>
+                    )}
                   </label>
                 </div>
 
                 <div className="mt-6 float-right">
                   <ElemButton
                     btn="primary"
-                    disabled={!values.name}
+                    disabled={
+                      !values.name ||
+                      Boolean(error.name) ||
+                      Boolean(error.description)
+                    }
                     loading={isLoading}
                     onClick={handleCreate}
                   >

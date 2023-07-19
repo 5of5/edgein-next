@@ -2,8 +2,6 @@ import { ElemButton } from './elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
 import { Menu, Transition } from '@headlessui/react';
 import React, { Fragment, FC } from 'react';
-import find from 'lodash/find';
-import { getNameFromListName } from '@/utils/reaction';
 import {
   IconUserCircle,
   IconSignOut,
@@ -22,20 +20,16 @@ type Props = {
 };
 
 export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
-  const { listAndFollows, user } = useUser();
+  const { user } = useUser();
 
   const showUpgradeLink = user?.entitlements.viewEmails === false;
-
-  const hotListId =
-    find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
-  const myListsUrl = `/lists/${hotListId}/hot`;
 
   const navigation = [];
 
   if (user) {
     navigation.push({
       name: 'My Lists',
-      href: myListsUrl,
+      href: '/lists',
       icon: IconCustomList,
     });
   }
