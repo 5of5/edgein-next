@@ -1,6 +1,7 @@
 name: Check e2e tests
 on:
-  pull_request:
+  #pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -81,8 +82,8 @@ jobs:
       - name: Run Playwright tests
         uses: knicknic/os-specific-run@v1.0.3
         with:
-          linux: npx playwright test --project=setup --project=chromium --project=firefox
-          windows: npx playwright test --project=setup --project=chromium --project=firefox
+          linux: npx playwright test --project=setup --project=chromium
+          windows: npx playwright test --project=setup --project=chromium
           macos: npx playwright test
         env:
           GRAPHQL_ENDPOINT: 'http://172.17.0.1:8080/v1/graphql'

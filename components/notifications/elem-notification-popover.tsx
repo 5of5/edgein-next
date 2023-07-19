@@ -48,16 +48,18 @@ const ElemNotificationPopover: FC<Props> = ({
         <Popover.Panel className="absolute right-0 overflow-hidden w-48 p-1 divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5">
           {({ close }) => (
             <>
-              <button
-                onClick={() => {
-                  onMarkAsRead(notification.id);
-                  close();
-                }}
-                className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
-              >
-                <IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
-                <span className="text-sm">Mark as read</span>
-              </button>
+              {!notification.read && (
+                <button
+                  onClick={() => {
+                    onMarkAsRead(notification.id);
+                    close();
+                  }}
+                  className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
+                >
+                  <IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
+                  <span className="text-sm">Mark as read</span>
+                </button>
+              )}
               <button
                 onClick={() => {
                   showNewMessages(
