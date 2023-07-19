@@ -23,6 +23,7 @@ import { toLabel } from '@/utils';
 import moment from 'moment-timezone';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
+import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 
 type Props = {
   list: any;
@@ -84,99 +85,114 @@ export const ElemListInformation: FC<Props> = ({
   return (
     <>
       <div className="flex flex-wrap space-y-2 items-end justify-between mb-4 lg:space-y-0 lg:border-b lg:pb-2 lg:border-black/10">
-        {isCustomList ? (
-          <div>
-            {isListCreator ? (
-              <button
-                onClick={onOpenSettingsDialog}
-                className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
-              >
-                <IconCustomList className="w-6 h-6 mr-1" />
-                <div className="font-bold text-xl capitalize">
-                  {getNameFromListName(list)}
-                </div>
-                <IconChevronDownMini className="h-5 w-5" />
-              </button>
-            ) : (
-              <h1 className="mr-2 font-bold text-xl capitalize leading-tight">
-                Previewing:{' '}
-                {list
-                  ? getNameFromListName(list)
-                  : toLabel(router.query.slug as string)}
-              </h1>
-            )}
-
-            {list?.created_by && (
-              <p className="pt-1 text-slate-600">
-                by{' '}
-                {list?.created_by?.person ? (
-                  <Link
-                    href={`/people/${list?.created_by?.person?.slug}`}
-                    passHref
+        <div>
+          <ElemDashboardBreadcrumb
+            breadcrumbs={[
+              {
+                name: 'my-lists',
+                to: '/lists',
+                component: 'My Lists',
+              },
+              {
+                name: 'current',
+                component: isListCreator ? (
+                  <button
+                    onClick={onOpenSettingsDialog}
+                    className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
                   >
-                    <a className="hover:text-primary-500">
-                      {list?.created_by?.person?.name}
-                    </a>
-                  </Link>
+                    <IconCustomList className="w-6 h-6 mr-1" />
+                    <div className="font-bold text-xl capitalize">
+                      {getNameFromListName(list)}
+                    </div>
+                    <IconChevronDownMini className="h-5 w-5" />
+                  </button>
                 ) : (
-                  <span>{list?.created_by?.display_name}</span>
-                )}
-                <span aria-hidden="true"> · </span>
-                {moment(list?.created_at).format('LL')}
-              </p>
-            )}
-          </div>
-        ) : (
-          <div>
-            <div className="flex items-center">
-              {listName === 'hot' && <EmojiHot className="w-6 h-6 mr-2" />}
-              {listName === 'like' && <EmojiLike className="w-6 h-6 mr-2" />}
-              {listName === 'sh**' && <EmojiCrap className="w-6 h-6 mr-2" />}
-              <h1 className="mr-2 font-bold text-xl capitalize leading-tight">
-                {listName}
-              </h1>
+                  <h1 className="mr-2 font-bold text-xl capitalize leading-tight">
+                    Previewing:{' '}
+                    {list
+                      ? getNameFromListName(list)
+                      : toLabel(router.query.slug as string)}
+                  </h1>
+                ),
+              },
+            ]}
+          />
+          {!isCustomList && (
+            <div className="mt-2">
+              <div className="flex items-center">
+                {listName === 'hot' && <EmojiHot className="w-6 h-6 mr-2" />}
+                {listName === 'like' && <EmojiLike className="w-6 h-6 mr-2" />}
+                {listName === 'sh**' && <EmojiCrap className="w-6 h-6 mr-2" />}
+                <h1 className="mr-2 font-bold text-xl capitalize leading-tight">
+                  {listName}
+                </h1>
+              </div>
+
+              {listName && (
+                <p className="mt-1 first-letter:uppercase text-slate-600">
+                  The {listName} list is generated from your {listName}{' '}
+                  reactions on EdgeIn.
+                </p>
+              )}
             </div>
-
-            {listName && (
-              <p className="mt-1 first-letter:uppercase text-slate-600">
-                The {listName} list is generated from your {listName} reactions
-                on EdgeIn.
-              </p>
-            )}
-          </div>
-        )}
-
-        <div className="flex items-center gap-x-2 shrink-0">
-          {isCustomList && isListCreator && (
-            <ElemButton
-              btn="slate"
-              className="gap-x-1 lg:!pl-3"
-              onClick={onOpenSettingsDialog}
-            >
-              <IconSettings className="hidden sm:block w-5 h-5" />
-              <span>Settings</span>
-            </ElemButton>
-          )}
-          {isCustomList && !isFollowing && (
-            <ElemButton
-              btn="primary"
-              loading={isFollowButtonLoading}
-              onClick={onFollowList}
-            >
-              Follow
-            </ElemButton>
-          )}
-          {isCustomList && isFollowing && !isListCreator && (
-            <ElemButton
-              btn="slate"
-              loading={isFollowButtonLoading}
-              onClick={onFollowList}
-            >
-              <IconCheck className="w-5 h-5 mr-1" />
-              Following
-            </ElemButton>
           )}
         </div>
+
+        {isCustomList && (
+          <div className="flex items-center gap-x-4 shrink-0">
+            <div>
+              {list?.created_by && (
+                <p className="pt-1 text-slate-600">
+                  {list?.created_by?.person ? (
+                    <Link
+                      href={`/people/${list?.created_by?.person?.slug}`}
+                      passHref
+                    >
+                      <a className="hover:text-primary-500">
+                        {list?.created_by?.person?.name}
+                      </a>
+                    </Link>
+                  ) : (
+                    <span>{list?.created_by?.display_name}</span>
+                  )}
+                  <span aria-hidden="true"> · </span>
+                  {moment(list?.created_at).format('LL')}
+                </p>
+              )}
+            </div>
+            <div className="flex items-center gap-x-2 shrink-0">
+              {isListCreator && (
+                <ElemButton
+                  btn="slate"
+                  className="gap-x-1 lg:!pl-3"
+                  onClick={onOpenSettingsDialog}
+                >
+                  <IconSettings className="hidden sm:block w-5 h-5" />
+                  <span>Settings</span>
+                </ElemButton>
+              )}
+              {!isFollowing && (
+                <ElemButton
+                  btn="primary"
+                  loading={isFollowButtonLoading}
+                  onClick={onFollowList}
+                >
+                  Follow
+                </ElemButton>
+              )}
+              {isFollowing && !isListCreator && (
+                <ElemButton
+                  btn="slate"
+                  loading={isFollowButtonLoading}
+                  onClick={onFollowList}
+                >
+                  <IconCheck className="w-5 h-5 mr-1" />
+                  Following
+                </ElemButton>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       <Transition appear show={listSettingsModal} as={Fragment}>
@@ -308,10 +324,7 @@ export const ElemListInformation: FC<Props> = ({
                       <button
                         className="flex justify-between w-full p-3 hover:bg-slate-100"
                         onClick={() => {
-                          setListSettingsModal(false);
-                          setTimeout(() => {
-                            setListDeleteModal(true);
-                          }, 300);
+                          setListDeleteModal(true);
                         }}
                       >
                         <div className="text-left text-rose-500">
@@ -326,42 +339,40 @@ export const ElemListInformation: FC<Props> = ({
                       </button>
                     </div>
                   </div>
+                  <ModalListName
+                    isOpen={listNameModal}
+                    onCloseModal={() => setListNameModal(false)}
+                    theListName={getNameFromListName(list) ?? ''}
+                    onSave={onSaveListName}
+                  />
+                  <ElemDeleteConfirmModal
+                    isOpen={listDeleteModal}
+                    title="Delete this list?"
+                    content={
+                      <div>
+                        When you delete a list, everything in it will be removed
+                        immediately.
+                        <span className="font-bold inline">
+                          This can&lsquo;t be undone.
+                        </span>
+                      </div>
+                    }
+                    onClose={() => setListDeleteModal(false)}
+                    onDelete={() => onDeleteList(list?.id)}
+                  />
+
+                  <ModalListGroups
+                    isOpen={listGroupsModal}
+                    onCloseModal={() => setListGroupsModal(false)}
+                    listGroups={groups}
+                    onSave={onAddGroups}
+                  />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
           </div>
         </Dialog>
       </Transition>
-
-      <ModalListName
-        isOpen={listNameModal}
-        onCloseModal={() => setListNameModal(false)}
-        theListName={getNameFromListName(list) ? getNameFromListName(list) : ''}
-        onSave={onSaveListName}
-      />
-
-      <ElemDeleteConfirmModal
-        isOpen={listDeleteModal}
-        title="Delete this list?"
-        content={
-          <div>
-            When you delete a list, everything in it will be removed
-            immediately.
-            <span className="font-bold inline">
-              This can&lsquo;t be undone.
-            </span>
-          </div>
-        }
-        onClose={() => setListDeleteModal(false)}
-        onDelete={() => onDeleteList(list?.id)}
-      />
-
-      <ModalListGroups
-        isOpen={listGroupsModal}
-        onCloseModal={() => setListGroupsModal(false)}
-        listGroups={groups}
-        onSave={onAddGroups}
-      />
     </>
   );
 };

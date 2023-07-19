@@ -30,7 +30,7 @@ test.describe('Lists', () => {
 
     await page.getByRole('menuitem', { name: /My Lists/ }).click();
 
-    await expect(page).toHaveURL(`${baseURL}/lists/0/hot/`);
+    await expect(page).toHaveURL(`${baseURL}/lists/`);
 
     await page
       .locator('li', {

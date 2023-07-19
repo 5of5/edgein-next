@@ -28,8 +28,12 @@ select_permissions:
         - list_id
         - user_group_id
       filter:
-        user_group:
-          user_group_members:
-            user_id:
-              _eq: X-Hasura-User-Id
+        _or:
+          - user_group:
+              user_group_members:
+                user_id:
+                  _eq: X-Hasura-User-Id
+          - user_group:
+              public:
+                _eq: true
       limit: 50

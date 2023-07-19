@@ -24992,7 +24992,7 @@ export type GetGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupsQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }>, user_groups_aggregate: { __typename?: 'user_groups_aggregate', aggregate: { __typename?: 'user_groups_aggregate_fields', count: number } | null } };
+export type GetGroupsQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }>, list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number }> }>, user_groups_aggregate: { __typename?: 'user_groups_aggregate', aggregate: { __typename?: 'user_groups_aggregate_fields', count: number } | null } };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -25275,6 +25275,15 @@ export type TriggerListUpdatedAtMutationVariables = Exact<{
 
 
 export type TriggerListUpdatedAtMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number }> } | null };
+
+export type GetListsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  where: Lists_Bool_Exp;
+}>;
+
+
+export type GetListsQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, user_id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null }> }>, lists_aggregate: { __typename?: 'lists_aggregate', aggregate: { __typename?: 'lists_aggregate_fields', count: number } | null } };
 
 export type GetNewsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -27496,6 +27505,10 @@ export const GetGroupsDocument = `
       created_at
       created_by_user_id
     }
+    list_user_groups {
+      id
+      list_id
+    }
   }
   user_groups_aggregate(where: $where) {
     aggregate {
@@ -28593,6 +28606,67 @@ export const useTriggerListUpdatedAtMutation = <
       options
     );
 useTriggerListUpdatedAtMutation.fetcher = (variables: TriggerListUpdatedAtMutationVariables, options?: RequestInit['headers']) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables, options);
+export const GetListsDocument = `
+    query GetLists($limit: Int, $offset: Int, $where: lists_bool_exp!) {
+  lists(
+    where: $where
+    order_by: {created_at: desc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    public
+    created_at
+    updated_at
+    created_by {
+      id
+      display_name
+      email
+    }
+    list_members {
+      id
+      member_type
+      user_id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          name
+          slug
+          picture
+        }
+      }
+    }
+  }
+  lists_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetListsQuery = <
+      TData = GetListsQuery,
+      TError = Error
+    >(
+      variables: GetListsQueryVariables,
+      options?: UseQueryOptions<GetListsQuery, TError, TData>
+    ) =>
+    useQuery<GetListsQuery, TError, TData>(
+      ['GetLists', variables],
+      fetcher<GetListsQuery, GetListsQueryVariables>(GetListsDocument, variables),
+      options
+    );
+useGetListsQuery.document = GetListsDocument;
+
+
+useGetListsQuery.getKey = (variables: GetListsQueryVariables) => ['GetLists', variables];
+;
+
+useGetListsQuery.fetcher = (variables: GetListsQueryVariables, options?: RequestInit['headers']) => fetcher<GetListsQuery, GetListsQueryVariables>(GetListsDocument, variables, options);
 export const GetNewsDocument = `
     query GetNews($limit: Int, $offset: Int, $order: order_by!, $where: news_bool_exp!) {
   news(where: $where, order_by: {date: $order}, limit: $limit, offset: $offset) {

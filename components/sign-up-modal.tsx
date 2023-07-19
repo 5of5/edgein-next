@@ -182,7 +182,8 @@ export default function SignUpModal(props: Props) {
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0">
+          leaveTo="opacity-0"
+        >
           <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
         </Transition.Child>
 
@@ -194,7 +195,8 @@ export default function SignUpModal(props: Props) {
             enterTo="opacity-100 translate-y-0 sm:scale-100"
             leave="ease-in duration-300"
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          >
             <Dialog.Panel className="max-w-lg w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide lg:p-12">
               <div className="max-w-xs mx-auto w-full">
                 {isRegistered ? (
@@ -214,7 +216,8 @@ export default function SignUpModal(props: Props) {
                         className="w-full"
                         onClick={onLogin}
                         btn="primary"
-                        loading={isLoading}>
+                        loading={isLoading}
+                      >
                         Login
                       </ElemButton>
                     </div>
@@ -243,7 +246,8 @@ export default function SignUpModal(props: Props) {
                     </h1>
                     <ElemButton
                       onClick={onLinkedInClick}
-                      className="w-full mt-5 gap-x-2 text-center rounded-full bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]">
+                      className="w-full mt-5 gap-x-2 text-center rounded-full bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]"
+                    >
                       <IconLinkedIn
                         title="LinkedIn"
                         className="h-6 w-6 text-[#0077B5]"
@@ -346,7 +350,8 @@ export default function SignUpModal(props: Props) {
                             //onClick={onSignUp}
                             btn="primary"
                             loading={isLoading}
-                            className="w-full mt-2">
+                            className="w-full mt-2"
+                          >
                             Sign up{' '}
                             {props.inviteCode ? 'with referral' : 'and explore'}
                           </ElemButton>
@@ -376,7 +381,8 @@ export default function SignUpModal(props: Props) {
                           Have an account?
                           <button
                             onClick={onLogin}
-                            className="inline ml-0.5 text-primary-500 hover:underline">
+                            className="inline ml-0.5 text-primary-500 hover:underline"
+                          >
                             Log In
                           </button>
                         </div>

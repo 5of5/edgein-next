@@ -160,7 +160,8 @@ const UserProvider: React.FC<Props> = props => {
         refetchMyGroups,
         refetchUnreadNotifications,
         refreshUser,
-      }}>
+      }}
+    >
       {user && !user.email.endsWith('@edgein.io') ? (
         <FullStory org={FULLSTORY_ORG_ID} />
       ) : null}

@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import GroupService from '@/utils/groups';
 import CookieService from '../../utils/cookie';
+import { groupSchema, Group } from '@/utils/schema';
+import { extractErrors, zodValidate } from '@/utils/validation';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies);
@@ -9,6 +11,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.body.id;
   const payload = req.body.payload;
+
+  if (req.method !== 'DELETE') {
+    const { errors: fieldErrors } = zodValidate(payload, groupSchema);
+    if (fieldErrors) {
+      const errors = extractErrors<Group>(fieldErrors);
+      return res.status(400).send({ errors });
+    }
+  }
 
   switch (req.method) {
     case 'POST': {
