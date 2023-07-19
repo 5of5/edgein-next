@@ -2,7 +2,6 @@ import {
   AppMetadata,
   AuthenticationClient,
   ManagementClient,
-  SignInToken,
   TokenResponse,
   User,
   UserMetadata,
@@ -32,9 +31,7 @@ export class AuthService {
   private readonly auth: AuthenticationClient;
 
   public static logoutUrl(): string {
-    return `${redirect_url()}/v2/logout?client_id=${
-      env.NEXT_PUBLIC_AUTH0_CLIENT_ID
-    }`;
+    return `${env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/v2/logout?client_id=${env.NEXT_PUBLIC_AUTH0_CLIENT_ID}`;
   }
 
   public static groupUrl(groupId: string): string {
