@@ -239,7 +239,8 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
       <div className="px-1 py-1 sm:px-3 sm:py-2 shadow bg-white/80 backdrop-blur">
         <nav
           className="flex items-center justify-between lg:justify-start w-full mx-auto transition-all"
-          aria-label="Global">
+          aria-label="Global"
+        >
           <div className="flex items-center">
             <div className="flex-none lg:mr-2">
               <Link href={user ? '/companies' : '/'} passHref>
@@ -272,7 +273,8 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 <ElemButton
                   onClick={() => setShowPopup('search')}
                   btn="slate"
-                  className="h-9 w-9 !px-0 !py-0 sm:hidden">
+                  className="h-9 w-9 !px-0 !py-0 sm:hidden"
+                >
                   <IconSearch className="h-5 w-5" />
                 </ElemButton>
                 <div className="hidden lg:inline-block">
@@ -285,13 +287,15 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 <ElemButton
                   onClick={() => setShowPopup('login')}
                   btn="ol-primary"
-                  className="!px-2.5 whitespace-nowrap sm:!px-3">
+                  className="!px-2.5 whitespace-nowrap sm:!px-3"
+                >
                   Log In
                 </ElemButton>
                 <ElemButton
                   onClick={() => setShowPopup('signup')}
                   btn="primary"
-                  className="!px-2.5 whitespace-nowrap sm:!px-3">
+                  className="!px-2.5 whitespace-nowrap sm:!px-3"
+                >
                   Start for free
                 </ElemButton>
               </>
