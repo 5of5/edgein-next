@@ -25,6 +25,7 @@ resource "random_password" "hasura_jwt_secret" {
 locals {
   ecr_environment = [
     { name : "ENVIRONMENT", value : terraform.workspace },
+    { name : "HASURA_GRAPHQL_EXPERIMENTAL_FEATURES", value : var.hasura_graphql_experimental_features },
     { name : "HASURA_API_VIEWER", value : local.hasura_api_viewer },
     { name : "HASURA_VIEWER", value : local.hasura_viewer },
     { name : "HASURA_GRAPHQL_ENABLE_CONSOLE", value : "true" },

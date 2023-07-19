@@ -22,6 +22,12 @@ variable "hasura_log_types" {
   default     = "startup, http-log, webhook-log, websocket-log, query-log"
 }
 
+variable "hasura_graphql_experimental_features" {
+  type        = string
+  description = "Allowed hasura experimental features"
+  default     = "naming_convention"
+}
+
 variable "server_cpu" {
   type        = number
   description = "CPU setting for NextJS server task in Fargate"
