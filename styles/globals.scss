@@ -86,10 +86,6 @@
   }
 }
 
-.intercom-lightweight-app .intercom-lightweight-app-launcher {
-  @apply bottom-16;
-}
-
 /* Mobile hamburger button */
 .hamburger-inner,
 .hamburger-inner::before,
@@ -149,4 +145,15 @@
 .logoFile .RaImageField-image {
   height: 48px !important;
   width: 48px !important;
+}
+
+@media screen and (max-width: 1023px) {
+  .intercom-lightweight-app .intercom-lightweight-app-launcher {
+    bottom: 64px !important;
+  }
+
+  /*localhost*/
+  .intercom-dfosxs {
+    bottom: 64px !important;
+  }
 }

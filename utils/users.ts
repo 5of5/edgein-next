@@ -33,6 +33,7 @@ import {
 } from '@/graphql/types';
 import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
+import { clearLocalStorage } from './helpers';
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
   const data = await query<GetAllowedEmailByEmailOrDomainQuery>({
@@ -246,6 +247,21 @@ const findUserByPk = async (user_id: number) => {
   return data.data.users_by_pk;
 };
 
+const logout = async () => {
+  clearLocalStorage();
+  const authRequest = await fetch('/api/logout/', {
+    method: 'POST',
+  }).then(res => res.json());
+  if (authRequest.success) {
+    // We successfully logged in, our API
+    // set authorization cookies and now we
+    // can redirect to the dashboard!
+    location.href = authRequest.logoutLink;
+  } else {
+    /* handle errors */
+  }
+};
+
 const UserService = {
   queryForDisabledEmailCheck,
   queryForAllowedEmailCheck,
@@ -264,5 +280,6 @@ const UserService = {
   findOneUserByPersonId,
   createToken,
   findUserByPk,
+  logout,
 };
 export default UserService;

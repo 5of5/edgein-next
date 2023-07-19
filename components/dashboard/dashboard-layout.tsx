@@ -1,32 +1,16 @@
 import { Fragment, useState, FC, PropsWithChildren } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { useRouter } from 'next/router';
-import { ElemButton } from '@/components/elem-button';
-import { IconX, IconWindowSidebar } from '@/components/icons';
-import { useAuth } from '@/hooks/use-auth';
+import { IconX } from '@/components/icons';
 import { DashboardSidebar } from './dashboard-sidebar';
 
 type Props = {};
 
 export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const router = useRouter();
-  const { user } = useAuth();
 
   return (
     <>
       <div className="relative mt-2">
-        <ElemButton
-          btn="slate"
-          roundedFull={false}
-          onClick={() => setSidebarOpen(true)}
-          className="-ml-4 mt-4 mb-2 rounded-tr-lg rounded-br-lg pl-8 sm:pl-10 md:pl-12 hover:border-primary-500 lg:hidden"
-        >
-          <span className="sr-only">Dashboard Menu</span>
-          <IconWindowSidebar className="w-6 h-6 mr-2" />
-          Sidebar
-        </ElemButton>
-
         <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-72 mt-14 overflow-y-auto scrollbar-hide lg:block">
           <DashboardSidebar />
         </div>

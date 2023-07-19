@@ -7,6 +7,7 @@ import {
   GetGroupsOfUserQuery,
   useGetUnreadNotificationsQuery,
   GetUnreadNotificationsQuery,
+  Notifications,
 } from '@/graphql/types';
 import React, { useState, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
@@ -15,6 +16,8 @@ import { hotjar } from 'react-hotjar';
 import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
+import { filterExcludeNotifications } from '@/utils/notifications';
+import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 const CLARITY_ID = 'epusnauses';
 
@@ -145,7 +148,12 @@ const UserProvider: React.FC<Props> = props => {
     );
   }, [groups]);
 
-  const unreadNotifications = notifications?.notifications || [];
+  let unreadNotifications = notifications?.notifications || [];
+
+  unreadNotifications = filterExcludeNotifications(
+    unreadNotifications as Notifications[],
+    NOTIFICATION_EXCLUDE_PROPERTIES,
+  );
 
   return (
     <Provider

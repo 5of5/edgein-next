@@ -502,7 +502,7 @@ export const IconSearch: React.FC<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 2}
+      strokeWidth={strokeWidth ?? 2}
     >
       <title>{title ? title : 'Search'}</title>
       <path

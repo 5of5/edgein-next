@@ -1,4 +1,11 @@
-import { FC, PropsWithChildren, useState, useEffect, useMemo } from 'react';
+import {
+  FC,
+  PropsWithChildren,
+  Dispatch,
+  SetStateAction,
+  useState,
+  useMemo,
+} from 'react';
 import Link from 'next/link';
 import { ElemButton } from './elem-button';
 import {
@@ -18,63 +25,31 @@ import {
 import { Transition } from '@headlessui/react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useUser } from '@/context/user-context';
-import { clearLocalStorage } from '@/utils/helpers';
 import { useRouter } from 'next/router';
 import { Popups } from '@/components/the-navbar';
-import { useGetNotificationsForUserQuery } from '@/graphql/types';
-import { filterExcludeNotifications } from '@/utils/notifications';
+import UserService from '@/utils/users';
 
 type Props = {
   className?: string;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
+  setShowPopup: Dispatch<SetStateAction<Popups>>;
 };
 
 export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   className = '',
   setShowPopup,
 }) => {
-  const { user } = useUser();
+  const { user, unreadNotifications } = useUser();
+
   const router = useRouter();
 
-  const { data } = useGetNotificationsForUserQuery(
-    {
-      user: user?.id || 0,
-      limit: 10,
-      offset: 0,
-    },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
-
-  const excludeProperties = useMemo(() => {
-    return ['status_tags', 'logo'];
-  }, []);
-
-  const excludeResourceTypes = useMemo(() => {
-    return ['event_organization', 'companies'];
-  }, []);
-
-  const notifications = filterExcludeNotifications(
-    data?.notifications || [],
-    excludeResourceTypes,
-    excludeProperties,
-  ).filter(item => !item?.read);
-
-  const notificationsCount = notifications ? notifications.length : 0;
-
   const [navOpen, setNavOpen] = useState(false);
-
-  const onOpen = () => {
-    setNavOpen(true);
-  };
 
   const onClose = () => {
     setNavOpen(false);
   };
 
   const onToggleMenu = () => {
-    setNavOpen(!navOpen);
+    setNavOpen(prevNavOpen => !prevNavOpen);
   };
 
   const onOpenSearch = () => {
@@ -82,115 +57,78 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     setNavOpen(false);
   };
 
-  const logout = async () => {
-    clearLocalStorage();
-    const authRequest = await fetch('/api/logout/', {
-      method: 'POST',
-    }).then(res => res.json());
-    if (authRequest.success) {
-      // We successfully logged in, our API
-      // set authorization cookies and now we
-      // can redirect to the dashboard!
-      location.href = authRequest.logoutLink;
-    } else {
-      /* handle errors */
-    }
-  };
+  const baseNav = useMemo(
+    () => [
+      {
+        icon: IconCompanies,
+        name: 'Companies',
+        href: '/companies',
+      },
+      {
+        icon: IconCash,
+        name: 'Investors',
+        href: '/investors',
+      },
+      {
+        icon: IconCalendar,
+        name: 'Events',
+        href: '/events',
+      },
+      {
+        icon: IconNewspaper,
+        name: 'News',
+        href: '/news',
+      },
+    ],
+    [],
+  );
 
-  const nav = [
-    {
-      icon: IconCompanies,
-      name: 'Companies',
-      href: '/companies',
-      onClick: null,
-    },
-    {
-      icon: IconCash,
-      name: 'Investors',
-      href: '/investors',
-      onClick: null,
-    },
-    {
-      icon: IconCalendar,
-      name: 'Events',
-      href: '/events',
-      onClick: null,
-    },
-    {
-      icon: IconNewspaper,
-      name: 'News',
-      href: '/news',
-      onClick: null,
-    },
-    {
-      icon: IconBell,
-      name: 'Notifications',
-      href: '/notifications',
-      onClick: null,
-    },
-  ];
+  const bottomNav = useMemo(
+    () => [
+      ...baseNav,
+      {
+        icon: IconBell,
+        name: 'Notifications',
+        href: '/notifications',
+      },
+    ],
+    [baseNav],
+  );
 
-  const menuPanel = [
-    ...(user
-      ? [
-          {
-            icon: IconDocumentDownload,
-            name: 'Notes',
-            href: '/notes',
-            onClick: null,
-          },
-          {
-            icon: IconGroup,
-            name: 'Groups',
-            href: '/groups',
-            onClick: null,
-          },
-          {
-            icon: IconCustomList,
-            name: 'Lists',
-            href: '/lists',
-            onClick: null,
-          },
-        ]
-      : []),
-    {
-      icon: IconCompanies,
-      name: 'Companies',
-      href: '/companies',
-      onClick: null,
-    },
-    {
-      icon: IconCash,
-      name: 'Investors',
-      href: '/investors',
-      onClick: null,
-    },
-    {
-      icon: IconCalendar,
-      name: 'Events',
-      href: '/events',
-      onClick: null,
-    },
-    {
-      icon: IconNewspaper,
-      name: 'News',
-      href: '/news',
-      onClick: null,
-    },
-    ...(user
-      ? [
-          {
-            icon: IconSettings,
-            name: 'Account Settings',
-            href: '/account',
-            onClick: () => {
-              router.push('/account');
-              setNavOpen(false);
+  const menuPanel = useMemo(
+    () => [
+      ...(user
+        ? [
+            {
+              icon: IconDocumentDownload,
+              name: 'Notes',
+              href: '/notes',
             },
-          },
-        ]
-      : []),
-  ];
+            {
+              icon: IconGroup,
+              name: 'Groups',
+              href: '/groups',
+            },
+            {
+              icon: IconCustomList,
+              name: 'Lists',
+              href: '/lists',
+            },
+          ]
+        : []),
+      ...baseNav,
+      ...(user
+        ? [
+            {
+              icon: IconSettings,
+              name: 'Account Settings',
+              href: '/account',
+            },
+          ]
+        : []),
+    ],
+    [baseNav, user],
+  );
 
   return (
     <>
@@ -198,7 +136,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
         className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
       >
         <ul className="grid grid-cols-6 w-full bg-white px-0.5 pb-0.5">
-          {nav.map((item, index) => (
+          {bottomNav.map((item, index) => (
             <li
               key={index}
               className={`pt-0.5 ${
@@ -209,12 +147,12 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
             >
               <Link href={item?.href ? item.href : ''}>
                 <a
-                  onClick={item?.onClick ? item?.onClick : onClose}
+                  onClick={onClose}
                   className="flex flex-col items-center h-full text-[11px]"
                 >
                   {item?.icon && (
                     <div className="relative flex items-center justify-center h-7 aspect-square">
-                      {notificationsCount > 0 &&
+                      {unreadNotifications.length > 0 &&
                         item.name === 'Notifications' && (
                           <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
                         )}
@@ -298,7 +236,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 <li key={index}>
                   <Link href={item?.href ? item.href : ''}>
                     <a
-                      onClick={item.onClick ? item.onClick : onClose}
+                      onClick={onClose}
                       className="block p-3 outline-none bg-white shadow rounded-lg"
                     >
                       {item?.icon && (
@@ -319,7 +257,8 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                   btn="slate"
                   roundedFull={false}
                   onClick={() => {
-                    logout(), setNavOpen(false);
+                    UserService.logout();
+                    setNavOpen(false);
                   }}
                   className="w-full"
                 >
