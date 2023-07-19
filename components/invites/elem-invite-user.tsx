@@ -167,7 +167,7 @@ export const ElemInviteUser = () => {
                 <ElemInviteEmails
                   label="Invite with email"
                   description="Send an email invite"
-                  placeholder="Enter multiple emails"
+                  placeholder="name@company.com"
                   selected={selectedPeople}
                   onChange={setSelectedPeople}
                 />
@@ -179,7 +179,7 @@ export const ElemInviteUser = () => {
                 disabled={selectedPeople.length === 0}
                 className="mt-4"
               >
-                Send invites
+                Invite
               </ElemButton>
             </>
           )}
