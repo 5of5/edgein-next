@@ -11,6 +11,7 @@ import { useGetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
+import { ElemInviteUser } from '@/components/invites/elem-invite-user';
 
 const validator = require('validator');
 
@@ -127,11 +128,11 @@ export default function Account() {
     <DashboardLayout>
       <div className="bg-white shadow rounded-lg p-5">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="font-bold text-xl">Referrals and credits</h2>
+          <h2 className="font-bold text-xl">Referrals and Credits</h2>
         </div>
 
         <EditSection
-          heading="Share and earn"
+          heading="Invite a friend"
           right={
             <>
               <div>
@@ -142,15 +143,18 @@ export default function Account() {
           }
         >
           <h3 className="font-bold">
-            Get $14.99 in credit for every person you refer to EdgeIn.
+            Get 1 month free for every person you invite
           </h3>
           <p className="mt-2 text-slate-600">
-            You&rsquo;ll only receive credit when the person you invite signs up
-            and claims their profile. You can redeem this credit to upgrade to
-            an EdgeIn plan. Referring someone below will not invite them to your
-            account or share any of your content with them. You&rsquo;ll receive
-            credit once they sign up and claim their profile.
+            Invite your friends to EdgeIn and for each friend who signs up
+            through your referral, you&apos;ll receive $14.99 in credit.
+            That&apos;s 1 month of EdgeIn Premium for free! The more people who
+            sign up, the more credit you&apos;ll get.
           </p>
+
+          <div className="mt-6">
+            <ElemInviteUser />
+          </div>
 
           {user && user.reference_id && (
             <div className="mt-6">

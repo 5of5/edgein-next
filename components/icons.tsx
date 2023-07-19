@@ -1,10 +1,12 @@
+import { FC } from 'react';
+
 export type IconProps = {
   className?: string;
   strokeWidth?: number;
   title?: string;
 };
 
-export const IconSpinner: React.FC<IconProps> = ({ className, title }) => {
+export const IconSpinner: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -30,7 +32,7 @@ export const IconSpinner: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconArrowRight: React.FC<IconProps> = ({
+export const IconArrowRight: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -54,7 +56,7 @@ export const IconArrowRight: React.FC<IconProps> = ({
   );
 };
 
-export const IconArrowUp: React.FC<IconProps> = ({
+export const IconArrowUp: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -78,11 +80,7 @@ export const IconArrowUp: React.FC<IconProps> = ({
   );
 };
 
-export const IconEye: React.FC<IconProps> = ({
-  className,
-  strokeWidth,
-  title,
-}) => {
+export const IconEye: FC<IconProps> = ({ className, strokeWidth, title }) => {
   return (
     <svg
       className={className}
@@ -107,7 +105,7 @@ export const IconEye: React.FC<IconProps> = ({
   );
 };
 
-export const IconEyeSlash: React.FC<IconProps> = ({
+export const IconEyeSlash: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -132,7 +130,7 @@ export const IconEyeSlash: React.FC<IconProps> = ({
   );
 };
 
-export const IconWindowSidebar: React.FC<IconProps> = ({
+export const IconWindowSidebar: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -156,7 +154,7 @@ export const IconWindowSidebar: React.FC<IconProps> = ({
   );
 };
 
-export const IconArrowDown: React.FC<IconProps> = ({
+export const IconArrowDown: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -180,10 +178,7 @@ export const IconArrowDown: React.FC<IconProps> = ({
   );
 };
 
-export const IconCurrencyDollar: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconCurrencyDollar: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -202,7 +197,7 @@ export const IconCurrencyDollar: React.FC<IconProps> = ({
   );
 };
 
-export const IconInformationCircleSolid: React.FC<IconProps> = ({
+export const IconInformationCircleSolid: FC<IconProps> = ({
   className,
   title,
 }) => {
@@ -218,7 +213,7 @@ export const IconInformationCircleSolid: React.FC<IconProps> = ({
   );
 };
 
-export const IconInformationCircle: React.FC<IconProps> = ({
+export const IconInformationCircle: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -241,7 +236,7 @@ export const IconInformationCircle: React.FC<IconProps> = ({
   );
 };
 
-export const IconChartUp: React.FC<IconProps> = ({ className, title }) => {
+export const IconChartUp: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -261,10 +256,7 @@ export const IconChartUp: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconBadgeCheckSolid: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconBadgeCheckSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -282,7 +274,7 @@ export const IconBadgeCheckSolid: React.FC<IconProps> = ({
   );
 };
 
-export const IconBadgeCheck: React.FC<IconProps> = ({
+export const IconBadgeCheck: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -305,7 +297,7 @@ export const IconBadgeCheck: React.FC<IconProps> = ({
   );
 };
 
-export const IconLockClosed: React.FC<IconProps> = ({
+export const IconLockClosed: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -328,7 +320,7 @@ export const IconLockClosed: React.FC<IconProps> = ({
   );
 };
 
-export const IconMinus: React.FC<IconProps> = ({ className, title }) => {
+export const IconMinus: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -343,7 +335,7 @@ export const IconMinus: React.FC<IconProps> = ({ className, title }) => {
     </svg>
   );
 };
-export const IconAnnotation: React.FC<IconProps> = ({
+export const IconAnnotation: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -367,7 +359,7 @@ export const IconAnnotation: React.FC<IconProps> = ({
   );
 };
 
-export const IconThumbUp: React.FC<IconProps> = ({
+export const IconThumbUp: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -391,7 +383,7 @@ export const IconThumbUp: React.FC<IconProps> = ({
   );
 };
 
-export const IconThumbUpSolid: React.FC<IconProps> = ({ className, title }) => {
+export const IconThumbUpSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
       <title>{title ? title : 'Like'}</title>
@@ -400,7 +392,7 @@ export const IconThumbUpSolid: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconPaperAirplane: React.FC<IconProps> = ({
+export const IconPaperAirplane: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -424,10 +416,7 @@ export const IconPaperAirplane: React.FC<IconProps> = ({
   );
 };
 
-export const IconPaperAirplaneSolid: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconPaperAirplaneSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -441,7 +430,7 @@ export const IconPaperAirplaneSolid: React.FC<IconProps> = ({
   );
 };
 
-export const IconSelector: React.FC<IconProps> = ({ className, title }) => {
+export const IconSelector: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -461,7 +450,7 @@ export const IconSelector: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconCheck: React.FC<IconProps> = ({ className, title }) => {
+export const IconCheck: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -477,7 +466,7 @@ export const IconCheck: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconCheckBadge: React.FC<IconProps> = ({
+export const IconCheckBadge: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -500,10 +489,7 @@ export const IconCheckBadge: React.FC<IconProps> = ({
   );
 };
 
-export const IconCheckBadgeSolid: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconCheckBadgeSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
       <title>{title ? title : 'Check Badge'}</title>
@@ -516,7 +502,7 @@ export const IconCheckBadgeSolid: React.FC<IconProps> = ({
   );
 };
 
-export const IconSearch: React.FC<IconProps> = ({ className, title }) => {
+export const IconSearch: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -535,7 +521,7 @@ export const IconSearch: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconFilter: React.FC<IconProps> = ({ className, title }) => {
+export const IconFilter: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -554,7 +540,7 @@ export const IconFilter: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconGrid: React.FC<IconProps> = ({ className, title }) => {
+export const IconGrid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 20 20"
@@ -568,7 +554,7 @@ export const IconGrid: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconList: React.FC<IconProps> = ({ className, title }) => {
+export const IconList: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 20 20"
@@ -586,11 +572,7 @@ export const IconList: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconGroup: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconGroup: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -610,7 +592,7 @@ export const IconGroup: React.FC<IconProps> = ({
   );
 };
 
-export const IconGroupPlus: React.FC<IconProps> = ({
+export const IconGroupPlus: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -634,7 +616,7 @@ export const IconGroupPlus: React.FC<IconProps> = ({
   );
 };
 
-export const IconEllipsisVertical: React.FC<IconProps> = ({
+export const IconEllipsisVertical: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -658,7 +640,7 @@ export const IconEllipsisVertical: React.FC<IconProps> = ({
   );
 };
 
-export const IconEllipsisHorizontal: React.FC<IconProps> = ({
+export const IconEllipsisHorizontal: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -682,11 +664,7 @@ export const IconEllipsisHorizontal: React.FC<IconProps> = ({
   );
 };
 
-export const IconTrash: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconTrash: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -706,7 +684,7 @@ export const IconTrash: React.FC<IconProps> = ({
   );
 };
 
-export const IconCustomList: React.FC<IconProps> = ({
+export const IconCustomList: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -729,7 +707,7 @@ export const IconCustomList: React.FC<IconProps> = ({
   );
 };
 
-export const IconCash: React.FC<IconProps> = ({ className, title }) => {
+export const IconCash: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -749,7 +727,7 @@ export const IconCash: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconDocumentDownload: React.FC<IconProps> = ({
+export const IconDocumentDownload: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -773,7 +751,7 @@ export const IconDocumentDownload: React.FC<IconProps> = ({
   );
 };
 
-export const IconDocument: React.FC<IconProps> = ({
+export const IconDocument: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -797,7 +775,7 @@ export const IconDocument: React.FC<IconProps> = ({
   );
 };
 
-export const IconDocumentText: React.FC<IconProps> = ({
+export const IconDocumentText: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -821,7 +799,7 @@ export const IconDocumentText: React.FC<IconProps> = ({
   );
 };
 
-export const IconNewspaper: React.FC<IconProps> = ({
+export const IconNewspaper: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -845,7 +823,7 @@ export const IconNewspaper: React.FC<IconProps> = ({
   );
 };
 
-export const IconPlayCircle: React.FC<IconProps> = ({
+export const IconPlayCircle: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -874,11 +852,7 @@ export const IconPlayCircle: React.FC<IconProps> = ({
   );
 };
 
-export const IconUsers: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconUsers: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -898,11 +872,7 @@ export const IconUsers: React.FC<IconProps> = ({
   );
 };
 
-export const IconUser: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconUser: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -922,7 +892,7 @@ export const IconUser: React.FC<IconProps> = ({
   );
 };
 
-export const IconUserSolid: React.FC<IconProps> = ({ className, title }) => {
+export const IconUserSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -941,7 +911,7 @@ export const IconUserSolid: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconExclamationTriangle: React.FC<IconProps> = ({
+export const IconExclamationTriangle: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -965,7 +935,7 @@ export const IconExclamationTriangle: React.FC<IconProps> = ({
   );
 };
 
-export const IconUserPlus: React.FC<IconProps> = ({
+export const IconUserPlus: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -989,7 +959,7 @@ export const IconUserPlus: React.FC<IconProps> = ({
   );
 };
 
-export const IconUserCircle: React.FC<IconProps> = ({
+export const IconUserCircle: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1013,10 +983,7 @@ export const IconUserCircle: React.FC<IconProps> = ({
   );
 };
 
-export const IconUserCircleSolid: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconUserCircleSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1034,11 +1001,7 @@ export const IconUserCircleSolid: React.FC<IconProps> = ({
   );
 };
 
-export const IconAlert: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconAlert: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -1058,7 +1021,7 @@ export const IconAlert: React.FC<IconProps> = ({
   );
 };
 
-export const IconAlertSolid: React.FC<IconProps> = ({ className, title }) => {
+export const IconAlertSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1077,7 +1040,7 @@ export const IconAlertSolid: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconImage: React.FC<IconProps> = ({ className, title }) => {
+export const IconImage: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1095,11 +1058,7 @@ export const IconImage: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconFlag: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconFlag: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -1119,7 +1078,7 @@ export const IconFlag: React.FC<IconProps> = ({
   );
 };
 
-export const IconLink: React.FC<IconProps> = ({ className, title }) => {
+export const IconLink: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1139,7 +1098,7 @@ export const IconLink: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconExternalLink: React.FC<IconProps> = ({
+export const IconExternalLink: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1163,7 +1122,7 @@ export const IconExternalLink: React.FC<IconProps> = ({
   );
 };
 
-export const IconChatBubble: React.FC<IconProps> = ({ className, title }) => {
+export const IconChatBubble: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1183,7 +1142,7 @@ export const IconChatBubble: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconTelegram: React.FC<IconProps> = ({ className, title }) => {
+export const IconTelegram: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1201,7 +1160,7 @@ export const IconTelegram: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconTelegramAlt: React.FC<IconProps> = ({ className, title }) => {
+export const IconTelegramAlt: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1218,7 +1177,7 @@ export const IconTelegramAlt: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconWhatsApp: React.FC<IconProps> = ({ className, title }) => {
+export const IconWhatsApp: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1236,7 +1195,7 @@ export const IconWhatsApp: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconLinkedIn: React.FC<IconProps> = ({ className, title }) => {
+export const IconLinkedIn: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1250,7 +1209,7 @@ export const IconLinkedIn: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconLinkedInAlt: React.FC<IconProps> = ({ className, title }) => {
+export const IconLinkedInAlt: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1268,7 +1227,7 @@ export const IconLinkedInAlt: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconGithub: React.FC<IconProps> = ({ className, title }) => {
+export const IconGithub: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1286,7 +1245,7 @@ export const IconGithub: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconDiscord: React.FC<IconProps> = ({ className, title }) => {
+export const IconDiscord: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1304,7 +1263,7 @@ export const IconDiscord: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconGlassdoor: React.FC<IconProps> = ({ className, title }) => {
+export const IconGlassdoor: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1323,7 +1282,7 @@ export const IconGlassdoor: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconTwitter: React.FC<IconProps> = ({ className, title }) => {
+export const IconTwitter: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1337,7 +1296,7 @@ export const IconTwitter: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconInstagram: React.FC<IconProps> = ({ className, title }) => {
+export const IconInstagram: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1355,7 +1314,7 @@ export const IconInstagram: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconFacebook: React.FC<IconProps> = ({ className, title }) => {
+export const IconFacebook: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1373,7 +1332,7 @@ export const IconFacebook: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconTicket: React.FC<IconProps> = ({
+export const IconTicket: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1399,7 +1358,7 @@ export const IconTicket: React.FC<IconProps> = ({
   );
 };
 
-export const IconBriefcase: React.FC<IconProps> = ({
+export const IconBriefcase: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1423,11 +1382,7 @@ export const IconBriefcase: React.FC<IconProps> = ({
   );
 };
 
-export const IconRole: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconRole: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -1445,11 +1400,7 @@ export const IconRole: React.FC<IconProps> = ({
   );
 };
 
-export const IconGlobe: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconGlobe: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1469,11 +1420,7 @@ export const IconGlobe: React.FC<IconProps> = ({
   );
 };
 
-export const IconBell: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconBell: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -1492,11 +1439,7 @@ export const IconBell: React.FC<IconProps> = ({
   );
 };
 
-export const IconCopy: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconCopy: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -1516,11 +1459,7 @@ export const IconCopy: React.FC<IconProps> = ({
   );
 };
 
-export const IconEmail: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconEmail: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -1540,7 +1479,7 @@ export const IconEmail: React.FC<IconProps> = ({
   );
 };
 
-export const IconCompanies: React.FC<IconProps> = ({
+export const IconCompanies: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1564,7 +1503,7 @@ export const IconCompanies: React.FC<IconProps> = ({
   );
 };
 
-export const IconCalendarDays: React.FC<IconProps> = ({
+export const IconCalendarDays: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1588,7 +1527,7 @@ export const IconCalendarDays: React.FC<IconProps> = ({
   );
 };
 
-export const IconCalendarAdd: React.FC<IconProps> = ({
+export const IconCalendarAdd: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1617,7 +1556,7 @@ export const IconCalendarAdd: React.FC<IconProps> = ({
   );
 };
 
-export const IconCalendar: React.FC<IconProps> = ({
+export const IconCalendar: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1641,11 +1580,7 @@ export const IconCalendar: React.FC<IconProps> = ({
   );
 };
 
-export const IconPlus: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconPlus: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       className={className}
@@ -1664,7 +1599,7 @@ export const IconPlus: React.FC<IconProps> = ({
   );
 };
 
-export const IconChevronLeft: React.FC<IconProps> = ({
+export const IconChevronLeft: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1684,7 +1619,7 @@ export const IconChevronLeft: React.FC<IconProps> = ({
   );
 };
 
-export const IconChevronRight: React.FC<IconProps> = ({
+export const IconChevronRight: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1704,7 +1639,7 @@ export const IconChevronRight: React.FC<IconProps> = ({
   );
 };
 
-export const IconChevronDown: React.FC<IconProps> = ({ className, title }) => {
+export const IconChevronDown: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1720,10 +1655,7 @@ export const IconChevronDown: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconChevronDownMini: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconChevronDownMini: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1741,7 +1673,7 @@ export const IconChevronDownMini: React.FC<IconProps> = ({
   );
 };
 
-export const IconPolygonDown: React.FC<IconProps> = ({ className, title }) => {
+export const IconPolygonDown: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1755,7 +1687,7 @@ export const IconPolygonDown: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconChevronUp: React.FC<IconProps> = ({
+export const IconChevronUp: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1775,11 +1707,7 @@ export const IconChevronUp: React.FC<IconProps> = ({
   );
 };
 
-export const IconHome: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconHome: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1800,7 +1728,7 @@ export const IconHome: React.FC<IconProps> = ({
   );
 };
 
-export const IconDashboard: React.FC<IconProps> = ({ className, title }) => {
+export const IconDashboard: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1818,7 +1746,7 @@ export const IconDashboard: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconSettings: React.FC<IconProps> = ({
+export const IconSettings: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1847,7 +1775,7 @@ export const IconSettings: React.FC<IconProps> = ({
   );
 };
 
-export const IconOrganization: React.FC<IconProps> = ({
+export const IconOrganization: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1871,7 +1799,7 @@ export const IconOrganization: React.FC<IconProps> = ({
   );
 };
 
-export const IconSignOut: React.FC<IconProps> = ({
+export const IconSignOut: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1895,11 +1823,7 @@ export const IconSignOut: React.FC<IconProps> = ({
   );
 };
 
-export const IconX: React.FC<IconProps> = ({
-  className,
-  title,
-  strokeWidth,
-}) => {
+export const IconX: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1919,7 +1843,7 @@ export const IconX: React.FC<IconProps> = ({
   );
 };
 
-export const IconLocation: React.FC<IconProps> = ({
+export const IconLocation: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -1948,10 +1872,7 @@ export const IconLocation: React.FC<IconProps> = ({
   );
 };
 
-export const IconEditPencilOLD: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconEditPencilOLD: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -1971,7 +1892,7 @@ export const IconEditPencilOLD: React.FC<IconProps> = ({
   );
 };
 
-export const IconEditPencil: React.FC<IconProps> = ({
+export const IconEditPencil: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -1995,7 +1916,7 @@ export const IconEditPencil: React.FC<IconProps> = ({
   );
 };
 
-export const IconPencilSquare: React.FC<IconProps> = ({
+export const IconPencilSquare: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -2019,7 +1940,7 @@ export const IconPencilSquare: React.FC<IconProps> = ({
   );
 };
 
-export const IconSortDown: React.FC<IconProps> = ({ className, title }) => {
+export const IconSortDown: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2037,7 +1958,7 @@ export const IconSortDown: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconSortUp: React.FC<IconProps> = ({ className, title }) => {
+export const IconSortUp: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2056,7 +1977,7 @@ export const IconSortUp: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconSave: React.FC<IconProps> = ({ className, title }) => {
+export const IconSave: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       className={className}
@@ -2073,7 +1994,7 @@ export const IconSave: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconListPlus: React.FC<IconProps> = ({
+export const IconListPlus: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -2096,7 +2017,7 @@ export const IconListPlus: React.FC<IconProps> = ({
   );
 };
 
-export const IconListSaved: React.FC<IconProps> = ({
+export const IconListSaved: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -2119,7 +2040,7 @@ export const IconListSaved: React.FC<IconProps> = ({
   );
 };
 
-export const IconColumns: React.FC<IconProps> = ({
+export const IconColumns: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -2143,11 +2064,7 @@ export const IconColumns: React.FC<IconProps> = ({
   );
 };
 
-export const IconTable: React.FC<IconProps> = ({
-  className,
-  strokeWidth,
-  title,
-}) => {
+export const IconTable: FC<IconProps> = ({ className, strokeWidth, title }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2167,11 +2084,7 @@ export const IconTable: React.FC<IconProps> = ({
   );
 };
 
-export const IconShare: React.FC<IconProps> = ({
-  className,
-  strokeWidth,
-  title,
-}) => {
+export const IconShare: FC<IconProps> = ({ className, strokeWidth, title }) => {
   return (
     <svg
       className={className}
@@ -2190,7 +2103,7 @@ export const IconShare: React.FC<IconProps> = ({
   );
 };
 
-export const IconShareAlt: React.FC<IconProps> = ({
+export const IconShareAlt: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -2214,7 +2127,7 @@ export const IconShareAlt: React.FC<IconProps> = ({
   );
 };
 
-export const IconShare3: React.FC<IconProps> = ({
+export const IconShare3: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -2240,7 +2153,7 @@ export const IconShare3: React.FC<IconProps> = ({
   );
 };
 
-export const IconFindCompanies: React.FC<IconProps> = ({
+export const IconFindCompanies: FC<IconProps> = ({
   className,
   strokeWidth,
   title,
@@ -2263,10 +2176,7 @@ export const IconFindCompanies: React.FC<IconProps> = ({
   );
 };
 
-export const IconFindInvestors: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconFindInvestors: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -2280,7 +2190,7 @@ export const IconFindInvestors: React.FC<IconProps> = ({
   );
 };
 
-export const IconFollowing: React.FC<IconProps> = ({ className, title }) => {
+export const IconFollowing: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -2300,7 +2210,7 @@ export const IconFollowing: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconAcquired: React.FC<IconProps> = ({ className, title }) => {
+export const IconAcquired: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -2317,7 +2227,7 @@ export const IconAcquired: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconTrending: React.FC<IconProps> = ({
+export const IconTrending: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -2343,7 +2253,7 @@ export const IconTrending: React.FC<IconProps> = ({
   );
 };
 
-export const IconSparkles: React.FC<IconProps> = ({
+export const IconSparkles: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -2367,7 +2277,7 @@ export const IconSparkles: React.FC<IconProps> = ({
   );
 };
 
-export const IconContributor: React.FC<IconProps> = ({
+export const IconContributor: FC<IconProps> = ({
   className,
   title,
   strokeWidth,
@@ -2391,10 +2301,7 @@ export const IconContributor: React.FC<IconProps> = ({
   );
 };
 
-export const IconContributorSolid: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconContributorSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
       <title>{title ? title : 'Contributor'}</title>
@@ -2407,7 +2314,7 @@ export const IconContributorSolid: React.FC<IconProps> = ({
   );
 };
 
-export const IconDead: React.FC<IconProps> = ({ className, title }) => {
+export const IconDead: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -2477,11 +2384,7 @@ export const IconDead: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconHide: React.FC<IconProps> = ({
-  className,
-  strokeWidth,
-  title,
-}) => {
+export const IconHide: FC<IconProps> = ({ className, strokeWidth, title }) => {
   return (
     <svg
       className={className}
@@ -2499,7 +2402,7 @@ export const IconHide: React.FC<IconProps> = ({
   );
 };
 
-export const IconApple: React.FC<IconProps> = ({ className, title }) => {
+export const IconApple: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -2513,10 +2416,7 @@ export const IconApple: React.FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconAppleCalendar: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconAppleCalendar: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -2602,10 +2502,7 @@ export const IconAppleCalendar: React.FC<IconProps> = ({
   );
 };
 
-export const IconGoogleCalendar: React.FC<IconProps> = ({
-  className,
-  title,
-}) => {
+export const IconGoogleCalendar: FC<IconProps> = ({ className, title }) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -2650,7 +2547,7 @@ export const IconGoogleCalendar: React.FC<IconProps> = ({
   );
 };
 
-export const IconMicrosoftOutlook: React.FC<IconProps> = ({ className }) => {
+export const IconMicrosoftOutlook: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

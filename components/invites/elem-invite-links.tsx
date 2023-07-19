@@ -1,24 +1,21 @@
+import { FC } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { ElemButton } from '@/components/elem-button';
 import {
-  IconShare,
-  IconLink,
   IconTelegramAlt,
-  IconTelegram,
   IconEmail,
   IconChatBubble,
   IconTwitter,
+  IconCopy,
 } from '@/components/icons';
-import { FC, useState } from 'react';
-import toast from 'react-hot-toast';
+import { User } from '@/models/user';
 
 type Props = {
-  user: any;
-  personSlug?: string | null | undefined;
+  user: User;
+  personSlug?: string | null;
 };
 
 export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
-  const [isCopied, setIsCopied] = useState(false);
-
   const getInviteLink = () => {
     const inviteCode = personSlug || user.reference_id;
     const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
@@ -64,7 +61,6 @@ export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
 
   const onCopy = async () => {
     navigator.clipboard.writeText(getInviteLink());
-    setIsCopied(true);
     toast.custom(
       t => (
         <div
@@ -72,7 +68,7 @@ export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
-          Copied Invite Link
+          Link copied
         </div>
       ),
       {
@@ -93,15 +89,9 @@ export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
     <div>
       <h3 className="font-bold mt-3">Your referral link</h3>
       <div className="relative">
-        <div className="absolute right-1 top-1 z-10 pt-1 pr-1">
-          <ElemButton
-            onClick={() => onCopy()}
-            btn="slate"
-            size="sm"
-            roundedFull={true}
-            className="px-2.5"
-          >
-            {isCopied ? 'Link Copied' : 'Copy Link'}
+        <div className="absolute right-1 top-2 z-10">
+          <ElemButton onClick={() => onCopy()} btn="slate" size="sm">
+            <IconCopy className="w-5 h-5" />
           </ElemButton>
         </div>
         <input
@@ -130,6 +120,7 @@ export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
           </div>
         ))}
       </div>
+      <Toaster />
     </div>
   );
 };
