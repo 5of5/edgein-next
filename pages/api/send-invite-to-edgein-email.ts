@@ -13,6 +13,7 @@ import {
   InsertInvitedPeopleDocument,
   InsertInvitedPeopleMutation,
 } from '@/graphql/types';
+import { inviteToEdgeInPayloadSchema } from '@/utils/schema';
 
 //AWS config set
 AWS.config.update({
@@ -31,10 +32,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const payload: InviteToEdgeInPayload[] = req.body.payload;
 
+  const params = inviteToEdgeInPayloadSchema.parse(payload);
+
   const inviteCode = user.person?.slug || user.reference_id;
 
   const response = await Promise.all(
-    payload.map(async ({ email, personId }) => {
+    params.map(async ({ email, personId }) => {
       const mailParams: InviteToEdgeInMailParams = {
         email,
         senderName: user.display_name || '',

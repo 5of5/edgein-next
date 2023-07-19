@@ -1993,3 +1993,5 @@ export const NOTIFICATION_EXCLUDE_PROPERTIES = [
   'trajectory',
   'search_count',
 ];
+
+export const EMAIL_MAX_LENGTH = 255;

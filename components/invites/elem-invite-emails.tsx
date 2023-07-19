@@ -42,6 +42,7 @@ const ElemInviteEmails: FC<Props> = ({
       await fetch(
         `/api/find-people-by-email/?searchText=${debouncedQuery}`,
       ).then(res => res.json()),
+    { enabled: debouncedQuery.trim().length > 0 },
   );
 
   const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {

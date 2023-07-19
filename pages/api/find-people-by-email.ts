@@ -1,10 +1,13 @@
 import { NextApiResponse, NextApiRequest } from 'next';
+import { z } from 'zod';
 import { query } from '@/graphql/hasuraAdmin';
 import CookieService from '../../utils/cookie';
 import {
   FindPeopleByEmailDocument,
   FindPeopleByEmailQuery,
 } from '@/graphql/types';
+import { EMAIL_MAX_LENGTH } from '@/utils/constants';
+import { findPeopleByEmailSchema } from '@/utils/schema';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
@@ -18,12 +21,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // params:
   const searchText = req.query.searchText;
 
+  const keyword = findPeopleByEmailSchema.parse(searchText);
+
   try {
     const {
       data: { people },
     } = await query<FindPeopleByEmailQuery>({
       query: FindPeopleByEmailDocument,
-      variables: { query: `%${searchText}%` },
+      variables: { query: `%${keyword}%` },
     });
     return res.send(people);
   } catch (ex) {
