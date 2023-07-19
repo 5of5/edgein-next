@@ -10,6 +10,8 @@ import {
 import { Fragment } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
+import { redirect_url } from '@/utils/auth';
+
 type Props = {
   user: any;
   personSlug?: string | null | undefined;
@@ -18,7 +20,7 @@ type Props = {
 export const ElemInviteLinks = ({ user, personSlug }: Props) => {
   const getInviteLink = () => {
     const inviteCode = personSlug || user.reference_id;
-    const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
+    const inviteLink = `${redirect_url()}/?invite=${inviteCode}`;
     return inviteLink;
   };
 
@@ -59,8 +61,7 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
         <div
           className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
-          }`}
-        >
+          }`}>
           Copied Invite Link
         </div>
       ),
@@ -95,12 +96,10 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
         enterTo="transform opacity-100 scale-100"
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
+        leaveTo="transform opacity-0 scale-95">
         <Menu.Items
           as="nav"
-          className="z-10 absolute overflow-hidden left-0 lg:left-auto lg:right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
-        >
+          className="z-10 absolute overflow-hidden left-0 lg:left-auto lg:right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
           {list.map(link => (
             <Menu.Item key={link.text}>
               {({ active }) => (
@@ -108,8 +107,7 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
                   onClick={link.onClick}
                   className={`${
                     active ? 'bg-gray-50 text-primary-500' : ''
-                  } flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500`}
-                >
+                  } flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500`}>
                   <link.icon className="mr-2 h-5 w-5" aria-hidden="true" />
                   {link.text}
                 </button>
