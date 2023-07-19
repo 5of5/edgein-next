@@ -8,7 +8,7 @@ import {
   maxValue,
   regex,
 } from 'react-admin';
-import { GroupsTabItem } from '@/types/common';
+import { GroupsTabItem, ListsTabItem } from '@/types/common';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -1949,6 +1949,12 @@ export const GROUPS_TABS: GroupsTabItem[] = [
   { id: 'joined', name: 'Joined' },
 ];
 
+export const LISTS_TABS: ListsTabItem[] = [
+  { id: 'my-lists', name: 'My Lists' },
+  { id: 'discover', name: 'Discover' },
+  { id: 'following', name: 'Following' },
+];
+
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
   'companies',
   'vc_firms',
@@ -1986,6 +1992,12 @@ export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
   'mdinsdale@mac.com',
   'dinghan@capital6.com',
 ];
+
+export const LIST_NAME_MIN_LENGTH = 3;
+export const LIST_NAME_MAX_LENGTH = 255;
+
+export const GROUP_NAME_MAX_LENGTH = 255;
+export const GROUP_DESCRIPTION_MAX_LENGTH = 1000;
 
 export const NOTIFICATION_EXCLUDE_PROPERTIES = [
   'status_tags',

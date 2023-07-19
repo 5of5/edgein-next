@@ -73,6 +73,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         body: JSON.stringify({
           id: group.id,
           payload: {
+            name: group.name,
             public: value,
           },
         }),
@@ -134,7 +135,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
     {
       onSuccess: () => {
         refetchMyGroups();
-        router.push('/account');
+        router.push('/groups');
       },
     },
   );

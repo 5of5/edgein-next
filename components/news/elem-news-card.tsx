@@ -12,7 +12,7 @@ import { GetNewsQuery } from '@/graphql/types';
 import Link from 'next/link';
 import { getCleanWebsiteUrl, stripHtmlTags } from '@/utils/text';
 import parse from 'html-react-parser';
-import moment from 'moment-timezone';
+import { formatDateShown } from '@/utils';
 
 type Props = {
   className?: string;
@@ -50,11 +50,6 @@ export const ElemNewsCard: FC<Props> = ({
   const otherOrganizations = organizations.filter(
     org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
   );
-
-  const formatDateShown = (date: Date, timezone?: string) => {
-    const local_date = moment(date).local().format('YYYY-MM-DD');
-    return moment(local_date).format('LL');
-  };
 
   return (
     <div

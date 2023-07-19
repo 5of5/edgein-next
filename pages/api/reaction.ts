@@ -6,6 +6,8 @@ import {
   upsertFollow,
   upsertList,
 } from '@/utils/lists';
+import { listSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 
@@ -33,6 +35,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
+
+  const { errors } = zodValidate(
+    { ...req.body, name: req.body.listName },
+    listSchema,
+  );
+  if (errors) {
+    return res
+      .status(400)
+      .send({ error: errors['name']?.[0] || 'Invalid parameters' });
+  }
 
   const listName: string = sentimentType
     ? `sentiment-${user.id}-${sentimentType}`
@@ -103,7 +115,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  res.send({ ...sentimentReturn, ...list });
+  return res.send({ ...sentimentReturn, ...list });
 };
 
 export default handler;
