@@ -194,16 +194,17 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
   hmac.update(String(userData.id));
 
-  const entitlements: Entitlements = userData.billing_org_id
-    ? {
-        viewEmails: true,
-        groupsCount: 5000,
-      }
-    : {
-        viewEmails: false,
-        listsCount: 5,
-        groupsCount: 3,
-      };
+  const entitlements: Entitlements =
+    userData.billing_org_id || userData.credits > 0
+      ? {
+          viewEmails: true,
+          groupsCount: 5000,
+        }
+      : {
+          viewEmails: false,
+          listsCount: 5,
+          groupsCount: 3,
+        };
 
   return {
     id: userData.id,
@@ -211,6 +212,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     email: userData.email,
     role: userData.role,
     isFirstLogin,
+    credits: userData.credits,
     billing_org_id: userData.billing_org_id,
     billing_org: userData.billing_org,
     display_name: userData.display_name,

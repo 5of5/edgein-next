@@ -4,7 +4,29 @@ import {
   LIST_NAME_MAX_LENGTH,
   GROUP_NAME_MAX_LENGTH,
   GROUP_DESCRIPTION_MAX_LENGTH,
+  EMAIL_MAX_LENGTH,
 } from './constants';
+
+export const findPeopleByEmailSchema = z
+  .string()
+  .nonempty('Email is required.')
+  .max(
+    EMAIL_MAX_LENGTH,
+    `Email should be maximum of ${EMAIL_MAX_LENGTH} characters.`,
+  );
+
+export const inviteToEdgeInPayloadSchema = z
+  .object({
+    email: z
+      .string()
+      .nonempty('Email is required')
+      .max(
+        EMAIL_MAX_LENGTH,
+        `Email should be maximum of ${EMAIL_MAX_LENGTH} characters.`,
+      ),
+    personId: z.number().nullable(),
+  })
+  .array();
 
 export const groupSchema = z.object({
   name: z

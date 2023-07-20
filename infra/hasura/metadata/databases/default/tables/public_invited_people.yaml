@@ -1,0 +1,14 @@
+table:
+  schema: public
+  name: invited_people
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - person_id
+        - inviter_user_id
+        - created_at
+      filter:
+        inviter_user_id:
+          _eq: X-Hasura-User-Id

@@ -24,6 +24,7 @@
 - '!include public_investment_rounds.yaml'
 - '!include public_investments.yaml'
 - '!include public_investors.yaml'
+- '!include public_invited_people.yaml'
 - '!include public_leads.yaml'
 - '!include public_leads_segmentation.yaml'
 - '!include public_likes.yaml'
