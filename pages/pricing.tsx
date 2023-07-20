@@ -39,7 +39,11 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
           'Create / Share up to 5 Lists',
           'Create / Manage Groups with up to 3 members',
         ],
-        cta: user ? (user.billing_org ? '' : 'Current Plan') : 'Sign up',
+        cta: user
+          ? user.billing_org || user.credits > 0
+            ? ''
+            : 'Current Plan'
+          : 'Sign up',
         mostPopular: false,
       },
       {
