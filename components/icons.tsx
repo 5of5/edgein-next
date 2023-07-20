@@ -501,7 +501,11 @@ export const IconCheckBadgeSolid: FC<IconProps> = ({ className, title }) => {
   );
 };
 
-export const IconSearch: FC<IconProps> = ({ className, title, strokeWidth }) => {
+export const IconSearch: FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
   return (
     <svg
       className={className}

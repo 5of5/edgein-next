@@ -137,9 +137,7 @@ export default function Account() {
           <h2 className="font-bold text-xl">Referrals and Credits</h2>
         </div>
 
-        <EditSection
-          heading="Invite a friend"
-        >
+        <EditSection heading="Invite a friend">
           <h3 className="font-bold">
             Get 1 month free for every person you invite
           </h3>
