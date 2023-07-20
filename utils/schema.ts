@@ -24,7 +24,7 @@ export const inviteToEdgeInPayloadSchema = z
         EMAIL_MAX_LENGTH,
         `Email should be maximum of ${EMAIL_MAX_LENGTH} characters.`,
       ),
-    personId: z.optional(z.number()),
+    personId: z.number().nullable(),
   })
   .array();
 
