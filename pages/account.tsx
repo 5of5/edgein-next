@@ -139,14 +139,6 @@ export default function Account() {
 
         <EditSection
           heading="Invite a friend"
-          right={
-            <>
-              <div>
-                <h2 className="font-bold">Your credits</h2>
-                <p className="text-slate-600">No credit awarded yet.</p>
-              </div>
-            </>
-          }
         >
           <h3 className="font-bold">
             Get 1 month free for every person you invite
@@ -156,6 +148,11 @@ export default function Account() {
             through your referral, you&apos;ll receive $14.99 in credit.
             That&apos;s 1 month of EdgeIn Premium for free! The more people who
             sign up, the more credit you&apos;ll get.
+          </p>
+
+          {/* TODO: add data from the https://github.com/5of5/edgein-next/pull/651 PR */}
+          <p className="mt-2 text-primary-500">
+            You earned $44.99 in credit. It gives you 3 months free.
           </p>
 
           <div className="mt-6">

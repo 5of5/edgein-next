@@ -87,7 +87,7 @@ const ElemInviteEmails: FC<Props> = ({
     <Combobox value={selectedUsers} onChange={handleSelect} multiple>
       <div className="relative">
         <div className="flex flex-col gap-1">
-          <label className="font-bold text-slate-600">{label}</label>
+          <label className="font-bold">{label}</label>
           {description && (
             <p className="text-sm text-slate-600">{description}</p>
           )}
