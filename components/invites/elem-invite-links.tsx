@@ -15,9 +15,9 @@ type Props = {
   personSlug?: string | null;
 };
 
-export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
+export const ElemInviteLinks: FC<Props> = ({ user }) => {
   const getInviteLink = () => {
-    const inviteCode = personSlug || user.reference_id;
+    const inviteCode = user.reference_id;
     const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
     return inviteLink;
   };

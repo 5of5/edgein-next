@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const params = inviteToEdgeInPayloadSchema.parse(payload);
 
-  const inviteCode = user.person?.slug || user.reference_id;
+  const inviteCode = user.reference_id;
 
   const response = await Promise.all(
     params.map(async ({ email, personId }) => {
