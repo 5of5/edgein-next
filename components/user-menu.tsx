@@ -12,7 +12,7 @@ import {
 } from './icons';
 import { useUser } from '@/context/user-context';
 import Link from 'next/link';
-import { clearLocalStorage } from '@/utils/helpers';
+import UserService from '@/utils/users';
 
 type Props = {
   className?: string;
@@ -23,21 +23,6 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
   const { user } = useUser();
 
   const showUpgradeLink = user?.entitlements.viewEmails === false;
-
-  const logout = async () => {
-    clearLocalStorage();
-    const authRequest = await fetch('/api/logout/', {
-      method: 'POST',
-    }).then(res => res.json());
-    if (authRequest.success) {
-      // We successfully logged in, our API
-      // set authorization cookies and now we
-      // can redirect to the dashboard!
-      location.href = authRequest.logoutLink;
-    } else {
-      /* handle errors */
-    }
-  };
 
   const navigation = [];
 
@@ -144,7 +129,7 @@ export const UserMenu: FC<Props> = ({ className = '', onShowUpgrade }) => {
           <Menu.Item>
             {({ active }) => (
               <button
-                onClick={logout}
+                onClick={UserService.logout}
                 className={`${
                   active ? 'bg-gray-50' : ''
                 } hover:text-primary-500 flex w-full items-center px-2 py-2`}

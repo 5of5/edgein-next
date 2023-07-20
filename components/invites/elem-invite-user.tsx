@@ -166,7 +166,7 @@ export const ElemInviteUser = () => {
               <div className="flex flex-col gap-1">
                 <ElemInviteEmails
                   label="Invite with email"
-                  description="Send an email invite"
+                  description="Search for a person or type in an email address"
                   placeholder="name@company.com"
                   selected={selectedPeople}
                   onChange={setSelectedPeople}

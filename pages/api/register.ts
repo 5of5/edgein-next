@@ -3,11 +3,7 @@ import CookieService from '@/utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { GetUserGroupInvitesByEmailQuery } from '@/graphql/types';
 import GroupService from '@/utils/groups';
-import {
-  AuthService,
-  makeAuthService,
-  UserInfo,
-} from '@/services/auth.service';
+import { makeAuthService, UserInfo } from '@/services/auth.service';
 
 const authService = makeAuthService();
 
@@ -47,6 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     result = await authService.createUser(data);
+    const user_id = result.identities![0].user_id;
 
     let userData: any = await UserService.findOneUserByEmail(email);
     if (!userData) {
@@ -81,8 +78,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const objectData = {
         email: result.email,
         name: result.name,
-        _id: result._id, // get Id from sub
-        auth0_user_pass_id: result._id,
+        _id: user_id, // get Id from sub
+        auth0_user_pass_id: user_id,
         reference_user_id: referenceUserId,
         // person_id: isEmailAllowed.person_id
       };
@@ -95,7 +92,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isUserPassPrimaryAccount = false;
       userData = await UserService.updateAuth0UserPassId(
         result.email!,
-        result._id!,
+        user_id,
       );
     }
 

@@ -68,7 +68,7 @@ export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
-          Link copied
+          Link copied to clipboard
         </div>
       ),
       {
@@ -86,8 +86,11 @@ export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
   ];
 
   return (
-    <div>
-      <h3 className="font-bold mt-3">Your referral link</h3>
+    <div className="relative p-5 bg-white rounded-lg border border-black/10">
+      <h3 className="font-bold">Share your referral link</h3>
+      <p className="mt-2 text-sm text-slate-600">
+        Copy and paste it or send it directly to your friends
+      </p>
       <div className="relative">
         <div className="absolute right-1 top-2 z-10">
           <ElemButton onClick={() => onCopy()} btn="slate" size="sm">
@@ -104,7 +107,7 @@ export const ElemInviteLinks: FC<Props> = ({ user, personSlug }) => {
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-2 lg:space-x-2 lg:gap-0">
-        <div>Share:</div>
+        <div>Share on:</div>
         {list.map(link => (
           <div key={link.text}>
             <ElemButton

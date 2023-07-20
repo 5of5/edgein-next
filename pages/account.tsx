@@ -162,6 +162,11 @@ export default function Account() {
             sign up, the more credit you&apos;ll get.
           </p>
 
+          {/* TODO: add data from the https://github.com/5of5/edgein-next/pull/651 PR */}
+          <p className="mt-2 text-primary-500">
+            You earned $44.99 in credit. It gives you 3 months free.
+          </p>
+
           <div className="mt-6">
             <ElemInviteUser />
           </div>
