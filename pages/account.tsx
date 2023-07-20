@@ -33,6 +33,9 @@ export default function Account() {
   const [reEnterErrorMessage, setReEnterErrorMessage] = useState('');
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
+  const numberOfMonthsFromCredits = Math.ceil(
+    userProfile?.users_by_pk?.credits / 14.99,
+  );
 
   const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
 
@@ -144,16 +147,27 @@ export default function Account() {
           <p className="mt-2 text-slate-600">
             Invite your friends to EdgeIn and for each friend who signs up
             through your referral, you&apos;ll receive $14.99 in credit.
-            That&apos;s 1 month of EdgeIn Premium for free! The more people who
-            sign up, the more credit you&apos;ll get.
+            That&apos;s 1 month of EdgeIn Contributor for free! The more people
+            who sign up, the more credit you&apos;ll get.
           </p>
-          {userProfile?.users_by_pk?.credits > 0 && (
-            <p className="mt-2 text-primary-500">
-              You earned ${userProfile?.users_by_pk?.credits} in credit. It
-              gives you {Math.ceil(userProfile?.users_by_pk?.credits / 14.99)}{' '}
-              months free.
-            </p>
-          )}
+
+          {userProfile?.users_by_pk?.credits > 0 &&
+            !user?.entitlements.viewEmails && (
+              <p className="mt-2 text-primary-500">
+                You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
+                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
+                out and log back in to activate.
+              </p>
+            )}
+
+          {userProfile?.users_by_pk?.credits > 0 &&
+            user?.entitlements.viewEmails && (
+              <p className="mt-2 text-primary-500">
+                You have EdgeIn Contributor active for{' '}
+                {numberOfMonthsFromCredits}{' '}
+                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
+              </p>
+            )}
 
           <div className="mt-6">
             <ElemInviteUser />
