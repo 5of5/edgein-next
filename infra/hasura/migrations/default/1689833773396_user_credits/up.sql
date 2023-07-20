@@ -8,7 +8,7 @@ DECLARE
     first_referral timestamp;
     days_since_first_referral integer;
 BEGIN
-    referral_count := (SELECT COUNT(*) FROM users WHERE reference_user_id = user_row.id);
+    referral_count := (SELECT COUNT(*) FROM users WHERE reference_user_id = user_row.id AND created_at >= '2023-07-19T00:00:00.000000+00:00');
     IF referral_count = 0 THEN
         RETURN 0;
     END IF;
