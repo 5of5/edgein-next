@@ -180,7 +180,8 @@ export default function Account() {
                 <ElemButton
                   onClick={() => {}}
                   btn="white"
-                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white">
+                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
+                >
                   <IconLinkedIn className="h-5 w-5" />
                   <span>Connected</span>
                 </ElemButton>
@@ -189,12 +190,14 @@ export default function Account() {
                   <ElemButton
                     onClick={onLinkedInClick}
                     btn="white"
-                    className="space-x-1 text-[#0077B5] hover:!text-[#0077B5]">
+                    className="space-x-1 text-[#0077B5] hover:!text-[#0077B5]"
+                  >
                     <IconLinkedIn className="h-5 w-5" /> <span>LinkedIn</span>
                   </ElemButton>
                 </>
               )
-            }>
+            }
+          >
             <div>
               <p className="text-slate-600">
                 Connect your LinkedIn account to validate your profile and
@@ -212,13 +215,15 @@ export default function Account() {
                 !isEditPassword ? (
                   <button
                     onClick={() => setEditPassword(true)}
-                    className="text-primary-500 hover:text-dark-500">
+                    className="text-primary-500 hover:text-dark-500"
+                  >
                     Edit
                   </button>
                 ) : (
                   <></>
                 )
-              }>
+              }
+            >
               {!isEditPassword ? (
                 <p className="text-slate-600">
                   Use a strong password that you are not using elsewhere.
@@ -259,12 +264,14 @@ export default function Account() {
                     <ElemButton
                       btn="primary"
                       className="mr-2"
-                      onClick={onChangePassword}>
+                      onClick={onChangePassword}
+                    >
                       Save Changes
                     </ElemButton>
                     <ElemButton
                       onClick={() => setEditPassword(false)}
-                      btn="transparent">
+                      btn="transparent"
+                    >
                       Cancel
                     </ElemButton>
                   </div>
@@ -286,7 +293,8 @@ export default function Account() {
                   <ElemButton
                     onClick={onBillingClick}
                     btn="primary-light"
-                    className="mt-2 text-primary-500">
+                    className="mt-2 text-primary-500"
+                  >
                     <span>Manage</span>
                   </ElemButton>
                 </div>
@@ -305,7 +313,8 @@ export default function Account() {
                   onClick={onBillingClick}
                   btn="primary-light"
                   arrow
-                  className="mt-4 text-primary-500">
+                  className="mt-4 text-primary-500"
+                >
                   Start your free trial
                 </ElemButton>
               </div>
