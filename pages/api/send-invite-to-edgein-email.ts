@@ -13,15 +13,11 @@ import {
   InsertInvitedPeopleDocument,
   InsertInvitedPeopleMutation,
 } from '@/graphql/types';
+import { makeEmailService } from '@/services/email.service';
+import { env } from '@/services/config.service';
 import { inviteToEdgeInPayloadSchema } from '@/utils/schema';
 
-//AWS config set
-AWS.config.update({
-  accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID!,
-  secretAccessKey: process.env.AWS_SES_ACCESS_SECRET_KEY!,
-  region: process.env.AWS_BUCKET_REGION!,
-});
-const SES_SOURCE = 'EdgeIn Support <support@edgein.io>';
+const emailService = makeEmailService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -86,10 +82,10 @@ const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
           Data: `${senderName} (${senderEmail}) invited you to EdgeIn`,
         },
       },
-      Source: SES_SOURCE,
+      Source: env.SES_SOURCE,
     };
 
-    await new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+    await emailService.sendEmail(params);
     const res: InviteToEdgeInResponse = {
       status: 200,
       message: 'success',
@@ -99,7 +95,7 @@ const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
   } catch (err) {
     const res: InviteToEdgeInResponse = {
       status: 500,
-      message: `Failed to send verification email to ${email}. ${err}`,
+      message: `Failed to send invitation email to ${email}. ${err}`,
       email,
     };
     return res;
