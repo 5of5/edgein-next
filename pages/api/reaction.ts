@@ -65,10 +65,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // upsertList
   const list = await upsertList(listName, user, token);
 
-  if (isFullList(list as Lists)) {
-    return res.status(400).send({ error: 'List is full' });
-  }
-
   // This is to toggle
   // check if user already follows
   const existsFollows = await deleteFollowIfExists(
@@ -78,6 +74,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user,
     token,
   );
+
+  // Check maximum items of list if insert follows
+  if (!existsFollows && isFullList(list as Lists)) {
+    return res.status(400).send({ error: 'List is full' });
+  }
 
   // insert follow only if the follows don't exists
   const follow =

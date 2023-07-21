@@ -50,11 +50,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // upsertList
   const list = await upsertList(listName, user, token);
 
-  if (isFullList(list as Lists)) {
+  const isAddToList = action === 'add';
+
+  // Check maximum items of list if action === 'add'
+  if (isAddToList && isFullList(list as Lists)) {
     return res.status(400).send({ error: 'List is full' });
   }
-
-  const isAddToList = action === 'add';
 
   await Promise.all(
     personIds.map(async personId => {
