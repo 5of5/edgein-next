@@ -31,7 +31,7 @@ export const isFullList = (list: Lists, numOfAddedItems = 1) => {
     list.follows_companies.length +
       list.follows_vcfirms.length +
       list.follows_people.length +
-      numOfAddedItems >=
+      numOfAddedItems >
       MAXIMUM_ITEMS_ON_LIST
   ) {
     return true;
