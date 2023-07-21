@@ -180,13 +180,13 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
     event.preventDefault();
     event.stopPropagation();
 
-    // if (!isSelected && isFullList(list as Lists, personIds.length)) {
-    //   setItemsFullListName(getNameFromListName(list));
-    //   onOpenFullListDialog();
-    //   setIsOpen(false);
-    // } else {
-    toggleToList(list.name, isSelected ? 'remove' : 'add');
-    // }
+    if (!isSelected && isFullList(list as Lists, personIds.length)) {
+      setItemsFullListName(getNameFromListName(list));
+      onOpenFullListDialog();
+      setIsOpen(false);
+    } else {
+      toggleToList(list.name, isSelected ? 'remove' : 'add');
+    }
   };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
