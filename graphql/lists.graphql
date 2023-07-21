@@ -89,6 +89,15 @@ mutation UpsertList($userId: Int, $name: String) {
     }
   ) {
     id
+    follows_companies {
+      resource_id
+    }
+    follows_vcfirms {
+      resource_id
+    }
+    follows_people {
+      resource_id
+    }
   }
 }
 

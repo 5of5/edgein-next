@@ -1,5 +1,7 @@
 import { z, ZodSchema } from 'zod';
 import mapValues from 'lodash/mapValues';
+import { Lists } from '@/graphql/types';
+import { MAXIMUM_ITEMS_ON_LIST } from './constants';
 
 export const zodValidate = (values: unknown, schema: ZodSchema) => {
   let success = false;
@@ -21,4 +23,19 @@ export const extractErrors = <T>(
   fieldErrors: Partial<Record<keyof T, string[] | string>>,
 ) => {
   return mapValues(fieldErrors, o => o?.[0] || '');
+};
+
+export const isFullList = (list: Lists, numOfAddedItems = 1) => {
+  if (
+    list &&
+    list.follows_companies.length +
+      list.follows_vcfirms.length +
+      list.follows_people.length +
+      numOfAddedItems >=
+      MAXIMUM_ITEMS_ON_LIST
+  ) {
+    return true;
+  }
+
+  return false;
 };

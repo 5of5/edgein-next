@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
-import { Follows, GetFollowsByUserQuery } from '@/graphql/types';
+import { Follows, GetFollowsByUserQuery, Lists } from '@/graphql/types';
 import {
   getNameFromListName,
   isOnList,
@@ -13,8 +13,13 @@ import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
-import { zodValidate } from '@/utils/validation';
+import { isFullList, zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
+import { ElemFullListDialog } from './elem-full-list-dialog';
+import {
+  GENERAL_ERROR_MESSAGE,
+  MAXIMUM_ITEMS_ON_LIST,
+} from '@/utils/constants';
 
 type Props = {
   resourceName: string | null;
@@ -52,6 +57,8 @@ export const ElemSaveToList: FC<Props> = ({
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [isOpenFullListDialog, setIsOpenFullListDialog] = useState(false);
+  const [fullItemsListName, setItemsFullListName] = useState('');
   const [followsByResource, setFollowsByResource] = useState<
     Pick<Follows, 'list_id'>[]
   >([]);
@@ -184,26 +191,46 @@ export const ElemSaveToList: FC<Props> = ({
             ),
           ];
         });
+        refreshProfile();
+        toast.custom(
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}
+            >
+              {action === 'add' ? ' Added ' : ' Removed '}
+              {resourceName ? (
+                <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</>
+              ) : (
+                ''
+              )}
+              {action === 'add' ? ' to ' : ' from '}
+              &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
+      } else {
+        toast.custom(
+          t => (
+            <div
+              className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}
+            >
+              {newSentiment?.error || GENERAL_ERROR_MESSAGE}
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
       }
-      refreshProfile();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
-            {action === 'add' ? ' Added ' : ' Removed '}
-            {resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
-            {action === 'add' ? ' to ' : ' from '}
-            &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
     }
   };
 
@@ -222,6 +249,34 @@ export const ElemSaveToList: FC<Props> = ({
     return isOnList(list, resourceId);
   };
 
+  const onOpenFullListDialog = () => {
+    setIsOpenFullListDialog(true);
+  };
+
+  const onCloseFullListDialog = () => {
+    setIsOpen(false);
+    setShowNew(false);
+    setIsOpenFullListDialog(false);
+  };
+
+  const onFullListCreateClick = () => {
+    setIsOpenFullListDialog(false);
+    setIsOpen(true);
+    setShowNew(true);
+  };
+
+  const onCloseSaveToListDialog = () => {
+    if (isOpenFullListDialog) {
+      return;
+    }
+    setIsOpen(false);
+    setShowNew(false);
+  };
+
+  const onOpenNewListForm = () => {
+    setShowNew(true);
+  };
+
   const onClickHandler = (
     event: React.MouseEvent<HTMLInputElement>,
     list: List,
@@ -229,7 +284,14 @@ export const ElemSaveToList: FC<Props> = ({
   ) => {
     event.preventDefault();
     event.stopPropagation();
-    toggleToList(list.name, isSelected ? 'remove' : 'add');
+
+    if (!isSelected && isFullList(list as Lists)) {
+      setItemsFullListName(getNameFromListName(list));
+      onOpenFullListDialog();
+      setIsOpen(false);
+    } else {
+      toggleToList(list.name, isSelected ? 'remove' : 'add');
+    }
   };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -258,9 +320,7 @@ export const ElemSaveToList: FC<Props> = ({
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          onClose={() => {
-            setIsOpen(false), setShowNew(false);
-          }}
+          onClose={onCloseSaveToListDialog}
           className="relative z-[60]"
         >
           <Transition.Child
@@ -288,9 +348,7 @@ export const ElemSaveToList: FC<Props> = ({
               <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
                 <div className="absolute top-1 right-1">
                   <button
-                    onClick={() => {
-                      setIsOpen(false), setShowNew(false);
-                    }}
+                    onClick={onCloseSaveToListDialog}
                     type="button"
                     className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
                   >
@@ -333,12 +391,9 @@ export const ElemSaveToList: FC<Props> = ({
                 {!showNew && listsData.length > 0 && (
                   <div className="flex border-t border-slate-300 p-3">
                     <div className="ml-auto">
-                      <ElemButton
-                        btn="primary"
-                        onClick={() => setShowNew(true)}
-                      >
+                      <ElemButton btn="primary" onClick={onOpenNewListForm}>
                         <IconListPlus className="w-6 h-6 mr-1" />
-                        Create new list
+                        Create a New List
                       </ElemButton>
                     </div>
                   </div>
@@ -386,6 +441,13 @@ export const ElemSaveToList: FC<Props> = ({
           <Toaster />
         </Dialog>
       </Transition.Root>
+
+      <ElemFullListDialog
+        isOpen={isOpenFullListDialog}
+        listName={fullItemsListName}
+        onClose={onCloseFullListDialog}
+        onCreate={onFullListCreateClick}
+      />
     </>
   );
 };

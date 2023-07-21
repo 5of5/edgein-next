@@ -1,10 +1,13 @@
 import { mutate } from '@/graphql/hasuraAdmin';
+import { Lists } from '@/graphql/types';
 import {
   checkFollowExists,
   deleteFollowIfExists,
   upsertFollow,
   upsertList,
 } from '@/utils/lists';
+import { listSchema } from '@/utils/schema';
+import { isFullList, zodValidate } from '@/utils/validation';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 
@@ -33,9 +36,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
+  const { errors } = zodValidate(
+    { ...req.body, name: req.body.listName },
+    listSchema,
+  );
+  if (errors) {
+    return res
+      .status(400)
+      .send({ error: errors['name']?.[0] || 'Invalid parameters' });
+  }
+
   // check if user has a list for sentiment
   // upsertList
   const list = await upsertList(listName, user, token);
+
+  if (isFullList(list as Lists)) {
+    return res.status(400).send({ error: 'List is full' });
+  }
 
   const isAddToList = action === 'add';
 

@@ -2002,3 +2002,8 @@ export const NOTIFICATION_EXCLUDE_PROPERTIES = [
   'trajectory',
   'search_count',
 ];
+
+export const MAXIMUM_ITEMS_ON_LIST = 200;
+
+export const GENERAL_ERROR_MESSAGE =
+  'Something went wrong. Please try again later';

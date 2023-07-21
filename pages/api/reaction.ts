@@ -1,5 +1,9 @@
 import { mutate } from '@/graphql/hasuraAdmin';
-import { InsertActionDocument, InsertActionMutation } from '@/graphql/types';
+import {
+  InsertActionDocument,
+  InsertActionMutation,
+  Lists,
+} from '@/graphql/types';
 import {
   deleteFollowIfExists,
   updateResourceSentimentCount,
@@ -7,7 +11,7 @@ import {
   upsertList,
 } from '@/utils/lists';
 import { listSchema } from '@/utils/schema';
-import { zodValidate } from '@/utils/validation';
+import { isFullList, zodValidate } from '@/utils/validation';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 
@@ -60,6 +64,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check if user has a list for sentiment
   // upsertList
   const list = await upsertList(listName, user, token);
+
+  if (isFullList(list as Lists)) {
+    return res.status(400).send({ error: 'List is full' });
+  }
 
   // This is to toggle
   // check if user already follows

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { GetFollowsByUserQuery } from '@/graphql/types';
+import { GetFollowsByUserQuery, Lists } from '@/graphql/types';
 import { getNameFromListName } from '@/utils/reaction';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
@@ -11,6 +11,9 @@ import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { find } from 'lodash';
+import { isFullList } from '@/utils/validation';
+import { ElemFullListDialog } from './elem-full-list-dialog';
+import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
 
 type Props = {
   text: string;
@@ -27,6 +30,9 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+
+  const [isOpenFullListDialog, setIsOpenFullListDialog] = useState(false);
+  const [fullItemsListName, setItemsFullListName] = useState('');
 
   const listData = listAndFollows
     .filter(item => {
@@ -61,30 +67,76 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
           action,
           pathname: router.pathname,
         }),
-      }),
+      }).then(res => res.json()),
     {
-      onSuccess: (_, { listName, action }) => {
-        refreshProfile();
-        toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              {action === 'add' ? ' Added ' : ' Removed '}
-              {action === 'add' ? ' to ' : ' from '}
-              &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+      onSuccess: (response, { listName, action }) => {
+        if (response?.error) {
+          toast.custom(
+            t => (
+              <div
+                className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                }`}
+              >
+                {response.error || GENERAL_ERROR_MESSAGE}
+              </div>
+            ),
+            {
+              duration: 3000,
+              position: 'top-center',
+            },
+          );
+        } else {
+          refreshProfile();
+          toast.custom(
+            t => (
+              <div
+                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                }`}
+              >
+                {action === 'add' ? ' Added ' : ' Removed '}
+                {action === 'add' ? ' to ' : ' from '}
+                &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
+              </div>
+            ),
+            {
+              duration: 3000,
+              position: 'top-center',
+            },
+          );
+        }
       },
     },
   );
+
+  const onOpenFullListDialog = () => {
+    setIsOpenFullListDialog(true);
+  };
+
+  const onCloseFullListDialog = () => {
+    setIsOpen(false);
+    setShowNew(false);
+    setIsOpenFullListDialog(false);
+  };
+
+  const onFullListCreateClick = () => {
+    setIsOpenFullListDialog(false);
+    setIsOpen(true);
+    setShowNew(true);
+  };
+
+  const onCloseSaveToListDialog = () => {
+    if (isOpenFullListDialog) {
+      return;
+    }
+    setIsOpen(false);
+    setShowNew(false);
+  };
+
+  const onOpenNewListForm = () => {
+    setShowNew(true);
+  };
 
   const toggleToList = async (listName: string, action: 'add' | 'remove') => {
     if (listName && user) {
@@ -127,7 +179,14 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   ) => {
     event.preventDefault();
     event.stopPropagation();
+
+    // if (!isSelected && isFullList(list as Lists, personIds.length)) {
+    //   setItemsFullListName(getNameFromListName(list));
+    //   onOpenFullListDialog();
+    //   setIsOpen(false);
+    // } else {
     toggleToList(list.name, isSelected ? 'remove' : 'add');
+    // }
   };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -151,9 +210,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          onClose={() => {
-            setIsOpen(false), setShowNew(false);
-          }}
+          onClose={onCloseSaveToListDialog}
           className="relative z-[60]"
         >
           <Transition.Child
@@ -181,9 +238,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
               <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
                 <div className="absolute top-1 right-1">
                   <button
-                    onClick={() => {
-                      setIsOpen(false), setShowNew(false);
-                    }}
+                    onClick={onCloseSaveToListDialog}
                     type="button"
                     className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
                   >
@@ -225,12 +280,9 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                 {!showNew && listData.length > 0 && (
                   <div className="flex border-t border-slate-300 p-3">
                     <div className="ml-auto">
-                      <ElemButton
-                        btn="primary"
-                        onClick={() => setShowNew(true)}
-                      >
+                      <ElemButton btn="primary" onClick={onOpenNewListForm}>
                         <IconListPlus className="w-6 h-6 mr-1" />
-                        Create new list
+                        Create a New List
                       </ElemButton>
                     </div>
                   </div>
@@ -283,6 +335,13 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
           <Toaster />
         </Dialog>
       </Transition.Root>
+
+      <ElemFullListDialog
+        isOpen={isOpenFullListDialog}
+        listName={fullItemsListName}
+        onClose={onCloseFullListDialog}
+        onCreate={onFullListCreateClick}
+      />
     </>
   );
 };

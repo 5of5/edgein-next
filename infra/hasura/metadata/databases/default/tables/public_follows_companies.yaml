@@ -42,4 +42,4 @@ select_permissions:
         follow_member:
           user_id:
             _eq: X-Hasura-User-Id
-      limit: 50
+      limit: 200
