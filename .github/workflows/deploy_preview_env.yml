@@ -178,6 +178,7 @@ jobs:
 
       - name: Expose Vercel URL for preview environment
         uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
         env:
           VERCEL_URL: ${{ steps.tf-outputs.outputs.vercel_url }}
           HASURA_URL: ${{ steps.tf-outputs.outputs.hasura_endpoint }}
