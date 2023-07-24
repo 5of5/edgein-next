@@ -14,7 +14,8 @@ setup('Authenticate', async ({ page }) => {
   await expect(
     page
       .getByAltText('profile')
-      .or(page.getByRole('img', { name: loginPayloadData.name })),
+      .or(page.getByRole('img', { name: loginPayloadData.name }))
+      .first(),
   ).toBeVisible();
 
   await page.context().storageState({ path: file });
