@@ -30,6 +30,7 @@ import {
 } from '@/graphql/types';
 import { ElemReactions } from '@/components/elem-reactions';
 import { useAuth } from '@/hooks/use-auth';
+import useLibrary from '@/hooks/use-library';
 import { companyLayerChoices, tokenInfoMetrics } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
@@ -79,6 +80,8 @@ const Company: NextPage<Props> = (props: Props) => {
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
+  const { selectedLibrary } = useLibrary();
+
   const {
     data: companyData,
     error,
@@ -86,6 +89,12 @@ const Company: NextPage<Props> = (props: Props) => {
   } = useGetCompanyQuery({
     slug: companyId as string,
   });
+
+  useEffect(() => {
+    if (!company.library?.includes(selectedLibrary)) {
+      router.push('/companies');
+    }
+  }, [company, selectedLibrary, router]);
 
   useEffect(() => {
     if (companyData) {

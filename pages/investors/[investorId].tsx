@@ -26,6 +26,7 @@ import {
 } from '@/graphql/types';
 
 import { useAuth } from '@/hooks/use-auth';
+import useLibrary from '@/hooks/use-library';
 import { uniq } from 'lodash';
 import { ElemButton } from '@/components/elem-button';
 import { onTrackView } from '@/utils/track';
@@ -60,6 +61,8 @@ const VCFirm: NextPage<Props> = props => {
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
+  const { selectedLibrary } = useLibrary();
+
   const {
     data: vcFirmData,
     error,
@@ -67,6 +70,12 @@ const VCFirm: NextPage<Props> = props => {
   } = useGetVcFirmQuery({
     slug: investorId as string,
   });
+
+  useEffect(() => {
+    if (!vcfirm.library?.includes(selectedLibrary)) {
+      router.push('/investors');
+    }
+  }, [vcfirm, selectedLibrary, router]);
 
   useEffect(() => {
     if (vcfirm.overview) {
