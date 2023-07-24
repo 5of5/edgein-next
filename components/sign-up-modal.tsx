@@ -6,6 +6,8 @@ import { InputText } from '@/components/input-text';
 import { ElemLogo } from './elem-logo';
 import { IconLinkedIn, IconCheck, IconExclamationTriangle } from './icons';
 import { Dialog, Transition } from '@headlessui/react';
+
+import { redirect_url } from '@/utils/auth';
 const validator = require('validator');
 
 type Props = {
@@ -162,7 +164,11 @@ export default function SignUpModal(props: Props) {
   };
 
   const onLinkedInClick = () => {
-    const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
+    const url = `${
+      process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL
+    }/authorize?response_type=code&client_id=${
+      process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID
+    }&connection=linkedin&redirect_uri=${redirect_url()}&scope=openid%20profile%20email%20offline_access`;
     window.location.href = url;
   };
 

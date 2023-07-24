@@ -12,6 +12,8 @@ import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
 
+import { redirect_url } from '@/utils/auth';
+
 const validator = require('validator');
 
 export default function Account() {
@@ -69,7 +71,11 @@ export default function Account() {
     if (user && user.auth0_linkedin_id) {
       return;
     }
-    const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
+    const url = `${
+      process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL
+    }/authorize?response_type=code&client_id=${
+      process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID
+    }&connection=linkedin&redirect_uri=${redirect_url()}&scope=openid%20profile%20email%20offline_access`;
     window.location.href = url;
   };
 

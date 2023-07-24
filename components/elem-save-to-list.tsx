@@ -12,6 +12,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
+import { listSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
 
 type Props = {
@@ -72,8 +74,13 @@ export const ElemSaveToList: FC<Props> = ({
 
   useEffect(() => {
     setListName(listName);
-    if (listName && listName.length < 3) {
-      setError('List name should have at least 3 characters.');
+    if (listName) {
+      const { errors } = zodValidate({ name: listName }, listSchema);
+      if (errors) {
+        setError(errors['name']?.[0] || '');
+      } else {
+        setError('');
+      }
     } else {
       setError('');
     }

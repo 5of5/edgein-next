@@ -1,5 +1,7 @@
 import { mutate, query } from '@/graphql/hasuraAdmin';
 import {
+  GetCompanyByIdDocument,
+  GetCompanyByIdQuery,
   GetEventOrganizationByIdDocument,
   GetEventOrganizationByIdQuery,
   GetInvestmentByIdDocument,
@@ -11,10 +13,13 @@ import {
   GetNotificationsForUserQuery,
   GetTeamMemberByIdDocument,
   GetTeamMemberByIdQuery,
+  GetVcFirmByIdDocument,
+  GetVcFirmByIdQuery,
   InsertNotificationActionsDocument,
   InsertNotificationActionsMutation,
   InsertNotificationsDocument,
   InsertNotificationsMutation,
+  Notifications,
 } from '@/graphql/types';
 import { flatten, startCase, unionBy } from 'lodash';
 import { getFollowsByResource } from './lists';
@@ -85,6 +90,16 @@ export const processNotification = async (
   notificationResourceId?: number,
 ) => {
   if (followResourceId && followedResourceType && actionType) {
+    // Check if company or vc_firm status is draft
+    const isDraftResource = await isDraftOrganization(
+      followResourceId,
+      followedResourceType,
+    );
+
+    if (isDraftResource) {
+      return;
+    }
+
     const follows = await getFollowsByResource(
       followResourceId,
       followedResourceType,
@@ -200,20 +215,18 @@ export const insertNotificationAction = async (
 };
 
 export const filterExcludeNotifications = (
-  notifications: GetNotificationsForUserQuery['notifications'],
-  excludeResourceTypes: string[],
+  notifications: Notifications[],
   excludeProperties: string[],
 ) => {
   const results = notifications?.filter(
     item =>
-      !excludeResourceTypes.includes(item.notification_resource_type) &&
-      (item.notification_actions.length > 1 ||
-        (item.notification_actions.length === 1 &&
-          !excludeProperties.includes(
-            Object.keys(
-              item.notification_actions[0]?.action?.properties || {},
-            )[0],
-          ))),
+      item.notification_actions.length > 1 ||
+      (item.notification_actions.length === 1 &&
+        !excludeProperties.includes(
+          Object.keys(
+            item.notification_actions[0]?.action?.properties || {},
+          )[0],
+        )),
   );
 
   results.forEach(item => {
@@ -233,7 +246,7 @@ export const filterExcludeNotifications = (
 export const getNotificationOrganizationLink = (
   notification: GetNotificationsForUserQuery['notifications'][0],
 ) =>
-  notification.company
+  notification.company?.slug
     ? `/${notification.follow_resource_type}/${notification.company?.slug}`
     : `/investors/${notification.vc_firm?.slug}`;
 
@@ -476,6 +489,22 @@ export const processNotificationOnSubmitData = async (
   }
 };
 
+const isDraftOrganization = async (
+  followResourceId: number,
+  followedResourceType: 'companies' | 'vc_firms',
+) => {
+  let isDraftOrganization = false;
+  if (followedResourceType === 'companies') {
+    const company = await getCompanyById(followResourceId);
+    isDraftOrganization = company?.status === 'draft';
+  } else {
+    const vcFirm = await getVcFirmById(followResourceId);
+    isDraftOrganization = vcFirm?.status === 'draft';
+  }
+
+  return isDraftOrganization;
+};
+
 const getInvestorById = async (id: number) => {
   const {
     data: { investors },
@@ -524,4 +553,24 @@ const getEventOrganizationById = async (id: number) => {
     variables: { id },
   });
   return event_organization[0];
+};
+
+const getCompanyById = async (id: number) => {
+  const {
+    data: { companies },
+  } = await query<GetCompanyByIdQuery>({
+    query: GetCompanyByIdDocument,
+    variables: { id },
+  });
+  return companies[0];
+};
+
+const getVcFirmById = async (id: number) => {
+  const {
+    data: { vc_firms },
+  } = await query<GetVcFirmByIdQuery>({
+    query: GetVcFirmByIdDocument,
+    variables: { id },
+  });
+  return vc_firms[0];
 };

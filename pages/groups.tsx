@@ -3,12 +3,10 @@ import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
-import { ElemGroupCard } from '@/components/groups/elem-group-card';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
 import { IconGroup, IconGroupPlus } from '@/components/icons';
 import {
-  User_Groups,
   GetGroupsDocument,
   GetGroupsQuery,
   User_Groups_Bool_Exp,
@@ -25,6 +23,7 @@ import { getGroupsFilters } from '@/utils/filter';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
+import { ElemListCard } from '@/components/elem-list-card';
 
 type Props = {
   initialGroupsCount: number;
@@ -80,11 +79,14 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
     error,
     isLoading,
     refetch,
-  } = useGetGroupsQuery({
-    limit: LIMIT,
-    offset,
-    where: filters as User_Groups_Bool_Exp,
-  });
+  } = useGetGroupsQuery(
+    {
+      limit: LIMIT,
+      offset,
+      where: filters as User_Groups_Bool_Exp,
+    },
+    { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -234,11 +236,11 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
           ) : (
             groups?.map(group => {
               return (
-                <ElemGroupCard
+                <ElemListCard
                   key={group.id}
-                  group={group as User_Groups}
-                  selectedGroupTab={selectedGroupTab}
-                  refetchGroupsPage={refetch}
+                  selectedTab={selectedGroupTab}
+                  resource={{ ...group, resourceType: 'group' }}
+                  refetchList={refetch}
                 />
               );
             })

@@ -14,6 +14,14 @@ export type GroupsTabItem = {
   disabled?: boolean;
 };
 
+export type ListsTabType = 'my-lists' | 'discover' | 'following';
+
+export type ListsTabItem = {
+  id: ListsTabType;
+  name: string;
+  disabled?: boolean;
+};
+
 export type Breadcrumb = {
   name: string;
   to?: string;

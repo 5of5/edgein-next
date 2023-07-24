@@ -178,3 +178,44 @@ mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
     }
   }
 }
+
+query GetLists($limit: Int, $offset: Int, $where: lists_bool_exp!) {
+  lists(
+    where: $where
+    order_by: { created_at: desc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    public
+    created_at
+    updated_at
+    created_by {
+      id
+      display_name
+      email
+    }
+    list_members {
+      id
+      member_type
+      user_id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          name
+          slug
+          picture
+        }
+      }
+    }
+  }
+  lists_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

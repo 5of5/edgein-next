@@ -24806,6 +24806,13 @@ export type UpdateCompanyByPkMutationVariables = Exact<{
 
 export type UpdateCompanyByPkMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', id: number } | null };
 
+export type GetCompanyByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetCompanyByIdQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, status: string }> };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -24985,7 +24992,7 @@ export type GetGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupsQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }>, user_groups_aggregate: { __typename?: 'user_groups_aggregate', aggregate: { __typename?: 'user_groups_aggregate_fields', count: number } | null } };
+export type GetGroupsQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }>, list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number }> }>, user_groups_aggregate: { __typename?: 'user_groups_aggregate', aggregate: { __typename?: 'user_groups_aggregate_fields', count: number } | null } };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -25269,6 +25276,15 @@ export type TriggerListUpdatedAtMutationVariables = Exact<{
 
 export type TriggerListUpdatedAtMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number }> } | null };
 
+export type GetListsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  where: Lists_Bool_Exp;
+}>;
+
+
+export type GetListsQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, user_id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null }> }>, lists_aggregate: { __typename?: 'lists_aggregate', aggregate: { __typename?: 'lists_aggregate_fields', count: number } | null } };
+
 export type GetNewsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -25426,6 +25442,13 @@ export type InsertNotificationActionsMutationVariables = Exact<{
 
 
 export type InsertNotificationActionsMutation = { __typename?: 'mutation_root', insert_notification_actions_one: { __typename?: 'notification_actions', id: number } | null };
+
+export type GetUnreadNotificationsQueryVariables = Exact<{
+  user_id: Scalars['Int'];
+}>;
+
+
+export type GetUnreadNotificationsQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }> }> };
 
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -25733,6 +25756,13 @@ export type GetVcFirmsInvestmentsQueryVariables = Exact<{ [key: string]: never; 
 
 
 export type GetVcFirmsInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, tags: any | null } | null } | null }> }> };
+
+export type GetVcFirmByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetVcFirmByIdQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, status: string }> };
 
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
@@ -26536,6 +26566,34 @@ export const useUpdateCompanyByPkMutation = <
       options
     );
 useUpdateCompanyByPkMutation.fetcher = (variables: UpdateCompanyByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables, options);
+export const GetCompanyByIdDocument = `
+    query GetCompanyById($id: Int!) {
+  companies(where: {id: {_eq: $id}}) {
+    id
+    name
+    status
+  }
+}
+    `;
+export const useGetCompanyByIdQuery = <
+      TData = GetCompanyByIdQuery,
+      TError = Error
+    >(
+      variables: GetCompanyByIdQueryVariables,
+      options?: UseQueryOptions<GetCompanyByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetCompanyByIdQuery, TError, TData>(
+      ['GetCompanyById', variables],
+      fetcher<GetCompanyByIdQuery, GetCompanyByIdQueryVariables>(GetCompanyByIdDocument, variables),
+      options
+    );
+useGetCompanyByIdQuery.document = GetCompanyByIdDocument;
+
+
+useGetCompanyByIdQuery.getKey = (variables: GetCompanyByIdQueryVariables) => ['GetCompanyById', variables];
+;
+
+useGetCompanyByIdQuery.fetcher = (variables: GetCompanyByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyByIdQuery, GetCompanyByIdQueryVariables>(GetCompanyByIdDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -27446,6 +27504,10 @@ export const GetGroupsDocument = `
       email
       created_at
       created_by_user_id
+    }
+    list_user_groups {
+      id
+      list_id
     }
   }
   user_groups_aggregate(where: $where) {
@@ -28544,6 +28606,67 @@ export const useTriggerListUpdatedAtMutation = <
       options
     );
 useTriggerListUpdatedAtMutation.fetcher = (variables: TriggerListUpdatedAtMutationVariables, options?: RequestInit['headers']) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables, options);
+export const GetListsDocument = `
+    query GetLists($limit: Int, $offset: Int, $where: lists_bool_exp!) {
+  lists(
+    where: $where
+    order_by: {created_at: desc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    public
+    created_at
+    updated_at
+    created_by {
+      id
+      display_name
+      email
+    }
+    list_members {
+      id
+      member_type
+      user_id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          name
+          slug
+          picture
+        }
+      }
+    }
+  }
+  lists_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetListsQuery = <
+      TData = GetListsQuery,
+      TError = Error
+    >(
+      variables: GetListsQueryVariables,
+      options?: UseQueryOptions<GetListsQuery, TError, TData>
+    ) =>
+    useQuery<GetListsQuery, TError, TData>(
+      ['GetLists', variables],
+      fetcher<GetListsQuery, GetListsQueryVariables>(GetListsDocument, variables),
+      options
+    );
+useGetListsQuery.document = GetListsDocument;
+
+
+useGetListsQuery.getKey = (variables: GetListsQueryVariables) => ['GetLists', variables];
+;
+
+useGetListsQuery.fetcher = (variables: GetListsQueryVariables, options?: RequestInit['headers']) => fetcher<GetListsQuery, GetListsQueryVariables>(GetListsDocument, variables, options);
 export const GetNewsDocument = `
     query GetNews($limit: Int, $offset: Int, $order: order_by!, $where: news_bool_exp!) {
   news(where: $where, order_by: {date: $order}, limit: $limit, offset: $offset) {
@@ -29072,7 +29195,7 @@ useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, opt
 export const GetNotificationsForUserDocument = `
     query GetNotificationsForUser($limit: Int, $offset: Int, $user: Int!) {
   notifications(
-    where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}]}
+    where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}, {_or: [{_and: [{company_id: {_is_null: false}}, {company: {status: {_neq: "draft"}}}]}, {_and: [{vc_firm_id: {_is_null: false}}, {vc_firm: {status: {_neq: "draft"}}}]}]}]}
     order_by: {created_at: desc}
     limit: $limit
     offset: $offset
@@ -29199,6 +29322,44 @@ export const useInsertNotificationActionsMutation = <
       options
     );
 useInsertNotificationActionsMutation.fetcher = (variables: InsertNotificationActionsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNotificationActionsMutation, InsertNotificationActionsMutationVariables>(InsertNotificationActionsDocument, variables, options);
+export const GetUnreadNotificationsDocument = `
+    query GetUnreadNotifications($user_id: Int!) {
+  notifications(
+    where: {_and: [{target_user_id: {_eq: $user_id}}, {event_type: {_neq: "Delete Data"}}, {read: {_eq: false}}, {_or: [{_and: [{company_id: {_is_null: false}}, {company: {status: {_neq: "draft"}}}]}, {_and: [{vc_firm_id: {_is_null: false}}, {vc_firm: {status: {_neq: "draft"}}}]}]}]}
+    limit: 100
+  ) {
+    id
+    read
+    notification_actions {
+      id
+      action_id
+      action {
+        id
+        properties
+      }
+    }
+  }
+}
+    `;
+export const useGetUnreadNotificationsQuery = <
+      TData = GetUnreadNotificationsQuery,
+      TError = Error
+    >(
+      variables: GetUnreadNotificationsQueryVariables,
+      options?: UseQueryOptions<GetUnreadNotificationsQuery, TError, TData>
+    ) =>
+    useQuery<GetUnreadNotificationsQuery, TError, TData>(
+      ['GetUnreadNotifications', variables],
+      fetcher<GetUnreadNotificationsQuery, GetUnreadNotificationsQueryVariables>(GetUnreadNotificationsDocument, variables),
+      options
+    );
+useGetUnreadNotificationsQuery.document = GetUnreadNotificationsDocument;
+
+
+useGetUnreadNotificationsQuery.getKey = (variables: GetUnreadNotificationsQueryVariables) => ['GetUnreadNotifications', variables];
+;
+
+useGetUnreadNotificationsQuery.fetcher = (variables: GetUnreadNotificationsQueryVariables, options?: RequestInit['headers']) => fetcher<GetUnreadNotificationsQuery, GetUnreadNotificationsQueryVariables>(GetUnreadNotificationsDocument, variables, options);
 export const GetPersonDocument = `
     query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {
@@ -30918,6 +31079,34 @@ useGetVcFirmsInvestmentsQuery.getKey = (variables?: GetVcFirmsInvestmentsQueryVa
 ;
 
 useGetVcFirmsInvestmentsQuery.fetcher = (variables?: GetVcFirmsInvestmentsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsInvestmentsQuery, GetVcFirmsInvestmentsQueryVariables>(GetVcFirmsInvestmentsDocument, variables, options);
+export const GetVcFirmByIdDocument = `
+    query GetVcFirmById($id: Int!) {
+  vc_firms(where: {id: {_eq: $id}}) {
+    id
+    name
+    status
+  }
+}
+    `;
+export const useGetVcFirmByIdQuery = <
+      TData = GetVcFirmByIdQuery,
+      TError = Error
+    >(
+      variables: GetVcFirmByIdQueryVariables,
+      options?: UseQueryOptions<GetVcFirmByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmByIdQuery, TError, TData>(
+      ['GetVcFirmById', variables],
+      fetcher<GetVcFirmByIdQuery, GetVcFirmByIdQueryVariables>(GetVcFirmByIdDocument, variables),
+      options
+    );
+useGetVcFirmByIdQuery.document = GetVcFirmByIdDocument;
+
+
+useGetVcFirmByIdQuery.getKey = (variables: GetVcFirmByIdQueryVariables) => ['GetVcFirmById', variables];
+;
+
+useGetVcFirmByIdQuery.fetcher = (variables: GetVcFirmByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmByIdQuery, GetVcFirmByIdQueryVariables>(GetVcFirmByIdDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

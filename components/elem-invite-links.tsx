@@ -10,6 +10,8 @@ import {
 import { Fragment } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
+import { redirect_url } from '@/utils/auth';
+
 type Props = {
   user: any;
   personSlug?: string | null | undefined;
@@ -18,7 +20,7 @@ type Props = {
 export const ElemInviteLinks = ({ user, personSlug }: Props) => {
   const getInviteLink = () => {
     const inviteCode = personSlug || user.reference_id;
-    const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
+    const inviteLink = `${redirect_url()}/?invite=${inviteCode}`;
     return inviteLink;
   };
 

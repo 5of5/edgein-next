@@ -3,6 +3,7 @@ import rateLimit from 'express-rate-limit';
 import slowDown from 'express-slow-down';
 import RedisStore from 'rate-limit-redis';
 import { createClient } from 'redis';
+import { env } from '@/services/config.service';
 const applyMiddleware =
   (middleware: any) => (request: NextApiRequest, response: NextApiResponse) =>
     new Promise((resolve, reject) => {
@@ -24,9 +25,11 @@ export const getRateLimitMiddlewares = ({
   delayAfter = Number(process.env.DELAY_AFTER),
   delayMs = Number(process.env.DELAYMS),
 } = {}) => {
-  const url = `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+  const url = env.REDIS_CONNECTION_STRING
+    ? env.REDIS_CONNECTION_STRING
+    : `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
   const client = createClient({
-    url: url,
+    url,
   });
   (async () => {
     await client.connect();
