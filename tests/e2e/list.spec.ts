@@ -135,7 +135,7 @@ test.describe('Lists', () => {
       .locator('button', { has: page.locator('span', { hasText: 'Close' }) })
       .click();
 
-    await page.getByAltText('profile').click();
+    await page.getByAltText('profile').first().click();
 
     await page.getByRole('menuitem', { name: /My Lists/ }).click();
 
