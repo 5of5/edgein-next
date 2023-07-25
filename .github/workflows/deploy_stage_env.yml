@@ -67,8 +67,8 @@ jobs:
         run: |
           touch input.tfvars
           echo vercel_commit = \"$GITHUB_SHA\" >> input.tfvars
-          echo 'vercel_team = ${{ secrets.VERCEL_TEAM }}' >> input.tfvars
-          echo 'vercel_api_token = ${{ secrets.VERCEL_API_TOKEN }}' >> input.tfvars
+          echo 'vercel_team = "${{ secrets.VERCEL_TEAM }}"' >> input.tfvars
+          echo 'vercel_api_token = "${{ secrets.VERCEL_API_TOKEN }}"' >> input.tfvars
           echo 'auth0_domain = "${{ vars.AUTH0_DOMAIN }}"' >> input.tfvars
           echo 'auth0_client_id = "${{ secrets.AUTH0_CLIENT_ID }}"' >> input.tfvars
           echo 'auth0_client_secret = "${{ secrets.AUTH0_CLIENT_SECRET }}"' >> input.tfvars
