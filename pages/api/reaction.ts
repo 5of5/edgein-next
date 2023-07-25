@@ -1,9 +1,5 @@
 import { mutate } from '@/graphql/hasuraAdmin';
-import {
-  InsertActionDocument,
-  InsertActionMutation,
-  Lists,
-} from '@/graphql/types';
+import { InsertActionDocument, InsertActionMutation } from '@/graphql/types';
 import {
   deleteFollowIfExists,
   updateResourceSentimentCount,
@@ -11,7 +7,7 @@ import {
   upsertList,
 } from '@/utils/lists';
 import { listSchema } from '@/utils/schema';
-import { isFullList, zodValidate } from '@/utils/validation';
+import { zodValidate } from '@/utils/validation';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 
@@ -74,11 +70,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user,
     token,
   );
-
-  // Check maximum items of list if insert follows
-  if (!existsFollows && isFullList(list as Lists)) {
-    return res.status(400).send({ error: 'List is full' });
-  }
 
   // insert follow only if the follows don't exists
   const follow =

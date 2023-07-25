@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
-import { Follows, GetFollowsByUserQuery, Lists } from '@/graphql/types';
+import { Follows, GetFollowsByUserQuery } from '@/graphql/types';
 import {
   getNameFromListName,
   isOnList,
@@ -13,9 +13,8 @@ import { InputCheckbox } from '@/components/input-checkbox';
 import { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
-import { isFullList, zodValidate } from '@/utils/validation';
+import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
-import { ElemFullListDialog } from './elem-full-list-dialog';
 import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
 import useToast from '@/hooks/use-toast';
 
@@ -55,8 +54,6 @@ export const ElemSaveToList: FC<Props> = ({
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [isOpenFullListDialog, setIsOpenFullListDialog] = useState(false);
-  const [fullItemsListName, setItemsFullListName] = useState('');
   const [followsByResource, setFollowsByResource] = useState<
     Pick<Follows, 'list_id'>[]
   >([]);
@@ -221,26 +218,7 @@ export const ElemSaveToList: FC<Props> = ({
     return isOnList(list, resourceId);
   };
 
-  const onOpenFullListDialog = () => {
-    setIsOpenFullListDialog(true);
-  };
-
-  const onCloseFullListDialog = () => {
-    setIsOpen(false);
-    setShowNew(false);
-    setIsOpenFullListDialog(false);
-  };
-
-  const onFullListCreateClick = () => {
-    setIsOpenFullListDialog(false);
-    setIsOpen(true);
-    setShowNew(true);
-  };
-
   const onCloseSaveToListDialog = () => {
-    if (isOpenFullListDialog) {
-      return;
-    }
     setIsOpen(false);
     setShowNew(false);
   };
@@ -257,13 +235,7 @@ export const ElemSaveToList: FC<Props> = ({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!isSelected && isFullList(list as Lists)) {
-      setItemsFullListName(getNameFromListName(list));
-      onOpenFullListDialog();
-      setIsOpen(false);
-    } else {
-      toggleToList(list.name, isSelected ? 'remove' : 'add');
-    }
+    toggleToList(list.name, isSelected ? 'remove' : 'add');
   };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -413,13 +385,6 @@ export const ElemSaveToList: FC<Props> = ({
           <Toaster />
         </Dialog>
       </Transition.Root>
-
-      <ElemFullListDialog
-        isOpen={isOpenFullListDialog}
-        listName={fullItemsListName}
-        onClose={onCloseFullListDialog}
-        onCreate={onFullListCreateClick}
-      />
     </>
   );
 };

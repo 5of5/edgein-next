@@ -1,5 +1,4 @@
 import { mutate } from '@/graphql/hasuraAdmin';
-import { Lists } from '@/graphql/types';
 import {
   checkFollowExists,
   deleteFollowIfExists,
@@ -7,7 +6,7 @@ import {
   upsertList,
 } from '@/utils/lists';
 import { listSchema } from '@/utils/schema';
-import { isFullList, zodValidate } from '@/utils/validation';
+import { zodValidate } from '@/utils/validation';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 
@@ -51,11 +50,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const list = await upsertList(listName, user, token);
 
   const isAddToList = action === 'add';
-
-  // Check maximum items of list if action === 'add'
-  if (isAddToList && isFullList(list as Lists)) {
-    return res.status(400).send({ error: 'List is full' });
-  }
 
   await Promise.all(
     personIds.map(async personId => {

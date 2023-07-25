@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { GetFollowsByUserQuery, Lists } from '@/graphql/types';
+import { GetFollowsByUserQuery } from '@/graphql/types';
 import { getNameFromListName } from '@/utils/reaction';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
@@ -11,8 +11,6 @@ import { InputCheckbox } from '@/components/input-checkbox';
 import { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { find } from 'lodash';
-import { isFullList } from '@/utils/validation';
-import { ElemFullListDialog } from './elem-full-list-dialog';
 import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
 import useToast from '@/hooks/use-toast';
 
@@ -31,9 +29,6 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-
-  const [isOpenFullListDialog, setIsOpenFullListDialog] = useState(false);
-  const [fullItemsListName, setItemsFullListName] = useState('');
 
   const { toast } = useToast();
 
@@ -89,26 +84,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
     },
   );
 
-  const onOpenFullListDialog = () => {
-    setIsOpenFullListDialog(true);
-  };
-
-  const onCloseFullListDialog = () => {
-    setIsOpen(false);
-    setShowNew(false);
-    setIsOpenFullListDialog(false);
-  };
-
-  const onFullListCreateClick = () => {
-    setIsOpenFullListDialog(false);
-    setIsOpen(true);
-    setShowNew(true);
-  };
-
   const onCloseSaveToListDialog = () => {
-    if (isOpenFullListDialog) {
-      return;
-    }
     setIsOpen(false);
     setShowNew(false);
   };
@@ -159,13 +135,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!isSelected && isFullList(list as Lists, personIds.length)) {
-      setItemsFullListName(getNameFromListName(list));
-      onOpenFullListDialog();
-      setIsOpen(false);
-    } else {
-      toggleToList(list.name, isSelected ? 'remove' : 'add');
-    }
+    toggleToList(list.name, isSelected ? 'remove' : 'add');
   };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -314,13 +284,6 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
           <Toaster />
         </Dialog>
       </Transition.Root>
-
-      <ElemFullListDialog
-        isOpen={isOpenFullListDialog}
-        listName={fullItemsListName}
-        onClose={onCloseFullListDialog}
-        onCreate={onFullListCreateClick}
-      />
     </>
   );
 };

@@ -24,18 +24,3 @@ export const extractErrors = <T>(
 ) => {
   return mapValues(fieldErrors, o => o?.[0] || '');
 };
-
-export const isFullList = (list: Lists, numOfAddedItems = 1) => {
-  if (
-    list &&
-    list.follows_companies.length +
-      list.follows_vcfirms.length +
-      list.follows_people.length +
-      numOfAddedItems >
-      MAXIMUM_ITEMS_ON_LIST
-  ) {
-    return true;
-  }
-
-  return false;
-};
