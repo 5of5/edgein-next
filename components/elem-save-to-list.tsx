@@ -201,7 +201,7 @@ export const ElemSaveToList: FC<Props> = ({
           </>,
         );
       } else {
-        toast(newSentiment?.error || GENERAL_ERROR_MESSAGE);
+        toast(newSentiment?.error || GENERAL_ERROR_MESSAGE, 'error');
       }
     }
   };

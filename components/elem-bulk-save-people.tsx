@@ -74,7 +74,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
     {
       onSuccess: (response, { listName, action }) => {
         if (response?.error) {
-          toast(response.error || GENERAL_ERROR_MESSAGE);
+          toast(response.error || GENERAL_ERROR_MESSAGE, 'error');
         } else {
           refreshProfile();
           toast(
