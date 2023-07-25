@@ -29,7 +29,7 @@ resource "aws_s3_bucket_acl" "assets" {
 }
 
 resource "aws_iam_user" "assets" {
-  name = "assets_access_user"
+  name = "${terraform.workspace}_assets_access_user"
   path = "${local.path}/"
 }
 

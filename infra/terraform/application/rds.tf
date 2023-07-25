@@ -17,7 +17,6 @@ resource "aws_db_instance" "main" {
   identifier          = local.project_name
   snapshot_identifier = data.aws_db_snapshot.latest.id
 
-  allocated_storage   = var.db_allocated_storage
   engine              = "postgres"
   instance_class      = var.db_instance_class
   username            = data.aws_ssm_parameter.db_username.value
