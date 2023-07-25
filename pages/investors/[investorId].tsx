@@ -25,16 +25,13 @@ import {
   Vc_Firms,
 } from '@/graphql/types';
 
-import { useAuth } from '@/hooks/use-auth';
-import useLibrary from '@/hooks/use-library';
-import { uniq } from 'lodash';
 import { ElemButton } from '@/components/elem-button';
 import { onTrackView } from '@/utils/track';
 import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
-import { IconEditPencil, IconAnnotation } from '@/components/icons';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import { Popups } from '@/components/the-navbar';
 import ElemNewsList from '@/components/news/elem-news-list';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -46,7 +43,6 @@ type Props = {
 };
 
 const VCFirm: NextPage<Props> = props => {
-  const { user } = useAuth();
   const router = useRouter();
   const { investorId } = router.query;
 
@@ -61,7 +57,7 @@ const VCFirm: NextPage<Props> = props => {
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-  const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useUser();
 
   const {
     data: vcFirmData,
@@ -72,7 +68,7 @@ const VCFirm: NextPage<Props> = props => {
   });
 
   useEffect(() => {
-    if (!vcfirm.library?.includes(selectedLibrary)) {
+    if (selectedLibrary && !vcfirm.library?.includes(selectedLibrary)) {
       router.push('/investors');
     }
   }, [vcfirm, selectedLibrary, router]);
