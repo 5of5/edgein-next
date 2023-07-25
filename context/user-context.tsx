@@ -19,6 +19,9 @@ import { startCase } from 'lodash';
 import { filterExcludeNotifications } from '@/utils/notifications';
 import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
 import { redirect_url } from '@/utils/auth';
+import useLibrary from '@/hooks/use-library';
+import { libraryChoices } from '@/utils/constants';
+import { Library, LibraryTag } from '@/types/common';
 
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 const CLARITY_ID = 'epusnauses';
@@ -29,6 +32,8 @@ type UserValue = {
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][];
   myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][];
   unreadNotifications: GetUnreadNotificationsQuery['notifications'];
+  selectedLibrary?: Library;
+  onChangeLibrary: (value: LibraryTag) => void;
   refetchMyGroups: any;
   refetchUnreadNotifications: () => void;
   refreshUser: () => void;
@@ -40,6 +45,7 @@ const userContext = React.createContext<UserValue>({
   listAndFollows: [],
   myGroups: [],
   unreadNotifications: [],
+  onChangeLibrary: () => {},
   refetchMyGroups: () => {},
   refetchUnreadNotifications: () => {},
   refreshUser: () => {},
@@ -157,6 +163,20 @@ const UserProvider: React.FC<Props> = props => {
     NOTIFICATION_EXCLUDE_PROPERTIES,
   );
 
+  const { selectedLibrary, onChangeLibrary } = useLibrary();
+  const [library, setLibrary] = useState<LibraryTag | undefined>();
+
+  useEffect(() => {
+    if (selectedLibrary && selectedLibrary !== library?.id) {
+      setLibrary(libraryChoices.find(item => item.id === selectedLibrary));
+    }
+  }, [selectedLibrary, library]);
+
+  const handleSelectLibrary = (value: LibraryTag) => {
+    setLibrary(value);
+    onChangeLibrary(value.id);
+  };
+
   return (
     <Provider
       value={{
@@ -165,6 +185,8 @@ const UserProvider: React.FC<Props> = props => {
         listAndFollows,
         myGroups,
         unreadNotifications,
+        selectedLibrary: library?.id,
+        onChangeLibrary: handleSelectLibrary,
         refetchMyGroups,
         refetchUnreadNotifications,
         refreshUser,
