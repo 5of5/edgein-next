@@ -1,7 +1,5 @@
-import { z, ZodSchema } from 'zod';
+import { ZodSchema } from 'zod';
 import mapValues from 'lodash/mapValues';
-import { Lists } from '@/graphql/types';
-import { MAXIMUM_ITEMS_ON_LIST } from './constants';
 
 export const zodValidate = (values: unknown, schema: ZodSchema) => {
   let success = false;
