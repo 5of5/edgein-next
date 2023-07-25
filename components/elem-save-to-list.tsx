@@ -10,16 +10,14 @@ import { InputText } from '@/components/input-text';
 import { IconX, IconListPlus, IconListSaved } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { isFullList, zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
 import { ElemFullListDialog } from './elem-full-list-dialog';
-import {
-  GENERAL_ERROR_MESSAGE,
-  MAXIMUM_ITEMS_ON_LIST,
-} from '@/utils/constants';
+import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
+import useToast from '@/hooks/use-toast';
 
 type Props = {
   resourceName: string | null;
@@ -62,6 +60,8 @@ export const ElemSaveToList: FC<Props> = ({
   const [followsByResource, setFollowsByResource] = useState<
     Pick<Follows, 'list_id'>[]
   >([]);
+
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!isEqual(follows, followsByResource)) {
@@ -192,44 +192,16 @@ export const ElemSaveToList: FC<Props> = ({
           ];
         });
         refreshProfile();
-        toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              {action === 'add' ? ' Added ' : ' Removed '}
-              {resourceName ? (
-                <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</>
-              ) : (
-                ''
-              )}
-              {action === 'add' ? ' to ' : ' from '}
-              &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
+        toast(
+          <>
+            {action === 'add' ? ' Added ' : ' Removed '}
+            {resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
+            {action === 'add' ? ' to ' : ' from '}
+            &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
+          </>,
         );
       } else {
-        toast.custom(
-          t => (
-            <div
-              className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              {newSentiment?.error || GENERAL_ERROR_MESSAGE}
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+        toast(newSentiment?.error || GENERAL_ERROR_MESSAGE);
       }
     }
   };

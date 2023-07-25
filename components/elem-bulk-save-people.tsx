@@ -8,12 +8,13 @@ import { InputText } from '@/components/input-text';
 import { IconX, IconListPlus, IconSpinner } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { find } from 'lodash';
 import { isFullList } from '@/utils/validation';
 import { ElemFullListDialog } from './elem-full-list-dialog';
 import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
+import useToast from '@/hooks/use-toast';
 
 type Props = {
   text: string;
@@ -33,6 +34,8 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
 
   const [isOpenFullListDialog, setIsOpenFullListDialog] = useState(false);
   const [fullItemsListName, setItemsFullListName] = useState('');
+
+  const { toast } = useToast();
 
   const listData = listAndFollows
     .filter(item => {
@@ -71,39 +74,15 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
     {
       onSuccess: (response, { listName, action }) => {
         if (response?.error) {
-          toast.custom(
-            t => (
-              <div
-                className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
-                {response.error || GENERAL_ERROR_MESSAGE}
-              </div>
-            ),
-            {
-              duration: 3000,
-              position: 'top-center',
-            },
-          );
+          toast(response.error || GENERAL_ERROR_MESSAGE);
         } else {
           refreshProfile();
-          toast.custom(
-            t => (
-              <div
-                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
-                {action === 'add' ? ' Added ' : ' Removed '}
-                {action === 'add' ? ' to ' : ' from '}
-                &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
-              </div>
-            ),
-            {
-              duration: 3000,
-              position: 'top-center',
-            },
+          toast(
+            <>
+              {action === 'add' ? ' Added ' : ' Removed '}
+              {action === 'add' ? ' to ' : ' from '}
+              &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
+            </>,
           );
         }
       },
