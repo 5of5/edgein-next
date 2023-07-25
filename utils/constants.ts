@@ -1065,6 +1065,7 @@ export const MY_LISTS_MENU_OPEN_KEY = 'disclosure-my-lists-menu-default-open';
 export const MY_NOTES_MENU_OPEN_KEY = 'disclosure-my-notes-menu-default-open';
 export const MY_GROUPS_MENU_OPEN_KEY = 'disclosure-my-groups-menu-default-open';
 export const EXPLORE_MENU_OPEN_KEY = 'disclosure-explore-menu-default-open';
+export const SHOW_INVITE_BANNER = 'show-invite-banner';
 
 export const eventTypeChoices = [
   'Hackathon',
@@ -1940,6 +1941,8 @@ export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
 
 export const ONBOARDING_QUESTION = 'Where did you hear about us?';
 
+export const DEBOUNCE_TIME = 700;
+
 export const GROUPS_TABS: GroupsTabItem[] = [
   { id: 'my-groups', name: 'My Groups' },
   { id: 'discover', name: 'Discover' },
@@ -2002,3 +2005,5 @@ export const NOTIFICATION_EXCLUDE_PROPERTIES = [
   'trajectory',
   'search_count',
 ];
+
+export const EMAIL_MAX_LENGTH = 255;

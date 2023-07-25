@@ -10,6 +10,7 @@ import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import moment from 'moment-timezone';
 import { IconSearch, IconAnnotation } from '@/components/icons';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import {
   GetEventsDocument,
   GetEventsQuery,
@@ -240,6 +241,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 )}
             </nav>
           </div>
+
+          <ElemInviteBanner />
 
           <ElemFilter
             className="py-3"

@@ -6,7 +6,7 @@ import { InputText } from '@/components/input-text';
 import { ElemLogo } from './elem-logo';
 import { IconLinkedIn, IconCheck, IconExclamationTriangle } from './icons';
 import { Dialog, Transition } from '@headlessui/react';
-
+import { isFreeEmail } from '@/utils/helpers';
 import { redirect_url } from '@/utils/auth';
 const validator = require('validator');
 
@@ -60,11 +60,6 @@ export default function SignUpModal(props: Props) {
       return true;
     }
   };
-
-  function isFreeEmail(email: string) {
-    const pattern = /@(gmail|yahoo|hotmail)/i;
-    return pattern.test(email);
-  }
 
   const validateEmail = (value: string) => {
     setEmail(value);

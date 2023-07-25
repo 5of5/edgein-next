@@ -36,6 +36,7 @@ import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   vcFirmCount: number;
@@ -266,6 +267,8 @@ const Investors: NextPage<Props> = ({
               </div>
             </div>
           </div>
+
+          <ElemInviteBanner />
 
           <div>
             {error ? (

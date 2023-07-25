@@ -36,6 +36,7 @@ import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -269,6 +270,8 @@ const Companies: NextPage<Props> = ({
               </div>
             </div>
           </div>
+
+          <ElemInviteBanner />
 
           <div>
             {error ? (

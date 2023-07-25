@@ -65,7 +65,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
         <ElemMyNotesMenu className="mt-6" />
         <ElemMyGroupsMenu className="mt-6" />
         <ElemMyListsMenu className="mt-6" />
-        <ElemExploreMenu className="mt-6" />
+        <ElemExploreMenu className="mt-6 hidden lg:block" />
       </div>
     </nav>
   );

@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useDebounce } from '@/hooks/use-debounce';
+import { DEBOUNCE_TIME } from '@/utils/constants';
 
 type Props = {
   defaultLocation?: any;
@@ -15,7 +16,7 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<any>([]);
 
-  const debouncedQuery = useDebounce(inputValue, 700);
+  const debouncedQuery = useDebounce(inputValue, DEBOUNCE_TIME);
 
   const onSearchAddress = async (keyword: string) => {
     const response = await fetch(

@@ -134,6 +134,11 @@ export const isValidJsonString = (jsonString: string) => {
   return false;
 };
 
+export const isFreeEmail = (email: string) => {
+  const pattern = /@(gmail|yahoo|hotmail)/i;
+  return pattern.test(email);
+};
+
 export const getSelectableWeb3Tags = () => {
   return web3Tags.filter(
     ({ name }) => !NON_SELECTABLE_WEB_3_TAGS.includes(name),

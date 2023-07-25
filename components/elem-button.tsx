@@ -93,7 +93,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   btnClass += ` ${sizeClasses}`;
 
   // button disabled
-  if (disabled) {
+  if (disabled || loading) {
     btnClass = btnClass + ' opacity-40 pointer-events-none';
   }
 

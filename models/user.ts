@@ -16,6 +16,7 @@ export type User = {
   intercomUserHash?: string;
   auth0_linkedin_id?: string | null;
   auth0_user_pass_id?: string | null;
+  credits: number;
   billing_org_id?: string;
   billing_org?: {
     customer_id?: string;
