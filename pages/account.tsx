@@ -5,12 +5,13 @@ import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconLinkedIn, IconContributor } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ElemInviteLinks } from '@/components/elem-invite-links';
+import { ElemInviteLinks } from '@/components/invites/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';
 import { useGetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
+import { ElemInviteUser } from '@/components/invites/elem-invite-user';
 
 import { redirect_url } from '@/utils/auth';
 
@@ -32,6 +33,9 @@ export default function Account() {
   const [reEnterErrorMessage, setReEnterErrorMessage] = useState('');
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
+  const numberOfMonthsFromCredits = Math.ceil(
+    userProfile?.users_by_pk?.credits / 14.99,
+  );
 
   const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
 
@@ -132,24 +136,49 @@ export default function Account() {
   return (
     <DashboardLayout>
       <div className="bg-white shadow rounded-lg p-5">
-        <div className="lg:flex justify-between items-start pb-2">
-          <div className="max-w-2xl">
-            <h2 className="font-bold text-xl">
-              Get Rewarded for Sharing EdgeIn.
-            </h2>
-            <p className="text-slate-600">
-              Share your code with friends and colleagues and you will be
-              considered a partial data contributor with every future data
-              contribution your invitees make to EdgeIn!
-            </p>
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="font-bold text-xl">Referrals and Credits</h2>
+        </div>
+
+        <EditSection heading="Invite a friend">
+          <h3 className="font-bold">
+            Get 1 month free for every person you invite
+          </h3>
+          <p className="mt-2 text-slate-600">
+            Invite your friends to EdgeIn and for each friend who signs up
+            through your referral, you&apos;ll receive $14.99 in credit.
+            That&apos;s 1 month of EdgeIn Contributor for free! The more people
+            who sign up, the more credit you&apos;ll get.
+          </p>
+
+          {userProfile?.users_by_pk?.credits > 0 &&
+            !user?.entitlements.viewEmails && (
+              <p className="mt-2 text-primary-500">
+                You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
+                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
+                out and log back in to activate.
+              </p>
+            )}
+
+          {userProfile?.users_by_pk?.credits > 0 &&
+            user?.entitlements.viewEmails && (
+              <p className="mt-2 text-primary-500">
+                You have EdgeIn Contributor active for{' '}
+                {numberOfMonthsFromCredits}{' '}
+                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
+              </p>
+            )}
+
+          <div className="mt-6">
+            <ElemInviteUser />
           </div>
 
           {user && user.reference_id && (
-            <div className="mt-2 lg:mt-0">
+            <div className="mt-6">
               <ElemInviteLinks user={user} personSlug={personSlug} />
             </div>
           )}
-        </div>
+        </EditSection>
       </div>
 
       <div className="bg-white shadow rounded-lg mt-5 p-5">
@@ -266,7 +295,9 @@ export default function Account() {
           )}
 
           <EditSection heading="Subscription">
-            {userProfile && userProfile.users_by_pk?.billing_org_id ? (
+            {userProfile &&
+            (userProfile.users_by_pk?.billing_org_id ||
+              userProfile.users_by_pk?.credits > 0) ? (
               <div>
                 <div className="flex items-center space-x-1">
                   <IconContributor className="h-6 w-6 text-primary-500" />

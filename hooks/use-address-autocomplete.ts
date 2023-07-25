@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
+import { DEBOUNCE_TIME } from '@/utils/constants';
 
 const useAddressAutocomplete = (layers: string[] = []) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,7 +30,7 @@ const useAddressAutocomplete = (layers: string[] = []) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
-    debounce(query => onSearchAddress(query), 700),
+    debounce(query => onSearchAddress(query), DEBOUNCE_TIME),
     [],
   );
 

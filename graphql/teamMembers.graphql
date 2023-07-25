@@ -29,6 +29,35 @@ mutation InsertTeamMember($personId: Int, $companyId: Int, $vcFirmId: Int) {
   }
 }
 
+query GetTeamMemberByPersonId($person_id: Int!) {
+  team_members(where: { person_id: { _eq: $person_id } }) {
+    id
+    company_id
+  }
+}
+
+query GetTeamMemberByCompanyIds($company_ids: [Int!]) {
+  team_members(where: { company_id: { _in: $company_ids } }) {
+    id
+    company_id
+    company {
+      id
+      name
+      slug
+      logo
+    }
+    person_id
+    person {
+      id
+      name
+      slug
+      picture
+      personal_email
+      work_email
+    }
+  }
+}
+
 query GetTeamMemberById($id: Int!) {
   team_members(where: { id: { _eq: $id } }, limit: 1) {
     id
@@ -37,6 +66,9 @@ query GetTeamMemberById($id: Int!) {
       id
       name
       slug
+      picture
+      personal_email
+      work_email
       status
     }
   }

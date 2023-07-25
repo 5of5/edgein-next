@@ -1,5 +1,6 @@
 locals {
   db_url = "postgres://${data.aws_ssm_parameter.db_username.value}:${data.aws_ssm_parameter.db_password.value}@${aws_db_instance.main.endpoint}"
+  db_alias = "rds-${local.domain_name}"
 }
 
 resource "aws_db_subnet_group" "main" {

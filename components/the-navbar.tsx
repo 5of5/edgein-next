@@ -11,7 +11,7 @@ import UsageModal from '@/components/usage-modal';
 import ForgotPasswordModal from '@/components/forgot-password-modal';
 import SignUpModal from '@/components/sign-up-modal';
 import { IconSearch } from '@/components/icons';
-import { MobileNav } from '@/components/mobile-nav';
+import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import OnboardingStep1 from '@/components/onboarding/onboarding-step-1';
 import OnboardingStep2 from '@/components/onboarding/onboarding-step-2';
@@ -277,7 +277,9 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 >
                   <IconSearch className="h-5 w-5" />
                 </ElemButton>
-                <NotificationAlerts />
+                <div className="hidden lg:inline-block">
+                  <NotificationAlerts />
+                </div>
                 <UserMenu onShowUpgrade={onOpenUpgradeDialog} />
               </>
             ) : (
@@ -298,12 +300,6 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 </ElemButton>
               </>
             )}
-
-            <MobileNav
-              className="flex lg:hidden items-center"
-              myListsUrl={myListsUrl}
-              myGroupsUrl={myGroupsUrl}
-            />
           </div>
 
           <UsageModal
@@ -422,6 +418,12 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
           )}
         </nav>
       </div>
+
+      <TheMobileNav
+        className="flex lg:hidden items-center"
+        setShowPopup={setShowPopup}
+      />
+
       <ElemUpgradeDialog
         isOpen={isOpenUpgradeDialog}
         onClose={onCloseUpgradeDialog}

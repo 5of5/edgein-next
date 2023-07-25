@@ -32,7 +32,7 @@ jobs:
           fi
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -81,7 +81,7 @@ jobs:
           echo vercel_commit = \"$GITHUB_SHA\" >> input.tfvars
           echo 'vercel_team = "${{ secrets.VERCEL_TEAM }}"' >> input.tfvars
           echo 'vercel_api_token = "${{ secrets.VERCEL_API_TOKEN }}"' >> input.tfvars
-          echo 'auth0_domain = "${{ var.AUTH0_DOMAIN }}"' >> input.tfvars
+          echo 'auth0_domain = "${{ vars.AUTH0_DOMAIN }}"' >> input.tfvars
           echo 'auth0_client_id = "${{ secrets.AUTH0_CLIENT_ID }}"' >> input.tfvars
           echo 'auth0_client_secret = "${{ secrets.AUTH0_CLIENT_SECRET }}"' >> input.tfvars
 
@@ -178,6 +178,7 @@ jobs:
 
       - name: Expose Vercel URL for preview environment
         uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
         env:
           VERCEL_URL: ${{ steps.tf-outputs.outputs.vercel_url }}
           HASURA_URL: ${{ steps.tf-outputs.outputs.hasura_endpoint }}

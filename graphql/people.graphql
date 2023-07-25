@@ -254,3 +254,14 @@ mutation InsertOnboardingClaimProfile($object: people_insert_input!) {
     linkedin
   }
 }
+
+query FindPeopleByEmail($query: String) {
+  people(where: { work_email: { _ilike: $query } }, limit: 25) {
+    id
+    name
+    picture
+    slug
+    work_email
+    personal_email
+  }
+}

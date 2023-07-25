@@ -17,9 +17,9 @@ type Props = {
   personSlug?: string | null | undefined;
 };
 
-export const ElemInviteLinks = ({ user, personSlug }: Props) => {
+export const ElemInviteLinks = ({ user }: Props) => {
   const getInviteLink = () => {
-    const inviteCode = personSlug || user.reference_id;
+    const inviteCode = user.reference_id;
     const inviteLink = `${redirect_url()}/?invite=${inviteCode}`;
     return inviteLink;
   };

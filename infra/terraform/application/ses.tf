@@ -18,7 +18,7 @@ resource "aws_iam_user_policy" "ses_full_access" {
       {
         "Action": "ses:*",
         "Effect": "Allow",
-        "Resource": "${data.terraform_remote_state.shared.outputs.ses_domain_identity_arn}*"
+        "Resource": "*"
       }
     ]
   }
