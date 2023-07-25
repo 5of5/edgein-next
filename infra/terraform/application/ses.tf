@@ -1,5 +1,5 @@
 resource "aws_iam_user" "ses_full_access" {
-  name = "ses_full_access_user"
+  name = "${terraform.workspace}_ses_full_access_user"
   path = "${local.path}/"
 }
 

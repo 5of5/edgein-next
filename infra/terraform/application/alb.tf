@@ -16,7 +16,6 @@ resource "aws_lb_target_group" "hasura" {
 
 resource "aws_lb_listener_rule" "hasura" {
   listener_arn = data.terraform_remote_state.shared.outputs.aws_lb_listener_edgein.arn
-  priority     = 100
 
   action {
     type             = "forward"
