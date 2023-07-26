@@ -688,7 +688,7 @@ export const web3Tags: Tag[] = [
   'Polkadot',
   'Metaverse',
   'News',
-  'ZK',
+  'Zero Knowledge',
 ].map(tag => ({ id: tag, name: tag }));
 
 export const aiTags: Tag[] = [
