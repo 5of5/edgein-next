@@ -21,7 +21,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
     data: companiesData,
     error,
     isLoading,
-    refetch: refetchCompanies,
+    refetch,
   } = useGetCompaniesByListIdQuery(
     {
       list_id: listId,
@@ -32,8 +32,6 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       refetchOnWindowFocus: false,
     },
   );
-
-  const listNameTitle = listName === 'crap' ? 'sh**' : listName;
 
   const companies = companiesData?.follows_companies;
 
@@ -297,7 +295,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
   };
 
   if (error) {
-    return <h4>{`Error loading companies`}</h4>;
+    return <h4>Error loading companies</h4>;
   }
 
   if (isLoading) {
@@ -310,7 +308,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
   return (
     <Table
-      listName={listNameTitle}
+      listName={listName}
       resourceType="companies"
       columns={columns}
       data={companies}
@@ -321,7 +319,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       noDataText="There are no companies in this list."
       exploreBtnHref="/companies"
       exploreBtnText="Explore Companies"
-      onRefetchData={refetchCompanies}
+      onRefetchData={refetch}
       onPreviousPage={onPreviousPage}
       onNextPage={onNextPage}
     />

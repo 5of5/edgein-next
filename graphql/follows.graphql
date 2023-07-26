@@ -72,8 +72,12 @@ query GetCompaniesByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
   }
 }
 
-query GetVcFirmsByListId($list_id: Int = 0) {
-  follows_vc_firms(where: { list_id: { _eq: $list_id } }) {
+query GetVcFirmsByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+  follows_vc_firms(
+    where: { list_id: { _eq: $list_id } }
+    limit: $limit
+    offset: $offset
+  ) {
     id
     vc_firm {
       id
@@ -95,6 +99,11 @@ query GetVcFirmsByListId($list_id: Int = 0) {
           round
         }
       }
+    }
+  }
+  follows_vc_firms_aggregate(where: { list_id: { _eq: $list_id } }) {
+    aggregate {
+      count
     }
   }
 }
@@ -156,8 +165,12 @@ query GetFollowsByResource($resourceId: Int!, $resourceType: String!) {
   }
 }
 
-query GetPeopleByListId($list_id: Int = 0) {
-  follows_people(where: { list_id: { _eq: $list_id } }) {
+query GetPeopleByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+  follows_people(
+    where: { list_id: { _eq: $list_id } }
+    limit: $limit
+    offset: $offset
+  ) {
     id
     person {
       id
@@ -173,6 +186,11 @@ query GetPeopleByListId($list_id: Int = 0) {
       github
       twitter_url
       linkedin
+    }
+  }
+  follows_people_aggregate(where: { list_id: { _eq: $list_id } }) {
+    aggregate {
+      count
     }
   }
 }

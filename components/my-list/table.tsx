@@ -35,8 +35,8 @@ type Props = {
   totalItems: number;
   fundingTotal?: number;
   noDataText: string;
-  exploreBtnHref: string;
-  exploreBtnText: string;
+  exploreBtnHref?: string;
+  exploreBtnText?: string;
   onRefetchData: () => void;
   onPreviousPage: () => void;
   onNextPage: () => void;
@@ -407,14 +407,16 @@ export const Table: FC<Props> = ({
           ) : (
             <div className="flex flex-col w-full items-center justify-center  p-5 text-slate-600">
               <div className="max-w-sm text-center">{noDataText}</div>
-              <ElemButton
-                href={exploreBtnHref}
-                btn="transparent"
-                arrow
-                className="px-0"
-              >
-                {exploreBtnText}
-              </ElemButton>
+              {['companies', 'investors'].includes(resourceType) && (
+                <ElemButton
+                  href={exploreBtnHref}
+                  btn="transparent"
+                  arrow
+                  className="px-0"
+                >
+                  {exploreBtnText}
+                </ElemButton>
+              )}
             </div>
           )}
         </div>

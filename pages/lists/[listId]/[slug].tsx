@@ -3,16 +3,10 @@ import { CompaniesList } from '@/components/my-list/companies-list';
 import { InvestorsList } from '@/components/my-list/investors-list';
 import { ElemListInformation } from '@/components/my-list/elem-list-information';
 import { IconCustomList } from '@/components/icons';
-import { PlaceholderTable } from '@/components/placeholders';
 
 import {
-  Follows_Companies,
-  Follows_Vc_Firms,
-  Follows_People,
-  useGetVcFirmsByListIdQuery,
   useGetListUserGroupsQuery,
   List_User_Groups_Bool_Exp,
-  useGetPeopleByListIdQuery,
   List_Members_Bool_Exp,
   useGetListMembersQuery,
 } from '@/graphql/types';
@@ -58,9 +52,6 @@ const MyList: NextPage<Props> = () => {
   );
 
   const [isCustomList, setIsCustomList] = useState(false);
-
-  const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
-  const [people, setPeople] = useState<Follows_People[]>([]);
 
   const { data: groups, refetch: refetchGroups } = useGetListUserGroupsQuery(
     {
@@ -221,8 +212,6 @@ const MyList: NextPage<Props> = () => {
       onSuccess: () => {
         refetch();
         refreshProfile();
-        refetchVcFirms();
-        refetchPeople();
       },
     },
   );
@@ -283,6 +272,8 @@ const MyList: NextPage<Props> = () => {
     setTheListPublic,
   ]);
 
+  const listName = selectedListName === 'crap' ? 'sh**' : selectedListName;
+
   const isFollowing = listMembers.some(mem => mem.list_id === theList?.id);
 
   useEffect(() => {
@@ -290,29 +281,6 @@ const MyList: NextPage<Props> = () => {
       setTheListId(parseInt(router.query?.listId as string));
     }
   }, [router]);
-
-  const {
-    data: vcFirms,
-    error: vcFirmsError,
-    isLoading: vcFirmsLoading,
-    refetch: refetchVcFirms,
-  } = useGetVcFirmsByListIdQuery({
-    list_id: theListId,
-  });
-
-  const {
-    data: listPeople,
-    error: listPeopleError,
-    isLoading: listPeopleLoading,
-    refetch: refetchPeople,
-  } = useGetPeopleByListIdQuery({
-    list_id: theListId,
-  });
-
-  useEffect(() => {
-    if (vcFirms) setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[]);
-    if (listPeople) setPeople(listPeople?.follows_people as Follows_People[]);
-  }, [vcFirms, listPeople]);
 
   const isFollowButtonLoading = isFollowListLoading || isListMembersReFetching;
 
@@ -332,31 +300,11 @@ const MyList: NextPage<Props> = () => {
 
       {(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
         <>
-          <CompaniesList listId={theListId} listName={selectedListName} />
+          <CompaniesList listId={theListId} listName={listName} />
 
-          {vcFirmsError ? (
-            <h4>Error loading Investors</h4>
-          ) : vcFirmsLoading ? (
-            <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
-              <PlaceholderTable />
-            </div>
-          ) : (
-            <InvestorsList
-              vcfirms={vcfirms}
-              selectedListName={selectedListName}
-              isCustomList={isCustomList}
-            />
-          )}
+          <InvestorsList listId={theListId} listName={listName} />
 
-          {listPeopleError ? (
-            <h4>Error loading people</h4>
-          ) : listPeopleLoading ? (
-            <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
-              <PlaceholderTable />
-            </div>
-          ) : (
-            <PeopleList people={people} selectedListName={selectedListName} />
-          )}
+          <PeopleList listId={theListId} listName={listName} />
         </>
       )}
 

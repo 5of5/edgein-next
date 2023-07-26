@@ -25374,10 +25374,12 @@ export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_com
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location: string | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }> };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location: string | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }>, follows_vc_firms_aggregate: { __typename?: 'follows_vc_firms_aggregate', aggregate: { __typename?: 'follows_vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertFollowsMutationVariables = Exact<{
   listId: InputMaybe<Scalars['Int']>;
@@ -25413,10 +25415,12 @@ export type GetFollowsByResourceQuery = { __typename?: 'query_root', follows: Ar
 
 export type GetPeopleByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetPeopleByListIdQuery = { __typename?: 'query_root', follows_people: Array<{ __typename?: 'follows_people', id: number | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, type: string | null, personal_email: string | null, work_email: string | null, city: string | null, country: string | null, website_url: string | null, github: string | null, twitter_url: string | null, linkedin: string | null } | null }> };
+export type GetPeopleByListIdQuery = { __typename?: 'query_root', follows_people: Array<{ __typename?: 'follows_people', id: number | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, type: string | null, personal_email: string | null, work_email: string | null, city: string | null, country: string | null, website_url: string | null, github: string | null, twitter_url: string | null, linkedin: string | null } | null }>, follows_people_aggregate: { __typename?: 'follows_people_aggregate', aggregate: { __typename?: 'follows_people_aggregate_fields', count: number } | null } };
 
 export type CheckFollowExistsQueryVariables = Exact<{
   where: Follows_Bool_Exp;
@@ -27693,8 +27697,12 @@ useGetCompaniesByListIdQuery.getKey = (variables?: GetCompaniesByListIdQueryVari
 
 useGetCompaniesByListIdQuery.fetcher = (variables?: GetCompaniesByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesByListIdQuery, GetCompaniesByListIdQueryVariables>(GetCompaniesByListIdDocument, variables, options);
 export const GetVcFirmsByListIdDocument = `
-    query GetVcFirmsByListId($list_id: Int = 0) {
-  follows_vc_firms(where: {list_id: {_eq: $list_id}}) {
+    query GetVcFirmsByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+  follows_vc_firms(
+    where: {list_id: {_eq: $list_id}}
+    limit: $limit
+    offset: $offset
+  ) {
     id
     vc_firm {
       id
@@ -27716,6 +27724,11 @@ export const GetVcFirmsByListIdDocument = `
           round
         }
       }
+    }
+  }
+  follows_vc_firms_aggregate(where: {list_id: {_eq: $list_id}}) {
+    aggregate {
+      count
     }
   }
 }
@@ -27844,8 +27857,12 @@ useGetFollowsByResourceQuery.getKey = (variables: GetFollowsByResourceQueryVaria
 
 useGetFollowsByResourceQuery.fetcher = (variables: GetFollowsByResourceQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables, options);
 export const GetPeopleByListIdDocument = `
-    query GetPeopleByListId($list_id: Int = 0) {
-  follows_people(where: {list_id: {_eq: $list_id}}) {
+    query GetPeopleByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+  follows_people(
+    where: {list_id: {_eq: $list_id}}
+    limit: $limit
+    offset: $offset
+  ) {
     id
     person {
       id
@@ -27861,6 +27878,11 @@ export const GetPeopleByListIdDocument = `
       github
       twitter_url
       linkedin
+    }
+  }
+  follows_people_aggregate(where: {list_id: {_eq: $list_id}}) {
+    aggregate {
+      count
     }
   }
 }
