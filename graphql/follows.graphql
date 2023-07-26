@@ -31,8 +31,8 @@ query GetFollowsByUser($user_id: Int!) {
   }
 }
 
-query GetCompaniesByListId($list_id: Int = 0, $limit: Int = 200) {
-  follows_companies(where: { list_id: { _eq: $list_id } }, limit: $limit) {
+query GetCompaniesByListId($list_id: Int = 0) {
+  follows_companies(where: { list_id: { _eq: $list_id } }) {
     id
     company {
       id
@@ -63,8 +63,8 @@ query GetCompaniesByListId($list_id: Int = 0, $limit: Int = 200) {
   }
 }
 
-query GetVcFirmsByListId($list_id: Int = 0, $limit: Int = 200) {
-  follows_vc_firms(where: { list_id: { _eq: $list_id } }, limit: $limit) {
+query GetVcFirmsByListId($list_id: Int = 0) {
+  follows_vc_firms(where: { list_id: { _eq: $list_id } }) {
     id
     vc_firm {
       id
@@ -147,8 +147,8 @@ query GetFollowsByResource($resourceId: Int!, $resourceType: String!) {
   }
 }
 
-query GetPeopleByListId($list_id: Int = 0, $limit: Int = 200) {
-  follows_people(where: { list_id: { _eq: $list_id } }, limit: $limit) {
+query GetPeopleByListId($list_id: Int = 0) {
+  follows_people(where: { list_id: { _eq: $list_id } }) {
     id
     person {
       id

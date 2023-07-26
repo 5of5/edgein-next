@@ -21,4 +21,4 @@ select_permissions:
         - resource_type
         - list_id
       filter: {}
-      limit: 200
+      limit: 50
