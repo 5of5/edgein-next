@@ -4200,6 +4200,7 @@ export type Data_Raw = {
   field: Scalars['String'];
   id: Scalars['bigint'];
   is_active: Scalars['Boolean'];
+  is_owner_verified: Scalars['Boolean'];
   partner: Scalars['Int'];
   resource: Scalars['String'];
   resource_id: Scalars['Int'];
@@ -4268,6 +4269,7 @@ export type Data_Raw_Bool_Exp = {
   field: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Bigint_Comparison_Exp>;
   is_active: InputMaybe<Boolean_Comparison_Exp>;
+  is_owner_verified: InputMaybe<Boolean_Comparison_Exp>;
   partner: InputMaybe<Int_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
@@ -4312,6 +4314,7 @@ export type Data_Raw_Insert_Input = {
   field: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   is_active: InputMaybe<Scalars['Boolean']>;
+  is_owner_verified: InputMaybe<Scalars['Boolean']>;
   partner: InputMaybe<Scalars['Int']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -4368,6 +4371,7 @@ export type Data_Raw_Order_By = {
   field: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   is_active: InputMaybe<Order_By>;
+  is_owner_verified: InputMaybe<Order_By>;
   partner: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
@@ -4398,6 +4402,8 @@ export enum Data_Raw_Select_Column {
   /** column name */
   IsActive = 'is_active',
   /** column name */
+  IsOwnerVerified = 'is_owner_verified',
+  /** column name */
   Partner = 'partner',
   /** column name */
   Resource = 'resource',
@@ -4416,6 +4422,7 @@ export type Data_Raw_Set_Input = {
   field: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
   is_active: InputMaybe<Scalars['Boolean']>;
+  is_owner_verified: InputMaybe<Scalars['Boolean']>;
   partner: InputMaybe<Scalars['Int']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -4475,6 +4482,8 @@ export enum Data_Raw_Update_Column {
   Id = 'id',
   /** column name */
   IsActive = 'is_active',
+  /** column name */
+  IsOwnerVerified = 'is_owner_verified',
   /** column name */
   Partner = 'partner',
   /** column name */
@@ -5765,7 +5774,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -16853,10 +16862,6 @@ export type People = {
   email: Maybe<Scalars['jsonb']>;
   external_id: Maybe<Scalars['String']>;
   facebook_url: Maybe<Scalars['String']>;
-  /** An array relationship */
-  follows: Array<Follows_People>;
-  /** An aggregate relationship */
-  follows_aggregate: Follows_People_Aggregate;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   /** An array relationship */
@@ -16893,26 +16898,6 @@ export type People = {
 /** columns and relationships of "people" */
 export type PeopleEmailArgs = {
   path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "people" */
-export type PeopleFollowsArgs = {
-  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Follows_People_Order_By>>;
-  where: InputMaybe<Follows_People_Bool_Exp>;
-};
-
-
-/** columns and relationships of "people" */
-export type PeopleFollows_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Follows_People_Order_By>>;
-  where: InputMaybe<Follows_People_Bool_Exp>;
 };
 
 
@@ -17063,7 +17048,6 @@ export type People_Bool_Exp = {
   email: InputMaybe<Jsonb_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook_url: InputMaybe<String_Comparison_Exp>;
-  follows: InputMaybe<Follows_People_Bool_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
@@ -17133,7 +17117,6 @@ export type People_Insert_Input = {
   email: InputMaybe<Scalars['jsonb']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
-  follows: InputMaybe<Follows_People_Arr_Rel_Insert_Input>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
@@ -17232,7 +17215,6 @@ export type People_Order_By = {
   email: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   facebook_url: InputMaybe<Order_By>;
-  follows_aggregate: InputMaybe<Follows_People_Aggregate_Order_By>;
   github: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
@@ -25301,14 +25283,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -25316,7 +25298,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -25338,14 +25320,14 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string | null, status: string } | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -25356,7 +25338,6 @@ export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: A
 
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -25364,7 +25345,6 @@ export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_com
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -25404,7 +25384,6 @@ export type GetFollowsByResourceQuery = { __typename?: 'query_root', follows: Ar
 
 export type GetPeopleByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -25669,7 +25648,7 @@ export type UpsertListMutationVariables = Exact<{
 }>;
 
 
-export type UpsertListMutation = { __typename?: 'mutation_root', insert_lists_one: { __typename?: 'lists', id: number, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }>, follows_people: Array<{ __typename?: 'follows_people', resource_id: number | null }> } | null };
+export type UpsertListMutation = { __typename?: 'mutation_root', insert_lists_one: { __typename?: 'lists', id: number } | null };
 
 export type UpsertMembershipMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -25909,7 +25888,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }> }> };
 
 export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -27624,8 +27603,8 @@ useGetFollowsByUserQuery.getKey = (variables: GetFollowsByUserQueryVariables) =>
 
 useGetFollowsByUserQuery.fetcher = (variables: GetFollowsByUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByUserQuery, GetFollowsByUserQueryVariables>(GetFollowsByUserDocument, variables, options);
 export const GetCompaniesByListIdDocument = `
-    query GetCompaniesByListId($list_id: Int = 0, $limit: Int = 200) {
-  follows_companies(where: {list_id: {_eq: $list_id}}, limit: $limit) {
+    query GetCompaniesByListId($list_id: Int = 0) {
+  follows_companies(where: {list_id: {_eq: $list_id}}) {
     id
     company {
       id
@@ -27676,8 +27655,8 @@ useGetCompaniesByListIdQuery.getKey = (variables?: GetCompaniesByListIdQueryVari
 
 useGetCompaniesByListIdQuery.fetcher = (variables?: GetCompaniesByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesByListIdQuery, GetCompaniesByListIdQueryVariables>(GetCompaniesByListIdDocument, variables, options);
 export const GetVcFirmsByListIdDocument = `
-    query GetVcFirmsByListId($list_id: Int = 0, $limit: Int = 200) {
-  follows_vc_firms(where: {list_id: {_eq: $list_id}}, limit: $limit) {
+    query GetVcFirmsByListId($list_id: Int = 0) {
+  follows_vc_firms(where: {list_id: {_eq: $list_id}}) {
     id
     vc_firm {
       id
@@ -27827,8 +27806,8 @@ useGetFollowsByResourceQuery.getKey = (variables: GetFollowsByResourceQueryVaria
 
 useGetFollowsByResourceQuery.fetcher = (variables: GetFollowsByResourceQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables, options);
 export const GetPeopleByListIdDocument = `
-    query GetPeopleByListId($list_id: Int = 0, $limit: Int = 200) {
-  follows_people(where: {list_id: {_eq: $list_id}}, limit: $limit) {
+    query GetPeopleByListId($list_id: Int = 0) {
+  follows_people(where: {list_id: {_eq: $list_id}}) {
     id
     person {
       id
@@ -28946,15 +28925,6 @@ export const UpsertListDocument = `
     on_conflict: {constraint: lists_created_by_id_name_key, update_columns: created_by_id}
   ) {
     id
-    follows_companies {
-      resource_id
-    }
-    follows_vcfirms {
-      resource_id
-    }
-    follows_people {
-      resource_id
-    }
   }
 }
     `;
@@ -30002,10 +29972,6 @@ export const GetPersonDocument = `
           person_id
         }
       }
-    }
-    follows {
-      id
-      list_id
     }
   }
 }
