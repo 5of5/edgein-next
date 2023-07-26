@@ -31,8 +31,12 @@ query GetFollowsByUser($user_id: Int!) {
   }
 }
 
-query GetCompaniesByListId($list_id: Int = 0) {
-  follows_companies(where: { list_id: { _eq: $list_id } }) {
+query GetCompaniesByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+  follows_companies(
+    where: { list_id: { _eq: $list_id } }
+    limit: $limit
+    offset: $offset
+  ) {
     id
     company {
       id
@@ -59,6 +63,11 @@ query GetCompaniesByListId($list_id: Int = 0) {
       }
       tags
       slug
+    }
+  }
+  follows_companies_aggregate(where: { list_id: { _eq: $list_id } }) {
+    aggregate {
+      count
     }
   }
 }

@@ -10,11 +10,9 @@ import {
   Follows_Vc_Firms,
   Follows_People,
   useGetVcFirmsByListIdQuery,
-  useGetCompaniesByListIdQuery,
   useGetListUserGroupsQuery,
   List_User_Groups_Bool_Exp,
   useGetPeopleByListIdQuery,
-  Users,
   List_Members_Bool_Exp,
   useGetListMembersQuery,
 } from '@/graphql/types';
@@ -61,7 +59,6 @@ const MyList: NextPage<Props> = () => {
 
   const [isCustomList, setIsCustomList] = useState(false);
 
-  const [companies, setCompanies] = useState<Follows_Companies[]>([]);
   const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
   const [people, setPeople] = useState<Follows_People[]>([]);
 
@@ -224,7 +221,6 @@ const MyList: NextPage<Props> = () => {
       onSuccess: () => {
         refetch();
         refreshProfile();
-        refetchCompanies();
         refetchVcFirms();
         refetchPeople();
       },
@@ -296,15 +292,6 @@ const MyList: NextPage<Props> = () => {
   }, [router]);
 
   const {
-    data: companiesData,
-    error: companiesError,
-    isLoading: companiesLoading,
-    refetch: refetchCompanies,
-  } = useGetCompaniesByListIdQuery({
-    list_id: theListId,
-  });
-
-  const {
     data: vcFirms,
     error: vcFirmsError,
     isLoading: vcFirmsLoading,
@@ -323,11 +310,9 @@ const MyList: NextPage<Props> = () => {
   });
 
   useEffect(() => {
-    if (companiesData)
-      setCompanies(companiesData?.follows_companies as Follows_Companies[]);
     if (vcFirms) setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[]);
     if (listPeople) setPeople(listPeople?.follows_people as Follows_People[]);
-  }, [companiesData, vcFirms, listPeople]);
+  }, [vcFirms, listPeople]);
 
   const isFollowButtonLoading = isFollowListLoading || isListMembersReFetching;
 
@@ -347,19 +332,7 @@ const MyList: NextPage<Props> = () => {
 
       {(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
         <>
-          {companiesError ? (
-            <h4>Error loading companies</h4>
-          ) : companiesLoading ? (
-            <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
-              <PlaceholderTable />
-            </div>
-          ) : (
-            <CompaniesList
-              companies={companies}
-              selectedListName={selectedListName}
-              isCustomList={isCustomList}
-            />
-          )}
+          <CompaniesList listId={theListId} listName={selectedListName} />
 
           {vcFirmsError ? (
             <h4>Error loading Investors</h4>
