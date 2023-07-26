@@ -4,6 +4,7 @@ import { ElemButton } from '@/components/elem-button';
 import {
   FindPeopleByNameAndEmailQuery,
   useFindPeopleByNameAndEmailQuery,
+  useGetUserByPersonIdsQuery,
 } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
 import { ElemPhoto } from '../elem-photo';
@@ -42,7 +43,18 @@ export default function OnboardingStep4(props: Props) {
       { enabled: !!user },
     );
 
-  const peopleList = people?.people;
+  const { data: linkedUser, isLoading: isLoadingLinkedUser } =
+    useGetUserByPersonIdsQuery(
+      { person_ids: people?.people?.map(person => person.id) || [] },
+      { enabled: people?.people && people.people.length > 0 },
+    );
+
+  let peopleList = people?.people || [];
+
+  peopleList = peopleList.filter(
+    person =>
+      !linkedUser?.users?.some(userItem => userItem.person_id === person.id),
+  );
 
   const handleChangeLinkedin = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -93,7 +105,7 @@ export default function OnboardingStep4(props: Props) {
                 <p className="text-sm text-slate-500">Step 3 of 4</p>
 
                 <div className="mt-8">
-                  {isLoadingPeople ? (
+                  {isLoadingPeople || isLoadingLinkedUser ? (
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
                       {Array.from({ length: 3 }, (_, i) => (
                         <div
@@ -142,7 +154,7 @@ export default function OnboardingStep4(props: Props) {
                     </Fragment>
                   ) : null}
 
-                  {!isLoadingPeople && (
+                  {!isLoadingPeople && !isLoadingLinkedUser && (
                     <Fragment>
                       {peopleList && peopleList?.length > 0 ? (
                         <p className="font-bold mt-8">

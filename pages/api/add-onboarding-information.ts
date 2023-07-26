@@ -10,6 +10,8 @@ import {
   UpdateUserPersonIdMutation,
   InsertOnboardingClaimProfileMutation,
   InsertOnboardingClaimProfileDocument,
+  GetUserByPersonIdQuery,
+  GetUserByPersonIdDocument,
 } from '@/graphql/types';
 import CookieService from '../../utils/cookie';
 import SlackServices from '@/utils/slack';
@@ -39,10 +41,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // Link user to person id
     if (selectedPerson?.id) {
+      const isClaimedPerson = await onFindUserByPersonId(selectedPerson.id);
+      if (isClaimedPerson) {
+        return res.status(400).send({
+          error: 'The profile you chose was claimed from another user.',
+        });
+      }
       await onLinkUserToPerson(user.id, selectedPerson.id);
     } else if (linkedin) {
       const personByLinkedin = await onFindPeopleByLinkedin(linkedin);
       if (personByLinkedin?.id) {
+        const isClaimedPerson = await onFindUserByPersonId(personByLinkedin.id);
+        if (isClaimedPerson) {
+          return res.status(400).send({
+            error: 'The LinkedIn URL you provided was existed in another user.',
+          });
+        }
         await onLinkUserToPerson(user.id, personByLinkedin.id);
       } else {
         const insertedPerson = await onInsertProfile(
@@ -117,7 +131,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send(response);
   } catch (error: any) {
-    return res.status(500).send(error.message);
+    return res
+      .status(500)
+      .send({ error: 'Something went wrong. Please try again later.' });
   }
 };
 
@@ -171,6 +187,19 @@ const onInsertProfile = async (
   });
 
   return insert_people_one;
+};
+
+const onFindUserByPersonId = async (personId: number) => {
+  const {
+    data: { users },
+  } = await query<GetUserByPersonIdQuery>({
+    query: GetUserByPersonIdDocument,
+    variables: {
+      person_id: personId,
+    },
+  });
+
+  return users[0];
 };
 
 export default handler;
