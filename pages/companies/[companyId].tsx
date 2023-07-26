@@ -29,7 +29,6 @@ import {
   Order_By,
 } from '@/graphql/types';
 import { ElemReactions } from '@/components/elem-reactions';
-import { useAuth } from '@/hooks/use-auth';
 import { companyLayerChoices, tokenInfoMetrics } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
@@ -44,6 +43,7 @@ import ElemNewsArticles, {
 import { getQueryBySource } from '@/utils/news';
 import ElemNewsList from '@/components/news/elem-news-list';
 import ElemCompanyTags from '@/components/elem-company-tags';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   company: Companies;
@@ -56,7 +56,6 @@ type Props = {
 };
 
 const Company: NextPage<Props> = (props: Props) => {
-  const { user } = useAuth();
   const router = useRouter();
   const { companyId } = router.query;
   const [company, setCompany] = useState<Companies>(props.company);
@@ -79,6 +78,8 @@ const Company: NextPage<Props> = (props: Props) => {
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
+  const { selectedLibrary } = useUser();
+
   const {
     data: companyData,
     error,
@@ -86,6 +87,12 @@ const Company: NextPage<Props> = (props: Props) => {
   } = useGetCompanyQuery({
     slug: companyId as string,
   });
+
+  useEffect(() => {
+    if (selectedLibrary && !company.library?.includes(selectedLibrary)) {
+      router.push('/companies');
+    }
+  }, [company, selectedLibrary, router]);
 
   useEffect(() => {
     if (companyData) {

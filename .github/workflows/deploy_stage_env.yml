@@ -1,4 +1,4 @@
-name: Drop staging env and create new one from last prod DB snapshot
+name: Deploy staging env
 on:
   push:
     branches:

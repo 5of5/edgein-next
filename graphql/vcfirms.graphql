@@ -13,6 +13,7 @@ query GetVCFirm($slug: String!) {
     location
     location_json
     twitter
+    library
     investors {
       id
       person {
