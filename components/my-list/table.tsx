@@ -111,7 +111,6 @@ export const Table: FC<Props> = ({
     toggleHideAllColumns,
     state: { selectedRowIds },
     toggleAllRowsSelected,
-    preGlobalFilteredRows,
   } = useTable(
     {
       columns,
@@ -192,7 +191,7 @@ export const Table: FC<Props> = ({
           )}
       </div>
 
-      {preGlobalFilteredRows.length > 0 && (
+      {(data.length > 0 || searchQuery) && (
         <div className="flex items-center space-x-2 mb-2">
           {Object.keys(selectedRowIds).length > 0 ? (
             <>
@@ -237,7 +236,7 @@ export const Table: FC<Props> = ({
       <div className="relative -mx-5 lg:mx-0">
         <div className="absolute pointer-events-none w-8 bg-gradient-to-l from-white z-10 rounded-tr-lg rounded-br-lg top-px bottom-px right-0 sm:right-px"></div>
         <div className="w-full border-y border-black/10 overflow-auto lg:border lg:rounded-lg">
-          {preGlobalFilteredRows.length > 0 ? (
+          {data.length > 0 ? (
             <table
               {...getTableProps()}
               className="table-auto divide-y divide-black/10 overscroll-x-none"

@@ -291,6 +291,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
   const onChangeSearchQuery = (value: string) => {
     setQuery(value);
+    setPageIndex(0);
   };
 
   const onPreviousPage = () => {
