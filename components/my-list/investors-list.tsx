@@ -16,6 +16,7 @@ type Props = {
 
 export const InvestorsList: FC<Props> = ({ listId, listName }) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [query, setQuery] = useState('');
   const limit = 10;
 
   const {
@@ -28,6 +29,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       list_id: listId,
       limit,
       offset: limit * pageIndex,
+      query: `%${query.trim()}%`,
     },
     {
       refetchOnWindowFocus: false,
@@ -294,6 +296,10 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
     [],
   );
 
+  const onChangeSearchQuery = (value: string) => {
+    setQuery(value);
+  };
+
   const onPreviousPage = () => {
     setPageIndex(pageIndex - 1);
   };
@@ -326,6 +332,8 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       noDataText="There are no investors in this list."
       exploreBtnHref="/investors"
       exploreBtnText="Explore Investors"
+      searchQuery={query}
+      onChangeSearchQuery={onChangeSearchQuery}
       onRefetchData={refetch}
       onPreviousPage={onPreviousPage}
       onNextPage={onNextPage}

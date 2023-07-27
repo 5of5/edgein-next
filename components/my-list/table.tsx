@@ -37,6 +37,8 @@ type Props = {
   noDataText: string;
   exploreBtnHref?: string;
   exploreBtnText?: string;
+  searchQuery: string;
+  onChangeSearchQuery: (value: string) => void;
   onRefetchData: () => void;
   onPreviousPage: () => void;
   onNextPage: () => void;
@@ -54,6 +56,8 @@ export const Table: FC<Props> = ({
   noDataText,
   exploreBtnHref,
   exploreBtnText,
+  searchQuery,
+  onChangeSearchQuery,
   onRefetchData,
   onPreviousPage,
   onNextPage,
@@ -105,10 +109,9 @@ export const Table: FC<Props> = ({
     rows,
     selectedFlatRows,
     toggleHideAllColumns,
-    state: { selectedRowIds, globalFilter },
+    state: { selectedRowIds },
     toggleAllRowsSelected,
     preGlobalFilteredRows,
-    setGlobalFilter,
   } = useTable(
     {
       columns,
@@ -176,7 +179,7 @@ export const Table: FC<Props> = ({
         )}
 
         {['companies', 'investors'].includes(resourceType) &&
-          fundingTotal &&
+          fundingTotal !== undefined &&
           fundingTotal > 0 && (
             <div className="flex items-center sm:justify-center sm:text-right font-bold shrink-0 mr-2">
               <div className="text-sm mr-1">{`Total ${
@@ -220,9 +223,11 @@ export const Table: FC<Props> = ({
                 resetColumns={() => toggleHideAllColumns(false)}
               />
               <TableGlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
+                placeholder={`Search ${
+                  totalItems > 1 ? `${totalItems} items` : `${totalItems} item`
+                }...`}
+                defaultValue={searchQuery}
+                onChange={onChangeSearchQuery}
               />
             </div>
           )}

@@ -13,6 +13,7 @@ type Props = {
 
 export const PeopleList: FC<Props> = ({ listId, listName }) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [query, setQuery] = useState('');
   const limit = 10;
   const {
     data: listPeople,
@@ -24,6 +25,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
       list_id: listId,
       limit,
       offset: limit * pageIndex,
+      query: `%${query.trim()}%`,
     },
     {
       refetchOnWindowFocus: false,
@@ -168,6 +170,10 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
     [],
   );
 
+  const onChangeSearchQuery = (value: string) => {
+    setQuery(value);
+  };
+
   const onPreviousPage = () => {
     setPageIndex(pageIndex - 1);
   };
@@ -197,6 +203,8 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
       pageIndex={pageIndex}
       totalItems={totalItems}
       noDataText="There are no people in this list."
+      searchQuery={query}
+      onChangeSearchQuery={onChangeSearchQuery}
       onRefetchData={refetch}
       onPreviousPage={onPreviousPage}
       onNextPage={onNextPage}

@@ -16,6 +16,7 @@ type Props = {
 
 export const CompaniesList: FC<Props> = ({ listId, listName }) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [query, setQuery] = useState('');
   const limit = 10;
   const {
     data: companiesData,
@@ -27,6 +28,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       list_id: listId,
       limit,
       offset: limit * pageIndex,
+      query: `%${query.trim()}%`,
     },
     {
       refetchOnWindowFocus: false,
@@ -287,6 +289,10 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
     [],
   );
 
+  const onChangeSearchQuery = (value: string) => {
+    setQuery(value);
+  };
+
   const onPreviousPage = () => {
     setPageIndex(pageIndex - 1);
   };
@@ -319,6 +325,8 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       noDataText="There are no companies in this list."
       exploreBtnHref="/companies"
       exploreBtnText="Explore Companies"
+      searchQuery={query}
+      onChangeSearchQuery={onChangeSearchQuery}
       onRefetchData={refetch}
       onPreviousPage={onPreviousPage}
       onNextPage={onNextPage}

@@ -25367,6 +25367,7 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
+  query: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -25376,6 +25377,7 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
+  query: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -25417,6 +25419,7 @@ export type GetPeopleByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
+  query: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -27636,9 +27639,9 @@ useGetFollowsByUserQuery.getKey = (variables: GetFollowsByUserQueryVariables) =>
 
 useGetFollowsByUserQuery.fetcher = (variables: GetFollowsByUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByUserQuery, GetFollowsByUserQueryVariables>(GetFollowsByUserDocument, variables, options);
 export const GetCompaniesByListIdDocument = `
-    query GetCompaniesByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+    query GetCompaniesByListId($list_id: Int = 0, $limit: Int, $offset: Int, $query: String) {
   follows_companies(
-    where: {list_id: {_eq: $list_id}}
+    where: {_and: [{list_id: {_eq: $list_id}}, {company: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
     limit: $limit
     offset: $offset
   ) {
@@ -27670,7 +27673,9 @@ export const GetCompaniesByListIdDocument = `
       slug
     }
   }
-  follows_companies_aggregate(where: {list_id: {_eq: $list_id}}) {
+  follows_companies_aggregate(
+    where: {_and: [{list_id: {_eq: $list_id}}, {company: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
+  ) {
     aggregate {
       count
     }
@@ -27697,9 +27702,9 @@ useGetCompaniesByListIdQuery.getKey = (variables?: GetCompaniesByListIdQueryVari
 
 useGetCompaniesByListIdQuery.fetcher = (variables?: GetCompaniesByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesByListIdQuery, GetCompaniesByListIdQueryVariables>(GetCompaniesByListIdDocument, variables, options);
 export const GetVcFirmsByListIdDocument = `
-    query GetVcFirmsByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+    query GetVcFirmsByListId($list_id: Int = 0, $limit: Int, $offset: Int, $query: String) {
   follows_vc_firms(
-    where: {list_id: {_eq: $list_id}}
+    where: {_and: [{list_id: {_eq: $list_id}}, {vc_firm: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
     limit: $limit
     offset: $offset
   ) {
@@ -27726,7 +27731,9 @@ export const GetVcFirmsByListIdDocument = `
       }
     }
   }
-  follows_vc_firms_aggregate(where: {list_id: {_eq: $list_id}}) {
+  follows_vc_firms_aggregate(
+    where: {_and: [{list_id: {_eq: $list_id}}, {vc_firm: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
+  ) {
     aggregate {
       count
     }
@@ -27857,9 +27864,9 @@ useGetFollowsByResourceQuery.getKey = (variables: GetFollowsByResourceQueryVaria
 
 useGetFollowsByResourceQuery.fetcher = (variables: GetFollowsByResourceQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables, options);
 export const GetPeopleByListIdDocument = `
-    query GetPeopleByListId($list_id: Int = 0, $limit: Int, $offset: Int) {
+    query GetPeopleByListId($list_id: Int = 0, $limit: Int, $offset: Int, $query: String) {
   follows_people(
-    where: {list_id: {_eq: $list_id}}
+    where: {_and: [{list_id: {_eq: $list_id}}, {person: {_or: [{name: {_ilike: $query}}, {personal_email: {_ilike: $query}}, {work_email: {_ilike: $query}}]}}]}
     limit: $limit
     offset: $offset
   ) {
@@ -27880,7 +27887,9 @@ export const GetPeopleByListIdDocument = `
       linkedin
     }
   }
-  follows_people_aggregate(where: {list_id: {_eq: $list_id}}) {
+  follows_people_aggregate(
+    where: {_and: [{list_id: {_eq: $list_id}}, {person: {_or: [{name: {_ilike: $query}}, {personal_email: {_ilike: $query}}, {work_email: {_ilike: $query}}]}}]}
+  ) {
     aggregate {
       count
     }
