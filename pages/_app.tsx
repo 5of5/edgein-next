@@ -135,7 +135,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Script
         src="https://aggle.net/js?pid=J9GEZNSN8"
         strategy="afterInteractive"
-        type="js"></Script>
+        type="js"
+      ></Script>
       <div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
         <QueryClientProvider client={queryClient}>
           {pageProps.noLayout ? (
@@ -186,6 +187,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
+        {/* test */}
       </div>
     </>
   );

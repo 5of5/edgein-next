@@ -73,7 +73,7 @@ const blue = {
   900: '#1E3A8A',
 };
 
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [

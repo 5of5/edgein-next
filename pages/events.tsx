@@ -124,7 +124,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -138,7 +139,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -191,13 +193,15 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       <div className="relative">
         <div
           className="mb-4 flex items-center justify-between overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
-          role="tablist">
+          role="tablist"
+        >
           <nav className="flex space-x-2">
             <ElemButton
               // onClick={() => onChangeTab(tab)}
               btn="slate"
               roundedFull={false}
-              className="rounded-lg">
+              className="rounded-lg"
+            >
               Featured
             </ElemButton>
             {eventTabs &&
@@ -210,7 +214,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                     onClick={() => onChangeTab(tab)}
                     btn="slate"
                     roundedFull={false}
-                    className="rounded-lg">
+                    className="rounded-lg"
+                  >
                     {/* <IconDead className="w-5 h-5 mr-1" /> */}
                     {tab.title}
                   </ElemButton>
@@ -256,7 +261,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                   )
                 }
                 btn="white"
-                className="mt-3">
+                className="mt-3"
+              >
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>
@@ -266,7 +272,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
         <div
           data-testid="events"
-          className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+          className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+        >
           {error ? (
             <h4>Error loading events</h4>
           ) : isLoading && !initialLoad ? (
