@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { SHOW_INVITE_BANNER } from '@/utils/constants';
 import { IconX, IconArrowRight } from '../icons';
 
-export const ElemInviteBanner = () => {
+type Props = {
+  className?: string;
+};
+
+export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
@@ -27,7 +31,9 @@ export const ElemInviteBanner = () => {
   }
 
   return (
-    <div className="flex items-center gap-x-6 px-6 py-2.5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg sm:px-3.5 sm:before:flex-1">
+    <div
+      className={`flex items-center gap-x-6 px-6 py-2.5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
+    >
       <Link href={'/account'}>
         <a className="text-white">
           Get <strong className="font-bold">1 month free</strong> for every

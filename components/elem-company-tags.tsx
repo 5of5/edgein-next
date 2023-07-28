@@ -31,19 +31,19 @@ const ElemCompanyTags: FC<Props> = ({
 
   if (layer || isRaisingCompany || tags) {
     return (
-      <div className={`mt-4 flex flex-wrap gap-2 ${className}`}>
+      <div className={`mt-4 flex flex-nowrap overflow-clip gap-2 ${className}`}>
         {!hideLayer && layer && (
           <div
             className={`${getLayerClass(
               layer,
-            )} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+            )} shrink-0 text-xs font-medium px-3 py-1 rounded-full`}
           >
             {layer}
           </div>
         )}
 
         {isRaisingCompany && (
-          <div className="shrink-0 bg-rose-100 text-rose-500 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full">
+          <div className="shrink-0 bg-rose-100 text-rose-500 text-xs font-medium px-3 py-1 rounded-full">
             Raising
           </div>
         )}
@@ -53,7 +53,7 @@ const ElemCompanyTags: FC<Props> = ({
             <div
               key={index}
               onClick={e => handleTagClick(e, tag)}
-              className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full ${
+              className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
                 tagOnClick !== undefined
                   ? 'cursor-pointer hover:bg-slate-300'
                   : ''

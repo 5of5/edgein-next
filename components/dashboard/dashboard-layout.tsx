@@ -27,9 +27,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
           <DashboardSidebar />
         </div>
 
-        <div className="min-h-[calc(100vh_-_3rem)] lg:pl-72">
-          <div className="p-4">{children}</div>
-        </div>
+        <div className="min-h-[calc(100vh_-_3rem)] lg:pl-72">{children}</div>
       </div>
 
       <Transition.Root show={sidebarOpen} as={Fragment}>

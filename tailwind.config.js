@@ -48,8 +48,8 @@ const darkBlue = {
 
 const gray = {
   50: '#FCFCFC',
-  100: '#eeeef1',
-  200: '#d5d5db',
+  100: '#f3f4f6',
+  200: '#e5e7eb',
   250: '#E2E8F0',
   300: '#bcbcc5',
   400: '#425466',

@@ -6,6 +6,7 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
 import ElemCompanyTags from '../elem-company-tags';
+import { IconGlobe } from '@/components/icons';
 
 type Props = {
   company: Companies;
@@ -19,67 +20,71 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
     setCompanyData(company);
   }, [company]);
 
-  const { id, slug, logo, name, coin, overview, follows } = companyData;
+  const { id, slug, logo, name, coin, overview, follows, website } =
+    companyData;
 
   return (
-    <Link href={`/companies/${slug}`}>
-      <a
-        target="_blank"
-        className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
-      >
-        <div className="flex shrink-0 w-full">
-          <ElemPhoto
-            photo={logo}
-            wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow"
-            imgClass="object-fit max-w-full max-h-full"
-            imgAlt={name}
-            placeholderClass="text-slate-300"
-          />
-
-          <div className="flex items-center justify-center pl-2 md:overflow-visible">
-            <div>
-              <h3
-                className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl"
-                title={name ?? ''}
-              >
-                {name}
-              </h3>
-              {coin && (
-                <ElemTooltip
-                  content={`Token`}
-                  className="inline-flex items-center overflow-visible"
-                >
-                  <span className="uppercase">{coin.ticker}</span>
-                </ElemTooltip>
-              )}
-            </div>
+    <div className="flex flex-col w-full p-4">
+      <Link href={`/companies/${slug}`}>
+        <a target="_blank">
+          <div className="flex shrink-0 w-full">
+            <ElemPhoto
+              photo={logo}
+              wrapClass="flex items-center justify-center shrink-0 w-36 aspect-square p-1 bg-white rounded-lg shadow"
+              imgClass="object-fit max-w-full max-h-full"
+              imgAlt={name}
+              placeholderClass="text-slate-300"
+            />
           </div>
-        </div>
+        </a>
+      </Link>
+      <Link href={`/companies/${slug}`}>
+        <a target="_blank" className="flex items-center mt-4">
+          <h3
+            className="inline min-w-0 text-xl font-medium break-words line-clamp-1"
+            title={name ?? ''}
+          >
+            {name}
+          </h3>
+          {coin && (
+            <ElemTooltip
+              content={`Token`}
+              className="inline-flex items-center overflow-visible"
+            >
+              <span className="uppercase">{coin.ticker}</span>
+            </ElemTooltip>
+          )}
+        </a>
+      </Link>
 
-        <div className="grow">
-          <ElemCompanyTags company={company} tagOnClick={tagOnClick} />
-
-          {overview && (
-            <div className="grow mt-4">
-              <div className="text-gray-400 line-clamp-5">{overview}</div>
-            </div>
+      <div>
+        {overview && (
+          <div className="grow mt-4">
+            <div className="text-sm line-clamp-3">{overview}</div>
+          </div>
+        )}
+        <ElemCompanyTags company={company} tagOnClick={tagOnClick} />
+      </div>
+      <div className="flex items-center justify-between mt-4 gap-x-5">
+        <div>
+          {website && (
+            <Link href={website}>
+              <a target="_blank">
+                <IconGlobe className="h-6 w-6" />
+              </a>
+            </Link>
           )}
         </div>
-        <div
-          className="flex items-center justify-between mt-4 gap-x-5"
-          onClick={e => e.stopPropagation()}
-        >
-          <ElemReactions resource={company} resourceType={'companies'} />
-          <ElemSaveToList
-            resourceName={name}
-            resourceId={id}
-            resourceType={'companies'}
-            slug={slug!}
-            buttonStyle="white"
-            follows={follows}
-          />
-        </div>
-      </a>
-    </Link>
+        {/* <ElemReactions resource={company} resourceType={'companies'} /> */}
+        <ElemSaveToList
+          resourceName={name}
+          resourceId={id}
+          resourceType={'companies'}
+          slug={slug!}
+          buttonStyle="white"
+          follows={follows}
+        />
+      </div>
+    </div>
   );
 };
