@@ -58,7 +58,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         if (isClaimedPerson) {
           return res.status(400).send({
-            error: 'The LinkedIn URL you provided was existed in another user.',
+            error:
+              'A user with this LinkedIn profile already exists. Try a different one.',
           });
         }
         await onLinkUserToPerson(user.id, personByLinkedin.id);
