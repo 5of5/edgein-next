@@ -10,8 +10,8 @@ import {
   UpdateUserPersonIdMutation,
   InsertOnboardingClaimProfileMutation,
   InsertOnboardingClaimProfileDocument,
-  GetUserByPersonIdQuery,
-  GetUserByPersonIdDocument,
+  GetUserPublicByPersonIdQuery,
+  GetUserPublicByPersonIdDocument,
 } from '@/graphql/types';
 import CookieService from '../../utils/cookie';
 import SlackServices from '@/utils/slack';
@@ -41,7 +41,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // Link user to person id
     if (selectedPerson?.id) {
-      const isClaimedPerson = await onFindUserByPersonId(selectedPerson.id);
+      const isClaimedPerson = await onFindUserPublicByPersonId(
+        selectedPerson.id,
+      );
       if (isClaimedPerson) {
         return res.status(400).send({
           error: 'The profile you chose was claimed from another user.',
@@ -51,7 +53,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } else if (linkedin) {
       const personByLinkedin = await onFindPeopleByLinkedin(linkedin);
       if (personByLinkedin?.id) {
-        const isClaimedPerson = await onFindUserByPersonId(personByLinkedin.id);
+        const isClaimedPerson = await onFindUserPublicByPersonId(
+          personByLinkedin.id,
+        );
         if (isClaimedPerson) {
           return res.status(400).send({
             error: 'The LinkedIn URL you provided was existed in another user.',
@@ -189,17 +193,17 @@ const onInsertProfile = async (
   return insert_people_one;
 };
 
-const onFindUserByPersonId = async (personId: number) => {
+const onFindUserPublicByPersonId = async (personId: number) => {
   const {
-    data: { users },
-  } = await query<GetUserByPersonIdQuery>({
-    query: GetUserByPersonIdDocument,
+    data: { users_public },
+  } = await query<GetUserPublicByPersonIdQuery>({
+    query: GetUserPublicByPersonIdDocument,
     variables: {
       person_id: personId,
     },
   });
 
-  return users[0];
+  return users_public[0];
 };
 
 export default handler;

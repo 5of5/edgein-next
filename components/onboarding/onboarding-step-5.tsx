@@ -81,7 +81,8 @@ export default function OnboardingStep5(props: Props) {
               <div
                 className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                   t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}>
+                }`}
+              >
                 {error.error}
               </div>
             ),
@@ -117,7 +118,8 @@ export default function OnboardingStep5(props: Props) {
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0">
+            leaveTo="opacity-0"
+          >
             <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
@@ -129,7 +131,8 @@ export default function OnboardingStep5(props: Props) {
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-300"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
               <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
                 <h3 className="text-2xl font-bold">{ONBOARDING_QUESTION}</h3>
                 <p className="text-sm text-slate-500">Step 4 of 4</p>
@@ -149,14 +152,16 @@ export default function OnboardingStep5(props: Props) {
                   <ElemButton
                     onClick={onBack}
                     btn="transparent"
-                    className="text-slate-600">
+                    className="text-slate-600"
+                  >
                     Back
                   </ElemButton>
                   <ElemButton
                     onClick={onNext}
                     btn="primary"
                     disabled={isSubmitting}
-                    loading={isSubmitting}>
+                    loading={isSubmitting}
+                  >
                     Finish Setup
                   </ElemButton>
                 </div>
