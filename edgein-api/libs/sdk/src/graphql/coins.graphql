@@ -1,0 +1,11 @@
+query getCoins {
+    coins(filter: {}) {
+        edges {
+            cursor
+            node {
+                id
+                ticker
+            }
+        }
+    }
+}

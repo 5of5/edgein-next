@@ -1,0 +1,83 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/utils": [
+        "libs/utils/src"
+      ],
+      "@app/utils/*": [
+        "libs/utils/src/*"
+      ],
+      "@app/database": [
+        "libs/database/src"
+      ],
+      "@app/database/*": [
+        "libs/database/src/*"
+      ],
+      "@app/coin": [
+        "libs/coin/src"
+      ],
+      "@app/coin/*": [
+        "libs/coin/src/*"
+      ],
+      "@app/company": [
+        "libs/company/src"
+      ],
+      "@app/company/*": [
+        "libs/company/src/*"
+      ],
+      "@app/entities": [
+        "libs/entities/src"
+      ],
+      "@app/entities/*": [
+        "libs/entities/src/*"
+      ],
+      "@app/dtos": [
+        "libs/dtos/src"
+      ],
+      "@app/dtos/*": [
+        "libs/dtos/src/*"
+      ],
+      "@app/types": [
+        "libs/types/src"
+      ],
+      "@app/types/*": [
+        "libs/types/src/*"
+      ],
+      "@app/social-medium": [
+        "libs/social-medium/src"
+      ],
+      "@app/social-medium/*": [
+        "libs/social-medium/src/*"
+      ],
+      "@app/sdk": [
+        "libs/sdk/src"
+      ],
+      "@app/sdk/*": [
+        "libs/sdk/src/*"
+      ],
+      "@app/geo": [
+        "libs/geo/src"
+      ],
+      "@app/geo/*": [
+        "libs/geo/src/*"
+      ]
+    }
+  }
+}

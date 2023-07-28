@@ -1,0 +1,35 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/utils/(.*)": "<rootDir>/../libs/utils/src/$1",
+    "@app/utils": "<rootDir>/../libs/utils/src",
+    "@app/database/(.*)": "<rootDir>/../libs/database/src/$1",
+    "@app/database": "<rootDir>/../libs/database/src",
+    "@app/coin/(.*)": "<rootDir>/../libs/coin/src/$1",
+    "@app/coin": "<rootDir>/../libs/coin/src",
+    "@app/company/(.*)": "<rootDir>/../libs/company/src/$1",
+    "@app/company": "<rootDir>/../libs/company/src",
+    "@app/entities/(.*)": "<rootDir>/../libs/entities/src/$1",
+    "@app/entities": "<rootDir>/../libs/entities/src",
+    "@app/dtos/(.*)": "<rootDir>/../libs/dtos/src/$1",
+    "@app/dtos": "<rootDir>/../libs/dtos/src",
+    "@app/types/(.*)": "<rootDir>/../libs/types/src/$1",
+    "@app/types": "<rootDir>/../libs/types/src",
+    "@app/social-medium/(.*)": "<rootDir>/../libs/social-medium/src/$1",
+    "@app/social-medium": "<rootDir>/../libs/social-medium/src",
+    "@app/sdk/(.*)": "<rootDir>/../libs/sdk/src/$1",
+    "@app/sdk": "<rootDir>/../libs/sdk/src",
+    "@app/geo/(.*)": "<rootDir>/../libs/geo/src/$1",
+    "@app/geo": "<rootDir>/../libs/geo/src"
+  }
+}

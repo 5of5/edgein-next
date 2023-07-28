@@ -29,8 +29,8 @@ services:
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
-      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET}
-      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_JWT_SECRET}
+      HASURA_GRAPHQL_ADMIN_SECRET: devsecret
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "you-should-create-your-own-secret-to-use-for-encryption"}'
   cache:
     image: redis:6.2-alpine
     restart: always

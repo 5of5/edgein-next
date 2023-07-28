@@ -1,0 +1,5 @@
+mutation createOneCompany($company: CompanyCreate!) {
+    createOneCompany(input: {company: $company}) {
+        id
+    }
+}

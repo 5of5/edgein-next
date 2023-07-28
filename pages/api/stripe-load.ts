@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // check if user already has a subscription
         // Authenticate your user.
         const session = await stripe.billingPortal.sessions.create({
-          customer: dbuser.billing_org?.customer_id,
+          customer: dbuser.billing_org.customer_id,
           return_url: `${req.headers.origin}/account`,
         });
         res.send({ success: true, redirect: session.url });

@@ -1,6 +1,6 @@
 version: 3
-endpoint: http://localhost:8080
-admin_secret: devsecret
+endpoint: https://pr-661.edgein.dev
+admin_secret: KoOVkgWAtTzp5wTrRnlNXP5oOy9Hb5A3
 metadata_directory: metadata
 actions:
   kind: synchronous

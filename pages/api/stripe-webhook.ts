@@ -5,7 +5,15 @@ import BillingService from '../../utils/billing-org';
 import { buffer } from 'micro';
 import SlackServices from '@/utils/slack';
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2022-11-15',
+});
+
+function isCustomer(
+  resp: Stripe.Customer | Stripe.DeletedCustomer,
+): resp is Stripe.Customer {
+  return !resp.deleted;
+}
 
 export const config = { api: { bodyParser: false } };
 
@@ -26,6 +34,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Get the signature sent by Stripe
       const signature = req.headers['stripe-signature'];
       const reqBuffer = await buffer(req);
+      if (!signature) {
+        console.error(
+          `⚠️  Webhook signature verification failed. Missing stripe signature header`,
+        );
+        return res.status(400).send({
+          error: `Webhook signature verification failed. Missing stripe signature header`,
+        });
+      }
 
       try {
         event = stripe.webhooks.constructEvent(
@@ -48,15 +64,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send({
         error: `Webhook signature verification failed. Missing endpointSecret`,
       });
-    } else {
-      try {
-        // event = JSON.parse(event.toString());
-      } catch (err: any) {
-        console.error(`Webhook event parse failed. ${err.message}`);
-        return res
-          .status(400)
-          .send({ error: `Webhook event parse failed. ${err.message}` });
-      }
     }
     let customerId: string;
     // Handle the event
@@ -70,6 +77,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         if (!billingOrg) {
           const customer = await stripe.customers.retrieve(customerId);
+          if (!isCustomer(customer)) {
+            break;
+          }
+          if (!customer.email) {
+            console.error(`Stripe user is missing email attribute`);
+            return res.status(400).send({
+              error: `Stripe user missing email attribute`,
+            });
+          }
           const user = await UserService.findOneUserByEmail(customer.email);
           if (!user) {
             // slack
