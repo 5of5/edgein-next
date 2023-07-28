@@ -186,7 +186,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
-        {/* test */}
       </div>
     </>
   );
