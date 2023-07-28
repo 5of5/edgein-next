@@ -27,6 +27,7 @@ import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 type Props = {
   eventTabs: TextFilter[];
@@ -123,8 +124,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -138,8 +138,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -188,140 +187,118 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
   return (
-    <div className="relative">
-      <ElemHeading
-        title="Events"
-        //subtitle={`Don't miss a beat. Here's your lineup for all of the industry's must attend events. Holding an event? Let us know.`}
-      >
-        <p className="max-w-3xl mt-5 text-xl text-slate-600">
-          Don&rsquo;t miss a beat. Here&rsquo;s your lineup for all of the
-          industry&rsquo;s must attend events. Holding an event?{' '}
-          <button
-            onClick={() =>
-              showNewMessages(`Hi EdgeIn, I'd like to submit an event`)
-            }
-            className="text-primary-500 hover:underline"
-          >
-            Let us know
-          </button>
-          .
-        </p>
-      </ElemHeading>
-
-      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-        <ElemFeaturedEvents className="shadow" heading="Featured" />
-      </div>
-
-      <div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow p-5">
-          <h2 className="text-xl font-bold">Events</h2>
-
-          <div
-            className="mt-2 mb-4 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
-            role="tablist"
-          >
-            <nav className="flex">
-              {eventTabs &&
-                eventTabs.map((tab: any, index: number) =>
-                  tab.disabled === true ? (
-                    <Fragment key={index}></Fragment>
-                  ) : (
-                    <button
-                      key={index}
-                      onClick={() => onChangeTab(tab)}
-                      className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-                        selectedTab.value === tab.value
-                          ? 'text-primary-500 border-primary-500'
-                          : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
-                    >
-                      {tab.title}
-                    </button>
-                  ),
-                )}
-            </nav>
-          </div>
-
-          <ElemInviteBanner />
-
-          <ElemFilter
-            className="py-3"
-            resourceType="events"
-            filterValues={selectedFilters}
-            dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
-            onApply={(name, filterParams) => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: filterParams });
-            }}
-            onClearOption={name => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: undefined });
-            }}
-            onReset={() => setSelectedFilters(null)}
-          />
-
-          {events?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
-
-          <div
-            data-testid="events"
-            className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {error ? (
-              <h4>Error loading events</h4>
-            ) : isLoading && !initialLoad ? (
-              <>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <PlaceholderEventCard key={i} />
-                ))}
-              </>
-            ) : (
-              events?.map(event => (
-                <ElemEventCard
-                  key={event.id}
-                  event={event}
-                  onClickType={onClickType}
-                />
-              ))
-            )}
-          </div>
-
-          <Pagination
-            shownItems={events?.length}
-            totalItems={events_aggregate}
-            page={page}
-            itemsPerPage={limit}
-            numeric
-            onClickPrev={() => setPage(page - 1)}
-            onClickNext={() => setPage(page + 1)}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
+    <DashboardLayout>
+      <div className="relative">
+        <div
+          className="mb-4 flex items-center justify-between overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+          role="tablist">
+          <nav className="flex space-x-2">
+            <ElemButton
+              // onClick={() => onChangeTab(tab)}
+              btn="slate"
+              roundedFull={false}
+              className="rounded-lg">
+              Featured
+            </ElemButton>
+            {eventTabs &&
+              eventTabs.map((tab: any, index: number) =>
+                tab.disabled === true ? (
+                  <Fragment key={index}></Fragment>
+                ) : (
+                  <ElemButton
+                    key={index}
+                    onClick={() => onChangeTab(tab)}
+                    btn="slate"
+                    roundedFull={false}
+                    className="rounded-lg">
+                    {/* <IconDead className="w-5 h-5 mr-1" /> */}
+                    {tab.title}
+                  </ElemButton>
+                ),
+              )}
+          </nav>
         </div>
+
+        <ElemInviteBanner />
+
+        <ElemFilter
+          className="py-3"
+          resourceType="events"
+          filterValues={selectedFilters}
+          dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
+          onApply={(name, filterParams) => {
+            filters._and = defaultFilters;
+            setSelectedFilters({
+              ...selectedFilters,
+              [name]: filterParams,
+            });
+          }}
+          onClearOption={name => {
+            filters._and = defaultFilters;
+            setSelectedFilters({ ...selectedFilters, [name]: undefined });
+          }}
+          onReset={() => setSelectedFilters(null)}
+        />
+
+        {events?.length === 0 && (
+          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+              <div className="mt-1 text-lg text-slate-600">
+                Please check spelling, try different filters, or tell us about
+                missing data.
+              </div>
+              <ElemButton
+                onClick={() =>
+                  showNewMessages(
+                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                  )
+                }
+                btn="white"
+                className="mt-3">
+                <IconAnnotation className="w-6 h-6 mr-1" />
+                Tell us about missing data
+              </ElemButton>
+            </div>
+          </div>
+        )}
+
+        <div
+          data-testid="events"
+          className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+          {error ? (
+            <h4>Error loading events</h4>
+          ) : isLoading && !initialLoad ? (
+            <>
+              {Array.from({ length: 9 }, (_, i) => (
+                <PlaceholderEventCard key={i} />
+              ))}
+            </>
+          ) : (
+            events?.map(event => (
+              <ElemEventCard
+                key={event.id}
+                event={event}
+                onClickType={onClickType}
+              />
+            ))
+          )}
+        </div>
+
+        <Pagination
+          shownItems={events?.length}
+          totalItems={events_aggregate}
+          page={page}
+          itemsPerPage={limit}
+          numeric
+          onClickPrev={() => setPage(page - 1)}
+          onClickNext={() => setPage(page + 1)}
+          onClickToPage={selectedPage => setPage(selectedPage)}
+        />
+        <Toaster />
       </div>
-      <Toaster />
-    </div>
+    </DashboardLayout>
   );
 };
 

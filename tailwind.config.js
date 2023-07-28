@@ -47,7 +47,7 @@ const darkBlue = {
 };
 
 const gray = {
-  50: '#F2F5FA',
+  50: '#FCFCFC',
   100: '#eeeef1',
   200: '#d5d5db',
   250: '#E2E8F0',
@@ -73,6 +73,8 @@ const blue = {
   900: '#1E3A8A',
 };
 
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -81,7 +83,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      sans: ['Inter', 'Metropolis', ...defaultTheme.fontFamily.sans],
     },
     extend: {
       fontSize: {

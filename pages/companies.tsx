@@ -14,6 +14,9 @@ import {
   IconAnnotation,
   IconGrid,
   IconTable,
+  IconDead,
+  IconAcquired,
+  IconTrending,
 } from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
@@ -37,6 +40,7 @@ import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -147,8 +151,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -162,8 +165,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -204,122 +206,124 @@ const Companies: NextPage<Props> = ({
   const { showNewMessages } = useIntercom();
 
   return (
-    <div className="relative">
-      {!initialLoad && (
-        <ElemHeading
-          title={`${selectedLibrary} Companies`}
-          subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
-        ></ElemHeading>
-      )}
+    <DashboardLayout>
+      <div className="relative">
+        <div
+          className="relative mb-4 flex items-center justify-between"
+          role="tablist">
+          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+            {companyStatusTags &&
+              companyStatusTags.map((tab: any, index: number) =>
+                tab.disabled === true ? (
+                  <Fragment key={index}></Fragment>
+                ) : (
+                  <ElemButton
+                    key={index}
+                    onClick={() => setSelectedStatusTag(tab)}
+                    btn="slate"
+                    roundedFull={false}
+                    className="rounded-lg">
+                    {/* <IconDead className="w-5 h-5 mr-1" /> */}
+                    {tab.title}
+                  </ElemButton>
+                ),
+              )}
+          </nav>
 
-      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-        <ElemRecentCompanies className="shadow" heading="Recently Discovered" />
-      </div>
-
-      <div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow p-5">
-          <h2 className="text-xl font-bold">Companies</h2>
-
-          <div
-            className="relative mt-2 mb-4 flex items-center justify-between lg:border-y lg:border-black/10"
-            role="tablist"
-          >
-            <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x border-y border-black/10 pr-32 sm:pr-0 lg:border-none">
-              {companyStatusTags &&
-                companyStatusTags.map((tab: any, index: number) =>
-                  tab.disabled === true ? (
-                    <Fragment key={index}></Fragment>
-                  ) : (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedStatusTag(tab)}
-                      className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-                        selectedStatusTag.value === tab.value
-                          ? 'text-primary-500 border-primary-500'
-                          : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
-                    >
-                      {tab.title}
-                    </button>
-                  ),
-                )}
-            </nav>
-
-            <div className="absolute right-0 flex items-center py-1.5 sm:relative sm:right-auto">
-              <div className="w-6 h-10 bg-gradient-to-r from-transparent to-white sm:hidden"></div>
-              <div className="hidden text-xs font-bold leading-sm uppercase pr-1 sm:block">
-                Layout:
-              </div>
-              <div className="bg-slate-200 rounded-full p-0.5">
-                <button
-                  onClick={() => setTableLayout(false)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    !tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
-                  <IconGrid className="w-5 h-5" title="Grid layout" />
-                </button>
-                <button
-                  onClick={() => setTableLayout(true)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
-                  <IconTable className="w-5 h-5" title="Table layout" />
-                </button>
-              </div>
+          <div className="absolute right-0 flex items-center py-1.5 sm:relative sm:right-auto">
+            <div className="w-6 h-10 bg-gradient-to-r from-transparent to-white sm:hidden"></div>
+            <div className="hidden text-xs font-bold leading-sm uppercase pr-1 sm:block">
+              Layout:
+            </div>
+            <div className="bg-slate-200 rounded-full p-0.5">
+              <button
+                onClick={() => setTableLayout(false)}
+                className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                  !tableLayout && 'bg-white shadow-sm text-primary-500'
+                }`}>
+                <IconGrid className="w-5 h-5" title="Grid layout" />
+              </button>
+              <button
+                onClick={() => setTableLayout(true)}
+                className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                  tableLayout && 'bg-white shadow-sm text-primary-500'
+                }`}>
+                <IconTable className="w-5 h-5" title="Table layout" />
+              </button>
             </div>
           </div>
+        </div>
 
-          <ElemInviteBanner />
+        <ElemInviteBanner />
 
-          <div>
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading companies
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
+        <div>
+          {error ? (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+              <div className="max-w-xl mx-auto">
+                <h4 className="mt-5 text-3xl font-bold">
+                  Error loading companies
+                </h4>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, reset filters, or{' '}
+                  <button
+                    onClick={() =>
+                      showNewMessages(
+                        `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                      )
+                    }
+                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    <span>report error</span>
+                  </button>
+                  .
                 </div>
               </div>
-            ) : isLoading && !initialLoad ? (
-              <>
-                {tableLayout ? (
-                  <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                    <PlaceholderTable />
-                  </div>
-                ) : (
-                  <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                    {Array.from({ length: 9 }, (_, i) => (
-                      <PlaceholderCompanyCard key={i} />
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : tableLayout && companies?.length != 0 ? (
-              <CompaniesTable
-                companies={companies}
-                pageNumber={page}
-                itemsPerPage={limit}
-                shownItems={companies?.length}
-                totalItems={companies_aggregate}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                filterByTag={filterByTag}
+            </div>
+          ) : isLoading && !initialLoad ? (
+            <>
+              {tableLayout ? (
+                <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                  <PlaceholderTable />
+                </div>
+              ) : (
+                <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <PlaceholderCompanyCard key={i} />
+                  ))}
+                </div>
+              )}
+            </>
+          ) : tableLayout && companies?.length != 0 ? (
+            <CompaniesTable
+              companies={companies}
+              pageNumber={page}
+              itemsPerPage={limit}
+              shownItems={companies?.length}
+              totalItems={companies_aggregate}
+              onClickPrev={() => setPage(page - 1)}
+              onClickNext={() => setPage(page + 1)}
+              filterByTag={filterByTag}
+              filterValues={selectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                setSelectedFilters({
+                  ...selectedFilters,
+                  [name]: filterParams,
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                setSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => setSelectedFilters(null)}
+            />
+          ) : (
+            <>
+              <ElemFilter
+                className="py-3"
+                resourceType="companies"
                 filterValues={selectedFilters}
                 onApply={(name, filterParams) => {
                   filters._and = defaultFilters;
@@ -330,90 +334,69 @@ const Companies: NextPage<Props> = ({
                 }}
                 onClearOption={name => {
                   filters._and = defaultFilters;
-                  setSelectedFilters({ ...selectedFilters, [name]: undefined });
+                  setSelectedFilters({
+                    ...selectedFilters,
+                    [name]: undefined,
+                  });
                 }}
                 onReset={() => setSelectedFilters(null)}
               />
-            ) : (
-              <>
-                <ElemFilter
-                  className="py-3"
-                  resourceType="companies"
-                  filterValues={selectedFilters}
-                  onApply={(name, filterParams) => {
-                    filters._and = defaultFilters;
-                    setSelectedFilters({
-                      ...selectedFilters,
-                      [name]: filterParams,
-                    });
-                  }}
-                  onClearOption={name => {
-                    filters._and = defaultFilters;
-                    setSelectedFilters({
-                      ...selectedFilters,
-                      [name]: undefined,
-                    });
-                  }}
-                  onReset={() => setSelectedFilters(null)}
-                />
-                {companies?.length != 0 && (
-                  <div
-                    data-testid="companies"
-                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                  >
-                    {companies?.map(company => {
-                      return (
-                        <ElemCompanyCard
-                          key={company.id}
-                          company={company as Companies}
-                          tagOnClick={filterByTag}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-                <Pagination
-                  shownItems={companies?.length}
-                  totalItems={companies_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  numeric
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
-                />
-              </>
-            )}
-          </div>
-
-          {companies?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
+              {companies?.length != 0 && (
+                <div
+                  data-testid="companies"
+                  className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                  {companies?.map(company => {
+                    return (
+                      <ElemCompanyCard
+                        key={company.id}
+                        company={company as Companies}
+                        tagOnClick={filterByTag}
+                      />
+                    );
+                  })}
                 </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
+              )}
+              <Pagination
+                shownItems={companies?.length}
+                totalItems={companies_aggregate}
+                page={page}
+                itemsPerPage={limit}
+                numeric
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                onClickToPage={selectedPage => setPage(selectedPage)}
+              />
+            </>
           )}
         </div>
+
+        {companies?.length === 0 && (
+          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+              <div className="mt-1 text-lg text-slate-600">
+                Please check spelling, try different filters, or tell us about
+                missing data.
+              </div>
+              <ElemButton
+                onClick={() =>
+                  showNewMessages(
+                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                  )
+                }
+                btn="white"
+                className="mt-3">
+                <IconAnnotation className="w-6 h-6 mr-1" />
+                Tell us about missing data
+              </ElemButton>
+            </div>
+          </div>
+        )}
+
+        <Toaster />
       </div>
-      <Toaster />
-    </div>
+    </DashboardLayout>
   );
 };
 
@@ -469,7 +452,7 @@ const companyStatusTagValues = companyChoices.map(option => {
 
 const companyStatusTags: TextFilter[] = [
   {
-    title: 'All Companies',
+    title: 'New',
     value: '',
   },
   ...companyStatusTagValues,
