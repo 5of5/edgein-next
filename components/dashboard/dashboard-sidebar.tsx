@@ -89,15 +89,17 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   ];
 
   return (
-    <nav className={`p-4 border-r border-gray-200 bg-gray-50 ${className}`}>
-      <ul className="mt-1 space-y-2 text-slate-600">
+    <nav className={`p-4 text-gray-600 ${className}`}>
+      <ul>
         {exploreMenu.map((item: any) => (
           <li role="button" key={item.href}>
             <Link href={item.href}>
               <a
                 className={`${
-                  router.asPath.includes(item.href) ? 'bg-gray-100' : ''
-                } flex items-center space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200`}
+                  router.asPath.includes(item.href)
+                    ? 'bg-gray-100 text-gray-900'
+                    : ''
+                } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
               >
                 <item.icon className="w-6 h-6" />
                 <span>{item.title}</span>
@@ -107,9 +109,9 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
         ))}
       </ul>
 
-      <ElemMyNotesMenu className="mt-6" />
-      <ElemMyListsMenu className="mt-6" />
-      <ElemMyGroupsMenu className="mt-6" />
+      <ElemMyNotesMenu className="mt-8" />
+      <ElemMyListsMenu className="mt-3" />
+      <ElemMyGroupsMenu className="mt-3" />
       {/* <ElemMyEdgeInMenu /> */}
     </nav>
   );

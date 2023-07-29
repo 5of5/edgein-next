@@ -1602,6 +1602,25 @@ export const IconPlus: FC<IconProps> = ({ className, title, strokeWidth }) => {
   );
 };
 
+export const IconPlusSmall: FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+    >
+      <title>{title ? title : 'Add'}</title>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+    </svg>
+  );
+};
+
 export const IconChevronLeft: FC<IconProps> = ({
   className,
   title,
