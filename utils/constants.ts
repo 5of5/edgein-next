@@ -843,37 +843,37 @@ export const companiesFilterOptions = [
     category: 'Location',
     items: [
       {
-        label: 'Add country',
+        label: 'Country',
         value: 'country',
       },
       {
-        label: 'Add state',
+        label: 'State',
         value: 'state',
       },
       {
-        label: 'Add city',
+        label: 'City',
         value: 'city',
       },
       {
-        label: 'Add address',
+        label: 'Address',
         value: 'address',
       },
     ],
   },
   {
-    category: 'Description keywords',
+    // category: 'Keywords',
     items: [
       {
-        label: 'Add keywords',
+        label: 'Keywords',
         value: 'keywords',
       },
     ],
   },
   {
-    category: 'Tags',
+    //category: 'Tags',
     items: [
       {
-        label: 'Select tags',
+        label: 'Tags',
         value: 'industry',
       },
     ],
@@ -904,7 +904,7 @@ export const companiesFilterOptions = [
     ],
   },
   {
-    category: 'Team',
+    // category: 'Team',
     items: [
       {
         label: 'Team size',

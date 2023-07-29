@@ -401,9 +401,7 @@ export const ElemFilter: FC<Props> = ({
   };
 
   return (
-    <section
-      className={`w-full flex items-center justify-between ${className}`}
-    >
+    <section className={`${className}`}>
       <div className="flex flex-col flex-wrap w-full gap-3 items-start lg:flex-row lg:items-center">
         <ElemAddFilter
           resourceType={resourceType}

@@ -36,12 +36,19 @@ import { processCompaniesFilters } from '@/utils/filter';
 import { ElemFilter } from '@/components/elem-filter';
 import { useIntercom } from 'react-use-intercom';
 import useFilterParams from '@/hooks/use-filter-params';
-import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemAddFilter } from '@/components/elem-add-filter';
+import ElemLibrarySelector from '@/components/elem-library-selector';
+import {
+  SWITCH_LIBRARY_ALLOWED_DOMAINS,
+  SWITCH_LIBRARY_ALLOWED_EMAILS,
+} from '@/utils/constants';
+import useLibrary from '@/hooks/use-library';
+import { ElemDropdown } from '@/components/elem-dropdown';
+import { Popover, Transition } from '@headlessui/react';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -69,6 +76,12 @@ const Companies: NextPage<Props> = ({
 
   const router = useRouter();
 
+  const isDisplaySelectLibrary =
+    user?.email &&
+    (SWITCH_LIBRARY_ALLOWED_EMAILS.includes(user.email) ||
+      SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
+        user.email.endsWith(domain),
+      ));
   const { selectedLibrary } = useLibrary();
 
   const { selectedFilters, setSelectedFilters } = useFilterParams();
@@ -208,11 +221,26 @@ const Companies: NextPage<Props> = ({
 
   const { showNewMessages } = useIntercom();
 
+  const layoutItems = [
+    {
+      id: 0,
+      label: 'Grid View',
+      value: 'grid',
+      onClick: () => setTableLayout(false),
+    },
+    {
+      id: 1,
+      label: 'List View',
+      value: 'list',
+      onClick: () => setTableLayout(true),
+    },
+  ];
+
   return (
     <DashboardLayout>
       <div className="relative">
         <div
-          className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
+          className=" mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
@@ -236,53 +264,32 @@ const Companies: NextPage<Props> = ({
           </nav>
 
           <div className="flex space-x-2">
-            <div className="absolute right-0 flex items-center sm:relative sm:right-auto">
-              <div className="w-6 h-10 bg-gradient-to-r from-transparent to-white sm:hidden"></div>
-              <div className="hidden text-xs font-bold leading-sm uppercase pr-1 sm:block">
-                Layout:
-              </div>
-              <div className="bg-slate-200 rounded-full p-0.5">
-                <button
-                  onClick={() => setTableLayout(false)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    !tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
-                  <IconGrid className="w-5 h-5" title="Grid layout" />
-                </button>
-                <button
-                  onClick={() => setTableLayout(true)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
-                  <IconTable className="w-5 h-5" title="Table layout" />
-                </button>
-              </div>
-            </div>
+            {/* {isDisplaySelectLibrary &&  */}
+            <ElemLibrarySelector />
+            {/* } */}
+            <ElemDropdown items={layoutItems} />
+
+            <ElemFilter
+              resourceType="companies"
+              filterValues={selectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                setSelectedFilters({
+                  ...selectedFilters,
+                  [name]: filterParams,
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                setSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => setSelectedFilters(null)}
+            />
           </div>
         </div>
-
-        <ElemFilter
-          className="px-4"
-          resourceType="companies"
-          filterValues={selectedFilters}
-          onApply={(name, filterParams) => {
-            filters._and = defaultFilters;
-            setSelectedFilters({
-              ...selectedFilters,
-              [name]: filterParams,
-            });
-          }}
-          onClearOption={name => {
-            filters._and = defaultFilters;
-            setSelectedFilters({
-              ...selectedFilters,
-              [name]: undefined,
-            });
-          }}
-          onReset={() => setSelectedFilters(null)}
-        />
 
         <ElemInviteBanner className="mt-3 mx-4" />
 
