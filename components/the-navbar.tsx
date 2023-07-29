@@ -23,7 +23,7 @@ import {
   FindPeopleByNameAndEmailQuery,
   useGetUserByIdQuery,
 } from '@/graphql/types';
-import ElemSearchBox from './elem-search-box';
+import { ElemSearchBox } from './elem-search-box';
 import { find, first } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import ElemLibrarySelector from './elem-library-selector';
@@ -241,19 +241,15 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
           className="flex items-center justify-between lg:justify-start w-full mx-auto transition-all"
           aria-label="Global"
         >
-          <div className="flex items-center">
-            <div className="flex-none lg:mr-2">
-              <Link href={user ? '/companies' : '/'} passHref>
-                <a>
-                  <ElemLogo
-                    mode="logo"
-                    className="h-6 w-auto transition duration-200 ease-in-out scale-90 scheme-standard hover:scale-95 sm:h-8"
-                  />
-                </a>
-              </Link>
-            </div>
-            {isDisplaySelectLibrary && <ElemLibrarySelector />}
-          </div>
+          <Link href={user ? '/companies' : '/'} passHref>
+            <a className="w-auto lg:w-64">
+              <ElemLogo
+                mode="logo"
+                className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
+              />
+            </a>
+          </Link>
+
           <ElemSearchBox
             onClick={() => {
               setShowPopup('search');

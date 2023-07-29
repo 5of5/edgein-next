@@ -236,6 +236,33 @@ const Companies: NextPage<Props> = ({
     },
   ];
 
+  const sortItems = [
+    {
+      id: 0,
+      label: 'Ascending',
+      value: 'ascending',
+      onClick: () => {},
+    },
+    {
+      id: 1,
+      label: 'Descending',
+      value: 'descending',
+      onClick: () => {},
+    },
+    {
+      id: 2,
+      label: 'Newest First',
+      value: 'newest',
+      onClick: () => {},
+    },
+    {
+      id: 3,
+      label: 'Oldest First',
+      value: 'oldest',
+      onClick: () => {},
+    },
+  ];
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -288,6 +315,8 @@ const Companies: NextPage<Props> = ({
               }}
               onReset={() => setSelectedFilters(null)}
             />
+
+            <ElemDropdown items={sortItems} />
           </div>
         </div>
 

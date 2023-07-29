@@ -4,7 +4,12 @@ import { useEffect, useState, Fragment } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { ElemLogo } from './elem-logo';
-import { IconLinkedIn, IconCheck, IconExclamationTriangle } from './icons';
+import {
+  IconLinkedIn,
+  IconLinkedInAlt,
+  IconCheck,
+  IconExclamationTriangle,
+} from './icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { isFreeEmail } from '@/utils/helpers';
 import { redirect_url } from '@/utils/auth';
@@ -192,201 +197,178 @@ export default function SignUpModal(props: Props) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <Dialog.Panel className="max-w-lg w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide lg:p-12">
-              <div className="max-w-xs mx-auto w-full">
-                {isRegistered ? (
-                  <>
-                    <div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
-                      <ElemLogo mode="icon" className="w-10 aspect-square" />
-                    </div>
-                    <h1 className="mt-4 text-2xl font-bold lg:text-3xl">
-                      Registration Complete
-                    </h1>
-                    <p className="mt-2 text-slate-600">
-                      Thank you for creating an account and joining EdgeIn.
-                      Verify your email and Log in to get started.
-                    </p>
-                    <div className="mt-6">
-                      <ElemButton
-                        className="w-full"
-                        onClick={onLogin}
-                        btn="primary"
-                        loading={isLoading}
-                      >
-                        Login
-                      </ElemButton>
-                    </div>
-                  </>
-                ) : isWaitlisted ? (
-                  <>
-                    <div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
-                      <IconCheck className="w-10 aspect-square text-primary-500" />
-                    </div>
-                    <h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-                      You&rsquo;re on the list!
-                    </h1>
-                    <p className="mt-2 text-center text-slate-600">
-                      Your email <span className="font-bold">{email}</span> has
-                      been added to the waitlist. We will update you soon with
-                      your invite.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
-                      <ElemLogo mode="icon" className="w-10 aspect-square" />
-                    </div>
-                    <h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-                      Welcome to EdgeIn
-                    </h1>
+            <Dialog.Panel className="max-w-md w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide lg:p-12">
+              {isRegistered ? (
+                <>
+                  <h1 className="mt-4 text-2xl font-medium lg:text-3xl">
+                    Registration Complete
+                  </h1>
+                  <p className="mt-2 text-sm text-gray-500">
+                    Thank you for creating an account and joining EdgeIn. Verify
+                    your email and Log in to get started.
+                  </p>
+                  <div className="mt-6">
                     <ElemButton
-                      onClick={onLinkedInClick}
-                      btn="default"
-                      className="w-full mt-5 gap-x-2 text-center"
+                      className="w-full"
+                      onClick={onLogin}
+                      btn="primary"
+                      loading={isLoading}
                     >
-                      <IconLinkedIn
-                        title="LinkedIn"
-                        className="h-6 w-6 text-[#0077B5]"
-                      />
-                      Sign up with LinkedIn
+                      Login
                     </ElemButton>
+                  </div>
+                </>
+              ) : isWaitlisted ? (
+                <>
+                  <div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
+                    <IconCheck className="w-10 aspect-square text-primary-500" />
+                  </div>
+                  <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
+                    You&rsquo;re on the list!
+                  </h1>
+                  <p className="mt-2 text-center text-slate-600">
+                    Your email <span className="font-medium">{email}</span> has
+                    been added to the waitlist. We will update you soon with
+                    your invite.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-2xl text-center font-medium lg:text-3xl">
+                    Welcome to EdgeIn
+                  </h1>
+                  <ElemButton
+                    onClick={onLinkedInClick}
+                    btn="default"
+                    className="w-full mt-5 gap-x-2 text-center"
+                  >
+                    <IconLinkedInAlt
+                      title="LinkedIn"
+                      className="h-5 w-5 text-[#0077B5]"
+                    />
+                    Sign up with LinkedIn
+                  </ElemButton>
 
-                    <div className=" flex py-3 items-center">
-                      <div className="flex-grow border-t border-black/10"></div>
-                      <span className="flex-shrink mx-4 font-bold">or</span>
-                      <div className="flex-grow border-t border-black/10"></div>
+                  <div className=" flex py-6 items-center">
+                    <div className="flex-grow border-t border-gray-200"></div>
+                    <span className="flex-shrink mx-4 text-gray-500 text-sm">
+                      or
+                    </span>
+                    <div className="flex-grow border-t border-gray-200"></div>
+                  </div>
+
+                  <div>
+                    <form onSubmit={onSignUp}>
+                      <div className="flex flex-col space-y-4">
+                        <label>
+                          <span className="text-sm font-medium">Full name</span>
+                          <InputText
+                            name="name"
+                            type="text"
+                            value={name}
+                            disabled={isLoading}
+                            placeholder="First and last name"
+                            onChange={event =>
+                              validateName(event?.target.value)
+                            }
+                          />
+                          {nameError === '' ? null : (
+                            <div className="mt-2 font-medium text-sm text-rose-400">
+                              {nameError}
+                            </div>
+                          )}
+                        </label>
+
+                        <label>
+                          <span className="text-sm font-medium">
+                            Work email
+                          </span>
+                          <InputText
+                            name="email"
+                            type="email"
+                            value={email}
+                            disabled={isLoading || props.emailFromLogin != ''}
+                            placeholder="name@company.com"
+                            onChange={event =>
+                              validateEmail(event?.target.value)
+                            }
+                          />
+                          {emailError === '' ? null : (
+                            <div className="mt-2 font-medium text-sm text-rose-400">
+                              {emailError}
+                            </div>
+                          )}
+                        </label>
+
+                        <label>
+                          <span className="text-sm font-medium">Password</span>
+                          <InputText
+                            name="password"
+                            type="password"
+                            value={password}
+                            disabled={
+                              isLoading || props.passwordFromLogin != ''
+                            }
+                            placeholder="********"
+                            onChange={event => validate(event?.target.value)}
+                          />
+                          {errorMessage === '' ? null : (
+                            <div className="mt-2 font-medium text-sm text-rose-400">
+                              {errorMessage}
+                            </div>
+                          )}
+                        </label>
+
+                        {unsuccessMessage && (
+                          <p className="mt-1 flex items-center font-medium text-sm text-red-500">
+                            <IconExclamationTriangle className="h-5 w-5 mr-1" />
+                            {unsuccessMessage}
+                          </p>
+                        )}
+
+                        <ElemButton
+                          //onClick={onSignUp}
+                          btn="purple"
+                          loading={isLoading}
+                          className="w-full mt-2"
+                        >
+                          Sign up
+                        </ElemButton>
+                      </div>
+                    </form>
+
+                    <div>
+                      <div className="w-full mt-8 text-sm text-center text-gray-600">
+                        Have an account?
+                        <button
+                          onClick={onLogin}
+                          className="inline ml-0.5 underline"
+                        >
+                          Log In
+                        </button>
+                      </div>
                     </div>
 
                     <div>
-                      <form onSubmit={onSignUp}>
-                        <div className="flex flex-col space-y-4">
-                          <label>
-                            <span className="text-sm font-medium">
-                              Full name
-                            </span>
-                            <InputText
-                              name="name"
-                              type="text"
-                              value={name}
-                              disabled={isLoading}
-                              onChange={event =>
-                                validateName(event?.target.value)
-                              }
-                              className={`${
-                                nameError === ''
-                                  ? 'ring-1 ring-slate-200'
-                                  : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                              }`}
-                            />
-                            {nameError === '' ? null : (
-                              <div className="mt-2 font-bold text-sm text-rose-400">
-                                {nameError}
-                              </div>
-                            )}
-                          </label>
-
-                          <label>
-                            <span className="text-sm font-medium">
-                              Work email
-                            </span>
-                            <InputText
-                              name="email"
-                              type="email"
-                              value={email}
-                              disabled={isLoading || props.emailFromLogin != ''}
-                              onChange={event =>
-                                validateEmail(event?.target.value)
-                              }
-                              className={`${
-                                emailError === ''
-                                  ? 'ring-1 ring-slate-200'
-                                  : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                              }`}
-                            />
-                            {emailError === '' ? null : (
-                              <div className="mt-2 font-bold text-sm text-rose-400">
-                                {emailError}
-                              </div>
-                            )}
-                          </label>
-
-                          <label>
-                            <span className="text-sm font-medium">
-                              Password
-                            </span>
-                            <InputText
-                              name="password"
-                              type="password"
-                              value={password}
-                              disabled={
-                                isLoading || props.passwordFromLogin != ''
-                              }
-                              onChange={event => validate(event?.target.value)}
-                              className={`${
-                                errorMessage === ''
-                                  ? 'ring-1 ring-slate-200'
-                                  : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                              }`}
-                            />
-                            {errorMessage === '' ? null : (
-                              <div className="mt-2 font-bold text-sm text-rose-400">
-                                {errorMessage}
-                              </div>
-                            )}
-                          </label>
-
-                          {unsuccessMessage && (
-                            <p className="mt-1 flex items-center font-bold text-sm text-red-500">
-                              <IconExclamationTriangle className="h-5 w-5 mr-1" />
-                              {unsuccessMessage}
-                            </p>
-                          )}
-
-                          <ElemButton
-                            //onClick={onSignUp}
-                            btn="purple"
-                            loading={isLoading}
-                            className="w-full mt-2"
-                          >
-                            Sign up{' '}
-                            {props.inviteCode ? 'with referral' : 'and explore'}
-                          </ElemButton>
-                        </div>
-                      </form>
-
-                      <div>
-                        <p className="mt-2 text-sm text-center text-slate-600">
-                          By signing up, you agree to the{' '}
-                          <Link href="/terms">
-                            <a className="hover:underline" onClick={onClose}>
-                              Terms
-                            </a>
-                          </Link>{' '}
-                          &amp;{' '}
-                          <Link href="/privacy">
-                            <a className="hover:underline" onClick={onClose}>
-                              Policy
-                            </a>
-                          </Link>
-                          .
-                        </p>
-                      </div>
-
-                      <div>
-                        <div className="w-full mt-6 text-sm text-center text-slate-600">
-                          Have an account?
-                          <button
-                            onClick={onLogin}
-                            className="inline ml-0.5 text-primary-500 hover:underline"
-                          >
-                            Log In
-                          </button>
-                        </div>
-                      </div>
+                      <p className="mt-3 text-xs text-center text-slate-600">
+                        By signing up, you agree to the{' '}
+                        <Link href="/terms">
+                          <a className="underline" onClick={onClose}>
+                            Terms
+                          </a>
+                        </Link>{' '}
+                        &amp;{' '}
+                        <Link href="/privacy">
+                          <a className="underline" onClick={onClose}>
+                            Policy
+                          </a>
+                        </Link>
+                        .
+                      </p>
                     </div>
-                  </>
-                )}
-              </div>
+                  </div>
+                </>
+              )}
             </Dialog.Panel>
           </Transition.Child>
         </div>
