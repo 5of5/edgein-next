@@ -192,13 +192,13 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="mb-4 flex items-center justify-between overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+          className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
           <nav className="flex space-x-2">
             <ElemButton
               // onClick={() => onChangeTab(tab)}
-              btn="slate"
+              btn="gray"
               roundedFull={false}
               className="rounded-lg"
             >
@@ -212,7 +212,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                   <ElemButton
                     key={index}
                     onClick={() => onChangeTab(tab)}
-                    btn="slate"
+                    btn="gray"
                     roundedFull={false}
                     className="rounded-lg"
                   >
@@ -224,10 +224,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </nav>
         </div>
 
-        <ElemInviteBanner />
-
         <ElemFilter
-          className="py-3"
+          className="px-4"
           resourceType="events"
           filterValues={selectedFilters}
           dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
@@ -245,64 +243,67 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           onReset={() => setSelectedFilters(null)}
         />
 
-        {events?.length === 0 && (
-          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-              <div className="mt-1 text-lg text-slate-600">
-                Please check spelling, try different filters, or tell us about
-                missing data.
-              </div>
-              <ElemButton
-                onClick={() =>
-                  showNewMessages(
-                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                  )
-                }
-                btn="white"
-                className="mt-3"
-              >
-                <IconAnnotation className="w-6 h-6 mr-1" />
-                Tell us about missing data
-              </ElemButton>
-            </div>
-          </div>
-        )}
+        <ElemInviteBanner className="mt-3 mx-4" />
 
-        <div
-          data-testid="events"
-          className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-        >
-          {error ? (
-            <h4>Error loading events</h4>
-          ) : isLoading && !initialLoad ? (
-            <>
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderEventCard key={i} />
-              ))}
-            </>
-          ) : (
-            events?.map(event => (
-              <ElemEventCard
-                key={event.id}
-                event={event}
-                onClickType={onClickType}
-              />
-            ))
+        <div className="mt-6 px-4">
+          {events?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
           )}
+
+          <div
+            data-testid="events"
+            className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+          >
+            {error ? (
+              <h4>Error loading events</h4>
+            ) : isLoading && !initialLoad ? (
+              <>
+                {Array.from({ length: 9 }, (_, i) => (
+                  <PlaceholderEventCard key={i} />
+                ))}
+              </>
+            ) : (
+              events?.map(event => (
+                <ElemEventCard
+                  key={event.id}
+                  event={event}
+                  onClickType={onClickType}
+                />
+              ))
+            )}
+          </div>
+          <Pagination
+            shownItems={events?.length}
+            totalItems={events_aggregate}
+            page={page}
+            itemsPerPage={limit}
+            onClickPrev={() => setPage(page - 1)}
+            onClickNext={() => setPage(page + 1)}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
         </div>
 
-        <Pagination
-          shownItems={events?.length}
-          totalItems={events_aggregate}
-          page={page}
-          itemsPerPage={limit}
-          numeric
-          onClickPrev={() => setPage(page - 1)}
-          onClickNext={() => setPage(page + 1)}
-          onClickToPage={selectedPage => setPage(selectedPage)}
-        />
         <Toaster />
       </div>
     </DashboardLayout>

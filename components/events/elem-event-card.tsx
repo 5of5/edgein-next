@@ -31,7 +31,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
         target="_blank"
         className="flex flex-col box-border mx-auto h-full w-full cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
       >
-        <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-32 mb-4 rounded-tl-lg rounded-tr-lg overflow-hidden shadow">
+        <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-28 mb-4 rounded-tl-lg rounded-tr-lg overflow-hidden shadow">
           <div
             className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
             style={{

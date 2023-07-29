@@ -241,7 +241,8 @@ export default function SignUpModal(props: Props) {
                     </h1>
                     <ElemButton
                       onClick={onLinkedInClick}
-                      className="w-full mt-5 gap-x-2 text-center rounded-full bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]"
+                      btn="default"
+                      className="w-full mt-5 gap-x-2 text-center"
                     >
                       <IconLinkedIn
                         title="LinkedIn"
@@ -343,7 +344,7 @@ export default function SignUpModal(props: Props) {
 
                           <ElemButton
                             //onClick={onSignUp}
-                            btn="primary"
+                            btn="purple"
                             loading={isLoading}
                             className="w-full mt-2"
                           >

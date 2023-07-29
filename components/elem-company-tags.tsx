@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Companies } from '@/graphql/types';
 import { getLayerClass } from '@/utils/style';
 
@@ -17,6 +17,11 @@ const ElemCompanyTags: FC<Props> = ({
 }) => {
   const { layer, tags, status_tags } = company;
 
+  const [tagsLimit, setTagsLimit] = useState(3);
+  const showMoreTags = () => {
+    setTagsLimit(50);
+  };
+
   const isRaisingCompany =
     status_tags && status_tags.length > 0 && status_tags.includes('Raising');
 
@@ -29,26 +34,16 @@ const ElemCompanyTags: FC<Props> = ({
     }
   };
 
-  if (layer || isRaisingCompany || tags) {
+  if (isRaisingCompany || tags) {
     return (
-      <div className={`mt-4 flex flex-nowrap overflow-clip gap-2 ${className}`}>
-        {!hideLayer && layer && (
-          <div
-            className={`${getLayerClass(
-              layer,
-            )} shrink-0 text-xs font-medium px-3 py-1 rounded-full`}
-          >
-            {layer}
-          </div>
-        )}
-
+      <div className={`mt-4 flex flex-wrap overflow-clip gap-2 ${className}`}>
         {isRaisingCompany && (
           <div className="shrink-0 bg-rose-100 text-rose-500 text-xs font-medium px-3 py-1 rounded-full">
             Raising
           </div>
         )}
 
-        {tags?.map((tag: string, index: number) => {
+        {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
           return (
             <div
               key={index}
@@ -63,6 +58,14 @@ const ElemCompanyTags: FC<Props> = ({
             </div>
           );
         })}
+        {tagsLimit < tags.length && (
+          <button
+            onClick={showMoreTags}
+            className="text-xs text-gray-500 font-medium py-1"
+          >
+            {tags.length - tagsLimit} more
+          </button>
+        )}
       </div>
     );
   }

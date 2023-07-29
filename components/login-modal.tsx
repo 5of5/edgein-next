@@ -166,7 +166,8 @@ export default function LoginModal(props: Props) {
                   </h1>
                   <ElemButton
                     onClick={onLinkedInClick}
-                    className="w-full mt-5 gap-x-2 text-center bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]"
+                    btn="default"
+                    className="w-full mt-5 gap-x-2 text-center"
                   >
                     <IconLinkedIn
                       title="LinkedIn"
@@ -258,7 +259,7 @@ export default function LoginModal(props: Props) {
 														</button> */}
                         <ElemButton
                           className="w-full mt-10"
-                          btn="primary"
+                          btn="purple"
                           loading={isLoading}
                         >
                           Login

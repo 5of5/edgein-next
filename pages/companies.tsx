@@ -224,7 +224,7 @@ const Companies: NextPage<Props> = ({
                   <ElemButton
                     key={index}
                     onClick={() => setSelectedStatusTag(tab)}
-                    btn="slate"
+                    btn="gray"
                     roundedFull={false}
                     className="rounded-lg"
                   >
@@ -286,7 +286,7 @@ const Companies: NextPage<Props> = ({
 
         <ElemInviteBanner className="mt-3 mx-4" />
 
-        <div className="mt-3 px-4">
+        <div className="mt-6 px-4">
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">
@@ -373,7 +373,6 @@ const Companies: NextPage<Props> = ({
                 totalItems={companies_aggregate}
                 page={page}
                 itemsPerPage={limit}
-                numeric
                 onClickPrev={() => setPage(page - 1)}
                 onClickNext={() => setPage(page + 1)}
                 onClickToPage={selectedPage => setPage(selectedPage)}
