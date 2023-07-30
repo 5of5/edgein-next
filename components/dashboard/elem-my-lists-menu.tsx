@@ -203,7 +203,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               )}
             </div>
 
-            <Disclosure.Panel as="ul" className="mt-1 ml-8">
+            <Disclosure.Panel as="ul" className="ml-8">
               <li role="button">
                 <Link href={`/lists/${hotId}/hot`}>
                   <a

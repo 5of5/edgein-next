@@ -6,12 +6,15 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
 import ElemCompanyTags from '../elem-company-tags';
+import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import {
   IconGlobe,
+  IconLinkedIn,
   IconTwitter,
   IconGithub,
   IconDiscord,
 } from '@/components/icons';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   company: Companies;
@@ -20,6 +23,18 @@ type Props = {
 
 export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
   const [companyData, setCompanyData] = useState(company);
+
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+  const { user } = useUser();
+
+  const userCanViewLinkedIn = user?.entitlements.viewEmails
+    ? user?.entitlements.viewEmails
+    : false;
+
+  const onCloseUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(false);
+  };
 
   useEffect(() => {
     setCompanyData(company);
@@ -35,6 +50,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
     follows,
     website,
     twitter,
+    company_linkedin,
     github,
     discord,
   } = companyData;
@@ -95,6 +111,20 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
             </Link>
           )}
 
+          {userCanViewLinkedIn && company_linkedin ? (
+            <Link href={company_linkedin}>
+              <a target="_blank">
+                <IconLinkedIn className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          ) : !userCanViewLinkedIn && company_linkedin ? (
+            <button onClick={() => setIsOpenUpgradeDialog(true)}>
+              <IconLinkedIn className="h-6 w-6 text-gray-400" />
+            </button>
+          ) : (
+            <></>
+          )}
+
           {twitter && (
             <Link href={twitter}>
               <a target="_blank">
@@ -102,7 +132,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
               </a>
             </Link>
           )}
-
           {github && (
             <Link href={github}>
               <a target="_blank">
@@ -110,7 +139,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
               </a>
             </Link>
           )}
-
           {discord && (
             <Link href={discord}>
               <a target="_blank">
@@ -129,6 +157,10 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
           follows={follows}
         />
       </div>
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
     </div>
   );
 };

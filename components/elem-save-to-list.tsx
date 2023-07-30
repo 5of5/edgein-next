@@ -281,7 +281,7 @@ export const ElemSaveToList: FC<Props> = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-                <Dialog.Title className="text-xl font-bold flex items-center justify-between">
+                <Dialog.Title className="text-xl font-medium flex items-center justify-between">
                   <span>Save to List</span>
                   <button
                     type="button"
@@ -352,7 +352,7 @@ export const ElemSaveToList: FC<Props> = ({
                         }`}
                       />
                       {error === '' ? null : (
-                        <div className="mt-2 font-bold text-sm text-rose-400">
+                        <div className="mt-2 font-medium text-sm text-rose-400">
                           {error}
                         </div>
                       )}

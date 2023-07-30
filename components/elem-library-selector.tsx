@@ -44,11 +44,11 @@ const ElemLibrarySelector = () => {
       >
         <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
           {({ close }) => (
-            <div>
+            <>
               {libraryChoices.map(item => (
                 <button
                   key={item.id}
-                  className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm p-2 m-0 transition-all hover:bg-gray-100`}
+                  className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100`}
                   title={item?.id}
                   onClick={() => {
                     onChangeLibrary(item);
@@ -64,7 +64,7 @@ const ElemLibrarySelector = () => {
                   {item.name}
                 </button>
               ))}
-            </div>
+            </>
           )}
         </Popover.Panel>
       </Transition>

@@ -32,7 +32,10 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
   return (
     <>
       {label && (
-        <label htmlFor={name} className={`font-bold cursor-text ${labelClass}`}>
+        <label
+          htmlFor={name}
+          className={`font-medium text-sm cursor-text ${labelClass}`}
+        >
           {label}
         </label>
       )}

@@ -17,7 +17,7 @@ export const ElemDropdown: FC<Props> = ({ className = '', items }) => {
   const [itemActive, setItemActive] = useState<number>(0);
 
   return (
-    <Popover className="relative">
+    <Popover className={`relative ${className}`}>
       <Popover.Button as="div">
         <ElemButton btn="default" roundedFull={false} className="rounded-lg">
           {items[itemActive].label}
@@ -40,7 +40,7 @@ export const ElemDropdown: FC<Props> = ({ className = '', items }) => {
               {items.map(item => (
                 <button
                   key={item.id}
-                  className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm p-2 m-0 transition-all hover:bg-gray-100"
+                  className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
                   onClick={() => {
                     item.onClick();
                     setItemActive(item.id);

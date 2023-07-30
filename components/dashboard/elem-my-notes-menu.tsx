@@ -51,7 +51,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
               </button>
             </div>
 
-            <Disclosure.Panel as="ul" className="mt-1 ml-8 space-y-1">
+            <Disclosure.Panel as="ul" className="ml-8 space-y-1">
               <li role="button">
                 <Link href="/notes/">
                   <a
