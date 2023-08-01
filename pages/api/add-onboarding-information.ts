@@ -10,8 +10,6 @@ import {
   UpdateUserPersonIdMutation,
   InsertOnboardingClaimProfileMutation,
   InsertOnboardingClaimProfileDocument,
-  GetUserPublicByPersonIdQuery,
-  GetUserPublicByPersonIdDocument,
 } from '@/graphql/types';
 import CookieService from '../../utils/cookie';
 import SlackServices from '@/utils/slack';
@@ -41,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // Link user to person id
     if (selectedPerson?.id) {
-      const isClaimedPerson = await onFindUserPublicByPersonId(
+      const isClaimedPerson = await UserService.findOneUserPublicByPersonId(
         selectedPerson.id,
       );
       if (isClaimedPerson) {
@@ -53,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } else if (linkedin) {
       const personByLinkedin = await onFindPeopleByLinkedin(linkedin);
       if (personByLinkedin?.id) {
-        const isClaimedPerson = await onFindUserPublicByPersonId(
+        const isClaimedPerson = await UserService.findOneUserPublicByPersonId(
           personByLinkedin.id,
         );
         if (isClaimedPerson) {
@@ -192,19 +190,6 @@ const onInsertProfile = async (
   });
 
   return insert_people_one;
-};
-
-const onFindUserPublicByPersonId = async (personId: number) => {
-  const {
-    data: { users_public },
-  } = await query<GetUserPublicByPersonIdQuery>({
-    query: GetUserPublicByPersonIdDocument,
-    variables: {
-      person_id: personId,
-    },
-  });
-
-  return users_public[0];
 };
 
 export default handler;

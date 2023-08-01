@@ -28,8 +28,8 @@ import {
   UpsertWaitlistEmailDocument,
   UpsertWaitlistEmailMutation,
   GetPersonQuery,
-  GetUserByPersonIdQuery,
-  GetUserByPersonIdDocument,
+  GetUserPublicByPersonIdQuery,
+  GetUserPublicByPersonIdDocument,
 } from '@/graphql/types';
 import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
@@ -182,12 +182,17 @@ async function findOnePeopleBySlug(slug: string) {
   return data.data.people[0];
 }
 
-async function findOneUserByPersonId(personId: number) {
-  const data = await query<GetUserByPersonIdQuery>({
-    query: GetUserByPersonIdDocument,
-    variables: { personId },
+async function findOneUserPublicByPersonId(personId: number) {
+  const {
+    data: { users_public },
+  } = await query<GetUserPublicByPersonIdQuery>({
+    query: GetUserPublicByPersonIdDocument,
+    variables: {
+      person_id: personId,
+    },
   });
-  return data.data.users[0];
+
+  return users_public[0];
 }
 
 const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
@@ -279,7 +284,7 @@ const UserService = {
   updateAllowedEmailArray,
   findOneUserByAdditionalEmail,
   findOnePeopleBySlug,
-  findOneUserByPersonId,
+  findOneUserPublicByPersonId,
   createToken,
   findUserByPk,
   logout,

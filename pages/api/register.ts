@@ -63,9 +63,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const person = await UserService.findOnePeopleBySlug(reference_id);
           if (person) {
             // look up user by person_id
-            const userByPersonId = await UserService.findOneUserByPersonId(
-              person.id,
-            );
+            const userByPersonId =
+              await UserService.findOneUserPublicByPersonId(person.id);
             if (userByPersonId) {
               referenceUserId = userByPersonId.id;
             } else {
