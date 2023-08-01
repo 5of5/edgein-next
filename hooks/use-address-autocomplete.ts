@@ -1,48 +1,66 @@
-import { useState, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import debounce from 'lodash/debounce';
+import { SearchForSuggestionsResult } from '@aws-sdk/client-location';
+import { LocationService } from '@/services/location.service';
 import { DEBOUNCE_TIME } from '@/utils/constants';
 
-const useAddressAutocomplete = (layers: string[] = []) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+const locationService = new LocationService();
 
-  const [options, setOptions] = useState<any[]>([]);
+const useAddressAutocomplete = (filterCategories?: string[]) => {
+  const [isLoadingPlaceSuggestions, setIsLoadingPlaceSuggestions] =
+    useState(false);
 
-  const onSearchAddress = async (keyword: string) => {
-    const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_RADAR_URL
-      }/v1/search/autocomplete?query=${encodeURIComponent(
-        keyword,
-      )}&layers=${layers.join(',')}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: process.env.NEXT_PUBLIC_RADAR_PUBLIC_KEY || '',
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    const data = await response.json();
-    setOptions(data?.addresses || []);
-    setIsLoading(false);
+  const [isLoadingPlace, setIsLoadingPlace] = useState(false);
+
+  const [options, setOptions] = useState<SearchForSuggestionsResult[]>([]);
+
+  const onGetPlace = async (placeId: string) => {
+    setIsLoadingPlace(true);
+
+    const input = {
+      IndexName: process.env.NEXT_PUBLIC_AWS_LOCATION_SERVICE_PLACE_INDEX,
+      PlaceId: placeId,
+    };
+    const placeResponse = await locationService.getPlace(input);
+
+    setIsLoadingPlace(false);
+
+    return placeResponse.Place;
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedSearch = useCallback(
-    debounce(query => onSearchAddress(query), DEBOUNCE_TIME),
-    [],
+  const onSearchAddress = useCallback(
+    async (keyword: string) => {
+      const input = {
+        IndexName: process.env.NEXT_PUBLIC_AWS_LOCATION_SERVICE_PLACE_INDEX,
+        Text: keyword,
+        FilterCategories: filterCategories,
+      };
+
+      const placeSuggestionResponse =
+        await locationService.searchPlaceSuggestions(input);
+
+      setOptions(placeSuggestionResponse.Results || []);
+      setIsLoadingPlaceSuggestions(false);
+    },
+    [filterCategories],
+  );
+
+  const debouncedSearch = useMemo(
+    () => debounce(query => onSearchAddress(query), DEBOUNCE_TIME),
+    [onSearchAddress],
   );
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLoading(true);
+    setIsLoadingPlaceSuggestions(true);
     debouncedSearch(event.target.value);
   };
 
   return {
-    isLoading,
+    isLoadingPlaceSuggestions,
+    isLoadingPlace,
     options,
     onInputChange,
+    onGetPlace,
   };
 };
 

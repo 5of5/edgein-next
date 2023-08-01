@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from 'react';
+import { Place } from '@aws-sdk/client-location';
 import { ElemButton } from '@/components/elem-button';
 import { TagInputText } from '@/components/tag-input-text';
 import { TagInputSelect } from '@/components/tag-input-select';
@@ -9,7 +10,7 @@ import { getSelectableWeb3Tags } from '@/utils/helpers';
 
 type Props = {
   selectedOption: string;
-  locationTags: any[];
+  locationTags: Place[];
   industryTags: string[];
   show: boolean;
   onClose: () => void;
@@ -101,8 +102,8 @@ export default function OnboardingStep2(props: Props) {
                 <div className="mt-8">
                   <ElemLocationTagInput
                     label="Locations"
-                    defaultTags={locationTags}
-                    layers={['coarse']}
+                    tags={locationTags}
+                    layers={['MunicipalityType', 'RegionType']}
                     onChange={tags => {
                       setLocationTags(tags);
                     }}

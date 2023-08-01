@@ -3,10 +3,10 @@ import { useFormContext } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { SearchForSuggestionsResult } from '@aws-sdk/client-location';
-import { DEBOUNCE_TIME } from '@/utils/constants';
+import debounce from 'lodash/debounce';
 import { LocationService } from '@/services/location.service';
+import { DEBOUNCE_TIME } from '@/utils/constants';
 import { countries } from '@/utils/countries';
-import { debounce } from 'lodash';
 
 const locationService = new LocationService();
 
