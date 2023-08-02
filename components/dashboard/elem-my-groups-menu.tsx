@@ -89,7 +89,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
               )}
             </div>
 
-            <Disclosure.Panel as="ul" className="mt-1 space-y-1">
+            <Disclosure.Panel as="ul" className="ml-8">
               {displayedGroups?.map(group => (
                 <li key={group.id} role="button">
                   <Link href={`/groups/${group.id}/`}>

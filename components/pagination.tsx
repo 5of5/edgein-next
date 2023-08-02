@@ -48,7 +48,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
       className={`${className} flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0`}
       aria-label="Pagination"
     >
-      <div className="flex-1 text-gray-500">
+      <div className="flex-1 text-gray-500 text-sm">
         {shownItems === 0 ? (
           <></>
         ) : shownItems == totalItems ? (

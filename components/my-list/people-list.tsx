@@ -94,22 +94,21 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
           <div>
             <a
               href={`/people/` + props.row.original?.person?.slug}
-              className="flex items-center space-x-3 shrink-0 group transition-all"
+              className="flex items-center space-x-3 shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.person?.picture}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-black/10 rounded-lg overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-lg overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
-                placeholderClass="text-slate-300"
+                placeholderClass="text-gray-300"
               />
-              <p className="font-bold line-clamp-2 break-words group-hover:text-primary-500">
+              <p className="font-medium line-clamp-2 break-words hover:underline">
                 {props.value}
               </p>
             </a>
           </div>
         ),
-        //width: 300,
         minWidth: 320,
         //disableDropdown: true,
         //disableResizing: true,
@@ -137,7 +136,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                         <a
                           key={index}
                           href={`mailto:${email}`}
-                          className="block text-sm hover:text-primary-500"
+                          className="block text-sm hover:underline"
                         >
                           {email}
                         </a>
@@ -164,7 +163,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
           );
         },
         //	disableSortBy: true,
-        minWidth: 160,
+        width: 200,
       },
       {
         Header: 'Linkedin',
@@ -188,7 +187,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
           );
         },
         disableSortBy: true,
-        minWidth: 160,
+        width: 200,
       },
       {
         Header: 'Github',
@@ -212,7 +211,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
           );
         },
         disableSortBy: true,
-        minWidth: 160,
+        width: 200,
       },
     ],
     [emptyCell],
@@ -247,7 +246,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
       autoResetSortBy: false,
       sortTypes,
       initialState: {
-        pageSize: 10,
+        pageSize: 20,
       },
       defaultColumn,
       autoResetHiddenColumns: false,
@@ -301,58 +300,39 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
   };
 
   return (
-    <div className="rounded-lg p-5 bg-white shadow mb-8">
+    <div className="px-4 mt-10">
       <div className="sm:flex items-start justify-between mb-2">
-        {listNameTitle && (
-          <h2 className="font-bold text-lg capitalize mr-2">
-            {listNameTitle}: People
-          </h2>
-        )}
+        <h2 className="font-medium capitalize mr-2">People</h2>
       </div>
 
-      {preGlobalFilteredRows.length > 0 && (
-        <div className="flex items-center space-x-2 mb-2">
-          {Object.keys(selectedRowIds).length > 0 ? (
-            <>
-              <button
-                onClick={onRemove}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1"
-              >
-                <IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
-                <div>Remove from list</div>
-              </button>
-              <button
-                onClick={() => toggleAllRowsSelected(false)}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1"
-              >
-                <IconX className="h-5 w-5 mr-1" title="Clear Selection" />
-                <div>Cancel</div>
-              </button>
+      {preGlobalFilteredRows.length > 0 &&
+        Object.keys(selectedRowIds).length > 0 && (
+          <div className="flex items-center space-x-2 mb-2">
+            <button
+              onClick={onRemove}
+              className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1"
+            >
+              <IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
+              <div>Remove from list</div>
+            </button>
+            <button
+              onClick={() => toggleAllRowsSelected(false)}
+              className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1"
+            >
+              <IconX className="h-5 w-5 mr-1" title="Clear Selection" />
+              <div>Cancel</div>
+            </button>
 
-              <div className="text-sm shrink-0">
-                {Object.keys(selectedRowIds).length}
-                {Object.keys(selectedRowIds).length > 1
-                  ? ' people'
-                  : ' person'}{' '}
-                selected
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-col space-y-1 sm:flex-row sm:items-center sm:space-x-3 sm:space-y-0">
-              <TableColumnsFilter
-                columns={allColumns}
-                resetColumns={() => toggleHideAllColumns(false)}
-              />
-              <TableGlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-              />
+            <div className="text-sm shrink-0">
+              {Object.keys(selectedRowIds).length}
+              {Object.keys(selectedRowIds).length > 1
+                ? ' people'
+                : ' person'}{' '}
+              selected
             </div>
-          )}
-        </div>
-      )}
-      <div className="relative -mx-5 lg:mx-0">
+          </div>
+        )}
+      <div className="relative">
         <div className="absolute pointer-events-none w-8 bg-gradient-to-l from-white z-10 rounded-tr-lg rounded-br-lg top-px bottom-px right-0 sm:right-px"></div>
         <div className="border-y border-black/10 overflow-auto lg:border lg:rounded-lg">
           {preGlobalFilteredRows.length > 0 ? (
@@ -385,7 +365,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                           <th
                             key={key}
                             {...restColumnProps}
-                            className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left min-w-content`}
+                            className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
                           >
                             <div className="flex items-center min-w-content">
                               {column.render('Header')}
@@ -395,7 +375,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                                   as="div"
                                   className="relative inline-block text-left ml-1"
                                 >
-                                  <Menu.Button className="block align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
+                                  <Menu.Button className="block align-middle text-slate-400 rounded-full hover:bg-slate-100">
                                     <IconChevronDown className="h-5 w-5" />
                                   </Menu.Button>
 
@@ -403,7 +383,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                                     {column.canSort && (
                                       <Menu.Item
                                         as="button"
-                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
+                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:bg-slate-100 ${
                                           column.isSorted &&
                                           column.isSortedDesc === false
                                             ? 'text-primary-500'
@@ -462,7 +442,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                                 </Menu>
                               )}
 
-                              {column.canResize && (
+                              {/* {column.canResize && (
                                 <div
                                   {...column.getResizerProps()}
                                   className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${
@@ -470,17 +450,15 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                                       ? 'isResizing select-none'
                                       : ''
                                   }`}
-                                  onClick={event => event.stopPropagation()}
-                                >
+                                  onClick={event => event.stopPropagation()}>
                                   <div
                                     className={`w-px h-full ${
                                       column.isResizing
                                         ? 'bg-primary-500'
                                         : 'bg-black/10 group-hover:bg-primary-500'
-                                    }`}
-                                  ></div>
+                                    }`}></div>
                                 </div>
-                              )}
+                              )} */}
                             </div>
                           </th>
                         );
@@ -498,11 +476,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                   const { key, ...restRowProps } = row.getRowProps();
 
                   return (
-                    <tr
-                      key={key}
-                      {...restRowProps}
-                      className="min-w-full bg-white hover:bg-slate-100"
-                    >
+                    <tr key={key} {...restRowProps} className="min-w-full">
                       {row.cells.map(cell => {
                         const { key, ...restCellProps } = cell.getCellProps({
                           style: {

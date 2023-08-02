@@ -81,7 +81,7 @@ const ElemFilterTagsInput: FC<Props> = ({
               name={option}
               value="any"
               checked={checkedAny}
-              label="is any of these"
+              label="is"
               onChange={event => onChangeCondition(event, option)}
             />
           )}
@@ -101,7 +101,7 @@ const ElemFilterTagsInput: FC<Props> = ({
               name={option}
               value="none"
               checked={checkedNone}
-              label="is none of these"
+              label="is not"
               onChange={event => onChangeCondition(event, option)}
               labelClass="mb-0.5"
             />

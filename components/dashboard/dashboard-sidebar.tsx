@@ -87,29 +87,31 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   ];
 
   return (
-    <nav className={`p-4 text-gray-600 ${className}`}>
-      <ul>
-        {exploreMenu.map(item => (
-          <li role="button" key={item.href}>
-            <Link href={item.href}>
-              <a
-                className={`${
-                  router.asPath.includes(item.href)
-                    ? 'bg-gray-100 text-gray-900'
-                    : ''
-                } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
-              >
-                <item.icon className="w-6 h-6" />
-                <span>{item.title}</span>
-              </a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <div className={`p-4 text-gray-600 ${className}`}>
+      <nav>
+        <ul>
+          {exploreMenu.map(item => (
+            <li role="button" key={item.href}>
+              <Link href={item.href}>
+                <a
+                  className={`${
+                    router.asPath.includes(item.href)
+                      ? 'bg-gray-100 text-gray-900'
+                      : ''
+                  } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
+                >
+                  <item.icon className="w-6 h-6" />
+                  <span>{item.title}</span>
+                </a>
+              </Link>
+            </li>
+          ))}
+        </ul>
 
-      <ElemMyNotesMenu className="mt-8" />
-      <ElemMyListsMenu className="mt-3" />
-      <ElemMyGroupsMenu className="mt-3" />
-    </nav>
+        <ElemMyNotesMenu className="mt-8" />
+        <ElemMyListsMenu className="mt-3" />
+        <ElemMyGroupsMenu className="mt-3" />
+      </nav>
+    </div>
   );
 };
