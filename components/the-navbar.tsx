@@ -62,7 +62,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
   const [emailFromLogin, setEmailFromLogin] = useState('');
   const [passwordFromLogin, setPasswordFromLogin] = useState('');
-  const [onboardingStep, setOnboardingStep] = useState(1);
+  const [onboardingStep, setOnboardingStep] = useState(0);
 
   const [selectedOption, setSelectedOption] = useState('');
   const [locationTags, setLocationTags] = useState<any[]>([]);
