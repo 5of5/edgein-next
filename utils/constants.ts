@@ -408,23 +408,22 @@ export const companyChoices = [
   {
     id: 'Trending',
     name: 'Trending',
-  },
-  {
-    id: 'Following',
-    name: 'Following (Upcoming)',
-    disabled: true,
+    icon: '🔥',
   },
   {
     id: 'Raising',
     name: 'Raising',
+    icon: '💸',
   },
   {
     id: 'Acquired',
     name: 'Acquired',
+    icon: '🏡',
   },
   {
     id: 'Dead',
     name: 'Dead',
+    icon: '💀',
   },
 ];
 
@@ -458,6 +457,7 @@ export const companyLayerChoices = [
     name: "Layer 6 - Interoperable Digital Assets / NFT's",
   },
 ];
+
 export const roundChoices = [
   {
     id: 'Pre-seed',
@@ -543,25 +543,36 @@ export const currencyChoices = [
     name: 'SGD',
   },
 ];
+// {
+//   id: 'Trending',
+//   name: 'Trending',
+//   icon: '🔥',
+// },
+// {
+//   id: 'Raising',
+//   name: 'Raising',
+//   icon: '💸',
+// },
+// {
+//   id: 'Acquired',
+//   name: 'Acquired',
+//   icon: '🏡',
+// },
+// {
+//   id: 'Dead',
+//   name: 'Dead',
+//   icon: '💀',
 
 export const investorChoices = [
   {
     id: 'Trending',
     name: 'Trending',
-  },
-  {
-    id: 'Following',
-    name: 'Following (Coming soon!)',
-    disabled: true,
-  },
-  {
-    id: 'Acquired',
-    name: 'Acquired',
-    disabled: true,
+    icon: '🔥',
   },
   {
     id: 'Dead',
     name: 'Dead',
+    icon: '💀',
   },
 ];
 

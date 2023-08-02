@@ -52,185 +52,143 @@ export const ElemNewsCard: FC<Props> = ({
   );
 
   return (
-    <div
-      className={`flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all ${className}`}
-    >
-      <div className="flex items-start">
-        {link && (
-          <div>
-            <h3
-              className="mt-1 inline min-w-0 font-bold break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500"
-              title={text ?? ''}
-            >
-              <Link href={link}>
-                <a target="_blank">
-                  {/* <IconExternalLink className="inline-block align-sub w-5 h-5 mr-0.5 text-primary-500" /> */}
-                  {text}
-                </a>
-              </Link>
-            </h3>
-
-            <div className="mt-2 flex flex-wrap items-center">
-              {kind === 'news' ? (
-                <IconNewspaper
-                  className="w-6 h-6 mr-1 text-slate-400"
-                  title="Article"
-                />
-              ) : kind === 'media' ? (
-                <IconPlayCircle
-                  className="w-6 h-6 mr-1 text-slate-400"
-                  title="Video"
-                />
-              ) : (
-                ''
+    <div className={`flex flex-col w-full p-4 ${className}`}>
+      {link && (
+        <div>
+          <h2 className="font-medium break-words" title={text ?? ''}>
+            <Link href={link}>
+              <a target="_blank">{text}</a>
+            </Link>
+          </h2>
+          <p className="mt-4 text-xs text-gray-500">{formatDateShown(date)}</p>
+          {metadata?.description && (
+            <div className="mt-4 text-gray-400">
+              {link && metadata?.image && (
+                <Link href={link}>
+                  <a target="_blank" className="block mb-2">
+                    {metadata?.image && (
+                      <img
+                        src={metadata?.image}
+                        alt={text}
+                        className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
+                      />
+                    )}{' '}
+                  </a>
+                </Link>
               )}
-              {link && (
-                <p className="font-bold text-sm text-slate-600">
-                  {'By '}
-                  {publisher ? (
-                    <Link
-                      href={
-                        publisher.company
-                          ? `/companies/${publisher.company?.slug}`
-                          : publisher.vc_firm
-                          ? `/investors/${publisher.vc_firm?.slug}`
-                          : ''
-                      }
-                    >
-                      <a target="_blank" className="hover:text-primary-500">
-                        {publisher.company?.name || publisher.vc_firm?.name}
-                      </a>
-                    </Link>
-                  ) : (
-                    <Link href={getCleanWebsiteUrl(link, true)}>
-                      <a target="_blank" className="hover:text-primary-500">
-                        {getCleanWebsiteUrl(link, false)}
-                      </a>
-                    </Link>
-                  )}
-
-                  {' • '}
-                </p>
-              )}
-
-              <p className="font-bold text-sm text-slate-600">
-                {formatDateShown(date)}
-              </p>
             </div>
-          </div>
-        )}
-      </div>
-      <div className="grow text-gray-400">
-        {metadata?.description && (
-          <div className="mt-4 text-gray-400">
-            {link && metadata?.image && (
-              <Link href={link}>
-                <a target="_blank" className="block mb-2">
-                  {metadata?.image && (
-                    <img
-                      src={metadata?.image}
-                      alt={text}
-                      className="rounded-lg w-full h-auto mr-3  hover:opacity-75"
-                    />
-                  )}{' '}
-                </a>
-              </Link>
-            )}
+          )}
 
-            {link ? (
-              <Link href={link}>
-                <a
-                  target="_blank"
-                  className={`${
-                    metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-                  }`}
-                >
-                  {parse(stripHtmlTags(metadata?.description))}
-                </a>
-              </Link>
-            ) : (
-              <p
-                className={`${
+          {link ? (
+            <Link href={link}>
+              <a
+                target="_blank"
+                className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
                 }`}
               >
                 {parse(stripHtmlTags(metadata?.description))}
+              </a>
+            </Link>
+          ) : (
+            <p
+              className={`text-sm text-gray-500 mt-4 ${
+                metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
+              }`}
+            >
+              {parse(stripHtmlTags(metadata?.description))}
+            </p>
+          )}
+
+          <div className="mt-2 text-gray-600">
+            {otherOrganizations && (
+              <>
+                {otherOrganizations.map((organizer: any, index: number) => {
+                  const slug = organizer.company
+                    ? `/companies/${organizer.company?.slug}`
+                    : organizer.vc_firm
+                    ? `/investors/${organizer.vc_firm?.slug}`
+                    : '';
+
+                  const organization = organizer.company
+                    ? organizer.company
+                    : organizer.vc_firm;
+
+                  const organizationId = organizer.company
+                    ? organizer.company?.id
+                    : organizer.vc_firm?.id;
+
+                  return (
+                    <Fragment key={organizationId}>
+                      <ElemTooltip
+                        mode="light"
+                        content={
+                          <ElemPhoto
+                            photo={organization?.logo}
+                            wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2"
+                            imgClass="object-fit max-w-full max-h-full"
+                            imgAlt={organization?.name}
+                            placeholderClass="text-slate-300"
+                          />
+                        }
+                      >
+                        <div className="inline-block">
+                          <Link href={slug}>
+                            <a className="break-words border-b border-gray-600">
+                              {organization?.name}
+                            </a>
+                          </Link>
+                        </div>
+                      </ElemTooltip>
+                      {otherOrganizations.length === index + 1 ? '' : ', '}
+                    </Fragment>
+                  );
+                })}
+              </>
+            )}
+          </div>
+
+          <div className="mt-4 flex flex-wrap items-center">
+            {link && (
+              <p className="text-xs text-gray-500">
+                {'From  '}
+                {publisher ? (
+                  <Link
+                    href={
+                      publisher.company
+                        ? `/companies/${publisher.company?.slug}`
+                        : publisher.vc_firm
+                        ? `/investors/${publisher.vc_firm?.slug}`
+                        : ''
+                    }
+                  >
+                    <a target="_blank" className="">
+                      {publisher.company?.name || publisher.vc_firm?.name}
+                    </a>
+                  </Link>
+                ) : (
+                  <Link href={getCleanWebsiteUrl(link, true)}>
+                    <a target="_blank" className="">
+                      {getCleanWebsiteUrl(link, false)}
+                    </a>
+                  </Link>
+                )}
+                {' • '}
+                Powered by{' '}
+                <Link
+                  href={`/companies/${
+                    source?.poweredby?.toLowerCase() === 'techcrunch'
+                      ? 'techcrunch'
+                      : 'cryptopanic'
+                  }`}
+                >
+                  <a>{source?.poweredby || 'CryptoPanic'}</a>
+                </Link>
               </p>
             )}
           </div>
-        )}
-
-        {otherOrganizations && (
-          <div className="mt-4" onClick={e => e.stopPropagation()}>
-            {otherOrganizations.map((organizer: any, index: number) => {
-              const slug = organizer.company
-                ? `/companies/${organizer.company?.slug}`
-                : organizer.vc_firm
-                ? `/investors/${organizer.vc_firm?.slug}`
-                : '';
-
-              const organization = organizer.company
-                ? organizer.company
-                : organizer.vc_firm;
-
-              const organizationId = organizer.company
-                ? organizer.company?.id
-                : organizer.vc_firm?.id;
-
-              return (
-                <Fragment key={organizationId}>
-                  <ElemTooltip
-                    content={
-                      <ElemPhoto
-                        photo={organization?.logo}
-                        wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={organization?.name}
-                        placeholderClass="text-slate-300"
-                      />
-                    }
-                  >
-                    <div className="inline-block">
-                      <Link href={slug}>
-                        <a className="break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-                          {organization?.name}
-                        </a>
-                      </Link>
-                    </div>
-                  </ElemTooltip>
-                  {otherOrganizations.length === index + 1 ? '' : ', '}
-                </Fragment>
-              );
-            })}
-          </div>
-        )}
-      </div>
-      <div>
-        <p className="mt-4 text-xs text-gray-400">
-          Powered by{' '}
-          <Link
-            href={`/companies/${
-              source?.poweredby?.toLowerCase() === 'techcrunch'
-                ? 'techcrunch'
-                : 'cryptopanic'
-            }`}
-          >
-            <a>{source?.poweredby || 'CryptoPanic'}</a>
-          </Link>
-        </p>
-      </div>
-      {/* <div
-				className="flex items-center justify-between mt-4 gap-x-5"
-				onClick={(e) => e.stopPropagation()}
-			>
-				<ElemReactions resource={newsPost} resourceType={"news"} />
-				<ElemSaveToList
-					resourceName={name}
-					resourceId={id}
-					resourceType={"news"}
-					slug={slug!}
-				/>
-			</div> */}
+        </div>
+      )}
     </div>
   );
 };

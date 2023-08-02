@@ -1,8 +1,6 @@
 import type { NextPage, GetStaticProps } from 'next';
 import React, { Fragment, useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { ElemHeading } from '../components/elem-heading';
-import { ElemFeaturedEvents } from '@/components/events/elem-featured-events';
 import { ElemButton } from '../components/elem-button';
 import { runGraphQl } from '../utils';
 import { useStateParams } from '@/hooks/use-state-params';
@@ -25,9 +23,16 @@ import { processEventsFilters } from '@/utils/filter';
 import useFilterParams from '@/hooks/use-filter-params';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
-import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { useUser } from '@/context/user-context';
+import ElemLibrarySelector from '@/components/elem-library-selector';
+import {
+  SWITCH_LIBRARY_ALLOWED_DOMAINS,
+  SWITCH_LIBRARY_ALLOWED_EMAILS,
+} from '@/utils/constants';
+import useLibrary from '@/hooks/use-library';
+import { ElemDropdown } from '@/components/elem-dropdown';
 
 type Props = {
   eventTabs: TextFilter[];
@@ -37,10 +42,16 @@ type Props = {
 
 const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
-
+  const { user } = useUser();
   const router = useRouter();
-
   const { selectedLibrary } = useLibrary();
+
+  const isDisplaySelectLibrary =
+    user?.email &&
+    (SWITCH_LIBRARY_ALLOWED_EMAILS.includes(user.email) ||
+      SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
+        user.email.endsWith(domain),
+      ));
 
   const { showNewMessages } = useIntercom();
 
@@ -188,6 +199,33 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
+  const sortItems = [
+    {
+      id: 0,
+      label: 'Sort: Ascending',
+      value: 'ascending',
+      onClick: () => {},
+    },
+    {
+      id: 1,
+      label: 'Sort: Descending',
+      value: 'descending',
+      onClick: () => {},
+    },
+    {
+      id: 2,
+      label: 'Sort: Newest First',
+      value: 'newest',
+      onClick: () => {},
+    },
+    {
+      id: 3,
+      label: 'Sort: Oldest First',
+      value: 'oldest',
+      onClick: () => {},
+    },
+  ];
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -195,15 +233,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
-          <nav className="flex space-x-2">
-            <ElemButton
-              // onClick={() => onChangeTab(tab)}
-              btn="gray"
-              roundedFull={false}
-              className="rounded-lg"
-            >
-              Featured
-            </ElemButton>
+          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x pr-32 sm:pr-0 lg:border-none">
             {eventTabs &&
               eventTabs.map((tab: any, index: number) =>
                 tab.disabled === true ? (
@@ -216,32 +246,41 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                     roundedFull={false}
                     className="rounded-lg"
                   >
-                    {/* <IconDead className="w-5 h-5 mr-1" /> */}
+                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
                     {tab.title}
                   </ElemButton>
                 ),
               )}
           </nav>
-        </div>
 
-        <ElemFilter
-          className="px-4"
-          resourceType="events"
-          filterValues={selectedFilters}
-          dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
-          onApply={(name, filterParams) => {
-            filters._and = defaultFilters;
-            setSelectedFilters({
-              ...selectedFilters,
-              [name]: filterParams,
-            });
-          }}
-          onClearOption={name => {
-            filters._and = defaultFilters;
-            setSelectedFilters({ ...selectedFilters, [name]: undefined });
-          }}
-          onReset={() => setSelectedFilters(null)}
-        />
+          <div className="flex space-x-2">
+            {/* {isDisplaySelectLibrary &&  */}
+            <ElemLibrarySelector />
+            {/* } */}
+
+            <ElemFilter
+              resourceType="vc_firms"
+              filterValues={selectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                setSelectedFilters({
+                  ...selectedFilters,
+                  [name]: filterParams,
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                setSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => setSelectedFilters(null)}
+            />
+
+            <ElemDropdown items={sortItems} />
+          </div>
+        </div>
 
         <ElemInviteBanner className="mt-3 mx-4" />
 
@@ -288,7 +327,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 <ElemEventCard
                   key={event.id}
                   event={event}
-                  onClickType={onClickType}
+                  tagOnClick={onClickType}
                 />
               ))
             )}
@@ -338,17 +377,26 @@ interface TextFilter {
   title: string;
   value: string;
   date: string;
+  icon: string;
 }
 
 const eventTabs: TextFilter[] = [
   {
+    title: 'Featured',
+    value: 'featured',
+    date: '',
+    icon: '📣',
+  },
+  {
     title: 'Upcoming',
     value: 'upcoming',
     date: moment().toISOString(),
+    icon: '✨',
   },
   {
     title: 'Past',
     value: 'past',
     date: moment().subtract(1, 'days').toISOString(),
+    icon: '🕸',
   },
 ];

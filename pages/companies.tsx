@@ -6,7 +6,6 @@ import {
   PlaceholderCompanyCard,
   PlaceholderTable,
 } from '@/components/placeholders';
-import { ElemRecentCompanies } from '@/components/companies/elem-recent-companies';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
 import {
@@ -48,7 +47,6 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
-import { Popover, Transition } from '@headlessui/react';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -82,6 +80,7 @@ const Companies: NextPage<Props> = ({
       SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
         user.email.endsWith(domain),
       ));
+
   const { selectedLibrary } = useLibrary();
 
   const { selectedFilters, setSelectedFilters } = useFilterParams();
@@ -230,8 +229,8 @@ const Companies: NextPage<Props> = ({
     },
     {
       id: 1,
-      label: 'List View',
-      value: 'list',
+      label: 'Table View',
+      value: 'table',
       onClick: () => setTableLayout(true),
     },
   ];
@@ -239,25 +238,25 @@ const Companies: NextPage<Props> = ({
   const sortItems = [
     {
       id: 0,
-      label: 'Ascending',
+      label: 'Sort: Ascending',
       value: 'ascending',
       onClick: () => {},
     },
     {
       id: 1,
-      label: 'Descending',
+      label: 'Sort: Descending',
       value: 'descending',
       onClick: () => {},
     },
     {
       id: 2,
-      label: 'Newest First',
+      label: 'Sort: Newest First',
       value: 'newest',
       onClick: () => {},
     },
     {
       id: 3,
-      label: 'Oldest First',
+      label: 'Sort: Oldest First',
       value: 'oldest',
       onClick: () => {},
     },
@@ -283,6 +282,8 @@ const Companies: NextPage<Props> = ({
                     roundedFull={false}
                     className="rounded-lg"
                   >
+                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
+
                     {/* <IconDead className="w-5 h-5 mr-1" /> */}
                     {tab.title}
                   </ElemButton>
@@ -493,8 +494,7 @@ const companyStatusTagValues = companyChoices.map(option => {
   return {
     title: option.name,
     value: option.id,
-    icon: option.id,
-    disabled: option.disabled ? option.disabled : false,
+    icon: option.icon,
   };
 });
 
@@ -502,6 +502,7 @@ const companyStatusTags: TextFilter[] = [
   {
     title: 'New',
     value: '',
+    icon: '✨',
   },
   ...companyStatusTagValues,
 ];

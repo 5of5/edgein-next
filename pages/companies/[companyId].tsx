@@ -29,7 +29,7 @@ import {
   Order_By,
 } from '@/graphql/types';
 import { ElemReactions } from '@/components/elem-reactions';
-import { companyLayerChoices, tokenInfoMetrics } from '@/utils/constants';
+import { tokenInfoMetrics } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
 import parse from 'html-react-parser';
@@ -151,10 +151,6 @@ const Company: NextPage<Props> = (props: Props) => {
 
   // Company tags
   const companyTags: string[] = [];
-  if (company.layer) {
-    const layer = companyLayerChoices.find(layer => layer.id === company.layer);
-    companyTags.unshift(layer ? layer.name : company.layer);
-  }
   if (company.tags) {
     company.tags.map((tag: string, i: number) => [companyTags.push(tag)]);
   }
@@ -187,7 +183,7 @@ const Company: NextPage<Props> = (props: Props) => {
   );
 
   const handleTagClick = (
-    event: React.MouseEvent<HTMLDivElement>,
+    event: React.MouseEvent<HTMLButtonElement>,
     tag: string,
   ) => {
     event.stopPropagation();

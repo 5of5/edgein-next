@@ -12,9 +12,6 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const ElemMyEdgeInMenu = dynamic(() => import('./elem-my-edge-in-menu'), {
-  ssr: false,
-});
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,
 });
@@ -112,7 +109,6 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
       <ElemMyNotesMenu className="mt-8" />
       <ElemMyListsMenu className="mt-3" />
       <ElemMyGroupsMenu className="mt-3" />
-      {/* <ElemMyEdgeInMenu /> */}
     </nav>
   );
 };

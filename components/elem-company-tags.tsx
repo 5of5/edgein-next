@@ -6,7 +6,10 @@ type Props = {
   className?: string;
   company: Companies;
   hideLayer?: boolean;
-  tagOnClick?: (event: React.MouseEvent<HTMLDivElement>, tag: string) => void;
+  tagOnClick?: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    tag: string,
+  ) => void;
 };
 
 const ElemCompanyTags: FC<Props> = ({
@@ -26,7 +29,7 @@ const ElemCompanyTags: FC<Props> = ({
     status_tags && status_tags.length > 0 && status_tags.includes('Raising');
 
   const handleTagClick = (
-    event: React.MouseEvent<HTMLDivElement>,
+    event: React.MouseEvent<HTMLButtonElement>,
     tag: string,
   ) => {
     if (tagOnClick) {
@@ -45,17 +48,17 @@ const ElemCompanyTags: FC<Props> = ({
 
         {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
           return (
-            <div
+            <button
               key={index}
               onClick={e => handleTagClick(e, tag)}
               className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
                 tagOnClick !== undefined
-                  ? 'cursor-pointer hover:bg-slate-300'
+                  ? 'cursor-pointer hover:bg-gray-200'
                   : ''
               }`}
             >
               {tag}
-            </div>
+            </button>
           );
         })}
         {tagsLimit < tags.length && (

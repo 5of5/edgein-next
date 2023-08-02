@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { MouseEvent } from 'react';
 import { IconSearch } from './icons';
 
 type Props = {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const ElemSearchBox: React.FC<Props> = ({ onClick }) => {

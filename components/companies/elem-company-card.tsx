@@ -5,7 +5,6 @@ import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
-import ElemCompanyTags from '../elem-company-tags';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import {
   IconGlobe,
@@ -25,6 +24,11 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
   const [companyData, setCompanyData] = useState(company);
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+  const [tagsLimit, setTagsLimit] = useState(3);
+  const showMoreTags = () => {
+    setTagsLimit(50);
+  };
 
   const { user } = useUser();
 
@@ -46,6 +50,8 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
     logo,
     name,
     coin,
+    tags,
+    status_tags,
     overview,
     follows,
     website,
@@ -54,6 +60,9 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
     github,
     discord,
   } = companyData;
+
+  const isRaisingCompany =
+    status_tags && status_tags.length > 0 && status_tags.includes('Raising');
 
   return (
     <div className="flex flex-col w-full p-4">
@@ -99,8 +108,36 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
             <div className="text-sm line-clamp-3 text-gray-500">{overview}</div>
           </>
         )}
-        <ElemCompanyTags company={company} tagOnClick={tagOnClick} />
+
+        {tags && (
+          <div className="mt-4 flex flex-wrap overflow-clip gap-2">
+            {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
+              return (
+                <button
+                  key={index}
+                  onClick={e => tagOnClick(e, tag)}
+                  className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
+                    tagOnClick !== undefined
+                      ? 'cursor-pointer hover:bg-gray-200'
+                      : ''
+                  }`}
+                >
+                  {tag}
+                </button>
+              );
+            })}
+            {tagsLimit < tags.length && (
+              <button
+                onClick={showMoreTags}
+                className="text-xs text-gray-500 font-medium py-1"
+              >
+                {tags.length - tagsLimit} more
+              </button>
+            )}
+          </div>
+        )}
       </div>
+
       <div className="flex items-center justify-between mt-4 gap-x-5">
         <div className="flex items-center space-x-0.5">
           {website && (

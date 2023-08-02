@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { GetEventsQuery } from '@/graphql/types';
 import {
@@ -8,108 +8,210 @@ import {
 } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
 import { formatDateShown } from '@/utils';
+import { ElemTooltip } from '@/components/elem-tooltip';
+import { ElemButton } from '@/components/elem-button';
+import {
+  IconGlobe,
+  IconLinkedIn,
+  IconTwitter,
+  IconGithub,
+  IconDiscord,
+} from '@/components/icons';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   event: GetEventsQuery['events'][0];
-  onClickType?: any;
+  tagOnClick?: any;
 };
 
-export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
-  const isEmptyLocation = values(event.location_json).every(isEmpty);
+export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
+  const { user } = useUser();
+
+  const userCanViewLinkedIn = user?.entitlements.viewEmails
+    ? user?.entitlements.viewEmails
+    : false;
+
+  const [eventData, setEventData] = useState(event);
+
+  useEffect(() => {
+    setEventData(event);
+  }, [event]);
+
+  const {
+    id,
+    slug,
+    name,
+    overview,
+    price,
+    venue_name,
+    location_json,
+    banner,
+    types,
+    start_date,
+    end_date,
+    link,
+    // TO DO: add twitter, linkedin, github, discord to GetEventsQuery
+    // twitter,
+    // linkedin,
+    // github,
+    // discord,
+  } = eventData;
+
+  const tags = types;
+  const [tagsLimit, setTagsLimit] = useState(3);
+  const showMoreTags = () => {
+    setTagsLimit(50);
+  };
+
+  const isEmptyLocation = values(location_json).every(isEmpty);
 
   const eventPrice =
-    event.price > 0
-      ? `Starts at $${event.price}`
-      : event.price?.toString() === '0'
+    price > 0
+      ? `Starts at $${price}`
+      : price?.toString() === '0'
       ? 'Free'
       : null;
 
+  const eventImageUrl = banner?.url || getEventBanner(location_json?.city);
+
   return (
-    <Link key={event.id} href={`/events/${event.slug}`}>
-      <a
-        key={event.id}
-        target="_blank"
-        className="flex flex-col box-border mx-auto h-full w-full cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
-      >
-        <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-28 mb-4 rounded-tl-lg rounded-tr-lg overflow-hidden shadow">
-          <div
-            className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
-            style={{
-              backgroundImage: `url(${
-                event.banner?.url || getEventBanner(event.location_json?.city)
-              }), url(${randomImageOfCity(event.location_json?.city)})`,
-            }}
-          ></div>
-          <img
-            className="relative object-fit w-full max-w-full"
-            src={event.banner?.url || getEventBanner(event.location_json?.city)}
-            alt={event.name}
-            onError={e => {
-              (e.target as HTMLImageElement).src = randomImageOfCity(
-                event.location_json?.city,
-              );
-              (e.target as HTMLImageElement).onerror = null; // prevents looping
-            }}
-          />
-        </div>
-
-        {event.start_date && (
-          <p className="font-medium uppercase text-sm px-5 ">
-            {formatDateShown(event?.start_date)}
-
-            {event.end_date && (
-              <>
-                &nbsp;&ndash;&nbsp;
-                {formatDateShown(event?.end_date)}
-              </>
-            )}
-          </p>
-        )}
-
-        <h3 className="text-2xl font-bold break-words min-w-0 px-5 sm:text-lg lg:text-xl group-hover:opacity-60">
-          {event.name}
-        </h3>
-
-        <div className="grow px-5 pb-5">
-          {event?.types?.length > 0 && (
+    <div className="flex flex-col w-full p-4">
+      <Link href={`/events/${slug}`}>
+        <a target="_blank" className="flex shrink-0 w-full">
+          <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
             <div
-              className="my-2 flex flex-wrap gap-2"
-              onClick={e => e.stopPropagation()}
-            >
-              {event.types.map((type: string) => (
-                <div
-                  key={type}
-                  onClick={e => {
-                    if (onClickType) {
-                      onClickType(e, type);
-                    }
-                  }}
-                  className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
-                >
-                  {type}
-                </div>
-              ))}
-            </div>
-          )}
-          {(!isEmptyLocation || event.venue_name) && (
-            <div className="mt-1 text-sm text-gray-400 break-words">
-              {`${event.venue_name || ''}${
-                event.venue_name && event.location_json ? ' • ' : ''
-              }${getFullAddress(event.location_json)}`}
-            </div>
-          )}
+              className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+              style={{
+                backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
+              }}
+            ></div>
+            <img
+              className="relative"
+              src={eventImageUrl}
+              alt={name}
+              onError={e => {
+                (e.target as HTMLImageElement).src = randomImageOfCity(
+                  location_json?.city,
+                );
+                (e.target as HTMLImageElement).onerror = null; // prevents looping
+              }}
+            />
+          </div>
+        </a>
+      </Link>
 
-          {(eventPrice || event.size) && (
-            <div className="mt-1 text-sm text-gray-400 break-words">
-              {eventPrice}
-              {eventPrice && event.size ? ' • ' : ''}
-              {event.size && (
-                <div className="inline capitalize">{event.size}</div>
-              )}
-            </div>
+      <Link href={`/events/${slug}`}>
+        <a target="_blank" className="flex items-center mt-3">
+          <ElemTooltip content={name} mode="light">
+            <h3 className="text-xl font-medium truncate">{name}</h3>
+          </ElemTooltip>
+        </a>
+      </Link>
+
+      {start_date && (
+        <p className="text-sm text-gray-500">
+          {formatDateShown(start_date)}
+
+          {end_date && (
+            <>
+              &nbsp;&ndash;&nbsp;
+              {formatDateShown(end_date)}
+            </>
+          )}
+        </p>
+      )}
+
+      {!isEmptyLocation && (
+        <p className="text-sm text-gray-500">{getFullAddress(location_json)}</p>
+      )}
+
+      {tags && (
+        <div className="mt-4 flex flex-wrap overflow-clip gap-2">
+          {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
+            return (
+              <button
+                key={index}
+                onClick={e => tagOnClick(e, tag)}
+                className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
+                  tagOnClick !== undefined
+                    ? 'cursor-pointer hover:bg-gray-200'
+                    : ''
+                }`}
+              >
+                {tag}
+              </button>
+            );
+          })}
+          {tagsLimit < tags.length && (
+            <button
+              onClick={showMoreTags}
+              className="text-xs text-gray-500 font-medium py-1"
+            >
+              {tags.length - tagsLimit} more
+            </button>
           )}
         </div>
-      </a>
-    </Link>
+      )}
+
+      <div className="flex items-center justify-between mt-4 gap-x-5">
+        <div className="flex items-center space-x-0.5">
+          {link && (
+            <Link href={link}>
+              <a target="_blank">
+                <IconGlobe className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          )}
+
+          {/* {userCanViewLinkedIn && linkedin ? (
+            <Link href={linkedin}>
+              <a target="_blank">
+                <IconLinkedIn className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          ) : !userCanViewLinkedIn && linkedin ? (
+            <button onClick={() => setIsOpenUpgradeDialog(true)}>
+              <IconLinkedIn className="h-6 w-6 text-gray-400" />
+            </button>
+          ) : (
+            <></>
+          )} 
+
+          {twitter && (
+            <Link href={twitter}>
+              <a target="_blank">
+                <IconTwitter className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          )}
+          {github && (
+            <Link href={github}>
+              <a target="_blank">
+                <IconGithub className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          )}
+          {discord && (
+            <Link href={discord}>
+              <a target="_blank">
+                <IconDiscord className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          )}
+          */}
+        </div>
+
+        <div className="flex items-center gap-2">
+          {eventPrice && (
+            <div className="text-xs text-gray-500">{eventPrice}</div>
+          )}
+
+          {/* TO DO: add onclick function  */}
+          <ElemButton onClick={() => {}} btn="default" className="px-2.5">
+            Attend
+          </ElemButton>
+        </div>
+      </div>
+    </div>
   );
 };

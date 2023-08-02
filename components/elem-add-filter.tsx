@@ -5,11 +5,7 @@ import {
   eventsFilterOptions,
 } from '@/utils/constants';
 import { useUser } from '@/context/user-context';
-import {
-  IconContributorSolid,
-  IconChevronDownMini,
-  IconLockClosed,
-} from '@/components/icons';
+import { IconChevronDownMini, IconLockClosed } from '@/components/icons';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemButton } from './elem-button';
 
@@ -139,7 +135,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                 {item.isPremium ? (
                   <button
                     onClick={
-                      userCanUseFilter === true
+                      userCanUseFilter
                         ? onSelectFilterOption
                         : onOpenUpgradeDialog
                     }

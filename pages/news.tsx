@@ -3,7 +3,6 @@ import type { NextPage, GetStaticProps } from 'next';
 import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
 import { useRouter } from 'next/router';
-import { ElemHeading } from '@/components/elem-heading';
 import { ElemNewsCard } from '@/components/news/elem-news-card';
 import { useIntercom } from 'react-use-intercom';
 import { PlaceholderNewsCard } from '@/components/placeholders';
@@ -23,13 +22,13 @@ import {
 } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
-
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
+import { ElemDropdown } from '@/components/elem-dropdown';
 
 type Props = {
   newsCount: number;
@@ -92,6 +91,33 @@ const NewsPage: NextPage<Props> = ({
     ? newsCount
     : newsData?.news_aggregate?.aggregate?.count || 0;
 
+  const sortItems = [
+    {
+      id: 0,
+      label: 'Sort: Ascending',
+      value: 'ascending',
+      onClick: () => {},
+    },
+    {
+      id: 1,
+      label: 'Sort: Descending',
+      value: 'descending',
+      onClick: () => {},
+    },
+    {
+      id: 2,
+      label: 'Sort: Newest First',
+      value: 'newest',
+      onClick: () => {},
+    },
+    {
+      id: 3,
+      label: 'Sort: Oldest First',
+      value: 'oldest',
+      onClick: () => {},
+    },
+  ];
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -112,7 +138,7 @@ const NewsPage: NextPage<Props> = ({
                     roundedFull={false}
                     className="rounded-lg"
                   >
-                    {/* <IconDead className="w-5 h-5 mr-1" /> */}
+                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
                     {tab.title}
                   </ElemButton>
                 ),
@@ -120,39 +146,11 @@ const NewsPage: NextPage<Props> = ({
           </nav>
 
           <div className="flex space-x-2">
-            <ElemButton
-              onClick={() => {}}
-              btn="default"
-              roundedFull={false}
-              className="rounded-lg"
-            >
-              Sort
-            </ElemButton>
+            {/* {isDisplaySelectLibrary &&  */}
+            <ElemLibrarySelector />
+            {/* } */}
 
-            {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
-            {/* <div className="absolute right-0 flex items-center sm:relative sm:right-auto">
-              <div className="w-6 h-10 bg-gradient-to-r from-transparent to-white sm:hidden"></div>
-              <div className="hidden text-xs font-bold leading-sm uppercase pr-1 sm:block">
-                Layout:
-              </div>
-              <div className="bg-slate-200 rounded-full p-0.5">
-                <button
-                  onClick={() => setTableLayout(false)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    !tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}>
-                  <IconGrid className="w-5 h-5" title="Grid layout" />
-                </button>
-                <button
-                  onClick={() => setTableLayout(true)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}>
-                  <IconTable className="w-5 h-5" title="Table layout" />
-                </button>
-              </div> 
-            </div>*/}
+            <ElemDropdown items={sortItems} />
           </div>
         </div>
 
@@ -225,22 +223,22 @@ export default NewsPage;
 
 interface TextFilter {
   title: string;
+  value: string;
   description?: string;
   icon?: string;
-  value: string;
 }
 
 const newsStatusTags: TextFilter[] = [
   {
     title: 'Today',
-    description: 'desc',
-    icon: 'something',
     value: 'today',
+    description: 'desc',
+    icon: '✨',
   },
   {
     title: 'This week',
-    description: 'desc',
-    icon: 'something',
     value: 'week',
+    description: 'desc',
+    icon: '🗓',
   },
 ];
