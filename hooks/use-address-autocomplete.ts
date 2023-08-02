@@ -18,7 +18,7 @@ const useAddressAutocomplete = (filterCategories?: string[]) => {
     setIsLoadingPlace(true);
 
     const input = {
-      IndexName: process.env.NEXT_PUBLIC_AWS_LOCATION_SERVICE_PLACE_INDEX,
+      IndexName: locationService.getPlaceIndex(),
       PlaceId: placeId,
     };
     const placeResponse = await locationService.getPlace(input);
@@ -31,7 +31,7 @@ const useAddressAutocomplete = (filterCategories?: string[]) => {
   const onSearchAddress = useCallback(
     async (keyword: string) => {
       const input = {
-        IndexName: process.env.NEXT_PUBLIC_AWS_LOCATION_SERVICE_PLACE_INDEX,
+        IndexName: locationService.getPlaceIndex(),
         Text: keyword,
         FilterCategories: filterCategories,
       };

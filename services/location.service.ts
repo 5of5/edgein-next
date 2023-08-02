@@ -24,6 +24,10 @@ export class LocationService {
     return this.clientPromise;
   }
 
+  public getPlaceIndex() {
+    return process.env.NEXT_PUBLIC_AWS_LOCATION_SERVICE_PLACE_INDEX;
+  }
+
   public async searchPlaceSuggestions(
     input: SearchPlaceIndexForSuggestionsRequest,
   ): Promise<SearchPlaceIndexForSuggestionsResponse> {

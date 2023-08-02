@@ -68,6 +68,7 @@
     "graphql-tag": "^2.12.6",
     "hash-sum": "^2.0.0",
     "html-react-parser": "^3.0.4",
+    "iso-3166-1": "^2.1.1",
     "jose": "^4.8.1",
     "lodash": "^4.17.21",
     "micro": "^10.0.1",

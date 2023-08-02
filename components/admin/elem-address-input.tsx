@@ -4,9 +4,9 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { SearchForSuggestionsResult } from '@aws-sdk/client-location';
 import debounce from 'lodash/debounce';
+import iso from 'iso-3166-1';
 import { LocationService } from '@/services/location.service';
 import { DEBOUNCE_TIME } from '@/utils/constants';
-import { countries } from '@/utils/countries';
 
 const locationService = new LocationService();
 
@@ -22,7 +22,7 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
 
   const onGetPlace = async (placeId: string) => {
     const input = {
-      IndexName: process.env.NEXT_PUBLIC_AWS_LOCATION_SERVICE_PLACE_INDEX,
+      IndexName: locationService.getPlaceIndex(),
       PlaceId: placeId,
     };
 
@@ -33,7 +33,7 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
 
   const onSearchAddress = async (keyword: string) => {
     const input = {
-      IndexName: process.env.NEXT_PUBLIC_AWS_LOCATION_SERVICE_PLACE_INDEX,
+      IndexName: locationService.getPlaceIndex(),
       Text: keyword,
     };
 
@@ -67,9 +67,7 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
           const streetAddress = `${place?.AddressNumber || ''}${
             place?.Street ? ` ${place.Street}` : ''
           }`;
-          const country = countries.find(
-            countryItem => countryItem.code === place?.Country,
-          )?.name;
+          const country = iso.whereAlpha3(place?.Country || '')?.country;
           setFormValue(
             'location_json',
             place
