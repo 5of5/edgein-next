@@ -64,6 +64,8 @@ export const ElemAddFilter: FC<Props> = ({
     };
   });
 
+  const categoryFilterOptionsEndIndex = resourceType === 'events' ? 2 : 3;
+
   return (
     <div className="relative shrink-0">
       <ElemButton
@@ -83,17 +85,14 @@ export const ElemAddFilter: FC<Props> = ({
         >
           <div>
             <CategoryFilterOption
-              options={filterOptions.slice(
-                0,
-                resourceType === 'events' ? 2 : 3,
-              )}
+              options={filterOptions.slice(0, categoryFilterOptionsEndIndex)}
               onSelectFilterOption={onSelectFilterOption}
               onOpenUpgradeDialog={onOpenUpgradeDialog}
             />
           </div>
           <div className="mt-6 lg:mt-0">
             <CategoryFilterOption
-              options={filterOptions.slice(resourceType === 'events' ? 2 : 3)}
+              options={filterOptions.slice(categoryFilterOptionsEndIndex)}
               onSelectFilterOption={onSelectFilterOption}
               onOpenUpgradeDialog={onOpenUpgradeDialog}
             />

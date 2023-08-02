@@ -1,11 +1,11 @@
-import React, { MouseEvent } from 'react';
+import { FC, MouseEvent } from 'react';
 import { IconSearch } from './icons';
 
 type Props = {
   onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const ElemSearchBox: React.FC<Props> = ({ onClick }) => {
+export const ElemSearchBox: FC<Props> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}

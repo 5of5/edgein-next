@@ -13,6 +13,10 @@ import {
   IconDiscord,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
+import {
+  CARD_DEFAULT_TAGS_LIMIT,
+  CARD_MAX_TAGS_LIMIT,
+} from '@/utils/constants';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -26,9 +30,9 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
 
   const { user } = useUser();
 
-  const [tagsLimit, setTagsLimit] = useState(3);
+  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
   const showMoreTags = () => {
-    setTagsLimit(50);
+    setTagsLimit(CARD_MAX_TAGS_LIMIT);
   };
 
   const userCanViewLinkedIn = user?.entitlements.viewEmails

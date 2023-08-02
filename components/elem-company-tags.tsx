@@ -1,6 +1,10 @@
 import { FC, useState } from 'react';
 import { Companies } from '@/graphql/types';
 import { getLayerClass } from '@/utils/style';
+import {
+  CARD_DEFAULT_TAGS_LIMIT,
+  CARD_MAX_TAGS_LIMIT,
+} from '@/utils/constants';
 
 type Props = {
   className?: string;
@@ -20,9 +24,9 @@ const ElemCompanyTags: FC<Props> = ({
 }) => {
   const { layer, tags, status_tags } = company;
 
-  const [tagsLimit, setTagsLimit] = useState(3);
+  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
   const showMoreTags = () => {
-    setTagsLimit(50);
+    setTagsLimit(CARD_MAX_TAGS_LIMIT);
   };
 
   const isRaisingCompany =

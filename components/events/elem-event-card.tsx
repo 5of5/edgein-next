@@ -18,6 +18,10 @@ import {
   IconDiscord,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
+import {
+  CARD_DEFAULT_TAGS_LIMIT,
+  CARD_MAX_TAGS_LIMIT,
+} from '@/utils/constants';
 
 type Props = {
   event: GetEventsQuery['events'][0];
@@ -58,9 +62,9 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
   } = eventData;
 
   const tags = types;
-  const [tagsLimit, setTagsLimit] = useState(3);
+  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
   const showMoreTags = () => {
-    setTagsLimit(50);
+    setTagsLimit(CARD_MAX_TAGS_LIMIT);
   };
 
   const isEmptyLocation = values(location_json).every(isEmpty);

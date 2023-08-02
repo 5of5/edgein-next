@@ -11,6 +11,7 @@ import { Resource_Edit_Access, useGetUserProfileQuery } from '@/graphql/types';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { ExploreMenuItem } from '@/types/common';
 
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,
@@ -62,7 +63,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
     }
   }, [users]);
 
-  const exploreMenu: any = [
+  const exploreMenu: ExploreMenuItem[] = [
     {
       href: '/companies/',
       icon: IconCompanies,
@@ -88,7 +89,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   return (
     <nav className={`p-4 text-gray-600 ${className}`}>
       <ul>
-        {exploreMenu.map((item: any) => (
+        {exploreMenu.map(item => (
           <li role="button" key={item.href}>
             <Link href={item.href}>
               <a
