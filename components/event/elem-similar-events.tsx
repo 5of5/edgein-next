@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
@@ -56,10 +56,7 @@ export const ElemSimilarEvents: FC<Props> = ({
 
   const events = eventsData?.events;
 
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string,
-  ) => {
+  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -98,7 +95,7 @@ export const ElemSimilarEvents: FC<Props> = ({
                   key={event.id}
                   className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
-                  <ElemEventCard event={event} onClickType={onClickType} />
+                  <ElemEventCard event={event} tagOnClick={tagOnClick} />
                 </ElemCarouselCard>
               );
             })}
