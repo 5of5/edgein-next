@@ -31,7 +31,6 @@ import { onTrackView } from '@/utils/track';
 import { ElemFilter } from '@/components/elem-filter';
 import { processInvestorsFilters } from '@/utils/filter';
 import { useIntercom } from 'react-use-intercom';
-import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
@@ -43,6 +42,8 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import { ElemAddFilter } from '@/components/elem-add-filter';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
 
 type Props = {
   vcFirmCount: number;
@@ -80,8 +81,14 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  // Filters
-  const { selectedFilters, setSelectedFilters } = useFilterParams();
+  const {
+    isOpenFilters,
+    selectedFilters,
+    onChangeSelectedFilters,
+    onSelectFilterOption,
+    onOpenFilters,
+    onCloseFilters,
+  } = useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -140,9 +147,9 @@ const Investors: NextPage<Props> = ({
       : [tag, ...currentFilterOption];
 
     if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, industry: undefined });
+      onChangeSelectedFilters({ ...selectedFilters, industry: undefined });
     } else {
-      setSelectedFilters({
+      onChangeSelectedFilters({
         ...selectedFilters,
         industry: {
           ...selectedFilters?.industry,
@@ -290,28 +297,40 @@ const Investors: NextPage<Props> = ({
               {/* } */}
               <ElemDropdown items={layoutItems} />
 
-              <ElemFilter
+              <ElemAddFilter
+                isOpenFilters={isOpenFilters}
                 resourceType="vc_firms"
-                filterValues={selectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({
-                    ...selectedFilters,
-                    [name]: filterParams,
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => setSelectedFilters(null)}
+                onSelectFilterOption={onSelectFilterOption}
+                onOpenFilters={onOpenFilters}
+                onCloseFilters={onCloseFilters}
               />
 
               <ElemDropdown items={sortItems} />
             </div>
+          </div>
+
+          <div className="px-4">
+            <ElemFilter
+              resourceType="vc_firms"
+              filterValues={selectedFilters}
+              onSelectFilterOption={onSelectFilterOption}
+              onChangeFilterValues={onChangeSelectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: { ...filterParams, open: false },
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => onChangeSelectedFilters(null)}
+            />
           </div>
 
           <ElemInviteBanner className="mt-3 mx-4" />
@@ -366,19 +385,19 @@ const Investors: NextPage<Props> = ({
                 filterValues={selectedFilters}
                 onApply={(name, filterParams) => {
                   filters._and = defaultFilters;
-                  setSelectedFilters({
+                  onChangeSelectedFilters({
                     ...selectedFilters,
                     [name]: filterParams,
                   });
                 }}
                 onClearOption={name => {
                   filters._and = defaultFilters;
-                  setSelectedFilters({
+                  onChangeSelectedFilters({
                     ...selectedFilters,
                     [name]: undefined,
                   });
                 }}
-                onReset={() => setSelectedFilters(null)}
+                onReset={() => onChangeSelectedFilters(null)}
               />
             ) : (
               <>

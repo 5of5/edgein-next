@@ -1,11 +1,18 @@
 import { FilterOptionKeys } from '@/models/Filter';
-import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
+import React, {
+  FC,
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 import { ElemButton } from './elem-button';
+import { IconX } from './icons';
 
 type Props = {
   open: boolean;
   name: FilterOptionKeys;
-  title: string;
+  title?: string | ReactNode;
   onOpen: (name: FilterOptionKeys) => void;
   onClose: (name: FilterOptionKeys) => void;
   onClear: (name: FilterOptionKeys) => void;
@@ -56,18 +63,21 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
   };
 
   return (
-    <div className="snap-start shrink-0">
-      <ElemButton btn="purple" size="sm" onClick={onOpenFilterOption}>
-        {title}
-      </ElemButton>
+    <div className="snap-start shrink-0 relative">
+      <div className="flex items-center min-h-[32px] bg-primary-500 text-white text-sm rounded-full px-3 py-1">
+        <button onClick={onOpenFilterOption}>{title}</button>
+        <button onClick={onClearFilterOption}>
+          <IconX className="w-3 h-3 ml-1" title="Remove" />
+        </button>
+      </div>
 
       {open && (
         <div
           ref={wrapperRef}
-          className={`absolute z-10 bg-white shadow-lg border border-gray-400 rounded-lg w-[calc(100vw-50px)] max-w-sm p-5 ${popupClass}`}
+          className={`absolute top-10 z-10 bg-white shadow-lg border border-gray-400 rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}
         >
-          {children}
-          <div className="flex items-center gap-x-4 mt-2 pt-2 border-t border-gray-300">
+          <div className="p-5">{children}</div>
+          <div className="flex items-center justify-end gap-x-4 p-4 border-t border-gray-300">
             <button
               onClick={onClearFilterOption}
               name={name}

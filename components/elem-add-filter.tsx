@@ -5,7 +5,11 @@ import {
   eventsFilterOptions,
 } from '@/utils/constants';
 import { useUser } from '@/context/user-context';
-import { IconChevronDownMini, IconLockClosed } from '@/components/icons';
+import {
+  IconChevronDownMini,
+  IconLockClosed,
+  IconPlus,
+} from '@/components/icons';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemButton } from './elem-button';
 
@@ -19,19 +23,21 @@ type CategoryFilterOptionProps = {
 };
 
 type Props = {
+  isOpenFilters: boolean;
   resourceType: 'companies' | 'vc_firms' | 'events';
-  open: boolean;
-  onOpen: () => void;
-  onClose: () => void;
+  type?: 'icon' | 'button';
+  onOpenFilters: () => void;
+  onCloseFilters: () => void;
   onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const ElemAddFilter: FC<Props> = ({
+  isOpenFilters,
   resourceType,
-  open,
-  onOpen,
-  onClose,
+  type = 'button',
   onSelectFilterOption,
+  onOpenFilters,
+  onCloseFilters,
 }) => {
   const filterOptions = {
     companies: companiesFilterOptions,
@@ -53,7 +59,7 @@ export const ElemAddFilter: FC<Props> = ({
 
   const handleClickOutside = (e: MouseEvent) => {
     if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-      onClose();
+      onCloseFilters();
     }
   };
 
@@ -68,17 +74,28 @@ export const ElemAddFilter: FC<Props> = ({
 
   return (
     <div className="relative shrink-0">
-      <ElemButton
-        btn="default"
-        roundedFull={false}
-        className="rounded-lg"
-        onClick={onOpen}
-      >
-        Filters
-        <IconChevronDownMini className="w-5 h-5 ml-1" />
-      </ElemButton>
+      {type === 'button' ? (
+        <ElemButton
+          btn="default"
+          roundedFull={false}
+          className="rounded-lg"
+          onClick={onOpenFilters}
+        >
+          Filters
+          <IconChevronDownMini className="w-5 h-5 ml-1" />
+        </ElemButton>
+      ) : (
+        <ElemButton
+          btn="slate"
+          size="sm"
+          onClick={onOpenFilters}
+          className="!p-1"
+        >
+          <IconPlus className="w-4 h-4" />
+        </ElemButton>
+      )}
 
-      {open && (
+      {isOpenFilters && (
         <div
           ref={wrapperRef}
           className="absolute right-0 z-10 bg-white shadow-lg border border-gray-300 rounded-lg w-56 mt-2"
