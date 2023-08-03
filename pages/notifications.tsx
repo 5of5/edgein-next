@@ -131,7 +131,7 @@ const Notifications: NextPage = () => {
             )}
           </div>
 
-          <div className="relative flex flex-col space-y-1 z-10 mx-2">
+          <div className="relative flex flex-col border-y border-gray-200 divide-y divide-gray-200 z-10">
             {error && !isFetching && <h4>Error loading notifications</h4>}
 
             {!isFetching && !error && displayedNotifications.length === 0 && (

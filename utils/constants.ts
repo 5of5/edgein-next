@@ -2023,3 +2023,7 @@ export const EMAIL_MAX_LENGTH = 255;
 export const CARD_DEFAULT_TAGS_LIMIT = 3;
 
 export const CARD_MAX_TAGS_LIMIT = 50;
+
+export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
+
+export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;

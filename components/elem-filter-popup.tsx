@@ -74,14 +74,14 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
       {open && (
         <div
           ref={wrapperRef}
-          className={`absolute top-10 z-10 bg-white shadow-lg border border-gray-400 rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}
+          className={`absolute z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}
         >
-          <div className="p-5">{children}</div>
-          <div className="flex items-center justify-end gap-x-4 p-4 border-t border-gray-300">
+          <div className="px-4 py-2">{children}</div>
+          <div className="flex justify-end items-center gap-x-4 px-4 py-2 border-t border-gray-300">
             <button
               onClick={onClearFilterOption}
               name={name}
-              className="text-primary-500"
+              className="text-sm underline"
             >
               Clear
             </button>

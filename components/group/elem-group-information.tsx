@@ -58,7 +58,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                         {
                           name: 'my-groups',
                           to: '/groups',
-                          component: 'My Groups',
+                          component: 'Groups',
                         },
                       ]
                     : [
@@ -89,7 +89,6 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 className="inline-flex items-start lg:items-center justify-start hover:text-primary-500 hover:underline"
                 onClick={() => onOpenSettingDialog('settings')}
               >
-                <IconGroup className="w-5 h-5 mr-1 mt-1 shrink-0 lg:mt-0" />
                 <span className="font-bold text-left text-lg capitalize">
                   {group.name}
                 </span>

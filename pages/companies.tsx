@@ -290,8 +290,6 @@ const Companies: NextPage<Props> = ({
                     className="rounded-lg"
                   >
                     {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
-
-                    {/* <IconDead className="w-5 h-5 mr-1" /> */}
                     {tab.title}
                   </ElemButton>
                 ),
@@ -299,9 +297,8 @@ const Companies: NextPage<Props> = ({
           </nav>
 
           <div className="flex space-x-2">
-            {/* {isDisplaySelectLibrary &&  */}
-            <ElemLibrarySelector />
-            {/* } */}
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
+
             <ElemDropdown items={layoutItems} />
 
             <ElemAddFilter

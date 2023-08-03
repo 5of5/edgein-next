@@ -295,12 +295,13 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                 <Link href="/notifications" passHref>
                   <a className="relative flex items-center justify-center w-9 h-9">
                     {notificationsCount > 0 && (
-                      <div className="absolute flex items-center justify-center -top-[4px] -right-[4px] w-5 h-5 rounded-full bg-primary-500 border border-white">
+                      <div className="absolute flex items-center justify-center -top-[2px] -right-[2px] w-5 h-5 rounded-full bg-primary-500 border border-white">
                         <div className="text-white font-bold text-[10px] text-center">
                           {notificationsCount > 99 ? '99+' : notificationsCount}
                         </div>
                       </div>
                     )}
+
                     <IconBell
                       className="h-6 w-6 text-gray-600"
                       strokeWidth={2}
