@@ -11,6 +11,7 @@ import {
 } from '@/components/icons';
 import { Popover, Transition } from '@headlessui/react';
 import { useIntercom } from 'react-use-intercom';
+import { ElemButton } from '@/components/elem-button';
 
 type Tabs = {
   name?: string;
@@ -36,7 +37,7 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
   const [isActive, setActive] = useState(0);
-  const [dropdownIsOpen, setDropdownIsOpen] = useState(true);
+  const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
 
   useEffect(() => {
     if (tabs) {
@@ -69,23 +70,35 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 
   return (
     <div
-      className={`flex items-center justify-between border-y border-black/10 ${className}`}
+      className={`flex items-center justify-between ${className}`}
       role="tablist"
     >
-      <nav className={`flex overflow-x-scroll scrollbar-hide ${tabsClassName}`}>
+      <nav
+        className={`flex gap-2 overflow-x-scroll scrollbar-hide ${tabsClassName}`}
+      >
         {tabs &&
           tabs.map((tab: any, index: number) => (
-            <button
+            <ElemButton
               key={index}
               onClick={() => onClick(index, tab.ref)}
-              className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-                isActive === index
-                  ? 'text-primary-500 border-primary-500'
-                  : 'border-transparent  hover:bg-slate-200'
-              }`}
+              btn="gray"
+              roundedFull={false}
+              className="rounded-lg"
             >
               {tab.name}
-            </button>
+            </ElemButton>
+
+            // <button
+            //   key={index}
+            //   onClick={() => onClick(index, tab.ref)}
+            //   className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+            //     isActive === index
+            //       ? 'text-primary-500 border-primary-500'
+            //       : 'border-transparent  hover:bg-slate-200'
+            //   }`}
+            // >
+            //   {tab.name}
+            // </button>
           ))}
       </nav>
       {children}

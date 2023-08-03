@@ -298,7 +298,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
     });
   }
 
-  const baseClasses = 'flex space-x-2 py-1 px-2 rounded-md';
+  const baseClasses = 'flex space-x-2 text-gray-600';
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [showInfo, setShowInfo] = useState<Record<string, boolean>>({});
@@ -316,18 +316,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
   };
 
   return (
-    <section className={className}>
-      {heading && <h2 className="text-xl font-bold mb-2">{heading}</h2>}
+    <section className={`border border-gray-300 rounded-lg ${className}`}>
+      {heading && <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>}
 
-      <ul className="flex flex-col space-y-2">
+      <ul className="flex flex-col space-y-3 text-sm p-4">
         {infoItems.map((item, index: number) => {
           let itemInner = (
             <>
               {item.icon && (
-                <item.icon
-                  title={item.text}
-                  className="h-6 w-6 shrink-0 text-dark-500"
-                />
+                <item.icon title={item.text} className="h-6 w-6 shrink-0" />
               )}
               <span className="break-words min-w-0">{item.text}</span>
             </>
@@ -337,7 +334,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
             itemInner = (
               <a
                 key={index}
-                className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
+                className={`${baseClasses} flex-1 transition-all underline hover:no-underline`}
                 href={item.link}
                 target={item.target ? item.target : '_blank'}
                 rel="noopener noreferrer"
@@ -359,7 +356,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
               <li
                 key={index}
                 onClick={onInfoClick(item.text)}
-                className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+                className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer`}
               >
                 <div className="flex items-center">
                   {item.icon && (
@@ -370,7 +367,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   )}
                   {showInfo[item.text] ? (
                     <a
-                      className={`break-all transition-all text-primary-500 hover:bg-slate-200`}
+                      className={`break-all transition-all `}
                       href={item.link}
                       target={item.target ? item.target : '_blank'}
                       rel="noopener noreferrer"
