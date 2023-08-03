@@ -1,15 +1,10 @@
 query GetEvents(
   $limit: Int
   $offset: Int
-  $order: order_by!
+  $orderBy: [events_order_by!]
   $where: events_bool_exp!
 ) {
-  events(
-    where: $where
-    order_by: { start_date: $order }
-    limit: $limit
-    offset: $offset
-  ) {
+  events(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
     name
     slug

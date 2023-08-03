@@ -21,8 +21,10 @@ import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
   Companies,
   Companies_Bool_Exp,
+  Companies_Order_By,
   GetCompaniesDocument,
   GetCompaniesQuery,
+  Order_By,
   useGetCompaniesQuery,
 } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
@@ -47,6 +49,7 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -118,6 +121,13 @@ const Companies: NextPage<Props> = ({
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Companies_Order_By>();
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -208,6 +218,7 @@ const Companies: NextPage<Props> = ({
     offset,
     limit,
     where: filters as Companies_Bool_Exp,
+    orderBy: [orderByQuery],
   });
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -232,33 +243,6 @@ const Companies: NextPage<Props> = ({
       label: 'Table View',
       value: 'table',
       onClick: () => setTableLayout(true),
-    },
-  ];
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Sort: Ascending',
-      value: 'ascending',
-      onClick: () => {},
-    },
-    {
-      id: 1,
-      label: 'Sort: Descending',
-      value: 'descending',
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: 'Sort: Newest First',
-      value: 'newest',
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: 'Sort: Oldest First',
-      value: 'oldest',
-      onClick: () => {},
     },
   ];
 
@@ -314,7 +298,7 @@ const Companies: NextPage<Props> = ({
               onReset={() => setSelectedFilters(null)}
             />
 
-            <ElemDropdown items={sortItems} />
+            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
           </div>
         </div>
 
@@ -455,6 +439,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       where: {
         _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
       },
+      orderBy: [{ name: Order_By.Asc }],
     },
     context.req.cookies,
   );

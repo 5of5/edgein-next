@@ -22,6 +22,8 @@ import {
   useGetVcFirmsQuery,
   Vc_Firms_Bool_Exp,
   Vc_Firms,
+  Vc_Firms_Order_By,
+  Order_By,
 } from '@/graphql/types';
 import { runGraphQl } from '@/utils';
 import { investorChoices } from '@/utils/constants';
@@ -43,6 +45,7 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 
 type Props = {
   vcFirmCount: number;
@@ -108,6 +111,13 @@ const Investors: NextPage<Props> = ({
   const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Vc_Firms_Order_By>();
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -201,6 +211,7 @@ const Investors: NextPage<Props> = ({
     offset,
     limit,
     where: filters as Vc_Firms_Bool_Exp,
+    orderBy: [orderByQuery],
   });
 
   if (!isLoading && initialLoad) {
@@ -226,33 +237,6 @@ const Investors: NextPage<Props> = ({
       label: 'List View',
       value: 'list',
       onClick: () => setTableLayout(true),
-    },
-  ];
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Sort: Ascending',
-      value: 'ascending',
-      onClick: () => {},
-    },
-    {
-      id: 1,
-      label: 'Sort: Descending',
-      value: 'descending',
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: 'Sort: Newest First',
-      value: 'newest',
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: 'Sort: Oldest First',
-      value: 'oldest',
-      onClick: () => {},
     },
   ];
 
@@ -310,7 +294,7 @@ const Investors: NextPage<Props> = ({
                 onReset={() => setSelectedFilters(null)}
               />
 
-              <ElemDropdown items={sortItems} />
+              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
             </div>
           </div>
 
@@ -450,6 +434,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       where: {
         _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
       },
+      orderBy: [{ name: Order_By.Asc }],
     },
     context.req.cookies,
   );

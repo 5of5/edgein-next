@@ -15,6 +15,7 @@ import {
   useGetEventsQuery,
   Events_Bool_Exp,
   Order_By,
+  Events_Order_By,
 } from '@/graphql/types';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
@@ -33,6 +34,7 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 
 type Props = {
   eventTabs: TextFilter[];
@@ -81,6 +83,16 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Events_Order_By>({
+      newestSortKey: 'start_date',
+      oldestSortKey: 'start_date',
+    });
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -186,8 +198,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   } = useGetEventsQuery({
     offset,
     limit,
-    order: selectedTab.value === 'past' ? Order_By.Desc : Order_By.Asc,
     where: filters as Events_Bool_Exp,
+    orderBy: [orderByQuery],
   });
 
   if (!isLoading && initialLoad) {
@@ -198,33 +210,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const events_aggregate = initialLoad
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Sort: Ascending',
-      value: 'ascending',
-      onClick: () => {},
-    },
-    {
-      id: 1,
-      label: 'Sort: Descending',
-      value: 'descending',
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: 'Sort: Newest First',
-      value: 'newest',
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: 'Sort: Oldest First',
-      value: 'oldest',
-      onClick: () => {},
-    },
-  ];
 
   return (
     <DashboardLayout>
@@ -278,7 +263,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               onReset={() => setSelectedFilters(null)}
             />
 
-            <ElemDropdown items={sortItems} />
+            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
           </div>
         </div>
 
@@ -353,10 +338,10 @@ export const getStaticProps: GetStaticProps = async context => {
   const { data: events } = await runGraphQl<GetEventsQuery>(GetEventsDocument, {
     offset: 0,
     limit: 50,
-    order: Order_By.Asc,
     where: {
       _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
     },
+    orderBy: [{ start_date: Order_By.Asc, name: Order_By.Asc }],
   });
 
   return {
