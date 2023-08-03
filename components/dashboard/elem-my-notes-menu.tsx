@@ -43,12 +43,12 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
                 <span className="font-medium text-sm">Notes</span>
               </Disclosure.Button>
 
-              <button
+              {/* <button
                 onClick={() => {}}
                 className="flex items-center justify-center rounded-full hover:bg-gray-100"
               >
                 <IconPlusSmall className="h-6 w-6" title="Create List" />
-              </button>
+              </button> */}
             </div>
 
             <Disclosure.Panel as="ul" className="ml-8 space-y-1">

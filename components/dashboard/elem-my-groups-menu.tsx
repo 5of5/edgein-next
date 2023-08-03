@@ -6,7 +6,10 @@ import { Disclosure } from '@headlessui/react';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import useDisclosureState from '@/hooks/use-disclosure-state';
-import { MY_GROUPS_MENU_OPEN_KEY } from '@/utils/constants';
+import {
+  MY_GROUPS_MENU_OPEN_KEY,
+  SIDEBAR_DEFAULT_GROUPS_LIMIT,
+} from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 
 type Props = {
@@ -31,7 +34,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
 
   const getActiveClass = (id: number) => {
     return `/groups/${id}/` === router.asPath
-      ? '  text-primary-500 bg-slate-200'
+      ? 'bg-gray-100 text-gray-900'
       : '';
   };
 
@@ -51,6 +54,8 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   const onCloseUpgradeDialog = () => {
     setIsOpenUpgradeDialog(false);
   };
+
+  const [groupsLimit, setGroupsLimit] = useState(SIDEBAR_DEFAULT_GROUPS_LIMIT);
 
   return (
     <div className={className}>
@@ -90,22 +95,31 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             </div>
 
             <Disclosure.Panel as="ul" className="ml-8">
-              {displayedGroups?.map(group => (
-                <li key={group.id} role="button">
-                  <Link href={`/groups/${group.id}/`}>
-                    <a
-                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                        group.id,
-                      )}`}
-                      title={group.name}
-                    >
-                      <span className="line-clamp-1 break-all">
-                        {group.name}
-                      </span>
-                    </a>
-                  </Link>
-                </li>
-              ))}
+              {displayedGroups.slice(0, groupsLimit)?.map(group => {
+                return (
+                  <li key={group.id} role="button">
+                    <Link href={`/groups/${group.id}/`}>
+                      <a
+                        className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                          group.id,
+                        )}`}
+                        title={group.name}
+                      >
+                        <span className="line-clamp-1 break-all">
+                          {group.name}
+                        </span>
+                      </a>
+                    </Link>
+                  </li>
+                );
+              })}
+              <li role="button">
+                <Link href="/groups/">
+                  <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                    See all
+                  </a>
+                </Link>
+              </li>
             </Disclosure.Panel>
           </>
         )}

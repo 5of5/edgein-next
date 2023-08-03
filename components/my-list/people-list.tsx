@@ -365,7 +365,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
                           <th
                             key={key}
                             {...restColumnProps}
-                            className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
+                            className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content bg-[#FCFCFC] text-gray-600`}
                           >
                             <div className="flex items-center min-w-content">
                               {column.render('Header')}
