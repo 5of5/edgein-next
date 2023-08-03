@@ -132,7 +132,11 @@ export const ElemListCard: FC<Props> = ({
     <div className="flex flex-col mx-auto w-full p-4 rounded-lg border border-gray-200 ">
       <div>
         {!isResourceList && description ? (
-          <ElemTooltip content={truncateWords(description)} direction="top">
+          <ElemTooltip
+            content={truncateWords(description)}
+            direction="top"
+            mode="light"
+          >
             {ListItemName}
           </ElemTooltip>
         ) : (

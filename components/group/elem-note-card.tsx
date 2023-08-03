@@ -10,12 +10,11 @@ import moment from 'moment-timezone';
 import { ElemPhoto } from '../elem-photo';
 import Link from 'next/link';
 import {
+  IconEllipsisVertical,
   IconEllipsisHorizontal,
   IconThumbUp,
   IconThumbUpSolid,
   IconAnnotation,
-  IconTrash,
-  IconEditPencil,
   IconGroup,
   IconLockClosed,
   IconGlobe,
@@ -23,7 +22,6 @@ import {
   IconPaperAirplane,
   IconPaperAirplaneSolid,
 } from '@/components/icons';
-import { ElemTooltip } from '@/components/elem-tooltip';
 import { GetNotesQuery, People } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
 import { Popover, Transition } from '@headlessui/react';
@@ -285,9 +283,9 @@ const ElemNoteCard: React.FC<Props> = ({
 
   const noteOptions = (
     <Popover className="relative z-10 transition-all">
-      <Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-        <IconEllipsisHorizontal
-          className="h-6 w-6 group-hover:text-primary-500"
+      <Popover.Button className="flex items-center focus:outline-none">
+        <IconEllipsisVertical
+          className="h-6 w-6 text-gray-600"
           title="Options"
         />
       </Popover.Button>
@@ -300,7 +298,7 @@ const ElemNoteCard: React.FC<Props> = ({
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Popover.Panel className="absolute right-0 overflow-hidden w-48 p-1 divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5">
+        <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
           {({ close }) => (
             <>
               <button
@@ -308,27 +306,16 @@ const ElemNoteCard: React.FC<Props> = ({
                   onSelectNote(data);
                   close();
                 }}
-                className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
+                className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
               >
-                <IconEditPencil className="h-4 aspect-square group-hover:text-primary-500" />
-                <span className="text-sm font-medium">Edit note</span>
+                Edit note
               </button>
-              {/* <button
-								onClick={() => {
-									setIsEdit(true);
-									close();
-								}}
-								className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
-							>
-								<IconEditPencil className="h-4 aspect-square group-hover:text-primary-500" />
-								<span className="text-sm font-medium">Edit note old</span>
-							</button> */}
+
               <button
                 onClick={onDeleteNote}
-                className="flex items-center space-x-1 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
+                className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
               >
-                <IconTrash className="h-4 aspect-square group-hover:text-primary-500" />
-                <span className="text-sm font-medium">Delete note</span>
+                Delete note
               </button>
             </>
           )}
@@ -343,15 +330,15 @@ const ElemNoteCard: React.FC<Props> = ({
 
   return (
     <>
-      <div className="flex flex-col border border-gray-300 rounded-lg px-4 py-3">
-        <div className="relative flex items-center space-x-3">
+      <div className="flex flex-col border border-gray-300 rounded-lg">
+        <div className="relative flex items-center space-x-3 px-4 py-2">
           <div className="flex-shrink-0 relative">
             {layout === 'organizationAndAuthor' ? (
               <Link href={resourceLink}>
                 <a>
                   <ElemPhoto
                     photo={resource?.logo}
-                    wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-white rounded-lg shadow"
+                    wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-white rounded-lg border border-gray-300"
                     imgClass="object-fit max-w-full max-h-full"
                     imgAlt={resource?.name}
                   />
@@ -360,7 +347,7 @@ const ElemNoteCard: React.FC<Props> = ({
             ) : layout === 'groupAndAuthor' ? (
               <Link href={`/groups/${data?.user_group?.id}`}>
                 <a>
-                  <div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-slate-200 rounded-lg shadow">
+                  <div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-gray-300 rounded-lg border border-gray-300">
                     <IconGroup
                       className="w-7 h-7"
                       title={data?.user_group?.name}
@@ -374,7 +361,7 @@ const ElemNoteCard: React.FC<Props> = ({
                 <a>
                   <ElemPhoto
                     photo={data?.created_by_user?.person?.picture}
-                    wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full shadow"
+                    wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
                     imgClass="object-fit max-w-full max-h-full rounded-full"
                     imgAlt={
                       data?.created_by_user?.person?.name ||
@@ -382,7 +369,7 @@ const ElemNoteCard: React.FC<Props> = ({
                       `User: ${data?.created_by}`
                     }
                     placeholder="user"
-                    placeholderClass="text-slate-400 bg-white p-0"
+                    placeholderClass="text-gray-300 bg-white p-0"
                   />
                 </a>
               </Link>
@@ -401,7 +388,7 @@ const ElemNoteCard: React.FC<Props> = ({
                       data?.created_by_user?.display_name
                     }
                     placeholder="user"
-                    placeholderClass="text-slate-400 bg-white p-0"
+                    placeholderClass="text-gray-300 bg-white p-0"
                   />
                 </a>
               </Link>
@@ -410,7 +397,7 @@ const ElemNoteCard: React.FC<Props> = ({
 
           <div className="min-w-0 flex-1">
             <div>
-              <h2 className="text-lg leading-tight font-bold underline-offset-1 hover:underline">
+              <h2 className="text-lg leading-tight font-medium underline-offset-1 hover:underline">
                 {layout === 'organizationAndAuthor' ? (
                   <Link href={resourceLink}>
                     <a>{resource?.name}</a>
@@ -441,16 +428,6 @@ const ElemNoteCard: React.FC<Props> = ({
                   </>
                 )}
 
-                {/* <ElemTooltip
-                  content={`${moment(data?.created_at).format(
-                    'LL [at] h:mma',
-                  )}`}
-                  size="md"
-                  className="inline-flex items-center overflow-visible"
-                >
-                  {formatDateShown(data?.created_at)}
-                </ElemTooltip> */}
-
                 {layout === 'organizationAndAuthor' ||
                 layout === 'groupAndAuthor' ? (
                   <IconUsers
@@ -480,11 +457,11 @@ const ElemNoteCard: React.FC<Props> = ({
           <div>{data?.created_by_user?.id === user?.id && noteOptions}</div>
         </div>
 
-        <div className="grow py-2 min-h-fit">
+        <div className="grow min-h-fit px-4 py-2">
           <p
-            className={`break-words whitespace-pre-line ${
+            className={`break-words whitespace-pre-line text-sm text-gray-900 ${
               !contentShowAll && 'line-clamp-5'
-            } text-gray-400`}
+            }`}
             ref={contentDiv}
           >
             {data.notes}
@@ -493,122 +470,129 @@ const ElemNoteCard: React.FC<Props> = ({
             <button
               type="button"
               onClick={() => setContentShowAll(!contentShowAll)}
-              className="inline text-primary-500"
+              className="text-sm inline hover:underline"
             >
               See more
             </button>
           )}
         </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-slate-600">
+        <div className="flex items-center justify-between px-4 py-2">
+          <span className="text-sm text-gray-500">
             {likesCount > 0
               ? `${likesCount} like${likesCount > 1 ? 's' : ''}`
               : null}
           </span>
-          <span className="text-sm text-slate-600">
+          <span className="text-sm text-gray-500">
             {commentsCount > 0
               ? `${commentsCount} comment${commentsCount > 1 ? 's' : ''}`
               : null}
           </span>
         </div>
-        <div className="flex space-x-1 py-1 border-t border-b border-black/10">
+        <div className="flex space-x-1 border-y border-gray-300">
           <button
-            className={`flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium hover:bg-slate-200 active:bg-slate-300 ${
-              isLikedByCurrentUser ? 'text-primary-500' : 'text-slate-600'
+            className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-gray-100 ${
+              isLikedByCurrentUser ? 'text-gray-900' : 'text-gray-500'
             }`}
             onClick={onToggleLike}
           >
             {isLikedByCurrentUser ? (
-              <IconThumbUpSolid className="h-5 w-5 mr-1" />
+              <>
+                <IconThumbUpSolid className="h-5 w-5 mr-1" /> Liked
+              </>
             ) : (
-              <IconThumbUp className="h-5 w-5 mr-1" />
+              <>
+                <IconThumbUp className="h-5 w-5 mr-1" /> Like
+              </>
             )}
-            Like
           </button>
           <button
-            className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:bg-slate-200 active:bg-slate-300"
+            className="flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-gray-100 text-gray-500"
             onClick={onCommentButton}
           >
             <IconAnnotation className="h-5 w-5 mr-1" /> Comment
           </button>
         </div>
-        <div className="flex flex-col space-y-2 mt-2">
-          {data.comments.map(comment => (
-            <div key={comment.id} className="flex items-center gap-2">
-              <div className="flex items-start gap-2">
-                <Link href={`/people/${comment.created_by_user?.person?.slug}`}>
-                  <a>
-                    <ElemPhoto
-                      photo={comment.created_by_user?.person?.picture}
-                      wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                      imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                      imgAlt={
-                        comment.created_by_user?.person?.name ||
-                        data?.created_by_user?.display_name
-                      }
-                      placeholder="user"
-                      placeholderClass="text-slate-300"
-                    />
-                  </a>
-                </Link>
-                <div className="">
-                  <div className="inline-flex py-2 px-3 text-sm bg-slate-100 rounded-[18px]">
-                    <div>
-                      <p className="">
-                        <Link
-                          href={`/people/${comment.created_by_user?.person?.slug}`}
-                        >
-                          <a className="font-bold hover:underline">
-                            {comment.created_by_user?.person?.name ||
-                              comment.created_by_user?.display_name}
-                          </a>
-                        </Link>
-                        <span aria-hidden="true"> · </span>
-                        <span className="text-slate-600">
-                          {formatDateShown(comment?.created_at)}
-                        </span>
-                      </p>
-                      <p>{comment.content}</p>
+        {data.comments.length > 0 && (
+          <div className="flex flex-col space-y-2 px-4 py-2">
+            {data.comments.map(comment => (
+              <div key={comment.id} className="flex items-center gap-2">
+                <div className="flex items-start gap-2">
+                  <Link
+                    href={`/people/${comment.created_by_user?.person?.slug}`}
+                  >
+                    <a>
+                      <ElemPhoto
+                        photo={comment.created_by_user?.person?.picture}
+                        wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                        imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                        imgAlt={
+                          comment.created_by_user?.person?.name ||
+                          data?.created_by_user?.display_name
+                        }
+                        placeholder="user"
+                        placeholderClass="text-slate-300"
+                      />
+                    </a>
+                  </Link>
+                  <div className="">
+                    <div className="inline-flex py-2 px-3 text-sm bg-gray-100 rounded-lg">
+                      <div>
+                        <p className="">
+                          <Link
+                            href={`/people/${comment.created_by_user?.person?.slug}`}
+                          >
+                            <a className="font-medium hover:underline">
+                              {comment.created_by_user?.person?.name ||
+                                comment.created_by_user?.display_name}
+                            </a>
+                          </Link>
+                          <span aria-hidden="true"> · </span>
+                          <span className="text-slate-600">
+                            {formatDateShown(comment?.created_at)}
+                          </span>
+                        </p>
+                        <p>{comment.content}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
+                {comment.created_by_user_id === user?.id && (
+                  <Popover className="relative">
+                    <Popover.Button className="flex items-center focus:outline-none">
+                      <IconEllipsisVertical
+                        className="h-6 w-6 text-gray-600"
+                        title="Options"
+                      />
+                    </Popover.Button>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-200"
+                      enterFrom="opacity-0 translate-y-1"
+                      enterTo="opacity-100 translate-y-0"
+                      leave="transition ease-in duration-150"
+                      leaveFrom="opacity-100 translate-y-0"
+                      leaveTo="opacity-0 translate-y-1"
+                    >
+                      <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+                        <button
+                          onClick={() => {
+                            onDeleteComment(comment.id);
+                          }}
+                          className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                        >
+                          <span className="text-sm font-medium">Delete</span>
+                        </button>
+                      </Popover.Panel>
+                    </Transition>
+                  </Popover>
+                )}
               </div>
-              {comment.created_by_user_id === user?.id && (
-                <Popover className="relative">
-                  <Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group hover:text-primary-500 hover:bg-slate-200 focus:outline-none">
-                    <IconEllipsisHorizontal
-                      className="h-6 w-6 group-hover:text-primary-500"
-                      title="Options"
-                    />
-                  </Popover.Button>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="opacity-0 translate-y-1"
-                    enterTo="opacity-100 translate-y-0"
-                    leave="transition ease-in duration-150"
-                    leaveFrom="opacity-100 translate-y-0"
-                    leaveTo="opacity-0 translate-y-1"
-                  >
-                    <Popover.Panel className="absolute left-1/2 -translate-x-1/2 bg-white z-10 rounded-md shadow-md p-1 w-48">
-                      <button
-                        onClick={() => {
-                          onDeleteComment(comment.id);
-                        }}
-                        className="cursor-pointer text-left w-full rounded-md p-2 m-0 transition-all hover:bg-slate-100"
-                      >
-                        <span className="text-sm font-medium">Delete</span>
-                      </button>
-                    </Popover.Panel>
-                  </Transition>
-                </Popover>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        <div className="flex items-start space-x-2 mt-2">
+        <div className="flex items-start space-x-2 px-4 py-2">
           <ElemPhoto
             photo={user?.person?.picture}
             wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
@@ -628,25 +612,22 @@ const ElemNoteCard: React.FC<Props> = ({
               onChange={onChangeCommentInput}
               onKeyDown={onCommentInputKeyDown}
               onClick={onCommentInputClick}
-              className="bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 min-h-[2rem] overflow-y-auto overscroll-y-none scrollbar-hide text-slate-600 transition-all hover:bg-slate-200"
+              className="!mt-0"
             />
 
             <button
               onClick={onCommentSend}
               className={`absolute z-10 right-3 bottom-0 flex items-center justify-center w-8 h-8 rounded-full  ${
                 commentContent.length > 0
-                  ? 'cursor-pointer hover:bg-slate-200'
+                  ? 'cursor-pointer hover:bg-gray-100'
                   : 'cursor-not-allowed'
               }`}
             >
               {commentContent.length > 0 ? (
-                <IconPaperAirplaneSolid
-                  className="w-5 h-5 text-primary-500"
-                  title="Comment"
-                />
+                <IconPaperAirplaneSolid className="w-5 h-5" title="Comment" />
               ) : (
                 <IconPaperAirplane
-                  className="w-5 h-5 text-slate-600"
+                  className="w-5 h-5 text-gray-500"
                   title="Comment"
                 />
               )}
