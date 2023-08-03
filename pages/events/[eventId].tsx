@@ -36,6 +36,7 @@ import { ElemRequiredProfileDialog } from '@/components/elem-required-profile-di
 import { ElemSubEvents } from '@/components/event/elem-sub-events';
 import moment from 'moment-timezone';
 import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 type Props = {
   event: GetEventQuery['events'][0];
@@ -176,7 +177,7 @@ const Event: NextPage<Props> = props => {
   );
 
   return (
-    <>
+    <DashboardLayout>
       <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-4">
@@ -426,7 +427,7 @@ const Event: NextPage<Props> = props => {
       />
 
       <Toaster />
-    </>
+    </DashboardLayout>
   );
 };
 

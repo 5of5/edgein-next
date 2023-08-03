@@ -44,6 +44,7 @@ import { getQueryBySource } from '@/utils/news';
 import ElemNewsList from '@/components/news/elem-news-list';
 import ElemCompanyTags from '@/components/elem-company-tags';
 import { useUser } from '@/context/user-context';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 type Props = {
   company: Companies;
@@ -197,7 +198,7 @@ const Company: NextPage<Props> = (props: Props) => {
   };
 
   return (
-    <>
+    <DashboardLayout>
       <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-11 lg:gap-7">
@@ -507,7 +508,7 @@ const Company: NextPage<Props> = (props: Props) => {
           />
         )}
       </div>
-    </>
+    </DashboardLayout>
   );
 };
 

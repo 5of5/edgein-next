@@ -32,6 +32,7 @@ import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import { Popups } from '@/components/the-navbar';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { useUser } from '@/context/user-context';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -125,7 +126,7 @@ const VCFirm: NextPage<Props> = props => {
   );
 
   return (
-    <>
+    <DashboardLayout>
       <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-11 lg:gap-7">
@@ -314,7 +315,7 @@ const VCFirm: NextPage<Props> = props => {
 				)}
 			</div> */}
       </div>
-    </>
+    </DashboardLayout>
   );
 };
 
