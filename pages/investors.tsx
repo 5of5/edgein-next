@@ -382,22 +382,6 @@ const Investors: NextPage<Props> = ({
                 onClickPrev={() => setPage(page - 1)}
                 onClickNext={() => setPage(page + 1)}
                 filterByTag={filterByTag}
-                filterValues={selectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: filterParams,
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => onChangeSelectedFilters(null)}
               />
             ) : (
               <>
