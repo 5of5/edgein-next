@@ -318,6 +318,98 @@ const Investors: NextPage<Props> = ({
           <ElemInviteBanner className="mt-3 mx-4" />
 
           <div className="mt-6 px-4">
+            {personalizedTags.locationTags.length != 0 &&
+              !shouldHidePersonalized &&
+              personalizedTags.locationTags.map(location => (
+                <>
+                  <InvestorsByFilter
+                    key={location}
+                    headingText={`Trending in ${location}`}
+                    tagOnClick={filterByTag}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        { status_tags: { _contains: 'Trending' } },
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+
+                  <InvestorsByFilter
+                    key={location}
+                    headingText={`New in ${location}`}
+                    tagOnClick={filterByTag}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                </>
+              ))}
+
+            {personalizedTags.industryTags.length != 0 &&
+              !shouldHidePersonalized &&
+              personalizedTags.industryTags.map(industry => (
+                <InvestorsByFilter
+                  key={industry}
+                  headingText={`Trending in ${industry}`}
+                  tagOnClick={filterByTag}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      {
+                        status_tags: {
+                          _contains: 'Trending',
+                        },
+                      },
+                      {
+                        tags: {
+                          _contains: industry,
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+
+            {!shouldHidePersonalized && (
+              <InvestorsByFilter
+                headingText={`Just acquired`}
+                tagOnClick={filterByTag}
+                filters={{
+                  _and: [
+                    { slug: { _neq: '' } },
+                    { library: { _contains: selectedLibrary } },
+                    {
+                      status_tags: {
+                        _contains: 'Acquired',
+                      },
+                    },
+                  ],
+                }}
+              />
+            )}
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
@@ -367,99 +459,6 @@ const Investors: NextPage<Props> = ({
               />
             ) : (
               <>
-                {personalizedTags.locationTags.length != 0 &&
-                  !shouldHidePersonalized &&
-                  personalizedTags.locationTags.map(location => (
-                    <>
-                      <InvestorsByFilter
-                        key={location}
-                        headingText={`Trending in ${location}`}
-                        tagOnClick={filterByTag}
-                        filters={{
-                          _and: [
-                            { slug: { _neq: '' } },
-                            { library: { _contains: selectedLibrary } },
-                            { status_tags: { _contains: 'Trending' } },
-                            {
-                              location_json: {
-                                _cast: {
-                                  String: {
-                                    _ilike: `%"city": "${location}"%`,
-                                  },
-                                },
-                              },
-                            },
-                          ],
-                        }}
-                      />
-
-                      <InvestorsByFilter
-                        key={location}
-                        headingText={`New in ${location}`}
-                        tagOnClick={filterByTag}
-                        filters={{
-                          _and: [
-                            { slug: { _neq: '' } },
-                            { library: { _contains: selectedLibrary } },
-                            {
-                              location_json: {
-                                _cast: {
-                                  String: {
-                                    _ilike: `%"city": "${location}"%`,
-                                  },
-                                },
-                              },
-                            },
-                          ],
-                        }}
-                      />
-                    </>
-                  ))}
-
-                {personalizedTags.industryTags.length != 0 &&
-                  !shouldHidePersonalized &&
-                  personalizedTags.industryTags.map(industry => (
-                    <InvestorsByFilter
-                      key={industry}
-                      headingText={`Trending in ${industry}`}
-                      tagOnClick={filterByTag}
-                      filters={{
-                        _and: [
-                          { slug: { _neq: '' } },
-                          { library: { _contains: selectedLibrary } },
-                          {
-                            status_tags: {
-                              _contains: 'Trending',
-                            },
-                          },
-                          {
-                            tags: {
-                              _contains: industry,
-                            },
-                          },
-                        ],
-                      }}
-                    />
-                  ))}
-
-                {!shouldHidePersonalized && (
-                  <InvestorsByFilter
-                    headingText={`Just acquired`}
-                    tagOnClick={filterByTag}
-                    filters={{
-                      _and: [
-                        { slug: { _neq: '' } },
-                        { library: { _contains: selectedLibrary } },
-                        {
-                          status_tags: {
-                            _contains: 'Acquired',
-                          },
-                        },
-                      ],
-                    }}
-                  />
-                )}
-
                 {vcFirms?.length != 0 && (
                   <>
                     <div className="text-2xl font-bold ml-4">All investors</div>
