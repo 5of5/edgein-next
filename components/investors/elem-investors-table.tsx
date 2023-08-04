@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import moment from 'moment-timezone';
-import { orderBy, first } from 'lodash';
+import { first } from 'lodash';
 import {
   IconSortUp,
   IconSortDown,
@@ -13,14 +13,11 @@ import {
 import { ElemButton } from '@/components/elem-button';
 import { ElemReactions } from '@/components/elem-reactions';
 import { TableColumnsFilter } from '@/components/my-list/table-columns-filter';
-import { last } from 'lodash';
 import { Menu } from '@headlessui/react';
 import { numberWithCommas } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { loadStripe } from '@/utils/stripe';
-import { ElemFilter } from '@/components/elem-filter';
-import { Filters, FilterOptionKeys } from '@/models/Filter';
 
 import {
   useTable,
@@ -45,10 +42,6 @@ type Props = {
   onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   filterByTag: Function;
-  filterValues: Filters | null;
-  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
-  onClearOption: (name: FilterOptionKeys) => void;
-  onReset: () => void;
 };
 
 export const InvestorsTable: FC<Props> = ({
@@ -61,10 +54,6 @@ export const InvestorsTable: FC<Props> = ({
   onClickPrev,
   onClickNext,
   filterByTag,
-  filterValues,
-  onApply,
-  onClearOption,
-  onReset,
 }) => {
   const { user } = useUser();
 
@@ -464,13 +453,6 @@ export const InvestorsTable: FC<Props> = ({
           <TableColumnsFilter
             columns={allColumns}
             resetColumns={() => toggleHideAllColumns(false)}
-          />
-          <ElemFilter
-            resourceType="vc_firms"
-            filterValues={filterValues}
-            onApply={onApply}
-            onClearOption={onClearOption}
-            onReset={onReset}
           />
         </div>
 

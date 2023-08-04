@@ -22,21 +22,34 @@ export const ElemNotes: React.FC<Props> = props => {
 
   return (
     <div className={`${props.className}`}>
-      {props.notes.length === 0 ? (
-        <div className="bg-white shadow rounded-lg px-4 py-4 shrink-0">
-          <div className="flex items-center justify-between pb-1 border-b border-black/10">
-            <h2 className="text-lg font-bold">{`Notes (${props.notes.length})`}</h2>
+      <div className="flex items-center mb-4 px-4 py-2 shrink-0 border border-gray-300 rounded-lg">
+        <h2 className="text-lg font-medium mr-1">{`Notes (${props.notes.length})`}</h2>
+        <ElemTooltip
+          size="md"
+          content="Notes are added on a Company or Investor profile and shared with a selected audience."
+          mode="light"
+        >
+          <div>
+            <IconInformationCircle
+              className="h-5 w-5 text-gray-500"
+              title="About notes"
+            />
           </div>
+        </ElemTooltip>
+      </div>
+
+      {props.notes.length === 0 ? (
+        <div className="px-4 py-4 shrink-0 border border-gray-300 rounded-lg">
           <div className="p-12 text-center">
             <IconDocumentDownload
-              className="mx-auto h-12 w-12 text-slate-300"
+              className="mx-auto h-12 w-12 text-gray-300"
               title="Notes"
             />
-            <h3 className="mt-2 text-lg font-bold">
+            <h3 className="mt-2 text-lg font-medium">
               No notes have been added to group yet
             </h3>
 
-            <p className="mt-1 text-slate-600">
+            <p className="mt-1 text-sm text-gray-500">
               Create a note in a company or investor profile and select group as
               audience.
             </p>
@@ -44,20 +57,6 @@ export const ElemNotes: React.FC<Props> = props => {
         </div>
       ) : (
         <>
-          <div className="flex items-center mb-4 bg-white shadow rounded-lg px-4 py-2 shrink-0">
-            <h2 className="text-lg font-bold mr-1">{`Notes (${props.notes.length})`}</h2>
-            <ElemTooltip
-              size="md"
-              content="Notes are added on a Company or Investor profile and shared with a selected audience."
-            >
-              <div>
-                <IconInformationCircle
-                  className="h-5 w-5 text-primary-500"
-                  title="About notes"
-                />
-              </div>
-            </ElemTooltip>
-          </div>
           <div className="flex flex-col gap-y-4">
             {sortedNotes.map(item => (
               <ElemNoteCard

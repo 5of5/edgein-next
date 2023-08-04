@@ -121,7 +121,7 @@ export const ElemListCard: FC<Props> = ({
   const ListItemName = (
     <div className="inline-block">
       <Link href={resourceUrl} passHref>
-        <a className="inline-block font-bold break-words line-clamp-2 transition-all hover:text-primary-500 hover:underline">
+        <a className="inline-block font-medium underline break-words line-clamp-2">
           {name}
         </a>
       </Link>
@@ -129,10 +129,14 @@ export const ElemListCard: FC<Props> = ({
   );
 
   return (
-    <div className="flex flex-col mx-auto w-full p-4 bg-white rounded-lg shadow">
+    <div className="flex flex-col mx-auto w-full p-4 rounded-lg border border-gray-200 ">
       <div>
         {!isResourceList && description ? (
-          <ElemTooltip content={truncateWords(description)} direction="top">
+          <ElemTooltip
+            content={truncateWords(description)}
+            direction="top"
+            mode="light"
+          >
             {ListItemName}
           </ElemTooltip>
         ) : (
@@ -141,7 +145,7 @@ export const ElemListCard: FC<Props> = ({
       </div>
 
       <div className="grow">
-        <p className="inline text-slate-600 text-sm">
+        <p className="inline text-gray-500 text-sm">
           {isResourceList ? (
             members.length > 0 && (
               <>
@@ -177,7 +181,7 @@ export const ElemListCard: FC<Props> = ({
           )}
         </p>
 
-        <p className="text-primary-500 text-sm">
+        <p className="text-sm text-gray-500">
           Updated {formatDateShown(resource.updated_at)}
         </p>
 
@@ -208,7 +212,7 @@ export const ElemListCard: FC<Props> = ({
             ))}
           </ul>
           <Link href={resourceUrl} passHref>
-            <a className="font-medium text-sm text-slate-600 ml-1 hover:underline">
+            <a className="font-medium text-sm text-gray-500 ml-1 hover:underline">
               {members.length > 1
                 ? `${members.length} ${
                     isResourceList ? 'Followers' : 'Members'
@@ -222,7 +226,7 @@ export const ElemListCard: FC<Props> = ({
         {selectedTab.id === 'discover' ? (
           <ElemButton
             onClick={handleClickJoin}
-            btn="slate"
+            btn="default"
             size="sm"
             loading={isFollowingListLoading || isJoiningGroupLoading}
             className="w-full block rounded-md transition ease-in-out duration-150 group"
@@ -232,7 +236,7 @@ export const ElemListCard: FC<Props> = ({
         ) : (
           <ElemButton
             href={resourceUrl}
-            btn="primary-light"
+            btn="default"
             size="sm"
             className="w-full block rounded-md transition ease-in-out duration-150 group"
           >

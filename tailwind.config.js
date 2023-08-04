@@ -46,19 +46,19 @@ const darkBlue = {
   950: '#0E0067',
 };
 
-const gray = {
-  50: '#FCFCFC',
-  100: '#eeeef1',
-  200: '#d5d5db',
-  250: '#E2E8F0',
-  300: '#bcbcc5',
-  400: '#425466',
-  500: '#57586e',
-  600: '#4e4f63',
-  700: '#414253',
-  800: '#343542',
-  900: '#2b2b36',
-};
+// const gray = {
+//   50: '#FCFCFC',
+//   100: '#f3f4f6',
+//   200: '#e5e7eb',
+//   250: '#E2E8F0',
+//   300: '#bcbcc5',
+//   400: '#425466',
+//   500: '#57586e',
+//   600: '#4b5563',
+//   700: '#414253',
+//   800: '#343542',
+//   900: '#111827',
+// };
 
 const blue = {
   50: '#EFF6FF',
@@ -70,10 +70,10 @@ const blue = {
   600: '#2563EB',
   700: '#1D4ED8',
   800: '#1B01FE',
-  900: '#1E3A8A',
+  900: '#1C01B7',
 };
 
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [
@@ -93,7 +93,7 @@ module.exports = {
         ...colors,
         primary,
         dark: dark,
-        gray,
+        // gray,
         blue,
         transparent: 'transparent',
       },

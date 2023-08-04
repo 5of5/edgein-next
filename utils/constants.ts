@@ -408,23 +408,22 @@ export const companyChoices = [
   {
     id: 'Trending',
     name: 'Trending',
-  },
-  {
-    id: 'Following',
-    name: 'Following (Upcoming)',
-    disabled: true,
+    icon: '🔥',
   },
   {
     id: 'Raising',
     name: 'Raising',
+    icon: '💸',
   },
   {
     id: 'Acquired',
     name: 'Acquired',
+    icon: '🏡',
   },
   {
     id: 'Dead',
     name: 'Dead',
+    icon: '💀',
   },
 ];
 
@@ -458,6 +457,7 @@ export const companyLayerChoices = [
     name: "Layer 6 - Interoperable Digital Assets / NFT's",
   },
 ];
+
 export const roundChoices = [
   {
     id: 'Pre-seed',
@@ -543,25 +543,36 @@ export const currencyChoices = [
     name: 'SGD',
   },
 ];
+// {
+//   id: 'Trending',
+//   name: 'Trending',
+//   icon: '🔥',
+// },
+// {
+//   id: 'Raising',
+//   name: 'Raising',
+//   icon: '💸',
+// },
+// {
+//   id: 'Acquired',
+//   name: 'Acquired',
+//   icon: '🏡',
+// },
+// {
+//   id: 'Dead',
+//   name: 'Dead',
+//   icon: '💀',
 
 export const investorChoices = [
   {
     id: 'Trending',
     name: 'Trending',
-  },
-  {
-    id: 'Following',
-    name: 'Following (Coming soon!)',
-    disabled: true,
-  },
-  {
-    id: 'Acquired',
-    name: 'Acquired',
-    disabled: true,
+    icon: '🔥',
   },
   {
     id: 'Dead',
     name: 'Dead',
+    icon: '💀',
   },
 ];
 
@@ -843,37 +854,37 @@ export const companiesFilterOptions = [
     category: 'Location',
     items: [
       {
-        label: 'Add country',
+        label: 'Country',
         value: 'country',
       },
       {
-        label: 'Add state',
+        label: 'State',
         value: 'state',
       },
       {
-        label: 'Add city',
+        label: 'City',
         value: 'city',
       },
       {
-        label: 'Add address',
+        label: 'Address',
         value: 'address',
       },
     ],
   },
   {
-    category: 'Description keywords',
+    // category: 'Keywords',
     items: [
       {
-        label: 'Add keywords',
+        label: 'Keywords',
         value: 'keywords',
       },
     ],
   },
   {
-    category: 'Tags',
+    //category: 'Tags',
     items: [
       {
-        label: 'Select tags',
+        label: 'Tags',
         value: 'industry',
       },
     ],
@@ -904,7 +915,7 @@ export const companiesFilterOptions = [
     ],
   },
   {
-    category: 'Team',
+    // category: 'Team',
     items: [
       {
         label: 'Team size',
@@ -2008,3 +2019,11 @@ export const NOTIFICATION_EXCLUDE_PROPERTIES = [
 ];
 
 export const EMAIL_MAX_LENGTH = 255;
+
+export const CARD_DEFAULT_TAGS_LIMIT = 3;
+
+export const CARD_MAX_TAGS_LIMIT = 50;
+
+export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
+
+export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;

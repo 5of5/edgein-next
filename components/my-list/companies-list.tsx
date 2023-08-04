@@ -5,14 +5,13 @@ import React, { FC, useEffect, useState } from 'react';
 import { Menu } from '@headlessui/react';
 import {
   useTable,
-  useResizeColumns,
   useSortBy,
   usePagination,
   useRowSelect,
   useGlobalFilter,
 } from 'react-table';
-import { TableColumnsFilter } from './table-columns-filter';
-import { TableGlobalFilter } from './table-global-filter';
+// import { TableColumnsFilter } from './table-columns-filter';
+// import { TableGlobalFilter } from './table-global-filter';
 import { ElemPhoto } from '@/components/elem-photo';
 import {
   IconSortUp,
@@ -31,6 +30,7 @@ import {
 import { ElemReactions } from '@/components/elem-reactions';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
+import Link from 'next/link';
 
 type Props = {
   companies?: Follows_Companies[];
@@ -141,16 +141,16 @@ export const CompaniesList: FC<Props> = ({
           <div>
             <a
               href={`/companies/` + props.row.original?.company?.slug}
-              className="flex items-center space-x-3 shrink-0 group transition-all"
+              className="flex items-center space-x-3 shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.company?.logo}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
-                placeholderClass="text-slate-300"
+                placeholderClass="text-gray-300"
               />
-              <p className="font-bold line-clamp-2 break-words group-hover:text-primary-500">
+              <p className="font-medium line-clamp-2 break-words hover:underline">
                 {props.value}
               </p>
             </a>
@@ -163,31 +163,37 @@ export const CompaniesList: FC<Props> = ({
         disableHiding: true,
       },
       {
-        Header: 'Token',
-        accessor: 'company.coin.ticker' as const,
+        Header: 'Description',
+        accessor: 'company.overview' as const,
         Cell: (props: any) => (
-          <>{props.value ? <div>{props.value}</div> : emptyCell}</>
+          <div>
+            {props.value ? (
+              <p className="line-clamp-3 text-sm text-gray-500">
+                {props.value}
+              </p>
+            ) : (
+              emptyCell
+            )}
+          </div>
         ),
-        width: 100,
+        disableSortBy: true,
+        width: 400,
+        minWidth: 300,
       },
       {
-        Header: 'Industries',
+        Header: 'Tags',
         accessor: 'company.tags' as const,
         Cell: (props: any) => (
-          <div className="whitespace-nowrap truncate">
+          <div className="flex flex-wrap gap-1">
             {props.value ? (
               <>
                 {props.value?.map((tag: string, index: number) => {
                   return (
-                    <div key={index} className="inline">
-                      <a
-                        href={`/companies/?tags=${tag}`}
-                        className="cursor-pointer border-primary-500 hover:border-b hover:text-primary-500"
-                      >
+                    <Link href={`/companies/?tags=${tag}`} key={index}>
+                      <a className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
                         {tag}
                       </a>
-                      {last(props.value) === tag ? '' : ','}{' '}
-                    </div>
+                    </Link>
                   );
                 })}
               </>
@@ -197,23 +203,15 @@ export const CompaniesList: FC<Props> = ({
           </div>
         ),
         disableSortBy: true,
-        width: 200,
+        width: 400,
       },
       {
-        Header: 'Description',
-        accessor: 'company.overview' as const,
+        Header: 'Token',
+        accessor: 'company.coin.ticker' as const,
         Cell: (props: any) => (
-          <div>
-            {props.value ? (
-              <p className="line-clamp-2 text-sm">{props.value}</p>
-            ) : (
-              emptyCell
-            )}
-          </div>
+          <>{props.value ? <div>{props.value}</div> : emptyCell}</>
         ),
-        disableSortBy: true,
-        width: 400,
-        minWidth: 300,
+        width: 100,
       },
       // {
       // 	Header: "Location",
@@ -230,7 +228,7 @@ export const CompaniesList: FC<Props> = ({
         Cell: (props: any) => {
           return <div>{props.value ? props.value : emptyCell}</div>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'State',
@@ -238,7 +236,7 @@ export const CompaniesList: FC<Props> = ({
         Cell: (props: any) => {
           return <div>{props.value ? props.value : emptyCell}</div>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Country',
@@ -246,7 +244,7 @@ export const CompaniesList: FC<Props> = ({
         Cell: (props: any) => {
           return <div>{props.value ? props.value : emptyCell}</div>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Founded',
@@ -254,7 +252,7 @@ export const CompaniesList: FC<Props> = ({
         Cell: (props: any) => {
           return <>{props.value ? <p>{props.value}</p> : emptyCell}</>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Employees',
@@ -266,7 +264,7 @@ export const CompaniesList: FC<Props> = ({
             </>
           );
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Total Funding',
@@ -293,7 +291,7 @@ export const CompaniesList: FC<Props> = ({
             </div>
           );
         },
-        width: 140,
+        width: 200,
       },
       {
         Header: '# Funding Rounds',
@@ -302,7 +300,7 @@ export const CompaniesList: FC<Props> = ({
           const numberOfRounds = props.value;
           return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
         },
-        width: 100,
+        width: 200,
       },
       {
         Header: 'Last Funding Date',
@@ -326,7 +324,7 @@ export const CompaniesList: FC<Props> = ({
             </div>
           );
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Last Funding Type',
@@ -346,23 +344,6 @@ export const CompaniesList: FC<Props> = ({
         Cell: (props: any) => {
           return <div>{props.value ? props.value : emptyCell}</div>;
         },
-      },
-      {
-        Header: 'Reactions',
-        accessor: 'company' as const,
-        Cell: (props: any) => (
-          <div>
-            {props.value && (
-              <ElemReactions
-                resource={props.value}
-                resourceType={'companies'}
-                isInteractive={false}
-              />
-            )}
-          </div>
-        ),
-        width: 200,
-        disableSortBy: true,
       },
     ],
     [emptyCell],
@@ -397,17 +378,15 @@ export const CompaniesList: FC<Props> = ({
       autoResetSortBy: false,
       sortTypes,
       initialState: {
-        pageSize: 10,
+        pageSize: 20,
       },
       defaultColumn,
       autoResetHiddenColumns: false,
-      autoResetResize: false,
     },
     useGlobalFilter,
     useSortBy,
     usePagination,
     useRowSelect,
-    useResizeColumns,
     useCheckboxes,
   );
 
@@ -451,16 +430,12 @@ export const CompaniesList: FC<Props> = ({
   };
 
   return (
-    <div className="rounded-lg p-5 bg-white shadow mb-8">
+    <div className="px-4 mt-4">
       <div className="sm:flex items-start justify-between mb-2">
-        {listNameTitle && (
-          <h2 className="font-bold text-lg capitalize mr-2">
-            {listNameTitle}: Companies
-          </h2>
-        )}
+        <h2 className="font-medium capitalize mr-2">Companies</h2>
 
         {fundingTotal > 0 && (
-          <div className="flex items-center sm:justify-center sm:text-right font-bold shrink-0 mr-2">
+          <div className="flex items-center sm:justify-center sm:text-right font-medium shrink-0 mr-2">
             <div className="text-sm mr-1">Total Funding</div>
             <div className="text-green-600 text-lg">
               ${convertToInternationalCurrencySystem(fundingTotal)}
@@ -469,84 +444,38 @@ export const CompaniesList: FC<Props> = ({
         )}
       </div>
 
-      {/* {sortedTags.length > 0 && (
-				<div className="sm:flex items-start w-full mb-3">
-					<div className="font-bold text-sm mr-2 py-0.5">Tags:</div>
-					<div className="flex gap-2 flex-wrap">
-						{sortedTags.map(
-							(
-								{
-									name,
-									count,
-								}: {
-									name: string;
-									count: number;
-								},
-								index: number
-							) => (
-								<div
-									key={index}
-									className="group inline-flex items-center shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
-								>
-									<span>{name}</span>
+      {preGlobalFilteredRows.length > 0 &&
+        Object.keys(selectedRowIds).length > 0 && (
+          <div className="flex items-center space-x-2 mb-2">
+            <button
+              onClick={onRemove}
+              className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1"
+            >
+              <IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
+              <div>Remove from list</div>
+            </button>
+            <button
+              onClick={() => toggleAllRowsSelected(false)}
+              className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1"
+            >
+              <IconX className="h-5 w-5 mr-1" title="Clear Selection" />
+              <div>Cancel</div>
+            </button>
 
-									<span className="pl-1 text-sm proportional-nums lining-nums">
-										({count})
-									</span>
-								</div>
-							)
-						)}
-					</div>
-				</div>
-			)} */}
-
-      {preGlobalFilteredRows.length > 0 && (
-        <div className="flex items-center space-x-2 mb-2">
-          {Object.keys(selectedRowIds).length > 0 ? (
-            <>
-              <button
-                onClick={onRemove}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1"
-              >
-                <IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
-                <div>Remove from list</div>
-              </button>
-              <button
-                onClick={() => toggleAllRowsSelected(false)}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1"
-              >
-                <IconX className="h-5 w-5 mr-1" title="Clear Selection" />
-                <div>Cancel</div>
-              </button>
-
-              <div className="text-sm shrink-0">
-                {Object.keys(selectedRowIds).length} organization
-                {Object.keys(selectedRowIds).length > 1 && 's'} selected
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-col space-y-1 sm:flex-row sm:items-center sm:space-x-3 sm:space-y-0">
-              <TableColumnsFilter
-                columns={allColumns}
-                resetColumns={() => toggleHideAllColumns(false)}
-              />
-              <TableGlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-              />
+            <div className="text-sm shrink-0">
+              {Object.keys(selectedRowIds).length} organization
+              {Object.keys(selectedRowIds).length > 1 && 's'} selected
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
 
-      <div className="relative -mx-5 lg:mx-0">
+      <div className="relative">
         <div className="absolute pointer-events-none w-8 bg-gradient-to-l from-white z-10 rounded-tr-lg rounded-br-lg top-px bottom-px right-0 sm:right-px"></div>
-        <div className="w-full border-y border-black/10 overflow-auto lg:border lg:rounded-lg">
+        <div className="w-full border-y border-gray-200 overflow-auto lg:border lg:rounded-lg">
           {preGlobalFilteredRows.length > 0 ? (
             <table
               {...getTableProps()}
-              className="table-auto divide-y divide-black/10 overscroll-x-none"
+              className="table-auto divide-y divide-gray-200 overscroll-x-none"
             >
               <thead className="">
                 {headerGroups.map(headerGroup => {
@@ -573,7 +502,7 @@ export const CompaniesList: FC<Props> = ({
                           <th
                             key={key}
                             {...restColumnProps}
-                            className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left min-w-content`}
+                            className="relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content bg-[#FCFCFC] text-gray-600"
                           >
                             <div className="flex items-center min-w-content">
                               {column.render('Header')}
@@ -649,26 +578,6 @@ export const CompaniesList: FC<Props> = ({
                                   </Menu.Items>
                                 </Menu>
                               )}
-
-                              {column.canResize && (
-                                <div
-                                  {...column.getResizerProps()}
-                                  className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${
-                                    column.isResizing
-                                      ? 'isResizing select-none'
-                                      : ''
-                                  }`}
-                                  onClick={event => event.stopPropagation()}
-                                >
-                                  <div
-                                    className={`w-px h-full ${
-                                      column.isResizing
-                                        ? 'bg-primary-500'
-                                        : 'bg-black/10 group-hover:bg-primary-500'
-                                    }`}
-                                  ></div>
-                                </div>
-                              )}
                             </div>
                           </th>
                         );
@@ -679,18 +588,14 @@ export const CompaniesList: FC<Props> = ({
               </thead>
               <tbody
                 {...getTableBodyProps()}
-                className="bg-white divide-y divide-black/10"
+                className="divide-y divide-gray-200"
               >
                 {page.map(row => {
                   prepareRow(row);
                   const { key, ...restRowProps } = row.getRowProps();
 
                   return (
-                    <tr
-                      key={key}
-                      {...restRowProps}
-                      className="min-w-full bg-white hover:bg-slate-100"
-                    >
+                    <tr key={key} {...restRowProps} className="min-w-full">
                       {row.cells.map(cell => {
                         const { key, ...restCellProps } = cell.getCellProps({
                           style: {
