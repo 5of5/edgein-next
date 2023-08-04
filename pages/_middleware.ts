@@ -7,12 +7,7 @@ export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
   if (url.pathname === '/') {
-    const user = await CookieService.getUser(
-      CookieService.getAuthToken(req.cookies),
-    );
-    if (!user) {
-      return NextResponse.redirect(new URL('/companies', req.url));
-    }
+    return NextResponse.redirect(new URL('/companies', req.url));
   }
 
   // Prevent security issues – users should not be able to canonically access

@@ -15,6 +15,7 @@ import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   resourceName: string | null;
@@ -47,6 +48,8 @@ export const ElemSaveToList: FC<Props> = ({
   buttonStyle = 'purple',
   follows = [],
 }) => {
+  const { setShowPopup } = usePopup();
+
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [listsData, setListsData] = useState([] as List[]);
@@ -236,7 +239,12 @@ export const ElemSaveToList: FC<Props> = ({
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsOpen(true);
+
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpen(true);
+    }
   };
 
   return (
