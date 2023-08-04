@@ -217,7 +217,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const events_aggregate = initialLoad
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
-  
+
   const shouldHidePersonalized =
     selectedFilters || selectedTab?.title !== 'Featured';
 
@@ -314,13 +314,14 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               </div>
             </div>
           )}
-          
+
           {personalizedTags.locationTags.length != 0 &&
             !shouldHidePersonalized &&
             personalizedTags.locationTags.map(location => (
               <EventsByFilter
                 key={location}
                 headingText={`New in ${location}`}
+                tagOnClick={onClickType}
                 filters={{
                   _and: [
                     { slug: { _neq: '' } },
