@@ -374,6 +374,7 @@ const Investors: NextPage<Props> = ({
                       <InvestorsByFilter
                         key={location}
                         headingText={`Trending in ${location}`}
+                        tagOnClick={filterByTag}
                         filters={{
                           _and: [
                             { slug: { _neq: '' } },
@@ -390,11 +391,12 @@ const Investors: NextPage<Props> = ({
                             },
                           ],
                         }}
-                        tagOnClick={filterByTag}
                       />
+
                       <InvestorsByFilter
                         key={location}
                         headingText={`New in ${location}`}
+                        tagOnClick={filterByTag}
                         filters={{
                           _and: [
                             { slug: { _neq: '' } },
@@ -410,7 +412,6 @@ const Investors: NextPage<Props> = ({
                             },
                           ],
                         }}
-                        tagOnClick={filterByTag}
                       />
                     </>
                   ))}
@@ -421,6 +422,7 @@ const Investors: NextPage<Props> = ({
                     <InvestorsByFilter
                       key={industry}
                       headingText={`Trending in ${industry}`}
+                      tagOnClick={filterByTag}
                       filters={{
                         _and: [
                           { slug: { _neq: '' } },
@@ -437,13 +439,13 @@ const Investors: NextPage<Props> = ({
                           },
                         ],
                       }}
-                      tagOnClick={filterByTag}
                     />
                   ))}
 
                 {!shouldHidePersonalized && (
                   <InvestorsByFilter
                     headingText={`Just acquired`}
+                    tagOnClick={filterByTag}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
@@ -455,7 +457,6 @@ const Investors: NextPage<Props> = ({
                         },
                       ],
                     }}
-                    tagOnClick={filterByTag}
                   />
                 )}
 

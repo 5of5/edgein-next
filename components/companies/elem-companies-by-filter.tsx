@@ -5,20 +5,20 @@ import {
   useGetCompaniesQuery,
 } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
+import { times } from 'lodash';
 import { FC } from 'react';
+import { PlaceholderCompanyCard } from '../placeholders';
 import { ElemCompanyCard } from './elem-company-card';
 
 type Props = {
   headingText: string;
   filters: DeepPartial<Companies_Bool_Exp>;
-  isTableView?: boolean;
   tagOnClick: any;
 };
 
 export const CompaniesByFilter: FC<Props> = ({
   headingText,
   filters,
-  isTableView,
   tagOnClick,
 }) => {
   const { data, isLoading, error } = useGetCompaniesQuery({
@@ -29,13 +29,21 @@ export const CompaniesByFilter: FC<Props> = ({
     where: filters as Companies_Bool_Exp,
   });
 
+  if (isLoading) {
+    return (
+      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16">
+        {times(4, index => (
+          <PlaceholderCompanyCard key={index} />
+        ))}
+      </div>
+    );
+  }
+
   if (isLoading || data?.companies.length === 0) {
     return <></>;
   }
 
-  return isTableView ? (
-    <>WIP</>
-  ) : (
+  return (
     <>
       <div className="text-2xl font-semibold ml-4">{headingText}</div>
       <div

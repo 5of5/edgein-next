@@ -332,6 +332,7 @@ const Companies: NextPage<Props> = ({
                 <CompaniesByFilter
                   key={location}
                   headingText={`Trending in ${location}`}
+                  tagOnClick={filterByTag}
                   filters={{
                     _and: [
                       { slug: { _neq: '' } },
@@ -348,12 +349,12 @@ const Companies: NextPage<Props> = ({
                       },
                     ],
                   }}
-                  tagOnClick={filterByTag}
                 />
 
                 <CompaniesByFilter
                   key={location}
                   headingText={`New in ${location}`}
+                  tagOnClick={filterByTag}
                   filters={{
                     _and: [
                       { slug: { _neq: '' } },
@@ -369,7 +370,6 @@ const Companies: NextPage<Props> = ({
                       },
                     ],
                   }}
-                  tagOnClick={filterByTag}
                 />
               </>
             ))}
@@ -380,6 +380,7 @@ const Companies: NextPage<Props> = ({
               <CompaniesByFilter
                 key={industry}
                 headingText={`Trending in ${industry}`}
+                tagOnClick={filterByTag}
                 filters={{
                   _and: [
                     { slug: { _neq: '' } },
@@ -396,13 +397,13 @@ const Companies: NextPage<Props> = ({
                     },
                   ],
                 }}
-                tagOnClick={filterByTag}
               />
             ))}
 
           {!shouldHidePersonalized && user && (
             <CompaniesByFilter
               headingText={`Just acquired`}
+              tagOnClick={filterByTag}
               filters={{
                 _and: [
                   { slug: { _neq: '' } },
@@ -414,7 +415,6 @@ const Companies: NextPage<Props> = ({
                   },
                 ],
               }}
-              tagOnClick={filterByTag}
             />
           )}
 
