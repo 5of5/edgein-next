@@ -37,7 +37,7 @@ import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { EventsByFilter } from '@/components/event/elem-events-by-filter';
+import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 
 type Props = {
   eventTabs: TextFilter[];

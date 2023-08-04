@@ -22,7 +22,8 @@ export const EventsByFilter: FC<Props> = ({
   const { data, isLoading, error } = useGetEventsQuery({
     offset: 0,
     limit: 8,
-    order: Order_By.Desc,
+    // @ts-expect-error this should work
+    orderBy: [{ updated_at: Order_By.Desc }],
     where: filters as Events_Bool_Exp,
   });
 
