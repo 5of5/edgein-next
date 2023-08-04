@@ -23,6 +23,8 @@ export const InvestorsByFilter: FC<Props> = ({
   const { data, isLoading, error } = useGetVcFirmsQuery({
     offset: 0,
     limit: 8,
+    // @ts-expect-error this should work
+    orderBy: [{ updated_at: Order_By.Desc }],
     where: filters as Vc_Firms_Bool_Exp,
   });
 

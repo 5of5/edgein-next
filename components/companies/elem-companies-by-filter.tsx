@@ -1,6 +1,7 @@
 import {
   Companies,
   Companies_Bool_Exp,
+  Order_By,
   useGetCompaniesQuery,
 } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
@@ -11,18 +12,20 @@ type Props = {
   headingText: string;
   filters: DeepPartial<Companies_Bool_Exp>;
   isTableView?: boolean;
-  tagOnClick: any
+  tagOnClick: any;
 };
 
 export const CompaniesByFilter: FC<Props> = ({
   headingText,
   filters,
   isTableView,
-  tagOnClick
+  tagOnClick,
 }) => {
   const { data, isLoading, error } = useGetCompaniesQuery({
     offset: 0,
     limit: 8,
+    // @ts-expect-error this should work
+    orderBy: [{ updated_at: Order_By.Desc }],
     where: filters as Companies_Bool_Exp,
   });
 
