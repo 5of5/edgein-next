@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { MouseEvent, FC, Fragment, useState } from 'react';
+import { Popover, Transition } from '@headlessui/react';
 import {
   companiesFilterOptions,
   investorsFilterOptions,
@@ -18,26 +19,20 @@ type CategoryFilterOptionProps = {
     category?: string;
     items: Array<{ label: string; value: string; isPremium?: boolean }>;
   }>;
-  onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onSelectFilterOption: (event: MouseEvent<HTMLButtonElement>) => void;
   onOpenUpgradeDialog: () => void;
 };
 
 type Props = {
-  isOpenFilters: boolean;
   resourceType: 'companies' | 'vc_firms' | 'events';
   type?: 'icon' | 'button';
-  onOpenFilters: () => void;
-  onCloseFilters: () => void;
-  onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onSelectFilterOption: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const ElemAddFilter: FC<Props> = ({
-  isOpenFilters,
   resourceType,
   type = 'button',
   onSelectFilterOption,
-  onOpenFilters,
-  onCloseFilters,
 }) => {
   const filterOptions = {
     companies: companiesFilterOptions,
@@ -55,72 +50,73 @@ export const ElemAddFilter: FC<Props> = ({
     setIsOpenUpgradeDialog(false);
   };
 
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-      onCloseFilters();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  });
-
   const categoryFilterOptionsEndIndex = resourceType === 'events' ? 2 : 3;
 
   return (
-    <div className="relative shrink-0">
-      {type === 'button' ? (
-        <ElemButton
-          btn="default"
-          roundedFull={false}
-          className="rounded-lg"
-          onClick={onOpenFilters}
-        >
-          Filters
-          <IconChevronDownMini className="w-5 h-5 ml-1" />
-        </ElemButton>
-      ) : (
-        <ElemButton
-          btn="slate"
-          size="sm"
-          onClick={onOpenFilters}
-          className="!p-1"
-        >
-          <IconPlus className="w-4 h-4" />
-        </ElemButton>
-      )}
+    <>
+      <Popover className="relative">
+        <Popover.Button as="div">
+          {type === 'button' ? (
+            <ElemButton
+              btn="default"
+              roundedFull={false}
+              className="rounded-lg"
+            >
+              Filters
+              <IconChevronDownMini className="w-5 h-5 ml-1" />
+            </ElemButton>
+          ) : (
+            <ElemButton btn="slate" size="sm" className="!p-1">
+              <IconPlus className="w-4 h-4" />
+            </ElemButton>
+          )}
+        </Popover.Button>
 
-      {isOpenFilters && (
-        <div
-          ref={wrapperRef}
-          className="absolute right-0 z-10 bg-white shadow-lg border border-gray-300 rounded-lg w-56 mt-2"
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-200"
+          enterFrom="opacity-0 translate-y-1"
+          enterTo="opacity-100 translate-y-0"
+          leave="transition ease-in duration-150"
+          leaveFrom="opacity-100 translate-y-0"
+          leaveTo="opacity-0 translate-y-1"
         >
-          <div>
-            <CategoryFilterOption
-              options={filterOptions.slice(0, categoryFilterOptionsEndIndex)}
-              onSelectFilterOption={onSelectFilterOption}
-              onOpenUpgradeDialog={onOpenUpgradeDialog}
-            />
-          </div>
-          <div className="mt-6 lg:mt-0">
-            <CategoryFilterOption
-              options={filterOptions.slice(categoryFilterOptionsEndIndex)}
-              onSelectFilterOption={onSelectFilterOption}
-              onOpenUpgradeDialog={onOpenUpgradeDialog}
-            />
-          </div>
-        </div>
-      )}
+          <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+            {({ close }) => (
+              <div>
+                <div>
+                  <CategoryFilterOption
+                    options={filterOptions.slice(
+                      0,
+                      categoryFilterOptionsEndIndex,
+                    )}
+                    onSelectFilterOption={event => {
+                      close();
+                      onSelectFilterOption(event);
+                    }}
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                  />
+                </div>
+                <div className="mt-6 lg:mt-0">
+                  <CategoryFilterOption
+                    options={filterOptions.slice(categoryFilterOptionsEndIndex)}
+                    onSelectFilterOption={event => {
+                      close();
+                      onSelectFilterOption(event);
+                    }}
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                  />
+                </div>
+              </div>
+            )}
+          </Popover.Panel>
+        </Transition>
+      </Popover>
       <ElemUpgradeDialog
         isOpen={isOpenUpgradeDialog}
         onClose={onCloseUpgradeDialog}
       />
-    </div>
+    </>
   );
 };
 

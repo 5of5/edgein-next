@@ -63,14 +63,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     index => eventTabs[Number(index)],
   );
 
-  const {
-    isOpenFilters,
-    selectedFilters,
-    onChangeSelectedFilters,
-    onSelectFilterOption,
-    onOpenFilters,
-    onCloseFilters,
-  } = useDashboardFilter();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -267,11 +261,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             {/* } */}
 
             <ElemAddFilter
-              isOpenFilters={isOpenFilters}
               resourceType="events"
               onSelectFilterOption={onSelectFilterOption}
-              onOpenFilters={onOpenFilters}
-              onCloseFilters={onCloseFilters}
             />
 
             <ElemDropdown items={sortItems} />

@@ -81,14 +81,8 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const {
-    isOpenFilters,
-    selectedFilters,
-    onChangeSelectedFilters,
-    onSelectFilterOption,
-    onOpenFilters,
-    onCloseFilters,
-  } = useDashboardFilter();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -298,11 +292,8 @@ const Investors: NextPage<Props> = ({
               <ElemDropdown items={layoutItems} />
 
               <ElemAddFilter
-                isOpenFilters={isOpenFilters}
                 resourceType="vc_firms"
                 onSelectFilterOption={onSelectFilterOption}
-                onOpenFilters={onOpenFilters}
-                onCloseFilters={onCloseFilters}
               />
 
               <ElemDropdown items={sortItems} />

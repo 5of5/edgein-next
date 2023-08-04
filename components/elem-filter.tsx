@@ -53,15 +53,6 @@ export const ElemFilter: FC<Props> = ({
 
   const [filters, setFilters] = useState<Filters | null>(filterValues);
 
-  const [isOpenFilters, setIsOpenFilters] = useState(false);
-
-  const onOpenFilters = () => {
-    setIsOpenFilters(true);
-  };
-  const onCloseFilters = () => {
-    setIsOpenFilters(false);
-  };
-
   useEffect(() => {
     setFilters(filterValues);
   }, [filterValues]);
@@ -899,15 +890,9 @@ export const ElemFilter: FC<Props> = ({
 
         {filters && Object.keys(filters).length > 0 && (
           <ElemAddFilter
-            isOpenFilters={isOpenFilters}
             resourceType={resourceType}
             type="icon"
-            onSelectFilterOption={event => {
-              onCloseFilters();
-              onSelectFilterOption(event);
-            }}
-            onOpenFilters={onOpenFilters}
-            onCloseFilters={onCloseFilters}
+            onSelectFilterOption={onSelectFilterOption}
           />
         )}
       </div>

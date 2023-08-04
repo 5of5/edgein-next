@@ -98,14 +98,8 @@ const Companies: NextPage<Props> = ({
     pageIndex => Number(pageIndex) - 1,
   );
 
-  const {
-    isOpenFilters,
-    selectedFilters,
-    onChangeSelectedFilters,
-    onSelectFilterOption,
-    onOpenFilters,
-    onCloseFilters,
-  } = useDashboardFilter();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   // limit shown companies on table layout for free users
   const limit =
@@ -302,11 +296,8 @@ const Companies: NextPage<Props> = ({
             <ElemDropdown items={layoutItems} />
 
             <ElemAddFilter
-              isOpenFilters={isOpenFilters}
               resourceType="companies"
               onSelectFilterOption={onSelectFilterOption}
-              onOpenFilters={onOpenFilters}
-              onCloseFilters={onCloseFilters}
             />
 
             <ElemDropdown items={sortItems} />
