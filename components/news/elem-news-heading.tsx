@@ -25,29 +25,27 @@ const ElemNewsHeading: React.FC<Props> = ({
       </span>
 
       <div className="mb-4">
-        <div className="inline leading-7 text-slate-600">
+        <div className="inline leading-7 text-gray-600">
           {news?.link ? (
-            <>
-              <Link href={news.link}>
-                <a className="font-semibold" target="_blank">
-                  <span className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-                    {news.text}
-                  </span>
-                  <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
-                </a>
-              </Link>
-            </>
+            <Link href={news.link}>
+              <a className="font-medium text-sm" target="_blank">
+                <span className="underline hover:no-underline">
+                  {news.text}
+                </span>
+                <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
+              </a>
+            </Link>
           ) : (
-            <div className="inline font-semibold">{news.text}</div>
+            <div className="inline font-medium">{news.text}</div>
           )}
           <div className="flex items-center gap-x-2">
             {isPublisher && (
-              <span className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
+              <span className="bg-slate-200 self-start text-xs font-medium leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
                 Publisher
               </span>
             )}
             {isAuthor && (
-              <span className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
+              <span className="bg-slate-200 self-start text-xs font-medium leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
                 Author
               </span>
             )}

@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemCredibility } from '@/components/company/elem-credibility';
 import { ElemKeyInfo } from '@/components/elem-key-info';
-import { ElemTags } from '@/components/elem-tags';
 import { ElemInvestments } from '@/components/company/elem-investments';
 import { ElemTeamGrid } from '@/components/company/elem-team-grid';
 import { runGraphQl } from '@/utils';
@@ -28,7 +27,7 @@ import {
   GetNewsArticlesDocument,
   Order_By,
 } from '@/graphql/types';
-import { ElemReactions } from '@/components/elem-reactions';
+// import { ElemReactions } from '@/components/elem-reactions';
 import { tokenInfoMetrics } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
@@ -44,6 +43,7 @@ import { getQueryBySource } from '@/utils/news';
 import ElemNewsList from '@/components/news/elem-news-list';
 import ElemCompanyTags from '@/components/elem-company-tags';
 import { useUser } from '@/context/user-context';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 type Props = {
   company: Companies;
@@ -75,6 +75,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
   const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const activityRef = useRef() as MutableRefObject<HTMLDivElement>;
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -147,7 +148,7 @@ const Company: NextPage<Props> = (props: Props) => {
   const isNewsOrganization =
     props.newsArticles && props.newsArticles.length > 0;
 
-  const hasNewsTab = isNewsOrganization || props.sortNews.length > 0;
+  const hasNews = isNewsOrganization || props.sortNews.length > 0;
 
   // Company tags
   const companyTags: string[] = [];
@@ -159,19 +160,16 @@ const Company: NextPage<Props> = (props: Props) => {
   const secondTag = company.tags ? company.tags[1] : '';
 
   // Tabs
-  const tabBarItems = [{ name: 'Overview', ref: overviewRef }];
-  if (hasNewsTab) {
-    tabBarItems.push({ name: 'News', ref: newsRef });
-  }
-  if (company.teamMembers.length > 0) {
-    tabBarItems.push({ name: 'Team', ref: teamRef });
-  }
-  if (sortedInvestmentRounds.length > 0) {
-    tabBarItems.push({
+  const tabBarItems = [
+    { name: 'Overview', ref: overviewRef },
+    { name: 'News', ref: newsRef },
+    { name: 'Activity', ref: activityRef },
+    { name: 'Team', ref: teamRef },
+    {
       name: 'Investments',
       ref: investmentRef,
-    });
-  }
+    },
+  ];
 
   const parentLinks = company?.to_links?.find(
     item => item.link_type === 'child',
@@ -197,181 +195,177 @@ const Company: NextPage<Props> = (props: Props) => {
   };
 
   return (
-    <>
-      <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-11 lg:gap-7">
-            <div className="col-span-3">
-              <ElemPhoto
-                photo={company.logo}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
-                imgClass="object-contain w-full h-full"
-                imgAlt={company.name}
-                placeholderClass="text-slate-300"
-              />
-            </div>
-            <div className="w-full col-span-5 mt-7 lg:mt-4">
-              <div className="shrink-0">
-                <h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
-                  {company.name}
-                </h1>
-                {company.coin && (
-                  <div
-                    key={company.coin.id}
-                    className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap text-lg leading-sm uppercase"
-                    title={`Token: ${company.coin.ticker}`}
-                  >
-                    {company.coin.ticker}
-                  </div>
-                )}
-              </div>
-
-              <ElemCompanyTags
-                company={company}
-                className="mt-4"
-                hideLayer
-                tagOnClick={handleTagClick}
-              />
-
-              {parentOrganization && (
-                <div className="mt-4">
-                  <div className="font-bold text-sm">Sub-organization of:</div>
-                  <Link
-                    href={`/${
-                      parentLinks?.from_company ? 'companies' : 'investors'
-                    }/${parentOrganization?.slug}`}
-                    passHref
-                  >
-                    <a className="flex items-center gap-2 mt-1 group">
-                      <ElemPhoto
-                        photo={parentOrganization?.logo}
-                        wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
-                        imgClass="object-contain w-full h-full"
-                        imgAlt={parentOrganization?.name}
-                        placeholderClass="text-slate-300"
-                      />
-                      <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
-                        {parentOrganization?.name}
-                      </h2>
-                    </a>
-                  </Link>
+    <DashboardLayout>
+      <div className="p-8">
+        <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+          <div className="col-span-3">
+            <ElemPhoto
+              photo={company.logo}
+              wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden"
+              imgClass="object-contain w-full h-full"
+              imgAlt={company.name}
+              placeholderClass="text-slate-300"
+            />
+          </div>
+          <div className="w-full col-span-5 mt-7 lg:mt-4">
+            <div className="shrink-0">
+              <h1 className="self-end inline-block text-4xl font-medium">
+                {company.name}
+              </h1>
+              {company.coin && (
+                <div
+                  key={company.coin.id}
+                  className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap uppercase"
+                  title={`Token: ${company.coin.ticker}`}
+                >
+                  {company.coin.ticker}
                 </div>
               )}
-              {company.overview && (
-                <>
-                  <div
-                    ref={overviewDiv}
-                    className={`mt-4 text-base text-slate-600 prose ${
-                      overviewMore ? '' : 'line-clamp-3'
-                    }`}
-                  >
-                    {parse(stripHtmlTags(company.overview))}
-                  </div>
+            </div>
 
-                  {overviewDivHeight > 84 && (
-                    <ElemButton
-                      onClick={() => setOverviewMore(!overviewMore)}
-                      btn="transparent"
-                      className="!px-0 !py-0 inline font-normal"
-                    >
-                      show {overviewMore ? 'less' : 'more'}
-                    </ElemButton>
-                  )}
-                </>
-              )}
-              <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
-                <ElemReactions
+            <ElemCompanyTags
+              company={company}
+              className="mt-4"
+              hideLayer
+              tagOnClick={handleTagClick}
+            />
+
+            {parentOrganization && (
+              <div className="mt-4">
+                <div className="font-medium text-sm">Sub-organization of:</div>
+                <Link
+                  href={`/${
+                    parentLinks?.from_company ? 'companies' : 'investors'
+                  }/${parentOrganization?.slug}`}
+                  passHref
+                >
+                  <a className="flex items-center gap-2 mt-1 group">
+                    <ElemPhoto
+                      photo={parentOrganization?.logo}
+                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border border-gray-200"
+                      imgClass="object-contain w-full h-full"
+                      imgAlt={parentOrganization?.name}
+                      placeholderClass="text-slate-300"
+                    />
+                    <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                      {parentOrganization?.name}
+                    </h2>
+                  </a>
+                </Link>
+              </div>
+            )}
+            {company.overview && (
+              <>
+                <div
+                  ref={overviewDiv}
+                  className={`mt-4 text-sm text-gray-500 prose ${
+                    overviewMore ? '' : 'line-clamp-3'
+                  }`}
+                >
+                  {parse(stripHtmlTags(company.overview))}
+                </div>
+
+                {overviewDivHeight > 84 && (
+                  <ElemButton
+                    onClick={() => setOverviewMore(!overviewMore)}
+                    btn="transparent"
+                    className="!px-0 !py-0 inline font-normal"
+                  >
+                    show {overviewMore ? 'less' : 'more'}
+                  </ElemButton>
+                )}
+              </>
+            )}
+            <div className="flex flex-wrap items-center mt-4 gap-3">
+              {/* <ElemReactions
                   resource={company}
                   resourceType={'companies'}
                   className="w-full sm:w-auto"
-                />
-                <ElemSaveToList
-                  resourceName={company.name}
-                  resourceId={company.id}
-                  resourceType={'companies'}
-                  slug={company.slug!}
-                  follows={company.follows}
-                />
-                <ElemSocialShare
-                  resourceName={company.name}
-                  resourceTwitterUrl={company.twitter}
-                />
-              </div>
-            </div>
-            <div className="col-span-3 mt-7 lg:mt-0">
-              {Object.values(tokenInfo).some(i => i > 0) && (
-                <section className="bg-white border border-black/10 rounded-lg p-5 md:mt-0">
-                  <h2 className="text-xl font-bold">Token Info</h2>
-                  <div className="flex flex-col space-y-2 mt-2">
-                    {props.metrics.map(item => {
-                      let metricsClass = '';
-
-                      if (item.id === 'currentPrice') {
-                        metricsClass = 'text-green-600';
-                      } else if (item.id === 'marketCap') {
-                        metricsClass = 'text-green-600';
-                      } else if (item.id === 'marketCapRank') {
-                        metricsClass = '';
-                      } else if (item.id === 'highLow24H') {
-                        metricsClass = '';
-                      } else if (item.id === 'vol24H') {
-                        metricsClass = 'text-green-600';
-                      } else {
-                        metricsClass = '';
-                      }
-
-                      return (
-                        <div
-                          className="flex items-center justify-between space-x-2"
-                          key={item.id}
-                        >
-                          <div>{item.name}</div>
-                          <div
-                            className={`${metricsClass} text-sm font-semibold py-1 px-2`}
-                          >
-                            {tokenInfo[item.id as keyof TokenInfo]
-                              ? item.id === 'highLow24H'
-                                ? `$${convertAmountRaised(
-                                    tokenInfo.high24H,
-                                  )}/$${convertAmountRaised(tokenInfo.low24H)}`
-                                : `${
-                                    item.id === 'marketCapRank' ? '#' : '$'
-                                  }${convertAmountRaised(
-                                    tokenInfo[item.id as keyof TokenInfo],
-                                  )}`
-                              : `N/A`}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-3 text-xs text-center text-slate-400">
-                    Token data source:{' '}
-                    <a
-                      href="https://www.amberdata.io/?ref=edgeinio"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-slate-600"
-                    >
-                      AmberData
-                    </a>{' '}
-                    and Coingecko
-                  </div>
-                </section>
-              )}
+                /> */}
+              <ElemSaveToList
+                resourceName={company.name}
+                resourceId={company.id}
+                resourceType={'companies'}
+                slug={company.slug!}
+                follows={company.follows}
+              />
+              <ElemSocialShare
+                resourceName={company.name}
+                resourceTwitterUrl={company.twitter}
+              />
             </div>
           </div>
-          <ElemTabBar
-            className="mt-7 border-b-0"
-            tabs={tabBarItems}
-            resourceName={company.name}
-          />
+          <div className="col-span-3 mt-7 lg:mt-0">
+            {Object.values(tokenInfo).some(i => i > 0) && (
+              <section className="bg-white border border-gray-300 rounded-lg p-4 md:mt-0">
+                <h2 className="font-medium">Token Info</h2>
+                <div className="flex flex-col space-y-3 my-3">
+                  {props.metrics.map(item => {
+                    let metricsClass = '';
+
+                    if (item.id === 'currentPrice') {
+                      metricsClass = 'text-green-600';
+                    } else if (item.id === 'marketCap') {
+                      metricsClass = 'text-green-600';
+                    } else if (item.id === 'marketCapRank') {
+                      metricsClass = '';
+                    } else if (item.id === 'highLow24H') {
+                      metricsClass = '';
+                    } else if (item.id === 'vol24H') {
+                      metricsClass = 'text-green-600';
+                    } else {
+                      metricsClass = '';
+                    }
+
+                    return (
+                      <div
+                        className="flex items-center justify-between space-x-2"
+                        key={item.id}
+                      >
+                        <div className="text-sm">{item.name}</div>
+                        <div className={`text-sm font-medium ${metricsClass}`}>
+                          {tokenInfo[item.id as keyof TokenInfo]
+                            ? item.id === 'highLow24H'
+                              ? `$${convertAmountRaised(
+                                  tokenInfo.high24H,
+                                )}/$${convertAmountRaised(tokenInfo.low24H)}`
+                              : `${
+                                  item.id === 'marketCapRank' ? '#' : '$'
+                                }${convertAmountRaised(
+                                  tokenInfo[item.id as keyof TokenInfo],
+                                )}`
+                            : `N/A`}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="text-xs text-center text-gray-500">
+                  Token data source:{' '}
+                  <a
+                    href="https://www.amberdata.io/?ref=edgeinio"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-slate-600"
+                  >
+                    AmberData
+                  </a>{' '}
+                  and Coingecko
+                </div>
+              </section>
+            )}
+          </div>
         </div>
+        <ElemTabBar
+          className="mt-7 border-b-0"
+          tabs={tabBarItems}
+          resourceName={company.name}
+        />
       </div>
 
-      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+      <div className="px-8">
         <div
-          className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+          className="lg:grid lg:grid-cols-11 lg:gap-7"
           ref={overviewRef}
           id="overview"
         >
@@ -395,10 +389,11 @@ const Company: NextPage<Props> = (props: Props) => {
             />
           </div>
           <div className="col-span-8">
-            <div className="w-full mt-7 p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)] lg:mt-0">
+            <div className="w-full mt-7 lg:mt-0">
               <ElemOrganizationNotes
                 resourceId={company.id}
                 resourceType="companies"
+                resourceName={company.name || ''}
                 setShowPopup={props.setShowPopup}
               />
             </div>
@@ -410,7 +405,7 @@ const Company: NextPage<Props> = (props: Props) => {
               company.velocity_token) && (
               <div className="mt-7 lg:grid lg:grid-cols-8 lg:gap-7">
                 <ElemCredibility
-                  className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+                  className="col-span-5 mt-7 lg:mt-0"
                   heading="Credibility"
                   marketVerified={company.market_verified}
                   githubVerified={company.github}
@@ -418,7 +413,7 @@ const Company: NextPage<Props> = (props: Props) => {
                 />
                 {(company.velocity_linkedin || velocityToken) && (
                   <ElemVelocity
-                    className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+                    className="col-span-3 mt-7 lg:mt-0"
                     heading="Velocity"
                     employeeListings={company.velocity_linkedin}
                     tokenExchangeValue={velocityToken}
@@ -427,32 +422,32 @@ const Company: NextPage<Props> = (props: Props) => {
               </div>
             )}
 
-            {hasNewsTab && (
-              <div
-                ref={newsRef}
-                className="w-full mt-7 p-5 bg-white shadow rounded-lg"
-              >
-                {isNewsOrganization ? (
-                  <ElemNewsArticles
-                    heading={
-                      isNewsOrganization
-                        ? `News articles from ${company.name} feeds`
-                        : 'News'
-                    }
-                    newsOrgSlug={company.slug}
-                    news={props.newsArticles}
-                  />
-                ) : (
-                  <ElemNewsList
-                    news={props.sortNews}
-                    resourceType="companies"
-                    resourceId={company.id}
-                  />
-                )}
-              </div>
-            )}
+            <div
+              ref={newsRef}
+              className="w-full mt-7 border border-gray-300 rounded-lg"
+            >
+              {isNewsOrganization ? (
+                <ElemNewsArticles
+                  heading={
+                    isNewsOrganization
+                      ? `News articles from ${company.name} feeds`
+                      : 'News'
+                  }
+                  newsOrgSlug={company.slug}
+                  news={props.newsArticles}
+                />
+              ) : (
+                <ElemNewsList
+                  heading="News"
+                  resourceName={company.name || ''}
+                  news={props.sortNews}
+                  resourceType="companies"
+                  resourceId={company.id}
+                />
+              )}
+            </div>
 
-            <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+            <div ref={activityRef} className="w-full mt-7">
               <ElemOrganizationActivity
                 resourceType="companies"
                 resourceInvestments={sortedInvestmentRounds}
@@ -461,33 +456,21 @@ const Company: NextPage<Props> = (props: Props) => {
           </div>
         </div>
 
-        {company.teamMembers.length > 0 && (
-          <div
-            ref={teamRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
-            id="team"
-          >
-            <ElemTeamGrid
-              showEdit={false}
-              heading="Team"
-              people={company.teamMembers}
-            />
-          </div>
-        )}
+        <div ref={teamRef} className="mt-7">
+          <ElemTeamGrid
+            heading="Team"
+            resourceName={company.name || ''}
+            people={company.teamMembers}
+          />
+        </div>
 
-        {sortedInvestmentRounds.length > 0 && (
-          <div
-            ref={investmentRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
-            id="investments"
-          >
-            <ElemInvestments
-              showEdit={false}
-              heading="Investments"
-              investments={sortedInvestmentRounds}
-            />
-          </div>
-        )}
+        <div ref={investmentRef} className="mt-7" id="investments">
+          <ElemInvestments
+            heading="Investments"
+            resourceName={company.name || ''}
+            investments={sortedInvestmentRounds}
+          />
+        </div>
 
         {subOrganizations?.length > 0 && (
           <ElemSubOrganizations
@@ -507,7 +490,7 @@ const Company: NextPage<Props> = (props: Props) => {
           />
         )}
       </div>
-    </>
+    </DashboardLayout>
   );
 };
 

@@ -81,7 +81,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
   return (
     <div className="flex flex-col w-full p-4">
       <Link href={`/events/${slug}`}>
-        <a target="_blank" className="flex shrink-0 w-full">
+        <a className="flex shrink-0 w-full">
           <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
             <div
               className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
@@ -105,7 +105,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
       </Link>
 
       <Link href={`/events/${slug}`}>
-        <a target="_blank" className="flex items-center mt-3">
+        <a className="flex items-center mt-3">
           <ElemTooltip content={name} mode="light">
             <h3 className="text-xl font-medium truncate">{name}</h3>
           </ElemTooltip>

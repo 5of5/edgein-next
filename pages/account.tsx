@@ -232,19 +232,19 @@ export default function Account() {
               heading="Password"
               right={
                 !isEditPassword ? (
-                  <button
+                  <ElemButton
                     onClick={() => setEditPassword(true)}
-                    className="text-primary-500 hover:text-dark-500"
+                    btn="default"
                   >
                     Edit
-                  </button>
+                  </ElemButton>
                 ) : (
                   <></>
                 )
               }
             >
               {!isEditPassword ? (
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-sm">
                   Use a strong password that you are not using elsewhere.
                 </p>
               ) : (
@@ -281,7 +281,7 @@ export default function Account() {
 
                   <div className="flex mt-4 mb-2 text-base">
                     <ElemButton
-                      btn="primary"
+                      btn="purple"
                       className="mr-2"
                       onClick={onChangePassword}
                     >
@@ -289,7 +289,7 @@ export default function Account() {
                     </ElemButton>
                     <ElemButton
                       onClick={() => setEditPassword(false)}
-                      btn="transparent"
+                      btn="default"
                     >
                       Cancel
                     </ElemButton>
@@ -347,9 +347,9 @@ export default function Account() {
       </div>
 
       {user?.role === 'admin' && (
-        <div className="bg-white shadow rounded-lg mt-5 p-5">
+        <div className="px-4 py-3 border-t border-gray-200">
           <div className="flex justify-between items-center mb-2">
-            <h2 className="font-bold text-xl">Admin Settings</h2>
+            <h2 className="font-medium text-xl">Admin Settings</h2>
           </div>
 
           <dl className="w-full">
