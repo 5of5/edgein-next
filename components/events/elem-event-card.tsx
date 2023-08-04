@@ -67,7 +67,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
     // twitter,
     // linkedin,
     // github,
-    // discord,76
+    // discord,
   } = eventData;
 
   const attendees = event_person?.filter(item => item.type === 'attendee');
