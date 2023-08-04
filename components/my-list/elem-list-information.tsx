@@ -84,7 +84,7 @@ export const ElemListInformation: FC<Props> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between flex-wrap space-y-2 px-4 py-3 border-b border-gray-200 lg:space-y-0 ">
+      <div className="flex items-center justify-between flex-wrap space-y-2 px-4 py-3 border-b border-gray-300 lg:space-y-0">
         <div>
           <ElemDashboardBreadcrumb
             breadcrumbs={[
@@ -156,38 +156,36 @@ export const ElemListInformation: FC<Props> = ({
         </div>
 
         {isCustomList && (
-          <div className="flex items-center gap-x-4 shrink-0">
-            <div className="flex items-center gap-x-2 shrink-0">
-              {isListCreator && (
-                <ElemButton
-                  btn="default"
-                  className="gap-x-1 lg:!pl-3"
-                  onClick={onOpenSettingsDialog}
-                >
-                  <IconSettings className="hidden sm:block w-5 h-5" />
-                  <span>Settings</span>
-                </ElemButton>
-              )}
-              {!isFollowing && (
-                <ElemButton
-                  btn="purple"
-                  loading={isFollowButtonLoading}
-                  onClick={onFollowList}
-                >
-                  Follow
-                </ElemButton>
-              )}
-              {isFollowing && !isListCreator && (
-                <ElemButton
-                  btn="default"
-                  loading={isFollowButtonLoading}
-                  onClick={onFollowList}
-                >
-                  <IconCheck className="w-5 h-5 mr-1" />
-                  Following
-                </ElemButton>
-              )}
-            </div>
+          <div className="flex items-center gap-x-2 shrink-0">
+            {isListCreator && (
+              <ElemButton
+                btn="default"
+                className="gap-x-1 lg:!pl-3"
+                onClick={onOpenSettingsDialog}
+              >
+                <IconSettings className="hidden sm:block w-5 h-5" />
+                <span>Settings</span>
+              </ElemButton>
+            )}
+            {!isFollowing && (
+              <ElemButton
+                btn="purple"
+                loading={isFollowButtonLoading}
+                onClick={onFollowList}
+              >
+                Follow
+              </ElemButton>
+            )}
+            {isFollowing && !isListCreator && (
+              <ElemButton
+                btn="default"
+                loading={isFollowButtonLoading}
+                onClick={onFollowList}
+              >
+                <IconCheck className="w-5 h-5 mr-1" />
+                Following
+              </ElemButton>
+            )}
           </div>
         )}
       </div>

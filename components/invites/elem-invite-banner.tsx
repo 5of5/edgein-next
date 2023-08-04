@@ -32,7 +32,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
 
   return (
     <div
-      className={`flex items-center gap-x-6 px-6 py-2.5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
+      className={`flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
     >
       <Link href={'/account'}>
         <a className="text-white">

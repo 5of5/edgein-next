@@ -1,7 +1,6 @@
 import { useAuth } from '@/hooks/use-auth';
 import { FC, useEffect, useState } from 'react';
 import {
-  IconPolygonDown,
   IconCash,
   IconCompanies,
   IconCalendarDays,
@@ -100,8 +99,8 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
                       : ''
                   } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
                 >
-                  <item.icon className="w-6 h-6" />
-                  <span>{item.title}</span>
+                  <item.icon className="w-5 h-5" />
+                  <span className="text-xs">{item.title}</span>
                 </a>
               </Link>
             </li>

@@ -65,76 +65,78 @@ export const ElemGroupAbout: React.FC<Props> = ({
   return (
     <>
       <div className={className}>
-        <div className="bg-white shadow rounded-lg px-4 py-3 shrink-0">
-          <h2 className="text-lg font-bold">About Group</h2>
-          {group?.description && (
-            <p className="text-gray-400 mb-3">{group?.description}</p>
-          )}
+        <div className="shrink-0 border border-gray-300 rounded-lg">
+          <div className="px-4 py-3 border-b border-gray-300">
+            <h2 className="text-lg font-medium">About Group</h2>
+            {group?.description && (
+              <p className="text-gray-500 text-sm mb-3">{group?.description}</p>
+            )}
 
-          {isPublicGroup ? (
-            <div className="flex text-sm">
-              <IconGlobe className="w-5 h-5 shrink-0 mr-2 text-gray-400" />
-              <div>
-                <h4 className="font-bold">Public</h4>
-                <p className="text-gray-400">Anyone can find this group.</p>
+            {isPublicGroup ? (
+              <div className="flex text-sm">
+                <IconGlobe className="w-5 h-5 shrink-0 mr-2 text-gray-500" />
+                <div>
+                  <h4>Public</h4>
+                  <p className="text-gray-500">Anyone can find this group.</p>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="flex text-sm">
-              <IconLockClosed className="w-5 h-5 shrink-0 mr-2 text-gray-400" />
-              <div>
-                <h4 className="font-bold">Private</h4>
-                <p className="text-gray-400">
-                  Only members can see who&rsquo;s in the group and what they
-                  post.
-                </p>
+            ) : (
+              <div className="flex text-sm">
+                <IconLockClosed className="w-5 h-5 shrink-0 mr-2 text-gray-500" />
+                <div>
+                  <h4 className="font-mediun">Private</h4>
+                  <p className="text-gray-500">
+                    Only members can see who&rsquo;s in the group and what they
+                    post.
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {isUserBelongToGroup && groupLinks.length > 0 && (
-            <ul className="mt-2 flex flex-col space-y-2">
-              {groupLinks?.map((item, index) => {
-                return (
-                  <li key={index}>
-                    <a
-                      href={item.link}
-                      className="flex items-center"
-                      target={item.target ? item.target : '_blank'}
-                      rel="noreferrer"
-                    >
-                      {item.icon && (
-                        <item.icon
-                          title={item.text}
-                          className="w-5 h-5 shrink-0 mr-2 text-gray-400"
-                        />
-                      )}
-                      <span className="text-sm text-slate-600 hover:text-primary-500">
-                        {item.text}
-                      </span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+            {isUserBelongToGroup && groupLinks.length > 0 && (
+              <ul className="mt-2 flex flex-col space-y-2">
+                {groupLinks?.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      <a
+                        href={item.link}
+                        className="flex items-center"
+                        target={item.target ? item.target : '_blank'}
+                        rel="noreferrer"
+                      >
+                        {item.icon && (
+                          <item.icon
+                            title={item.text}
+                            className="w-5 h-5 shrink-0 mr-2 text-gray-500"
+                          />
+                        )}
+                        <span className="text-sm hover:underline">
+                          {item.text}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
 
           {(isPublicGroup || isUserBelongToGroup) && (
-            <div className="mt-4 pt-2 border-t border-black/10">
+            <div className="px-4 py-3">
               <div className="flex justify-between items-center">
-                <h3 className="font-bold">People</h3>
+                <h3 className="font-medium">People</h3>
                 {isUserBelongToGroup && (
                   <button
                     onClick={() => onOpenSettingDialog('members')}
-                    className="text-primary-500"
+                    className="text-sm hover:underline"
                   >
                     See all
                   </button>
                 )}
               </div>
-              <div className="mt-2 flex items-center">
+              <div className="pt-1 flex items-center">
                 <ElemMemberAvatarList members={group.user_group_members} />
-                <div className="text-sm text-slate-600 ml-1">
+                <div className="text-sm text-gray-500 ml-1">
                   {group.user_group_members.length} Member
                   {group.user_group_members.length > 1 ? 's' : ''}
                 </div>
@@ -143,47 +145,51 @@ export const ElemGroupAbout: React.FC<Props> = ({
           )}
 
           {(groupAdmins.length > 0 || isUserBelongToGroup) && (
-            <div className="mt-4 flex items-center">
-              <ul>
-                {groupAdmins.map(mem => {
-                  const admin = (
-                    <div>
-                      {mem.user?.person?.picture ? (
-                        <ElemPhoto
-                          photo={mem.user?.person?.picture}
-                          wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                          imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                          imgAlt={mem.user?.display_name}
-                        />
-                      ) : (
-                        <div
-                          className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
-                          title={
-                            mem.user?.display_name ? mem.user?.display_name : ''
-                          }
-                        >
-                          {mem.user?.display_name?.charAt(0)}
-                        </div>
-                      )}
-                    </div>
-                  );
+            <div className="px-4 pb-3">
+              <div className="flex items-center">
+                <ul>
+                  {groupAdmins.map(mem => {
+                    const admin = (
+                      <div>
+                        {mem.user?.person?.picture ? (
+                          <ElemPhoto
+                            photo={mem.user?.person?.picture}
+                            wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                            imgAlt={mem.user?.display_name}
+                          />
+                        ) : (
+                          <div
+                            className="flex items-center justify-center aspect-square w-8 rounded-full bg-gray-300 border border-gray-50 text-lg capitalize"
+                            title={
+                              mem.user?.display_name
+                                ? mem.user?.display_name
+                                : ''
+                            }
+                          >
+                            {mem.user?.display_name?.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                    );
 
-                  return (
-                    <li key={mem.id}>
-                      {mem.user?.person?.slug ? (
-                        <Link href={`/people/${mem.user?.person?.slug}/`}>
-                          <a>{admin}</a>
-                        </Link>
-                      ) : (
-                        admin
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-              <div className="text-sm text-slate-600 ml-1">
-                Admin
-                {groupAdmins.length > 1 ? 's' : ''}
+                    return (
+                      <li key={mem.id}>
+                        {mem.user?.person?.slug ? (
+                          <Link href={`/people/${mem.user?.person?.slug}/`}>
+                            <a>{admin}</a>
+                          </Link>
+                        ) : (
+                          admin
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="text-sm text-gray-500 ml-1">
+                  Admin
+                  {groupAdmins.length > 1 ? 's' : ''}
+                </div>
               </div>
             </div>
           )}

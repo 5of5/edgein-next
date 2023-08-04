@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, ReactNode } from 'react';
 import { FilterOptionKeys } from '@/models/Filter';
 import { ElemFilterPopup } from './elem-filter-popup';
 import { ElemTagsInput } from './elem-tags-input';
@@ -7,7 +7,7 @@ import { InputRadio } from './input-radio';
 type Props = {
   open: boolean;
   option: FilterOptionKeys;
-  title: string;
+  title: string | ReactNode;
   heading?: string;
   subtext?: string;
   checkedAny?: boolean;

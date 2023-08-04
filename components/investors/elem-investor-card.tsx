@@ -60,7 +60,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
   return (
     <div className="flex flex-col w-full p-4">
       <Link href={`/investors/${slug}`}>
-        <a target="_blank">
+        <a>
           <div className="flex shrink-0 w-full">
             <ElemPhoto
               photo={logo}
@@ -74,7 +74,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
       </Link>
 
       <Link href={`/investors/${slug}`}>
-        <a target="_blank" className="flex items-center mt-3">
+        <a className="flex items-center mt-3">
           <ElemTooltip content={name} mode="light">
             <h3 className="text-xl font-medium truncate">{name}</h3>
           </ElemTooltip>
