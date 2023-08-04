@@ -485,7 +485,7 @@ const Companies: NextPage<Props> = ({
 
               {companies?.length != 0 && (
                 <>
-                  {!user && (
+                  {user && (
                     <div className="text-2xl font-bold ml-4">All companies</div>
                   )}
                   <div
@@ -568,7 +568,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       metaDescription:
         'Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.',
       companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
-      initialCompanies: companies?.companies,
+      initialCompanies: companies?.companies || [],
       companyStatusTags,
     },
   };
