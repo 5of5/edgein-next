@@ -35,11 +35,13 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
                 ref={btnRef}
                 onClick={onDisclosureButtonClick}
               >
-                <IconChevronDownMini
-                  className={`${
-                    open ? 'rotate-0' : '-rotate-90 '
-                  } w-6 h-6 transform transition-all`}
-                />
+                {user && (
+                  <IconChevronDownMini
+                    className={`${
+                      open ? 'rotate-0' : '-rotate-90 '
+                    } w-6 h-6 transform transition-all`}
+                  />
+                )}
                 <span className="font-medium text-sm">Notes</span>
               </Disclosure.Button>
 
@@ -51,25 +53,29 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
               </button> */}
             </div>
 
-            <Disclosure.Panel as="ul" className="ml-8 space-y-1">
-              <li role="button">
-                <Link href="/notes/">
-                  <a
-                    className={`${
-                      router.asPath.includes('/notes')
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'text-gray-600'
-                    } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
-                    title="notes"
-                  >
-                    <span className="line-clamp-1 break-all flex-1">Notes</span>
-                    {/* <div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+            {user && (
+              <Disclosure.Panel as="ul" className="ml-8 space-y-1">
+                <li role="button">
+                  <Link href="/notes/">
+                    <a
+                      className={`${
+                        router.asPath.includes('/notes')
+                          ? 'bg-gray-100 text-gray-900'
+                          : 'text-gray-600'
+                      } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
+                      title="notes"
+                    >
+                      <span className="line-clamp-1 break-all flex-1">
+                        Notes
+                      </span>
+                      {/* <div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
 											{notes.total_no_of_resources} 
 										</div>*/}
-                  </a>
-                </Link>
-              </li>
-            </Disclosure.Panel>
+                    </a>
+                  </Link>
+                </li>
+              </Disclosure.Panel>
+            )}
           </>
         )}
       </Disclosure>

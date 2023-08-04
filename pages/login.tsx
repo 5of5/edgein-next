@@ -11,7 +11,7 @@ export default function Login() {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      metaTitle: 'Login - EdgeIn.io',
+      metaTitle: 'Log in - EdgeIn.io',
     },
   };
 };

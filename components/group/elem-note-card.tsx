@@ -27,14 +27,13 @@ import { useUser } from '@/context/user-context';
 import { Popover, Transition } from '@headlessui/react';
 import { InputTextarea } from '../input-textarea';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
-import { Popups } from '@/components/the-navbar';
 import ElemNoteForm from '@/components/elem-note-form';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   data: GetNotesQuery['notes'][0];
   refetch: () => void;
   layout?: 'organizationAndAuthor' | 'groupAndAuthor' | 'author';
-  setShowPopup?: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const fetcher = async (url: string, args: any) => {
@@ -55,9 +54,10 @@ const ElemNoteCard: React.FC<Props> = ({
   data,
   refetch,
   layout = 'organizationAndAuthor',
-  setShowPopup,
 }) => {
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const { data: resource } = useSWR(
     [

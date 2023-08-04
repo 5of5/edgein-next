@@ -19,14 +19,12 @@ type Props = {
   resourceId: number;
   resourceType: string;
   resourceName?: string;
-  setShowPopup?: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const ElemOrganizationNotes: FC<Props> = ({
   resourceId,
   resourceType,
   resourceName,
-  setShowPopup,
 }) => {
   const { user, myGroups } = useUser();
 
@@ -119,7 +117,6 @@ const ElemOrganizationNotes: FC<Props> = ({
                   data={item}
                   refetch={refetch}
                   layout={`${item.user_group_id ? 'groupAndAuthor' : 'author'}`}
-                  setShowPopup={setShowPopup}
                 />
               ))}
             </div>

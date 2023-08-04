@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -29,6 +29,7 @@ import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { Popover, Transition } from '@headlessui/react';
 
 import { redirect_url } from '@/utils/auth';
+import { usePopup } from '@/context/popup-context';
 
 export type Popups =
   | 'login'
@@ -38,14 +39,11 @@ export type Popups =
   | 'usage'
   | false;
 
-type Props = {
-  showPopup: Popups;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
-};
-
-export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
+export const TheNavbar = () => {
   const router = useRouter();
   const { user, listAndFollows, myGroups, unreadNotifications } = useUser();
+
+  const { showPopup, setShowPopup } = usePopup();
 
   const notificationsCount = unreadNotifications
     ? unreadNotifications.length
@@ -317,7 +315,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
                   btn="default"
                   className="whitespace-nowrap"
                 >
-                  Log In
+                  Log in
                 </ElemButton>
                 <ElemButton
                   onClick={() => setShowPopup('signup')}

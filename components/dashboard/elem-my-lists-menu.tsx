@@ -17,6 +17,7 @@ import {
   MY_LISTS_MENU_OPEN_KEY,
   SIDEBAR_DEFAULT_LISTS_LIMIT,
 } from '@/utils/constants';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -25,6 +26,8 @@ type Props = {
 const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const router = useRouter();
   const { listAndFollows: lists, user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
     MY_LISTS_MENU_OPEN_KEY,
@@ -133,6 +136,18 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  const onClickCreate = () => {
+    if (!user) {
+      return setShowPopup('signup');
+    }
+
+    if (getCustomLists.length > totalListCount) {
+      return onOpenUpgradeDialog();
+    }
+
+    return onOpenCreateListDialog();
+  };
+
   const [listsLimit, setListsLimit] = useState(SIDEBAR_DEFAULT_LISTS_LIMIT);
 
   return (
@@ -147,112 +162,107 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 ref={btnRef}
                 onClick={onDisclosureButtonClick}
               >
-                <IconChevronDownMini
-                  className={`${
-                    open ? 'rotate-0' : '-rotate-90 '
-                  } w-6 h-6 transform transition-all`}
-                />
+                {user && (
+                  <IconChevronDownMini
+                    className={`${
+                      open ? 'rotate-0' : '-rotate-90 '
+                    } w-6 h-6 transform transition-all`}
+                  />
+                )}
                 <span className="font-medium text-sm">Lists</span>
               </Disclosure.Button>
 
-              {getCustomLists.length > totalListCount ? (
-                <button
-                  onClick={onOpenUpgradeDialog}
-                  className="flex items-center justify-center rounded-full hover:bg-gray-100"
-                >
-                  <IconPlusSmall className="h-6 w-6" title="Create List" />
-                </button>
-              ) : (
-                <button
-                  onClick={onOpenCreateListDialog}
-                  className="flex items-center justify-center rounded-full hover:bg-gray-100"
-                >
-                  <IconPlusSmall className="h-6 w-6" title="Create List" />
-                </button>
-              )}
+              <button
+                onClick={onClickCreate}
+                className="flex items-center justify-center rounded-full hover:bg-gray-100"
+              >
+                <IconPlusSmall className="h-6 w-6" title="Create List" />
+              </button>
             </div>
 
-            <Disclosure.Panel as="ul" className="ml-8">
-              <li role="button">
-                <Link href={`/lists/${hotId}/hot`}>
-                  <a
-                    className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                      hotId,
-                      'hot',
-                    )} `}
-                  >
-                    <span className="flex-1">Hot</span>
-                    <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
-                      {getCountForList('hot')}
-                    </div>
-                  </a>
-                </Link>
-              </li>
-              <li role="button">
-                <Link href={`/lists/${likeId}/like`}>
-                  <a
-                    className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                      likeId,
-                      'like',
-                    )}`}
-                  >
-                    <span className="flex-1">Like</span>
-                    <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
-                      {getCountForList('like')}
-                    </div>
-                  </a>
-                </Link>
-              </li>
-              <li role="button">
-                <Link href={`/lists/${crapId}/sh**`}>
-                  <a
-                    className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                      crapId,
-                      'sh**',
-                    )} `}
-                  >
-                    <span className="flex-1">Sh**</span>
-                    <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
-                      {getCountForList('crap')}
-                    </div>
-                  </a>
-                </Link>
-              </li>
-              {createdLists.slice(0, listsLimit)?.map(list => {
-                return (
-                  <li key={list.id} role="button">
-                    <Link
-                      href={`/lists/${list.id}/${kebabCase(
-                        getNameFromListName(list),
+            {user && (
+              <Disclosure.Panel as="ul" className="ml-8">
+                <li role="button">
+                  <Link href={`/lists/${hotId}/hot`}>
+                    <a
+                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                        hotId,
+                        'hot',
+                      )} `}
+                    >
+                      <span className="flex-1">Hot</span>
+                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                        {getCountForList('hot')}
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+                <li role="button">
+                  <Link href={`/lists/${likeId}/like`}>
+                    <a
+                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                        likeId,
+                        'like',
                       )}`}
                     >
-                      <a
-                        className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                          list.id,
-                          kebabCase(getNameFromListName(list)),
+                      <span className="flex-1">Like</span>
+                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                        {getCountForList('like')}
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+                <li role="button">
+                  <Link href={`/lists/${crapId}/sh**`}>
+                    <a
+                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                        crapId,
+                        'sh**',
+                      )} `}
+                    >
+                      <span className="flex-1">Sh**</span>
+                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                        {getCountForList('crap')}
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+                {createdLists.slice(0, listsLimit)?.map(list => {
+                  return (
+                    <li key={list.id} role="button">
+                      <Link
+                        href={`/lists/${list.id}/${kebabCase(
+                          getNameFromListName(list),
                         )}`}
-                        title={getNameFromListName(list)}
                       >
-                        <span className="line-clamp-1 break-all flex-1">
-                          {getNameFromListName(list)}
-                        </span>
-                        <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
-                          {list.total_no_of_resources}
-                        </div>
-                      </a>
-                    </Link>
-                  </li>
-                );
-              })}
+                        <a
+                          className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                            list.id,
+                            kebabCase(getNameFromListName(list)),
+                          )}`}
+                          title={getNameFromListName(list)}
+                        >
+                          <span className="line-clamp-1 break-all flex-1">
+                            {getNameFromListName(list)}
+                          </span>
+                          <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                            {list.total_no_of_resources}
+                          </div>
+                        </a>
+                      </Link>
+                    </li>
+                  );
+                })}
 
-              <li role="button">
-                <Link href="/lists/">
-                  <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
-                    See all
-                  </a>
-                </Link>
-              </li>
-            </Disclosure.Panel>
+                <li role="button">
+                  <Link href="/lists/">
+                    <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                      See all
+                    </a>
+                  </Link>
+                </li>
+              </Disclosure.Panel>
+            )}
           </>
         )}
       </Disclosure>

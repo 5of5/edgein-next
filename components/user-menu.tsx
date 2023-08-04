@@ -77,7 +77,7 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
                   <a
                     className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
                     onClick={() => {
-                      item.onClick && item.onClick;
+                      item.onClick && item.onClick();
                       close();
                     }}
                   >

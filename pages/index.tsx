@@ -1,4 +1,3 @@
-import type { NextPage } from 'next';
 import Script from 'next/script';
 import React, { useState } from 'react';
 import { ElemButton } from '@/components/elem-button';
@@ -6,16 +5,14 @@ import { IconCheck, IconChevronDownMini } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { FigureConnect } from '@/components/figures';
 import { Tab, Transition } from '@headlessui/react';
-import { Popups } from '@/components/the-navbar';
 import { useIntercom } from 'react-use-intercom';
 import parse from 'html-react-parser';
+import { usePopup } from '@/context/popup-context';
 
-type Props = {
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
-};
-
-const Home: NextPage<Props> = ({ setShowPopup }) => {
+const Home = () => {
   const { user, loading } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const { show } = useIntercom();
 

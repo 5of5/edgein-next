@@ -158,7 +158,7 @@ export default function LoginModal(props: Props) {
             >
               <Dialog.Panel className="max-w-md w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide lg:p-12">
                 <h1 className="text-2xl text-center font-medium lg:text-3xl">
-                  Login
+                  Log in
                 </h1>
                 <ElemButton
                   onClick={onLinkedInClick}
@@ -169,7 +169,7 @@ export default function LoginModal(props: Props) {
                     title="LinkedIn"
                     className="h-5 w-5 text-[#0077B5]"
                   />
-                  Login with LinkedIn
+                  Log in with LinkedIn
                 </ElemButton>
 
                 <div className=" flex py-6 items-center">
@@ -236,7 +236,7 @@ export default function LoginModal(props: Props) {
                         btn="purple"
                         loading={isLoading}
                       >
-                        Login
+                        Log in
                       </ElemButton>
                     </div>
                   </form>

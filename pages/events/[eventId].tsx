@@ -31,17 +31,16 @@ import Link from 'next/link';
 import parse from 'html-react-parser';
 import { newLineToP } from '@/utils/text';
 import { useUser } from '@/context/user-context';
-import { Popups } from '@/components/the-navbar';
 import { ElemRequiredProfileDialog } from '@/components/elem-required-profile-dialog';
 import { ElemSubEvents } from '@/components/event/elem-sub-events';
 import moment from 'moment-timezone';
 import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   event: GetEventQuery['events'][0];
   setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const Event: NextPage<Props> = props => {
@@ -49,6 +48,8 @@ const Event: NextPage<Props> = props => {
   const { eventId } = router.query;
 
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [event, setEvent] = useState<GetEventQuery['events'][0]>(props.event);
 
@@ -86,7 +87,7 @@ const Event: NextPage<Props> = props => {
 
   const onClickSearchName = () => {
     onCloseLinkPersonDialog();
-    props.setShowPopup('search');
+    setShowPopup('search');
   };
 
   const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
