@@ -469,24 +469,23 @@ const Companies: NextPage<Props> = ({
                   />
                 ))}
 
-              {!shouldHidePersonalized ||
-                (!user && (
-                  <CompaniesByFilter
-                    headingText={`Just acquired`}
-                    filters={{
-                      _and: [
-                        { slug: { _neq: '' } },
-                        { library: { _contains: selectedLibrary } },
-                        {
-                          status_tags: {
-                            _contains: 'Acquired',
-                          },
+              {!shouldHidePersonalized && user && (
+                <CompaniesByFilter
+                  headingText={`Just acquired`}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      {
+                        status_tags: {
+                          _contains: 'Acquired',
                         },
-                      ],
-                    }}
-                    tagOnClick={filterByTag}
-                  />
-                ))}
+                      },
+                    ],
+                  }}
+                  tagOnClick={filterByTag}
+                />
+              )}
 
               {companies?.length != 0 && (
                 <>
