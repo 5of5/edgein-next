@@ -150,9 +150,9 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <IconChevronDownMini
                   className={`${
                     open ? 'rotate-0' : '-rotate-90 '
-                  } w-6 h-6 transform transition-all`}
+                  } w-4 h-4 transform transition-all`}
                 />
-                <span className="font-medium text-sm">Lists</span>
+                <span className="font-medium text-xs">Lists</span>
               </Disclosure.Button>
 
               {getCustomLists.length > totalListCount ? (
@@ -160,14 +160,14 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                   onClick={onOpenUpgradeDialog}
                   className="flex items-center justify-center rounded-full hover:bg-gray-100"
                 >
-                  <IconPlusSmall className="h-6 w-6" title="Create List" />
+                  <IconPlusSmall className="h-3 w-3" title="Create List" />
                 </button>
               ) : (
                 <button
                   onClick={onOpenCreateListDialog}
                   className="flex items-center justify-center rounded-full hover:bg-gray-100"
                 >
-                  <IconPlusSmall className="h-6 w-6" title="Create List" />
+                  <IconPlusSmall className="h-3 w-3" title="Create List" />
                 </button>
               )}
             </div>
@@ -176,7 +176,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               <li role="button">
                 <Link href={`/lists/${hotId}/hot`}>
                   <a
-                    className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                    className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                       hotId,
                       'hot',
                     )} `}
@@ -191,7 +191,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               <li role="button">
                 <Link href={`/lists/${likeId}/like`}>
                   <a
-                    className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                    className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                       likeId,
                       'like',
                     )}`}
@@ -206,7 +206,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               <li role="button">
                 <Link href={`/lists/${crapId}/sh**`}>
                   <a
-                    className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                    className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                       crapId,
                       'sh**',
                     )} `}
@@ -227,7 +227,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                       )}`}
                     >
                       <a
-                        className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                        className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                           list.id,
                           kebabCase(getNameFromListName(list)),
                         )}`}
@@ -247,7 +247,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
               <li role="button">
                 <Link href="/lists/">
-                  <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                  <a className="flex items-center space-x-2 py-1.5 font-medium text-xs text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
                     See all
                   </a>
                 </Link>

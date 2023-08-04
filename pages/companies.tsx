@@ -267,7 +267,7 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className=" mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
+          className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
