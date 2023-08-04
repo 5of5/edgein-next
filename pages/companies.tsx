@@ -457,15 +457,9 @@ const Companies: NextPage<Props> = ({
                           },
                         },
                         {
-                          _or: [
-                            {
-                              tags: {
-                                _contains: {
-                                  industry,
-                                },
-                              },
-                            },
-                          ],
+                          tags: {
+                            _contains: industry,
+                          },
                         },
                       ],
                     }}
