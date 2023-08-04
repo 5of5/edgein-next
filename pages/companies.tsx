@@ -464,27 +464,30 @@ const Companies: NextPage<Props> = ({
                   />
                 ))}
 
-              {!selectedFilters && (
-                <CompaniesByFilter
-                  headingText={`Just acquired`}
-                  filters={{
-                    _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
-                      {
-                        status_tags: {
-                          _contains: 'Acquired',
+              {!selectedFilters ||
+                (!user && (
+                  <CompaniesByFilter
+                    headingText={`Just acquired`}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        {
+                          status_tags: {
+                            _contains: 'Acquired',
+                          },
                         },
-                      },
-                    ],
-                  }}
-                  tagOnClick={filterByTag}
-                />
-              )}
+                      ],
+                    }}
+                    tagOnClick={filterByTag}
+                  />
+                ))}
 
               {companies?.length != 0 && (
                 <>
-                  <div className="text-2xl font-bold ml-4">All companies</div>
+                  {!user && (
+                    <div className="text-2xl font-bold ml-4">All companies</div>
+                  )}
                   <div
                     data-testid="companies"
                     className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
