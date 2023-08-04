@@ -280,8 +280,8 @@ export const ElemSaveToList: FC<Props> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-                <Dialog.Title className="text-xl font-medium flex items-center justify-between">
+              <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+                <Dialog.Title className="text-lg font-medium flex items-center justify-between px-4 py-2 border-b border-gray-200">
                   <span>Save to List</span>
                   <button
                     type="button"
@@ -308,7 +308,7 @@ export const ElemSaveToList: FC<Props> = ({
                     return (
                       <li key={list.id}>
                         <InputCheckbox
-                          className="w-full hover:bg-slate-100"
+                          className="w-full hover:bg-gray-100"
                           inputClass="ml-3"
                           labelClass="grow py-3 pr-3"
                           label={getNameFromListName(list)}
@@ -324,10 +324,9 @@ export const ElemSaveToList: FC<Props> = ({
                   <div className="flex border-t border-slate-300 p-3">
                     <div className="ml-auto">
                       <ElemButton
-                        btn="primary"
+                        btn="default"
                         onClick={() => setShowNew(true)}
                       >
-                        <IconListPlus className="w-6 h-6 mr-1" />
                         Create new list
                       </ElemButton>
                     </div>
