@@ -36,6 +36,8 @@ import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/elem-add-filter';
+import { getPersonalizedData } from '@/utils/personalizedTags';
+import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 
 type Props = {
   eventTabs: TextFilter[];
@@ -46,6 +48,9 @@ type Props = {
 const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const { user } = useUser();
+
+  const personalizedTags = getPersonalizedData({ user });
+
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
 
@@ -219,6 +224,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
+  const shouldHidePersonalized =
+    selectedFilters || selectedTab?.title !== 'Featured';
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -311,6 +319,32 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             </div>
           )}
 
+          {personalizedTags.locationTags.length != 0 &&
+            !shouldHidePersonalized &&
+            personalizedTags.locationTags.map(location => (
+              <EventsByFilter
+                key={location}
+                headingText={`New in ${location}`}
+                tagOnClick={onClickType}
+                filters={{
+                  _and: [
+                    { slug: { _neq: '' } },
+                    { library: { _contains: selectedLibrary } },
+                    {
+                      location_json: {
+                        _cast: {
+                          String: {
+                            _ilike: `%"city": "${location}"%`,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                }}
+              />
+            ))}
+
+          <div className="text-2xl font-bold ml-4">All Events</div>
           <div
             data-testid="events"
             className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"

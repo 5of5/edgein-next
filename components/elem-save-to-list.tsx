@@ -316,7 +316,7 @@ export const ElemSaveToList: FC<Props> = ({
                     return (
                       <li key={list.id}>
                         <InputCheckbox
-                          className="w-full hover:bg-slate-100"
+                          className="w-full hover:bg-gray-100"
                           inputClass="ml-3"
                           labelClass="grow py-3 pr-3"
                           label={getNameFromListName(list)}
@@ -332,10 +332,9 @@ export const ElemSaveToList: FC<Props> = ({
                   <div className="flex border-t border-slate-300 p-3">
                     <div className="ml-auto">
                       <ElemButton
-                        btn="primary"
+                        btn="default"
                         onClick={() => setShowNew(true)}
                       >
-                        <IconListPlus className="w-6 h-6 mr-1" />
                         Create new list
                       </ElemButton>
                     </div>

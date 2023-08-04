@@ -50,6 +50,19 @@ import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { User } from '@/models/user';
+import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
+import { getPersonalizedData } from '@/utils/personalizedTags';
+import { some } from 'lodash';
+
+function useStateParamsFilter<T>(filters: T[], name: string) {
+  return useStateParams(
+    filters[0],
+    name,
+    companyLayer => filters.indexOf(companyLayer).toString(),
+    index => filters[Number(index)],
+  );
+}
 
 type Props = {
   companiesCount: number;
@@ -63,6 +76,8 @@ const Companies: NextPage<Props> = ({
   companyStatusTags,
 }) => {
   const { user } = useUser();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -228,6 +243,7 @@ const Companies: NextPage<Props> = ({
         : orderByQuery,
     ],
   });
+
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
   }
@@ -253,6 +269,9 @@ const Companies: NextPage<Props> = ({
       onClick: () => setTableLayout(true),
     },
   ];
+
+  const shouldHidePersonalized =
+    selectedFilters || selectedStatusTag?.title !== 'New';
 
   return (
     <DashboardLayout>
@@ -324,6 +343,99 @@ const Companies: NextPage<Props> = ({
         <ElemInviteBanner className="mt-3 mx-4" />
 
         <div className="mt-6 px-4">
+          {personalizedTags.locationTags.length != 0 &&
+            !shouldHidePersonalized &&
+            personalizedTags.locationTags.map(location => (
+              <>
+                <CompaniesByFilter
+                  key={location}
+                  headingText={`Trending in ${location}`}
+                  tagOnClick={filterByTag}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      { status_tags: { _contains: 'Trending' } },
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                />
+
+                <CompaniesByFilter
+                  key={location}
+                  headingText={`New in ${location}`}
+                  tagOnClick={filterByTag}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                />
+              </>
+            ))}
+
+          {personalizedTags.industryTags.length != 0 &&
+            !shouldHidePersonalized &&
+            personalizedTags.industryTags.map(industry => (
+              <CompaniesByFilter
+                key={industry}
+                headingText={`Trending in ${industry}`}
+                tagOnClick={filterByTag}
+                filters={{
+                  _and: [
+                    { slug: { _neq: '' } },
+                    { library: { _contains: selectedLibrary } },
+                    {
+                      status_tags: {
+                        _contains: 'Trending',
+                      },
+                    },
+                    {
+                      tags: {
+                        _contains: industry,
+                      },
+                    },
+                  ],
+                }}
+              />
+            ))}
+
+          {!shouldHidePersonalized && user && (
+            <CompaniesByFilter
+              headingText={`Just acquired`}
+              tagOnClick={filterByTag}
+              filters={{
+                _and: [
+                  { slug: { _neq: '' } },
+                  { library: { _contains: selectedLibrary } },
+                  {
+                    status_tags: {
+                      _contains: 'Acquired',
+                    },
+                  },
+                ],
+              }}
+            />
+          )}
+
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">
@@ -471,7 +583,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       metaDescription:
         'Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.',
       companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
-      initialCompanies: companies?.companies,
+      initialCompanies: companies?.companies || [],
       companyStatusTags,
     },
   };
