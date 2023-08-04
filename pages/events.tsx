@@ -20,7 +20,6 @@ import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
 import { ElemFilter } from '@/components/elem-filter';
 import { processEventsFilters } from '@/utils/filter';
-import useFilterParams from '@/hooks/use-filter-params';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import { DeepPartial } from '@/types/common';
@@ -33,6 +32,8 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { ElemAddFilter } from '@/components/elem-add-filter';
 
 type Props = {
   eventTabs: TextFilter[];
@@ -62,7 +63,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     index => eventTabs[Number(index)],
   );
 
-  const { selectedFilters, setSelectedFilters } = useFilterParams();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -102,7 +104,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const onChangeTab = (tab: any) => {
     setSelectedTab(tab);
-    setSelectedFilters(null);
+    onChangeSelectedFilters(null);
   };
 
   const onClickType = (
@@ -118,9 +120,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       : [type, ...currentFilterOption];
 
     if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, eventType: undefined });
+      onChangeSelectedFilters({ ...selectedFilters, eventType: undefined });
     } else {
-      setSelectedFilters({
+      onChangeSelectedFilters({
         ...selectedFilters,
         eventType: {
           ...selectedFilters?.eventType,
@@ -258,28 +260,38 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <ElemLibrarySelector />
             {/* } */}
 
-            <ElemFilter
-              resourceType="vc_firms"
-              filterValues={selectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                setSelectedFilters({
-                  ...selectedFilters,
-                  [name]: filterParams,
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                setSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => setSelectedFilters(null)}
+            <ElemAddFilter
+              resourceType="events"
+              onSelectFilterOption={onSelectFilterOption}
             />
 
             <ElemDropdown items={sortItems} />
           </div>
+        </div>
+
+        <div className="px-4">
+          <ElemFilter
+            resourceType="events"
+            filterValues={selectedFilters}
+            dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
+            onSelectFilterOption={onSelectFilterOption}
+            onChangeFilterValues={onChangeSelectedFilters}
+            onApply={(name, filterParams) => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: { ...filterParams, open: false },
+              });
+            }}
+            onClearOption={name => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: undefined,
+              });
+            }}
+            onReset={() => onChangeSelectedFilters(null)}
+          />
         </div>
 
         <ElemInviteBanner className="mt-3 mx-4" />
