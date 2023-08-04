@@ -26,7 +26,7 @@ import {
   Order_By,
 } from '@/graphql/types';
 import { runGraphQl } from '@/utils';
-import { investorChoices } from '@/utils/constants';
+import { investorChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
@@ -75,12 +75,16 @@ const Investors: NextPage<Props> = ({
       ));
 
   // Investor Status Tag
-  const [selectedStatusTag, setSelectedStatusTag] = useStateParams(
-    investorsStatusTags[0],
-    'statusTag',
-    statusTag => investorsStatusTags.indexOf(statusTag).toString(),
-    index => investorsStatusTags[Number(index)],
-  );
+  const [selectedStatusTag, setSelectedStatusTag] =
+    useStateParams<TextFilter | null>(
+      null,
+      'statusTag',
+      statusTag =>
+        statusTag ? investorsStatusTags.indexOf(statusTag).toString() : '',
+      index => investorsStatusTags[Number(index)],
+    );
+
+  const isNewTabSelected = selectedStatusTag?.value === 'new';
 
   const [tableLayout, setTableLayout] = useState(false);
 
@@ -198,10 +202,16 @@ const Investors: NextPage<Props> = ({
   /** Handle selected filter params */
   processInvestorsFilters(filters, selectedFilters, defaultFilters);
 
-  if (selectedStatusTag.value) {
-    filters._and?.push({
-      status_tags: { _contains: selectedStatusTag.value },
-    });
+  if (selectedStatusTag?.value) {
+    if (isNewTabSelected) {
+      filters._and?.push({
+        created_at: { _neq: new Date(0) },
+      });
+    } else {
+      filters._and?.push({
+        status_tags: { _contains: selectedStatusTag.value },
+      });
+    }
   }
 
   const {
@@ -209,10 +219,14 @@ const Investors: NextPage<Props> = ({
     error,
     isLoading,
   } = useGetVcFirmsQuery({
-    offset,
-    limit,
+    offset: isNewTabSelected ? null : offset,
+    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
     where: filters as Vc_Firms_Bool_Exp,
-    orderBy: [orderByQuery],
+    orderBy: [
+      isNewTabSelected
+        ? ({ created_at: Order_By.Desc } as Vc_Firms_Order_By)
+        : orderByQuery,
+    ],
   });
 
   if (!isLoading && initialLoad) {
@@ -270,9 +284,7 @@ const Investors: NextPage<Props> = ({
             </nav>
 
             <div className="flex space-x-2">
-              {/* {isDisplaySelectLibrary &&  */}
-              <ElemLibrarySelector />
-              {/* } */}
+              {isDisplaySelectLibrary && <ElemLibrarySelector />}
               <ElemDropdown items={layoutItems} />
 
               <ElemAddFilter
@@ -280,7 +292,12 @@ const Investors: NextPage<Props> = ({
                 onSelectFilterOption={onSelectFilterOption}
               />
 
-              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+              {!isNewTabSelected && (
+                <ElemDropdown
+                  defaultItem={defaultOrderBy}
+                  items={sortChoices}
+                />
+              )}
             </div>
           </div>
 
@@ -374,15 +391,18 @@ const Investors: NextPage<Props> = ({
                     ))}
                   </div>
                 )}
-                <Pagination
-                  shownItems={vcFirms?.length}
-                  totalItems={vcfirms_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
-                />
+
+                {!isNewTabSelected && (
+                  <Pagination
+                    shownItems={vcFirms?.length}
+                    totalItems={vcfirms_aggregate}
+                    page={page}
+                    itemsPerPage={limit}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    onClickToPage={selectedPage => setPage(selectedPage)}
+                  />
+                )}
               </>
             )}
           </div>
@@ -465,7 +485,7 @@ const investorFilterValue = investorChoices.map(option => {
 const investorsStatusTags: TextFilter[] = [
   {
     title: 'New',
-    value: '',
+    value: 'new',
     icon: '✨',
   },
   ...investorFilterValue,

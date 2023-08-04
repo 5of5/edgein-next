@@ -29,7 +29,7 @@ import {
 } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
-import { companyChoices } from '@/utils/constants';
+import { companyChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
@@ -50,15 +50,6 @@ import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-
-function useStateParamsFilter<T>(filters: T[], name: string) {
-  return useStateParams(
-    filters[0],
-    name,
-    companyLayer => filters.indexOf(companyLayer).toString(),
-    index => filters[Number(index)],
-  );
-}
 
 type Props = {
   companiesCount: number;
@@ -87,10 +78,16 @@ const Companies: NextPage<Props> = ({
   const { selectedLibrary } = useLibrary();
 
   // Company status-tag filter
-  const [selectedStatusTag, setSelectedStatusTag] = useStateParamsFilter(
-    companyStatusTags,
-    'statusTag',
-  );
+  const [selectedStatusTag, setSelectedStatusTag] =
+    useStateParams<TextFilter | null>(
+      null,
+      'statusTag',
+      companyLayer =>
+        companyLayer ? companyStatusTags.indexOf(companyLayer).toString() : '',
+      index => companyStatusTags[Number(index)],
+    );
+
+  const isNewTabSelected = selectedStatusTag?.value === 'new';
 
   const [tableLayout, setTableLayout] = useState(false);
 
@@ -134,7 +131,7 @@ const Companies: NextPage<Props> = ({
     if (!initialLoad) {
       setPage(0);
     }
-    if (initialLoad && selectedStatusTag.value !== '') {
+    if (initialLoad && selectedStatusTag?.value !== '') {
       setInitialLoad(false);
     }
 
@@ -205,10 +202,16 @@ const Companies: NextPage<Props> = ({
   /** Handle selected filter params */
   processCompaniesFilters(filters, selectedFilters, defaultFilters);
 
-  if (selectedStatusTag.value) {
-    filters._and?.push({
-      status_tags: { _contains: selectedStatusTag.value },
-    });
+  if (selectedStatusTag?.value) {
+    if (isNewTabSelected) {
+      filters._and?.push({
+        date_added: { _neq: new Date(0) },
+      });
+    } else {
+      filters._and?.push({
+        status_tags: { _contains: selectedStatusTag.value },
+      });
+    }
   }
 
   const {
@@ -216,10 +219,14 @@ const Companies: NextPage<Props> = ({
     error,
     isLoading,
   } = useGetCompaniesQuery({
-    offset,
-    limit,
+    offset: isNewTabSelected ? null : offset,
+    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
     where: filters as Companies_Bool_Exp,
-    orderBy: [orderByQuery],
+    orderBy: [
+      isNewTabSelected
+        ? ({ date_added: Order_By.Desc } as Companies_Order_By)
+        : orderByQuery,
+    ],
   });
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -284,7 +291,9 @@ const Companies: NextPage<Props> = ({
               onSelectFilterOption={onSelectFilterOption}
             />
 
-            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            {!isNewTabSelected && (
+              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            )}
           </div>
         </div>
 
@@ -396,15 +405,17 @@ const Companies: NextPage<Props> = ({
                   })}
                 </div>
               )}
-              <Pagination
-                shownItems={companies?.length}
-                totalItems={companies_aggregate}
-                page={page}
-                itemsPerPage={limit}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                onClickToPage={selectedPage => setPage(selectedPage)}
-              />
+              {!isNewTabSelected && (
+                <Pagination
+                  shownItems={companies?.length}
+                  totalItems={companies_aggregate}
+                  page={page}
+                  itemsPerPage={limit}
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
+              )}
             </>
           )}
         </div>
@@ -493,7 +504,7 @@ const companyStatusTagValues = companyChoices.map(option => {
 const companyStatusTags: TextFilter[] = [
   {
     title: 'New',
-    value: '',
+    value: 'new',
     icon: '✨',
   },
   ...companyStatusTagValues,
