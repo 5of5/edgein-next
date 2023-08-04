@@ -47,6 +47,8 @@ import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { getPersonalizedData } from '@/utils/personalizedTags';
+import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 
 type Props = {
   vcFirmCount: number;
@@ -60,6 +62,8 @@ const Investors: NextPage<Props> = ({
   investorsStatusTags,
 }) => {
   const { user } = useUser();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -360,19 +364,116 @@ const Investors: NextPage<Props> = ({
               />
             ) : (
               <>
-                {vcFirms?.length != 0 && (
-                  <div
-                    data-testid="investors"
-                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-                  >
-                    {vcFirms?.map(vcfirm => (
-                      <ElemInvestorCard
-                        key={vcfirm.id}
-                        vcFirm={vcfirm as Vc_Firms}
+                {personalizedTags.locationTags.length != 0 &&
+                  !selectedFilters &&
+                  personalizedTags.locationTags.map(location => (
+                    <>
+                      <InvestorsByFilter
+                        key={location}
+                        headingText={`Trending in ${location}`}
+                        filters={{
+                          _and: [
+                            { slug: { _neq: '' } },
+                            { library: { _contains: selectedLibrary } },
+                            { status_tags: { _contains: 'Trending' } },
+                            {
+                              location_json: {
+                                _cast: {
+                                  String: {
+                                    _ilike: `%"city": "${location}"%`,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                        }}
                         tagOnClick={filterByTag}
                       />
-                    ))}
-                  </div>
+                      <InvestorsByFilter
+                        key={location}
+                        headingText={`New in ${location}`}
+                        filters={{
+                          _and: [
+                            { slug: { _neq: '' } },
+                            { library: { _contains: selectedLibrary } },
+                            {
+                              location_json: {
+                                _cast: {
+                                  String: {
+                                    _ilike: `%"city": "${location}"%`,
+                                  },
+                                },
+                              },
+                            },
+                          ],
+                        }}
+                        tagOnClick={filterByTag}
+                      />
+                    </>
+                  ))}
+
+                {personalizedTags.industryTags.length != 0 &&
+                  !selectedFilters &&
+                  personalizedTags.industryTags.map(industry => (
+                    <InvestorsByFilter
+                      key={industry}
+                      headingText={`Trending in ${industry}`}
+                      filters={{
+                        _and: [
+                          { slug: { _neq: '' } },
+                          { library: { _contains: selectedLibrary } },
+                          {
+                            status_tags: {
+                              _contains: 'Trending',
+                            },
+                          },
+                          {
+                            tags: {
+                              _contains: {
+                                industry,
+                              },
+                            },
+                          },
+                        ],
+                      }}
+                      tagOnClick={filterByTag}
+                    />
+                  ))}
+
+                {!selectedFilters && (
+                  <InvestorsByFilter
+                    headingText={`Just acquired`}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        {
+                          status_tags: {
+                            _contains: 'Acquired',
+                          },
+                        },
+                      ],
+                    }}
+                    tagOnClick={filterByTag}
+                  />
+                )}
+
+                {vcFirms?.length != 0 && (
+                  <>
+                    <div className="text-2xl font-bold ml-4">All investors</div>
+                    <div
+                      data-testid="investors"
+                      className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                    >
+                      {vcFirms?.map(vcfirm => (
+                        <ElemInvestorCard
+                          key={vcfirm.id}
+                          vcFirm={vcfirm as Vc_Firms}
+                          tagOnClick={filterByTag}
+                        />
+                      ))}
+                    </div>
+                  </>
                 )}
                 <Pagination
                   shownItems={vcFirms?.length}

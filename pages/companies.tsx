@@ -50,6 +50,9 @@ import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { User } from '@/models/user';
+import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
+import { getPersonalizedData } from '@/utils/personalizedTags';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -59,6 +62,7 @@ function useStateParamsFilter<T>(filters: T[], name: string) {
     index => filters[Number(index)],
   );
 }
+
 
 type Props = {
   companiesCount: number;
@@ -72,6 +76,8 @@ const Companies: NextPage<Props> = ({
   companyStatusTags,
 }) => {
   const { user } = useUser();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -221,6 +227,7 @@ const Companies: NextPage<Props> = ({
     where: filters as Companies_Bool_Exp,
     orderBy: [orderByQuery],
   });
+
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
   }
@@ -352,49 +359,147 @@ const Companies: NextPage<Props> = ({
               )}
             </>
           ) : tableLayout && companies?.length != 0 ? (
-            <CompaniesTable
-              companies={companies}
-              pageNumber={page}
-              itemsPerPage={limit}
-              shownItems={companies?.length}
-              totalItems={companies_aggregate}
-              onClickPrev={() => setPage(page - 1)}
-              onClickNext={() => setPage(page + 1)}
-              filterByTag={filterByTag}
-              filterValues={selectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: filterParams,
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => onChangeSelectedFilters(null)}
-            />
+            <>
+              <CompaniesTable
+                companies={companies}
+                pageNumber={page}
+                itemsPerPage={limit}
+                shownItems={companies?.length}
+                totalItems={companies_aggregate}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                filterByTag={filterByTag}
+                filterValues={selectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: filterParams,
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: undefined,
+                  });
+                }}
+                onReset={() => onChangeSelectedFilters(null)}
+              />
+            </>
           ) : (
             <>
+              {personalizedTags.locationTags.length != 0 &&
+                !selectedFilters &&
+                personalizedTags.locationTags.map(location => (
+                  <>
+                    <CompaniesByFilter
+                      key={location}
+                      headingText={`Trending in ${location}`}
+                      filters={{
+                        _and: [
+                          { slug: { _neq: '' } },
+                          { library: { _contains: selectedLibrary } },
+                          { status_tags: { _contains: 'Trending' } },
+                          {
+                            location_json: {
+                              _cast: {
+                                String: {
+                                  _ilike: `%"city": "${location}"%`,
+                                },
+                              },
+                            },
+                          },
+                        ],
+                      }}
+                      tagOnClick={filterByTag}
+                    />
+                    <CompaniesByFilter
+                      key={location}
+                      headingText={`New in ${location}`}
+                      filters={{
+                        _and: [
+                          { slug: { _neq: '' } },
+                          { library: { _contains: selectedLibrary } },
+                          {
+                            location_json: {
+                              _cast: {
+                                String: {
+                                  _ilike: `%"city": "${location}"%`,
+                                },
+                              },
+                            },
+                          },
+                        ],
+                      }}
+                      tagOnClick={filterByTag}
+                    />
+                  </>
+                ))}
+              {personalizedTags.industryTags.length != 0 &&
+                !selectedFilters &&
+                personalizedTags.industryTags.map(industry => (
+                  <CompaniesByFilter
+                    key={industry}
+                    headingText={`Trending in ${industry}`}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        {
+                          status_tags: {
+                            _contains: 'Trending',
+                          },
+                        },
+                        {
+                          tags: {
+                            _contains: {
+                              industry,
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                    tagOnClick={filterByTag}
+                  />
+                ))}
+
+              {!selectedFilters && (
+                <CompaniesByFilter
+                  headingText={`Just acquired`}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      {
+                        status_tags: {
+                          _contains: 'Acquired',
+                        },
+                      },
+                    ],
+                  }}
+                  tagOnClick={filterByTag}
+                />
+              )}
+
               {companies?.length != 0 && (
-                <div
-                  data-testid="companies"
-                  className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-                >
-                  {companies?.map(company => {
-                    return (
-                      <ElemCompanyCard
-                        key={company.id}
-                        company={company as Companies}
-                        tagOnClick={filterByTag}
-                      />
-                    );
-                  })}
-                </div>
+                <>
+                  <div className="text-2xl font-bold ml-4">All companies</div>
+                  <div
+                    data-testid="companies"
+                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                  >
+                    {companies?.map(company => {
+                      return (
+                        <ElemCompanyCard
+                          key={company.id}
+                          company={company as Companies}
+                          tagOnClick={filterByTag}
+                        />
+                      );
+                    })}
+                  </div>
+                </>
               )}
               <Pagination
                 shownItems={companies?.length}
