@@ -179,7 +179,7 @@ const Event: NextPage<Props> = props => {
 
   return (
     <DashboardLayout>
-      <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
+      <div className="w-full pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-4">
             <div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">

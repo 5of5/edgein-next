@@ -126,7 +126,7 @@ const VCFirm: NextPage<Props> = props => {
 
   return (
     <DashboardLayout>
-      <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
+      <div className="w-full pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-11 lg:gap-7">
             <div className="col-span-3">
@@ -244,17 +244,14 @@ const VCFirm: NextPage<Props> = props => {
             />
           </div>
           <div className="col-span-8">
-            <div className="w-full mt-7 p-5 bg-slate-200 rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)] lg:mt-0">
+            <div className="w-full mt-7 lg:mt-0">
               <ElemOrganizationNotes
                 resourceId={vcfirm.id}
                 resourceType="vc_firms"
               />
             </div>
             {props.sortNews.length > 0 && (
-              <div
-                ref={newsRef}
-                className="w-full mt-7 p-5 bg-white shadow rounded-lg"
-              >
+              <div ref={newsRef} className="w-full mt-7">
                 <ElemNewsList
                   resourceType="vc_firms"
                   resourceId={vcfirm.id}
@@ -262,7 +259,7 @@ const VCFirm: NextPage<Props> = props => {
                 />
               </div>
             )}
-            <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+            <div className="w-full mt-7">
               <ElemOrganizationActivity
                 resourceType="vc_firms"
                 resourceInvestments={sortedInvestmentRounds}
