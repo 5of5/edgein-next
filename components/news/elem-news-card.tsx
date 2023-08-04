@@ -100,12 +100,7 @@ export const ElemNewsCard: FC<Props> = ({
                 return (
                   <button
                     key={index}
-                    onClick={e => tagOnClick(e, tag)}
-                    className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
-                      tagOnClick !== undefined
-                        ? 'cursor-pointer hover:bg-gray-200'
-                        : ''
-                    }`}>
+                    className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full cursor-default`}>
                     {tag}
                   </button>
                 );
