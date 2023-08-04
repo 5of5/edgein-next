@@ -100,7 +100,8 @@ export const ElemNewsCard: FC<Props> = ({
                 return (
                   <button
                     key={index}
-                    className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full cursor-default`}>
+                    className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full cursor-default`}
+                  >
                     {tag}
                   </button>
                 );
@@ -108,7 +109,8 @@ export const ElemNewsCard: FC<Props> = ({
               {tagsLimit < tags.length && (
                 <button
                   onClick={showMoreTags}
-                  className="text-xs text-gray-500 font-medium py-1">
+                  className="text-xs text-gray-500 font-medium py-1"
+                >
                   {tags.length - tagsLimit} more
                 </button>
               )}
@@ -138,7 +140,8 @@ export const ElemNewsCard: FC<Props> = ({
                 target="_blank"
                 className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-                }`}>
+                }`}
+              >
                 {parse(stripHtmlTags(metadata?.description))}
               </a>
             </Link>
@@ -146,7 +149,8 @@ export const ElemNewsCard: FC<Props> = ({
             <p
               className={`text-sm text-gray-500 mt-4 ${
                 metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-              }`}>
+              }`}
+            >
               {parse(stripHtmlTags(metadata?.description))}
             </p>
           )}
@@ -181,7 +185,8 @@ export const ElemNewsCard: FC<Props> = ({
                             imgAlt={organization?.name}
                             placeholderClass="text-slate-300"
                           />
-                        }>
+                        }
+                      >
                         <div className="inline-block">
                           <Link href={slug}>
                             <a className="break-words border-b border-gray-600">
@@ -210,7 +215,8 @@ export const ElemNewsCard: FC<Props> = ({
                         : publisher.vc_firm
                         ? `/investors/${publisher.vc_firm?.slug}`
                         : ''
-                    }>
+                    }
+                  >
                     <a target="_blank" className="">
                       {publisher.company?.name || publisher.vc_firm?.name}
                     </a>
@@ -229,7 +235,8 @@ export const ElemNewsCard: FC<Props> = ({
                     source?.poweredby?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'
-                  }`}>
+                  }`}
+                >
                   <a>{source?.poweredby || 'CryptoPanic'}</a>
                 </Link>
               </p>

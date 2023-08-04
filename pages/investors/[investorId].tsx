@@ -127,7 +127,7 @@ const VCFirm: NextPage<Props> = props => {
 
   return (
     <DashboardLayout>
-    <div className="w-full pt-8">
+      <div className="w-full pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-11 lg:gap-7">
             <div className="col-span-3">
@@ -253,10 +253,7 @@ const VCFirm: NextPage<Props> = props => {
               />
             </div>
             {props.sortNews.length > 0 && (
-              <div
-                ref={newsRef}
-                className="w-full mt-7"
-              >
+              <div ref={newsRef} className="w-full mt-7">
                 <ElemNewsList
                   resourceType="vc_firms"
                   resourceId={vcfirm.id}

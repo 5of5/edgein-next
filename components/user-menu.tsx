@@ -46,7 +46,8 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
         <Popover.Button as="div">
           <ElemButton
             btn="default"
-            className="h-9 aspect-square !px-1 !py-1.5 group">
+            className="h-9 aspect-square !px-1 !py-1.5 group"
+          >
             <IconUserCircle
               className="h-6 w-6 shrink-0"
               title={user?.display_name ? user.display_name : ''}
@@ -62,7 +63,8 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
         enterTo="opacity-100 translate-y-0"
         leave="transition ease-in duration-150"
         leaveFrom="opacity-100 translate-y-0"
-        leaveTo="opacity-0 translate-y-1">
+        leaveTo="opacity-0 translate-y-1"
+      >
         <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
           {({ close }) => (
             <div>
@@ -77,7 +79,8 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
                     onClick={() => {
                       item.onClick && item.onClick();
                       close();
-                    }}>
+                    }}
+                  >
                     {item.label}
                   </a>
                 </Link>

@@ -104,7 +104,8 @@ const ElemOrganizationNotes: FC<Props> = ({
             />
             <div
               className="w-full cursor-pointer px-4 py-2 border border-gray-300 text-gray-500 text-sm rounded-lg"
-              onClick={onOpenNoteForm}>
+              onClick={onOpenNoteForm}
+            >
               Write a few sentences about {resourceName}...
             </div>
           </div>
