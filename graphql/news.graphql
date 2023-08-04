@@ -22,12 +22,20 @@ query GetNews(
         name
         slug
         logo
+        tags
       }
       vc_firm {
         id
         name
         slug
         logo
+        investments {
+          investment_round {
+            company {
+              tags
+            }
+          }
+        }
       }
     }
   }

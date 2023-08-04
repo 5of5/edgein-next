@@ -13,6 +13,10 @@ import Link from 'next/link';
 import { getCleanWebsiteUrl, stripHtmlTags } from '@/utils/text';
 import parse from 'html-react-parser';
 import { formatDateShown } from '@/utils';
+import {
+  CARD_DEFAULT_TAGS_LIMIT,
+  CARD_MAX_TAGS_LIMIT,
+} from '@/utils/constants';
 
 type Props = {
   className?: string;
@@ -31,6 +35,11 @@ export const ElemNewsCard: FC<Props> = ({
     setPostData(newsPost);
   }, [newsPost]);
 
+  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
+  const showMoreTags = () => {
+    setTagsLimit(CARD_MAX_TAGS_LIMIT);
+  };
+
   const {
     // id,
     kind,
@@ -44,6 +53,30 @@ export const ElemNewsCard: FC<Props> = ({
     metadata,
     organizations,
   } = postData;
+  const orgs = organizations as {
+    company?: {
+      tags: string[];
+    };
+    vc_firm?: {
+      investments?: { investment_round?: { company: { tags: string[] }[] } };
+    };
+  }[];
+
+  const vc_tags = orgs.reduce((tmp, org) => {
+    const tags = org.vc_firm?.investments?.investment_round?.company.reduce(
+      (tmp, company) => {
+        return [...tmp, ...company.tags];
+      },
+      new Array<string>(),
+    );
+    return [...tmp, ...(tags || [])];
+  }, new Array<string>());
+
+  const company_tags = orgs.reduce((tmp, org) => {
+    return [...tmp, ...(org.company?.tags || [])];
+  }, new Array<string>());
+
+  const tags = Array.from(new Set([...vc_tags, ...company_tags]));
 
   const publisher = organizations.find(org => org.type === 'publisher');
 
@@ -61,6 +94,26 @@ export const ElemNewsCard: FC<Props> = ({
             </Link>
           </h2>
           <p className="mt-4 text-xs text-gray-500">{formatDateShown(date)}</p>
+          {tags && (
+            <div className="mt-4 flex flex-wrap overflow-clip gap-2">
+              {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
+                return (
+                  <button
+                    key={index}
+                    className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full cursor-default`}>
+                    {tag}
+                  </button>
+                );
+              })}
+              {tagsLimit < tags.length && (
+                <button
+                  onClick={showMoreTags}
+                  className="text-xs text-gray-500 font-medium py-1">
+                  {tags.length - tagsLimit} more
+                </button>
+              )}
+            </div>
+          )}
           {metadata?.description && (
             <div className="mt-4 text-gray-400">
               {link && metadata?.image && (
@@ -85,8 +138,7 @@ export const ElemNewsCard: FC<Props> = ({
                 target="_blank"
                 className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-                }`}
-              >
+                }`}>
                 {parse(stripHtmlTags(metadata?.description))}
               </a>
             </Link>
@@ -94,8 +146,7 @@ export const ElemNewsCard: FC<Props> = ({
             <p
               className={`text-sm text-gray-500 mt-4 ${
                 metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-              }`}
-            >
+              }`}>
               {parse(stripHtmlTags(metadata?.description))}
             </p>
           )}
@@ -130,8 +181,7 @@ export const ElemNewsCard: FC<Props> = ({
                             imgAlt={organization?.name}
                             placeholderClass="text-slate-300"
                           />
-                        }
-                      >
+                        }>
                         <div className="inline-block">
                           <Link href={slug}>
                             <a className="break-words border-b border-gray-600">
@@ -160,8 +210,7 @@ export const ElemNewsCard: FC<Props> = ({
                         : publisher.vc_firm
                         ? `/investors/${publisher.vc_firm?.slug}`
                         : ''
-                    }
-                  >
+                    }>
                     <a target="_blank" className="">
                       {publisher.company?.name || publisher.vc_firm?.name}
                     </a>
@@ -180,8 +229,7 @@ export const ElemNewsCard: FC<Props> = ({
                     source?.poweredby?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'
-                  }`}
-                >
+                  }`}>
                   <a>{source?.poweredby || 'CryptoPanic'}</a>
                 </Link>
               </p>
