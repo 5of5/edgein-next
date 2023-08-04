@@ -247,7 +247,7 @@ const Investors: NextPage<Props> = ({
 
   const shouldHidePersonalized =
     selectedFilters || selectedStatusTag?.title !== 'New';
-  
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -431,11 +431,15 @@ const Investors: NextPage<Props> = ({
                             },
                           },
                           {
-                            tags: {
-                              _contains: {
-                                industry,
+                            _or: [
+                              {
+                                tags: {
+                                  _contains: {
+                                    industry,
+                                  },
+                                },
                               },
-                            },
+                            ],
                           },
                         ],
                       }}
