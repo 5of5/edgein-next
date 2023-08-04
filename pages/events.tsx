@@ -314,6 +314,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               </div>
             </div>
           )}
+          
           {personalizedTags.locationTags.length != 0 &&
             !shouldHidePersonalized &&
             personalizedTags.locationTags.map(location => (

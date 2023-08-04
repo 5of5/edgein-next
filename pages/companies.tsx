@@ -325,6 +325,99 @@ const Companies: NextPage<Props> = ({
         <ElemInviteBanner className="mt-3 mx-4" />
 
         <div className="mt-6 px-4">
+          {personalizedTags.locationTags.length != 0 &&
+            !shouldHidePersonalized &&
+            personalizedTags.locationTags.map(location => (
+              <>
+                <CompaniesByFilter
+                  key={location}
+                  headingText={`Trending in ${location}`}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      { status_tags: { _contains: 'Trending' } },
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                  tagOnClick={filterByTag}
+                />
+
+                <CompaniesByFilter
+                  key={location}
+                  headingText={`New in ${location}`}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                  tagOnClick={filterByTag}
+                />
+              </>
+            ))}
+
+          {personalizedTags.industryTags.length != 0 &&
+            !shouldHidePersonalized &&
+            personalizedTags.industryTags.map(industry => (
+              <CompaniesByFilter
+                key={industry}
+                headingText={`Trending in ${industry}`}
+                filters={{
+                  _and: [
+                    { slug: { _neq: '' } },
+                    { library: { _contains: selectedLibrary } },
+                    {
+                      status_tags: {
+                        _contains: 'Trending',
+                      },
+                    },
+                    {
+                      tags: {
+                        _contains: industry,
+                      },
+                    },
+                  ],
+                }}
+                tagOnClick={filterByTag}
+              />
+            ))}
+
+          {!shouldHidePersonalized && user && (
+            <CompaniesByFilter
+              headingText={`Just acquired`}
+              filters={{
+                _and: [
+                  { slug: { _neq: '' } },
+                  { library: { _contains: selectedLibrary } },
+                  {
+                    status_tags: {
+                      _contains: 'Acquired',
+                    },
+                  },
+                ],
+              }}
+              tagOnClick={filterByTag}
+            />
+          )}
+
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">
@@ -392,99 +485,6 @@ const Companies: NextPage<Props> = ({
             </>
           ) : (
             <>
-              {personalizedTags.locationTags.length != 0 &&
-                !shouldHidePersonalized &&
-                personalizedTags.locationTags.map(location => (
-                  <>
-                    <CompaniesByFilter
-                      key={location}
-                      headingText={`Trending in ${location}`}
-                      filters={{
-                        _and: [
-                          { slug: { _neq: '' } },
-                          { library: { _contains: selectedLibrary } },
-                          { status_tags: { _contains: 'Trending' } },
-                          {
-                            location_json: {
-                              _cast: {
-                                String: {
-                                  _ilike: `%"city": "${location}"%`,
-                                },
-                              },
-                            },
-                          },
-                        ],
-                      }}
-                      tagOnClick={filterByTag}
-                    />
-
-                    <CompaniesByFilter
-                      key={location}
-                      headingText={`New in ${location}`}
-                      filters={{
-                        _and: [
-                          { slug: { _neq: '' } },
-                          { library: { _contains: selectedLibrary } },
-                          {
-                            location_json: {
-                              _cast: {
-                                String: {
-                                  _ilike: `%"city": "${location}"%`,
-                                },
-                              },
-                            },
-                          },
-                        ],
-                      }}
-                      tagOnClick={filterByTag}
-                    />
-                  </>
-                ))}
-
-              {personalizedTags.industryTags.length != 0 &&
-                !shouldHidePersonalized &&
-                personalizedTags.industryTags.map(industry => (
-                  <CompaniesByFilter
-                    key={industry}
-                    headingText={`Trending in ${industry}`}
-                    filters={{
-                      _and: [
-                        { slug: { _neq: '' } },
-                        { library: { _contains: selectedLibrary } },
-                        {
-                          status_tags: {
-                            _contains: 'Trending',
-                          },
-                        },
-                        {
-                          tags: {
-                            _contains: industry,
-                          },
-                        },
-                      ],
-                    }}
-                    tagOnClick={filterByTag}
-                  />
-                ))}
-
-              {!shouldHidePersonalized && user && (
-                <CompaniesByFilter
-                  headingText={`Just acquired`}
-                  filters={{
-                    _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
-                      {
-                        status_tags: {
-                          _contains: 'Acquired',
-                        },
-                      },
-                    ],
-                  }}
-                  tagOnClick={filterByTag}
-                />
-              )}
-
               {companies?.length != 0 && (
                 <>
                   {user && (
