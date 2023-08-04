@@ -53,6 +53,7 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { User } from '@/models/user';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
+import { some } from 'lodash';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -253,6 +254,9 @@ const Companies: NextPage<Props> = ({
     },
   ];
 
+  const shouldHidePersonalized =
+    selectedFilters || selectedStatusTag?.title !== 'New';
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -389,7 +393,7 @@ const Companies: NextPage<Props> = ({
           ) : (
             <>
               {personalizedTags.locationTags.length != 0 &&
-                !selectedFilters &&
+                !shouldHidePersonalized &&
                 personalizedTags.locationTags.map(location => (
                   <>
                     <CompaniesByFilter
@@ -436,8 +440,9 @@ const Companies: NextPage<Props> = ({
                     />
                   </>
                 ))}
+
               {personalizedTags.industryTags.length != 0 &&
-                !selectedFilters &&
+                !shouldHidePersonalized &&
                 personalizedTags.industryTags.map(industry => (
                   <CompaniesByFilter
                     key={industry}
@@ -464,7 +469,7 @@ const Companies: NextPage<Props> = ({
                   />
                 ))}
 
-              {!selectedFilters ||
+              {!shouldHidePersonalized ||
                 (!user && (
                   <CompaniesByFilter
                     headingText={`Just acquired`}
