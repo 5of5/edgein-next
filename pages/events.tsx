@@ -58,10 +58,10 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const { showNewMessages } = useIntercom();
 
-  const [selectedTab, setSelectedTab] = useStateParams(
-    { ...eventTabs[0], date: moment().toISOString() },
+  const [selectedTab, setSelectedTab] = useStateParams<TextFilter | null>(
+    null,
     'tab',
-    statusTag => eventTabs.indexOf(statusTag).toString(),
+    statusTag => (statusTag ? eventTabs.indexOf(statusTag).toString() : ''),
     index => eventTabs[Number(index)],
   );
 
@@ -179,18 +179,24 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   /** Handle selected filter params */
   processEventsFilters(filters, selectedFilters, defaultFilters);
 
-  if (
-    selectedTab.value === 'upcoming' &&
-    !selectedFilters?.eventDate?.condition
-  ) {
+  if (selectedTab?.value === 'featured') {
     filters._and?.push({
-      start_date: { _gte: selectedTab.date },
+      is_featured: { _eq: true },
     });
   }
 
-  if (selectedTab.value === 'past' && !selectedFilters?.eventDate?.condition) {
+  if (
+    selectedTab?.value === 'upcoming' &&
+    !selectedFilters?.eventDate?.condition
+  ) {
     filters._and?.push({
-      start_date: { _lte: selectedTab.date },
+      start_date: { _gte: selectedTab?.date },
+    });
+  }
+
+  if (selectedTab?.value === 'past' && !selectedFilters?.eventDate?.condition) {
+    filters._and?.push({
+      start_date: { _lte: selectedTab?.date },
     });
   }
   const {
@@ -241,9 +247,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </nav>
 
           <div className="flex space-x-2">
-            {/* {isDisplaySelectLibrary &&  */}
-            <ElemLibrarySelector />
-            {/* } */}
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemAddFilter
               resourceType="events"

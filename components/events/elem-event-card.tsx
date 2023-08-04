@@ -22,6 +22,10 @@ import {
   CARD_DEFAULT_TAGS_LIMIT,
   CARD_MAX_TAGS_LIMIT,
 } from '@/utils/constants';
+import { useMutation } from 'react-query';
+import { toast, Toaster } from 'react-hot-toast';
+import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   event: GetEventsQuery['events'][0];
@@ -31,11 +35,15 @@ type Props = {
 export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
   const { user } = useUser();
 
+  const { setShowPopup } = usePopup();
+
   const userCanViewLinkedIn = user?.entitlements.viewEmails
     ? user?.entitlements.viewEmails
     : false;
 
   const [eventData, setEventData] = useState(event);
+
+  const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] = useState(false);
 
   useEffect(() => {
     setEventData(event);
@@ -54,12 +62,21 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
     start_date,
     end_date,
     link,
+    event_person,
     // TO DO: add twitter, linkedin, github, discord to GetEventsQuery
     // twitter,
     // linkedin,
     // github,
-    // discord,
+    // discord,76
   } = eventData;
+
+  const attendees = event_person?.filter(item => item.type === 'attendee');
+
+  const defaultIsAttended = attendees.some(
+    item => item.person_id === user?.person?.id,
+  );
+
+  const [isAttended, setIsAttended] = useState(defaultIsAttended);
 
   const tags = types;
   const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
@@ -77,6 +94,68 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
       : null;
 
   const eventImageUrl = banner?.url || getEventBanner(location_json?.city);
+
+  const onOpenLinkPersonDialog = () => {
+    setIsOpenLinkPersonDialog(true);
+  };
+
+  const onCloseLinkPersonDialog = () => {
+    setIsOpenLinkPersonDialog(false);
+  };
+
+  const onClickSearchName = () => {
+    onCloseLinkPersonDialog();
+    setShowPopup('search');
+  };
+
+  const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
+    useMutation(
+      () =>
+        fetch('/api/add-event-attendee/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            eventId: event?.id,
+          }),
+        }),
+      {
+        onSuccess: async response => {
+          if (response.status !== 200) {
+            const err = await response.json();
+            toast.custom(
+              t => (
+                <div
+                  className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                    t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                  }`}
+                >
+                  {err?.message}
+                </div>
+              ),
+              {
+                duration: 3000,
+                position: 'top-center',
+              },
+            );
+          } else {
+            setIsAttended(true);
+          }
+        },
+      },
+    );
+
+  const handleClickAttend = () => {
+    if (!isAttended) {
+      if (user?.person) {
+        onAddEventAttendee();
+      } else {
+        onOpenLinkPersonDialog();
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col w-full p-4">
@@ -210,12 +289,25 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
             <div className="text-xs text-gray-500">{eventPrice}</div>
           )}
 
-          {/* TO DO: add onclick function  */}
-          <ElemButton onClick={() => {}} btn="default" className="px-2.5">
-            Attend
+          <ElemButton
+            onClick={handleClickAttend}
+            btn="default"
+            className="px-2.5"
+          >
+            {isAttended ? 'Attended' : 'Attend'}
           </ElemButton>
         </div>
       </div>
+
+      <ElemRequiredProfileDialog
+        isOpen={isOpenLinkPersonDialog}
+        title="You have not linked your account to a profile on EdgeIn"
+        content="Search your name and claim profile to be able to mark yourself as going to this event."
+        onClose={onCloseLinkPersonDialog}
+        onClickSearch={onClickSearchName}
+      />
+
+      <Toaster />
     </div>
   );
 };

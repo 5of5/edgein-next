@@ -14,6 +14,7 @@ import ElemNoteCard from '@/components/group/elem-note-card';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
 import { Popups } from '@/components/the-navbar';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   resourceId: number;
@@ -28,10 +29,16 @@ const ElemOrganizationNotes: FC<Props> = ({
 }) => {
   const { user, myGroups } = useUser();
 
+  const { setShowPopup } = usePopup();
+
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
   const onOpenNoteForm = () => {
-    setIsOpenNoteForm(true);
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpenNoteForm(true);
+    }
   };
 
   const onCloseNoteForm = () => {
