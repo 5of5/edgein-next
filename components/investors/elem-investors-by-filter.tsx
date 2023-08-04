@@ -1,4 +1,5 @@
 import {
+  Order_By,
   useGetVcFirmsQuery,
   Vc_Firms,
   Vc_Firms_Bool_Exp,
