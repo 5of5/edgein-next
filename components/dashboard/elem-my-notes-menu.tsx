@@ -39,7 +39,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
                   <IconChevronDownMini
                     className={`${
                       open ? 'rotate-0' : '-rotate-90 '
-                    } w-6 h-6 transform transition-all`}
+                    } w-4 h-4 transform transition-all`}
                   />
                 )}
                 <span className="font-medium text-sm">Notes</span>
@@ -62,10 +62,10 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
                         router.asPath.includes('/notes')
                           ? 'bg-gray-100 text-gray-900'
                           : 'text-gray-600'
-                      } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
+                      } flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100`}
                       title="notes"
                     >
-                      <span className="line-clamp-1 break-all flex-1">
+                      <span className="line-clamp-1 break-all flex-1 text-xs">
                         Notes
                       </span>
                       {/* <div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">

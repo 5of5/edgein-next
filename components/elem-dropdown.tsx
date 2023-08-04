@@ -1,10 +1,11 @@
 import { FC, Fragment, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { IconProps, IconChevronDownMini, IconCheck } from './icons';
+import { IconChevronDownMini, IconCheck } from './icons';
 import { ElemButton } from './elem-button';
 
 type Props = {
   className?: string;
+  defaultItem?: number;
   items: Array<{
     id: number;
     label: string;
@@ -13,8 +14,12 @@ type Props = {
   }>;
 };
 
-export const ElemDropdown: FC<Props> = ({ className = '', items }) => {
-  const [activeItem, setActiveItem] = useState<number>(0);
+export const ElemDropdown: FC<Props> = ({
+  className = '',
+  defaultItem = 0,
+  items,
+}) => {
+  const [activeItem, setActiveItem] = useState<number>(defaultItem);
 
   return (
     <Popover className={`relative ${className}`}>

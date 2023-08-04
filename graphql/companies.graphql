@@ -178,14 +178,13 @@ query GetCompany($slug: String!) {
   }
 }
 
-query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
-  companies(
-    where: $where
-    # order_by: { slug: asc }
-    order_by: { updated_at: desc }
-    limit: $limit
-    offset: $offset
-  ) {
+query GetCompanies(
+  $limit: Int
+  $offset: Int
+  $orderBy: [companies_order_by!]
+  $where: companies_bool_exp!
+) {
+  companies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
     name
     slug

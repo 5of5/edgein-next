@@ -46,3 +46,5 @@ export type ExploreMenuItem = {
   icon: FC<IconProps>;
   title: string;
 };
+
+export type Order_By_Option = 'ascending' | 'descending' | 'newest' | 'oldest';

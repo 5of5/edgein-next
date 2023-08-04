@@ -15,12 +15,12 @@ import {
   useGetEventsQuery,
   Events_Bool_Exp,
   Order_By,
+  Events_Order_By,
 } from '@/graphql/types';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
 import { ElemFilter } from '@/components/elem-filter';
 import { processEventsFilters } from '@/utils/filter';
-import useFilterParams from '@/hooks/use-filter-params';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import { DeepPartial } from '@/types/common';
@@ -33,6 +33,9 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { ElemAddFilter } from '@/components/elem-add-filter';
 
 type Props = {
   eventTabs: TextFilter[];
@@ -62,7 +65,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     index => eventTabs[Number(index)],
   );
 
-  const { selectedFilters, setSelectedFilters } = useFilterParams();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -81,6 +85,16 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Events_Order_By>({
+      newestSortKey: 'start_date',
+      oldestSortKey: 'start_date',
+    });
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -102,7 +116,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const onChangeTab = (tab: any) => {
     setSelectedTab(tab);
-    setSelectedFilters(null);
+    onChangeSelectedFilters(null);
   };
 
   const onClickType = (
@@ -118,9 +132,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       : [type, ...currentFilterOption];
 
     if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, eventType: undefined });
+      onChangeSelectedFilters({ ...selectedFilters, eventType: undefined });
     } else {
-      setSelectedFilters({
+      onChangeSelectedFilters({
         ...selectedFilters,
         eventType: {
           ...selectedFilters?.eventType,
@@ -186,8 +200,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   } = useGetEventsQuery({
     offset,
     limit,
-    order: selectedTab.value === 'past' ? Order_By.Desc : Order_By.Asc,
     where: filters as Events_Bool_Exp,
+    orderBy: [orderByQuery],
   });
 
   if (!isLoading && initialLoad) {
@@ -198,33 +212,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const events_aggregate = initialLoad
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Sort: Ascending',
-      value: 'ascending',
-      onClick: () => {},
-    },
-    {
-      id: 1,
-      label: 'Sort: Descending',
-      value: 'descending',
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: 'Sort: Newest First',
-      value: 'newest',
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: 'Sort: Oldest First',
-      value: 'oldest',
-      onClick: () => {},
-    },
-  ];
 
   return (
     <DashboardLayout>
@@ -258,28 +245,38 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <ElemLibrarySelector />
             {/* } */}
 
-            <ElemFilter
-              resourceType="vc_firms"
-              filterValues={selectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                setSelectedFilters({
-                  ...selectedFilters,
-                  [name]: filterParams,
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                setSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => setSelectedFilters(null)}
+            <ElemAddFilter
+              resourceType="events"
+              onSelectFilterOption={onSelectFilterOption}
             />
 
-            <ElemDropdown items={sortItems} />
+            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
           </div>
+        </div>
+
+        <div className="px-4">
+          <ElemFilter
+            resourceType="events"
+            filterValues={selectedFilters}
+            dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
+            onSelectFilterOption={onSelectFilterOption}
+            onChangeFilterValues={onChangeSelectedFilters}
+            onApply={(name, filterParams) => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: { ...filterParams, open: false },
+              });
+            }}
+            onClearOption={name => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: undefined,
+              });
+            }}
+            onReset={() => onChangeSelectedFilters(null)}
+          />
         </div>
 
         <ElemInviteBanner className="mt-3 mx-4" />
@@ -353,10 +350,10 @@ export const getStaticProps: GetStaticProps = async context => {
   const { data: events } = await runGraphQl<GetEventsQuery>(GetEventsDocument, {
     offset: 0,
     limit: 50,
-    order: Order_By.Asc,
     where: {
       _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
     },
+    orderBy: [{ start_date: Order_By.Asc, name: Order_By.Asc }],
   });
 
   return {

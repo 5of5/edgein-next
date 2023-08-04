@@ -19,6 +19,7 @@ import {
   useGetNewsQuery,
   News_Bool_Exp,
   Order_By,
+  News_Order_By,
 } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
@@ -29,6 +30,7 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 
 type Props = {
   newsCount: number;
@@ -71,6 +73,18 @@ const NewsPage: NextPage<Props> = ({
     ],
   };
 
+  const { sortChoices, orderByParam, orderByQuery } =
+    useDashboardSortBy<News_Order_By>({
+      ascendingSortKey: 'text',
+      descendingSortKey: 'text',
+      newestSortKey: 'date',
+      oldestSortKey: 'date',
+    });
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
+
   const {
     data: newsData,
     error,
@@ -78,7 +92,7 @@ const NewsPage: NextPage<Props> = ({
   } = useGetNewsQuery({
     offset,
     limit,
-    order: Order_By.Desc,
+    orderBy: [orderByQuery],
     where: filters as News_Bool_Exp,
   });
 
@@ -90,33 +104,6 @@ const NewsPage: NextPage<Props> = ({
   const news_aggregate = initialLoad
     ? newsCount
     : newsData?.news_aggregate?.aggregate?.count || 0;
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Sort: Ascending',
-      value: 'ascending',
-      onClick: () => {},
-    },
-    {
-      id: 1,
-      label: 'Sort: Descending',
-      value: 'descending',
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: 'Sort: Newest First',
-      value: 'newest',
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: 'Sort: Oldest First',
-      value: 'oldest',
-      onClick: () => {},
-    },
-  ];
 
   return (
     <DashboardLayout>
@@ -150,7 +137,7 @@ const NewsPage: NextPage<Props> = ({
             <ElemLibrarySelector />
             {/* } */}
 
-            <ElemDropdown items={sortItems} />
+            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
           </div>
         </div>
 
@@ -198,7 +185,7 @@ export const getStaticProps: GetStaticProps = async context => {
   const { data: news } = await runGraphQl<GetNewsQuery>(GetNewsDocument, {
     offset: 0,
     limit: 50,
-    order: Order_By.Desc,
+    orderBy: [{ text: Order_By.Asc }],
     where: {
       _and: [
         { status: { _eq: 'published' } },

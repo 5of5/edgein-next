@@ -22,6 +22,8 @@ import {
   useGetVcFirmsQuery,
   Vc_Firms_Bool_Exp,
   Vc_Firms,
+  Vc_Firms_Order_By,
+  Order_By,
 } from '@/graphql/types';
 import { runGraphQl } from '@/utils';
 import { investorChoices } from '@/utils/constants';
@@ -31,7 +33,6 @@ import { onTrackView } from '@/utils/track';
 import { ElemFilter } from '@/components/elem-filter';
 import { processInvestorsFilters } from '@/utils/filter';
 import { useIntercom } from 'react-use-intercom';
-import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
@@ -43,6 +44,9 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import { ElemAddFilter } from '@/components/elem-add-filter';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
 
 type Props = {
   vcFirmCount: number;
@@ -80,8 +84,8 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  // Filters
-  const { selectedFilters, setSelectedFilters } = useFilterParams();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -108,6 +112,13 @@ const Investors: NextPage<Props> = ({
   const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Vc_Firms_Order_By>();
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -140,9 +151,9 @@ const Investors: NextPage<Props> = ({
       : [tag, ...currentFilterOption];
 
     if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, industry: undefined });
+      onChangeSelectedFilters({ ...selectedFilters, industry: undefined });
     } else {
-      setSelectedFilters({
+      onChangeSelectedFilters({
         ...selectedFilters,
         industry: {
           ...selectedFilters?.industry,
@@ -201,6 +212,7 @@ const Investors: NextPage<Props> = ({
     offset,
     limit,
     where: filters as Vc_Firms_Bool_Exp,
+    orderBy: [orderByQuery],
   });
 
   if (!isLoading && initialLoad) {
@@ -226,33 +238,6 @@ const Investors: NextPage<Props> = ({
       label: 'List View',
       value: 'list',
       onClick: () => setTableLayout(true),
-    },
-  ];
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Sort: Ascending',
-      value: 'ascending',
-      onClick: () => {},
-    },
-    {
-      id: 1,
-      label: 'Sort: Descending',
-      value: 'descending',
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: 'Sort: Newest First',
-      value: 'newest',
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: 'Sort: Oldest First',
-      value: 'oldest',
-      onClick: () => {},
     },
   ];
 
@@ -290,28 +275,37 @@ const Investors: NextPage<Props> = ({
               {/* } */}
               <ElemDropdown items={layoutItems} />
 
-              <ElemFilter
+              <ElemAddFilter
                 resourceType="vc_firms"
-                filterValues={selectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({
-                    ...selectedFilters,
-                    [name]: filterParams,
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => setSelectedFilters(null)}
+                onSelectFilterOption={onSelectFilterOption}
               />
 
-              <ElemDropdown items={sortItems} />
+              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
             </div>
+          </div>
+
+          <div className="px-4">
+            <ElemFilter
+              resourceType="vc_firms"
+              filterValues={selectedFilters}
+              onSelectFilterOption={onSelectFilterOption}
+              onChangeFilterValues={onChangeSelectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: { ...filterParams, open: false },
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => onChangeSelectedFilters(null)}
+            />
           </div>
 
           <ElemInviteBanner className="mt-3 mx-4" />
@@ -363,22 +357,6 @@ const Investors: NextPage<Props> = ({
                 onClickPrev={() => setPage(page - 1)}
                 onClickNext={() => setPage(page + 1)}
                 filterByTag={filterByTag}
-                filterValues={selectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({
-                    ...selectedFilters,
-                    [name]: filterParams,
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => setSelectedFilters(null)}
               />
             ) : (
               <>
@@ -450,6 +428,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       where: {
         _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
       },
+      orderBy: [{ name: Order_By.Asc }],
     },
     context.req.cookies,
   );

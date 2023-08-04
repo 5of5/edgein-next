@@ -21,8 +21,10 @@ import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
   Companies,
   Companies_Bool_Exp,
+  Companies_Order_By,
   GetCompaniesDocument,
   GetCompaniesQuery,
+  Order_By,
   useGetCompaniesQuery,
 } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
@@ -34,7 +36,6 @@ import { onTrackView } from '@/utils/track';
 import { processCompaniesFilters } from '@/utils/filter';
 import { ElemFilter } from '@/components/elem-filter';
 import { useIntercom } from 'react-use-intercom';
-import useFilterParams from '@/hooks/use-filter-params';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
@@ -47,6 +48,8 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -83,8 +86,6 @@ const Companies: NextPage<Props> = ({
 
   const { selectedLibrary } = useLibrary();
 
-  const { selectedFilters, setSelectedFilters } = useFilterParams();
-
   // Company status-tag filter
   const [selectedStatusTag, setSelectedStatusTag] = useStateParamsFilter(
     companyStatusTags,
@@ -99,6 +100,9 @@ const Companies: NextPage<Props> = ({
     pageIndex => pageIndex + 1 + '',
     pageIndex => Number(pageIndex) - 1,
   );
+
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   // limit shown companies on table layout for free users
   const limit =
@@ -118,6 +122,13 @@ const Companies: NextPage<Props> = ({
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Companies_Order_By>();
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -147,9 +158,9 @@ const Companies: NextPage<Props> = ({
       : [tag, ...currentFilterOption];
 
     if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, industry: undefined });
+      onChangeSelectedFilters({ ...selectedFilters, industry: undefined });
     } else {
-      setSelectedFilters({
+      onChangeSelectedFilters({
         ...selectedFilters,
         industry: {
           ...selectedFilters?.industry,
@@ -208,6 +219,7 @@ const Companies: NextPage<Props> = ({
     offset,
     limit,
     where: filters as Companies_Bool_Exp,
+    orderBy: [orderByQuery],
   });
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -235,38 +247,11 @@ const Companies: NextPage<Props> = ({
     },
   ];
 
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Sort: Ascending',
-      value: 'ascending',
-      onClick: () => {},
-    },
-    {
-      id: 1,
-      label: 'Sort: Descending',
-      value: 'descending',
-      onClick: () => {},
-    },
-    {
-      id: 2,
-      label: 'Sort: Newest First',
-      value: 'newest',
-      onClick: () => {},
-    },
-    {
-      id: 3,
-      label: 'Sort: Oldest First',
-      value: 'oldest',
-      onClick: () => {},
-    },
-  ];
-
   return (
     <DashboardLayout>
       <div className="relative">
         <div
-          className=" mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
+          className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
@@ -294,28 +279,37 @@ const Companies: NextPage<Props> = ({
 
             <ElemDropdown items={layoutItems} />
 
-            <ElemFilter
+            <ElemAddFilter
               resourceType="companies"
-              filterValues={selectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                setSelectedFilters({
-                  ...selectedFilters,
-                  [name]: filterParams,
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                setSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => setSelectedFilters(null)}
+              onSelectFilterOption={onSelectFilterOption}
             />
 
-            <ElemDropdown items={sortItems} />
+            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
           </div>
+        </div>
+
+        <div className="px-4">
+          <ElemFilter
+            resourceType="companies"
+            filterValues={selectedFilters}
+            onSelectFilterOption={onSelectFilterOption}
+            onChangeFilterValues={onChangeSelectedFilters}
+            onApply={(name, filterParams) => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: { ...filterParams, open: false },
+              });
+            }}
+            onClearOption={name => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: undefined,
+              });
+            }}
+            onReset={() => onChangeSelectedFilters(null)}
+          />
         </div>
 
         <ElemInviteBanner className="mt-3 mx-4" />
@@ -370,19 +364,19 @@ const Companies: NextPage<Props> = ({
               filterValues={selectedFilters}
               onApply={(name, filterParams) => {
                 filters._and = defaultFilters;
-                setSelectedFilters({
+                onChangeSelectedFilters({
                   ...selectedFilters,
                   [name]: filterParams,
                 });
               }}
               onClearOption={name => {
                 filters._and = defaultFilters;
-                setSelectedFilters({
+                onChangeSelectedFilters({
                   ...selectedFilters,
                   [name]: undefined,
                 });
               }}
-              onReset={() => setSelectedFilters(null)}
+              onReset={() => onChangeSelectedFilters(null)}
             />
           ) : (
             <>
@@ -455,6 +449,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       where: {
         _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
       },
+      orderBy: [{ name: Order_By.Asc }],
     },
     context.req.cookies,
   );

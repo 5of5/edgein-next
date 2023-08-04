@@ -5,6 +5,7 @@ import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { useRouter } from 'next/router';
 import {
   Events_Bool_Exp,
+  Events_Order_By,
   Maybe,
   Order_By,
   useGetEventsQuery,
@@ -50,7 +51,7 @@ export const ElemSimilarEvents: FC<Props> = ({
   } = useGetEventsQuery({
     offset,
     limit,
-    order: Order_By.Desc,
+    orderBy: [{ start_date: Order_By.Desc } as Events_Order_By],
     where: filters as Events_Bool_Exp,
   });
 
