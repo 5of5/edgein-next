@@ -183,35 +183,33 @@ const Companies: NextPage<Props> = ({
 
     currentFilterOption.includes(tag)
       ? toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-            >
-              Removed &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        )
+          >
+            Removed &ldquo;{tag}&rdquo; Filter
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      )
       : toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-            >
-              Added &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+          >
+            Added &ldquo;{tag}&rdquo; Filter
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      );
   };
 
   /** Handle selected filter params */
@@ -502,20 +500,25 @@ const Companies: NextPage<Props> = ({
           ) : (
             <>
               {companies?.length != 0 && (
-                <div
-                  data-testid="companies"
-                  className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-                >
-                  {companies?.map(company => {
-                    return (
-                      <ElemCompanyCard
-                        key={company.id}
-                        company={company as Companies}
-                        tagOnClick={filterByTag}
-                      />
-                    );
-                  })}
-                </div>
+                <>
+                  {user && (
+                    <div className="text-2xl font-bold ml-4">All companies</div>
+                  )}
+                  <div
+                    data-testid="companies"
+                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                  >
+                    {companies?.map(company => {
+                      return (
+                        <ElemCompanyCard
+                          key={company.id}
+                          company={company as Companies}
+                          tagOnClick={filterByTag}
+                        />
+                      );
+                    })}
+                  </div>
+                </>
               )}
               {!isNewTabSelected && (
                 <Pagination
