@@ -5,6 +5,7 @@ import React, {
   useEffect,
 } from 'react';
 import {
+  IconEllipsisVertical,
   IconEllipsisHorizontal,
   IconExclamationTriangle,
   IconPencilSquare,
@@ -37,7 +38,6 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
   const [isActive, setActive] = useState(0);
-  const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
 
   useEffect(() => {
     if (tabs) {
@@ -87,72 +87,55 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
             >
               {tab.name}
             </ElemButton>
-
-            // <button
-            //   key={index}
-            //   onClick={() => onClick(index, tab.ref)}
-            //   className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-            //     isActive === index
-            //       ? 'text-primary-500 border-primary-500'
-            //       : 'border-transparent  hover:bg-slate-200'
-            //   }`}
-            // >
-            //   {tab.name}
-            // </button>
           ))}
       </nav>
       {children}
       {showDropdown && (
-        <Popover className="relative z-10">
-          <Popover.Button
-            onClick={() => setDropdownIsOpen(!dropdownIsOpen)}
-            className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1"
-          >
-            <IconEllipsisHorizontal
-              className="h-6 w-6 group-hover:text-primary-500"
+        <Popover className="relative z-10 transition-all">
+          <Popover.Button className="flex items-center focus:outline-none">
+            <IconEllipsisVertical
+              className="h-6 w-6 text-gray-600"
               title="Options"
             />
           </Popover.Button>
 
-          {dropdownIsOpen && (
-            <Transition
-              show={dropdownIsOpen}
-              enter="transition duration-100 ease-out"
-              enterFrom="transform scale-95 opacity-0"
-              enterTo="transform scale-100 opacity-100"
-              leave="transition duration-75 ease-out"
-              leaveFrom="transform scale-100 opacity-100"
-              leaveTo="transform scale-95 opacity-0"
-            >
-              <Popover.Panel
-                static={true}
-                className="absolute right-0 overflow-hidden w-48 divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5"
-              >
-                <button
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to request some more data on ${resourceName}`,
-                    )
-                  }
-                  className="flex items-center space-x-2 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
-                >
-                  <IconPencilSquare className="h-6 w-6 group-hover:text-primary-500" />
-                  <span>Request more data</span>
-                </button>
-                <button
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report an error on ${resourceName}`,
-                    )
-                  }
-                  className="flex items-center space-x-2 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
-                >
-                  <IconExclamationTriangle className="h-6 w-6 group-hover:text-primary-500" />
-                  <span>Report an error</span>
-                </button>
-              </Popover.Panel>
-            </Transition>
-          )}
+          <Transition
+            enter="transition duration-100 ease-out"
+            enterFrom="transform scale-95 opacity-0"
+            enterTo="transform scale-100 opacity-100"
+            leave="transition duration-75 ease-out"
+            leaveFrom="transform scale-100 opacity-100"
+            leaveTo="transform scale-95 opacity-0"
+          >
+            <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+              {({ close }) => (
+                <>
+                  <button
+                    onClick={() => {
+                      showNewMessages(
+                        `Hi EdgeIn, I'd like to request some more data on ${resourceName}`,
+                      );
+                      close();
+                    }}
+                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                  >
+                    <span>Request more data</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      showNewMessages(
+                        `Hi EdgeIn, I'd like to report an error on ${resourceName}`,
+                      );
+                      close();
+                    }}
+                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                  >
+                    <span>Report an error</span>
+                  </button>
+                </>
+              )}
+            </Popover.Panel>
+          </Transition>
         </Popover>
       )}
     </div>

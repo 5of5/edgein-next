@@ -389,10 +389,11 @@ const Company: NextPage<Props> = (props: Props) => {
             />
           </div>
           <div className="col-span-8">
-            <div className="w-full mt-7 p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)] lg:mt-0">
+            <div className="w-full mt-7 lg:mt-0">
               <ElemOrganizationNotes
                 resourceId={company.id}
                 resourceType="companies"
+                resourceName={company.name || ''}
                 setShowPopup={props.setShowPopup}
               />
             </div>
@@ -463,18 +464,12 @@ const Company: NextPage<Props> = (props: Props) => {
           />
         </div>
 
-        <div
-          ref={investmentRef}
-          className="mt-7 p-5 rounded-lg bg-white shadow"
-          id="investments"
-        >
-          {sortedInvestmentRounds.length > 0 && (
-            <ElemInvestments
-              showEdit={false}
-              heading="Investments"
-              investments={sortedInvestmentRounds}
-            />
-          )}
+        <div ref={investmentRef} className="mt-7" id="investments">
+          <ElemInvestments
+            heading="Investments"
+            resourceName={company.name || ''}
+            investments={sortedInvestmentRounds}
+          />
         </div>
 
         {subOrganizations?.length > 0 && (
