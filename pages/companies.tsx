@@ -63,7 +63,6 @@ function useStateParamsFilter<T>(filters: T[], name: string) {
   );
 }
 
-
 type Props = {
   companiesCount: number;
   initialCompanies: GetCompaniesQuery['companies'];
@@ -414,6 +413,7 @@ const Companies: NextPage<Props> = ({
                       }}
                       tagOnClick={filterByTag}
                     />
+
                     <CompaniesByFilter
                       key={location}
                       headingText={`New in ${location}`}
