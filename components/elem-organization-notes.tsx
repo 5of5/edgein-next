@@ -72,18 +72,6 @@ const ElemOrganizationNotes: FC<Props> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center space-x-1">
-          <h2 className="text-lg font-medium">
-            Notes{` ${notes.length > 0 ? '(' + notes.length + ')' : ''}`}{' '}
-          </h2>
-        </div>
-        <ElemButton btn="purple" onClick={onOpenNoteForm} className="!pl-3">
-          <IconPlus className="w-5 h-5 mr-1" />
-          <span>Create note</span>
-        </ElemButton>
-      </div>
-
       {error ? (
         <h4>Error loading notes</h4>
       ) : isLoading ? (
@@ -93,8 +81,19 @@ const ElemOrganizationNotes: FC<Props> = ({
           ))}
         </div>
       ) : (
-        <>
-          <div className="mt-4 flex items-start gap-2 border border-gray-300 rounded-lg px-5 py-4">
+        <div className="border border-gray-300 rounded-lg px-5 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-1">
+              <h2 className="text-lg font-medium">
+                Notes{` ${notes.length > 0 ? '(' + notes.length + ')' : ''}`}{' '}
+              </h2>
+            </div>
+            <ElemButton btn="purple" onClick={onOpenNoteForm} className="!pl-3">
+              <IconPlus className="w-5 h-5 mr-1" />
+              <span>Create note</span>
+            </ElemButton>
+          </div>
+          <div className="mt-4 flex items-start gap-2 py-4">
             <ElemPhoto
               photo={user?.profilePicture || user?.person?.picture}
               wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
@@ -124,7 +123,7 @@ const ElemOrganizationNotes: FC<Props> = ({
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
 
       <ElemNoteForm
