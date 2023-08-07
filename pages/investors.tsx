@@ -260,8 +260,7 @@ const Investors: NextPage<Props> = ({
     },
   ];
 
-  const shouldHidePersonalized =
-    selectedFilters || selectedStatusTag?.title !== 'New';
+  const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
   return (
     <DashboardLayout>
@@ -323,7 +322,7 @@ const Investors: NextPage<Props> = ({
 
           <div className="mt-6 px-4">
             {personalizedTags.locationTags.length != 0 &&
-              !shouldHidePersonalized &&
+              showPersonalized &&
               personalizedTags.locationTags.map(location => (
                 <>
                   <InvestorsByFilter
@@ -372,7 +371,7 @@ const Investors: NextPage<Props> = ({
               ))}
 
             {personalizedTags.industryTags.length != 0 &&
-              !shouldHidePersonalized &&
+              showPersonalized &&
               personalizedTags.industryTags.map(industry => (
                 <InvestorsByFilter
                   key={industry}
@@ -397,7 +396,7 @@ const Investors: NextPage<Props> = ({
                 />
               ))}
 
-            {!shouldHidePersonalized && (
+            {showPersonalized && (
               <InvestorsByFilter
                 headingText={`Just acquired`}
                 tagOnClick={filterByTag}
@@ -465,7 +464,11 @@ const Investors: NextPage<Props> = ({
               <>
                 {vcFirms?.length != 0 && (
                   <>
-                    <div className="text-2xl font-bold ml-4">All investors</div>
+                    {showPersonalized && (
+                      <div className="text-2xl font-bold ml-4">
+                        All investors
+                      </div>
+                    )}
                     <div
                       data-testid="investors"
                       className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"

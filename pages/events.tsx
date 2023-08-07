@@ -226,8 +226,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
-  const shouldHidePersonalized =
-    selectedFilters || selectedTab?.title !== 'Featured';
+  const showPersonalized = user && !selectedFilters && !selectedTab;
 
   return (
     <DashboardLayout>
@@ -308,7 +307,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           )}
 
           {personalizedTags.locationTags.length != 0 &&
-            !shouldHidePersonalized &&
+            showPersonalized &&
             personalizedTags.locationTags.map(location => (
               <EventsByFilter
                 key={location}
@@ -332,7 +331,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               />
             ))}
 
-          <div className="text-2xl font-bold ml-4">All Events</div>
+          {showPersonalized && (
+            <div className="text-2xl font-bold ml-4">All Events</div>
+          )}
           <div
             data-testid="events"
             className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"

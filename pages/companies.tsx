@@ -271,8 +271,7 @@ const Companies: NextPage<Props> = ({
     },
   ];
 
-  const shouldHidePersonalized =
-    selectedFilters || selectedStatusTag?.title !== 'New';
+  const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
   return (
     <DashboardLayout>
@@ -330,8 +329,8 @@ const Companies: NextPage<Props> = ({
         <ElemInviteBanner className="mt-3 mx-4" />
 
         <div className="mt-6 px-4">
-          {personalizedTags.locationTags.length != 0 &&
-            !shouldHidePersonalized &&
+          {personalizedTags.locationTags.length !== 0 &&
+            showPersonalized &&
             personalizedTags.locationTags.map(location => (
               <>
                 <CompaniesByFilter
@@ -379,8 +378,8 @@ const Companies: NextPage<Props> = ({
               </>
             ))}
 
-          {personalizedTags.industryTags.length != 0 &&
-            !shouldHidePersonalized &&
+          {personalizedTags.industryTags.length !== 0 &&
+            showPersonalized &&
             personalizedTags.industryTags.map(industry => (
               <CompaniesByFilter
                 key={industry}
@@ -405,7 +404,7 @@ const Companies: NextPage<Props> = ({
               />
             ))}
 
-          {!shouldHidePersonalized && user && (
+          {showPersonalized && (
             <CompaniesByFilter
               headingText={`Just acquired`}
               tagOnClick={filterByTag}
