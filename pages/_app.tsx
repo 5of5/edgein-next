@@ -84,6 +84,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   React.useEffect(() => {
     const pagesWithoutFooter = [
+      '/companies',
+      '/investors',
+      '/events',
+      '/news',
       '/groups',
       '/account',
       '/profile',
@@ -183,6 +187,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
+        {/* test */}
       </div>
     </>
   );

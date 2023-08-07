@@ -5,12 +5,14 @@ import { IconEditPencil } from '@/components/icons';
 import { ElemFilterTags } from '@/components/elem-filter-tags';
 import { uniq, compact, sortBy } from 'lodash';
 import { ElemBulkSavePeople } from '../elem-bulk-save-people';
+import { ElemButton } from '../elem-button';
+import { useIntercom } from 'react-use-intercom';
 
 type Props = {
   className?: string;
   heading?: string;
+  resourceName?: string;
   people: Team_Members[];
-  showEdit?: boolean;
   showTags?: boolean;
   allowToSaveTeam?: boolean;
   // tags?: Maybe<string>[] | null
@@ -19,11 +21,13 @@ type Props = {
 export const ElemTeamGrid: React.FC<Props> = ({
   className,
   heading,
+  resourceName,
   people,
-  showEdit,
   showTags = true,
   allowToSaveTeam = true,
 }) => {
+  const { showNewMessages } = useIntercom();
+
   // Show founders first
   const allTags = compact(
     uniq(['All Members', ...sortBy(people.map(people => people.function))]),
@@ -54,56 +58,75 @@ export const ElemTeamGrid: React.FC<Props> = ({
     .map(item => (item.person as People).id);
 
   return (
-    <section className={className}>
+    <section className={`rounded-lg border border-gray-300 ${className}`}>
       {heading && (
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">{heading}</h2>
-          {showEdit && (
-            <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-              <IconEditPencil title="Edit" />
-            </button>
-          )}
+        <div className="flex items-center justify-between px-4 pt-2">
+          <h2 className="text-lg font-medium">{heading}</h2>
         </div>
       )}
-      <div className="lg:flex items-start justify-between">
-        {showTags && (
-          <ElemFilterTags
-            onClick={(tag, index) => setSelectedTag(tag)}
-            selectedTag={selectedTag}
-            className="mt-2"
-            tags={allTags}
-          />
-        )}
-        {allowToSaveTeam && (
-          <div className="mt-2 lg:mt-0 shrink-0">
-            <ElemBulkSavePeople
-              text="Save team to list"
-              personIds={personIds}
-            />
+
+      <div className="px-4 py-4">
+        {people.length === 0 ? (
+          <div className="flex flex-col items-center justify-center">
+            <div className="text-gray-500">
+              There is no team data on this organization.
+            </div>
+            <ElemButton
+              className="mt-2"
+              onClick={() =>
+                showNewMessages(
+                  `Hi EdgeIn, I'd like to request team data on ${resourceName}`,
+                )
+              }
+              btn="default"
+            >
+              Request data or contribute
+            </ElemButton>
           </div>
-        )}
-      </div>
-      <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-        {peopleInactiveLast.map(teamMember => {
-          return (
-            <React.Fragment key={teamMember.id}>
-              {teamMember.person && (
-                <ElemPersonCard
-                  key={teamMember.person.id}
-                  href={`/people/${teamMember.person.slug}`}
-                  photo={teamMember.person.picture}
-                  heading={teamMember.person.name}
-                  founder={teamMember.founder}
-                  text={teamMember.function}
-                  linkedin={teamMember.person.linkedin}
-                  personal_email={teamMember.person.personal_email}
-                  work_email={teamMember.person.work_email}
-                  end_date={teamMember.end_date}
+        ) : (
+          <>
+            <div className="lg:flex items-start justify-between">
+              {showTags && (
+                <ElemFilterTags
+                  onClick={(tag, index) => setSelectedTag(tag)}
+                  selectedTag={selectedTag}
+                  className="mt-2"
+                  tags={allTags}
                 />
               )}
-            </React.Fragment>
-          );
-        })}
+              {allowToSaveTeam && (
+                <div className="mt-2 lg:mt-0 shrink-0">
+                  <ElemBulkSavePeople
+                    text="Save team to list"
+                    personIds={personIds}
+                  />
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              {peopleInactiveLast.map(teamMember => {
+                return (
+                  <React.Fragment key={teamMember.id}>
+                    {teamMember.person && (
+                      <ElemPersonCard
+                        key={teamMember.person.id}
+                        href={`/people/${teamMember.person.slug}`}
+                        photo={teamMember.person.picture}
+                        heading={teamMember.person.name}
+                        founder={teamMember.founder}
+                        text={teamMember.function}
+                        linkedin={teamMember.person.linkedin}
+                        personal_email={teamMember.person.personal_email}
+                        work_email={teamMember.person.work_email}
+                        end_date={teamMember.end_date}
+                      />
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

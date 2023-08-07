@@ -21,6 +21,7 @@ type Props = {
   mode?: 'dark' | 'light';
   size?: 'sm' | 'md' | 'lg';
   content?: any;
+  delay?: number;
 };
 
 export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
@@ -32,6 +33,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
   content,
   size = 'md',
   children,
+  delay = 0,
 }: any) => {
   //style
   let modeClasses = '';
@@ -40,8 +42,8 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
     modeClasses = 'bg-gray-900 text-gray-100';
     modeArrowClasses = 'text-gray-900';
   } else {
-    modeClasses = 'bg-gray-50 text-dark-500';
-    modeArrowClasses = 'text-gray-50';
+    modeClasses = 'bg-gray-50 border border-gray border-gray-200 text-gray-900';
+    modeArrowClasses = 'text-gray-50 before:border before:border-gray-200';
   }
 
   // Sizes
@@ -59,7 +61,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
       title={content}
       placement={direction}
       arrow={arrow}
-      enterTouchDelay={0}
+      enterNextDelay={delay}
       classes={{
         tooltip: `${className} ${sizeClasses} ${modeClasses} !px-2 !py-0.5 !text-sm !font-medium !font-sans`,
         arrow: `${classNameArrow} ${modeArrowClasses}`,

@@ -107,7 +107,10 @@ export const TagInputSelect: React.FC<Props> = ({
   return (
     <div className={`relative z-10 ${className}`}>
       {label && (
-        <label htmlFor={name} className={`font-bold cursor-text ${labelClass}`}>
+        <label
+          htmlFor={name}
+          className={`font-medium text-sm cursor-text ${labelClass}`}
+        >
           {label}
         </label>
       )}

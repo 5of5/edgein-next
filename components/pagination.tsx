@@ -48,26 +48,27 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
       className={`${className} flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0`}
       aria-label="Pagination"
     >
-      <div className="flex-1">
+      <div className="flex-1 text-gray-500 text-sm">
         {shownItems === 0 ? (
           <></>
         ) : shownItems == totalItems ? (
           <span>
-            Results: {shownItemsStart}
-            {' - '} {shownItemsEnd} of {totalItems}
+            Showing {shownItemsStart}
+            {' to '} {shownItemsEnd} of {totalItems} results
           </span>
         ) : (
           <span>
-            Results: {numberWithCommas(shownItemsStart)}
-            {' - '}
-            {numberWithCommas(shownItemsEnd)} of {numberWithCommas(totalItems)}
+            Showing {numberWithCommas(shownItemsStart)}
+            {' to '}
+            {numberWithCommas(shownItemsEnd)} of {numberWithCommas(totalItems)}{' '}
+            results
           </span>
         )}
       </div>
       <div className="flex-1 flex space-x-2 justify-between sm:justify-end items-center">
         {page * itemsPerPage > 0 && (
-          <ElemButton onClick={onClickPrev} btn="white" arrowLeft>
-            Prev
+          <ElemButton onClick={onClickPrev} btn="default">
+            Previous
           </ElemButton>
         )}
 
@@ -129,8 +130,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           <ElemButton
             onClick={onClickNext}
             className={numeric ? '' : 'sm:ml-3'}
-            btn="white"
-            arrow
+            btn="default"
           >
             Next
           </ElemButton>

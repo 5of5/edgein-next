@@ -4,6 +4,7 @@ import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import {
   Events_Bool_Exp,
+  Events_Order_By,
   GetEventsQuery,
   Order_By,
   useGetEventsQuery,
@@ -47,7 +48,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
   } = useGetEventsQuery({
     offset,
     limit,
-    order: Order_By.Asc,
+    orderBy: [{ start_date: Order_By.Asc } as Events_Order_By],
     where: filters as Events_Bool_Exp,
   });
 

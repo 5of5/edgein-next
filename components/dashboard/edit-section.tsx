@@ -14,10 +14,8 @@ export const EditSection: FC<PropsWithChildren<Props>> = ({
 }) => {
   return (
     <>
-      <section
-        className={`py-4 lg:grid lg:grid-cols-5 lg:gap-6 lg:py-5 ${className}`}
-      >
-        {heading && <dt className="font-bold">{heading}</dt>}
+      <section className={`py-3 lg:grid lg:grid-cols-5 lg:gap-6 ${className}`}>
+        {heading && <dt className="font-medium">{heading}</dt>}
         <dd className="mt-1 lg:flex lg:col-span-4 lg:mt-0">
           <div className="flex-grow">
             <div className="max-w-xl">{children}</div>
