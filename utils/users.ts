@@ -183,16 +183,11 @@ async function findOnePeopleBySlug(slug: string) {
 }
 
 async function findOneUserByPersonId(personId: number) {
-  const {
-    data: { users },
-  } = await query<GetUserByPersonIdQuery>({
+  const data = await query<GetUserByPersonIdQuery>({
     query: GetUserByPersonIdDocument,
-    variables: {
-      person_id: personId,
-    },
+    variables: { personId },
   });
-
-  return users[0];
+  return data.data.users[0];
 }
 
 const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
