@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ElemHeading } from '@/components/elem-heading';
@@ -36,7 +36,7 @@ import { onTrackView } from '@/utils/track';
 import { processCompaniesFilters } from '@/utils/filter';
 import { ElemFilter } from '@/components/elem-filter';
 import { useIntercom } from 'react-use-intercom';
-import { DeepPartial } from '@/types/common';
+import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -54,6 +54,7 @@ import { User } from '@/models/user';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { some } from 'lodash';
+import { ElemCategories } from '@/components/dashboard/elem-categories';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -67,7 +68,7 @@ function useStateParamsFilter<T>(filters: T[], name: string) {
 type Props = {
   companiesCount: number;
   initialCompanies: GetCompaniesQuery['companies'];
-  companyStatusTags: TextFilter[];
+  companyStatusTags: DashboardCategory[];
 };
 
 const Companies: NextPage<Props> = ({
@@ -94,7 +95,7 @@ const Companies: NextPage<Props> = ({
 
   // Company status-tag filter
   const [selectedStatusTag, setSelectedStatusTag] =
-    useStateParams<TextFilter | null>(
+    useStateParams<DashboardCategory | null>(
       null,
       'statusTag',
       companyLayer =>
@@ -183,33 +184,35 @@ const Companies: NextPage<Props> = ({
 
     currentFilterOption.includes(tag)
       ? toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-          >
-            Removed &ldquo;{tag}&rdquo; Filter
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      )
+            >
+              Removed &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        )
       : toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-          >
-            Added &ldquo;{tag}&rdquo; Filter
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+            >
+              Added &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
   };
 
   /** Handle selected filter params */
@@ -278,25 +281,11 @@ const Companies: NextPage<Props> = ({
           className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
-            {companyStatusTags &&
-              companyStatusTags.map((tab: any, index: number) =>
-                tab.disabled === true ? (
-                  <Fragment key={index}></Fragment>
-                ) : (
-                  <ElemButton
-                    key={index}
-                    onClick={() => setSelectedStatusTag(tab)}
-                    btn="gray"
-                    roundedFull={false}
-                    className="rounded-lg"
-                  >
-                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
-                    {tab.title}
-                  </ElemButton>
-                ),
-              )}
-          </nav>
+          <ElemCategories
+            categories={companyStatusTags}
+            selectedCategory={selectedStatusTag}
+            onChangeCategory={setSelectedStatusTag}
+          />
 
           <div className="flex space-x-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
@@ -594,13 +583,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 export default Companies;
 
-interface TextFilter {
-  title: string;
-  description?: string;
-  icon?: string;
-  value: string;
-}
-
 export interface NumericFilter {
   title: string;
   description?: string;
@@ -616,7 +598,7 @@ const companyStatusTagValues = companyChoices.map(option => {
   };
 });
 
-const companyStatusTags: TextFilter[] = [
+const companyStatusTags: DashboardCategory[] = [
   {
     title: 'New',
     value: 'new',

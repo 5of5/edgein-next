@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { NextPage, GetStaticProps } from 'next';
 import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
@@ -21,7 +21,7 @@ import {
   Order_By,
   News_Order_By,
 } from '@/graphql/types';
-import { DeepPartial } from '@/types/common';
+import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
@@ -33,11 +33,12 @@ import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
+import { ElemCategories } from '@/components/dashboard/elem-categories';
 
 type Props = {
   newsCount: number;
   initialNews: GetNewsQuery['news'];
-  newsTab: TextFilter[];
+  newsTab: DashboardCategory[];
 };
 
 const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
@@ -55,12 +56,13 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   const { selectedLibrary } = useLibrary();
 
-  const [selectedTab, setSelectedTab] = useStateParams<TextFilter | null>(
-    null,
-    'tab',
-    statusTag => (statusTag ? newsTab.indexOf(statusTag).toString() : ''),
-    index => newsTab[Number(index)],
-  );
+  const [selectedTab, setSelectedTab] =
+    useStateParams<DashboardCategory | null>(
+      null,
+      'tab',
+      statusTag => (statusTag ? newsTab.indexOf(statusTag).toString() : ''),
+      index => newsTab[Number(index)],
+    );
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -114,11 +116,11 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     });
   }
 
-  if (selectedTab?.value === 'week') {
+  if (selectedTab?.value === '7days') {
     filters._and?.push({
       _and: [
-        { date: { _gte: moment().startOf('week').format('YYYY-MM-DD') } },
-        { date: { _lte: moment().endOf('week').format('YYYY-MM-DD') } },
+        { date: { _gte: moment().subtract(7, 'days').format('YYYY-MM-DD') } },
+        { date: { _lte: moment().format('YYYY-MM-DD') } },
       ],
     });
   }
@@ -150,25 +152,11 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
           className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
-            {newsTab &&
-              newsTab.map((tab: any, index: number) =>
-                tab.disabled === true ? (
-                  <Fragment key={index}></Fragment>
-                ) : (
-                  <ElemButton
-                    key={index}
-                    onClick={() => setSelectedTab(tab)}
-                    btn="gray"
-                    roundedFull={false}
-                    className="rounded-lg"
-                  >
-                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
-                    {tab.title}
-                  </ElemButton>
-                ),
-              )}
-          </nav>
+          <ElemCategories
+            categories={newsTab}
+            selectedCategory={selectedTab}
+            onChangeCategory={setSelectedTab}
+          />
 
           <div className="flex space-x-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
@@ -268,14 +256,7 @@ export const getStaticProps: GetStaticProps = async context => {
 
 export default NewsPage;
 
-interface TextFilter {
-  title: string;
-  value: string;
-  description?: string;
-  icon?: string;
-}
-
-const newsTab: TextFilter[] = [
+const newsTab: DashboardCategory[] = [
   {
     title: 'Today',
     value: 'today',
@@ -283,8 +264,8 @@ const newsTab: TextFilter[] = [
     icon: '✨',
   },
   {
-    title: 'This week',
-    value: 'week',
+    title: 'Last 7 days',
+    value: '7days',
     description: 'desc',
     icon: '🗓',
   },

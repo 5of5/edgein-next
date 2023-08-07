@@ -31,10 +31,8 @@ export const InvestorsByFilter: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div
-        className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16"
-      >
-        {times(4, (index) => (
+      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16">
+        {times(4, index => (
           <PlaceholderInvestorCard key={index} />
         ))}
       </div>
