@@ -10,16 +10,11 @@ import {
 } from '@/components/figures';
 import { Transition } from '@headlessui/react';
 import { useUser } from '@/context/user-context';
-import { Popups } from '@/components/the-navbar';
 import Builders from '@/public/images/builders.svg';
 import People from '@/public/images/people.svg';
 import { IconCheck } from '@/components/icons';
 
-type Props = {
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
-};
-
-const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
+const Enterprise = () => {
   const { user } = useUser();
 
   const partners = [

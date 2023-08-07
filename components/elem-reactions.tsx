@@ -9,6 +9,7 @@ import { EmojiHot, EmojiLike, EmojiCrap } from '@/components/emojis';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { useUser } from '@/context/user-context';
 import hashSum from 'hash-sum';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -79,7 +80,9 @@ export const ElemReaction: FC<ReactionProps> = ({
   resourceType,
   isInteractive,
 }) => {
-  const { listAndFollows, refreshProfile } = useUser();
+  const { listAndFollows, user, refreshProfile } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [reactionState, setReactionState] = useState(() => {
     const list = find(listAndFollows, item => {
@@ -123,21 +126,26 @@ export const ElemReaction: FC<ReactionProps> = ({
   ) => {
     event.stopPropagation();
     event.preventDefault();
-    setReactionState(prev => {
-      let count = prev.count + (prev.alreadyReacted ? -1 : 1);
-      if (count < 0) count = 0;
-      return {
-        count,
-        alreadyReacted: !prev.alreadyReacted,
-      };
-    });
-    await toggleFollowOnList({
-      resourceId,
-      resourceType,
-      sentiment: type,
-      pathname: `/${resourceType}/${slug}`,
-    });
-    refreshProfile();
+
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setReactionState(prev => {
+        let count = prev.count + (prev.alreadyReacted ? -1 : 1);
+        if (count < 0) count = 0;
+        return {
+          count,
+          alreadyReacted: !prev.alreadyReacted,
+        };
+      });
+      await toggleFollowOnList({
+        resourceId,
+        resourceType,
+        sentiment: type,
+        pathname: `/${resourceType}/${slug}`,
+      });
+      refreshProfile();
+    }
   };
 
   return (

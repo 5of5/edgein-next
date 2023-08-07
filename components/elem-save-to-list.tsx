@@ -15,6 +15,7 @@ import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   resourceName: string | null;
@@ -47,6 +48,8 @@ export const ElemSaveToList: FC<Props> = ({
   buttonStyle = 'purple',
   follows = [],
 }) => {
+  const { setShowPopup } = usePopup();
+
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [listsData, setListsData] = useState([] as List[]);
@@ -236,7 +239,12 @@ export const ElemSaveToList: FC<Props> = ({
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsOpen(true);
+
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpen(true);
+    }
   };
 
   return (
@@ -280,8 +288,8 @@ export const ElemSaveToList: FC<Props> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-                <Dialog.Title className="text-lg font-medium flex items-center justify-between px-4 py-2 border-b border-gray-200">
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+                <Dialog.Title className="text-xl font-medium flex items-center justify-between">
                   <span>Save to List</span>
                   <button
                     type="button"

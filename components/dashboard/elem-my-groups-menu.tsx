@@ -11,6 +11,7 @@ import {
   SIDEBAR_DEFAULT_GROUPS_LIMIT,
 } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -19,6 +20,7 @@ type Props = {
 const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   const router = useRouter();
   const { myGroups, user } = useUser();
+  const { setShowPopup } = usePopup();
   const displayedGroups = myGroups.slice(
     0,
     user?.entitlements.groupsCount
@@ -55,6 +57,18 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  const onClickCreate = () => {
+    if (!user) {
+      return setShowPopup('signup');
+    }
+
+    if (myGroups.length > displayedGroups.length) {
+      return onOpenUpgradeDialog();
+    }
+
+    return onOpenCreateGroupDialog();
+  };
+
   const [groupsLimit, setGroupsLimit] = useState(SIDEBAR_DEFAULT_GROUPS_LIMIT);
 
   return (
@@ -69,58 +83,53 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                 ref={btnRef}
                 onClick={onDisclosureButtonClick}
               >
-                <IconChevronDownMini
-                  className={`${
-                    open ? 'rotate-0' : '-rotate-90 '
-                  } w-4 h-4 transform transition-all`}
-                />
+                {user && (
+                  <IconChevronDownMini
+                    className={`${
+                      open ? 'rotate-0' : '-rotate-90 '
+                    } w-4 h-4 transform transition-all`}
+                  />
+                )}
                 <span className="font-medium text-xs">Groups</span>
               </Disclosure.Button>
 
-              {myGroups.length > displayedGroups.length ? (
-                <button
-                  onClick={onOpenUpgradeDialog}
-                  className="flex items-center justify-center rounded-full hover:bg-gray-100"
-                >
-                  <IconPlusSmall className="h-3 w-3" title="Create List" />
-                </button>
-              ) : (
-                <button
-                  onClick={onOpenCreateGroupDialog}
-                  className="flex items-center justify-center rounded-full hover:bg-gray-100"
-                >
-                  <IconPlusSmall className="h-3 w-3" title="Create List" />
-                </button>
-              )}
+              <button
+                onClick={onClickCreate}
+                className="flex items-center justify-center rounded-full hover:bg-gray-100"
+              >
+                <IconPlusSmall className="h-3 w-3" title="Create List" />
+              </button>
             </div>
 
-            <Disclosure.Panel as="ul" className="ml-8">
-              {displayedGroups.slice(0, groupsLimit)?.map(group => {
-                return (
-                  <li key={group.id} role="button">
-                    <Link href={`/groups/${group.id}/`}>
-                      <a
-                        className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                          group.id,
-                        )}`}
-                        title={group.name}
-                      >
-                        <span className="line-clamp-1 break-all">
-                          {group.name}
-                        </span>
-                      </a>
-                    </Link>
-                  </li>
-                );
-              })}
-              <li role="button">
-                <Link href="/groups/">
-                  <a className="flex items-center space-x-2 py-1.5 font-medium text-xs text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
-                    See all
-                  </a>
-                </Link>
-              </li>
-            </Disclosure.Panel>
+            {user && (
+              <Disclosure.Panel as="ul" className="ml-8">
+                {displayedGroups.slice(0, groupsLimit)?.map(group => {
+                  return (
+                    <li key={group.id} role="button">
+                      <Link href={`/groups/${group.id}/`}>
+                        <a
+                          className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                            group.id,
+                          )}`}
+                          title={group.name}
+                        >
+                          <span className="line-clamp-1 break-all">
+                            {group.name}
+                          </span>
+                        </a>
+                      </Link>
+                    </li>
+                  );
+                })}
+                <li role="button">
+                  <Link href="/groups/">
+                    <a className="flex items-center space-x-2 py-1.5 font-medium text-xs text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                      See all
+                    </a>
+                  </Link>
+                </li>
+              </Disclosure.Panel>
+            )}
           </>
         )}
       </Disclosure>

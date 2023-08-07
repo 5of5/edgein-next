@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { NextPage, GetStaticProps } from 'next';
 import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
@@ -21,7 +21,7 @@ import {
   Order_By,
   News_Order_By,
 } from '@/graphql/types';
-import { DeepPartial } from '@/types/common';
+import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
@@ -31,21 +31,20 @@ import {
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import { onTrackView } from '@/utils/track';
+import moment from 'moment-timezone';
+import { ElemCategories } from '@/components/dashboard/elem-categories';
 
 type Props = {
   newsCount: number;
   initialNews: GetNewsQuery['news'];
-  newsStatusTags: TextFilter[];
+  newsTab: DashboardCategory[];
 };
 
-const NewsPage: NextPage<Props> = ({
-  newsCount,
-  initialNews,
-  newsStatusTags,
-}) => {
+const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const router = useRouter();
-  const { show } = useIntercom();
+  const { showNewMessages } = useIntercom();
   const { user, listAndFollows, myGroups } = useUser();
 
   const isDisplaySelectLibrary =
@@ -56,6 +55,14 @@ const NewsPage: NextPage<Props> = ({
       ));
 
   const { selectedLibrary } = useLibrary();
+
+  const [selectedTab, setSelectedTab] =
+    useStateParams<DashboardCategory | null>(
+      null,
+      'tab',
+      statusTag => (statusTag ? newsTab.indexOf(statusTag).toString() : ''),
+      index => newsTab[Number(index)],
+    );
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -85,6 +92,39 @@ const NewsPage: NextPage<Props> = ({
     sortItem => sortItem.value === orderByParam,
   )?.id;
 
+  useEffect(() => {
+    if (!initialLoad) {
+      setPage(0);
+    }
+    if (initialLoad) {
+      setInitialLoad(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTab]);
+
+  useEffect(() => {
+    onTrackView({
+      properties: filters,
+      pathname: router.pathname,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTab]);
+
+  if (selectedTab?.value === 'today') {
+    filters._and?.push({
+      date: { _eq: moment().format('YYYY-MM-DD') },
+    });
+  }
+
+  if (selectedTab?.value === '7days') {
+    filters._and?.push({
+      _and: [
+        { date: { _gte: moment().subtract(7, 'days').format('YYYY-MM-DD') } },
+        { date: { _lte: moment().format('YYYY-MM-DD') } },
+      ],
+    });
+  }
+
   const {
     data: newsData,
     error,
@@ -112,30 +152,14 @@ const NewsPage: NextPage<Props> = ({
           className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
-            {newsStatusTags &&
-              newsStatusTags.map((tab: any, index: number) =>
-                tab.disabled === true ? (
-                  <Fragment key={index}></Fragment>
-                ) : (
-                  <ElemButton
-                    key={index}
-                    // onClick={() => setSelectedStatusTag(tab)}
-                    btn="gray"
-                    roundedFull={false}
-                    className="rounded-lg"
-                  >
-                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
-                    {tab.title}
-                  </ElemButton>
-                ),
-              )}
-          </nav>
+          <ElemCategories
+            categories={newsTab}
+            selectedCategory={selectedTab}
+            onChangeCategory={setSelectedTab}
+          />
 
           <div className="flex space-x-2">
-            {/* {isDisplaySelectLibrary &&  */}
-            <ElemLibrarySelector />
-            {/* } */}
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
           </div>
@@ -144,6 +168,30 @@ const NewsPage: NextPage<Props> = ({
         <ElemInviteBanner className="mt-3 mx-4" />
 
         <div className="mt-6 px-4">
+          {news?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
           <div className="mt-3 grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
             {error ? (
               <h4>Error loading news</h4>
@@ -201,21 +249,14 @@ export const getStaticProps: GetStaticProps = async context => {
         'Get the latest news, guides, price and analysis on Web3',
       newsCount: news?.news_aggregate?.aggregate?.count || 0,
       initialNews: news?.news || [],
-      newsStatusTags,
+      newsTab,
     },
   };
 };
 
 export default NewsPage;
 
-interface TextFilter {
-  title: string;
-  value: string;
-  description?: string;
-  icon?: string;
-}
-
-const newsStatusTags: TextFilter[] = [
+const newsTab: DashboardCategory[] = [
   {
     title: 'Today',
     value: 'today',
@@ -223,8 +264,8 @@ const newsStatusTags: TextFilter[] = [
     icon: '✨',
   },
   {
-    title: 'This week',
-    value: 'week',
+    title: 'Last 7 days',
+    value: '7days',
     description: 'desc',
     icon: '🗓',
   },

@@ -14,26 +14,31 @@ import ElemNoteCard from '@/components/group/elem-note-card';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
 import { Popups } from '@/components/the-navbar';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   resourceId: number;
   resourceType: string;
   resourceName?: string;
-  setShowPopup?: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const ElemOrganizationNotes: FC<Props> = ({
   resourceId,
   resourceType,
   resourceName,
-  setShowPopup,
 }) => {
   const { user, myGroups } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
   const onOpenNoteForm = () => {
-    setIsOpenNoteForm(true);
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpenNoteForm(true);
+    }
   };
 
   const onCloseNoteForm = () => {
@@ -118,7 +123,6 @@ const ElemOrganizationNotes: FC<Props> = ({
                   data={item}
                   refetch={refetch}
                   layout={`${item.user_group_id ? 'groupAndAuthor' : 'author'}`}
-                  setShowPopup={setShowPopup}
                 />
               ))}
             </div>

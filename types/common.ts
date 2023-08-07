@@ -48,3 +48,12 @@ export type ExploreMenuItem = {
 };
 
 export type Order_By_Option = 'ascending' | 'descending' | 'newest' | 'oldest';
+
+export type DashboardCategory = {
+  title: string;
+  value: string;
+  description?: string;
+  icon?: string;
+  disabled?: boolean;
+  date?: string;
+};

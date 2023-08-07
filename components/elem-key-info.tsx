@@ -34,6 +34,7 @@ import {
 import { getFullAddress } from '@/utils/helpers';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { useAuth } from '@/hooks/use-auth';
+import { usePopup } from '@/context/popup-context';
 
 type Attachments = Array<{
   label: string;
@@ -98,6 +99,8 @@ export const ElemKeyInfo: React.FC<Props> = ({
   attachments,
 }) => {
   const { user } = useAuth();
+
+  const { setShowPopup } = usePopup();
 
   const isEmptyLocationJson = values(locationJson).every(isEmpty);
   let locationText = '';
@@ -304,7 +307,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
   const [showInfo, setShowInfo] = useState<Record<string, boolean>>({});
 
   const onInfoClick = (info: string) => () => {
-    if (user?.entitlements?.viewEmails) {
+    if (!user) {
+      setShowPopup('signup');
+    } else if (user?.entitlements?.viewEmails) {
       setShowInfo({ ...showInfo, [info]: !showInfo[info] });
       // TODO add action
     } else {
