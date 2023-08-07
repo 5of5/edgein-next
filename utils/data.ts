@@ -20,8 +20,7 @@ export const runGraphQl = async <QueryType>(
       Accept: 'application/json',
       'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
       'x-hasura-role': process.env.HASURA_VIEWER ?? '',
-      /** TO DO: Need to re-review it in the future */
-      // 'x-hasura-role': process.env.HASURA_VIEWER ?? '',
+      'x-hasura-user-id': '0',
     };
   }
 
