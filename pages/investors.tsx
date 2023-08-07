@@ -168,35 +168,33 @@ const Investors: NextPage<Props> = ({
 
     currentFilterOption.includes(tag)
       ? toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-            >
-              Removed &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        )
+          >
+            Removed &ldquo;{tag}&rdquo; Filter
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      )
       : toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-            >
-              Added &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+          >
+            Added &ldquo;{tag}&rdquo; Filter
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      );
   };
 
   /** Handle selected filter params */
@@ -326,6 +324,7 @@ const Investors: NextPage<Props> = ({
                     key={location}
                     headingText={`Trending in ${location}`}
                     tagOnClick={filterByTag}
+                    itemsPerPage={8}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
@@ -348,6 +347,7 @@ const Investors: NextPage<Props> = ({
                     key={location}
                     headingText={`New in ${location}`}
                     tagOnClick={filterByTag}
+                    itemsPerPage={8}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
@@ -374,6 +374,7 @@ const Investors: NextPage<Props> = ({
                   key={industry}
                   headingText={`Trending in ${industry}`}
                   tagOnClick={filterByTag}
+                  itemsPerPage={8}
                   filters={{
                     _and: [
                       { slug: { _neq: '' } },
@@ -397,6 +398,7 @@ const Investors: NextPage<Props> = ({
               <InvestorsByFilter
                 headingText={`Just acquired`}
                 tagOnClick={filterByTag}
+                itemsPerPage={8}
                 filters={{
                   _and: [
                     { slug: { _neq: '' } },

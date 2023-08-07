@@ -150,35 +150,33 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
     currentFilterOption.includes(type)
       ? toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-            >
-              Removed &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        )
+          >
+            Removed &ldquo;{type}&rdquo; Filter
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      )
       : toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-            >
-              Added &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+          >
+            Added &ldquo;{type}&rdquo; Filter
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      );
   };
 
   /** Handle selected filter params */
@@ -322,6 +320,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 key={location}
                 headingText={`New in ${location}`}
                 tagOnClick={onClickType}
+                itemsPerPage={8}
                 filters={{
                   _and: [
                     { slug: { _neq: '' } },
