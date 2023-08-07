@@ -57,16 +57,20 @@ const ElemOrganizationNotes: FC<Props> = ({
       _or: [
         { _or: [{ audience: { _eq: 'public' } }] },
         { _or: [{ user_group_id: { _in: myGroups.map(item => item.id) } }] },
-        {
-          _or: [
-            {
-              _and: [
-                { audience: { _eq: 'only_me' } },
-                { created_by: { _eq: user?.id } },
+        user?.id
+          ? {
+              _or: [
+                {
+                  _and: [
+                    { audience: { _eq: 'only_me' } },
+                    { created_by: { _eq: user?.id } },
+                  ],
+                },
               ],
+            }
+          : {
+              _or: [{ audience: { _neq: 'only_me' } }],
             },
-          ],
-        },
       ],
     } as Notes_Bool_Exp,
   });

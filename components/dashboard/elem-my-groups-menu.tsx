@@ -90,7 +90,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     } w-4 h-4 transform transition-all`}
                   />
                 )}
-                <span className="font-medium text-xs">Groups</span>
+                <span className="font-medium text-sm">Groups</span>
               </Disclosure.Button>
 
               <button
@@ -108,7 +108,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     <li key={group.id} role="button">
                       <Link href={`/groups/${group.id}/`}>
                         <a
-                          className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                          className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                             group.id,
                           )}`}
                           title={group.name}
@@ -123,7 +123,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                 })}
                 <li role="button">
                   <Link href="/groups/">
-                    <a className="flex items-center space-x-2 py-1.5 font-medium text-xs text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                    <a className="flex items-center space-x-2 py-1.5 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
                       See all
                     </a>
                   </Link>

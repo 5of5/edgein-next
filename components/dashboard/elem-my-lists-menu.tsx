@@ -169,7 +169,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     } w-4 h-4 transform transition-all`}
                   />
                 )}
-                <span className="font-medium text-xs">Lists</span>
+                <span className="font-medium text-sm">Lists</span>
               </Disclosure.Button>
 
               <button
@@ -185,13 +185,13 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <Link href={`/lists/${hotId}/hot`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                         hotId,
                         'hot',
                       )} `}
                     >
                       <span className="flex-1">Hot</span>
-                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-sm">
                         {getCountForList('hot')}
                       </div>
                     </a>
@@ -200,13 +200,13 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <Link href={`/lists/${likeId}/like`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                         likeId,
                         'like',
                       )}`}
                     >
                       <span className="flex-1">Like</span>
-                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-sm">
                         {getCountForList('like')}
                       </div>
                     </a>
@@ -215,13 +215,13 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <Link href={`/lists/${crapId}/sh**`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                         crapId,
                         'sh**',
                       )} `}
                     >
                       <span className="flex-1">Sh**</span>
-                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                      <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-sm">
                         {getCountForList('crap')}
                       </div>
                     </a>
@@ -236,7 +236,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                         )}`}
                       >
                         <a
-                          className={`flex items-center space-x-2 py-1.5 font-medium text-xs rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                          className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                             list.id,
                             kebabCase(getNameFromListName(list)),
                           )}`}
@@ -244,7 +244,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                           <span className="line-clamp-1 break-all flex-1">
                             {getNameFromListName(list)}
                           </span>
-                          <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-xs">
+                          <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-sm">
                             {list.total_no_of_resources}
                           </div>
                         </a>
@@ -256,7 +256,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <li role="button">
                     <Link href="/lists/">
-                      <a className="flex items-center space-x-2 py-1.5 font-medium text-xs text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                      <a className="flex items-center space-x-2 py-1.5 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
                         See all
                       </a>
                     </Link>
