@@ -57,11 +57,11 @@ export const InvestorsByFilter: FC<Props> = ({
   const { vc_firms, vc_firms_aggregate } = data;
 
   return (
-    <div className="mb-16">
-      <div className="text-2xl font-semibold ml-4">{headingText}</div>
+    <div>
+      <div className="text-2xl font-semibold">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16"
+        className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
       >
         {vc_firms.map(vcFirm => (
           <ElemInvestorCard
@@ -72,17 +72,15 @@ export const InvestorsByFilter: FC<Props> = ({
         ))}
       </div>
 
-      <div className="mx-4 mt-4">
-        <Pagination
-          shownItems={vc_firms.length}
-          totalItems={vc_firms_aggregate.aggregate?.count ?? 0}
-          page={page}
-          itemsPerPage={itemsPerPage}
-          onClickPrev={previousPage}
-          onClickNext={nextPage}
-          onClickToPage={selectedPage => setPage(selectedPage)}
-        />
-      </div>
+      <Pagination
+        shownItems={vc_firms.length}
+        totalItems={vc_firms_aggregate.aggregate?.count ?? 0}
+        page={page}
+        itemsPerPage={itemsPerPage}
+        onClickPrev={previousPage}
+        onClickNext={nextPage}
+        onClickToPage={selectedPage => setPage(selectedPage)}
+      />
     </div>
   );
 };

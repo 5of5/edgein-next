@@ -315,37 +315,13 @@ const Investors: NextPage<Props> = ({
 
           <ElemInviteBanner className="mt-3 mx-4" />
 
-          <div className="mt-6 px-4">
-            {personalizedTags.locationTags.length != 0 &&
-              !shouldHidePersonalized &&
-              personalizedTags.locationTags.map(location => (
-                <>
+          <div className="mt-6 mx-4">
+            {!shouldHidePersonalized && (
+              <div className='flex flex-col gap-4 gap-x-16'>
+                {personalizedTags.industryTags.map(industry => (
                   <InvestorsByFilter
-                    key={location}
-                    headingText={`Trending in ${location}`}
-                    tagOnClick={filterByTag}
-                    itemsPerPage={8}
-                    filters={{
-                      _and: [
-                        { slug: { _neq: '' } },
-                        { library: { _contains: selectedLibrary } },
-                        { status_tags: { _contains: 'Trending' } },
-                        {
-                          location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                  />
-
-                  <InvestorsByFilter
-                    key={location}
-                    headingText={`New in ${location}`}
+                    key={industry}
+                    headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
                     itemsPerPage={8}
                     filters={{
@@ -353,26 +329,46 @@ const Investors: NextPage<Props> = ({
                         { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
-                          location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
-                            },
+                          status_tags: {
+                            _contains: 'Trending',
+                          },
+                        },
+                        {
+                          tags: {
+                            _contains: industry,
                           },
                         },
                       ],
                     }}
                   />
-                </>
-              ))}
+                ))}
 
-            {personalizedTags.industryTags.length != 0 &&
-              !shouldHidePersonalized &&
-              personalizedTags.industryTags.map(industry => (
+                {personalizedTags.industryTags.map(industry => (
+                  <InvestorsByFilter
+                    key={industry}
+                    headingText={`Trending in ${industry}`}
+                    tagOnClick={filterByTag}
+                    itemsPerPage={8}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        {
+                          status_tags: {
+                            _contains: 'Trending',
+                          },
+                        },
+                        {
+                          tags: {
+                            _contains: industry,
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                ))}
                 <InvestorsByFilter
-                  key={industry}
-                  headingText={`Trending in ${industry}`}
+                  headingText={`Just acquired`}
                   tagOnClick={filterByTag}
                   itemsPerPage={8}
                   filters={{
@@ -381,37 +377,15 @@ const Investors: NextPage<Props> = ({
                       { library: { _contains: selectedLibrary } },
                       {
                         status_tags: {
-                          _contains: 'Trending',
-                        },
-                      },
-                      {
-                        tags: {
-                          _contains: industry,
+                          _contains: 'Acquired',
                         },
                       },
                     ],
                   }}
                 />
-              ))}
-
-            {!shouldHidePersonalized && (
-              <InvestorsByFilter
-                headingText={`Just acquired`}
-                tagOnClick={filterByTag}
-                itemsPerPage={8}
-                filters={{
-                  _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
-                    {
-                      status_tags: {
-                        _contains: 'Acquired',
-                      },
-                    },
-                  ],
-                }}
-              />
+              </div>
             )}
+
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
@@ -461,23 +435,20 @@ const Investors: NextPage<Props> = ({
               />
             ) : (
               <>
-                {vcFirms?.length != 0 && (
-                  <>
-                    <div className="text-2xl font-bold ml-4">All investors</div>
-                    <div
-                      data-testid="investors"
-                      className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-                    >
-                      {vcFirms?.map(vcfirm => (
-                        <ElemInvestorCard
-                          key={vcfirm.id}
-                          vcFirm={vcfirm as Vc_Firms}
-                          tagOnClick={filterByTag}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
+                <div className="text-2xl font-bold">All investors</div>
+                <div
+                  data-testid="investors"
+                  className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                >
+                  {vcFirms?.map(vcfirm => (
+                    <ElemInvestorCard
+                      key={vcfirm.id}
+                      vcFirm={vcfirm as Vc_Firms}
+                      tagOnClick={filterByTag}
+                    />
+                  ))}
+                </div>
+
                 <Pagination
                   shownItems={vcFirms?.length}
                   totalItems={vcfirms_aggregate}

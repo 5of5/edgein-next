@@ -44,10 +44,6 @@ type Props = {
   onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   filterByTag: Function;
-  filterValues: Filters | null;
-  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
-  onClearOption: (name: FilterOptionKeys) => void;
-  onReset: () => void;
 };
 
 export const CompaniesTable: FC<Props> = ({
@@ -60,10 +56,6 @@ export const CompaniesTable: FC<Props> = ({
   onClickPrev,
   onClickNext,
   filterByTag,
-  filterValues,
-  onApply,
-  onClearOption,
-  onReset,
 }) => {
   const { user } = useUser();
 

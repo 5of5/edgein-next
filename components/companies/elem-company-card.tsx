@@ -25,11 +25,10 @@ type Props = {
 };
 
 export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
-  const [companyData, setCompanyData] = useState(company);
-
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
+  
   const showMoreTags = () => {
     setTagsLimit(CARD_MAX_TAGS_LIMIT);
   };
@@ -43,10 +42,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
   const onCloseUpgradeDialog = () => {
     setIsOpenUpgradeDialog(false);
   };
-
-  useEffect(() => {
-    setCompanyData(company);
-  }, [company]);
 
   const {
     id,
@@ -63,13 +58,13 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
     company_linkedin,
     github,
     discord,
-  } = companyData;
+  } = company;
 
   const isRaisingCompany =
     status_tags && status_tags.length > 0 && status_tags.includes('Raising');
 
   return (
-    <div className="flex flex-col w-full p-4">
+    <div className="flex flex-col w-full">
       <Link href={`/companies/${slug}`}>
         <a>
           <div className="flex shrink-0 w-full">

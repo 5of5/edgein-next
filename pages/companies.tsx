@@ -322,102 +322,98 @@ const Companies: NextPage<Props> = ({
 
         <ElemInviteBanner className="mt-3 mx-4" />
 
-        <div className="mt-6 px-4">
-          {personalizedTags.locationTags.length != 0 &&
-            !shouldHidePersonalized &&
-            personalizedTags.locationTags.map(location => (
-              <>
-                <CompaniesByFilter
-                  key={location}
-                  headingText={`Trending in ${location}`}
-                  tagOnClick={filterByTag}
-                  itemsPerPage={8}
-                  filters={{
-                    _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
-                      { status_tags: { _contains: 'Trending' } },
-                      {
-                        location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
+        <div className="mt-6 mx-8">
+          {!shouldHidePersonalized && (
+            <div className="flex flex-col gap-16">
+              {personalizedTags.locationTags.map(location => (
+                <div key={location} className="flex flex-col gap-16">
+                  <CompaniesByFilter
+                    headingText={`Trending in ${location}`}
+                    tagOnClick={filterByTag}
+                    itemsPerPage={8}
+                    tableView={tableLayout}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        { status_tags: { _contains: 'Trending' } },
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
                             },
                           },
+                        },
+                      ],
+                    }}
+                  />
+
+                  <CompaniesByFilter
+                    headingText={`New in ${location}`}
+                    tagOnClick={filterByTag}
+                    itemsPerPage={8}
+                    tableView={tableLayout}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                </div>
+              ))}
+
+              {personalizedTags.industryTags.map(industry => (
+                <CompaniesByFilter
+                  key={industry}
+                  headingText={`Trending in ${industry}`}
+                  tagOnClick={filterByTag}
+                  itemsPerPage={8}
+                  tableView={tableLayout}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        status_tags: {
+                          _contains: 'Trending',
+                        },
+                      },
+                      {
+                        tags: {
+                          _contains: industry,
                         },
                       },
                     ],
                   }}
                 />
+              ))}
 
-                <CompaniesByFilter
-                  key={location}
-                  headingText={`New in ${location}`}
-                  tagOnClick={filterByTag}
-                  itemsPerPage={8}
-                  filters={{
-                    _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
-                      {
-                        location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-              </>
-            ))}
-
-          {personalizedTags.industryTags.length != 0 &&
-            !shouldHidePersonalized &&
-            personalizedTags.industryTags.map(industry => (
               <CompaniesByFilter
-                key={industry}
-                headingText={`Trending in ${industry}`}
+                headingText={`Just acquired`}
                 tagOnClick={filterByTag}
                 itemsPerPage={8}
+                tableView={tableLayout}
                 filters={{
                   _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
+                    ...defaultFilters,
                     {
                       status_tags: {
-                        _contains: 'Trending',
-                      },
-                    },
-                    {
-                      tags: {
-                        _contains: industry,
+                        _contains: 'Acquired',
                       },
                     },
                   ],
                 }}
               />
-            ))}
-
-          {!shouldHidePersonalized && user && (
-            <CompaniesByFilter
-              headingText={`Just acquired`}
-              tagOnClick={filterByTag}
-              itemsPerPage={8}
-              filters={{
-                _and: [
-                  { slug: { _neq: '' } },
-                  { library: { _contains: selectedLibrary } },
-                  {
-                    status_tags: {
-                      _contains: 'Acquired',
-                    },
-                  },
-                ],
-              }}
-            />
+            </div>
           )}
 
           {error ? (
@@ -467,47 +463,26 @@ const Companies: NextPage<Props> = ({
                 onClickPrev={() => setPage(page - 1)}
                 onClickNext={() => setPage(page + 1)}
                 filterByTag={filterByTag}
-                filterValues={selectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: filterParams,
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => onChangeSelectedFilters(null)}
               />
             </>
           ) : (
-            <>
-              {companies?.length != 0 && (
-                <>
-                  {user && (
-                    <div className="text-2xl font-bold ml-4">All companies</div>
-                  )}
-                  <div
-                    data-testid="companies"
-                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-                  >
-                    {companies?.map(company => {
-                      return (
-                        <ElemCompanyCard
-                          key={company.id}
-                          company={company as Companies}
-                          tagOnClick={filterByTag}
-                        />
-                      );
-                    })}
-                  </div>
-                </>
-              )}
+            <div className="mt-16">
+              {user && <div className="text-2xl font-bold">All companies</div>}
+              <div
+                data-testid="companies"
+                className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
+              >
+                {companies?.map(company => {
+                  return (
+                    <ElemCompanyCard
+                      key={company.id}
+                      company={company as Companies}
+                      tagOnClick={filterByTag}
+                    />
+                  );
+                })}
+              </div>
+
               <Pagination
                 shownItems={companies?.length}
                 totalItems={companies_aggregate}
@@ -517,7 +492,7 @@ const Companies: NextPage<Props> = ({
                 onClickNext={() => setPage(page + 1)}
                 onClickToPage={selectedPage => setPage(selectedPage)}
               />
-            </>
+            </div>
           )}
         </div>
 

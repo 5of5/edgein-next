@@ -10,6 +10,7 @@ import { times } from 'lodash';
 import { FC } from 'react';
 import { Pagination } from '../pagination';
 import { PlaceholderCompanyCard } from '../placeholders';
+import { CompaniesTable } from './elem-companies-table';
 import { ElemCompanyCard } from './elem-company-card';
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
   filters: DeepPartial<Companies_Bool_Exp>;
   itemsPerPage: number;
   tagOnClick: any;
+  tableView?: boolean;
 };
 
 export const CompaniesByFilter: FC<Props> = ({
@@ -24,6 +26,7 @@ export const CompaniesByFilter: FC<Props> = ({
   filters,
   itemsPerPage,
   tagOnClick,
+  tableView = false,
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
@@ -37,7 +40,7 @@ export const CompaniesByFilter: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16">
+      <div className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         {times(itemsPerPage, index => (
           <PlaceholderCompanyCard key={index} />
         ))}
@@ -57,32 +60,45 @@ export const CompaniesByFilter: FC<Props> = ({
   const { companies, companies_aggregate } = data;
 
   return (
-    <div className="mb-16">
-      <div className="text-2xl font-semibold ml-4">{headingText}</div>
-      <div
-        data-testid="personalizedCompanies"
-        className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-      >
-        {companies.map(company => (
-          <ElemCompanyCard
-            key={company.id}
-            company={company as Companies}
-            tagOnClick={tagOnClick}
-          />
-        ))}
-      </div>
-
-      <div className="mx-4 mt-4">
-        <Pagination
-          shownItems={companies.length}
-          totalItems={companies_aggregate.aggregate?.count ?? 0}
-          page={page}
+    <div>
+      <div className="text-2xl font-semibold">{headingText}</div>
+      {tableView ? (
+        <CompaniesTable
+          companies={companies}
+          pageNumber={page}
           itemsPerPage={itemsPerPage}
-          onClickPrev={previousPage}
-          onClickNext={nextPage}
-          onClickToPage={selectedPage => setPage(selectedPage)}
+          shownItems={companies?.length}
+          totalItems={companies_aggregate.aggregate?.count ?? 0}
+          onClickPrev={() => setPage(page - 1)}
+          onClickNext={() => setPage(page + 1)}
+          filterByTag={() => { }}
         />
-      </div>
+      ) : (
+        <div>
+          <div
+            data-testid="personalizedCompanies"
+            className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
+          >
+            {companies.map(company => (
+              <ElemCompanyCard
+                key={company.id}
+                company={company as Companies}
+                tagOnClick={tagOnClick}
+              />
+            ))}
+          </div>
+
+          <Pagination
+            shownItems={companies.length}
+            totalItems={companies_aggregate.aggregate?.count ?? 0}
+            page={page}
+            itemsPerPage={itemsPerPage}
+            onClickPrev={previousPage}
+            onClickNext={nextPage}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
+        </div>
+      )}
     </div>
   );
 };
