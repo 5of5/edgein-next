@@ -6,12 +6,11 @@ import {
   IconSortUp,
   IconSortDown,
   IconX,
-  IconChevronDown,
+  IconChevronDownMini,
   IconChevronLeft,
   IconChevronRight,
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { ElemReactions } from '@/components/elem-reactions';
 import { TableColumnsFilter } from '@/components/my-list/table-columns-filter';
 import { last } from 'lodash';
 import { Menu } from '@headlessui/react';
@@ -28,6 +27,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
+import { usePopup } from '@/context/popup-context';
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -68,6 +68,8 @@ export const CompaniesTable: FC<Props> = ({
 }) => {
   const { user } = useUser();
 
+  const { setShowPopup } = usePopup();
+
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const onOpenUpgradeDialog = () => {
@@ -78,7 +80,11 @@ export const CompaniesTable: FC<Props> = ({
   };
 
   const onBillingClick = async () => {
-    loadStripe();
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      loadStripe();
+    }
   };
 
   const isDisplayAllCompanies = user?.entitlements.viewEmails
@@ -389,22 +395,6 @@ export const CompaniesTable: FC<Props> = ({
           return <div>{props.value ? props.value : emptyCell}</div>;
         },
       },
-      {
-        Header: 'Reactions',
-        accessor: 'company' as const,
-        Cell: (props: any) => (
-          <div>
-            {props.row.original && (
-              <ElemReactions
-                resource={props.row.original}
-                resourceType={'companies'}
-                isInteractive={false}
-              />
-            )}
-          </div>
-        ),
-        disableSortBy: true,
-      },
     ],
     [filterByTag, emptyCell],
   );
@@ -452,13 +442,6 @@ export const CompaniesTable: FC<Props> = ({
           <TableColumnsFilter
             columns={allColumns}
             resetColumns={() => toggleHideAllColumns(false)}
-          />
-          <ElemFilter
-            resourceType="companies"
-            filterValues={filterValues}
-            onApply={onApply}
-            onClearOption={onClearOption}
-            onReset={onReset}
           />
         </div>
 
@@ -572,7 +555,7 @@ export const CompaniesTable: FC<Props> = ({
                       <th
                         key={key}
                         {...restColumnProps}
-                        className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left min-w-content`}
+                        className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
                       >
                         <div className="flex items-center min-w-content">
                           {column.render('Header')}
@@ -580,8 +563,8 @@ export const CompaniesTable: FC<Props> = ({
                             as="div"
                             className="relative inline-block text-left ml-1"
                           >
-                            <Menu.Button className="block align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
-                              <IconChevronDown className="h-5 w-5" />
+                            <Menu.Button className="block align-middle text-gray-400 rounded-full hover:bg-slate-100">
+                              <IconChevronDownMini className="h-5 w-5" />
                             </Menu.Button>
 
                             <Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
@@ -750,15 +733,6 @@ export const CompaniesTable: FC<Props> = ({
                       >
                         Start your free trial
                       </ElemButton>
-                      {/* <div className="font-bold text-white">or</div>
-											<ElemButton
-												onClick={() => {}}
-												btn="ol-white"
-												arrow
-												className=" text-primary-500"
-											>
-												Invite team members
-											</ElemButton> */}
                     </div>
                   </div>
                 </td>

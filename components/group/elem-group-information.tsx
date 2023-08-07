@@ -24,7 +24,6 @@ type Props = {
 };
 
 export const ElemGroupInformation: React.FC<Props> = ({
-  className,
   isUserBelongToGroup,
   group,
   onInvite,
@@ -43,11 +42,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 
   return (
     <>
-      <div
-        className={`sm:flex sm:items-center sm:justify-between sm:space-x-4 ${
-          className ? className : ''
-        }`}
-      >
+      <div className="flex items-center justify-between flex-wrap space-y-2 px-4 py-3 border-b border-gray-300 lg:space-y-0">
         {isUserBelongToGroup ? (
           <>
             <div>
@@ -58,7 +53,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                         {
                           name: 'my-groups',
                           to: '/groups',
-                          component: 'My Groups',
+                          component: 'Groups',
                         },
                       ]
                     : [
@@ -73,7 +68,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                     component: (
                       <button
                         type="button"
-                        className="inline-flex items-center justify-start hover:text-primary-500 hover:underline"
+                        className="inline-flex items-center justify-start hover:underline"
                         onClick={() => onOpenSettingDialog('settings')}
                       >
                         <span className="text-left capitalize">
@@ -86,11 +81,10 @@ export const ElemGroupInformation: React.FC<Props> = ({
               />
               <button
                 type="button"
-                className="inline-flex items-start lg:items-center justify-start hover:text-primary-500 hover:underline"
+                className="inline-flex items-start lg:items-center justify-start hover:underline"
                 onClick={() => onOpenSettingDialog('settings')}
               >
-                <IconGroup className="w-5 h-5 mr-1 mt-1 shrink-0 lg:mt-0" />
-                <span className="font-bold text-left text-lg capitalize">
+                <span className="font-medium text-left text-lg capitalize">
                   {group.name}
                 </span>
               </button>
@@ -98,7 +92,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 
             <div className="flex items-center gap-x-2 shrink-0 mt-3 sm:mt-0">
               <ElemButton
-                btn="primary"
+                btn="purple"
                 className="gap-x-1 lg:!pl-3"
                 onClick={onInvite}
               >
@@ -106,7 +100,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 <span>Invite</span>
               </ElemButton>
               <ElemButton
-                btn="slate"
+                btn="default"
                 className="gap-x-1 lg:!pl-3"
                 onClick={() => onOpenSettingDialog('settings')}
               >
@@ -136,17 +130,16 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 ]}
               />
               <div className="flex items-center">
-                <IconGroup className="w-5 h-5 mr-1 mt-1 shrink-0 lg:mt-0" />
-                <span className="font-bold text-lg capitalize">
+                <span className="font-medium text-lg capitalize">
                   {group.name}
                 </span>
               </div>
             </div>
 
             {group.public && (
-              <div className="flex items-center gap-x-2 shrink-0 pt-3">
+              <div className="flex items-center gap-x-2 shrink-0">
                 <ElemButton
-                  btn="primary"
+                  btn="purple"
                   loading={isAddingGroupMember}
                   onClick={onAddGroupMember}
                 >

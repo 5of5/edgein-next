@@ -1,10 +1,14 @@
 import CookieService from '../utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
 
-const USAGE_LIMIT = 5;
+const USAGE_LIMIT = 10;
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
+
+  if (url.pathname === '/') {
+    return NextResponse.redirect(new URL('/companies', req.url));
+  }
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents. This can also be done

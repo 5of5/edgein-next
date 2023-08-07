@@ -23,12 +23,12 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
           More
         </ElemButton>
 
-        <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-72 mt-14 overflow-y-auto scrollbar-hide lg:block">
+        <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-64 mt-12 border-r border-gray-200 bg-gray-50 overflow-y-auto scrollbar-hide lg:block">
           <DashboardSidebar />
         </div>
 
-        <div className="min-h-[calc(100vh_-_3rem)] lg:pl-72">
-          <div className="p-4">{children}</div>
+        <div className="min-h-[calc(100vh_-_3rem)] mb-20 lg:pl-64">
+          {children}
         </div>
       </div>
 

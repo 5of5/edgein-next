@@ -28,6 +28,7 @@ import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
 import { Popups } from '@/components/the-navbar';
 import UserService from '@/utils/users';
+import { ExploreMenuItem } from '@/types/common';
 
 type Props = {
   className?: string;
@@ -57,61 +58,61 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     setNavOpen(false);
   };
 
-  const baseNav = useMemo(
+  const baseNav: ExploreMenuItem[] = useMemo(
     () => [
       {
         icon: IconCompanies,
-        name: 'Companies',
+        title: 'Companies',
         href: '/companies',
       },
       {
         icon: IconCash,
-        name: 'Investors',
+        title: 'Investors',
         href: '/investors',
       },
       {
         icon: IconCalendar,
-        name: 'Events',
+        title: 'Events',
         href: '/events',
       },
       {
         icon: IconNewspaper,
-        name: 'News',
+        title: 'News',
         href: '/news',
       },
     ],
     [],
   );
 
-  const bottomNav = useMemo(
+  const bottomNav: ExploreMenuItem[] = useMemo(
     () => [
       ...baseNav,
       {
         icon: IconBell,
-        name: 'Notifications',
+        title: 'Notifications',
         href: '/notifications',
       },
     ],
     [baseNav],
   );
 
-  const menuPanel = useMemo(
+  const menuPanel: ExploreMenuItem[] = useMemo(
     () => [
       ...(user
         ? [
             {
               icon: IconDocumentDownload,
-              name: 'Notes',
+              title: 'Notes',
               href: '/notes',
             },
             {
               icon: IconGroup,
-              name: 'Groups',
+              title: 'Groups',
               href: '/groups',
             },
             {
               icon: IconCustomList,
-              name: 'Lists',
+              title: 'Lists',
               href: '/lists',
             },
           ]
@@ -121,7 +122,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
         ? [
             {
               icon: IconSettings,
-              name: 'Account Settings',
+              title: 'Account Settings',
               href: '/account',
             },
           ]
@@ -153,16 +154,16 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                   {item?.icon && (
                     <div className="relative flex items-center justify-center h-7 aspect-square">
                       {unreadNotifications.length > 0 &&
-                        item.name === 'Notifications' && (
+                        item.title === 'Notifications' && (
                           <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
                         )}
                       <item.icon
-                        title={item.name}
+                        title={item.title}
                         className="h-6 w-6 shrink-0 text-slate-600"
                       />
                     </div>
                   )}
-                  {item?.name}
+                  {item?.title}
                 </a>
               </Link>
             </li>
@@ -241,11 +242,11 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                     >
                       {item?.icon && (
                         <item.icon
-                          title={item.name}
+                          title={item.title}
                           className="h-6 w-6 shrink-0"
                         />
                       )}
-                      <span className="leading-tight">{item?.name}</span>
+                      <span className="leading-tight">{item?.title}</span>
                     </a>
                   </Link>
                 </li>

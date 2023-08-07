@@ -1,4 +1,5 @@
-import { ReactNode } from 'react';
+import { IconProps } from '@/components/icons';
+import { FC, ReactNode } from 'react';
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -38,4 +39,21 @@ export type LibraryTag = {
 export type Tag = {
   id: string;
   name: string;
+};
+
+export type ExploreMenuItem = {
+  href: string;
+  icon: FC<IconProps>;
+  title: string;
+};
+
+export type Order_By_Option = 'ascending' | 'descending' | 'newest' | 'oldest';
+
+export type DashboardCategory = {
+  title: string;
+  value: string;
+  description?: string;
+  icon?: string;
+  disabled?: boolean;
+  date?: string;
 };

@@ -23,14 +23,14 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
   const { show } = useIntercom();
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-2 border-b border-black/10">
-        <h2 className="text-xl font-bold">
+    <div className="rounded-lg border border-gray-300">
+      <div className="flex items-center justify-between px-4 pt-2">
+        <h2 className="text-lg font-medium">
           {heading ? heading : 'Activity Timeline'}
         </h2>
       </div>
 
-      <div className="py-4">
+      <div className="px-4 py-4">
         {resourceInvestments && resourceInvestments.length > 0 ? (
           <>
             <ul className="flex flex-col">
@@ -66,11 +66,11 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center lg:p-5">
-            <div className="text-slate-600 lg:text-xl">
+          <div className="flex flex-col items-center justify-center">
+            <div className="text-gray-500">
               There is no recent activity for this organization.
             </div>
-            <ElemButton onClick={show} btn="slate" className="mt-3">
+            <ElemButton onClick={show} btn="default" className="mt-3">
               Request data or contribute
             </ElemButton>
           </div>
@@ -86,12 +86,12 @@ const renderActivity = (
 ) => {
   return resourceType === 'companies' && activity ? (
     <div className="mb-4">
-      <div className="inline leading-7 text-slate-600">
+      <div className="inline leading-7 text-gray-600 text-sm">
         {activity.round === 'Acquisition' ? (
-          <div className="inline font-bold">Acquired by </div>
+          <div className="inline font-medium">Acquired by </div>
         ) : (
           <>
-            <div className="inline font-bold">
+            <div className="inline font-medium">
               Raised{' '}
               {activity.amount ? (
                 <div className="inline text-green-600">
@@ -124,7 +124,7 @@ const renderActivity = (
                       : ', ')}
                   {item.vc_firm && (
                     <Link href={`/investors/${item.vc_firm?.slug}`}>
-                      <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                      <a className="underline hover:no-underline">
                         {item.vc_firm['name']}
                       </a>
                     </Link>
@@ -132,7 +132,7 @@ const renderActivity = (
                   {item.vc_firm && item.person && <>/</>}
                   {item.person && (
                     <Link href={`/people/${item.person['slug']}`}>
-                      <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                      <a className="underline hover:no-underline">
                         {item.person['name']}
                       </a>
                     </Link>
@@ -157,19 +157,19 @@ const renderActivity = (
     </div>
   ) : resourceType === 'vc_firms' && activity ? (
     <div className="mb-4">
-      <div className="inline leading-7 text-slate-600">
+      <div className="inline leading-7 text-gray-600 text-sm">
         {activity.company && (
           <Link href={`/companies/${activity.company['slug']}`}>
-            <a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
+            <a className="underline font-medium hover:no-underline">
               {activity.company['name']}
             </a>
           </Link>
         )}{' '}
         {activity.round === 'Acquisition' ? (
-          <div className="inline font-bold">Acquired by </div>
+          <div className="inline font-medium">Acquired by </div>
         ) : (
           <>
-            <div className="inline font-bold">
+            <div className="inline font-medium">
               Raised{' '}
               {activity.amount ? (
                 <div className="inline text-green-600">
@@ -200,7 +200,7 @@ const renderActivity = (
 
               {item.vc_firm && (
                 <Link href={`/investors/${item.vc_firm?.slug}`}>
-                  <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                  <a className="underline hover:no-underline">
                     {item.vc_firm['name']}
                   </a>
                 </Link>
@@ -209,7 +209,7 @@ const renderActivity = (
 
               {item.person && (
                 <Link href={`/people/${item.person['slug']}`}>
-                  <a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                  <a className="underline hover:no-underline">
                     {item.person['name']}
                   </a>
                 </Link>
@@ -219,7 +219,7 @@ const renderActivity = (
         })}
         .
       </div>
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-gray-600">
         {formatDate(activity.round_date as string, {
           month: 'short',
           day: '2-digit',

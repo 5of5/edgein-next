@@ -350,7 +350,7 @@ const MyList: NextPage<Props> = () => {
           {companiesError ? (
             <h4>Error loading companies</h4>
           ) : companiesLoading ? (
-            <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+            <div className="rounded-lg px-4 border border-gray-200">
               <PlaceholderTable />
             </div>
           ) : (
@@ -364,7 +364,7 @@ const MyList: NextPage<Props> = () => {
           {vcFirmsError ? (
             <h4>Error loading Investors</h4>
           ) : vcFirmsLoading ? (
-            <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+            <div className="rounded-lg px-4 border border-gray-200">
               <PlaceholderTable />
             </div>
           ) : (
@@ -388,20 +388,20 @@ const MyList: NextPage<Props> = () => {
       )}
 
       {theListCreatorId != user?.id && !isFollowing && (
-        <div className="w-full">
-          <div className="bg-white shadow rounded-lg w-full p-12 text-center">
+        <div className="mx-4">
+          <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
             <IconCustomList
-              className="mx-auto h-12 w-12 text-slate-300"
+              className="mx-auto h-12 w-12 text-gray-300"
               title="Join Group"
             />
-            <h3 className="mt-2 text-lg font-bold">
-              Follow this list to access and view updates.
+            <h3 className="mt-2 text-lg font-medium">
+              Follow list to access and view updates.
             </h3>
             <ElemButton
-              btn="primary"
+              btn="purple"
               loading={isFollowButtonLoading}
               onClick={handleFollowList}
-              className="mt-2 mb-12"
+              className="mt-2"
             >
               Follow
             </ElemButton>

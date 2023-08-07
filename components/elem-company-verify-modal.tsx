@@ -10,9 +10,12 @@ import { validateCompanyEmail } from '@/utils';
 import extractDomain from 'extract-domain';
 import {
   Companies_Bool_Exp,
+  Order_By,
   useGetCompaniesQuery,
   useGetVcFirmsQuery,
   Vc_Firms_Bool_Exp,
+  Companies_Order_By,
+  Vc_Firms_Order_By,
 } from '@/graphql/types';
 
 type Props = {
@@ -101,6 +104,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
   const { data: companiesData } = useGetCompaniesQuery({
     limit: null,
     offset: null,
+    orderBy: [{ name: Order_By.Asc } as Companies_Order_By],
     where: {
       slug: { _neq: '' },
       name: { _ilike: `%${search}%` },
@@ -110,6 +114,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
   const { data: vcFirmsData } = useGetVcFirmsQuery({
     limit: null,
     offset: null,
+    orderBy: [{ name: Order_By.Asc } as Vc_Firms_Order_By],
     where: {
       slug: { _neq: '' },
       name: { _ilike: `%${search}%` },

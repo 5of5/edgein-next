@@ -1,8 +1,6 @@
 import type { NextPage, GetStaticProps } from 'next';
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { ElemHeading } from '../components/elem-heading';
-import { ElemFeaturedEvents } from '@/components/events/elem-featured-events';
 import { ElemButton } from '../components/elem-button';
 import { runGraphQl } from '../utils';
 import { useStateParams } from '@/hooks/use-state-params';
@@ -17,41 +15,65 @@ import {
   useGetEventsQuery,
   Events_Bool_Exp,
   Order_By,
+  Events_Order_By,
 } from '@/graphql/types';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
 import { ElemFilter } from '@/components/elem-filter';
 import { processEventsFilters } from '@/utils/filter';
-import useFilterParams from '@/hooks/use-filter-params';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
-import useLibrary from '@/hooks/use-library';
-import { DeepPartial } from '@/types/common';
+import { DashboardCategory, DeepPartial } from '@/types/common';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { useUser } from '@/context/user-context';
+import ElemLibrarySelector from '@/components/elem-library-selector';
+import {
+  SWITCH_LIBRARY_ALLOWED_DOMAINS,
+  SWITCH_LIBRARY_ALLOWED_EMAILS,
+} from '@/utils/constants';
+import useLibrary from '@/hooks/use-library';
+import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { ElemAddFilter } from '@/components/elem-add-filter';
+import { getPersonalizedData } from '@/utils/personalizedTags';
+import { EventsByFilter } from '@/components/events/elem-events-by-filter';
+import { ElemCategories } from '@/components/dashboard/elem-categories';
 
 type Props = {
-  eventTabs: TextFilter[];
+  eventTabs: DashboardCategory[];
   eventsCount: number;
   initialEvents: GetEventsQuery['events'];
 };
 
 const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
+  const { user } = useUser();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const router = useRouter();
-
   const { selectedLibrary } = useLibrary();
+
+  const isDisplaySelectLibrary =
+    user?.email &&
+    (SWITCH_LIBRARY_ALLOWED_EMAILS.includes(user.email) ||
+      SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
+        user.email.endsWith(domain),
+      ));
 
   const { showNewMessages } = useIntercom();
 
-  const [selectedTab, setSelectedTab] = useStateParams(
-    { ...eventTabs[0], date: moment().toISOString() },
-    'tab',
-    statusTag => eventTabs.indexOf(statusTag).toString(),
-    index => eventTabs[Number(index)],
-  );
+  const [selectedTab, setSelectedTab] =
+    useStateParams<DashboardCategory | null>(
+      null,
+      'tab',
+      statusTag => (statusTag ? eventTabs.indexOf(statusTag).toString() : ''),
+      index => eventTabs[Number(index)],
+    );
 
-  const { selectedFilters, setSelectedFilters } = useFilterParams();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -70,6 +92,16 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Events_Order_By>({
+      newestSortKey: 'start_date',
+      oldestSortKey: 'start_date',
+    });
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -91,7 +123,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const onChangeTab = (tab: any) => {
     setSelectedTab(tab);
-    setSelectedFilters(null);
+    onChangeSelectedFilters(null);
   };
 
   const onClickType = (
@@ -107,9 +139,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       : [type, ...currentFilterOption];
 
     if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, eventType: undefined });
+      onChangeSelectedFilters({ ...selectedFilters, eventType: undefined });
     } else {
-      setSelectedFilters({
+      onChangeSelectedFilters({
         ...selectedFilters,
         eventType: {
           ...selectedFilters?.eventType,
@@ -124,7 +156,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -138,7 +171,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -152,18 +186,24 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   /** Handle selected filter params */
   processEventsFilters(filters, selectedFilters, defaultFilters);
 
-  if (
-    selectedTab.value === 'upcoming' &&
-    !selectedFilters?.eventDate?.condition
-  ) {
+  if (selectedTab?.value === 'featured') {
     filters._and?.push({
-      start_date: { _gte: selectedTab.date },
+      is_featured: { _eq: true },
     });
   }
 
-  if (selectedTab.value === 'past' && !selectedFilters?.eventDate?.condition) {
+  if (
+    selectedTab?.value === 'upcoming' &&
+    !selectedFilters?.eventDate?.condition
+  ) {
     filters._and?.push({
-      start_date: { _lte: selectedTab.date },
+      start_date: { _gte: selectedTab?.date },
+    });
+  }
+
+  if (selectedTab?.value === 'past' && !selectedFilters?.eventDate?.condition) {
+    filters._and?.push({
+      start_date: { _lte: selectedTab?.date },
     });
   }
   const {
@@ -173,8 +213,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   } = useGetEventsQuery({
     offset,
     limit,
-    order: selectedTab.value === 'past' ? Order_By.Desc : Order_By.Asc,
     where: filters as Events_Bool_Exp,
+    orderBy: [orderByQuery],
   });
 
   if (!isLoading && initialLoad) {
@@ -186,116 +226,147 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
+  const showPersonalized = user && !selectedFilters && !selectedTab;
+
   return (
     <DashboardLayout>
       <div className="relative">
         <div
-          className="mb-4 flex items-center justify-between overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
-          role="tablist">
-          <nav className="flex space-x-2">
-            <ElemButton
-              // onClick={() => onChangeTab(tab)}
-              btn="slate"
-              roundedFull={false}
-              className="rounded-lg">
-              Featured
-            </ElemButton>
-            {eventTabs &&
-              eventTabs.map((tab: any, index: number) =>
-                tab.disabled === true ? (
-                  <Fragment key={index}></Fragment>
-                ) : (
-                  <ElemButton
-                    key={index}
-                    onClick={() => onChangeTab(tab)}
-                    btn="slate"
-                    roundedFull={false}
-                    className="rounded-lg">
-                    {/* <IconDead className="w-5 h-5 mr-1" /> */}
-                    {tab.title}
-                  </ElemButton>
-                ),
-              )}
-          </nav>
-        </div>
+          className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
+          role="tablist"
+        >
+          <ElemCategories
+            categories={eventTabs}
+            selectedCategory={selectedTab}
+            onChangeCategory={onChangeTab}
+          />
 
-        <ElemInviteBanner />
+          <div className="flex space-x-2">
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
-        <ElemFilter
-          className="py-3"
-          resourceType="events"
-          filterValues={selectedFilters}
-          dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
-          onApply={(name, filterParams) => {
-            filters._and = defaultFilters;
-            setSelectedFilters({
-              ...selectedFilters,
-              [name]: filterParams,
-            });
-          }}
-          onClearOption={name => {
-            filters._and = defaultFilters;
-            setSelectedFilters({ ...selectedFilters, [name]: undefined });
-          }}
-          onReset={() => setSelectedFilters(null)}
-        />
+            <ElemAddFilter
+              resourceType="events"
+              onSelectFilterOption={onSelectFilterOption}
+            />
 
-        {events?.length === 0 && (
-          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-              <div className="mt-1 text-lg text-slate-600">
-                Please check spelling, try different filters, or tell us about
-                missing data.
-              </div>
-              <ElemButton
-                onClick={() =>
-                  showNewMessages(
-                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                  )
-                }
-                btn="white"
-                className="mt-3">
-                <IconAnnotation className="w-6 h-6 mr-1" />
-                Tell us about missing data
-              </ElemButton>
-            </div>
+            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
           </div>
-        )}
-
-        <div
-          data-testid="events"
-          className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-          {error ? (
-            <h4>Error loading events</h4>
-          ) : isLoading && !initialLoad ? (
-            <>
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderEventCard key={i} />
-              ))}
-            </>
-          ) : (
-            events?.map(event => (
-              <ElemEventCard
-                key={event.id}
-                event={event}
-                onClickType={onClickType}
-              />
-            ))
-          )}
         </div>
 
-        <Pagination
-          shownItems={events?.length}
-          totalItems={events_aggregate}
-          page={page}
-          itemsPerPage={limit}
-          numeric
-          onClickPrev={() => setPage(page - 1)}
-          onClickNext={() => setPage(page + 1)}
-          onClickToPage={selectedPage => setPage(selectedPage)}
-        />
+        <div className="px-4">
+          <ElemFilter
+            resourceType="events"
+            filterValues={selectedFilters}
+            dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
+            onSelectFilterOption={onSelectFilterOption}
+            onChangeFilterValues={onChangeSelectedFilters}
+            onApply={(name, filterParams) => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: { ...filterParams, open: false },
+              });
+            }}
+            onClearOption={name => {
+              filters._and = defaultFilters;
+              onChangeSelectedFilters({
+                ...selectedFilters,
+                [name]: undefined,
+              });
+            }}
+            onReset={() => onChangeSelectedFilters(null)}
+          />
+        </div>
+
+        <ElemInviteBanner className="mt-3 mx-4" />
+
+        <div className="mt-6 px-4">
+          {events?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
+
+          {personalizedTags.locationTags.length != 0 &&
+            showPersonalized &&
+            personalizedTags.locationTags.map(location => (
+              <EventsByFilter
+                key={location}
+                headingText={`New in ${location}`}
+                tagOnClick={onClickType}
+                filters={{
+                  _and: [
+                    { slug: { _neq: '' } },
+                    { library: { _contains: selectedLibrary } },
+                    {
+                      location_json: {
+                        _cast: {
+                          String: {
+                            _ilike: `%"city": "${location}"%`,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                }}
+              />
+            ))}
+
+          {showPersonalized && (
+            <div className="text-2xl font-bold ml-4">All Events</div>
+          )}
+          <div
+            data-testid="events"
+            className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+          >
+            {error ? (
+              <h4>Error loading events</h4>
+            ) : isLoading && !initialLoad ? (
+              <>
+                {Array.from({ length: 9 }, (_, i) => (
+                  <PlaceholderEventCard key={i} />
+                ))}
+              </>
+            ) : (
+              events?.map(event => (
+                <ElemEventCard
+                  key={event.id}
+                  event={event}
+                  tagOnClick={onClickType}
+                />
+              ))
+            )}
+          </div>
+          <Pagination
+            shownItems={events?.length}
+            totalItems={events_aggregate}
+            page={page}
+            itemsPerPage={limit}
+            onClickPrev={() => setPage(page - 1)}
+            onClickNext={() => setPage(page + 1)}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
+        </div>
+
         <Toaster />
       </div>
     </DashboardLayout>
@@ -306,10 +377,10 @@ export const getStaticProps: GetStaticProps = async context => {
   const { data: events } = await runGraphQl<GetEventsQuery>(GetEventsDocument, {
     offset: 0,
     limit: 50,
-    order: Order_By.Asc,
     where: {
       _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
     },
+    orderBy: [{ start_date: Order_By.Asc, name: Order_By.Asc }],
   });
 
   return {
@@ -326,21 +397,23 @@ export const getStaticProps: GetStaticProps = async context => {
 
 export default Events;
 
-interface TextFilter {
-  title: string;
-  value: string;
-  date: string;
-}
-
-const eventTabs: TextFilter[] = [
+const eventTabs: DashboardCategory[] = [
+  {
+    title: 'Featured',
+    value: 'featured',
+    date: '',
+    icon: '📣',
+  },
   {
     title: 'Upcoming',
     value: 'upcoming',
     date: moment().toISOString(),
+    icon: '✨',
   },
   {
     title: 'Past',
     value: 'past',
     date: moment().subtract(1, 'days').toISOString(),
+    icon: '🕸',
   },
 ];
