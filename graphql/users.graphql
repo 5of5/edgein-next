@@ -505,12 +505,3 @@ query GetUserByPersonIds($person_ids: [Int!]) {
     person_id
   }
 }
-
-query GetUserPublicByPersonId($person_id: Int!) {
-  users_public(where: { person_id: { _eq: $person_id } }) {
-    id
-    email
-    display_name
-    person_id
-  }
-}

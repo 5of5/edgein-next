@@ -39,27 +39,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // Link user to person id
     if (selectedPerson?.id) {
-      const isClaimedPerson = await UserService.findOneUserPublicByPersonId(
-        selectedPerson.id,
-      );
-      if (isClaimedPerson) {
-        return res.status(400).send({
-          error: 'The profile you chose was claimed from another user.',
-        });
-      }
       await onLinkUserToPerson(user.id, selectedPerson.id);
     } else if (linkedin) {
       const personByLinkedin = await onFindPeopleByLinkedin(linkedin);
       if (personByLinkedin?.id) {
-        const isClaimedPerson = await UserService.findOneUserPublicByPersonId(
-          personByLinkedin.id,
-        );
-        if (isClaimedPerson) {
-          return res.status(400).send({
-            error:
-              'A user with this LinkedIn profile already exists. Try a different one.',
-          });
-        }
         await onLinkUserToPerson(user.id, personByLinkedin.id);
       } else {
         const insertedPerson = await onInsertProfile(
@@ -140,7 +123,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const onFindPeopleByLinkedin = async (linkedin: string) => {
+export const onFindPeopleByLinkedin = async (linkedin: string) => {
   const {
     data: { people },
   } = await query<FindPeopleByLinkedinUrlQuery>({

@@ -26163,13 +26163,6 @@ export type GetUserByPersonIdsQueryVariables = Exact<{
 
 export type GetUserByPersonIdsQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, person_id: number | null }> };
 
-export type GetUserPublicByPersonIdQueryVariables = Exact<{
-  person_id: Scalars['Int'];
-}>;
-
-
-export type GetUserPublicByPersonIdQuery = { __typename?: 'query_root', users_public: Array<{ __typename?: 'users_public', id: number | null, email: string | null, display_name: string | null, person_id: number | null }> };
-
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -31258,35 +31251,6 @@ useGetUserByPersonIdsQuery.getKey = (variables?: GetUserByPersonIdsQueryVariable
 ;
 
 useGetUserByPersonIdsQuery.fetcher = (variables?: GetUserByPersonIdsQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByPersonIdsQuery, GetUserByPersonIdsQueryVariables>(GetUserByPersonIdsDocument, variables, options);
-export const GetUserPublicByPersonIdDocument = `
-    query GetUserPublicByPersonId($person_id: Int!) {
-  users_public(where: {person_id: {_eq: $person_id}}) {
-    id
-    email
-    display_name
-    person_id
-  }
-}
-    `;
-export const useGetUserPublicByPersonIdQuery = <
-      TData = GetUserPublicByPersonIdQuery,
-      TError = Error
-    >(
-      variables: GetUserPublicByPersonIdQueryVariables,
-      options?: UseQueryOptions<GetUserPublicByPersonIdQuery, TError, TData>
-    ) =>
-    useQuery<GetUserPublicByPersonIdQuery, TError, TData>(
-      ['GetUserPublicByPersonId', variables],
-      fetcher<GetUserPublicByPersonIdQuery, GetUserPublicByPersonIdQueryVariables>(GetUserPublicByPersonIdDocument, variables),
-      options
-    );
-useGetUserPublicByPersonIdQuery.document = GetUserPublicByPersonIdDocument;
-
-
-useGetUserPublicByPersonIdQuery.getKey = (variables: GetUserPublicByPersonIdQueryVariables) => ['GetUserPublicByPersonId', variables];
-;
-
-useGetUserPublicByPersonIdQuery.fetcher = (variables: GetUserPublicByPersonIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserPublicByPersonIdQuery, GetUserPublicByPersonIdQueryVariables>(GetUserPublicByPersonIdDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
