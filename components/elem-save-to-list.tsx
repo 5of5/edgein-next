@@ -34,6 +34,7 @@ type Props = {
     | 'slate'
     | 'ol-white'
     | 'ol-primary'
+    | 'default'
     | '';
   follows?: Pick<Follows, 'list_id'>[];
 };
@@ -249,16 +250,10 @@ export const ElemSaveToList: FC<Props> = ({
       <ElemButton
         onClick={onSaveButton}
         btn={buttonStyle}
-        // btn="white"
         roundedFull={true}
         className={`px-2.5 ${isSaved ? savedButtonStyle : ''}`}
       >
-        {isSaved ? (
-          <IconListSaved className="w-5 h-5 mr-1" />
-        ) : (
-          <IconListPlus className="w-5 h-5 mr-1" />
-        )}
-        {isSaved ? 'Saved' : 'Save'}
+        {isSaved ? 'Saved' : 'Save to list'}
       </ElemButton>
 
       <Transition.Root show={isOpen} as={Fragment}>
@@ -290,37 +285,32 @@ export const ElemSaveToList: FC<Props> = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-                <div className="absolute top-1 right-1">
+                <Dialog.Title className="text-lg font-medium flex items-center justify-between px-4 py-2 border-b border-gray-200">
+                  <span>Save to List</span>
                   <button
-                    onClick={onCloseSaveToListDialog}
                     type="button"
-                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
+                    onClick={onCloseSaveToListDialog}
+                    className="focus-visible:outline-none"
                   >
-                    <span className="sr-only">Close</span>
-                    <IconX className="h-6 w-6 text-white" />
+                    <IconX className="w-5 h-5" />
                   </button>
-                </div>
-                <div className="flex items-center justify-between px-3 py-1.5 from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
-                  <Dialog.Title className="text-lg font-bold text-white">
-                    Save to List
-                  </Dialog.Title>
-                </div>
+                </Dialog.Title>
 
                 {listsData.length === 0 && (
-                  <p className="p-3 text-slate-500 text-lg">
+                  <p className="mt-2 text-slate-500">
                     Group organizations that matter to you in a list so you can
                     compare, sort, and more.
                   </p>
                 )}
 
-                <ul className="max-h-96 overflow-y-auto scrollbar-hide divide-y divide-slate-100">
+                <ul className="max-h-96 overflow-y-auto scrollbar-hide divide-y divide-gray-200">
                   {listsData?.map(list => {
                     const selected = isSelected(list);
 
                     return (
                       <li key={list.id}>
                         <InputCheckbox
-                          className="w-full hover:bg-slate-100"
+                          className="w-full hover:bg-gray-100"
                           inputClass="ml-3"
                           labelClass="grow py-3 pr-3"
                           label={getNameFromListName(list)}
@@ -335,16 +325,15 @@ export const ElemSaveToList: FC<Props> = ({
                 {!showNew && listsData.length > 0 && (
                   <div className="flex border-t border-slate-300 p-3">
                     <div className="ml-auto">
-                      <ElemButton btn="primary" onClick={onOpenNewListForm}>
-                        <IconListPlus className="w-6 h-6 mr-1" />
-                        Create a New List
+                      <ElemButton btn="default" onClick={onOpenNewListForm}>
+                        Create new list
                       </ElemButton>
                     </div>
                   </div>
                 )}
 
                 {(showNew || listsData.length === 0) && (
-                  <div className="p-3 border-t border-slate-300 ease-in-out duration-300">
+                  <div className="mt-3 ease-in-out duration-300">
                     <label>
                       <InputText
                         label="Name"
@@ -361,7 +350,7 @@ export const ElemSaveToList: FC<Props> = ({
                         }`}
                       />
                       {error === '' ? null : (
-                        <div className="mt-2 font-bold text-sm text-rose-400">
+                        <div className="mt-2 font-medium text-sm text-rose-400">
                           {error}
                         </div>
                       )}
@@ -372,7 +361,7 @@ export const ElemSaveToList: FC<Props> = ({
                         className="mt-3 ml-auto"
                         disabled={listName === '' || error ? true : false}
                         roundedFull
-                        btn="primary"
+                        btn="purple"
                       >
                         Create
                       </ElemButton>

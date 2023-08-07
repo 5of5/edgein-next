@@ -23,7 +23,7 @@ type Props = {
   refetchLists: () => void;
 };
 
-export const ElemLists: React.FC<Props> = ({
+export const ElemGroupLists: React.FC<Props> = ({
   group,
   lists,
   refetchLists,
@@ -75,7 +75,7 @@ export const ElemLists: React.FC<Props> = ({
         toast.custom(
           t => (
             <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+              className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
             >
@@ -111,7 +111,7 @@ export const ElemLists: React.FC<Props> = ({
       toast.custom(
         t => (
           <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+            className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
             }`}
           >
@@ -146,16 +146,12 @@ export const ElemLists: React.FC<Props> = ({
 
   return (
     <div className={`${className ? className : ''}`}>
-      <div className="bg-white shadow rounded-lg px-4 py-3 shrink-0">
-        <div className="flex items-center justify-between pb-1 border-b border-black/10">
+      <div className="shrink-0 border border-gray-300 rounded-lg">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-300">
           <div>
-            <h2 className="text-lg font-bold">{`Lists (${lists.length})`}</h2>
+            <h2 className="text-lg font-medium">{`Lists (${lists.length})`}</h2>
           </div>
-          <ElemButton
-            btn="transparent"
-            onClick={() => setIsOpenAddList(true)}
-            className="!px-0 !py-0"
-          >
+          <ElemButton btn="default" onClick={() => setIsOpenAddList(true)}>
             <IconPlus className="w-5 h-5 mr-1" />
             <span>Add List</span>
           </ElemButton>
@@ -164,22 +160,24 @@ export const ElemLists: React.FC<Props> = ({
         {lists?.length === 0 ? (
           <div className="w-full p-12 text-center">
             <IconCustomList
-              className="mx-auto h-12 w-12 text-slate-300"
+              className="mx-auto h-12 w-12 text-gray-300"
               title="Lists"
             />
-            <h3 className="mt-2 text-lg font-bold">
+            <h3 className="mt-2 text-lg font-medium">
               No lists have been added to group yet.
             </h3>
 
-            <button
+            <ElemButton
+              className="mt-2"
+              btn="default"
               onClick={() => setIsOpenAddList(true)}
-              className="mt-1 text-primary-500 hover:underline"
             >
-              Share one of your lists.
-            </button>
+              <IconPlus className="w-5 h-5 mr-1" />
+              <span>Add List</span>
+            </ElemButton>
           </div>
         ) : (
-          <ul className="mt-4 flex flex-col space-y-5">
+          <ul className="px-4 py-3 flex flex-col space-y-3">
             {lists.map(item => {
               if (!item) {
                 return;
@@ -197,21 +195,18 @@ export const ElemLists: React.FC<Props> = ({
                       getNameFromListName(item),
                     )}`}
                   >
-                    <a className="flex items-start space-x-2 group">
-                      <div className="flex items-center justify-center shrink-0 w-6 h-6">
-                        <IconCustomList className="object-fit max-w-full max-h-full group-hover:text-primary-500" />
-                      </div>
+                    <a className="flex items-start space-x-2 text-sm">
                       <div>
                         <h3
-                          className="line-clamp-1 break-all font-bold leading-tight group-hover:text-primary-500"
+                          className="line-clamp-1 break-all font-medium hover:underline"
                           title={getNameFromListName(item)}
                         >
                           {getNameFromListName(item)}
                         </h3>
 
-                        <p className="text-sm text-gray-400">
+                        <p className="text-gray-500">
                           <span className="capitalize">
-                            {item.created_by?.display_name}
+                            By {item.created_by?.display_name}
                           </span>
                           <span aria-hidden="true"> · </span>
                           {formatDateShown(item?.created_at)}
@@ -221,8 +216,7 @@ export const ElemLists: React.FC<Props> = ({
                   </Link>
 
                   <ElemButton
-                    btn="slate"
-                    size="sm"
+                    btn="default"
                     className={`${isFollowing ? '' : ''}`}
                     onClick={() => handleToggleFollow(item.id, isFollowing)}
                   >

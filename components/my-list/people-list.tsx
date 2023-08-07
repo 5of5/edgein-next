@@ -46,16 +46,16 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
           <div>
             <a
               href={`/people/` + props.row.original?.person?.slug}
-              className="flex items-center space-x-3 shrink-0 group transition-all"
+              className="flex items-center space-x-3 shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.person?.picture}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-black/10 rounded-lg overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-lg overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
-                placeholderClass="text-slate-300"
+                placeholderClass="text-gray-300"
               />
-              <p className="font-bold line-clamp-2 break-words group-hover:text-primary-500">
+              <p className="font-medium line-clamp-2 break-words hover:underline">
                 {props.value}
               </p>
             </a>
@@ -86,7 +86,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
                       <a
                         key={index}
                         href={`mailto:${email}`}
-                        className="block text-sm hover:text-primary-500"
+                        className="block text-sm hover:underline"
                       >
                         {email}
                       </a>
@@ -116,7 +116,8 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
             </div>
           );
         },
-        minWidth: 160,
+        //	disableSortBy: true,
+        width: 200,
       },
       {
         Header: 'Linkedin',
@@ -140,7 +141,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
           );
         },
         disableSortBy: true,
-        minWidth: 160,
+        width: 200,
       },
       {
         Header: 'Github',
@@ -164,7 +165,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
           );
         },
         disableSortBy: true,
-        minWidth: 160,
+        width: 200,
       },
     ],
     [],
@@ -188,7 +189,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+      <div className="rounded-lg px-4 border border-gray-200">
         <PlaceholderTable />
       </div>
     );

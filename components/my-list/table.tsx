@@ -169,13 +169,11 @@ export const Table: FC<Props> = ({
   };
 
   return (
-    <div className="rounded-lg p-5 bg-white shadow mb-8">
+    <div className="px-4 mt-4">
       <div className="sm:flex items-start justify-between mb-2">
-        {listName && (
-          <h2 className="font-bold text-lg capitalize mr-2">
-            {`${listName}: ${startCase(resourceType)}`}
-          </h2>
-        )}
+        <h2 className="font-medium capitalize mr-2">
+          {startCase(resourceType)}
+        </h2>
 
         {['companies', 'investors'].includes(resourceType) &&
           fundingTotal !== undefined &&
@@ -233,13 +231,13 @@ export const Table: FC<Props> = ({
         </div>
       )}
 
-      <div className="relative -mx-5 lg:mx-0">
+      <div className="relative">
         <div className="absolute pointer-events-none w-8 bg-gradient-to-l from-white z-10 rounded-tr-lg rounded-br-lg top-px bottom-px right-0 sm:right-px"></div>
-        <div className="w-full border-y border-black/10 overflow-auto lg:border lg:rounded-lg">
+        <div className="w-full border-y border-gray-200 overflow-auto lg:border lg:rounded-lg">
           {data.length > 0 ? (
             <table
               {...getTableProps()}
-              className="table-auto divide-y divide-black/10 overscroll-x-none"
+              className="table-auto divide-y divide-gray-200 overscroll-x-none"
             >
               <thead className="">
                 {headerGroups.map(headerGroup => {
@@ -266,7 +264,7 @@ export const Table: FC<Props> = ({
                           <th
                             key={key}
                             {...restColumnProps}
-                            className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left min-w-content`}
+                            className="relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content bg-[#FCFCFC] text-gray-600"
                           >
                             <div className="flex items-center min-w-content">
                               {column.render('Header')}
@@ -342,26 +340,6 @@ export const Table: FC<Props> = ({
                                   </Menu.Items>
                                 </Menu>
                               )}
-
-                              {column.canResize && (
-                                <div
-                                  {...column.getResizerProps()}
-                                  className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${
-                                    column.isResizing
-                                      ? 'isResizing select-none'
-                                      : ''
-                                  }`}
-                                  onClick={event => event.stopPropagation()}
-                                >
-                                  <div
-                                    className={`w-px h-full ${
-                                      column.isResizing
-                                        ? 'bg-primary-500'
-                                        : 'bg-black/10 group-hover:bg-primary-500'
-                                    }`}
-                                  ></div>
-                                </div>
-                              )}
                             </div>
                           </th>
                         );
@@ -372,18 +350,14 @@ export const Table: FC<Props> = ({
               </thead>
               <tbody
                 {...getTableBodyProps()}
-                className="bg-white divide-y divide-black/10"
+                className="divide-y divide-gray-200"
               >
                 {rows.map(row => {
                   prepareRow(row);
                   const { key, ...restRowProps } = row.getRowProps();
 
                   return (
-                    <tr
-                      key={key}
-                      {...restRowProps}
-                      className="min-w-full bg-white hover:bg-slate-100"
-                    >
+                    <tr key={key} {...restRowProps} className="min-w-full">
                       {row.cells.map(cell => {
                         const { key, ...restCellProps } = cell.getCellProps({
                           style: {

@@ -44,11 +44,11 @@ export const ElemCredibility: React.FC<Props> = ({
   }
 
   return (
-    <section className={className}>
-      {heading && <h2 className="text-xl font-bold">{heading}</h2>}
+    <section className={`rounded-lg border border-gray-300 ${className}`}>
+      {heading && <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>}
       <div
-        className={`grid gap-2 overflow-visible ${
-          mini ? `grid-cols-${credibilityItems.length}` : 'grid-cols-3 mt-3'
+        className={`grid gap-2 overflow-visible p-4 ${
+          mini ? `grid-cols-${credibilityItems.length}` : 'grid-cols-3'
         }`}
       >
         {credibilityItems.map((item, index: number) => {

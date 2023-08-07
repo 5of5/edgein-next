@@ -1,13 +1,13 @@
 import { useGetCompaniesByListIdQuery } from '@/graphql/types';
-import { last, orderBy } from 'lodash';
+import { orderBy } from 'lodash';
 import moment from 'moment-timezone';
 import { FC, useMemo, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { numberWithCommas } from '@/utils';
-import { ElemReactions } from '@/components/elem-reactions';
 import { Table } from './table';
 import { TableEmptyCell } from './table-empty-cell';
 import { PlaceholderTable } from '../placeholders';
+import Link from 'next/link';
 
 type Props = {
   listId: number;
@@ -63,16 +63,16 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
           <div>
             <a
               href={`/companies/` + props.row.original?.company?.slug}
-              className="flex items-center space-x-3 shrink-0 group transition-all"
+              className="flex items-center space-x-3 shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.company?.logo}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
-                placeholderClass="text-slate-300"
+                placeholderClass="text-gray-300"
               />
-              <p className="font-bold line-clamp-2 break-words group-hover:text-primary-500">
+              <p className="font-medium line-clamp-2 break-words hover:underline">
                 {props.value}
               </p>
             </a>
@@ -85,49 +85,14 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         disableHiding: true,
       },
       {
-        Header: 'Token',
-        accessor: 'company.coin.ticker' as const,
-        Cell: (props: any) => (
-          <>{props.value ? <div>{props.value}</div> : <TableEmptyCell />}</>
-        ),
-        width: 100,
-      },
-      {
-        Header: 'Industries',
-        accessor: 'company.tags' as const,
-        Cell: (props: any) => (
-          <div className="whitespace-nowrap truncate">
-            {props.value ? (
-              <>
-                {props.value?.map((tag: string, index: number) => {
-                  return (
-                    <div key={index} className="inline">
-                      <a
-                        href={`/companies/?tags=${tag}`}
-                        className="cursor-pointer border-primary-500 hover:border-b hover:text-primary-500"
-                      >
-                        {tag}
-                      </a>
-                      {last(props.value) === tag ? '' : ','}{' '}
-                    </div>
-                  );
-                })}
-              </>
-            ) : (
-              <TableEmptyCell />
-            )}
-          </div>
-        ),
-        disableSortBy: true,
-        width: 200,
-      },
-      {
         Header: 'Description',
         accessor: 'company.overview' as const,
         Cell: (props: any) => (
           <div>
             {props.value ? (
-              <p className="line-clamp-2 text-sm">{props.value}</p>
+              <p className="line-clamp-3 text-sm text-gray-500">
+                {props.value}
+              </p>
             ) : (
               <TableEmptyCell />
             )}
@@ -138,12 +103,45 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         minWidth: 300,
       },
       {
+        Header: 'Tags',
+        accessor: 'company.tags' as const,
+        Cell: (props: any) => (
+          <div className="flex flex-wrap gap-1">
+            {props.value ? (
+              <>
+                {props.value?.map((tag: string, index: number) => {
+                  return (
+                    <Link href={`/companies/?tags=${tag}`} key={index}>
+                      <a className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
+                        {tag}
+                      </a>
+                    </Link>
+                  );
+                })}
+              </>
+            ) : (
+              <TableEmptyCell />
+            )}
+          </div>
+        ),
+        disableSortBy: true,
+        width: 400,
+      },
+      {
+        Header: 'Token',
+        accessor: 'company.coin.ticker' as const,
+        Cell: (props: any) => (
+          <>{props.value ? <div>{props.value}</div> : <TableEmptyCell />}</>
+        ),
+        width: 100,
+      },
+      {
         Header: 'City',
         accessor: 'company.location_json.city' as const,
         Cell: (props: any) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'State',
@@ -151,7 +149,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Country',
@@ -159,7 +157,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Founded',
@@ -167,7 +165,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => {
           return <>{props.value ? <p>{props.value}</p> : <TableEmptyCell />}</>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Employees',
@@ -183,7 +181,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
             </>
           );
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Total Funding',
@@ -210,7 +208,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
             </div>
           );
         },
-        width: 140,
+        width: 200,
       },
       {
         Header: '# Funding Rounds',
@@ -219,7 +217,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
           const numberOfRounds = props.value;
           return <>{numberOfRounds ? numberOfRounds : <TableEmptyCell />}</>;
         },
-        width: 100,
+        width: 200,
       },
       {
         Header: 'Last Funding Date',
@@ -247,7 +245,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
             </div>
           );
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Last Funding Type',
@@ -267,23 +265,6 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
-      },
-      {
-        Header: 'Reactions',
-        accessor: 'company' as const,
-        Cell: (props: any) => (
-          <div>
-            {props.value && (
-              <ElemReactions
-                resource={props.value}
-                resourceType={'companies'}
-                isInteractive={false}
-              />
-            )}
-          </div>
-        ),
-        width: 200,
-        disableSortBy: true,
       },
     ],
     [],
@@ -307,7 +288,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+      <div className="rounded-lg px-4 border border-gray-200">
         <PlaceholderTable />
       </div>
     );

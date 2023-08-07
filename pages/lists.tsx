@@ -22,6 +22,7 @@ import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { ElemListCard } from '@/components/elem-list-card';
 import { CreateListDialog } from '@/components/my-list/create-list-dialog';
+import { ElemButton } from '@/components/elem-button';
 import { ElemEmptyState } from '@/components/lists/elem-empty-state';
 
 type Props = {
@@ -127,43 +128,43 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
 
   return (
     <DashboardLayout>
-      <div className="pb-20">
-        <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x bg-white shadow rounded-lg shrink-0">
+      <div className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200">
+        <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
           {LISTS_TABS &&
-            LISTS_TABS.map((tab, index: number) =>
+            LISTS_TABS.map((tab: any, index: number) =>
               tab.disabled === true ? (
                 <Fragment key={index}></Fragment>
               ) : (
-                <button
+                <ElemButton
                   key={index}
                   onClick={() => setSelectedListTab(tab)}
-                  className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-                    selectedListTab.id === tab.id
-                      ? 'text-primary-500 border-primary-500'
-                      : 'border-transparent  hover:bg-slate-200'
-                  } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
+                  btn="gray"
+                  roundedFull={false}
+                  className="rounded-lg"
                 >
                   {tab.name}
-                </button>
+                </ElemButton>
               ),
             )}
         </nav>
+      </div>
 
-        {lists?.length === 0 ? (
-          <ElemEmptyState
-            selectedTab={selectedListTab}
-            onChangeTab={setSelectedListTab}
-            onClickCreateList={onClickCreateList}
-          />
-        ) : (
-          <div className="w-full mt-6 mb-2">
-            <h1 className="font-bold text-xl capitalize">
-              {selectedListTab.name}
-            </h1>
-          </div>
-        )}
+      {lists?.length === 0 ? (
+        <ElemEmptyState
+          selectedTab={selectedListTab}
+          onChangeTab={setSelectedListTab}
+          onClickCreateList={onClickCreateList}
+        />
+      ) : (
+        <div className="px-4 pb-2">
+          <h1 className="font-medium text-xl capitalize">
+            {selectedListTab.name}
+          </h1>
+        </div>
+      )}
 
-        <div className={`grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}>
+      <div className="px-4 py-3">
+        <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">
@@ -209,7 +210,6 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
           totalItems={listsAggregate}
           page={page}
           itemsPerPage={LIMIT}
-          numeric
           onClickPrev={() => setPage(page - 1)}
           onClickNext={() => setPage(page + 1)}
           onClickToPage={selectedPage => setPage(selectedPage)}

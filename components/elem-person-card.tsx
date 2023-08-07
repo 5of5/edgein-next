@@ -75,8 +75,8 @@ export const ElemPersonCard: React.FC<Props> = ({
   return (
     <div>
       <div
-        className={`flex gap-2 items-start p-1 border border-black/10 rounded-lg transition-all hover:shadow hover:-translate-y-0.5 ${
-          end_date ? 'opacity-70 hover:opacity-100' : ''
+        className={`flex gap-2 items-start ${
+          end_date ? 'opacity-60 hover:opacity-100' : ''
         }`}
       >
         <Link href={href}>
@@ -95,13 +95,13 @@ export const ElemPersonCard: React.FC<Props> = ({
           <Link href={href}>
             <a className="block">
               {heading && (
-                <h3 className="font-bold text-lg truncate" title={heading}>
+                <h3 className="font-medium truncate" title={heading}>
                   {heading}
                 </h3>
               )}
 
               {(founder || text || organizationName) && (
-                <p className="text-sm line-clamp-2">
+                <p className="text-sm text-gray-500 line-clamp-2">
                   {founder && <span>Founder</span>}
                   {founder && text && `, `}
                   {text && <span>{text}</span>}
@@ -114,7 +114,7 @@ export const ElemPersonCard: React.FC<Props> = ({
               )}
 
               {end_date && (
-                <div className="text-xs">
+                <div className="text-xs text-gray-500">
                   Ended {moment(end_date).format('MMM Do, YYYY')}
                 </div>
               )}

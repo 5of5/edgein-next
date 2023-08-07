@@ -1,13 +1,13 @@
 import { FC, useState, useMemo } from 'react';
-import { first, last } from 'lodash';
+import { first } from 'lodash';
 import moment from 'moment-timezone';
 import { useGetVcFirmsByListIdQuery } from '@/graphql/types';
 import { numberWithCommas } from '@/utils';
 import { ElemPhoto } from '@/components/elem-photo';
-import { ElemReactions } from '@/components/elem-reactions';
 import { PlaceholderTable } from '../placeholders';
 import { Table } from './table';
 import { TableEmptyCell } from './table-empty-cell';
+import Link from 'next/link';
 
 type Props = {
   listId: number;
@@ -86,16 +86,16 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
           <div>
             <a
               href={`/investors/` + props.row.original?.vc_firm?.slug}
-              className="flex items-center space-x-3 shrink-0 group transition-all"
+              className="flex items-center space-x-3 shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.vc_firm?.logo}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
                 placeholderClass="text-slate-300"
               />
-              <p className="font-bold line-clamp-2 break-words group-hover:text-primary-500">
+              <p className="font-medium line-clamp-2 break-words hover:underline">
                 {props.value}
               </p>
             </a>
@@ -106,50 +106,14 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         disableHiding: true,
       },
       {
-        Header: 'Industries',
-        accessor: 'vc_firm.tags' as const,
-        Cell: (props: any) => (
-          <div className="whitespace-nowrap truncate">
-            {props.value ? (
-              <>
-                {props.value?.map((tag: string, index: number) => {
-                  return (
-                    <div key={index} className="inline">
-                      <a
-                        href={`/investors/?tags=${tag}`}
-                        className="cursor-pointer border-primary-500 hover:border-b hover:text-primary-500"
-                      >
-                        {tag}
-                      </a>
-                      {last(props.value) === tag ? '' : ','}{' '}
-                    </div>
-                  );
-                })}
-              </>
-            ) : (
-              <TableEmptyCell />
-            )}
-          </div>
-        ),
-        disableSortBy: true,
-        width: 200,
-      },
-      {
-        Header: 'Location',
-        accessor: 'vc_firm.location' as const,
-        Cell: (props: any) => {
-          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
-        },
-        disableSortBy: true,
-        minWidth: 180,
-      },
-      {
         Header: 'Description',
         accessor: 'vc_firm.overview' as const,
         Cell: (props: any) => (
           <div>
             {props.value ? (
-              <p className="line-clamp-2 text-sm">{props.value}</p>
+              <p className="line-clamp-3 text-sm text-gray-500">
+                {props.value}
+              </p>
             ) : (
               <TableEmptyCell />
             )}
@@ -160,12 +124,46 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         minWidth: 300,
       },
       {
+        Header: 'Tags',
+        accessor: 'vc_firm.tags' as const,
+        Cell: (props: any) => (
+          <div className="flex flex-wrap gap-1">
+            {props.value ? (
+              <>
+                {props.value?.map((tag: string, index: number) => {
+                  return (
+                    <Link href={`/investors/?tags=${tag}`} key={index}>
+                      <a className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
+                        {tag}
+                      </a>
+                    </Link>
+                  );
+                })}
+              </>
+            ) : (
+              <TableEmptyCell />
+            )}
+          </div>
+        ),
+        disableSortBy: true,
+        width: 400,
+      },
+      {
+        Header: 'Location',
+        accessor: 'vc_firm.location' as const,
+        Cell: (props: any) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+        disableSortBy: true,
+        width: 200,
+      },
+      {
         Header: 'Founded',
         accessor: 'vc_firm.year_founded' as const,
         Cell: (props: any) => {
           return <>{props.value ? <p>{props.value}</p> : <TableEmptyCell />}</>;
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Investments Total',
@@ -200,7 +198,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
             </div>
           );
         },
-        width: 140,
+        width: 200,
       },
       {
         Header: '# Investment Rounds',
@@ -245,7 +243,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
             </div>
           );
         },
-        width: 120,
+        width: 200,
       },
       {
         Header: 'Last Investment Type',
@@ -275,23 +273,6 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
       },
-      {
-        Header: 'Reactions',
-        accessor: 'vc_firm' as const,
-        Cell: (props: any) => (
-          <>
-            {props.value && (
-              <ElemReactions
-                resource={props.value}
-                resourceType={'vc_firms'}
-                isInteractive={false}
-              />
-            )}
-          </>
-        ),
-        width: 200,
-        disableSortBy: true,
-      },
     ],
     [],
   );
@@ -314,7 +295,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+      <div className="rounded-lg px-4 border border-gray-200">
         <PlaceholderTable />
       </div>
     );

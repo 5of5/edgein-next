@@ -56,13 +56,11 @@ const ElemNewsArticles: React.FC<Props> = ({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2 border-b border-black/10">
-        <h2 className="text-xl font-bold">
-          {heading ? heading : 'Activity Timeline'}
-        </h2>
+      <div className="flex items-center justify-between px-4 pt-2">
+        <h2 className="text-lg font-medium">{heading ? heading : 'News'}</h2>
       </div>
 
-      <div className="py-4">
+      <div className="p-4">
         {articles && articles.length > 0 ? (
           <>
             <ul className="flex flex-col">
@@ -81,7 +79,7 @@ const ElemNewsArticles: React.FC<Props> = ({
             {articles.length < totalArticles && (
               <div className="mt-6">
                 <ElemButton
-                  btn="ol-primary"
+                  btn="default"
                   onClick={showMoreNews}
                   className="w-full"
                 >
@@ -92,10 +90,10 @@ const ElemNewsArticles: React.FC<Props> = ({
           </>
         ) : (
           <div className="flex flex-col items-center justify-center lg:p-5">
-            <div className="text-slate-600 lg:text-xl">
+            <div className="text-gray-500 lg:text-xl">
               There is no recent news for this organization.
             </div>
-            <ElemButton onClick={show} btn="slate" className="mt-3">
+            <ElemButton onClick={show} btn="default" className="mt-3">
               Request data or contribute
             </ElemButton>
           </div>

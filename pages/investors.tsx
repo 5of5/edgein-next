@@ -6,7 +6,6 @@ import {
   PlaceholderInvestorCard,
   PlaceholderTable,
 } from '@/components/placeholders';
-import { ElemRecentInvestments } from '@/components/investors/elem-recent-investments';
 import { ElemButton } from '@/components/elem-button';
 import { Pagination } from '@/components/pagination';
 import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
@@ -23,6 +22,8 @@ import {
   useGetVcFirmsQuery,
   Vc_Firms_Bool_Exp,
   Vc_Firms,
+  Vc_Firms_Order_By,
+  Order_By,
 } from '@/graphql/types';
 import { runGraphQl } from '@/utils';
 import { investorChoices } from '@/utils/constants';
@@ -32,11 +33,22 @@ import { onTrackView } from '@/utils/track';
 import { ElemFilter } from '@/components/elem-filter';
 import { processInvestorsFilters } from '@/utils/filter';
 import { useIntercom } from 'react-use-intercom';
-import useFilterParams from '@/hooks/use-filter-params';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import ElemLibrarySelector from '@/components/elem-library-selector';
+import {
+  SWITCH_LIBRARY_ALLOWED_DOMAINS,
+  SWITCH_LIBRARY_ALLOWED_EMAILS,
+} from '@/utils/constants';
+import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import { ElemAddFilter } from '@/components/elem-add-filter';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { getPersonalizedData } from '@/utils/personalizedTags';
+import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 
 type Props = {
   vcFirmCount: number;
@@ -51,11 +63,20 @@ const Investors: NextPage<Props> = ({
 }) => {
   const { user } = useUser();
 
+  const personalizedTags = getPersonalizedData({ user });
+
   const [initialLoad, setInitialLoad] = useState(true);
 
   const router = useRouter();
 
   const { selectedLibrary } = useLibrary();
+
+  const isDisplaySelectLibrary =
+    user?.email &&
+    (SWITCH_LIBRARY_ALLOWED_EMAILS.includes(user.email) ||
+      SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
+        user.email.endsWith(domain),
+      ));
 
   // Investor Status Tag
   const [selectedStatusTag, setSelectedStatusTag] = useStateParams(
@@ -67,8 +88,8 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  // Filters
-  const { selectedFilters, setSelectedFilters } = useFilterParams();
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -95,6 +116,13 @@ const Investors: NextPage<Props> = ({
   const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Vc_Firms_Order_By>();
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -127,9 +155,9 @@ const Investors: NextPage<Props> = ({
       : [tag, ...currentFilterOption];
 
     if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, industry: undefined });
+      onChangeSelectedFilters({ ...selectedFilters, industry: undefined });
     } else {
-      setSelectedFilters({
+      onChangeSelectedFilters({
         ...selectedFilters,
         industry: {
           ...selectedFilters?.industry,
@@ -188,6 +216,7 @@ const Investors: NextPage<Props> = ({
     offset,
     limit,
     where: filters as Vc_Firms_Bool_Exp,
+    orderBy: [orderByQuery],
   });
 
   if (!isLoading && initialLoad) {
@@ -201,76 +230,186 @@ const Investors: NextPage<Props> = ({
 
   const { showNewMessages } = useIntercom();
 
+  const layoutItems = [
+    {
+      id: 0,
+      label: 'Grid View',
+      value: 'grid',
+      onClick: () => setTableLayout(false),
+    },
+    {
+      id: 1,
+      label: 'List View',
+      value: 'list',
+      onClick: () => setTableLayout(true),
+    },
+  ];
+
+  const shouldHidePersonalized =
+    selectedFilters || selectedStatusTag?.title !== 'New';
+
   return (
-    <div className="relative">
-      {!initialLoad && (
-        <ElemHeading
-          title="Investors"
-          subtitle={`We're tracking investments made in ${selectedLibrary} companies and projects to provide you with an index of the most active and influential capital in the industry.`}
-        ></ElemHeading>
-      )}
-
-      <div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
-        <ElemRecentInvestments heading="Recent Updates" />
-      </div>
-      <div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow p-5">
-          <h2 className="text-xl font-bold">Investors</h2>
-
+    <DashboardLayout>
+      <div className="relative">
+        <div>
           <div
-            className="relative mt-2 mb-4 flex items-center justify-between lg:border-y lg:border-black/10"
+            className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
             role="tablist"
           >
-            <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x border-y border-black/10 pr-32 sm:pr-0 lg:border-none">
+            <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x pr-32 sm:pr-0 lg:border-none">
               {investorsStatusTags &&
                 investorsStatusTags.map((tab: any, index: number) =>
                   tab.disabled === true ? (
                     <Fragment key={index}></Fragment>
                   ) : (
-                    <button
+                    <ElemButton
                       key={index}
                       onClick={() => setSelectedStatusTag(tab)}
-                      className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-                        selectedStatusTag.value === tab.value
-                          ? 'text-primary-500 border-primary-500'
-                          : 'border-transparent  hover:bg-slate-200'
-                      } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
+                      btn="gray"
+                      roundedFull={false}
+                      className="rounded-lg"
                     >
+                      {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
                       {tab.title}
-                    </button>
+                    </ElemButton>
                   ),
                 )}
             </nav>
 
-            <div className="absolute right-0 flex items-center py-1.5 sm:relative sm:right-auto">
-              <div className="w-6 h-10 bg-gradient-to-r from-transparent to-white sm:hidden"></div>
-              <div className="hidden text-xs font-bold leading-sm uppercase pr-1 sm:block">
-                Layout:
-              </div>
-              <div className="bg-slate-200 rounded-full p-0.5">
-                <button
-                  onClick={() => setTableLayout(false)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    !tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
-                  <IconGrid className="w-5 h-5" title="Grid layout" />
-                </button>
-                <button
-                  onClick={() => setTableLayout(true)}
-                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-                    tableLayout && 'bg-white shadow-sm text-primary-500'
-                  }`}
-                >
-                  <IconTable className="w-5 h-5" title="Table layout" />
-                </button>
-              </div>
+            <div className="flex space-x-2">
+              {/* {isDisplaySelectLibrary &&  */}
+              <ElemLibrarySelector />
+              {/* } */}
+              <ElemDropdown items={layoutItems} />
+
+              <ElemAddFilter
+                resourceType="vc_firms"
+                onSelectFilterOption={onSelectFilterOption}
+              />
+
+              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
             </div>
           </div>
 
-          <ElemInviteBanner />
+          <div className="px-4">
+            <ElemFilter
+              resourceType="vc_firms"
+              filterValues={selectedFilters}
+              onSelectFilterOption={onSelectFilterOption}
+              onChangeFilterValues={onChangeSelectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: { ...filterParams, open: false },
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => onChangeSelectedFilters(null)}
+            />
+          </div>
 
-          <div>
+          <ElemInviteBanner className="mt-3 mx-4" />
+
+          <div className="mt-6 px-4">
+            {personalizedTags.locationTags.length != 0 &&
+              !shouldHidePersonalized &&
+              personalizedTags.locationTags.map(location => (
+                <>
+                  <InvestorsByFilter
+                    key={location}
+                    headingText={`Trending in ${location}`}
+                    tagOnClick={filterByTag}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        { status_tags: { _contains: 'Trending' } },
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+
+                  <InvestorsByFilter
+                    key={location}
+                    headingText={`New in ${location}`}
+                    tagOnClick={filterByTag}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                </>
+              ))}
+
+            {personalizedTags.industryTags.length != 0 &&
+              !shouldHidePersonalized &&
+              personalizedTags.industryTags.map(industry => (
+                <InvestorsByFilter
+                  key={industry}
+                  headingText={`Trending in ${industry}`}
+                  tagOnClick={filterByTag}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      {
+                        status_tags: {
+                          _contains: 'Trending',
+                        },
+                      },
+                      {
+                        tags: {
+                          _contains: industry,
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+
+            {!shouldHidePersonalized && (
+              <InvestorsByFilter
+                headingText={`Just acquired`}
+                tagOnClick={filterByTag}
+                filters={{
+                  _and: [
+                    { slug: { _neq: '' } },
+                    { library: { _contains: selectedLibrary } },
+                    {
+                      status_tags: {
+                        _contains: 'Acquired',
+                      },
+                    },
+                  ],
+                }}
+              />
+            )}
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
@@ -300,7 +439,7 @@ const Investors: NextPage<Props> = ({
                     <PlaceholderTable />
                   </div>
                 ) : (
-                  <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
                     {Array.from({ length: 9 }, (_, i) => (
                       <PlaceholderInvestorCard key={i} />
                     ))}
@@ -317,63 +456,31 @@ const Investors: NextPage<Props> = ({
                 onClickPrev={() => setPage(page - 1)}
                 onClickNext={() => setPage(page + 1)}
                 filterByTag={filterByTag}
-                filterValues={selectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({
-                    ...selectedFilters,
-                    [name]: filterParams,
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  setSelectedFilters({ ...selectedFilters, [name]: undefined });
-                }}
-                onReset={() => setSelectedFilters(null)}
               />
             ) : (
               <>
-                <ElemFilter
-                  className="py-3"
-                  resourceType="vc_firms"
-                  filterValues={selectedFilters}
-                  onApply={(name, filterParams) => {
-                    filters._and = defaultFilters;
-                    setSelectedFilters({
-                      ...selectedFilters,
-                      [name]: filterParams,
-                    });
-                  }}
-                  onClearOption={name => {
-                    filters._and = defaultFilters;
-                    setSelectedFilters({
-                      ...selectedFilters,
-                      [name]: undefined,
-                    });
-                  }}
-                  onReset={() => setSelectedFilters(null)}
-                />
-
                 {vcFirms?.length != 0 && (
-                  <div
-                    data-testid="investors"
-                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                  >
-                    {vcFirms?.map(vcfirm => (
-                      <ElemInvestorCard
-                        key={vcfirm.id}
-                        vcFirm={vcfirm as Vc_Firms}
-                        tagOnClick={filterByTag}
-                      />
-                    ))}
-                  </div>
+                  <>
+                    <div className="text-2xl font-bold ml-4">All investors</div>
+                    <div
+                      data-testid="investors"
+                      className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                    >
+                      {vcFirms?.map(vcfirm => (
+                        <ElemInvestorCard
+                          key={vcfirm.id}
+                          vcFirm={vcfirm as Vc_Firms}
+                          tagOnClick={filterByTag}
+                        />
+                      ))}
+                    </div>
+                  </>
                 )}
                 <Pagination
                   shownItems={vcFirms?.length}
                   totalItems={vcfirms_aggregate}
                   page={page}
                   itemsPerPage={limit}
-                  numeric
                   onClickPrev={() => setPage(page - 1)}
                   onClickNext={() => setPage(page + 1)}
                   onClickToPage={selectedPage => setPage(selectedPage)}
@@ -407,9 +514,10 @@ const Investors: NextPage<Props> = ({
             </div>
           )}
         </div>
+
+        <Toaster />
       </div>
-      <Toaster />
-    </div>
+    </DashboardLayout>
   );
 };
 
@@ -422,6 +530,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       where: {
         _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
       },
+      orderBy: [{ name: Order_By.Asc }],
     },
     context.req.cookies,
   );
@@ -451,15 +560,15 @@ const investorFilterValue = investorChoices.map(option => {
   return {
     title: option.name,
     value: option.id,
-    icon: option.id,
-    disabled: option.disabled ? option.disabled : false,
+    icon: option.icon,
   };
 });
 
 const investorsStatusTags: TextFilter[] = [
   {
-    title: 'All Investors',
+    title: 'New',
     value: '',
+    icon: '✨',
   },
   ...investorFilterValue,
 ];
