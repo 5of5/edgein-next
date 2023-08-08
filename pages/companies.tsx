@@ -320,7 +320,7 @@ const Companies: NextPage<Props> = ({
                   headingText={`Trending in ${location}`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
-                  tableView={tableLayout}
+                  isTableView={tableLayout}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -344,7 +344,7 @@ const Companies: NextPage<Props> = ({
                   headingText={`New in ${location}`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
-                  tableView={tableLayout}
+                  isTableView={tableLayout}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -368,7 +368,7 @@ const Companies: NextPage<Props> = ({
                   headingText={`Trending in ${industry}`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
-                  tableView={tableLayout}
+                  isTableView={tableLayout}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -391,7 +391,7 @@ const Companies: NextPage<Props> = ({
                 headingText={`Just acquired`}
                 tagOnClick={filterByTag}
                 itemsPerPage={ITEMS_PER_PAGE}
-                tableView={tableLayout}
+                isTableView={tableLayout}
                 filters={{
                   _and: [
                     ...defaultFilters,

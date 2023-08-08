@@ -328,7 +328,7 @@ const Investors: NextPage<Props> = ({
                     headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
-                    tableView={tableLayout}
+                    isTableView={tableLayout}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
@@ -349,7 +349,7 @@ const Investors: NextPage<Props> = ({
                     headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
-                    tableView={tableLayout}
+                    isTableView={tableLayout}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
@@ -373,7 +373,7 @@ const Investors: NextPage<Props> = ({
                   headingText={`Just acquired`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
-                  tableView={tableLayout}
+                  isTableView={tableLayout}
                   filters={{
                     _and: [
                       { slug: { _neq: '' } },

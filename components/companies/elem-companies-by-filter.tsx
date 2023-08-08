@@ -18,7 +18,7 @@ type Props = {
   filters: DeepPartial<Companies_Bool_Exp>;
   itemsPerPage: number;
   tagOnClick: any;
-  tableView?: boolean;
+  isTableView?: boolean;
 };
 
 export const CompaniesByFilter: FC<Props> = ({
@@ -26,7 +26,7 @@ export const CompaniesByFilter: FC<Props> = ({
   filters,
   itemsPerPage,
   tagOnClick,
-  tableView = false,
+  isTableView = false,
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
@@ -62,7 +62,7 @@ export const CompaniesByFilter: FC<Props> = ({
   return (
     <div>
       <div className="text-2xl font-medium my-4">{headingText}</div>
-      {tableView ? (
+      {isTableView ? (
         <CompaniesTable
           companies={companies}
           pageNumber={page}
