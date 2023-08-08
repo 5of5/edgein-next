@@ -34,7 +34,7 @@ export const ElemEditTeam: React.FC<Props> = ({
               imgAlt={props.value.name}
               placeholder="user"
             />
-            <span className="text-md font-Metropolis font-normal text-dark-500 ml-3">
+            <span className="text-md  font-normal text-dark-500 ml-3">
               {props.value.name}
             </span>
           </div>

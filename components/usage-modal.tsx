@@ -132,7 +132,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 
                         <ElemButton
                           onClick={onLogin}
-                          btn="slate"
+                          btn="default"
                           className="w-full mt-5 mb-4"
                         >
                           Log in

@@ -75,7 +75,7 @@ export const ElemSubEvents: FC<Props> = ({
             There are no sub-events.
           </div>
           <ElemButton
-            btn="slate"
+            btn="default"
             onClick={() =>
               showNewMessages(
                 `Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`,

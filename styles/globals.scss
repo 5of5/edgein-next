@@ -2,33 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fonts */
-@layer base {
-  @font-face {
-    font-family: 'Metropolis';
-    src: url('./fonts/Metropolis-Regular.woff2') format('woff2'),
-      url('./fonts/Metropolis-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Metropolis';
-    src: url('./fonts/Metropolis-Medium.woff2') format('woff2'),
-      url('./fonts/Metropolis-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: medium;
-  }
-
-  @font-face {
-    font-family: 'Metropolis';
-    src: url('./fonts/Metropolis-Bold.woff2') format('woff2'),
-      url('./fonts/Metropolis-Bold.woff') format('woff');
-    font-weight: bold;
-  }
-}
-
 @layer utilities {
   .animation-delay-2000 {
     animation-delay: 2s;

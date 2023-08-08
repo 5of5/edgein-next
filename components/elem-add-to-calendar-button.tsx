@@ -54,7 +54,7 @@ const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
       >
         <div>
           <Menu.Button as="div">
-            <ElemButton btn="slate" className="flex items-center w-full">
+            <ElemButton btn="default" className="flex items-center w-full">
               <IconCalendarAdd className="w-5 h-5 mr-1 shrink-0" />
               <div className="whitespace-nowrap">Add to Calendar</div>
             </ElemButton>

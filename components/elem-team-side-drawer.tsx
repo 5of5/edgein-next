@@ -96,14 +96,14 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
               >
                 <Dialog.Panel className="p-4 bg-white min-h-screen text-left content-between">
                   <div>
-                    <h2 className="font-Metropolis text-dark-500 font-bold">{`${
+                    <h2 className=" text-dark-500 font-bold">{`${
                       memberToEdit && memberToEdit.id
                         ? 'Edit Employee'
                         : 'Add Employee'
                     }`}</h2>
 
                     <div className="mt-4">
-                      <label className="font-Metropolis text-sm font-bold text-slate-600">
+                      <label className=" text-sm font-bold text-slate-600">
                         Person
                       </label>
                       <InputSelect
@@ -135,7 +135,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                     </div>
 
                     <div className="mt-4">
-                      <label className="font-Metropolis text-sm font-bold text-slate-600">
+                      <label className=" text-sm font-bold text-slate-600">
                         Position
                       </label>
                       <InputSelect
@@ -163,12 +163,12 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         checked={employee.founder as boolean}
                         onChange={() => setValues('founder', !employee.founder)}
                       />
-                      <span className="text-sm font-Metropolis font-bold text-slate-600 ml-2">
+                      <span className="text-sm  font-bold text-slate-600 ml-2">
                         Founder
                       </span>
                     </div>
                     <div className="mt-4">
-                      <label className=" block  font-Metropolis text-sm font-bold text-slate-600">
+                      <label className=" block   text-sm font-bold text-slate-600">
                         Title
                       </label>
                       {/* <InputSelect
@@ -189,7 +189,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                     </div>
 
                     <div className="mt-4">
-                      <label className=" block  font-Metropolis text-sm font-bold text-slate-600">
+                      <label className=" block   text-sm font-bold text-slate-600">
                         Time Period
                       </label>
                       <input
@@ -197,7 +197,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         checked={current}
                         onChange={() => setCurrent(!current)}
                       />
-                      <span className="text-sm font-Metropolis font-normal text-slate-600 ml-2">
+                      <span className="text-sm  font-normal text-slate-600 ml-2">
                         Current
                       </span>
                       <InputDate

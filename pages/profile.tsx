@@ -224,7 +224,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 							/>
 
   // 							<div className="ml-5">
-  // 								<h2 className="font-bold font-Metropolis  text-slate-600">
+  // 								<h2 className="font-bold   text-slate-600">
   // 									{teamMember.title}
   // 								</h2>
   // 								<span className="font-thin text-slate-500 ">

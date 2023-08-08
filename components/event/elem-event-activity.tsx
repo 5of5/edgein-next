@@ -186,7 +186,7 @@ export const ElemEventActivity: React.FC<Props> = ({
             <div className="text-slate-600 lg:text-xl">
               There is no recent activity for this event.
             </div>
-            <ElemButton onClick={show} btn="slate" className="mt-3">
+            <ElemButton onClick={show} btn="default" className="mt-3">
               Request data or contribute
             </ElemButton>
           </div>

@@ -162,7 +162,7 @@ const Person: NextPage<Props> = props => {
                     />
 
                     {isCurrentUserProfile && (
-                      <ElemButton btn="slate" href="/profile/">
+                      <ElemButton btn="default" href="/profile/">
                         Edit profile
                       </ElemButton>
                     )}

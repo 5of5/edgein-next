@@ -65,13 +65,13 @@ const Organizations: FC<Props> = ({ dropdown }) => {
     <DashboardLayout>
       <div className="bg-white shadow rounded-lg p-5">
         <div className="flex">
-          <h2 className="text-dark-500 font-Metropolis font-bold text-xl">
+          <h2 className="text-dark-500  font-bold text-xl">
             My Organization(s)
           </h2>
         </div>
 
         <div className="flex mt-6 mb-2 relative border-b border-gray-100 pb-3">
-          <h2 className="text-dark-500 font-Metropolis font-bold text-md w-40">
+          <h2 className="text-dark-500  font-bold text-md w-40">
             Verified Organization(s)
           </h2>
           <div>
@@ -107,7 +107,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
                   />
 
                   <div className="ml-3">
-                    <h2 className="font-bold font-Metropolis text-sm text-slate-600">
+                    <h2 className="font-bold  text-sm text-slate-600">
                       {data?.name}
                     </h2>
                     <span className="font-thin text-slate-500 text-sm">

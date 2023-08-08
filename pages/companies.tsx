@@ -286,7 +286,7 @@ const Companies: NextPage<Props> = ({
             onChangeCategory={setSelectedStatusTag}
           />
 
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemDropdown items={layoutItems} />
