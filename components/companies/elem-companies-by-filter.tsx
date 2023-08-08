@@ -31,7 +31,7 @@ export const CompaniesByFilter: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-16">
         {times(4, index => (
           <PlaceholderCompanyCard key={index} />
         ))}
@@ -48,7 +48,7 @@ export const CompaniesByFilter: FC<Props> = ({
       <div className="text-2xl font-semibold ml-4">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16"
+        className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-16"
       >
         {!isLoading &&
           !error &&

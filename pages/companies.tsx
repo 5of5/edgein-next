@@ -277,7 +277,7 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
+          className="mb-4 px-4 py-3 flex flex-wrap gap-3 justify-between border-b border-gray-200 lg:flex-row lg:items-center lg:space-y-0"
           role="tablist"
         >
           <ElemCategories
@@ -451,7 +451,7 @@ const Companies: NextPage<Props> = ({
                   <PlaceholderTable />
                 </div>
               ) : (
-                <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {Array.from({ length: 9 }, (_, i) => (
                     <PlaceholderCompanyCard key={i} />
                   ))}
@@ -494,7 +494,7 @@ const Companies: NextPage<Props> = ({
                   )}
                   <div
                     data-testid="companies"
-                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                    className="min-h-[42vh] grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                   >
                     {companies?.map(company => {
                       return (
