@@ -26,12 +26,6 @@ import {
   usePagination,
 } from 'react-table';
 
-export type DeepPartial<T> = T extends object
-  ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
-  : T;
-
 type Props = {
   className?: string;
   investors?: any;
@@ -701,7 +695,8 @@ export const InvestorsTable: FC<Props> = ({
             })}
           </tbody>
         </table>
-        {!isDisplayAllInvestors && (
+
+        {!isDisplayAllInvestors && totalItems > itemsPerPage && (
           <table className="relative table-auto min-w-full overscroll-x-none">
             <tbody className="divide-y divide-black/10" role="rowgroup">
               {Array.from({ length: 10 }, (_, i) => (

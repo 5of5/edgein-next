@@ -168,33 +168,35 @@ const Investors: NextPage<Props> = ({
 
     currentFilterOption.includes(tag)
       ? toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-          >
-            Removed &ldquo;{tag}&rdquo; Filter
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      )
+            >
+              Removed &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        )
       : toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-          >
-            Added &ldquo;{tag}&rdquo; Filter
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+            >
+              Added &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
   };
 
   /** Handle selected filter params */
@@ -237,8 +239,8 @@ const Investors: NextPage<Props> = ({
     },
     {
       id: 1,
-      label: 'List View',
-      value: 'list',
+      label: 'Table View',
+      value: 'table',
       onClick: () => setTableLayout(true),
     },
   ];
@@ -317,13 +319,14 @@ const Investors: NextPage<Props> = ({
 
           <div className="mt-6 mx-4">
             {!shouldHidePersonalized && (
-              <div className='flex flex-col gap-4 gap-x-16'>
+              <div className="flex flex-col gap-4 gap-x-16">
                 {personalizedTags.industryTags.map(industry => (
                   <InvestorsByFilter
                     key={industry}
                     headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
                     itemsPerPage={8}
+                    tableView={tableLayout}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
@@ -349,6 +352,7 @@ const Investors: NextPage<Props> = ({
                     headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
                     itemsPerPage={8}
+                    tableView={tableLayout}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
@@ -371,6 +375,7 @@ const Investors: NextPage<Props> = ({
                   headingText={`Just acquired`}
                   tagOnClick={filterByTag}
                   itemsPerPage={8}
+                  tableView={tableLayout}
                   filters={{
                     _and: [
                       { slug: { _neq: '' } },
@@ -423,19 +428,26 @@ const Investors: NextPage<Props> = ({
                 )}
               </>
             ) : tableLayout && vcFirms?.length != 0 ? (
-              <InvestorsTable
-                investors={vcFirms}
-                pageNumber={page}
-                itemsPerPage={limit}
-                shownItems={vcFirms?.length}
-                totalItems={vcfirms_aggregate}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                filterByTag={filterByTag}
-              />
+              <>
+                {!shouldHidePersonalized && (
+                  <div className="text-2xl font-bold">All investors</div>
+                )}
+                <InvestorsTable
+                  investors={vcFirms}
+                  pageNumber={page}
+                  itemsPerPage={limit}
+                  shownItems={vcFirms?.length}
+                  totalItems={vcfirms_aggregate}
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  filterByTag={filterByTag}
+                />
+              </>
             ) : (
               <>
-                <div className="text-2xl font-bold">All investors</div>
+                {!shouldHidePersonalized && (
+                  <div className="text-2xl font-bold">All investors</div>
+                )}
                 <div
                   data-testid="investors"
                   className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"

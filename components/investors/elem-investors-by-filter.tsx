@@ -11,12 +11,14 @@ import { FC } from 'react';
 import { Pagination } from '../pagination';
 import { PlaceholderInvestorCard } from '../placeholders';
 import { ElemInvestorCard } from './elem-investor-card';
+import { InvestorsTable } from './elem-investors-table';
 
 type Props = {
   headingText: string;
   filters: DeepPartial<Vc_Firms_Bool_Exp>;
   itemsPerPage: number;
   tagOnClick: any;
+  tableView?: boolean;
 };
 
 export const InvestorsByFilter: FC<Props> = ({
@@ -24,6 +26,7 @@ export const InvestorsByFilter: FC<Props> = ({
   filters,
   itemsPerPage,
   tagOnClick,
+  tableView = false,
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
@@ -59,28 +62,43 @@ export const InvestorsByFilter: FC<Props> = ({
   return (
     <div>
       <div className="text-2xl font-semibold">{headingText}</div>
-      <div
-        data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
-      >
-        {vc_firms.map(vcFirm => (
-          <ElemInvestorCard
-            key={vcFirm.id}
-            vcFirm={vcFirm as Vc_Firms}
-            tagOnClick={tagOnClick}
-          />
-        ))}
-      </div>
+      {tableView ? (
+        <InvestorsTable
+          investors={vc_firms}
+          pageNumber={page}
+          itemsPerPage={itemsPerPage}
+          shownItems={vc_firms.length}
+          totalItems={vc_firms_aggregate.aggregate?.count ?? 0}
+          onClickPrev={() => setPage(page - 1)}
+          onClickNext={() => setPage(page + 1)}
+          filterByTag={tagOnClick}
+        />
+      ) : (
+        <div>
+          <div
+            data-testid="personalizedCompanies"
+            className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
+          >
+            {vc_firms.map(vcFirm => (
+              <ElemInvestorCard
+                key={vcFirm.id}
+                vcFirm={vcFirm as Vc_Firms}
+                tagOnClick={tagOnClick}
+              />
+            ))}
+          </div>
 
-      <Pagination
-        shownItems={vc_firms.length}
-        totalItems={vc_firms_aggregate.aggregate?.count ?? 0}
-        page={page}
-        itemsPerPage={itemsPerPage}
-        onClickPrev={previousPage}
-        onClickNext={nextPage}
-        onClickToPage={selectedPage => setPage(selectedPage)}
-      />
+          <Pagination
+            shownItems={vc_firms.length}
+            totalItems={vc_firms_aggregate.aggregate?.count ?? 0}
+            page={page}
+            itemsPerPage={itemsPerPage}
+            onClickPrev={previousPage}
+            onClickNext={nextPage}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
+        </div>
+      )}
     </div>
   );
 };
