@@ -69,8 +69,8 @@ export const CompaniesByFilter: FC<Props> = ({
           itemsPerPage={itemsPerPage}
           shownItems={companies?.length}
           totalItems={companies_aggregate.aggregate?.count ?? 0}
-          onClickPrev={() => setPage(page - 1)}
-          onClickNext={() => setPage(page + 1)}
+          onClickPrev={previousPage}
+          onClickNext={nextPage}
           filterByTag={tagOnClick}
         />
       ) : (
