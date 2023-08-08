@@ -295,7 +295,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg px-4 px-4 border border-gray-200">
+      <div className="rounded-lg px-4 border border-gray-200">
         <PlaceholderTable />
       </div>
     );
