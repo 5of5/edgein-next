@@ -29,7 +29,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
-  
+
   const showMoreTags = () => {
     setTagsLimit(CARD_MAX_TAGS_LIMIT);
   };

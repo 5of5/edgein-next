@@ -45,7 +45,7 @@ import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filt
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
-const ITEMS_PER_PAGE = 8
+const ITEMS_PER_PAGE = 8;
 
 type Props = {
   companiesCount: number;
@@ -446,7 +446,9 @@ const Companies: NextPage<Props> = ({
             </>
           ) : tableLayout && companies?.length != 0 ? (
             <>
-              {user && <div className="text-2xl font-medium mt-4">All companies</div>}
+              {user && (
+                <div className="text-2xl font-medium mt-4">All companies</div>
+              )}
               <CompaniesTable
                 companies={companies}
                 pageNumber={page}
@@ -460,7 +462,9 @@ const Companies: NextPage<Props> = ({
             </>
           ) : (
             <>
-              {user && <div className="text-2xl font-medium my-4">All companies</div>}
+              {user && (
+                <div className="text-2xl font-medium my-4">All companies</div>
+              )}
               <div
                 data-testid="companies"
                 className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"

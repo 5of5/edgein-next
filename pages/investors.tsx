@@ -45,7 +45,7 @@ import { getPersonalizedData } from '@/utils/personalizedTags';
 import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
-const ITEMS_PER_PAGE = 8
+const ITEMS_PER_PAGE = 8;
 
 type Props = {
   vcFirmCount: number;
@@ -290,7 +290,6 @@ const Investors: NextPage<Props> = ({
             </div>
           </div>
 
-          
           {selectedFilters && (
             <div className="mx-6 my-3">
               <ElemFilter

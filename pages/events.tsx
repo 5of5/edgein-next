@@ -40,7 +40,7 @@ import { getPersonalizedData } from '@/utils/personalizedTags';
 import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
-const ITEMS_PER_PAGE = 8
+const ITEMS_PER_PAGE = 8;
 
 type Props = {
   eventTabs: DashboardCategory[];
@@ -341,7 +341,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           ) : (
             events?.length !== 0 && (
               <>
-                {user && <div className="text-2xl font-medium my-4">All Events</div>}
+                {user && (
+                  <div className="text-2xl font-medium my-4">All Events</div>
+                )}
                 <div
                   data-testid="events"
                   className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"

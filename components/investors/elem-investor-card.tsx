@@ -4,11 +4,7 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
-import {
-  IconGlobe,
-  IconLinkedIn,
-  IconTwitter,
-} from '@/components/icons';
+import { IconGlobe, IconLinkedIn, IconTwitter } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import {
   CARD_DEFAULT_TAGS_LIMIT,

@@ -278,10 +278,10 @@ const Company: NextPage<Props> = (props: Props) => {
             )}
             <div className="flex flex-wrap items-center mt-4 gap-3">
               <ElemReactions
-                  resource={company}
-                  resourceType={'companies'}
-                  className="w-full sm:w-auto"
-                />
+                resource={company}
+                resourceType={'companies'}
+                className="w-full sm:w-auto"
+              />
               <ElemSaveToList
                 resourceName={company.name}
                 resourceId={company.id}

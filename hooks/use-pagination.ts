@@ -8,7 +8,7 @@ const usePagination = () => {
 
   return {
     page,
-    setPage, 
+    setPage,
     nextPage,
     previousPage,
   };
