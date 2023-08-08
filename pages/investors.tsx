@@ -321,10 +321,36 @@ const Investors: NextPage<Props> = ({
           <div className="mx-6">
             {showPersonalized && (
               <div className="flex flex-col gap-4 gap-x-16">
-                {personalizedTags.industryTags.map(industry => (
+                {personalizedTags.locationTags.map(location => (
                   <InvestorsByFilter
-                    key={industry}
-                    headingText={`Trending in ${industry}`}
+                    key={location}
+                    headingText={`Trending in ${location}`}
+                    tagOnClick={filterByTag}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={tableLayout}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        { status_tags: { _contains: 'Trending' } },
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                ))}
+
+                {personalizedTags.locationTags.map(location => (
+                  <InvestorsByFilter
+                    key={location}
+                    headingText={`New in ${location}`}
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={tableLayout}
@@ -333,8 +359,12 @@ const Investors: NextPage<Props> = ({
                         { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
-                          tags: {
-                            _contains: industry,
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
                           },
                         },
                       ],
