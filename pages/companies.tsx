@@ -45,6 +45,8 @@ import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filt
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
+const ITEMS_PER_PAGE = 8
+
 type Props = {
   companiesCount: number;
   initialCompanies: GetCompaniesQuery['companies'];
@@ -317,7 +319,7 @@ const Companies: NextPage<Props> = ({
                 <CompaniesByFilter
                   headingText={`Trending in ${location}`}
                   tagOnClick={filterByTag}
-                  itemsPerPage={8}
+                  itemsPerPage={ITEMS_PER_PAGE}
                   tableView={tableLayout}
                   filters={{
                     _and: [
@@ -341,7 +343,7 @@ const Companies: NextPage<Props> = ({
                 <CompaniesByFilter
                   headingText={`New in ${location}`}
                   tagOnClick={filterByTag}
-                  itemsPerPage={8}
+                  itemsPerPage={ITEMS_PER_PAGE}
                   tableView={tableLayout}
                   filters={{
                     _and: [
@@ -365,7 +367,7 @@ const Companies: NextPage<Props> = ({
                   key={industry}
                   headingText={`Trending in ${industry}`}
                   tagOnClick={filterByTag}
-                  itemsPerPage={8}
+                  itemsPerPage={ITEMS_PER_PAGE}
                   tableView={tableLayout}
                   filters={{
                     _and: [
@@ -388,7 +390,7 @@ const Companies: NextPage<Props> = ({
               <CompaniesByFilter
                 headingText={`Just acquired`}
                 tagOnClick={filterByTag}
-                itemsPerPage={8}
+                itemsPerPage={ITEMS_PER_PAGE}
                 tableView={tableLayout}
                 filters={{
                   _and: [

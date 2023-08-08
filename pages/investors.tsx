@@ -45,6 +45,8 @@ import { getPersonalizedData } from '@/utils/personalizedTags';
 import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
+const ITEMS_PER_PAGE = 8
+
 type Props = {
   vcFirmCount: number;
   initialVCFirms: GetVcFirmsQuery['vc_firms'];
@@ -325,7 +327,7 @@ const Investors: NextPage<Props> = ({
                     key={industry}
                     headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
-                    itemsPerPage={8}
+                    itemsPerPage={ITEMS_PER_PAGE}
                     tableView={tableLayout}
                     filters={{
                       _and: [
@@ -346,7 +348,7 @@ const Investors: NextPage<Props> = ({
                     key={industry}
                     headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
-                    itemsPerPage={8}
+                    itemsPerPage={ITEMS_PER_PAGE}
                     tableView={tableLayout}
                     filters={{
                       _and: [
@@ -370,7 +372,7 @@ const Investors: NextPage<Props> = ({
                 <InvestorsByFilter
                   headingText={`Just acquired`}
                   tagOnClick={filterByTag}
-                  itemsPerPage={8}
+                  itemsPerPage={ITEMS_PER_PAGE}
                   tableView={tableLayout}
                   filters={{
                     _and: [

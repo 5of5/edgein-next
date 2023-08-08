@@ -40,6 +40,8 @@ import { getPersonalizedData } from '@/utils/personalizedTags';
 import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
+const ITEMS_PER_PAGE = 8
+
 type Props = {
   eventTabs: DashboardCategory[];
   eventsCount: number;
@@ -289,7 +291,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 key={location}
                 headingText={`New in ${location}`}
                 tagOnClick={onClickType}
-                itemsPerPage={8}
+                itemsPerPage={ITEMS_PER_PAGE}
                 filters={{
                   _and: [
                     { slug: { _neq: '' } },
