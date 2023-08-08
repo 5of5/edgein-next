@@ -24,6 +24,12 @@ query GetEvents(
     timezone
     is_featured
     created_at
+    event_person {
+      id
+      type
+      created_at
+      person_id
+    }
   }
   events_aggregate(where: $where) {
     aggregate {

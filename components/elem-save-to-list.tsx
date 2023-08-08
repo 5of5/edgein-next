@@ -10,13 +10,12 @@ import { InputText } from '@/components/input-text';
 import { IconX, IconListPlus, IconListSaved } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
-import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
-import useToast from '@/hooks/use-toast';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   resourceName: string | null;
@@ -49,6 +48,8 @@ export const ElemSaveToList: FC<Props> = ({
   buttonStyle = 'purple',
   follows = [],
 }) => {
+  const { setShowPopup } = usePopup();
+
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [listsData, setListsData] = useState([] as List[]);
@@ -58,8 +59,6 @@ export const ElemSaveToList: FC<Props> = ({
   const [followsByResource, setFollowsByResource] = useState<
     Pick<Follows, 'list_id'>[]
   >([]);
-
-  const { toast } = useToast();
 
   useEffect(() => {
     if (!isEqual(follows, followsByResource)) {
@@ -189,18 +188,26 @@ export const ElemSaveToList: FC<Props> = ({
             ),
           ];
         });
-        refreshProfile();
-        toast(
-          <>
+      }
+      refreshProfile();
+      toast.custom(
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+              t.visible ? 'animate-fade-in-up' : 'opacity-0'
+            }`}
+          >
             {action === 'add' ? ' Added ' : ' Removed '}
             {resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
             {action === 'add' ? ' to ' : ' from '}
             &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
-          </>,
-        );
-      } else {
-        toast(newSentiment?.error || GENERAL_ERROR_MESSAGE, 'error');
-      }
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      );
     }
   };
 
@@ -219,15 +226,6 @@ export const ElemSaveToList: FC<Props> = ({
     return isOnList(list, resourceId);
   };
 
-  const onCloseSaveToListDialog = () => {
-    setIsOpen(false);
-    setShowNew(false);
-  };
-
-  const onOpenNewListForm = () => {
-    setShowNew(true);
-  };
-
   const onClickHandler = (
     event: React.MouseEvent<HTMLInputElement>,
     list: List,
@@ -235,14 +233,18 @@ export const ElemSaveToList: FC<Props> = ({
   ) => {
     event.preventDefault();
     event.stopPropagation();
-
     toggleToList(list.name, isSelected ? 'remove' : 'add');
   };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsOpen(true);
+
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpen(true);
+    }
   };
 
   return (
@@ -259,7 +261,9 @@ export const ElemSaveToList: FC<Props> = ({
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          onClose={onCloseSaveToListDialog}
+          onClose={() => {
+            setIsOpen(false), setShowNew(false);
+          }}
           className="relative z-[60]"
         >
           <Transition.Child
@@ -284,12 +288,14 @@ export const ElemSaveToList: FC<Props> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-                <Dialog.Title className="text-lg font-medium flex items-center justify-between px-4 py-2 border-b border-gray-200">
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+                <Dialog.Title className="text-xl font-medium flex items-center justify-between">
                   <span>Save to List</span>
                   <button
                     type="button"
-                    onClick={onCloseSaveToListDialog}
+                    onClick={() => {
+                      setIsOpen(false), setShowNew(false);
+                    }}
                     className="focus-visible:outline-none"
                   >
                     <IconX className="w-5 h-5" />
@@ -325,7 +331,10 @@ export const ElemSaveToList: FC<Props> = ({
                 {!showNew && listsData.length > 0 && (
                   <div className="flex border-t border-slate-300 p-3">
                     <div className="ml-auto">
-                      <ElemButton btn="default" onClick={onOpenNewListForm}>
+                      <ElemButton
+                        btn="default"
+                        onClick={() => setShowNew(true)}
+                      >
                         Create new list
                       </ElemButton>
                     </div>

@@ -100,7 +100,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
                   } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
                 >
                   <item.icon className="w-5 h-5" />
-                  <span className="text-xs">{item.title}</span>
+                  <span className="text-sm">{item.title}</span>
                 </a>
               </Link>
             </li>

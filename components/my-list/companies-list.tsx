@@ -1,13 +1,13 @@
 import { useGetCompaniesByListIdQuery } from '@/graphql/types';
 import { orderBy } from 'lodash';
 import moment from 'moment-timezone';
-import { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { numberWithCommas } from '@/utils';
-import { Table } from './table';
-import { TableEmptyCell } from './table-empty-cell';
-import { PlaceholderTable } from '../placeholders';
 import Link from 'next/link';
+import { TableEmptyCell } from './table-empty-cell';
+import { Table } from './table';
+import { PlaceholderTable } from '../placeholders';
 
 type Props = {
   listId: number;

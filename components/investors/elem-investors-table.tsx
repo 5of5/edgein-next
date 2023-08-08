@@ -25,6 +25,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
+import { usePopup } from '@/context/popup-context';
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -57,6 +58,8 @@ export const InvestorsTable: FC<Props> = ({
 }) => {
   const { user } = useUser();
 
+  const { setShowPopup } = usePopup();
+
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const onOpenUpgradeDialog = () => {
@@ -67,7 +70,11 @@ export const InvestorsTable: FC<Props> = ({
   };
 
   const onBillingClick = async () => {
-    loadStripe();
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      loadStripe();
+    }
   };
 
   const isDisplayAllInvestors = user?.entitlements.viewEmails
