@@ -1,10 +1,9 @@
 import React, { Fragment, useState } from 'react';
+import { useQuery, useMutation } from 'react-query';
+import { toast, Toaster } from 'react-hot-toast';
 import { Dialog, Transition } from '@headlessui/react';
 import { ElemButton } from '@/components/elem-button';
-import {
-  FindPeopleByNameAndEmailQuery,
-  useFindPeopleByNameAndEmailQuery,
-} from '@/graphql/types';
+import { FindPeopleByNameAndEmailQuery } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
 import { ElemPhoto } from '../elem-photo';
 import { IconCheck } from '../icons';
@@ -36,13 +35,13 @@ export default function OnboardingStep4(props: Props) {
 
   const [linkedinError, setLinkedinError] = useState<string>('');
 
-  const { data: people, isLoading: isLoadingPeople } =
-    useFindPeopleByNameAndEmailQuery(
-      { name: `%${user?.display_name}%`, email: `%${user?.email || ''}%` },
-      { enabled: !!user },
-    );
-
-  const peopleList = people?.people;
+  const { data: peopleList = [], isLoading: isLoadingPeople } = useQuery<
+    FindPeopleByNameAndEmailQuery['people']
+  >(
+    ['get-match-profiles'],
+    async () => await fetch(`/api/get-match-profile/`).then(res => res.json()),
+    { enabled: Boolean(user), staleTime: Infinity },
+  );
 
   const handleChangeLinkedin = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -58,8 +57,49 @@ export default function OnboardingStep4(props: Props) {
     props.onBack(selectedPerson, linkedin);
   };
 
-  const onNext = () => {
-    props.onNext(selectedPerson, linkedin);
+  const { mutate: checkClaimedProfile, isLoading: isCheckingClaimedProfile } =
+    useMutation(
+      () => {
+        return fetch('/api/check-claimed-profile/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            personId: selectedPerson?.id,
+            linkedin,
+          }),
+        });
+      },
+      {
+        onSuccess: async response => {
+          if (response.status === 200) {
+            props.onNext(selectedPerson, linkedin);
+          } else {
+            const error = await response.json();
+            toast.custom(
+              t => (
+                <div
+                  className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                    t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                  }`}
+                >
+                  {error.error}
+                </div>
+              ),
+              {
+                duration: 5000,
+                position: 'top-center',
+              },
+            );
+          }
+        },
+      },
+    );
+
+  const handleClickNext = () => {
+    checkClaimedProfile();
   };
 
   return (
@@ -182,8 +222,9 @@ export default function OnboardingStep4(props: Props) {
                     Back
                   </ElemButton>
                   <ElemButton
-                    onClick={onNext}
+                    onClick={handleClickNext}
                     btn="primary"
+                    loading={isCheckingClaimedProfile}
                     disabled={!selectedPerson && !linkedin}
                   >
                     Next
@@ -192,6 +233,7 @@ export default function OnboardingStep4(props: Props) {
               </Dialog.Panel>
             </Transition.Child>
           </div>
+          <Toaster />
         </Dialog>
       </Transition.Root>
     </>
