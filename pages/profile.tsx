@@ -9,7 +9,6 @@ import { IconSearch } from '@/components/icons';
 // import { ElemPhoto } from "@/components/elem-photo";
 // import { InputText } from "@/components/InputText";
 // import { InputTextarea } from "@/components/InputTextarea";
-import { Popups } from '@/components/the-navbar';
 
 import {
   // GetCompaniesDocument,
@@ -20,6 +19,7 @@ import {
   useGetUserProfileQuery,
 } from '@/graphql/types';
 import { useAuth } from '@/hooks/use-auth';
+import { usePopup } from '@/context/popup-context';
 // import { divide, find, findIndex } from "lodash";
 // import validator from "validator";
 // import { InputSelect } from "@/components/InputSelect";
@@ -43,11 +43,12 @@ const emptyTeamMember = {
 
 type Props = {
   companiesDropdown: any;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
+const Profile: FC<Props> = ({ companiesDropdown }) => {
   const { user } = useAuth();
+
+  const { setShowPopup } = usePopup();
 
   //const fileInputRef = useRef<HTMLInputElement>(null);
 

@@ -135,7 +135,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
                           btn="slate"
                           className="w-full mt-5 mb-4"
                         >
-                          Login
+                          Log in
                         </ElemButton>
                       </div>
                     </div>

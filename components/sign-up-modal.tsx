@@ -214,7 +214,7 @@ export default function SignUpModal(props: Props) {
                       btn="primary"
                       loading={isLoading}
                     >
-                      Login
+                      Log in
                     </ElemButton>
                   </div>
                 </>
@@ -344,7 +344,7 @@ export default function SignUpModal(props: Props) {
                           onClick={onLogin}
                           className="inline ml-0.5 underline"
                         >
-                          Log In
+                          Log in
                         </button>
                       </div>
                     </div>

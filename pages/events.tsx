@@ -1,5 +1,5 @@
 import type { NextPage, GetStaticProps } from 'next';
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { ElemButton } from '../components/elem-button';
 import { runGraphQl } from '../utils';
@@ -23,7 +23,7 @@ import { ElemFilter } from '@/components/elem-filter';
 import { processEventsFilters } from '@/utils/filter';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
-import { DeepPartial } from '@/types/common';
+import { DashboardCategory, DeepPartial } from '@/types/common';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
@@ -38,9 +38,10 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { EventsByFilter } from '@/components/events/elem-events-by-filter';
+import { ElemCategories } from '@/components/dashboard/elem-categories';
 
 type Props = {
-  eventTabs: TextFilter[];
+  eventTabs: DashboardCategory[];
   eventsCount: number;
   initialEvents: GetEventsQuery['events'];
 };
@@ -63,12 +64,13 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const { showNewMessages } = useIntercom();
 
-  const [selectedTab, setSelectedTab] = useStateParams(
-    { ...eventTabs[0], date: moment().toISOString() },
-    'tab',
-    statusTag => eventTabs.indexOf(statusTag).toString(),
-    index => eventTabs[Number(index)],
-  );
+  const [selectedTab, setSelectedTab] =
+    useStateParams<DashboardCategory | null>(
+      null,
+      'tab',
+      statusTag => (statusTag ? eventTabs.indexOf(statusTag).toString() : ''),
+      index => eventTabs[Number(index)],
+    );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
     useDashboardFilter();
@@ -184,18 +186,24 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   /** Handle selected filter params */
   processEventsFilters(filters, selectedFilters, defaultFilters);
 
-  if (
-    selectedTab.value === 'upcoming' &&
-    !selectedFilters?.eventDate?.condition
-  ) {
+  if (selectedTab?.value === 'featured') {
     filters._and?.push({
-      start_date: { _gte: selectedTab.date },
+      is_featured: { _eq: true },
     });
   }
 
-  if (selectedTab.value === 'past' && !selectedFilters?.eventDate?.condition) {
+  if (
+    selectedTab?.value === 'upcoming' &&
+    !selectedFilters?.eventDate?.condition
+  ) {
     filters._and?.push({
-      start_date: { _lte: selectedTab.date },
+      start_date: { _gte: selectedTab?.date },
+    });
+  }
+
+  if (selectedTab?.value === 'past' && !selectedFilters?.eventDate?.condition) {
+    filters._and?.push({
+      start_date: { _lte: selectedTab?.date },
     });
   }
   const {
@@ -218,8 +226,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
-  const shouldHidePersonalized =
-    selectedFilters || selectedTab?.title !== 'Featured';
+  const showPersonalized = user && !selectedFilters && !selectedTab;
 
   return (
     <DashboardLayout>
@@ -228,30 +235,14 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x pr-32 sm:pr-0 lg:border-none">
-            {eventTabs &&
-              eventTabs.map((tab: any, index: number) =>
-                tab.disabled === true ? (
-                  <Fragment key={index}></Fragment>
-                ) : (
-                  <ElemButton
-                    key={index}
-                    onClick={() => onChangeTab(tab)}
-                    btn="gray"
-                    roundedFull={false}
-                    className="rounded-lg"
-                  >
-                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
-                    {tab.title}
-                  </ElemButton>
-                ),
-              )}
-          </nav>
+          <ElemCategories
+            categories={eventTabs}
+            selectedCategory={selectedTab}
+            onChangeCategory={onChangeTab}
+          />
 
           <div className="flex space-x-2">
-            {/* {isDisplaySelectLibrary &&  */}
-            <ElemLibrarySelector />
-            {/* } */}
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemAddFilter
               resourceType="events"
@@ -316,7 +307,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           )}
 
           {personalizedTags.locationTags.length != 0 &&
-            !shouldHidePersonalized &&
+            showPersonalized &&
             personalizedTags.locationTags.map(location => (
               <EventsByFilter
                 key={location}
@@ -340,7 +331,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               />
             ))}
 
-          <div className="text-2xl font-bold ml-4">All Events</div>
+          {showPersonalized && (
+            <div className="text-2xl font-bold ml-4">All Events</div>
+          )}
           <div
             data-testid="events"
             className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
@@ -354,15 +347,13 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 ))}
               </>
             ) : (
-              <>
-                {events?.map(event => (
-                  <ElemEventCard
-                    key={event.id}
-                    event={event}
-                    tagOnClick={onClickType}
-                  />
-                ))}
-              </>
+              events?.map(event => (
+                <ElemEventCard
+                  key={event.id}
+                  event={event}
+                  tagOnClick={onClickType}
+                />
+              ))
             )}
           </div>
           <Pagination
@@ -406,14 +397,7 @@ export const getStaticProps: GetStaticProps = async context => {
 
 export default Events;
 
-interface TextFilter {
-  title: string;
-  value: string;
-  date: string;
-  icon: string;
-}
-
-const eventTabs: TextFilter[] = [
+const eventTabs: DashboardCategory[] = [
   {
     title: 'Featured',
     value: 'featured',

@@ -1,17 +1,14 @@
-import type { NextPage } from 'next';
 import React from 'react';
 import { FigureBlurredCircle } from '@/components/figures';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useIntercom } from 'react-use-intercom';
-import { Popups } from '@/components/the-navbar';
+import { usePopup } from '@/context/popup-context';
 
-type Props = {
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
-};
-
-const Custom404: NextPage<Props> = ({ setShowPopup }) => {
+const Custom404 = () => {
   const { show } = useIntercom();
+
+  const { setShowPopup } = usePopup();
 
   return (
     <>
