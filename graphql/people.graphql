@@ -97,6 +97,10 @@ query GetPerson($slug: String!) {
         }
       }
     }
+    follows {
+      id
+      list_id
+    }
   }
 }
 
