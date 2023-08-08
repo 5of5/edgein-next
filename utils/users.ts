@@ -182,10 +182,10 @@ async function findOnePeopleBySlug(slug: string) {
   return data.data.people[0];
 }
 
-async function findOneUserByPersonId(personId: number) {
+async function findOneUserByPersonId(person_id: number) {
   const data = await query<GetUserByPersonIdQuery>({
     query: GetUserByPersonIdDocument,
-    variables: { personId },
+    variables: { person_id },
   });
   return data.data.users[0];
 }
