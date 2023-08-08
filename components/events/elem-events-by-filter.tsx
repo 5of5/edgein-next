@@ -58,8 +58,8 @@ export const EventsByFilter: FC<Props> = ({
   const { events, events_aggregate } = data;
 
   return (
-    <div className="mb-16">
-      <div className="text-2xl font-semibold ml-4">{headingText}</div>
+    <div>
+      <div className="text-2xl font-medium my-4">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
         className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-16"
@@ -73,17 +73,15 @@ export const EventsByFilter: FC<Props> = ({
         ))}
       </div>
 
-      <div className="mx-4 mt-4">
-        <Pagination
-          shownItems={events.length}
-          totalItems={events_aggregate.aggregate?.count ?? 0}
-          page={page}
-          itemsPerPage={itemsPerPage}
-          onClickPrev={previousPage}
-          onClickNext={nextPage}
-          onClickToPage={selectedPage => setPage(selectedPage)}
-        />
-      </div>
+      <Pagination
+        shownItems={events.length}
+        totalItems={events_aggregate.aggregate?.count ?? 0}
+        page={page}
+        itemsPerPage={itemsPerPage}
+        onClickPrev={previousPage}
+        onClickNext={nextPage}
+        onClickToPage={selectedPage => setPage(selectedPage)}
+      />
     </div>
   );
 };
