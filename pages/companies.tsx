@@ -7,19 +7,17 @@ import {
 } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import {
-  IconSearch,
-  IconAnnotation,
-} from '@/components/icons';
+import { IconSearch, IconAnnotation } from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
+  Order_By,
+  useGetCompaniesQuery,
   Companies_Bool_Exp,
   Companies_Order_By,
   GetCompaniesDocument,
   GetCompaniesQuery,
-  Order_By,
-  useGetCompaniesQuery,
 } from '@/graphql/types';
+import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import { companyChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
@@ -166,33 +164,35 @@ const Companies: NextPage<Props> = ({
 
     currentFilterOption.includes(tag)
       ? toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-          >
-            Removed &ldquo;{tag}&rdquo; Filter
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      )
+            >
+              Removed &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        )
       : toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${t.visible ? 'animate-fade-in-up' : 'opacity-0'
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
-          >
-            Added &ldquo;{tag}&rdquo; Filter
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+            >
+              Added &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
   };
 
   /** Handle selected filter params */
@@ -439,7 +439,7 @@ const Companies: NextPage<Props> = ({
               )}
             </>
           ) : tableLayout && companies?.length != 0 ? (
-            <div className='mt-16'>
+            <div className="mt-16">
               {user && <div className="text-2xl font-bold">All companies</div>}
               <CompaniesTable
                 companies={companies}
