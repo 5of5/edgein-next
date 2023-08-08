@@ -21,14 +21,12 @@ export const ElemEventActivity: React.FC<Props> = ({
 
   return (
     <div>
-      <h2 className="text-xl font-bold w-full mb-2 border-b border-black/10">
-        Activity
-      </h2>
+      <h2 className="text-lg font-medium px-4 pt-2">Activity</h2>
 
-      <div className="py-4">
+      <div className="px-4 py-4">
         {activities.length > 0 ? (
           <>
-            <ul className="flex flex-col">
+            <ul className="flex flex-col overflow-hidden">
               {activities.slice(0, activityLimit).map((activity, index) => {
                 const isPublishedCompany =
                   activity?.company && activity?.company?.status === 'published'
@@ -61,11 +59,11 @@ export const ElemEventActivity: React.FC<Props> = ({
                   >
                     <span className="absolute h-full top-0 bottom-0 left-0">
                       <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-                      <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+                      <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-primary-200 group-hover:bg-primary-500"></span>
                     </span>
 
                     <div className="mb-4">
-                      <div className="inline leading-7 text-slate-600">
+                      <div className="inline leading-7 text-gray-600 text-sm">
                         <div className="inline">
                           {/* isPublishedCompany: {isPublishedCompany && 'company'}{' '}
                           <br />
@@ -77,24 +75,24 @@ export const ElemEventActivity: React.FC<Props> = ({
                           {activity?.type === 'attendee' ? (
                             <>
                               <Link href={`/people/${activity?.person?.slug}`}>
-                                <a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                                <a className="font-medium underline hover:no-underline">
                                   {activity?.person?.name}
                                 </a>
                               </Link>
                               {` is going to `}
-                              <span className="font-bold capitalize">
+                              <span className="font-medium capitalize">
                                 {eventName}
                               </span>
                             </>
                           ) : activity?.type === 'speaker' ? (
                             <>
                               <Link href={`/people/${activity?.person?.slug}`}>
-                                <a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                                <a className="font-medium underline hover:no-underline">
                                   {activity?.person?.name}
                                 </a>
                               </Link>
                               {` was added as a `}
-                              <span className="capitalize">
+                              <span className="font-medium capitalize">
                                 {activity?.type}
                               </span>
                             </>
@@ -109,14 +107,14 @@ export const ElemEventActivity: React.FC<Props> = ({
                                     : `/people/${activity?.person?.slug}`
                                 }
                               >
-                                <a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                                <a className="font-medium underline hover:no-underline">
                                   {activity?.company?.name ||
                                     activity?.vc_firm?.name ||
                                     activity?.person?.name}
                                 </a>
                               </Link>
                               {` was added as an `}
-                              <span className="capitalize">
+                              <span className="font-medium capitalize">
                                 {activity?.type}
                               </span>
                             </>
@@ -131,14 +129,14 @@ export const ElemEventActivity: React.FC<Props> = ({
                                     : `/people/${activity?.person?.slug}`
                                 }
                               >
-                                <a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                                <a className="font-medium underline hover:no-underline">
                                   {activity?.company?.name ||
                                     activity?.vc_firm?.name ||
                                     activity?.person?.name}
                                 </a>
                               </Link>
                               {` was added as a `}
-                              <span className="capitalize">
+                              <span className="font-medium capitalize">
                                 {activity?.type}
                               </span>
                             </>
@@ -155,7 +153,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                             </>
                           )}
                         </div>
-                        <p className="text-sm">
+                        <p className="text-sm text-slate-600">
                           {formatDate(activity.created_at as string, {
                             month: 'short',
                             day: '2-digit',
@@ -172,7 +170,7 @@ export const ElemEventActivity: React.FC<Props> = ({
             {activityLimit < activities.length && (
               <div className="mt-6">
                 <ElemButton
-                  btn="ol-primary"
+                  btn="default"
                   onClick={showMoreActivity}
                   className="w-full"
                 >
@@ -182,11 +180,11 @@ export const ElemEventActivity: React.FC<Props> = ({
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center lg:p-5">
-            <div className="text-slate-600 lg:text-xl">
+          <div className="flex flex-col items-center justify-center">
+            <div className="text-gray-500">
               There is no recent activity for this event.
             </div>
-            <ElemButton onClick={show} btn="default" className="mt-3">
+            <ElemButton className="mt-2" onClick={show} btn="default">
               Request data or contribute
             </ElemButton>
           </div>

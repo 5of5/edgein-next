@@ -2,7 +2,6 @@ import React from 'react';
 
 type Props = {
   className?: string;
-  heading?: string;
   resourceType: 'companies' | 'investors' | 'events';
   tags?: (string | null)[];
   filter?: string;
@@ -10,35 +9,29 @@ type Props = {
 
 export const ElemTags: React.FC<Props> = ({
   className,
-  heading,
   resourceType,
   tags,
   filter = 'industry',
 }) => {
-  if (!tags) {
-    return <span></span>;
-  }
-  return (
-    <section className={className}>
-      {heading && <h2 className="text-2xl font-bold">{heading}</h2>}
-      <ul className="flex flex-wrap gap-2 mt-4">
+  if (tags) {
+    return (
+      <div className={`mt-4 flex flex-wrap overflow-clip gap-2 ${className}`}>
         {tags.map((tag, index: number) => {
           return (
-            <li
+            <a
               key={index}
-              className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all cursor-pointer hover:bg-slate-300"
+              href={`/${resourceType}/?filters=${encodeURIComponent(
+                `{"${filter}":{"tags":["${tag}"]}}`,
+              )}`}
             >
-              <a
-                href={`/${resourceType}/?filters=${encodeURIComponent(
-                  `{"${filter}":{"tags":["${tag}"]}}`,
-                )}`}
-              >
+              <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
                 {tag}
-              </a>
-            </li>
+              </button>
+            </a>
           );
         })}
-      </ul>
-    </section>
-  );
+      </div>
+    );
+  }
+  return null;
 };

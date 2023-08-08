@@ -186,7 +186,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
       <Link href={`/events/${slug}`}>
         <a className="flex items-center mt-3">
           <ElemTooltip content={name} mode="light">
-            <h3 className="text-xl font-medium truncate">{name}</h3>
+            <h3 className="text-xl font-medium">{name}</h3>
           </ElemTooltip>
         </a>
       </Link>

@@ -69,8 +69,8 @@ export const ElemSimilarEvents: FC<Props> = ({
   };
 
   return (
-    <section className={`bg-white rounded-lg p-5 shadow ${className}`}>
-      <h2 className="text-xl font-bold">Similar Events</h2>
+    <section className={`border border-gray-300 rounded-lg ${className}`}>
+      <h2 className="text-lg font-medium px-4 pt-2">Similar Events</h2>
 
       {error ? (
         <h4>Error loading similar events</h4>
@@ -94,7 +94,7 @@ export const ElemSimilarEvents: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={event.id}
-                  className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                  className={`basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <ElemEventCard event={event} tagOnClick={tagOnClick} />
                 </ElemCarouselCard>

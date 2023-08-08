@@ -35,9 +35,9 @@ export const ElemSubEvents: FC<Props> = ({
   };
 
   return (
-    <section className={`bg-white rounded-lg p-5 shadow ${className}`}>
-      <div className="flex flex-wrap items-center justify-between">
-        <h2 className="text-xl font-bold">
+    <section className={`rounded-lg border border-gray-300 ${className}`}>
+      <div className="flex flex-wrap items-center justify-between px-4 pt-2">
+        <h2 className="text-lg font-medium">
           {eventName ? `Sub-events at ${eventName}` : 'Sub-events'}
         </h2>
 
@@ -56,13 +56,14 @@ export const ElemSubEvents: FC<Props> = ({
           </ElemButton>
         )}
       </div>
+
       {subEvents && subEvents.length > 0 ? (
         <ElemCarouselWrap>
           {subEvents.map((event: any) => {
             return (
               <ElemCarouselCard
                 key={event.id}
-                className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                className={`basis-full sm:basis-1/2 lg:basis-1/3`}
               >
                 <ElemEventCard event={event} tagOnClick={tagOnClick} />
               </ElemCarouselCard>
@@ -70,10 +71,8 @@ export const ElemSubEvents: FC<Props> = ({
           })}
         </ElemCarouselWrap>
       ) : (
-        <div className="w-full p-12 text-center">
-          <div className="text-slate-600 lg:text-xl">
-            There are no sub-events.
-          </div>
+        <div className="w-full text-center px-4 py-4">
+          <div className="text-gray-500">There are no sub-events.</div>
           <ElemButton
             btn="default"
             onClick={() =>
@@ -81,9 +80,8 @@ export const ElemSubEvents: FC<Props> = ({
                 `Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`,
               )
             }
-            className="mt-3 !pl-3"
+            className="mt-2"
           >
-            <IconPlus className="w-5 h-5 mr-1" />
             Add sub-event
           </ElemButton>
         </div>

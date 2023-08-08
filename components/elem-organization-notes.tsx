@@ -106,7 +106,7 @@ const ElemOrganizationNotes: FC<Props> = ({
               <span>Create note</span>
             </ElemButton>
           </div>
-          <div className="mt-4 flex items-start gap-2 py-4">
+          <div className="flex items-start gap-2 py-4">
             <ElemPhoto
               photo={user?.profilePicture || user?.person?.picture}
               wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"

@@ -210,7 +210,7 @@ const Event: NextPage<Props> = props => {
           </div>
 
           {event.start_date && (
-            <div className="w-full inline py-1 font-medium uppercase text-lg text-slate-600">
+            <div className="w-full inline py-1 text-gray-500">
               {formatDateShown(event?.start_date)}
 
               {event?.start_time && (
@@ -229,7 +229,7 @@ const Event: NextPage<Props> = props => {
           )}
 
           <div className="items-start justify-between lg:flex lg:gap-20">
-            <h1 className="text-3xl font-bold md:text-5xl">{event.name}</h1>
+            <h1 className="text-4xl font-medium">{event.name}</h1>
             {attendees?.length > 0 && (
               <div className="self-center flex items-center gap-x-2 shrink-0">
                 <ul className="flex -space-x-3">
@@ -254,7 +254,7 @@ const Event: NextPage<Props> = props => {
                     </li>
                   ))}
                 </ul>
-                <span className="font-bold">{attendees?.length}</span>
+                <span className="font-medium">{attendees?.length}</span>
               </div>
             )}
           </div>
@@ -352,11 +352,9 @@ const Event: NextPage<Props> = props => {
           </div>
           <div className="col-span-8">
             {event.overview && (
-              <div className="mt-7 w-full p-5 bg-white shadow rounded-lg lg:mt-0">
-                <h2 className="text-xl font-bold w-full mb-2 border-b border-black/10">
-                  Overview
-                </h2>
-                <div className="text-lg text-slate-600 prose">
+              <div className="mt-7 rounded-lg border border-gray-300 lg:mt-0">
+                <h2 className="text-lg font-medium px-4 pt-2">Overview</h2>
+                <div className="text-sm text-gray-500 px-4 py-4">
                   {parse(newLineToP(event.overview))}
                 </div>
               </div>
@@ -365,14 +363,14 @@ const Event: NextPage<Props> = props => {
             {organizers?.length > 0 && (
               <div
                 ref={organizersRef}
-                className="mt-7 p-5 bg-white shadow rounded-lg"
+                className="mt-7 rounded-lg border border-gray-300"
                 id="organizers"
               >
                 <ElemOrganizers organizations={organizers} />
               </div>
             )}
 
-            <div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
+            <div className="mt-7 rounded-lg border border-gray-300">
               <ElemEventActivity
                 activities={sortedActivities}
                 eventName={event.name}
@@ -384,7 +382,7 @@ const Event: NextPage<Props> = props => {
         {speakers?.length > 0 && (
           <div
             ref={speakersRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
+            className="mt-7 rounded-lg border border-gray-300"
             id="speakers"
           >
             <ElemSpeakerGrid people={speakers} />

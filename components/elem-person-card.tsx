@@ -101,7 +101,7 @@ export const ElemPersonCard: React.FC<Props> = ({
               )}
 
               {(founder || text || organizationName) && (
-                <p className="text-sm text-gray-500 line-clamp-2">
+                <p className="text-sm text-gray-500 truncate">
                   {founder && <span>Founder</span>}
                   {founder && text && `, `}
                   {text && <span>{text}</span>}
