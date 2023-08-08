@@ -40,6 +40,8 @@ import { getPersonalizedData } from '@/utils/personalizedTags';
 import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
+const ITEMS_PER_PAGE = 8
+
 type Props = {
   eventTabs: DashboardCategory[];
   eventsCount: number;
@@ -232,7 +234,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
+          className="relative px-6 py-3 flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
           <ElemCategories
@@ -253,34 +255,119 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </div>
         </div>
 
-        <div className="px-4">
-          <ElemFilter
-            resourceType="events"
-            filterValues={selectedFilters}
-            dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
-            onSelectFilterOption={onSelectFilterOption}
-            onChangeFilterValues={onChangeSelectedFilters}
-            onApply={(name, filterParams) => {
-              filters._and = defaultFilters;
-              onChangeSelectedFilters({
-                ...selectedFilters,
-                [name]: { ...filterParams, open: false },
-              });
-            }}
-            onClearOption={name => {
-              filters._and = defaultFilters;
-              onChangeSelectedFilters({
-                ...selectedFilters,
-                [name]: undefined,
-              });
-            }}
-            onReset={() => onChangeSelectedFilters(null)}
-          />
-        </div>
+        {selectedFilters && (
+          <div className="mx-6 my-3">
+            <ElemFilter
+              resourceType="events"
+              filterValues={selectedFilters}
+              dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
+              onSelectFilterOption={onSelectFilterOption}
+              onChangeFilterValues={onChangeSelectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: { ...filterParams, open: false },
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => onChangeSelectedFilters(null)}
+            />
+          </div>
+        )}
 
-        <ElemInviteBanner className="mt-3 mx-4" />
+        <ElemInviteBanner className="mx-6 my-3" />
 
-        <div className="mt-6 px-4">
+        <div className="mx-6">
+          {showPersonalized &&
+            personalizedTags.locationTags.map(location => (
+              <EventsByFilter
+                key={location}
+                headingText={`New in ${location}`}
+                tagOnClick={onClickType}
+                itemsPerPage={ITEMS_PER_PAGE}
+                filters={{
+                  _and: [
+                    { slug: { _neq: '' } },
+                    { library: { _contains: selectedLibrary } },
+                    {
+                      location_json: {
+                        _cast: {
+                          String: {
+                            _ilike: `%"city": "${location}"%`,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                }}
+              />
+            ))}
+
+          {error ? (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+              <div className="max-w-xl mx-auto">
+                <h4 className="mt-5 text-3xl font-bold">
+                  Error loading events
+                </h4>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, reset filters, or{' '}
+                  <button
+                    onClick={() =>
+                      showNewMessages(
+                        `Hi EdgeIn, I'd like to report an error on events page`,
+                      )
+                    }
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
+                    <span>report error</span>
+                  </button>
+                  .
+                </div>
+              </div>
+            </div>
+          ) : isLoading && !initialLoad ? (
+            <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+              {Array.from({ length: 9 }, (_, i) => (
+                <PlaceholderEventCard key={i} />
+              ))}
+            </div>
+          ) : (
+            events?.length !== 0 && (
+              <>
+                {user && <div className="text-2xl font-medium my-4">All Events</div>}
+                <div
+                  data-testid="events"
+                  className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                >
+                  {events?.map(event => (
+                    <ElemEventCard
+                      key={event.id}
+                      event={event}
+                      tagOnClick={onClickType}
+                    />
+                  ))}
+                </div>
+
+                <Pagination
+                  shownItems={events?.length}
+                  totalItems={events_aggregate}
+                  page={page}
+                  itemsPerPage={limit}
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
+              </>
+            )
+          )}
+
           {events?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
               <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -305,66 +392,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               </div>
             </div>
           )}
-
-          {personalizedTags.locationTags.length != 0 &&
-            showPersonalized &&
-            personalizedTags.locationTags.map(location => (
-              <EventsByFilter
-                key={location}
-                headingText={`New in ${location}`}
-                tagOnClick={onClickType}
-                filters={{
-                  _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
-                    {
-                      location_json: {
-                        _cast: {
-                          String: {
-                            _ilike: `%"city": "${location}"%`,
-                          },
-                        },
-                      },
-                    },
-                  ],
-                }}
-              />
-            ))}
-
-          {showPersonalized && (
-            <div className="text-2xl font-bold ml-4">All Events</div>
-          )}
-          <div
-            data-testid="events"
-            className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-          >
-            {error ? (
-              <h4>Error loading events</h4>
-            ) : isLoading && !initialLoad ? (
-              <>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <PlaceholderEventCard key={i} />
-                ))}
-              </>
-            ) : (
-              events?.map(event => (
-                <ElemEventCard
-                  key={event.id}
-                  event={event}
-                  tagOnClick={onClickType}
-                />
-              ))
-            )}
-          </div>
-          <Pagination
-            shownItems={events?.length}
-            totalItems={events_aggregate}
-            page={page}
-            itemsPerPage={limit}
-            onClickPrev={() => setPage(page - 1)}
-            onClickNext={() => setPage(page + 1)}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
         </div>
 
         <Toaster />

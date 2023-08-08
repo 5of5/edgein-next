@@ -1,7 +1,6 @@
 import { Vc_Firms } from '@/graphql/types';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
-import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
@@ -9,8 +8,6 @@ import {
   IconGlobe,
   IconLinkedIn,
   IconTwitter,
-  IconGithub,
-  IconDiscord,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import {
@@ -25,8 +22,6 @@ type Props = {
 };
 
 export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
-  const [vcFirmData, setVcFirmData] = useState(vcFirm);
-
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const { user } = useUser();
@@ -42,10 +37,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
     ? user?.entitlements.viewEmails
     : false;
 
-  useEffect(() => {
-    setVcFirmData(vcFirm);
-  }, [vcFirm]);
-
   const {
     id,
     slug,
@@ -58,7 +49,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
     website,
     linkedin,
     twitter,
-  } = vcFirmData;
+  } = vcFirm;
 
   const onClickInvestorLinkedin = () => {
     if (!user) {
@@ -69,7 +60,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
   };
 
   return (
-    <div className="flex flex-col w-full p-4">
+    <div className="flex flex-col w-full">
       <Link href={`/investors/${slug}`}>
         <a>
           <div className="flex shrink-0 w-full">
@@ -198,7 +189,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
           )}
 
           <ElemSaveToList
-            resourceName={vcFirmData.name}
+            resourceName={vcFirm.name}
             resourceId={id}
             resourceType={'vc_firms'}
             slug={slug!}

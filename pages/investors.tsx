@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { ElemHeading } from '@/components/elem-heading';
 import {
   PlaceholderInvestorCard,
   PlaceholderTable,
@@ -9,12 +8,7 @@ import {
 import { ElemButton } from '@/components/elem-button';
 import { Pagination } from '@/components/pagination';
 import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
-import {
-  IconSearch,
-  IconAnnotation,
-  IconGrid,
-  IconTable,
-} from '@/components/icons';
+import { IconSearch, IconAnnotation } from '@/components/icons';
 import { InvestorsTable } from '@/components/investors/elem-investors-table';
 import {
   GetVcFirmsDocument,
@@ -50,6 +44,8 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+
+const ITEMS_PER_PAGE = 8
 
 type Props = {
   vcFirmCount: number;
@@ -254,8 +250,8 @@ const Investors: NextPage<Props> = ({
     },
     {
       id: 1,
-      label: 'List View',
-      value: 'list',
+      label: 'Table View',
+      value: 'table',
       onClick: () => setTableLayout(true),
     },
   ];
@@ -267,7 +263,7 @@ const Investors: NextPage<Props> = ({
       <div className="relative">
         <div>
           <div
-            className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
+            className="relative px-6 py-3 flex items-center justify-between border-b border-gray-200"
             role="tablist"
           >
             <ElemCategories
@@ -294,125 +290,105 @@ const Investors: NextPage<Props> = ({
             </div>
           </div>
 
-          <div className="px-4">
-            <ElemFilter
-              resourceType="vc_firms"
-              filterValues={selectedFilters}
-              onSelectFilterOption={onSelectFilterOption}
-              onChangeFilterValues={onChangeSelectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: { ...filterParams, open: false },
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => onChangeSelectedFilters(null)}
-            />
-          </div>
+          
+          {selectedFilters && (
+            <div className="mx-6 my-3">
+              <ElemFilter
+                resourceType="vc_firms"
+                filterValues={selectedFilters}
+                onSelectFilterOption={onSelectFilterOption}
+                onChangeFilterValues={onChangeSelectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: { ...filterParams, open: false },
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: undefined,
+                  });
+                }}
+                onReset={() => onChangeSelectedFilters(null)}
+              />
+            </div>
+          )}
 
-          <ElemInviteBanner className="mt-3 mx-4" />
+          <ElemInviteBanner className="mx-6 my-3" />
 
-          <div className="mt-6 px-4">
-            {personalizedTags.locationTags.length != 0 &&
-              showPersonalized &&
-              personalizedTags.locationTags.map(location => (
-                <>
+          <div className="mx-6">
+            {showPersonalized && (
+              <div className="flex flex-col gap-4 gap-x-16">
+                {personalizedTags.industryTags.map(industry => (
                   <InvestorsByFilter
-                    key={location}
-                    headingText={`Trending in ${location}`}
+                    key={industry}
+                    headingText={`Trending in ${industry}`}
                     tagOnClick={filterByTag}
-                    filters={{
-                      _and: [
-                        { slug: { _neq: '' } },
-                        { library: { _contains: selectedLibrary } },
-                        { status_tags: { _contains: 'Trending' } },
-                        {
-                          location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                  />
-
-                  <InvestorsByFilter
-                    key={location}
-                    headingText={`New in ${location}`}
-                    tagOnClick={filterByTag}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={tableLayout}
                     filters={{
                       _and: [
                         { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
-                          location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
-                            },
+                          tags: {
+                            _contains: industry,
                           },
                         },
                       ],
                     }}
                   />
-                </>
-              ))}
+                ))}
 
-            {personalizedTags.industryTags.length != 0 &&
-              showPersonalized &&
-              personalizedTags.industryTags.map(industry => (
+                {personalizedTags.industryTags.map(industry => (
+                  <InvestorsByFilter
+                    key={industry}
+                    headingText={`Trending in ${industry}`}
+                    tagOnClick={filterByTag}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={tableLayout}
+                    filters={{
+                      _and: [
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        {
+                          status_tags: {
+                            _contains: 'Trending',
+                          },
+                        },
+                        {
+                          tags: {
+                            _contains: industry,
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                ))}
+
                 <InvestorsByFilter
-                  key={industry}
-                  headingText={`Trending in ${industry}`}
+                  headingText={`Just acquired`}
                   tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
                   filters={{
                     _and: [
                       { slug: { _neq: '' } },
                       { library: { _contains: selectedLibrary } },
                       {
                         status_tags: {
-                          _contains: 'Trending',
-                        },
-                      },
-                      {
-                        tags: {
-                          _contains: industry,
+                          _contains: 'Acquired',
                         },
                       },
                     ],
                   }}
                 />
-              ))}
-
-            {showPersonalized && (
-              <InvestorsByFilter
-                headingText={`Just acquired`}
-                tagOnClick={filterByTag}
-                filters={{
-                  _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
-                    {
-                      status_tags: {
-                        _contains: 'Acquired',
-                      },
-                    },
-                  ],
-                }}
-              />
+              </div>
             )}
+
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
@@ -450,39 +426,39 @@ const Investors: NextPage<Props> = ({
                 )}
               </>
             ) : tableLayout && vcFirms?.length != 0 ? (
-              <InvestorsTable
-                investors={vcFirms}
-                pageNumber={page}
-                itemsPerPage={limit}
-                shownItems={vcFirms?.length}
-                totalItems={vcfirms_aggregate}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                filterByTag={filterByTag}
-              />
+              <>
+                {user && (
+                  <div className="text-2xl font-medium mt-4">All investors</div>
+                )}
+                <InvestorsTable
+                  investors={vcFirms}
+                  pageNumber={page}
+                  itemsPerPage={limit}
+                  shownItems={vcFirms?.length}
+                  totalItems={vcfirms_aggregate}
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  filterByTag={filterByTag}
+                />
+              </>
             ) : (
               <>
-                {vcFirms?.length != 0 && (
-                  <>
-                    {showPersonalized && (
-                      <div className="text-2xl font-bold ml-4">
-                        All investors
-                      </div>
-                    )}
-                    <div
-                      data-testid="investors"
-                      className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
-                    >
-                      {vcFirms?.map(vcfirm => (
-                        <ElemInvestorCard
-                          key={vcfirm.id}
-                          vcFirm={vcfirm as Vc_Firms}
-                          tagOnClick={filterByTag}
-                        />
-                      ))}
-                    </div>
-                  </>
+                {user && (
+                  <div className="text-2xl font-medium my-4">All investors</div>
                 )}
+                <div
+                  data-testid="investors"
+                  className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                >
+                  {vcFirms?.map(vcfirm => (
+                    <ElemInvestorCard
+                      key={vcfirm.id}
+                      vcFirm={vcfirm as Vc_Firms}
+                      tagOnClick={filterByTag}
+                    />
+                  ))}
+                </div>
+
                 <Pagination
                   shownItems={vcFirms?.length}
                   totalItems={vcfirms_aggregate}

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import moment from 'moment-timezone';
 import { first } from 'lodash';
@@ -18,8 +18,6 @@ import { numberWithCommas } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { loadStripe } from '@/utils/stripe';
-import { ElemFilter } from '@/components/elem-filter';
-import { Filters, FilterOptionKeys } from '@/models/Filter';
 
 import {
   useTable,
@@ -28,12 +26,6 @@ import {
   usePagination,
 } from 'react-table';
 import { usePopup } from '@/context/popup-context';
-
-export type DeepPartial<T> = T extends object
-  ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
-  : T;
 
 type Props = {
   className?: string;
@@ -45,10 +37,6 @@ type Props = {
   onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   filterByTag: Function;
-  filterValues: Filters | null;
-  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
-  onClearOption: (name: FilterOptionKeys) => void;
-  onReset: () => void;
 };
 
 export const CompaniesTable: FC<Props> = ({
@@ -61,10 +49,6 @@ export const CompaniesTable: FC<Props> = ({
   onClickPrev,
   onClickNext,
   filterByTag,
-  filterValues,
-  onApply,
-  onClearOption,
-  onReset,
 }) => {
   const { user } = useUser();
 
@@ -129,10 +113,7 @@ export const CompaniesTable: FC<Props> = ({
     [],
   );
 
-  const emptyCell = React.useMemo(
-    () => <div className="text-slate-400">&mdash;</div>,
-    [],
-  );
+  const EmptyCell = () => <div className="text-slate-400">&mdash;</div>;
 
   const columns = React.useMemo<any[]>(
     () => [
@@ -163,7 +144,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Token',
         accessor: 'coin.ticker' as const,
         Cell: (props: any) => (
-          <>{props.value ? <div>{props.value}</div> : emptyCell}</>
+          <>{props.value ? <div>{props.value}</div> : <EmptyCell />}</>
         ),
         width: 100,
       },
@@ -187,7 +168,7 @@ export const CompaniesTable: FC<Props> = ({
                 })}
               </>
             ) : (
-              emptyCell
+              <EmptyCell />
             )}
           </div>
         ),
@@ -203,7 +184,7 @@ export const CompaniesTable: FC<Props> = ({
             {props.value ? (
               <p className="line-clamp-2 text-sm">{props.value}</p>
             ) : (
-              emptyCell
+              <EmptyCell />
             )}
           </div>
         ),
@@ -217,7 +198,11 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <>
-              {props.value ? <p>{numberWithCommas(props.value)}</p> : emptyCell}
+              {props.value ? (
+                <p>{numberWithCommas(props.value)}</p>
+              ) : (
+                <EmptyCell />
+              )}
             </>
           );
         },
@@ -247,7 +232,7 @@ export const CompaniesTable: FC<Props> = ({
                   })}
                 </>
               ) : (
-                emptyCell
+                <EmptyCell />
               )}
             </div>
           );
@@ -260,7 +245,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'City',
         accessor: 'location_json.city' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -269,7 +254,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'State',
         accessor: 'location_json.state' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -278,7 +263,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Country',
         accessor: 'location_json.country' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -287,7 +272,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Founded',
         accessor: 'year_founded' as const,
         Cell: (props: any) => {
-          return <>{props.value ? <p>{props.value}</p> : emptyCell}</>;
+          return <>{props.value ? <p>{props.value}</p> : <EmptyCell />}</>;
         },
         width: 120,
       },
@@ -323,7 +308,7 @@ export const CompaniesTable: FC<Props> = ({
         accessor: 'investment_rounds.length' as const,
         Cell: (props: any) => {
           const numberOfRounds = props.value;
-          return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
+          return <>{numberOfRounds ? numberOfRounds : <EmptyCell />}</>;
         },
         width: 100,
       },
@@ -343,7 +328,7 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <div>
-              {props.value ? moment(props.value).format('LL') : emptyCell}
+              {props.value ? moment(props.value).format('LL') : <EmptyCell />}
             </div>
           );
         },
@@ -371,7 +356,7 @@ export const CompaniesTable: FC<Props> = ({
                 props.row.original?.investment_rounds.length > 0 ? (
                 <>Undisclosed Capital</>
               ) : (
-                emptyCell
+                <EmptyCell />
               )}
             </div>
           );
@@ -392,11 +377,11 @@ export const CompaniesTable: FC<Props> = ({
           }
         },
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
       },
     ],
-    [filterByTag, emptyCell],
+    [filterByTag],
   );
 
   const getCompanies = React.useMemo(() => {
@@ -691,7 +676,7 @@ export const CompaniesTable: FC<Props> = ({
           </tbody>
         </table>
 
-        {!isDisplayAllCompanies && (
+        {!isDisplayAllCompanies && totalItems > itemsPerPage && (
           <table className="relative table-auto min-w-full overscroll-x-none">
             <tbody className="divide-y divide-black/10">
               {Array.from({ length: 10 }, (_, i) => (
