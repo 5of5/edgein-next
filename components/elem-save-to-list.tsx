@@ -44,7 +44,7 @@ export const ElemSaveToList: FC<Props> = ({
   resourceId,
   resourceType,
   slug,
-  buttonStyle = 'purple',
+  buttonStyle = 'primary',
   follows = [],
 }) => {
   const { setShowPopup } = usePopup();
