@@ -71,7 +71,7 @@ export const CompaniesByFilter: FC<Props> = ({
           totalItems={companies_aggregate.aggregate?.count ?? 0}
           onClickPrev={() => setPage(page - 1)}
           onClickNext={() => setPage(page + 1)}
-          filterByTag={() => { }}
+          filterByTag={tagOnClick}
         />
       ) : (
         <div>
