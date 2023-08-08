@@ -267,7 +267,7 @@ const Investors: NextPage<Props> = ({
       <div className="relative">
         <div>
           <div
-            className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
+            className="mb-4 px-4 py-3 flex flex-wrap gap-3 justify-between border-b border-gray-200 lg:items-center"
             role="tablist"
           >
             <ElemCategories
@@ -276,7 +276,7 @@ const Investors: NextPage<Props> = ({
               onChangeCategory={setSelectedStatusTag}
             />
 
-            <div className="flex space-x-2">
+            <div className="flex flex-wrap gap-2">
               {isDisplaySelectLibrary && <ElemLibrarySelector />}
               <ElemDropdown items={layoutItems} />
 
