@@ -72,7 +72,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
 
   const attendees = event_person?.filter(item => item.type === 'attendee');
 
-  const defaultIsAttended = attendees.some(
+  const defaultIsAttended = attendees?.some(
     item => item.person_id === user?.person?.id,
   );
 
