@@ -13,7 +13,6 @@ import {
 } from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
-  Companies,
   Companies_Bool_Exp,
   Companies_Order_By,
   GetCompaniesDocument,
@@ -310,7 +309,7 @@ const Companies: NextPage<Props> = ({
         <ElemInviteBanner className="mt-3 mx-4" />
 
         <div className="mt-6 mx-8">
-          {!showPersonalized && (
+          {showPersonalized && (
             <div className="flex flex-col gap-16">
               {personalizedTags.locationTags.map(location => (
                 <div key={location} className="flex flex-col gap-16">

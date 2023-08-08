@@ -318,7 +318,7 @@ const Investors: NextPage<Props> = ({
           <ElemInviteBanner className="mt-3 mx-4" />
 
           <div className="mt-6 mx-4">
-            {!showPersonalized && (
+            {showPersonalized && (
               <div className="flex flex-col gap-4 gap-x-16">
                 {personalizedTags.industryTags.map(industry => (
                   <InvestorsByFilter
@@ -445,7 +445,7 @@ const Investors: NextPage<Props> = ({
               </>
             ) : (
               <>
-                {!showPersonalized && (
+                {showPersonalized && (
                   <div className="text-2xl font-bold">All investors</div>
                 )}
                 <div
