@@ -315,8 +315,9 @@ const Companies: NextPage<Props> = ({
         <div className="mx-6">
           {showPersonalized && (
             <div className="flex flex-col gap-4 gap-x-16">
-              {personalizedTags.locationTags.map(location => (
+              {personalizedTags.locationTags.map((location, index) => (
                 <CompaniesByFilter
+                  key={`${location}-${index}`}
                   headingText={`Trending in ${location}`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -339,8 +340,9 @@ const Companies: NextPage<Props> = ({
                 />
               ))}
 
-              {personalizedTags.locationTags.map(location => (
+              {personalizedTags.locationTags.map((location, index) => (
                 <CompaniesByFilter
+                  key={`${location}-${index}`}
                   headingText={`New in ${location}`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
