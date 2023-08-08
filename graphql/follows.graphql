@@ -31,8 +31,29 @@ query GetFollowsByUser($user_id: Int!) {
   }
 }
 
-query GetCompaniesByListId($list_id: Int = 0) {
-  follows_companies(where: { list_id: { _eq: $list_id } }) {
+query GetCompaniesByListId(
+  $list_id: Int = 0
+  $limit: Int
+  $offset: Int
+  $query: String
+) {
+  follows_companies(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        {
+          company: {
+            _or: [
+              { name: { _ilike: $query } }
+              { overview: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+    limit: $limit
+    offset: $offset
+  ) {
     id
     company {
       id
@@ -61,10 +82,50 @@ query GetCompaniesByListId($list_id: Int = 0) {
       slug
     }
   }
+  follows_companies_aggregate(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        {
+          company: {
+            _or: [
+              { name: { _ilike: $query } }
+              { overview: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
 }
 
-query GetVcFirmsByListId($list_id: Int = 0) {
-  follows_vc_firms(where: { list_id: { _eq: $list_id } }) {
+query GetVcFirmsByListId(
+  $list_id: Int = 0
+  $limit: Int
+  $offset: Int
+  $query: String
+) {
+  follows_vc_firms(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        {
+          vc_firm: {
+            _or: [
+              { name: { _ilike: $query } }
+              { overview: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+    limit: $limit
+    offset: $offset
+  ) {
     id
     vc_firm {
       id
@@ -86,6 +147,25 @@ query GetVcFirmsByListId($list_id: Int = 0) {
           round
         }
       }
+    }
+  }
+  follows_vc_firms_aggregate(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        {
+          vc_firm: {
+            _or: [
+              { name: { _ilike: $query } }
+              { overview: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+  ) {
+    aggregate {
+      count
     }
   }
 }
@@ -147,8 +227,30 @@ query GetFollowsByResource($resourceId: Int!, $resourceType: String!) {
   }
 }
 
-query GetPeopleByListId($list_id: Int = 0) {
-  follows_people(where: { list_id: { _eq: $list_id } }) {
+query GetPeopleByListId(
+  $list_id: Int = 0
+  $limit: Int
+  $offset: Int
+  $query: String
+) {
+  follows_people(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        {
+          person: {
+            _or: [
+              { name: { _ilike: $query } }
+              { personal_email: { _ilike: $query } }
+              { work_email: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+    limit: $limit
+    offset: $offset
+  ) {
     id
     person {
       id
@@ -164,6 +266,26 @@ query GetPeopleByListId($list_id: Int = 0) {
       github
       twitter_url
       linkedin
+    }
+  }
+  follows_people_aggregate(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        {
+          person: {
+            _or: [
+              { name: { _ilike: $query } }
+              { personal_email: { _ilike: $query } }
+              { work_email: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+  ) {
+    aggregate {
+      count
     }
   }
 }

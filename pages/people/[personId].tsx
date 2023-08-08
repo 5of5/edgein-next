@@ -159,6 +159,7 @@ const Person: NextPage<Props> = props => {
                       resourceId={person.id}
                       resourceType="people"
                       slug={person.slug!}
+                      follows={person.follows}
                     />
 
                     {isCurrentUserProfile && (

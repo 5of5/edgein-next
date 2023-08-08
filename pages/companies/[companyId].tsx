@@ -44,6 +44,7 @@ import ElemNewsList from '@/components/news/elem-news-list';
 import ElemCompanyTags from '@/components/elem-company-tags';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { ElemReactions } from '@/components/elem-reactions';
 
 type Props = {
   company: Companies;
@@ -276,11 +277,11 @@ const Company: NextPage<Props> = (props: Props) => {
               </>
             )}
             <div className="flex flex-wrap items-center mt-4 gap-3">
-              {/* <ElemReactions
-                  resource={company}
-                  resourceType={'companies'}
-                  className="w-full sm:w-auto"
-                /> */}
+              <ElemReactions
+                resource={company}
+                resourceType={'companies'}
+                className="w-full sm:w-auto"
+              />
               <ElemSaveToList
                 resourceName={company.name}
                 resourceId={company.id}
