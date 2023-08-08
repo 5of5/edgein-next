@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
