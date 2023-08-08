@@ -61,7 +61,7 @@ export const CompaniesByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-2xl font-semibold">{headingText}</div>
+      <div className="text-2xl font-medium my-4">{headingText}</div>
       {tableView ? (
         <CompaniesTable
           companies={companies}

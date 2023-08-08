@@ -257,7 +257,7 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
+          className="px-6 py-3 lg:flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
           <ElemCategories
@@ -282,80 +282,82 @@ const Companies: NextPage<Props> = ({
           </div>
         </div>
 
-        <div className="px-4">
-          <ElemFilter
-            resourceType="companies"
-            filterValues={selectedFilters}
-            onSelectFilterOption={onSelectFilterOption}
-            onChangeFilterValues={onChangeSelectedFilters}
-            onApply={(name, filterParams) => {
-              filters._and = defaultFilters;
-              onChangeSelectedFilters({
-                ...selectedFilters,
-                [name]: { ...filterParams, open: false },
-              });
-            }}
-            onClearOption={name => {
-              filters._and = defaultFilters;
-              onChangeSelectedFilters({
-                ...selectedFilters,
-                [name]: undefined,
-              });
-            }}
-            onReset={() => onChangeSelectedFilters(null)}
-          />
-        </div>
+        {selectedFilters && (
+          <div className="mx-6 my-3">
+            <ElemFilter
+              resourceType="companies"
+              filterValues={selectedFilters}
+              onSelectFilterOption={onSelectFilterOption}
+              onChangeFilterValues={onChangeSelectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: { ...filterParams, open: false },
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => onChangeSelectedFilters(null)}
+            />
+          </div>
+        )}
 
-        <ElemInviteBanner className="mt-3 mx-4" />
+        <ElemInviteBanner className="mx-6 my-3" />
 
-        <div className="mt-6 mx-8">
+        <div className="mx-6">
           {showPersonalized && (
-            <div className="flex flex-col gap-16">
+            <div className="flex flex-col gap-4 gap-x-16">
               {personalizedTags.locationTags.map(location => (
-                <div key={location} className="flex flex-col gap-16">
-                  <CompaniesByFilter
-                    headingText={`Trending in ${location}`}
-                    tagOnClick={filterByTag}
-                    itemsPerPage={8}
-                    tableView={tableLayout}
-                    filters={{
-                      _and: [
-                        ...defaultFilters,
-                        { status_tags: { _contains: 'Trending' } },
-                        {
-                          location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
+                <CompaniesByFilter
+                  headingText={`Trending in ${location}`}
+                  tagOnClick={filterByTag}
+                  itemsPerPage={8}
+                  tableView={tableLayout}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      { status_tags: { _contains: 'Trending' } },
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
                             },
                           },
                         },
-                      ],
-                    }}
-                  />
+                      },
+                    ],
+                  }}
+                />
+              ))}
 
-                  <CompaniesByFilter
-                    headingText={`New in ${location}`}
-                    tagOnClick={filterByTag}
-                    itemsPerPage={8}
-                    tableView={tableLayout}
-                    filters={{
-                      _and: [
-                        ...defaultFilters,
-                        {
-                          location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
+              {personalizedTags.locationTags.map(location => (
+                <CompaniesByFilter
+                  headingText={`New in ${location}`}
+                  tagOnClick={filterByTag}
+                  itemsPerPage={8}
+                  tableView={tableLayout}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
                             },
                           },
                         },
-                      ],
-                    }}
-                  />
-                </div>
+                      },
+                    ],
+                  }}
+                />
               ))}
 
               {personalizedTags.industryTags.map(industry => (
@@ -439,8 +441,8 @@ const Companies: NextPage<Props> = ({
               )}
             </>
           ) : tableLayout && companies?.length != 0 ? (
-            <div className="mt-16">
-              {user && <div className="text-2xl font-bold">All companies</div>}
+            <>
+              {user && <div className="text-2xl font-medium mt-4">All companies</div>}
               <CompaniesTable
                 companies={companies}
                 pageNumber={page}
@@ -451,13 +453,13 @@ const Companies: NextPage<Props> = ({
                 onClickNext={() => setPage(page + 1)}
                 filterByTag={filterByTag}
               />
-            </div>
+            </>
           ) : (
-            <div className="mt-16">
-              {user && <div className="text-2xl font-bold">All companies</div>}
+            <>
+              {user && <div className="text-2xl font-medium my-4">All companies</div>}
               <div
                 data-testid="companies"
-                className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
+                className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
               >
                 {companies?.map(company => {
                   return (
@@ -479,7 +481,7 @@ const Companies: NextPage<Props> = ({
                 onClickNext={() => setPage(page + 1)}
                 onClickToPage={selectedPage => setPage(selectedPage)}
               />
-            </div>
+            </>
           )}
         </div>
 

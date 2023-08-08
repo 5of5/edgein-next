@@ -60,7 +60,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
   };
 
   return (
-    <div className="flex flex-col w-full p-4">
+    <div className="flex flex-col w-full">
       <Link href={`/investors/${slug}`}>
         <a>
           <div className="flex shrink-0 w-full">

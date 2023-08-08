@@ -61,7 +61,7 @@ export const InvestorsByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-2xl font-semibold">{headingText}</div>
+      <div className="text-2xl font-medium my-4">{headingText}</div>
       {tableView ? (
         <InvestorsTable
           investors={vc_firms}
@@ -77,7 +77,7 @@ export const InvestorsByFilter: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
+            className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
           >
             {vc_firms.map(vcFirm => (
               <ElemInvestorCard

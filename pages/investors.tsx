@@ -8,10 +8,7 @@ import {
 import { ElemButton } from '@/components/elem-button';
 import { Pagination } from '@/components/pagination';
 import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
-import {
-  IconSearch,
-  IconAnnotation,
-} from '@/components/icons';
+import { IconSearch, IconAnnotation } from '@/components/icons';
 import { InvestorsTable } from '@/components/investors/elem-investors-table';
 import {
   GetVcFirmsDocument,
@@ -264,7 +261,7 @@ const Investors: NextPage<Props> = ({
       <div className="relative">
         <div>
           <div
-            className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
+            className="relative px-6 py-3 flex items-center justify-between border-b border-gray-200"
             role="tablist"
           >
             <ElemCategories
@@ -291,33 +288,36 @@ const Investors: NextPage<Props> = ({
             </div>
           </div>
 
-          <div className="px-4">
-            <ElemFilter
-              resourceType="vc_firms"
-              filterValues={selectedFilters}
-              onSelectFilterOption={onSelectFilterOption}
-              onChangeFilterValues={onChangeSelectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: { ...filterParams, open: false },
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => onChangeSelectedFilters(null)}
-            />
-          </div>
+          
+          {selectedFilters && (
+            <div className="mx-6 my-3">
+              <ElemFilter
+                resourceType="vc_firms"
+                filterValues={selectedFilters}
+                onSelectFilterOption={onSelectFilterOption}
+                onChangeFilterValues={onChangeSelectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: { ...filterParams, open: false },
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: undefined,
+                  });
+                }}
+                onReset={() => onChangeSelectedFilters(null)}
+              />
+            </div>
+          )}
 
-          <ElemInviteBanner className="mt-3 mx-4" />
+          <ElemInviteBanner className="mx-6 my-3" />
 
-          <div className="mt-6 mx-4">
+          <div className="mx-6">
             {showPersonalized && (
               <div className="flex flex-col gap-4 gap-x-16">
                 {personalizedTags.industryTags.map(industry => (
@@ -332,11 +332,6 @@ const Investors: NextPage<Props> = ({
                         { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
-                          status_tags: {
-                            _contains: 'Trending',
-                          },
-                        },
-                        {
                           tags: {
                             _contains: industry,
                           },
@@ -371,6 +366,7 @@ const Investors: NextPage<Props> = ({
                     }}
                   />
                 ))}
+
                 <InvestorsByFilter
                   headingText={`Just acquired`}
                   tagOnClick={filterByTag}
@@ -429,8 +425,8 @@ const Investors: NextPage<Props> = ({
               </>
             ) : tableLayout && vcFirms?.length != 0 ? (
               <>
-                {!showPersonalized && (
-                  <div className="text-2xl font-bold">All investors</div>
+                {user && (
+                  <div className="text-2xl font-medium mt-4">All investors</div>
                 )}
                 <InvestorsTable
                   investors={vcFirms}
@@ -445,12 +441,12 @@ const Investors: NextPage<Props> = ({
               </>
             ) : (
               <>
-                {showPersonalized && (
-                  <div className="text-2xl font-bold">All investors</div>
+                {user && (
+                  <div className="text-2xl font-medium my-4">All investors</div>
                 )}
                 <div
                   data-testid="investors"
-                  className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                  className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
                 >
                   {vcFirms?.map(vcfirm => (
                     <ElemInvestorCard
