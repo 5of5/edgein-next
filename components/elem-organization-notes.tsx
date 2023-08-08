@@ -55,7 +55,7 @@ const ElemOrganizationNotes: FC<Props> = ({
       resource_id: { _eq: resourceId },
       resource_type: { _eq: resourceType },
       _or: [
-        { audience: { _eq: 'public' } },
+        { _or: [{ audience: { _eq: 'public' } }] },
         { _or: [{ user_group_id: { _in: myGroups.map(item => item.id) } }] },
         user?.id
           ? {
