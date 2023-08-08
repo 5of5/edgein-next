@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { ElemHeading } from '@/components/elem-heading';
 import {
   PlaceholderCompanyCard,
   PlaceholderTable,
@@ -11,11 +10,6 @@ import { runGraphQl } from '@/utils';
 import {
   IconSearch,
   IconAnnotation,
-  IconGrid,
-  IconTable,
-  IconDead,
-  IconAcquired,
-  IconTrending,
 } from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
@@ -29,14 +23,14 @@ import {
 } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
-import { companyChoices } from '@/utils/constants';
+import { companyChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { processCompaniesFilters } from '@/utils/filter';
 import { ElemFilter } from '@/components/elem-filter';
 import { useIntercom } from 'react-use-intercom';
-import { DeepPartial } from '@/types/common';
+import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -50,24 +44,14 @@ import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { User } from '@/models/user';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { some } from 'lodash';
-
-function useStateParamsFilter<T>(filters: T[], name: string) {
-  return useStateParams(
-    filters[0],
-    name,
-    companyLayer => filters.indexOf(companyLayer).toString(),
-    index => filters[Number(index)],
-  );
-}
+import { ElemCategories } from '@/components/dashboard/elem-categories';
 
 type Props = {
   companiesCount: number;
   initialCompanies: GetCompaniesQuery['companies'];
-  companyStatusTags: TextFilter[];
+  companyStatusTags: DashboardCategory[];
 };
 
 const Companies: NextPage<Props> = ({
@@ -93,10 +77,16 @@ const Companies: NextPage<Props> = ({
   const { selectedLibrary } = useLibrary();
 
   // Company status-tag filter
-  const [selectedStatusTag, setSelectedStatusTag] = useStateParamsFilter(
-    companyStatusTags,
-    'statusTag',
-  );
+  const [selectedStatusTag, setSelectedStatusTag] =
+    useStateParams<DashboardCategory | null>(
+      null,
+      'statusTag',
+      companyLayer =>
+        companyLayer ? companyStatusTags.indexOf(companyLayer).toString() : '',
+      index => companyStatusTags[Number(index)],
+    );
+
+  const isNewTabSelected = selectedStatusTag?.value === 'new';
 
   const [tableLayout, setTableLayout] = useState(false);
 
@@ -140,7 +130,7 @@ const Companies: NextPage<Props> = ({
     if (!initialLoad) {
       setPage(0);
     }
-    if (initialLoad && selectedStatusTag.value !== '') {
+    if (initialLoad && selectedStatusTag?.value !== '') {
       setInitialLoad(false);
     }
 
@@ -209,10 +199,16 @@ const Companies: NextPage<Props> = ({
   /** Handle selected filter params */
   processCompaniesFilters(filters, selectedFilters, defaultFilters);
 
-  if (selectedStatusTag.value) {
-    filters._and?.push({
-      status_tags: { _contains: selectedStatusTag.value },
-    });
+  if (selectedStatusTag?.value) {
+    if (isNewTabSelected) {
+      filters._and?.push({
+        date_added: { _neq: new Date(0) },
+      });
+    } else {
+      filters._and?.push({
+        status_tags: { _contains: selectedStatusTag.value },
+      });
+    }
   }
 
   const {
@@ -220,10 +216,14 @@ const Companies: NextPage<Props> = ({
     error,
     isLoading,
   } = useGetCompaniesQuery({
-    offset,
-    limit,
+    offset: isNewTabSelected ? null : offset,
+    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
     where: filters as Companies_Bool_Exp,
-    orderBy: [orderByQuery],
+    orderBy: [
+      isNewTabSelected
+        ? ({ date_added: Order_By.Desc } as Companies_Order_By)
+        : orderByQuery,
+    ],
   });
 
   if (!isLoading && initialLoad) {
@@ -252,8 +252,7 @@ const Companies: NextPage<Props> = ({
     },
   ];
 
-  const shouldHidePersonalized =
-    selectedFilters || selectedStatusTag?.title !== 'New';
+  const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
   return (
     <DashboardLayout>
@@ -262,25 +261,11 @@ const Companies: NextPage<Props> = ({
           className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200"
           role="tablist"
         >
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
-            {companyStatusTags &&
-              companyStatusTags.map((tab: any, index: number) =>
-                tab.disabled === true ? (
-                  <Fragment key={index}></Fragment>
-                ) : (
-                  <ElemButton
-                    key={index}
-                    onClick={() => setSelectedStatusTag(tab)}
-                    btn="gray"
-                    roundedFull={false}
-                    className="rounded-lg"
-                  >
-                    {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
-                    {tab.title}
-                  </ElemButton>
-                ),
-              )}
-          </nav>
+          <ElemCategories
+            categories={companyStatusTags}
+            selectedCategory={selectedStatusTag}
+            onChangeCategory={setSelectedStatusTag}
+          />
 
           <div className="flex space-x-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
@@ -292,7 +277,9 @@ const Companies: NextPage<Props> = ({
               onSelectFilterOption={onSelectFilterOption}
             />
 
-            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            {!isNewTabSelected && (
+              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            )}
           </div>
         </div>
 
@@ -323,7 +310,7 @@ const Companies: NextPage<Props> = ({
         <ElemInviteBanner className="mt-3 mx-4" />
 
         <div className="mt-6 mx-8">
-          {!shouldHidePersonalized && (
+          {!showPersonalized && (
             <div className="flex flex-col gap-16">
               {personalizedTags.locationTags.map(location => (
                 <div key={location} className="flex flex-col gap-16">
@@ -556,13 +543,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 export default Companies;
 
-interface TextFilter {
-  title: string;
-  description?: string;
-  icon?: string;
-  value: string;
-}
-
 export interface NumericFilter {
   title: string;
   description?: string;
@@ -578,10 +558,10 @@ const companyStatusTagValues = companyChoices.map(option => {
   };
 });
 
-const companyStatusTags: TextFilter[] = [
+const companyStatusTags: DashboardCategory[] = [
   {
     title: 'New',
-    value: '',
+    value: 'new',
     icon: '✨',
   },
   ...companyStatusTagValues,

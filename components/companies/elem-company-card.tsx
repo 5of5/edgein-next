@@ -18,6 +18,7 @@ import {
   CARD_DEFAULT_TAGS_LIMIT,
   CARD_MAX_TAGS_LIMIT,
 } from '@/utils/constants';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   company: Companies;
@@ -34,6 +35,8 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
   };
 
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const userCanViewLinkedIn = user?.entitlements.viewEmails
     ? user?.entitlements.viewEmails
@@ -62,6 +65,14 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 
   const isRaisingCompany =
     status_tags && status_tags.length > 0 && status_tags.includes('Raising');
+
+  const onClickCompanyLinkedin = () => {
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpenUpgradeDialog(true);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -147,19 +158,19 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
             </Link>
           )}
 
-          {userCanViewLinkedIn && company_linkedin ? (
-            <Link href={company_linkedin}>
-              <a target="_blank">
+          {company_linkedin ? (
+            userCanViewLinkedIn ? (
+              <Link href={company_linkedin}>
+                <a target="_blank">
+                  <IconLinkedIn className="h-6 w-6 text-gray-400" />
+                </a>
+              </Link>
+            ) : (
+              <button onClick={onClickCompanyLinkedin}>
                 <IconLinkedIn className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          ) : !userCanViewLinkedIn && company_linkedin ? (
-            <button onClick={() => setIsOpenUpgradeDialog(true)}>
-              <IconLinkedIn className="h-6 w-6 text-gray-400" />
-            </button>
-          ) : (
-            <></>
-          )}
+              </button>
+            )
+          ) : null}
 
           {twitter && (
             <Link href={twitter}>

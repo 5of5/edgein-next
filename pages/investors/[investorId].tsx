@@ -40,7 +40,6 @@ type Props = {
   sortNews: Array<News>;
   getInvestments: Array<Investment_Rounds>;
   setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const VCFirm: NextPage<Props> = props => {
@@ -249,7 +248,6 @@ const VCFirm: NextPage<Props> = props => {
               <ElemOrganizationNotes
                 resourceId={vcfirm.id}
                 resourceType="vc_firms"
-                setShowPopup={props.setShowPopup}
               />
             </div>
             {props.sortNews.length > 0 && (

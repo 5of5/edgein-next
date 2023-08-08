@@ -14,6 +14,7 @@ import {
   CARD_DEFAULT_TAGS_LIMIT,
   CARD_MAX_TAGS_LIMIT,
 } from '@/utils/constants';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -24,6 +25,8 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
   const showMoreTags = () => {
@@ -47,6 +50,14 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
     linkedin,
     twitter,
   } = vcFirm;
+
+  const onClickInvestorLinkedin = () => {
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpenUpgradeDialog(true);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full p-4">
@@ -128,19 +139,19 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
               </Link>
             )}
 
-            {userCanViewLinkedIn && linkedin ? (
-              <Link href={linkedin}>
-                <a target="_blank">
+            {linkedin ? (
+              userCanViewLinkedIn ? (
+                <Link href={linkedin}>
+                  <a target="_blank">
+                    <IconLinkedIn className="h-6 w-6 text-gray-400" />
+                  </a>
+                </Link>
+              ) : (
+                <button onClick={onClickInvestorLinkedin}>
                   <IconLinkedIn className="h-6 w-6 text-gray-400" />
-                </a>
-              </Link>
-            ) : !userCanViewLinkedIn && linkedin ? (
-              <button onClick={() => setIsOpenUpgradeDialog(true)}>
-                <IconLinkedIn className="h-6 w-6 text-gray-400" />
-              </button>
-            ) : (
-              <></>
-            )}
+                </button>
+              )
+            ) : null}
 
             {twitter && (
               <Link href={twitter}>

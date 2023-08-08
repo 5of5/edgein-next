@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { ElemHeading } from '@/components/elem-heading';
 import {
   PlaceholderInvestorCard,
   PlaceholderTable,
@@ -12,8 +11,6 @@ import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
 import {
   IconSearch,
   IconAnnotation,
-  IconGrid,
-  IconTable,
 } from '@/components/icons';
 import { InvestorsTable } from '@/components/investors/elem-investors-table';
 import {
@@ -26,7 +23,7 @@ import {
   Order_By,
 } from '@/graphql/types';
 import { runGraphQl } from '@/utils';
-import { investorChoices } from '@/utils/constants';
+import { investorChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
@@ -34,7 +31,7 @@ import { ElemFilter } from '@/components/elem-filter';
 import { processInvestorsFilters } from '@/utils/filter';
 import { useIntercom } from 'react-use-intercom';
 import useLibrary from '@/hooks/use-library';
-import { DeepPartial } from '@/types/common';
+import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -49,11 +46,12 @@ import { ElemAddFilter } from '@/components/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
+import { ElemCategories } from '@/components/dashboard/elem-categories';
 
 type Props = {
   vcFirmCount: number;
   initialVCFirms: GetVcFirmsQuery['vc_firms'];
-  investorsStatusTags: TextFilter[];
+  investorsStatusTags: DashboardCategory[];
 };
 
 const Investors: NextPage<Props> = ({
@@ -79,12 +77,16 @@ const Investors: NextPage<Props> = ({
       ));
 
   // Investor Status Tag
-  const [selectedStatusTag, setSelectedStatusTag] = useStateParams(
-    investorsStatusTags[0],
-    'statusTag',
-    statusTag => investorsStatusTags.indexOf(statusTag).toString(),
-    index => investorsStatusTags[Number(index)],
-  );
+  const [selectedStatusTag, setSelectedStatusTag] =
+    useStateParams<DashboardCategory | null>(
+      null,
+      'statusTag',
+      statusTag =>
+        statusTag ? investorsStatusTags.indexOf(statusTag).toString() : '',
+      index => investorsStatusTags[Number(index)],
+    );
+
+  const isNewTabSelected = selectedStatusTag?.value === 'new';
 
   const [tableLayout, setTableLayout] = useState(false);
 
@@ -202,10 +204,16 @@ const Investors: NextPage<Props> = ({
   /** Handle selected filter params */
   processInvestorsFilters(filters, selectedFilters, defaultFilters);
 
-  if (selectedStatusTag.value) {
-    filters._and?.push({
-      status_tags: { _contains: selectedStatusTag.value },
-    });
+  if (selectedStatusTag?.value) {
+    if (isNewTabSelected) {
+      filters._and?.push({
+        created_at: { _neq: new Date(0) },
+      });
+    } else {
+      filters._and?.push({
+        status_tags: { _contains: selectedStatusTag.value },
+      });
+    }
   }
 
   const {
@@ -213,10 +221,14 @@ const Investors: NextPage<Props> = ({
     error,
     isLoading,
   } = useGetVcFirmsQuery({
-    offset,
-    limit,
+    offset: isNewTabSelected ? null : offset,
+    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
     where: filters as Vc_Firms_Bool_Exp,
-    orderBy: [orderByQuery],
+    orderBy: [
+      isNewTabSelected
+        ? ({ created_at: Order_By.Desc } as Vc_Firms_Order_By)
+        : orderByQuery,
+    ],
   });
 
   if (!isLoading && initialLoad) {
@@ -245,8 +257,7 @@ const Investors: NextPage<Props> = ({
     },
   ];
 
-  const shouldHidePersonalized =
-    selectedFilters || selectedStatusTag?.title !== 'New';
+  const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
   return (
     <DashboardLayout>
@@ -256,30 +267,14 @@ const Investors: NextPage<Props> = ({
             className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
             role="tablist"
           >
-            <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x pr-32 sm:pr-0 lg:border-none">
-              {investorsStatusTags &&
-                investorsStatusTags.map((tab: any, index: number) =>
-                  tab.disabled === true ? (
-                    <Fragment key={index}></Fragment>
-                  ) : (
-                    <ElemButton
-                      key={index}
-                      onClick={() => setSelectedStatusTag(tab)}
-                      btn="gray"
-                      roundedFull={false}
-                      className="rounded-lg"
-                    >
-                      {tab.icon && <div className="w-5 h-5">{tab.icon}</div>}
-                      {tab.title}
-                    </ElemButton>
-                  ),
-                )}
-            </nav>
+            <ElemCategories
+              categories={investorsStatusTags}
+              selectedCategory={selectedStatusTag}
+              onChangeCategory={setSelectedStatusTag}
+            />
 
             <div className="flex space-x-2">
-              {/* {isDisplaySelectLibrary &&  */}
-              <ElemLibrarySelector />
-              {/* } */}
+              {isDisplaySelectLibrary && <ElemLibrarySelector />}
               <ElemDropdown items={layoutItems} />
 
               <ElemAddFilter
@@ -287,7 +282,12 @@ const Investors: NextPage<Props> = ({
                 onSelectFilterOption={onSelectFilterOption}
               />
 
-              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+              {!isNewTabSelected && (
+                <ElemDropdown
+                  defaultItem={defaultOrderBy}
+                  items={sortChoices}
+                />
+              )}
             </div>
           </div>
 
@@ -318,7 +318,7 @@ const Investors: NextPage<Props> = ({
           <ElemInviteBanner className="mt-3 mx-4" />
 
           <div className="mt-6 mx-4">
-            {!shouldHidePersonalized && (
+            {!showPersonalized && (
               <div className="flex flex-col gap-4 gap-x-16">
                 {personalizedTags.industryTags.map(industry => (
                   <InvestorsByFilter
@@ -429,7 +429,7 @@ const Investors: NextPage<Props> = ({
               </>
             ) : tableLayout && vcFirms?.length != 0 ? (
               <>
-                {!shouldHidePersonalized && (
+                {!showPersonalized && (
                   <div className="text-2xl font-bold">All investors</div>
                 )}
                 <InvestorsTable
@@ -445,7 +445,7 @@ const Investors: NextPage<Props> = ({
               </>
             ) : (
               <>
-                {!shouldHidePersonalized && (
+                {!showPersonalized && (
                   <div className="text-2xl font-bold">All investors</div>
                 )}
                 <div
@@ -534,13 +534,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 export default Investors;
 
-interface TextFilter {
-  title: string;
-  description?: string;
-  icon?: string;
-  value: string;
-}
-
 const investorFilterValue = investorChoices.map(option => {
   return {
     title: option.name,
@@ -549,10 +542,10 @@ const investorFilterValue = investorChoices.map(option => {
   };
 });
 
-const investorsStatusTags: TextFilter[] = [
+const investorsStatusTags: DashboardCategory[] = [
   {
     title: 'New',
-    value: '',
+    value: 'new',
     icon: '✨',
   },
   ...investorFilterValue,

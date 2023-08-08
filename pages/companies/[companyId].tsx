@@ -52,7 +52,6 @@ type Props = {
   metrics: Metric[];
   newsArticles?: News[];
   setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -394,7 +393,6 @@ const Company: NextPage<Props> = (props: Props) => {
                 resourceId={company.id}
                 resourceType="companies"
                 resourceName={company.name || ''}
-                setShowPopup={props.setShowPopup}
               />
             </div>
 
