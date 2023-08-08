@@ -398,7 +398,7 @@ const MyList: NextPage<Props> = () => {
               Follow list to access and view updates.
             </h3>
             <ElemButton
-              btn="purple"
+              btn="primary"
               loading={isFollowButtonLoading}
               onClick={handleFollowList}
               className="mt-2"

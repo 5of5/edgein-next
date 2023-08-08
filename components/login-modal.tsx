@@ -233,7 +233,7 @@ export default function LoginModal(props: Props) {
 
                       <ElemButton
                         className="w-full mt-10"
-                        btn="purple"
+                        btn="primary"
                         loading={isLoading}
                       >
                         Log in

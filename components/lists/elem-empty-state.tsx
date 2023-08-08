@@ -42,14 +42,18 @@ export const ElemEmptyState: FC<Props> = ({
                 name: 'Discover',
               })
             }
-            btn="purple"
+            btn="primary"
             className="mt-3"
           >
             <IconListPlus className="w-6 h-6 mr-1" />
             Discover New Lists
           </ElemButton>
         ) : (
-          <ElemButton onClick={onClickCreateList} btn="purple" className="mt-3">
+          <ElemButton
+            onClick={onClickCreateList}
+            btn="primary"
+            className="mt-3"
+          >
             <IconListPlus className="w-6 h-6 mr-1" />
             Create New List
           </ElemButton>

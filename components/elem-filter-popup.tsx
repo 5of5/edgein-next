@@ -85,7 +85,7 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
             >
               Clear
             </button>
-            <ElemButton btn="purple" size="sm" onClick={onApplyFilter}>
+            <ElemButton btn="primary" size="sm" onClick={onApplyFilter}>
               Apply
             </ElemButton>
           </div>

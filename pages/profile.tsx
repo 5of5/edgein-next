@@ -548,7 +548,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
           {users?.users_by_pk?.person && (
             <ElemButton
               href={`/people/${users?.users_by_pk?.person?.slug}/`}
-              btn="purple"
+              btn="primary"
               arrow
               className="mt-2 sm:mt-0"
             >

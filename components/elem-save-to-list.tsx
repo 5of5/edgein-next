@@ -370,7 +370,7 @@ export const ElemSaveToList: FC<Props> = ({
                         className="mt-3 ml-auto"
                         disabled={listName === '' || error ? true : false}
                         roundedFull
-                        btn="purple"
+                        btn="primary"
                       >
                         Create
                       </ElemButton>

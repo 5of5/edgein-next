@@ -169,7 +169,7 @@ export const ElemListInformation: FC<Props> = ({
             )}
             {!isFollowing && (
               <ElemButton
-                btn="purple"
+                btn="primary"
                 loading={isFollowButtonLoading}
                 onClick={onFollowList}
               >

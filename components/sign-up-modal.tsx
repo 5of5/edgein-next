@@ -328,7 +328,7 @@ export default function SignUpModal(props: Props) {
 
                         <ElemButton
                           //onClick={onSignUp}
-                          btn="purple"
+                          btn="primary"
                           loading={isLoading}
                           className="w-full mt-2"
                         >

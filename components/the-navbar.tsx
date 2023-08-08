@@ -319,7 +319,7 @@ export const TheNavbar = () => {
                 </ElemButton>
                 <ElemButton
                   onClick={() => setShowPopup('signup')}
-                  btn="purple"
+                  btn="primary"
                   className="whitespace-nowrap"
                 >
                   Sign up

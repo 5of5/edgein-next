@@ -71,7 +71,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
                 </div>
 
                 <div className="flex justify-center mt-6">
-                  <ElemButton onClick={() => loadStripe()} btn="purple">
+                  <ElemButton onClick={() => loadStripe()} btn="primary">
                     Start free trial
                   </ElemButton>
                 </div>

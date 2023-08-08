@@ -84,7 +84,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button as="div">
-          <ElemButton btn="purple">
+          <ElemButton btn="primary">
             <IconShare className="h-5 w-5 mr-1.5" aria-hidden="true" />
             Share
           </ElemButton>

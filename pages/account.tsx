@@ -281,7 +281,7 @@ export default function Account() {
 
                   <div className="flex mt-4 mb-2 text-base">
                     <ElemButton
-                      btn="purple"
+                      btn="primary"
                       className="mr-2"
                       onClick={onChangePassword}
                     >

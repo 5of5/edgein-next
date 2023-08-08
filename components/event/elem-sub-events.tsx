@@ -48,7 +48,7 @@ export const ElemSubEvents: FC<Props> = ({
                 `Hi EdgeIn, I'd like to add my sub-event to ${eventName}. Details:`,
               )
             }
-            btn="purple"
+            btn="primary"
             className="!pl-3"
           >
             <IconPlus className="w-5 h-5 mr-1" />

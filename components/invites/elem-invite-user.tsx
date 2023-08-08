@@ -173,7 +173,7 @@ export const ElemInviteUser = () => {
                 />
               </div>
               <ElemButton
-                btn="purple"
+                btn="primary"
                 onClick={handleClickSendInvites}
                 loading={isLoading}
                 disabled={selectedPeople.length === 0}
