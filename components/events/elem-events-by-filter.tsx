@@ -8,6 +8,7 @@ import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
 import { times } from 'lodash';
 import { FC } from 'react';
+import { ElemFilter } from '../elem-filter';
 import { ElemEventCard } from '../events/elem-event-card';
 import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
@@ -71,7 +72,7 @@ export const EventsByFilter: FC<Props> = ({
           />
         ))}
       </div>
-      
+
       <div className="mx-4 mt-4">
         <Pagination
           shownItems={events.length}

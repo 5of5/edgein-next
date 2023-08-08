@@ -35,12 +35,6 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
     ? user?.entitlements.viewEmails
     : false;
 
-  const [eventData, setEventData] = useState(event);
-
-  useEffect(() => {
-    setEventData(event);
-  }, [event]);
-
   const {
     id,
     slug,
@@ -59,7 +53,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
     // linkedin,
     // github,
     // discord,
-  } = eventData;
+  } = event;
 
   const tags = types;
   const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
