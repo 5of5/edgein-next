@@ -26,7 +26,6 @@ type Props = {
     | 'danger'
     | 'dark'
     | 'primary'
-    | 'purple'
     | 'primary-light'
     | 'transparent'
     | 'white'
