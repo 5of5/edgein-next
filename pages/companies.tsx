@@ -453,7 +453,8 @@ const Companies: NextPage<Props> = ({
               )}
             </>
           ) : tableLayout && companies?.length != 0 ? (
-            <>
+            <div className='mt-16'>
+              {user && <div className="text-2xl font-bold">All companies</div>}
               <CompaniesTable
                 companies={companies}
                 pageNumber={page}
@@ -464,7 +465,7 @@ const Companies: NextPage<Props> = ({
                 onClickNext={() => setPage(page + 1)}
                 filterByTag={filterByTag}
               />
-            </>
+            </div>
           ) : (
             <div className="mt-16">
               {user && <div className="text-2xl font-bold">All companies</div>}
