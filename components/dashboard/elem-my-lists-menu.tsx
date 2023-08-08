@@ -254,13 +254,11 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 })}
 
                 <li role="button">
-                  <li role="button">
-                    <Link href="/lists/">
-                      <a className="flex items-center space-x-2 py-1.5 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
-                        See all
-                      </a>
-                    </Link>
-                  </li>
+                  <Link href="/lists/">
+                    <a className="flex items-center space-x-2 py-1.5 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                      See all
+                    </a>
+                  </Link>
                 </li>
               </Disclosure.Panel>
             )}
