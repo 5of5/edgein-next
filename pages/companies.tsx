@@ -170,7 +170,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -184,7 +185,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -258,7 +260,8 @@ const Companies: NextPage<Props> = ({
       <div className="relative">
         <div
           className="mb-4 px-6 py-3 flex flex-wrap gap-3 justify-between border-b border-gray-200 lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <ElemCategories
             categories={companyStatusTags}
             selectedCategory={selectedStatusTag}
@@ -419,7 +422,8 @@ const Companies: NextPage<Props> = ({
                         `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
@@ -465,7 +469,8 @@ const Companies: NextPage<Props> = ({
                   )}
                   <div
                     data-testid="companies"
-                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                  >
                     {companies?.map(company => {
                       return (
                         <ElemCompanyCard
@@ -509,7 +514,8 @@ const Companies: NextPage<Props> = ({
                   )
                 }
                 btn="white"
-                className="mt-3">
+                className="mt-3"
+              >
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>

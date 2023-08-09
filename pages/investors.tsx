@@ -173,7 +173,8 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -187,7 +188,8 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -262,7 +264,8 @@ const Investors: NextPage<Props> = ({
         <div>
           <div
             className="relative mb-4 px-6 py-3 flex flex-wrap gap-3 justify-between border-b border-gray-200 lg:items-center"
-            role="tablist">
+            role="tablist"
+          >
             <ElemCategories
               categories={investorsStatusTags}
               selectedCategory={selectedStatusTag}
@@ -429,7 +432,8 @@ const Investors: NextPage<Props> = ({
                           `Hi EdgeIn, I'd like to report an error on investors page`,
                         )
                       }
-                      className="inline underline decoration-primary-500 hover:text-primary-500">
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
                       <span>report error</span>
                     </button>
                     .
@@ -477,7 +481,8 @@ const Investors: NextPage<Props> = ({
                     )}
                     <div
                       data-testid="investors"
-                      className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                      className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                    >
                       {vcFirms?.map(vcfirm => (
                         <ElemInvestorCard
                           key={vcfirm.id}
@@ -517,7 +522,8 @@ const Investors: NextPage<Props> = ({
                     )
                   }
                   btn="white"
-                  className="mt-3">
+                  className="mt-3"
+                >
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>

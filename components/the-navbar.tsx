@@ -160,7 +160,7 @@ export const TheNavbar = () => {
 
   useEffect(() => {
     if (router.asPath.includes('?code=')) {
-      const code = (new URLSearchParams(router.asPath.split('?')[1])).get('code');
+      const code = new URLSearchParams(router.asPath.split('?')[1]).get('code');
       if (code) {
         (async () => {
           //setFinishingLogin(true);
