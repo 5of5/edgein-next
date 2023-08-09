@@ -159,14 +159,17 @@ export const TheNavbar = () => {
   };
 
   useEffect(() => {
-    if (router.query.code) {
-      (async () => {
-        //setFinishingLogin(true);
-        const res = await getAccessTokenFromCode(router.query.code as string);
-      })();
+    if (window.location.search) {
+      const code = (new URLSearchParams(window.location.search)).get('code');
+      if (code) {
+        (async () => {
+          //setFinishingLogin(true);
+          const res = await getAccessTokenFromCode(code);
+        })();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.code]);
+  }, [window.location.search]);
 
   useEffect(() => {
     if (router.query.invite && !user) {
