@@ -13,7 +13,9 @@ const InputSwitch: FC<Props> = props => {
   return (
     <Switch.Group>
       <div className="flex items-center">
-        <Switch.Label className="font-medium mr-2">{label}</Switch.Label>
+        <Switch.Label className="font-medium text-sm mr-2">
+          {label}
+        </Switch.Label>
         <Switch
           checked={checked}
           onChange={onChange}
