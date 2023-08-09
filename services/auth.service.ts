@@ -179,14 +179,17 @@ export class AuthService {
     token_type: string;
     expires_in: number;
   }> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
     const userTokenResponse = await fetch(
       `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`,
       {
         method: 'POST',
+        headers,
         body: qs.stringify({
           grant_type: 'authorization_code',
           client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-          client_secret: process.env.AUTH0_CLIENT_SECRET,
+          client_secret: process.env.AUTH0_CLIENT_SECRET,    
           code: data.code,
           redirect_uri: redirect_url(),
         }),
