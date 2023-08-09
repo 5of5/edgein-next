@@ -5,18 +5,14 @@ import groupBy from 'lodash/groupBy';
 import { InviteToEdgeInPayload, InviteToEdgeInResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
 import {
-  Investments,
-  useGetInvestmentsQuery,
   useGetInvestorMailingListQuery,
   useGetInvitedPeopleByUserIdQuery,
-  useGetVcFirmsInvestmentsQuery,
 } from '@/graphql/types';
 import { IconPaperAirplane, IconChevronDownMini } from '../icons';
 import { ElemButton } from '../elem-button';
 import ElemInviteEmails from './elem-invite-emails';
 import { ElemInviteTeamMember } from './elem-invite-team-member';
 import { ElemInviteCompanyGroup } from './elem-invite-company-group';
-import { DeepPartial } from '@/types/common';
 
 export const ElemInviteUser = () => {
   const { user } = useUser();
@@ -73,11 +69,15 @@ export const ElemInviteUser = () => {
       })),
     );
   };
-  
+
   const mailingList = useGetInvestorMailingListQuery({
     //@ts-expect-error
     where: { person_id: { _eq: 3015 } },
   });
+
+  const handleAddTeamMembers = async () => {
+    await mailingList.refetch();
+  };
 
   return (
     <div>
@@ -99,8 +99,9 @@ export const ElemInviteUser = () => {
                         company={membersGroupByCompany[companyId][0].company}
                       />
                       <IconChevronDownMini
-                        className={`${open ? 'rotate-0' : '-rotate-90 '
-                          } h-6 w-6 transform transition-all`}
+                        className={`${
+                          open ? 'rotate-0' : '-rotate-90 '
+                        } h-6 w-6 transform transition-all`}
                       />
                     </Disclosure.Button>
 
@@ -128,7 +129,7 @@ export const ElemInviteUser = () => {
       <div className="mt-4">
         <div className="relative p-5 bg-white rounded-lg border border-black/10">
           {sendInvitationEmailResponse &&
-            sendInvitationEmailResponse.length > 0 ? (
+          sendInvitationEmailResponse.length > 0 ? (
             <>
               <div className="w-full text-center">
                 <IconPaperAirplane
