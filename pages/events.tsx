@@ -333,7 +333,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               </div>
             </div>
           ) : isLoading && !initialLoad ? (
-            <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {Array.from({ length: 9 }, (_, i) => (
                 <PlaceholderEventCard key={i} />
               ))}
@@ -346,7 +346,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 )}
                 <div
                   data-testid="events"
-                  className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                  className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                 >
                   {events?.map(event => (
                     <ElemEventCard

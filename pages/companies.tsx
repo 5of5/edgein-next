@@ -437,7 +437,7 @@ const Companies: NextPage<Props> = ({
                   <PlaceholderTable />
                 </div>
               ) : (
-                <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {Array.from({ length: 9 }, (_, i) => (
                     <PlaceholderCompanyCard key={i} />
                   ))}
@@ -467,7 +467,7 @@ const Companies: NextPage<Props> = ({
               )}
               <div
                 data-testid="companies"
-                className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
+                className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4"
               >
                 {companies?.map(company => {
                   return (
