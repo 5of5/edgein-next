@@ -189,7 +189,7 @@ export class AuthService {
         body: qs.stringify({
           grant_type: 'authorization_code',
           client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-          client_secret: process.env.AUTH0_CLIENT_SECRET,    
+          client_secret: process.env.AUTH0_CLIENT_SECRET,
           code: data.code,
           redirect_uri: redirect_url(),
         }),
