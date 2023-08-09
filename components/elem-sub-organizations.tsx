@@ -1,11 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
-import { ElemPhoto } from '@/components/elem-photo';
-import { ElemReactions } from '@/components/elem-reactions';
-import { ElemSaveToList } from '@/components/elem-save-to-list';
-import { Resource_Links } from '@/graphql/types';
-import ElemCompanyTags from './elem-company-tags';
+import { Companies, Vc_Firms, Resource_Links } from '@/graphql/types';
+import { useRouter } from 'next/router';
+import { ElemCompanyCard } from './companies/elem-company-card';
+import { ElemInvestorCard } from './investors/elem-investor-card';
 
 type Props = {
   className?: string;
@@ -18,9 +17,22 @@ export const ElemSubOrganizations: FC<Props> = ({
   heading,
   subOrganizations,
 }) => {
+  const router = useRouter();
+
+  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    router.push(
+      `/companies/?filters=${encodeURIComponent(
+        `{"industry":{"tags":["${type}"]}}`,
+      )}`,
+    );
+  };
+
   return (
-    <section className={`bg-white rounded-lg p-5 shadow ${className}`}>
-      {heading && <h2 className="text-xl font-bold">{heading}</h2>}
+    <section className={`rounded-lg border border-gray-300 ${className}`}>
+      {heading && <h2 className="text-xl font-medium px-4 pt-2">{heading}</h2>}
 
       <ElemCarouselWrap>
         {subOrganizations?.map((item: Resource_Links, index: number) => {
@@ -41,56 +53,19 @@ export const ElemSubOrganizations: FC<Props> = ({
           return (
             <ElemCarouselCard
               key={index}
-              className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+              className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
             >
-              <a
-                href={`/${item.to_company ? 'companies' : 'investors'}/${
-                  subOrganization.slug
-                }`}
-                className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
-              >
-                <div className="flex items-center">
-                  <ElemPhoto
-                    photo={subOrganization.logo}
-                    wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-white rounded-lg shadow"
-                    imgClass="object-contain w-full h-full"
-                    imgAlt={subOrganization.name}
-                    placeholderClass="text-slate-300"
-                  />
-
-                  <div className="pl-2 md:overflow-hidden">
-                    <h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
-                      {subOrganization.name}
-                    </h3>
-                  </div>
-                </div>
-
-                {item.to_company && (
-                  <ElemCompanyTags company={item.to_company} />
-                )}
-
-                <div className="mt-4 grow">
-                  <div className="text-gray-400 line-clamp-3">
-                    {subOrganization.overview}
-                  </div>
-                </div>
-                <div
-                  className="flex items-center justify-between mt-4 gap-x-5"
-                  onClick={e => e.stopPropagation()}
-                >
-                  <ElemReactions
-                    resource={subOrganization}
-                    resourceType={resourceType}
-                  />
-                  <ElemSaveToList
-                    resourceName={subOrganization.name}
-                    resourceId={subOrganization.id}
-                    resourceType={resourceType}
-                    slug={subOrganization.slug!}
-                    follows={subOrganization.follows}
-                  />
-                </div>
-              </a>
+              {item.to_company ? (
+                <ElemCompanyCard
+                  company={item.to_company as Companies}
+                  tagOnClick={tagOnClick}
+                />
+              ) : (
+                <ElemInvestorCard
+                  vcFirm={item.to_vc_firm as Vc_Firms}
+                  tagOnClick={tagOnClick}
+                />
+              )}
             </ElemCarouselCard>
           );
         })}
