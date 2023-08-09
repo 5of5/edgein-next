@@ -192,7 +192,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
               </div>
             </div>
           )}
-          <div className="mt-3 grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="mt-3 grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <h4>Error loading news</h4>
             ) : isLoading && !initialLoad ? (
