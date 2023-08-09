@@ -159,8 +159,8 @@ export const TheNavbar = () => {
   };
 
   useEffect(() => {
-    if (window.location.search) {
-      const code = (new URLSearchParams(window.location.search)).get('code');
+    if (router.asPath.includes('?code=')) {
+      const code = (new URLSearchParams(router.asPath.split('?')[1])).get('code');
       if (code) {
         (async () => {
           //setFinishingLogin(true);
@@ -169,7 +169,7 @@ export const TheNavbar = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.search]);
+  }, [router.asPath]);
 
   useEffect(() => {
     if (router.query.invite && !user) {
