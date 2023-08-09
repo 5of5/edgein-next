@@ -16,9 +16,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let isFirstLogin = false;
   try {
-    const userTokenResult = await authService.verifyEmailCode({
-      email: req.body.email,
-      otp: code,
+    const userTokenResult = await authService.getAccessToken({
+      // email: req.body.email,
+      code,
     });
     console.log(1, userTokenResult);
     // get the user info from auth0
