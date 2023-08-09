@@ -41,13 +41,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
     ? user?.entitlements.viewEmails
     : false;
 
-  const [eventData, setEventData] = useState(event);
-
   const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] = useState(false);
-
-  useEffect(() => {
-    setEventData(event);
-  }, [event]);
 
   const {
     id,
@@ -68,7 +62,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
     // linkedin,
     // github,
     // discord,
-  } = eventData;
+  } = event;
 
   const attendees = event_person?.filter(item => item.type === 'attendee');
 
@@ -158,7 +152,7 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
   };
 
   return (
-    <div className="flex flex-col w-full p-4">
+    <div className="flex flex-col w-full">
       <Link href={`/events/${slug}`}>
         <a className="flex shrink-0 w-full">
           <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">

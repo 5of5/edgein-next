@@ -1,32 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { ElemHeading } from '@/components/elem-heading';
 import {
   PlaceholderCompanyCard,
   PlaceholderTable,
 } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import {
-  IconSearch,
-  IconAnnotation,
-  IconGrid,
-  IconTable,
-  IconDead,
-  IconAcquired,
-  IconTrending,
-} from '@/components/icons';
+import { IconSearch, IconAnnotation } from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
-  Companies,
+  Order_By,
+  useGetCompaniesQuery,
   Companies_Bool_Exp,
   Companies_Order_By,
   GetCompaniesDocument,
   GetCompaniesQuery,
-  Order_By,
-  useGetCompaniesQuery,
 } from '@/graphql/types';
+import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import { companyChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
@@ -50,20 +41,11 @@ import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { User } from '@/models/user';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { some } from 'lodash';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 
-function useStateParamsFilter<T>(filters: T[], name: string) {
-  return useStateParams(
-    filters[0],
-    name,
-    companyLayer => filters.indexOf(companyLayer).toString(),
-    index => filters[Number(index)],
-  );
-}
+const ITEMS_PER_PAGE = 8;
 
 type Props = {
   companiesCount: number;
@@ -188,8 +170,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -203,8 +184,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -277,9 +257,8 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="mb-4 px-4 py-3 flex flex-wrap gap-3 justify-between border-b border-gray-200 lg:items-center"
-          role="tablist"
-        >
+          className="mb-4 px-6 py-3 flex flex-wrap gap-3 justify-between border-b border-gray-200 lg:items-center"
+          role="tablist">
           <ElemCategories
             categories={companyStatusTags}
             selectedCategory={selectedStatusTag}
@@ -302,45 +281,47 @@ const Companies: NextPage<Props> = ({
           </div>
         </div>
 
-        <div className="px-4">
-          <ElemFilter
-            resourceType="companies"
-            filterValues={selectedFilters}
-            onSelectFilterOption={onSelectFilterOption}
-            onChangeFilterValues={onChangeSelectedFilters}
-            onApply={(name, filterParams) => {
-              filters._and = defaultFilters;
-              onChangeSelectedFilters({
-                ...selectedFilters,
-                [name]: { ...filterParams, open: false },
-              });
-            }}
-            onClearOption={name => {
-              filters._and = defaultFilters;
-              onChangeSelectedFilters({
-                ...selectedFilters,
-                [name]: undefined,
-              });
-            }}
-            onReset={() => onChangeSelectedFilters(null)}
-          />
-        </div>
+        {selectedFilters && (
+          <div className="mx-6 my-3">
+            <ElemFilter
+              resourceType="companies"
+              filterValues={selectedFilters}
+              onSelectFilterOption={onSelectFilterOption}
+              onChangeFilterValues={onChangeSelectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: { ...filterParams, open: false },
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => onChangeSelectedFilters(null)}
+            />
+          </div>
+        )}
 
-        <ElemInviteBanner className="mt-3 mx-4" />
+        <ElemInviteBanner className="mx-6 my-3" />
 
-        <div className="mt-6 px-4">
-          {personalizedTags.locationTags.length !== 0 &&
-            showPersonalized &&
-            personalizedTags.locationTags.map(location => (
-              <>
+        <div className="mx-6">
+          {showPersonalized && (
+            <div className="flex flex-col gap-4 gap-x-16">
+              {personalizedTags.locationTags.map((location, index) => (
                 <CompaniesByFilter
-                  key={location}
+                  key={`${location}-${index}`}
                   headingText={`Trending in ${location}`}
                   tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
                   filters={{
                     _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
+                      ...defaultFilters,
                       { status_tags: { _contains: 'Trending' } },
                       {
                         location_json: {
@@ -354,15 +335,18 @@ const Companies: NextPage<Props> = ({
                     ],
                   }}
                 />
+              ))}
 
+              {personalizedTags.locationTags.map((location, index) => (
                 <CompaniesByFilter
-                  key={location}
+                  key={`${location}-${index}`}
                   headingText={`New in ${location}`}
                   tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
                   filters={{
                     _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
+                      ...defaultFilters,
                       {
                         location_json: {
                           _cast: {
@@ -375,51 +359,50 @@ const Companies: NextPage<Props> = ({
                     ],
                   }}
                 />
-              </>
-            ))}
+              ))}
 
-          {personalizedTags.industryTags.length !== 0 &&
-            showPersonalized &&
-            personalizedTags.industryTags.map(industry => (
+              {personalizedTags.industryTags.map(industry => (
+                <CompaniesByFilter
+                  key={industry}
+                  headingText={`Trending in ${industry}`}
+                  tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        status_tags: {
+                          _contains: 'Trending',
+                        },
+                      },
+                      {
+                        tags: {
+                          _contains: industry,
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+
               <CompaniesByFilter
-                key={industry}
-                headingText={`Trending in ${industry}`}
+                headingText={`Just acquired`}
                 tagOnClick={filterByTag}
+                itemsPerPage={ITEMS_PER_PAGE}
+                isTableView={tableLayout}
                 filters={{
                   _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
+                    ...defaultFilters,
                     {
                       status_tags: {
-                        _contains: 'Trending',
-                      },
-                    },
-                    {
-                      tags: {
-                        _contains: industry,
+                        _contains: 'Acquired',
                       },
                     },
                   ],
                 }}
               />
-            ))}
-
-          {showPersonalized && (
-            <CompaniesByFilter
-              headingText={`Just acquired`}
-              tagOnClick={filterByTag}
-              filters={{
-                _and: [
-                  { slug: { _neq: '' } },
-                  { library: { _contains: selectedLibrary } },
-                  {
-                    status_tags: {
-                      _contains: 'Acquired',
-                    },
-                  },
-                ],
-              }}
-            />
+            </div>
           )}
 
           {error ? (
@@ -436,8 +419,7 @@ const Companies: NextPage<Props> = ({
                         `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
+                    className="inline underline decoration-primary-500 hover:text-primary-500">
                     <span>report error</span>
                   </button>
                   .
@@ -459,32 +441,21 @@ const Companies: NextPage<Props> = ({
               )}
             </>
           ) : tableLayout && companies?.length != 0 ? (
-            <CompaniesTable
-              companies={companies}
-              pageNumber={page}
-              itemsPerPage={limit}
-              shownItems={companies?.length}
-              totalItems={companies_aggregate}
-              onClickPrev={() => setPage(page - 1)}
-              onClickNext={() => setPage(page + 1)}
-              filterByTag={filterByTag}
-              filterValues={selectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: filterParams,
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => onChangeSelectedFilters(null)}
-            />
+            <>
+              {user && (
+                <div className="text-2xl font-medium mt-4">All companies</div>
+              )}
+              <CompaniesTable
+                companies={companies}
+                pageNumber={page}
+                itemsPerPage={limit}
+                shownItems={companies?.length}
+                totalItems={companies_aggregate}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                filterByTag={filterByTag}
+              />
+            </>
           ) : (
             <>
               {companies?.length != 0 && (
@@ -494,8 +465,7 @@ const Companies: NextPage<Props> = ({
                   )}
                   <div
                     data-testid="companies"
-                    className="min-h-[42vh] grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                  >
+                    className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
                     {companies?.map(company => {
                       return (
                         <ElemCompanyCard
@@ -539,8 +509,7 @@ const Companies: NextPage<Props> = ({
                   )
                 }
                 btn="white"
-                className="mt-3"
-              >
+                className="mt-3">
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>

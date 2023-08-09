@@ -2018,6 +2018,9 @@ export const NOTIFICATION_EXCLUDE_PROPERTIES = [
   'search_count',
 ];
 
+export const GENERAL_ERROR_MESSAGE =
+  'Something went wrong. Please try again later';
+
 export const EMAIL_MAX_LENGTH = 255;
 
 export const CARD_DEFAULT_TAGS_LIMIT = 3;

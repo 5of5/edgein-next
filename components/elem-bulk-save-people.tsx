@@ -8,9 +8,11 @@ import { InputText } from '@/components/input-text';
 import { IconX, IconListPlus, IconSpinner } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { find } from 'lodash';
+import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
+import useToast from '@/hooks/use-toast';
 
 type Props = {
   text: string;
@@ -27,6 +29,8 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+
+  const { toast } = useToast();
 
   const listData = listAndFollows
     .filter(item => {
@@ -61,30 +65,33 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
           action,
           pathname: router.pathname,
         }),
-      }),
+      }).then(res => res.json()),
     {
-      onSuccess: (_, { listName, action }) => {
-        refreshProfile();
-        toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+      onSuccess: (response, { listName, action }) => {
+        if (response?.error) {
+          toast(response.error || GENERAL_ERROR_MESSAGE, 'error');
+        } else {
+          refreshProfile();
+          toast(
+            <>
               {action === 'add' ? ' Added ' : ' Removed '}
               {action === 'add' ? ' to ' : ' from '}
               &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+            </>,
+          );
+        }
       },
     },
   );
+
+  const onCloseSaveToListDialog = () => {
+    setIsOpen(false);
+    setShowNew(false);
+  };
+
+  const onOpenNewListForm = () => {
+    setShowNew(true);
+  };
 
   const toggleToList = async (listName: string, action: 'add' | 'remove') => {
     if (listName && user) {
@@ -127,6 +134,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   ) => {
     event.preventDefault();
     event.stopPropagation();
+
     toggleToList(list.name, isSelected ? 'remove' : 'add');
   };
 
@@ -145,9 +153,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          onClose={() => {
-            setIsOpen(false), setShowNew(false);
-          }}
+          onClose={onCloseSaveToListDialog}
           className="relative z-[60]"
         >
           <Transition.Child
@@ -175,9 +181,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
               <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
                 <div className="absolute top-1 right-1">
                   <button
-                    onClick={() => {
-                      setIsOpen(false), setShowNew(false);
-                    }}
+                    onClick={onCloseSaveToListDialog}
                     type="button"
                     className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
                   >
@@ -219,12 +223,9 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                 {!showNew && listData.length > 0 && (
                   <div className="flex border-t border-slate-300 p-3">
                     <div className="ml-auto">
-                      <ElemButton
-                        btn="primary"
-                        onClick={() => setShowNew(true)}
-                      >
+                      <ElemButton btn="primary" onClick={onOpenNewListForm}>
                         <IconListPlus className="w-6 h-6 mr-1" />
-                        Create new list
+                        Create a New List
                       </ElemButton>
                     </div>
                   </div>
