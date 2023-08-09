@@ -23,3 +23,20 @@ query GetInvestorById($id: Int!) {
     }
   }
 }
+
+query GetInvestorMailingList($where: investments_bool_exp) {
+  investments(where: $where) {
+    id
+    vc_firm {
+      investments {
+        investment_round {
+          company {
+            teamMembers(where: { email_address: { _neq: "" } }) {
+              email_address
+            }
+          }
+        }
+      }
+    }
+  }
+}
