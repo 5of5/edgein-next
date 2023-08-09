@@ -259,7 +259,7 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 py-3 lg:flex items-center justify-between border-b border-gray-200"
+          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -268,7 +268,7 @@ const Companies: NextPage<Props> = ({
             onChangeCategory={setSelectedStatusTag}
           />
 
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemDropdown items={layoutItems} />

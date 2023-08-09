@@ -149,7 +149,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="relative mb-4 px-4 py-3 flex items-center justify-between border-b border-gray-200"
+          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -158,7 +158,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             onChangeCategory={setSelectedTab}
           />
 
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
