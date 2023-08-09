@@ -410,11 +410,11 @@ export const companyChoices = [
     name: 'Trending',
     icon: '🔥',
   },
-  {
-    id: 'Raising',
-    name: 'Raising',
-    icon: '💸',
-  },
+  // {
+  //   id: 'Raising',
+  //   name: 'Raising',
+  //   icon: '💸',
+  // },
   {
     id: 'Acquired',
     name: 'Acquired',
