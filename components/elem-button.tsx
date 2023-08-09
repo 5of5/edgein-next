@@ -49,8 +49,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   let btnClass = '';
   // button styles
   if (btn === 'primary') {
-    btnClass =
-      'text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:from-primary-500 hover:to-primary-400';
+    btnClass = 'text-white bg-primary-500 hover:bg-blue-900';
   } else if (btn === 'secondary') {
     btnClass =
       'text-primary-700 from-amber-300 to-amber-500 bg-gradient-to-r hover:to-amber-400';

@@ -281,14 +281,13 @@ const Event: NextPage<Props> = props => {
         )}
 
         <ElemTabBar
-          className="mt-7"
+          className="mt-7 flex-wrap"
           tabs={tabBarItems}
           resourceName={event.name}
           showDropdown={false}
         >
-          <div className="w-full space-y-2 sm:w-auto sm:flex sm:items-center sm:space-y-0 sm:space-x-2">
+          <div className="flex flex-wrap gap-2 lg:justify-end">
             <ElemAddToCalendarButton
-              className="w-full sm:w-auto"
               event={{
                 name: event.name,
                 startDate: event.start_date,
@@ -300,20 +299,16 @@ const Event: NextPage<Props> = props => {
               }}
             />
             <ElemSocialShare
-              btnClass="w-full sm:w-auto"
               resourceName={event.name}
               resourceTwitterUrl={event.twitter}
             />
             {attendees?.some(item => item.person?.id === user?.person?.id) ? (
-              <ElemButton btn="purple" className="w-full">
-                Joined
-              </ElemButton>
+              <ElemButton btn="purple">Joined</ElemButton>
             ) : (
               <ElemButton
                 btn="primary"
                 onClick={handleClickGoingEvent}
                 loading={isLoadingGoingEvent}
-                className="w-full"
               >
                 Going
               </ElemButton>
@@ -346,9 +341,9 @@ const Event: NextPage<Props> = props => {
               attachments={event.attachments}
             />
           </div>
-          <div className="col-span-8">
+          <div className="col-span-8 mt-8 grid gap-y-8 lg:mt-0">
             {event.overview && (
-              <div className="mt-7 rounded-lg border border-gray-300 lg:mt-0">
+              <div className="rounded-lg border border-gray-300 lg:mt-0">
                 <h2 className="text-lg font-medium px-4 pt-2">Overview</h2>
                 <div className="text-sm text-gray-500 px-4 py-4">
                   {parse(newLineToP(event.overview))}
@@ -359,14 +354,14 @@ const Event: NextPage<Props> = props => {
             {organizers?.length > 0 && (
               <div
                 ref={organizersRef}
-                className="mt-7 rounded-lg border border-gray-300"
+                className="rounded-lg border border-gray-300"
                 id="organizers"
               >
                 <ElemOrganizers organizations={organizers} />
               </div>
             )}
 
-            <div className="mt-7 rounded-lg border border-gray-300">
+            <div className="rounded-lg border border-gray-300">
               <ElemEventActivity
                 activities={sortedActivities}
                 eventName={event.name}

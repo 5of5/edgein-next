@@ -48,7 +48,7 @@ export const ElemSubEvents: FC<Props> = ({
                 `Hi EdgeIn, I'd like to add my sub-event to ${eventName}. Details:`,
               )
             }
-            btn="purple"
+            btn="default"
           >
             Add sub-event
           </ElemButton>
@@ -69,7 +69,7 @@ export const ElemSubEvents: FC<Props> = ({
           })}
         </ElemCarouselWrap>
       ) : (
-        <div className="w-full text-center">
+        <div className="w-full text-center p-4">
           <div className="text-gray-500">There are no sub-events.</div>
           <ElemButton
             btn="default"
