@@ -85,7 +85,7 @@ export const ElemNewsCard: FC<Props> = ({
   );
 
   return (
-    <div className={`flex flex-col w-full p-4 ${className}`}>
+    <div className={`flex flex-col w-full ${className}`}>
       {link && (
         <div>
           <h2 className="font-medium break-words" title={text ?? ''}>
@@ -93,9 +93,9 @@ export const ElemNewsCard: FC<Props> = ({
               <a target="_blank">{text}</a>
             </Link>
           </h2>
-          <p className="mt-4 text-xs text-gray-500">{formatDateShown(date)}</p>
-          {tags && (
-            <div className="mt-4 flex flex-wrap overflow-clip gap-2">
+          <p className="mt-3 text-xs text-gray-500">{formatDateShown(date)}</p>
+          {tags?.length > 0 && (
+            <div className="mt-3 flex flex-wrap overflow-clip gap-2">
               {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
                 return (
                   <button
@@ -116,21 +116,20 @@ export const ElemNewsCard: FC<Props> = ({
               )}
             </div>
           )}
-          {metadata?.description && (
-            <div className="mt-4 text-gray-400">
-              {link && metadata?.image && (
-                <Link href={link}>
-                  <a target="_blank" className="block mb-2">
-                    {metadata?.image && (
-                      <img
-                        src={metadata?.image}
-                        alt={text}
-                        className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
-                      />
-                    )}{' '}
-                  </a>
-                </Link>
-              )}
+
+          {link && metadata?.image && (
+            <div className="mt-3 text-gray-400">
+              <Link href={link}>
+                <a target="_blank" className="block mb-2">
+                  {metadata?.image && (
+                    <img
+                      src={metadata?.image}
+                      alt={text}
+                      className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
+                    />
+                  )}{' '}
+                </a>
+              </Link>
             </div>
           )}
 

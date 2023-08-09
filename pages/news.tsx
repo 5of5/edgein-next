@@ -165,9 +165,9 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
           </div>
         </div>
 
-        <ElemInviteBanner className="mt-3 mx-4" />
+        <ElemInviteBanner className="mx-6 my-3" />
 
-        <div className="mt-6 px-4">
+        <div className="mx-6">
           {news?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
               <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -192,7 +192,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
               </div>
             </div>
           )}
-          <div className="mt-3 grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="mt-4 grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <h4>Error loading news</h4>
             ) : isLoading && !initialLoad ? (
