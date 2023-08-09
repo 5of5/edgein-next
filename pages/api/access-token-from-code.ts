@@ -20,8 +20,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       email: req.body.email,
       otp: code,
     });
+    console.log(1, userTokenResult);
     // get the user info from auth0
     const userInfo = await authService.getProfile(userTokenResult.access_token);
+    console.log(2, userInfo);
 
     if (userInfo && userInfo.email) {
       // get the domain from the email
@@ -129,6 +131,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       CookieService.setTokenCookie(res, token);
     }
   } catch (ex: any) {
+    console.log(ex.stack);
     return res.status(400).send(ex.message);
   }
 
