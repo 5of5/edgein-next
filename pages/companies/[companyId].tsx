@@ -357,7 +357,7 @@ const Company: NextPage<Props> = (props: Props) => {
           </div>
         </div>
         <ElemTabBar
-          className="mt-7 border-b-0"
+          className="mt-7"
           tabs={tabBarItems}
           resourceName={company.name}
         />
@@ -371,7 +371,7 @@ const Company: NextPage<Props> = (props: Props) => {
         >
           <div className="col-span-3">
             <ElemKeyInfo
-              className="sticky top-11"
+              className="sticky top-16"
               heading="Key Info"
               website={company.website}
               totalFundingRaised={company.investor_amount}

@@ -65,7 +65,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
               >
                 <PlaceholderEventCard />
               </div>
@@ -79,7 +79,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={event.id}
-                  className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <ElemEventCard event={event} />
                 </ElemCarouselCard>

@@ -196,7 +196,7 @@ const Person: NextPage<Props> = props => {
         >
           <div className="col-span-3">
             <ElemKeyInfo
-              className="sticky top-11 mb-7 lg:mb-0"
+              className="sticky top-16 mb-7 lg:mb-0"
               heading="Key Info"
               roles={removeSpecialCharacterFromString(person.type as string)}
               linkedIn={person.linkedin}

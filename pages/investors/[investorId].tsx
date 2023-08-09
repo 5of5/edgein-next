@@ -231,7 +231,7 @@ const VCFirm: NextPage<Props> = props => {
         >
           <div className="col-span-3">
             <ElemKeyInfo
-              className="sticky top-11"
+              className="sticky top-16"
               heading="Key Info"
               website={vcfirm.website}
               investmentsLength={sortedInvestmentRounds.length}

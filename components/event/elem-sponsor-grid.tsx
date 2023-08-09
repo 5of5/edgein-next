@@ -122,106 +122,106 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
   };
 
   return (
-    <section>
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">Sponsors</h2>
-      </div>
+    <section className="rounded-lg border border-gray-300">
+      <h2 className="text-xl font-medium px-4 pt-2">Sponsors</h2>
 
-      <div className="mt-2 overflow-auto border border-black/10 rounded-lg">
-        <table
-          {...getTableProps()}
-          className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
-        >
-          <thead>
-            {headerGroups.map(headerGroup => {
-              const { key, ...restHeaderGroupProps } =
-                headerGroup.getHeaderGroupProps();
-
-              return (
-                <tr key={key} {...restHeaderGroupProps} className="table-row">
-                  {headerGroup.headers.map((column: any) => {
-                    const { key, ...restColumnProps }: any = ({} = {
-                      ...column.getHeaderProps(column.getSortByToggleProps(), {
-                        style: {
-                          width: column.width,
-                          minWidth: column.width,
-                          maxWidth: column.width,
-                        },
-                      }),
-                    });
-                    return (
-                      <th
-                        key={key}
-                        {...restColumnProps}
-                        className={`px-4 py-2 whitespace-nowrap text-sm bg-white font-bold text-left ${
-                          column.canSort ? 'hover:text-primary-500' : ''
-                        }`}
-                        title={column.canSort ? `Sort By ${column.Header}` : ''}
-                      >
-                        {column.render('Header')}
-                        {generateSortingIndicator(column)}
-                      </th>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </thead>
-          <tbody
-            {...getTableBodyProps()}
-            className="bg-white divide-y divide-black/10 flex-1 md:flex-none mb-96"
+      <div className="px-4 py-4">
+        <div className="overflow-auto border border-gray-300 rounded-lg">
+          <table
+            {...getTableProps()}
+            className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
           >
-            {page.map(row => {
-              prepareRow(row);
-              const { key, ...restRowProps } = row.getRowProps();
+            <thead>
+              {headerGroups.map(headerGroup => {
+                const { key, ...restHeaderGroupProps } =
+                  headerGroup.getHeaderGroupProps();
 
-              const rowAllValuesAreEmpty = row.cells.every(
-                item => item?.value === null,
-              );
+                return (
+                  <tr
+                    key={key}
+                    {...restHeaderGroupProps}
+                    className="table-row min-w-full bg-[#FCFCFC] text-gray-600"
+                  >
+                    {headerGroup.headers.map((column: any) => {
+                      const { key, ...restColumnProps }: any = ({} = {
+                        ...column.getHeaderProps(
+                          column.getSortByToggleProps(),
+                          {
+                            style: {
+                              width: column.width,
+                              minWidth: column.width,
+                              maxWidth: column.width,
+                            },
+                          },
+                        ),
+                      });
+                      return (
+                        <th
+                          key={key}
+                          {...restColumnProps}
+                          className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
+                        >
+                          {column.render('Header')}
+                          {generateSortingIndicator(column)}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </thead>
+            <tbody
+              {...getTableBodyProps()}
+              className="bg-white divide-y divide-gray-300 flex-1 md:flex-none mb-96"
+            >
+              {page.map(row => {
+                prepareRow(row);
+                const { key, ...restRowProps } = row.getRowProps();
 
-              if (rowAllValuesAreEmpty) {
-                return;
-              }
+                const rowAllValuesAreEmpty = row.cells.every(
+                  item => item?.value === null,
+                );
 
-              return (
-                <tr
-                  key={key}
-                  {...restRowProps}
-                  className="table-row rounded-lg bg-white even:bg-slate-50"
-                >
-                  {row.cells.map(cell => {
-                    const { key, ...restCellProps } = cell.getCellProps({
-                      style: {
-                        width: cell.column.width,
-                        minWidth: cell.column.width,
-                        maxWidth: cell.column.width,
-                      },
-                    });
+                if (rowAllValuesAreEmpty) {
+                  return;
+                }
 
-                    return (
-                      <td
-                        key={key}
-                        {...restCellProps}
-                        className="align-middle text-sm px-4 py-3"
-                      >
-                        {cell.render('Cell')}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                return (
+                  <tr key={key} {...restRowProps} className="table-row">
+                    {row.cells.map(cell => {
+                      const { key, ...restCellProps } = cell.getCellProps({
+                        style: {
+                          width: cell.column.width,
+                          minWidth: cell.column.width,
+                          maxWidth: cell.column.width,
+                        },
+                      });
+
+                      return (
+                        <td
+                          key={key}
+                          {...restCellProps}
+                          className="align-middle text-sm px-4 py-3"
+                        >
+                          {cell.render('Cell')}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <Pagination
+          shownItems={page?.length}
+          totalItems={organizations.length}
+          page={pageIndex}
+          itemsPerPage={pageSize}
+          onClickPrev={() => previousPage()}
+          onClickNext={() => nextPage()}
+        />
       </div>
-      <Pagination
-        shownItems={page?.length}
-        totalItems={organizations.length}
-        page={pageIndex}
-        itemsPerPage={pageSize}
-        onClickPrev={() => previousPage()}
-        onClickNext={() => nextPage()}
-      />
     </section>
   );
 };
