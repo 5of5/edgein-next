@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
   if (url.pathname === '/') {
-    return NextResponse.redirect(new URL('/companies', req.url));
+    return NextResponse.rewrite(new URL('/companies', req.url));
   }
 
   // Prevent security issues – users should not be able to canonically access
