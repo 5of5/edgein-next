@@ -71,7 +71,7 @@ export const ElemInviteUser = () => {
   };
 
   const mailingList = useGetInvestorMailingListQuery({
-    //@ts-expect-error
+    //@ts-expect-error this works
     where: { person_id: { _eq: 3015 } },
   });
 
