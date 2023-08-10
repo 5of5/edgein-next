@@ -54,6 +54,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  if (url.pathname.startsWith('/sitemap')) {
+    return NextResponse.next();
+  }
+
   if (
     url.searchParams.get('revalidation_auth') ===
     process.env.REVALIDATION_AUTH_TOKEN

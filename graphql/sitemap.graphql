@@ -1,0 +1,87 @@
+
+query GetEventsPaths(
+  $limit: Int
+  $offset: Int
+) {
+  events(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+    order_by: { slug: asc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+  }
+}
+
+query GetCompaniesPaths(
+  $limit: Int
+  $offset: Int
+) {
+  companies(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } },
+    order_by: { slug: asc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+  }
+}
+
+query GetPersonsPath(
+  $limit: Int
+  $offset: Int
+) {
+  people(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+    order_by: { slug: asc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+  }
+}
+
+query GetVCFirmsPath(
+  $limit: Int
+  $offset: Int
+) {
+  vc_firms(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+    order_by: { slug: asc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+  }
+}
+
+query GetSiteMapAggregates {
+  companies_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+    aggregate {
+      count
+    }
+  }
+  events_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+    aggregate {
+      count
+    }
+  }
+  people_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+    aggregate {
+      count
+    }
+  }
+  vc_firms_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+    aggregate {
+      count
+    }
+  }
+}

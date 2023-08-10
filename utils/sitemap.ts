@@ -1,6 +1,8 @@
 import { runGraphQl } from '@/utils';
 import { GetServerSidePropsContext } from 'next';
 
+export const PER_PAGE_LIMIT = 25_000
+
 function escapeXml(unsafe: string) {
     return unsafe.replace(/[<>&'"]/g, function (c) {
         switch (c) {
@@ -43,9 +45,10 @@ export async function generateXMLSiteMap<
   graphqlQuery: string,
   graphqlAccessor: (result?: T) => Arr[],
   folder: string,
+  offset: number,
 ) {
   // We make an API call to gather the URLs for our site
-  const { data } = await runGraphQl<T>(graphqlQuery, {}, undefined, true);
+  const { data } = await runGraphQl<T>(graphqlQuery, {limit: PER_PAGE_LIMIT, offset: offset * PER_PAGE_LIMIT}, undefined, true);
 
   const array = graphqlAccessor(data);
 
