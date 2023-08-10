@@ -136,6 +136,14 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  const onClickHeader = () => {
+    if (!user) {
+      return setShowPopup('signup');
+    }
+
+    return onDisclosureButtonClick;
+  };
+
   const onClickCreate = () => {
     if (!user) {
       return setShowPopup('signup');
@@ -160,7 +168,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 className="flex items-center grow space-x-2 py-1.5 px-2 focus:outline-none"
                 data-expanded={open}
                 ref={btnRef}
-                onClick={onDisclosureButtonClick}
+                onClick={onClickHeader}
               >
                 {user && (
                   <IconChevronDownMini
@@ -181,11 +189,11 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             </div>
 
             {user && (
-              <Disclosure.Panel as="ul" className="ml-8">
+              <Disclosure.Panel as="ul" className="ml-6">
                 <li role="button">
                   <Link href={`/lists/${hotId}/hot`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                         hotId,
                         'hot',
                       )} `}
@@ -200,7 +208,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <Link href={`/lists/${likeId}/like`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                         likeId,
                         'like',
                       )}`}
@@ -215,7 +223,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <Link href={`/lists/${crapId}/sh**`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                         crapId,
                         'sh**',
                       )} `}
@@ -236,7 +244,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                         )}`}
                       >
                         <a
-                          className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                          className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                             list.id,
                             kebabCase(getNameFromListName(list)),
                           )}`}
@@ -255,7 +263,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
                 <li role="button">
                   <Link href="/lists/">
-                    <a className="flex items-center space-x-2 py-1.5 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                    <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
                       See all
                     </a>
                   </Link>
