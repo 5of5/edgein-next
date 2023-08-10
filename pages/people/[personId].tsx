@@ -163,7 +163,7 @@ const Person: NextPage<Props> = props => {
                     />
 
                     {isCurrentUserProfile && (
-                      <ElemButton btn="slate" href="/profile/">
+                      <ElemButton btn="gray" href="/profile/">
                         Edit profile
                       </ElemButton>
                     )}
