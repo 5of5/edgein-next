@@ -9,20 +9,19 @@ const xml = (rootUrl: string, data?: GetSiteMapAggregatesQuery) => `<?xml versio
   ${ Array.from({length: Math.ceil((data?.companies_aggregate.aggregate?.count || 1) / PER_PAGE_LIMIT)}, (_, i) => 
   `   <sitemap><loc>${rootUrl}/sitemap/companies/${i}.xml</loc></sitemap>
   `
-  )}
-  
+  ).join('')}
   ${ Array.from({length: Math.ceil((data?.events_aggregate.aggregate?.count || 1) / PER_PAGE_LIMIT)}, (_, i) => 
   `   <sitemap><loc>${rootUrl}/sitemap/events/${i}.xml</loc></sitemap>
   `
-  ) }
+  ).join('') }
   ${ Array.from({length: Math.ceil((data?.vc_firms_aggregate.aggregate?.count || 1) / PER_PAGE_LIMIT)}, (_, i) => 
   `   <sitemap><loc>${rootUrl}/sitemap/investors/${i}.xml</loc></sitemap>
   `
-  ) }
+  ).join('') }
   ${ Array.from({length: Math.ceil((data?.people_aggregate.aggregate?.count || 1) / PER_PAGE_LIMIT)}, (_, i) => 
   `   <sitemap><loc>${rootUrl}/sitemap/people/${i}.xml</loc></sitemap>
   `
-  ) } 
+  ).join('') } 
     </sitemapindex>`;
 
 function SiteMap() {
