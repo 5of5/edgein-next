@@ -559,8 +559,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
           </EditSection>
         )}
 
-        <div className="w-full divide-y divide-black/10 border-y border-black/10">
-          {/* <EditSection heading="Profile Image">
+        {/* <EditSection heading="Profile Image">
 						<div className="sm:flex items-center">
 							<div className="relative w-32 h-32 mx-auto sm:mx-0">
 								<ElemPhoto
@@ -598,19 +597,18 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						</div>
 					</EditSection> */}
 
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              <ProfileEditName />
-              <ProfileEditEmail />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <ProfileEditName />
+            <ProfileEditEmail />
 
-              {users?.users_by_pk?.person && (
-                <ProfileEdit user={users?.users_by_pk} />
-              )}
-            </>
-          )}
-        </div>
+            {users?.users_by_pk?.person && (
+              <ProfileEdit user={users?.users_by_pk} />
+            )}
+          </>
+        )}
       </div>
     </DashboardLayout>
   );

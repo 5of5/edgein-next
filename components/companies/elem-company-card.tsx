@@ -97,7 +97,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
           </ElemTooltip>
           {coin && (
             <ElemTooltip content={`Token`} mode="light" className="">
-              <span className="uppercase">{coin.ticker}</span>
+              <span className="uppercase ml-1">{coin.ticker}</span>
             </ElemTooltip>
           )}
         </a>

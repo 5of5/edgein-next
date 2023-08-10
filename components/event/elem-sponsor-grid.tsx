@@ -140,7 +140,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
                   <tr
                     key={key}
                     {...restHeaderGroupProps}
-                    className="table-row min-w-full bg-[#FCFCFC] text-gray-600"
+                    className="table-row min-w-full bg-gray-25 text-gray-600"
                   >
                     {headerGroup.headers.map((column: any) => {
                       const { key, ...restColumnProps }: any = ({} = {
