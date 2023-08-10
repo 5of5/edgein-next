@@ -1,6 +1,19 @@
 import { runGraphQl } from '@/utils';
 import { GetServerSidePropsContext } from 'next';
 
+function escapeXml(unsafe: string) {
+    return unsafe.replace(/[<>&'"]/g, function (c) {
+        switch (c) {
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '&': return '&amp;';
+            case '\'': return '&apos;';
+            case '"': return '&quot;';
+        }
+        return c;
+    });
+}
+
 function generateSiteMap<T extends { slug: string | null }>(
   rootUrl: string,
   folder: string,
@@ -13,7 +26,7 @@ function generateSiteMap<T extends { slug: string | null }>(
        .map(({ slug }) => {
          return slug
            ? `
-       <url><loc>${rootUrl}/${folder}/${slug}</loc><lastmod>${lastModDate}</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+       <url><loc>${rootUrl}/${folder}/${escapeXml(slug)}</loc><lastmod>${lastModDate}</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
      `
            : '';
        })
