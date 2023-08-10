@@ -10,7 +10,7 @@ const getIp = (req: NextRequest) => {
   if (!ip && forwardedFor) {
     ip = forwardedFor.split(',').at(0) ?? 'Unknown';
   }
-  return ip;
+  return ip ?? 'Unknown';
 };
 
 export async function middleware(req: NextRequest) {
