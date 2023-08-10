@@ -38,7 +38,7 @@ export async function generateXMLSiteMap<
 
   // We generate the XML sitemap with the posts data
   const sitemap = generateSiteMap(
-    process.env.NEXT_PUBLIC_VERCEL_URL!,
+    `https://${process.env.NEXT_PUBLIC_VERCEL_URL!}`,
     folder,
     new Date().toISOString(),
     array || [],
