@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, ReactNode } from 'react';
 import { FilterOptionKeys } from '@/models/Filter';
 import { ElemFilterPopup } from './elem-filter-popup';
 import { ElemTagsInput } from './elem-tags-input';
@@ -7,7 +7,7 @@ import { InputRadio } from './input-radio';
 type Props = {
   open: boolean;
   option: FilterOptionKeys;
-  title: string;
+  title: string | ReactNode;
   heading?: string;
   subtext?: string;
   checkedAny?: boolean;
@@ -81,7 +81,7 @@ const ElemFilterTagsInput: FC<Props> = ({
               name={option}
               value="any"
               checked={checkedAny}
-              label="is any of these"
+              label="is"
               onChange={event => onChangeCondition(event, option)}
             />
           )}
@@ -101,7 +101,7 @@ const ElemFilterTagsInput: FC<Props> = ({
               name={option}
               value="none"
               checked={checkedNone}
-              label="is none of these"
+              label="is not"
               onChange={event => onChangeCondition(event, option)}
               labelClass="mb-0.5"
             />

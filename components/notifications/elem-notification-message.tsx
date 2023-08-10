@@ -25,7 +25,7 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
     return (
       <div className="inline">
         <Link href={getNotificationOrganizationLink(notification)} passHref>
-          <a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
+          <a className="border-b border-primary-500 transition-all font-medium">
             {name}
           </a>
         </Link>
@@ -40,7 +40,7 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
         a: ({ href, children }) => {
           return (
             <Link href={href as string} passHref>
-              <a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
+              <a className="border-b border-primary-500 transition-all font-medium hover:border-b-2 hover:text-primary-500">
                 {children[0]}
               </a>
             </Link>

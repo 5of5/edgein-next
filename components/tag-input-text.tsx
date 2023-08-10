@@ -53,7 +53,10 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
   return (
     <div className={className}>
       {label && (
-        <label htmlFor={name} className={`font-bold cursor-text ${labelClass}`}>
+        <label
+          htmlFor={name}
+          className={`font-medium text-sm cursor-text ${labelClass}`}
+        >
           {label}
         </label>
       )}

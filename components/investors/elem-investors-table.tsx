@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import moment from 'moment-timezone';
-import { orderBy, first } from 'lodash';
+import { first } from 'lodash';
 import {
   IconSortUp,
   IconSortDown,
@@ -13,14 +13,11 @@ import {
 import { ElemButton } from '@/components/elem-button';
 import { ElemReactions } from '@/components/elem-reactions';
 import { TableColumnsFilter } from '@/components/my-list/table-columns-filter';
-import { last } from 'lodash';
 import { Menu } from '@headlessui/react';
 import { numberWithCommas } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { loadStripe } from '@/utils/stripe';
-import { ElemFilter } from '@/components/elem-filter';
-import { Filters, FilterOptionKeys } from '@/models/Filter';
 
 import {
   useTable,
@@ -28,12 +25,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
-
-export type DeepPartial<T> = T extends object
-  ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
-  : T;
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -45,10 +37,6 @@ type Props = {
   onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   filterByTag: Function;
-  filterValues: Filters | null;
-  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
-  onClearOption: (name: FilterOptionKeys) => void;
-  onReset: () => void;
 };
 
 export const InvestorsTable: FC<Props> = ({
@@ -61,12 +49,10 @@ export const InvestorsTable: FC<Props> = ({
   onClickPrev,
   onClickNext,
   filterByTag,
-  filterValues,
-  onApply,
-  onClearOption,
-  onReset,
 }) => {
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -78,7 +64,11 @@ export const InvestorsTable: FC<Props> = ({
   };
 
   const onBillingClick = async () => {
-    loadStripe();
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      loadStripe();
+    }
   };
 
   const isDisplayAllInvestors = user?.entitlements.viewEmails
@@ -465,13 +455,6 @@ export const InvestorsTable: FC<Props> = ({
             columns={allColumns}
             resetColumns={() => toggleHideAllColumns(false)}
           />
-          <ElemFilter
-            resourceType="vc_firms"
-            filterValues={filterValues}
-            onApply={onApply}
-            onClearOption={onClearOption}
-            onReset={onReset}
-          />
         </div>
 
         <div className="flex items-center mt-6 lg:mt-0">
@@ -719,7 +702,8 @@ export const InvestorsTable: FC<Props> = ({
             })}
           </tbody>
         </table>
-        {!isDisplayAllInvestors && (
+
+        {!isDisplayAllInvestors && totalItems > itemsPerPage && (
           <table className="relative table-auto min-w-full overscroll-x-none">
             <tbody className="divide-y divide-black/10" role="rowgroup">
               {Array.from({ length: 10 }, (_, i) => (

@@ -1432,12 +1432,13 @@ export const IconBell: FC<IconProps> = ({ className, title, strokeWidth }) => {
       aria-hidden="true"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
     >
       <title>{title ? title : 'Notification'}</title>
-      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-      <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+      />
     </svg>
   );
 };
@@ -1598,6 +1599,25 @@ export const IconPlus: FC<IconProps> = ({ className, title, strokeWidth }) => {
         strokeLinejoin="round"
         d="M12 4.5v15m7.5-7.5h-15"
       />
+    </svg>
+  );
+};
+
+export const IconPlusSmall: FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+    >
+      <title>{title ? title : 'Add'}</title>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
     </svg>
   );
 };

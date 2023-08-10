@@ -144,13 +144,13 @@ query GetVCFirm($slug: String!) {
   }
 }
 
-query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
-  vc_firms(
-    where: $where
-    order_by: { num_of_investments: desc }
-    limit: $limit
-    offset: $offset
-  ) {
+query GetVCFirms(
+  $limit: Int
+  $offset: Int
+  $orderBy: [vc_firms_order_by!]
+  $where: vc_firms_bool_exp!
+) {
+  vc_firms(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
     name
     slug

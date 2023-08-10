@@ -56,9 +56,9 @@ const Notes: FC<Props> = () => {
 
   return (
     <DashboardLayout>
-      <div className="pb-20">
-        <div className="w-full mb-2">
-          <h1 className="h-6 mr-2 font-bold text-xl capitalize">Your Notes</h1>
+      <div className="pb-20 px-4">
+        <div className="w-full py-3">
+          <h1 className="h-6 mr-2 font-medium text-xl">Your Notes</h1>
         </div>
 
         {error ? (

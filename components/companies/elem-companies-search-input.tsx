@@ -1,4 +1,9 @@
-import { Companies_Bool_Exp, useGetCompaniesQuery } from '@/graphql/types';
+import {
+  Companies_Bool_Exp,
+  Companies_Order_By,
+  Order_By,
+  useGetCompaniesQuery,
+} from '@/graphql/types';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { ActionMeta, createFilter } from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -21,6 +26,7 @@ export const ElemCompaniesSearchInput: FC<Props> = ({
   const { data: companiesData } = useGetCompaniesQuery({
     limit: null,
     offset: null,
+    orderBy: [{ name: Order_By.Asc } as Companies_Order_By],
     where: {
       slug: { _neq: '' },
       name: { _ilike: `%${search}%` },

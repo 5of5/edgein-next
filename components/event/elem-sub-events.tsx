@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
@@ -23,10 +23,7 @@ export const ElemSubEvents: FC<Props> = ({
 
   const { showNewMessages } = useIntercom();
 
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string,
-  ) => {
+  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -67,7 +64,7 @@ export const ElemSubEvents: FC<Props> = ({
                 key={event.id}
                 className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
               >
-                <ElemEventCard event={event} onClickType={onClickType} />
+                <ElemEventCard event={event} tagOnClick={tagOnClick} />
               </ElemCarouselCard>
             );
           })}

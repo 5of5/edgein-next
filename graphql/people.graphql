@@ -97,6 +97,10 @@ query GetPerson($slug: String!) {
         }
       }
     }
+    follows {
+      id
+      list_id
+    }
   }
 }
 
@@ -218,10 +222,15 @@ mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
 query FindPeopleByNameAndEmail($name: String, $email: String) {
   people(
     where: {
-      _or: [
-        { name: { _ilike: $name } }
-        { work_email: { _ilike: $email } }
-        { personal_email: { _ilike: $email } }
+      _and: [
+        { _not: { user: {} } }
+        {
+          _or: [
+            { name: { _ilike: $name } }
+            { work_email: { _ilike: $email } }
+            { personal_email: { _ilike: $email } }
+          ]
+        }
       ]
     }
     limit: 50
@@ -230,6 +239,9 @@ query FindPeopleByNameAndEmail($name: String, $email: String) {
     name
     picture
     slug
+    user {
+      id
+    }
   }
 }
 

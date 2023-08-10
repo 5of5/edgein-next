@@ -8,10 +8,9 @@ import React, {
 import { NextPage, GetServerSideProps } from 'next';
 import { useMutation } from 'react-query';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemGroupInformation } from '@/components/group/elem-group-information';
 import { ElemGroupAbout } from '@/components/group/elem-group-about';
-import { ElemLists } from '@/components/group/elem-lists';
+import { ElemGroupLists } from '@/components/group/elem-group-lists';
 import { ElemNotes } from '@/components/group/elem-notes';
 import ElemInviteDialog from '@/components/group/elem-invite-dialog';
 import ElemSettingDialog, {
@@ -86,14 +85,6 @@ const Group: NextPage<Props> = (props: Props) => {
 
   const [isOpenSettingDialog, setIsOpenSettingDialog] = useState(false);
 
-  const tabBarItems = useMemo(() => {
-    return [
-      { name: 'About', ref: aboutRef },
-      { name: 'Lists', ref: listsRef },
-      { name: 'Notes', ref: notesRef },
-    ];
-  }, []);
-
   const onOpenInviteDialog = () => {
     setIsOpenSettingDialog(false);
     setIsOpenInviteDialog(true);
@@ -152,26 +143,16 @@ const Group: NextPage<Props> = (props: Props) => {
 
   return (
     <DashboardLayout>
-      <div className="border-b border-black/10">
-        <ElemGroupInformation
-          isUserBelongToGroup={isUserBelongToGroup}
-          group={groupData}
-          onInvite={onOpenInviteDialog}
-          onOpenSettingDialog={onOpenSettingDialog}
-          isAddingGroupMember={isAddingGroupMember}
-          onAddGroupMember={() => addGroupMember()}
-        />
+      <ElemGroupInformation
+        isUserBelongToGroup={isUserBelongToGroup}
+        group={groupData}
+        onInvite={onOpenInviteDialog}
+        onOpenSettingDialog={onOpenSettingDialog}
+        isAddingGroupMember={isAddingGroupMember}
+        onAddGroupMember={() => addGroupMember()}
+      />
 
-        {isUserBelongToGroup && (
-          <ElemTabBar
-            className="mt-3 border-b-transparent lg:hidden"
-            tabs={tabBarItems}
-            showDropdown={false}
-          />
-        )}
-      </div>
-
-      <div className="mt-7 grid lg:grid-cols-11 lg:gap-7">
+      <div className="mt-4 px-4 grid lg:grid-cols-11 lg:gap-7">
         <div className="mt-4 lg:mt-0 lg:col-span-7">
           <div ref={notesRef}>
             {isUserBelongToGroup && (
@@ -182,19 +163,18 @@ const Group: NextPage<Props> = (props: Props) => {
               />
             )}
           </div>
-
           {isPublicGroup && !isUserBelongToGroup && (
             <div className="bg-white shadow rounded-lg px-5 py-4">
               <div className="p-12 text-center">
                 <IconUsers
-                  className="mx-auto h-12 w-12 text-slate-300"
+                  className="mx-auto h-12 w-12 text-gray-300"
                   title="Join Group"
                 />
-                <h3 className="mt-2 text-lg font-bold">
+                <h3 className="mt-2 text-lg font-medium">
                   Join this group to view and participate.
                 </h3>
                 <ElemButton
-                  btn="primary"
+                  btn="purple"
                   loading={isAddingGroupMember}
                   onClick={() => addGroupMember()}
                   className="mt-2"
@@ -204,7 +184,6 @@ const Group: NextPage<Props> = (props: Props) => {
               </div>
             </div>
           )}
-
           {isPrivateGroup && !isUserBelongToGroup && (
             <div className="bg-white shadow rounded-lg px-5 py-4">
               <div className="p-12 text-center">
@@ -232,7 +211,7 @@ const Group: NextPage<Props> = (props: Props) => {
 
             <div ref={listsRef}>
               {isUserBelongToGroup && (
-                <ElemLists
+                <ElemGroupLists
                   group={groupData}
                   lists={
                     (lists?.list_user_groups?.map(
