@@ -1,7 +1,7 @@
 import { runGraphQl } from '@/utils';
 import { GetServerSidePropsContext } from 'next';
 
-export const PER_PAGE_LIMIT = 25_000
+export const PER_PAGE_LIMIT = 10_000
 
 function escapeXml(unsafe: string) {
     return unsafe.replace(/[<>&'"]/g, function (c) {

@@ -6,8 +6,14 @@ import { GetServerSidePropsContext } from 'next';
 const xml = (rootUrl: string, data?: GetSiteMapAggregatesQuery) => `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap><loc>${rootUrl}/sitemap-index.xml</loc></sitemap>
-  <sitemap><loc>${ JSON.stringify(data, null, 2)}</loc></sitemap>
-</sitemapindex>`;
+  <sitemap><loc>${Math.ceil(data?.companies_aggregate.aggregate?.count || 1 / PER_PAGE_LIMIT)}/sitemap/companies/0.xml</loc></sitemap>
+  <sitemap><loc>${Math.ceil(data?.events_aggregate.aggregate?.count || 1 / PER_PAGE_LIMIT)}/sitemap/companies/0.xml</loc></sitemap>
+  <sitemap><loc>${Math.ceil(data?.vc_firms_aggregate.aggregate?.count || 1 / PER_PAGE_LIMIT)}/sitemap/companies/0.xml</loc></sitemap>
+  <sitemap><loc>${Math.ceil(data?.people_aggregate.aggregate?.count || 1 / PER_PAGE_LIMIT)}/sitemap/companies/0.xml</loc></sitemap>
+  </sitemapindex>`;
+function SiteMap() {
+  // getServerSideProps will do the heavy lifting
+}
 // ${ Array.from({length: Math.ceil(data?.companies_aggregate.aggregate?.count || 1 / PER_PAGE_LIMIT)}, (_, i) => 
 // `   <sitemap><loc>${rootUrl}/sitemap/companies/${i}.xml</loc></sitemap>
 // `
@@ -25,10 +31,6 @@ const xml = (rootUrl: string, data?: GetSiteMapAggregatesQuery) => `<?xml versio
 // `   <sitemap><loc>${rootUrl}/sitemap/people/${i}.xml</loc></sitemap>
 // `
 // ) } 
-
-function SiteMap() {
-  // getServerSideProps will do the heavy lifting
-}
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { data } = await runGraphQl<GetSiteMapAggregatesQuery>(GetSiteMapAggregatesDocument, {}, undefined, true);
