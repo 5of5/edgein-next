@@ -273,3 +273,31 @@ query FindPeopleByEmail($query: String) {
     personal_email
   }
 }
+
+query FindPeopleByEmailAndLinkedin($email: String, $linkedin: String) {
+  people(
+    where: {
+      _and: [
+        { _not: { user: {} } }
+        {
+          _or: [
+            { work_email: { _ilike: $email } }
+            { personal_email: { _ilike: $email } }
+          ]
+        }
+        { linkedin: { _eq: $linkedin } }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+    name
+    picture
+    slug
+    website_url
+    linkedin
+    twitter_url
+    github
+    facebook_url
+  }
+}

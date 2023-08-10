@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, useState } from 'react';
+import { useQuery } from 'react-query';
 import validator from 'validator';
 import capitalize from 'lodash/capitalize';
 import lowerCase from 'lodash/lowerCase';
@@ -6,7 +7,6 @@ import isEmpty from 'lodash/isEmpty';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { urlPattern } from '@/utils/constants';
-import { useQuery } from 'react-query';
 
 export type SignUpFormState = {
   firstName?: string;

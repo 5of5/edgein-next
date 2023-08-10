@@ -9,6 +9,7 @@ import {
   ElemSignUpForm,
   SignUpFormState,
 } from '@/components/sign-in/elem-sign-up-form';
+import { ElemSignUpProfile } from '@/components/sign-in/elem-sign-up-profile';
 
 export default function SignIn() {
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -16,6 +17,8 @@ export default function SignIn() {
   const [signUpStep, setSignUpStep] = useState(0);
 
   const [signUpFormValues, setSignUpFormValues] = useState<SignUpFormState>({});
+
+  const [selectedPersonId, setSelectedPersonId] = useState<number>();
 
   return (
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
@@ -51,7 +54,19 @@ export default function SignIn() {
             <ElemSignUpForm
               signUpEmail={signUpEmail}
               onNext={formValues => {
+                setSignUpStep(2);
                 setSignUpFormValues(formValues);
+              }}
+            />
+          )}
+
+          {signUpStep === 2 && (
+            <ElemSignUpProfile
+              signUpEmail={signUpEmail}
+              linkedinUrl={signUpFormValues.linkedinUrl || ''}
+              onNext={personId => {
+                setSelectedPersonId(personId);
+                setSignUpStep(3);
               }}
             />
           )}

@@ -25986,6 +25986,14 @@ export type FindPeopleByEmailQueryVariables = Exact<{
 
 export type FindPeopleByEmailQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, work_email: string | null, personal_email: string | null }> };
 
+export type FindPeopleByEmailAndLinkedinQueryVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+  linkedin: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindPeopleByEmailAndLinkedinQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, website_url: string | null, linkedin: string | null, twitter_url: string | null, github: string | null, facebook_url: string | null }> };
+
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
 }>;
@@ -30371,6 +30379,43 @@ useFindPeopleByEmailQuery.getKey = (variables?: FindPeopleByEmailQueryVariables)
 ;
 
 useFindPeopleByEmailQuery.fetcher = (variables?: FindPeopleByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByEmailQuery, FindPeopleByEmailQueryVariables>(FindPeopleByEmailDocument, variables, options);
+export const FindPeopleByEmailAndLinkedinDocument = `
+    query FindPeopleByEmailAndLinkedin($email: String, $linkedin: String) {
+  people(
+    where: {_and: [{_not: {user: {}}}, {_or: [{work_email: {_ilike: $email}}, {personal_email: {_ilike: $email}}]}, {linkedin: {_eq: $linkedin}}]}
+    limit: 1
+  ) {
+    id
+    name
+    picture
+    slug
+    website_url
+    linkedin
+    twitter_url
+    github
+    facebook_url
+  }
+}
+    `;
+export const useFindPeopleByEmailAndLinkedinQuery = <
+      TData = FindPeopleByEmailAndLinkedinQuery,
+      TError = Error
+    >(
+      variables?: FindPeopleByEmailAndLinkedinQueryVariables,
+      options?: UseQueryOptions<FindPeopleByEmailAndLinkedinQuery, TError, TData>
+    ) =>
+    useQuery<FindPeopleByEmailAndLinkedinQuery, TError, TData>(
+      variables === undefined ? ['FindPeopleByEmailAndLinkedin'] : ['FindPeopleByEmailAndLinkedin', variables],
+      fetcher<FindPeopleByEmailAndLinkedinQuery, FindPeopleByEmailAndLinkedinQueryVariables>(FindPeopleByEmailAndLinkedinDocument, variables),
+      options
+    );
+useFindPeopleByEmailAndLinkedinQuery.document = FindPeopleByEmailAndLinkedinDocument;
+
+
+useFindPeopleByEmailAndLinkedinQuery.getKey = (variables?: FindPeopleByEmailAndLinkedinQueryVariables) => variables === undefined ? ['FindPeopleByEmailAndLinkedin'] : ['FindPeopleByEmailAndLinkedin', variables];
+;
+
+useFindPeopleByEmailAndLinkedinQuery.fetcher = (variables?: FindPeopleByEmailAndLinkedinQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByEmailAndLinkedinQuery, FindPeopleByEmailAndLinkedinQueryVariables>(FindPeopleByEmailAndLinkedinDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {
