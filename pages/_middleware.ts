@@ -1,7 +1,17 @@
 import CookieService from '../utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
+import { verify } from 'googlebot-verify';
 
 const USAGE_LIMIT = 10;
+
+const getIp = (req: NextRequest) => {
+  let ip = req.ip ?? req.headers.get('x-real-ip')
+  const forwardedFor = req.headers.get('x-forwarded-for')
+  if(!ip && forwardedFor){
+    ip = forwardedFor.split(',').at(0) ?? 'Unknown'
+  }
+  return ip;
+}
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
@@ -60,6 +70,11 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.next();
   }
+  const isGoogle = await verify(getIp(req));
+  if (isGoogle) {
+    return NextResponse.next();
+  }
+
   let user;
   const redirectPath = url.pathname.startsWith('/api')
     ? ''
