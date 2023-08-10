@@ -63,7 +63,7 @@ export const ElemSubEvents: FC<Props> = ({
                 key={event.id}
                 className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
               >
-                <ElemEventCard event={event} tagOnClick={tagOnClick} />
+                <ElemEventCard event={event} />
               </ElemCarouselCard>
             );
           })}
