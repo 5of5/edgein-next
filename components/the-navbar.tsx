@@ -310,20 +310,13 @@ export const TheNavbar = () => {
               </>
             ) : (
               <>
-                <ElemButton
-                  onClick={() => setShowPopup('login')}
-                  btn="default"
-                  className="whitespace-nowrap"
-                >
-                  Log in
-                </ElemButton>
-                <ElemButton
-                  onClick={() => setShowPopup('signup')}
-                  btn="purple"
-                  className="whitespace-nowrap"
-                >
-                  Sign up
-                </ElemButton>
+                <Link href="/sign-in" passHref>
+                  <a className="w-auto">
+                    <ElemButton btn="purple" className="whitespace-nowrap">
+                      Sign in
+                    </ElemButton>
+                  </a>
+                </Link>
               </>
             )}
           </div>
@@ -335,21 +328,21 @@ export const TheNavbar = () => {
             onClose={onModalClose}
           />
 
-          <LoginModal
+          {/* <LoginModal
             linkedInError={linkedInError}
             onSignUp={showSignUpModal}
             onForgotPassword={() => setShowPopup('forgotPassword')}
             show={showPopup === 'login'}
             onClose={onModalClose}
-          />
-          <SignUpModal
+          /> */}
+          {/* <SignUpModal
             inviteCode={inviteCode}
             passwordFromLogin={passwordFromLogin}
             emailFromLogin={emailFromLogin}
             onLogin={showLoginModal}
             show={showPopup === 'signup'}
             onClose={onModalClose}
-          />
+          /> */}
           <ForgotPasswordModal
             show={showPopup === 'forgotPassword'}
             onClose={onModalClose}

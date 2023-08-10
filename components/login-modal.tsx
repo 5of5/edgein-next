@@ -141,7 +141,8 @@ export default function LoginModal(props: Props) {
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0">
+            leaveTo="opacity-0"
+          >
             <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
@@ -153,7 +154,8 @@ export default function LoginModal(props: Props) {
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-300"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
               <Dialog.Panel className="w-full h-full flex items-center mx-auto shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
                 <div className="max-w-xs mx-auto w-full">
                   <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
@@ -195,7 +197,8 @@ export default function LoginModal(props: Props) {
                               <span>Password</span>
                               <span
                                 onClick={onForgotPassword}
-                                className="text-primary-500 cursor-pointer hover:underline">
+                                className="text-primary-500 cursor-pointer hover:underline"
+                              >
                                 Forgot your password?
                               </span>
                             </div>
@@ -230,7 +233,8 @@ export default function LoginModal(props: Props) {
                         <ElemButton
                           className="w-full mt-10"
                           btn="primary"
-                          loading={isLoading}>
+                          loading={isLoading}
+                        >
                           Login
                         </ElemButton>
                       </div>
@@ -246,7 +250,8 @@ export default function LoginModal(props: Props) {
 
                     <ElemButton
                       onClick={onLinkedInClick}
-                      className="w-full mt-5 gap-x-2 text-center bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]">
+                      className="w-full mt-5 gap-x-2 text-center bg-white text-[#0077B5] ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200 hover:!text-[#0077B5]"
+                    >
                       <IconLinkedIn
                         title="LinkedIn"
                         className="h-6 w-6 text-[#0077B5]"
@@ -259,7 +264,8 @@ export default function LoginModal(props: Props) {
                         Don&rsquo;t have an account?
                         <button
                           onClick={() => onSignUp('', '')}
-                          className="inline ml-0.5 text-primary-500 hover:underline">
+                          className="inline ml-0.5 text-primary-500 hover:underline"
+                        >
                           Sign up
                         </button>
                       </div>
