@@ -97,10 +97,7 @@ export const ElemCohort: FC<Props> = ({
                   key={index}
                   className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
-                  <ElemCompanyCard
-                    company={company as Companies}
-                    tagOnClick={tagOnClick}
-                  />
+                  <ElemCompanyCard company={company as Companies} />
                 </ElemCarouselCard>
               );
             })}

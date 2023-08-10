@@ -65,11 +65,7 @@ export const EventsByFilter: FC<Props> = ({
         className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-16"
       >
         {events.map(event => (
-          <ElemEventCard
-            key={event.id}
-            event={event as Events}
-            tagOnClick={tagOnClick}
-          />
+          <ElemEventCard key={event.id} event={event as Events} />
         ))}
       </div>
 

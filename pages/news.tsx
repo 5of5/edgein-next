@@ -202,13 +202,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                 ))}
               </>
             ) : (
-              news?.map(item => (
-                <ElemNewsCard
-                  key={item.id}
-                  newsPost={item}
-                  //tagOnClick={filterByTag}
-                />
-              ))
+              news?.map(item => <ElemNewsCard key={item.id} newsPost={item} />)
             )}
           </div>
 

@@ -474,7 +474,6 @@ const Companies: NextPage<Props> = ({
                     <ElemCompanyCard
                       key={company.id}
                       company={company as Companies}
-                      tagOnClick={filterByTag}
                     />
                   );
                 })}

@@ -483,7 +483,6 @@ const Investors: NextPage<Props> = ({
                     <ElemInvestorCard
                       key={vcfirm.id}
                       vcFirm={vcfirm as Vc_Firms}
-                      tagOnClick={filterByTag}
                     />
                   ))}
                 </div>

@@ -2023,6 +2023,8 @@ export const GENERAL_ERROR_MESSAGE =
 
 export const EMAIL_MAX_LENGTH = 255;
 
+export const MAX_TAGS_LIMIT = 50;
+
 export const CARD_DEFAULT_TAGS_LIMIT = 3;
 
 export const CARD_MAX_TAGS_LIMIT = 50;

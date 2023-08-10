@@ -2,7 +2,6 @@ import React, { FC, MouseEvent } from 'react';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { Companies, Vc_Firms, Resource_Links } from '@/graphql/types';
-import { useRouter } from 'next/router';
 import { ElemCompanyCard } from './companies/elem-company-card';
 import { ElemInvestorCard } from './investors/elem-investor-card';
 
@@ -17,19 +16,6 @@ export const ElemSubOrganizations: FC<Props> = ({
   heading,
   subOrganizations,
 }) => {
-  const router = useRouter();
-
-  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    router.push(
-      `/companies/?filters=${encodeURIComponent(
-        `{"industry":{"tags":["${type}"]}}`,
-      )}`,
-    );
-  };
-
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
       {heading && <h2 className="text-xl font-medium px-4 pt-2">{heading}</h2>}
@@ -56,15 +42,9 @@ export const ElemSubOrganizations: FC<Props> = ({
               className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
             >
               {item.to_company ? (
-                <ElemCompanyCard
-                  company={item.to_company as Companies}
-                  tagOnClick={tagOnClick}
-                />
+                <ElemCompanyCard company={item.to_company as Companies} />
               ) : (
-                <ElemInvestorCard
-                  vcFirm={item.to_vc_firm as Vc_Firms}
-                  tagOnClick={tagOnClick}
-                />
+                <ElemInvestorCard vcFirm={item.to_vc_firm as Vc_Firms} />
               )}
             </ElemCarouselCard>
           );

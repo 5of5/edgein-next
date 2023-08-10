@@ -80,11 +80,7 @@ export const InvestorsByFilter: FC<Props> = ({
             className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {vc_firms.map(vcFirm => (
-              <ElemInvestorCard
-                key={vcFirm.id}
-                vcFirm={vcFirm as Vc_Firms}
-                tagOnClick={tagOnClick}
-              />
+              <ElemInvestorCard key={vcFirm.id} vcFirm={vcFirm as Vc_Firms} />
             ))}
           </div>
 

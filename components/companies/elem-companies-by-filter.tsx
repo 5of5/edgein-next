@@ -83,7 +83,6 @@ export const CompaniesByFilter: FC<Props> = ({
               <ElemCompanyCard
                 key={company.id}
                 company={company as Companies}
-                tagOnClick={tagOnClick}
               />
             ))}
           </div>

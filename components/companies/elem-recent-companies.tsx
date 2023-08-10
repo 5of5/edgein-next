@@ -12,7 +12,7 @@ import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
-import ElemCompanyTags from '../elem-company-tags';
+import { ElemTags } from '@/components/elem-tags';
 
 type Props = {
   className?: string;
@@ -132,7 +132,11 @@ export const ElemRecentCompanies: FC<Props> = ({
                       </span>
                     </div>
 
-                    <ElemCompanyTags company={company} />
+                    <ElemTags
+                      className="mt-4"
+                      resourceType={'companies'}
+                      tags={company.tags}
+                    />
 
                     <div className="mt-4 grow">
                       <div className="text-gray-400 line-clamp-3">

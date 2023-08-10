@@ -97,7 +97,7 @@ export const ElemSimilarEvents: FC<Props> = ({
                   className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <div className="w-full max-w-full">
-                    <ElemEventCard event={event} tagOnClick={tagOnClick} />
+                    <ElemEventCard event={event} />
                   </div>
                 </ElemCarouselCard>
               );

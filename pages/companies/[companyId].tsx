@@ -41,7 +41,7 @@ import ElemNewsArticles, {
 } from '@/components/news/elem-news-articles';
 import { getQueryBySource } from '@/utils/news';
 import ElemNewsList from '@/components/news/elem-news-list';
-import ElemCompanyTags from '@/components/elem-company-tags';
+import { ElemTags } from '@/components/elem-tags';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemReactions } from '@/components/elem-reactions';
@@ -223,11 +223,10 @@ const Company: NextPage<Props> = (props: Props) => {
               )}
             </div>
 
-            <ElemCompanyTags
-              company={company}
+            <ElemTags
               className="mt-4"
-              hideLayer
-              tagOnClick={handleTagClick}
+              resourceType={'companies'}
+              tags={company.tags}
             />
 
             {parentOrganization && (

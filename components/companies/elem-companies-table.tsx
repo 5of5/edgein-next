@@ -153,17 +153,13 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Industries',
         accessor: 'tags' as const,
         Cell: (props: any) => (
-          <div className="flex flex-wrap overflow-clip gap-2">
+          <>
             {props.value ? (
-              <ElemTags
-                className="mt-4"
-                resourceType={'companies'}
-                tags={props.value}
-              />
+              <ElemTags resourceType={'companies'} tags={props.value} />
             ) : (
               <EmptyCell />
             )}
-          </div>
+          </>
         ),
         disableSortBy: true,
         width: 300,
@@ -374,7 +370,7 @@ export const CompaniesTable: FC<Props> = ({
         },
       },
     ],
-    [filterByTag],
+    [],
   );
 
   const getCompanies = React.useMemo(() => {
