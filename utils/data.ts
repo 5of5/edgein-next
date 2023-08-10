@@ -4,6 +4,7 @@ export const runGraphQl = async <QueryType>(
   query: string,
   variables?: Record<string, any>,
   cookies?: any,
+  isAdmin = false,
 ): Promise<{ data?: QueryType; errors?: any }> => {
   let headers: Record<string, string> = {};
   const authToken = CookieService.getAuthToken(cookies || {});
@@ -13,6 +14,12 @@ export const runGraphQl = async <QueryType>(
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: `Bearer ${authToken}`,
+    };
+  } else if (isAdmin) {
+    headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
     };
   } else {
     headers = {

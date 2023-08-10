@@ -238,7 +238,7 @@ query GetVCFirmsRecentInvestments(
 }
 
 query GetVCFirmsPath {
-  vc_firms(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
+  vc_firms(where: { slug: { _neq: "" }, status: { _eq: "published" } }, order_by: { slug: asc }) {
     id
     name
     slug
