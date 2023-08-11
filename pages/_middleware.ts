@@ -6,10 +6,6 @@ const USAGE_LIMIT = 10;
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
-  if (url.pathname === '/') {
-    return NextResponse.rewrite(new URL('/companies', req.url));
-  }
-
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents. This can also be done
   // via rewrites to a custom 404 page
