@@ -100,7 +100,7 @@ export const ElemInviteInvestmentMembers = () => {
 
         <div className="grid grid-cols-2 gap-4 p-5 bg-white rounded-lg border border-black/10">
           {companies.map(company => (
-            <div className="flex flex-row gap-4 items-center">
+            <div key={company?.id} className="flex flex-row gap-4 items-center">
               <ElemPhoto
                 photo={company?.logo}
                 wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
