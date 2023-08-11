@@ -4,10 +4,7 @@ import { Disclosure } from '@headlessui/react';
 import groupBy from 'lodash/groupBy';
 import { InviteToEdgeInPayload, InviteToEdgeInResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
-import {
-  useGetInvestorMailingListQuery,
-  useGetInvitedPeopleByUserIdQuery,
-} from '@/graphql/types';
+import { useGetInvitedPeopleByUserIdQuery } from '@/graphql/types';
 import { IconPaperAirplane, IconChevronDownMini } from '../icons';
 import { ElemButton } from '../elem-button';
 import ElemInviteEmails from './elem-invite-emails';
@@ -68,15 +65,6 @@ export const ElemInviteUser = () => {
         personId: item.id && item.slug ? item.id : null,
       })),
     );
-  };
-
-  const mailingList = useGetInvestorMailingListQuery({
-    //@ts-expect-error this works
-    where: { person_id: { _eq: 3015 } },
-  });
-
-  const handleAddTeamMembers = async () => {
-    await mailingList.refetch();
   };
 
   return (
@@ -147,7 +135,7 @@ export const ElemInviteUser = () => {
                       return (
                         <li className="text-slate-500 text-sm" key={index}>
                           {`Invitation has been sent to `}
-                          <span className="font-bold">{res.email}</span>{' '}
+                          <span className="font-bold">{res.emails[index]}</span>{' '}
                           successfully.
                         </li>
                       );
@@ -155,7 +143,7 @@ export const ElemInviteUser = () => {
                     return (
                       <li className="text-red-500 text-sm" key={index}>
                         {`Failed to send invitation to email `}
-                        <span className="font-bold">{res.email}</span>. Please
+                        <span className="font-bold">{res.emails[index]}</span>. Please
                         try again later.
                       </li>
                     );
@@ -195,15 +183,6 @@ export const ElemInviteUser = () => {
                   className="mt-4"
                 >
                   Invite
-                </ElemButton>
-
-                <ElemButton
-                  btn="white"
-                  onClick={handleAddTeamMembers}
-                  loading={isLoading}
-                  className="mt-4 self-end"
-                >
-                  Add my team members
                 </ElemButton>
               </div>
             </>
