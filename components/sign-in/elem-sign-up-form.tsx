@@ -7,21 +7,25 @@ import isEmpty from 'lodash/isEmpty';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { urlPattern } from '@/utils/constants';
-
-export type SignUpFormState = {
-  firstName?: string;
-  lastName?: string;
-  linkedinUrl?: string;
-  password?: string;
-  confirmPassword?: string;
-};
+import { FindPeopleByEmailAndLinkedinQuery } from '@/graphql/types';
+import { SignUpFormState, SignUpPayload } from '@/pages/sign-in';
 
 type Props = {
+  isSubmittingSignUp: boolean;
   signUpEmail: string;
-  onNext: (values: SignUpFormState) => void;
+  onNext: (
+    values: SignUpFormState,
+    person: FindPeopleByEmailAndLinkedinQuery['people'][0],
+  ) => void;
+  onSignUp: (payload: SignUpPayload) => void;
 };
 
-export const ElemSignUpForm: FC<Props> = ({ signUpEmail, onNext }) => {
+export const ElemSignUpForm: FC<Props> = ({
+  isSubmittingSignUp,
+  signUpEmail,
+  onNext,
+  onSignUp,
+}) => {
   const [values, setValues] = useState<SignUpFormState>({
     firstName: '',
     lastName: '',
@@ -54,7 +58,31 @@ export const ElemSignUpForm: FC<Props> = ({ signUpEmail, onNext }) => {
             linkedinUrl: data.error,
           }));
         } else {
-          onNext(values);
+          getSignUpProfile();
+        }
+      },
+    },
+  );
+
+  const { isLoading: isLoadingPeople, refetch: getSignUpProfile } = useQuery<{
+    person: FindPeopleByEmailAndLinkedinQuery['people'][0];
+  }>(
+    ['get-sign-up-profile'],
+    async () =>
+      await fetch(
+        `/api/get-sign-up-profile/?email=${signUpEmail}&linkedinUrl=${values.linkedinUrl}`,
+      ).then(res => res.json()),
+    {
+      enabled: false,
+      onSuccess(data) {
+        if (data.person) {
+          onNext(values, data.person);
+        } else {
+          onSignUp({
+            email: signUpEmail,
+            password: values.password || '',
+            name: `${values.firstName} ${values.lastName}`,
+          });
         }
       },
     },
@@ -116,7 +144,7 @@ export const ElemSignUpForm: FC<Props> = ({ signUpEmail, onNext }) => {
       </h1>
       <p className="mt-4 text-xs text-center text-slate-500 font-normal">
         You&apos;re signing up with the email{' '}
-        <span className=" font-semibold">{signUpEmail}</span>.
+        <span className="font-semibold">{signUpEmail}</span>.
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -223,7 +251,11 @@ export const ElemSignUpForm: FC<Props> = ({ signUpEmail, onNext }) => {
             className="w-full !mt-8"
             size="md"
             btn="primary"
-            loading={isCheckingExistedLinkedinUrl}
+            loading={
+              isCheckingExistedLinkedinUrl ||
+              isLoadingPeople ||
+              isSubmittingSignUp
+            }
             disabled={isDisabledButton}
           >
             Continue

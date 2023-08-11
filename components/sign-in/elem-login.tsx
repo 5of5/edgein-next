@@ -217,6 +217,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                 className="w-full !mt-8"
                 btn="primary"
                 size="md"
+                disabled={!email}
                 loading={isCheckingExistedEmail || isLoginLoading}
               >
                 {isExistedEmail ? 'Log in' : 'Continue with email'}

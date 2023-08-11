@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useQuery } from 'react-query';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '../elem-photo';
 import Link from 'next/link';
@@ -13,37 +12,16 @@ import {
 import { FindPeopleByEmailAndLinkedinQuery } from '@/graphql/types';
 
 type Props = {
-  signUpEmail: string;
-  linkedinUrl: string;
+  isSubmittingSignUp: boolean;
+  person?: FindPeopleByEmailAndLinkedinQuery['people'][0];
   onNext: (personId?: number) => void;
 };
 
 export const ElemSignUpProfile: FC<Props> = ({
-  signUpEmail,
-  linkedinUrl,
+  isSubmittingSignUp,
+  person,
   onNext,
 }) => {
-  const { data: person, isLoading: isLoadingPeople } = useQuery<
-    FindPeopleByEmailAndLinkedinQuery['people'][0]
-  >(
-    ['get-sign-up-profile'],
-    async () =>
-      await fetch(
-        `/api/get-sign-up-profile/?email=${signUpEmail}&linkedinUrl=${linkedinUrl}`,
-      ).then(res => res.json()),
-    {
-      onSuccess(data) {
-        if (!data) {
-          onNext();
-        }
-      },
-    },
-  );
-
-  if (isLoadingPeople) {
-    return null;
-  }
-
   return (
     <div className="max-w-sm mx-auto w-full px-8 lg:px-0">
       <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
@@ -111,11 +89,17 @@ export const ElemSignUpProfile: FC<Props> = ({
           className="w-full"
           size="md"
           btn="primary"
+          loading={isSubmittingSignUp}
           onClick={() => onNext(person?.id)}
         >
           Yes, it&apos; me
         </ElemButton>
-        <ElemButton size="sm" btn="default" onClick={() => onNext()}>
+        <ElemButton
+          size="sm"
+          btn="default"
+          loading={isSubmittingSignUp}
+          onClick={() => onNext()}
+        >
           It&apos; someone else
         </ElemButton>
       </div>

@@ -1,24 +1,70 @@
 import { useState } from 'react';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useMutation } from 'react-query';
 import { Dialog } from '@headlessui/react';
 import { ElemButton } from '@/components/elem-button';
 import { ElemLogo } from '@/components/elem-logo';
 import { ElemLogin } from '@/components/sign-in/elem-login';
-import {
-  ElemSignUpForm,
-  SignUpFormState,
-} from '@/components/sign-in/elem-sign-up-form';
+import { ElemSignUpForm } from '@/components/sign-in/elem-sign-up-form';
 import { ElemSignUpProfile } from '@/components/sign-in/elem-sign-up-profile';
+import { ElemSignUpConfirm } from '@/components/sign-in/elem-sign-up-confirm';
+import { FindPeopleByEmailAndLinkedinQuery } from '@/graphql/types';
+
+export type SignUpFormState = {
+  firstName?: string;
+  lastName?: string;
+  linkedinUrl?: string;
+  password?: string;
+  confirmPassword?: string;
+};
+
+export type SignUpPayload = {
+  email: string;
+  password: string;
+  name: string;
+  personId?: number;
+};
 
 export default function SignIn() {
+  const router = useRouter();
+
   const [signUpEmail, setSignUpEmail] = useState('');
 
   const [signUpStep, setSignUpStep] = useState(0);
 
   const [signUpFormValues, setSignUpFormValues] = useState<SignUpFormState>({});
 
-  const [selectedPersonId, setSelectedPersonId] = useState<number>();
+  const [profile, setProfile] =
+    useState<FindPeopleByEmailAndLinkedinQuery['people'][0]>();
+
+  const { mutate: signUp, isLoading: isSubmittingSignUp } = useMutation(
+    ({ email, password, name, personId }: SignUpPayload) =>
+      fetch('/api/register/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+          personId,
+          reference_id: router.query.invite,
+        }),
+      }).then(res => res.json()),
+    {
+      onSuccess: () => {
+        setSignUpStep(3);
+      },
+    },
+  );
+
+  const handleSignUp = (payload: SignUpPayload) => {
+    signUp(payload);
+  };
 
   return (
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
@@ -34,11 +80,13 @@ export default function SignIn() {
               </a>
             </Link>
 
-            <Link href="/" passHref>
-              <a className="absolute right-5">
-                <ElemButton btn="white">Back</ElemButton>
-              </a>
-            </Link>
+            {(signUpStep === 0 || signUpStep === 1) && (
+              <Link href="/" passHref>
+                <a className="absolute right-5">
+                  <ElemButton btn="white">Back</ElemButton>
+                </a>
+              </Link>
+            )}
           </nav>
 
           {signUpStep === 0 && (
@@ -52,22 +100,36 @@ export default function SignIn() {
 
           {signUpStep === 1 && (
             <ElemSignUpForm
+              isSubmittingSignUp={isSubmittingSignUp}
               signUpEmail={signUpEmail}
-              onNext={formValues => {
+              onNext={(formValues, person) => {
                 setSignUpStep(2);
                 setSignUpFormValues(formValues);
+                setProfile(person);
               }}
+              onSignUp={handleSignUp}
             />
           )}
 
           {signUpStep === 2 && (
             <ElemSignUpProfile
-              signUpEmail={signUpEmail}
-              linkedinUrl={signUpFormValues.linkedinUrl || ''}
+              isSubmittingSignUp={isSubmittingSignUp}
+              person={profile}
               onNext={personId => {
-                setSelectedPersonId(personId);
-                setSignUpStep(3);
+                handleSignUp({
+                  email: signUpEmail,
+                  password: signUpFormValues.password || '',
+                  name: `${signUpFormValues.firstName} ${signUpFormValues.lastName}`,
+                  personId,
+                });
               }}
+            />
+          )}
+
+          {signUpStep === 3 && (
+            <ElemSignUpConfirm
+              firstName={signUpFormValues.firstName || ''}
+              signUpEmail={signUpEmail}
             />
           )}
         </Dialog.Panel>

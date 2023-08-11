@@ -9,14 +9,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const userData = await UserService.findOneUserByEmail(email);
 
-    if (!userData) {
-      return res.status(400).send({
-        existed: false,
-      });
-    }
-
     return res.status(200).send({
-      existed: true,
+      existed: Boolean(userData),
     });
   } catch (error: any) {
     return res

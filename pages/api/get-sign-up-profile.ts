@@ -12,9 +12,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const linkedinUrl = req.query.linkedinUrl as string;
 
   try {
-    const people = await onFindPeopleByEmailAndLinkedin(email, linkedinUrl);
+    const person = await onFindPeopleByEmailAndLinkedin(email, linkedinUrl);
 
-    return res.status(200).send(people);
+    return res.status(200).send({ person });
   } catch (error: any) {
     return res
       .status(500)
