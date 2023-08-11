@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
@@ -60,10 +60,7 @@ export const ElemCohort: FC<Props> = ({
 
   const companies = companiesData?.companies;
 
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string,
-  ) => {
+  const onClickType = (event: MouseEvent<HTMLButtonElement>, type: string) => {
     event.stopPropagation();
     event.preventDefault();
 

@@ -48,7 +48,7 @@ export const ElemTagsInput: FC<Props> = ({
 
   return (
     <div>
-      <div className="p-2 border rounded-lg">
+      <div className="px-3 py-2 text-sm border rounded-full">
         {tags.length > 0 && (
           <div className="flex flex-wrap items-center gap-2 mb-2">
             {tags.map(tag => (
@@ -71,7 +71,7 @@ export const ElemTagsInput: FC<Props> = ({
         )}
         <input
           type="text"
-          className="appearance-none p-0 border-none w-full placeholder:text-slate-400 focus:outline-none focus:ring-0"
+          className="appearance-none p-0 border-none w-full text-sm placeholder:text-slate-400 focus:outline-none focus:ring-0"
           placeholder={placeholder}
           value={inputValue}
           onChange={onChangeInput}

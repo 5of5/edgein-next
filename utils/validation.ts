@@ -1,4 +1,4 @@
-import { z, ZodSchema } from 'zod';
+import { ZodSchema } from 'zod';
 import mapValues from 'lodash/mapValues';
 
 export const zodValidate = (values: unknown, schema: ZodSchema) => {

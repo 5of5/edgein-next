@@ -1,4 +1,3 @@
-import type { NextPage } from 'next';
 import React from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { FigureBlurredCircle } from '@/components/figures';
@@ -6,14 +5,12 @@ import { IconCheck, IconContributor } from '@/components/icons';
 import Image from 'next/image';
 import { loadStripe } from '@/utils/stripe';
 import { useUser } from '@/context/user-context';
-import { Popups } from '@/components/the-navbar';
+import { usePopup } from '@/context/popup-context';
 
-type Props = {
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
-};
-
-const Pricing: NextPage<Props> = ({ setShowPopup }) => {
+const Pricing = () => {
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const pricing = {
     tiers: [

@@ -17,9 +17,11 @@ type Props = {
     | 'primary-light'
     | 'transparent'
     | 'white'
+    | 'gray'
     | 'slate'
     | 'ol-white'
     | 'ol-primary'
+    | 'default'
     | '';
   roundedFull?: boolean;
   size?: 'sm' | 'lg' | '';
@@ -53,7 +55,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     btnClass =
       'text-primary-700 from-amber-300 to-amber-500 bg-gradient-to-r hover:to-amber-400';
   } else if (btn === 'purple') {
-    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
+    btnClass = 'text-white bg-primary-500 hover:bg-blue-900';
   } else if (btn === 'primary-light') {
     btnClass = 'bg-primary-50 hover:bg-primary-100 text-primary-500';
   } else if (btn === 'ol-primary') {
@@ -75,6 +77,12 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     btnClass = 'text-white bg-dark-700 hover:opacity-60';
   } else if (btn === 'danger') {
     btnClass = 'text-white bg-rose-500 hover:bg-rose-600';
+  } else if (btn === 'gray') {
+    btnClass =
+      'text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500';
+  } else if (btn === 'default') {
+    btnClass =
+      'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 active:border-primary-500';
   } else {
     btnClass = '';
   }
@@ -87,7 +95,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   } else if (size === 'lg') {
     sizeClasses = 'px-5 py-2 text-lg';
   } else {
-    sizeClasses = 'px-4 py-1.5';
+    sizeClasses = 'px-2.5 py-1.5 text-sm';
   }
 
   btnClass += ` ${sizeClasses}`;
@@ -97,7 +105,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     btnClass = btnClass + ' opacity-40 pointer-events-none';
   }
 
-  const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 transition ease-in-out duration-150 group
+  const componentClassName = `relative inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group
 		${btnClass}
 		${roundedFull ? 'rounded-full' : ''}
 		${arrow || arrowLeft ? 'justify-between' : 'justify-center'}

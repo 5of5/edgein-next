@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { Place } from '@aws-sdk/client-location';
 import { Dialog, Transition } from '@headlessui/react';
+import { toast, Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { ONBOARDING_QUESTION } from '@/utils/constants';
@@ -70,9 +71,28 @@ export default function OnboardingStep5(props: Props) {
       });
     },
     {
-      onSuccess: () => {
-        props.onNext();
-        router.push(`/` + props.selectedOption);
+      onSuccess: async response => {
+        if (response.status === 200) {
+          props.onNext();
+          router.push(`/` + props.selectedOption);
+        } else {
+          const error = await response.json();
+          toast.custom(
+            t => (
+              <div
+                className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                }`}
+              >
+                {error.error}
+              </div>
+            ),
+            {
+              duration: 5000,
+              position: 'top-center',
+            },
+          );
+        }
       },
     },
   );
@@ -149,6 +169,7 @@ export default function OnboardingStep5(props: Props) {
               </Dialog.Panel>
             </Transition.Child>
           </div>
+          <Toaster />
         </Dialog>
       </Transition.Root>
     </>

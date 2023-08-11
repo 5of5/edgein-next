@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import moment from 'moment-timezone';
 import { first } from 'lodash';
@@ -6,12 +6,11 @@ import {
   IconSortUp,
   IconSortDown,
   IconX,
-  IconChevronDown,
+  IconChevronDownMini,
   IconChevronLeft,
   IconChevronRight,
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { ElemReactions } from '@/components/elem-reactions';
 import { TableColumnsFilter } from '@/components/my-list/table-columns-filter';
 import { last } from 'lodash';
 import { Menu } from '@headlessui/react';
@@ -19,8 +18,6 @@ import { numberWithCommas } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { loadStripe } from '@/utils/stripe';
-import { ElemFilter } from '@/components/elem-filter';
-import { Filters, FilterOptionKeys } from '@/models/Filter';
 
 import {
   useTable,
@@ -28,12 +25,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
-
-export type DeepPartial<T> = T extends object
-  ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
-  : T;
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -45,10 +37,6 @@ type Props = {
   onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   filterByTag: Function;
-  filterValues: Filters | null;
-  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
-  onClearOption: (name: FilterOptionKeys) => void;
-  onReset: () => void;
 };
 
 export const CompaniesTable: FC<Props> = ({
@@ -61,12 +49,10 @@ export const CompaniesTable: FC<Props> = ({
   onClickPrev,
   onClickNext,
   filterByTag,
-  filterValues,
-  onApply,
-  onClearOption,
-  onReset,
 }) => {
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -78,7 +64,11 @@ export const CompaniesTable: FC<Props> = ({
   };
 
   const onBillingClick = async () => {
-    loadStripe();
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      loadStripe();
+    }
   };
 
   const isDisplayAllCompanies = user?.entitlements.viewEmails
@@ -123,10 +113,7 @@ export const CompaniesTable: FC<Props> = ({
     [],
   );
 
-  const emptyCell = React.useMemo(
-    () => <div className="text-slate-400">&mdash;</div>,
-    [],
-  );
+  const EmptyCell = () => <div className="text-slate-400">&mdash;</div>;
 
   const columns = React.useMemo<any[]>(
     () => [
@@ -157,7 +144,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Token',
         accessor: 'coin.ticker' as const,
         Cell: (props: any) => (
-          <>{props.value ? <div>{props.value}</div> : emptyCell}</>
+          <>{props.value ? <div>{props.value}</div> : <EmptyCell />}</>
         ),
         width: 100,
       },
@@ -181,7 +168,7 @@ export const CompaniesTable: FC<Props> = ({
                 })}
               </>
             ) : (
-              emptyCell
+              <EmptyCell />
             )}
           </div>
         ),
@@ -197,7 +184,7 @@ export const CompaniesTable: FC<Props> = ({
             {props.value ? (
               <p className="line-clamp-2 text-sm">{props.value}</p>
             ) : (
-              emptyCell
+              <EmptyCell />
             )}
           </div>
         ),
@@ -211,7 +198,11 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <>
-              {props.value ? <p>{numberWithCommas(props.value)}</p> : emptyCell}
+              {props.value ? (
+                <p>{numberWithCommas(props.value)}</p>
+              ) : (
+                <EmptyCell />
+              )}
             </>
           );
         },
@@ -241,7 +232,7 @@ export const CompaniesTable: FC<Props> = ({
                   })}
                 </>
               ) : (
-                emptyCell
+                <EmptyCell />
               )}
             </div>
           );
@@ -254,7 +245,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'City',
         accessor: 'location_json.city' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -263,7 +254,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'State',
         accessor: 'location_json.state' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -272,7 +263,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Country',
         accessor: 'location_json.country' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -281,7 +272,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Founded',
         accessor: 'year_founded' as const,
         Cell: (props: any) => {
-          return <>{props.value ? <p>{props.value}</p> : emptyCell}</>;
+          return <>{props.value ? <p>{props.value}</p> : <EmptyCell />}</>;
         },
         width: 120,
       },
@@ -317,7 +308,7 @@ export const CompaniesTable: FC<Props> = ({
         accessor: 'investment_rounds.length' as const,
         Cell: (props: any) => {
           const numberOfRounds = props.value;
-          return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
+          return <>{numberOfRounds ? numberOfRounds : <EmptyCell />}</>;
         },
         width: 100,
       },
@@ -337,7 +328,7 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <div>
-              {props.value ? moment(props.value).format('LL') : emptyCell}
+              {props.value ? moment(props.value).format('LL') : <EmptyCell />}
             </div>
           );
         },
@@ -365,7 +356,7 @@ export const CompaniesTable: FC<Props> = ({
                 props.row.original?.investment_rounds.length > 0 ? (
                 <>Undisclosed Capital</>
               ) : (
-                emptyCell
+                <EmptyCell />
               )}
             </div>
           );
@@ -386,27 +377,11 @@ export const CompaniesTable: FC<Props> = ({
           }
         },
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
       },
-      {
-        Header: 'Reactions',
-        accessor: 'company' as const,
-        Cell: (props: any) => (
-          <div>
-            {props.row.original && (
-              <ElemReactions
-                resource={props.row.original}
-                resourceType={'companies'}
-                isInteractive={false}
-              />
-            )}
-          </div>
-        ),
-        disableSortBy: true,
-      },
     ],
-    [filterByTag, emptyCell],
+    [filterByTag],
   );
 
   const getCompanies = React.useMemo(() => {
@@ -452,13 +427,6 @@ export const CompaniesTable: FC<Props> = ({
           <TableColumnsFilter
             columns={allColumns}
             resetColumns={() => toggleHideAllColumns(false)}
-          />
-          <ElemFilter
-            resourceType="companies"
-            filterValues={filterValues}
-            onApply={onApply}
-            onClearOption={onClearOption}
-            onReset={onReset}
           />
         </div>
 
@@ -572,7 +540,7 @@ export const CompaniesTable: FC<Props> = ({
                       <th
                         key={key}
                         {...restColumnProps}
-                        className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left min-w-content`}
+                        className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
                       >
                         <div className="flex items-center min-w-content">
                           {column.render('Header')}
@@ -580,8 +548,8 @@ export const CompaniesTable: FC<Props> = ({
                             as="div"
                             className="relative inline-block text-left ml-1"
                           >
-                            <Menu.Button className="block align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
-                              <IconChevronDown className="h-5 w-5" />
+                            <Menu.Button className="block align-middle text-gray-400 rounded-full hover:bg-slate-100">
+                              <IconChevronDownMini className="h-5 w-5" />
                             </Menu.Button>
 
                             <Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
@@ -708,7 +676,7 @@ export const CompaniesTable: FC<Props> = ({
           </tbody>
         </table>
 
-        {!isDisplayAllCompanies && (
+        {!isDisplayAllCompanies && totalItems > itemsPerPage && (
           <table className="relative table-auto min-w-full overscroll-x-none">
             <tbody className="divide-y divide-black/10">
               {Array.from({ length: 10 }, (_, i) => (
@@ -750,15 +718,6 @@ export const CompaniesTable: FC<Props> = ({
                       >
                         Start your free trial
                       </ElemButton>
-                      {/* <div className="font-bold text-white">or</div>
-											<ElemButton
-												onClick={() => {}}
-												btn="ol-white"
-												arrow
-												className=" text-primary-500"
-											>
-												Invite team members
-											</ElemButton> */}
                     </div>
                   </div>
                 </td>

@@ -36,14 +36,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  const { errors } = zodValidate(
-    { ...req.body, name: req.body.listName },
-    listSchema,
-  );
-  if (errors) {
-    return res
-      .status(400)
-      .send({ error: errors['name']?.[0] || 'Invalid parameters' });
+  if (!sentimentType) {
+    const { errors } = zodValidate(
+      { ...req.body, name: req.body.listName },
+      listSchema,
+    );
+    if (errors) {
+      return res
+        .status(400)
+        .send({ error: errors['name']?.[0] || 'Invalid parameters' });
+    }
   }
 
   const listName: string = sentimentType

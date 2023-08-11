@@ -1,25 +1,36 @@
 import React from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useTable, useSortBy, usePagination } from 'react-table';
-import { IconEditPencil, IconSortUp, IconSortDown } from '@/components/icons';
+import {
+  IconEditPencil,
+  IconSortUp,
+  IconSortDown,
+  IconX,
+  IconChevronDownMini,
+} from '@/components/icons';
+import { Menu } from '@headlessui/react';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
 import { numberWithCommas, formatDate, convertToIntNum } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
+import { ElemButton } from '../elem-button';
+import { useIntercom } from 'react-use-intercom';
 
 type Props = {
   className?: string;
+  resourceName?: string;
   heading?: string;
   investments: Investment_Rounds[];
-  showEdit?: boolean;
 };
 
 export const ElemInvestments: React.FC<Props> = ({
   className,
   heading,
+  resourceName,
   investments,
-  showEdit,
 }) => {
+  const { showNewMessages } = useIntercom();
+
   const columns = React.useMemo(
     () => [
       {
@@ -90,7 +101,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+                    className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2 transition-all"
                   >
                     {investment.vc_firm && (
                       <Link
@@ -105,7 +116,7 @@ export const ElemInvestments: React.FC<Props> = ({
                             imgAlt={investment.vc_firm.name}
                             placeholderClass="text-slate-300"
                           />
-                          <span className="line-clamp-2 font-bold">
+                          <span className="line-clamp-2 font-medium">
                             {investment.vc_firm.name}
                           </span>
                         </a>
@@ -117,7 +128,7 @@ export const ElemInvestments: React.FC<Props> = ({
                         href={`/people/${investment.person.slug}`}
                         key={investment.person.id}
                       >
-                        <a className="investor flex items-center space-x-3 hover:opacity-70">
+                        <a className="investor flex items-center space-x-3">
                           <ElemPhoto
                             photo={investment.person.picture}
                             wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
@@ -126,7 +137,7 @@ export const ElemInvestments: React.FC<Props> = ({
                             placeholder="user"
                             placeholderClass="text-slate-300"
                           />
-                          <span className="line-clamp-2 font-bold">
+                          <span className="line-clamp-2 font-medium">
                             {investment.person.name}
                           </span>
                         </a>
@@ -140,7 +151,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+                    className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2 transition-all"
                   >
                     {investment.vc_firm && (
                       <Link
@@ -150,12 +161,12 @@ export const ElemInvestments: React.FC<Props> = ({
                         <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
                           <ElemPhoto
                             photo={investment.vc_firm.logo}
-                            wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
+                            wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-gray-300 rounded-lg overflow-hidden"
                             imgClass="object-fit max-w-full max-h-full"
                             imgAlt={investment.vc_firm.name}
                             placeholderClass="text-slate-300"
                           />
-                          <span className="line-clamp-2 font-bold">
+                          <span className="line-clamp-2 font-medium">
                             {investment.vc_firm.name}
                           </span>
                         </a>
@@ -169,7 +180,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+                    className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2 transition-all"
                   >
                     {investment.person && (
                       <Link
@@ -185,7 +196,7 @@ export const ElemInvestments: React.FC<Props> = ({
                             placeholder="user"
                             placeholderClass="text-slate-300"
                           />
-                          <span className="line-clamp-2 font-bold">
+                          <span className="line-clamp-2 font-medium">
                             {investment.person.name}
                           </span>
                         </a>
@@ -229,6 +240,7 @@ export const ElemInvestments: React.FC<Props> = ({
     page,
     nextPage,
     previousPage,
+    setSortBy,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -261,109 +273,194 @@ export const ElemInvestments: React.FC<Props> = ({
   };
 
   return (
-    <section className={className}>
+    <section className={`rounded-lg border border-gray-300 ${className}`}>
       {heading && (
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">{heading}</h2>
-
-          {showEdit && (
-            <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-              <IconEditPencil title="Edit" />
-            </button>
-          )}
-
-          {/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-						<IconEditPencil title="Edit" />
-					</button> */}
+          <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>
         </div>
       )}
 
-      <div className="mt-2 overflow-auto border border-black/10 rounded-lg">
-        <table
-          {...getTableProps()}
-          className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
-        >
-          <thead>
-            {headerGroups.map(headerGroup => {
-              const { key, ...restHeaderGroupProps } =
-                headerGroup.getHeaderGroupProps();
-              return (
-                <tr key={key} {...restHeaderGroupProps} className="table-row">
-                  {headerGroup.headers.map((column: any) => {
-                    const { key, ...restColumnProps }: any = ({} = {
-                      ...column.getHeaderProps(column.getSortByToggleProps(), {
-                        style: {
-                          width: column.width,
-                          minWidth: column.width,
-                          maxWidth: column.width,
-                        },
-                      }),
-                    });
+      <div className="px-4 py-4">
+        {investments.length === 0 ? (
+          <div className="flex flex-col items-center justify-center">
+            <div className="text-gray-500">
+              There is no investment data on this organization.
+            </div>
+            <ElemButton
+              className="mt-2"
+              onClick={() =>
+                showNewMessages(
+                  `Hi EdgeIn, I'd like to request investment data on ${resourceName}`,
+                )
+              }
+              btn="default"
+            >
+              Request data or contribute
+            </ElemButton>
+          </div>
+        ) : (
+          <>
+            <div className="overflow-auto border border-gray-300 rounded-lg">
+              <table
+                {...getTableProps()}
+                className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none"
+              >
+                <thead>
+                  {headerGroups.map(headerGroup => {
+                    const { key, ...restHeaderGroupProps } =
+                      headerGroup.getHeaderGroupProps();
                     return (
-                      <th
+                      <tr
                         key={key}
-                        {...restColumnProps}
-                        className={`px-4 py-2 whitespace-nowrap text-sm bg-white font-bold text-left ${
-                          column.canSort ? 'group hover:text-primary-500' : ''
-                        }`}
-                        title={column.canSort ? `Sort By ${column.Header}` : ''}
+                        {...restHeaderGroupProps}
+                        className="table-row min-w-full"
                       >
-                        {column.render('Header')}
-                        {generateSortingIndicator(column)}
-                      </th>
+                        {headerGroup.headers.map((column: any) => {
+                          const { key, ...restColumnProps }: any = ({} = {
+                            ...column.getHeaderProps({
+                              style: {
+                                width: column.width,
+                                minWidth: column.minWidth,
+                                maxWidth: column.maxWidth,
+                              },
+                            }),
+                          });
+
+                          return (
+                            <th
+                              key={key}
+                              {...restColumnProps}
+                              className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
+                            >
+                              <div className="flex items-center min-w-content">
+                                {column.render('Header')}
+                                <Menu
+                                  as="div"
+                                  className="relative inline-block text-left ml-1"
+                                >
+                                  <Menu.Button className="block align-middle text-gray-400 rounded-full hover:bg-slate-100">
+                                    <IconChevronDownMini className="h-5 w-5" />
+                                  </Menu.Button>
+
+                                  <Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
+                                    {column.canSort && (
+                                      <Menu.Item
+                                        as="button"
+                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
+                                          column.isSorted &&
+                                          column.isSortedDesc === false
+                                            ? 'text-primary-500'
+                                            : ''
+                                        }`}
+                                        onClick={(e: any) => {
+                                          column.getHeaderProps(
+                                            setSortBy([
+                                              { id: column.id, desc: false },
+                                            ]),
+                                          );
+                                        }}
+                                      >
+                                        <IconSortUp className="mr-1 h-5 w-5 inline-block" />
+                                        Sort Ascending
+                                      </Menu.Item>
+                                    )}
+
+                                    {column.canSort && (
+                                      <Menu.Item
+                                        as="button"
+                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
+                                          column.isSorted &&
+                                          column.isSortedDesc === true
+                                            ? 'text-primary-500'
+                                            : ''
+                                        }`}
+                                        onClick={(e: any) => {
+                                          column.getHeaderProps(
+                                            setSortBy([
+                                              { id: column.id, desc: true },
+                                            ]),
+                                          );
+                                        }}
+                                      >
+                                        <IconSortDown className="mr-1 h-5 w-5 inline-block" />
+                                        Sort Descending
+                                      </Menu.Item>
+                                    )}
+
+                                    {column.render('Header') != 'Name' && (
+                                      <Menu.Item
+                                        as="button"
+                                        className="flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
+                                        onClick={(e: any) => {
+                                          column.getHeaderProps(
+                                            column.toggleHidden(),
+                                          );
+                                        }}
+                                      >
+                                        <IconX className="mr-1 h-5 w-5 inline-block" />
+                                        Hide Column
+                                      </Menu.Item>
+                                    )}
+                                  </Menu.Items>
+                                </Menu>
+                              </div>
+                            </th>
+                          );
+                        })}
+                      </tr>
                     );
                   })}
-                </tr>
-              );
-            })}
-          </thead>
-          <tbody
-            {...getTableBodyProps()}
-            className="bg-white divide-y divide-black/10 flex-1 md:flex-none mb-96"
-          >
-            {page.map(row => {
-              prepareRow(row);
-              const { key, ...restRowProps } = row.getRowProps();
-
-              return (
-                <tr
-                  key={key}
-                  {...restRowProps}
-                  className="table-row rounded-lg bg-white even:bg-slate-50"
+                </thead>
+                <tbody
+                  {...getTableBodyProps()}
+                  className="bg-white divide-y divide-black/10 flex-1 md:flex-none mb-96"
                 >
-                  {row.cells.map(cell => {
-                    const { key, ...restCellProps } = cell.getCellProps({
-                      style: {
-                        width: cell.column.width,
-                        minWidth: cell.column.width,
-                        maxWidth: cell.column.width,
-                      },
-                    });
+                  {page.map(row => {
+                    prepareRow(row);
+                    const { key, ...restRowProps } = row.getRowProps();
 
                     return (
-                      <td
+                      <tr
                         key={key}
-                        {...restCellProps}
-                        className="align-top text-sm px-4 py-3"
+                        {...restRowProps}
+                        className="table-row rounded-lg"
                       >
-                        {cell.render('Cell')}
-                      </td>
+                        {row.cells.map(cell => {
+                          const { key, ...restCellProps } = cell.getCellProps({
+                            style: {
+                              width: cell.column.width,
+                              minWidth: cell.column.width,
+                              maxWidth: cell.column.width,
+                            },
+                          });
+
+                          return (
+                            <td
+                              key={key}
+                              {...restCellProps}
+                              className="align-top text-sm px-4 py-3"
+                            >
+                              {cell.render('Cell')}
+                            </td>
+                          );
+                        })}
+                      </tr>
                     );
                   })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                </tbody>
+              </table>
+            </div>
+            <Pagination
+              shownItems={page?.length}
+              totalItems={investmentsCount}
+              page={pageIndex}
+              itemsPerPage={pageSize}
+              onClickPrev={() => previousPage()}
+              onClickNext={() => nextPage()}
+            />
+          </>
+        )}
       </div>
-      <Pagination
-        shownItems={page?.length}
-        totalItems={investmentsCount}
-        page={pageIndex}
-        itemsPerPage={pageSize}
-        onClickPrev={() => previousPage()}
-        onClickNext={() => nextPage()}
-      />
     </section>
   );
 };

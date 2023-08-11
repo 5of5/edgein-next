@@ -30,10 +30,10 @@ export const ElemEmptyState: FC<Props> = ({
 
   return (
     <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-      <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+      <div className="w-full max-w-xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
         <IconList className="w-12 h-12 mx-auto text-slate-300" />
-        <h1 className="mt-5 text-3xl font-bold">{heading}</h1>
-        <div className="mt-1 text-lg text-slate-600">{caption}</div>
+        <h1 className="mt-5 text-xl font-medium">{heading}</h1>
+        <div className="mt-1 text-sm text-gray-500">{caption}</div>
         {selectedTab.id === 'following' ? (
           <ElemButton
             onClick={() =>
@@ -42,18 +42,14 @@ export const ElemEmptyState: FC<Props> = ({
                 name: 'Discover',
               })
             }
-            btn="primary"
+            btn="purple"
             className="mt-3"
           >
             <IconListPlus className="w-6 h-6 mr-1" />
             Discover New Lists
           </ElemButton>
         ) : (
-          <ElemButton
-            onClick={onClickCreateList}
-            btn="primary"
-            className="mt-3"
-          >
+          <ElemButton onClick={onClickCreateList} btn="purple" className="mt-3">
             <IconListPlus className="w-6 h-6 mr-1" />
             Create New List
           </ElemButton>
