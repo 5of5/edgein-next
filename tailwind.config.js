@@ -32,34 +32,6 @@ const dark = {
   900: '#0e0e0f',
 };
 
-const darkBlue = {
-  50: '#f3f2f7',
-  100: '#e7e6f0',
-  200: '#c3bfd9',
-  300: '#9f99c2',
-  400: '#425466',
-  500: '#0E0067',
-  600: '#0d005d',
-  700: '#0a2540',
-  800: '#08003e',
-  900: '#070032',
-  950: '#0E0067',
-};
-
-// const gray = {
-//   50: '#FCFCFC',
-//   100: '#f3f4f6',
-//   200: '#e5e7eb',
-//   250: '#E2E8F0',
-//   300: '#bcbcc5',
-//   400: '#425466',
-//   500: '#57586e',
-//   600: '#4b5563',
-//   700: '#414253',
-//   800: '#343542',
-//   900: '#111827',
-// };
-
 const blue = {
   50: '#EFF6FF',
   100: '#DBEAFE',
@@ -83,7 +55,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ['Inter', 'Metropolis', ...defaultTheme.fontFamily.sans],
+      sans: ['Inter', ...defaultTheme.fontFamily.sans],
     },
     extend: {
       fontSize: {
@@ -93,7 +65,9 @@ module.exports = {
         ...colors,
         primary,
         dark: dark,
-        // gray,
+        gray: {
+          25: '#fcfcfc',
+        },
         blue,
         transparent: 'transparent',
       },

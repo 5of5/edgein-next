@@ -83,7 +83,7 @@ export const ElemInviteTeamMember: FC<Props> = ({
 
       <ElemButton
         onClick={handleClickInvite}
-        btn="slate"
+        btn="gray"
         loading={isLoading}
         className={isInvitationSent ? ' cursor-auto pointer-events-none' : ''}
       >

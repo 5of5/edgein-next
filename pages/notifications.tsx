@@ -250,7 +250,7 @@ const Notifications: NextPage = () => {
             displayedNotifications.length < totalNotifications && (
               <div className="p-5">
                 <ElemButton
-                  btn="ol-primary"
+                  btn="default"
                   onClick={handleClickShowMore}
                   className="w-full"
                 >

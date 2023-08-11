@@ -57,6 +57,14 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  const onClickHeader = () => {
+    if (!user) {
+      return setShowPopup('signup');
+    }
+
+    return onDisclosureButtonClick;
+  };
+
   const onClickCreate = () => {
     if (!user) {
       return setShowPopup('signup');
@@ -81,7 +89,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                 className="flex items-center grow space-x-2 py-1.5 px-2 focus:outline-none"
                 data-expanded={open}
                 ref={btnRef}
-                onClick={onDisclosureButtonClick}
+                onClick={onClickHeader}
               >
                 {user && (
                   <IconChevronDownMini
@@ -102,13 +110,13 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             </div>
 
             {user && (
-              <Disclosure.Panel as="ul" className="ml-8">
+              <Disclosure.Panel as="ul" className="ml-6">
                 {displayedGroups.slice(0, groupsLimit)?.map(group => {
                   return (
                     <li key={group.id} role="button">
                       <Link href={`/groups/${group.id}/`}>
                         <a
-                          className={`flex items-center space-x-2 py-1.5 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                          className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
                             group.id,
                           )}`}
                           title={group.name}
@@ -123,7 +131,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                 })}
                 <li role="button">
                   <Link href="/groups/">
-                    <a className="flex items-center space-x-2 py-1.5 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
+                    <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
                       See all
                     </a>
                   </Link>
