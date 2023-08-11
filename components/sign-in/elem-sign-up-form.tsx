@@ -17,7 +17,7 @@ type Props = {
     values: SignUpFormState,
     person: FindPeopleByEmailAndLinkedinQuery['people'][0],
   ) => void;
-  onSignUp: (payload: SignUpPayload) => void;
+  onSignUp: (formValues: SignUpFormState, payload: SignUpPayload) => void;
 };
 
 export const ElemSignUpForm: FC<Props> = ({
@@ -78,7 +78,7 @@ export const ElemSignUpForm: FC<Props> = ({
         if (data.person) {
           onNext(values, data.person);
         } else {
-          onSignUp({
+          onSignUp(values, {
             email: signUpEmail,
             password: values.password || '',
             name: `${values.firstName} ${values.lastName}`,

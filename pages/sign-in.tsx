@@ -108,7 +108,10 @@ export default function SignIn() {
                 setSignUpFormValues(formValues);
                 setProfile(person);
               }}
-              onSignUp={handleSignUp}
+              onSignUp={(formValues, payload) => {
+                setSignUpFormValues(formValues);
+                handleSignUp(payload);
+              }}
             />
           )}
 
