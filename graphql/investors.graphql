@@ -24,15 +24,71 @@ query GetInvestorById($id: Int!) {
   }
 }
 
-query GetInvestorMailingList($where: investments_bool_exp) {
-  investments(where: $where) {
+query GetInvestorByPersonId($personId: Int!) {
+  investors(where: { person_id: { _eq: $personId } }, limit: 1) {
+    id
+    vc_firm_id
+    person_id
+    person {
+      id
+      name
+      slug
+      status
+    }
+  }
+}
+
+query GetInvestorMailingList($personId: Int!) {
+  investors(where: { person_id: { _eq: $personId } }) {
     id
     vc_firm {
       investments {
         investment_round {
           company {
-            teamMembers(where: { email_address: { _neq: "" } }) {
+            id
+            name
+            logo
+            slug
+            teamMembers(where: { email_address: { _is_null: false } }) {
+              id
+              person_id
+            }
+            teamMembers_aggregate(
+              where: { email_address: { _is_null: false } }
+            ) {
+              aggregate {
+                count
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# only possible with admin hasura role
+query GetAdminInvestorMailingList($personId: Int!, $companyId: Int!) {
+  investors(where: { person_id: { _eq: $personId } }) {
+    id
+    vc_firm {
+      investments(
+        where: { investment_round: { company: { id: { _eq: $companyId } } } }
+      ) {
+        investment_round {
+          company {
+            id
+            teamMembers(where: { email_address: { _is_null: false } }) {
+              id
               email_address
+              person_id
+            }
+            teamMembers_aggregate(
+              where: { email_address: { _is_null: false } }
+            ) {
+              aggregate {
+                count
+              }
             }
           }
         }
