@@ -136,7 +136,7 @@ export const onFindPeopleByLinkedin = async (linkedin: string) => {
   return people[0];
 };
 
-const onLinkUserToPerson = async (userId: number, personId: number) => {
+export const onLinkUserToPerson = async (userId: number, personId: number) => {
   const {
     data: { update_users },
   } = await mutate<UpdateUserPersonIdMutation>({
@@ -150,7 +150,7 @@ const onLinkUserToPerson = async (userId: number, personId: number) => {
   return update_users;
 };
 
-const onInsertProfile = async (
+export const onInsertProfile = async (
   name: string,
   email: string,
   linkedin: string,

@@ -24,6 +24,7 @@ export type SignUpPayload = {
   email: string;
   password: string;
   name: string;
+  linkedinUrl: string;
   personId?: number;
 };
 
@@ -120,6 +121,7 @@ export default function SignIn() {
                   email: signUpEmail,
                   password: signUpFormValues.password || '',
                   name: `${signUpFormValues.firstName} ${signUpFormValues.lastName}`,
+                  linkedinUrl: signUpFormValues.linkedinUrl || '',
                   personId,
                 });
               }}

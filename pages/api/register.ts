@@ -4,11 +4,18 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { GetUserGroupInvitesByEmailQuery } from '@/graphql/types';
 import GroupService from '@/utils/groups';
 import { makeAuthService, UserInfo } from '@/services/auth.service';
+import {
+  onInsertProfile,
+  onLinkUserToPerson,
+} from './add-onboarding-information';
 
 const authService = makeAuthService();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
+
+  const personId: number | undefined = req.body.personId;
+  const linkedinUrl: string = req.body.linkedinUrl;
 
   // check email exist in allowedEmail table or not
   const email = ((req.body.email as string) || '').toLowerCase();
@@ -94,6 +101,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         result.email!,
         user_id,
       );
+    }
+
+    // Link user to profile
+    if (personId) {
+      await onLinkUserToPerson(userData.id, personId);
+    } else {
+      const insertedPerson = await onInsertProfile(
+        userData.display_name || '',
+        userData.email,
+        linkedinUrl,
+      );
+      await onLinkUserToPerson(userData.id, insertedPerson?.id || 0);
     }
 
     await authService.linkAccounts(

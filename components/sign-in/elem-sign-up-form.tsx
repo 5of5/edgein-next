@@ -82,6 +82,7 @@ export const ElemSignUpForm: FC<Props> = ({
             email: signUpEmail,
             password: values.password || '',
             name: `${values.firstName} ${values.lastName}`,
+            linkedinUrl: values.linkedinUrl || '',
           });
         }
       },
