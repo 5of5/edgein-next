@@ -52,7 +52,6 @@ type Props = {
   sortNews: News[];
   metrics: Metric[];
   newsArticles?: News[];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {

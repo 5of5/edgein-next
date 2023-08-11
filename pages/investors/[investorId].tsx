@@ -40,7 +40,6 @@ type Props = {
   sortByDateAscInvestments: Array<Investment_Rounds>;
   sortNews: Array<News>;
   getInvestments: Array<Investment_Rounds>;
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const VCFirm: NextPage<Props> = props => {

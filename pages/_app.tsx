@@ -9,7 +9,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { LoaderPlasma } from '@/components/loader-plasma';
 import { TheNavbar } from '@/components/the-navbar';
-import { ElemFeedback } from '@/components/elem-feedback';
 import { TheFooter } from '@/components/the-footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { UserProvider } from '@/context/user-context';
@@ -31,8 +30,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   // App Page Preloader
   const router = useRouter();
   const [pageLoading, setPageLoading] = React.useState<boolean>(false);
-
-  const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
 
   //google
   React.useEffect(() => {
@@ -148,21 +145,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                         {pageLoading ? (
                           <LoaderPlasma />
                         ) : (
-                          <Component
-                            {...pageProps}
-                            setToggleFeedbackForm={setToggleFeedbackForm}
-                          />
+                          <Component {...pageProps} />
                         )}
                       </main>
-
-                      {(router.asPath.includes('/companies/') ||
-                        router.asPath.includes('/investors/') ||
-                        router.asPath.includes('/events/')) && (
-                        <ElemFeedback
-                          toggleFeedbackForm={toggleFeedbackForm}
-                          setToggleFeedbackForm={setToggleFeedbackForm}
-                        />
-                      )}
 
                       {showFooter === true && <TheFooter />}
                     </>

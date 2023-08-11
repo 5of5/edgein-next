@@ -40,7 +40,6 @@ import { usePopup } from '@/context/popup-context';
 
 type Props = {
   event: GetEventQuery['events'][0];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Event: NextPage<Props> = props => {
