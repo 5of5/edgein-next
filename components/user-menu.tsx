@@ -32,7 +32,7 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
   return (
     <Popover className="relative">
       {user?.person?.picture ? (
-        <Popover.Button>
+        <Popover.Button className="focus:outline-none">
           <ElemPhoto
             photo={user?.person?.picture}
             wrapClass="flex items-center justify-center shrink-0 w-9 h-9 bg-white rounded-full shadow border border-black/10"

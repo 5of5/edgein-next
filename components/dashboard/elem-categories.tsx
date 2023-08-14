@@ -14,7 +14,7 @@ export const ElemCategories: FC<Props> = ({
   onChangeCategory,
 }) => {
   return (
-    <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+    <nav className="flex flex-wrap gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
       {categories.map((category, index) => {
         const selected = selectedCategory?.value === category.value;
 

@@ -259,7 +259,7 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 py-3 lg:flex items-center justify-between border-b border-gray-200"
+          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -268,7 +268,7 @@ const Companies: NextPage<Props> = ({
             onChangeCategory={setSelectedStatusTag}
           />
 
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemDropdown items={layoutItems} />
@@ -437,7 +437,7 @@ const Companies: NextPage<Props> = ({
                   <PlaceholderTable />
                 </div>
               ) : (
-                <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {Array.from({ length: 9 }, (_, i) => (
                     <PlaceholderCompanyCard key={i} />
                   ))}
@@ -467,14 +467,13 @@ const Companies: NextPage<Props> = ({
               )}
               <div
                 data-testid="companies"
-                className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4"
+                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4"
               >
                 {companies?.map(company => {
                   return (
                     <ElemCompanyCard
                       key={company.id}
                       company={company as Companies}
-                      tagOnClick={filterByTag}
                     />
                   );
                 })}

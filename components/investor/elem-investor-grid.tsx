@@ -35,43 +35,40 @@ export const ElemInvestorGrid: React.FC<Props> = ({
             return b.founder - a.founder;
           });
   return (
-    <section className={className}>
+    <section className={`rounded-lg border border-gray-300 ${className}`}>
       {heading && (
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">{heading}</h2>
-          {showEdit && (
-            <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-              <IconEditPencil title="Edit" />
-            </button>
-          )}
+        <div className="flex items-center justify-between px-4 pt-2">
+          <h2 className="text-lg font-medium">{heading}</h2>
         </div>
       )}
-      <ElemFilterTags
-        onClick={(tag, index) => setSelectedTag(tag)}
-        selectedTag={selectedTag}
-        className="mt-2"
-        tags={allTags}
-      />
-      <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-        {peopleFoundersFirst.map(teamMember => {
-          return (
-            <React.Fragment key={teamMember.id}>
-              {teamMember.person && (
-                <ElemPersonCard
-                  key={teamMember.person.id}
-                  href={`/people/${teamMember.person.slug}`}
-                  photo={teamMember.person.picture}
-                  heading={teamMember.person.name}
-                  //founder={teamMember.founder}
-                  text={teamMember.function}
-                  linkedin={teamMember.person.linkedin}
-                  personal_email={teamMember.person.personal_email}
-                  work_email={teamMember.person.work_email}
-                />
-              )}
-            </React.Fragment>
-          );
-        })}
+
+      <div className="px-4 py-4">
+        <ElemFilterTags
+          onClick={(tag, index) => setSelectedTag(tag)}
+          selectedTag={selectedTag}
+          tags={allTags}
+        />
+        <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+          {peopleFoundersFirst.map(teamMember => {
+            return (
+              <React.Fragment key={teamMember.id}>
+                {teamMember.person && (
+                  <ElemPersonCard
+                    key={teamMember.person.id}
+                    href={`/people/${teamMember.person.slug}`}
+                    photo={teamMember.person.picture}
+                    heading={teamMember.person.name}
+                    //founder={teamMember.founder}
+                    text={teamMember.function}
+                    linkedin={teamMember.person.linkedin}
+                    personal_email={teamMember.person.personal_email}
+                    work_email={teamMember.person.work_email}
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

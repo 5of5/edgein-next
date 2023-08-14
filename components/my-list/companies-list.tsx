@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { TableEmptyCell } from './table-empty-cell';
 import { Table } from './table';
 import { PlaceholderTable } from '../placeholders';
+import { ElemTags } from '@/components/elem-tags';
 
 type Props = {
   listId: number;
@@ -106,23 +107,13 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Header: 'Tags',
         accessor: 'company.tags' as const,
         Cell: (props: any) => (
-          <div className="flex flex-wrap gap-1">
+          <>
             {props.value ? (
-              <>
-                {props.value?.map((tag: string, index: number) => {
-                  return (
-                    <Link href={`/companies/?tags=${tag}`} key={index}>
-                      <a className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
-                        {tag}
-                      </a>
-                    </Link>
-                  );
-                })}
-              </>
+              <ElemTags resourceType={'companies'} tags={props.value} />
             ) : (
               <TableEmptyCell />
             )}
-          </div>
+          </>
         ),
         disableSortBy: true,
         width: 400,

@@ -13,32 +13,20 @@ import Link from 'next/link';
 import { getCleanWebsiteUrl, stripHtmlTags } from '@/utils/text';
 import parse from 'html-react-parser';
 import { formatDateShown } from '@/utils';
-import {
-  CARD_DEFAULT_TAGS_LIMIT,
-  CARD_MAX_TAGS_LIMIT,
-} from '@/utils/constants';
+import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
+import { ElemTags } from '@/components/elem-tags';
 
 type Props = {
   className?: string;
   newsPost: GetNewsQuery['news'][0];
-  tagOnClick?: any;
 };
 
-export const ElemNewsCard: FC<Props> = ({
-  className = '',
-  newsPost,
-  tagOnClick,
-}) => {
+export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
   const [postData, setPostData] = useState(newsPost);
 
   useEffect(() => {
     setPostData(newsPost);
   }, [newsPost]);
-
-  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
-  const showMoreTags = () => {
-    setTagsLimit(CARD_MAX_TAGS_LIMIT);
-  };
 
   const {
     // id,
@@ -85,7 +73,7 @@ export const ElemNewsCard: FC<Props> = ({
   );
 
   return (
-    <div className={`flex flex-col w-full p-4 ${className}`}>
+    <div className={`flex flex-col w-full ${className}`}>
       {link && (
         <div>
           <h2 className="font-medium break-words" title={text ?? ''}>
@@ -93,44 +81,30 @@ export const ElemNewsCard: FC<Props> = ({
               <a target="_blank">{text}</a>
             </Link>
           </h2>
-          <p className="mt-4 text-xs text-gray-500">{formatDateShown(date)}</p>
-          {tags && (
-            <div className="mt-4 flex flex-wrap overflow-clip gap-2">
-              {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
-                return (
-                  <button
-                    key={index}
-                    className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full cursor-default`}
-                  >
-                    {tag}
-                  </button>
-                );
-              })}
-              {tagsLimit < tags.length && (
-                <button
-                  onClick={showMoreTags}
-                  className="text-xs text-gray-500 font-medium py-1"
-                >
-                  {tags.length - tagsLimit} more
-                </button>
-              )}
-            </div>
+          <p className="mt-3 text-xs text-gray-500">{formatDateShown(date)}</p>
+
+          {tags?.length > 0 && (
+            <ElemTags
+              className="mt-4"
+              limit={CARD_DEFAULT_TAGS_LIMIT}
+              resourceType={'news'}
+              tags={tags}
+            />
           )}
-          {metadata?.description && (
-            <div className="mt-4 text-gray-400">
-              {link && metadata?.image && (
-                <Link href={link}>
-                  <a target="_blank" className="block mb-2">
-                    {metadata?.image && (
-                      <img
-                        src={metadata?.image}
-                        alt={text}
-                        className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
-                      />
-                    )}{' '}
-                  </a>
-                </Link>
-              )}
+
+          {link && metadata?.image && (
+            <div className="mt-3 text-gray-400">
+              <Link href={link}>
+                <a target="_blank" className="block mb-2">
+                  {metadata?.image && (
+                    <img
+                      src={metadata?.image}
+                      alt={text}
+                      className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
+                    />
+                  )}{' '}
+                </a>
+              </Link>
             </div>
           )}
 
