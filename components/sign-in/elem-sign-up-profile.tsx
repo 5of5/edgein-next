@@ -13,7 +13,7 @@ import { FindPeopleByEmailAndLinkedinQuery } from '@/graphql/types';
 
 type Props = {
   isSubmittingSignUp: boolean;
-  person?: FindPeopleByEmailAndLinkedinQuery['people'][0];
+  person?: FindPeopleByEmailAndLinkedinQuery['people'][number];
   onNext: (personId?: number) => void;
 };
 

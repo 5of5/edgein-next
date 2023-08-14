@@ -27,13 +27,11 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   const { isFetching: isCheckingExistedEmail, refetch: checkExistedEmail } =
     useQuery(
       ['check-existed-email', email],
-      async () =>
-        await fetch(`/api/check-existed-email/?email=${email}`).then(res =>
-          res.json(),
-        ),
+      async () => await fetch(`/api/check-existed-email/?email=${email}`),
       {
         enabled: false,
-        onSuccess(data) {
+        onSuccess: async response => {
+          const data = await response.json();
           if (data.existed) {
             setIsExistedEmail(true);
           } else {
@@ -55,10 +53,10 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
           email,
           password,
         }),
-      }).then(res => res.json()),
+      }),
     {
       onSuccess: response => {
-        if (response?.error) {
+        if (!response.ok) {
           setUnsuccessMessage('Incorrect email or password.');
         } else {
           if (router.query.redirect) {
@@ -105,7 +103,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     validateEmail(email);
     validatePassword(password);
 

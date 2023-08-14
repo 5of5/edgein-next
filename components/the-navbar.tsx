@@ -5,10 +5,8 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { ElemLogo } from '@/components/elem-logo';
 import { ElemButton } from '@/components/elem-button';
 import { UserMenu } from '@/components/user-menu';
-import LoginModal from '@/components/login-modal';
 import UsageModal from '@/components/usage-modal';
 import ForgotPasswordModal from '@/components/forgot-password-modal';
-import SignUpModal from '@/components/sign-up-modal';
 import { IconSearch, IconBell, IconEllipsisVertical } from '@/components/icons';
 import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
@@ -69,11 +67,6 @@ export const TheNavbar = () => {
   const [selectedPerson, setSelectedPerson] =
     useState<FindPeopleByNameAndEmailQuery['people'][0]>();
   const [linkedin, setLinkedin] = useState<string>('');
-
-  const [linkedInError, setLinkedInError] = useState('');
-  const [inviteCode, setInviteCode] = useState(
-    typeof window !== 'undefined' ? localStorage.inviteCode ?? '' : '',
-  );
 
   const { data: userProfile, isLoading: isFetchingUserProfile } =
     useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
@@ -147,8 +140,7 @@ export const TheNavbar = () => {
       if (response.status !== 200) {
         const responseText = await response.clone().json();
         if (responseText.message) {
-          setLinkedInError(responseText.message);
-          setShowPopup('login');
+          router.push('/sign-in');
         }
       } else {
         window.location.href = '/';
@@ -170,23 +162,22 @@ export const TheNavbar = () => {
 
   useEffect(() => {
     if (router.query.invite && !user) {
-      setInviteCode(router.query.invite as string);
       localStorage.inviteCode = router.query.invite as string;
-      showSignUpModal('', '');
+      redirectToSignIn();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.invite, user]);
 
   const onBackFromForgotPassword = () => {
-    setShowPopup('login');
+    router.push('/sign-in');
   };
 
   const onModalClose = () => {
     setShowPopup(router.asPath.includes('/login/') ? 'login' : false);
   };
 
-  const showLoginModal = () => {
-    setShowPopup('login');
+  const redirectToSignIn = () => {
+    router.push('/sign-in');
   };
 
   const showSignUpModal = (email: string, password: string) => {
@@ -323,26 +314,11 @@ export const TheNavbar = () => {
 
           <UsageModal
             onSignUp={showSignUpModal}
-            onLogin={showLoginModal}
+            onLogin={redirectToSignIn}
             show={showPopup === 'usage'}
             onClose={onModalClose}
           />
 
-          {/* <LoginModal
-            linkedInError={linkedInError}
-            onSignUp={showSignUpModal}
-            onForgotPassword={() => setShowPopup('forgotPassword')}
-            show={showPopup === 'login'}
-            onClose={onModalClose}
-          /> */}
-          {/* <SignUpModal
-            inviteCode={inviteCode}
-            passwordFromLogin={passwordFromLogin}
-            emailFromLogin={emailFromLogin}
-            onLogin={showLoginModal}
-            show={showPopup === 'signup'}
-            onClose={onModalClose}
-          /> */}
           <ForgotPasswordModal
             show={showPopup === 'forgotPassword'}
             onClose={onModalClose}

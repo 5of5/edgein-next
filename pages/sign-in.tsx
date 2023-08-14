@@ -38,7 +38,7 @@ export default function SignIn() {
   const [signUpFormValues, setSignUpFormValues] = useState<SignUpFormState>({});
 
   const [profile, setProfile] =
-    useState<FindPeopleByEmailAndLinkedinQuery['people'][0]>();
+    useState<FindPeopleByEmailAndLinkedinQuery['people'][number]>();
 
   const { mutate: signUp, isLoading: isSubmittingSignUp } = useMutation(
     ({ email, password, name, personId }: SignUpPayload) =>
@@ -53,9 +53,12 @@ export default function SignIn() {
           password,
           name,
           personId,
-          reference_id: router.query.invite,
+          reference_id:
+            typeof window !== 'undefined'
+              ? localStorage.getItem('inviteCode')
+              : router.query.invite,
         }),
-      }).then(res => res.json()),
+      }),
     {
       onSuccess: () => {
         setSignUpStep(3);
