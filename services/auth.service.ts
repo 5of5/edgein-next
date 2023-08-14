@@ -2,6 +2,7 @@ import {
   AppMetadata,
   AuthenticationClient,
   ManagementClient,
+  SignInToken,
   TokenResponse,
   User,
   UserMetadata,
@@ -169,6 +170,13 @@ export class AuthService {
     expires_in: number;
   }> {
     return this.auth.verifyEmailCode(data);
+  }
+
+  public async authorizationCodeGrant(data: {
+    redirect_uri: string;
+    code: string;
+  }): Promise<SignInToken | undefined> {
+    return await this.auth.oauth?.authorizationCodeGrant(data);
   }
 }
 
