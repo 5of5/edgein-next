@@ -1,19 +1,24 @@
 import { runGraphQl } from '@/utils';
 import { GetServerSidePropsContext } from 'next';
 
-export const PER_PAGE_LIMIT = 10_000
+export const PER_PAGE_LIMIT = 10_000;
 
 function escapeXml(unsafe: string) {
-    return unsafe.replace(/[<>&'"]/g, function (c) {
-        switch (c) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case '\'': return '&apos;';
-            case '"': return '&quot;';
-        }
-        return c;
-    });
+  return unsafe.replace(/[<>&'"]/g, function (c) {
+    switch (c) {
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '&':
+        return '&amp;';
+      case "'":
+        return '&apos;';
+      case '"':
+        return '&quot;';
+    }
+    return c;
+  });
 }
 
 function generateSiteMap<T extends { slug: string | null }>(
@@ -28,7 +33,9 @@ function generateSiteMap<T extends { slug: string | null }>(
        .map(({ slug }) => {
          return slug
            ? `
-       <url><loc>${rootUrl}/${folder}/${escapeXml(slug)}</loc><lastmod>${lastModDate}</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+       <url><loc>${rootUrl}/${folder}/${escapeXml(
+               slug,
+             )}</loc><lastmod>${lastModDate}</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
      `
            : '';
        })
@@ -48,7 +55,12 @@ export async function generateXMLSiteMap<
   offset: number,
 ) {
   // We make an API call to gather the URLs for our site
-  const { data } = await runGraphQl<T>(graphqlQuery, {limit: PER_PAGE_LIMIT, offset: offset * PER_PAGE_LIMIT}, undefined, true);
+  const { data } = await runGraphQl<T>(
+    graphqlQuery,
+    { limit: PER_PAGE_LIMIT, offset: offset * PER_PAGE_LIMIT },
+    undefined,
+    true,
+  );
 
   const array = graphqlAccessor(data);
 

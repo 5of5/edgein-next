@@ -1,8 +1,4 @@
-
-query GetEventsPaths(
-  $limit: Int
-  $offset: Int
-) {
+query GetEventsPaths($limit: Int, $offset: Int) {
   events(
     where: { slug: { _neq: "" }, status: { _eq: "published" } }
     order_by: { slug: asc }
@@ -15,12 +11,9 @@ query GetEventsPaths(
   }
 }
 
-query GetCompaniesPaths(
-  $limit: Int
-  $offset: Int
-) {
+query GetCompaniesPaths($limit: Int, $offset: Int) {
   companies(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } },
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
     order_by: { slug: asc }
     limit: $limit
     offset: $offset
@@ -31,10 +24,7 @@ query GetCompaniesPaths(
   }
 }
 
-query GetPersonsPath(
-  $limit: Int
-  $offset: Int
-) {
+query GetPersonsPath($limit: Int, $offset: Int) {
   people(
     where: { slug: { _neq: "" }, status: { _eq: "published" } }
     order_by: { slug: asc }
@@ -47,10 +37,7 @@ query GetPersonsPath(
   }
 }
 
-query GetVCFirmsPath(
-  $limit: Int
-  $offset: Int
-) {
+query GetVCFirmsPath($limit: Int, $offset: Int) {
   vc_firms(
     where: { slug: { _neq: "" }, status: { _eq: "published" } }
     order_by: { slug: asc }
@@ -64,22 +51,30 @@ query GetVCFirmsPath(
 }
 
 query GetSiteMapAggregates {
-  companies_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+  companies_aggregate(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+  ) {
     aggregate {
       count
     }
   }
-  events_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+  events_aggregate(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+  ) {
     aggregate {
       count
     }
   }
-  people_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+  people_aggregate(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+  ) {
     aggregate {
       count
     }
   }
-  vc_firms_aggregate(where: { slug: { _neq: "" }, status: { _eq: "published" } }) {
+  vc_firms_aggregate(
+    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+  ) {
     aggregate {
       count
     }

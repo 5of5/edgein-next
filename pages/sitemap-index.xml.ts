@@ -30,7 +30,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   ctx.res.setHeader('Content-Type', 'text/xml');
   // we send the XML to the browser
   ctx.res.write(
-    xml(`https://${process.env.NEXT_PUBLIC_VERCEL_URL!}`, new Date().toISOString()),
+    xml(
+      `https://${process.env.NEXT_PUBLIC_VERCEL_URL!}`,
+      new Date().toISOString(),
+    ),
   );
   ctx.res.end();
 
