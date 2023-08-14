@@ -8,7 +8,7 @@ import {
   Companies,
 } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
-import { filter, flatten, get, has, uniqBy } from 'lodash';
+import { flatten, get, has, uniqBy } from 'lodash';
 import { DeepPartial } from '@/types/common';
 import { ElemPhoto } from '../elem-photo';
 import { useState } from 'react';
