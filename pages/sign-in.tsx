@@ -58,7 +58,7 @@ export default function SignIn() {
               ? localStorage.getItem('inviteCode')
               : router.query.invite,
         }),
-      }).then(res => res.json()),
+      }),
     {
       onSuccess: () => {
         setSignUpStep(3);

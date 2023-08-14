@@ -15,7 +15,7 @@ type Props = {
   signUpEmail: string;
   onNext: (
     values: SignUpFormState,
-    person: FindPeopleByEmailAndLinkedinQuery['people'][0],
+    person: FindPeopleByEmailAndLinkedinQuery['people'][number],
   ) => void;
   onSignUp: (formValues: SignUpFormState, payload: SignUpPayload) => void;
 };
@@ -48,10 +48,11 @@ export const ElemSignUpForm: FC<Props> = ({
     async () =>
       await fetch(
         `/api/check-existed-linkedin-url/?linkedinUrl=${values.linkedinUrl}`,
-      ).then(res => res.json()),
+      ),
     {
       enabled: false,
-      onSuccess(data) {
+      onSuccess: async response => {
+        const data = await response.json();
         if (data.error) {
           setErrors(prev => ({
             ...prev,
@@ -64,17 +65,16 @@ export const ElemSignUpForm: FC<Props> = ({
     },
   );
 
-  const { isLoading: isLoadingPeople, refetch: getSignUpProfile } = useQuery<{
-    person: FindPeopleByEmailAndLinkedinQuery['people'][number];
-  }>(
+  const { isLoading: isLoadingPeople, refetch: getSignUpProfile } = useQuery(
     ['get-sign-up-profile'],
     async () =>
       await fetch(
         `/api/get-sign-up-profile/?email=${signUpEmail}&linkedinUrl=${values.linkedinUrl}`,
-      ).then(res => res.json()),
+      ),
     {
       enabled: false,
-      onSuccess(data) {
+      onSuccess: async response => {
+        const data = await response.json();
         if (data.person) {
           onNext(values, data.person);
         } else {
