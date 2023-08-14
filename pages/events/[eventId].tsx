@@ -307,7 +307,7 @@ const Event: NextPage<Props> = props => {
                 resourceName={event.name}
                 resourceTwitterUrl={event.twitter}
               />
-              {attendees.some(item => item.person?.id === user?.person?.id) ? (
+              {attendees?.some(item => item.person?.id === user?.person?.id) ? (
                 <ElemButton btn="primary" className="w-full">
                   Joined
                 </ElemButton>
