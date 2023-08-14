@@ -31,7 +31,7 @@ const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!,
 );
 
-type HitCompaniesProps = {
+export type HitCompaniesProps = {
   hit: AlgoliaHit<{
     name: string;
     overview: string;
@@ -42,7 +42,7 @@ type HitCompaniesProps = {
   }>;
 };
 
-type HitInvestorsProps = {
+export type HitInvestorsProps = {
   hit: AlgoliaHit<{
     name: string;
     logo: string;
@@ -51,7 +51,7 @@ type HitInvestorsProps = {
   }>;
 };
 
-type HitPeopleProps = {
+export type HitPeopleProps = {
   hit: AlgoliaHit<{
     name: string;
     work_email: string;

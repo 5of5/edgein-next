@@ -25255,6 +25255,13 @@ export type GetCompanyByIdQueryVariables = Exact<{
 
 export type GetCompanyByIdQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, status: string }> };
 
+export type GetCompanyInsightByLocationQueryVariables = Exact<{
+  where: Companies_Bool_Exp;
+}>;
+
+
+export type GetCompanyInsightByLocationQuery = { __typename?: 'query_root', companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -25352,6 +25359,13 @@ export type GetEventOrganizationByIdQueryVariables = Exact<{
 
 
 export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
+
+export type GetEventInsightByLocationQueryVariables = Exact<{
+  where: Events_Bool_Exp;
+}>;
+
+
+export type GetEventInsightByLocationQuery = { __typename?: 'query_root', events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -26267,6 +26281,13 @@ export type GetVcFirmByIdQueryVariables = Exact<{
 
 export type GetVcFirmByIdQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, status: string }> };
 
+export type GetVcFirmInsightByLocationQueryVariables = Exact<{
+  where: Vc_Firms_Bool_Exp;
+}>;
+
+
+export type GetVcFirmInsightByLocationQuery = { __typename?: 'query_root', vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
 }>;
@@ -27093,6 +27114,34 @@ useGetCompanyByIdQuery.getKey = (variables: GetCompanyByIdQueryVariables) => ['G
 ;
 
 useGetCompanyByIdQuery.fetcher = (variables: GetCompanyByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyByIdQuery, GetCompanyByIdQueryVariables>(GetCompanyByIdDocument, variables, options);
+export const GetCompanyInsightByLocationDocument = `
+    query GetCompanyInsightByLocation($where: companies_bool_exp!) {
+  companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetCompanyInsightByLocationQuery = <
+      TData = GetCompanyInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetCompanyInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetCompanyInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetCompanyInsightByLocationQuery, TError, TData>(
+      ['GetCompanyInsightByLocation', variables],
+      fetcher<GetCompanyInsightByLocationQuery, GetCompanyInsightByLocationQueryVariables>(GetCompanyInsightByLocationDocument, variables),
+      options
+    );
+useGetCompanyInsightByLocationQuery.document = GetCompanyInsightByLocationDocument;
+
+
+useGetCompanyInsightByLocationQuery.getKey = (variables: GetCompanyInsightByLocationQueryVariables) => ['GetCompanyInsightByLocation', variables];
+;
+
+useGetCompanyInsightByLocationQuery.fetcher = (variables: GetCompanyInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyInsightByLocationQuery, GetCompanyInsightByLocationQueryVariables>(GetCompanyInsightByLocationDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -27587,6 +27636,34 @@ useGetEventOrganizationByIdQuery.getKey = (variables: GetEventOrganizationByIdQu
 ;
 
 useGetEventOrganizationByIdQuery.fetcher = (variables: GetEventOrganizationByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventOrganizationByIdQuery, GetEventOrganizationByIdQueryVariables>(GetEventOrganizationByIdDocument, variables, options);
+export const GetEventInsightByLocationDocument = `
+    query GetEventInsightByLocation($where: events_bool_exp!) {
+  events_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetEventInsightByLocationQuery = <
+      TData = GetEventInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetEventInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetEventInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetEventInsightByLocationQuery, TError, TData>(
+      ['GetEventInsightByLocation', variables],
+      fetcher<GetEventInsightByLocationQuery, GetEventInsightByLocationQueryVariables>(GetEventInsightByLocationDocument, variables),
+      options
+    );
+useGetEventInsightByLocationQuery.document = GetEventInsightByLocationDocument;
+
+
+useGetEventInsightByLocationQuery.getKey = (variables: GetEventInsightByLocationQueryVariables) => ['GetEventInsightByLocation', variables];
+;
+
+useGetEventInsightByLocationQuery.fetcher = (variables: GetEventInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventInsightByLocationQuery, GetEventInsightByLocationQueryVariables>(GetEventInsightByLocationDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
   list_members(where: {user_id: {_eq: $user_id}}) {
@@ -31882,6 +31959,34 @@ useGetVcFirmByIdQuery.getKey = (variables: GetVcFirmByIdQueryVariables) => ['Get
 ;
 
 useGetVcFirmByIdQuery.fetcher = (variables: GetVcFirmByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmByIdQuery, GetVcFirmByIdQueryVariables>(GetVcFirmByIdDocument, variables, options);
+export const GetVcFirmInsightByLocationDocument = `
+    query GetVcFirmInsightByLocation($where: vc_firms_bool_exp!) {
+  vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetVcFirmInsightByLocationQuery = <
+      TData = GetVcFirmInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetVcFirmInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetVcFirmInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmInsightByLocationQuery, TError, TData>(
+      ['GetVcFirmInsightByLocation', variables],
+      fetcher<GetVcFirmInsightByLocationQuery, GetVcFirmInsightByLocationQueryVariables>(GetVcFirmInsightByLocationDocument, variables),
+      options
+    );
+useGetVcFirmInsightByLocationQuery.document = GetVcFirmInsightByLocationDocument;
+
+
+useGetVcFirmInsightByLocationQuery.getKey = (variables: GetVcFirmInsightByLocationQueryVariables) => ['GetVcFirmInsightByLocation', variables];
+;
+
+useGetVcFirmInsightByLocationQuery.fetcher = (variables: GetVcFirmInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmInsightByLocationQuery, GetVcFirmInsightByLocationQueryVariables>(GetVcFirmInsightByLocationDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

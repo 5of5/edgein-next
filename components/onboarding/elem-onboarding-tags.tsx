@@ -3,9 +3,17 @@ import { aiTags } from '@/utils/constants';
 import { getSelectableWeb3Tags } from '@/utils/helpers';
 import { ElemButton } from '../elem-button';
 
-type Props = {};
+type Props = {
+  tags: string[];
+  onChangeTags: (tags: string[]) => void;
+  onNext: () => void;
+};
 
-export const ElemOnboardingTags: FC<Props> = ({}) => {
+export const ElemOnboardingTags: FC<Props> = ({
+  tags,
+  onChangeTags,
+  onNext,
+}) => {
   const [limit, setLimit] = useState(20);
 
   const tagChoices = useMemo(() => {
@@ -16,6 +24,14 @@ export const ElemOnboardingTags: FC<Props> = ({}) => {
 
   const handleLoadMore = () => {
     setLimit(prev => prev + 10);
+  };
+
+  const handleToggleTag = (tag: string) => {
+    if (tags.includes(tag)) {
+      onChangeTags([...tags.filter(tagItem => tagItem !== tag)]);
+    } else {
+      onChangeTags([...tags, tag]);
+    }
   };
 
   return (
@@ -34,7 +50,14 @@ export const ElemOnboardingTags: FC<Props> = ({}) => {
         {displayedTags.map(tagItem => (
           <li
             key={tagItem.id}
-            className="bg-gray-100 px-3 py-2 rounded-full text-xs font-medium cursor-pointer border border-transparent hover:border-gray-300"
+            className={`bg-gray-100 px-3 py-2 rounded-full text-xs font-medium cursor-pointer border ${
+              tags.includes(tagItem.id)
+                ? 'border-primary-500 hover:border-primary-500'
+                : 'border-transparent hover:border-gray-300'
+            }`}
+            onClick={() => {
+              handleToggleTag(tagItem.id);
+            }}
           >
             {tagItem.name}
           </li>
@@ -50,7 +73,13 @@ export const ElemOnboardingTags: FC<Props> = ({}) => {
         </button>
       )}
 
-      <ElemButton btn="primary" size="md" className="max-w-sm w-full mt-16">
+      <ElemButton
+        btn="primary"
+        size="md"
+        className="max-w-sm w-full mt-16"
+        disabled={tags.length < 3}
+        onClick={onNext}
+      >
         Next
       </ElemButton>
     </>

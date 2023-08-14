@@ -3,9 +3,15 @@ import { onboardingSurveyChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
 import { InputCheckbox } from '../input-checkbox';
 
-type Props = {};
+type Props = {
+  answers: string[];
+  onChangeAnswers: (answers: string[]) => void;
+};
 
-export const ElemOnboardingSurvey: FC<Props> = ({}) => {
+export const ElemOnboardingSurvey: FC<Props> = ({
+  answers,
+  onChangeAnswers,
+}) => {
   return (
     <>
       <div className="max-w-sm">
@@ -20,8 +26,16 @@ export const ElemOnboardingSurvey: FC<Props> = ({}) => {
             <InputCheckbox
               className="text-sm mx-6"
               label={choiceItem}
-              checked={false}
-              onClick={() => {}}
+              checked={answers.includes(choiceItem)}
+              onChange={event => {
+                if (event.target.checked) {
+                  onChangeAnswers([
+                    ...answers.filter(item => item !== choiceItem),
+                  ]);
+                } else {
+                  onChangeAnswers([...answers, choiceItem]);
+                }
+              }}
             />
           </li>
         ))}

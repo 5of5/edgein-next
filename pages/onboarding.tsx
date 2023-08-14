@@ -9,9 +9,28 @@ import { ElemOnboardingLocation } from '@/components/onboarding/elem-onboarding-
 import { ElemOnboardingTags } from '@/components/onboarding/elem-onboarding-tags';
 import { ElemOnboardingSurvey } from '@/components/onboarding/elem-onboarding-survey';
 import { ElemOnboardingSaveList } from '@/components/onboarding/elem-onboarding-save-list';
+import { Segment } from '@/types/onboarding';
 
 export default function Onboarding() {
-  const [currentStep, setCurrentStep] = useState(4);
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const [segment, setSegment] = useState<Segment>();
+
+  const [locations, setLocations] = useState<any[]>([]);
+
+  const [tags, setTags] = useState<string[]>([]);
+
+  const [companies, setCompanies] = useState<any[]>([]);
+  const [investors, setInvestors] = useState<any[]>([]);
+  const [people, setPeople] = useState<any[]>([]);
+
+  const [surveyAnswers, setSurveyAnswers] = useState<string[]>([]);
+
+  const handleSkip = () => {
+    if (currentStep === 4) {
+      setCurrentStep(5);
+    }
+  };
 
   return (
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
@@ -27,11 +46,15 @@ export default function Onboarding() {
               </a>
             </Link>
 
-            <Link href="/" passHref>
-              <a className="absolute right-5">
-                <ElemButton btn="white">Skip</ElemButton>
-              </a>
-            </Link>
+            {currentStep >= 4 && (
+              <ElemButton
+                btn="white"
+                className="!absolute right-5"
+                onClick={handleSkip}
+              >
+                Skip
+              </ElemButton>
+            )}
           </nav>
 
           <h3 className="text-lg font-medium text-slate-900">
@@ -61,11 +84,54 @@ export default function Onboarding() {
           </div>
 
           <div className="mt-16 flex flex-col items-center">
-            {currentStep === 1 && <ElemOnboardingSegmenting />}
-            {currentStep === 2 && <ElemOnboardingLocation />}
-            {currentStep === 3 && <ElemOnboardingTags />}
-            {currentStep === 4 && <ElemOnboardingSaveList />}
-            {currentStep === 5 && <ElemOnboardingSurvey />}
+            {currentStep === 1 && (
+              <ElemOnboardingSegmenting
+                selectedSegment={segment}
+                onChangeSegment={setSegment}
+                onNext={() => {
+                  setCurrentStep(2);
+                }}
+              />
+            )}
+            {currentStep === 2 && (
+              <ElemOnboardingLocation
+                segment={segment}
+                locations={locations}
+                onChangeLocations={setLocations}
+                onNext={() => {
+                  setCurrentStep(3);
+                }}
+              />
+            )}
+            {currentStep === 3 && (
+              <ElemOnboardingTags
+                tags={tags}
+                onChangeTags={setTags}
+                onNext={() => {
+                  setCurrentStep(4);
+                }}
+              />
+            )}
+            {currentStep === 4 && (
+              <ElemOnboardingSaveList
+                segment={segment}
+                companies={companies}
+                investors={investors}
+                people={people}
+                onChangeCompanies={setCompanies}
+                onChangeInvestors={setInvestors}
+                onChangePeople={setPeople}
+                onNext={() => {
+                  setCurrentStep(5);
+                }}
+              />
+            )}
+            {currentStep === 5 && (
+              <ElemOnboardingSurvey
+                answers={surveyAnswers}
+                onChangeAnswers={setSurveyAnswers}
+              />
+            )}
           </div>
         </Dialog.Panel>
       </div>

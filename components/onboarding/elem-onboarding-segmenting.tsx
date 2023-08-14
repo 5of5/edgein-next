@@ -1,10 +1,19 @@
 import { FC } from 'react';
 import { segmentChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
+import { Segment } from '@/types/onboarding';
 
-type Props = {};
+type Props = {
+  selectedSegment?: Segment;
+  onChangeSegment: (segment: Segment) => void;
+  onNext: () => void;
+};
 
-export const ElemOnboardingSegmenting: FC<Props> = ({}) => {
+export const ElemOnboardingSegmenting: FC<Props> = ({
+  selectedSegment,
+  onChangeSegment,
+  onNext,
+}) => {
   return (
     <>
       <div className="max-w-sm">
@@ -21,7 +30,12 @@ export const ElemOnboardingSegmenting: FC<Props> = ({}) => {
         {segmentChoices.map(item => (
           <li
             key={item.title}
-            className="px-6 py-4 rounded-lg border border-slate-300 shadow-sm cursor-pointer hover:bg-slate-50"
+            className={`px-6 py-4 rounded-lg border ${
+              item.title === selectedSegment
+                ? 'border-primary-500'
+                : 'border-slate-300'
+            } shadow-sm cursor-pointer hover:bg-slate-50`}
+            onClick={() => onChangeSegment(item.title)}
           >
             <p className="text-slate-900 text-sm font-medium">{item.title}</p>
             <p className="text-slate-500 text-xs">{item.description}</p>
@@ -29,7 +43,13 @@ export const ElemOnboardingSegmenting: FC<Props> = ({}) => {
         ))}
       </ul>
 
-      <ElemButton btn="primary" size="md" className="max-w-sm w-full mt-16">
+      <ElemButton
+        btn="primary"
+        size="md"
+        className="max-w-sm w-full mt-16"
+        disabled={!selectedSegment}
+        onClick={onNext}
+      >
         Next
       </ElemButton>
     </>
