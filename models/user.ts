@@ -37,6 +37,7 @@ export type User = {
   active: boolean;
   onboarding_information: Record<string, unknown> | null;
   showDraftData?: boolean;
+  feature_flags: Record<string, unknown> | null;
 };
 
 export type UserToken = User & {
