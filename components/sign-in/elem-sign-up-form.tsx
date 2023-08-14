@@ -65,7 +65,7 @@ export const ElemSignUpForm: FC<Props> = ({
   );
 
   const { isLoading: isLoadingPeople, refetch: getSignUpProfile } = useQuery<{
-    person: FindPeopleByEmailAndLinkedinQuery['people'][0];
+    person: FindPeopleByEmailAndLinkedinQuery['people'][number];
   }>(
     ['get-sign-up-profile'],
     async () =>

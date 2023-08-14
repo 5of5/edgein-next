@@ -105,7 +105,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     validateEmail(email);
     validatePassword(password);
 
