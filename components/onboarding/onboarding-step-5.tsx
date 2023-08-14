@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { Place } from '@aws-sdk/client-location';
 import { Dialog, Transition } from '@headlessui/react';
 import { toast, Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
@@ -13,7 +12,7 @@ import { InputTextarea } from '../input-textarea';
 
 type Props = {
   selectedOption: string;
-  locationTags: Place[];
+  locationTags: any[];
   industryTags: string[];
   message: string;
   show: boolean;
@@ -57,7 +56,7 @@ export default function OnboardingStep5(props: Props) {
         },
         body: JSON.stringify({
           selectedResourceType: props.selectedOption,
-          locationTags: props.locationTags.map(item => item?.Label),
+          locationTags: props.locationTags.map(item => item?.formattedAddress),
           industryTags: props.industryTags,
           questions: [
             {

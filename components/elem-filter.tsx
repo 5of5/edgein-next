@@ -5,7 +5,6 @@ import {
   convertCurrencyStringToIntNumber,
   convertToInternationalCurrencySystem,
 } from '@/utils';
-import { Place } from '@aws-sdk/client-location';
 import { getFilterOptionMetadata } from '@/utils/filter';
 import {
   Filters,
@@ -119,15 +118,12 @@ export const ElemFilter: FC<Props> = ({
     }));
   };
 
-  const onChangeAddress = (value: Place) => {
+  const onChangeAddress = (value: any) => {
     setFilters(prev => ({
       ...prev,
       address: {
         ...prev?.address,
-        value: {
-          ...value,
-          geometry: { type: 'Point', coordinates: value.Geometry?.Point },
-        },
+        value,
       },
     }));
   };

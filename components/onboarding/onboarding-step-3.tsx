@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { Dialog, Transition } from '@headlessui/react';
-import { Place } from '@aws-sdk/client-location';
 import {
   Companies_Bool_Exp,
   Vc_Firms_Bool_Exp,
@@ -13,7 +12,7 @@ import ElemOrganizationItem from './elem-organization-item';
 
 type Props = {
   selectedOption: string;
-  locationTags: Place[];
+  locationTags: any[];
   industryTags: string[];
   show: boolean;
   list: any[];
@@ -39,7 +38,7 @@ export default function OnboardingStep3(props: Props) {
             geopoint: {
               _st_d_within: {
                 distance: 20 * 1609.344, // 20 miles to meters
-                from: { type: 'Point', coordinates: tag.Geometry?.Point },
+                from: tag.geometry,
               },
             },
           })),
@@ -57,7 +56,7 @@ export default function OnboardingStep3(props: Props) {
             geopoint: {
               _st_d_within: {
                 distance: 20 * 1609.344, // 20 miles to meters
-                from: { type: 'Point', coordinates: tag.Geometry?.Point },
+                from: tag.geometry,
               },
             },
           })),
