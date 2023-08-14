@@ -63,11 +63,6 @@ export const ElemInviteInvestmentMembers = () => {
 
   const companies = getInvestedInCompanies(mailingList.data?.investors ?? []);
 
-  const companiesWithTeamMembers = filter(
-    companies,
-    company => (company?.teamMembers?.length ?? []) > 0,
-  );
-
   const { mutate: sendInvitationEmailMutation, isLoading } = useMutation<
     unknown,
     unknown,
@@ -113,14 +108,15 @@ export const ElemInviteInvestmentMembers = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-4">
-          {companiesWithTeamMembers.map(company =>
+          {companies.map(company =>
             canSendInvestorInvitation(userById?.users, company?.id) ? (
               <div
                 key={company?.id}
-                className={`flex flex-row items-center py-2 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 hover:cursor-pointer ${selectedCompany?.id === company?.id
+                className={`flex flex-row items-center py-2 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 hover:cursor-pointer ${
+                  selectedCompany?.id === company?.id
                     ? 'border-primary-700'
                     : ''
-                  }`}
+                }`}
                 onClick={() => handleClick(company)}
               >
                 <ElemPhoto
@@ -166,14 +162,18 @@ export const ElemInviteInvestmentMembers = () => {
             btn="purple"
             onClick={handleSendEmails}
             loading={isLoading}
-            disabled={!user || selectedCompany === undefined}
+            disabled={
+              !user ||
+              selectedCompany === undefined ||
+              selectedCompany?.teamMembers?.length === 0
+            }
           >
             Invite
           </ElemButton>
 
           {selectedCompany !== undefined && (
             <div className="text-sm text-slate-400 my-auto">
-              {selectedCompany?.teamMembers?.length} people will be notified
+              {selectedCompany?.teamMembers?.length} people will be invited
             </div>
           )}
         </div>
