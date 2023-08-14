@@ -12,6 +12,7 @@ import { filter, flatten, get, has, includes, reduce, uniqBy } from 'lodash';
 import { DeepPartial } from '@/types/common';
 import { ElemPhoto } from '../elem-photo';
 import { useState } from 'react';
+import { ElemAddressBook } from '../address-book/elem-address-book';
 
 const getInvestedInCompanies = (investors: DeepPartial<Investors>[]) => {
   const companies = investors.map(investor => {
@@ -139,11 +140,10 @@ export const ElemInviteInvestmentMembers = () => {
             canSendInvestorInvitation(userById?.users, company?.id) ? (
               <div
                 key={company?.id}
-                className={`flex flex-row items-center py-2 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 hover:cursor-pointer ${
-                  includes(selectedCompanies, company)
+                className={`flex flex-row items-center py-2 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 hover:cursor-pointer ${includes(selectedCompanies, company)
                     ? 'border-primary-500'
                     : ''
-                }`}
+                  }`}
                 onClick={() => handleClick(company)}
               >
                 <ElemPhoto
@@ -184,7 +184,7 @@ export const ElemInviteInvestmentMembers = () => {
           )}
         </div>
 
-        <div className="flex flex-row gap-4 mt-2">
+        <div className="flex flex-row gap-4 mt-2 items-center text-center">
           <ElemButton
             btn="purple"
             onClick={handleSendEmails}
