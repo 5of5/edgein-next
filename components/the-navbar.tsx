@@ -114,7 +114,7 @@ export const TheNavbar = () => {
   });
 
   const showOnboarding = () => {
-    setOnboardingStep(1);
+    // setOnboardingStep(1);
   };
 
   useEffect(() => {

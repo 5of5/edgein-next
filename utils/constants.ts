@@ -2032,3 +2032,43 @@ export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
 
 export const NEW_CATEGORY_LIMIT = 33;
+
+export const segmentChoices = [
+  {
+    title: 'Executive',
+    description: 'Company Founder, C-Suite Executive,...',
+  },
+  {
+    title: 'Investor',
+    description: 'Limited Partner, Investment Analyst,...',
+  },
+  {
+    title: 'Sales or Business Developer',
+    description: 'GTM, Sales or Business Development Manager,...',
+  },
+  {
+    title: 'Event Organizer',
+    description: 'Event Manager, Community Manager,...',
+  },
+  {
+    title: 'Creator or Publisher',
+    description: 'Journalist, PR Manager,...',
+  },
+  {
+    title: 'Team Member',
+    description: 'Product, Engineer, Designer, Operations,...',
+  },
+];
+
+export const onboardingSurveyChoices = [
+  'Email',
+  'Linkedin',
+  'Founders',
+  'Press',
+  'Search',
+  'Referral',
+  'Ads',
+  'Work',
+  'Friend',
+  'Other',
+];
