@@ -5,11 +5,12 @@ import { Segment } from '@/types/onboarding';
 import { ElemButton } from '../elem-button';
 import ElemLocationTagInput from '../elem-location-tag-input';
 import { getGeometryPlace } from '@/utils/helpers';
+import { numberWithCommas } from '@/utils';
 
 type Props = {
   segment?: Segment;
   locations: Place[];
-  onChangeLocations: (locations: any[]) => void;
+  onChangeLocations: (locations: Place[]) => void;
   onNext: () => void;
 };
 
@@ -80,9 +81,11 @@ export const ElemOnboardingLocation: FC<Props> = ({
           <p className="text-gray-500 text-xs mt-1 mb-3">In the last 7 days</p>
           <p>
             <span className="text-primary-500 text-2xl font-semibold mr-1">
-              {data.last7days}
+              {numberWithCommas(data.last7days)}
             </span>
-            <span className="text-gray-500 text-sm">{`from ${data.total} total`}</span>
+            <span className="text-gray-500 text-sm">{`from ${numberWithCommas(
+              data.total,
+            )} total`}</span>
           </p>
         </div>
       )}
