@@ -11,7 +11,17 @@ import {
   UpdateUserFeatureFlagsMutation,
 } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
-import { chunk, compact, every, flatten, includes, keys, map, reduce, uniqBy } from 'lodash';
+import {
+  chunk,
+  compact,
+  every,
+  flatten,
+  includes,
+  keys,
+  map,
+  reduce,
+  uniqBy,
+} from 'lodash';
 import { sendInvitationMail } from './send-invite-to-edgein-email';
 
 const EMAIL_BATCH = 50;
@@ -55,7 +65,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   const existingFeatureFlags = getUserResponse.data.users.at(0)?.feature_flags;
-  const existingNotifiedCompanies = map(keys(existingFeatureFlags.notifiedInvestorCompanies), (key) => Number(key))
+  const existingNotifiedCompanies = map(
+    keys(existingFeatureFlags.notifiedInvestorCompanies),
+    key => Number(key),
+  );
 
   if (every(companyIds, id => includes(existingNotifiedCompanies, id)))
     return res.status(400).end();
@@ -93,14 +106,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   if (every(responses, response => response.status === 200)) {
-    const newIds = reduce(notYetNotifiedIds, (acc, id) => {
-      return {
-        ...acc, 
-        [id]: {
-          status: 'FINISHED'
-        }
-      }
-    }, {})
+    const newIds = reduce(
+      notYetNotifiedIds,
+      (acc, id) => {
+        return {
+          ...acc,
+          [id]: {
+            status: 'FINISHED',
+          },
+        };
+      },
+      {},
+    );
 
     await mutate<UpdateUserFeatureFlagsMutation>({
       mutation: UpdateUserFeatureFlagsDocument,
@@ -111,20 +128,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           notifiedInvestorCompanies: {
             ...existingFeatureFlags.notifiedInvestorCompanies,
             ...newIds,
-          }
+          },
         },
       },
     });
     res.status(200).end();
   } else {
-    const newIds = reduce(notYetNotifiedIds, (acc, id) => {
-      return {
-        ...acc, 
-        [id]: {
-          status: 'ERROR'
-        }
-      }
-    }, {})
+    const newIds = reduce(
+      notYetNotifiedIds,
+      (acc, id) => {
+        return {
+          ...acc,
+          [id]: {
+            status: 'ERROR',
+          },
+        };
+      },
+      {},
+    );
 
     await mutate<UpdateUserFeatureFlagsMutation>({
       mutation: UpdateUserFeatureFlagsDocument,
