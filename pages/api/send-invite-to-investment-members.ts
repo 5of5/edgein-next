@@ -17,7 +17,9 @@ import {
   every,
   flatten,
   includes,
+  keys,
   map,
+  reduce,
   uniqBy,
 } from 'lodash';
 import { sendInvitationMail } from './send-invite-to-edgein-email';
@@ -51,7 +53,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!user.person?.id) return res.status(403).end();
 
-  if (!req.body?.companyId) return res.status(400).end();
+  if (!req.body?.companyIds) return res.status(400).end();
+
+  const companyIds = req.body.companyIds as number[];
 
   const getUserResponse = await query<GetUserByIdQuery>({
     query: GetUserByIdDocument,
@@ -61,18 +65,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   const existingFeatureFlags = getUserResponse.data.users.at(0)?.feature_flags;
-  const existingNotifiedCompanies = Array.from(
-    existingFeatureFlags.notifiedInvestorCompanies ?? [],
+  const existingNotifiedCompanies = map(
+    keys(existingFeatureFlags.notifiedInvestorCompanies),
+    key => Number(key),
   );
 
-  if (includes(existingNotifiedCompanies, req.body.companyId))
+  if (every(companyIds, id => includes(existingNotifiedCompanies, id)))
     return res.status(400).end();
+
+  const notYetNotifiedIds = companyIds.filter(
+    id => !includes(existingNotifiedCompanies, id),
+  );
 
   const response = await query<GetAdminInvestorMailingListQuery>({
     query: GetAdminInvestorMailingListDocument,
     variables: {
-      companyId: req.body.companyId,
       personId: user.person.id,
+      companyIds: notYetNotifiedIds,
     },
   });
 
@@ -97,6 +106,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   if (every(responses, response => response.status === 200)) {
+    const newIds = reduce(
+      notYetNotifiedIds,
+      (acc, id) => {
+        return {
+          ...acc,
+          [id]: {
+            status: 'FINISHED',
+          },
+        };
+      },
+      {},
+    );
+
     await mutate<UpdateUserFeatureFlagsMutation>({
       mutation: UpdateUserFeatureFlagsDocument,
       variables: {
@@ -104,16 +126,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         feature_flags: {
           ...existingFeatureFlags,
           notifiedInvestorCompanies: {
-            ...existingNotifiedCompanies,
-            [req.body.companyId]: {
-              status: 'FINISHED',
-            },
+            ...existingFeatureFlags.notifiedInvestorCompanies,
+            ...newIds,
           },
         },
       },
     });
     res.status(200).end();
   } else {
+    const newIds = reduce(
+      notYetNotifiedIds,
+      (acc, id) => {
+        return {
+          ...acc,
+          [id]: {
+            status: 'ERROR',
+          },
+        };
+      },
+      {},
+    );
+
     await mutate<UpdateUserFeatureFlagsMutation>({
       mutation: UpdateUserFeatureFlagsDocument,
       variables: {
@@ -121,11 +154,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         feature_flags: {
           ...existingFeatureFlags,
           notifiedInvestorCompanies: {
-            ...existingNotifiedCompanies,
-            [req.body.companyId]: {
-              status: 'ERROR',
-              errors: [responses]
-            },
+            ...existingFeatureFlags.notifiedInvestorCompanies,
+            ...newIds,
+            error: responses,
           },
         },
       },
