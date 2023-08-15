@@ -4,13 +4,17 @@ import { ElemButton } from '../elem-button';
 import { InputCheckbox } from '../input-checkbox';
 
 type Props = {
+  isLoading: boolean;
   answers: string[];
   onChangeAnswers: (answers: string[]) => void;
+  onNext: () => void;
 };
 
 export const ElemOnboardingSurvey: FC<Props> = ({
+  isLoading,
   answers,
   onChangeAnswers,
+  onNext,
 }) => {
   return (
     <>
@@ -29,11 +33,11 @@ export const ElemOnboardingSurvey: FC<Props> = ({
               checked={answers.includes(choiceItem)}
               onChange={event => {
                 if (event.target.checked) {
+                  onChangeAnswers([...answers, choiceItem]);
+                } else {
                   onChangeAnswers([
                     ...answers.filter(item => item !== choiceItem),
                   ]);
-                } else {
-                  onChangeAnswers([...answers, choiceItem]);
                 }
               }}
             />
@@ -41,7 +45,13 @@ export const ElemOnboardingSurvey: FC<Props> = ({
         ))}
       </ul>
 
-      <ElemButton btn="primary" size="md" className="max-w-sm w-full mt-16">
+      <ElemButton
+        btn="primary"
+        size="md"
+        className="max-w-sm w-full mt-16"
+        loading={isLoading}
+        onClick={onNext}
+      >
         Finish
       </ElemButton>
     </>

@@ -1,12 +1,14 @@
 import { FC, useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
+import { Place } from '@aws-sdk/client-location';
 import { Segment } from '@/types/onboarding';
 import { ElemButton } from '../elem-button';
 import ElemLocationTagInput from '../elem-location-tag-input';
+import { getGeometryPlace } from '@/utils/helpers';
 
 type Props = {
   segment?: Segment;
-  locations: any[];
+  locations: Place[];
   onChangeLocations: (locations: any[]) => void;
   onNext: () => void;
 };
@@ -35,7 +37,7 @@ export const ElemOnboardingLocation: FC<Props> = ({
       await fetch(
         `/api/get-location-insight/?segment=${segment}&locations=${encodeURIComponent(
           locations
-            .map(locationItem => JSON.stringify(locationItem.geometry))
+            .map(locationItem => JSON.stringify(getGeometryPlace(locationItem)))
             .join('+'),
         )}`,
       ).then(res => res.json()),
@@ -65,8 +67,8 @@ export const ElemOnboardingLocation: FC<Props> = ({
 
       <div className="mt-8 w-full">
         <ElemLocationTagInput
-          defaultTags={locations}
-          layers={['coarse']}
+          tags={locations}
+          layers={['MunicipalityType', 'RegionType']}
           placeholder="Try “San Francisco”"
           onChange={onChangeLocations}
         />

@@ -1,4 +1,5 @@
 import { useEffect, Fragment } from 'react';
+import { useRouter } from 'next/router';
 import { ElemButton } from '@/components/elem-button';
 import { ElemLogo } from '@/components/elem-logo';
 import { IconBadgeCheck, IconContributor } from '@/components/icons';
@@ -6,17 +7,18 @@ import { Dialog, Transition } from '@headlessui/react';
 
 type Props = {
   show: boolean;
-  onSignUp: (email: string, password: string) => void;
   onLogin: () => void;
   onClose: () => void;
 };
 
 const UsageModal: React.FC<Props> = (props: Props) => {
+  const router = useRouter();
+
   useEffect(() => {}, [props.show]);
 
-  const onSignUp = (email: string, password: string) => {
+  const onSignUp = () => {
     props.onClose();
-    props.onSignUp(email, password);
+    router.push('/sign-in');
   };
 
   const onClose = () => {
@@ -119,7 +121,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
                       <div className=" max-w-xs">
                         <ElemButton
                           className="w-full my-2"
-                          onClick={() => onSignUp('', '')}
+                          onClick={onSignUp}
                           btn="primary"
                           loading={false}
                         >

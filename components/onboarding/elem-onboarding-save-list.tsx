@@ -26,12 +26,12 @@ const searchClient = algoliasearch(
 
 type Props = {
   segment?: Segment;
-  companies: any[];
-  investors: any[];
-  people: any[];
-  onChangeCompanies: (companies: any[]) => void;
-  onChangeInvestors: (vcFirms: any[]) => void;
-  onChangePeople: (people: any[]) => void;
+  companies: HitCompaniesProps['hit'][];
+  investors: HitInvestorsProps['hit'][];
+  people: HitPeopleProps['hit'][];
+  onChangeCompanies: (companies: HitCompaniesProps['hit'][]) => void;
+  onChangeInvestors: (vcFirms: HitInvestorsProps['hit'][]) => void;
+  onChangePeople: (people: HitPeopleProps['hit'][]) => void;
   onNext: () => void;
 };
 

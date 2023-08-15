@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useEffect, Fragment } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -10,20 +10,10 @@ import ForgotPasswordModal from '@/components/forgot-password-modal';
 import { IconSearch, IconBell, IconEllipsisVertical } from '@/components/icons';
 import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
-import OnboardingStep1 from '@/components/onboarding/onboarding-step-1';
-import OnboardingStep2 from '@/components/onboarding/onboarding-step-2';
-import OnboardingStep3 from '@/components/onboarding/onboarding-step-3';
-import OnboardingStep4 from './onboarding/onboarding-step-4';
-import OnboardingStep5 from './onboarding/onboarding-step-5';
 import { useUser } from '@/context/user-context';
-import {
-  FindPeopleByNameAndEmailQuery,
-  useGetUserByIdQuery,
-} from '@/graphql/types';
 import { ElemSearchBox } from './elem-search-box';
 import { find, first } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
-import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { Popover, Transition } from '@headlessui/react';
 
 import { redirect_url } from '@/utils/auth';
@@ -55,28 +45,8 @@ export const TheNavbar = () => {
 
   const myGroupsUrl = getFirstGroup ? `/groups/${getFirstGroup.id}/` : '';
 
-  const [emailFromLogin, setEmailFromLogin] = useState('');
-  const [passwordFromLogin, setPasswordFromLogin] = useState('');
-  const [onboardingStep, setOnboardingStep] = useState(0);
-
-  const [selectedOption, setSelectedOption] = useState('');
-  const [locationTags, setLocationTags] = useState<any[]>([]);
-  const [industryTags, setIndustryTags] = useState<string[]>([]);
-  const [list, setList] = useState<any[]>([]);
-  const [message, setMessage] = useState<string>('');
-  const [selectedPerson, setSelectedPerson] =
-    useState<FindPeopleByNameAndEmailQuery['people'][0]>();
-  const [linkedin, setLinkedin] = useState<string>('');
-
-  const { data: userProfile, isLoading: isFetchingUserProfile } =
-    useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
-
   useEffect(() => {
-    if (
-      !showPopup &&
-      onboardingStep === 0 &&
-      router.asPath.includes('/login/')
-    ) {
+    if (!showPopup && router.asPath.includes('/login/')) {
       setShowPopup(
         router.asPath.includes('/login/')
           ? router.asPath.includes('?usage=true')
@@ -85,11 +55,7 @@ export const TheNavbar = () => {
           : false,
       );
     }
-    if (
-      !showPopup &&
-      onboardingStep === 0 &&
-      router.asPath.includes('/signup/')
-    ) {
+    if (!showPopup && router.asPath.includes('/signup/')) {
       setShowPopup(
         router.asPath.includes('/signup/')
           ? router.asPath.includes('?usage=true')
@@ -105,20 +71,6 @@ export const TheNavbar = () => {
     event.preventDefault();
     setShowPopup('search');
   });
-
-  const showOnboarding = () => {
-    // setOnboardingStep(1);
-  };
-
-  useEffect(() => {
-    if (
-      !isFetchingUserProfile &&
-      userProfile &&
-      !userProfile.users[0]?.onboarding_information
-    ) {
-      showOnboarding();
-    }
-  }, [isFetchingUserProfile, userProfile]);
 
   // if (user) {
   // 	siteNav.push({ path: myListsUrl, name: "My Lists" });
@@ -178,22 +130,6 @@ export const TheNavbar = () => {
 
   const redirectToSignIn = () => {
     router.push('/sign-in');
-  };
-
-  const showSignUpModal = (email: string, password: string) => {
-    setEmailFromLogin(email ? email : '');
-    setPasswordFromLogin(password ? password : '');
-    setShowPopup('signup');
-  };
-
-  // Upgrade modal
-  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-
-  const onOpenUpgradeDialog = () => {
-    setIsOpenUpgradeDialog(true);
-  };
-  const onCloseUpgradeDialog = () => {
-    setIsOpenUpgradeDialog(false);
   };
 
   const ellipsisDropdownItems = [
@@ -313,7 +249,6 @@ export const TheNavbar = () => {
           </div>
 
           <UsageModal
-            onSignUp={showSignUpModal}
             onLogin={redirectToSignIn}
             show={showPopup === 'usage'}
             onClose={onModalClose}
@@ -328,100 +263,12 @@ export const TheNavbar = () => {
             show={showPopup === 'search'}
             onClose={() => setShowPopup(false)}
           />
-          {onboardingStep === 1 && (
-            <OnboardingStep1
-              selectedOption={selectedOption}
-              show={onboardingStep === 1 && !isFetchingUserProfile}
-              onClose={() => setOnboardingStep(0)}
-              onNext={selectedOption => {
-                setSelectedOption(selectedOption);
-                setOnboardingStep(2);
-              }}
-              user={user}
-            />
-          )}
-          {onboardingStep === 2 && (
-            <OnboardingStep2
-              selectedOption={selectedOption}
-              locationTags={locationTags}
-              industryTags={industryTags}
-              show={onboardingStep === 2 && !isFetchingUserProfile}
-              onClose={() => {
-                setOnboardingStep(0);
-              }}
-              onNext={(locationTags, industryTags) => {
-                setOnboardingStep(3);
-                setLocationTags(locationTags);
-                setIndustryTags(industryTags);
-              }}
-              onBack={(locationTags, industryTags) => {
-                setLocationTags(locationTags);
-                setIndustryTags(industryTags);
-                setOnboardingStep(1);
-              }}
-            />
-          )}
-
-          {onboardingStep === 3 && (
-            <OnboardingStep3
-              selectedOption={selectedOption}
-              locationTags={locationTags}
-              industryTags={industryTags}
-              show={onboardingStep === 3 && !isFetchingUserProfile}
-              list={list}
-              onNext={list => {
-                setList(list);
-                setOnboardingStep(4);
-              }}
-              onBack={() => setOnboardingStep(2)}
-            />
-          )}
-
-          {onboardingStep === 4 && (
-            <OnboardingStep4
-              show={onboardingStep === 4 && !isFetchingUserProfile}
-              selectedPerson={selectedPerson}
-              linkedin={linkedin}
-              onBack={(person, linkedinUrl) => {
-                setSelectedPerson(person);
-                setLinkedin(linkedinUrl);
-                setOnboardingStep(3);
-              }}
-              onNext={(person, linkedinUrl) => {
-                setSelectedPerson(person);
-                setLinkedin(linkedinUrl);
-                setOnboardingStep(5);
-              }}
-            />
-          )}
-          {onboardingStep === 5 && (
-            <OnboardingStep5
-              selectedOption={selectedOption}
-              locationTags={locationTags}
-              industryTags={industryTags}
-              list={list}
-              message={message}
-              selectedPerson={selectedPerson}
-              linkedin={linkedin}
-              show={onboardingStep === 5 && !isFetchingUserProfile}
-              onBack={msg => {
-                setMessage(msg);
-                setOnboardingStep(4);
-              }}
-              onNext={() => setOnboardingStep(0)}
-            />
-          )}
         </nav>
       </div>
 
       <TheMobileNav
         className="flex lg:hidden items-center"
         setShowPopup={setShowPopup}
-      />
-
-      <ElemUpgradeDialog
-        isOpen={isOpenUpgradeDialog}
-        onClose={onCloseUpgradeDialog}
       />
     </header>
   );

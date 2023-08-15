@@ -1,11 +1,13 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import CookieService from '../../utils/cookie';
-import { has, map } from 'lodash';
+import map from 'lodash/map';
 import {
   updateResourceSentimentCount,
   upsertFollow,
   upsertList,
 } from '@/utils/lists';
+import { UpsertListMutation } from '@/graphql/types';
+import { User } from '@/models/user';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -15,31 +17,63 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   const sentimentType: string = req.body.sentiment;
-
-  const resourceType = has(req.body, 'companies')
-    ? 'companies'
-    : has(req.body, 'vcfirms')
-    ? 'vc_firms'
-    : '';
-
-  if (resourceType === '') {
-    return res.status(400).end();
-  }
+  const companies: number[] = req.body.companies;
+  const vcFirms: number[] = req.body.vcFirms;
+  const people: number[] = req.body.people;
 
   // console.log('starting reaction for user', {token,user,companyId,sentimentType,pathname})
   // check if user has a list for sentiment
   const listname = `sentiment-${user.id}-${sentimentType}`;
-  // upsertList
-  const list = await upsertList(listname, user, token);
 
-  const resourceData =
-    resourceType === 'companies' ? req.body.companies : req.body.vcfirms;
+  try {
+    // upsertList
+    const list = await upsertList(listname, user, token);
 
+    const companyReactions = await upsertFollowToList(
+      'companies',
+      companies,
+      list,
+      user,
+      token,
+      sentimentType,
+    );
+
+    const vcFirmReactions = await upsertFollowToList(
+      'vc_firms',
+      vcFirms,
+      list,
+      user,
+      token,
+      sentimentType,
+    );
+
+    const peopleReactions = await upsertFollowToList(
+      'people',
+      people,
+      list,
+      user,
+      token,
+      sentimentType,
+    );
+
+    res.send({ companyReactions, vcFirmReactions, peopleReactions });
+  } catch (error: any) {
+    return res
+      .status(500)
+      .send({ error: 'Something went wrong. Please try again later.' });
+  }
+};
+
+const upsertFollowToList = async (
+  resourceType: 'companies' | 'vc_firms' | 'people',
+  resources: number[],
+  list: UpsertListMutation['insert_lists_one'],
+  user: User,
+  token: string,
+  sentimentType: string,
+) => {
   const reactions = await Promise.all(
-    map(resourceData, async resource => {
-      const resourceId =
-        resourceType === 'companies' ? resource.company : resource.vcfirm;
-
+    map(resources, async resourceId => {
       // insert follow only if the follows don't exists
       const follow = await upsertFollow(
         list?.id || 0,
@@ -49,24 +83,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         token,
       );
 
-      const { sentiment, revalidatePath } = await updateResourceSentimentCount(
-        resourceType,
-        resourceId,
-        token,
-        sentimentType,
-        Boolean(follow),
-        false,
-      );
+      if (resourceType === 'companies' || resourceType === 'vc_firms') {
+        const { sentiment } = await updateResourceSentimentCount(
+          resourceType,
+          resourceId,
+          token,
+          sentimentType,
+          Boolean(follow),
+          false,
+        );
+        return { resourceId, sentiment: { ...sentiment } };
+      }
 
-      // if (revalidatePath) {
-      //   await res.unstable_revalidate(revalidatePath)
-      // }
-
-      return { company: resource.company, sentiment: { ...sentiment } };
+      return { resourceId };
     }),
   );
 
-  res.send({ reactions });
+  return reactions;
 };
 
 export default handler;

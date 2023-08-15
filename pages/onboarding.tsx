@@ -2,6 +2,10 @@ import { useState } from 'react';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { Dialog } from '@headlessui/react';
+import { Place } from '@aws-sdk/client-location';
+import { useMutation } from 'react-query';
+import { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/router';
 import { ElemButton } from '@/components/elem-button';
 import { ElemLogo } from '@/components/elem-logo';
 import { ElemOnboardingSegmenting } from '@/components/onboarding/elem-onboarding-segmenting';
@@ -10,21 +14,96 @@ import { ElemOnboardingTags } from '@/components/onboarding/elem-onboarding-tags
 import { ElemOnboardingSurvey } from '@/components/onboarding/elem-onboarding-survey';
 import { ElemOnboardingSaveList } from '@/components/onboarding/elem-onboarding-save-list';
 import { Segment } from '@/types/onboarding';
+import {
+  HitCompaniesProps,
+  HitInvestorsProps,
+  HitPeopleProps,
+} from '@/components/search-modal';
+import { useUser } from '@/context/user-context';
+import { GENERAL_ERROR_MESSAGE, ONBOARDING_QUESTION } from '@/utils/constants';
+import useToast from '@/hooks/use-toast';
 
 export default function Onboarding() {
+  const router = useRouter();
+
+  const { refreshProfile } = useUser();
+
+  const { toast } = useToast();
+
   const [currentStep, setCurrentStep] = useState(1);
 
   const [segment, setSegment] = useState<Segment>();
 
-  const [locations, setLocations] = useState<any[]>([]);
+  const [locations, setLocations] = useState<Place[]>([]);
 
   const [tags, setTags] = useState<string[]>([]);
 
-  const [companies, setCompanies] = useState<any[]>([]);
-  const [investors, setInvestors] = useState<any[]>([]);
-  const [people, setPeople] = useState<any[]>([]);
+  const [companies, setCompanies] = useState<HitCompaniesProps['hit'][]>([]);
+  const [investors, setInvestors] = useState<HitInvestorsProps['hit'][]>([]);
+  const [people, setPeople] = useState<HitPeopleProps['hit'][]>([]);
 
   const [surveyAnswers, setSurveyAnswers] = useState<string[]>([]);
+
+  const { mutate: saveToList, isLoading: isLoadingSaveToList } = useMutation(
+    () =>
+      fetch('/api/multiple-resources-to-list/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sentiment: 'My first list',
+          companies: [...companies.map(item => item.objectID)],
+          vcFirms: [...investors.map(item => item.objectID)],
+          people: [...people.map(item => item.objectID)],
+        }),
+      }),
+    {
+      onSuccess: async response => {
+        if (response.status === 200) {
+          refreshProfile();
+          submitOnboarding();
+        } else {
+          const error = await response.json();
+          toast(error.error || GENERAL_ERROR_MESSAGE, 'error');
+        }
+      },
+    },
+  );
+
+  const { mutate: submitOnboarding, isLoading: isSubmittingOnboarding } =
+    useMutation(
+      () =>
+        fetch('/api/add-onboarding-information/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            segment,
+            locationTags: locations.map(item => item?.Label),
+            industryTags: tags,
+            questions: [
+              {
+                name: ONBOARDING_QUESTION,
+                answer: surveyAnswers,
+              },
+            ],
+          }),
+        }),
+      {
+        onSuccess: async response => {
+          if (response.status === 200) {
+            router.push('/');
+          } else {
+            const error = await response.json();
+            toast(error.error || GENERAL_ERROR_MESSAGE, 'error');
+          }
+        },
+      },
+    );
 
   const handleSkip = () => {
     if (currentStep === 4) {
@@ -50,6 +129,7 @@ export default function Onboarding() {
               <ElemButton
                 btn="white"
                 className="!absolute right-5"
+                loading={isLoadingSaveToList || isSubmittingOnboarding}
                 onClick={handleSkip}
               >
                 Skip
@@ -128,12 +208,17 @@ export default function Onboarding() {
             )}
             {currentStep === 5 && (
               <ElemOnboardingSurvey
+                isLoading={isLoadingSaveToList || isSubmittingOnboarding}
                 answers={surveyAnswers}
                 onChangeAnswers={setSurveyAnswers}
+                onNext={() => {
+                  saveToList();
+                }}
               />
             )}
           </div>
         </Dialog.Panel>
+        <Toaster />
       </div>
     </Dialog>
   );

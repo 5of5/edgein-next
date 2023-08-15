@@ -7,6 +7,7 @@ import debounce from 'lodash/debounce';
 import iso from 'iso-3166-1';
 import { LocationService } from '@/services/location.service';
 import { DEBOUNCE_TIME } from '@/utils/constants';
+import { getGeometryPlace } from '@/utils/helpers';
 
 const locationService = new LocationService();
 
@@ -84,9 +85,7 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
           );
           setFormValue(
             'geopoint',
-            place
-              ? { type: 'Point', coordinates: place.Geometry?.Point }
-              : defaultGeoPoint,
+            place ? getGeometryPlace(place) : defaultGeoPoint,
             {
               shouldTouch: true,
               shouldDirty: true,
