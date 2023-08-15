@@ -106,5 +106,5 @@ jobs:
 
       - name: Remove workspace
         id: remove-workspace
-        working-directory: infrastructure/application
+        working-directory: infra/terraform/application
         run: terraform workspace delete ${{ env.WORKSPACE }}
