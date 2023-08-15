@@ -25660,7 +25660,7 @@ export type GetInvestorMailingListQuery = { __typename?: 'query_root', investors
 
 export type GetAdminInvestorMailingListQueryVariables = Exact<{
   personId: Scalars['Int'];
-  companyId: Scalars['Int'];
+  companyIds: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
@@ -28897,11 +28897,11 @@ useGetInvestorMailingListQuery.getKey = (variables: GetInvestorMailingListQueryV
 
 useGetInvestorMailingListQuery.fetcher = (variables: GetInvestorMailingListQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestorMailingListQuery, GetInvestorMailingListQueryVariables>(GetInvestorMailingListDocument, variables, options);
 export const GetAdminInvestorMailingListDocument = `
-    query GetAdminInvestorMailingList($personId: Int!, $companyId: Int!) {
+    query GetAdminInvestorMailingList($personId: Int!, $companyIds: [Int!]) {
   investors(where: {person_id: {_eq: $personId}}) {
     id
     vc_firm {
-      investments(where: {investment_round: {company: {id: {_eq: $companyId}}}}) {
+      investments(where: {investment_round: {company: {id: {_in: $companyIds}}}}) {
         investment_round {
           company {
             id
