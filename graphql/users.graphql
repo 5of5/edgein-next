@@ -195,6 +195,7 @@ query GetUserByEmail($email: String) {
     additional_emails
     active
     onboarding_information
+    feature_flags
   }
 }
 
@@ -220,6 +221,7 @@ query GetUserById($id: Int) {
     }
     additional_emails
     onboarding_information
+    feature_flags
   }
 }
 
@@ -503,5 +505,26 @@ query GetUserByPersonIds($person_ids: [Int!]) {
     email
     display_name
     person_id
+  }
+}
+
+mutation UpdateUserFeatureFlags($id: Int!, $feature_flags: jsonb) {
+  update_users(
+    where: { id: { _eq: $id } }
+    _set: { feature_flags: $feature_flags }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      feature_flags
+    }
   }
 }

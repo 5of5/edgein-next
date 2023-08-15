@@ -204,7 +204,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
       )}
 
       <div className="px-4 py-3">
-        <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">

@@ -41,7 +41,7 @@ import ElemNewsArticles, {
 } from '@/components/news/elem-news-articles';
 import { getQueryBySource } from '@/utils/news';
 import ElemNewsList from '@/components/news/elem-news-list';
-import ElemCompanyTags from '@/components/elem-company-tags';
+import { ElemTags } from '@/components/elem-tags';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemReactions } from '@/components/elem-reactions';
@@ -52,7 +52,6 @@ type Props = {
   sortNews: News[];
   metrics: Metric[];
   newsArticles?: News[];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -223,11 +222,10 @@ const Company: NextPage<Props> = (props: Props) => {
               )}
             </div>
 
-            <ElemCompanyTags
-              company={company}
+            <ElemTags
               className="mt-4"
-              hideLayer
-              tagOnClick={handleTagClick}
+              resourceType={'companies'}
+              tags={company.tags}
             />
 
             {parentOrganization && (
@@ -357,7 +355,7 @@ const Company: NextPage<Props> = (props: Props) => {
           </div>
         </div>
         <ElemTabBar
-          className="mt-7 border-b-0"
+          className="mt-7"
           tabs={tabBarItems}
           resourceName={company.name}
         />
@@ -371,7 +369,7 @@ const Company: NextPage<Props> = (props: Props) => {
         >
           <div className="col-span-3">
             <ElemKeyInfo
-              className="sticky top-11"
+              className="sticky top-16"
               heading="Key Info"
               website={company.website}
               totalFundingRaised={company.investor_amount}

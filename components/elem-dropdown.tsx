@@ -22,7 +22,7 @@ export const ElemDropdown: FC<Props> = ({
   const [activeItem, setActiveItem] = useState<number>(defaultItem);
 
   return (
-    <Popover className={`relative ${className}`}>
+    <Popover className={`relative shrink-0 ${className}`}>
       <Popover.Button as="div">
         <ElemButton btn="default" roundedFull={false} className="rounded-lg">
           {items[activeItem].label}
