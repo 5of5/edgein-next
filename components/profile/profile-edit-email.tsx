@@ -92,12 +92,9 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
       heading="Email"
       right={
         !editEmail ? (
-          <button
-            onClick={onEdit}
-            className="text-primary-500 hover:text-dark-500"
-          >
+          <ElemButton btn="default" onClick={onEdit}>
             Edit
-          </button>
+          </ElemButton>
         ) : (
           <></>
         )
@@ -105,7 +102,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
     >
       {!editEmail ? (
         <div>
-          <p className="text-slate-600">
+          <p className="text-gray-500">
             {user?.email}
             {user?.email != null && (
               <span className="font-bold text-sm text-primary-500">
@@ -116,23 +113,23 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
           </p>
           {user?.additional_emails &&
             user?.additional_emails.map((email: any) => (
-              <p key={email} className="text-slate-600 mb-2">
+              <p key={email} className="text-gray-500 mb-2">
                 {email}
               </p>
             ))}
         </div>
       ) : (
         <div className="max-w-sm">
-          <h2 className=" font-bold text-slate-600">Current Emails</h2>
+          <h2 className="font-medium">Current Emails</h2>
           <div className="mb-2">
-            <span className="block mt-1 text-sm font-semibold text-slate-600">
+            <span className="block mt-1 text-sm text-gray-500">
               {user?.email}
             </span>
-            <span className="mt-1 text-slate-500 text-sm">Primary</span>
+            <span className="mt-1 text-sm">Primary</span>
           </div>
           {user?.additional_emails?.map((email: any) => (
             <div key={email} className="mb-2">
-              <span className="block mt-1 text-sm text-slate-600">{email}</span>
+              <span className="block mt-1 text-sm text-gray-500">{email}</span>
               <span
                 className="mt-1 text-sm text-primary-500 cursor-pointer"
                 onClick={() => onRemoveEmail(email)}
@@ -160,16 +157,15 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
             </span>
           )}
 
-          <div className="flex mt-4">
+          <div className="flex gap-2 mt-4">
             <ElemButton
               btn="primary"
-              className="mr-2"
               disabled={!!emailError || !newEmail}
               onClick={onSaveNewEmail}
             >
               Add
             </ElemButton>
-            <ElemButton btn="white" onClick={onCancel}>
+            <ElemButton btn="default" onClick={onCancel}>
               Cancel
             </ElemButton>
           </div>

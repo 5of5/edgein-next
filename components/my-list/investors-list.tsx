@@ -7,6 +7,7 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { PlaceholderTable } from '../placeholders';
 import { Table } from './table';
 import { TableEmptyCell } from './table-empty-cell';
+import { ElemTags } from '@/components/elem-tags';
 import Link from 'next/link';
 
 type Props = {
@@ -127,23 +128,15 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         Header: 'Tags',
         accessor: 'vc_firm.tags' as const,
         Cell: (props: any) => (
-          <div className="flex flex-wrap gap-1">
+          <>
             {props.value ? (
               <>
-                {props.value?.map((tag: string, index: number) => {
-                  return (
-                    <Link href={`/investors/?tags=${tag}`} key={index}>
-                      <a className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
-                        {tag}
-                      </a>
-                    </Link>
-                  );
-                })}
+                <ElemTags resourceType={'investors'} tags={props.value} />
               </>
             ) : (
               <TableEmptyCell />
             )}
-          </div>
+          </>
         ),
         disableSortBy: true,
         width: 400,

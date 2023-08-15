@@ -5,8 +5,11 @@ const USAGE_LIMIT = 10;
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
+  const userExists = await CookieService.getUser(
+    CookieService.getAuthToken(req.cookies),
+  );
 
-  if (url.pathname === '/') {
+  if (userExists && url.pathname === '/') {
     return NextResponse.rewrite(new URL('/companies', req.url));
   }
 
@@ -66,6 +69,7 @@ export async function middleware(req: NextRequest) {
     : `redirect=${encodeURIComponent(url.pathname)}`;
   try {
     user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
+
     if (!user) {
       const usage = await CookieService.getUsage(
         CookieService.getUsageToken(req.cookies),

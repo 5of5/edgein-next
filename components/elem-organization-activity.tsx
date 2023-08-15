@@ -56,7 +56,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
             {activityLimit < resourceInvestments.length && (
               <div className="mt-6">
                 <ElemButton
-                  btn="ol-primary"
+                  btn="default"
                   onClick={showMoreActivity}
                   className="w-full"
                 >

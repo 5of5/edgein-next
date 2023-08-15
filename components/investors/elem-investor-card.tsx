@@ -2,32 +2,24 @@ import { Vc_Firms } from '@/graphql/types';
 import { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
+import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
 import { IconGlobe, IconLinkedIn, IconTwitter } from '@/components/icons';
 import { useUser } from '@/context/user-context';
-import {
-  CARD_DEFAULT_TAGS_LIMIT,
-  CARD_MAX_TAGS_LIMIT,
-} from '@/utils/constants';
+import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { usePopup } from '@/context/popup-context';
 
 type Props = {
   vcFirm: Vc_Firms;
-  tagOnClick: any;
 };
 
-export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
+export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const { user } = useUser();
 
   const { setShowPopup } = usePopup();
-
-  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
-  const showMoreTags = () => {
-    setTagsLimit(CARD_MAX_TAGS_LIMIT);
-  };
 
   const userCanViewLinkedIn = user?.entitlements.viewEmails
     ? user?.entitlements.viewEmails
@@ -96,31 +88,12 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
         )}
 
         {tags && (
-          <div className="mt-4 flex flex-wrap overflow-clip gap-2">
-            {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
-              return (
-                <button
-                  key={index}
-                  onClick={e => tagOnClick(e, tag)}
-                  className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
-                    tagOnClick !== undefined
-                      ? 'cursor-pointer hover:bg-gray-200'
-                      : ''
-                  }`}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-            {tagsLimit < tags.length && (
-              <button
-                onClick={showMoreTags}
-                className="text-xs text-gray-500 font-medium py-1"
-              >
-                {tags.length - tagsLimit} more
-              </button>
-            )}
-          </div>
+          <ElemTags
+            className="mt-4"
+            limit={CARD_DEFAULT_TAGS_LIMIT}
+            resourceType={'investors'}
+            tags={tags}
+          />
         )}
       </div>
 
