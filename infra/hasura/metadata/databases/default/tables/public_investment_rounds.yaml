@@ -66,4 +66,4 @@ select_permissions:
       filter:
         status:
           _eq: published
-      limit: 50
+      limit: 250
