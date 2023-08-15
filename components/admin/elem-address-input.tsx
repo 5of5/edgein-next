@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useDebounce } from '@/hooks/use-debounce';
+import { SearchForSuggestionsResult } from '@aws-sdk/client-location';
+import debounce from 'lodash/debounce';
+import iso from 'iso-3166-1';
+import { LocationService } from '@/services/location.service';
 import { DEBOUNCE_TIME } from '@/utils/constants';
+
+const locationService = new LocationService();
 
 type Props = {
   defaultLocation?: any;
@@ -13,85 +18,94 @@ type Props = {
 const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
   const { setValue: setFormValue } = useFormContext();
   const [value, setValue] = useState<any>(null);
-  const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<any>([]);
 
-  const debouncedQuery = useDebounce(inputValue, DEBOUNCE_TIME);
+  const onGetPlace = async (placeId: string) => {
+    const input = {
+      IndexName: locationService.getPlaceIndex(),
+      PlaceId: placeId,
+    };
 
-  const onSearchAddress = async (keyword: string) => {
-    const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_RADAR_URL
-      }/v1/search/autocomplete?query=${encodeURIComponent(keyword)}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: process.env.NEXT_PUBLIC_RADAR_PUBLIC_KEY || '',
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    const data = await response.json();
-    setOptions(data?.addresses || []);
+    const placeResponse = await locationService.getPlace(input);
+
+    return placeResponse.Place;
   };
 
-  useEffect(() => {
-    if (debouncedQuery === '') {
-      setOptions(value ? [value] : []);
-      return undefined;
-    }
+  const onSearchAddress = async (keyword: string) => {
+    const input = {
+      IndexName: locationService.getPlaceIndex(),
+      Text: keyword,
+    };
 
-    onSearchAddress(debouncedQuery);
-  }, [debouncedQuery, value]);
+    const placeSuggestionResponse =
+      await locationService.searchPlaceSuggestions(input);
+
+    setOptions(placeSuggestionResponse.Results);
+  };
+
+  const debouncedSearch = useMemo(
+    () => debounce(query => onSearchAddress(query), DEBOUNCE_TIME),
+    [],
+  );
 
   return (
     <Autocomplete
       id="elem-address-component"
       sx={{ width: '49%', marginBottom: 3 }}
       filterOptions={x => x}
-      getOptionLabel={option => option.formattedAddress}
+      getOptionLabel={option => option.Text}
       options={options}
       autoComplete
       includeInputInList
       filterSelectedOptions
       value={value}
       noOptionsText="No addresses found."
-      onChange={(event, newValue: any) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
-        const streetAddress = `${newValue?.number || ''}${
-          newValue?.street ? ` ${newValue.street}` : ''
-        }`;
-        setFormValue(
-          'location_json',
-          newValue
-            ? {
-                address: streetAddress === newValue?.city ? '' : streetAddress,
-                city: newValue?.city,
-                state:
-                  newValue?.state === newValue?.city ? '' : newValue?.state,
-                country: newValue?.country,
-              }
-            : defaultLocation,
-          { shouldTouch: true },
-        );
-        setFormValue(
-          'geopoint',
-          newValue ? newValue?.geometry : defaultGeoPoint,
-          { shouldTouch: true },
-        );
+      onChange={async (event, newValue: SearchForSuggestionsResult) => {
+        if (newValue?.PlaceId) {
+          const place = await onGetPlace(newValue.PlaceId);
+          setValue(newValue);
+          const streetAddress = `${place?.AddressNumber || ''}${
+            place?.Street ? ` ${place.Street}` : ''
+          }`;
+          const country = iso.whereAlpha3(place?.Country || '')?.country;
+          setFormValue(
+            'location_json',
+            place
+              ? {
+                  address:
+                    streetAddress === place?.Municipality ? '' : streetAddress,
+                  city: place?.Municipality || '',
+                  state:
+                    place?.Region === place?.Municipality ? '' : place?.Region,
+                  country,
+                }
+              : defaultLocation,
+            { shouldTouch: true, shouldDirty: true },
+          );
+          setFormValue(
+            'geopoint',
+            place
+              ? { type: 'Point', coordinates: place.Geometry?.Point }
+              : defaultGeoPoint,
+            {
+              shouldTouch: true,
+              shouldDirty: true,
+            },
+          );
+        }
       }}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
+        if (newInputValue) {
+          debouncedSearch(newInputValue);
+        }
       }}
       renderInput={params => (
         <TextField {...params} label="Enter an address" fullWidth />
       )}
-      renderOption={(props, option: any) => {
+      renderOption={(props, option: SearchForSuggestionsResult) => {
         return (
-          <li {...props}>
-            <p>{option.formattedAddress}</p>
+          <li {...props} key={option.PlaceId}>
+            <p>{option.Text}</p>
           </li>
         );
       }}
