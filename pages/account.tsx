@@ -21,6 +21,7 @@ import { redirect_url } from '@/utils/auth';
 import { ElemInviteInvestmentMembers } from '@/components/invites/elem-invite-investment-members';
 
 import validator from 'validator';
+import { isEmpty } from 'lodash';
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
@@ -50,6 +51,8 @@ export default function Account() {
   }, {
     enabled: !!user
   })
+
+  const isInvestor = !isEmpty(investorData?.investors)
 
   const onCloseSubscribedDialog = () => {
     setIsOpenSubscribedDialog(false);
@@ -183,7 +186,7 @@ export default function Account() {
             <ElemInviteUser />
           </div>
 
-          {investorData && (
+          {isInvestor && (
             <div className="mt-6">
               <ElemInviteInvestmentMembers />
             </div>
