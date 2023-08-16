@@ -42,7 +42,7 @@ export default function SignIn() {
     useState<GetSignUpProfileQuery['people'][number]>();
 
   const { mutate: signUp, isLoading: isSubmittingSignUp } = useMutation(
-    ({ email, password, name, personId }: SignUpPayload) =>
+    ({ email, password, name, personId, linkedinUrl }: SignUpPayload) =>
       fetch('/api/register/', {
         method: 'POST',
         headers: {
@@ -54,6 +54,7 @@ export default function SignIn() {
           password,
           name,
           personId,
+          linkedinUrl,
           reference_id:
             typeof window !== 'undefined'
               ? localStorage.getItem('inviteCode')
