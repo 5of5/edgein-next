@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
-import {
-  IconLinkedInAlt,
-  IconContributor,
-} from '@/components/icons';
+import { IconLinkedInAlt, IconContributor } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemInviteLinks } from '@/components/invites/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';

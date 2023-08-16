@@ -1,10 +1,6 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import CookieService from '@/utils/cookie';
-import {
-  chunk,
-  every,
-  map,
-} from 'lodash';
+import { chunk, every, map } from 'lodash';
 import { sendInvitationMail } from './send-invite-to-edgein-email';
 
 const EMAIL_BATCH = 50;

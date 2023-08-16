@@ -139,10 +139,11 @@ export const ElemInviteInvestmentMembers = () => {
             canSendInvestorInvitation(userById?.users, company?.id) ? (
               <div
                 key={company?.id}
-                className={`flex flex-row items-center py-2 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 hover:cursor-pointer ${includes(selectedCompanies, company)
+                className={`flex flex-row items-center py-2 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 hover:cursor-pointer ${
+                  includes(selectedCompanies, company)
                     ? 'border-primary-500'
                     : ''
-                  }`}
+                }`}
                 onClick={() => handleClick(company)}
               >
                 <ElemPhoto

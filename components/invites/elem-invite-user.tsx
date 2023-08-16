@@ -92,8 +92,9 @@ export const ElemInviteUser = () => {
                         company={membersGroupByCompany[companyId][0].company}
                       />
                       <IconChevronDownMini
-                        className={`${open ? 'rotate-0' : '-rotate-90 '
-                          } h-6 w-6 transform transition-all`}
+                        className={`${
+                          open ? 'rotate-0' : '-rotate-90 '
+                        } h-6 w-6 transform transition-all`}
                       />
                     </Disclosure.Button>
 
@@ -121,7 +122,7 @@ export const ElemInviteUser = () => {
       <div className="mt-4">
         <div className="relative p-5 bg-white rounded-lg border border-black/10">
           {sendInvitationEmailResponse &&
-            sendInvitationEmailResponse.length > 0 ? (
+          sendInvitationEmailResponse.length > 0 ? (
             <>
               <div className="w-full text-center">
                 <IconPaperAirplane
