@@ -11,7 +11,10 @@ import {
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemInviteLinks } from '@/components/invites/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';
-import { useGetInvestorByPersonIdQuery, useGetUserProfileQuery } from '@/graphql/types';
+import {
+  useGetInvestorByPersonIdQuery,
+  useGetUserProfileQuery,
+} from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
@@ -26,11 +29,14 @@ import { isEmpty } from 'lodash';
 export default function Account() {
   const { user, refreshUser } = useAuth();
 
-  const { data: userProfile } = useGetUserProfileQuery({
-    id: user?.id || 0,
-  }, {
-    enabled: !!user
-  });
+  const { data: userProfile } = useGetUserProfileQuery(
+    {
+      id: user?.id || 0,
+    },
+    {
+      enabled: !!user,
+    },
+  );
 
   const [isEditPassword, setEditPassword] = useState(false);
 
@@ -46,13 +52,16 @@ export default function Account() {
 
   const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
 
-  const { data: investorData } = useGetInvestorByPersonIdQuery({
-    personId: user?.person?.id || 0
-  }, {
-    enabled: !!user
-  })
+  const { data: investorData } = useGetInvestorByPersonIdQuery(
+    {
+      personId: user?.person?.id || 0,
+    },
+    {
+      enabled: !!user,
+    },
+  );
 
-  const isInvestor = !isEmpty(investorData?.investors)
+  const isInvestor = !isEmpty(investorData?.investors);
 
   const onCloseSubscribedDialog = () => {
     setIsOpenSubscribedDialog(false);
@@ -90,9 +99,11 @@ export default function Account() {
     if (user && user.auth0_linkedin_id) {
       return;
     }
-    const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL
-      }/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID
-      }&connection=linkedin&redirect_uri=${redirect_url()}&scope=openid%20profile%20email%20offline_access`;
+    const url = `${
+      process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL
+    }/authorize?response_type=code&client_id=${
+      process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID
+    }&connection=linkedin&redirect_uri=${redirect_url()}&scope=openid%20profile%20email%20offline_access`;
     window.location.href = url;
   };
 
@@ -211,7 +222,7 @@ export default function Account() {
             right={
               user && user.auth0_linkedin_id ? (
                 <ElemButton
-                  onClick={() => { }}
+                  onClick={() => {}}
                   btn="default"
                   className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
                 >
@@ -316,8 +327,8 @@ export default function Account() {
 
           <EditSection heading="Subscription">
             {userProfile &&
-              (userProfile.users_by_pk?.billing_org_id ||
-                userProfile.users_by_pk?.credits > 0) ? (
+            (userProfile.users_by_pk?.billing_org_id ||
+              userProfile.users_by_pk?.credits > 0) ? (
               <div>
                 <div className="flex items-center space-x-1">
                   <IconContributor className="h-6 w-6 text-primary-500" />

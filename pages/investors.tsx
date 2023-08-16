@@ -89,15 +89,15 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter();
-
   const [page, setPage] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
     pageIndex => Number(pageIndex) - 1,
   );
+
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter({ resetPage: () => setPage(0) });
 
   // limit shown investors on table layout for free users
   const limit =
