@@ -3,6 +3,7 @@ import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
+import { Toaster } from 'react-hot-toast';
 import { Dialog } from '@headlessui/react';
 import { ElemButton } from '@/components/elem-button';
 import { ElemLogo } from '@/components/elem-logo';
@@ -141,6 +142,7 @@ export default function SignIn() {
             />
           )}
         </Dialog.Panel>
+        <Toaster />
       </div>
     </Dialog>
   );

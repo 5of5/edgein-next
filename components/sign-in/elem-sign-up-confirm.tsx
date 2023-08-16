@@ -1,4 +1,7 @@
 import { FC } from 'react';
+import { useMutation } from 'react-query';
+import useToast from '@/hooks/use-toast';
+import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
 
 type Props = {
   firstName: string;
@@ -6,6 +9,33 @@ type Props = {
 };
 
 export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
+  const { toast } = useToast();
+
+  const { mutate: resend } = useMutation(
+    () =>
+      fetch('/api/resend-verification-email/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }),
+    {
+      onSuccess: async response => {
+        if (response.ok) {
+          toast('Resend verification email successfully.');
+        } else {
+          const error = await response.json();
+          toast(error.error || GENERAL_ERROR_MESSAGE);
+        }
+      },
+    },
+  );
+
+  const handleResendEmail = () => {
+    resend();
+  };
+
   return (
     <div className="max-w-sm mx-auto w-full -translate-y-20">
       <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
@@ -24,7 +54,10 @@ export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
 
       <div className="flex justify-center gap-1 mt-16">
         <p className="text-gray-500 text-xs">Didn&apos;t receive the email?</p>
-        <button className="text-gray-500 text-xs underline hover:text-gray-800">
+        <button
+          className="text-gray-500 text-xs underline hover:text-gray-800"
+          onClick={handleResendEmail}
+        >
           Resend email
         </button>
       </div>

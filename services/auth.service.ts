@@ -172,6 +172,10 @@ export class AuthService {
     return this.auth.verifyEmailCode(data);
   }
 
+  public resendVerificationEmail(userId: string): Promise<unknown> {
+    return this.management.sendEmailVerification({ user_id: userId });
+  }
+
   public async getAccessToken(data: { code: string }): Promise<{
     access_token: string;
     id_token: string;
