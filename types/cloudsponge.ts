@@ -11,7 +11,7 @@ export type Contact = {
   groups?: string[];
   dob?: Date;
   birthday?: Date;
-  fullname: () => string;
+  fullName: () => string;
   primaryEmail: () => string;
   selectedEmail: () => string;
   primaryPhone: () => string;
