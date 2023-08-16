@@ -18,10 +18,8 @@ import {
   IconDiscord,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
-import {
-  CARD_DEFAULT_TAGS_LIMIT,
-  CARD_MAX_TAGS_LIMIT,
-} from '@/utils/constants';
+import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
+import { ElemTags } from '@/components/elem-tags';
 import { useMutation } from 'react-query';
 import { toast, Toaster } from 'react-hot-toast';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
@@ -29,10 +27,9 @@ import { usePopup } from '@/context/popup-context';
 
 type Props = {
   event: GetEventsQuery['events'][0];
-  tagOnClick?: any;
 };
 
-export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
+export const ElemEventCard: FC<Props> = ({ event }) => {
   const { user } = useUser();
 
   const { setShowPopup } = usePopup();
@@ -66,17 +63,13 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
 
   const attendees = event_person?.filter(item => item.type === 'attendee');
 
-  const defaultIsAttended = attendees.some(
+  const defaultIsAttended = attendees?.some(
     item => item.person_id === user?.person?.id,
   );
 
   const [isAttended, setIsAttended] = useState(defaultIsAttended);
 
   const tags = types;
-  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
-  const showMoreTags = () => {
-    setTagsLimit(CARD_MAX_TAGS_LIMIT);
-  };
 
   const isEmptyLocation = values(location_json).every(isEmpty);
 
@@ -203,31 +196,13 @@ export const ElemEventCard: FC<Props> = ({ event, tagOnClick }) => {
       )}
 
       {tags && (
-        <div className="mt-4 flex flex-wrap overflow-clip gap-2">
-          {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
-            return (
-              <button
-                key={index}
-                onClick={e => tagOnClick(e, tag)}
-                className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
-                  tagOnClick !== undefined
-                    ? 'cursor-pointer hover:bg-gray-200'
-                    : ''
-                }`}
-              >
-                {tag}
-              </button>
-            );
-          })}
-          {tagsLimit < tags.length && (
-            <button
-              onClick={showMoreTags}
-              className="text-xs text-gray-500 font-medium py-1"
-            >
-              {tags.length - tagsLimit} more
-            </button>
-          )}
-        </div>
+        <ElemTags
+          className="mt-4"
+          limit={CARD_DEFAULT_TAGS_LIMIT}
+          filter={'eventType'}
+          resourceType={'events'}
+          tags={tags}
+        />
       )}
 
       <div className="flex items-center justify-between mt-4 gap-x-5">

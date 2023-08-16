@@ -61,7 +61,7 @@ export const ElemDeleteConfirmModal: FC<Props> = ({
                 <div className="p-6 flex flex-col gap-y-6">
                   {content}
                   <div className="flex justify-end gap-x-6">
-                    <ElemButton onClick={onClose} roundedFull btn="slate">
+                    <ElemButton onClick={onClose} roundedFull btn="gray">
                       Cancel
                     </ElemButton>
                     <ElemButton

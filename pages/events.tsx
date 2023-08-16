@@ -234,7 +234,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="relative px-6 py-3 flex items-center justify-between border-b border-gray-200"
+          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -243,7 +243,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             onChangeCategory={onChangeTab}
           />
 
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemAddFilter
@@ -333,7 +333,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               </div>
             </div>
           ) : isLoading && !initialLoad ? (
-            <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {Array.from({ length: 9 }, (_, i) => (
                 <PlaceholderEventCard key={i} />
               ))}
@@ -346,14 +346,10 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 )}
                 <div
                   data-testid="events"
-                  className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                 >
                   {events?.map(event => (
-                    <ElemEventCard
-                      key={event.id}
-                      event={event}
-                      tagOnClick={onClickType}
-                    />
+                    <ElemEventCard key={event.id} event={event} />
                   ))}
                 </div>
 

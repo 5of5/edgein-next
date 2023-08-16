@@ -118,7 +118,7 @@ const ElemEditDialog: FC<Props> = ({
                     )}
                   </div>
                   <div className="flex justify-end gap-x-4">
-                    <ElemButton onClick={onClose} roundedFull btn="slate">
+                    <ElemButton onClick={onClose} roundedFull btn="gray">
                       Cancel
                     </ElemButton>
                     <ElemButton

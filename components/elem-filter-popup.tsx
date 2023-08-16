@@ -63,9 +63,14 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
   };
 
   return (
-    <div className="snap-start shrink-0 relative">
+    <div className="snap-start shrink-0 relative max-w-full">
       <div className="flex items-center min-h-[32px] bg-primary-500 text-white text-sm rounded-full px-3 py-1">
-        <button onClick={onOpenFilterOption}>{title}</button>
+        <button
+          onClick={onOpenFilterOption}
+          className="max-w-full inline-block truncate"
+        >
+          {title}
+        </button>
         <button onClick={onClearFilterOption}>
           <IconX className="w-3 h-3 ml-1" title="Remove" />
         </button>

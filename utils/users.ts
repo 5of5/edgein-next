@@ -228,6 +228,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     active: userData.active,
     onboarding_information: userData.onboarding_information,
     showDraftData: userData.showDraftData,
+    feature_flags: userData.feature_flags,
     entitlements,
   };
 };
