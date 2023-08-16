@@ -6,27 +6,25 @@ import { useDebounce } from '@/hooks/use-debounce';
 import { ElemPhoto } from '@/components/elem-photo';
 import { IconX } from '@/components/icons';
 import { PlaceholderPerson } from '../placeholders';
-import { isFreeEmail } from '@/utils/helpers';
 import { DEBOUNCE_TIME } from '@/utils/constants';
+import { SelectedPeople } from './elem-invite-user';
 
 type Props = {
   label: string;
   description?: string;
   placeholder?: string;
-  selected: Record<string, any>[];
-  onChange: (values: Record<string, any>[]) => void;
+  selectedPeople: SelectedPeople[];
+  setSelectedPeople: (values: SelectedPeople[]) => void;
 };
 
 const ElemInviteEmails: FC<Props> = ({
   label,
   description,
   placeholder,
-  selected,
-  onChange,
+  selectedPeople,
+  setSelectedPeople,
 }) => {
   const [query, setQuery] = useState('');
-  const [selectedUsers, setSelectedUsers] =
-    useState<Record<string, any>[]>(selected);
 
   const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
 
@@ -48,8 +46,8 @@ const ElemInviteEmails: FC<Props> = ({
   const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
     setIsDuplicatedEmail(false);
-    if (validator.isEmail(newQuery) && isFreeEmail(newQuery)) {
-      setEmailError('Please enter a work email.');
+    if (validator.isEmail(newQuery)) {
+      setEmailError('Please enter a valid email.');
     } else {
       setEmailError('');
     }
@@ -57,25 +55,20 @@ const ElemInviteEmails: FC<Props> = ({
   };
 
   const handleRemove = (id: number) => {
-    const newSelectedUsers = selectedUsers.filter(
-      (item: any) => item.id !== id,
-    );
-    setSelectedUsers(newSelectedUsers);
-    onChange(newSelectedUsers);
+    setSelectedPeople(selectedPeople.filter((_, index) => index !== id));
   };
 
-  const handleSelect = (values: Record<string, any>[]) => {
+  const handleSelect = (values: SelectedPeople[]) => {
     if (
-      selectedUsers.some(
-        selectedUser =>
-          selectedUser.work_email === values[values.length - 1]?.work_email,
+      selectedPeople.some(
+        person => person.work_email === values[values.length - 1]?.work_email,
       )
     ) {
       setIsDuplicatedEmail(true);
     } else {
-      setSelectedUsers(values);
-      onChange(values);
+      setSelectedPeople(values);
       setQuery('');
+
       if (inputRef.current) {
         inputRef.current.value = '';
         inputRef.current.focus();
@@ -84,7 +77,7 @@ const ElemInviteEmails: FC<Props> = ({
   };
 
   return (
-    <Combobox value={selectedUsers} onChange={handleSelect} multiple>
+    <Combobox value={selectedPeople} onChange={handleSelect} multiple>
       <div className="relative">
         <div className="flex flex-col gap-1">
           <label className="font-bold">{label}</label>
@@ -92,16 +85,20 @@ const ElemInviteEmails: FC<Props> = ({
             <p className="text-sm text-slate-600">{description}</p>
           )}
           <div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
-            {selectedUsers.length > 0 && (
+            {selectedPeople.length > 0 && (
               <ul className="flex flex-wrap gap-2">
-                {selectedUsers.map(item => (
+                {selectedPeople.map((person, index) => (
                   <li
-                    key={item.id}
+                    key={index}
                     className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1"
                   >
-                    <div title={item.work_email}>{item?.name}</div>
+                    {person.name ? (
+                      <div title={person.work_email}>{person?.name}</div>
+                    ) : (
+                      <div title={person.work_email}>{person?.work_email}</div>
+                    )}
                     <button
-                      onClick={() => handleRemove(item.id)}
+                      onClick={() => handleRemove(index)}
                       className="focus:outline-none"
                       title="Remove"
                     >

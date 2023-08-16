@@ -12,7 +12,6 @@ import { filter, flatten, get, has, includes, reduce, uniqBy } from 'lodash';
 import { DeepPartial } from '@/types/common';
 import { ElemPhoto } from '../elem-photo';
 import { useState } from 'react';
-import { ElemAddressBook } from '../address-book/elem-address-book';
 
 const getInvestedInCompanies = (investors: DeepPartial<Investors>[]) => {
   const companies = investors.map(investor => {

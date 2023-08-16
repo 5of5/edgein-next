@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import { useParams } from 'react-router-dom';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import {
-  IconLinkedIn,
   IconLinkedInAlt,
   IconContributor,
 } from '@/components/icons';
