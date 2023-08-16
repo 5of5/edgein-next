@@ -32,7 +32,10 @@ export const ElemOnboardingResourceTable: FC<Props> = ({
         </thead>
         <tbody>
           {data.map(row => (
-            <tr key={row.objectID} className="bg-white border-b border-gray-100">
+            <tr
+              key={row.objectID}
+              className="bg-white border-b border-gray-100"
+            >
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
