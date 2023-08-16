@@ -11,15 +11,7 @@ import {
   UpdateUserFeatureFlagsMutation,
 } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
-import {
-  chunk,
-  compact,
-  every,
-  flatten,
-  includes,
-  map,
-  uniqBy,
-} from 'lodash';
+import { chunk, compact, every, flatten, includes, map, uniqBy } from 'lodash';
 import { sendInvitationMail } from './send-invite-to-edgein-email';
 
 const EMAIL_BATCH = 50;
@@ -124,7 +116,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             ...existingNotifiedCompanies,
             [req.body.companyId]: {
               status: 'ERROR',
-              errors: [responses]
+              errors: [responses],
             },
           },
         },

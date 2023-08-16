@@ -135,7 +135,9 @@ export const ElemInviteUser = () => {
                       return (
                         <li className="text-slate-500 text-sm" key={index}>
                           {`Invitation has been sent to `}
-                          <span className="font-bold">{res.emails[index]}</span>{' '}
+                          <span className="font-bold">
+                            {res.emails[index]}
+                          </span>{' '}
                           successfully.
                         </li>
                       );
@@ -143,8 +145,8 @@ export const ElemInviteUser = () => {
                     return (
                       <li className="text-red-500 text-sm" key={index}>
                         {`Failed to send invitation to email `}
-                        <span className="font-bold">{res.emails[index]}</span>. Please
-                        try again later.
+                        <span className="font-bold">{res.emails[index]}</span>.
+                        Please try again later.
                       </li>
                     );
                   },
