@@ -33703,7 +33703,7 @@ useFindPeopleByEmailQuery.fetcher = (variables?: FindPeopleByEmailQueryVariables
 export const GetSignUpProfileDocument = `
     query GetSignUpProfile($email: String, $name: String) {
   people(
-    where: {_and: [{_not: {user: {}}}, {_or: [{name: {_ilike: $name}}, {work_email: {_ilike: $email}}, {personal_email: {_ilike: $email}}]}]}
+    where: {_and: [{_not: {user: {}}}, {_and: [{name: {_eq: $name}}, {_or: [{work_email: {_eq: $email}}, {personal_email: {_eq: $email}}]}]}]}
     limit: 1
   ) {
     id

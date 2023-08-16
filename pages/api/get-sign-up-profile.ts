@@ -28,8 +28,8 @@ export const onGetSignUpProfile = async (email: string, name: string) => {
   } = await query<GetSignUpProfileQuery>({
     query: GetSignUpProfileDocument,
     variables: {
-      email: `%${email}%`,
-      name: `%${name}%`,
+      email,
+      name,
     },
   });
 
