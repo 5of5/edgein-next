@@ -10,6 +10,9 @@ export async function middleware(req: NextRequest) {
   );
 
   if (userExists && url.pathname === '/') {
+    if (!userExists.onboarding_information) {
+      return NextResponse.rewrite(new URL('/onboarding', req.url));  
+    }
     return NextResponse.rewrite(new URL('/companies', req.url));
   }
 
