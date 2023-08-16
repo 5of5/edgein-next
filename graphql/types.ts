@@ -28655,6 +28655,13 @@ export type GetInvestmentRoundByIdQueryVariables = Exact<{
 
 export type GetInvestmentRoundByIdQuery = { __typename?: 'query_root', investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round: string | null, company_id: number | null, status: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string } | null }> };
 
+export type GetInvestmentInsightByLocationQueryVariables = Exact<{
+  where: Investment_Rounds_Bool_Exp;
+}>;
+
+
+export type GetInvestmentInsightByLocationQuery = { __typename?: 'query_root', investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null } };
+
 export type UpsertInvestmentsMutationVariables = Exact<{
   data: Array<Investments_Insert_Input> | Investments_Insert_Input;
 }>;
@@ -31807,6 +31814,34 @@ useGetInvestmentRoundByIdQuery.getKey = (variables: GetInvestmentRoundByIdQueryV
 ;
 
 useGetInvestmentRoundByIdQuery.fetcher = (variables: GetInvestmentRoundByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestmentRoundByIdQuery, GetInvestmentRoundByIdQueryVariables>(GetInvestmentRoundByIdDocument, variables, options);
+export const GetInvestmentInsightByLocationDocument = `
+    query GetInvestmentInsightByLocation($where: investment_rounds_bool_exp!) {
+  investment_rounds_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetInvestmentInsightByLocationQuery = <
+      TData = GetInvestmentInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetInvestmentInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetInvestmentInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetInvestmentInsightByLocationQuery, TError, TData>(
+      ['GetInvestmentInsightByLocation', variables],
+      fetcher<GetInvestmentInsightByLocationQuery, GetInvestmentInsightByLocationQueryVariables>(GetInvestmentInsightByLocationDocument, variables),
+      options
+    );
+useGetInvestmentInsightByLocationQuery.document = GetInvestmentInsightByLocationDocument;
+
+
+useGetInvestmentInsightByLocationQuery.getKey = (variables: GetInvestmentInsightByLocationQueryVariables) => ['GetInvestmentInsightByLocation', variables];
+;
+
+useGetInvestmentInsightByLocationQuery.fetcher = (variables: GetInvestmentInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestmentInsightByLocationQuery, GetInvestmentInsightByLocationQueryVariables>(GetInvestmentInsightByLocationDocument, variables, options);
 export const UpsertInvestmentsDocument = `
     mutation UpsertInvestments($data: [investments_insert_input!]!) {
   insert_investments(

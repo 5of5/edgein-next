@@ -24,6 +24,8 @@ export const ElemOnboardingLocation: FC<Props> = ({
     switch (segment) {
       case 'Executive':
         return 'New investors in your location(s)';
+      case 'Investor':
+        return 'New investments in your location(s)';
       case 'Team Member':
       case 'Event Organizer':
         return 'New events in your location(s)';

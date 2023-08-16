@@ -9,8 +9,11 @@ import {
   GetCompanyInsightByLocationQuery,
   GetEventInsightByLocationDocument,
   GetEventInsightByLocationQuery,
+  GetInvestmentInsightByLocationDocument,
+  GetInvestmentInsightByLocationQuery,
   GetVcFirmInsightByLocationDocument,
   GetVcFirmInsightByLocationQuery,
+  Investment_Rounds_Bool_Exp,
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
 import { Segment } from '@/types/onboarding';
@@ -39,27 +42,52 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .send({ error: errors['name']?.[0] || 'Invalid parameters' });
     }
 
-    const filter: unknown = {
-      _and: [
-        {
-          created_at: {
-            _gte: moment().subtract(7, 'days').format('YYYY-MM-DD'),
-          },
-        },
-        {
-          _or: [
-            ...locations.split('+').map(tag => ({
-              geopoint: {
-                _st_d_within: {
-                  distance: 20 * 1609.344, // 20 miles to meters
-                  from: tag,
+    const filter: unknown =
+      segment === 'Investor'
+        ? {
+            _and: [
+              {
+                round_date: {
+                  _gte: moment().subtract(7, 'days').format('YYYY-MM-DD'),
                 },
               },
-            })),
-          ],
-        },
-      ],
-    };
+              {
+                company: {
+                  _or: [
+                    ...locations.split('+').map(tag => ({
+                      geopoint: {
+                        _st_d_within: {
+                          distance: 20 * 1609.344, // 20 miles to meters
+                          from: tag,
+                        },
+                      },
+                    })),
+                  ],
+                },
+              },
+            ],
+          }
+        : {
+            _and: [
+              {
+                created_at: {
+                  _gte: moment().subtract(7, 'days').format('YYYY-MM-DD'),
+                },
+              },
+              {
+                _or: [
+                  ...locations.split('+').map(tag => ({
+                    geopoint: {
+                      _st_d_within: {
+                        distance: 20 * 1609.344, // 20 miles to meters
+                        from: tag,
+                      },
+                    },
+                  })),
+                ],
+              },
+            ],
+          };
 
     if (segment === 'Executive') {
       // Get last 7 days investors in locations
@@ -73,6 +101,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Get last 7 days events in locations
       const last7days = await onGetEventInsight(filter as Events_Bool_Exp);
       const total = await onGetEventInsight();
+
+      return res.status(200).send({ last7days, total });
+    }
+
+    if (segment === 'Investor') {
+      const last7days = await onGetInvestmentInsight(
+        filter as Investment_Rounds_Bool_Exp,
+      );
+      const total = await onGetInvestmentInsight();
 
       return res.status(200).send({ last7days, total });
     }
@@ -126,6 +163,19 @@ async function onGetEventInsight(filter?: Events_Bool_Exp) {
   });
 
   return events_aggregate.aggregate?.count;
+}
+
+async function onGetInvestmentInsight(filter?: Investment_Rounds_Bool_Exp) {
+  const {
+    data: { investment_rounds_aggregate },
+  } = await query<GetInvestmentInsightByLocationQuery>({
+    query: GetInvestmentInsightByLocationDocument,
+    variables: {
+      where: filter || {},
+    },
+  });
+
+  return investment_rounds_aggregate.aggregate?.count;
 }
 
 export default handler;
