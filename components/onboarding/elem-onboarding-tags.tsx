@@ -1,4 +1,5 @@
 import { FC, useMemo, useState } from 'react';
+import { useIntercom } from 'react-use-intercom';
 import { aiTags, ONBOARDING_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getSelectableWeb3Tags } from '@/utils/helpers';
 import { ElemButton } from '../elem-button';
@@ -14,6 +15,8 @@ export const ElemOnboardingTags: FC<Props> = ({
   onChangeTags,
   onNext,
 }) => {
+  const { showNewMessages } = useIntercom();
+
   const [limit, setLimit] = useState(ONBOARDING_DEFAULT_TAGS_LIMIT);
 
   const tagChoices = useMemo(() => {
@@ -82,6 +85,18 @@ export const ElemOnboardingTags: FC<Props> = ({
       >
         Next
       </ElemButton>
+
+      <div className="flex justify-center gap-1 mt-5">
+        <p className="text-xs text-center text-slate-500 font-normal">
+          Can&apos;t see something you&apos;re interested in?
+        </p>
+        <button
+          className="text-gray-500 text-xs underline hover:text-gray-800"
+          onClick={() => showNewMessages()}
+        >
+          Let us know
+        </button>
+      </div>
     </>
   );
 };

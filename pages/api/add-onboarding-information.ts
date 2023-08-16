@@ -26,6 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // params
   const segment = req.body.segment;
+  const exploreChoice = req.body.exploreChoice;
   const locationTags = req.body.locationTags;
   const industryTags = req.body.industryTags;
   const questions = req.body.questions;
@@ -41,6 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const onboardingInformationObj: any = {
       segment,
+      exploreChoice,
       locationTags,
       industryTags,
       questions,
@@ -78,7 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
             ...questions.map((item: QUESTION) => ({
               title: item.name,
-              value: item.answer.join(', '),
+              value: item.answer,
             })),
           ],
         },

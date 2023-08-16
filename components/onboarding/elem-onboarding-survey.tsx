@@ -1,19 +1,18 @@
 import { FC } from 'react';
-import { onboardingSurveyChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
-import { InputCheckbox } from '../input-checkbox';
+import { InputTextarea } from '../input-textarea';
 
 type Props = {
   isLoading: boolean;
-  answers: string[];
-  onChangeAnswers: (answers: string[]) => void;
+  answer: string;
+  onChangeAnswer: (answer: string) => void;
   onNext: () => void;
 };
 
 export const ElemOnboardingSurvey: FC<Props> = ({
   isLoading,
-  answers,
-  onChangeAnswers,
+  answer,
+  onChangeAnswer,
   onNext,
 }) => {
   return (
@@ -22,28 +21,23 @@ export const ElemOnboardingSurvey: FC<Props> = ({
         <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
           How did you hear about EdgeIn?
         </h1>
-      </div>
+        <p className="mt-5 text-xs text-center text-slate-500 font-normal">
+          We&apos;re working hard to make sure we get EdgeIn to the right
+          people. You can help us out with that.
+        </p>
 
-      <ul className="grid grid-cols-2 gap-3 mt-8">
-        {onboardingSurveyChoices.map(choiceItem => (
-          <li key={choiceItem} className="">
-            <InputCheckbox
-              className="text-sm mx-6"
-              label={choiceItem}
-              checked={answers.includes(choiceItem)}
-              onChange={event => {
-                if (event.target.checked) {
-                  onChangeAnswers([...answers, choiceItem]);
-                } else {
-                  onChangeAnswers([
-                    ...answers.filter(item => item !== choiceItem),
-                  ]);
-                }
-              }}
-            />
-          </li>
-        ))}
-      </ul>
+        <div className="mt-8">
+          <InputTextarea
+            name="survey"
+            value={answer}
+            placeholder="For example, email campaigns or articles..."
+            rows={8}
+            onChange={e => onChangeAnswer(e.target.value)}
+            required
+            className="ring-inset focus:ring-inset"
+          />
+        </div>
+      </div>
 
       <ElemButton
         btn="primary"

@@ -34,6 +34,8 @@ export default function Onboarding() {
 
   const [segment, setSegment] = useState<Segment>();
 
+  const [exploreChoice, setExploreChoice] = useState('');
+
   const [locations, setLocations] = useState<Place[]>([]);
 
   const [tags, setTags] = useState<string[]>([]);
@@ -42,7 +44,7 @@ export default function Onboarding() {
   const [investors, setInvestors] = useState<HitInvestorsProps['hit'][]>([]);
   const [people, setPeople] = useState<HitPeopleProps['hit'][]>([]);
 
-  const [surveyAnswers, setSurveyAnswers] = useState<string[]>([]);
+  const [surveyAnswer, setSurveyAnswer] = useState<string>('');
 
   const { mutate: saveToList, isLoading: isLoadingSaveToList } = useMutation(
     () =>
@@ -83,12 +85,13 @@ export default function Onboarding() {
           },
           body: JSON.stringify({
             segment,
+            exploreChoice,
             locationTags: locations.map(item => item?.Label),
             industryTags: tags,
             questions: [
               {
                 name: ONBOARDING_QUESTION,
-                answer: surveyAnswers,
+                answer: surveyAnswer,
               },
             ],
           }),
@@ -167,6 +170,8 @@ export default function Onboarding() {
             {currentStep === 1 && (
               <ElemOnboardingSegmenting
                 selectedSegment={segment}
+                exploreChoice={exploreChoice}
+                onChangeExploreChoice={setExploreChoice}
                 onChangeSegment={setSegment}
                 onNext={() => {
                   setCurrentStep(2);
@@ -209,8 +214,8 @@ export default function Onboarding() {
             {currentStep === 5 && (
               <ElemOnboardingSurvey
                 isLoading={isLoadingSaveToList || isSubmittingOnboarding}
-                answers={surveyAnswers}
-                onChangeAnswers={setSurveyAnswers}
+                answer={surveyAnswer}
+                onChangeAnswer={setSurveyAnswer}
                 onNext={() => {
                   saveToList();
                 }}

@@ -54,11 +54,11 @@ export const ElemOnboardingSaveList: FC<Props> = ({
       case 'Investor':
         return 'Did you know you can monitor your portfolio companies?';
       case 'Sales or Business Developer':
-        return 'Did you know you can prospect your leads?';
+        return 'Did you know you can easily prospect your leads?';
       case 'Team Member':
         return 'Did you know you can monitor your competitors?';
       case 'Event Organizer':
-        return 'Did you know you can make a list of potential speakers?';
+        return 'Did you know you can make a list of potential event speakers?';
       case 'Creator or Publisher':
         return 'Did you know you can monitor trending companies?';
       default:

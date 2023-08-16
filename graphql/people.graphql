@@ -274,18 +274,18 @@ query FindPeopleByEmail($query: String) {
   }
 }
 
-query FindPeopleByEmailAndLinkedin($email: String, $linkedin: String) {
+query GetSignUpProfile($email: String, $name: String) {
   people(
     where: {
       _and: [
         { _not: { user: {} } }
         {
           _or: [
+            { name: { _ilike: $name } }
             { work_email: { _ilike: $email } }
             { personal_email: { _ilike: $email } }
           ]
         }
-        { linkedin: { _eq: $linkedin } }
       ]
     }
     limit: 1

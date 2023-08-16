@@ -29075,13 +29075,13 @@ export type FindPeopleByEmailQueryVariables = Exact<{
 
 export type FindPeopleByEmailQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, work_email: string | null, personal_email: string | null }> };
 
-export type FindPeopleByEmailAndLinkedinQueryVariables = Exact<{
+export type GetSignUpProfileQueryVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
-  linkedin: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type FindPeopleByEmailAndLinkedinQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, website_url: string | null, linkedin: string | null, twitter_url: string | null, github: string | null, facebook_url: string | null }> };
+export type GetSignUpProfileQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, website_url: string | null, linkedin: string | null, twitter_url: string | null, github: string | null, facebook_url: string | null }> };
 
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
@@ -33665,10 +33665,10 @@ useFindPeopleByEmailQuery.getKey = (variables?: FindPeopleByEmailQueryVariables)
 ;
 
 useFindPeopleByEmailQuery.fetcher = (variables?: FindPeopleByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByEmailQuery, FindPeopleByEmailQueryVariables>(FindPeopleByEmailDocument, variables, options);
-export const FindPeopleByEmailAndLinkedinDocument = `
-    query FindPeopleByEmailAndLinkedin($email: String, $linkedin: String) {
+export const GetSignUpProfileDocument = `
+    query GetSignUpProfile($email: String, $name: String) {
   people(
-    where: {_and: [{_not: {user: {}}}, {_or: [{work_email: {_ilike: $email}}, {personal_email: {_ilike: $email}}]}, {linkedin: {_eq: $linkedin}}]}
+    where: {_and: [{_not: {user: {}}}, {_or: [{name: {_ilike: $name}}, {work_email: {_ilike: $email}}, {personal_email: {_ilike: $email}}]}]}
     limit: 1
   ) {
     id
@@ -33683,25 +33683,25 @@ export const FindPeopleByEmailAndLinkedinDocument = `
   }
 }
     `;
-export const useFindPeopleByEmailAndLinkedinQuery = <
-      TData = FindPeopleByEmailAndLinkedinQuery,
+export const useGetSignUpProfileQuery = <
+      TData = GetSignUpProfileQuery,
       TError = Error
     >(
-      variables?: FindPeopleByEmailAndLinkedinQueryVariables,
-      options?: UseQueryOptions<FindPeopleByEmailAndLinkedinQuery, TError, TData>
+      variables?: GetSignUpProfileQueryVariables,
+      options?: UseQueryOptions<GetSignUpProfileQuery, TError, TData>
     ) =>
-    useQuery<FindPeopleByEmailAndLinkedinQuery, TError, TData>(
-      variables === undefined ? ['FindPeopleByEmailAndLinkedin'] : ['FindPeopleByEmailAndLinkedin', variables],
-      fetcher<FindPeopleByEmailAndLinkedinQuery, FindPeopleByEmailAndLinkedinQueryVariables>(FindPeopleByEmailAndLinkedinDocument, variables),
+    useQuery<GetSignUpProfileQuery, TError, TData>(
+      variables === undefined ? ['GetSignUpProfile'] : ['GetSignUpProfile', variables],
+      fetcher<GetSignUpProfileQuery, GetSignUpProfileQueryVariables>(GetSignUpProfileDocument, variables),
       options
     );
-useFindPeopleByEmailAndLinkedinQuery.document = FindPeopleByEmailAndLinkedinDocument;
+useGetSignUpProfileQuery.document = GetSignUpProfileDocument;
 
 
-useFindPeopleByEmailAndLinkedinQuery.getKey = (variables?: FindPeopleByEmailAndLinkedinQueryVariables) => variables === undefined ? ['FindPeopleByEmailAndLinkedin'] : ['FindPeopleByEmailAndLinkedin', variables];
+useGetSignUpProfileQuery.getKey = (variables?: GetSignUpProfileQueryVariables) => variables === undefined ? ['GetSignUpProfile'] : ['GetSignUpProfile', variables];
 ;
 
-useFindPeopleByEmailAndLinkedinQuery.fetcher = (variables?: FindPeopleByEmailAndLinkedinQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByEmailAndLinkedinQuery, FindPeopleByEmailAndLinkedinQueryVariables>(FindPeopleByEmailAndLinkedinDocument, variables, options);
+useGetSignUpProfileQuery.fetcher = (variables?: GetSignUpProfileQueryVariables, options?: RequestInit['headers']) => fetcher<GetSignUpProfileQuery, GetSignUpProfileQueryVariables>(GetSignUpProfileDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {

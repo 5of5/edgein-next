@@ -1,17 +1,21 @@
 import { FC } from 'react';
-import { segmentChoices } from '@/utils/constants';
+import { onboardingExploreChoices, segmentChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
 import { Segment } from '@/types/onboarding';
 
 type Props = {
   selectedSegment?: Segment;
+  exploreChoice?: string;
   onChangeSegment: (segment: Segment) => void;
+  onChangeExploreChoice: (choice: string) => void;
   onNext: () => void;
 };
 
 export const ElemOnboardingSegmenting: FC<Props> = ({
   selectedSegment,
+  exploreChoice,
   onChangeSegment,
+  onChangeExploreChoice,
   onNext,
 }) => {
   return (
@@ -43,15 +47,44 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
         ))}
       </ul>
 
-      <ElemButton
-        btn="primary"
-        size="md"
-        className="max-w-sm w-full mt-16"
-        disabled={!selectedSegment}
-        onClick={onNext}
-      >
-        Next
-      </ElemButton>
+      {selectedSegment && (
+        <div className="max-w-sm">
+          <div className="flex pt-12 pb-8 items-center">
+            <div className="flex-grow border-t border-black/10"></div>
+          </div>
+          <h1 className="text-2xl text-center font-medium lg:text-3xl">
+            What would you like to explore on EdgeIn?
+          </h1>
+          <p className="mt-5 text-xs text-center text-slate-500 font-normal">
+            Select any of the following choices.
+          </p>
+
+          <ul className="mt-8 flex flex-col gap-3">
+            {onboardingExploreChoices.map(item => (
+              <li
+                key={item}
+                className={`px-6 py-4 rounded-lg border ${
+                  item === exploreChoice
+                    ? 'border-primary-500'
+                    : 'border-slate-300'
+                } shadow-sm cursor-pointer hover:bg-slate-50`}
+                onClick={() => onChangeExploreChoice(item)}
+              >
+                <p className="text-slate-900 text-sm">{item}</p>
+              </li>
+            ))}
+          </ul>
+          <ElemButton
+            btn="primary"
+            size="md"
+            className="max-w-sm w-full mt-16"
+            disabled={!exploreChoice}
+            onClick={onNext}
+          >
+            Next
+          </ElemButton>
+        </div>
+      )}
     </>
   );
 };

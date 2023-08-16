@@ -11,6 +11,7 @@ import {
 import GroupService from '@/utils/groups';
 import { makeAuthService, UserInfo } from '@/services/auth.service';
 import { mutate } from '@/graphql/hasuraAdmin';
+import { onFindPeopleByLinkedin } from './add-onboarding-information';
 
 const authService = makeAuthService();
 
@@ -109,13 +110,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Link user to profile
     if (personId) {
       await onLinkUserToPerson(userData.id, personId);
-    } else {
-      const insertedPerson = await onInsertProfile(
-        userData.display_name || '',
-        userData.email,
-        linkedinUrl,
-      );
-      await onLinkUserToPerson(userData.id, insertedPerson?.id || 0);
+    } else if (linkedinUrl) {
+      const personByLinkedin = await onFindPeopleByLinkedin(linkedinUrl);
+      if (personByLinkedin?.id) {
+        await onLinkUserToPerson(userData.id, personByLinkedin.id);
+      } else {
+        const insertedPerson = await onInsertProfile(
+          userData.display_name || '',
+          userData.email,
+          linkedinUrl,
+        );
+        await onLinkUserToPerson(userData.id, insertedPerson?.id || 0);
+      }
     }
 
     await authService.linkAccounts(

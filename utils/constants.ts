@@ -2063,17 +2063,12 @@ export const segmentChoices: SegmentOption[] = [
   },
 ];
 
-export const onboardingSurveyChoices = [
-  'Email',
-  'Linkedin',
-  'Founders',
-  'Press',
-  'Search',
-  'Referral',
-  'Ads',
-  'Work',
-  'Friend',
-  'Other',
+export const onboardingExploreChoices = [
+  'Interesting companies',
+  'Investors and recent investments',
+  'Events in my area',
+  'Alpha market news',
+  'Something else',
 ];
 
 export const ONBOARDING_DEFAULT_TAGS_LIMIT = 20;

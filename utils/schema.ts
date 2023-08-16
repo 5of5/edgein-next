@@ -71,6 +71,7 @@ export const getLocationInsightSchema = z.object({
 
 export const addOnboardingSchema = z.object({
   segment: z.string().nonempty('Segment is required'),
+  exploreChoice: z.string().nonempty('Explore choice is required'),
   locationTags: z
     .array(z.string())
     .min(
