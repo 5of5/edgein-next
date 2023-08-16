@@ -40,7 +40,7 @@ export const ElemOnboardingResourceTable: FC<Props> = ({
                 <div className="flex items-center gap-3">
                   <ElemPhoto
                     photo={{
-                      url: row.logo | row.picture,
+                      url: row.logo || row.picture,
                     }}
                     wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
                     imgClass="object-fit max-w-full max-h-full"

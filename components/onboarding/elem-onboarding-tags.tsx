@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react';
-import { aiTags } from '@/utils/constants';
+import { aiTags, ONBOARDING_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getSelectableWeb3Tags } from '@/utils/helpers';
 import { ElemButton } from '../elem-button';
 
@@ -14,7 +14,7 @@ export const ElemOnboardingTags: FC<Props> = ({
   onChangeTags,
   onNext,
 }) => {
-  const [limit, setLimit] = useState(20);
+  const [limit, setLimit] = useState(ONBOARDING_DEFAULT_TAGS_LIMIT);
 
   const tagChoices = useMemo(() => {
     return [...getSelectableWeb3Tags(), ...aiTags];

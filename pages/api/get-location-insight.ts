@@ -14,6 +14,8 @@ import {
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
 import { Segment } from '@/types/onboarding';
+import { zodValidate } from '@/utils/validation';
+import { getLocationInsightSchema } from '@/utils/schema';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') return res.status(405).end();
@@ -25,6 +27,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const segment = req.query.segment as Segment;
     const locations = req.query.locations as string;
+
+    const { errors } = zodValidate(
+      { segment, locations },
+      getLocationInsightSchema,
+    );
+
+    if (errors) {
+      return res
+        .status(400)
+        .send({ error: errors['name']?.[0] || 'Invalid parameters' });
+    }
 
     const filter: unknown = {
       _and: [

@@ -2075,3 +2075,7 @@ export const onboardingSurveyChoices = [
   'Friend',
   'Other',
 ];
+
+export const ONBOARDING_DEFAULT_TAGS_LIMIT = 20;
+export const ONBOARDING_MIN_LOCATIONS = 1;
+export const ONBOARDING_MIN_TAGS = 3;

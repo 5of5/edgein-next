@@ -17,9 +17,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   const sentimentType: string = req.body.sentiment;
-  const companies: number[] = req.body.companies;
-  const vcFirms: number[] = req.body.vcFirms;
-  const people: number[] = req.body.people;
+  const companyIds: number[] = req.body.companyIds;
+  const vcFirmIds: number[] = req.body.vcFirmIds;
+  const peopleIds: number[] = req.body.peopleIds;
 
   // console.log('starting reaction for user', {token,user,companyId,sentimentType,pathname})
   // check if user has a list for sentiment
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const companyReactions = await upsertFollowToList(
       'companies',
-      companies,
+      companyIds,
       list,
       user,
       token,
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const vcFirmReactions = await upsertFollowToList(
       'vc_firms',
-      vcFirms,
+      vcFirmIds,
       list,
       user,
       token,
@@ -49,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const peopleReactions = await upsertFollowToList(
       'people',
-      people,
+      peopleIds,
       list,
       user,
       token,

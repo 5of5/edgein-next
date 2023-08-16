@@ -54,9 +54,9 @@ export default function Onboarding() {
         },
         body: JSON.stringify({
           sentiment: 'My first list',
-          companies: [...companies.map(item => item.objectID)],
-          vcFirms: [...investors.map(item => item.objectID)],
-          people: [...people.map(item => item.objectID)],
+          companyIds: [...companies.map(item => item.objectID)],
+          vcFirmIds: [...investors.map(item => item.objectID)],
+          peopleIds: [...people.map(item => item.objectID)],
         }),
       }),
     {

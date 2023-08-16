@@ -9,6 +9,8 @@ import {
 import CookieService from '../../utils/cookie';
 import SlackServices from '@/utils/slack';
 import UserService from '@/utils/users';
+import { zodValidate } from '@/utils/validation';
+import { addOnboardingSchema } from '@/utils/schema';
 
 type QUESTION = {
   name: string;
@@ -27,6 +29,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const locationTags = req.body.locationTags;
   const industryTags = req.body.industryTags;
   const questions = req.body.questions;
+
+  const { errors } = zodValidate(req.body, addOnboardingSchema);
+
+  if (errors) {
+    return res
+      .status(400)
+      .send({ error: errors['name']?.[0] || 'Invalid parameters' });
+  }
 
   try {
     const onboardingInformationObj: any = {
