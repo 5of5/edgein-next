@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment, FC } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -7,7 +7,12 @@ import { ElemButton } from '@/components/elem-button';
 import { UserMenu } from '@/components/user-menu';
 import UsageModal from '@/components/usage-modal';
 import ForgotPasswordModal from '@/components/forgot-password-modal';
-import { IconSearch, IconBell, IconEllipsisVertical } from '@/components/icons';
+import {
+  IconSearch,
+  IconBell,
+  IconEllipsisVertical,
+  IconBars3,
+} from '@/components/icons';
 import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { useUser } from '@/context/user-context';
@@ -15,9 +20,9 @@ import { ElemSearchBox } from './elem-search-box';
 import { find, first } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import { Popover, Transition } from '@headlessui/react';
-
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
+import { useSidebar } from '@/context/sidebar-context';
 
 export type Popups =
   | 'login'
@@ -27,11 +32,14 @@ export type Popups =
   | 'usage'
   | false;
 
-export const TheNavbar = () => {
+type Props = {};
+
+export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
   const { user, listAndFollows, myGroups, unreadNotifications } = useUser();
 
   const { showPopup, setShowPopup } = usePopup();
+  const { showSidebar, setShowSidebar } = useSidebar();
 
   const notificationsCount = unreadNotifications
     ? unreadNotifications.length
@@ -39,11 +47,6 @@ export const TheNavbar = () => {
 
   const hotListId =
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
-  const myListsUrl = `/lists/${hotListId}/hot`;
-
-  const getFirstGroup = first(myGroups ? myGroups : null);
-
-  const myGroupsUrl = getFirstGroup ? `/groups/${getFirstGroup.id}/` : '';
 
   useEffect(() => {
     if (!showPopup && router.asPath.includes('/login/')) {
@@ -103,14 +106,17 @@ export const TheNavbar = () => {
   };
 
   useEffect(() => {
-    if (router.query.code) {
-      (async () => {
-        //setFinishingLogin(true);
-        const res = await getAccessTokenFromCode(router.query.code as string);
-      })();
+    if (router.asPath.includes('?code=')) {
+      const code = new URLSearchParams(router.asPath.split('?')[1]).get('code');
+      if (code) {
+        (async () => {
+          //setFinishingLogin(true);
+          const res = await getAccessTokenFromCode(code);
+        })();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.code]);
+  }, [router.asPath]);
 
   useEffect(() => {
     if (router.query.invite && !user) {
@@ -148,20 +154,30 @@ export const TheNavbar = () => {
   ];
 
   return (
-    <header className="overflow-y-visible z-40 block fixed top-0 left-0 right-0">
+    <header className="sticky top-0 left-0 right-0 z-40">
       <div className="px-1 py-1 sm:px-3 sm:py-2 border-b border-gray-200 bg-white/80 backdrop-blur">
         <nav
           className="flex items-center justify-between lg:justify-start w-full mx-auto"
           aria-label="Global"
         >
-          <Link href={user ? '/companies' : '/'} passHref>
-            <a className="w-auto lg:w-64">
-              <ElemLogo
-                mode="logo"
-                className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
-              />
-            </a>
-          </Link>
+          <div className="flex items-center gap-3">
+            <ElemButton
+              onClick={() => setShowSidebar(!showSidebar)}
+              btn="gray"
+              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+            >
+              <IconBars3 className="h-6 w-6" />
+            </ElemButton>
+
+            <Link href={user ? '/companies' : '/'} passHref>
+              <a className="w-auto lg:w-64">
+                <ElemLogo
+                  mode="logo"
+                  className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
+                />
+              </a>
+            </Link>
+          </div>
 
           <ElemSearchBox
             onClick={() => {
@@ -173,7 +189,7 @@ export const TheNavbar = () => {
             {user && (
               <ElemButton
                 onClick={() => setShowPopup('search')}
-                btn="slate"
+                btn="gray"
                 className="h-9 w-9 !px-0 !py-0 sm:hidden"
               >
                 <IconSearch className="h-5 w-5" />

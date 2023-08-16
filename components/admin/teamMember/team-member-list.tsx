@@ -11,22 +11,13 @@ import {
   BooleanField,
   AutocompleteInput,
 } from 'react-admin';
-import {
-  functionChoicesTM,
-  seniorityChoicesTM,
-  ADMIN_REFERENCE_INPUT_PER_PAGE,
-} from '@/utils/constants';
+import { functionChoicesTM, seniorityChoicesTM } from '@/utils/constants';
 import ElemList from '../elem-list';
 import { useAuth } from '@/hooks/use-auth';
 
 const filters = [
   <TextInput key="search" source="title" label="Title" resettable alwaysOn />,
-  <ReferenceInput
-    key="searchCompany"
-    source="company_id"
-    reference="companies"
-    perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
-  >
+  <ReferenceInput key="searchCompany" source="company_id" reference="companies">
     <AutocompleteInput
       optionText={choice => `${choice.name}`}
       filterToQuery={search => ({ name: search })}

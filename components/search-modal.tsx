@@ -409,7 +409,7 @@ export default function SearchModal(props: any) {
       return (
         <div className="px-6 py-1 mt-5 text-center">
           <FigureSearch className="mx-auto h-36 lg:h-40" />
-          <div className="mt-3 text-xl font-bold">
+          <div className="mt-3 text-xl font-medium">
             Search for Companies, Investors, People, Events &amp; News
           </div>
           <div style={{ display: 'none' }}>{children}</div>

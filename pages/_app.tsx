@@ -9,11 +9,11 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { LoaderPlasma } from '@/components/loader-plasma';
 import { TheNavbar } from '@/components/the-navbar';
-import { ElemFeedback } from '@/components/elem-feedback';
 import { TheFooter } from '@/components/the-footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { UserProvider } from '@/context/user-context';
 import { PopupProvider } from '@/context/popup-context';
+import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
@@ -30,8 +30,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   // App Page Preloader
   const router = useRouter();
   const [pageLoading, setPageLoading] = React.useState<boolean>(false);
-
-  const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
 
   //google
   React.useEffect(() => {
@@ -139,30 +137,21 @@ function MyApp({ Component, pageProps }: AppProps) {
             <IntercomProvider appId={INTERCOM_APP_ID} autoBoot>
               <UserProvider>
                 <PopupProvider>
-                  <>
-                    <TheNavbar />
-                    <main className="mt-12 grow selection:bg-primary-200">
-                      {pageLoading ? (
-                        <LoaderPlasma />
-                      ) : (
-                        <Component
-                          {...pageProps}
-                          setToggleFeedbackForm={setToggleFeedbackForm}
-                        />
-                      )}
-                    </main>
+                  <SideBarProvider>
+                    <>
+                      <TheNavbar />
 
-                    {(router.asPath.includes('/companies/') ||
-                      router.asPath.includes('/investors/') ||
-                      router.asPath.includes('/events/')) && (
-                      <ElemFeedback
-                        toggleFeedbackForm={toggleFeedbackForm}
-                        setToggleFeedbackForm={setToggleFeedbackForm}
-                      />
-                    )}
+                      <main className="grow selection:bg-primary-200">
+                        {pageLoading ? (
+                          <LoaderPlasma />
+                        ) : (
+                          <Component {...pageProps} />
+                        )}
+                      </main>
 
-                    {showFooter === true && <TheFooter />}
-                  </>
+                      {showFooter === true && <TheFooter />}
+                    </>
+                  </SideBarProvider>
                 </PopupProvider>
               </UserProvider>
             </IntercomProvider>

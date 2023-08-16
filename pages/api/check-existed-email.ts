@@ -6,6 +6,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const email = req.query.email as string;
 
+  if (!email) {
+    return res.status(400).send({ error: 'Email is required.' });
+  }
+
   try {
     const userData = await UserService.findOneUserByEmail(email);
 

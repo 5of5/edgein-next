@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, Fragment } from 'react';
 import { omit, cloneDeep } from 'lodash';
 import moment from 'moment-timezone';
 import {
@@ -393,11 +393,11 @@ export const ElemFilter: FC<Props> = ({
   const extractTagsArrayToText = (tags: string[]) => {
     const numOfTags = tags.length;
     return tags.map((tagItem, tagIndex) => (
-      <span key={tagItem}>
-        <b>{tagItem}</b>
+      <Fragment key={tagItem}>
+        <span className="font-medium">{tagItem}</span>
         {tagIndex < numOfTags - 1 &&
           (tagIndex < numOfTags - 2 ? ', ' : ' and ')}
-      </span>
+      </Fragment>
     ));
   };
 
@@ -536,10 +536,10 @@ export const ElemFilter: FC<Props> = ({
                   name={option}
                   title={
                     numOfTags > 0 && (
-                      <div>
+                      <>
                         {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
                         {extractTagsArrayToText(filters?.[option]?.tags || [])}
-                      </div>
+                      </>
                     )
                   }
                   onOpen={onOpenFilterPopup}
@@ -549,7 +549,7 @@ export const ElemFilter: FC<Props> = ({
                   popupClass="max-w-xl"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="font-bold text-sm mb-1">
+                    <div className="text-bold text-sm mb-1">
                       {optionMetadata.heading}
                     </div>
                     <InputSwitch

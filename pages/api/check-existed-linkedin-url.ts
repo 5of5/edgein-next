@@ -7,6 +7,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const linkedinUrl = req.query.linkedinUrl as string;
 
+  if (!linkedinUrl) {
+    return res.status(400).send({ error: 'Linkedin URL is required.' });
+  }
+
   try {
     const personByLinkedin = await onFindPeopleByLinkedin(linkedinUrl);
     if (personByLinkedin?.id) {

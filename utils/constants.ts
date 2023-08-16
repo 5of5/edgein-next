@@ -411,11 +411,11 @@ export const companyChoices = [
     name: 'Trending',
     icon: '🔥',
   },
-  {
-    id: 'Raising',
-    name: 'Raising',
-    icon: '💸',
-  },
+  // {
+  //   id: 'Raising',
+  //   name: 'Raising',
+  //   icon: '💸',
+  // },
   {
     id: 'Acquired',
     name: 'Acquired',
@@ -2023,6 +2023,8 @@ export const GENERAL_ERROR_MESSAGE =
   'Something went wrong. Please try again later';
 
 export const EMAIL_MAX_LENGTH = 255;
+
+export const MAX_TAGS_LIMIT = 50;
 
 export const CARD_DEFAULT_TAGS_LIMIT = 3;
 

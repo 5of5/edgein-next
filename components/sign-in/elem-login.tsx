@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from 'react-query';
 import validator from 'validator';
@@ -114,7 +114,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
     login();
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
 

@@ -92,6 +92,7 @@ export const ElemInviteUser = () => {
                         } h-6 w-6 transform transition-all`}
                       />
                     </Disclosure.Button>
+
                     <Disclosure.Panel>
                       {membersGroupByCompany[companyId].map(mem => (
                         <ElemInviteTeamMember
@@ -134,7 +135,9 @@ export const ElemInviteUser = () => {
                       return (
                         <li className="text-slate-500 text-sm" key={index}>
                           {`Invitation has been sent to `}
-                          <span className="font-bold">{res.email}</span>{' '}
+                          <span className="font-bold">
+                            {res.emails[index]}
+                          </span>{' '}
                           successfully.
                         </li>
                       );
@@ -142,8 +145,8 @@ export const ElemInviteUser = () => {
                     return (
                       <li className="text-red-500 text-sm" key={index}>
                         {`Failed to send invitation to email `}
-                        <span className="font-bold">{res.email}</span>. Please
-                        try again later.
+                        <span className="font-bold">{res.emails[index]}</span>.
+                        Please try again later.
                       </li>
                     );
                   },
@@ -172,15 +175,18 @@ export const ElemInviteUser = () => {
                   onChange={setSelectedPeople}
                 />
               </div>
-              <ElemButton
-                btn="purple"
-                onClick={handleClickSendInvites}
-                loading={isLoading}
-                disabled={selectedPeople.length === 0}
-                className="mt-4"
-              >
-                Invite
-              </ElemButton>
+
+              <div className="flex gap-4">
+                <ElemButton
+                  btn="purple"
+                  onClick={handleClickSendInvites}
+                  loading={isLoading}
+                  disabled={selectedPeople.length === 0}
+                  className="mt-4"
+                >
+                  Invite
+                </ElemButton>
+              </div>
             </>
           )}
         </div>
