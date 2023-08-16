@@ -32,7 +32,7 @@ export const ElemOnboardingResourceTable: FC<Props> = ({
         </thead>
         <tbody>
           {data.map(row => (
-            <tr key={row.slug} className="bg-white border-b border-gray-100">
+            <tr key={row.objectID} className="bg-white border-b border-gray-100">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -40,6 +40,7 @@ export const ElemOnboardingResourceTable: FC<Props> = ({
                 <div className="flex items-center gap-3">
                   <ElemPhoto
                     photo={{
+                      id: row.objectID,
                       url: row.logo || row.picture,
                     }}
                     wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
