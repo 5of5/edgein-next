@@ -27,7 +27,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   const { isFetching: isCheckingExistedEmail, refetch: checkExistedEmail } =
     useQuery(
       ['check-existed-email', email],
-      async () => await fetch(`/api/check-existed-email/?email=${email}`),
+      async () => await fetch(`/api/check-existed-email/?email=${encodeURIComponent(email)}`),
       {
         enabled: false,
         onSuccess: async response => {
