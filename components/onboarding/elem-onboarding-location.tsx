@@ -23,8 +23,6 @@ export const ElemOnboardingLocation: FC<Props> = ({
   const heading = useMemo(() => {
     switch (segment) {
       case 'Executive':
-        return 'New investors in your location(s)';
-      case 'Investor':
         return 'New investments in your location(s)';
       case 'Team Member':
       case 'Event Organizer':

@@ -11,10 +11,7 @@ import {
   GetEventInsightByLocationQuery,
   GetInvestmentInsightByLocationDocument,
   GetInvestmentInsightByLocationQuery,
-  GetVcFirmInsightByLocationDocument,
-  GetVcFirmInsightByLocationQuery,
   Investment_Rounds_Bool_Exp,
-  Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
 import { Segment } from '@/types/onboarding';
 import { zodValidate } from '@/utils/validation';
@@ -43,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const filter: unknown =
-      segment === 'Investor'
+      segment === 'Executive'
         ? {
             _and: [
               {
@@ -89,14 +86,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             ],
           };
 
-    if (segment === 'Executive') {
-      // Get last 7 days investors in locations
-      const last7days = await onGetVcFirmInsight(filter as Vc_Firms_Bool_Exp);
-      const total = await onGetVcFirmInsight();
-
-      return res.status(200).send({ last7days, total });
-    }
-
     if (segment === 'Team Member' || segment === 'Event Organizer') {
       // Get last 7 days events in locations
       const last7days = await onGetEventInsight(filter as Events_Bool_Exp);
@@ -105,7 +94,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send({ last7days, total });
     }
 
-    if (segment === 'Investor') {
+    if (segment === 'Executive') {
       const last7days = await onGetInvestmentInsight(
         filter as Investment_Rounds_Bool_Exp,
       );
@@ -137,19 +126,6 @@ async function onGetCompanyInsight(filter?: Companies_Bool_Exp) {
   });
 
   return companies_aggregate.aggregate?.count;
-}
-
-async function onGetVcFirmInsight(filter?: Vc_Firms_Bool_Exp) {
-  const {
-    data: { vc_firms_aggregate },
-  } = await query<GetVcFirmInsightByLocationQuery>({
-    query: GetVcFirmInsightByLocationDocument,
-    variables: {
-      where: filter || {},
-    },
-  });
-
-  return vc_firms_aggregate.aggregate?.count;
 }
 
 async function onGetEventInsight(filter?: Events_Bool_Exp) {
