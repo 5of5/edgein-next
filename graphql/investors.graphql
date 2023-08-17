@@ -68,12 +68,12 @@ query GetInvestorMailingList($personId: Int!) {
 }
 
 # only possible with admin hasura role
-query GetAdminInvestorMailingList($personId: Int!, $companyId: Int!) {
+query GetAdminInvestorMailingList($personId: Int!, $companyIds: [Int!]) {
   investors(where: { person_id: { _eq: $personId } }) {
     id
     vc_firm {
       investments(
-        where: { investment_round: { company: { id: { _eq: $companyId } } } }
+        where: { investment_round: { company: { id: { _in: $companyIds } } } }
       ) {
         investment_round {
           company {

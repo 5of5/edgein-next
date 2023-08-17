@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const response = await Promise.all(
     params.map(async ({ email, personId }) => {
       const mailParams: InviteToEdgeInMailParams = {
-        emails: Array.from(email),
+        emails: [email],
         senderName: user.display_name || '',
         senderEmail: user.email || '',
         signUpUrl: `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`,
