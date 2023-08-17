@@ -1,9 +1,5 @@
 declare module 'react-gtm-module';
 
-declare module 'googlebot-verify' {
-  export function verify(ip: string): Promise<boolean>;
-}
-
 import {
   UseColumnOrderInstanceProps,
   UseColumnOrderState,
