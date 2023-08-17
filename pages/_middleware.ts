@@ -10,6 +10,9 @@ export async function middleware(req: NextRequest) {
   );
 
   if (userExists && url.pathname === '/') {
+    if (!userExists.onboarding_information) {
+      return NextResponse.rewrite(new URL('/onboarding', req.url));
+    }
     return NextResponse.rewrite(new URL('/companies', req.url));
   }
 
@@ -71,6 +74,10 @@ export async function middleware(req: NextRequest) {
     user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 
     if (!user) {
+      if (url.pathname === '/onboarding/') {
+        return NextResponse.redirect(new URL('/companies', req.url));
+      }
+
       const usage = await CookieService.getUsage(
         CookieService.getUsageToken(req.cookies),
       );
@@ -88,6 +95,21 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(
           new URL(`/login/?usage=true&${redirectPath}`, req.url),
         );
+      }
+    } else {
+      if (
+        url.pathname === '/sign-in/' ||
+        (url.pathname === '/onboarding/' && user.onboarding_information)
+      ) {
+        return NextResponse.redirect(new URL('/companies', req.url));
+      }
+
+      if (
+        !url.pathname.startsWith('/api/') &&
+        url.pathname !== '/onboarding/' &&
+        !user.onboarding_information
+      ) {
+        return NextResponse.redirect(new URL('/onboarding', req.url));
       }
     }
     // if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
