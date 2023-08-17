@@ -2,6 +2,8 @@ import { Contact } from '@/types/cloudsponge';
 import React, { useEffect } from 'react';
 import { SelectedPeople } from './elem-invite-user';
 
+// This implementation is taken from the CloudSponge documentation
+// https://www.cloudsponge.com/integrations/react/
 const addJavascript = (callback: () => void) => {
   const id = '__cloudsponge_widget_script';
   const src = `https://api.cloudsponge.com/widget/${CLOUDSPONGE_API_KEY}.js`;
