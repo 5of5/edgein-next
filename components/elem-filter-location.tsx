@@ -1,13 +1,11 @@
 import { FC, ChangeEvent, useState } from 'react';
 import { Combobox } from '@headlessui/react';
-import uniqBy from 'lodash/uniqBy';
-import uniq from 'lodash/uniq';
 import { FilterOptionKeys } from '@/models/Filter';
-import { RadarAddressResponse } from '@/types/common';
 import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
 import { ElemFilterPopup } from './elem-filter-popup';
 import { InputRadio } from './input-radio';
 import { IconX } from './icons';
+import { Place, SearchForSuggestionsResult } from '@aws-sdk/client-location';
 
 type Props = {
   open: boolean;
@@ -48,28 +46,32 @@ export const ElemFilterLocation: FC<Props> = ({
   const [inputValue, setInputValue] = useState('');
 
   const layers = {
-    country: ['country'],
-    state: ['state'],
-    city: ['locality'],
+    country: ['CountryType'],
+    state: ['RegionType'],
+    city: ['MunicipalityType'],
   }[option];
 
-  const { isLoading, options, onInputChange, setOptions } =
-    useAddressAutocomplete(layers);
-
-  const comboboxValues = [...tags].map(tagItem => ({ [option]: tagItem }));
-
-  const locationOptions = uniqBy(options, option);
+  const {
+    isLoadingPlaceSuggestions,
+    isLoadingPlace,
+    options,
+    onInputChange,
+    onGetPlace,
+  } = useAddressAutocomplete(layers);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     onInputChange(event);
   };
 
-  const handleSelect = (values: Partial<RadarAddressResponse>[]) => {
-    const newTags = uniq(values.map(item => item[option] || ''));
-    onChangeTags(newTags, option);
-    setOptions([]);
+  const handleSelect = async (value: SearchForSuggestionsResult) => {
     setInputValue('');
+    if (value.PlaceId && !tags.includes(value.Text || '')) {
+      const place = await onGetPlace(value.PlaceId);
+      if (place) {
+        onChangeTags([...tags, place.Label || ''], option);
+      }
+    }
   };
 
   const handleRemove = (tag: string) => {
@@ -106,8 +108,8 @@ export const ElemFilterLocation: FC<Props> = ({
           )}
 
           <div className="relative">
-            <Combobox multiple value={comboboxValues} onChange={handleSelect}>
-              <div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
+            <Combobox onChange={handleSelect}>
+              <div className="flex flex-wrap items-center p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
                 {tags.length > 0 && (
                   <ul className="flex flex-wrap gap-2">
                     {tags.map(item => (
@@ -127,22 +129,25 @@ export const ElemFilterLocation: FC<Props> = ({
                     ))}
                   </ul>
                 )}
-                <Combobox.Input
-                  className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
-                  displayValue={(value: RadarAddressResponse) =>
-                    value?.[option]
-                  }
-                  placeholder={placeholder}
-                  value={inputValue}
-                  onChange={handleInputChange}
-                />
+                {isLoadingPlace && (
+                  <p className="text-sm text-dark-400">Loading...</p>
+                )}
+                {!isLoadingPlace && (
+                  <Combobox.Input
+                    className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                    displayValue={(value: Place) => value?.Label || ''}
+                    placeholder={placeholder}
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                )}
               </div>
               {inputValue && (
                 <Combobox.Options className="absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
                   <ComboboxResults
-                    isLoading={isLoading}
+                    isLoading={isLoadingPlaceSuggestions}
                     name={option}
-                    options={locationOptions}
+                    options={options}
                   />
                 </Combobox.Options>
               )}
@@ -169,7 +174,7 @@ export const ElemFilterLocation: FC<Props> = ({
 type ComboboxResultsProps = {
   isLoading: boolean;
   name: Extract<FilterOptionKeys, 'country' | 'state' | 'city'>;
-  options: RadarAddressResponse[];
+  options: SearchForSuggestionsResult[];
 };
 
 const ComboboxResults: FC<ComboboxResultsProps> = ({
@@ -189,21 +194,19 @@ const ComboboxResults: FC<ComboboxResultsProps> = ({
 
   return (
     <>
-      {options
-        .filter(item => item[name])
-        .map(item => (
-          <Combobox.Option
-            className={({ active }) =>
-              `${
-                active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
-              }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
-            }
-            key={item[name]}
-            value={item}
-          >
-            {item[name]}
-          </Combobox.Option>
-        ))}
+      {options.map(item => (
+        <Combobox.Option
+          className={({ active }) =>
+            `${
+              active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
+            }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
+          }
+          key={item.PlaceId}
+          value={item}
+        >
+          {item.Text}
+        </Combobox.Option>
+      ))}
     </>
   );
 };

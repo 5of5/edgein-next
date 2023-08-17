@@ -12,14 +12,16 @@ type Props = {
     | 'danger'
     | 'dark'
     | 'primary'
-    | 'secondary'
     | 'purple'
+    | 'amber'
     | 'primary-light'
     | 'transparent'
     | 'white'
+    | 'gray'
     | 'slate'
     | 'ol-white'
     | 'ol-primary'
+    | 'default'
     | '';
   roundedFull?: boolean;
   size?: 'sm' | 'lg' | '';
@@ -47,13 +49,11 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   let btnClass = '';
   // button styles
   if (btn === 'primary') {
-    btnClass =
-      'text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:from-primary-500 hover:to-primary-400';
-  } else if (btn === 'secondary') {
-    btnClass =
-      'text-primary-700 from-amber-300 to-amber-500 bg-gradient-to-r hover:to-amber-400';
+    btnClass = 'text-white bg-primary-500 hover:bg-blue-900';
+  } else if (btn === 'amber') {
+    btnClass = 'text-gray-900 bg-amber-400 hover:bg-amber-300';
   } else if (btn === 'purple') {
-    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
+    btnClass = 'text-white bg-primary-500 hover:bg-blue-900';
   } else if (btn === 'primary-light') {
     btnClass = 'bg-primary-50 hover:bg-primary-100 text-primary-500';
   } else if (btn === 'ol-primary') {
@@ -62,7 +62,6 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   } else if (btn === 'ol-white') {
     btnClass =
       'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-white hover:text-primary-500 focus:outline-none focus:ring-1';
-    // 'text-white bg-transparent ring-inset ring-1 ring-white hover:ring-2 focus:!ring-2 active:ring-2';
   } else if (btn === 'transparent') {
     btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
   } else if (btn === 'white') {
@@ -75,6 +74,12 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     btnClass = 'text-white bg-dark-700 hover:opacity-60';
   } else if (btn === 'danger') {
     btnClass = 'text-white bg-rose-500 hover:bg-rose-600';
+  } else if (btn === 'gray') {
+    btnClass =
+      'text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500';
+  } else if (btn === 'default') {
+    btnClass =
+      'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 active:border-primary-500';
   } else {
     btnClass = '';
   }
@@ -87,17 +92,17 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   } else if (size === 'lg') {
     sizeClasses = 'px-5 py-2 text-lg';
   } else {
-    sizeClasses = 'px-4 py-1.5';
+    sizeClasses = 'px-2.5 py-1.5 text-sm';
   }
 
   btnClass += ` ${sizeClasses}`;
 
   // button disabled
-  if (disabled) {
+  if (disabled || loading) {
     btnClass = btnClass + ' opacity-40 pointer-events-none';
   }
 
-  const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 transition ease-in-out duration-150 group
+  const componentClassName = `relative inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group
 		${btnClass}
 		${roundedFull ? 'rounded-full' : ''}
 		${arrow || arrowLeft ? 'justify-between' : 'justify-center'}

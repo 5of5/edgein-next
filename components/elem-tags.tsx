@@ -1,44 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { MAX_TAGS_LIMIT } from '@/utils/constants';
 
 type Props = {
   className?: string;
-  heading?: string;
-  resourceType: 'companies' | 'investors' | 'events';
+  resourceType: 'companies' | 'investors' | 'events' | 'news';
   tags?: (string | null)[];
   filter?: string;
+  limit?: number;
 };
 
 export const ElemTags: React.FC<Props> = ({
   className,
-  heading,
   resourceType,
   tags,
   filter = 'industry',
+  limit = MAX_TAGS_LIMIT,
 }) => {
-  if (!tags) {
-    return <span></span>;
+  const [tagsLimit, setTagsLimit] = useState(limit);
+
+  const showMoreTags = () => {
+    setTagsLimit(MAX_TAGS_LIMIT);
+  };
+
+  if (tags) {
+    return (
+      <div className={`flex flex-wrap overflow-clip gap-2 ${className}`}>
+        {resourceType === 'news'
+          ? tags.slice(0, tagsLimit).map((tag, index: number) => {
+              return (
+                <div
+                  key={index}
+                  className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full"
+                >
+                  {tag}
+                </div>
+              );
+            })
+          : tags.slice(0, tagsLimit).map((tag, index: number) => {
+              return (
+                <a
+                  key={index}
+                  href={`/${resourceType}/?filters=${encodeURIComponent(
+                    `{"${filter}":{"tags":["${tag}"]}}`,
+                  )}`}
+                >
+                  <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
+                    {tag}
+                  </button>
+                </a>
+              );
+            })}
+
+        {tagsLimit < tags.length && (
+          <button
+            onClick={showMoreTags}
+            className="text-xs text-gray-500 font-medium py-1"
+          >
+            {tags.length - tagsLimit} more
+          </button>
+        )}
+      </div>
+    );
   }
-  return (
-    <section className={className}>
-      {heading && <h2 className="text-2xl font-bold">{heading}</h2>}
-      <ul className="flex flex-wrap gap-2 mt-4">
-        {tags.map((tag, index: number) => {
-          return (
-            <li
-              key={index}
-              className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all cursor-pointer hover:bg-slate-300"
-            >
-              <a
-                href={`/${resourceType}/?filters=${encodeURIComponent(
-                  `{"${filter}":{"tags":["${tag}"]}}`,
-                )}`}
-              >
-                {tag}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  );
+  return null;
 };

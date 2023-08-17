@@ -63,7 +63,7 @@ export const ElemRecentInvestments: FC<Props> = ({
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
               >
                 <PlaceholderInvestorCard />
               </div>
@@ -77,7 +77,7 @@ export const ElemRecentInvestments: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={index}
-                  className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <a
                     href={`/investors/${investor.slug}`}
@@ -162,6 +162,7 @@ export const ElemRecentInvestments: FC<Props> = ({
                         resourceType={'vc_firms'}
                         slug={investor.slug!}
                         buttonStyle="white"
+                        follows={investor.follows}
                       />
                     </div>
                   </a>

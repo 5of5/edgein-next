@@ -16,12 +16,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let isFirstLogin = false;
   try {
-    const userTokenResult = await authService.verifyEmailCode({
-      email: req.body.email,
-      otp: code,
+    const userTokenResult = await authService.getAccessToken({
+      // email: req.body.email,
+      code,
     });
+    console.log(1, userTokenResult);
     // get the user info from auth0
     const userInfo = await authService.getProfile(userTokenResult.access_token);
+    console.log(2, userInfo);
 
     if (userInfo && userInfo.email) {
       // get the domain from the email
@@ -42,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // check loggedin user and linkedin user email should be same
       const userToken = CookieService.getAuthToken(req.cookies);
       const loggedInUser = await CookieService.getUser(userToken);
-      if (loggedInUser && loggedInUser.active === false) {
+      if (loggedInUser && !loggedInUser.active) {
         return res.status(403).send({ message: 'Error: Please try again' });
       }
       const auth0SubInfo = userInfo.sub.split('|');
@@ -129,6 +131,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       CookieService.setTokenCookie(res, token);
     }
   } catch (ex: any) {
+    console.log(ex.stack);
     return res.status(400).send(ex.message);
   }
 

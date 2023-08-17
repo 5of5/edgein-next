@@ -34,7 +34,7 @@ export const getUpdatedDiff = (original: any, target: any) => {
       );
 
       if (
-        ['geopoint', 'source', 'metadata'].includes(key) &&
+        ['geopoint', 'source', 'metadata', 'location_json'].includes(key) &&
         !isEmpty(difference)
       ) {
         acc[key] = target[key as keyof {}];
@@ -132,6 +132,11 @@ export const isValidJsonString = (jsonString: string) => {
   } catch (e) {} // eslint-disable-line no-empty
 
   return false;
+};
+
+export const isFreeEmail = (email: string) => {
+  const pattern = /@(gmail|yahoo|hotmail)/i;
+  return pattern.test(email);
 };
 
 export const getSelectableWeb3Tags = () => {

@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemTags } from '@/components/elem-tags';
-import { runGraphQl } from '@/utils';
+import { formatDateShown, runGraphQl } from '@/utils';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -31,16 +31,15 @@ import Link from 'next/link';
 import parse from 'html-react-parser';
 import { newLineToP } from '@/utils/text';
 import { useUser } from '@/context/user-context';
-import { Popups } from '@/components/the-navbar';
 import { ElemRequiredProfileDialog } from '@/components/elem-required-profile-dialog';
 import { ElemSubEvents } from '@/components/event/elem-sub-events';
 import moment from 'moment-timezone';
 import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   event: GetEventQuery['events'][0];
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const Event: NextPage<Props> = props => {
@@ -48,6 +47,8 @@ const Event: NextPage<Props> = props => {
   const { eventId } = router.query;
 
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [event, setEvent] = useState<GetEventQuery['events'][0]>(props.event);
 
@@ -85,7 +86,7 @@ const Event: NextPage<Props> = props => {
 
   const onClickSearchName = () => {
     onCloseLinkPersonDialog();
-    props.setShowPopup('search');
+    setShowPopup('search');
   };
 
   const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
@@ -175,170 +176,155 @@ const Event: NextPage<Props> = props => {
     ['desc'],
   );
 
-  const formatDateShown = (date: Date, timezone?: string) => {
-    const local_date = moment(date).local().format('YYYY-MM-DD');
-
-    return moment(local_date).format('LL');
-  };
-
   return (
-    <>
-      <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-4">
-            <div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">
-              <div
-                className="absolute top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full -z-10 bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
-                style={{
-                  backgroundImage: `url(${
-                    event.banner?.url ||
-                    getEventBanner(event.location_json?.city)
-                  }), url(${randomImageOfCity(event.location_json?.city)})`,
-                }}
-              ></div>
-              <img
-                className="object-fit h-full w-full"
-                src={
-                  event.banner?.url ||
-                  getEventBanner(event.location_json?.city, '1220x400')
-                }
-                alt={event.name}
-                onError={e => {
-                  (e.target as HTMLImageElement).src = randomImageOfCity(
-                    event.location_json?.city,
-                  );
-                  (e.target as HTMLImageElement).onerror = null; // prevents looping
-                }}
-              />
-            </div>
+    <DashboardLayout>
+      <div className="p-8">
+        <div className="mb-4">
+          <div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">
+            <div
+              className="absolute top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full -z-10 bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+              style={{
+                backgroundImage: `url(${
+                  event.banner?.url || getEventBanner(event.location_json?.city)
+                }), url(${randomImageOfCity(event.location_json?.city)})`,
+              }}
+            ></div>
+            <img
+              className="object-fit h-full w-full"
+              src={
+                event.banner?.url ||
+                getEventBanner(event.location_json?.city, '1220x400')
+              }
+              alt={event.name}
+              onError={e => {
+                (e.target as HTMLImageElement).src = randomImageOfCity(
+                  event.location_json?.city,
+                );
+                (e.target as HTMLImageElement).onerror = null; // prevents looping
+              }}
+            />
           </div>
-
-          {event.start_date && (
-            <div className="w-full inline py-1 font-medium uppercase text-lg text-slate-600">
-              {formatDateShown(event?.start_date)}
-
-              {event?.start_time && (
-                <span className="pl-1">
-                  at {moment(event?.start_time, 'HH:mm').format('hh:mmA')}
-                </span>
-              )}
-              {event.end_date && ` – ${formatDateShown(event?.end_date)}`}
-              {event?.end_time && (
-                <span className="pl-1">
-                  at {moment(event?.end_time, 'HH:mm').format('hh:mmA')}
-                </span>
-              )}
-              {/* event.timezone */}
-            </div>
-          )}
-
-          <div className="items-start justify-between lg:flex lg:gap-20">
-            <h1 className="text-3xl font-bold md:text-5xl">{event.name}</h1>
-            {attendees?.length > 0 && (
-              <div className="self-center flex items-center gap-x-2 shrink-0">
-                <ul className="flex -space-x-3">
-                  {attendees?.map(attendee => (
-                    <li key={attendee.id}>
-                      <Link href={`/people/${attendee.person?.slug}`}>
-                        <a>
-                          {attendee.person?.picture ? (
-                            <ElemPhoto
-                              photo={attendee.person.picture}
-                              wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
-                              imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
-                              imgAlt={attendee.person?.name}
-                            />
-                          ) : (
-                            <div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
-                              {attendee.person?.name?.charAt(0)}
-                            </div>
-                          )}
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <span className="font-bold">{attendees?.length}</span>
-              </div>
-            )}
-          </div>
-          <div>
-            {event.types?.length > 0 && (
-              <ElemTags
-                className="mt-4"
-                resourceType={'events'}
-                tags={event.types}
-                filter="eventType"
-              />
-            )}
-          </div>
-
-          {event.parent_event && (
-            <div className="mt-4">
-              <div className="font-bold text-sm">Sub-event of:</div>
-              <Link href={`/events/${event.parent_event.slug}`} passHref>
-                <a className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
-                  <h2 className="inline group-hover:underline">
-                    {event.parent_event.name}
-                  </h2>
-                </a>
-              </Link>
-            </div>
-          )}
-
-          <ElemTabBar
-            className="flex-wrap gap-y-2 pb-2 mt-4 border-b-0 sm:flex-nowrap sm:gap-y-0 sm:pb-0"
-            tabs={tabBarItems}
-            tabsClassName="w-full border-b border-black/10 sm:w-auto lg:border-b-0"
-            resourceName={event.name}
-            showDropdown={false}
-          >
-            <div className="w-full space-y-2 sm:w-auto sm:flex sm:items-center sm:space-y-0 sm:space-x-2">
-              <ElemAddToCalendarButton
-                className="w-full sm:w-auto"
-                event={{
-                  name: event.name,
-                  startDate: event.start_date,
-                  endDate: event.end_date,
-                  startTime: event.start_time,
-                  endTime: event.end_time,
-                  location: getFullAddress(event.location_json),
-                  description: event.overview || '',
-                }}
-              />
-              <ElemSocialShare
-                btnClass="w-full sm:w-auto"
-                resourceName={event.name}
-                resourceTwitterUrl={event.twitter}
-              />
-              {attendees.some(item => item.person?.id === user?.person?.id) ? (
-                <ElemButton btn="primary" className="w-full">
-                  Joined
-                </ElemButton>
-              ) : (
-                <ElemButton
-                  btn="primary"
-                  onClick={handleClickGoingEvent}
-                  loading={isLoadingGoingEvent}
-                  className="w-full"
-                >
-                  Going
-                </ElemButton>
-              )}
-            </div>
-          </ElemTabBar>
         </div>
+
+        {event.start_date && (
+          <div className="w-full inline py-1 text-gray-500">
+            {formatDateShown(event?.start_date)}
+
+            {event?.start_time && (
+              <span className="pl-1">
+                at {moment(event?.start_time, 'HH:mm').format('hh:mmA')}
+              </span>
+            )}
+            {event.end_date && ` – ${formatDateShown(event?.end_date)}`}
+            {event?.end_time && (
+              <span className="pl-1">
+                at {moment(event?.end_time, 'HH:mm').format('hh:mmA')}
+              </span>
+            )}
+            {/* event.timezone */}
+          </div>
+        )}
+
+        <div className="items-start justify-between lg:flex lg:gap-20">
+          <h1 className="text-4xl font-medium">{event.name}</h1>
+          {attendees?.length > 0 && (
+            <div className="self-center flex items-center gap-x-2 shrink-0">
+              <ul className="flex -space-x-3">
+                {attendees?.map(attendee => (
+                  <li key={attendee.id}>
+                    <Link href={`/people/${attendee.person?.slug}`}>
+                      <a>
+                        {attendee.person?.picture ? (
+                          <ElemPhoto
+                            photo={attendee.person.picture}
+                            wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
+                            imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
+                            imgAlt={attendee.person?.name}
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
+                            {attendee.person?.name?.charAt(0)}
+                          </div>
+                        )}
+                      </a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <span className="font-medium">{attendees?.length}</span>
+            </div>
+          )}
+        </div>
+        <div>
+          {event.types?.length > 0 && (
+            <ElemTags
+              className="mt-4"
+              resourceType={'events'}
+              tags={event.types}
+              filter="eventType"
+            />
+          )}
+        </div>
+
+        {event.parent_event && (
+          <div className="mt-4">
+            <div className="font-bold text-sm">Sub-event of:</div>
+            <Link href={`/events/${event.parent_event.slug}`} passHref>
+              <a className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
+                <h2 className="inline group-hover:underline">
+                  {event.parent_event.name}
+                </h2>
+              </a>
+            </Link>
+          </div>
+        )}
+
+        <ElemTabBar
+          className="mt-7 flex-wrap"
+          tabs={tabBarItems}
+          resourceName={event.name}
+          showDropdown={false}
+        >
+          <div className="flex flex-wrap gap-2 lg:justify-end">
+            <ElemAddToCalendarButton
+              event={{
+                name: event.name,
+                startDate: event.start_date,
+                endDate: event.end_date,
+                startTime: event.start_time,
+                endTime: event.end_time,
+                location: getFullAddress(event.location_json),
+                description: event.overview || '',
+              }}
+            />
+            <ElemSocialShare
+              resourceName={event.name}
+              resourceTwitterUrl={event.twitter}
+            />
+            {attendees?.some(item => item.person?.id === user?.person?.id) ? (
+              <ElemButton btn="purple">Joined</ElemButton>
+            ) : (
+              <ElemButton
+                btn="primary"
+                onClick={handleClickGoingEvent}
+                loading={isLoadingGoingEvent}
+              >
+                Going
+              </ElemButton>
+            )}
+          </div>
+        </ElemTabBar>
       </div>
 
-      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+      <div className="px-8">
         <div
-          className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+          className="lg:grid lg:grid-cols-11 lg:gap-7"
           ref={overviewRef}
           id="overview"
         >
           <div className="col-span-3">
             <ElemKeyInfo
-              className="sticky top-11"
+              className="sticky top-16"
               heading="Key Info"
               eventLink={event.link}
               // website={event.link}
@@ -354,13 +340,11 @@ const Event: NextPage<Props> = props => {
               attachments={event.attachments}
             />
           </div>
-          <div className="col-span-8">
+          <div className="col-span-8 mt-8 grid gap-y-8 lg:mt-0">
             {event.overview && (
-              <div className="mt-7 w-full p-5 bg-white shadow rounded-lg lg:mt-0">
-                <h2 className="text-xl font-bold w-full mb-2 border-b border-black/10">
-                  Overview
-                </h2>
-                <div className="text-lg text-slate-600 prose">
+              <div className="rounded-lg border border-gray-300 lg:mt-0">
+                <h2 className="text-lg font-medium px-4 pt-2">Overview</h2>
+                <div className="text-sm text-gray-500 px-4 py-4">
                   {parse(newLineToP(event.overview))}
                 </div>
               </div>
@@ -369,14 +353,14 @@ const Event: NextPage<Props> = props => {
             {organizers?.length > 0 && (
               <div
                 ref={organizersRef}
-                className="mt-7 p-5 bg-white shadow rounded-lg"
+                className="rounded-lg border border-gray-300"
                 id="organizers"
               >
                 <ElemOrganizers organizations={organizers} />
               </div>
             )}
 
-            <div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
+            <div className="rounded-lg border border-gray-300">
               <ElemEventActivity
                 activities={sortedActivities}
                 eventName={event.name}
@@ -388,7 +372,7 @@ const Event: NextPage<Props> = props => {
         {speakers?.length > 0 && (
           <div
             ref={speakersRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
+            className="mt-7 rounded-lg border border-gray-300"
             id="speakers"
           >
             <ElemSpeakerGrid people={speakers} />
@@ -396,11 +380,7 @@ const Event: NextPage<Props> = props => {
         )}
 
         {sponsors.length > 0 && (
-          <div
-            ref={sponsorsRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
-            id="sponsors"
-          >
+          <div ref={sponsorsRef} className="mt-7" id="sponsors">
             <ElemSponsorGrid organizations={sponsors} />
           </div>
         )}
@@ -432,7 +412,7 @@ const Event: NextPage<Props> = props => {
       />
 
       <Toaster />
-    </>
+    </DashboardLayout>
   );
 };
 

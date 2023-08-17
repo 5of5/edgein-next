@@ -70,10 +70,8 @@ const ElemNotificationItem: FC<Props> = ({
 
       <div className="hidden sm:flex items-center space-x-4">
         <div
-          className={`w-3 h-3 rounded-full bg-gradient-to-r shrink-0 ${
-            notification.read
-              ? 'bg-transparent'
-              : 'from-blue-800 via-primary-500 to-primary-400 '
+          className={`w-3 h-3 rounded-full shrink-0 ${
+            notification.read ? 'bg-transparent' : 'bg-primary-500'
           }`}
         ></div>
       </div>

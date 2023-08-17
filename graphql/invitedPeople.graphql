@@ -1,0 +1,19 @@
+query GetInvitedPeopleByUserId($userId: Int!) {
+  invited_people(where: { inviter_user_id: { _eq: $userId } }) {
+    id
+    person_id
+    inviter_user_id
+    created_at
+  }
+}
+
+mutation InsertInvitedPeople($personId: Int!, $userId: Int!) {
+  insert_invited_people_one(
+    object: { person_id: $personId, inviter_user_id: $userId }
+  ) {
+    id
+    person_id
+    inviter_user_id
+    created_at
+  }
+}

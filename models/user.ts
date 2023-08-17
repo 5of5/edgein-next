@@ -16,6 +16,7 @@ export type User = {
   intercomUserHash?: string;
   auth0_linkedin_id?: string | null;
   auth0_user_pass_id?: string | null;
+  credits: number;
   billing_org_id?: string;
   billing_org?: {
     customer_id?: string;
@@ -36,6 +37,7 @@ export type User = {
   active: boolean;
   onboarding_information: Record<string, unknown> | null;
   showDraftData?: boolean;
+  feature_flags: Record<string, unknown> | null;
 };
 
 export type UserToken = User & {

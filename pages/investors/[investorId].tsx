@@ -8,6 +8,7 @@ import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemReactions } from '@/components/elem-reactions';
+import { ElemTeamGrid } from '@/components/company/elem-team-grid';
 import { ElemInvestorGrid } from '@/components/investor/elem-investor-grid';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemSocialShare } from '@/components/elem-social-share';
@@ -25,27 +26,23 @@ import {
   Vc_Firms,
 } from '@/graphql/types';
 
-import { useAuth } from '@/hooks/use-auth';
-import { uniq } from 'lodash';
 import { ElemButton } from '@/components/elem-button';
 import { onTrackView } from '@/utils/track';
 import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
-import { IconEditPencil, IconAnnotation } from '@/components/icons';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import { Popups } from '@/components/the-navbar';
 import ElemNewsList from '@/components/news/elem-news-list';
+import { useUser } from '@/context/user-context';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 type Props = {
   vcfirm: Vc_Firms;
   sortByDateAscInvestments: Array<Investment_Rounds>;
   sortNews: Array<News>;
   getInvestments: Array<Investment_Rounds>;
-  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const VCFirm: NextPage<Props> = props => {
-  const { user } = useAuth();
   const router = useRouter();
   const { investorId } = router.query;
 
@@ -60,6 +57,8 @@ const VCFirm: NextPage<Props> = props => {
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
+  const { selectedLibrary } = useUser();
+
   const {
     data: vcFirmData,
     error,
@@ -67,6 +66,12 @@ const VCFirm: NextPage<Props> = props => {
   } = useGetVcFirmQuery({
     slug: investorId as string,
   });
+
+  useEffect(() => {
+    if (selectedLibrary && !vcfirm.library?.includes(selectedLibrary)) {
+      router.push('/investors');
+    }
+  }, [vcfirm, selectedLibrary, router]);
 
   useEffect(() => {
     if (vcfirm.overview) {
@@ -120,113 +125,112 @@ const VCFirm: NextPage<Props> = props => {
   );
 
   return (
-    <>
-      <div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-11 lg:gap-7">
-            <div className="col-span-3">
-              <ElemPhoto
-                photo={vcfirm.logo}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
-                imgClass="object-contain w-full h-full"
-                imgAlt={vcfirm.name}
-                placeholderClass="text-slate-300"
-              />
-            </div>
-
-            <div className="w-full col-span-5 mt-7 lg:mt-4">
-              <h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
-              {vcfirm.tags?.length > 0 && (
-                <ElemTags
-                  className="mt-4"
-                  resourceType={'investors'}
-                  tags={vcfirm.tags}
-                />
-              )}
-
-              {parentOrganization && (
-                <div className="mt-4">
-                  <div className="font-bold text-sm">Sub-organization of:</div>
-                  <Link
-                    href={`/${
-                      parentLinks?.from_company ? 'companies' : 'investors'
-                    }/${parentOrganization?.slug}`}
-                    passHref
-                  >
-                    <a className="flex items-center gap-2 mt-1 group">
-                      <ElemPhoto
-                        photo={parentOrganization?.logo}
-                        wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
-                        imgClass="object-contain w-full h-full"
-                        imgAlt={parentOrganization?.name}
-                        placeholderClass="text-slate-300"
-                      />
-                      <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
-                        {parentOrganization?.name}
-                      </h2>
-                    </a>
-                  </Link>
-                </div>
-              )}
-
-              {vcfirm.overview && (
-                <>
-                  <div
-                    ref={overviewDiv}
-                    className={`mt-4 text-base text-slate-600 prose ${
-                      overviewMore ? '' : 'line-clamp-3'
-                    }`}
-                  >
-                    {parse(stripHtmlTags(vcfirm.overview))}
-                  </div>
-                  {overviewDivHeight > 84 && (
-                    <ElemButton
-                      onClick={() => setOverviewMore(!overviewMore)}
-                      btn="transparent"
-                      className="!px-0 !py-0 inline font-normal"
-                    >
-                      show {overviewMore ? 'less' : 'more'}
-                    </ElemButton>
-                  )}
-                </>
-              )}
-              <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
-                <ElemReactions
-                  resource={vcfirm}
-                  resourceType={'vc_firms'}
-                  className="w-full sm:w-auto"
-                />
-                <ElemSaveToList
-                  resourceName={vcfirm.name}
-                  resourceId={vcfirm.id}
-                  resourceType={'vc_firms'}
-                  slug={vcfirm.slug!}
-                />
-                <ElemSocialShare
-                  resourceName={vcfirm.name}
-                  resourceTwitterUrl={vcfirm.twitter}
-                />
-              </div>
-            </div>
+    <DashboardLayout>
+      <div className="p-8">
+        <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+          <div className="col-span-3">
+            <ElemPhoto
+              photo={vcfirm.logo}
+              wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
+              imgClass="object-contain w-full h-full"
+              imgAlt={vcfirm.name}
+              placeholderClass="text-slate-300"
+            />
           </div>
 
-          <ElemTabBar
-            className="mt-7 border-b-0"
-            tabs={tabBarItems}
-            resourceName={vcfirm.name}
-          />
+          <div className="w-full col-span-5 mt-7 lg:mt-4">
+            <h1 className="text-4xl font-medium">{vcfirm.name}</h1>
+            {vcfirm.tags?.length > 0 && (
+              <ElemTags
+                className="mt-4"
+                resourceType={'investors'}
+                tags={vcfirm.tags}
+              />
+            )}
+
+            {parentOrganization && (
+              <div className="mt-4">
+                <div className="font-bold text-sm">Sub-organization of:</div>
+                <Link
+                  href={`/${
+                    parentLinks?.from_company ? 'companies' : 'investors'
+                  }/${parentOrganization?.slug}`}
+                  passHref
+                >
+                  <a className="flex items-center gap-2 mt-1 group">
+                    <ElemPhoto
+                      photo={parentOrganization?.logo}
+                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
+                      imgClass="object-contain w-full h-full"
+                      imgAlt={parentOrganization?.name}
+                      placeholderClass="text-slate-300"
+                    />
+                    <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                      {parentOrganization?.name}
+                    </h2>
+                  </a>
+                </Link>
+              </div>
+            )}
+
+            {vcfirm.overview && (
+              <>
+                <div
+                  ref={overviewDiv}
+                  className={`mt-4 text-sm text-gray-500 prose ${
+                    overviewMore ? '' : 'line-clamp-3'
+                  }`}
+                >
+                  {parse(stripHtmlTags(vcfirm.overview))}
+                </div>
+                {overviewDivHeight > 84 && (
+                  <ElemButton
+                    onClick={() => setOverviewMore(!overviewMore)}
+                    btn="transparent"
+                    className="!px-0 !py-0 inline font-normal"
+                  >
+                    show {overviewMore ? 'less' : 'more'}
+                  </ElemButton>
+                )}
+              </>
+            )}
+            <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+              <ElemReactions
+                resource={vcfirm}
+                resourceType={'vc_firms'}
+                className="w-full sm:w-auto"
+              />
+              <ElemSaveToList
+                resourceName={vcfirm.name}
+                resourceId={vcfirm.id}
+                resourceType={'vc_firms'}
+                slug={vcfirm.slug!}
+                follows={vcfirm.follows}
+              />
+              <ElemSocialShare
+                resourceName={vcfirm.name}
+                resourceTwitterUrl={vcfirm.twitter}
+              />
+            </div>
+          </div>
         </div>
+
+        <ElemTabBar
+          className="mt-7 border-b-0"
+          tabs={tabBarItems}
+          resourceName={vcfirm.name}
+        />
       </div>
 
-      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+      <div className="px-8">
         <div
-          className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+          className="lg:grid lg:grid-cols-11 lg:gap-7"
           ref={overviewRef}
           id="overview"
         >
           <div className="col-span-3">
             <ElemKeyInfo
-              className="sticky top-11"
+              className="sticky top-16"
               heading="Key Info"
               website={vcfirm.website}
               investmentsLength={sortedInvestmentRounds.length}
@@ -238,18 +242,15 @@ const VCFirm: NextPage<Props> = props => {
             />
           </div>
           <div className="col-span-8">
-            <div className="w-full mt-7 p-5 bg-slate-200 rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)] lg:mt-0">
+            <div className="w-full mt-7 lg:mt-0">
               <ElemOrganizationNotes
                 resourceId={vcfirm.id}
                 resourceType="vc_firms"
-                setShowPopup={props.setShowPopup}
+                resourceName={vcfirm.name || ''}
               />
             </div>
             {props.sortNews.length > 0 && (
-              <div
-                ref={newsRef}
-                className="w-full mt-7 p-5 bg-white shadow rounded-lg"
-              >
+              <div ref={newsRef} className="w-full mt-7">
                 <ElemNewsList
                   resourceType="vc_firms"
                   resourceId={vcfirm.id}
@@ -257,7 +258,7 @@ const VCFirm: NextPage<Props> = props => {
                 />
               </div>
             )}
-            <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+            <div className="w-full mt-7">
               <ElemOrganizationActivity
                 resourceType="vc_firms"
                 resourceInvestments={sortedInvestmentRounds}
@@ -266,11 +267,7 @@ const VCFirm: NextPage<Props> = props => {
           </div>
         </div>
         {vcfirm.investors.length > 0 && (
-          <div
-            ref={teamRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
-            id="team"
-          >
+          <div ref={teamRef} className="mt-7" id="team">
             <ElemInvestorGrid
               // tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
               showEdit={false}
@@ -281,13 +278,8 @@ const VCFirm: NextPage<Props> = props => {
         )}
 
         {sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
-          <section
-            ref={investmentRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
-            id="investments"
-          >
+          <section ref={investmentRef} className="mt-7" id="investments">
             <ElemInvestments
-              showEdit={false}
               heading="Investments"
               investments={sortedInvestmentRounds.filter(n => n)}
             />
@@ -308,7 +300,7 @@ const VCFirm: NextPage<Props> = props => {
 				)}
 			</div> */}
       </div>
-    </>
+    </DashboardLayout>
   );
 };
 

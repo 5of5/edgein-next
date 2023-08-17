@@ -1,0 +1,110 @@
+name: Remove preview environment
+on:
+  pull_request:
+    types:
+      - closed
+  workflow_dispatch:
+    inputs:
+      workspace:
+        description: 'Workspace to deploy'
+        required: true
+        default: preview
+
+env:
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_REGION: ${{vars.AWS_REGION}}
+  PROJECT_NAME: edgein
+
+jobs:
+  remove:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set workspace
+        run: |
+          if [[ "${{ github.event.inputs.workspace }}" == "preview" || -z "${{ github.event.inputs.workspace }}" ]]; then
+            echo WORKSPACE=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
+          else
+            echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
+          fi
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Load environment variables from .env file
+        uses: falti/dotenv-action@v1.0.4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Config Terraform plugin cache
+        working-directory: infra/terraform/application
+        run: |
+          echo 'plugin_cache_dir="$HOME/.terraform.d/plugin-cache"' >~/.terraformrc
+          mkdir --parents ~/.terraform.d/plugin-cache
+
+      - name: Cache Terraform
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      - name: Setup TF variables
+        working-directory: infra/terraform/application
+        run: |
+          touch input.tfvars
+          echo vercel_commit = \"$GITHUB_SHA\" >> input.tfvars
+          echo 'vercel_team = "${{ secrets.VERCEL_TEAM }}"' >> input.tfvars
+          echo 'vercel_api_token = "${{ secrets.VERCEL_API_TOKEN }}"' >> input.tfvars
+          echo 'auth0_domain = "${{ vars.AUTH0_DOMAIN }}"' >> input.tfvars
+          echo 'auth0_client_id = "${{ secrets.AUTH0_CLIENT_ID }}"' >> input.tfvars
+          echo 'auth0_client_secret = "${{ secrets.AUTH0_CLIENT_SECRET }}"' >> input.tfvars
+
+      - name: Terraform Init
+        id: init
+        working-directory: infra/terraform/application
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        working-directory: infra/terraform/application
+        run: terraform validate -no-color
+
+      - name: Terraform select workspace
+        id: select-workspace
+        working-directory: infra/terraform/application
+        run: terraform workspace select ${{ env.WORKSPACE }}
+
+      - name: Destroy preview environment
+        working-directory: infra/terraform/application
+        run: terraform destroy --auto-approve -var-file="input.tfvars"
+
+      - name: Remove workspace
+        id: remove-workspace
+        working-directory: infra/terraform/application
+        run: terraform workspace delete ${{ env.WORKSPACE }}

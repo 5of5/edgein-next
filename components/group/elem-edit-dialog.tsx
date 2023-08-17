@@ -3,11 +3,15 @@ import { Dialog, Transition } from '@headlessui/react';
 import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
 import { ElemButton } from '../elem-button';
+import { User_Groups } from '@/graphql/types';
+import { groupSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
   loading?: boolean;
-  fieldName: string;
+  fieldName: Partial<keyof User_Groups>;
+  fieldLabel: string;
   fieldValue?: string;
   required?: boolean;
   onClose: () => void;
@@ -18,6 +22,7 @@ const ElemEditDialog: FC<Props> = ({
   isOpen,
   loading = false,
   fieldName,
+  fieldLabel,
   fieldValue,
   required,
   onClose,
@@ -33,8 +38,14 @@ const ElemEditDialog: FC<Props> = ({
 
   const onValidate = (value: string) => {
     setValue(value);
-    if (required && !value) {
-      setError(`${fieldName} is required.`);
+
+    const { errors } = zodValidate({ [fieldName]: value }, groupSchema);
+    if (errors) {
+      if (fieldName === 'name' || fieldName === 'description') {
+        setError(errors[fieldName]?.[0] || '');
+      } else {
+        setError('');
+      }
     } else {
       setError('');
     }
@@ -77,7 +88,7 @@ const ElemEditDialog: FC<Props> = ({
               <Dialog.Panel className="w-full max-w-md transform rounded-lg bg-slate-100 shadow-xl transition-all overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
                   <h2 className="text-xl font-bold capitalize">
-                    {`Edit ${fieldName}`}
+                    {`Edit ${fieldLabel}`}
                   </h2>
                   <button
                     onClick={onClose}
@@ -95,19 +106,19 @@ const ElemEditDialog: FC<Props> = ({
                       type="text"
                       value={value}
                       className={`${
-                        error === ''
-                          ? 'ring-1 ring-slate-200'
-                          : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                        error
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
                       }`}
                     />
-                    {error === '' ? null : (
+                    {error && (
                       <div className="mt-2 font-bold text-sm text-rose-400">
                         {error}
                       </div>
                     )}
                   </div>
                   <div className="flex justify-end gap-x-4">
-                    <ElemButton onClick={onClose} roundedFull btn="slate">
+                    <ElemButton onClick={onClose} roundedFull btn="gray">
                       Cancel
                     </ElemButton>
                     <ElemButton
@@ -115,7 +126,7 @@ const ElemEditDialog: FC<Props> = ({
                       roundedFull
                       btn="primary"
                       loading={loading}
-                      disabled={!!error}
+                      disabled={(required && !value) || Boolean(error)}
                     >
                       Save
                     </ElemButton>

@@ -1,4 +1,5 @@
-import { ReactNode } from 'react';
+import { IconProps } from '@/components/icons';
+import { FC, ReactNode } from 'react';
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -10,6 +11,14 @@ export type GroupsTabType = 'my-groups' | 'discover' | 'joined';
 
 export type GroupsTabItem = {
   id: GroupsTabType;
+  name: string;
+  disabled?: boolean;
+};
+
+export type ListsTabType = 'my-lists' | 'discover' | 'following';
+
+export type ListsTabItem = {
+  id: ListsTabType;
   name: string;
   disabled?: boolean;
 };
@@ -32,21 +41,19 @@ export type Tag = {
   name: string;
 };
 
-export type RadarAddressResponse = {
-  latitude: number;
-  longitude: number;
-  country: string;
-  countryCode: string;
-  county: string;
-  borough: string;
-  city: string;
-  number: string;
-  neighborhood: string;
-  postalCode: string;
-  stateCode: string;
-  state: string;
-  street: string;
-  layer: string;
-  formattedAddress: string;
-  placeLabel: string;
+export type ExploreMenuItem = {
+  href: string;
+  icon: FC<IconProps>;
+  title: string;
+};
+
+export type Order_By_Option = 'ascending' | 'descending' | 'newest' | 'oldest';
+
+export type DashboardCategory = {
+  title: string;
+  value: string;
+  description?: string;
+  icon?: string;
+  disabled?: boolean;
+  date?: string;
 };

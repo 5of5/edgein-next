@@ -8,7 +8,7 @@ import {
   maxValue,
   regex,
 } from 'react-admin';
-import { GroupsTabItem } from '@/types/common';
+import { GroupsTabItem, ListsTabItem } from '@/types/common';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -408,23 +408,22 @@ export const companyChoices = [
   {
     id: 'Trending',
     name: 'Trending',
+    icon: '🔥',
   },
-  {
-    id: 'Following',
-    name: 'Following (Upcoming)',
-    disabled: true,
-  },
-  {
-    id: 'Raising',
-    name: 'Raising',
-  },
+  // {
+  //   id: 'Raising',
+  //   name: 'Raising',
+  //   icon: '💸',
+  // },
   {
     id: 'Acquired',
     name: 'Acquired',
+    icon: '🏡',
   },
   {
     id: 'Dead',
     name: 'Dead',
+    icon: '💀',
   },
 ];
 
@@ -458,6 +457,7 @@ export const companyLayerChoices = [
     name: "Layer 6 - Interoperable Digital Assets / NFT's",
   },
 ];
+
 export const roundChoices = [
   {
     id: 'Pre-seed',
@@ -543,25 +543,36 @@ export const currencyChoices = [
     name: 'SGD',
   },
 ];
+// {
+//   id: 'Trending',
+//   name: 'Trending',
+//   icon: '🔥',
+// },
+// {
+//   id: 'Raising',
+//   name: 'Raising',
+//   icon: '💸',
+// },
+// {
+//   id: 'Acquired',
+//   name: 'Acquired',
+//   icon: '🏡',
+// },
+// {
+//   id: 'Dead',
+//   name: 'Dead',
+//   icon: '💀',
 
 export const investorChoices = [
   {
     id: 'Trending',
     name: 'Trending',
-  },
-  {
-    id: 'Following',
-    name: 'Following (Coming soon!)',
-    disabled: true,
-  },
-  {
-    id: 'Acquired',
-    name: 'Acquired',
-    disabled: true,
+    icon: '🔥',
   },
   {
     id: 'Dead',
     name: 'Dead',
+    icon: '💀',
   },
 ];
 
@@ -688,6 +699,7 @@ export const web3Tags: Tag[] = [
   'Polkadot',
   'Metaverse',
   'News',
+  'Zero Knowledge',
 ].map(tag => ({ id: tag, name: tag }));
 
 export const aiTags: Tag[] = [
@@ -842,37 +854,37 @@ export const companiesFilterOptions = [
     category: 'Location',
     items: [
       {
-        label: 'Add country',
+        label: 'Country',
         value: 'country',
       },
       {
-        label: 'Add state',
+        label: 'State',
         value: 'state',
       },
       {
-        label: 'Add city',
+        label: 'City',
         value: 'city',
       },
       {
-        label: 'Add address',
+        label: 'Address',
         value: 'address',
       },
     ],
   },
   {
-    category: 'Description keywords',
+    // category: 'Keywords',
     items: [
       {
-        label: 'Add keywords',
+        label: 'Keywords',
         value: 'keywords',
       },
     ],
   },
   {
-    category: 'Tags',
+    //category: 'Tags',
     items: [
       {
-        label: 'Select tags',
+        label: 'Tags',
         value: 'industry',
       },
     ],
@@ -903,7 +915,7 @@ export const companiesFilterOptions = [
     ],
   },
   {
-    category: 'Team',
+    // category: 'Team',
     items: [
       {
         label: 'Team size',
@@ -1065,6 +1077,7 @@ export const MY_LISTS_MENU_OPEN_KEY = 'disclosure-my-lists-menu-default-open';
 export const MY_NOTES_MENU_OPEN_KEY = 'disclosure-my-notes-menu-default-open';
 export const MY_GROUPS_MENU_OPEN_KEY = 'disclosure-my-groups-menu-default-open';
 export const EXPLORE_MENU_OPEN_KEY = 'disclosure-explore-menu-default-open';
+export const SHOW_INVITE_BANNER = 'show-invite-banner';
 
 export const eventTypeChoices = [
   'Hackathon',
@@ -1940,10 +1953,18 @@ export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
 
 export const ONBOARDING_QUESTION = 'Where did you hear about us?';
 
+export const DEBOUNCE_TIME = 700;
+
 export const GROUPS_TABS: GroupsTabItem[] = [
   { id: 'my-groups', name: 'My Groups' },
   { id: 'discover', name: 'Discover' },
   { id: 'joined', name: 'Joined' },
+];
+
+export const LISTS_TABS: ListsTabItem[] = [
+  { id: 'my-lists', name: 'My Lists' },
+  { id: 'discover', name: 'Discover' },
+  { id: 'following', name: 'Following' },
 ];
 
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
@@ -1983,3 +2004,33 @@ export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
   'mdinsdale@mac.com',
   'dinghan@capital6.com',
 ];
+
+export const LIST_NAME_MIN_LENGTH = 3;
+export const LIST_NAME_MAX_LENGTH = 255;
+
+export const GROUP_NAME_MAX_LENGTH = 255;
+export const GROUP_DESCRIPTION_MAX_LENGTH = 1000;
+
+export const NOTIFICATION_EXCLUDE_PROPERTIES = [
+  'status_tags',
+  'logo',
+  'trajectory',
+  'search_count',
+];
+
+export const GENERAL_ERROR_MESSAGE =
+  'Something went wrong. Please try again later';
+
+export const EMAIL_MAX_LENGTH = 255;
+
+export const MAX_TAGS_LIMIT = 50;
+
+export const CARD_DEFAULT_TAGS_LIMIT = 3;
+
+export const CARD_MAX_TAGS_LIMIT = 50;
+
+export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
+
+export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
+
+export const NEW_CATEGORY_LIMIT = 33;

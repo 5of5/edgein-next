@@ -1,7 +1,9 @@
 import React, { useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
+import { Place } from '@aws-sdk/client-location';
 import { Dialog, Transition } from '@headlessui/react';
+import { toast, Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { ONBOARDING_QUESTION } from '@/utils/constants';
@@ -11,7 +13,7 @@ import { InputTextarea } from '../input-textarea';
 
 type Props = {
   selectedOption: string;
-  locationTags: any[];
+  locationTags: Place[];
   industryTags: string[];
   message: string;
   show: boolean;
@@ -55,7 +57,7 @@ export default function OnboardingStep5(props: Props) {
         },
         body: JSON.stringify({
           selectedResourceType: props.selectedOption,
-          locationTags: props.locationTags.map(item => item?.formattedAddress),
+          locationTags: props.locationTags.map(item => item?.Label),
           industryTags: props.industryTags,
           questions: [
             {
@@ -69,9 +71,28 @@ export default function OnboardingStep5(props: Props) {
       });
     },
     {
-      onSuccess: () => {
-        props.onNext();
-        router.push(`/` + props.selectedOption);
+      onSuccess: async response => {
+        if (response.status === 200) {
+          props.onNext();
+          router.push(`/` + props.selectedOption);
+        } else {
+          const error = await response.json();
+          toast.custom(
+            t => (
+              <div
+                className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                }`}
+              >
+                {error.error}
+              </div>
+            ),
+            {
+              duration: 5000,
+              position: 'top-center',
+            },
+          );
+        }
       },
     },
   );
@@ -148,6 +169,7 @@ export default function OnboardingStep5(props: Props) {
               </Dialog.Panel>
             </Transition.Child>
           </div>
+          <Toaster />
         </Dialog>
       </Transition.Root>
     </>

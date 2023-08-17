@@ -1,7 +1,6 @@
 import { Fragment, PropsWithChildren } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { IconX } from '@/components/icons';
-import { ElemLogo } from '@/components/elem-logo';
 import { ElemButton } from '@/components/elem-button';
 import { loadStripe } from '@/utils/stripe';
 
@@ -33,7 +32,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center p-4">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -44,30 +43,26 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 p-6 shadow-xl transition-all">
-                <div className="flex justify-end items-center">
+                <Dialog.Title className="text-xl font-medium flex items-start justify-between">
+                  <span className="text-center px-8">
+                    {title
+                      ? title
+                      : 'Gain access to unlimited data, lists, and groups with an EdgeIn trial'}
+                  </span>
                   <button
                     type="button"
                     onClick={onClose}
                     className="focus-visible:outline-none"
                   >
-                    <IconX className="h-6 w-6" />
+                    <IconX className="w-5 h-5" />
                   </button>
-                </div>
-                <div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
-                  <ElemLogo mode="icon" className="w-10 aspect-square" />
-                </div>
-
-                <Dialog.Title className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-                  {title
-                    ? title
-                    : 'Gain access to unlimited data, lists, and groups with an EdgeIn trial'}
                 </Dialog.Title>
 
-                <div className="mt-4 text-slate-600">
+                <div className="mt-4 text-gray-500 text-center">
                   {children ? (
                     children
                   ) : (
-                    <p className="text-slate-600">
+                    <p className="text-gray-500">
                       EdgeIn customers close deals faster thanks to real-time
                       updates on relevant companies, investors, people, and
                       deals.
@@ -75,13 +70,11 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
                   )}
                 </div>
 
-                <ElemButton
-                  onClick={() => loadStripe()}
-                  btn="primary"
-                  className="mx-auto mt-6"
-                >
-                  Start free trial
-                </ElemButton>
+                <div className="flex justify-center mt-6">
+                  <ElemButton onClick={() => loadStripe()} btn="purple">
+                    Start free trial
+                  </ElemButton>
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

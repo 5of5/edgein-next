@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import { GetNotificationsForUserQuery } from '@/graphql/types';
 import { getNotificationOrganizationLink } from '@/utils/notifications';
+import { raise } from '@/utils';
 
 type Props = {
   notification: GetNotificationsForUserQuery['notifications'][0];
@@ -12,7 +13,10 @@ type Props = {
 const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
   const { company, vc_firm } = notification;
 
-  const organization = company || vc_firm;
+  const name =
+    company?.name ??
+    vc_firm?.name ??
+    raise('Organization name must be defined.');
 
   if (
     notification.notification_resource_type === 'companies' ||
@@ -21,8 +25,8 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
     return (
       <div className="inline">
         <Link href={getNotificationOrganizationLink(notification)} passHref>
-          <a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
-            {organization?.name}
+          <a className="border-b border-primary-500 transition-all font-medium">
+            {name}
           </a>
         </Link>
         <span>{` ${message}`}</span>
@@ -36,7 +40,7 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
         a: ({ href, children }) => {
           return (
             <Link href={href as string} passHref>
-              <a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
+              <a className="border-b border-primary-500 transition-all font-medium hover:border-b-2 hover:text-primary-500">
                 {children[0]}
               </a>
             </Link>
@@ -44,9 +48,9 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
         },
       }}
     >
-      {`[${organization?.name}](${getNotificationOrganizationLink(
-        notification,
-      )}) ${notification.message || ''}`}
+      {`[${name}](${getNotificationOrganizationLink(notification)}) ${
+        notification.message || ''
+      }`}
     </ReactMarkdown>
   );
 };

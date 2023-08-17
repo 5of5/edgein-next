@@ -4,6 +4,7 @@ import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import {
   Events_Bool_Exp,
+  Events_Order_By,
   GetEventsQuery,
   Order_By,
   useGetEventsQuery,
@@ -47,7 +48,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
   } = useGetEventsQuery({
     offset,
     limit,
-    order: Order_By.Asc,
+    orderBy: [{ start_date: Order_By.Asc } as Events_Order_By],
     where: filters as Events_Bool_Exp,
   });
 
@@ -64,7 +65,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
               >
                 <PlaceholderEventCard />
               </div>
@@ -78,7 +79,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={event.id}
-                  className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <ElemEventCard event={event} />
                 </ElemCarouselCard>

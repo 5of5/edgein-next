@@ -1,11 +1,12 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, Fragment } from 'react';
 import { omit, cloneDeep } from 'lodash';
 import moment from 'moment-timezone';
 import {
   convertCurrencyStringToIntNumber,
   convertToInternationalCurrencySystem,
 } from '@/utils';
-import { getDefaultFilter, getFilterOptionMetadata } from '@/utils/filter';
+import { Place } from '@aws-sdk/client-location';
+import { getFilterOptionMetadata } from '@/utils/filter';
 import {
   Filters,
   FilterOptionKeys,
@@ -13,12 +14,10 @@ import {
   DateCondition,
   FilterOptionMetadata,
 } from '@/models/Filter';
-import { ElemButton } from './elem-button';
 import { InputRadio } from './input-radio';
 import { ElemMultiRangeSlider } from './elem-multi-range-slider';
 import { InputDate } from './input-date';
 import { ElemFilterPopup } from './elem-filter-popup';
-import { ElemAddFilter } from './elem-add-filter';
 import ElemAddressFilter from './elem-address-filter';
 import { InputText } from './input-text';
 import { InputSelect } from './input-select';
@@ -27,12 +26,15 @@ import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
 import { ElemFilterLocation } from './elem-filter-location';
+import { ElemAddFilter } from './elem-add-filter';
 
 type Props = {
   className?: string;
   resourceType: 'companies' | 'vc_firms' | 'events';
   filterValues: Filters | null;
+  onChangeFilterValues: (values: Filters | null) => void;
   dateCondition?: DateCondition;
+  onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
   onClearOption: (name: FilterOptionKeys) => void;
   onReset: () => void;
@@ -43,13 +45,13 @@ export const ElemFilter: FC<Props> = ({
   resourceType,
   filterValues,
   dateCondition = 'past',
+  onChangeFilterValues,
+  onSelectFilterOption,
   onApply,
   onClearOption,
   onReset,
 }) => {
   const { selectedLibrary } = useLibrary();
-
-  const [openAddFilter, setOpenAddFilter] = useState<boolean>(false);
 
   const [filters, setFilters] = useState<Filters | null>(filterValues);
 
@@ -57,21 +59,12 @@ export const ElemFilter: FC<Props> = ({
     setFilters(filterValues);
   }, [filterValues]);
 
-  const onSelectFilterOption = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setOpenAddFilter(false);
-    const { name } = event.target as HTMLButtonElement;
-    setFilters(prev => ({
-      ...prev,
-      [name]: {
-        ...getDefaultFilter(name as FilterOptionKeys, dateCondition),
-        open: true,
-      },
-    }));
-  };
-
   const onClearFilterOption = (name: FilterOptionKeys) => {
-    setFilters(omit(filters, name));
-    onClearOption(name);
+    if (Object.keys(filters || {}).length > 1) {
+      onClearOption(name);
+    } else {
+      onReset();
+    }
   };
 
   const onOpenFilterPopup = (name: FilterOptionKeys) => {
@@ -85,13 +78,13 @@ export const ElemFilter: FC<Props> = ({
   };
 
   const onCloseFilterPopup = (name: FilterOptionKeys) => {
-    setFilters(prev => ({
-      ...prev,
+    onChangeFilterValues({
+      ...filterValues,
       [name]: {
-        ...prev?.[name],
+        ...filterValues?.[name],
         open: false,
       },
-    }));
+    });
   };
 
   const onChangeTags = (selectedTags: Array<string>, name: string) => {
@@ -127,12 +120,15 @@ export const ElemFilter: FC<Props> = ({
     }));
   };
 
-  const onChangeAddress = (value: any) => {
+  const onChangeAddress = (value: Place) => {
     setFilters(prev => ({
       ...prev,
       address: {
         ...prev?.address,
-        value,
+        value: {
+          ...value,
+          geometry: { type: 'Point', coordinates: value.Geometry?.Point },
+        },
       },
     }));
   };
@@ -371,12 +367,6 @@ export const ElemFilter: FC<Props> = ({
 
   const onApplyFilter = (name: FilterOptionKeys) => {
     onApply(name, onFormatFilterParams(name));
-    onCloseFilterPopup(name);
-  };
-
-  const onResetFilters = () => {
-    setFilters({});
-    onReset();
   };
 
   const onApplyFilterTags = (name: FilterOptionKeys, tags: string[]) => {
@@ -398,22 +388,22 @@ export const ElemFilter: FC<Props> = ({
         onApply(name, filterParams as Filters);
       }
     }
-    onCloseFilterPopup(name);
+  };
+
+  const extractTagsArrayToText = (tags: string[]) => {
+    const numOfTags = tags.length;
+    return tags.map((tagItem, tagIndex) => (
+      <Fragment key={tagItem}>
+        <span className="font-medium">{tagItem}</span>
+        {tagIndex < numOfTags - 1 &&
+          (tagIndex < numOfTags - 2 ? ', ' : ' and ')}
+      </Fragment>
+    ));
   };
 
   return (
-    <section
-      className={`w-full flex items-center justify-between ${className}`}
-    >
+    <section className={`${className}`}>
       <div className="flex flex-col flex-wrap w-full gap-3 items-start lg:flex-row lg:items-center">
-        <ElemAddFilter
-          resourceType={resourceType}
-          open={openAddFilter}
-          onOpen={() => setOpenAddFilter(true)}
-          onClose={() => setOpenAddFilter(false)}
-          onSelectFilterOption={onSelectFilterOption}
-        />
-
         {filters &&
           (Object.keys(filters) as FilterOptionKeys[]).map(option => {
             const optionMetadata = getFilterOptionMetadata(
@@ -426,6 +416,7 @@ export const ElemFilter: FC<Props> = ({
               option === 'state' ||
               option === 'city'
             ) {
+              const numOfTags = filters?.[option]?.tags?.length || 0;
               return (
                 <ElemFilterLocation
                   key={option}
@@ -449,14 +440,21 @@ export const ElemFilter: FC<Props> = ({
               );
             }
             if (option === 'fundingInvestors' || option === 'fundedCompanies') {
+              const numOfTags = filters?.[option]?.tags?.length || 0;
               return (
                 <ElemFilterTagsInput
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   option={option}
-                  title={`${optionMetadata.title} (${
-                    filters?.[option]?.tags?.length || 0
-                  })`}
+                  title={
+                    numOfTags > 0 && (
+                      <div>
+                        {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
+                        {filters?.[option]?.condition === 'none' ? 'not ' : ''}
+                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                      </div>
+                    )
+                  }
                   heading={optionMetadata.heading}
                   checkedAny={filters?.[option]?.condition === 'any'}
                   checkedNone={filters?.[option]?.condition === 'none'}
@@ -477,7 +475,15 @@ export const ElemFilter: FC<Props> = ({
                 <ElemFilterPopup
                   open={Boolean(filters[option]?.open)}
                   name={option}
-                  title={optionMetadata.title || ''}
+                  title={
+                    filters[option]?.value && (
+                      <div>
+                        Address is{' '}
+                        <b>{`${filters[option]?.distance} miles `}</b>
+                        around <b>{filters[option]?.value?.formattedAddress}</b>
+                      </div>
+                    )
+                  }
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
@@ -508,14 +514,20 @@ export const ElemFilter: FC<Props> = ({
             }
 
             if (option === 'keywords') {
+              const numOfTags = filters?.[option]?.tags?.length || 0;
               return (
                 <ElemFilterTagsInput
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   option={option}
-                  title={`${optionMetadata.title} (${
-                    filters?.[option]?.tags?.length || 0
-                  })`}
+                  title={
+                    numOfTags > 0 && (
+                      <div>
+                        {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
+                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                      </div>
+                    )
+                  }
                   heading={optionMetadata.heading}
                   subtext={optionMetadata.subtext}
                   tags={filters?.[option]?.tags || []}
@@ -538,15 +550,20 @@ export const ElemFilter: FC<Props> = ({
               const isSelectedAll =
                 filters[option]?.tags?.length ===
                 optionMetadata.choices?.length;
-
+              const numOfTags = filters?.[option]?.tags?.length || 0;
               return (
                 <ElemFilterPopup
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   name={option}
-                  title={`${optionMetadata.title} (${
-                    filters?.[option]?.tags?.length || 0
-                  })`}
+                  title={
+                    numOfTags > 0 && (
+                      <>
+                        {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
+                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                      </>
+                    )
+                  }
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
@@ -554,7 +571,7 @@ export const ElemFilter: FC<Props> = ({
                   popupClass="max-w-xl"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="font-bold text-sm mb-1">
+                    <div className="text-bold text-sm mb-1">
                       {optionMetadata.heading}
                     </div>
                     <InputSwitch
@@ -601,7 +618,13 @@ export const ElemFilter: FC<Props> = ({
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   name={option}
-                  title={optionMetadata.title || ''}
+                  title={
+                    <div>
+                      {optionMetadata.title} is between{' '}
+                      <b>{filters?.[option]?.formattedMinVal}</b> and{' '}
+                      <b>{filters?.[option]?.formattedMaxVal}</b>
+                    </div>
+                  }
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
@@ -665,7 +688,34 @@ export const ElemFilter: FC<Props> = ({
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   name={option}
-                  title={optionMetadata.title || ''}
+                  title={
+                    <div>
+                      {optionMetadata.title}
+                      {filters?.[option]?.condition === 'custom' ? (
+                        <>
+                          {' '}
+                          from{' '}
+                          <b>
+                            {moment(filters?.[option]?.fromDate).format(
+                              'YYYY-MM-DD',
+                            )}
+                          </b>{' '}
+                          to{' '}
+                          <b>
+                            {moment(filters?.[option]?.toDate).format(
+                              'YYYY-MM-DD',
+                            )}
+                          </b>
+                        </>
+                      ) : (
+                        <>
+                          {' '}
+                          in{' '}
+                          <b>{`${dateCondition} ${filters?.[option]?.condition}`}</b>
+                        </>
+                      )}
+                    </div>
+                  }
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
@@ -766,7 +816,13 @@ export const ElemFilter: FC<Props> = ({
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   name={option}
-                  title={optionMetadata.title || ''}
+                  title={
+                    <div>
+                      {optionMetadata.title} is between{' '}
+                      <b>{filters?.[option]?.minVal}</b> and{' '}
+                      <b>{filters?.[option]?.maxVal}</b>
+                    </div>
+                  }
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
@@ -824,7 +880,14 @@ export const ElemFilter: FC<Props> = ({
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   name={option}
-                  title={optionMetadata.title || ''}
+                  title={
+                    filters[option]?.value && (
+                      <div>
+                        {optionMetadata.title} is{' '}
+                        <b>{filters[option]?.value?.title}</b>
+                      </div>
+                    )
+                  }
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
@@ -853,16 +916,11 @@ export const ElemFilter: FC<Props> = ({
           })}
 
         {filters && Object.keys(filters).length > 0 && (
-          <div>
-            <ElemButton
-              btn="transparent"
-              size="sm"
-              onClick={onResetFilters}
-              className="snap-start shrink-0"
-            >
-              Reset
-            </ElemButton>
-          </div>
+          <ElemAddFilter
+            resourceType={resourceType}
+            type="icon"
+            onSelectFilterOption={onSelectFilterOption}
+          />
         )}
       </div>
     </section>

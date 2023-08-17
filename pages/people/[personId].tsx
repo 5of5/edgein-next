@@ -88,7 +88,7 @@ const Person: NextPage<Props> = props => {
 
   return (
     <div className="relative">
-      <div className="w-full bg-gradient-to-b from-transparent to-white shadow">
+      <div className="w-full">
         <div className="bg-slate-600 border-b border-black/10">
           <div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes')] bg-cover bg-no-repeat bg-center"></div>
         </div>
@@ -159,10 +159,11 @@ const Person: NextPage<Props> = props => {
                       resourceId={person.id}
                       resourceType="people"
                       slug={person.slug!}
+                      follows={person.follows}
                     />
 
                     {isCurrentUserProfile && (
-                      <ElemButton btn="slate" href="/profile/">
+                      <ElemButton btn="gray" href="/profile/">
                         Edit profile
                       </ElemButton>
                     )}
@@ -195,7 +196,7 @@ const Person: NextPage<Props> = props => {
         >
           <div className="col-span-3">
             <ElemKeyInfo
-              className="sticky top-11 mb-7 lg:mb-0"
+              className="sticky top-16 mb-7 lg:mb-0"
               heading="Key Info"
               roles={removeSpecialCharacterFromString(person.type as string)}
               linkedIn={person.linkedin}

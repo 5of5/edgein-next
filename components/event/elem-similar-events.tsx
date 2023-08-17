@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { useRouter } from 'next/router';
 import {
   Events_Bool_Exp,
+  Events_Order_By,
   Maybe,
   Order_By,
   useGetEventsQuery,
@@ -50,16 +51,13 @@ export const ElemSimilarEvents: FC<Props> = ({
   } = useGetEventsQuery({
     offset,
     limit,
-    order: Order_By.Desc,
+    orderBy: [{ start_date: Order_By.Desc } as Events_Order_By],
     where: filters as Events_Bool_Exp,
   });
 
   const events = eventsData?.events;
 
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string,
-  ) => {
+  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -71,8 +69,8 @@ export const ElemSimilarEvents: FC<Props> = ({
   };
 
   return (
-    <section className={`bg-white rounded-lg p-5 shadow ${className}`}>
-      <h2 className="text-xl font-bold">Similar Events</h2>
+    <section className={`border border-gray-300 rounded-lg ${className}`}>
+      <h2 className="text-lg font-medium px-4 pt-2">Similar Events</h2>
 
       {error ? (
         <h4>Error loading similar events</h4>
@@ -82,7 +80,7 @@ export const ElemSimilarEvents: FC<Props> = ({
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
               >
                 <PlaceholderEventCard />
               </div>
@@ -96,9 +94,11 @@ export const ElemSimilarEvents: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={event.id}
-                  className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
-                  <ElemEventCard event={event} onClickType={onClickType} />
+                  <div className="w-full max-w-full">
+                    <ElemEventCard event={event} />
+                  </div>
                 </ElemCarouselCard>
               );
             })}

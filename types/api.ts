@@ -1,3 +1,25 @@
+export type InviteToEdgeInPayload = {
+  email: string;
+  personId?: number;
+};
+
+export type InviteToEdgeInMailParams = {
+  emails: string[];
+  senderName: string;
+  senderEmail: string;
+  signUpUrl: string;
+};
+
+export type EmailOptions = {
+  useBcc?: boolean;
+};
+
+export type InviteToEdgeInResponse = {
+  status: number;
+  message: string;
+  emails: string[];
+};
+
 export type InviteGroupMemberPayloadEmailResource = {
   isExistedUser: boolean;
   email: string;

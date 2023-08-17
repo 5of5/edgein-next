@@ -1,19 +1,17 @@
-import React, { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
-import { ElemPhoto } from '@/components/elem-photo';
-import { ElemReactions } from '@/components/elem-reactions';
-import { ElemSaveToList } from '@/components/elem-save-to-list';
+import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import { useRouter } from 'next/router';
 import {
+  Companies,
   Companies_Bool_Exp,
   Maybe,
   useGetCompaniesRecentQuery,
 } from '@/graphql/types';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
-import ElemCompanyTags from '../elem-company-tags';
 
 type Props = {
   className?: string;
@@ -60,10 +58,7 @@ export const ElemCohort: FC<Props> = ({
 
   const companies = companiesData?.companies;
 
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string,
-  ) => {
+  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -75,18 +70,18 @@ export const ElemCohort: FC<Props> = ({
   };
 
   return (
-    <section className={`bg-white rounded-lg p-5 shadow ${className}`}>
-      {heading && <h2 className="text-xl font-bold">{heading}</h2>}
+    <section className={`rounded-lg border border-gray-300 ${className}`}>
+      {heading && <h2 className="text-xl font-medium px-4 pt-2">{heading}</h2>}
 
       {error ? (
         <h4>Error loading similar companies</h4>
       ) : isLoading ? (
         <>
-          <div className="flex overflow-hidden -mx-3">
+          <div className="flex overflow-hidden">
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
               >
                 <PlaceholderCompanyCard />
               </div>
@@ -97,65 +92,12 @@ export const ElemCohort: FC<Props> = ({
         companies && (
           <ElemCarouselWrap>
             {companies.map((company: any, index: number) => {
-              // Add 'amount' from investment_rounds array
-              const fundingTotal = company.investment_rounds?.reduce(
-                (total: number, currentValue: any) =>
-                  (total = total + currentValue.amount),
-                0,
-              );
-
               return (
                 <ElemCarouselCard
                   key={index}
-                  className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
-                  <a
-                    href={`/companies/${company.slug}`}
-                    className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
-                  >
-                    <div className="flex items-center">
-                      <ElemPhoto
-                        photo={company.logo}
-                        wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-white rounded-lg shadow"
-                        imgClass="object-contain w-full h-full"
-                        imgAlt={company.name}
-                        placeholderClass="text-slate-300"
-                      />
-
-                      <div className="pl-2 md:overflow-hidden">
-                        <h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
-                          {company.name}
-                        </h3>
-                      </div>
-                    </div>
-
-                    <ElemCompanyTags
-                      company={company}
-                      tagOnClick={onClickType}
-                    />
-
-                    <div className="mt-4 grow">
-                      <div className="text-gray-400 line-clamp-3">
-                        {company.overview}
-                      </div>
-                    </div>
-                    <div
-                      className="flex items-center justify-between mt-4 gap-x-5"
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <ElemReactions
-                        resource={company}
-                        resourceType={'companies'}
-                      />
-                      <ElemSaveToList
-                        resourceName={company.name}
-                        resourceId={company.id}
-                        resourceType={'companies'}
-                        slug={company.slug!}
-                        buttonStyle="white"
-                      />
-                    </div>
-                  </a>
+                  <ElemCompanyCard company={company as Companies} />
                 </ElemCarouselCard>
               );
             })}

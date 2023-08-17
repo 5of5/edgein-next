@@ -2,12 +2,13 @@ import {
   AppMetadata,
   AuthenticationClient,
   ManagementClient,
-  SignInToken,
   TokenResponse,
   User,
   UserMetadata,
 } from 'auth0';
 import { env } from '@/services/config.service';
+import { redirect_url } from '@/utils/auth';
+import qs from 'qs';
 
 export const LINKEDIN_PROVIDER = 'linkedin';
 export const AUTH0_PROVIDER = 'auth0';
@@ -35,11 +36,11 @@ export class AuthService {
   }
 
   public static groupUrl(groupId: string): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/groups/${groupId}`;
+    return `${redirect_url()}/groups/${groupId}`;
   }
 
   public static signUpUrl(inviteCode: string): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
+    return `${redirect_url()}/?invite=${inviteCode}`;
   }
 
   public static auth0UserId(auth0_user_pass_id?: string | null): string {
@@ -53,11 +54,11 @@ export class AuthService {
     userId,
     email,
   }: Pick<AuthData, 'userId' | 'email'>): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-additional-email/?email=${email}&uid=${userId}`;
+    return `${redirect_url()}/verify-additional-email/?email=${email}&uid=${userId}`;
   }
 
   public static verifyWorkplaceUrl(verifyWorkToken: string): string {
-    return `${env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?vtoken=${verifyWorkToken}`;
+    return `${redirect_url()}/verify-workplace?vtoken=${verifyWorkToken}`;
   }
 
   constructor() {
@@ -169,6 +170,36 @@ export class AuthService {
     expires_in: number;
   }> {
     return this.auth.verifyEmailCode(data);
+  }
+
+  public async getAccessToken(data: { code: string }): Promise<{
+    access_token: string;
+    id_token: string;
+    refresh_token: string;
+    token_type: string;
+    expires_in: number;
+  }> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    const userTokenResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`,
+      {
+        method: 'POST',
+        headers,
+        body: qs.stringify({
+          grant_type: 'authorization_code',
+          client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
+          client_secret: process.env.AUTH0_CLIENT_SECRET,
+          code: data.code,
+          redirect_uri: redirect_url(),
+        }),
+      },
+    );
+    if (!userTokenResponse.ok) {
+      const errorResponse = JSON.parse(await userTokenResponse.text());
+      throw new Error(errorResponse.error_description);
+    }
+    return JSON.parse(await userTokenResponse.text());
   }
 }
 

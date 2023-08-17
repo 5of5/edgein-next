@@ -14,24 +14,31 @@ import ElemNoteCard from '@/components/group/elem-note-card';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
 import { Popups } from '@/components/the-navbar';
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   resourceId: number;
   resourceType: string;
-  setShowPopup?: React.Dispatch<React.SetStateAction<Popups>>;
+  resourceName?: string;
 };
 
 const ElemOrganizationNotes: FC<Props> = ({
   resourceId,
   resourceType,
-  setShowPopup,
+  resourceName,
 }) => {
   const { user, myGroups } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
   const onOpenNoteForm = () => {
-    setIsOpenNoteForm(true);
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      setIsOpenNoteForm(true);
+    }
   };
 
   const onCloseNoteForm = () => {
@@ -50,16 +57,20 @@ const ElemOrganizationNotes: FC<Props> = ({
       _or: [
         { _or: [{ audience: { _eq: 'public' } }] },
         { _or: [{ user_group_id: { _in: myGroups.map(item => item.id) } }] },
-        {
-          _or: [
-            {
-              _and: [
-                { audience: { _eq: 'only_me' } },
-                { created_by: { _eq: user?.id } },
+        user?.id
+          ? {
+              _or: [
+                {
+                  _and: [
+                    { audience: { _eq: 'only_me' } },
+                    { created_by: { _eq: user?.id } },
+                  ],
+                },
               ],
+            }
+          : {
+              _or: [{ audience: { _neq: 'only_me' } }],
             },
-          ],
-        },
       ],
     } as Notes_Bool_Exp,
   });
@@ -70,31 +81,6 @@ const ElemOrganizationNotes: FC<Props> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center space-x-1">
-          <h2 className="flex items-center text-xl font-bold">
-            <IconLockClosed className="h-5 w-5 mr-1" title="Private" />
-            Notes{` ${notes.length > 0 ? '(' + notes.length + ')' : ''}`}{' '}
-          </h2>
-
-          <ElemTooltip
-            size="md"
-            content="Notes are private to you, but you can change the audience of any note."
-          >
-            <div>
-              <IconInformationCircle
-                className="h-5 w-5 text-primary-500"
-                title="About notes"
-              />
-            </div>
-          </ElemTooltip>
-        </div>
-        <ElemButton btn="purple" onClick={onOpenNoteForm} className="!pl-3">
-          <IconPlus className="w-5 h-5 mr-1" />
-          <span>Create note</span>
-        </ElemButton>
-      </div>
-
       {error ? (
         <h4>Error loading notes</h4>
       ) : isLoading ? (
@@ -103,26 +89,20 @@ const ElemOrganizationNotes: FC<Props> = ({
             <PlaceholderNote key={i} />
           ))}
         </div>
-      ) : notes.length === 0 ? (
-        <div className="mt-4 flex items-start gap-2 bg-white shadow rounded-lg px-5 py-4">
-          <ElemPhoto
-            photo={user?.profilePicture || user?.person?.picture}
-            wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
-            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-            imgAlt={user?.display_name}
-            placeholder="user"
-            placeholderClass="text-slate-300"
-          />
-          <div
-            className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
-            onClick={onOpenNoteForm}
-          >
-            Write your note...
-          </div>
-        </div>
       ) : (
-        <>
-          <div className="mt-4 flex items-start gap-2 bg-white shadow rounded-lg px-5 py-4">
+        <div className="border border-gray-300 rounded-lg px-5 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-1">
+              <h2 className="text-lg font-medium">
+                Notes{` ${notes.length > 0 ? '(' + notes.length + ')' : ''}`}{' '}
+              </h2>
+            </div>
+            <ElemButton btn="purple" onClick={onOpenNoteForm} className="!pl-3">
+              <IconPlus className="w-5 h-5 mr-1" />
+              <span>Create note</span>
+            </ElemButton>
+          </div>
+          <div className="mt-4 flex items-start gap-2 py-4">
             <ElemPhoto
               photo={user?.profilePicture || user?.person?.picture}
               wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
@@ -132,25 +112,26 @@ const ElemOrganizationNotes: FC<Props> = ({
               placeholderClass="text-slate-300"
             />
             <div
-              className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
+              className="w-full cursor-pointer px-4 py-2 border border-gray-300 text-gray-500 text-sm rounded-lg"
               onClick={onOpenNoteForm}
             >
-              Write your note...
+              Write a few sentences about {resourceName}...
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 gap-4">
-            {sortedNotes.map(item => (
-              <ElemNoteCard
-                key={item.id}
-                data={item}
-                refetch={refetch}
-                layout={`${item.user_group_id ? 'groupAndAuthor' : 'author'}`}
-                setShowPopup={setShowPopup}
-              />
-            ))}
-          </div>
-        </>
+          {sortedNotes?.length != 0 && (
+            <div className="mt-4 grid grid-cols-1 gap-4">
+              {sortedNotes.map(item => (
+                <ElemNoteCard
+                  key={item.id}
+                  data={item}
+                  refetch={refetch}
+                  layout={`${item.user_group_id ? 'groupAndAuthor' : 'author'}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       <ElemNoteForm

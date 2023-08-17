@@ -1,11 +1,18 @@
 import { FilterOptionKeys } from '@/models/Filter';
-import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
+import React, {
+  FC,
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 import { ElemButton } from './elem-button';
+import { IconX } from './icons';
 
 type Props = {
   open: boolean;
   name: FilterOptionKeys;
-  title: string;
+  title?: string | ReactNode;
   onOpen: (name: FilterOptionKeys) => void;
   onClose: (name: FilterOptionKeys) => void;
   onClear: (name: FilterOptionKeys) => void;
@@ -56,30 +63,36 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
   };
 
   return (
-    <div className="snap-start shrink-0">
-      <div
-        className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 cursor-pointer ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1"
-        onClick={onOpenFilterOption}
-      >
-        {title}
+    <div className="snap-start shrink-0 relative max-w-full">
+      <div className="flex items-center min-h-[32px] bg-primary-500 text-white text-sm rounded-full px-3 py-1">
+        <button
+          onClick={onOpenFilterOption}
+          className="max-w-full inline-block truncate"
+        >
+          {title}
+        </button>
+        <button onClick={onClearFilterOption}>
+          <IconX className="w-3 h-3 ml-1" title="Remove" />
+        </button>
       </div>
+
       {open && (
         <div
           ref={wrapperRef}
-          className={`absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-[calc(100vw-50px)] max-w-sm p-5 ${popupClass}`}
+          className={`absolute z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}
         >
-          {children}
-          <div className="flex items-center justify-between gap-x-4 mt-2 pt-2 border-t border-black/5">
-            <ElemButton btn="primary" size="sm" onClick={onApplyFilter}>
-              Apply
-            </ElemButton>
+          <div className="px-4 py-2">{children}</div>
+          <div className="flex justify-end items-center gap-x-4 px-4 py-2 border-t border-gray-300">
             <button
               onClick={onClearFilterOption}
               name={name}
-              className="text-primary-500"
+              className="text-sm underline"
             >
-              Clear filter
+              Clear
             </button>
+            <ElemButton btn="purple" size="sm" onClick={onApplyFilter}>
+              Apply
+            </ElemButton>
           </div>
         </div>
       )}

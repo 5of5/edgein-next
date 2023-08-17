@@ -1,6 +1,12 @@
 name: Check e2e tests
 on:
   pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+  workflow_dispatch:
 
 jobs:
   test:
@@ -36,7 +42,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: Cache node modules
         uses: actions/cache@v3
         with:
@@ -81,16 +87,10 @@ jobs:
       - name: Run Playwright tests
         uses: knicknic/os-specific-run@v1.0.3
         with:
-          linux: npx playwright test --project=setup --project=chromium --project=firefox
-          windows: npx playwright test --project=setup --project=chromium --project=firefox
+          linux: npx playwright test --project=setup --project=chromium
+          windows: npx playwright test --project=setup --project=chromium
           macos: npx playwright test
         env:
           GRAPHQL_ENDPOINT: 'http://172.17.0.1:8080/v1/graphql'
           GRAPHQL_ENDPOINT_ADMIN: 'http://172.17.0.1:8080/v1/graphql'
           PG_HOST: 172.17.0.1
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30

@@ -117,11 +117,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send(response);
   } catch (error: any) {
-    return res.status(500).send(error.message);
+    return res
+      .status(500)
+      .send({ error: 'Something went wrong. Please try again later.' });
   }
 };
 
-const onFindPeopleByLinkedin = async (linkedin: string) => {
+export const onFindPeopleByLinkedin = async (linkedin: string) => {
   const {
     data: { people },
   } = await query<FindPeopleByLinkedinUrlQuery>({

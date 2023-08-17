@@ -33,6 +33,7 @@ import {
 } from '@/graphql/types';
 import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
+import { clearLocalStorage } from './helpers';
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
   const data = await query<GetAllowedEmailByEmailOrDomainQuery>({
@@ -181,10 +182,10 @@ async function findOnePeopleBySlug(slug: string) {
   return data.data.people[0];
 }
 
-async function findOneUserByPersonId(personId: number) {
+async function findOneUserByPersonId(person_id: number) {
   const data = await query<GetUserByPersonIdQuery>({
     query: GetUserByPersonIdDocument,
-    variables: { personId },
+    variables: { person_id },
   });
   return data.data.users[0];
 }
@@ -193,16 +194,17 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
   hmac.update(String(userData.id));
 
-  const entitlements: Entitlements = userData.billing_org_id
-    ? {
-        viewEmails: true,
-        groupsCount: 5000,
-      }
-    : {
-        viewEmails: false,
-        listsCount: 5,
-        groupsCount: 3,
-      };
+  const entitlements: Entitlements =
+    userData.billing_org_id || userData.credits > 0
+      ? {
+          viewEmails: true,
+          groupsCount: 5000,
+        }
+      : {
+          viewEmails: false,
+          listsCount: 5,
+          groupsCount: 3,
+        };
 
   return {
     id: userData.id,
@@ -210,6 +212,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     email: userData.email,
     role: userData.role,
     isFirstLogin,
+    credits: userData.credits,
     billing_org_id: userData.billing_org_id,
     billing_org: userData.billing_org,
     display_name: userData.display_name,
@@ -225,6 +228,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     active: userData.active,
     onboarding_information: userData.onboarding_information,
     showDraftData: userData.showDraftData,
+    feature_flags: userData.feature_flags,
     entitlements,
   };
 };
@@ -246,6 +250,21 @@ const findUserByPk = async (user_id: number) => {
   return data.data.users_by_pk;
 };
 
+const logout = async () => {
+  clearLocalStorage();
+  const authRequest = await fetch('/api/logout/', {
+    method: 'POST',
+  }).then(res => res.json());
+  if (authRequest.success) {
+    // We successfully logged in, our API
+    // set authorization cookies and now we
+    // can redirect to the dashboard!
+    location.href = authRequest.logoutLink;
+  } else {
+    /* handle errors */
+  }
+};
+
 const UserService = {
   queryForDisabledEmailCheck,
   queryForAllowedEmailCheck,
@@ -264,5 +283,6 @@ const UserService = {
   findOneUserByPersonId,
   createToken,
   findUserByPk,
+  logout,
 };
 export default UserService;

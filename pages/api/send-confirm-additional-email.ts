@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     username: user.display_name || '',
     verifyUrl: AuthService.verifyUrl({
       email,
-      userId: AuthService.auth0UserId(user.auth0_user_pass_id),
+      userId: user.id.toString(),
     }),
   };
 

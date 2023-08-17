@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import moment from 'moment-timezone';
 import { first } from 'lodash';
@@ -6,12 +6,11 @@ import {
   IconSortUp,
   IconSortDown,
   IconX,
-  IconChevronDown,
+  IconChevronDownMini,
   IconChevronLeft,
   IconChevronRight,
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { ElemReactions } from '@/components/elem-reactions';
 import { TableColumnsFilter } from '@/components/my-list/table-columns-filter';
 import { last } from 'lodash';
 import { Menu } from '@headlessui/react';
@@ -19,8 +18,7 @@ import { numberWithCommas } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { loadStripe } from '@/utils/stripe';
-import { ElemFilter } from '@/components/elem-filter';
-import { Filters, FilterOptionKeys } from '@/models/Filter';
+import { ElemTags } from '@/components/elem-tags';
 
 import {
   useTable,
@@ -28,12 +26,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
-
-export type DeepPartial<T> = T extends object
-  ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
-  : T;
+import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -45,10 +38,6 @@ type Props = {
   onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   filterByTag: Function;
-  filterValues: Filters | null;
-  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
-  onClearOption: (name: FilterOptionKeys) => void;
-  onReset: () => void;
 };
 
 export const CompaniesTable: FC<Props> = ({
@@ -61,12 +50,10 @@ export const CompaniesTable: FC<Props> = ({
   onClickPrev,
   onClickNext,
   filterByTag,
-  filterValues,
-  onApply,
-  onClearOption,
-  onReset,
 }) => {
   const { user } = useUser();
+
+  const { setShowPopup } = usePopup();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -78,7 +65,11 @@ export const CompaniesTable: FC<Props> = ({
   };
 
   const onBillingClick = async () => {
-    loadStripe();
+    if (!user) {
+      setShowPopup('signup');
+    } else {
+      loadStripe();
+    }
   };
 
   const isDisplayAllCompanies = user?.entitlements.viewEmails
@@ -123,10 +114,7 @@ export const CompaniesTable: FC<Props> = ({
     [],
   );
 
-  const emptyCell = React.useMemo(
-    () => <div className="text-slate-400">&mdash;</div>,
-    [],
-  );
+  const EmptyCell = () => <div className="text-slate-400">&mdash;</div>;
 
   const columns = React.useMemo<any[]>(
     () => [
@@ -140,12 +128,12 @@ export const CompaniesTable: FC<Props> = ({
           >
             <ElemPhoto
               photo={props.row.original?.logo}
-              wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+              wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
               imgClass="object-fit max-w-full max-h-full"
               imgAlt={props.value}
               placeholderClass="text-slate-300"
             />
-            <p className="font-bold line-clamp-2 break-words group-hover:text-primary-500">
+            <p className="font-medium line-clamp-2 break-word underline group-hover:no-underline">
               {props.value}
             </p>
           </a>
@@ -157,7 +145,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Token',
         accessor: 'coin.ticker' as const,
         Cell: (props: any) => (
-          <>{props.value ? <div>{props.value}</div> : emptyCell}</>
+          <>{props.value ? <div>{props.value}</div> : <EmptyCell />}</>
         ),
         width: 100,
       },
@@ -165,25 +153,13 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Industries',
         accessor: 'tags' as const,
         Cell: (props: any) => (
-          <div className="flex flex-wrap">
+          <>
             {props.value ? (
-              <>
-                {props.value?.map((tag: string, index: number) => {
-                  return (
-                    <button
-                      key={index}
-                      className="inline cursor-pointer shrink-0 bg-slate-200 text-xs leading-none mr-1 mb-1 px-2 py-1 rounded-full hover:bg-slate-300"
-                      onClick={e => filterByTag(e, tag)}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })}
-              </>
+              <ElemTags resourceType={'companies'} tags={props.value} />
             ) : (
-              emptyCell
+              <EmptyCell />
             )}
-          </div>
+          </>
         ),
         disableSortBy: true,
         width: 300,
@@ -195,9 +171,9 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => (
           <div>
             {props.value ? (
-              <p className="line-clamp-2 text-sm">{props.value}</p>
+              <p className="line-clamp-5 text-sm">{props.value}</p>
             ) : (
-              emptyCell
+              <EmptyCell />
             )}
           </div>
         ),
@@ -211,7 +187,11 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <>
-              {props.value ? <p>{numberWithCommas(props.value)}</p> : emptyCell}
+              {props.value ? (
+                <p>{numberWithCommas(props.value)}</p>
+              ) : (
+                <EmptyCell />
+              )}
             </>
           );
         },
@@ -231,7 +211,7 @@ export const CompaniesTable: FC<Props> = ({
                         <a
                           key={item?.person?.id}
                           href={`/people/${item.person?.slug}`}
-                          className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500"
+                          className="underline hover:no-underline"
                         >
                           {item.person?.name}
                         </a>
@@ -241,7 +221,7 @@ export const CompaniesTable: FC<Props> = ({
                   })}
                 </>
               ) : (
-                emptyCell
+                <EmptyCell />
               )}
             </div>
           );
@@ -254,7 +234,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'City',
         accessor: 'location_json.city' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -263,7 +243,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'State',
         accessor: 'location_json.state' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -272,7 +252,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Country',
         accessor: 'location_json.country' as const,
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
         //disableSortBy: true,
         minWidth: 180,
@@ -281,7 +261,7 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Founded',
         accessor: 'year_founded' as const,
         Cell: (props: any) => {
-          return <>{props.value ? <p>{props.value}</p> : emptyCell}</>;
+          return <>{props.value ? <p>{props.value}</p> : <EmptyCell />}</>;
         },
         width: 120,
       },
@@ -317,7 +297,7 @@ export const CompaniesTable: FC<Props> = ({
         accessor: 'investment_rounds.length' as const,
         Cell: (props: any) => {
           const numberOfRounds = props.value;
-          return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
+          return <>{numberOfRounds ? numberOfRounds : <EmptyCell />}</>;
         },
         width: 100,
       },
@@ -337,7 +317,7 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <div>
-              {props.value ? moment(props.value).format('LL') : emptyCell}
+              {props.value ? moment(props.value).format('LL') : <EmptyCell />}
             </div>
           );
         },
@@ -365,7 +345,7 @@ export const CompaniesTable: FC<Props> = ({
                 props.row.original?.investment_rounds.length > 0 ? (
                 <>Undisclosed Capital</>
               ) : (
-                emptyCell
+                <EmptyCell />
               )}
             </div>
           );
@@ -386,27 +366,11 @@ export const CompaniesTable: FC<Props> = ({
           }
         },
         Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
+          return <div>{props.value ? props.value : <EmptyCell />}</div>;
         },
       },
-      {
-        Header: 'Reactions',
-        accessor: 'company' as const,
-        Cell: (props: any) => (
-          <div>
-            {props.row.original && (
-              <ElemReactions
-                resource={props.row.original}
-                resourceType={'companies'}
-                isInteractive={false}
-              />
-            )}
-          </div>
-        ),
-        disableSortBy: true,
-      },
     ],
-    [filterByTag, emptyCell],
+    [],
   );
 
   const getCompanies = React.useMemo(() => {
@@ -452,13 +416,6 @@ export const CompaniesTable: FC<Props> = ({
           <TableColumnsFilter
             columns={allColumns}
             resetColumns={() => toggleHideAllColumns(false)}
-          />
-          <ElemFilter
-            resourceType="companies"
-            filterValues={filterValues}
-            onApply={onApply}
-            onClearOption={onClearOption}
-            onReset={onReset}
           />
         </div>
 
@@ -542,10 +499,10 @@ export const CompaniesTable: FC<Props> = ({
         </div>
       </div>
 
-      <div className="overflow-auto border border-black/10 overflow-y-hidden">
+      <div className="overflow-auto border border-gray-300 rounded-lg overflow-y-hidden">
         <table
           {...getTableProps()}
-          className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
+          className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none"
         >
           <thead className="">
             {headerGroups.map(headerGroup => {
@@ -555,7 +512,7 @@ export const CompaniesTable: FC<Props> = ({
                 <tr
                   key={key}
                   {...restHeaderGroupProps}
-                  className="table-row min-w-full"
+                  className="table-row min-w-full bg-gray-25 text-gray-600"
                 >
                   {headerGroup.headers.map((column: any) => {
                     const { key, ...restColumnProps }: any = ({} = {
@@ -572,7 +529,7 @@ export const CompaniesTable: FC<Props> = ({
                       <th
                         key={key}
                         {...restColumnProps}
-                        className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left min-w-content`}
+                        className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
                       >
                         <div className="flex items-center min-w-content">
                           {column.render('Header')}
@@ -580,8 +537,8 @@ export const CompaniesTable: FC<Props> = ({
                             as="div"
                             className="relative inline-block text-left ml-1"
                           >
-                            <Menu.Button className="block align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
-                              <IconChevronDown className="h-5 w-5" />
+                            <Menu.Button className="block align-middle text-gray-400 rounded-full hover:bg-slate-100">
+                              <IconChevronDownMini className="h-5 w-5" />
                             </Menu.Button>
 
                             <Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
@@ -671,18 +628,14 @@ export const CompaniesTable: FC<Props> = ({
           </thead>
           <tbody
             {...getTableBodyProps()}
-            className="bg-white divide-y divide-black/10"
+            className="bg-white divide-y divide-gray-300 flex-1"
           >
             {page.map(row => {
               prepareRow(row);
               const { key, ...restRowProps } = row.getRowProps();
 
               return (
-                <tr
-                  key={key}
-                  {...restRowProps}
-                  className="min-w-full bg-white hover:bg-slate-100"
-                >
+                <tr key={key} {...restRowProps} className="min-w-full">
                   {row.cells.map(cell => {
                     const { key, ...restCellProps } = cell.getCellProps({
                       style: {
@@ -708,12 +661,12 @@ export const CompaniesTable: FC<Props> = ({
           </tbody>
         </table>
 
-        {!isDisplayAllCompanies && (
+        {!isDisplayAllCompanies && totalItems > itemsPerPage && (
           <table className="relative table-auto min-w-full overscroll-x-none">
             <tbody className="divide-y divide-black/10">
               {Array.from({ length: 10 }, (_, i) => (
                 <tr key={i} className="min-w-full bg-white hover:bg-slate-100">
-                  {Array.from({ length: 16 }, (_, ii) => {
+                  {Array.from({ length: 15 }, (_, ii) => {
                     return (
                       <td
                         key={ii}
@@ -728,37 +681,20 @@ export const CompaniesTable: FC<Props> = ({
                   })}
                 </tr>
               ))}
-              <tr className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full p-5 bg-primary-500/90 shadow">
+              <tr className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full p-5 bg-gray-900/70 shadow">
                 <td>
                   <div className="max-w-2xl">
-                    <h2 className="text-2xl font-bold text-white lg:text-3xl">
+                    <h2 className="text-2xl font-medium text-white lg:text-3xl">
                       View all {numberWithCommas(totalItems)} companies from
                       this search.
                     </h2>
                     <p className="text-lg text-white opacity-90">
-                      {/* Get real-time updates on the companies, people, deals and
-											events you’re most interested in.  */}
                       Try EdgeIn Contributor FREE for 7 days.
-                      {/* or invite others and get 3-months FREE when they verify their profile. */}
                     </p>
                     <div className="flex items-center space-x-2 mt-4">
-                      <ElemButton
-                        onClick={onBillingClick}
-                        btn="primary-light"
-                        arrow
-                        className="text-primary-500"
-                      >
+                      <ElemButton onClick={onBillingClick} btn="default" arrow>
                         Start your free trial
                       </ElemButton>
-                      {/* <div className="font-bold text-white">or</div>
-											<ElemButton
-												onClick={() => {}}
-												btn="ol-white"
-												arrow
-												className=" text-primary-500"
-											>
-												Invite team members
-											</ElemButton> */}
                     </div>
                   </div>
                 </td>

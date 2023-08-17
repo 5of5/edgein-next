@@ -32,34 +32,6 @@ const dark = {
   900: '#0e0e0f',
 };
 
-const darkBlue = {
-  50: '#f3f2f7',
-  100: '#e7e6f0',
-  200: '#c3bfd9',
-  300: '#9f99c2',
-  400: '#425466',
-  500: '#0E0067',
-  600: '#0d005d',
-  700: '#0a2540',
-  800: '#08003e',
-  900: '#070032',
-  950: '#0E0067',
-};
-
-const gray = {
-  50: '#F2F5FA',
-  100: '#eeeef1',
-  200: '#d5d5db',
-  250: '#E2E8F0',
-  300: '#bcbcc5',
-  400: '#425466',
-  500: '#57586e',
-  600: '#4e4f63',
-  700: '#414253',
-  800: '#343542',
-  900: '#2b2b36',
-};
-
 const blue = {
   50: '#EFF6FF',
   100: '#DBEAFE',
@@ -70,8 +42,10 @@ const blue = {
   600: '#2563EB',
   700: '#1D4ED8',
   800: '#1B01FE',
-  900: '#1E3A8A',
+  900: '#1C01B7',
 };
+
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [
@@ -81,7 +55,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      sans: ['Inter', ...defaultTheme.fontFamily.sans],
     },
     extend: {
       fontSize: {
@@ -91,7 +65,9 @@ module.exports = {
         ...colors,
         primary,
         dark: dark,
-        gray,
+        gray: {
+          25: '#fcfcfc',
+        },
         blue,
         transparent: 'transparent',
       },
@@ -118,7 +94,7 @@ module.exports = {
         15: '.15',
       },
       boxShadow: {
-        shadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        up: ' 0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1);',
       },
       animation: {
         blob: 'blob 20s infinite',

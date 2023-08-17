@@ -12,7 +12,7 @@ import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
-import ElemCompanyTags from '../elem-company-tags';
+import { ElemTags } from '@/components/elem-tags';
 
 type Props = {
   className?: string;
@@ -63,7 +63,7 @@ export const ElemRecentCompanies: FC<Props> = ({
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
               >
                 <PlaceholderCompanyCard />
               </div>
@@ -84,7 +84,7 @@ export const ElemRecentCompanies: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={index}
-                  className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <a
                     href={`/companies/${company.slug}`}
@@ -132,7 +132,11 @@ export const ElemRecentCompanies: FC<Props> = ({
                       </span>
                     </div>
 
-                    <ElemCompanyTags company={company} />
+                    <ElemTags
+                      className="mt-4"
+                      resourceType={'companies'}
+                      tags={company.tags}
+                    />
 
                     <div className="mt-4 grow">
                       <div className="text-gray-400 line-clamp-3">
@@ -151,6 +155,7 @@ export const ElemRecentCompanies: FC<Props> = ({
                         resourceType={'companies'}
                         slug={company.slug}
                         buttonStyle="white"
+                        follows={company.follows}
                       />
                     </div>
                   </a>

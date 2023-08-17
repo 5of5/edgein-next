@@ -7,6 +7,8 @@ import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
 import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
+import { listSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -23,8 +25,13 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     setListName(listName);
-    if (listName && listName.length < 3) {
-      setError('List name should have at least 3 characters.');
+    if (listName) {
+      const { errors } = zodValidate({ name: listName }, listSchema);
+      if (errors) {
+        setError(errors['name']?.[0] || '');
+      } else {
+        setError('');
+      }
     } else {
       setError('');
     }
@@ -86,7 +93,7 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title className="text-xl font-bold flex items-center justify-between">
                   <span>Create List</span>
                   <button
@@ -121,7 +128,7 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                           : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                       }`}
                     />
-                    {error === '' ? null : (
+                    {error && (
                       <div className="mt-2 font-bold text-sm text-rose-400">
                         {error}
                       </div>

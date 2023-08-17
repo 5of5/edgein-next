@@ -13,6 +13,7 @@ query GetVCFirm($slug: String!) {
     location
     location_json
     twitter
+    library
     investors {
       id
       person {
@@ -70,6 +71,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
       from_vc_firm {
         id
@@ -79,6 +84,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
     }
     from_links {
@@ -91,6 +100,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
       to_vc_firm {
         id
@@ -100,6 +113,10 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        follows {
+          id
+          list_id
+        }
       }
     }
     news_links {
@@ -120,16 +137,20 @@ query GetVCFirm($slug: String!) {
         }
       }
     }
+    follows {
+      id
+      list_id
+    }
   }
 }
 
-query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
-  vc_firms(
-    where: $where
-    order_by: { num_of_investments: desc }
-    limit: $limit
-    offset: $offset
-  ) {
+query GetVCFirms(
+  $limit: Int
+  $offset: Int
+  $orderBy: [vc_firms_order_by!]
+  $where: vc_firms_bool_exp!
+) {
+  vc_firms(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
     name
     slug
@@ -177,6 +198,10 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
       }
     }
     sentiment
+    follows {
+      id
+      list_id
+    }
   }
   vc_firms_aggregate(where: $where) {
     aggregate {
@@ -205,6 +230,10 @@ query GetVCFirmsRecentInvestments(
     num_of_investments
     sentiment
     overview
+    follows {
+      id
+      list_id
+    }
   }
 }
 
@@ -285,5 +314,13 @@ query GetVcFirmsInvestments {
         }
       }
     }
+  }
+}
+
+query GetVcFirmById($id: Int!) {
+  vc_firms(where: { id: { _eq: $id } }) {
+    id
+    name
+    status
   }
 }

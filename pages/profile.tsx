@@ -9,7 +9,6 @@ import { IconSearch } from '@/components/icons';
 // import { ElemPhoto } from "@/components/elem-photo";
 // import { InputText } from "@/components/InputText";
 // import { InputTextarea } from "@/components/InputTextarea";
-import { Popups } from '@/components/the-navbar';
 
 import {
   // GetCompaniesDocument,
@@ -20,6 +19,7 @@ import {
   useGetUserProfileQuery,
 } from '@/graphql/types';
 import { useAuth } from '@/hooks/use-auth';
+import { usePopup } from '@/context/popup-context';
 // import { divide, find, findIndex } from "lodash";
 // import validator from "validator";
 // import { InputSelect } from "@/components/InputSelect";
@@ -28,7 +28,7 @@ import { useAuth } from '@/hooks/use-auth';
 // import { uploadFile, deleteFile } from "@/utils/file-functions";
 // import { InputDate } from "@/components/InputDate";
 // import { GetStaticProps } from "next";
-// import { EditSection } from "@/components/Dashboard/EditSection";
+import { EditSection } from '@/components/dashboard/edit-section';
 // import { functionChoicesTM } from "@/utils/constants";
 // import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 
@@ -43,11 +43,12 @@ const emptyTeamMember = {
 
 type Props = {
   companiesDropdown: any;
-  setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
+const Profile: FC<Props> = ({ companiesDropdown }) => {
   const { user } = useAuth();
+
+  const { setShowPopup } = usePopup();
 
   //const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -517,33 +518,9 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 
   return (
     <DashboardLayout>
-      {!users?.users_by_pk?.person && (
-        <div className="mb-5 p-5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg">
-          <div className="sm:flex justify-between items-center mb-2">
-            <h2 className="font-bold text-2xl text-white">
-              Claim your Profile to unlock some features.
-            </h2>
-          </div>
-          <div className="max-w-lg">
-            <p className="text-lg text-white opacity-80">
-              You have not linked your account to a profile on EdgeIn. Search
-              your name on the site and claim profile.
-            </p>
-            <ElemButton
-              btn="primary-light"
-              onClick={() => setShowPopup('search')}
-              className="mt-4"
-            >
-              <IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
-              Search your name
-            </ElemButton>
-          </div>
-        </div>
-      )}
-
-      <div className="bg-white shadow rounded-lg p-5">
-        <div className="sm:flex justify-between items-center mb-2">
-          <h2 className="font-bold text-xl">Profile Settings</h2>
+      <div className="px-4 py-3">
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="font-medium text-xl">Profile Settings</h2>
           {users?.users_by_pk?.person && (
             <ElemButton
               href={`/people/${users?.users_by_pk?.person?.slug}/`}
@@ -556,8 +533,33 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
           )}
         </div>
 
-        <div className="w-full divide-y divide-black/10 border-y border-black/10">
-          {/* <EditSection heading="Profile Image">
+        {!users?.users_by_pk?.person && (
+          <EditSection heading="Claim Profile">
+            <div className="p-5 bg-primary-500 shadow rounded-lg">
+              <div className="sm:flex justify-between items-center mb-2">
+                <h2 className="font-medium text-xl text-white">
+                  Claim your Profile to unlock some features.
+                </h2>
+              </div>
+              <div className="max-w-lg">
+                <p className="text-sm text-white opacity-80">
+                  You have not linked your account to a profile on EdgeIn.
+                  Search your name on the site and claim profile.
+                </p>
+                <ElemButton
+                  btn="primary-light"
+                  onClick={() => setShowPopup('search')}
+                  className="mt-4"
+                >
+                  <IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
+                  Search your name
+                </ElemButton>
+              </div>
+            </div>
+          </EditSection>
+        )}
+
+        {/* <EditSection heading="Profile Image">
 						<div className="sm:flex items-center">
 							<div className="relative w-32 h-32 mx-auto sm:mx-0">
 								<ElemPhoto
@@ -595,19 +597,18 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 						</div>
 					</EditSection> */}
 
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              <ProfileEditName />
-              <ProfileEditEmail />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <ProfileEditName />
+            <ProfileEditEmail />
 
-              {users?.users_by_pk?.person && (
-                <ProfileEdit user={users?.users_by_pk} />
-              )}
-            </>
-          )}
-        </div>
+            {users?.users_by_pk?.person && (
+              <ProfileEdit user={users?.users_by_pk} />
+            )}
+          </>
+        )}
       </div>
     </DashboardLayout>
   );

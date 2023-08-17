@@ -3,6 +3,8 @@ import { FC, Fragment, useState, useEffect } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconX } from '@/components/icons';
+import { listSchema } from '@/utils/schema';
+import { zodValidate } from '@/utils/validation';
 
 type Props = {
   isOpen: boolean;
@@ -27,10 +29,11 @@ export const ModalListName: FC<Props> = ({
 
   const validateName = (value: string) => {
     setName(value);
-    if (value.length >= 3) {
-      setError('');
+    const { errors } = zodValidate({ name: value }, listSchema);
+    if (errors) {
+      setError(errors['name']?.[0] || '');
     } else {
-      setError('List name should have at least 3 characters.');
+      setError('');
     }
   };
 
@@ -98,17 +101,22 @@ export const ModalListName: FC<Props> = ({
                           : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                       }`}
                     />
-                    {error === '' ? null : (
+                    {error && (
                       <div className="mt-2 font-bold text-sm text-rose-400">
                         {error}
                       </div>
                     )}
                   </div>
                   <div className="flex justify-end gap-x-6">
-                    <ElemButton onClick={onCloseModal} roundedFull btn="slate">
+                    <ElemButton onClick={onCloseModal} roundedFull btn="gray">
                       Cancel
                     </ElemButton>
-                    <ElemButton onClick={onSaveBtn} roundedFull btn="primary">
+                    <ElemButton
+                      onClick={onSaveBtn}
+                      disabled={name === '' || Boolean(error)}
+                      roundedFull
+                      btn="primary"
+                    >
                       Save
                     </ElemButton>
                   </div>

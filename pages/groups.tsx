@@ -3,12 +3,10 @@ import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
-import { ElemGroupCard } from '@/components/groups/elem-group-card';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
 import { IconGroup, IconGroupPlus } from '@/components/icons';
 import {
-  User_Groups,
   GetGroupsDocument,
   GetGroupsQuery,
   User_Groups_Bool_Exp,
@@ -25,6 +23,7 @@ import { getGroupsFilters } from '@/utils/filter';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
+import { ElemListCard } from '@/components/elem-list-card';
 
 type Props = {
   initialGroupsCount: number;
@@ -80,11 +79,14 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
     error,
     isLoading,
     refetch,
-  } = useGetGroupsQuery({
-    limit: LIMIT,
-    offset,
-    where: filters as User_Groups_Bool_Exp,
-  });
+  } = useGetGroupsQuery(
+    {
+      limit: LIMIT,
+      offset,
+      where: filters as User_Groups_Bool_Exp,
+    },
+    { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -126,83 +128,83 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
 
   return (
     <DashboardLayout>
-      <div className="pb-20">
-        <nav className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x bg-white shadow rounded-lg shrink-0">
+      <div className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200">
+        <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
           {GROUPS_TABS &&
-            GROUPS_TABS.map((tab, index: number) =>
+            GROUPS_TABS.map((tab: any, index: number) =>
               tab.disabled === true ? (
                 <Fragment key={index}></Fragment>
               ) : (
-                <button
+                <ElemButton
                   key={index}
                   onClick={() => setSelectedGroupTab(tab)}
-                  className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-                    selectedGroupTab.id === tab.id
-                      ? 'text-primary-500 border-primary-500'
-                      : 'border-transparent  hover:bg-slate-200'
-                  } ${tab.disabled ? 'cursor-not-allowed' : ''}`}
+                  btn="gray"
+                  roundedFull={false}
+                  className="rounded-lg"
                 >
                   {tab.name}
-                </button>
+                </ElemButton>
               ),
             )}
         </nav>
+      </div>
 
-        {groups?.length === 0 ? (
-          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
-              <h1 className="mt-5 text-3xl font-bold">
-                {selectedGroupTab.id === 'my-groups'
-                  ? 'Create a group'
-                  : selectedGroupTab.id === 'joined'
-                  ? 'Join a group'
-                  : selectedGroupTab.id === 'discover'
-                  ? 'Discover'
-                  : ''}
-              </h1>
-              <div className="mt-1 text-lg text-slate-600">
-                {selectedGroupTab.id === 'discover'
-                  ? 'There are no groups that are visible to the public yet, if you make your group public it will appear here.'
-                  : 'Groups allow you to collaborate on notes, share insights, and track leads with other people.'}
-              </div>
-              {selectedGroupTab.id === 'my-groups' ? (
-                <ElemButton
-                  onClick={onClickCreateGroup}
-                  btn="primary"
-                  className="mt-3"
-                >
-                  <IconGroupPlus className="w-6 h-6 mr-1" />
-                  Create New Group
-                </ElemButton>
-              ) : selectedGroupTab.id === 'joined' ? (
-                <ElemButton
-                  onClick={() =>
-                    setSelectedGroupTab({
-                      id: 'discover',
-                      name: 'Discover',
-                    })
-                  }
-                  btn="primary"
-                  className="mt-3"
-                >
-                  <IconGroupPlus className="w-6 h-6 mr-1" />
-                  Discover groups
-                </ElemButton>
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="w-full mt-6 mb-2">
-            <h1 className="font-bold text-xl capitalize">
-              {selectedGroupTab.name}
+      {groups?.length === 0 ? (
+        <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+          <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+            <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
+            <h1 className="mt-5 text-3xl font-bold">
+              {selectedGroupTab.id === 'my-groups'
+                ? 'Create a group'
+                : selectedGroupTab.id === 'joined'
+                ? 'Join a group'
+                : selectedGroupTab.id === 'discover'
+                ? 'Discover'
+                : ''}
             </h1>
+            <div className="mt-1 text-lg text-slate-600">
+              {selectedGroupTab.id === 'discover'
+                ? 'There are no groups that are visible to the public yet, if you make your group public it will appear here.'
+                : 'Groups allow you to collaborate on notes, share insights, and track leads with other people.'}
+            </div>
+            {selectedGroupTab.id === 'my-groups' ? (
+              <ElemButton
+                onClick={onClickCreateGroup}
+                btn="primary"
+                className="mt-3"
+              >
+                <IconGroupPlus className="w-6 h-6 mr-1" />
+                Create New Group
+              </ElemButton>
+            ) : selectedGroupTab.id === 'joined' ? (
+              <ElemButton
+                onClick={() =>
+                  setSelectedGroupTab({
+                    id: 'discover',
+                    name: 'Discover',
+                  })
+                }
+                btn="primary"
+                className="mt-3"
+              >
+                <IconGroupPlus className="w-6 h-6 mr-1" />
+                Discover groups
+              </ElemButton>
+            ) : (
+              <></>
+            )}
           </div>
-        )}
+        </div>
+      ) : (
+        <div className="px-4 pb-2">
+          <h1 className="font-medium text-xl capitalize">
+            {selectedGroupTab.name}
+          </h1>
+        </div>
+      )}
 
-        <div className={`grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}>
+      <div className="px-4 py-3">
+        <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">
@@ -234,11 +236,11 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
           ) : (
             groups?.map(group => {
               return (
-                <ElemGroupCard
+                <ElemListCard
                   key={group.id}
-                  group={group as User_Groups}
-                  selectedGroupTab={selectedGroupTab}
-                  refetchGroupsPage={refetch}
+                  selectedTab={selectedGroupTab}
+                  resource={{ ...group, resourceType: 'group' }}
+                  refetchList={refetch}
                 />
               );
             })
@@ -250,7 +252,6 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
           totalItems={groups_aggregate}
           page={page}
           itemsPerPage={LIMIT}
-          numeric
           onClickPrev={() => setPage(page - 1)}
           onClickNext={() => setPage(page + 1)}
           onClickToPage={selectedPage => setPage(selectedPage)}

@@ -5,14 +5,24 @@ import {
   GetFollowsByUserQuery,
   useGetGroupsOfUserQuery,
   GetGroupsOfUserQuery,
+  useGetUnreadNotificationsQuery,
+  GetUnreadNotificationsQuery,
+  Notifications,
 } from '@/graphql/types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
 import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
+import { filterExcludeNotifications } from '@/utils/notifications';
+import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
+import { redirect_url } from '@/utils/auth';
+import useLibrary from '@/hooks/use-library';
+import { libraryChoices } from '@/utils/constants';
+import { Library, LibraryTag } from '@/types/common';
+
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 const CLARITY_ID = 'epusnauses';
 
@@ -21,7 +31,11 @@ type UserValue = {
   loading: boolean;
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][];
   myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][];
+  unreadNotifications: GetUnreadNotificationsQuery['notifications'];
+  selectedLibrary?: Library;
+  onChangeLibrary: (value: LibraryTag) => void;
   refetchMyGroups: any;
+  refetchUnreadNotifications: () => void;
   refreshUser: () => void;
 };
 
@@ -30,7 +44,10 @@ const userContext = React.createContext<UserValue>({
   loading: true,
   listAndFollows: [],
   myGroups: [],
+  unreadNotifications: [],
+  onChangeLibrary: () => {},
   refetchMyGroups: () => {},
+  refetchUnreadNotifications: () => {},
   refreshUser: () => {},
 });
 const useUser = () => {
@@ -69,6 +86,12 @@ const UserProvider: React.FC<Props> = props => {
     { enabled: Boolean(user) },
   );
 
+  const { data: notifications, refetch: refetchUnreadNotifications } =
+    useGetUnreadNotificationsQuery(
+      { user_id: user?.id || 0 },
+      { enabled: Boolean(user), refetchOnWindowFocus: false },
+    );
+
   React.useEffect(() => {
     clarity.init(CLARITY_ID);
   }, []);
@@ -106,7 +129,7 @@ const UserProvider: React.FC<Props> = props => {
           customAttributes: {
             isClaimedProfile: !!user.person, // If a profile is claimed or not
             profileUrl: user.person
-              ? `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/people/${user.person.slug}`
+              ? `${redirect_url()}/people/${user.person.slug}`
               : null, // User profile url
           },
         });
@@ -117,21 +140,42 @@ const UserProvider: React.FC<Props> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const [listAndFollows, setListAndFollows] = React.useState(
+  const [listAndFollows, setListAndFollows] = useState(
     listMemberships?.list_members.map(li => li.list) || [],
   );
-  React.useEffect(() => {
+  useEffect(() => {
     setListAndFollows(listMemberships?.list_members.map(li => li.list) || []);
   }, [listMemberships]);
 
-  const [myGroups, setMyGroups] = React.useState(
+  const [myGroups, setMyGroups] = useState(
     groups?.user_group_members?.map(group => group.user_group) || [],
   );
-  React.useEffect(() => {
+  useEffect(() => {
     setMyGroups(
       groups?.user_group_members?.map(group => group.user_group) || [],
     );
   }, [groups]);
+
+  let unreadNotifications = notifications?.notifications || [];
+
+  unreadNotifications = filterExcludeNotifications(
+    unreadNotifications as Notifications[],
+    NOTIFICATION_EXCLUDE_PROPERTIES,
+  );
+
+  const { selectedLibrary, onChangeLibrary } = useLibrary();
+  const [library, setLibrary] = useState<LibraryTag | undefined>();
+
+  useEffect(() => {
+    if (selectedLibrary && selectedLibrary !== library?.id) {
+      setLibrary(libraryChoices.find(item => item.id === selectedLibrary));
+    }
+  }, [selectedLibrary, library]);
+
+  const handleSelectLibrary = (value: LibraryTag) => {
+    setLibrary(value);
+    onChangeLibrary(value.id);
+  };
 
   return (
     <Provider
@@ -140,7 +184,11 @@ const UserProvider: React.FC<Props> = props => {
         loading,
         listAndFollows,
         myGroups,
+        unreadNotifications,
+        selectedLibrary: library?.id,
+        onChangeLibrary: handleSelectLibrary,
         refetchMyGroups,
+        refetchUnreadNotifications,
         refreshUser,
       }}
     >

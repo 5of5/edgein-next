@@ -1,6 +1,7 @@
 query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
     id
+    credits
     billing_org_id
     organization_companies {
       id
@@ -79,6 +80,7 @@ query GetUserProfile($id: Int!) {
 query GetUserByPersonId($person_id: Int!) {
   users(where: { person_id: { _eq: $person_id } }) {
     id
+    credits
     billing_org_id
     organization_companies {
       id
@@ -182,6 +184,7 @@ query GetUserByEmail($email: String) {
     auth0_linkedin_id
     auth0_user_pass_id
     reference_id
+    credits
     billing_org_id
     person {
       name
@@ -192,6 +195,7 @@ query GetUserByEmail($email: String) {
     additional_emails
     active
     onboarding_information
+    feature_flags
   }
 }
 
@@ -206,6 +210,7 @@ query GetUserById($id: Int) {
     auth0_linkedin_id
     auth0_user_pass_id
     reference_id
+    credits
     billing_org_id
     billing_org {
       customer_id
@@ -216,6 +221,7 @@ query GetUserById($id: Int) {
     }
     additional_emails
     onboarding_information
+    feature_flags
   }
 }
 
@@ -261,6 +267,7 @@ mutation UpsertUsers(
       auth0_linkedin_id
       auth0_user_pass_id
       reference_id
+      credits
       billing_org_id
       person {
         name
@@ -293,6 +300,7 @@ mutation UpdateUserEmailVerifiedStatus(
       auth0_linkedin_id
       auth0_user_pass_id
       reference_id
+      credits
       billing_org_id
       person {
         name
@@ -325,6 +333,7 @@ mutation UpdateUserAuth0LinkedInId(
       auth0_linkedin_id
       auth0_user_pass_id
       reference_id
+      credits
       billing_org_id
       person {
         name
@@ -357,6 +366,7 @@ mutation UpdateUserAuth0UserPassId(
       auth0_linkedin_id
       auth0_user_pass_id
       reference_id
+      credits
       billing_org_id
       person {
         name
@@ -381,6 +391,7 @@ query GetUserByReferenceId($reference_id: String) {
     auth0_linkedin_id
     auth0_user_pass_id
     reference_id
+    credits
     billing_org_id
     person {
       name
@@ -409,6 +420,7 @@ mutation UpdateUserAdditionalEmails($id: Int!, $additional_emails: jsonb) {
       auth0_linkedin_id
       auth0_user_pass_id
       reference_id
+      credits
       billing_org_id
       person {
         name
@@ -433,6 +445,7 @@ query GetUserByAdditionalEmail($email: jsonb) {
     auth0_linkedin_id
     auth0_user_pass_id
     reference_id
+    credits
     billing_org_id
     person {
       name
@@ -482,6 +495,36 @@ mutation UpdateUserPersonId($id: Int!, $person_id: Int!) {
         slug
         id
       }
+    }
+  }
+}
+
+query GetUserByPersonIds($person_ids: [Int!]) {
+  users(where: { person_id: { _in: $person_ids } }) {
+    id
+    email
+    display_name
+    person_id
+  }
+}
+
+mutation UpdateUserFeatureFlags($id: Int!, $feature_flags: jsonb) {
+  update_users(
+    where: { id: { _eq: $id } }
+    _set: { feature_flags: $feature_flags }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      feature_flags
     }
   }
 }

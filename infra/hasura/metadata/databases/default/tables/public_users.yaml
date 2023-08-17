@@ -46,6 +46,12 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: user_id
+computed_fields:
+  - name: credits
+    definition:
+      function:
+        schema: public
+        name: user_credits
 select_permissions:
   - role: viewer
     permission:
@@ -58,6 +64,7 @@ select_permissions:
         - display_name
         - email
         - external_id
+        - feature_flags
         - id
         - is_auth0_verified
         - onboarding_information
@@ -65,6 +72,8 @@ select_permissions:
         - reference_id
         - reference_user_id
         - role
+      computed_fields:
+        - credits
       filter:
         id:
           _eq: X-Hasura-User-Id

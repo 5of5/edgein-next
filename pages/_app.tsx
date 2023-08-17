@@ -8,11 +8,12 @@ import Script from 'next/script';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { LoaderPlasma } from '@/components/loader-plasma';
-import { Popups, TheNavbar } from '@/components/the-navbar';
-import { ElemFeedback } from '@/components/elem-feedback';
+import { TheNavbar } from '@/components/the-navbar';
 import { TheFooter } from '@/components/the-footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { UserProvider } from '@/context/user-context';
+import { PopupProvider } from '@/context/popup-context';
+import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
@@ -29,15 +30,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   // App Page Preloader
   const router = useRouter();
   const [pageLoading, setPageLoading] = React.useState<boolean>(false);
-
-  const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
-  const [showPopup, setShowPopup] = useState<Popups>(
-    router.asPath.includes('/login/')
-      ? router.asPath.includes('?usage=true')
-        ? 'usage'
-        : 'login'
-      : false,
-  );
 
   //google
   React.useEffect(() => {
@@ -84,6 +76,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   React.useEffect(() => {
     const pagesWithoutFooter = [
+      '/companies',
+      '/investors',
+      '/events',
+      '/news',
       '/groups',
       '/account',
       '/profile',
@@ -140,35 +136,23 @@ function MyApp({ Component, pageProps }: AppProps) {
           ) : (
             <IntercomProvider appId={INTERCOM_APP_ID} autoBoot>
               <UserProvider>
-                <>
-                  <TheNavbar
-                    showPopup={showPopup}
-                    setShowPopup={setShowPopup}
-                  />
-                  <main className="mt-12 grow selection:bg-primary-200">
-                    {pageLoading ? (
-                      <LoaderPlasma />
-                    ) : (
-                      <Component
-                        {...pageProps}
-                        setToggleFeedbackForm={setToggleFeedbackForm}
-                        showPopup={showPopup}
-                        setShowPopup={setShowPopup}
-                      />
-                    )}
-                  </main>
+                <PopupProvider>
+                  <SideBarProvider>
+                    <>
+                      <TheNavbar />
 
-                  {(router.asPath.includes('/companies/') ||
-                    router.asPath.includes('/investors/') ||
-                    router.asPath.includes('/events/')) && (
-                    <ElemFeedback
-                      toggleFeedbackForm={toggleFeedbackForm}
-                      setToggleFeedbackForm={setToggleFeedbackForm}
-                    />
-                  )}
+                      <main className="grow selection:bg-primary-200">
+                        {pageLoading ? (
+                          <LoaderPlasma />
+                        ) : (
+                          <Component {...pageProps} />
+                        )}
+                      </main>
 
-                  {showFooter === true && <TheFooter />}
-                </>
+                      {showFooter === true && <TheFooter />}
+                    </>
+                  </SideBarProvider>
+                </PopupProvider>
               </UserProvider>
             </IntercomProvider>
           )}
@@ -183,6 +167,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
+        {/* test */}
       </div>
     </>
   );
