@@ -43,9 +43,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       segment === 'Executive'
         ? {
             _and: [
+              { status: { _eq: 'published' } },
               {
                 round_date: {
-                  _gte: moment().subtract(7, 'days').format('YYYY-MM-DD'),
+                  _gte: moment().subtract(28, 'days').format('YYYY-MM-DD'),
                 },
               },
               {
@@ -66,9 +67,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         : {
             _and: [
+              { status: { _eq: 'published' } },
               {
                 created_at: {
-                  _gte: moment().subtract(7, 'days').format('YYYY-MM-DD'),
+                  _gte: moment().subtract(28, 'days').format('YYYY-MM-DD'),
                 },
               },
               {
@@ -121,7 +123,7 @@ async function onGetCompanyInsight(filter?: Companies_Bool_Exp) {
   } = await query<GetCompanyInsightByLocationQuery>({
     query: GetCompanyInsightByLocationDocument,
     variables: {
-      where: filter || {},
+      where: filter || { status: { _eq: 'published' } },
     },
   });
 
@@ -134,7 +136,7 @@ async function onGetEventInsight(filter?: Events_Bool_Exp) {
   } = await query<GetEventInsightByLocationQuery>({
     query: GetEventInsightByLocationDocument,
     variables: {
-      where: filter || {},
+      where: filter || { status: { _eq: 'published' } },
     },
   });
 
@@ -147,7 +149,7 @@ async function onGetInvestmentInsight(filter?: Investment_Rounds_Bool_Exp) {
   } = await query<GetInvestmentInsightByLocationQuery>({
     query: GetInvestmentInsightByLocationDocument,
     variables: {
-      where: filter || {},
+      where: filter || { status: { _eq: 'published' } },
     },
   });
 
