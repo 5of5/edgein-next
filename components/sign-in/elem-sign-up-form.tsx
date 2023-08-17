@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { urlPattern } from '@/utils/constants';
-import { FindPeopleByEmailAndLinkedinQuery } from '@/graphql/types';
+import { GetSignUpProfileQuery } from '@/graphql/types';
 import { SignUpFormState, SignUpPayload } from '@/pages/sign-in';
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
   signUpEmail: string;
   onNext: (
     values: SignUpFormState,
-    person: FindPeopleByEmailAndLinkedinQuery['people'][number],
+    person: GetSignUpProfileQuery['people'][number],
   ) => void;
   onSignUp: (formValues: SignUpFormState, payload: SignUpPayload) => void;
 };
@@ -38,7 +38,9 @@ export const ElemSignUpForm: FC<Props> = ({
 
   const isDisabledButton =
     !isEmpty(errors) ||
-    Object.keys(values).some(key => !values[key as keyof SignUpFormState]);
+    Object.keys(values).some(
+      key => key !== 'linkedinUrl' && !values[key as keyof SignUpFormState],
+    );
 
   const {
     isFetching: isCheckingExistedLinkedinUrl,
@@ -69,7 +71,9 @@ export const ElemSignUpForm: FC<Props> = ({
     ['get-sign-up-profile'],
     async () =>
       await fetch(
-        `/api/get-sign-up-profile/?email=${signUpEmail}&linkedinUrl=${values.linkedinUrl}`,
+        `/api/get-sign-up-profile/?email=${signUpEmail}&name=${encodeURIComponent(
+          `${values.firstName} ${values.lastName}`,
+        )}`,
       ),
     {
       enabled: false,
@@ -91,7 +95,7 @@ export const ElemSignUpForm: FC<Props> = ({
 
   const handleValidate = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (!value.trim()) {
+    if (!value.trim() && name !== 'linkedinUrl') {
       setErrors(prev => ({
         ...prev,
         [name]: `${capitalize(lowerCase(name))} is required`,
@@ -135,7 +139,12 @@ export const ElemSignUpForm: FC<Props> = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    checkExistedLinkedinUrl();
+
+    if (values.linkedinUrl?.trim()) {
+      checkExistedLinkedinUrl();
+    } else {
+      getSignUpProfile();
+    }
   };
 
   return (

@@ -20,18 +20,6 @@ type ListReactionType = {
   pathname: string;
 };
 
-type ResourceType = {
-  company?: number;
-  vcfirm?: number;
-  pathname: string;
-};
-
-type MultipleListResourceType = {
-  companies?: [ResourceType];
-  vcfirms?: [ResourceType];
-  sentiment: string;
-};
-
 export const toggleFollowOnList = async ({
   resourceId,
   resourceType,
@@ -125,18 +113,4 @@ export const getNewTempSentiment = (
       : (newSentiment[sentiment] = 0);
 
   return newSentiment;
-};
-
-export const createListWithMultipleResources = async (
-  payload: MultipleListResourceType,
-) => {
-  const resp = await fetch('/api/multiple-resources-to-list/', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-  return resp.json();
 };

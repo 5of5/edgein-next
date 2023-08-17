@@ -1,13 +1,17 @@
 import UserService from '@/utils/users';
 import CookieService from '@/utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { GetUserGroupInvitesByEmailQuery } from '@/graphql/types';
+import {
+  GetUserGroupInvitesByEmailQuery,
+  UpdateUserPersonIdDocument,
+  UpdateUserPersonIdMutation,
+  InsertOnboardingClaimProfileMutation,
+  InsertOnboardingClaimProfileDocument,
+} from '@/graphql/types';
 import GroupService from '@/utils/groups';
 import { makeAuthService, UserInfo } from '@/services/auth.service';
-import {
-  onInsertProfile,
-  onLinkUserToPerson,
-} from './add-onboarding-information';
+import { mutate } from '@/graphql/hasuraAdmin';
+import { onFindPeopleByLinkedin } from './add-onboarding-information';
 
 const authService = makeAuthService();
 
@@ -106,13 +110,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Link user to profile
     if (personId) {
       await onLinkUserToPerson(userData.id, personId);
-    } else {
-      const insertedPerson = await onInsertProfile(
-        userData.display_name || '',
-        userData.email,
-        linkedinUrl,
-      );
-      await onLinkUserToPerson(userData.id, insertedPerson?.id || 0);
+    } else if (linkedinUrl) {
+      const personByLinkedin = await onFindPeopleByLinkedin(linkedinUrl);
+      if (personByLinkedin?.id) {
+        await onLinkUserToPerson(userData.id, personByLinkedin.id);
+      } else {
+        const insertedPerson = await onInsertProfile(
+          userData.display_name || '',
+          userData.email,
+          linkedinUrl,
+        );
+        await onLinkUserToPerson(userData.id, insertedPerson?.id || 0);
+      }
     }
 
     await authService.linkAccounts(
@@ -147,6 +156,45 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const addMember = async (userId: number, groupId: number) => {
   const response = await GroupService.onAddGroupMember(userId, groupId);
   return response;
+};
+
+const onLinkUserToPerson = async (userId: number, personId: number) => {
+  const {
+    data: { update_users },
+  } = await mutate<UpdateUserPersonIdMutation>({
+    mutation: UpdateUserPersonIdDocument,
+    variables: {
+      id: userId,
+      person_id: personId,
+    },
+  });
+
+  return update_users;
+};
+
+const onInsertProfile = async (
+  name: string,
+  email: string,
+  linkedin: string,
+) => {
+  const {
+    data: { insert_people_one },
+  } = await mutate<InsertOnboardingClaimProfileMutation>({
+    mutation: InsertOnboardingClaimProfileDocument,
+    variables: {
+      object: {
+        name,
+        slug: `${name.trim().replace(/ /g, '-').toLowerCase()}-${Math.floor(
+          Date.now() / 1000,
+        )}`,
+        email,
+        linkedin,
+        status: 'draft',
+      },
+    },
+  });
+
+  return insert_people_one;
 };
 
 export default handler;

@@ -165,7 +165,7 @@ export type Actions_Bool_Exp = {
 
 /** unique or primary key constraints on table "actions" */
 export enum Actions_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ActionsPkey = 'actions_pkey'
 }
 
@@ -339,6 +339,27 @@ export type Actions_Stddev_Samp_Fields = {
   user: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "actions" */
+export type Actions_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Actions_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Actions_Stream_Cursor_Value_Input = {
+  action: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  page: InputMaybe<Scalars['String']>;
+  partner: InputMaybe<Scalars['Int']>;
+  properties: InputMaybe<Scalars['jsonb']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Actions_Sum_Fields = {
   __typename?: 'actions_sum_fields';
@@ -369,6 +390,25 @@ export enum Actions_Update_Column {
   /** column name */
   User = 'user'
 }
+
+export type Actions_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Actions_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Actions_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Actions_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Actions_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Actions_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Actions_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Actions_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Actions_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Actions_Var_Pop_Fields = {
@@ -460,11 +500,11 @@ export type Allowed_Emails_Bool_Exp = {
 
 /** unique or primary key constraints on table "allowed_emails" */
 export enum Allowed_Emails_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "email" */
   AllowedEmailsEmailKey = 'allowed_emails_email_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "person_id" */
   AllowedEmailsPersonIdKey = 'allowed_emails_person_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   AllowedEmailsPkey = 'allowed_emails_pkey'
 }
 
@@ -584,6 +624,24 @@ export type Allowed_Emails_Stddev_Samp_Fields = {
   person_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "allowed_emails" */
+export type Allowed_Emails_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Allowed_Emails_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Allowed_Emails_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  match_type: InputMaybe<Scalars['String']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['date']>;
+};
+
 /** aggregate sum on columns */
 export type Allowed_Emails_Sum_Fields = {
   __typename?: 'allowed_emails_sum_fields';
@@ -606,6 +664,15 @@ export enum Allowed_Emails_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type Allowed_Emails_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Allowed_Emails_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Allowed_Emails_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Allowed_Emails_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Allowed_Emails_Var_Pop_Fields = {
@@ -690,7 +757,7 @@ export type Application_Meta_Bool_Exp = {
 
 /** unique or primary key constraints on table "application_meta" */
 export enum Application_Meta_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ApplicationMetaPkey = 'application_meta_pkey'
 }
 
@@ -806,6 +873,24 @@ export type Application_Meta_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "application_meta" */
+export type Application_Meta_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Application_Meta_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Application_Meta_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  error: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  key: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  value: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type Application_Meta_Sum_Fields = {
   __typename?: 'application_meta_sum_fields';
@@ -827,6 +912,15 @@ export enum Application_Meta_Update_Column {
   /** column name */
   Value = 'value'
 }
+
+export type Application_Meta_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Application_Meta_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Application_Meta_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Application_Meta_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Application_Meta_Var_Pop_Fields = {
@@ -925,7 +1019,7 @@ export type Billing_Org_Bool_Exp = {
 
 /** unique or primary key constraints on table "billing_org" */
 export enum Billing_Org_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   BillingOrgPkey = 'billing_org_pkey'
 }
 
@@ -1054,6 +1148,24 @@ export type Billing_Org_Stddev_Samp_Fields = {
   user_limit: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "billing_org" */
+export type Billing_Org_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Billing_Org_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Billing_Org_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  customer_id: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  plan: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  user_limit: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Billing_Org_Sum_Fields = {
   __typename?: 'billing_org_sum_fields';
@@ -1076,6 +1188,15 @@ export enum Billing_Org_Update_Column {
   /** column name */
   UserLimit = 'user_limit'
 }
+
+export type Billing_Org_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Billing_Org_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Billing_Org_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Billing_Org_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Billing_Org_Var_Pop_Fields = {
@@ -1154,7 +1275,7 @@ export type Blockchains_Bool_Exp = {
 
 /** unique or primary key constraints on table "blockchains" */
 export enum Blockchains_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   BlockchainPkey = 'blockchain_pkey'
 }
 
@@ -1256,6 +1377,21 @@ export type Blockchains_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "blockchains" */
+export type Blockchains_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Blockchains_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Blockchains_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Blockchains_Sum_Fields = {
   __typename?: 'blockchains_sum_fields';
@@ -1271,6 +1407,15 @@ export enum Blockchains_Update_Column {
   /** column name */
   Name = 'name'
 }
+
+export type Blockchains_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Blockchains_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Blockchains_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Blockchains_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Blockchains_Var_Pop_Fields = {
@@ -1361,9 +1506,9 @@ export type Coins_Bool_Exp = {
 
 /** unique or primary key constraints on table "coins" */
 export enum Coins_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   CoinsExternalIdKey = 'coins_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   CoinsPkey = 'coins_pkey'
 }
 
@@ -1510,6 +1655,26 @@ export type Coins_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "coins" */
+export type Coins_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Coins_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Coins_Stream_Cursor_Value_Input = {
+  blockchain_id: InputMaybe<Scalars['Int']>;
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  external_id: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  ticker: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Coins_Sum_Fields = {
   __typename?: 'coins_sum_fields';
@@ -1537,6 +1702,15 @@ export enum Coins_Update_Column {
   /** column name */
   Type = 'type'
 }
+
+export type Coins_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Coins_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Coins_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Coins_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Coins_Var_Pop_Fields = {
@@ -1581,6 +1755,17 @@ export type Comments_Aggregate = {
   __typename?: 'comments_aggregate';
   aggregate: Maybe<Comments_Aggregate_Fields>;
   nodes: Array<Comments>;
+};
+
+export type Comments_Aggregate_Bool_Exp = {
+  count: InputMaybe<Comments_Aggregate_Bool_Exp_Count>;
+};
+
+export type Comments_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Comments_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Comments_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "comments" */
@@ -1659,7 +1844,7 @@ export type Comments_Bool_Exp = {
 
 /** unique or primary key constraints on table "comments" */
 export enum Comments_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   CommentsPkey = 'comments_pkey'
 }
 
@@ -1819,6 +2004,23 @@ export type Comments_Stddev_Samp_Order_By = {
   note_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "comments" */
+export type Comments_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Comments_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Comments_Stream_Cursor_Value_Input = {
+  content: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Comments_Sum_Fields = {
   __typename?: 'comments_sum_fields';
@@ -1847,6 +2049,15 @@ export enum Comments_Update_Column {
   /** column name */
   NoteId = 'note_id'
 }
+
+export type Comments_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Comments_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Comments_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Comments_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Comments_Var_Pop_Fields = {
@@ -2204,7 +2415,9 @@ export type Companies_Bool_Exp = {
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Companies_Bool_Exp>;
+  follows_aggregate: InputMaybe<Follows_Companies_Aggregate_Bool_Exp>;
   from_links: InputMaybe<Resource_Links_Bool_Exp>;
+  from_links_aggregate: InputMaybe<Resource_Links_Aggregate_Bool_Exp>;
   geopoint: InputMaybe<Geography_Comparison_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   glassdoor: InputMaybe<String_Comparison_Exp>;
@@ -2213,6 +2426,7 @@ export type Companies_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   instagram: InputMaybe<String_Comparison_Exp>;
   investment_rounds: InputMaybe<Investment_Rounds_Bool_Exp>;
+  investment_rounds_aggregate: InputMaybe<Investment_Rounds_Aggregate_Bool_Exp>;
   investor_amount: InputMaybe<Bigint_Comparison_Exp>;
   layer: InputMaybe<String_Comparison_Exp>;
   layer_detail: InputMaybe<String_Comparison_Exp>;
@@ -2224,6 +2438,7 @@ export type Companies_Bool_Exp = {
   medium: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Organizations_Bool_Exp>;
+  news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Bool_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   reddit: InputMaybe<String_Comparison_Exp>;
@@ -2234,9 +2449,11 @@ export type Companies_Bool_Exp = {
   status_tags: InputMaybe<Jsonb_Comparison_Exp>;
   tags: InputMaybe<Jsonb_Comparison_Exp>;
   teamMembers: InputMaybe<Team_Members_Bool_Exp>;
+  teamMembers_aggregate: InputMaybe<Team_Members_Aggregate_Bool_Exp>;
   team_enrichment_status: InputMaybe<String_Comparison_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
   to_links: InputMaybe<Resource_Links_Bool_Exp>;
+  to_links_aggregate: InputMaybe<Resource_Links_Aggregate_Bool_Exp>;
   total_employees: InputMaybe<Numeric_Comparison_Exp>;
   total_valuation: InputMaybe<String_Comparison_Exp>;
   trajectory: InputMaybe<Float8_Comparison_Exp>;
@@ -2253,13 +2470,13 @@ export type Companies_Bool_Exp = {
 
 /** unique or primary key constraints on table "companies" */
 export enum Companies_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   CompaniesExternalIdKey = 'companies_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   CompaniesPkey = 'companies_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "slug" */
   CompaniesSlugIdx = 'companies_slug_idx',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "slug" */
   CompaniesSlugKey = 'companies_slug_key'
 }
 
@@ -2309,6 +2526,17 @@ export type Companies_Edit_Access_Aggregate = {
   __typename?: 'companies_edit_access_aggregate';
   aggregate: Maybe<Companies_Edit_Access_Aggregate_Fields>;
   nodes: Array<Companies_Edit_Access>;
+};
+
+export type Companies_Edit_Access_Aggregate_Bool_Exp = {
+  count: InputMaybe<Companies_Edit_Access_Aggregate_Bool_Exp_Count>;
+};
+
+export type Companies_Edit_Access_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "companies_edit_access" */
@@ -2514,6 +2742,22 @@ export type Companies_Edit_Access_Stddev_Samp_Order_By = {
   user_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "companies_edit_access" */
+export type Companies_Edit_Access_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Companies_Edit_Access_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Companies_Edit_Access_Stream_Cursor_Value_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Companies_Edit_Access_Sum_Fields = {
   __typename?: 'companies_edit_access_sum_fields';
@@ -2527,6 +2771,15 @@ export type Companies_Edit_Access_Sum_Order_By = {
   id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   user_id: InputMaybe<Order_By>;
+};
+
+export type Companies_Edit_Access_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Companies_Edit_Access_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Companies_Edit_Access_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Companies_Edit_Access_Bool_Exp;
 };
 
 /** aggregate var_pop on columns */
@@ -3052,6 +3305,71 @@ export type Companies_Stddev_Samp_Fields = {
   trajectory: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "companies" */
+export type Companies_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Companies_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Companies_Stream_Cursor_Value_Input = {
+  aliases: InputMaybe<Scalars['String']>;
+  audit_file: InputMaybe<Scalars['String']>;
+  bitcointalk: InputMaybe<Scalars['String']>;
+  blockchain_explorer: InputMaybe<Scalars['String']>;
+  careers_page: InputMaybe<Scalars['String']>;
+  coin_id: InputMaybe<Scalars['Int']>;
+  company_linkedin: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  date_added: InputMaybe<Scalars['date']>;
+  discord: InputMaybe<Scalars['String']>;
+  email_domain: InputMaybe<Scalars['String']>;
+  external_id: InputMaybe<Scalars['String']>;
+  facebook: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
+  github: InputMaybe<Scalars['String']>;
+  glassdoor: InputMaybe<Scalars['String']>;
+  ico_end: InputMaybe<Scalars['date']>;
+  ico_start: InputMaybe<Scalars['date']>;
+  id: InputMaybe<Scalars['Int']>;
+  instagram: InputMaybe<Scalars['String']>;
+  investor_amount: InputMaybe<Scalars['bigint']>;
+  layer: InputMaybe<Scalars['String']>;
+  layer_detail: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
+  location: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  logo: InputMaybe<Scalars['jsonb']>;
+  market_verified: InputMaybe<Scalars['String']>;
+  medium: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  notes: InputMaybe<Scalars['String']>;
+  overview: InputMaybe<Scalars['String']>;
+  reddit: InputMaybe<Scalars['String']>;
+  search_count: InputMaybe<Scalars['Int']>;
+  sentiment: InputMaybe<Scalars['jsonb']>;
+  slug: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  status_tags: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+  team_enrichment_status: InputMaybe<Scalars['String']>;
+  telegram: InputMaybe<Scalars['String']>;
+  total_employees: InputMaybe<Scalars['numeric']>;
+  total_valuation: InputMaybe<Scalars['String']>;
+  trajectory: InputMaybe<Scalars['float8']>;
+  twitter: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  velocity_linkedin: InputMaybe<Scalars['String']>;
+  velocity_token: InputMaybe<Scalars['String']>;
+  web_domain: InputMaybe<Scalars['String']>;
+  website: InputMaybe<Scalars['String']>;
+  white_paper: InputMaybe<Scalars['String']>;
+  year_founded: InputMaybe<Scalars['String']>;
+  youtube: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Companies_Sum_Fields = {
   __typename?: 'companies_sum_fields';
@@ -3173,6 +3491,25 @@ export enum Companies_Update_Column {
   Youtube = 'youtube'
 }
 
+export type Companies_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Companies_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Companies_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Companies_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Companies_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Companies_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Companies_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Companies_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Companies_Bool_Exp;
+};
+
 /** aggregate var_pop on columns */
 export type Companies_Var_Pop_Fields = {
   __typename?: 'companies_var_pop_fields';
@@ -3205,6 +3542,14 @@ export type Companies_Variance_Fields = {
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
 };
+
+/** ordering argument of a cursor */
+export enum Cursor_Ordering {
+  /** ascending ordering of the cursor */
+  Asc = 'ASC',
+  /** descending ordering of the cursor */
+  Desc = 'DESC'
+}
 
 /** columns and relationships of "data_actions" */
 export type Data_Actions = {
@@ -3268,7 +3613,7 @@ export type Data_Actions_Bool_Exp = {
 
 /** unique or primary key constraints on table "data_actions" */
 export enum Data_Actions_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "name" */
   DataActionsPkey = 'data_actions_pkey'
 }
 
@@ -3385,6 +3730,23 @@ export type Data_Actions_Stddev_Samp_Fields = {
   user_value: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "data_actions" */
+export type Data_Actions_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Data_Actions_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Data_Actions_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  name: InputMaybe<Scalars['String']>;
+  owner_value: InputMaybe<Scalars['Int']>;
+  partner_value: InputMaybe<Scalars['Int']>;
+  user_value: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Data_Actions_Sum_Fields = {
   __typename?: 'data_actions_sum_fields';
@@ -3406,6 +3768,15 @@ export enum Data_Actions_Update_Column {
   /** column name */
   UserValue = 'user_value'
 }
+
+export type Data_Actions_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Data_Actions_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Data_Actions_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Data_Actions_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Data_Actions_Var_Pop_Fields = {
@@ -3511,7 +3882,7 @@ export type Data_Discard_Bool_Exp = {
 
 /** unique or primary key constraints on table "data_discard" */
 export enum Data_Discard_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DataDiscardPkey = 'data_discard_pkey'
 }
 
@@ -3671,6 +4042,26 @@ export type Data_Discard_Stddev_Samp_Fields = {
   resource_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "data_discard" */
+export type Data_Discard_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Data_Discard_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Data_Discard_Stream_Cursor_Value_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
 /** aggregate sum on columns */
 export type Data_Discard_Sum_Fields = {
   __typename?: 'data_discard_sum_fields';
@@ -3699,6 +4090,25 @@ export enum Data_Discard_Update_Column {
   /** column name */
   Value = 'value'
 }
+
+export type Data_Discard_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Data_Discard_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Data_Discard_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Data_Discard_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Data_Discard_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Data_Discard_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Data_Discard_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Data_Discard_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Data_Discard_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Data_Discard_Var_Pop_Fields = {
@@ -3799,7 +4209,7 @@ export type Data_Fields_Bool_Exp = {
 
 /** unique or primary key constraints on table "data_fields" */
 export enum Data_Fields_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "path" */
   DataFieldsPkey = 'data_fields_pkey'
 }
 
@@ -3946,6 +4356,29 @@ export type Data_Fields_Stddev_Samp_Fields = {
   weight: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "data_fields" */
+export type Data_Fields_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Data_Fields_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Data_Fields_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  data_type: InputMaybe<Scalars['String']>;
+  description: InputMaybe<Scalars['String']>;
+  is_valid_identifier: InputMaybe<Scalars['Boolean']>;
+  name: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars['String']>;
+  regex_test: InputMaybe<Scalars['String']>;
+  regex_transform: InputMaybe<Scalars['String']>;
+  resource: InputMaybe<Scalars['String']>;
+  restricted_admin: InputMaybe<Scalars['Boolean']>;
+  weight: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Data_Fields_Sum_Fields = {
   __typename?: 'data_fields_sum_fields';
@@ -3977,6 +4410,15 @@ export enum Data_Fields_Update_Column {
   /** column name */
   Weight = 'weight'
 }
+
+export type Data_Fields_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Data_Fields_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Data_Fields_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Data_Fields_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Data_Fields_Var_Pop_Fields = {
@@ -4054,7 +4496,7 @@ export type Data_Partners_Bool_Exp = {
 
 /** unique or primary key constraints on table "data_partners" */
 export enum Data_Partners_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DataPartnersPkey = 'data_partners_pkey'
 }
 
@@ -4156,6 +4598,22 @@ export type Data_Partners_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "data_partners" */
+export type Data_Partners_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Data_Partners_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Data_Partners_Stream_Cursor_Value_Input = {
+  api_key: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Data_Partners_Sum_Fields = {
   __typename?: 'data_partners_sum_fields';
@@ -4173,6 +4631,15 @@ export enum Data_Partners_Update_Column {
   /** column name */
   Name = 'name'
 }
+
+export type Data_Partners_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Data_Partners_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Data_Partners_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Data_Partners_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Data_Partners_Var_Pop_Fields = {
@@ -4277,7 +4744,7 @@ export type Data_Raw_Bool_Exp = {
 
 /** unique or primary key constraints on table "data_raw" */
 export enum Data_Raw_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DataRawPkey = 'data_raw_pkey'
 }
 
@@ -4453,6 +4920,28 @@ export type Data_Raw_Stddev_Samp_Fields = {
   user_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "data_raw" */
+export type Data_Raw_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Data_Raw_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Data_Raw_Stream_Cursor_Value_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  is_active: InputMaybe<Scalars['Boolean']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
 /** aggregate sum on columns */
 export type Data_Raw_Sum_Fields = {
   __typename?: 'data_raw_sum_fields';
@@ -4486,6 +4975,25 @@ export enum Data_Raw_Update_Column {
   /** column name */
   Value = 'value'
 }
+
+export type Data_Raw_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Data_Raw_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Data_Raw_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Data_Raw_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Data_Raw_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Data_Raw_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Data_Raw_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Data_Raw_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Data_Raw_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Data_Raw_Var_Pop_Fields = {
@@ -4590,7 +5098,7 @@ export type Data_Runs_Bool_Exp = {
 
 /** unique or primary key constraints on table "data_runs" */
 export enum Data_Runs_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DataRunsPkey = 'data_runs_pkey'
 }
 
@@ -4747,6 +5255,27 @@ export type Data_Runs_Stddev_Samp_Fields = {
   weight_normalized: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "data_runs" */
+export type Data_Runs_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Data_Runs_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Data_Runs_Stream_Cursor_Value_Input = {
+  ambiguity_score: InputMaybe<Scalars['float8']>;
+  classification: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  data_raw: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['bigint']>;
+  max_weight: InputMaybe<Scalars['Int']>;
+  run_at: InputMaybe<Scalars['timestamptz']>;
+  weight: InputMaybe<Scalars['Int']>;
+  weight_normalized: InputMaybe<Scalars['float8']>;
+};
+
 /** aggregate sum on columns */
 export type Data_Runs_Sum_Fields = {
   __typename?: 'data_runs_sum_fields';
@@ -4779,6 +5308,15 @@ export enum Data_Runs_Update_Column {
   /** column name */
   WeightNormalized = 'weight_normalized'
 }
+
+export type Data_Runs_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Data_Runs_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Data_Runs_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Data_Runs_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Data_Runs_Var_Pop_Fields = {
@@ -4884,7 +5422,7 @@ export type Disabled_Emails_Bool_Exp = {
 
 /** unique or primary key constraints on table "disabled_emails" */
 export enum Disabled_Emails_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DisabledEmailsPkey = 'disabled_emails_pkey'
 }
 
@@ -4986,6 +5524,22 @@ export type Disabled_Emails_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "disabled_emails" */
+export type Disabled_Emails_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Disabled_Emails_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Disabled_Emails_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  match_type: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Disabled_Emails_Sum_Fields = {
   __typename?: 'disabled_emails_sum_fields';
@@ -5003,6 +5557,15 @@ export enum Disabled_Emails_Update_Column {
   /** column name */
   MatchType = 'match_type'
 }
+
+export type Disabled_Emails_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Disabled_Emails_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Disabled_Emails_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Disabled_Emails_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Disabled_Emails_Var_Pop_Fields = {
@@ -5045,6 +5608,17 @@ export type Event_Organization_Aggregate = {
   __typename?: 'event_organization_aggregate';
   aggregate: Maybe<Event_Organization_Aggregate_Fields>;
   nodes: Array<Event_Organization>;
+};
+
+export type Event_Organization_Aggregate_Bool_Exp = {
+  count: InputMaybe<Event_Organization_Aggregate_Bool_Exp_Count>;
+};
+
+export type Event_Organization_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Event_Organization_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Event_Organization_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "event_organization" */
@@ -5128,7 +5702,7 @@ export type Event_Organization_Bool_Exp = {
 
 /** unique or primary key constraints on table "event_organization" */
 export enum Event_Organization_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   EventOrganizationPkey = 'event_organization_pkey'
 }
 
@@ -5315,6 +5889,25 @@ export type Event_Organization_Stddev_Samp_Order_By = {
   vc_firm_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "event_organization" */
+export type Event_Organization_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Event_Organization_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Event_Organization_Stream_Cursor_Value_Input = {
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  sponsor_type: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Event_Organization_Sum_Fields = {
   __typename?: 'event_organization_sum_fields';
@@ -5349,6 +5942,15 @@ export enum Event_Organization_Update_Column {
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
+
+export type Event_Organization_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Event_Organization_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Event_Organization_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Event_Organization_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Event_Organization_Var_Pop_Fields = {
@@ -5420,6 +6022,17 @@ export type Event_Person_Aggregate = {
   __typename?: 'event_person_aggregate';
   aggregate: Maybe<Event_Person_Aggregate_Fields>;
   nodes: Array<Event_Person>;
+};
+
+export type Event_Person_Aggregate_Bool_Exp = {
+  count: InputMaybe<Event_Person_Aggregate_Bool_Exp_Count>;
+};
+
+export type Event_Person_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Event_Person_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Event_Person_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "event_person" */
@@ -5498,7 +6111,7 @@ export type Event_Person_Bool_Exp = {
 
 /** unique or primary key constraints on table "event_person" */
 export enum Event_Person_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   EventPersonPkey = 'event_person_pkey'
 }
 
@@ -5658,6 +6271,23 @@ export type Event_Person_Stddev_Samp_Order_By = {
   person_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "event_person" */
+export type Event_Person_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Event_Person_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Event_Person_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Event_Person_Sum_Fields = {
   __typename?: 'event_person_sum_fields';
@@ -5686,6 +6316,15 @@ export enum Event_Person_Update_Column {
   /** column name */
   Type = 'type'
 }
+
+export type Event_Person_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Event_Person_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Event_Person_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Event_Person_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Event_Person_Var_Pop_Fields = {
@@ -5765,7 +6404,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -5906,7 +6545,9 @@ export type Events_Bool_Exp = {
   end_date: InputMaybe<Date_Comparison_Exp>;
   end_time: InputMaybe<Time_Comparison_Exp>;
   event_organization: InputMaybe<Event_Organization_Bool_Exp>;
+  event_organization_aggregate: InputMaybe<Event_Organization_Aggregate_Bool_Exp>;
   event_person: InputMaybe<Event_Person_Bool_Exp>;
+  event_person_aggregate: InputMaybe<Event_Person_Aggregate_Bool_Exp>;
   facebook: InputMaybe<String_Comparison_Exp>;
   geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
@@ -5936,9 +6577,9 @@ export type Events_Bool_Exp = {
 
 /** unique or primary key constraints on table "events" */
 export enum Events_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   EventsPkey = 'events_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "slug" */
   EventsSlugKey = 'events_slug_key'
 }
 
@@ -6261,6 +6902,48 @@ export type Events_Stddev_Samp_Fields = {
   price: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "events" */
+export type Events_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Events_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Events_Stream_Cursor_Value_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
+  banner: InputMaybe<Scalars['jsonb']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  discord: InputMaybe<Scalars['String']>;
+  end_date: InputMaybe<Scalars['date']>;
+  end_time: InputMaybe<Scalars['time']>;
+  facebook: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
+  id: InputMaybe<Scalars['Int']>;
+  instagram: InputMaybe<Scalars['String']>;
+  is_featured: InputMaybe<Scalars['Boolean']>;
+  library: InputMaybe<Scalars['jsonb']>;
+  link: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  name: InputMaybe<Scalars['String']>;
+  notes: InputMaybe<Scalars['String']>;
+  overview: InputMaybe<Scalars['String']>;
+  parent_event_id: InputMaybe<Scalars['Int']>;
+  price: InputMaybe<Scalars['numeric']>;
+  size: InputMaybe<Scalars['String']>;
+  slug: InputMaybe<Scalars['String']>;
+  start_date: InputMaybe<Scalars['date']>;
+  start_time: InputMaybe<Scalars['time']>;
+  status: InputMaybe<Scalars['String']>;
+  telegram: InputMaybe<Scalars['String']>;
+  timezone: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+  types: InputMaybe<Scalars['jsonb']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  venue_name: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Events_Sum_Fields = {
   __typename?: 'events_sum_fields';
@@ -6332,6 +7015,25 @@ export enum Events_Update_Column {
   /** column name */
   VenueName = 'venue_name'
 }
+
+export type Events_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Events_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Events_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Events_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Events_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Events_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Events_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Events_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Events_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Events_Var_Pop_Fields = {
@@ -6460,6 +7162,17 @@ export type Follows_Companies_Aggregate = {
   __typename?: 'follows_companies_aggregate';
   aggregate: Maybe<Follows_Companies_Aggregate_Fields>;
   nodes: Array<Follows_Companies>;
+};
+
+export type Follows_Companies_Aggregate_Bool_Exp = {
+  count: InputMaybe<Follows_Companies_Aggregate_Bool_Exp_Count>;
+};
+
+export type Follows_Companies_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Follows_Companies_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Follows_Companies_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "follows_companies" */
@@ -6690,6 +7403,23 @@ export type Follows_Companies_Stddev_Samp_Order_By = {
   resource_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "follows_companies" */
+export type Follows_Companies_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Follows_Companies_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Follows_Companies_Stream_Cursor_Value_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Follows_Companies_Sum_Fields = {
   __typename?: 'follows_companies_sum_fields';
@@ -6705,6 +7435,15 @@ export type Follows_Companies_Sum_Order_By = {
   id: InputMaybe<Order_By>;
   list_id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
+};
+
+export type Follows_Companies_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Follows_Companies_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Follows_Companies_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Follows_Companies_Bool_Exp;
 };
 
 /** aggregate var_pop on columns */
@@ -6760,9 +7499,9 @@ export type Follows_Companies_Variance_Order_By = {
 
 /** unique or primary key constraints on table "follows" */
 export enum Follows_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   FollowsPkey = 'follows_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "resource_id", "list_id", "resource_type" */
   FollowsResourceTypeResourceIdListIdKey = 'follows_resource_type_resource_id_list_id_key'
 }
 
@@ -6853,6 +7592,17 @@ export type Follows_People_Aggregate = {
   __typename?: 'follows_people_aggregate';
   aggregate: Maybe<Follows_People_Aggregate_Fields>;
   nodes: Array<Follows_People>;
+};
+
+export type Follows_People_Aggregate_Bool_Exp = {
+  count: InputMaybe<Follows_People_Aggregate_Bool_Exp_Count>;
+};
+
+export type Follows_People_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Follows_People_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Follows_People_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "follows_people" */
@@ -7077,6 +7827,23 @@ export type Follows_People_Stddev_Samp_Order_By = {
   resource_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "follows_people" */
+export type Follows_People_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Follows_People_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Follows_People_Stream_Cursor_Value_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Follows_People_Sum_Fields = {
   __typename?: 'follows_people_sum_fields';
@@ -7092,6 +7859,15 @@ export type Follows_People_Sum_Order_By = {
   id: InputMaybe<Order_By>;
   list_id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
+};
+
+export type Follows_People_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Follows_People_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Follows_People_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Follows_People_Bool_Exp;
 };
 
 /** aggregate var_pop on columns */
@@ -7203,6 +7979,24 @@ export type Follows_Stddev_Samp_Fields = {
   resource_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "follows" */
+export type Follows_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Follows_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Follows_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Follows_Sum_Fields = {
   __typename?: 'follows_sum_fields';
@@ -7227,6 +8021,15 @@ export enum Follows_Update_Column {
   /** column name */
   ResourceType = 'resource_type'
 }
+
+export type Follows_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Follows_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Follows_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Follows_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Follows_Var_Pop_Fields = {
@@ -7276,6 +8079,17 @@ export type Follows_Vc_Firms_Aggregate = {
   __typename?: 'follows_vc_firms_aggregate';
   aggregate: Maybe<Follows_Vc_Firms_Aggregate_Fields>;
   nodes: Array<Follows_Vc_Firms>;
+};
+
+export type Follows_Vc_Firms_Aggregate_Bool_Exp = {
+  count: InputMaybe<Follows_Vc_Firms_Aggregate_Bool_Exp_Count>;
+};
+
+export type Follows_Vc_Firms_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "follows_vc_firms" */
@@ -7506,6 +8320,23 @@ export type Follows_Vc_Firms_Stddev_Samp_Order_By = {
   resource_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "follows_vc_firms" */
+export type Follows_Vc_Firms_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Follows_Vc_Firms_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Follows_Vc_Firms_Stream_Cursor_Value_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Follows_Vc_Firms_Sum_Fields = {
   __typename?: 'follows_vc_firms_sum_fields';
@@ -7521,6 +8352,15 @@ export type Follows_Vc_Firms_Sum_Order_By = {
   id: InputMaybe<Order_By>;
   list_id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
+};
+
+export type Follows_Vc_Firms_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Follows_Vc_Firms_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Follows_Vc_Firms_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Follows_Vc_Firms_Bool_Exp;
 };
 
 /** aggregate var_pop on columns */
@@ -7682,6 +8522,17 @@ export type Investment_Rounds_Aggregate = {
   nodes: Array<Investment_Rounds>;
 };
 
+export type Investment_Rounds_Aggregate_Bool_Exp = {
+  count: InputMaybe<Investment_Rounds_Aggregate_Bool_Exp_Count>;
+};
+
+export type Investment_Rounds_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Investment_Rounds_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Investment_Rounds_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "investment_rounds" */
 export type Investment_Rounds_Aggregate_Fields = {
   __typename?: 'investment_rounds_aggregate_fields';
@@ -7757,6 +8608,7 @@ export type Investment_Rounds_Bool_Exp = {
   external_id: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
+  investments_aggregate: InputMaybe<Investments_Aggregate_Bool_Exp>;
   round: InputMaybe<String_Comparison_Exp>;
   round_date: InputMaybe<Date_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
@@ -7765,9 +8617,9 @@ export type Investment_Rounds_Bool_Exp = {
 
 /** unique or primary key constraints on table "investment_rounds" */
 export enum Investment_Rounds_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   InvestmentRoundsExternalIdKey = 'investment_rounds_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   InvestmentRoundsPkey = 'investment_rounds_pkey'
 }
 
@@ -7986,6 +8838,28 @@ export type Investment_Rounds_Stddev_Samp_Order_By = {
   valuation: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "investment_rounds" */
+export type Investment_Rounds_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Investment_Rounds_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Investment_Rounds_Stream_Cursor_Value_Input = {
+  amount: InputMaybe<Scalars['numeric']>;
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  currency: InputMaybe<Scalars['String']>;
+  external_id: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  round: InputMaybe<Scalars['String']>;
+  round_date: InputMaybe<Scalars['date']>;
+  status: InputMaybe<Scalars['String']>;
+  valuation: InputMaybe<Scalars['numeric']>;
+};
+
 /** aggregate sum on columns */
 export type Investment_Rounds_Sum_Fields = {
   __typename?: 'investment_rounds_sum_fields';
@@ -8026,6 +8900,15 @@ export enum Investment_Rounds_Update_Column {
   /** column name */
   Valuation = 'valuation'
 }
+
+export type Investment_Rounds_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Investment_Rounds_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Investment_Rounds_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Investment_Rounds_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Investment_Rounds_Var_Pop_Fields = {
@@ -8102,6 +8985,17 @@ export type Investments_Aggregate = {
   __typename?: 'investments_aggregate';
   aggregate: Maybe<Investments_Aggregate_Fields>;
   nodes: Array<Investments>;
+};
+
+export type Investments_Aggregate_Bool_Exp = {
+  count: InputMaybe<Investments_Aggregate_Bool_Exp_Count>;
+};
+
+export type Investments_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Investments_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Investments_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "investments" */
@@ -8188,9 +9082,9 @@ export type Investments_Bool_Exp = {
 
 /** unique or primary key constraints on table "investments" */
 export enum Investments_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   InvestmentsExternalIdKey = 'investments_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   InvestmentsPkey = 'investments_pkey'
 }
 
@@ -8393,6 +9287,26 @@ export type Investments_Stddev_Samp_Order_By = {
   vc_firm_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "investments" */
+export type Investments_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Investments_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Investments_Stream_Cursor_Value_Input = {
+  amount: InputMaybe<Scalars['numeric']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  external_id: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  round_id: InputMaybe<Scalars['Int']>;
+  status: InputMaybe<Scalars['String']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Investments_Sum_Fields = {
   __typename?: 'investments_sum_fields';
@@ -8431,6 +9345,15 @@ export enum Investments_Update_Column {
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
+
+export type Investments_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Investments_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Investments_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Investments_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Investments_Var_Pop_Fields = {
@@ -8517,6 +9440,17 @@ export type Investors_Aggregate = {
   nodes: Array<Investors>;
 };
 
+export type Investors_Aggregate_Bool_Exp = {
+  count: InputMaybe<Investors_Aggregate_Bool_Exp_Count>;
+};
+
+export type Investors_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Investors_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Investors_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "investors" */
 export type Investors_Aggregate_Fields = {
   __typename?: 'investors_aggregate_fields';
@@ -8600,11 +9534,11 @@ export type Investors_Bool_Exp = {
 
 /** unique or primary key constraints on table "investors" */
 export enum Investors_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   InvestorsExternalIdKey = 'investors_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   InvestorsPkey = 'investors_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "vc_firm_id", "person_id" */
   InvestorsVcFirmIdPersonIdKey = 'investors_vc_firm_id_person_id_key'
 }
 
@@ -8827,6 +9761,30 @@ export type Investors_Stddev_Samp_Order_By = {
   vc_firm_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "investors" */
+export type Investors_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Investors_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Investors_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  email_address: InputMaybe<Scalars['String']>;
+  end_date: InputMaybe<Scalars['date']>;
+  external_id: InputMaybe<Scalars['String']>;
+  function: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  seniority: InputMaybe<Scalars['String']>;
+  start_date: InputMaybe<Scalars['date']>;
+  title: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Investors_Sum_Fields = {
   __typename?: 'investors_sum_fields';
@@ -8869,6 +9827,15 @@ export enum Investors_Update_Column {
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
+
+export type Investors_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Investors_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Investors_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Investors_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Investors_Var_Pop_Fields = {
@@ -8975,7 +9942,7 @@ export type Invited_People_Bool_Exp = {
 
 /** unique or primary key constraints on table "invited_people" */
 export enum Invited_People_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   InvitedPeoplePkey = 'invited_people_pkey'
 }
 
@@ -9085,6 +10052,22 @@ export type Invited_People_Stddev_Samp_Fields = {
   person_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "invited_people" */
+export type Invited_People_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Invited_People_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Invited_People_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  inviter_user_id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Invited_People_Sum_Fields = {
   __typename?: 'invited_people_sum_fields';
@@ -9104,6 +10087,15 @@ export enum Invited_People_Update_Column {
   /** column name */
   PersonId = 'person_id'
 }
+
+export type Invited_People_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Invited_People_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Invited_People_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Invited_People_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Invited_People_Var_Pop_Fields = {
@@ -9243,9 +10235,9 @@ export type Leads_Bool_Exp = {
 
 /** unique or primary key constraints on table "leads" */
 export enum Leads_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "email" */
   LeadsEmailKey = 'leads_email_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   LeadsPkey = 'leads_pkey'
 }
 
@@ -9426,9 +10418,9 @@ export type Leads_Segmentation_Bool_Exp = {
 
 /** unique or primary key constraints on table "leads_segmentation" */
 export enum Leads_Segmentation_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "name" */
   LeadsSegmentationNameKey = 'leads_segmentation_name_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   LeadsSegmentationPkey = 'leads_segmentation_pkey'
 }
 
@@ -9558,6 +10550,26 @@ export type Leads_Segmentation_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "leads_segmentation" */
+export type Leads_Segmentation_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Leads_Segmentation_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Leads_Segmentation_Stream_Cursor_Value_Input = {
+  campaign_id: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['date']>;
+  description: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  sql: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['date']>;
+};
+
 /** aggregate sum on columns */
 export type Leads_Segmentation_Sum_Fields = {
   __typename?: 'leads_segmentation_sum_fields';
@@ -9583,6 +10595,15 @@ export enum Leads_Segmentation_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type Leads_Segmentation_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Leads_Segmentation_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Leads_Segmentation_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Leads_Segmentation_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Leads_Segmentation_Var_Pop_Fields = {
@@ -9679,6 +10700,34 @@ export type Leads_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "leads" */
+export type Leads_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Leads_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Leads_Stream_Cursor_Value_Input = {
+  campaign_id: InputMaybe<Scalars['String']>;
+  company_name: InputMaybe<Scalars['String']>;
+  converted_userid: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  email: InputMaybe<Scalars['String']>;
+  email_domain: InputMaybe<Scalars['String']>;
+  first_name: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  instantly_id: InputMaybe<Scalars['String']>;
+  last_name: InputMaybe<Scalars['String']>;
+  linkedin_url: InputMaybe<Scalars['String']>;
+  phone: InputMaybe<Scalars['String']>;
+  source: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  website: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Leads_Sum_Fields = {
   __typename?: 'leads_sum_fields';
@@ -9722,6 +10771,15 @@ export enum Leads_Update_Column {
   Website = 'website'
 }
 
+export type Leads_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Leads_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Leads_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Leads_Bool_Exp;
+};
+
 /** aggregate var_pop on columns */
 export type Leads_Var_Pop_Fields = {
   __typename?: 'leads_var_pop_fields';
@@ -9761,6 +10819,17 @@ export type Likes_Aggregate = {
   __typename?: 'likes_aggregate';
   aggregate: Maybe<Likes_Aggregate_Fields>;
   nodes: Array<Likes>;
+};
+
+export type Likes_Aggregate_Bool_Exp = {
+  count: InputMaybe<Likes_Aggregate_Bool_Exp_Count>;
+};
+
+export type Likes_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Likes_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Likes_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "likes" */
@@ -9838,7 +10907,7 @@ export type Likes_Bool_Exp = {
 
 /** unique or primary key constraints on table "likes" */
 export enum Likes_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   LikesPkey = 'likes_pkey'
 }
 
@@ -9989,6 +11058,22 @@ export type Likes_Stddev_Samp_Order_By = {
   note_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "likes" */
+export type Likes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Likes_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Likes_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Likes_Sum_Fields = {
   __typename?: 'likes_sum_fields';
@@ -10015,6 +11100,15 @@ export enum Likes_Update_Column {
   /** column name */
   NoteId = 'note_id'
 }
+
+export type Likes_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Likes_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Likes_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Likes_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Likes_Var_Pop_Fields = {
@@ -10080,6 +11174,17 @@ export type List_Members_Aggregate = {
   __typename?: 'list_members_aggregate';
   aggregate: Maybe<List_Members_Aggregate_Fields>;
   nodes: Array<List_Members>;
+};
+
+export type List_Members_Aggregate_Bool_Exp = {
+  count: InputMaybe<List_Members_Aggregate_Bool_Exp_Count>;
+};
+
+export type List_Members_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<List_Members_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<List_Members_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "list_members" */
@@ -10158,9 +11263,9 @@ export type List_Members_Bool_Exp = {
 
 /** unique or primary key constraints on table "list_members" */
 export enum List_Members_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "user_id", "list_id" */
   ListMembersListIdUserIdKey = 'list_members_list_id_user_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ListMembersPkey = 'list_members_pkey'
 }
 
@@ -10327,6 +11432,23 @@ export type List_Members_Stddev_Samp_Order_By = {
   user_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "list_members" */
+export type List_Members_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: List_Members_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type List_Members_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  member_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type List_Members_Sum_Fields = {
   __typename?: 'list_members_sum_fields';
@@ -10355,6 +11477,15 @@ export enum List_Members_Update_Column {
   /** column name */
   UserId = 'user_id'
 }
+
+export type List_Members_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<List_Members_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<List_Members_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: List_Members_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type List_Members_Var_Pop_Fields = {
@@ -10419,6 +11550,17 @@ export type List_User_Groups_Aggregate = {
   __typename?: 'list_user_groups_aggregate';
   aggregate: Maybe<List_User_Groups_Aggregate_Fields>;
   nodes: Array<List_User_Groups>;
+};
+
+export type List_User_Groups_Aggregate_Bool_Exp = {
+  count: InputMaybe<List_User_Groups_Aggregate_Bool_Exp_Count>;
+};
+
+export type List_User_Groups_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<List_User_Groups_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<List_User_Groups_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "list_user_groups" */
@@ -10496,7 +11638,7 @@ export type List_User_Groups_Bool_Exp = {
 
 /** unique or primary key constraints on table "list_user_groups" */
 export enum List_User_Groups_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ListUserGroupsPkey = 'list_user_groups_pkey'
 }
 
@@ -10647,6 +11789,22 @@ export type List_User_Groups_Stddev_Samp_Order_By = {
   user_group_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "list_user_groups" */
+export type List_User_Groups_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: List_User_Groups_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type List_User_Groups_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  user_group_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type List_User_Groups_Sum_Fields = {
   __typename?: 'list_user_groups_sum_fields';
@@ -10673,6 +11831,15 @@ export enum List_User_Groups_Update_Column {
   /** column name */
   UserGroupId = 'user_group_id'
 }
+
+export type List_User_Groups_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<List_User_Groups_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<List_User_Groups_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: List_User_Groups_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type List_User_Groups_Var_Pop_Fields = {
@@ -10890,6 +12057,8 @@ export type Lists_Avg_Fields = {
   __typename?: 'lists_avg_fields';
   created_by_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
 };
 
 /** Boolean expression to filter rows from the table "lists". All fields are combined with a logical 'AND'. */
@@ -10901,23 +12070,28 @@ export type Lists_Bool_Exp = {
   created_by: InputMaybe<Users_Public_Bool_Exp>;
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
+  follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Bool_Exp>;
   follows_people: InputMaybe<Follows_People_Bool_Exp>;
+  follows_people_aggregate: InputMaybe<Follows_People_Aggregate_Bool_Exp>;
   follows_vcfirms: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+  follows_vcfirms_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
+  list_members_aggregate: InputMaybe<List_Members_Aggregate_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   public: InputMaybe<Boolean_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
+  user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "lists" */
 export enum Lists_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "name", "created_by_id" */
   ListsCreatedByIdNameKey = 'lists_created_by_id_name_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ListsPkey = 'lists_pkey'
 }
 
@@ -10951,6 +12125,8 @@ export type Lists_Max_Fields = {
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
   type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
 };
@@ -10962,6 +12138,8 @@ export type Lists_Min_Fields = {
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
   type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
 };
@@ -11046,6 +12224,8 @@ export type Lists_Stddev_Fields = {
   __typename?: 'lists_stddev_fields';
   created_by_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -11053,6 +12233,8 @@ export type Lists_Stddev_Pop_Fields = {
   __typename?: 'lists_stddev_pop_fields';
   created_by_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -11060,6 +12242,27 @@ export type Lists_Stddev_Samp_Fields = {
   __typename?: 'lists_stddev_samp_fields';
   created_by_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
+};
+
+/** Streaming cursor of the table "lists" */
+export type Lists_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Lists_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Lists_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate sum on columns */
@@ -11067,6 +12270,8 @@ export type Lists_Sum_Fields = {
   __typename?: 'lists_sum_fields';
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "lists" */
@@ -11087,11 +12292,22 @@ export enum Lists_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+export type Lists_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Lists_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Lists_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Lists_Bool_Exp;
+};
+
 /** aggregate var_pop on columns */
 export type Lists_Var_Pop_Fields = {
   __typename?: 'lists_var_pop_fields';
   created_by_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
 };
 
 /** aggregate var_samp on columns */
@@ -11099,6 +12315,8 @@ export type Lists_Var_Samp_Fields = {
   __typename?: 'lists_var_samp_fields';
   created_by_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
 };
 
 /** aggregate variance on columns */
@@ -11106,6 +12324,8 @@ export type Lists_Variance_Fields = {
   __typename?: 'lists_variance_fields';
   created_by_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  /** Computed field to get total no. of companies in a list */
+  total_no_of_resources: Maybe<Scalars['Int']>;
 };
 
 /** mutation root */
@@ -11543,210 +12763,320 @@ export type Mutation_Root = {
   update_actions: Maybe<Actions_Mutation_Response>;
   /** update single row of the table: "actions" */
   update_actions_by_pk: Maybe<Actions>;
+  /** update multiples rows of table: "actions" */
+  update_actions_many: Maybe<Array<Maybe<Actions_Mutation_Response>>>;
   /** update data of the table: "allowed_emails" */
   update_allowed_emails: Maybe<Allowed_Emails_Mutation_Response>;
   /** update single row of the table: "allowed_emails" */
   update_allowed_emails_by_pk: Maybe<Allowed_Emails>;
+  /** update multiples rows of table: "allowed_emails" */
+  update_allowed_emails_many: Maybe<Array<Maybe<Allowed_Emails_Mutation_Response>>>;
   /** update data of the table: "application_meta" */
   update_application_meta: Maybe<Application_Meta_Mutation_Response>;
   /** update single row of the table: "application_meta" */
   update_application_meta_by_pk: Maybe<Application_Meta>;
+  /** update multiples rows of table: "application_meta" */
+  update_application_meta_many: Maybe<Array<Maybe<Application_Meta_Mutation_Response>>>;
   /** update data of the table: "billing_org" */
   update_billing_org: Maybe<Billing_Org_Mutation_Response>;
   /** update single row of the table: "billing_org" */
   update_billing_org_by_pk: Maybe<Billing_Org>;
+  /** update multiples rows of table: "billing_org" */
+  update_billing_org_many: Maybe<Array<Maybe<Billing_Org_Mutation_Response>>>;
   /** update data of the table: "blockchains" */
   update_blockchains: Maybe<Blockchains_Mutation_Response>;
   /** update single row of the table: "blockchains" */
   update_blockchains_by_pk: Maybe<Blockchains>;
+  /** update multiples rows of table: "blockchains" */
+  update_blockchains_many: Maybe<Array<Maybe<Blockchains_Mutation_Response>>>;
   /** update data of the table: "coins" */
   update_coins: Maybe<Coins_Mutation_Response>;
   /** update single row of the table: "coins" */
   update_coins_by_pk: Maybe<Coins>;
+  /** update multiples rows of table: "coins" */
+  update_coins_many: Maybe<Array<Maybe<Coins_Mutation_Response>>>;
   /** update data of the table: "comments" */
   update_comments: Maybe<Comments_Mutation_Response>;
   /** update single row of the table: "comments" */
   update_comments_by_pk: Maybe<Comments>;
+  /** update multiples rows of table: "comments" */
+  update_comments_many: Maybe<Array<Maybe<Comments_Mutation_Response>>>;
   /** update data of the table: "companies" */
   update_companies: Maybe<Companies_Mutation_Response>;
   /** update single row of the table: "companies" */
   update_companies_by_pk: Maybe<Companies>;
   /** update data of the table: "companies_edit_access" */
   update_companies_edit_access: Maybe<Companies_Edit_Access_Mutation_Response>;
+  /** update multiples rows of table: "companies_edit_access" */
+  update_companies_edit_access_many: Maybe<Array<Maybe<Companies_Edit_Access_Mutation_Response>>>;
+  /** update multiples rows of table: "companies" */
+  update_companies_many: Maybe<Array<Maybe<Companies_Mutation_Response>>>;
   /** update data of the table: "data_actions" */
   update_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** update single row of the table: "data_actions" */
   update_data_actions_by_pk: Maybe<Data_Actions>;
+  /** update multiples rows of table: "data_actions" */
+  update_data_actions_many: Maybe<Array<Maybe<Data_Actions_Mutation_Response>>>;
   /** update data of the table: "data_discard" */
   update_data_discard: Maybe<Data_Discard_Mutation_Response>;
   /** update single row of the table: "data_discard" */
   update_data_discard_by_pk: Maybe<Data_Discard>;
+  /** update multiples rows of table: "data_discard" */
+  update_data_discard_many: Maybe<Array<Maybe<Data_Discard_Mutation_Response>>>;
   /** update data of the table: "data_fields" */
   update_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** update single row of the table: "data_fields" */
   update_data_fields_by_pk: Maybe<Data_Fields>;
+  /** update multiples rows of table: "data_fields" */
+  update_data_fields_many: Maybe<Array<Maybe<Data_Fields_Mutation_Response>>>;
   /** update data of the table: "data_partners" */
   update_data_partners: Maybe<Data_Partners_Mutation_Response>;
   /** update single row of the table: "data_partners" */
   update_data_partners_by_pk: Maybe<Data_Partners>;
+  /** update multiples rows of table: "data_partners" */
+  update_data_partners_many: Maybe<Array<Maybe<Data_Partners_Mutation_Response>>>;
   /** update data of the table: "data_raw" */
   update_data_raw: Maybe<Data_Raw_Mutation_Response>;
   /** update single row of the table: "data_raw" */
   update_data_raw_by_pk: Maybe<Data_Raw>;
+  /** update multiples rows of table: "data_raw" */
+  update_data_raw_many: Maybe<Array<Maybe<Data_Raw_Mutation_Response>>>;
   /** update data of the table: "data_runs" */
   update_data_runs: Maybe<Data_Runs_Mutation_Response>;
   /** update single row of the table: "data_runs" */
   update_data_runs_by_pk: Maybe<Data_Runs>;
+  /** update multiples rows of table: "data_runs" */
+  update_data_runs_many: Maybe<Array<Maybe<Data_Runs_Mutation_Response>>>;
   /** update data of the table: "disabled_emails" */
   update_disabled_emails: Maybe<Disabled_Emails_Mutation_Response>;
   /** update single row of the table: "disabled_emails" */
   update_disabled_emails_by_pk: Maybe<Disabled_Emails>;
+  /** update multiples rows of table: "disabled_emails" */
+  update_disabled_emails_many: Maybe<Array<Maybe<Disabled_Emails_Mutation_Response>>>;
   /** update data of the table: "event_organization" */
   update_event_organization: Maybe<Event_Organization_Mutation_Response>;
   /** update single row of the table: "event_organization" */
   update_event_organization_by_pk: Maybe<Event_Organization>;
+  /** update multiples rows of table: "event_organization" */
+  update_event_organization_many: Maybe<Array<Maybe<Event_Organization_Mutation_Response>>>;
   /** update data of the table: "event_person" */
   update_event_person: Maybe<Event_Person_Mutation_Response>;
   /** update single row of the table: "event_person" */
   update_event_person_by_pk: Maybe<Event_Person>;
+  /** update multiples rows of table: "event_person" */
+  update_event_person_many: Maybe<Array<Maybe<Event_Person_Mutation_Response>>>;
   /** update data of the table: "events" */
   update_events: Maybe<Events_Mutation_Response>;
   /** update single row of the table: "events" */
   update_events_by_pk: Maybe<Events>;
+  /** update multiples rows of table: "events" */
+  update_events_many: Maybe<Array<Maybe<Events_Mutation_Response>>>;
   /** update data of the table: "follows" */
   update_follows: Maybe<Follows_Mutation_Response>;
   /** update single row of the table: "follows" */
   update_follows_by_pk: Maybe<Follows>;
   /** update data of the table: "follows_companies" */
   update_follows_companies: Maybe<Follows_Companies_Mutation_Response>;
+  /** update multiples rows of table: "follows_companies" */
+  update_follows_companies_many: Maybe<Array<Maybe<Follows_Companies_Mutation_Response>>>;
+  /** update multiples rows of table: "follows" */
+  update_follows_many: Maybe<Array<Maybe<Follows_Mutation_Response>>>;
   /** update data of the table: "follows_people" */
   update_follows_people: Maybe<Follows_People_Mutation_Response>;
+  /** update multiples rows of table: "follows_people" */
+  update_follows_people_many: Maybe<Array<Maybe<Follows_People_Mutation_Response>>>;
   /** update data of the table: "follows_vc_firms" */
   update_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
+  /** update multiples rows of table: "follows_vc_firms" */
+  update_follows_vc_firms_many: Maybe<Array<Maybe<Follows_Vc_Firms_Mutation_Response>>>;
   /** update data of the table: "investment_rounds" */
   update_investment_rounds: Maybe<Investment_Rounds_Mutation_Response>;
   /** update single row of the table: "investment_rounds" */
   update_investment_rounds_by_pk: Maybe<Investment_Rounds>;
+  /** update multiples rows of table: "investment_rounds" */
+  update_investment_rounds_many: Maybe<Array<Maybe<Investment_Rounds_Mutation_Response>>>;
   /** update data of the table: "investments" */
   update_investments: Maybe<Investments_Mutation_Response>;
   /** update single row of the table: "investments" */
   update_investments_by_pk: Maybe<Investments>;
+  /** update multiples rows of table: "investments" */
+  update_investments_many: Maybe<Array<Maybe<Investments_Mutation_Response>>>;
   /** update data of the table: "investors" */
   update_investors: Maybe<Investors_Mutation_Response>;
   /** update single row of the table: "investors" */
   update_investors_by_pk: Maybe<Investors>;
+  /** update multiples rows of table: "investors" */
+  update_investors_many: Maybe<Array<Maybe<Investors_Mutation_Response>>>;
   /** update data of the table: "invited_people" */
   update_invited_people: Maybe<Invited_People_Mutation_Response>;
   /** update single row of the table: "invited_people" */
   update_invited_people_by_pk: Maybe<Invited_People>;
+  /** update multiples rows of table: "invited_people" */
+  update_invited_people_many: Maybe<Array<Maybe<Invited_People_Mutation_Response>>>;
   /** update data of the table: "leads" */
   update_leads: Maybe<Leads_Mutation_Response>;
   /** update single row of the table: "leads" */
   update_leads_by_pk: Maybe<Leads>;
+  /** update multiples rows of table: "leads" */
+  update_leads_many: Maybe<Array<Maybe<Leads_Mutation_Response>>>;
   /** update data of the table: "leads_segmentation" */
   update_leads_segmentation: Maybe<Leads_Segmentation_Mutation_Response>;
   /** update single row of the table: "leads_segmentation" */
   update_leads_segmentation_by_pk: Maybe<Leads_Segmentation>;
+  /** update multiples rows of table: "leads_segmentation" */
+  update_leads_segmentation_many: Maybe<Array<Maybe<Leads_Segmentation_Mutation_Response>>>;
   /** update data of the table: "likes" */
   update_likes: Maybe<Likes_Mutation_Response>;
   /** update single row of the table: "likes" */
   update_likes_by_pk: Maybe<Likes>;
+  /** update multiples rows of table: "likes" */
+  update_likes_many: Maybe<Array<Maybe<Likes_Mutation_Response>>>;
   /** update data of the table: "list_members" */
   update_list_members: Maybe<List_Members_Mutation_Response>;
   /** update single row of the table: "list_members" */
   update_list_members_by_pk: Maybe<List_Members>;
+  /** update multiples rows of table: "list_members" */
+  update_list_members_many: Maybe<Array<Maybe<List_Members_Mutation_Response>>>;
   /** update data of the table: "list_user_groups" */
   update_list_user_groups: Maybe<List_User_Groups_Mutation_Response>;
   /** update single row of the table: "list_user_groups" */
   update_list_user_groups_by_pk: Maybe<List_User_Groups>;
+  /** update multiples rows of table: "list_user_groups" */
+  update_list_user_groups_many: Maybe<Array<Maybe<List_User_Groups_Mutation_Response>>>;
   /** update data of the table: "lists" */
   update_lists: Maybe<Lists_Mutation_Response>;
   /** update single row of the table: "lists" */
   update_lists_by_pk: Maybe<Lists>;
+  /** update multiples rows of table: "lists" */
+  update_lists_many: Maybe<Array<Maybe<Lists_Mutation_Response>>>;
   /** update data of the table: "news" */
   update_news: Maybe<News_Mutation_Response>;
   /** update single row of the table: "news" */
   update_news_by_pk: Maybe<News>;
+  /** update multiples rows of table: "news" */
+  update_news_many: Maybe<Array<Maybe<News_Mutation_Response>>>;
   /** update data of the table: "news_organizations" */
   update_news_organizations: Maybe<News_Organizations_Mutation_Response>;
   /** update single row of the table: "news_organizations" */
   update_news_organizations_by_pk: Maybe<News_Organizations>;
+  /** update multiples rows of table: "news_organizations" */
+  update_news_organizations_many: Maybe<Array<Maybe<News_Organizations_Mutation_Response>>>;
   /** update data of the table: "news_person" */
   update_news_person: Maybe<News_Person_Mutation_Response>;
   /** update single row of the table: "news_person" */
   update_news_person_by_pk: Maybe<News_Person>;
+  /** update multiples rows of table: "news_person" */
+  update_news_person_many: Maybe<Array<Maybe<News_Person_Mutation_Response>>>;
   /** update data of the table: "news_related_organizations" */
   update_news_related_organizations: Maybe<News_Related_Organizations_Mutation_Response>;
   /** update single row of the table: "news_related_organizations" */
   update_news_related_organizations_by_pk: Maybe<News_Related_Organizations>;
+  /** update multiples rows of table: "news_related_organizations" */
+  update_news_related_organizations_many: Maybe<Array<Maybe<News_Related_Organizations_Mutation_Response>>>;
   /** update data of the table: "news_related_person" */
   update_news_related_person: Maybe<News_Related_Person_Mutation_Response>;
   /** update single row of the table: "news_related_person" */
   update_news_related_person_by_pk: Maybe<News_Related_Person>;
+  /** update multiples rows of table: "news_related_person" */
+  update_news_related_person_many: Maybe<Array<Maybe<News_Related_Person_Mutation_Response>>>;
   /** update data of the table: "notes" */
   update_notes: Maybe<Notes_Mutation_Response>;
   /** update single row of the table: "notes" */
   update_notes_by_pk: Maybe<Notes>;
+  /** update multiples rows of table: "notes" */
+  update_notes_many: Maybe<Array<Maybe<Notes_Mutation_Response>>>;
   /** update data of the table: "notification_actions" */
   update_notification_actions: Maybe<Notification_Actions_Mutation_Response>;
   /** update single row of the table: "notification_actions" */
   update_notification_actions_by_pk: Maybe<Notification_Actions>;
+  /** update multiples rows of table: "notification_actions" */
+  update_notification_actions_many: Maybe<Array<Maybe<Notification_Actions_Mutation_Response>>>;
   /** update data of the table: "notifications" */
   update_notifications: Maybe<Notifications_Mutation_Response>;
   /** update single row of the table: "notifications" */
   update_notifications_by_pk: Maybe<Notifications>;
+  /** update multiples rows of table: "notifications" */
+  update_notifications_many: Maybe<Array<Maybe<Notifications_Mutation_Response>>>;
   /** update data of the table: "people" */
   update_people: Maybe<People_Mutation_Response>;
   /** update single row of the table: "people" */
   update_people_by_pk: Maybe<People>;
+  /** update multiples rows of table: "people" */
+  update_people_many: Maybe<Array<Maybe<People_Mutation_Response>>>;
   /** update data of the table: "reset_passwords" */
   update_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
   /** update single row of the table: "reset_passwords" */
   update_reset_passwords_by_pk: Maybe<Reset_Passwords>;
+  /** update multiples rows of table: "reset_passwords" */
+  update_reset_passwords_many: Maybe<Array<Maybe<Reset_Passwords_Mutation_Response>>>;
   /** update data of the table: "resource_edit_access" */
   update_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** update single row of the table: "resource_edit_access" */
   update_resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
+  /** update multiples rows of table: "resource_edit_access" */
+  update_resource_edit_access_many: Maybe<Array<Maybe<Resource_Edit_Access_Mutation_Response>>>;
   /** update data of the table: "resource_links" */
   update_resource_links: Maybe<Resource_Links_Mutation_Response>;
   /** update single row of the table: "resource_links" */
   update_resource_links_by_pk: Maybe<Resource_Links>;
+  /** update multiples rows of table: "resource_links" */
+  update_resource_links_many: Maybe<Array<Maybe<Resource_Links_Mutation_Response>>>;
   /** update data of the table: "team_members" */
   update_team_members: Maybe<Team_Members_Mutation_Response>;
   /** update single row of the table: "team_members" */
   update_team_members_by_pk: Maybe<Team_Members>;
+  /** update multiples rows of table: "team_members" */
+  update_team_members_many: Maybe<Array<Maybe<Team_Members_Mutation_Response>>>;
   /** update data of the table: "user_group_invites" */
   update_user_group_invites: Maybe<User_Group_Invites_Mutation_Response>;
   /** update single row of the table: "user_group_invites" */
   update_user_group_invites_by_pk: Maybe<User_Group_Invites>;
+  /** update multiples rows of table: "user_group_invites" */
+  update_user_group_invites_many: Maybe<Array<Maybe<User_Group_Invites_Mutation_Response>>>;
   /** update data of the table: "user_group_members" */
   update_user_group_members: Maybe<User_Group_Members_Mutation_Response>;
   /** update single row of the table: "user_group_members" */
   update_user_group_members_by_pk: Maybe<User_Group_Members>;
+  /** update multiples rows of table: "user_group_members" */
+  update_user_group_members_many: Maybe<Array<Maybe<User_Group_Members_Mutation_Response>>>;
   /** update data of the table: "user_groups" */
   update_user_groups: Maybe<User_Groups_Mutation_Response>;
   /** update single row of the table: "user_groups" */
   update_user_groups_by_pk: Maybe<User_Groups>;
+  /** update multiples rows of table: "user_groups" */
+  update_user_groups_many: Maybe<Array<Maybe<User_Groups_Mutation_Response>>>;
   /** update data of the table: "user_tokens" */
   update_user_tokens: Maybe<User_Tokens_Mutation_Response>;
   /** update single row of the table: "user_tokens" */
   update_user_tokens_by_pk: Maybe<User_Tokens>;
+  /** update multiples rows of table: "user_tokens" */
+  update_user_tokens_many: Maybe<Array<Maybe<User_Tokens_Mutation_Response>>>;
   /** update data of the table: "users" */
   update_users: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
   update_users_by_pk: Maybe<Users>;
+  /** update multiples rows of table: "users" */
+  update_users_many: Maybe<Array<Maybe<Users_Mutation_Response>>>;
   /** update data of the table: "users_public" */
   update_users_public: Maybe<Users_Public_Mutation_Response>;
+  /** update multiples rows of table: "users_public" */
+  update_users_public_many: Maybe<Array<Maybe<Users_Public_Mutation_Response>>>;
   /** update data of the table: "vc_firms" */
   update_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** update single row of the table: "vc_firms" */
   update_vc_firms_by_pk: Maybe<Vc_Firms>;
   /** update data of the table: "vc_firms_edit_access" */
   update_vc_firms_edit_access: Maybe<Vc_Firms_Edit_Access_Mutation_Response>;
+  /** update multiples rows of table: "vc_firms_edit_access" */
+  update_vc_firms_edit_access_many: Maybe<Array<Maybe<Vc_Firms_Edit_Access_Mutation_Response>>>;
+  /** update multiples rows of table: "vc_firms" */
+  update_vc_firms_many: Maybe<Array<Maybe<Vc_Firms_Mutation_Response>>>;
   /** update data of the table: "waitlist_emails" */
   update_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
   /** update single row of the table: "waitlist_emails" */
   update_waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
+  /** update multiples rows of table: "waitlist_emails" */
+  update_waitlist_emails_many: Maybe<Array<Maybe<Waitlist_Emails_Mutation_Response>>>;
 };
 
 
@@ -13159,6 +14489,12 @@ export type Mutation_RootUpdate_Actions_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Actions_ManyArgs = {
+  updates: Array<Actions_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Allowed_EmailsArgs = {
   _inc: InputMaybe<Allowed_Emails_Inc_Input>;
   _set: InputMaybe<Allowed_Emails_Set_Input>;
@@ -13171,6 +14507,12 @@ export type Mutation_RootUpdate_Allowed_Emails_By_PkArgs = {
   _inc: InputMaybe<Allowed_Emails_Inc_Input>;
   _set: InputMaybe<Allowed_Emails_Set_Input>;
   pk_columns: Allowed_Emails_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Allowed_Emails_ManyArgs = {
+  updates: Array<Allowed_Emails_Updates>;
 };
 
 
@@ -13191,6 +14533,12 @@ export type Mutation_RootUpdate_Application_Meta_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Application_Meta_ManyArgs = {
+  updates: Array<Application_Meta_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Billing_OrgArgs = {
   _inc: InputMaybe<Billing_Org_Inc_Input>;
   _set: InputMaybe<Billing_Org_Set_Input>;
@@ -13203,6 +14551,12 @@ export type Mutation_RootUpdate_Billing_Org_By_PkArgs = {
   _inc: InputMaybe<Billing_Org_Inc_Input>;
   _set: InputMaybe<Billing_Org_Set_Input>;
   pk_columns: Billing_Org_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Org_ManyArgs = {
+  updates: Array<Billing_Org_Updates>;
 };
 
 
@@ -13223,6 +14577,12 @@ export type Mutation_RootUpdate_Blockchains_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Blockchains_ManyArgs = {
+  updates: Array<Blockchains_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_CoinsArgs = {
   _inc: InputMaybe<Coins_Inc_Input>;
   _set: InputMaybe<Coins_Set_Input>;
@@ -13239,6 +14599,12 @@ export type Mutation_RootUpdate_Coins_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Coins_ManyArgs = {
+  updates: Array<Coins_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_CommentsArgs = {
   _inc: InputMaybe<Comments_Inc_Input>;
   _set: InputMaybe<Comments_Set_Input>;
@@ -13251,6 +14617,12 @@ export type Mutation_RootUpdate_Comments_By_PkArgs = {
   _inc: InputMaybe<Comments_Inc_Input>;
   _set: InputMaybe<Comments_Set_Input>;
   pk_columns: Comments_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Comments_ManyArgs = {
+  updates: Array<Comments_Updates>;
 };
 
 
@@ -13289,6 +14661,18 @@ export type Mutation_RootUpdate_Companies_Edit_AccessArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Companies_Edit_Access_ManyArgs = {
+  updates: Array<Companies_Edit_Access_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Companies_ManyArgs = {
+  updates: Array<Companies_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Data_ActionsArgs = {
   _inc: InputMaybe<Data_Actions_Inc_Input>;
   _set: InputMaybe<Data_Actions_Set_Input>;
@@ -13301,6 +14685,12 @@ export type Mutation_RootUpdate_Data_Actions_By_PkArgs = {
   _inc: InputMaybe<Data_Actions_Inc_Input>;
   _set: InputMaybe<Data_Actions_Set_Input>;
   pk_columns: Data_Actions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_Actions_ManyArgs = {
+  updates: Array<Data_Actions_Updates>;
 };
 
 
@@ -13331,6 +14721,12 @@ export type Mutation_RootUpdate_Data_Discard_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Data_Discard_ManyArgs = {
+  updates: Array<Data_Discard_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Data_FieldsArgs = {
   _inc: InputMaybe<Data_Fields_Inc_Input>;
   _set: InputMaybe<Data_Fields_Set_Input>;
@@ -13347,6 +14743,12 @@ export type Mutation_RootUpdate_Data_Fields_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Data_Fields_ManyArgs = {
+  updates: Array<Data_Fields_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Data_PartnersArgs = {
   _inc: InputMaybe<Data_Partners_Inc_Input>;
   _set: InputMaybe<Data_Partners_Set_Input>;
@@ -13359,6 +14761,12 @@ export type Mutation_RootUpdate_Data_Partners_By_PkArgs = {
   _inc: InputMaybe<Data_Partners_Inc_Input>;
   _set: InputMaybe<Data_Partners_Set_Input>;
   pk_columns: Data_Partners_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_Partners_ManyArgs = {
+  updates: Array<Data_Partners_Updates>;
 };
 
 
@@ -13389,6 +14797,12 @@ export type Mutation_RootUpdate_Data_Raw_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Data_Raw_ManyArgs = {
+  updates: Array<Data_Raw_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Data_RunsArgs = {
   _inc: InputMaybe<Data_Runs_Inc_Input>;
   _set: InputMaybe<Data_Runs_Set_Input>;
@@ -13401,6 +14815,12 @@ export type Mutation_RootUpdate_Data_Runs_By_PkArgs = {
   _inc: InputMaybe<Data_Runs_Inc_Input>;
   _set: InputMaybe<Data_Runs_Set_Input>;
   pk_columns: Data_Runs_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_Runs_ManyArgs = {
+  updates: Array<Data_Runs_Updates>;
 };
 
 
@@ -13421,6 +14841,12 @@ export type Mutation_RootUpdate_Disabled_Emails_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Disabled_Emails_ManyArgs = {
+  updates: Array<Disabled_Emails_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Event_OrganizationArgs = {
   _inc: InputMaybe<Event_Organization_Inc_Input>;
   _set: InputMaybe<Event_Organization_Set_Input>;
@@ -13437,6 +14863,12 @@ export type Mutation_RootUpdate_Event_Organization_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Event_Organization_ManyArgs = {
+  updates: Array<Event_Organization_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Event_PersonArgs = {
   _inc: InputMaybe<Event_Person_Inc_Input>;
   _set: InputMaybe<Event_Person_Set_Input>;
@@ -13449,6 +14881,12 @@ export type Mutation_RootUpdate_Event_Person_By_PkArgs = {
   _inc: InputMaybe<Event_Person_Inc_Input>;
   _set: InputMaybe<Event_Person_Set_Input>;
   pk_columns: Event_Person_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Event_Person_ManyArgs = {
+  updates: Array<Event_Person_Updates>;
 };
 
 
@@ -13479,6 +14917,12 @@ export type Mutation_RootUpdate_Events_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Events_ManyArgs = {
+  updates: Array<Events_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_FollowsArgs = {
   _inc: InputMaybe<Follows_Inc_Input>;
   _set: InputMaybe<Follows_Set_Input>;
@@ -13503,6 +14947,18 @@ export type Mutation_RootUpdate_Follows_CompaniesArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Follows_Companies_ManyArgs = {
+  updates: Array<Follows_Companies_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Follows_ManyArgs = {
+  updates: Array<Follows_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Follows_PeopleArgs = {
   _inc: InputMaybe<Follows_People_Inc_Input>;
   _set: InputMaybe<Follows_People_Set_Input>;
@@ -13511,10 +14967,22 @@ export type Mutation_RootUpdate_Follows_PeopleArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Follows_People_ManyArgs = {
+  updates: Array<Follows_People_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Follows_Vc_FirmsArgs = {
   _inc: InputMaybe<Follows_Vc_Firms_Inc_Input>;
   _set: InputMaybe<Follows_Vc_Firms_Set_Input>;
   where: Follows_Vc_Firms_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Follows_Vc_Firms_ManyArgs = {
+  updates: Array<Follows_Vc_Firms_Updates>;
 };
 
 
@@ -13535,6 +15003,12 @@ export type Mutation_RootUpdate_Investment_Rounds_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Investment_Rounds_ManyArgs = {
+  updates: Array<Investment_Rounds_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_InvestmentsArgs = {
   _inc: InputMaybe<Investments_Inc_Input>;
   _set: InputMaybe<Investments_Set_Input>;
@@ -13547,6 +15021,12 @@ export type Mutation_RootUpdate_Investments_By_PkArgs = {
   _inc: InputMaybe<Investments_Inc_Input>;
   _set: InputMaybe<Investments_Set_Input>;
   pk_columns: Investments_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Investments_ManyArgs = {
+  updates: Array<Investments_Updates>;
 };
 
 
@@ -13567,6 +15047,12 @@ export type Mutation_RootUpdate_Investors_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Investors_ManyArgs = {
+  updates: Array<Investors_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Invited_PeopleArgs = {
   _inc: InputMaybe<Invited_People_Inc_Input>;
   _set: InputMaybe<Invited_People_Set_Input>;
@@ -13579,6 +15065,12 @@ export type Mutation_RootUpdate_Invited_People_By_PkArgs = {
   _inc: InputMaybe<Invited_People_Inc_Input>;
   _set: InputMaybe<Invited_People_Set_Input>;
   pk_columns: Invited_People_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Invited_People_ManyArgs = {
+  updates: Array<Invited_People_Updates>;
 };
 
 
@@ -13599,6 +15091,12 @@ export type Mutation_RootUpdate_Leads_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Leads_ManyArgs = {
+  updates: Array<Leads_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Leads_SegmentationArgs = {
   _inc: InputMaybe<Leads_Segmentation_Inc_Input>;
   _set: InputMaybe<Leads_Segmentation_Set_Input>;
@@ -13611,6 +15109,12 @@ export type Mutation_RootUpdate_Leads_Segmentation_By_PkArgs = {
   _inc: InputMaybe<Leads_Segmentation_Inc_Input>;
   _set: InputMaybe<Leads_Segmentation_Set_Input>;
   pk_columns: Leads_Segmentation_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Leads_Segmentation_ManyArgs = {
+  updates: Array<Leads_Segmentation_Updates>;
 };
 
 
@@ -13631,6 +15135,12 @@ export type Mutation_RootUpdate_Likes_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Likes_ManyArgs = {
+  updates: Array<Likes_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_List_MembersArgs = {
   _inc: InputMaybe<List_Members_Inc_Input>;
   _set: InputMaybe<List_Members_Set_Input>;
@@ -13643,6 +15153,12 @@ export type Mutation_RootUpdate_List_Members_By_PkArgs = {
   _inc: InputMaybe<List_Members_Inc_Input>;
   _set: InputMaybe<List_Members_Set_Input>;
   pk_columns: List_Members_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_List_Members_ManyArgs = {
+  updates: Array<List_Members_Updates>;
 };
 
 
@@ -13663,6 +15179,12 @@ export type Mutation_RootUpdate_List_User_Groups_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_List_User_Groups_ManyArgs = {
+  updates: Array<List_User_Groups_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_ListsArgs = {
   _inc: InputMaybe<Lists_Inc_Input>;
   _set: InputMaybe<Lists_Set_Input>;
@@ -13675,6 +15197,12 @@ export type Mutation_RootUpdate_Lists_By_PkArgs = {
   _inc: InputMaybe<Lists_Inc_Input>;
   _set: InputMaybe<Lists_Set_Input>;
   pk_columns: Lists_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Lists_ManyArgs = {
+  updates: Array<Lists_Updates>;
 };
 
 
@@ -13705,6 +15233,12 @@ export type Mutation_RootUpdate_News_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_News_ManyArgs = {
+  updates: Array<News_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_News_OrganizationsArgs = {
   _inc: InputMaybe<News_Organizations_Inc_Input>;
   _set: InputMaybe<News_Organizations_Set_Input>;
@@ -13717,6 +15251,12 @@ export type Mutation_RootUpdate_News_Organizations_By_PkArgs = {
   _inc: InputMaybe<News_Organizations_Inc_Input>;
   _set: InputMaybe<News_Organizations_Set_Input>;
   pk_columns: News_Organizations_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_News_Organizations_ManyArgs = {
+  updates: Array<News_Organizations_Updates>;
 };
 
 
@@ -13737,6 +15277,12 @@ export type Mutation_RootUpdate_News_Person_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_News_Person_ManyArgs = {
+  updates: Array<News_Person_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_News_Related_OrganizationsArgs = {
   _inc: InputMaybe<News_Related_Organizations_Inc_Input>;
   _set: InputMaybe<News_Related_Organizations_Set_Input>;
@@ -13749,6 +15295,12 @@ export type Mutation_RootUpdate_News_Related_Organizations_By_PkArgs = {
   _inc: InputMaybe<News_Related_Organizations_Inc_Input>;
   _set: InputMaybe<News_Related_Organizations_Set_Input>;
   pk_columns: News_Related_Organizations_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_News_Related_Organizations_ManyArgs = {
+  updates: Array<News_Related_Organizations_Updates>;
 };
 
 
@@ -13769,6 +15321,12 @@ export type Mutation_RootUpdate_News_Related_Person_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_News_Related_Person_ManyArgs = {
+  updates: Array<News_Related_Person_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_NotesArgs = {
   _inc: InputMaybe<Notes_Inc_Input>;
   _set: InputMaybe<Notes_Set_Input>;
@@ -13785,6 +15343,12 @@ export type Mutation_RootUpdate_Notes_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Notes_ManyArgs = {
+  updates: Array<Notes_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Notification_ActionsArgs = {
   _inc: InputMaybe<Notification_Actions_Inc_Input>;
   _set: InputMaybe<Notification_Actions_Set_Input>;
@@ -13797,6 +15361,12 @@ export type Mutation_RootUpdate_Notification_Actions_By_PkArgs = {
   _inc: InputMaybe<Notification_Actions_Inc_Input>;
   _set: InputMaybe<Notification_Actions_Set_Input>;
   pk_columns: Notification_Actions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Notification_Actions_ManyArgs = {
+  updates: Array<Notification_Actions_Updates>;
 };
 
 
@@ -13827,6 +15397,12 @@ export type Mutation_RootUpdate_Notifications_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Notifications_ManyArgs = {
+  updates: Array<Notifications_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_PeopleArgs = {
   _append: InputMaybe<People_Append_Input>;
   _delete_at_path: InputMaybe<People_Delete_At_Path_Input>;
@@ -13853,6 +15429,12 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_People_ManyArgs = {
+  updates: Array<People_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Reset_PasswordsArgs = {
   _inc: InputMaybe<Reset_Passwords_Inc_Input>;
   _set: InputMaybe<Reset_Passwords_Set_Input>;
@@ -13865,6 +15447,12 @@ export type Mutation_RootUpdate_Reset_Passwords_By_PkArgs = {
   _inc: InputMaybe<Reset_Passwords_Inc_Input>;
   _set: InputMaybe<Reset_Passwords_Set_Input>;
   pk_columns: Reset_Passwords_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Reset_Passwords_ManyArgs = {
+  updates: Array<Reset_Passwords_Updates>;
 };
 
 
@@ -13885,6 +15473,12 @@ export type Mutation_RootUpdate_Resource_Edit_Access_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Resource_Edit_Access_ManyArgs = {
+  updates: Array<Resource_Edit_Access_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Resource_LinksArgs = {
   _inc: InputMaybe<Resource_Links_Inc_Input>;
   _set: InputMaybe<Resource_Links_Set_Input>;
@@ -13897,6 +15491,12 @@ export type Mutation_RootUpdate_Resource_Links_By_PkArgs = {
   _inc: InputMaybe<Resource_Links_Inc_Input>;
   _set: InputMaybe<Resource_Links_Set_Input>;
   pk_columns: Resource_Links_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Resource_Links_ManyArgs = {
+  updates: Array<Resource_Links_Updates>;
 };
 
 
@@ -13917,6 +15517,12 @@ export type Mutation_RootUpdate_Team_Members_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Team_Members_ManyArgs = {
+  updates: Array<Team_Members_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_User_Group_InvitesArgs = {
   _inc: InputMaybe<User_Group_Invites_Inc_Input>;
   _set: InputMaybe<User_Group_Invites_Set_Input>;
@@ -13929,6 +15535,12 @@ export type Mutation_RootUpdate_User_Group_Invites_By_PkArgs = {
   _inc: InputMaybe<User_Group_Invites_Inc_Input>;
   _set: InputMaybe<User_Group_Invites_Set_Input>;
   pk_columns: User_Group_Invites_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Group_Invites_ManyArgs = {
+  updates: Array<User_Group_Invites_Updates>;
 };
 
 
@@ -13949,6 +15561,12 @@ export type Mutation_RootUpdate_User_Group_Members_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_User_Group_Members_ManyArgs = {
+  updates: Array<User_Group_Members_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_User_GroupsArgs = {
   _inc: InputMaybe<User_Groups_Inc_Input>;
   _set: InputMaybe<User_Groups_Set_Input>;
@@ -13965,6 +15583,12 @@ export type Mutation_RootUpdate_User_Groups_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_User_Groups_ManyArgs = {
+  updates: Array<User_Groups_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_User_TokensArgs = {
   _inc: InputMaybe<User_Tokens_Inc_Input>;
   _set: InputMaybe<User_Tokens_Set_Input>;
@@ -13977,6 +15601,12 @@ export type Mutation_RootUpdate_User_Tokens_By_PkArgs = {
   _inc: InputMaybe<User_Tokens_Inc_Input>;
   _set: InputMaybe<User_Tokens_Set_Input>;
   pk_columns: User_Tokens_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Tokens_ManyArgs = {
+  updates: Array<User_Tokens_Updates>;
 };
 
 
@@ -14007,10 +15637,22 @@ export type Mutation_RootUpdate_Users_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Users_ManyArgs = {
+  updates: Array<Users_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Users_PublicArgs = {
   _inc: InputMaybe<Users_Public_Inc_Input>;
   _set: InputMaybe<Users_Public_Set_Input>;
   where: Users_Public_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Users_Public_ManyArgs = {
+  updates: Array<Users_Public_Updates>;
 };
 
 
@@ -14049,6 +15691,18 @@ export type Mutation_RootUpdate_Vc_Firms_Edit_AccessArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Vc_Firms_Edit_Access_ManyArgs = {
+  updates: Array<Vc_Firms_Edit_Access_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Vc_Firms_ManyArgs = {
+  updates: Array<Vc_Firms_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Waitlist_EmailsArgs = {
   _inc: InputMaybe<Waitlist_Emails_Inc_Input>;
   _set: InputMaybe<Waitlist_Emails_Set_Input>;
@@ -14061,6 +15715,12 @@ export type Mutation_RootUpdate_Waitlist_Emails_By_PkArgs = {
   _inc: InputMaybe<Waitlist_Emails_Inc_Input>;
   _set: InputMaybe<Waitlist_Emails_Set_Input>;
   pk_columns: Waitlist_Emails_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Waitlist_Emails_ManyArgs = {
+  updates: Array<Waitlist_Emails_Updates>;
 };
 
 /** columns and relationships of "news" */
@@ -14201,7 +15861,9 @@ export type News_Bool_Exp = {
   link: InputMaybe<String_Comparison_Exp>;
   metadata: InputMaybe<Jsonb_Comparison_Exp>;
   organizations: InputMaybe<News_Organizations_Bool_Exp>;
+  organizations_aggregate: InputMaybe<News_Organizations_Aggregate_Bool_Exp>;
   people: InputMaybe<News_Person_Bool_Exp>;
+  people_aggregate: InputMaybe<News_Person_Aggregate_Bool_Exp>;
   source: InputMaybe<Jsonb_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   text: InputMaybe<String_Comparison_Exp>;
@@ -14210,7 +15872,7 @@ export type News_Bool_Exp = {
 
 /** unique or primary key constraints on table "news" */
 export enum News_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NewsPkey = 'news_pkey'
 }
 
@@ -14348,6 +16010,17 @@ export type News_Organizations_Aggregate = {
   nodes: Array<News_Organizations>;
 };
 
+export type News_Organizations_Aggregate_Bool_Exp = {
+  count: InputMaybe<News_Organizations_Aggregate_Bool_Exp_Count>;
+};
+
+export type News_Organizations_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<News_Organizations_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<News_Organizations_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "news_organizations" */
 export type News_Organizations_Aggregate_Fields = {
   __typename?: 'news_organizations_aggregate_fields';
@@ -14429,7 +16102,7 @@ export type News_Organizations_Bool_Exp = {
 
 /** unique or primary key constraints on table "news_organizations" */
 export enum News_Organizations_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NewsOrganizationsPkey = 'news_organizations_pkey'
 }
 
@@ -14616,6 +16289,25 @@ export type News_Organizations_Stddev_Samp_Order_By = {
   vc_firm_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "news_organizations" */
+export type News_Organizations_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: News_Organizations_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type News_Organizations_Stream_Cursor_Value_Input = {
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type News_Organizations_Sum_Fields = {
   __typename?: 'news_organizations_sum_fields';
@@ -14650,6 +16342,15 @@ export enum News_Organizations_Update_Column {
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
+
+export type News_Organizations_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<News_Organizations_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<News_Organizations_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: News_Organizations_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type News_Organizations_Var_Pop_Fields = {
@@ -14722,6 +16423,17 @@ export type News_Person_Aggregate = {
   __typename?: 'news_person_aggregate';
   aggregate: Maybe<News_Person_Aggregate_Fields>;
   nodes: Array<News_Person>;
+};
+
+export type News_Person_Aggregate_Bool_Exp = {
+  count: InputMaybe<News_Person_Aggregate_Bool_Exp_Count>;
+};
+
+export type News_Person_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<News_Person_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<News_Person_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "news_person" */
@@ -14801,7 +16513,7 @@ export type News_Person_Bool_Exp = {
 
 /** unique or primary key constraints on table "news_person" */
 export enum News_Person_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NewsPersonPkey = 'news_person_pkey'
 }
 
@@ -14970,6 +16682,24 @@ export type News_Person_Stddev_Samp_Order_By = {
   person_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "news_person" */
+export type News_Person_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: News_Person_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type News_Person_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type News_Person_Sum_Fields = {
   __typename?: 'news_person_sum_fields';
@@ -15000,6 +16730,15 @@ export enum News_Person_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type News_Person_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<News_Person_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<News_Person_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: News_Person_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type News_Person_Var_Pop_Fields = {
@@ -15121,7 +16860,7 @@ export type News_Related_Organizations_Bool_Exp = {
 
 /** unique or primary key constraints on table "news_related_organizations" */
 export enum News_Related_Organizations_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NewsRelatedOrganizationsPkey = 'news_related_organizations_pkey'
 }
 
@@ -15241,6 +16980,24 @@ export type News_Related_Organizations_Stddev_Samp_Fields = {
   news_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "news_related_organizations" */
+export type News_Related_Organizations_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: News_Related_Organizations_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type News_Related_Organizations_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type News_Related_Organizations_Sum_Fields = {
   __typename?: 'news_related_organizations_sum_fields';
@@ -15263,6 +17020,15 @@ export enum News_Related_Organizations_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type News_Related_Organizations_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<News_Related_Organizations_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<News_Related_Organizations_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: News_Related_Organizations_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type News_Related_Organizations_Var_Pop_Fields = {
@@ -15348,7 +17114,7 @@ export type News_Related_Person_Bool_Exp = {
 
 /** unique or primary key constraints on table "news_related_person" */
 export enum News_Related_Person_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NewsRelatedPersonPkey = 'news_related_person_pkey'
 }
 
@@ -15468,6 +17234,24 @@ export type News_Related_Person_Stddev_Samp_Fields = {
   news_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "news_related_person" */
+export type News_Related_Person_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: News_Related_Person_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type News_Related_Person_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type News_Related_Person_Sum_Fields = {
   __typename?: 'news_related_person_sum_fields';
@@ -15490,6 +17274,15 @@ export enum News_Related_Person_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type News_Related_Person_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<News_Related_Person_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<News_Related_Person_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: News_Related_Person_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type News_Related_Person_Var_Pop_Fields = {
@@ -15571,6 +17364,29 @@ export type News_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "news" */
+export type News_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: News_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type News_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  date: InputMaybe<Scalars['date']>;
+  id: InputMaybe<Scalars['Int']>;
+  kind: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
+  link: InputMaybe<Scalars['String']>;
+  metadata: InputMaybe<Scalars['jsonb']>;
+  source: InputMaybe<Scalars['jsonb']>;
+  status: InputMaybe<Scalars['String']>;
+  text: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type News_Sum_Fields = {
   __typename?: 'news_sum_fields';
@@ -15602,6 +17418,25 @@ export enum News_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type News_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<News_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<News_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<News_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<News_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<News_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<News_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<News_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: News_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type News_Var_Pop_Fields = {
@@ -15694,6 +17529,17 @@ export type Notes_Aggregate = {
   nodes: Array<Notes>;
 };
 
+export type Notes_Aggregate_Bool_Exp = {
+  count: InputMaybe<Notes_Aggregate_Bool_Exp_Count>;
+};
+
+export type Notes_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Notes_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Notes_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "notes" */
 export type Notes_Aggregate_Fields = {
   __typename?: 'notes_aggregate_fields';
@@ -15763,11 +17609,13 @@ export type Notes_Bool_Exp = {
   _or: InputMaybe<Array<Notes_Bool_Exp>>;
   audience: InputMaybe<String_Comparison_Exp>;
   comments: InputMaybe<Comments_Bool_Exp>;
+  comments_aggregate: InputMaybe<Comments_Aggregate_Bool_Exp>;
   created_at: InputMaybe<Timestamp_Comparison_Exp>;
   created_by: InputMaybe<Int_Comparison_Exp>;
   created_by_user: InputMaybe<Users_Public_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   likes: InputMaybe<Likes_Bool_Exp>;
+  likes_aggregate: InputMaybe<Likes_Aggregate_Bool_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
   resource_type: InputMaybe<String_Comparison_Exp>;
@@ -15778,7 +17626,7 @@ export type Notes_Bool_Exp = {
 
 /** unique or primary key constraints on table "notes" */
 export enum Notes_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NotesPkey = 'notes_pkey'
 }
 
@@ -15992,6 +17840,27 @@ export type Notes_Stddev_Samp_Order_By = {
   user_group_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "notes" */
+export type Notes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Notes_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Notes_Stream_Cursor_Value_Input = {
+  audience: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  created_by: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  notes: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  user_group_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Notes_Sum_Fields = {
   __typename?: 'notes_sum_fields';
@@ -16030,6 +17899,15 @@ export enum Notes_Update_Column {
   /** column name */
   UserGroupId = 'user_group_id'
 }
+
+export type Notes_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Notes_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Notes_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Notes_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Notes_Var_Pop_Fields = {
@@ -16100,6 +17978,17 @@ export type Notification_Actions_Aggregate = {
   __typename?: 'notification_actions_aggregate';
   aggregate: Maybe<Notification_Actions_Aggregate_Fields>;
   nodes: Array<Notification_Actions>;
+};
+
+export type Notification_Actions_Aggregate_Bool_Exp = {
+  count: InputMaybe<Notification_Actions_Aggregate_Bool_Exp_Count>;
+};
+
+export type Notification_Actions_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Notification_Actions_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "notification_actions" */
@@ -16177,7 +18066,7 @@ export type Notification_Actions_Bool_Exp = {
 
 /** unique or primary key constraints on table "notification_actions" */
 export enum Notification_Actions_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NotificationActionsPkey = 'notification_actions_pkey'
 }
 
@@ -16328,6 +18217,22 @@ export type Notification_Actions_Stddev_Samp_Order_By = {
   notification_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "notification_actions" */
+export type Notification_Actions_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Notification_Actions_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Notification_Actions_Stream_Cursor_Value_Input = {
+  action_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  notification_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Notification_Actions_Sum_Fields = {
   __typename?: 'notification_actions_sum_fields';
@@ -16354,6 +18259,15 @@ export enum Notification_Actions_Update_Column {
   /** column name */
   NotificationId = 'notification_id'
 }
+
+export type Notification_Actions_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Notification_Actions_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Notification_Actions_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Notification_Actions_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Notification_Actions_Var_Pop_Fields = {
@@ -16512,6 +18426,7 @@ export type Notifications_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   message: InputMaybe<String_Comparison_Exp>;
   notification_actions: InputMaybe<Notification_Actions_Bool_Exp>;
+  notification_actions_aggregate: InputMaybe<Notification_Actions_Aggregate_Bool_Exp>;
   notification_resource_id: InputMaybe<Int_Comparison_Exp>;
   notification_resource_type: InputMaybe<String_Comparison_Exp>;
   read: InputMaybe<Boolean_Comparison_Exp>;
@@ -16524,7 +18439,7 @@ export type Notifications_Bool_Exp = {
 
 /** unique or primary key constraints on table "notifications" */
 export enum Notifications_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   NotificationsPkey = 'notifications_pkey'
 }
 
@@ -16741,6 +18656,32 @@ export type Notifications_Stddev_Samp_Fields = {
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "notifications" */
+export type Notifications_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Notifications_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Notifications_Stream_Cursor_Value_Input = {
+  action_ids: InputMaybe<Scalars['jsonb']>;
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_type: InputMaybe<Scalars['String']>;
+  follow_resource_type: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  message: InputMaybe<Scalars['String']>;
+  notification_resource_id: InputMaybe<Scalars['Int']>;
+  notification_resource_type: InputMaybe<Scalars['String']>;
+  read: InputMaybe<Scalars['Boolean']>;
+  read_at: InputMaybe<Scalars['timestamptz']>;
+  target_user_id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Notifications_Sum_Fields = {
   __typename?: 'notifications_sum_fields';
@@ -16782,6 +18723,25 @@ export enum Notifications_Update_Column {
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
+
+export type Notifications_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Notifications_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Notifications_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Notifications_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Notifications_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Notifications_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Notifications_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Notifications_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Notifications_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Notifications_Var_Pop_Fields = {
@@ -17066,19 +19026,24 @@ export type People_Bool_Exp = {
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook_url: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_People_Bool_Exp>;
+  follows_aggregate: InputMaybe<Follows_People_Aggregate_Bool_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
+  investments_aggregate: InputMaybe<Investments_Aggregate_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
+  investors_aggregate: InputMaybe<Investors_Aggregate_Bool_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Person_Bool_Exp>;
+  news_links_aggregate: InputMaybe<News_Person_Aggregate_Bool_Exp>;
   personal_email: InputMaybe<String_Comparison_Exp>;
   picture: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   team_members: InputMaybe<Team_Members_Bool_Exp>;
+  team_members_aggregate: InputMaybe<Team_Members_Aggregate_Bool_Exp>;
   twitter_url: InputMaybe<String_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -17089,11 +19054,11 @@ export type People_Bool_Exp = {
 
 /** unique or primary key constraints on table "people" */
 export enum People_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   PeopleExternalIdKey = 'people_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PeoplePkey = 'people_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "slug" */
   PeopleSlugKey = 'people_slug_key'
 }
 
@@ -17361,6 +19326,40 @@ export type People_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "people" */
+export type People_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: People_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type People_Stream_Cursor_Value_Input = {
+  about: InputMaybe<Scalars['String']>;
+  city: InputMaybe<Scalars['String']>;
+  country: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['jsonb']>;
+  external_id: InputMaybe<Scalars['String']>;
+  facebook_url: InputMaybe<Scalars['String']>;
+  github: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  library: InputMaybe<Scalars['jsonb']>;
+  linkedin: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  personal_email: InputMaybe<Scalars['String']>;
+  picture: InputMaybe<Scalars['jsonb']>;
+  slug: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  twitter_url: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  website_url: InputMaybe<Scalars['String']>;
+  work_email: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type People_Sum_Fields = {
   __typename?: 'people_sum_fields';
@@ -17412,6 +19411,25 @@ export enum People_Update_Column {
   /** column name */
   WorkEmail = 'work_email'
 }
+
+export type People_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<People_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<People_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<People_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<People_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<People_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<People_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<People_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: People_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type People_Var_Pop_Fields = {
@@ -19056,7 +21074,7 @@ export type Reset_Passwords_Bool_Exp = {
 
 /** unique or primary key constraints on table "reset_passwords" */
 export enum Reset_Passwords_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ResetPasswordsPkey = 'reset_passwords_pkey'
 }
 
@@ -19177,6 +21195,23 @@ export type Reset_Passwords_Stddev_Samp_Fields = {
   user_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "reset_passwords" */
+export type Reset_Passwords_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Reset_Passwords_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Reset_Passwords_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  generated_password: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Reset_Passwords_Sum_Fields = {
   __typename?: 'reset_passwords_sum_fields';
@@ -19198,6 +21233,15 @@ export enum Reset_Passwords_Update_Column {
   /** column name */
   UserId = 'user_id'
 }
+
+export type Reset_Passwords_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Reset_Passwords_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Reset_Passwords_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Reset_Passwords_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Reset_Passwords_Var_Pop_Fields = {
@@ -19291,9 +21335,9 @@ export type Resource_Edit_Access_Bool_Exp = {
 
 /** unique or primary key constraints on table "resource_edit_access" */
 export enum Resource_Edit_Access_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ResourceEditAccessPkey = 'resource_edit_access_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "resource_id", "user_id", "resource_type" */
   ResourceEditAccessResourceIdUserIdResourceTypeKey = 'resource_edit_access_resource_id_user_id_resource_type_key'
 }
 
@@ -19414,6 +21458,23 @@ export type Resource_Edit_Access_Stddev_Samp_Fields = {
   user_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "resource_edit_access" */
+export type Resource_Edit_Access_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Resource_Edit_Access_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Resource_Edit_Access_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Resource_Edit_Access_Sum_Fields = {
   __typename?: 'resource_edit_access_sum_fields';
@@ -19435,6 +21496,15 @@ export enum Resource_Edit_Access_Update_Column {
   /** column name */
   UserId = 'user_id'
 }
+
+export type Resource_Edit_Access_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Resource_Edit_Access_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Resource_Edit_Access_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Resource_Edit_Access_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Resource_Edit_Access_Var_Pop_Fields = {
@@ -19485,6 +21555,17 @@ export type Resource_Links_Aggregate = {
   __typename?: 'resource_links_aggregate';
   aggregate: Maybe<Resource_Links_Aggregate_Fields>;
   nodes: Array<Resource_Links>;
+};
+
+export type Resource_Links_Aggregate_Bool_Exp = {
+  count: InputMaybe<Resource_Links_Aggregate_Bool_Exp_Count>;
+};
+
+export type Resource_Links_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Resource_Links_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Resource_Links_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "resource_links" */
@@ -19571,7 +21652,7 @@ export type Resource_Links_Bool_Exp = {
 
 /** unique or primary key constraints on table "resource_links" */
 export enum Resource_Links_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ResourceLinksPkey = 'resource_links_pkey'
 }
 
@@ -19767,6 +21848,25 @@ export type Resource_Links_Stddev_Samp_Order_By = {
   to_vc_firm_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "resource_links" */
+export type Resource_Links_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Resource_Links_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Resource_Links_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  from_company_id: InputMaybe<Scalars['Int']>;
+  from_vc_firm_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  link_type: InputMaybe<Scalars['String']>;
+  to_company_id: InputMaybe<Scalars['Int']>;
+  to_vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Resource_Links_Sum_Fields = {
   __typename?: 'resource_links_sum_fields';
@@ -19803,6 +21903,15 @@ export enum Resource_Links_Update_Column {
   /** column name */
   ToVcFirmId = 'to_vc_firm_id'
 }
+
+export type Resource_Links_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Resource_Links_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Resource_Links_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Resource_Links_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Resource_Links_Var_Pop_Fields = {
@@ -19880,42 +21989,56 @@ export type Subscription_Root = {
   actions_aggregate: Actions_Aggregate;
   /** fetch data from the table: "actions" using primary key columns */
   actions_by_pk: Maybe<Actions>;
+  /** fetch data from the table in a streaming manner: "actions" */
+  actions_stream: Array<Actions>;
   /** fetch data from the table: "allowed_emails" */
   allowed_emails: Array<Allowed_Emails>;
   /** fetch aggregated fields from the table: "allowed_emails" */
   allowed_emails_aggregate: Allowed_Emails_Aggregate;
   /** fetch data from the table: "allowed_emails" using primary key columns */
   allowed_emails_by_pk: Maybe<Allowed_Emails>;
+  /** fetch data from the table in a streaming manner: "allowed_emails" */
+  allowed_emails_stream: Array<Allowed_Emails>;
   /** fetch data from the table: "application_meta" */
   application_meta: Array<Application_Meta>;
   /** fetch aggregated fields from the table: "application_meta" */
   application_meta_aggregate: Application_Meta_Aggregate;
   /** fetch data from the table: "application_meta" using primary key columns */
   application_meta_by_pk: Maybe<Application_Meta>;
+  /** fetch data from the table in a streaming manner: "application_meta" */
+  application_meta_stream: Array<Application_Meta>;
   /** fetch data from the table: "billing_org" */
   billing_org: Array<Billing_Org>;
   /** fetch aggregated fields from the table: "billing_org" */
   billing_org_aggregate: Billing_Org_Aggregate;
   /** fetch data from the table: "billing_org" using primary key columns */
   billing_org_by_pk: Maybe<Billing_Org>;
+  /** fetch data from the table in a streaming manner: "billing_org" */
+  billing_org_stream: Array<Billing_Org>;
   /** fetch data from the table: "blockchains" */
   blockchains: Array<Blockchains>;
   /** fetch aggregated fields from the table: "blockchains" */
   blockchains_aggregate: Blockchains_Aggregate;
   /** fetch data from the table: "blockchains" using primary key columns */
   blockchains_by_pk: Maybe<Blockchains>;
+  /** fetch data from the table in a streaming manner: "blockchains" */
+  blockchains_stream: Array<Blockchains>;
   /** fetch data from the table: "coins" */
   coins: Array<Coins>;
   /** fetch aggregated fields from the table: "coins" */
   coins_aggregate: Coins_Aggregate;
   /** fetch data from the table: "coins" using primary key columns */
   coins_by_pk: Maybe<Coins>;
+  /** fetch data from the table in a streaming manner: "coins" */
+  coins_stream: Array<Coins>;
   /** An array relationship */
   comments: Array<Comments>;
   /** An aggregate relationship */
   comments_aggregate: Comments_Aggregate;
   /** fetch data from the table: "comments" using primary key columns */
   comments_by_pk: Maybe<Comments>;
+  /** fetch data from the table in a streaming manner: "comments" */
+  comments_stream: Array<Comments>;
   /** fetch data from the table: "companies" */
   companies: Array<Companies>;
   /** fetch aggregated fields from the table: "companies" */
@@ -19926,66 +22049,90 @@ export type Subscription_Root = {
   companies_edit_access: Array<Companies_Edit_Access>;
   /** fetch aggregated fields from the table: "companies_edit_access" */
   companies_edit_access_aggregate: Companies_Edit_Access_Aggregate;
+  /** fetch data from the table in a streaming manner: "companies_edit_access" */
+  companies_edit_access_stream: Array<Companies_Edit_Access>;
+  /** fetch data from the table in a streaming manner: "companies" */
+  companies_stream: Array<Companies>;
   /** fetch data from the table: "data_actions" */
   data_actions: Array<Data_Actions>;
   /** fetch aggregated fields from the table: "data_actions" */
   data_actions_aggregate: Data_Actions_Aggregate;
   /** fetch data from the table: "data_actions" using primary key columns */
   data_actions_by_pk: Maybe<Data_Actions>;
+  /** fetch data from the table in a streaming manner: "data_actions" */
+  data_actions_stream: Array<Data_Actions>;
   /** fetch data from the table: "data_discard" */
   data_discard: Array<Data_Discard>;
   /** fetch aggregated fields from the table: "data_discard" */
   data_discard_aggregate: Data_Discard_Aggregate;
   /** fetch data from the table: "data_discard" using primary key columns */
   data_discard_by_pk: Maybe<Data_Discard>;
+  /** fetch data from the table in a streaming manner: "data_discard" */
+  data_discard_stream: Array<Data_Discard>;
   /** fetch data from the table: "data_fields" */
   data_fields: Array<Data_Fields>;
   /** fetch aggregated fields from the table: "data_fields" */
   data_fields_aggregate: Data_Fields_Aggregate;
   /** fetch data from the table: "data_fields" using primary key columns */
   data_fields_by_pk: Maybe<Data_Fields>;
+  /** fetch data from the table in a streaming manner: "data_fields" */
+  data_fields_stream: Array<Data_Fields>;
   /** fetch data from the table: "data_partners" */
   data_partners: Array<Data_Partners>;
   /** fetch aggregated fields from the table: "data_partners" */
   data_partners_aggregate: Data_Partners_Aggregate;
   /** fetch data from the table: "data_partners" using primary key columns */
   data_partners_by_pk: Maybe<Data_Partners>;
+  /** fetch data from the table in a streaming manner: "data_partners" */
+  data_partners_stream: Array<Data_Partners>;
   /** fetch data from the table: "data_raw" */
   data_raw: Array<Data_Raw>;
   /** fetch aggregated fields from the table: "data_raw" */
   data_raw_aggregate: Data_Raw_Aggregate;
   /** fetch data from the table: "data_raw" using primary key columns */
   data_raw_by_pk: Maybe<Data_Raw>;
+  /** fetch data from the table in a streaming manner: "data_raw" */
+  data_raw_stream: Array<Data_Raw>;
   /** fetch data from the table: "data_runs" */
   data_runs: Array<Data_Runs>;
   /** fetch aggregated fields from the table: "data_runs" */
   data_runs_aggregate: Data_Runs_Aggregate;
   /** fetch data from the table: "data_runs" using primary key columns */
   data_runs_by_pk: Maybe<Data_Runs>;
+  /** fetch data from the table in a streaming manner: "data_runs" */
+  data_runs_stream: Array<Data_Runs>;
   /** fetch data from the table: "disabled_emails" */
   disabled_emails: Array<Disabled_Emails>;
   /** fetch aggregated fields from the table: "disabled_emails" */
   disabled_emails_aggregate: Disabled_Emails_Aggregate;
   /** fetch data from the table: "disabled_emails" using primary key columns */
   disabled_emails_by_pk: Maybe<Disabled_Emails>;
+  /** fetch data from the table in a streaming manner: "disabled_emails" */
+  disabled_emails_stream: Array<Disabled_Emails>;
   /** An array relationship */
   event_organization: Array<Event_Organization>;
   /** An aggregate relationship */
   event_organization_aggregate: Event_Organization_Aggregate;
   /** fetch data from the table: "event_organization" using primary key columns */
   event_organization_by_pk: Maybe<Event_Organization>;
+  /** fetch data from the table in a streaming manner: "event_organization" */
+  event_organization_stream: Array<Event_Organization>;
   /** An array relationship */
   event_person: Array<Event_Person>;
   /** An aggregate relationship */
   event_person_aggregate: Event_Person_Aggregate;
   /** fetch data from the table: "event_person" using primary key columns */
   event_person_by_pk: Maybe<Event_Person>;
+  /** fetch data from the table in a streaming manner: "event_person" */
+  event_person_stream: Array<Event_Person>;
   /** fetch data from the table: "events" */
   events: Array<Events>;
   /** fetch aggregated fields from the table: "events" */
   events_aggregate: Events_Aggregate;
   /** fetch data from the table: "events" using primary key columns */
   events_by_pk: Maybe<Events>;
+  /** fetch data from the table in a streaming manner: "events" */
+  events_stream: Array<Events>;
   /** fetch data from the table: "follows" */
   follows: Array<Follows>;
   /** fetch aggregated fields from the table: "follows" */
@@ -19996,38 +22143,54 @@ export type Subscription_Root = {
   follows_companies: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
+  /** fetch data from the table in a streaming manner: "follows_companies" */
+  follows_companies_stream: Array<Follows_Companies>;
   /** An array relationship */
   follows_people: Array<Follows_People>;
   /** An aggregate relationship */
   follows_people_aggregate: Follows_People_Aggregate;
+  /** fetch data from the table in a streaming manner: "follows_people" */
+  follows_people_stream: Array<Follows_People>;
+  /** fetch data from the table in a streaming manner: "follows" */
+  follows_stream: Array<Follows>;
   /** fetch data from the table: "follows_vc_firms" */
   follows_vc_firms: Array<Follows_Vc_Firms>;
   /** fetch aggregated fields from the table: "follows_vc_firms" */
   follows_vc_firms_aggregate: Follows_Vc_Firms_Aggregate;
+  /** fetch data from the table in a streaming manner: "follows_vc_firms" */
+  follows_vc_firms_stream: Array<Follows_Vc_Firms>;
   /** An array relationship */
   investment_rounds: Array<Investment_Rounds>;
   /** An aggregate relationship */
   investment_rounds_aggregate: Investment_Rounds_Aggregate;
   /** fetch data from the table: "investment_rounds" using primary key columns */
   investment_rounds_by_pk: Maybe<Investment_Rounds>;
+  /** fetch data from the table in a streaming manner: "investment_rounds" */
+  investment_rounds_stream: Array<Investment_Rounds>;
   /** An array relationship */
   investments: Array<Investments>;
   /** An aggregate relationship */
   investments_aggregate: Investments_Aggregate;
   /** fetch data from the table: "investments" using primary key columns */
   investments_by_pk: Maybe<Investments>;
+  /** fetch data from the table in a streaming manner: "investments" */
+  investments_stream: Array<Investments>;
   /** An array relationship */
   investors: Array<Investors>;
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** fetch data from the table in a streaming manner: "investors" */
+  investors_stream: Array<Investors>;
   /** fetch data from the table: "invited_people" */
   invited_people: Array<Invited_People>;
   /** fetch aggregated fields from the table: "invited_people" */
   invited_people_aggregate: Invited_People_Aggregate;
   /** fetch data from the table: "invited_people" using primary key columns */
   invited_people_by_pk: Maybe<Invited_People>;
+  /** fetch data from the table in a streaming manner: "invited_people" */
+  invited_people_stream: Array<Invited_People>;
   /** fetch data from the table: "leads" */
   leads: Array<Leads>;
   /** fetch aggregated fields from the table: "leads" */
@@ -20040,30 +22203,42 @@ export type Subscription_Root = {
   leads_segmentation_aggregate: Leads_Segmentation_Aggregate;
   /** fetch data from the table: "leads_segmentation" using primary key columns */
   leads_segmentation_by_pk: Maybe<Leads_Segmentation>;
+  /** fetch data from the table in a streaming manner: "leads_segmentation" */
+  leads_segmentation_stream: Array<Leads_Segmentation>;
+  /** fetch data from the table in a streaming manner: "leads" */
+  leads_stream: Array<Leads>;
   /** An array relationship */
   likes: Array<Likes>;
   /** An aggregate relationship */
   likes_aggregate: Likes_Aggregate;
   /** fetch data from the table: "likes" using primary key columns */
   likes_by_pk: Maybe<Likes>;
+  /** fetch data from the table in a streaming manner: "likes" */
+  likes_stream: Array<Likes>;
   /** An array relationship */
   list_members: Array<List_Members>;
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
   /** fetch data from the table: "list_members" using primary key columns */
   list_members_by_pk: Maybe<List_Members>;
+  /** fetch data from the table in a streaming manner: "list_members" */
+  list_members_stream: Array<List_Members>;
   /** An array relationship */
   list_user_groups: Array<List_User_Groups>;
   /** An aggregate relationship */
   list_user_groups_aggregate: List_User_Groups_Aggregate;
   /** fetch data from the table: "list_user_groups" using primary key columns */
   list_user_groups_by_pk: Maybe<List_User_Groups>;
+  /** fetch data from the table in a streaming manner: "list_user_groups" */
+  list_user_groups_stream: Array<List_User_Groups>;
   /** fetch data from the table: "lists" */
   lists: Array<Lists>;
   /** fetch aggregated fields from the table: "lists" */
   lists_aggregate: Lists_Aggregate;
   /** fetch data from the table: "lists" using primary key columns */
   lists_by_pk: Maybe<Lists>;
+  /** fetch data from the table in a streaming manner: "lists" */
+  lists_stream: Array<Lists>;
   /** fetch data from the table: "news" */
   news: Array<News>;
   /** fetch aggregated fields from the table: "news" */
@@ -20076,96 +22251,130 @@ export type Subscription_Root = {
   news_organizations_aggregate: News_Organizations_Aggregate;
   /** fetch data from the table: "news_organizations" using primary key columns */
   news_organizations_by_pk: Maybe<News_Organizations>;
+  /** fetch data from the table in a streaming manner: "news_organizations" */
+  news_organizations_stream: Array<News_Organizations>;
   /** fetch data from the table: "news_person" */
   news_person: Array<News_Person>;
   /** fetch aggregated fields from the table: "news_person" */
   news_person_aggregate: News_Person_Aggregate;
   /** fetch data from the table: "news_person" using primary key columns */
   news_person_by_pk: Maybe<News_Person>;
+  /** fetch data from the table in a streaming manner: "news_person" */
+  news_person_stream: Array<News_Person>;
   /** fetch data from the table: "news_related_organizations" */
   news_related_organizations: Array<News_Related_Organizations>;
   /** fetch aggregated fields from the table: "news_related_organizations" */
   news_related_organizations_aggregate: News_Related_Organizations_Aggregate;
   /** fetch data from the table: "news_related_organizations" using primary key columns */
   news_related_organizations_by_pk: Maybe<News_Related_Organizations>;
+  /** fetch data from the table in a streaming manner: "news_related_organizations" */
+  news_related_organizations_stream: Array<News_Related_Organizations>;
   /** fetch data from the table: "news_related_person" */
   news_related_person: Array<News_Related_Person>;
   /** fetch aggregated fields from the table: "news_related_person" */
   news_related_person_aggregate: News_Related_Person_Aggregate;
   /** fetch data from the table: "news_related_person" using primary key columns */
   news_related_person_by_pk: Maybe<News_Related_Person>;
+  /** fetch data from the table in a streaming manner: "news_related_person" */
+  news_related_person_stream: Array<News_Related_Person>;
+  /** fetch data from the table in a streaming manner: "news" */
+  news_stream: Array<News>;
   /** An array relationship */
   notes: Array<Notes>;
   /** An aggregate relationship */
   notes_aggregate: Notes_Aggregate;
   /** fetch data from the table: "notes" using primary key columns */
   notes_by_pk: Maybe<Notes>;
+  /** fetch data from the table in a streaming manner: "notes" */
+  notes_stream: Array<Notes>;
   /** An array relationship */
   notification_actions: Array<Notification_Actions>;
   /** An aggregate relationship */
   notification_actions_aggregate: Notification_Actions_Aggregate;
   /** fetch data from the table: "notification_actions" using primary key columns */
   notification_actions_by_pk: Maybe<Notification_Actions>;
+  /** fetch data from the table in a streaming manner: "notification_actions" */
+  notification_actions_stream: Array<Notification_Actions>;
   /** fetch data from the table: "notifications" */
   notifications: Array<Notifications>;
   /** fetch aggregated fields from the table: "notifications" */
   notifications_aggregate: Notifications_Aggregate;
   /** fetch data from the table: "notifications" using primary key columns */
   notifications_by_pk: Maybe<Notifications>;
+  /** fetch data from the table in a streaming manner: "notifications" */
+  notifications_stream: Array<Notifications>;
   /** fetch data from the table: "people" */
   people: Array<People>;
   /** fetch aggregated fields from the table: "people" */
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table in a streaming manner: "people" */
+  people_stream: Array<People>;
   /** fetch data from the table: "reset_passwords" */
   reset_passwords: Array<Reset_Passwords>;
   /** fetch aggregated fields from the table: "reset_passwords" */
   reset_passwords_aggregate: Reset_Passwords_Aggregate;
   /** fetch data from the table: "reset_passwords" using primary key columns */
   reset_passwords_by_pk: Maybe<Reset_Passwords>;
+  /** fetch data from the table in a streaming manner: "reset_passwords" */
+  reset_passwords_stream: Array<Reset_Passwords>;
   /** fetch data from the table: "resource_edit_access" */
   resource_edit_access: Array<Resource_Edit_Access>;
   /** fetch aggregated fields from the table: "resource_edit_access" */
   resource_edit_access_aggregate: Resource_Edit_Access_Aggregate;
   /** fetch data from the table: "resource_edit_access" using primary key columns */
   resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
+  /** fetch data from the table in a streaming manner: "resource_edit_access" */
+  resource_edit_access_stream: Array<Resource_Edit_Access>;
   /** fetch data from the table: "resource_links" */
   resource_links: Array<Resource_Links>;
   /** fetch aggregated fields from the table: "resource_links" */
   resource_links_aggregate: Resource_Links_Aggregate;
   /** fetch data from the table: "resource_links" using primary key columns */
   resource_links_by_pk: Maybe<Resource_Links>;
+  /** fetch data from the table in a streaming manner: "resource_links" */
+  resource_links_stream: Array<Resource_Links>;
   /** An array relationship */
   team_members: Array<Team_Members>;
   /** An aggregate relationship */
   team_members_aggregate: Team_Members_Aggregate;
   /** fetch data from the table: "team_members" using primary key columns */
   team_members_by_pk: Maybe<Team_Members>;
+  /** fetch data from the table in a streaming manner: "team_members" */
+  team_members_stream: Array<Team_Members>;
   /** An array relationship */
   user_group_invites: Array<User_Group_Invites>;
   /** An aggregate relationship */
   user_group_invites_aggregate: User_Group_Invites_Aggregate;
   /** fetch data from the table: "user_group_invites" using primary key columns */
   user_group_invites_by_pk: Maybe<User_Group_Invites>;
+  /** fetch data from the table in a streaming manner: "user_group_invites" */
+  user_group_invites_stream: Array<User_Group_Invites>;
   /** An array relationship */
   user_group_members: Array<User_Group_Members>;
   /** An aggregate relationship */
   user_group_members_aggregate: User_Group_Members_Aggregate;
   /** fetch data from the table: "user_group_members" using primary key columns */
   user_group_members_by_pk: Maybe<User_Group_Members>;
+  /** fetch data from the table in a streaming manner: "user_group_members" */
+  user_group_members_stream: Array<User_Group_Members>;
   /** fetch data from the table: "user_groups" */
   user_groups: Array<User_Groups>;
   /** fetch aggregated fields from the table: "user_groups" */
   user_groups_aggregate: User_Groups_Aggregate;
   /** fetch data from the table: "user_groups" using primary key columns */
   user_groups_by_pk: Maybe<User_Groups>;
+  /** fetch data from the table in a streaming manner: "user_groups" */
+  user_groups_stream: Array<User_Groups>;
   /** fetch data from the table: "user_tokens" */
   user_tokens: Array<User_Tokens>;
   /** fetch aggregated fields from the table: "user_tokens" */
   user_tokens_aggregate: User_Tokens_Aggregate;
   /** fetch data from the table: "user_tokens" using primary key columns */
   user_tokens_by_pk: Maybe<User_Tokens>;
+  /** fetch data from the table in a streaming manner: "user_tokens" */
+  user_tokens_stream: Array<User_Tokens>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -20176,6 +22385,10 @@ export type Subscription_Root = {
   users_public: Array<Users_Public>;
   /** fetch aggregated fields from the table: "users_public" */
   users_public_aggregate: Users_Public_Aggregate;
+  /** fetch data from the table in a streaming manner: "users_public" */
+  users_public_stream: Array<Users_Public>;
+  /** fetch data from the table in a streaming manner: "users" */
+  users_stream: Array<Users>;
   /** fetch data from the table: "vc_firms" */
   vc_firms: Array<Vc_Firms>;
   /** fetch aggregated fields from the table: "vc_firms" */
@@ -20186,12 +22399,18 @@ export type Subscription_Root = {
   vc_firms_edit_access: Array<Vc_Firms_Edit_Access>;
   /** fetch aggregated fields from the table: "vc_firms_edit_access" */
   vc_firms_edit_access_aggregate: Vc_Firms_Edit_Access_Aggregate;
+  /** fetch data from the table in a streaming manner: "vc_firms_edit_access" */
+  vc_firms_edit_access_stream: Array<Vc_Firms_Edit_Access>;
+  /** fetch data from the table in a streaming manner: "vc_firms" */
+  vc_firms_stream: Array<Vc_Firms>;
   /** fetch data from the table: "waitlist_emails" */
   waitlist_emails: Array<Waitlist_Emails>;
   /** fetch aggregated fields from the table: "waitlist_emails" */
   waitlist_emails_aggregate: Waitlist_Emails_Aggregate;
   /** fetch data from the table: "waitlist_emails" using primary key columns */
   waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
+  /** fetch data from the table in a streaming manner: "waitlist_emails" */
+  waitlist_emails_stream: Array<Waitlist_Emails>;
 };
 
 
@@ -20218,6 +22437,13 @@ export type Subscription_RootActions_By_PkArgs = {
 };
 
 
+export type Subscription_RootActions_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Actions_Stream_Cursor_Input>>;
+  where: InputMaybe<Actions_Bool_Exp>;
+};
+
+
 export type Subscription_RootAllowed_EmailsArgs = {
   distinct_on: InputMaybe<Array<Allowed_Emails_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20238,6 +22464,13 @@ export type Subscription_RootAllowed_Emails_AggregateArgs = {
 
 export type Subscription_RootAllowed_Emails_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootAllowed_Emails_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Allowed_Emails_Stream_Cursor_Input>>;
+  where: InputMaybe<Allowed_Emails_Bool_Exp>;
 };
 
 
@@ -20264,6 +22497,13 @@ export type Subscription_RootApplication_Meta_By_PkArgs = {
 };
 
 
+export type Subscription_RootApplication_Meta_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Application_Meta_Stream_Cursor_Input>>;
+  where: InputMaybe<Application_Meta_Bool_Exp>;
+};
+
+
 export type Subscription_RootBilling_OrgArgs = {
   distinct_on: InputMaybe<Array<Billing_Org_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20284,6 +22524,13 @@ export type Subscription_RootBilling_Org_AggregateArgs = {
 
 export type Subscription_RootBilling_Org_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootBilling_Org_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Billing_Org_Stream_Cursor_Input>>;
+  where: InputMaybe<Billing_Org_Bool_Exp>;
 };
 
 
@@ -20310,6 +22557,13 @@ export type Subscription_RootBlockchains_By_PkArgs = {
 };
 
 
+export type Subscription_RootBlockchains_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Blockchains_Stream_Cursor_Input>>;
+  where: InputMaybe<Blockchains_Bool_Exp>;
+};
+
+
 export type Subscription_RootCoinsArgs = {
   distinct_on: InputMaybe<Array<Coins_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20333,6 +22587,13 @@ export type Subscription_RootCoins_By_PkArgs = {
 };
 
 
+export type Subscription_RootCoins_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Coins_Stream_Cursor_Input>>;
+  where: InputMaybe<Coins_Bool_Exp>;
+};
+
+
 export type Subscription_RootCommentsArgs = {
   distinct_on: InputMaybe<Array<Comments_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20353,6 +22614,13 @@ export type Subscription_RootComments_AggregateArgs = {
 
 export type Subscription_RootComments_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootComments_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Comments_Stream_Cursor_Input>>;
+  where: InputMaybe<Comments_Bool_Exp>;
 };
 
 
@@ -20397,6 +22665,20 @@ export type Subscription_RootCompanies_Edit_Access_AggregateArgs = {
 };
 
 
+export type Subscription_RootCompanies_Edit_Access_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Companies_Edit_Access_Stream_Cursor_Input>>;
+  where: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+};
+
+
+export type Subscription_RootCompanies_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Companies_Stream_Cursor_Input>>;
+  where: InputMaybe<Companies_Bool_Exp>;
+};
+
+
 export type Subscription_RootData_ActionsArgs = {
   distinct_on: InputMaybe<Array<Data_Actions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20417,6 +22699,13 @@ export type Subscription_RootData_Actions_AggregateArgs = {
 
 export type Subscription_RootData_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+export type Subscription_RootData_Actions_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Data_Actions_Stream_Cursor_Input>>;
+  where: InputMaybe<Data_Actions_Bool_Exp>;
 };
 
 
@@ -20443,6 +22732,13 @@ export type Subscription_RootData_Discard_By_PkArgs = {
 };
 
 
+export type Subscription_RootData_Discard_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Data_Discard_Stream_Cursor_Input>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
 export type Subscription_RootData_FieldsArgs = {
   distinct_on: InputMaybe<Array<Data_Fields_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20463,6 +22759,13 @@ export type Subscription_RootData_Fields_AggregateArgs = {
 
 export type Subscription_RootData_Fields_By_PkArgs = {
   path: Scalars['String'];
+};
+
+
+export type Subscription_RootData_Fields_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Data_Fields_Stream_Cursor_Input>>;
+  where: InputMaybe<Data_Fields_Bool_Exp>;
 };
 
 
@@ -20489,6 +22792,13 @@ export type Subscription_RootData_Partners_By_PkArgs = {
 };
 
 
+export type Subscription_RootData_Partners_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Data_Partners_Stream_Cursor_Input>>;
+  where: InputMaybe<Data_Partners_Bool_Exp>;
+};
+
+
 export type Subscription_RootData_RawArgs = {
   distinct_on: InputMaybe<Array<Data_Raw_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20509,6 +22819,13 @@ export type Subscription_RootData_Raw_AggregateArgs = {
 
 export type Subscription_RootData_Raw_By_PkArgs = {
   id: Scalars['bigint'];
+};
+
+
+export type Subscription_RootData_Raw_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Data_Raw_Stream_Cursor_Input>>;
+  where: InputMaybe<Data_Raw_Bool_Exp>;
 };
 
 
@@ -20535,6 +22852,13 @@ export type Subscription_RootData_Runs_By_PkArgs = {
 };
 
 
+export type Subscription_RootData_Runs_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Data_Runs_Stream_Cursor_Input>>;
+  where: InputMaybe<Data_Runs_Bool_Exp>;
+};
+
+
 export type Subscription_RootDisabled_EmailsArgs = {
   distinct_on: InputMaybe<Array<Disabled_Emails_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20555,6 +22879,13 @@ export type Subscription_RootDisabled_Emails_AggregateArgs = {
 
 export type Subscription_RootDisabled_Emails_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootDisabled_Emails_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Disabled_Emails_Stream_Cursor_Input>>;
+  where: InputMaybe<Disabled_Emails_Bool_Exp>;
 };
 
 
@@ -20581,6 +22912,13 @@ export type Subscription_RootEvent_Organization_By_PkArgs = {
 };
 
 
+export type Subscription_RootEvent_Organization_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Event_Organization_Stream_Cursor_Input>>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+
 export type Subscription_RootEvent_PersonArgs = {
   distinct_on: InputMaybe<Array<Event_Person_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20604,6 +22942,13 @@ export type Subscription_RootEvent_Person_By_PkArgs = {
 };
 
 
+export type Subscription_RootEvent_Person_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Event_Person_Stream_Cursor_Input>>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+
 export type Subscription_RootEventsArgs = {
   distinct_on: InputMaybe<Array<Events_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20624,6 +22969,13 @@ export type Subscription_RootEvents_AggregateArgs = {
 
 export type Subscription_RootEvents_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootEvents_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Events_Stream_Cursor_Input>>;
+  where: InputMaybe<Events_Bool_Exp>;
 };
 
 
@@ -20668,6 +23020,13 @@ export type Subscription_RootFollows_Companies_AggregateArgs = {
 };
 
 
+export type Subscription_RootFollows_Companies_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Follows_Companies_Stream_Cursor_Input>>;
+  where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
 export type Subscription_RootFollows_PeopleArgs = {
   distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20686,6 +23045,20 @@ export type Subscription_RootFollows_People_AggregateArgs = {
 };
 
 
+export type Subscription_RootFollows_People_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Follows_People_Stream_Cursor_Input>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollows_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Follows_Stream_Cursor_Input>>;
+  where: InputMaybe<Follows_Bool_Exp>;
+};
+
+
 export type Subscription_RootFollows_Vc_FirmsArgs = {
   distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20700,6 +23073,13 @@ export type Subscription_RootFollows_Vc_Firms_AggregateArgs = {
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Vc_Firms_Order_By>>;
+  where: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollows_Vc_Firms_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Follows_Vc_Firms_Stream_Cursor_Input>>;
   where: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
 };
 
@@ -20727,6 +23107,13 @@ export type Subscription_RootInvestment_Rounds_By_PkArgs = {
 };
 
 
+export type Subscription_RootInvestment_Rounds_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Investment_Rounds_Stream_Cursor_Input>>;
+  where: InputMaybe<Investment_Rounds_Bool_Exp>;
+};
+
+
 export type Subscription_RootInvestmentsArgs = {
   distinct_on: InputMaybe<Array<Investments_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20747,6 +23134,13 @@ export type Subscription_RootInvestments_AggregateArgs = {
 
 export type Subscription_RootInvestments_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootInvestments_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Investments_Stream_Cursor_Input>>;
+  where: InputMaybe<Investments_Bool_Exp>;
 };
 
 
@@ -20773,6 +23167,13 @@ export type Subscription_RootInvestors_By_PkArgs = {
 };
 
 
+export type Subscription_RootInvestors_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Investors_Stream_Cursor_Input>>;
+  where: InputMaybe<Investors_Bool_Exp>;
+};
+
+
 export type Subscription_RootInvited_PeopleArgs = {
   distinct_on: InputMaybe<Array<Invited_People_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20793,6 +23194,13 @@ export type Subscription_RootInvited_People_AggregateArgs = {
 
 export type Subscription_RootInvited_People_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootInvited_People_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Invited_People_Stream_Cursor_Input>>;
+  where: InputMaybe<Invited_People_Bool_Exp>;
 };
 
 
@@ -20842,6 +23250,20 @@ export type Subscription_RootLeads_Segmentation_By_PkArgs = {
 };
 
 
+export type Subscription_RootLeads_Segmentation_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Leads_Segmentation_Stream_Cursor_Input>>;
+  where: InputMaybe<Leads_Segmentation_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeads_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Leads_Stream_Cursor_Input>>;
+  where: InputMaybe<Leads_Bool_Exp>;
+};
+
+
 export type Subscription_RootLikesArgs = {
   distinct_on: InputMaybe<Array<Likes_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20862,6 +23284,13 @@ export type Subscription_RootLikes_AggregateArgs = {
 
 export type Subscription_RootLikes_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootLikes_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Likes_Stream_Cursor_Input>>;
+  where: InputMaybe<Likes_Bool_Exp>;
 };
 
 
@@ -20888,6 +23317,13 @@ export type Subscription_RootList_Members_By_PkArgs = {
 };
 
 
+export type Subscription_RootList_Members_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<List_Members_Stream_Cursor_Input>>;
+  where: InputMaybe<List_Members_Bool_Exp>;
+};
+
+
 export type Subscription_RootList_User_GroupsArgs = {
   distinct_on: InputMaybe<Array<List_User_Groups_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20911,6 +23347,13 @@ export type Subscription_RootList_User_Groups_By_PkArgs = {
 };
 
 
+export type Subscription_RootList_User_Groups_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<List_User_Groups_Stream_Cursor_Input>>;
+  where: InputMaybe<List_User_Groups_Bool_Exp>;
+};
+
+
 export type Subscription_RootListsArgs = {
   distinct_on: InputMaybe<Array<Lists_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -20931,6 +23374,13 @@ export type Subscription_RootLists_AggregateArgs = {
 
 export type Subscription_RootLists_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootLists_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Lists_Stream_Cursor_Input>>;
+  where: InputMaybe<Lists_Bool_Exp>;
 };
 
 
@@ -20980,6 +23430,13 @@ export type Subscription_RootNews_Organizations_By_PkArgs = {
 };
 
 
+export type Subscription_RootNews_Organizations_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<News_Organizations_Stream_Cursor_Input>>;
+  where: InputMaybe<News_Organizations_Bool_Exp>;
+};
+
+
 export type Subscription_RootNews_PersonArgs = {
   distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21000,6 +23457,13 @@ export type Subscription_RootNews_Person_AggregateArgs = {
 
 export type Subscription_RootNews_Person_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootNews_Person_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<News_Person_Stream_Cursor_Input>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
 };
 
 
@@ -21026,6 +23490,13 @@ export type Subscription_RootNews_Related_Organizations_By_PkArgs = {
 };
 
 
+export type Subscription_RootNews_Related_Organizations_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<News_Related_Organizations_Stream_Cursor_Input>>;
+  where: InputMaybe<News_Related_Organizations_Bool_Exp>;
+};
+
+
 export type Subscription_RootNews_Related_PersonArgs = {
   distinct_on: InputMaybe<Array<News_Related_Person_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21046,6 +23517,20 @@ export type Subscription_RootNews_Related_Person_AggregateArgs = {
 
 export type Subscription_RootNews_Related_Person_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootNews_Related_Person_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<News_Related_Person_Stream_Cursor_Input>>;
+  where: InputMaybe<News_Related_Person_Bool_Exp>;
+};
+
+
+export type Subscription_RootNews_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<News_Stream_Cursor_Input>>;
+  where: InputMaybe<News_Bool_Exp>;
 };
 
 
@@ -21072,6 +23557,13 @@ export type Subscription_RootNotes_By_PkArgs = {
 };
 
 
+export type Subscription_RootNotes_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Notes_Stream_Cursor_Input>>;
+  where: InputMaybe<Notes_Bool_Exp>;
+};
+
+
 export type Subscription_RootNotification_ActionsArgs = {
   distinct_on: InputMaybe<Array<Notification_Actions_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21092,6 +23584,13 @@ export type Subscription_RootNotification_Actions_AggregateArgs = {
 
 export type Subscription_RootNotification_Actions_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootNotification_Actions_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Notification_Actions_Stream_Cursor_Input>>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
 };
 
 
@@ -21118,6 +23617,13 @@ export type Subscription_RootNotifications_By_PkArgs = {
 };
 
 
+export type Subscription_RootNotifications_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Notifications_Stream_Cursor_Input>>;
+  where: InputMaybe<Notifications_Bool_Exp>;
+};
+
+
 export type Subscription_RootPeopleArgs = {
   distinct_on: InputMaybe<Array<People_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21138,6 +23644,13 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 export type Subscription_RootPeople_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootPeople_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<People_Stream_Cursor_Input>>;
+  where: InputMaybe<People_Bool_Exp>;
 };
 
 
@@ -21164,6 +23677,13 @@ export type Subscription_RootReset_Passwords_By_PkArgs = {
 };
 
 
+export type Subscription_RootReset_Passwords_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Reset_Passwords_Stream_Cursor_Input>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
 export type Subscription_RootResource_Edit_AccessArgs = {
   distinct_on: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21184,6 +23704,13 @@ export type Subscription_RootResource_Edit_Access_AggregateArgs = {
 
 export type Subscription_RootResource_Edit_Access_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootResource_Edit_Access_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Resource_Edit_Access_Stream_Cursor_Input>>;
+  where: InputMaybe<Resource_Edit_Access_Bool_Exp>;
 };
 
 
@@ -21210,6 +23737,13 @@ export type Subscription_RootResource_Links_By_PkArgs = {
 };
 
 
+export type Subscription_RootResource_Links_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Resource_Links_Stream_Cursor_Input>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
 export type Subscription_RootTeam_MembersArgs = {
   distinct_on: InputMaybe<Array<Team_Members_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21230,6 +23764,13 @@ export type Subscription_RootTeam_Members_AggregateArgs = {
 
 export type Subscription_RootTeam_Members_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootTeam_Members_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Team_Members_Stream_Cursor_Input>>;
+  where: InputMaybe<Team_Members_Bool_Exp>;
 };
 
 
@@ -21256,6 +23797,13 @@ export type Subscription_RootUser_Group_Invites_By_PkArgs = {
 };
 
 
+export type Subscription_RootUser_Group_Invites_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<User_Group_Invites_Stream_Cursor_Input>>;
+  where: InputMaybe<User_Group_Invites_Bool_Exp>;
+};
+
+
 export type Subscription_RootUser_Group_MembersArgs = {
   distinct_on: InputMaybe<Array<User_Group_Members_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21276,6 +23824,13 @@ export type Subscription_RootUser_Group_Members_AggregateArgs = {
 
 export type Subscription_RootUser_Group_Members_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootUser_Group_Members_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<User_Group_Members_Stream_Cursor_Input>>;
+  where: InputMaybe<User_Group_Members_Bool_Exp>;
 };
 
 
@@ -21302,6 +23857,13 @@ export type Subscription_RootUser_Groups_By_PkArgs = {
 };
 
 
+export type Subscription_RootUser_Groups_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<User_Groups_Stream_Cursor_Input>>;
+  where: InputMaybe<User_Groups_Bool_Exp>;
+};
+
+
 export type Subscription_RootUser_TokensArgs = {
   distinct_on: InputMaybe<Array<User_Tokens_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21322,6 +23884,13 @@ export type Subscription_RootUser_Tokens_AggregateArgs = {
 
 export type Subscription_RootUser_Tokens_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootUser_Tokens_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<User_Tokens_Stream_Cursor_Input>>;
+  where: InputMaybe<User_Tokens_Bool_Exp>;
 };
 
 
@@ -21366,6 +23935,20 @@ export type Subscription_RootUsers_Public_AggregateArgs = {
 };
 
 
+export type Subscription_RootUsers_Public_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Users_Public_Stream_Cursor_Input>>;
+  where: InputMaybe<Users_Public_Bool_Exp>;
+};
+
+
+export type Subscription_RootUsers_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>;
+  where: InputMaybe<Users_Bool_Exp>;
+};
+
+
 export type Subscription_RootVc_FirmsArgs = {
   distinct_on: InputMaybe<Array<Vc_Firms_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21407,6 +23990,20 @@ export type Subscription_RootVc_Firms_Edit_Access_AggregateArgs = {
 };
 
 
+export type Subscription_RootVc_Firms_Edit_Access_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Vc_Firms_Edit_Access_Stream_Cursor_Input>>;
+  where: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+};
+
+
+export type Subscription_RootVc_Firms_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Vc_Firms_Stream_Cursor_Input>>;
+  where: InputMaybe<Vc_Firms_Bool_Exp>;
+};
+
+
 export type Subscription_RootWaitlist_EmailsArgs = {
   distinct_on: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -21427,6 +24024,13 @@ export type Subscription_RootWaitlist_Emails_AggregateArgs = {
 
 export type Subscription_RootWaitlist_Emails_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootWaitlist_Emails_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Waitlist_Emails_Stream_Cursor_Input>>;
+  where: InputMaybe<Waitlist_Emails_Bool_Exp>;
 };
 
 /** columns and relationships of "team_members" */
@@ -21455,6 +24059,33 @@ export type Team_Members_Aggregate = {
   __typename?: 'team_members_aggregate';
   aggregate: Maybe<Team_Members_Aggregate_Fields>;
   nodes: Array<Team_Members>;
+};
+
+export type Team_Members_Aggregate_Bool_Exp = {
+  bool_and: InputMaybe<Team_Members_Aggregate_Bool_Exp_Bool_And>;
+  bool_or: InputMaybe<Team_Members_Aggregate_Bool_Exp_Bool_Or>;
+  count: InputMaybe<Team_Members_Aggregate_Bool_Exp_Count>;
+};
+
+export type Team_Members_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Team_Members_Select_Column_Team_Members_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Team_Members_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Team_Members_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Team_Members_Select_Column_Team_Members_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Team_Members_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Team_Members_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Team_Members_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Team_Members_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "team_members" */
@@ -21540,11 +24171,11 @@ export type Team_Members_Bool_Exp = {
 
 /** unique or primary key constraints on table "team_members" */
 export enum Team_Members_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "company_id", "person_id" */
   TeamMembersCompanyIdPersonIdKey = 'team_members_company_id_person_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   TeamMembersExternalIdKey = 'team_members_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   TeamMembersPkey = 'team_members_pkey'
 }
 
@@ -21702,6 +24333,18 @@ export enum Team_Members_Select_Column {
   Title = 'title'
 }
 
+/** select "team_members_aggregate_bool_exp_bool_and_arguments_columns" columns of table "team_members" */
+export enum Team_Members_Select_Column_Team_Members_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Founder = 'founder'
+}
+
+/** select "team_members_aggregate_bool_exp_bool_or_arguments_columns" columns of table "team_members" */
+export enum Team_Members_Select_Column_Team_Members_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Founder = 'founder'
+}
+
 /** input type for updating data in table "team_members" */
 export type Team_Members_Set_Input = {
   company_id: InputMaybe<Scalars['Int']>;
@@ -21763,6 +24406,30 @@ export type Team_Members_Stddev_Samp_Order_By = {
   person_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "team_members" */
+export type Team_Members_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Team_Members_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Team_Members_Stream_Cursor_Value_Input = {
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  email_address: InputMaybe<Scalars['String']>;
+  end_date: InputMaybe<Scalars['date']>;
+  external_id: InputMaybe<Scalars['String']>;
+  founder: InputMaybe<Scalars['Boolean']>;
+  function: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  seniority: InputMaybe<Scalars['String']>;
+  start_date: InputMaybe<Scalars['date']>;
+  title: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Team_Members_Sum_Fields = {
   __typename?: 'team_members_sum_fields';
@@ -21805,6 +24472,15 @@ export enum Team_Members_Update_Column {
   /** column name */
   Title = 'title'
 }
+
+export type Team_Members_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Team_Members_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Team_Members_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Team_Members_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Team_Members_Var_Pop_Fields = {
@@ -21911,6 +24587,17 @@ export type User_Group_Invites_Aggregate = {
   nodes: Array<User_Group_Invites>;
 };
 
+export type User_Group_Invites_Aggregate_Bool_Exp = {
+  count: InputMaybe<User_Group_Invites_Aggregate_Bool_Exp_Count>;
+};
+
+export type User_Group_Invites_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<User_Group_Invites_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<User_Group_Invites_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "user_group_invites" */
 export type User_Group_Invites_Aggregate_Fields = {
   __typename?: 'user_group_invites_aggregate_fields';
@@ -21987,7 +24674,7 @@ export type User_Group_Invites_Bool_Exp = {
 
 /** unique or primary key constraints on table "user_group_invites" */
 export enum User_Group_Invites_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   UserGroupInvitesPkey = 'user_group_invites_pkey'
 }
 
@@ -22147,6 +24834,23 @@ export type User_Group_Invites_Stddev_Samp_Order_By = {
   user_group_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "user_group_invites" */
+export type User_Group_Invites_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: User_Group_Invites_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type User_Group_Invites_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_group_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type User_Group_Invites_Sum_Fields = {
   __typename?: 'user_group_invites_sum_fields';
@@ -22175,6 +24879,15 @@ export enum User_Group_Invites_Update_Column {
   /** column name */
   UserGroupId = 'user_group_id'
 }
+
+export type User_Group_Invites_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<User_Group_Invites_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<User_Group_Invites_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: User_Group_Invites_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type User_Group_Invites_Var_Pop_Fields = {
@@ -22239,6 +24952,17 @@ export type User_Group_Members_Aggregate = {
   __typename?: 'user_group_members_aggregate';
   aggregate: Maybe<User_Group_Members_Aggregate_Fields>;
   nodes: Array<User_Group_Members>;
+};
+
+export type User_Group_Members_Aggregate_Bool_Exp = {
+  count: InputMaybe<User_Group_Members_Aggregate_Bool_Exp_Count>;
+};
+
+export type User_Group_Members_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<User_Group_Members_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<User_Group_Members_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "user_group_members" */
@@ -22316,7 +25040,7 @@ export type User_Group_Members_Bool_Exp = {
 
 /** unique or primary key constraints on table "user_group_members" */
 export enum User_Group_Members_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   UserGroupMembersPkey = 'user_group_members_pkey'
 }
 
@@ -22467,6 +25191,22 @@ export type User_Group_Members_Stddev_Samp_Order_By = {
   user_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "user_group_members" */
+export type User_Group_Members_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: User_Group_Members_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type User_Group_Members_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_group_id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type User_Group_Members_Sum_Fields = {
   __typename?: 'user_group_members_sum_fields';
@@ -22493,6 +25233,15 @@ export enum User_Group_Members_Update_Column {
   /** column name */
   UserId = 'user_id'
 }
+
+export type User_Group_Members_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<User_Group_Members_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<User_Group_Members_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: User_Group_Members_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type User_Group_Members_Var_Pop_Fields = {
@@ -22701,19 +25450,23 @@ export type User_Groups_Bool_Exp = {
   discord: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   list_user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
+  list_user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<Notes_Bool_Exp>;
+  notes_aggregate: InputMaybe<Notes_Aggregate_Bool_Exp>;
   public: InputMaybe<Boolean_Comparison_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user_group_invites: InputMaybe<User_Group_Invites_Bool_Exp>;
+  user_group_invites_aggregate: InputMaybe<User_Group_Invites_Aggregate_Bool_Exp>;
   user_group_members: InputMaybe<User_Group_Members_Bool_Exp>;
+  user_group_members_aggregate: InputMaybe<User_Group_Members_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "user_groups" */
 export enum User_Groups_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   UserGroupsPkey = 'user_groups_pkey'
 }
 
@@ -22876,6 +25629,28 @@ export type User_Groups_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "user_groups" */
+export type User_Groups_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: User_Groups_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type User_Groups_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  description: InputMaybe<Scalars['String']>;
+  discord: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
+  telegram: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** aggregate sum on columns */
 export type User_Groups_Sum_Fields = {
   __typename?: 'user_groups_sum_fields';
@@ -22906,6 +25681,15 @@ export enum User_Groups_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type User_Groups_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<User_Groups_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<User_Groups_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: User_Groups_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type User_Groups_Var_Pop_Fields = {
@@ -22989,7 +25773,7 @@ export type User_Tokens_Bool_Exp = {
 
 /** unique or primary key constraints on table "user_tokens" */
 export enum User_Tokens_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   UserTokensPkey = 'user_tokens_pkey'
 }
 
@@ -23102,6 +25886,23 @@ export type User_Tokens_Stddev_Samp_Fields = {
   user_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "user_tokens" */
+export type User_Tokens_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: User_Tokens_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type User_Tokens_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  token: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type User_Tokens_Sum_Fields = {
   __typename?: 'user_tokens_sum_fields';
@@ -23122,6 +25923,15 @@ export enum User_Tokens_Update_Column {
   /** column name */
   UserId = 'user_id'
 }
+
+export type User_Tokens_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<User_Tokens_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<User_Tokens_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: User_Tokens_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type User_Tokens_Var_Pop_Fields = {
@@ -23303,6 +26113,8 @@ export type Users_Append_Input = {
 export type Users_Avg_Fields = {
   __typename?: 'users_avg_fields';
   billing_org_id: Maybe<Scalars['Float']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   reference_user_id: Maybe<Scalars['Float']>;
@@ -23328,9 +26140,12 @@ export type Users_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   is_auth0_verified: InputMaybe<Boolean_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
+  list_members_aggregate: InputMaybe<List_Members_Aggregate_Bool_Exp>;
   onboarding_information: InputMaybe<Jsonb_Comparison_Exp>;
   organization_companies: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+  organization_companies_aggregate: InputMaybe<Companies_Edit_Access_Aggregate_Bool_Exp>;
   organization_vc_firms: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+  organization_vc_firms_aggregate: InputMaybe<Vc_Firms_Edit_Access_Aggregate_Bool_Exp>;
   person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
   reference_id: InputMaybe<String_Comparison_Exp>;
@@ -23340,11 +26155,11 @@ export type Users_Bool_Exp = {
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "email" */
   UsersEmailKey = 'users_email_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "person_id" */
   UsersPersonIdKey = 'users_person_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   UsersPkey = 'users_pkey'
 }
 
@@ -23410,6 +26225,8 @@ export type Users_Max_Fields = {
   auth0_user_pass_id: Maybe<Scalars['String']>;
   billing_org_id: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   display_name: Maybe<Scalars['String']>;
   email: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
@@ -23427,6 +26244,8 @@ export type Users_Min_Fields = {
   auth0_user_pass_id: Maybe<Scalars['String']>;
   billing_org_id: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   display_name: Maybe<Scalars['String']>;
   email: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
@@ -23604,9 +26423,11 @@ export type Users_Public_Bool_Exp = {
   email: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
+  list_members_aggregate: InputMaybe<List_Members_Aggregate_Bool_Exp>;
   person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
   user_group_members: InputMaybe<User_Group_Members_Bool_Exp>;
+  user_group_members_aggregate: InputMaybe<User_Group_Members_Aggregate_Bool_Exp>;
 };
 
 /** input type for incrementing numeric columns in table "users_public" */
@@ -23710,11 +26531,36 @@ export type Users_Public_Stddev_Samp_Fields = {
   person_id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "users_public" */
+export type Users_Public_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Users_Public_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Users_Public_Stream_Cursor_Value_Input = {
+  display_name: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Users_Public_Sum_Fields = {
   __typename?: 'users_public_sum_fields';
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
+};
+
+export type Users_Public_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Users_Public_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Users_Public_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Users_Public_Bool_Exp;
 };
 
 /** aggregate var_pop on columns */
@@ -23801,6 +26647,8 @@ export type Users_Set_Input = {
 export type Users_Stddev_Fields = {
   __typename?: 'users_stddev_fields';
   billing_org_id: Maybe<Scalars['Float']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   reference_user_id: Maybe<Scalars['Float']>;
@@ -23810,6 +26658,8 @@ export type Users_Stddev_Fields = {
 export type Users_Stddev_Pop_Fields = {
   __typename?: 'users_stddev_pop_fields';
   billing_org_id: Maybe<Scalars['Float']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   reference_user_id: Maybe<Scalars['Float']>;
@@ -23819,15 +26669,48 @@ export type Users_Stddev_Pop_Fields = {
 export type Users_Stddev_Samp_Fields = {
   __typename?: 'users_stddev_samp_fields';
   billing_org_id: Maybe<Scalars['Float']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   reference_user_id: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "users" */
+export type Users_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Users_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Users_Stream_Cursor_Value_Input = {
+  active: InputMaybe<Scalars['Boolean']>;
+  additional_emails: InputMaybe<Scalars['jsonb']>;
+  auth0_linkedin_id: InputMaybe<Scalars['String']>;
+  auth0_user_pass_id: InputMaybe<Scalars['String']>;
+  billing_org_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  display_name: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  external_id: InputMaybe<Scalars['String']>;
+  feature_flags: InputMaybe<Scalars['jsonb']>;
+  id: InputMaybe<Scalars['Int']>;
+  is_auth0_verified: InputMaybe<Scalars['Boolean']>;
+  onboarding_information: InputMaybe<Scalars['jsonb']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  reference_id: InputMaybe<Scalars['String']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
+  role: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate sum on columns */
 export type Users_Sum_Fields = {
   __typename?: 'users_sum_fields';
   billing_org_id: Maybe<Scalars['Int']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
   reference_user_id: Maybe<Scalars['Int']>;
@@ -23871,10 +26754,31 @@ export enum Users_Update_Column {
   Role = 'role'
 }
 
+export type Users_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Users_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Users_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Users_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Users_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Users_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Users_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Users_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Users_Bool_Exp;
+};
+
 /** aggregate var_pop on columns */
 export type Users_Var_Pop_Fields = {
   __typename?: 'users_var_pop_fields';
   billing_org_id: Maybe<Scalars['Float']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   reference_user_id: Maybe<Scalars['Float']>;
@@ -23884,6 +26788,8 @@ export type Users_Var_Pop_Fields = {
 export type Users_Var_Samp_Fields = {
   __typename?: 'users_var_samp_fields';
   billing_org_id: Maybe<Scalars['Float']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   reference_user_id: Maybe<Scalars['Float']>;
@@ -23893,6 +26799,8 @@ export type Users_Var_Samp_Fields = {
 export type Users_Variance_Fields = {
   __typename?: 'users_variance_fields';
   billing_org_id: Maybe<Scalars['Float']>;
+  /** A computed field, executes function "user_credits" */
+  credits: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   reference_user_id: Maybe<Scalars['Float']>;
@@ -24169,12 +27077,16 @@ export type Vc_Firms_Bool_Exp = {
   email_domain: InputMaybe<String_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+  follows_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Bool_Exp>;
   from_links: InputMaybe<Resource_Links_Bool_Exp>;
+  from_links_aggregate: InputMaybe<Resource_Links_Aggregate_Bool_Exp>;
   geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investment_amount_total: InputMaybe<Bigint_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
+  investments_aggregate: InputMaybe<Investments_Aggregate_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
+  investors_aggregate: InputMaybe<Investors_Aggregate_Bool_Exp>;
   latest_investment: InputMaybe<Date_Comparison_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
@@ -24183,6 +27095,7 @@ export type Vc_Firms_Bool_Exp = {
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Organizations_Bool_Exp>;
+  news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Bool_Exp>;
   num_of_exits: InputMaybe<Int_Comparison_Exp>;
   num_of_investments: InputMaybe<Int_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
@@ -24193,6 +27106,7 @@ export type Vc_Firms_Bool_Exp = {
   tags: InputMaybe<Jsonb_Comparison_Exp>;
   team_size: InputMaybe<Int_Comparison_Exp>;
   to_links: InputMaybe<Resource_Links_Bool_Exp>;
+  to_links_aggregate: InputMaybe<Resource_Links_Aggregate_Bool_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   web_domain: InputMaybe<String_Comparison_Exp>;
@@ -24202,13 +27116,13 @@ export type Vc_Firms_Bool_Exp = {
 
 /** unique or primary key constraints on table "vc_firms" */
 export enum Vc_Firms_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   VcFirmsExternalIdKey = 'vc_firms_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   VcFirmsPkey = 'vc_firms_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "slug" */
   VcFirmsSlugIdx = 'vc_firms_slug_idx',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "slug" */
   VcFirmsSlugKey = 'vc_firms_slug_key'
 }
 
@@ -24258,6 +27172,17 @@ export type Vc_Firms_Edit_Access_Aggregate = {
   __typename?: 'vc_firms_edit_access_aggregate';
   aggregate: Maybe<Vc_Firms_Edit_Access_Aggregate_Fields>;
   nodes: Array<Vc_Firms_Edit_Access>;
+};
+
+export type Vc_Firms_Edit_Access_Aggregate_Bool_Exp = {
+  count: InputMaybe<Vc_Firms_Edit_Access_Aggregate_Bool_Exp_Count>;
+};
+
+export type Vc_Firms_Edit_Access_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "vc_firms_edit_access" */
@@ -24463,6 +27388,22 @@ export type Vc_Firms_Edit_Access_Stddev_Samp_Order_By = {
   user_id: InputMaybe<Order_By>;
 };
 
+/** Streaming cursor of the table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Vc_Firms_Edit_Access_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Vc_Firms_Edit_Access_Stream_Cursor_Value_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
 /** aggregate sum on columns */
 export type Vc_Firms_Edit_Access_Sum_Fields = {
   __typename?: 'vc_firms_edit_access_sum_fields';
@@ -24476,6 +27417,15 @@ export type Vc_Firms_Edit_Access_Sum_Order_By = {
   id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   user_id: InputMaybe<Order_By>;
+};
+
+export type Vc_Firms_Edit_Access_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Vc_Firms_Edit_Access_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Vc_Firms_Edit_Access_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Vc_Firms_Edit_Access_Bool_Exp;
 };
 
 /** aggregate var_pop on columns */
@@ -24813,6 +27763,45 @@ export type Vc_Firms_Stddev_Samp_Fields = {
   team_size: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "vc_firms" */
+export type Vc_Firms_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Vc_Firms_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Vc_Firms_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  email_domain: InputMaybe<Scalars['String']>;
+  external_id: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
+  id: InputMaybe<Scalars['Int']>;
+  investment_amount_total: InputMaybe<Scalars['bigint']>;
+  latest_investment: InputMaybe<Scalars['date']>;
+  library: InputMaybe<Scalars['jsonb']>;
+  linkedin: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  logo: InputMaybe<Scalars['jsonb']>;
+  name: InputMaybe<Scalars['String']>;
+  num_of_exits: InputMaybe<Scalars['Int']>;
+  num_of_investments: InputMaybe<Scalars['Int']>;
+  overview: InputMaybe<Scalars['String']>;
+  sentiment: InputMaybe<Scalars['jsonb']>;
+  slug: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  status_tags: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+  team_size: InputMaybe<Scalars['Int']>;
+  twitter: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  web_domain: InputMaybe<Scalars['String']>;
+  website: InputMaybe<Scalars['String']>;
+  year_founded: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type Vc_Firms_Sum_Fields = {
   __typename?: 'vc_firms_sum_fields';
@@ -24880,6 +27869,25 @@ export enum Vc_Firms_Update_Column {
   /** column name */
   YearFounded = 'year_founded'
 }
+
+export type Vc_Firms_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<Vc_Firms_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<Vc_Firms_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<Vc_Firms_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<Vc_Firms_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Vc_Firms_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<Vc_Firms_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Vc_Firms_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Vc_Firms_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Vc_Firms_Var_Pop_Fields = {
@@ -24969,9 +27977,9 @@ export type Waitlist_Emails_Bool_Exp = {
 
 /** unique or primary key constraints on table "waitlist_emails" */
 export enum Waitlist_Emails_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "email" */
   WaitlistEmailsEmailKey = 'waitlist_emails_email_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   WaitlistEmailsPkey = 'waitlist_emails_pkey'
 }
 
@@ -25073,6 +28081,22 @@ export type Waitlist_Emails_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "waitlist_emails" */
+export type Waitlist_Emails_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Waitlist_Emails_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Waitlist_Emails_Stream_Cursor_Value_Input = {
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['date']>;
+};
+
 /** aggregate sum on columns */
 export type Waitlist_Emails_Sum_Fields = {
   __typename?: 'waitlist_emails_sum_fields';
@@ -25090,6 +28114,15 @@ export enum Waitlist_Emails_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type Waitlist_Emails_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Waitlist_Emails_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Waitlist_Emails_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Waitlist_Emails_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type Waitlist_Emails_Var_Pop_Fields = {
@@ -25275,6 +28308,13 @@ export type GetCompanyByIdQueryVariables = Exact<{
 
 export type GetCompanyByIdQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, status: string }> };
 
+export type GetCompanyInsightByLocationQueryVariables = Exact<{
+  where: Companies_Bool_Exp;
+}>;
+
+
+export type GetCompanyInsightByLocationQuery = { __typename?: 'query_root', companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -25327,14 +28367,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -25342,7 +28382,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -25364,14 +28404,21 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string | null, status: string } | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
+
+export type GetEventInsightByLocationQueryVariables = Exact<{
+  where: Events_Bool_Exp;
+}>;
+
+
+export type GetEventInsightByLocationQuery = { __typename?: 'query_root', events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -25607,6 +28654,13 @@ export type GetInvestmentRoundByIdQueryVariables = Exact<{
 
 
 export type GetInvestmentRoundByIdQuery = { __typename?: 'query_root', investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round: string | null, company_id: number | null, status: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string } | null }> };
+
+export type GetInvestmentInsightByLocationQueryVariables = Exact<{
+  where: Investment_Rounds_Bool_Exp;
+}>;
+
+
+export type GetInvestmentInsightByLocationQuery = { __typename?: 'query_root', investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null } };
 
 export type UpsertInvestmentsMutationVariables = Exact<{
   data: Array<Investments_Insert_Input> | Investments_Insert_Input;
@@ -26028,13 +29082,13 @@ export type FindPeopleByEmailQueryVariables = Exact<{
 
 export type FindPeopleByEmailQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, work_email: string | null, personal_email: string | null }> };
 
-export type FindPeopleByEmailAndLinkedinQueryVariables = Exact<{
+export type GetSignUpProfileQueryVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
-  linkedin: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type FindPeopleByEmailAndLinkedinQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, website_url: string | null, linkedin: string | null, twitter_url: string | null, github: string | null, facebook_url: string | null }> };
+export type GetSignUpProfileQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, website_url: string | null, linkedin: string | null, twitter_url: string | null, github: string | null, facebook_url: string | null }> };
 
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
@@ -26316,6 +29370,13 @@ export type GetVcFirmByIdQueryVariables = Exact<{
 
 
 export type GetVcFirmByIdQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, status: string }> };
+
+export type GetVcFirmInsightByLocationQueryVariables = Exact<{
+  where: Vc_Firms_Bool_Exp;
+}>;
+
+
+export type GetVcFirmInsightByLocationQuery = { __typename?: 'query_root', vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
@@ -27143,6 +30204,34 @@ useGetCompanyByIdQuery.getKey = (variables: GetCompanyByIdQueryVariables) => ['G
 ;
 
 useGetCompanyByIdQuery.fetcher = (variables: GetCompanyByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyByIdQuery, GetCompanyByIdQueryVariables>(GetCompanyByIdDocument, variables, options);
+export const GetCompanyInsightByLocationDocument = `
+    query GetCompanyInsightByLocation($where: companies_bool_exp!) {
+  companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetCompanyInsightByLocationQuery = <
+      TData = GetCompanyInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetCompanyInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetCompanyInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetCompanyInsightByLocationQuery, TError, TData>(
+      ['GetCompanyInsightByLocation', variables],
+      fetcher<GetCompanyInsightByLocationQuery, GetCompanyInsightByLocationQueryVariables>(GetCompanyInsightByLocationDocument, variables),
+      options
+    );
+useGetCompanyInsightByLocationQuery.document = GetCompanyInsightByLocationDocument;
+
+
+useGetCompanyInsightByLocationQuery.getKey = (variables: GetCompanyInsightByLocationQueryVariables) => ['GetCompanyInsightByLocation', variables];
+;
+
+useGetCompanyInsightByLocationQuery.fetcher = (variables: GetCompanyInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyInsightByLocationQuery, GetCompanyInsightByLocationQueryVariables>(GetCompanyInsightByLocationDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -27637,6 +30726,34 @@ useGetEventOrganizationByIdQuery.getKey = (variables: GetEventOrganizationByIdQu
 ;
 
 useGetEventOrganizationByIdQuery.fetcher = (variables: GetEventOrganizationByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventOrganizationByIdQuery, GetEventOrganizationByIdQueryVariables>(GetEventOrganizationByIdDocument, variables, options);
+export const GetEventInsightByLocationDocument = `
+    query GetEventInsightByLocation($where: events_bool_exp!) {
+  events_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetEventInsightByLocationQuery = <
+      TData = GetEventInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetEventInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetEventInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetEventInsightByLocationQuery, TError, TData>(
+      ['GetEventInsightByLocation', variables],
+      fetcher<GetEventInsightByLocationQuery, GetEventInsightByLocationQueryVariables>(GetEventInsightByLocationDocument, variables),
+      options
+    );
+useGetEventInsightByLocationQuery.document = GetEventInsightByLocationDocument;
+
+
+useGetEventInsightByLocationQuery.getKey = (variables: GetEventInsightByLocationQueryVariables) => ['GetEventInsightByLocation', variables];
+;
+
+useGetEventInsightByLocationQuery.fetcher = (variables: GetEventInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventInsightByLocationQuery, GetEventInsightByLocationQueryVariables>(GetEventInsightByLocationDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
   list_members(where: {user_id: {_eq: $user_id}}) {
@@ -28697,6 +31814,34 @@ useGetInvestmentRoundByIdQuery.getKey = (variables: GetInvestmentRoundByIdQueryV
 ;
 
 useGetInvestmentRoundByIdQuery.fetcher = (variables: GetInvestmentRoundByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestmentRoundByIdQuery, GetInvestmentRoundByIdQueryVariables>(GetInvestmentRoundByIdDocument, variables, options);
+export const GetInvestmentInsightByLocationDocument = `
+    query GetInvestmentInsightByLocation($where: investment_rounds_bool_exp!) {
+  investment_rounds_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetInvestmentInsightByLocationQuery = <
+      TData = GetInvestmentInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetInvestmentInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetInvestmentInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetInvestmentInsightByLocationQuery, TError, TData>(
+      ['GetInvestmentInsightByLocation', variables],
+      fetcher<GetInvestmentInsightByLocationQuery, GetInvestmentInsightByLocationQueryVariables>(GetInvestmentInsightByLocationDocument, variables),
+      options
+    );
+useGetInvestmentInsightByLocationQuery.document = GetInvestmentInsightByLocationDocument;
+
+
+useGetInvestmentInsightByLocationQuery.getKey = (variables: GetInvestmentInsightByLocationQueryVariables) => ['GetInvestmentInsightByLocation', variables];
+;
+
+useGetInvestmentInsightByLocationQuery.fetcher = (variables: GetInvestmentInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestmentInsightByLocationQuery, GetInvestmentInsightByLocationQueryVariables>(GetInvestmentInsightByLocationDocument, variables, options);
 export const UpsertInvestmentsDocument = `
     mutation UpsertInvestments($data: [investments_insert_input!]!) {
   insert_investments(
@@ -30555,10 +33700,10 @@ useFindPeopleByEmailQuery.getKey = (variables?: FindPeopleByEmailQueryVariables)
 ;
 
 useFindPeopleByEmailQuery.fetcher = (variables?: FindPeopleByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByEmailQuery, FindPeopleByEmailQueryVariables>(FindPeopleByEmailDocument, variables, options);
-export const FindPeopleByEmailAndLinkedinDocument = `
-    query FindPeopleByEmailAndLinkedin($email: String, $linkedin: String) {
+export const GetSignUpProfileDocument = `
+    query GetSignUpProfile($email: String, $name: String) {
   people(
-    where: {_and: [{_not: {user: {}}}, {_or: [{work_email: {_ilike: $email}}, {personal_email: {_ilike: $email}}]}, {linkedin: {_eq: $linkedin}}]}
+    where: {_and: [{_not: {user: {}}}, {_and: [{name: {_eq: $name}}, {_or: [{work_email: {_eq: $email}}, {personal_email: {_eq: $email}}]}]}]}
     limit: 1
   ) {
     id
@@ -30573,25 +33718,25 @@ export const FindPeopleByEmailAndLinkedinDocument = `
   }
 }
     `;
-export const useFindPeopleByEmailAndLinkedinQuery = <
-      TData = FindPeopleByEmailAndLinkedinQuery,
+export const useGetSignUpProfileQuery = <
+      TData = GetSignUpProfileQuery,
       TError = Error
     >(
-      variables?: FindPeopleByEmailAndLinkedinQueryVariables,
-      options?: UseQueryOptions<FindPeopleByEmailAndLinkedinQuery, TError, TData>
+      variables?: GetSignUpProfileQueryVariables,
+      options?: UseQueryOptions<GetSignUpProfileQuery, TError, TData>
     ) =>
-    useQuery<FindPeopleByEmailAndLinkedinQuery, TError, TData>(
-      variables === undefined ? ['FindPeopleByEmailAndLinkedin'] : ['FindPeopleByEmailAndLinkedin', variables],
-      fetcher<FindPeopleByEmailAndLinkedinQuery, FindPeopleByEmailAndLinkedinQueryVariables>(FindPeopleByEmailAndLinkedinDocument, variables),
+    useQuery<GetSignUpProfileQuery, TError, TData>(
+      variables === undefined ? ['GetSignUpProfile'] : ['GetSignUpProfile', variables],
+      fetcher<GetSignUpProfileQuery, GetSignUpProfileQueryVariables>(GetSignUpProfileDocument, variables),
       options
     );
-useFindPeopleByEmailAndLinkedinQuery.document = FindPeopleByEmailAndLinkedinDocument;
+useGetSignUpProfileQuery.document = GetSignUpProfileDocument;
 
 
-useFindPeopleByEmailAndLinkedinQuery.getKey = (variables?: FindPeopleByEmailAndLinkedinQueryVariables) => variables === undefined ? ['FindPeopleByEmailAndLinkedin'] : ['FindPeopleByEmailAndLinkedin', variables];
+useGetSignUpProfileQuery.getKey = (variables?: GetSignUpProfileQueryVariables) => variables === undefined ? ['GetSignUpProfile'] : ['GetSignUpProfile', variables];
 ;
 
-useFindPeopleByEmailAndLinkedinQuery.fetcher = (variables?: FindPeopleByEmailAndLinkedinQueryVariables, options?: RequestInit['headers']) => fetcher<FindPeopleByEmailAndLinkedinQuery, FindPeopleByEmailAndLinkedinQueryVariables>(FindPeopleByEmailAndLinkedinDocument, variables, options);
+useGetSignUpProfileQuery.fetcher = (variables?: GetSignUpProfileQueryVariables, options?: RequestInit['headers']) => fetcher<GetSignUpProfileQuery, GetSignUpProfileQueryVariables>(GetSignUpProfileDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {
@@ -32089,6 +35234,34 @@ useGetVcFirmByIdQuery.getKey = (variables: GetVcFirmByIdQueryVariables) => ['Get
 ;
 
 useGetVcFirmByIdQuery.fetcher = (variables: GetVcFirmByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmByIdQuery, GetVcFirmByIdQueryVariables>(GetVcFirmByIdDocument, variables, options);
+export const GetVcFirmInsightByLocationDocument = `
+    query GetVcFirmInsightByLocation($where: vc_firms_bool_exp!) {
+  vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetVcFirmInsightByLocationQuery = <
+      TData = GetVcFirmInsightByLocationQuery,
+      TError = Error
+    >(
+      variables: GetVcFirmInsightByLocationQueryVariables,
+      options?: UseQueryOptions<GetVcFirmInsightByLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmInsightByLocationQuery, TError, TData>(
+      ['GetVcFirmInsightByLocation', variables],
+      fetcher<GetVcFirmInsightByLocationQuery, GetVcFirmInsightByLocationQueryVariables>(GetVcFirmInsightByLocationDocument, variables),
+      options
+    );
+useGetVcFirmInsightByLocationQuery.document = GetVcFirmInsightByLocationDocument;
+
+
+useGetVcFirmInsightByLocationQuery.getKey = (variables: GetVcFirmInsightByLocationQueryVariables) => ['GetVcFirmInsightByLocation', variables];
+;
+
+useGetVcFirmInsightByLocationQuery.fetcher = (variables: GetVcFirmInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmInsightByLocationQuery, GetVcFirmInsightByLocationQueryVariables>(GetVcFirmInsightByLocationDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

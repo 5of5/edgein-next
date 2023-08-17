@@ -11,7 +11,7 @@ import { ElemLogin } from '@/components/sign-in/elem-login';
 import { ElemSignUpForm } from '@/components/sign-in/elem-sign-up-form';
 import { ElemSignUpProfile } from '@/components/sign-in/elem-sign-up-profile';
 import { ElemSignUpConfirm } from '@/components/sign-in/elem-sign-up-confirm';
-import { FindPeopleByEmailAndLinkedinQuery } from '@/graphql/types';
+import { GetSignUpProfileQuery } from '@/graphql/types';
 
 export type SignUpFormState = {
   firstName?: string;
@@ -39,10 +39,10 @@ export default function SignIn() {
   const [signUpFormValues, setSignUpFormValues] = useState<SignUpFormState>({});
 
   const [profile, setProfile] =
-    useState<FindPeopleByEmailAndLinkedinQuery['people'][number]>();
+    useState<GetSignUpProfileQuery['people'][number]>();
 
   const { mutate: signUp, isLoading: isSubmittingSignUp } = useMutation(
-    ({ email, password, name, personId }: SignUpPayload) =>
+    ({ email, password, name, personId, linkedinUrl }: SignUpPayload) =>
       fetch('/api/register/', {
         method: 'POST',
         headers: {
@@ -54,6 +54,7 @@ export default function SignIn() {
           password,
           name,
           personId,
+          linkedinUrl,
           reference_id:
             typeof window !== 'undefined'
               ? localStorage.getItem('inviteCode')

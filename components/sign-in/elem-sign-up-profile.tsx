@@ -9,11 +9,11 @@ import {
   IconLinkedIn,
   IconTwitter,
 } from '../icons';
-import { FindPeopleByEmailAndLinkedinQuery } from '@/graphql/types';
+import { GetSignUpProfileQuery } from '@/graphql/types';
 
 type Props = {
   isSubmittingSignUp: boolean;
-  person?: FindPeopleByEmailAndLinkedinQuery['people'][number];
+  person?: GetSignUpProfileQuery['people'][number];
   onNext: (personId?: number) => void;
 };
 

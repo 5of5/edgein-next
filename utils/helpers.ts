@@ -1,3 +1,4 @@
+import { Place } from '@aws-sdk/client-location';
 import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
@@ -160,3 +161,8 @@ export const getTagChoicesByLibraries = (libraries: Library[]) => {
 };
 
 export const getAllTags = () => [...web3Tags, ...aiTags];
+
+export const getGeometryPlace = (place: Place) => ({
+  type: 'Point',
+  coordinates: place.Geometry?.Point,
+});
