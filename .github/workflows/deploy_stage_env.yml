@@ -110,7 +110,7 @@ jobs:
         id: tf-outputs
         with:
           path: infra/terraform/application
-          workspace: ${{ env.WORKSPACE }}
+          workspace: staging
 
       - name: Fetch Terraform hasura endpoint output
         if: steps.changes-in-hasura.outputs.src == 'true'

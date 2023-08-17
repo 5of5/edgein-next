@@ -74,15 +74,16 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       index => eventTabs[Number(index)],
     );
 
-  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter();
-
   const [page, setPage] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
     pageIndex => Number(pageIndex) - 1,
   );
+
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter({ resetPage: () => setPage(0) });
+
   const limit = 50;
   const offset = limit * page;
 

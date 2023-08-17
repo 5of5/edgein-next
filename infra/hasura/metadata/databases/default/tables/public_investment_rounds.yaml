@@ -67,3 +67,4 @@ select_permissions:
         status:
           _eq: published
       limit: 250
+      allow_aggregations: true
