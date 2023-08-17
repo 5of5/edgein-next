@@ -10,20 +10,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // check email exist in allowedEmail table or not
   const code = req.body.code;
+  const redirect_uri = req.body.redirect_uri;
   const reference_id = req.body.reference_id;
   //TODO: fix code to 400
-  if (!code) return res.status(404).send('Invalid request');
+  if (!code || !redirect_uri) return res.status(404).send('Invalid request');
 
   let isFirstLogin = false;
   try {
-    const userTokenResult = await authService.getAccessToken({
-      // email: req.body.email,
+    const userTokenResult = await authService.authorizationCodeGrant({
       code,
+      redirect_uri: req.body.redirect_uri,
     });
-    console.log(1, userTokenResult);
+    if (!userTokenResult) {
+      return res.status(404).send('Invalid request');
+    }
     // get the user info from auth0
     const userInfo = await authService.getProfile(userTokenResult.access_token);
-    console.log(2, userInfo);
 
     if (userInfo && userInfo.email) {
       // get the domain from the email
@@ -131,7 +133,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       CookieService.setTokenCookie(res, token);
     }
   } catch (ex: any) {
-    console.log(ex.stack);
     return res.status(400).send(ex.message);
   }
 

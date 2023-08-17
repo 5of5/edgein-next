@@ -2,13 +2,14 @@ import {
   AppMetadata,
   AuthenticationClient,
   ManagementClient,
+  SignInToken,
   TokenResponse,
   User,
   UserMetadata,
+  VerificationEmailJob,
 } from 'auth0';
 import { env } from '@/services/config.service';
 import { redirect_url } from '@/utils/auth';
-import qs from 'qs';
 
 export const LINKEDIN_PROVIDER = 'linkedin';
 export const AUTH0_PROVIDER = 'auth0';
@@ -172,38 +173,17 @@ export class AuthService {
     return this.auth.verifyEmailCode(data);
   }
 
-  public resendVerificationEmail(userId: string): Promise<unknown> {
+  public resendVerificationEmail(
+    userId: string,
+  ): Promise<VerificationEmailJob> {
     return this.management.sendEmailVerification({ user_id: userId });
   }
 
-  public async getAccessToken(data: { code: string }): Promise<{
-    access_token: string;
-    id_token: string;
-    refresh_token: string;
-    token_type: string;
-    expires_in: number;
-  }> {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    const userTokenResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`,
-      {
-        method: 'POST',
-        headers,
-        body: qs.stringify({
-          grant_type: 'authorization_code',
-          client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-          client_secret: process.env.AUTH0_CLIENT_SECRET,
-          code: data.code,
-          redirect_uri: redirect_url(),
-        }),
-      },
-    );
-    if (!userTokenResponse.ok) {
-      const errorResponse = JSON.parse(await userTokenResponse.text());
-      throw new Error(errorResponse.error_description);
-    }
-    return JSON.parse(await userTokenResponse.text());
+  public async authorizationCodeGrant(data: {
+    redirect_uri: string;
+    code: string;
+  }): Promise<SignInToken | undefined> {
+    return await this.auth.oauth?.authorizationCodeGrant(data);
   }
 }
 
