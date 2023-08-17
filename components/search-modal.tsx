@@ -31,7 +31,7 @@ const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!,
 );
 
-type HitCompaniesProps = {
+export type HitCompaniesProps = {
   hit: AlgoliaHit<{
     name: string;
     overview: string;
@@ -42,7 +42,7 @@ type HitCompaniesProps = {
   }>;
 };
 
-type HitInvestorsProps = {
+export type HitInvestorsProps = {
   hit: AlgoliaHit<{
     name: string;
     logo: string;
@@ -51,7 +51,7 @@ type HitInvestorsProps = {
   }>;
 };
 
-type HitPeopleProps = {
+export type HitPeopleProps = {
   hit: AlgoliaHit<{
     name: string;
     work_email: string;
@@ -409,7 +409,7 @@ export default function SearchModal(props: any) {
       return (
         <div className="px-6 py-1 mt-5 text-center">
           <FigureSearch className="mx-auto h-36 lg:h-40" />
-          <div className="mt-3 text-xl font-bold">
+          <div className="mt-3 text-xl font-medium">
             Search for Companies, Investors, People, Events &amp; News
           </div>
           <div style={{ display: 'none' }}>{children}</div>

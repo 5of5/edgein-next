@@ -93,7 +93,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
       </p>
       <div className="relative">
         <div className="absolute right-1 top-2 z-10">
-          <ElemButton onClick={() => onCopy()} btn="slate" size="sm">
+          <ElemButton onClick={() => onCopy()} btn="gray" size="sm">
             <IconCopy className="w-5 h-5" />
           </ElemButton>
         </div>
@@ -112,7 +112,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
           <div key={link.text}>
             <ElemButton
               onClick={link.onClick}
-              btn="slate"
+              btn="gray"
               size="sm"
               roundedFull={true}
               className="px-2.5"

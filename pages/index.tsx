@@ -8,9 +8,11 @@ import { Tab, Transition } from '@headlessui/react';
 import { useIntercom } from 'react-use-intercom';
 import parse from 'html-react-parser';
 import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 const Home = () => {
   const { user, loading } = useUser();
+  const router = useRouter();
 
   const { setShowPopup } = usePopup();
 
@@ -132,7 +134,7 @@ const Home = () => {
     },
     {
       title: 'Events',
-      content: `Discover and RSVP for the hottest events in Web3 and AI <div className="inline-block shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full">Coming soon</div>`,
+      content: `Discover and RSVP for the hottest events in Web3 and AI`,
       src: '/images/features/events.png',
     },
     {
@@ -177,15 +179,15 @@ const Home = () => {
         </div>
         <div className="mx-auto max-w-4xl pt-20 pb-8 sm:py-36">
           {/* <div className="mb-6 flex justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm font-bold uppercase leading-6 text-zinc-500">
+            <div className="relative rounded-full px-3 py-1 text-sm font-medium uppercase leading-6 text-gray-500">
               Web3 and AI data intelligence.
             </div>
           </div> */}
           <div className="text-center px-2">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+            <h1 className="text-4xl font-medium sm:text-6xl">
               Web3 and AI data intelligence.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-zinc-500 sm:text-xl sm:px-8">
+            <p className="mt-6 text-lg text-gray-500 sm:text-xl sm:px-8">
               EdgeIn leverages the power of AI and personalized human
               intelligence to gather, refine, and deliver the investor, company,
               event and news data you need to get an edge.
@@ -194,14 +196,14 @@ const Home = () => {
             <div className="mt-6">
               <ElemButton
                 arrow
-                onClick={() => setShowPopup('signup')}
+                onClick={() => router.push('/companies')}
                 btn="primary"
                 size="lg"
               >
                 Start for free
               </ElemButton>
 
-              <p className="mt-2 italic text-xs text-zinc-500">
+              <p className="mt-2 italic text-xs text-gray-500">
                 *no credit card required
               </p>
             </div>
@@ -214,7 +216,7 @@ const Home = () => {
               return (
                 <div
                   key={index}
-                  className={`absolute w-fit px-4 py-1.5 rounded-full whitespace-nowrap bg-gradient-to-b from-white to-primary-100 font-bold shadow-xl lg:block ${
+                  className={`absolute w-fit px-4 py-1.5 rounded-full whitespace-nowrap bg-gradient-to-b from-white to-primary-100 font-medium shadow-xl lg:block ${
                     className ? className : ''
                   }`}
                 >
@@ -222,7 +224,6 @@ const Home = () => {
                 </div>
               );
             })}
-
             <div className="bg-white w-full rounded-md lg:rounded-xl shadow-xl shadow-primary-800/10 overflow-hidden">
               <img
                 src="/images/features/hero.png"
@@ -235,7 +236,7 @@ const Home = () => {
       </section>
 
       <section className="mx-auto max-w-7xl px-2 pt-24 pb-20 lg:px-6">
-        <h2 className="mx-auto max-w-lg text-center text-lg text-zinc-500 lg:px-4">
+        <h2 className="mx-auto max-w-lg text-center text-lg text-gray-500 lg:px-4">
           Leading companies around the world are using EdgeIn to find superior
           data and context.
         </h2>
@@ -257,14 +258,13 @@ const Home = () => {
       </section>
 
       <section className="relative">
-        <h2 className="text-3xl text-center text-white font-bold tracking-tight py-8 sm:py-16 sm:text-5xl">
+        <h2 className="text-3xl text-center text-white font-medium py-8 sm:py-16 sm:text-5xl">
           How EdgeIn works
         </h2>
         <div className="absolute top-0 left-0 right-0 h-[28rem] bg-gradient-to-b from-primary-400 via-primary-500 to-primary-500 -z-10"></div>
 
         <div className="mx-auto max-w-7xl px-2 lg:px-6">
-          <div className="bg-gray-50 rounded-xl px-4 py-6 lg:p-14">
-            {/* Features Section 1 */}
+          <div className="bg-white rounded-xl px-4 py-6 lg:p-14">
             <div className="md:grid md:grid-cols-12 md:gap-16">
               <div className="flex flex-col sm:space-y-4 md:col-span-5">
                 {features.map((feature: any, index: number) => {
@@ -280,7 +280,7 @@ const Home = () => {
                     >
                       <button
                         onClick={() => setSelectedFeature(index)}
-                        className={`whitespace-nowrap flex items-center w-full font-bold text-lg transition-all ${
+                        className={`whitespace-nowrap flex items-center w-full font-medium text-lg transition-all ${
                           selectedFeature === index
                             ? 'text-primary-500'
                             : 'hover:text-primary-500'
@@ -347,7 +347,7 @@ const Home = () => {
                     >
                       <button
                         onClick={() => setSelectedFeature2(index)}
-                        className={`whitespace-nowrap flex items-center w-full font-bold text-lg transition-all ${
+                        className={`whitespace-nowrap flex items-center w-full font-medium text-lg transition-all ${
                           selectedFeature2 === index
                             ? 'text-primary-500'
                             : 'hover:text-primary-500'
@@ -399,10 +399,10 @@ const Home = () => {
 
       <section className="">
         <div className="mx-auto max-w-2xl text-left lg:text-center pt-24 pb-16 px-6 lg:px-0">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="text-3xl font-medium sm:text-5xl">
             Empowering the community with better data.
           </h2>
-          <p className="mt-6 text-zinc-500 sm:text-lg sm:px-6">
+          <p className="mt-6 text-gray-500 sm:text-lg sm:px-6">
             EdgeIn is the largest, community-driven data platform built
             exclusively for teams, investors, event organizers, and media in
             Web3 and AI.
@@ -411,7 +411,7 @@ const Home = () => {
 
         <div className="mx-auto max-w-7xl lg:px-6">
           <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
-            <Tab.List className="scrollbar-hide overflow-x-scroll pb-px flex shrink-0 gap-x-6 px-6 font-bold text-lg border-b border-black/10 transition-all sm:justify-center">
+            <Tab.List className="scrollbar-hide overflow-x-scroll pb-px flex shrink-0 gap-x-6 px-6 font-medium text-lg border-b border-black/10 transition-all sm:justify-center">
               <Tab
                 className={({ selected }) =>
                   `${
@@ -450,7 +450,7 @@ const Home = () => {
             <div className="px-6 py-8 lg:flex lg:items-center lg:px-8 lg:py-16 lg:space-x-24">
               <Tab.Panels className="w-full max-w-md mx-auto lg:mx-0">
                 <Tab.Panel className="w-full">
-                  <h3 className="font-bold text-xl sm:text-2xl">
+                  <h3 className="font-medium text-xl sm:text-2xl">
                     For Investors
                   </h3>
                   <ul className="mt-4 flex flex-col space-y-4">
@@ -474,7 +474,7 @@ const Home = () => {
                   </ul>
                 </Tab.Panel>
                 <Tab.Panel className="w-full">
-                  <h3 className="font-bold text-xl sm:text-2xl">For Teams</h3>
+                  <h3 className="font-medium text-xl sm:text-2xl">For Teams</h3>
                   <ul className="mt-4 flex flex-col space-y-4">
                     <li className="flex items-start">
                       <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
@@ -499,7 +499,7 @@ const Home = () => {
                   </ul>
                 </Tab.Panel>
                 <Tab.Panel className="w-full">
-                  <h3 className="font-bold text-xl sm:text-2xl">
+                  <h3 className="font-medium text-xl sm:text-2xl">
                     For Event Organizers and Media
                   </h3>
                   <ul className="mt-4 flex flex-col space-y-4">
@@ -532,7 +532,7 @@ const Home = () => {
       <section className="mx-auto max-w-7xl px-6 mt-8 lg:mt-20 lg:px-8">
         <div className="relative overflow-hidden p-8 sm:p-16 bg-gradient-to-b from-[#A05FFE] via-primary-500 to-primary-500  rounded-xl text-center">
           <div className=" relative z-10">
-            <h2 className="max-w-2xl mx-auto text-3xl font-bold text-white sm:text-5xl">
+            <h2 className="max-w-2xl mx-auto text-3xl font-medium text-white sm:text-5xl">
               Work smarter, not harder
             </h2>
             <ul className="mt-8 mx-auto w-fit text-left text-lg text-white grid grid-cols-2 gap-4">
@@ -550,8 +550,8 @@ const Home = () => {
 
             <div className="mt-8 flex flex-col justify-center space-y-6 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
               <ElemButton
-                onClick={() => setShowPopup('signup')}
-                btn="secondary"
+                onClick={() => router.push('/companies')}
+                btn="amber"
                 arrow
                 className="whitespace-nowrap w-fit mx-auto sm:mx-0"
               >
@@ -559,7 +559,7 @@ const Home = () => {
               </ElemButton>
               <ElemButton
                 onClick={show}
-                btn="ol-white"
+                btn="default"
                 className="whitespace-nowrap w-fit mx-auto sm:mx-0"
               >
                 Talk to us

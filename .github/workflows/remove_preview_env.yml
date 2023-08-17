@@ -104,7 +104,12 @@ jobs:
         working-directory: infra/terraform/application
         run: terraform destroy --auto-approve -var-file="input.tfvars"
 
+      - name: Switch to default
+        id: select-default-workspace
+        working-directory: infra/terraform/application
+        run: terraform workspace select default
+
       - name: Remove workspace
         id: remove-workspace
-        working-directory: infrastructure/application
+        working-directory: infra/terraform/application
         run: terraform workspace delete ${{ env.WORKSPACE }}

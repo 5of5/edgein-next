@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
+import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import Link from 'next/link';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
@@ -14,25 +15,15 @@ import {
   IconDiscord,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
-import {
-  CARD_DEFAULT_TAGS_LIMIT,
-  CARD_MAX_TAGS_LIMIT,
-} from '@/utils/constants';
+import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { usePopup } from '@/context/popup-context';
 
 type Props = {
   company: Companies;
-  tagOnClick: any;
 };
 
-export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
+export const ElemCompanyCard: FC<Props> = ({ company }) => {
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-
-  const [tagsLimit, setTagsLimit] = useState(CARD_DEFAULT_TAGS_LIMIT);
-
-  const showMoreTags = () => {
-    setTagsLimit(CARD_MAX_TAGS_LIMIT);
-  };
 
   const { user } = useUser();
 
@@ -97,7 +88,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
           </ElemTooltip>
           {coin && (
             <ElemTooltip content={`Token`} mode="light" className="">
-              <span className="uppercase">{coin.ticker}</span>
+              <span className="uppercase ml-1">{coin.ticker}</span>
             </ElemTooltip>
           )}
         </a>
@@ -120,31 +111,12 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
         )}
 
         {tags && (
-          <div className="mt-4 flex flex-wrap overflow-clip gap-2">
-            {tags.slice(0, tagsLimit)?.map((tag: string, index: number) => {
-              return (
-                <button
-                  key={index}
-                  onClick={e => tagOnClick(e, tag)}
-                  className={`shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full ${
-                    tagOnClick !== undefined
-                      ? 'cursor-pointer hover:bg-gray-200'
-                      : ''
-                  }`}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-            {tagsLimit < tags.length && (
-              <button
-                onClick={showMoreTags}
-                className="text-xs text-gray-500 font-medium py-1"
-              >
-                {tags.length - tagsLimit} more
-              </button>
-            )}
-          </div>
+          <ElemTags
+            className="mt-4"
+            limit={CARD_DEFAULT_TAGS_LIMIT}
+            resourceType={'companies'}
+            tags={tags}
+          />
         )}
       </div>
 

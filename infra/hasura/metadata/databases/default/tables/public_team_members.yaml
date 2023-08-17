@@ -61,18 +61,20 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - founder
-        - end_date
-        - start_date
         - company_id
+        - email_address
+        - end_date
+        - external_id
+        - founder
+        - function
         - id
         - person_id
-        - external_id
-        - function
         - seniority
+        - start_date
         - title
       filter:
         person:
           status:
             _eq: published
       limit: 50
+      allow_aggregations: true

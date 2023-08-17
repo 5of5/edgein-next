@@ -66,7 +66,7 @@ export const ElemAddFilter: FC<Props> = ({
               <IconChevronDownMini className="w-5 h-5 ml-1" />
             </ElemButton>
           ) : (
-            <ElemButton btn="slate" size="sm" className="!p-1">
+            <ElemButton btn="gray" size="sm" className="!p-1">
               <IconPlus className="w-4 h-4" />
             </ElemButton>
           )}

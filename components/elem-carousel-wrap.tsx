@@ -62,7 +62,7 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 
   return (
     <div className={`${className}`}>
-      <div className="relative overflow-hidden -mx-3">
+      <div className="relative overflow-hidden">
         <div className="absolute top left flex justify-between w-full h-full">
           <button
             onClick={movePrev}
