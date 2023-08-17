@@ -46,7 +46,7 @@ const ElemInviteEmails: FC<Props> = ({
   const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
     setIsDuplicatedEmail(false);
-    if (validator.isEmail(newQuery)) {
+    if (!validator.isEmail(newQuery)) {
       setEmailError('Please enter a valid email.');
     } else {
       setEmailError('');
