@@ -1,41 +1,23 @@
 import { runGraphQl } from '@/utils';
 import { GetServerSidePropsContext } from 'next';
+import { escape } from 'lodash';
 
 export const PER_PAGE_LIMIT = 10_000;
 
-function escapeXml(unsafe: string) {
-  return unsafe.replace(/[<>&'"]/g, function (c) {
-    switch (c) {
-      case '<':
-        return '&lt;';
-      case '>':
-        return '&gt;';
-      case '&':
-        return '&amp;';
-      case "'":
-        return '&apos;';
-      case '"':
-        return '&quot;';
-    }
-    return c;
-  });
-}
-
-function generateSiteMap<T extends { slug: string | null }>(
+function generateSiteMap<T extends { slug: string | null; updated_at: string }>(
   rootUrl: string,
   folder: string,
-  lastModDate: string,
   data: T[],
 ) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
      ${data
-       .map(({ slug }) => {
+       .map(({ slug, updated_at }) => {
          return slug
            ? `
-       <url><loc>${rootUrl}/${folder}/${escapeXml(
+       <url><loc>${rootUrl}/${folder}/${escape(
                slug,
-             )}</loc><lastmod>${lastModDate}</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+             )}</loc><lastmod>${updated_at}</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
      `
            : '';
        })
@@ -46,7 +28,7 @@ function generateSiteMap<T extends { slug: string | null }>(
 
 export async function generateXMLSiteMap<
   T,
-  Arr extends { slug: string | null },
+  Arr extends { slug: string | null; updated_at: string },
 >(
   ctx: GetServerSidePropsContext,
   graphqlQuery: string,
@@ -68,7 +50,6 @@ export async function generateXMLSiteMap<
   const sitemap = generateSiteMap(
     `https://${process.env.NEXT_PUBLIC_VERCEL_URL!}`,
     folder,
-    new Date().toISOString(),
     array || [],
   );
 

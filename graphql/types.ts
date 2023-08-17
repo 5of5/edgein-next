@@ -25998,7 +25998,7 @@ export type GetEventsPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null }> };
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, updated_at: any }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -26006,7 +26006,7 @@ export type GetCompaniesPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string }> };
+export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, updated_at: any }> };
 
 export type GetPersonsPathQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -26014,7 +26014,7 @@ export type GetPersonsPathQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string }> };
+export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string, updated_at: any | null }> };
 
 export type GetVcFirmsPathQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -26022,7 +26022,7 @@ export type GetVcFirmsPathQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string }> };
+export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, updated_at: any | null }> };
 
 export type GetSiteMapAggregatesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -30383,7 +30383,7 @@ useInsertEditAccessMutation.fetcher = (variables?: InsertEditAccessMutationVaria
 export const GetEventsPathsDocument = `
     query GetEventsPaths($limit: Int, $offset: Int) {
   events(
-    where: {slug: {_neq: ""}, status: {_eq: "published"}}
+    where: {status: {_eq: "published"}}
     order_by: {slug: asc}
     limit: $limit
     offset: $offset
@@ -30391,6 +30391,7 @@ export const GetEventsPathsDocument = `
     id
     name
     slug
+    updated_at
   }
 }
     `;
@@ -30416,7 +30417,7 @@ useGetEventsPathsQuery.fetcher = (variables?: GetEventsPathsQueryVariables, opti
 export const GetCompaniesPathsDocument = `
     query GetCompaniesPaths($limit: Int, $offset: Int) {
   companies(
-    where: {slug: {_neq: ""}, status: {_eq: "published"}}
+    where: {status: {_eq: "published"}}
     order_by: {slug: asc}
     limit: $limit
     offset: $offset
@@ -30424,6 +30425,7 @@ export const GetCompaniesPathsDocument = `
     id
     name
     slug
+    updated_at
   }
 }
     `;
@@ -30449,7 +30451,7 @@ useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables
 export const GetPersonsPathDocument = `
     query GetPersonsPath($limit: Int, $offset: Int) {
   people(
-    where: {slug: {_neq: ""}, status: {_eq: "published"}}
+    where: {status: {_eq: "published"}}
     order_by: {slug: asc}
     limit: $limit
     offset: $offset
@@ -30457,6 +30459,7 @@ export const GetPersonsPathDocument = `
     id
     name
     slug
+    updated_at
   }
 }
     `;
@@ -30482,7 +30485,7 @@ useGetPersonsPathQuery.fetcher = (variables?: GetPersonsPathQueryVariables, opti
 export const GetVcFirmsPathDocument = `
     query GetVCFirmsPath($limit: Int, $offset: Int) {
   vc_firms(
-    where: {slug: {_neq: ""}, status: {_eq: "published"}}
+    where: {status: {_eq: "published"}}
     order_by: {slug: asc}
     limit: $limit
     offset: $offset
@@ -30490,6 +30493,7 @@ export const GetVcFirmsPathDocument = `
     id
     name
     slug
+    updated_at
   }
 }
     `;
@@ -30514,22 +30518,22 @@ useGetVcFirmsPathQuery.getKey = (variables?: GetVcFirmsPathQueryVariables) => va
 useGetVcFirmsPathQuery.fetcher = (variables?: GetVcFirmsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables, options);
 export const GetSiteMapAggregatesDocument = `
     query GetSiteMapAggregates {
-  companies_aggregate(where: {slug: {_neq: ""}, status: {_eq: "published"}}) {
+  companies_aggregate(where: {status: {_eq: "published"}}) {
     aggregate {
       count
     }
   }
-  events_aggregate(where: {slug: {_neq: ""}, status: {_eq: "published"}}) {
+  events_aggregate(where: {status: {_eq: "published"}}) {
     aggregate {
       count
     }
   }
-  people_aggregate(where: {slug: {_neq: ""}, status: {_eq: "published"}}) {
+  people_aggregate(where: {status: {_eq: "published"}}) {
     aggregate {
       count
     }
   }
-  vc_firms_aggregate(where: {slug: {_neq: ""}, status: {_eq: "published"}}) {
+  vc_firms_aggregate(where: {status: {_eq: "published"}}) {
     aggregate {
       count
     }

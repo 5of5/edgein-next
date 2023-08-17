@@ -1,6 +1,6 @@
 query GetEventsPaths($limit: Int, $offset: Int) {
   events(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+    where: { status: { _eq: "published" } }
     order_by: { slug: asc }
     limit: $limit
     offset: $offset
@@ -8,12 +8,13 @@ query GetEventsPaths($limit: Int, $offset: Int) {
     id
     name
     slug
+    updated_at
   }
 }
 
 query GetCompaniesPaths($limit: Int, $offset: Int) {
   companies(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+    where: { status: { _eq: "published" } }
     order_by: { slug: asc }
     limit: $limit
     offset: $offset
@@ -21,12 +22,13 @@ query GetCompaniesPaths($limit: Int, $offset: Int) {
     id
     name
     slug
+    updated_at
   }
 }
 
 query GetPersonsPath($limit: Int, $offset: Int) {
   people(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+    where: { status: { _eq: "published" } }
     order_by: { slug: asc }
     limit: $limit
     offset: $offset
@@ -34,12 +36,13 @@ query GetPersonsPath($limit: Int, $offset: Int) {
     id
     name
     slug
+    updated_at
   }
 }
 
 query GetVCFirmsPath($limit: Int, $offset: Int) {
   vc_firms(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
+    where: { status: { _eq: "published" } }
     order_by: { slug: asc }
     limit: $limit
     offset: $offset
@@ -47,34 +50,27 @@ query GetVCFirmsPath($limit: Int, $offset: Int) {
     id
     name
     slug
+    updated_at
   }
 }
 
 query GetSiteMapAggregates {
-  companies_aggregate(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
-  ) {
+  companies_aggregate(where: { status: { _eq: "published" } }) {
     aggregate {
       count
     }
   }
-  events_aggregate(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
-  ) {
+  events_aggregate(where: { status: { _eq: "published" } }) {
     aggregate {
       count
     }
   }
-  people_aggregate(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
-  ) {
+  people_aggregate(where: { status: { _eq: "published" } }) {
     aggregate {
       count
     }
   }
-  vc_firms_aggregate(
-    where: { slug: { _neq: "" }, status: { _eq: "published" } }
-  ) {
+  vc_firms_aggregate(where: { status: { _eq: "published" } }) {
     aggregate {
       count
     }

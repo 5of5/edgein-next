@@ -25,7 +25,7 @@ export async function getServerSideProps(
         ctx,
         GetCompaniesPathsDocument,
         (data?: GetCompaniesPathsQuery) => data?.companies || [],
-        'companies',
+        ctx.params.type,
         offset,
       );
     case 'events':
@@ -33,7 +33,7 @@ export async function getServerSideProps(
         ctx,
         GetEventsPathsDocument,
         (data?: GetEventsPathsQuery) => data?.events || [],
-        'events',
+        ctx.params.type,
         offset,
       );
     case 'investors':
@@ -41,7 +41,7 @@ export async function getServerSideProps(
         ctx,
         GetVcFirmsPathDocument,
         (data?: GetVcFirmsPathQuery) => data?.vc_firms || [],
-        'investors',
+        ctx.params.type,
         offset,
       );
     case 'people':
@@ -49,7 +49,7 @@ export async function getServerSideProps(
         ctx,
         GetPersonsPathDocument,
         (data?: GetPersonsPathQuery) => data?.people || [],
-        'people',
+        ctx.params.type,
         offset,
       );
   }
