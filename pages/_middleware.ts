@@ -1,6 +1,6 @@
 import CookieService from '../utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
-import { verify } from 'googlebot-verify';
+import { verify } from '../utils/googlebot-verify';
 
 const USAGE_LIMIT = 10;
 
@@ -77,7 +77,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   if (!userExists) {
-    const isGoogle = await verify(getIp(req));
+    const isGoogle = verify(getIp(req));
     if (isGoogle) {
       return NextResponse.next();
     }
