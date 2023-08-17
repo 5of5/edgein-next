@@ -65,7 +65,6 @@ export const ElemAddressBook: React.FC<Props> = ({ setSelectedPeople }) => {
       if (window.cloudsponge) {
         //@ts-expect-error after script is loaded cloudsponge should be a global variable
         cloudsponge.init({
-          selectionLimit: 50,
           afterSubmitContacts: (
             contacts: Contact[],
             source: string,
