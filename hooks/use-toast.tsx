@@ -3,7 +3,7 @@ import ReactHotToast from 'react-hot-toast';
 
 type ToastType = 'info' | 'error';
 
-type Message = ReactElement;
+type Message = ReactElement | string;
 
 const useToast = () => {
   const toast = (message: Message, type: ToastType = 'info') => {

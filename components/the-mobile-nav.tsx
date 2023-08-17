@@ -267,7 +267,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 </ElemButton>
               ) : (
                 <ElemButton
-                  onClick={() => setShowPopup('signup')}
+                  onClick={() => router.push('/companies')}
                   btn="primary"
                   className="w-full"
                 >

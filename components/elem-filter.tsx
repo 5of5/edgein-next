@@ -5,6 +5,7 @@ import {
   convertCurrencyStringToIntNumber,
   convertToInternationalCurrencySystem,
 } from '@/utils';
+import { Place } from '@aws-sdk/client-location';
 import { getFilterOptionMetadata } from '@/utils/filter';
 import {
   Filters,
@@ -25,6 +26,7 @@ import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
 import { ElemAddFilter } from './elem-add-filter';
+import { getGeometryPlace } from '@/utils/helpers';
 
 type Props = {
   className?: string;
@@ -118,12 +120,15 @@ export const ElemFilter: FC<Props> = ({
     }));
   };
 
-  const onChangeAddress = (value: any) => {
+  const onChangeAddress = (value: Place) => {
     setFilters(prev => ({
       ...prev,
       address: {
         ...prev?.address,
-        value,
+        value: {
+          ...value,
+          geometry: getGeometryPlace(value),
+        },
       },
     }));
   };
