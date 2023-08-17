@@ -76,9 +76,11 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.next();
   }
-  const isGoogle = await verify(getIp(req));
-  if (isGoogle) {
-    return NextResponse.next();
+  if (!userExists) {
+    const isGoogle = await verify(getIp(req));
+    if (isGoogle) {
+      return NextResponse.next();
+    }
   }
 
   let user;
