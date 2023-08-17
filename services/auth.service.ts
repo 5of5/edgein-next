@@ -6,6 +6,7 @@ import {
   TokenResponse,
   User,
   UserMetadata,
+  VerificationEmailJob,
 } from 'auth0';
 import { env } from '@/services/config.service';
 import { redirect_url } from '@/utils/auth';
@@ -172,16 +173,18 @@ export class AuthService {
     return this.auth.verifyEmailCode(data);
   }
 
-  public resendVerificationEmail(userId: string): Promise<unknown> {
+  public resendVerificationEmail(
+    userId: string,
+  ): Promise<VerificationEmailJob> {
     return this.management.sendEmailVerification({ user_id: userId });
   }
 
-    public async authorizationCodeGrant(data: {
-        redirect_uri: string;
-        code: string;
-    }): Promise<SignInToken | undefined> {
-        return await this.auth.oauth?.authorizationCodeGrant(data);
-    }
+  public async authorizationCodeGrant(data: {
+    redirect_uri: string;
+    code: string;
+  }): Promise<SignInToken | undefined> {
+    return await this.auth.oauth?.authorizationCodeGrant(data);
+  }
 }
 
 let service: AuthService | undefined = undefined;
