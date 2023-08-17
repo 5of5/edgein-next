@@ -97,7 +97,7 @@ const Companies: NextPage<Props> = ({
   );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter();
+    useDashboardFilter({ resetPage: () => setPage(0) });
 
   // limit shown companies on table layout for free users
   const limit =

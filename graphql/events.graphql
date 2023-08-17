@@ -215,3 +215,11 @@ query GetEventOrganizationById($id: Int!) {
     }
   }
 }
+
+query GetEventInsightByLocation($where: events_bool_exp!) {
+  events_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
