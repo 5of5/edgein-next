@@ -17,7 +17,7 @@ export const ElemOnboardingResourceTable: FC<Props> = ({
   return (
     <div className="relative overflow-x-auto rounded-lg mt-5 border border-gray-200 border-b-0">
       <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-sm text-gray-500 bg-gray-50 border-b border-gray-200">
+        <thead className="text-xs text-gray-500 bg-gray-50 border-b border-gray-200">
           <tr>
             <th scope="col" className="px-6 py-3">
               {startCase(resourceType)}

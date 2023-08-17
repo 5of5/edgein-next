@@ -112,6 +112,10 @@ export default function Onboarding() {
     if (currentStep === 4) {
       setCurrentStep(5);
     }
+
+    if (currentStep === 5) {
+      submitOnboarding();
+    }
   };
 
   return (

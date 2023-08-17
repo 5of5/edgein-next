@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { onboardingExploreChoices, segmentChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
 import { Segment } from '@/types/onboarding';
+import { useIntercom } from 'react-use-intercom';
 
 type Props = {
   selectedSegment?: Segment;
@@ -18,6 +19,8 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
   onChangeExploreChoice,
   onNext,
 }) => {
+  const { showNewMessages } = useIntercom();
+
   return (
     <>
       <div className="max-w-sm">
@@ -68,7 +71,12 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                     ? 'border-primary-500'
                     : 'border-slate-300'
                 } shadow-sm cursor-pointer hover:bg-slate-50`}
-                onClick={() => onChangeExploreChoice(item)}
+                onClick={() => {
+                  if (item === 'Something else') {
+                    showNewMessages();
+                  }
+                  onChangeExploreChoice(item);
+                }}
               >
                 <p className="text-slate-900 text-sm">{item}</p>
               </li>

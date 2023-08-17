@@ -327,16 +327,19 @@ export const ElemOnboardingSaveList: FC<Props> = ({
         </div>
       )}
 
-      {(companies.length > 0 || investors.length > 0 || people.length > 0) && (
-        <ElemButton
-          btn="primary"
-          size="md"
-          className="max-w-sm w-full mt-16"
-          onClick={onNext}
-        >
-          Save my list
-        </ElemButton>
-      )}
+      <ElemButton
+        btn="primary"
+        size="md"
+        className="max-w-sm w-full mt-16"
+        disabled={
+          companies.length === 0 &&
+          investors.length === 0 &&
+          people.length === 0
+        }
+        onClick={onNext}
+      >
+        Save my list
+      </ElemButton>
 
       <p className="text-gray-500 text-xs mt-4">
         You can always create more lists later.

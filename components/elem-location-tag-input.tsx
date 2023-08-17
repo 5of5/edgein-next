@@ -84,7 +84,7 @@ const ElemLocationTagInput: FC<Props> = ({
             key={index}
             className="flex items-center gap-2 p-2 pl-3 rounded-md bg-gray-100"
           >
-            <span className="truncate max-w-xs text-sm font-medium">
+            <span className="truncate max-w-xs text-xs font-medium">
               {tag?.Label}
             </span>
             <button
