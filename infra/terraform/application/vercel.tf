@@ -8,6 +8,8 @@ data "vercel_project" "edgein" {
 }
 
 resource "vercel_deployment" "edgein" {
+  depends_on = [aws_ecs_service.hasura]
+
   project_id = data.vercel_project.edgein.id
   ref        = var.vercel_commit
 

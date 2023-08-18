@@ -78,6 +78,25 @@ export const addOnboardingSchema = z.object({
       ONBOARDING_MIN_LOCATIONS,
       `Should have at least ${ONBOARDING_MIN_LOCATIONS} location`,
     ),
+  locationDetails: z
+    .array(
+      z.object({
+        label: z.string().optional(),
+        city: z.string().optional(),
+        state: z.string().optional(),
+        county: z.string().optional(),
+        country: z.string().optional(),
+        categories: z.array(z.string()).optional(),
+        geometry: z.object({
+          type: z.string(),
+          coordinates: z.array(z.number()),
+        }),
+      }),
+    )
+    .min(
+      ONBOARDING_MIN_LOCATIONS,
+      `Should have at least ${ONBOARDING_MIN_LOCATIONS} location`,
+    ),
   industryTags: z
     .array(z.string())
     .min(

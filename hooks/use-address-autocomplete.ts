@@ -20,6 +20,7 @@ const useAddressAutocomplete = (filterCategories?: string[]) => {
     const input = {
       IndexName: locationService.getPlaceIndex(),
       PlaceId: placeId,
+      Language: 'en',
     };
     const placeResponse = await locationService.getPlace(input);
 
@@ -33,6 +34,7 @@ const useAddressAutocomplete = (filterCategories?: string[]) => {
       const input = {
         IndexName: locationService.getPlaceIndex(),
         Text: keyword,
+        Language: 'en',
         FilterCategories: filterCategories,
       };
 

@@ -22,6 +22,7 @@ import {
 import { useUser } from '@/context/user-context';
 import { GENERAL_ERROR_MESSAGE, ONBOARDING_QUESTION } from '@/utils/constants';
 import useToast from '@/hooks/use-toast';
+import { getGeometryPlace } from '@/utils/helpers';
 
 export default function Onboarding() {
   const router = useRouter();
@@ -86,7 +87,16 @@ export default function Onboarding() {
           body: JSON.stringify({
             segment,
             exploreChoice,
-            locationTags: locations.map(item => item?.Label),
+            locationTags: locations.map(item => item.Label),
+            locationDetails: locations.map(item => ({
+              label: item.Label,
+              city: item.Municipality,
+              state: item.Region,
+              county: item.SubRegion,
+              country: item.Country,
+              geometry: getGeometryPlace(item),
+              categories: item.Categories,
+            })),
             industryTags: tags,
             questions: [
               {
@@ -99,7 +109,7 @@ export default function Onboarding() {
       {
         onSuccess: async response => {
           if (response.status === 200) {
-            router.push('/companies');
+            router.reload()
           } else {
             const error = await response.json();
             toast(error.error || GENERAL_ERROR_MESSAGE, 'error');
