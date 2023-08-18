@@ -51,7 +51,6 @@ import {
 import {
   functionChoicesTM,
   seniorityChoicesTM,
-  ADMIN_REFERENCE_INPUT_PER_PAGE,
 } from '../../../utils/constants';
 
 import Slide from '@mui/material/Slide';
@@ -306,7 +305,6 @@ export const TeamMemberEdit = () => {
                   label="Company"
                   source="company_id"
                   reference="companies"
-                  perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
                 >
                   <AutocompleteInput
                     defaultValue={currRecord?.company_id}

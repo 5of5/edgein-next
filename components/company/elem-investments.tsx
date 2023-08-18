@@ -313,7 +313,7 @@ export const ElemInvestments: React.FC<Props> = ({
                       <tr
                         key={key}
                         {...restHeaderGroupProps}
-                        className="table-row min-w-full"
+                        className="table-row min-w-full bg-gray-25 text-gray-600"
                       >
                         {headerGroup.headers.map((column: any) => {
                           const { key, ...restColumnProps }: any = ({} = {
@@ -413,18 +413,14 @@ export const ElemInvestments: React.FC<Props> = ({
                 </thead>
                 <tbody
                   {...getTableBodyProps()}
-                  className="bg-white divide-y divide-black/10 flex-1 md:flex-none mb-96"
+                  className="bg-white divide-y divide-gray-300 flex-1 md:flex-none mb-96"
                 >
                   {page.map(row => {
                     prepareRow(row);
                     const { key, ...restRowProps } = row.getRowProps();
 
                     return (
-                      <tr
-                        key={key}
-                        {...restRowProps}
-                        className="table-row rounded-lg"
-                      >
+                      <tr key={key} {...restRowProps} className="table-row">
                         {row.cells.map(cell => {
                           const { key, ...restCellProps } = cell.getCellProps({
                             style: {

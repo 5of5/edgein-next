@@ -4,16 +4,20 @@ export type InviteToEdgeInPayload = {
 };
 
 export type InviteToEdgeInMailParams = {
-  email: string;
+  emails: string[];
   senderName: string;
   senderEmail: string;
   signUpUrl: string;
 };
 
+export type EmailOptions = {
+  useBcc?: boolean;
+};
+
 export type InviteToEdgeInResponse = {
   status: number;
   message: string;
-  email: string;
+  emails: string[];
 };
 
 export type InviteGroupMemberPayloadEmailResource = {

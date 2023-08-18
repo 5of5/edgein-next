@@ -70,11 +70,11 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 
   return (
     <div
-      className={`flex items-center justify-between ${className}`}
+      className={`flex gap-3 justify-between lg:items-center ${className}`}
       role="tablist"
     >
       <nav
-        className={`flex gap-2 overflow-x-scroll scrollbar-hide ${tabsClassName}`}
+        className={`flex flex-wrap gap-2 overflow-x-scroll scrollbar-hide ${tabsClassName}`}
       >
         {tabs &&
           tabs.map((tab: any, index: number) => (

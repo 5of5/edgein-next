@@ -265,3 +265,35 @@ query FindPeopleByEmail($query: String) {
     personal_email
   }
 }
+
+query GetSignUpProfile($email: String, $name: String) {
+  people(
+    where: {
+      _and: [
+        { _not: { user: {} } }
+        {
+          _and: [
+            { name: { _eq: $name } }
+            {
+              _or: [
+                { work_email: { _eq: $email } }
+                { personal_email: { _eq: $email } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+    name
+    picture
+    slug
+    website_url
+    linkedin
+    twitter_url
+    github
+    facebook_url
+  }
+}

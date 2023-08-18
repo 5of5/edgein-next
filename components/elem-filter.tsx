@@ -1,10 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, Fragment } from 'react';
 import { omit, cloneDeep } from 'lodash';
 import moment from 'moment-timezone';
 import {
   convertCurrencyStringToIntNumber,
   convertToInternationalCurrencySystem,
 } from '@/utils';
+import { Place } from '@aws-sdk/client-location';
 import { getFilterOptionMetadata } from '@/utils/filter';
 import {
   Filters,
@@ -25,6 +26,7 @@ import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
 import { ElemAddFilter } from './elem-add-filter';
+import { getGeometryPlace } from '@/utils/helpers';
 
 type Props = {
   className?: string;
@@ -118,12 +120,15 @@ export const ElemFilter: FC<Props> = ({
     }));
   };
 
-  const onChangeAddress = (value: any) => {
+  const onChangeAddress = (value: Place) => {
     setFilters(prev => ({
       ...prev,
       address: {
         ...prev?.address,
-        value,
+        value: {
+          ...value,
+          geometry: getGeometryPlace(value),
+        },
       },
     }));
   };
@@ -388,11 +393,11 @@ export const ElemFilter: FC<Props> = ({
   const extractTagsArrayToText = (tags: string[]) => {
     const numOfTags = tags.length;
     return tags.map((tagItem, tagIndex) => (
-      <span key={tagItem}>
-        <b>{tagItem}</b>
+      <Fragment key={tagItem}>
+        <span className="font-medium">{tagItem}</span>
         {tagIndex < numOfTags - 1 &&
           (tagIndex < numOfTags - 2 ? ', ' : ' and ')}
-      </span>
+      </Fragment>
     ));
   };
 
@@ -531,10 +536,10 @@ export const ElemFilter: FC<Props> = ({
                   name={option}
                   title={
                     numOfTags > 0 && (
-                      <div>
+                      <>
                         {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
                         {extractTagsArrayToText(filters?.[option]?.tags || [])}
-                      </div>
+                      </>
                     )
                   }
                   onOpen={onOpenFilterPopup}
@@ -544,7 +549,7 @@ export const ElemFilter: FC<Props> = ({
                   popupClass="max-w-xl"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="font-bold text-sm mb-1">
+                    <div className="text-bold text-sm mb-1">
                       {optionMetadata.heading}
                     </div>
                     <InputSwitch

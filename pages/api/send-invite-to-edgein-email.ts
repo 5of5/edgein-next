@@ -1,8 +1,8 @@
 import { NextApiResponse, NextApiRequest } from 'next';
-import AWS from 'aws-sdk';
 import { render } from '@react-email/render';
 import CookieService from '@/utils/cookie';
 import {
+  EmailOptions,
   InviteToEdgeInMailParams,
   InviteToEdgeInPayload,
   InviteToEdgeInResponse,
@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const response = await Promise.all(
     params.map(async ({ email, personId }) => {
       const mailParams: InviteToEdgeInMailParams = {
-        email,
+        emails: [email],
         senderName: user.display_name || '',
         senderEmail: user.email || '',
         signUpUrl: `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`,
@@ -54,8 +54,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.send(response);
 };
 
-const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
-  const { email, senderName, senderEmail, signUpUrl } = mailParams;
+export const sendInvitationMail = async (
+  mailParams: InviteToEdgeInMailParams,
+  options: EmailOptions = { useBcc: false },
+) => {
+  const { emails, senderName, senderEmail, signUpUrl } = mailParams;
 
   const emailHtml = render(
     InviteUserEmail({
@@ -65,11 +68,13 @@ const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
     }),
   );
 
+  const destination = options.useBcc
+    ? { BccAddresses: emails }
+    : { ToAddresses: emails };
+
   try {
     const params = {
-      Destination: {
-        ToAddresses: [email],
-      },
+      Destination: destination,
       Message: {
         Body: {
           Html: {
@@ -89,14 +94,14 @@ const sendInvitationMail = async (mailParams: InviteToEdgeInMailParams) => {
     const res: InviteToEdgeInResponse = {
       status: 200,
       message: 'success',
-      email,
+      emails,
     };
     return res;
   } catch (err) {
     const res: InviteToEdgeInResponse = {
       status: 500,
-      message: `Failed to send invitation email to ${email}. ${err}`,
-      email,
+      message: `Failed to send invitation email to ${emails}. ${err}`,
+      emails,
     };
     return res;
   }

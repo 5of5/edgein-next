@@ -18,6 +18,7 @@ import { numberWithCommas } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { loadStripe } from '@/utils/stripe';
+import { ElemTags } from '@/components/elem-tags';
 
 import {
   useTable,
@@ -127,12 +128,12 @@ export const CompaniesTable: FC<Props> = ({
           >
             <ElemPhoto
               photo={props.row.original?.logo}
-              wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+              wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
               imgClass="object-fit max-w-full max-h-full"
               imgAlt={props.value}
               placeholderClass="text-slate-300"
             />
-            <p className="font-bold line-clamp-2 break-words group-hover:text-primary-500">
+            <p className="font-medium line-clamp-2 break-word underline group-hover:no-underline">
               {props.value}
             </p>
           </a>
@@ -152,25 +153,13 @@ export const CompaniesTable: FC<Props> = ({
         Header: 'Industries',
         accessor: 'tags' as const,
         Cell: (props: any) => (
-          <div className="flex flex-wrap">
+          <>
             {props.value ? (
-              <>
-                {props.value?.map((tag: string, index: number) => {
-                  return (
-                    <button
-                      key={index}
-                      className="inline cursor-pointer shrink-0 bg-slate-200 text-xs leading-none mr-1 mb-1 px-2 py-1 rounded-full hover:bg-slate-300"
-                      onClick={e => filterByTag(e, tag)}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })}
-              </>
+              <ElemTags resourceType={'companies'} tags={props.value} />
             ) : (
               <EmptyCell />
             )}
-          </div>
+          </>
         ),
         disableSortBy: true,
         width: 300,
@@ -182,7 +171,7 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => (
           <div>
             {props.value ? (
-              <p className="line-clamp-2 text-sm">{props.value}</p>
+              <p className="line-clamp-5 text-sm">{props.value}</p>
             ) : (
               <EmptyCell />
             )}
@@ -222,7 +211,7 @@ export const CompaniesTable: FC<Props> = ({
                         <a
                           key={item?.person?.id}
                           href={`/people/${item.person?.slug}`}
-                          className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500"
+                          className="underline hover:no-underline"
                         >
                           {item.person?.name}
                         </a>
@@ -381,7 +370,7 @@ export const CompaniesTable: FC<Props> = ({
         },
       },
     ],
-    [filterByTag],
+    [],
   );
 
   const getCompanies = React.useMemo(() => {
@@ -509,10 +498,10 @@ export const CompaniesTable: FC<Props> = ({
         </div>
       </div>
 
-      <div className="overflow-auto border border-black/10 overflow-y-hidden">
+      <div className="overflow-auto border border-gray-300 rounded-lg overflow-y-hidden">
         <table
           {...getTableProps()}
-          className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
+          className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none"
         >
           <thead className="">
             {headerGroups.map(headerGroup => {
@@ -522,7 +511,7 @@ export const CompaniesTable: FC<Props> = ({
                 <tr
                   key={key}
                   {...restHeaderGroupProps}
-                  className="table-row min-w-full"
+                  className="table-row min-w-full bg-gray-25 text-gray-600"
                 >
                   {headerGroup.headers.map((column: any) => {
                     const { key, ...restColumnProps }: any = ({} = {
@@ -638,18 +627,14 @@ export const CompaniesTable: FC<Props> = ({
           </thead>
           <tbody
             {...getTableBodyProps()}
-            className="bg-white divide-y divide-black/10"
+            className="bg-white divide-y divide-gray-300 flex-1"
           >
             {rows.map(row => {
               prepareRow(row);
               const { key, ...restRowProps } = row.getRowProps();
 
               return (
-                <tr
-                  key={key}
-                  {...restRowProps}
-                  className="min-w-full bg-white hover:bg-slate-100"
-                >
+                <tr key={key} {...restRowProps} className="min-w-full">
                   {row.cells.map(cell => {
                     const { key, ...restCellProps } = cell.getCellProps({
                       style: {
@@ -680,7 +665,7 @@ export const CompaniesTable: FC<Props> = ({
             <tbody className="divide-y divide-black/10">
               {Array.from({ length: 10 }, (_, i) => (
                 <tr key={i} className="min-w-full bg-white hover:bg-slate-100">
-                  {Array.from({ length: 16 }, (_, ii) => {
+                  {Array.from({ length: 15 }, (_, ii) => {
                     return (
                       <td
                         key={ii}
@@ -695,26 +680,18 @@ export const CompaniesTable: FC<Props> = ({
                   })}
                 </tr>
               ))}
-              <tr className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full p-5 bg-primary-500/90 shadow">
+              <tr className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full p-5 bg-gray-900/70 shadow">
                 <td>
                   <div className="max-w-2xl">
-                    <h2 className="text-2xl font-bold text-white lg:text-3xl">
+                    <h2 className="text-2xl font-medium text-white lg:text-3xl">
                       View all {numberWithCommas(totalItems)} companies from
                       this search.
                     </h2>
                     <p className="text-lg text-white opacity-90">
-                      {/* Get real-time updates on the companies, people, deals and
-											events you’re most interested in.  */}
                       Try EdgeIn Contributor FREE for 7 days.
-                      {/* or invite others and get 3-months FREE when they verify their profile. */}
                     </p>
                     <div className="flex items-center space-x-2 mt-4">
-                      <ElemButton
-                        onClick={onBillingClick}
-                        btn="primary-light"
-                        arrow
-                        className="text-primary-500"
-                      >
+                      <ElemButton onClick={onBillingClick} btn="default" arrow>
                         Start your free trial
                       </ElemButton>
                     </div>

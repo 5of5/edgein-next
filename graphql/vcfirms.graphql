@@ -316,3 +316,11 @@ query GetVcFirmById($id: Int!) {
     status
   }
 }
+
+query GetVcFirmInsightByLocation($where: vc_firms_bool_exp!) {
+  vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

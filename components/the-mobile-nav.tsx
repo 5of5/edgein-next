@@ -218,14 +218,14 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
               <div className="flex space-x-2">
                 <ElemButton
                   onClick={onOpenSearch}
-                  btn="slate"
+                  btn="gray"
                   className="h-9 w-9 !px-0 !py-0"
                 >
                   <IconSearch className="h-5 w-5" strokeWidth={1.5} />
                 </ElemButton>
                 <ElemButton
                   onClick={onClose}
-                  btn="slate"
+                  btn="gray"
                   className="h-9 w-9 !px-0 !py-0 outline-none"
                 >
                   <IconX className="h-5 w-5" />
@@ -255,7 +255,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
             <div className="p-4">
               {user ? (
                 <ElemButton
-                  btn="slate"
+                  btn="gray"
                   roundedFull={false}
                   onClick={() => {
                     UserService.logout();
@@ -267,7 +267,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 </ElemButton>
               ) : (
                 <ElemButton
-                  onClick={() => setShowPopup('signup')}
+                  onClick={() => router.push('/companies')}
                   btn="primary"
                   className="w-full"
                 >

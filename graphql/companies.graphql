@@ -341,3 +341,11 @@ query GetCompanyById($id: Int!) {
     status
   }
 }
+
+query GetCompanyInsightByLocation($where: companies_bool_exp!) {
+  companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

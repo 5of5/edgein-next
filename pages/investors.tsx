@@ -89,15 +89,15 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter();
-
   const [page, setPage] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
     pageIndex => Number(pageIndex) - 1,
   );
+
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter({ resetPage: () => setPage(0) });
 
   // limit shown investors on table layout for free users
   const limit =
@@ -263,7 +263,7 @@ const Investors: NextPage<Props> = ({
       <div className="relative">
         <div>
           <div
-            className="relative px-6 py-3 flex items-center justify-between border-b border-gray-200"
+            className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
             role="tablist"
           >
             <ElemCategories
@@ -272,7 +272,7 @@ const Investors: NextPage<Props> = ({
               onChangeCategory={setSelectedStatusTag}
             />
 
-            <div className="flex space-x-2">
+            <div className="flex flex-wrap gap-2">
               {isDisplaySelectLibrary && <ElemLibrarySelector />}
               <ElemDropdown items={layoutItems} />
 
@@ -447,7 +447,7 @@ const Investors: NextPage<Props> = ({
                     <PlaceholderTable />
                   </div>
                 ) : (
-                  <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                  <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {Array.from({ length: 9 }, (_, i) => (
                       <PlaceholderInvestorCard key={i} />
                     ))}
@@ -477,13 +477,12 @@ const Investors: NextPage<Props> = ({
                 )}
                 <div
                   data-testid="investors"
-                  className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                 >
                   {vcFirms?.map(vcfirm => (
                     <ElemInvestorCard
                       key={vcfirm.id}
                       vcFirm={vcfirm as Vc_Firms}
-                      tagOnClick={filterByTag}
                     />
                   ))}
                 </div>

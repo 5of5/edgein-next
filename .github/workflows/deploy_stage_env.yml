@@ -88,10 +88,10 @@ jobs:
         working-directory: infra/terraform/application
         run: terraform workspace select -or-create staging
 
-      - name: Destroy staging environment
+      - name: Destroy staging db to refresh data
         if: ${{ github.event.inputs.refresh == 'true' }}
         working-directory: infra/terraform/application
-        run: terraform destroy --auto-approve -var-file="input.tfvars"
+        run: terraform destroy --auto-approve -target=aws_db_instance.main -var-file="input.tfvars"
 
       - name: Update stage environment
         working-directory: infra/terraform/application
@@ -110,7 +110,7 @@ jobs:
         id: tf-outputs
         with:
           path: infra/terraform/application
-          workspace: ${{ env.WORKSPACE }}
+          workspace: staging
 
       - name: Fetch Terraform hasura endpoint output
         if: steps.changes-in-hasura.outputs.src == 'true'

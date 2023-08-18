@@ -65,6 +65,7 @@ import useAdminDataProvider from '@/hooks/use-admin-data-provider';
 import { NullableInputs } from '@/types/admin';
 import { nullInputTransform } from '@/utils/admin';
 import useAdminAuthProvider from '@/hooks/use-admin-auth-provider';
+import { ADMIN_REFERENCE_INPUT_PER_PAGE } from '@/utils/constants';
 
 const nullableInputs: NullableInputs = {
   investments: ['person_id', 'vc_firm_id', 'round_id'],
@@ -191,10 +192,13 @@ const AdminApp = () => {
         ...adminDataProvider,
         getList: async (type, obj) => {
           // eslint-disable-next-line prefer-const
-          let { data, ...metadata } = await adminDataProvider.getList(
-            type,
-            obj,
-          );
+          let { data, ...metadata } = await adminDataProvider.getList(type, {
+            ...obj,
+            pagination: {
+              ...obj.pagination,
+              perPage: ADMIN_REFERENCE_INPUT_PER_PAGE,
+            },
+          });
           if (isTypeReferenceToResourceLink(type)) {
             data = data.map(val => ({
               ...val,

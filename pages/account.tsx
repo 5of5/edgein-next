@@ -11,23 +11,32 @@ import {
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemInviteLinks } from '@/components/invites/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';
-import { useGetUserProfileQuery } from '@/graphql/types';
+import {
+  useGetInvestorByPersonIdQuery,
+  useGetUserProfileQuery,
+} from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
 import { ElemInviteUser } from '@/components/invites/elem-invite-user';
 
 import { redirect_url } from '@/utils/auth';
+import { ElemInviteInvestmentMembers } from '@/components/invites/elem-invite-investment-members';
 
-const validator = require('validator');
+import validator from 'validator';
+import { isEmpty } from 'lodash';
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
-  const { success } = useParams();
 
-  const { data: userProfile } = useGetUserProfileQuery({
-    id: user?.id || 0,
-  });
+  const { data: userProfile } = useGetUserProfileQuery(
+    {
+      id: user?.id || 0,
+    },
+    {
+      enabled: !!user,
+    },
+  );
 
   const [isEditPassword, setEditPassword] = useState(false);
 
@@ -42,6 +51,17 @@ export default function Account() {
   );
 
   const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
+
+  const { data: investorData } = useGetInvestorByPersonIdQuery(
+    {
+      personId: user?.person?.id || 0,
+    },
+    {
+      enabled: !!user,
+    },
+  );
+
+  const isInvestor = !isEmpty(investorData?.investors);
 
   const onCloseSubscribedDialog = () => {
     setIsOpenSubscribedDialog(false);
@@ -176,6 +196,12 @@ export default function Account() {
           <div className="mt-6">
             <ElemInviteUser />
           </div>
+
+          {isInvestor && (
+            <div className="mt-6">
+              <ElemInviteInvestmentMembers />
+            </div>
+          )}
 
           {user && user.reference_id && (
             <div className="mt-6">
