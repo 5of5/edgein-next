@@ -9,6 +9,8 @@ export async function middleware(req: NextRequest) {
     CookieService.getAuthToken(req.cookies),
   );
 
+  console.log('userExists', userExists)
+
   // we want users to fill onboarding again
   const canShowNewOnboardingFlow =
     userExists &&
@@ -20,11 +22,13 @@ export async function middleware(req: NextRequest) {
     !url.pathname.startsWith('/onboarding') &&
     !url.pathname.startsWith('/api/')
   ) {
+    console.log('canShowNewOnboardingFlow')
     return NextResponse.redirect(new URL('/onboarding', req.url));
   }
 
   if (userExists && url.pathname === '/') {
     if (!userExists.onboarding_information) {
+      console.log('!userExists.onboarding_information')
       return NextResponse.redirect(new URL('/onboarding', req.url));
     }
     return NextResponse.rewrite(new URL('/companies', req.url));
@@ -123,6 +127,7 @@ export async function middleware(req: NextRequest) {
         url.pathname !== '/onboarding/' &&
         !user.onboarding_information
       ) {
+        console.log('third')
         return NextResponse.redirect(new URL('/onboarding', req.url));
       }
     }
