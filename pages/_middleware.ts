@@ -10,21 +10,8 @@ export async function middleware(req: NextRequest) {
   );
 
   // we want users to fill onboarding again
-  const canShowNewOnboardingFlow =
-    userExists &&
-    (!userExists.onboarding_information ||
-      !userExists.onboarding_information?.locationDetails);
-
-  if (
-    canShowNewOnboardingFlow &&
-    !url.pathname.startsWith('/onboarding') &&
-    !url.pathname.startsWith('/api/')
-  ) {
-    return NextResponse.redirect(new URL('/onboarding', req.url));
-  }
-
   if (userExists && url.pathname === '/') {
-    if (!userExists.onboarding_information) {
+    if (!userExists.onboarding_information?.locationDetails) {
       return NextResponse.redirect(new URL('/onboarding', req.url));
     }
     return NextResponse.rewrite(new URL('/companies', req.url));
@@ -121,7 +108,7 @@ export async function middleware(req: NextRequest) {
       if (
         !url.pathname.startsWith('/api/') &&
         url.pathname !== '/onboarding/' &&
-        !user.onboarding_information
+        !user.onboarding_information?.locationDetails
       ) {
         return NextResponse.redirect(new URL('/onboarding', req.url));
       }
