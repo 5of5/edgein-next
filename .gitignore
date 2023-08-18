@@ -50,7 +50,7 @@ playwright/.auth
 
 .idea
 
-# terraform
+# terraform files
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate
