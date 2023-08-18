@@ -22,6 +22,7 @@ import {
 import { useUser } from '@/context/user-context';
 import { GENERAL_ERROR_MESSAGE, ONBOARDING_QUESTION } from '@/utils/constants';
 import useToast from '@/hooks/use-toast';
+import { getGeometryPlace } from '@/utils/helpers';
 
 export default function Onboarding() {
   const router = useRouter();
@@ -86,7 +87,16 @@ export default function Onboarding() {
           body: JSON.stringify({
             segment,
             exploreChoice,
-            locationTags: locations.map(item => item?.Label),
+            locationTags: locations.map(item => item.Label),
+            locationDetails: locations.map(item => ({
+              label: item.Label,
+              city: item.Municipality,
+              state: item.Region,
+              county: item.SubRegion,
+              country: item.Country,
+              geometry: getGeometryPlace(item),
+              categories: item.Categories,
+            })),
             industryTags: tags,
             questions: [
               {
@@ -156,14 +166,12 @@ export default function Onboarding() {
               {Array.from({ length: 5 }, (_, i) => (
                 <li
                   key={i}
-                  className={`${
-                    i + 1 === currentStep ? 'bg-primary-100' : 'bg-transparent'
-                  } relative w-8 h-8 rounded-full `}
+                  className={`${i + 1 === currentStep ? 'bg-primary-100' : 'bg-transparent'
+                    } relative w-8 h-8 rounded-full `}
                 >
                   <span
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full ${
-                      i + 1 <= currentStep ? 'bg-primary-500' : 'bg-slate-200'
-                    }`}
+                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full ${i + 1 <= currentStep ? 'bg-primary-500' : 'bg-slate-200'
+                      }`}
                   />
                 </li>
               ))}
