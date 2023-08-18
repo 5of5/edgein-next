@@ -166,12 +166,14 @@ export default function Onboarding() {
               {Array.from({ length: 5 }, (_, i) => (
                 <li
                   key={i}
-                  className={`${i + 1 === currentStep ? 'bg-primary-100' : 'bg-transparent'
-                    } relative w-8 h-8 rounded-full `}
+                  className={`${
+                    i + 1 === currentStep ? 'bg-primary-100' : 'bg-transparent'
+                  } relative w-8 h-8 rounded-full `}
                 >
                   <span
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full ${i + 1 <= currentStep ? 'bg-primary-500' : 'bg-slate-200'
-                      }`}
+                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full ${
+                      i + 1 <= currentStep ? 'bg-primary-500' : 'bg-slate-200'
+                    }`}
                   />
                 </li>
               ))}

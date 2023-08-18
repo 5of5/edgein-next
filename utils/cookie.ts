@@ -52,8 +52,8 @@ function setUsageCookie(
       name: string,
       value:
         | {
-          [key: string]: any;
-        }
+            [key: string]: any;
+          }
         | string,
       opts?: CookieSerializeOptions,
     ) => void;

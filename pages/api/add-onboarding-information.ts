@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const segment = req.body.segment;
   const exploreChoice = req.body.exploreChoice;
   const locationTags = req.body.locationTags;
-  const locationDetails = req.body.locationDetails
+  const locationDetails = req.body.locationDetails;
   const industryTags = req.body.industryTags;
   const questions = req.body.questions;
 
