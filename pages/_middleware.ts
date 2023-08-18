@@ -9,6 +9,20 @@ export async function middleware(req: NextRequest) {
     CookieService.getAuthToken(req.cookies),
   );
 
+  // we want users to fill onboarding again
+  const canShowNewOnboardingFlow =
+    userExists &&
+    (!userExists.onboarding_information ||
+      !userExists.onboarding_information?.locationDetails);
+
+  if (
+    canShowNewOnboardingFlow &&
+    !url.pathname.startsWith('/onboarding') &&
+    !url.pathname.startsWith('/api/')
+  ) {
+    return NextResponse.redirect(new URL('/onboarding', req.url));
+  }
+
   if (userExists && url.pathname === '/') {
     if (!userExists.onboarding_information) {
       return NextResponse.redirect(new URL('/onboarding', req.url));
@@ -98,7 +112,8 @@ export async function middleware(req: NextRequest) {
     } else {
       if (
         url.pathname === '/sign-in/' ||
-        (url.pathname === '/onboarding/' && user.onboarding_information)
+        (url.pathname === '/onboarding/' &&
+          user.onboarding_information?.locationDetails)
       ) {
         return NextResponse.redirect(new URL('/companies', req.url));
       }
