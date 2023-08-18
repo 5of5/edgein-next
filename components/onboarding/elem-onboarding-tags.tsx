@@ -92,7 +92,7 @@ export const ElemOnboardingTags: FC<Props> = ({
         </p>
         <button
           className="text-gray-500 text-xs underline hover:text-gray-800"
-          onClick={() => showNewMessages()}
+          onClick={() => showNewMessages(`Hi EdgeIn, I'd like to see `)}
         >
           Let us know
         </button>

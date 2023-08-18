@@ -52,7 +52,7 @@ const ElemLocationTagInput: FC<Props> = ({
         )}
         <div className="relative max-w-sm w-full mx-auto">
           <Combobox.Input
-            className="relative w-full appearance-none border-none text-dark-500 bg-white rounded-full px-10 py-2 text-left ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="relative w-full appearance-none border-none text-sm text-dark-500 placeholder:text-slate-400 bg-white rounded-full px-10 py-2 text-left ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
             placeholder={placeholder}
             onChange={onInputChange}
           />

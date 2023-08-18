@@ -224,7 +224,7 @@ export const ElemOnboardingSaveList: FC<Props> = ({
                   loadingIndicator: 'hidden',
                   form: 'flex',
                   input:
-                    'w-full py-2 pl-10 m-0 text-sm relative bg-white rounded-full border-none outline-none ring-1 ring-gray-300 hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-slate-400',
+                    'w-full py-2 pl-10 m-0 text-sm placeholder:text-slate-400 relative bg-white rounded-full border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500',
                 }}
               />
             </header>
