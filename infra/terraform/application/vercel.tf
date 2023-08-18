@@ -13,7 +13,7 @@ resource "vercel_deployment" "edgein" {
   project_id = data.vercel_project.edgein.id
   ref        = var.vercel_commit
 
-  production        = true
+  production        = false
   delete_on_destroy = true
 
   environment = {
