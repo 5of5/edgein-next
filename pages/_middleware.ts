@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
 
   if (userExists && url.pathname === '/') {
     if (!userExists.onboarding_information) {
-      return NextResponse.rewrite(new URL('/onboarding', req.url));
+      return NextResponse.redirect(new URL('/onboarding', req.url));
     }
     return NextResponse.rewrite(new URL('/companies', req.url));
   }
@@ -22,8 +22,7 @@ export async function middleware(req: NextRequest) {
   if (
     [
       `/`,
-      `/login/`,
-      `/signup/`,
+      `/sign-in/`,
       `/contact/`,
       `/privacy/`,
       `/terms/`,
@@ -93,7 +92,7 @@ export async function middleware(req: NextRequest) {
         return CookieService.setUsageCookie(NextResponse.next(), newUsageToken);
       } else {
         return NextResponse.redirect(
-          new URL(`/login/?usage=true&${redirectPath}`, req.url),
+          new URL(`/sign-in/?usage=true&${redirectPath}`, req.url),
         );
       }
     } else {
@@ -119,7 +118,7 @@ export async function middleware(req: NextRequest) {
     // }
   } catch (error) {
     console.log(error);
-    return NextResponse.redirect(new URL(`/login/?${redirectPath}`, req.url));
+    return NextResponse.redirect(new URL(`/sign-in/?${redirectPath}`, req.url));
   }
 
   return NextResponse.next();

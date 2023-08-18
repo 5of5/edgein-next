@@ -6,8 +6,11 @@ import Image from 'next/image';
 import { loadStripe } from '@/utils/stripe';
 import { useUser } from '@/context/user-context';
 import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 const Pricing = () => {
+  const router = useRouter();
+
   const { user } = useUser();
 
   const { setShowPopup } = usePopup();
@@ -22,7 +25,7 @@ const Pricing = () => {
         //predescription: "No Cost - No Risk",
         click: () => {
           if (!user) {
-            setShowPopup('signup');
+            router.push('/sign-in');
           }
         },
         description:
@@ -51,7 +54,7 @@ const Pricing = () => {
         //predescription: "Serious Business Player",
         click: () => {
           if (!user) {
-            setShowPopup('signup');
+            router.push('/sign-in');
           } else {
             loadStripe();
           }

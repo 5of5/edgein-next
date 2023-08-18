@@ -6,7 +6,6 @@ import { useUser } from '@/context/user-context';
 import { Disclosure } from '@headlessui/react';
 import useDisclosureState from '@/hooks/use-disclosure-state';
 import { MY_NOTES_MENU_OPEN_KEY } from '@/utils/constants';
-import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -16,15 +15,17 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
   const router = useRouter();
   const { user } = useUser();
 
-  const { setShowPopup } = usePopup();
-
   const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
     MY_NOTES_MENU_OPEN_KEY,
   );
 
+  const onRedirectToSignIn = () => {
+    router.push('/sign-in');
+  };
+
   const onClickHeader = () => {
     if (!user) {
-      return setShowPopup('signup');
+      return onRedirectToSignIn();
     }
 
     return onDisclosureButtonClick;
@@ -54,7 +55,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
               {/* ) : (
                 <button
                   onClick={() => {
-                    setShowPopup('signup');
+                    onRedirectToSignIn();
                   }}
                   className="flex items-center grow space-x-2 py-1.5 px-2 focus:outline-none">
                   <span className="font-medium text-sm">Notes</span>

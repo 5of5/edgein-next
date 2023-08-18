@@ -34,7 +34,7 @@ import {
 import { getFullAddress } from '@/utils/helpers';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { useAuth } from '@/hooks/use-auth';
-import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 type Attachments = Array<{
   label: string;
@@ -98,9 +98,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
   venue,
   attachments,
 }) => {
-  const { user } = useAuth();
+  const router = useRouter();
 
-  const { setShowPopup } = usePopup();
+  const { user } = useAuth();
 
   const isEmptyLocationJson = values(locationJson).every(isEmpty);
   let locationText = '';
@@ -308,7 +308,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   const onInfoClick = (info: string) => () => {
     if (!user) {
-      setShowPopup('signup');
+      router.push('/sign-in');
     } else if (user?.entitlements?.viewEmails) {
       setShowInfo({ ...showInfo, [info]: !showInfo[info] });
       // TODO add action

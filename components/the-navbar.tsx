@@ -24,13 +24,7 @@ import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
 
-export type Popups =
-  | 'login'
-  | 'forgotPassword'
-  | 'search'
-  | 'signup'
-  | 'usage'
-  | false;
+export type Popups = 'forgotPassword' | 'search' | 'usage' | false;
 
 type Props = {};
 
@@ -49,24 +43,10 @@ export const TheNavbar: FC<Props> = ({}) => {
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
-    if (!showPopup && router.asPath.includes('/login/')) {
-      setShowPopup(
-        router.asPath.includes('/login/')
-          ? router.asPath.includes('?usage=true')
-            ? 'usage'
-            : 'login'
-          : false,
-      );
+    if (!showPopup && router.asPath.includes('/sign-in/')) {
+      setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
-    if (!showPopup && router.asPath.includes('/signup/')) {
-      setShowPopup(
-        router.asPath.includes('/signup/')
-          ? router.asPath.includes('?usage=true')
-            ? 'usage'
-            : 'signup'
-          : false,
-      );
-    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
@@ -131,7 +111,11 @@ export const TheNavbar: FC<Props> = ({}) => {
   };
 
   const onModalClose = () => {
-    setShowPopup(router.asPath.includes('/login/') ? 'login' : false);
+    if (router.asPath.includes('/sign-in/')) {
+      redirectToSignIn();
+    } else {
+      setShowPopup(false);
+    }
   };
 
   const redirectToSignIn = () => {
