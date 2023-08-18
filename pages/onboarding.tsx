@@ -108,9 +108,7 @@ export default function Onboarding() {
         }),
       {
         onSuccess: async response => {
-          if (response.status === 200) {
-            router.push('/companies');
-          } else {
+          if (response.status !== 200) {
             const error = await response.json();
             toast(error.error || GENERAL_ERROR_MESSAGE, 'error');
           }
