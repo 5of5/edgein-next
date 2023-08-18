@@ -1,7 +1,5 @@
 declare module 'react-gtm-module';
 
-declare module 'lodash';
-
 import {
   UseColumnOrderInstanceProps,
   UseColumnOrderState,
