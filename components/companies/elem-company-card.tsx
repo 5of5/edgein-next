@@ -1,5 +1,6 @@
 import { Companies } from '@/graphql/types';
 import { FC, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
@@ -16,18 +17,17 @@ import {
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
-import { usePopup } from '@/context/popup-context';
 
 type Props = {
   company: Companies;
 };
 
 export const ElemCompanyCard: FC<Props> = ({ company }) => {
+  const router = useRouter();
+
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const { user } = useUser();
-
-  const { setShowPopup } = usePopup();
 
   const userCanViewLinkedIn = user?.entitlements.viewEmails
     ? user?.entitlements.viewEmails
@@ -59,7 +59,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
 
   const onClickCompanyLinkedin = () => {
     if (!user) {
-      setShowPopup('signup');
+      router.push('/sign-in');
     } else {
       setIsOpenUpgradeDialog(true);
     }

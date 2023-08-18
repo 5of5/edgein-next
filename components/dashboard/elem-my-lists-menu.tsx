@@ -17,7 +17,6 @@ import {
   MY_LISTS_MENU_OPEN_KEY,
   SIDEBAR_DEFAULT_LISTS_LIMIT,
 } from '@/utils/constants';
-import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -26,8 +25,6 @@ type Props = {
 const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const router = useRouter();
   const { listAndFollows: lists, user } = useUser();
-
-  const { setShowPopup } = usePopup();
 
   const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
     MY_LISTS_MENU_OPEN_KEY,
@@ -136,9 +133,13 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  const onRedirectToSignIn = () => {
+    router.push('/sign-in');
+  };
+
   const onClickHeader = () => {
     if (!user) {
-      return setShowPopup('signup');
+      return onRedirectToSignIn();
     }
 
     return onDisclosureButtonClick;
@@ -146,7 +147,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
   const onClickCreate = () => {
     if (!user) {
-      return setShowPopup('signup');
+      return onRedirectToSignIn();
     }
 
     if (getCustomLists.length > totalListCount) {

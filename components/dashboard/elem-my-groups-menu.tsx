@@ -11,7 +11,6 @@ import {
   SIDEBAR_DEFAULT_GROUPS_LIMIT,
 } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
-import { usePopup } from '@/context/popup-context';
 
 type Props = {
   className?: string;
@@ -20,7 +19,6 @@ type Props = {
 const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   const router = useRouter();
   const { myGroups, user } = useUser();
-  const { setShowPopup } = usePopup();
   const displayedGroups = myGroups.slice(
     0,
     user?.entitlements.groupsCount
@@ -57,9 +55,13 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  const onRedirectToSignIn = () => {
+    router.push('/sign-in');
+  };
+
   const onClickHeader = () => {
     if (!user) {
-      return setShowPopup('signup');
+      return onRedirectToSignIn();
     }
 
     return onDisclosureButtonClick;
@@ -67,7 +69,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
 
   const onClickCreate = () => {
     if (!user) {
-      return setShowPopup('signup');
+      return onRedirectToSignIn();
     }
 
     if (myGroups.length > displayedGroups.length) {
