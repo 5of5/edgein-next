@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { IconUser, IconUserCircleSolid } from '@/components/icons';
+import { IconUserPlaceholder, IconCompanies } from '@/components/icons';
 
 type Props = {
   photo?: Record<string, any>;
@@ -31,9 +31,9 @@ export const ElemPhoto: React.FC<Props> = ({
           />
         </Fragment>
       ) : placeholder === 'user' ? (
-        <Fragment>
-          <IconUserCircleSolid className={`${placeholderClass} ${imgClass}`} />
-        </Fragment>
+        <IconUserPlaceholder className={`${placeholderClass} ${imgClass}`} />
+      ) : placeholder === 'company' ? (
+        <IconCompanies className={`${placeholderClass} ${imgClass}`} />
       ) : (
         <Fragment>
           <svg

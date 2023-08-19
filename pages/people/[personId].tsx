@@ -1,7 +1,7 @@
-import React, { MutableRefObject, useRef, useEffect } from 'react';
+import React, { MutableRefObject, useRef, useState, useEffect } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { flatten, union } from 'lodash';
+import { flatten, union, orderBy } from 'lodash';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/investor/elem-investments';
@@ -14,7 +14,9 @@ import {
   Investment_Rounds,
   News,
   People,
-  useGetUserByPersonIdQuery,
+  useGetPersonQuery,
+  Team_Members,
+  Investors,
 } from '@/graphql/types';
 import { ElemJobsList } from '@/components/person/elem-jobs-list';
 import { ElemInvestorsList } from '@/components/person/elem-investors-list';
@@ -26,6 +28,8 @@ import { ElemTooltip } from '@/components/elem-tooltip';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import ElemNewsList from '@/components/news/elem-news-list';
+import { ElemSocialShare } from '@/components/elem-social-share';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 
 type Props = {
   person: People;
@@ -33,14 +37,31 @@ type Props = {
   sortNews: News[];
 };
 
-const Person: NextPage<Props> = props => {
+const Person: NextPage<Props> = (props: Props) => {
   const router = useRouter();
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
   const { user } = useAuth();
   const { showNewMessages } = useIntercom();
 
-  const person = props.person;
+  const { personId } = router.query;
+  const [person, setPerson] = useState<People>(props.person);
+
+  console.log('personId:' + personId);
+  console.log('person.slug:' + person.slug);
+
+  const {
+    data: personData,
+    error,
+    isLoading,
+  } = useGetPersonQuery({
+    slug: personId as string,
+  });
+
+  useEffect(() => {
+    if (personData) setPerson(personData?.people[0] as People);
+  }, [personData]);
+
   const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
   useEffect(() => {
@@ -51,8 +72,14 @@ const Person: NextPage<Props> = props => {
         pathname: router.asPath,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [person]);
+  }, [person, router.asPath]);
+
+  const getVcFirmJobs = person.investors as Investors[];
+  const getCompanyJobs = person.team_members as Team_Members[];
+  const mergedJobs = union(getVcFirmJobs, getCompanyJobs as any).filter(
+    item => item,
+  );
+  const personJobs = orderBy(mergedJobs, [item => item.end_date], ['desc']);
 
   const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
   const companyTags = flatten(
@@ -78,46 +105,38 @@ const Person: NextPage<Props> = props => {
   ];
 
   const profileUrl = `https://edgein.io${router.asPath}`;
-
-  const { data: linkedUser, isLoading: isLoadingLinkedUser } =
-    useGetUserByPersonIdQuery({ person_id: person?.id });
-
-  const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
-  const isCurrentUserProfile =
-    claimedProfile && linkedUser?.users[0].id === user?.id;
+  const profileIsClaimed = person.user?.id ? true : false;
+  const profileIsLoggedInUser = person.user?.id === user?.id ? true : false;
 
   return (
-    <div className="relative">
-      <div className="w-full">
-        <div className="bg-slate-600 border-b border-black/10">
-          <div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes')] bg-cover bg-no-repeat bg-center"></div>
-        </div>
-        <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-          <div className="-mt-12 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-start">
+    <DashboardLayout>
+      <div className="relative">
+        <div className="p-8">
+          <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
             <div className="col-span-2 flex justify-center">
               <ElemPhoto
                 photo={person.picture}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 p-1 bg-white overflow-hidden rounded-full shadow w-40 lg:w-full"
+                wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full border border-gray-200 w-40 lg:w-full"
                 imgClass="object-cover w-full h-full rounded-full overflow-hidden"
                 imgAlt={person.name}
                 placeholder="user"
-                placeholderClass="text-slate-300"
+                placeholderClass="text-gray-300"
               />
             </div>
-            <div className="w-full col-span-9">
-              <div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:pt-14 lg:shrink-0">
+            <div className="w-full col-span-5">
+              <div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:shrink-0">
                 <div>
                   {person.type && (
-                    <div className="whitespace-nowrap text-lg text-slate-600">
+                    <div className="whitespace-nowrap text-sm text-gray-500">
                       {removeSpecialCharacterFromString(person.type as string)}
                     </div>
                   )}
                   <div className="flex items-center justify-center space-x-2 lg:justify-start">
-                    <h1 className="text-3xl font-bold lg:text-4xl">
+                    <h1 className="self-end inline-block text-4xl font-medium">
                       {person.name}
                     </h1>
 
-                    {claimedProfile && (
+                    {profileIsClaimed && (
                       <ElemTooltip content="Claimed profile">
                         <div className="cursor-pointer">
                           <IconCheckBadgeSolid
@@ -141,10 +160,23 @@ const Person: NextPage<Props> = props => {
                     />
                   )}
 
-                  <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
-                    {!isLoadingLinkedUser && !claimedProfile && (
+                  <div className="flex flex-wrap items-center mt-4 gap-3">
+                    <ElemSaveToList
+                      resourceName={person.name}
+                      resourceId={person.id}
+                      resourceType="people"
+                      slug={person.slug!}
+                      follows={person.follows}
+                    />
+
+                    <ElemSocialShare
+                      resourceName={person.name}
+                      resourceTwitterUrl={null}
+                    />
+
+                    {!profileIsClaimed && (
                       <ElemButton
-                        btn="primary"
+                        btn="default"
                         onClick={() =>
                           showNewMessages(
                             `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
@@ -154,17 +186,10 @@ const Person: NextPage<Props> = props => {
                         Claim profile
                       </ElemButton>
                     )}
-                    <ElemSaveToList
-                      resourceName={person.name}
-                      resourceId={person.id}
-                      resourceType="people"
-                      slug={person.slug!}
-                      follows={person.follows}
-                    />
 
-                    {isCurrentUserProfile && (
-                      <ElemButton btn="gray" href="/profile/">
-                        Edit profile
+                    {profileIsLoggedInUser && (
+                      <ElemButton btn="default" href="/profile/">
+                        Profile settings
                       </ElemButton>
                     )}
                   </div>
@@ -179,95 +204,78 @@ const Person: NextPage<Props> = props => {
               )}
             </div>
           </div>
-
           <ElemTabBar
             className="mt-7"
             tabs={tabBarItems}
             resourceName={person.name}
           />
         </div>
-      </div>
 
-      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-        <div
-          className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
-          ref={overviewRef}
-          id="overview"
-        >
-          <div className="col-span-3">
-            <ElemKeyInfo
-              className="sticky top-16 mb-7 lg:mb-0"
-              heading="Key Info"
-              roles={removeSpecialCharacterFromString(person.type as string)}
-              linkedIn={person.linkedin}
-              investmentsLength={person.investments?.length}
-              emails={personEmails}
-              github={person.github}
-              twitter={person.twitter_url}
-              location={person.city}
-              website={person.website_url}
-            />
-          </div>
-          <div className="col-span-8">
-            {person.about && (
-              <div className="w-full p-4 bg-white shadow rounded-lg mb-7">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-bold">About</h2>
-                </div>
-                <p className="line-clamp-3 text-base text-slate-600">
-                  {person.about}
-                </p>
-              </div>
-            )}
+        <div className="px-8">
+          <div
+            className="lg:grid lg:grid-cols-11 lg:gap-7"
+            ref={overviewRef}
+            id="overview"
+          >
+            <div className="col-span-3">
+              <ElemKeyInfo
+                className="sticky top-16 mb-7 lg:mb-0"
+                heading="Key Info"
+                roles={removeSpecialCharacterFromString(person.type as string)}
+                linkedIn={person.linkedin}
+                investmentsLength={person.investments?.length}
+                emails={personEmails}
+                github={person.github}
+                twitter={person.twitter_url}
+                location={person.city}
+                website={person.website_url}
+              />
+            </div>
+            <div className="col-span-8 grid gap-y-7">
+              {person.about && (
+                <section className="border border-gray-300 rounded-lg">
+                  <h2 className="text-lg font-medium px-4 pt-2">About</h2>
+                  <p className="text-sm text-gray-500 px-4 pb-4">
+                    {person.about}
+                  </p>
+                </section>
+              )}
 
-            {person.team_members.length > 0 && (
               <ElemJobsList
                 heading="Experience"
-                team_members={person.team_members}
-                className="mb-7"
+                jobs={personJobs}
+                resourceUrl={profileUrl}
               />
-            )}
-            {props.sortNews.length > 0 && (
-              <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+
+              {props.sortNews.length > 0 && (
                 <ElemNewsList
                   resourceId={person.id}
                   resourceType="people"
                   news={props.sortNews}
                 />
-              </div>
-            )}
-            {!person.investors || person.investors.length === 0 ? null : (
-              <ElemInvestorsList
-                heading="Investment Firms"
-                investors={person.investors}
-                className="mb-7"
+              )}
+
+              {!person.investors || person.investors.length === 0 ? null : (
+                <ElemInvestorsList
+                  heading="Investment Firms"
+                  investors={person.investors}
+                />
+              )}
+            </div>
+          </div>
+
+          {sortedInvestmentRounds.length > 0 && (
+            <div ref={investmentRef} id="investments">
+              <ElemInvestments
+                heading="Investments"
+                investments={sortedInvestmentRounds}
+                className="mt-7"
               />
-            )}
-          </div>
+            </div>
+          )}
         </div>
-
-        {/* {person.companies?.length > 0 && (
-				<ElemCompaniesGrid
-					className="mt-12"
-					heading="Companies"
-					companies={person.companies}
-				/>
-			)} */}
-
-        {sortedInvestmentRounds.length > 0 && (
-          <div
-            ref={investmentRef}
-            className="mt-7 p-5 rounded-lg bg-white shadow"
-            id="investments"
-          >
-            <ElemInvestments
-              heading="Investments"
-              investments={sortedInvestmentRounds}
-            />
-          </div>
-        )}
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
