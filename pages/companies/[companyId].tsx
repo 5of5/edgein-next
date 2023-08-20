@@ -419,10 +419,7 @@ const Company: NextPage<Props> = (props: Props) => {
               </div>
             )}
 
-            <div
-              ref={newsRef}
-              className="w-full mt-7 border border-gray-300 rounded-lg"
-            >
+            <div ref={newsRef} className="mt-7">
               {isNewsOrganization ? (
                 <ElemNewsArticles
                   heading={

@@ -26,7 +26,7 @@ const ElemNewsList: React.FC<Props> = ({
     setLimit(limit + 10);
   };
   return (
-    <div>
+    <section className="border border-gray-300 rounded-lg">
       <div className="flex items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">{heading ? heading : 'News'}</h2>
       </div>
@@ -74,17 +74,13 @@ const ElemNewsList: React.FC<Props> = ({
                 }
 
                 return (
-                  <li
+                  <ElemNewsHeading
+                    news={item}
+                    isPublisher={isPublisher}
+                    isAuthor={isAuthor}
+                    showPoweredBy
                     key={item.id}
-                    className="relative pl-6 overflow-hidden group last:-mb-4"
-                  >
-                    <ElemNewsHeading
-                      news={item}
-                      isPublisher={isPublisher}
-                      isAuthor={isAuthor}
-                      showPoweredBy
-                    />
-                  </li>
+                  />
                 );
               })}
             </ul>
@@ -99,7 +95,7 @@ const ElemNewsList: React.FC<Props> = ({
           </>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

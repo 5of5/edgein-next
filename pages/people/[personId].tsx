@@ -19,7 +19,6 @@ import {
   Investors,
 } from '@/graphql/types';
 import { ElemJobsList } from '@/components/person/elem-jobs-list';
-import { ElemInvestorsList } from '@/components/person/elem-investors-list';
 import { onTrackView } from '@/utils/track';
 import { useAuth } from '@/hooks/use-auth';
 import { useIntercom } from 'react-use-intercom';
@@ -41,14 +40,13 @@ const Person: NextPage<Props> = (props: Props) => {
   const router = useRouter();
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
+
   const { user } = useAuth();
   const { showNewMessages } = useIntercom();
 
   const { personId } = router.query;
   const [person, setPerson] = useState<People>(props.person);
-
-  console.log('personId:' + personId);
-  console.log('person.slug:' + person.slug);
 
   const {
     data: personData,
@@ -94,6 +92,14 @@ const Person: NextPage<Props> = (props: Props) => {
 
   const tabBarItems = [
     { name: 'Overview', ref: overviewRef },
+    ...(props.sortNews.length > 0
+      ? [
+          {
+            name: 'News',
+            ref: newsRef,
+          },
+        ]
+      : []),
     ...(sortedInvestmentRounds.length > 0
       ? [
           {
@@ -248,18 +254,13 @@ const Person: NextPage<Props> = (props: Props) => {
               />
 
               {props.sortNews.length > 0 && (
-                <ElemNewsList
-                  resourceId={person.id}
-                  resourceType="people"
-                  news={props.sortNews}
-                />
-              )}
-
-              {!person.investors || person.investors.length === 0 ? null : (
-                <ElemInvestorsList
-                  heading="Investment Firms"
-                  investors={person.investors}
-                />
+                <div ref={newsRef}>
+                  <ElemNewsList
+                    resourceId={person.id}
+                    resourceType="people"
+                    news={props.sortNews}
+                  />
+                </div>
               )}
             </div>
           </div>
