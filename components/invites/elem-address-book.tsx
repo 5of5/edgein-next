@@ -1,6 +1,7 @@
 import { Contact } from '@/types/cloudsponge';
 import React, { useEffect } from 'react';
 import { SelectedPeople } from './elem-invite-user';
+import { ElemButton } from '../elem-button';
 
 // This implementation is taken from the CloudSponge documentation
 // https://www.cloudsponge.com/integrations/react/
@@ -84,7 +85,9 @@ export const ElemAddressBook: React.FC<Props> = ({ setSelectedPeople }) => {
 
   return (
     <div>
-      <a className="cloudsponge-launch underline">Add from contacts</a>
+      <ElemButton className="cloudsponge-launch" btn="default">
+        Add from contacts
+      </ElemButton>
     </div>
   );
 };

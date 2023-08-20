@@ -125,16 +125,14 @@ export const ElemInviteInvestmentMembers = () => {
   );
 
   return (
-    <div className="p-5 bg-white rounded-lg border border-black/10">
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold">Invite from your portfolio</h3>
-          <p className="text-sm text-slate-600">
-            Select a company from your portfolio to invite their team
-          </p>
-        </div>
+    <div className="p-5 bg-white rounded-lg border border-gray-200">
+      <h3 className="font-medium">Invite from your portfolio</h3>
+      <p className="text-sm text-gray-500">
+        Select a company from your portfolio to invite their team
+      </p>
 
-        <div className="grid grid-cols-3 gap-4">
+      {companies.length > 0 && (
+        <div className="mt-2 grid grid-cols-3 gap-4">
           {companies.map(company =>
             canSendInvestorInvitation(userById?.users, company?.id) ? (
               <div
@@ -151,7 +149,8 @@ export const ElemInviteInvestmentMembers = () => {
                   wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
                   imgClass="object-fit max-w-full max-h-full"
                   imgAlt={company?.name}
-                  placeholderClass="text-slate-300"
+                  placeholderClass="text-gray-300"
+                  placeholder="company"
                 />
 
                 <div className="flex flex-col ml-2">
@@ -171,6 +170,7 @@ export const ElemInviteInvestmentMembers = () => {
                   imgClass="object-fit max-w-full max-h-full opacity-50"
                   imgAlt={company?.name}
                   placeholderClass="text-slate-300"
+                  placeholder="company"
                 />
 
                 <div className="flex flex-col ml-2 justify-center text-slate-400">
@@ -183,32 +183,32 @@ export const ElemInviteInvestmentMembers = () => {
             ),
           )}
         </div>
+      )}
 
-        <div className="flex flex-row gap-4 mt-2 items-center text-center">
-          <ElemButton
-            btn="purple"
-            onClick={handleSendEmails}
-            loading={isLoading}
-            disabled={!user || selectedCompanies.length === 0 || emails === 0}
-          >
-            Invite
-          </ElemButton>
+      <div className="flex flex-row gap-4 mt-2 items-center text-center">
+        <ElemButton
+          btn="purple"
+          onClick={handleSendEmails}
+          loading={isLoading}
+          disabled={!user || selectedCompanies.length === 0 || emails === 0}
+        >
+          Invite
+        </ElemButton>
 
-          {selectedCompanies.length !== 0 && (
-            <div className="text-sm text-slate-400 my-auto">
-              {emails} people will be invited
-            </div>
-          )}
+        {selectedCompanies.length !== 0 && (
+          <div className="text-sm text-slate-400 my-auto">
+            {emails} people will be invited
+          </div>
+        )}
 
-          <ElemButton
-            btn="purple"
-            onClick={handleSendAllEmails}
-            loading={isLoading}
-            disabled={!user}
-          >
-            Invite all
-          </ElemButton>
-        </div>
+        <ElemButton
+          btn="purple"
+          onClick={handleSendAllEmails}
+          loading={isLoading}
+          disabled={!user}
+        >
+          Invite all
+        </ElemButton>
       </div>
     </div>
   );
