@@ -411,11 +411,11 @@ export const companyChoices = [
     name: 'Trending',
     icon: '🔥',
   },
-  // {
-  //   id: 'Raising',
-  //   name: 'Raising',
-  //   icon: '💸',
-  // },
+  {
+    id: 'Raising',
+    name: 'Raising',
+    icon: '💸',
+  },
   {
     id: 'Acquired',
     name: 'Acquired',
@@ -544,31 +544,17 @@ export const currencyChoices = [
     name: 'SGD',
   },
 ];
-// {
-//   id: 'Trending',
-//   name: 'Trending',
-//   icon: '🔥',
-// },
-// {
-//   id: 'Raising',
-//   name: 'Raising',
-//   icon: '💸',
-// },
-// {
-//   id: 'Acquired',
-//   name: 'Acquired',
-//   icon: '🏡',
-// },
-// {
-//   id: 'Dead',
-//   name: 'Dead',
-//   icon: '💀',
 
 export const investorChoices = [
   {
     id: 'Trending',
     name: 'Trending',
     icon: '🔥',
+  },
+  {
+    id: 'Acquired',
+    name: 'Acquired',
+    icon: '🏡',
   },
   {
     id: 'Dead',
