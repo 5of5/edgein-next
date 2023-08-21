@@ -12,6 +12,7 @@ import { ElemSignUpForm } from '@/components/sign-in/elem-sign-up-form';
 import { ElemSignUpProfile } from '@/components/sign-in/elem-sign-up-profile';
 import { ElemSignUpConfirm } from '@/components/sign-in/elem-sign-up-confirm';
 import { GetSignUpProfileQuery } from '@/graphql/types';
+import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 
 export type SignUpFormState = {
   firstName?: string;
@@ -76,24 +77,21 @@ export default function SignIn() {
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
       <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
         <Dialog.Panel className="w-full h-full flex flex-col justify-center mx-auto bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-          <nav
-            className="fixed top-0 left-0 right-0 px-5 py-4 flex items-center justify-center border-b border-slate-200"
-            aria-label="Global"
-          >
-            <Link href="/" passHref>
-              <a className="w-auto">
-                <ElemLogo mode="logo" className="h-6 w-auto" />
-              </a>
-            </Link>
-
-            {(signUpStep === 0 || signUpStep === 1) && (
-              <Link href="/" passHref>
-                <a className="absolute right-5">
-                  <ElemButton btn="white">Back</ElemButton>
-                </a>
-              </Link>
-            )}
-          </nav>
+          <ElemSignInHeader
+            rightComponent={
+              signUpStep === 0 ? (
+                <Link href="/" passHref>
+                  <a className="">
+                    <ElemButton btn="white">Back</ElemButton>
+                  </a>
+                </Link>
+              ) : signUpStep === 1 ? (
+                <ElemButton btn="white" onClick={() => setSignUpStep(0)}>
+                  Back
+                </ElemButton>
+              ) : null
+            }
+          />
 
           {signUpStep === 0 && (
             <ElemLogin
