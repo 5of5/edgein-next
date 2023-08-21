@@ -481,7 +481,7 @@ export const ElemFilter: FC<Props> = ({
                       <div>
                         Address is{' '}
                         <b>{`${filters[option]?.distance} miles `}</b>
-                        around <b>{filters[option]?.value?.formattedAddress}</b>
+                        around <b>{filters[option]?.value?.Label}</b>
                       </div>
                     )
                   }

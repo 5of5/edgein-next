@@ -1,5 +1,6 @@
 import { FC, ChangeEvent, useState } from 'react';
 import { Combobox } from '@headlessui/react';
+import iso from 'iso-3166-1';
 import { FilterOptionKeys } from '@/models/Filter';
 import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
 import { ElemFilterPopup } from './elem-filter-popup';
@@ -59,6 +60,17 @@ export const ElemFilterLocation: FC<Props> = ({
     onGetPlace,
   } = useAddressAutocomplete(layers);
 
+  const handleGetTagValue = (place: Place) => {
+    switch (option) {
+      case 'country':
+        return iso.whereAlpha3(place?.Country || '')?.country;
+      case 'state':
+        return place?.Region;
+      default:
+        return place?.Municipality;
+    }
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     onInputChange(event);
@@ -69,7 +81,7 @@ export const ElemFilterLocation: FC<Props> = ({
     if (value.PlaceId && !tags.includes(value.Text || '')) {
       const place = await onGetPlace(value.PlaceId);
       if (place) {
-        onChangeTags([...tags, place.Label || ''], option);
+        onChangeTags([...tags, handleGetTagValue(place) || ''], option);
       }
     }
   };
