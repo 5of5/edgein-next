@@ -3,6 +3,40 @@ import { NextResponse, NextRequest } from 'next/server';
 
 const USAGE_LIMIT = 10;
 
+const PUBLIC_PAGES = [
+  `/`,
+  `/login/`,
+  `/signup/`,
+  `/contact/`,
+  `/privacy/`,
+  `/terms/`,
+  `/support/`,
+  `/pricing/`,
+  `/brand-assets/`,
+  `/team/`,
+  `/404/`,
+]
+
+const PUBLIC_API = [
+  `/api/login-attempt/`,
+  `/api/graphql-query/`,
+  `/api/get-access-token/`,
+  `/api/refresh-token/`,
+  `/api/login/`,
+  `/api/user/`,
+  `/api/register/`,
+  `/api/signin/`,
+  `/api/change-password/`,
+  `/api/access-token-from-code/`,
+  `/api/stripe-webhook/`,
+  `/admin/app/`,
+  `/admin/admin/`,
+  `/api/submit-data/`,
+  `/api/batch-job/`,
+  `/api/data-runs/`,
+  `/api/query/completions/`,
+]
+
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
   const userExists = await CookieService.getUser(
@@ -20,36 +54,8 @@ export async function middleware(req: NextRequest) {
   // the pages/sites folder and its respective contents. This can also be done
   // via rewrites to a custom 404 page
   if (
-    [
-      `/`,
-      `/login/`,
-      `/signup/`,
-      `/contact/`,
-      `/privacy/`,
-      `/terms/`,
-      `/support/`,
-      `/pricing/`,
-      `/brand-assets/`,
-      `/team/`,
-      `/404/`,
-      `/api/login-attempt/`,
-      `/api/graphql-query/`,
-      `/api/get-access-token/`,
-      `/api/refresh-token/`,
-      `/api/login/`,
-      `/api/user/`,
-      `/api/register/`,
-      `/api/signin/`,
-      `/api/change-password/`,
-      `/api/access-token-from-code/`,
-      `/api/stripe-webhook/`,
-      `/admin/app/`,
-      `/admin/admin/`,
-      `/api/submit-data/`,
-      `/api/batch-job/`,
-      `/api/data-runs/`,
-      `/api/query/completions/`,
-    ].includes(url.pathname) ||
+    PUBLIC_PAGES.includes(url.pathname) ||
+    PUBLIC_API.includes(url.pathname) ||
     url.pathname.endsWith('.png') ||
     url.pathname.endsWith('.jpg') ||
     url.pathname.endsWith('.svg') ||
