@@ -3,7 +3,8 @@ import { NextResponse, NextRequest } from 'next/server';
 
 const USAGE_LIMIT = 10;
 
-const PUBLIC_PAGES = [
+// This is used to generate a sitemap for the site
+export const PUBLIC_PAGES = [
   `/`,
   `/login/`,
   `/signup/`,
