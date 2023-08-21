@@ -112,7 +112,8 @@ const Person: NextPage<Props> = (props: Props) => {
 
   const profileUrl = `https://edgein.io${router.asPath}`;
   const profileIsClaimed = person.user?.id ? true : false;
-  const profileIsLoggedInUser = person.user?.id === user?.id ? true : false;
+  const profileIsLoggedInUser =
+    user && person.user?.id === user?.id ? true : false;
 
   return (
     <DashboardLayout>
