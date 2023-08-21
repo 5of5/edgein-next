@@ -20,6 +20,7 @@ const useAddressAutocomplete = (filterCategories?: string[]) => {
     const input = {
       IndexName: locationService.getPlaceIndex(),
       PlaceId: placeId,
+      Language: 'en',
     };
     const placeResponse = await locationService.getPlace(input);
 
@@ -30,16 +31,21 @@ const useAddressAutocomplete = (filterCategories?: string[]) => {
 
   const onSearchAddress = useCallback(
     async (keyword: string) => {
-      const input = {
-        IndexName: locationService.getPlaceIndex(),
-        Text: keyword,
-        FilterCategories: filterCategories,
-      };
+      if (keyword.trim()) {
+        const input = {
+          IndexName: locationService.getPlaceIndex(),
+          Text: keyword,
+          Language: 'en',
+          FilterCategories: filterCategories,
+        };
 
-      const placeSuggestionResponse =
-        await locationService.searchPlaceSuggestions(input);
+        const placeSuggestionResponse =
+          await locationService.searchPlaceSuggestions(input);
 
-      setOptions(placeSuggestionResponse.Results || []);
+        setOptions(placeSuggestionResponse.Results || []);
+      } else {
+        setOptions([]);
+      }
       setIsLoadingPlaceSuggestions(false);
     },
     [filterCategories],

@@ -8,18 +8,18 @@ import Link from 'next/link';
 import { IconGlobe, IconLinkedIn, IconTwitter } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
-import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 type Props = {
   vcFirm: Vc_Firms;
 };
 
 export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
+  const router = useRouter();
+
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const { user } = useUser();
-
-  const { setShowPopup } = usePopup();
 
   const userCanViewLinkedIn = user?.entitlements.viewEmails
     ? user?.entitlements.viewEmails
@@ -41,7 +41,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
 
   const onClickInvestorLinkedin = () => {
     if (!user) {
-      setShowPopup('signup');
+      router.push('/sign-in');
     } else {
       setIsOpenUpgradeDialog(true);
     }

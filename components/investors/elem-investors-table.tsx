@@ -25,7 +25,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
-import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 type Props = {
   className?: string;
@@ -52,7 +52,7 @@ export const InvestorsTable: FC<Props> = ({
 }) => {
   const { user } = useUser();
 
-  const { setShowPopup } = usePopup();
+  const router = useRouter();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -65,7 +65,7 @@ export const InvestorsTable: FC<Props> = ({
 
   const onBillingClick = async () => {
     if (!user) {
-      setShowPopup('signup');
+      router.push('/sign-in');
     } else {
       loadStripe();
     }

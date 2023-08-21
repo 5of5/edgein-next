@@ -13,8 +13,7 @@ import {
 import ElemNoteCard from '@/components/group/elem-note-card';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
-import { Popups } from '@/components/the-navbar';
-import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 type Props = {
   resourceId: number;
@@ -27,15 +26,15 @@ const ElemOrganizationNotes: FC<Props> = ({
   resourceType,
   resourceName,
 }) => {
-  const { user, myGroups } = useUser();
+  const router = useRouter();
 
-  const { setShowPopup } = usePopup();
+  const { user, myGroups } = useUser();
 
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
   const onOpenNoteForm = () => {
     if (!user) {
-      setShowPopup('signup');
+      router.push('/sign-in');
     } else {
       setIsOpenNoteForm(true);
     }

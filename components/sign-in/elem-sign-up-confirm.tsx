@@ -23,7 +23,7 @@ export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
     {
       onSuccess: async response => {
         if (response.ok) {
-          toast('Resend verification email successfully.');
+          toast('Your verification email is on the way.');
         } else {
           const error = await response.json();
           toast(error.error || GENERAL_ERROR_MESSAGE);

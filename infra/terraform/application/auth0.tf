@@ -5,7 +5,7 @@ resource "auth0_client" "edgein" {
   allowed_origins     = [local.vercel_url]
   allowed_logout_urls = [local.vercel_url]
   callbacks           = [local.vercel_url]
-  initiate_login_uri  = "${local.vercel_url}/login"
+  initiate_login_uri  = "${local.vercel_url}/sign-in"
   cross_origin_auth   = true
   logo_uri            = "https://edgein.io/edgein-io-icon.png"
   oidc_conformant     = true

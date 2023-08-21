@@ -184,7 +184,7 @@ export const ElemInviteInvestmentMembers = () => {
           )}
         </div>
 
-        <div className="flex flex-row gap-4 mt-2">
+        <div className="flex flex-row gap-4 mt-2 items-center text-center">
           <ElemButton
             btn="purple"
             onClick={handleSendEmails}

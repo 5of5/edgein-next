@@ -15,7 +15,7 @@ import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
-import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 type Props = {
   resourceName: string | null;
@@ -48,7 +48,7 @@ export const ElemSaveToList: FC<Props> = ({
   buttonStyle = 'purple',
   follows = [],
 }) => {
-  const { setShowPopup } = usePopup();
+  const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
@@ -241,7 +241,7 @@ export const ElemSaveToList: FC<Props> = ({
     event.stopPropagation();
 
     if (!user) {
-      setShowPopup('signup');
+      router.push('/sign-in');
     } else {
       setIsOpen(true);
     }

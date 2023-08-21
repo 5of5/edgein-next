@@ -49,8 +49,8 @@ import {
 } from 'react-admin';
 
 import {
-  functionChoicesTM,
-  seniorityChoicesTM,
+  investorFunctionChoices,
+  investorSeniorityChoices,
 } from '../../../utils/constants';
 
 import Slide from '@mui/material/Slide';
@@ -69,7 +69,7 @@ const ListActions = ({ onCreate }: any) => {
   return (
     <TopToolbar>
       <Button
-        label="Add as Company Team Member"
+        label="Add as Investor Team Member"
         variant="text"
         onClick={onCreate}
         startIcon={<ContentCreate />}
@@ -95,7 +95,7 @@ const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete('team_members', {
+  const [deleteOne] = useDelete('investors', {
     id: record.id,
     previousData: record,
   });
@@ -125,10 +125,10 @@ const CustomDeleteButton = () => {
   );
 };
 
-export const TeamMemberEdit = () => {
+export const InvestorEdit = () => {
   const { record, isLoading } = useEditContext();
   const { id: currentId } = useParams();
-  const { data: member } = useGetList('team_members', {
+  const { data: member } = useGetList('investors', {
     filter: { person_id: parseInt(currentId!) },
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -146,7 +146,7 @@ export const TeamMemberEdit = () => {
 
   const [teamData, setTeamData] = useState<any>({
     team_id: -1,
-    company_id: '',
+    vc_firm_id: '',
     founder: false,
     function: '',
     seniority: '',
@@ -160,7 +160,7 @@ export const TeamMemberEdit = () => {
     setCurrRecord(rec);
     setTeamData({
       team_id: rec.id,
-      company_id: rec.company_id,
+      vc_firm_id: rec.vc_firm_id,
       founder: rec.founder,
       function: rec.function,
       seniority: rec.seniority,
@@ -175,7 +175,7 @@ export const TeamMemberEdit = () => {
     setIsError(false);
     setCurrRecord(null);
     setTeamData({
-      company_id: '',
+      vc_firm_id: '',
       founder: false,
       function: '',
       seniority: '',
@@ -186,7 +186,7 @@ export const TeamMemberEdit = () => {
   };
 
   const handleChange = (target: number, value: any) => {
-    if (target === 0) setTeamData({ ...teamData, company_id: value });
+    if (target === 0) setTeamData({ ...teamData, vc_firm_id: value });
     else if (target === 1) setTeamData({ ...teamData, function: value });
     else if (target === 2) setTeamData({ ...teamData, seniority: value });
     else if (target === 3) setTeamData({ ...teamData, start_date: value });
@@ -196,11 +196,11 @@ export const TeamMemberEdit = () => {
   };
 
   const handleSave = () => {
-    if (!teamData.company_id) setIsError(true);
+    if (!teamData.vc_firm_id) setIsError(true);
     else {
       const data = {
         person_id: parseInt(currentId!),
-        company_id: teamData.company_id,
+        vc_firm_id: teamData.vc_firm_id,
         function: teamData.function,
         seniority: teamData.seniority,
         start_date: teamData.start_date,
@@ -209,9 +209,9 @@ export const TeamMemberEdit = () => {
         founder: teamData.founder,
       };
       if (!currRecord) {
-        create('team_members', { data });
+        create('investors', { data });
       } else {
-        update('team_members', {
+        update('investors', {
           id: currRecord.id,
           data,
           previousData: currRecord,
@@ -255,23 +255,23 @@ export const TeamMemberEdit = () => {
       >
         <Datagrid bulkActionButtons={false} data={member}>
           <ReferenceField
-            label="Company"
-            source="company_id"
-            reference="companies"
+            label="Investor"
+            source="vc_firm_id"
+            reference="vc_firms"
             sortable={false}
           >
             <TextField source="name" />
           </ReferenceField>
           <SelectField
             source="function"
-            choices={functionChoicesTM}
+            choices={investorFunctionChoices}
             sortable={false}
           />
           <DateField source="start_date" sortable={false} />
           <DateField source="end_date" sortable={false} />
           <SelectField
             source="seniority"
-            choices={seniorityChoicesTM}
+            choices={investorSeniorityChoices}
             sortable={false}
           />
           <TextField source="title" sortable={false} />
@@ -302,26 +302,26 @@ export const TeamMemberEdit = () => {
                 }}
               >
                 <ReferenceInput
-                  label="Company"
-                  source="company_id"
-                  reference="companies"
+                  label="Investor"
+                  source="vc_firm_id"
+                  reference="vc_firms"
                 >
                   <AutocompleteInput
-                    defaultValue={currRecord?.company_id}
+                    defaultValue={currRecord?.vc_firm_id}
                     optionText="name"
                     optionValue="id"
                     filterToQuery={search => ({ name: search })}
-                    onChange={company_id => {
-                      handleChange(0, company_id);
+                    onChange={vc_firm_id => {
+                      handleChange(0, vc_firm_id);
                     }}
-                    onCreate={company_id => {
-                      handleChange(0, company_id);
+                    onCreate={vc_firm_id => {
+                      handleChange(0, vc_firm_id);
                     }}
                   />
                 </ReferenceInput>
                 {isError && (
                   <FormHelperText sx={{ color: 'red' }}>
-                    Company is required
+                    Investor is required
                   </FormHelperText>
                 )}
               </FormControl>
@@ -331,7 +331,7 @@ export const TeamMemberEdit = () => {
                   value={teamData?.function}
                   onChange={e => handleChange(1, e.target.value)}
                 >
-                  {functionChoicesTM?.map(r => (
+                  {investorFunctionChoices?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
                     </MenuItem>
@@ -344,7 +344,7 @@ export const TeamMemberEdit = () => {
                   value={teamData?.seniority}
                   onChange={e => handleChange(2, e.target.value)}
                 >
-                  {seniorityChoicesTM?.map(r => (
+                  {investorSeniorityChoices?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
                     </MenuItem>

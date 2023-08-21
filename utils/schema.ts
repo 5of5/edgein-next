@@ -26,7 +26,7 @@ export const inviteToEdgeInPayloadSchema = z
         EMAIL_MAX_LENGTH,
         `Email should be maximum of ${EMAIL_MAX_LENGTH} characters.`,
       ),
-    personId: z.number().nullable(),
+    personId: z.number().optional(),
   })
   .array();
 
@@ -74,6 +74,25 @@ export const addOnboardingSchema = z.object({
   exploreChoice: z.string().nonempty('Explore choice is required'),
   locationTags: z
     .array(z.string())
+    .min(
+      ONBOARDING_MIN_LOCATIONS,
+      `Should have at least ${ONBOARDING_MIN_LOCATIONS} location`,
+    ),
+  locationDetails: z
+    .array(
+      z.object({
+        label: z.string().optional(),
+        city: z.string().optional(),
+        state: z.string().optional(),
+        county: z.string().optional(),
+        country: z.string().optional(),
+        categories: z.array(z.string()).optional(),
+        geometry: z.object({
+          type: z.string(),
+          coordinates: z.array(z.number()),
+        }),
+      }),
+    )
     .min(
       ONBOARDING_MIN_LOCATIONS,
       `Should have at least ${ONBOARDING_MIN_LOCATIONS} location`,

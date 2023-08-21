@@ -1,24 +1,26 @@
 import { User } from '@/models/user';
+import { compact } from 'lodash';
+import { z } from 'zod';
+import { addOnboardingSchema } from './schema';
+
+export type OnboardingInformation = z.infer<typeof addOnboardingSchema>;
 
 export const getPersonalizedData = ({
   user,
 }: {
   user: User | null;
 }): { locationTags: string[]; industryTags: string[] } => {
-  const locationTagsRaw =
-    (user?.onboarding_information?.locationTags as Array<string>) ?? [];
+  const onboardingInformation =
+    user?.onboarding_information as OnboardingInformation;
 
-  // This jargon is due to inconsistency of location values
-  // in the onboarding_information jsonb column, the location is
-  // saved like "Tel Aviv, TA ISR" so we parse it and return the first part
-  // until ','
-  const locationTags = locationTagsRaw.map(
-    rawLocation => rawLocation.split(',')[0] ?? rawLocation,
+  const locationDetails = onboardingInformation?.locationDetails ?? [];
+
+  const locationTags = compact(
+    locationDetails.map(locationDetail => locationDetail.city),
   );
 
   return {
     locationTags,
-    industryTags:
-      (user?.onboarding_information?.industryTags as Array<string>) ?? [],
+    industryTags: onboardingInformation?.industryTags ?? [],
   };
 };

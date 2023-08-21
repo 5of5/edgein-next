@@ -5,6 +5,7 @@ import ElemTitle from '../elem-title';
 import PersonForm from './person-form';
 import { withImageTransformData, withoutImageTransformData } from './services';
 import { TeamMemberEdit } from './team-member-edit';
+import { InvestorEdit } from './investor-edit';
 
 export const PersonEdit = () => {
   const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
@@ -29,6 +30,7 @@ export const PersonEdit = () => {
         />
       </ElemFormBase>
       <TeamMemberEdit />
+      <InvestorEdit />
     </>
   );
 };
