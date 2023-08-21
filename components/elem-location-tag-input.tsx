@@ -58,25 +58,29 @@ const ElemLocationTagInput: FC<Props> = ({
           />
           <IconSearch className="w-4 h-4 absolute top-1/2 left-3 -translate-y-1/2 text-slate-400" />
         </div>
-        <Combobox.Options className="absolute z-50 top-12 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
-          {isLoadingPlaceSuggestions ? (
-            <p className="text-sm p-2 animate-pulse">Searching location...</p>
-          ) : (
-            options.map((item: SearchForSuggestionsResult) => (
-              <Combobox.Option
-                className={({ active }) =>
-                  `${
-                    active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
-                  }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
-                }
-                key={item.PlaceId}
-                value={item}
-              >
-                {item.Text}
-              </Combobox.Option>
-            ))
-          )}
-        </Combobox.Options>
+        {(isLoadingPlaceSuggestions || options.length > 0) && (
+          <Combobox.Options className="absolute z-50 top-12 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+            {isLoadingPlaceSuggestions ? (
+              <p className="text-sm p-2 animate-pulse">Searching location...</p>
+            ) : (
+              options.map((item: SearchForSuggestionsResult) => (
+                <Combobox.Option
+                  className={({ active }) =>
+                    `${
+                      active
+                        ? 'text-primary-500 bg-primary-100'
+                        : 'text-dark-500'
+                    }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
+                  }
+                  key={item.PlaceId}
+                  value={item}
+                >
+                  {item.Text}
+                </Combobox.Option>
+              ))
+            )}
+          </Combobox.Options>
+        )}
       </Combobox>
       <ul className="flex items-center justify-center flex-wrap gap-3 mt-5 max-w-3xl">
         {tags.map((tag, index) => (
