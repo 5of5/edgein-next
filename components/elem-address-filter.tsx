@@ -39,25 +39,29 @@ const ElemAddressFilter: FC<Props> = ({ value, onChange }) => {
           placeholder="Enter an address"
           onChange={onInputChange}
         />
-        <Combobox.Options className=" absolute z-50 top-10 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
-          {isLoadingPlaceSuggestions ? (
-            <p className="text-sm p-2 animate-pulse">Searching location...</p>
-          ) : (
-            options.map((item: SearchForSuggestionsResult) => (
-              <Combobox.Option
-                className={({ active }) =>
-                  `${
-                    active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
-                  }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
-                }
-                key={item.PlaceId}
-                value={item}
-              >
-                {item.Text}
-              </Combobox.Option>
-            ))
-          )}
-        </Combobox.Options>
+        {(isLoadingPlaceSuggestions || options.length > 0) && (
+          <Combobox.Options className=" absolute z-50 top-10 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+            {isLoadingPlaceSuggestions ? (
+              <p className="text-sm p-2 animate-pulse">Searching location...</p>
+            ) : (
+              options.map((item: SearchForSuggestionsResult) => (
+                <Combobox.Option
+                  className={({ active }) =>
+                    `${
+                      active
+                        ? 'text-primary-500 bg-primary-100'
+                        : 'text-dark-500'
+                    }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
+                  }
+                  key={item.PlaceId}
+                  value={item}
+                >
+                  {item.Text}
+                </Combobox.Option>
+              ))
+            )}
+          </Combobox.Options>
+        )}
       </Combobox>
     </div>
   );

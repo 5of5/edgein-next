@@ -1,16 +1,16 @@
-import CookieService from '../utils/cookie';
+import CookieService from '@/utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
-import { verify } from '../utils/googlebot-verify';
+import { verify } from '@/utils/googlebot-verify';
 
 const USAGE_LIMIT = 10;
 
 const getIp = (req: NextRequest) => {
-  let ip = req.ip ?? req.headers.get('x-real-ip');
+  let ip = req.ip ?? req.headers.get('x-real-ip') ?? undefined;
   const forwardedFor = req.headers.get('x-forwarded-for');
   if (!ip && forwardedFor) {
-    ip = forwardedFor.split(',').at(0) ?? 'Unknown';
+    ip = forwardedFor.split(',').at(0);
   }
-  return ip ?? 'Unknown';
+  return ip;
 };
 
 export async function middleware(req: NextRequest) {
