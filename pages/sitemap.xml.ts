@@ -1,3 +1,4 @@
+import { query } from '@/graphql/hasuraAdmin';
 import {
   GetSiteMapAggregatesDocument,
   GetSiteMapAggregatesQuery,
@@ -59,11 +60,8 @@ function SiteMap() {
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const { data } = await runGraphQl<GetSiteMapAggregatesQuery>(
-    GetSiteMapAggregatesDocument,
-    {},
-    undefined,
-    true,
+  const { data } = await query<GetSiteMapAggregatesQuery>(
+    { query: GetSiteMapAggregatesDocument, variables: { }},
   );
 
   ctx.res.setHeader('Content-Type', 'text/xml');
