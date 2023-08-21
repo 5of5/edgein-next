@@ -1,37 +1,14 @@
-import { runGraphQl } from '@/utils';
-import { GetServerSidePropsContext } from 'next';
 import { escape } from 'lodash';
 import { query } from '@/graphql/hasuraAdmin';
 
 export const PER_PAGE_LIMIT = 10_000;
 
-function generateSiteMap<T extends { slug: string | null; updated_at: string }>(
-  rootUrl: string,
-  folder: string,
-  data: T[],
-) {
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-     ${data
-       .map(({ slug, updated_at }) => {
-         return slug
-           ? `
-       <url><loc>${rootUrl}/${folder}/${escape(
-               slug,
-             )}</loc><lastmod>${updated_at}</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-     `
-           : '';
-       })
-       .join('')}
-   </urlset>
- `;
-}
+export const getRootUrl = () => process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : process.env.NODE_ENV === 'production' ? 'https://edgein.io' : 'http://localhost:3000';
 
-export async function generateXMLSiteMap<
+export async function generateXMLSiteMapPages<
   T,
   Arr extends { slug: string | null; updated_at: string },
 >(
-  ctx: GetServerSidePropsContext,
   graphqlQuery: string,
   graphqlAccessor: (result?: T) => Arr[],
   folder: string,
@@ -43,20 +20,12 @@ export async function generateXMLSiteMap<
   );
 
   const array = graphqlAccessor(data);
+  const rootUrl = getRootUrl();
 
-  // We generate the XML sitemap with the posts data
-  const sitemap = generateSiteMap(
-    `https://${process.env.NEXT_PUBLIC_VERCEL_URL!}`,
-    folder,
-    array || [],
-  );
 
-  ctx.res.setHeader('Content-Type', 'text/xml');
-  // we send the XML to the browser
-  ctx.res.write(sitemap);
-  ctx.res.end();
 
-  return {
-    props: {},
-  };
+  return array.map(({ slug, updated_at }) => ({
+    loc: `${rootUrl}/${folder}/${escape(slug || '')}`,
+    lastmod: updated_at,
+  }));
 }

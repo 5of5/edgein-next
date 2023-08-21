@@ -8,8 +8,9 @@ import {
   GetVcFirmsPathDocument,
   GetVcFirmsPathQuery,
 } from '@/graphql/types';
-import { generateXMLSiteMap } from '@/utils/sitemap';
+import { generateXMLSiteMapPages } from '@/utils/sitemap';
 import { GetServerSidePropsContext } from 'next';
+import { getServerSideSitemapLegacy } from 'next-sitemap'
 
 function SiteMap() {
   // getServerSideProps will do the heavy lifting
@@ -19,43 +20,41 @@ export async function getServerSideProps(
   ctx: GetServerSidePropsContext & { params: { offset: string; type: string } },
 ) {
   const offset = parseInt(ctx.params.offset) || 0;
+  let fields: {
+    loc: string,
+    lastmod: string,
+  }[] = []
   switch (ctx.params.type) {
     case 'companies':
-      return generateXMLSiteMap(
-        ctx,
+      fields = await generateXMLSiteMapPages(
         GetCompaniesPathsDocument,
         (data?: GetCompaniesPathsQuery) => data?.companies || [],
         ctx.params.type,
         offset,
       );
     case 'events':
-      return generateXMLSiteMap(
-        ctx,
+      fields = await generateXMLSiteMapPages(
         GetEventsPathsDocument,
         (data?: GetEventsPathsQuery) => data?.events || [],
         ctx.params.type,
         offset,
       );
     case 'investors':
-      return generateXMLSiteMap(
-        ctx,
+      fields = await generateXMLSiteMapPages(
         GetVcFirmsPathDocument,
         (data?: GetVcFirmsPathQuery) => data?.vc_firms || [],
         ctx.params.type,
         offset,
       );
     case 'people':
-      return generateXMLSiteMap(
-        ctx,
+      fields = await generateXMLSiteMapPages(
         GetPersonsPathDocument,
         (data?: GetPersonsPathQuery) => data?.people || [],
         ctx.params.type,
         offset,
       );
   }
-  return {
-    props: {},
-  };
+  return getServerSideSitemapLegacy(ctx, fields)
 }
 
 export default SiteMap;
