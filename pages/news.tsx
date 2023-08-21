@@ -161,7 +161,9 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
-            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            {!selectedTab?.value && (
+              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            )}
           </div>
         </div>
 

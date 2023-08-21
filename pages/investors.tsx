@@ -397,24 +397,6 @@ const Investors: NextPage<Props> = ({
                     }}
                   />
                 ))}
-
-                <InvestorsByFilter
-                  headingText={`Just acquired`}
-                  tagOnClick={filterByTag}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={tableLayout}
-                  filters={{
-                    _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
-                      {
-                        status_tags: {
-                          _contains: 'Acquired',
-                        },
-                      },
-                    ],
-                  }}
-                />
               </div>
             )}
 
@@ -456,7 +438,7 @@ const Investors: NextPage<Props> = ({
               </>
             ) : tableLayout && vcFirms?.length != 0 ? (
               <>
-                {user && (
+                {showPersonalized && (
                   <div className="text-2xl font-medium mt-4">All investors</div>
                 )}
                 <InvestorsTable
@@ -472,7 +454,7 @@ const Investors: NextPage<Props> = ({
               </>
             ) : (
               <>
-                {user && (
+                {showPersonalized && (
                   <div className="text-2xl font-medium my-4">All investors</div>
                 )}
                 <div

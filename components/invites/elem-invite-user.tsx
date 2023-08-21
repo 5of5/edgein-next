@@ -10,13 +10,19 @@ import { ElemButton } from '../elem-button';
 import ElemInviteEmails from './elem-invite-emails';
 import { ElemInviteTeamMember } from './elem-invite-team-member';
 import { ElemInviteCompanyGroup } from './elem-invite-company-group';
+import { ElemAddressBook } from './elem-address-book';
+
+export type SelectedPeople = {
+  work_email: string;
+  personId?: number;
+  name?: string;
+  slug?: string;
+};
 
 export const ElemInviteUser = () => {
   const { user } = useUser();
 
-  const [selectedPeople, setSelectedPeople] = useState<Record<string, any>[]>(
-    [],
-  );
+  const [selectedPeople, setSelectedPeople] = useState<SelectedPeople[]>([]);
 
   const { data: invitedPeopleData, refetch: refetchInvitedPeople } =
     useGetInvitedPeopleByUserIdQuery(
@@ -27,8 +33,7 @@ export const ElemInviteUser = () => {
 
   const { data: teamMembers = [] } = useQuery(
     ['get-team-member-to-invite'],
-    async () =>
-      await fetch(`/api/get-team-member-to-invite/`).then(res => res.json()),
+    () => fetch(`/api/get-team-member-to-invite/`).then(res => res.json()),
     { enabled: Boolean(user?.person?.id) },
   );
 
@@ -60,9 +65,9 @@ export const ElemInviteUser = () => {
 
   const handleClickSendInvites = () => {
     sendInvitationEmail(
-      selectedPeople.map(item => ({
-        email: item.work_email,
-        personId: item.id && item.slug ? item.id : null,
+      selectedPeople.map(person => ({
+        email: person.work_email,
+        personId: person.personId && person.slug ? person.personId : undefined,
       })),
     );
   };
@@ -171,21 +176,22 @@ export const ElemInviteUser = () => {
                   label="Invite with email"
                   description="Search for a person or type in an email address"
                   placeholder="name@company.com"
-                  selected={selectedPeople}
-                  onChange={setSelectedPeople}
+                  selectedPeople={selectedPeople}
+                  setSelectedPeople={setSelectedPeople}
                 />
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex items-center gap-4 mt-4">
                 <ElemButton
                   btn="purple"
                   onClick={handleClickSendInvites}
                   loading={isLoading}
                   disabled={selectedPeople.length === 0}
-                  className="mt-4"
                 >
                   Invite
                 </ElemButton>
+
+                <ElemAddressBook setSelectedPeople={setSelectedPeople} />
               </div>
             </>
           )}

@@ -32,10 +32,8 @@ const PopupProvider: FC<Props> = props => {
   const router = useRouter();
 
   const [showPopup, setShowPopup] = useState<Popups>(
-    router.asPath.includes('/login/')
-      ? router.asPath.includes('?usage=true')
-        ? 'usage'
-        : 'login'
+    router.asPath.includes('/sign-in/') && router.asPath.includes('?usage=true')
+      ? 'usage'
       : false,
   );
 

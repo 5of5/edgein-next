@@ -342,7 +342,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           ) : (
             events?.length !== 0 && (
               <>
-                {user && (
+                {showPersonalized && (
                   <div className="text-2xl font-medium my-4">All Events</div>
                 )}
                 <div

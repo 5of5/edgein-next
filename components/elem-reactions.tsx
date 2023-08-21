@@ -9,7 +9,7 @@ import { EmojiHot, EmojiLike, EmojiCrap } from '@/components/emojis';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { useUser } from '@/context/user-context';
 import hashSum from 'hash-sum';
-import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 type Props = {
   className?: string;
@@ -80,9 +80,9 @@ export const ElemReaction: FC<ReactionProps> = ({
   resourceType,
   isInteractive,
 }) => {
-  const { listAndFollows, user, refreshProfile } = useUser();
+  const router = useRouter();
 
-  const { setShowPopup } = usePopup();
+  const { listAndFollows, user, refreshProfile } = useUser();
 
   const [reactionState, setReactionState] = useState(() => {
     const list = find(listAndFollows, item => {
@@ -128,7 +128,7 @@ export const ElemReaction: FC<ReactionProps> = ({
     event.preventDefault();
 
     if (!user) {
-      setShowPopup('signup');
+      router.push('/sign-in');
     } else {
       setReactionState(prev => {
         let count = prev.count + (prev.alreadyReacted ? -1 : 1);

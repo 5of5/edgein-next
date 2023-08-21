@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { SHOW_INVITE_BANNER } from '@/utils/constants';
 import { IconX, IconArrowRight } from '../icons';
 import { useUser } from '@/context/user-context';
-import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 type Props = {
   className?: string;
@@ -12,7 +12,7 @@ type Props = {
 export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   const { user } = useUser();
 
-  const { setShowPopup } = usePopup();
+  const router = useRouter();
 
   const [showBanner, setShowBanner] = useState(false);
 
@@ -36,7 +36,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   const handleClickBanner = (event: MouseEvent<HTMLAnchorElement>) => {
     if (!user) {
       event.preventDefault();
-      setShowPopup('signup');
+      router.push('/sign-in');
     }
   };
 

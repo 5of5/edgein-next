@@ -9,6 +9,7 @@ import {
   regex,
 } from 'react-admin';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
+import { SegmentOption } from '@/types/onboarding';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -2034,3 +2035,42 @@ export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
 
 export const NEW_CATEGORY_LIMIT = 33;
+
+export const segmentChoices: SegmentOption[] = [
+  {
+    title: 'Executive',
+    description: 'Company Founder, C-Suite Executive,...',
+  },
+  {
+    title: 'Investor',
+    description: 'Limited Partner, Investment Analyst,...',
+  },
+  {
+    title: 'Sales or Business Developer',
+    description: 'GTM, Sales or Business Development Manager,...',
+  },
+  {
+    title: 'Event Organizer',
+    description: 'Event Manager, Community Manager,...',
+  },
+  {
+    title: 'Creator or Publisher',
+    description: 'Journalist, PR Manager,...',
+  },
+  {
+    title: 'Team Member',
+    description: 'Product, Engineer, Designer, Operations,...',
+  },
+];
+
+export const onboardingExploreChoices = [
+  'Interesting companies',
+  'Investors and recent investments',
+  'Events in my area',
+  'Alpha market news',
+  'Something else',
+];
+
+export const ONBOARDING_DEFAULT_TAGS_LIMIT = 20;
+export const ONBOARDING_MIN_LOCATIONS = 1;
+export const ONBOARDING_MIN_TAGS = 3;

@@ -8,7 +8,7 @@ import {
   Companies,
 } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
-import { flatten, get, has, uniqBy } from 'lodash';
+import { filter, flatten, get, has, includes, reduce, uniqBy } from 'lodash';
 import { DeepPartial } from '@/types/common';
 import { ElemPhoto } from '../elem-photo';
 import { useState } from 'react';
@@ -40,13 +40,13 @@ const canSendInvestorInvitation = (
 };
 
 type SendInvitationPayload = {
-  companyId: number;
+  companyIds: number[];
 };
 
 export const ElemInviteInvestmentMembers = () => {
-  const [selectedCompany, setSelectedCompany] = useState<
-    DeepPartial<Companies> | undefined | null
-  >(undefined);
+  const [selectedCompanies, setSelectedCompanies] = useState<
+    DeepPartial<Companies>[]
+  >([]);
 
   const { user } = useUser();
 
@@ -68,34 +68,61 @@ export const ElemInviteInvestmentMembers = () => {
     unknown,
     SendInvitationPayload
   >({
-    mutationFn: ({ companyId }) =>
+    mutationFn: ({ companyIds }) =>
       fetch('/api/send-invite-to-investment-members/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ companyId }),
+        body: JSON.stringify({ companyIds }),
       }),
-    onSuccess: () => setSelectedCompany(undefined),
+    onSuccess: () => setSelectedCompanies([]),
     onSettled: () => refetchUser(),
   });
 
   const handleClick = (company: DeepPartial<Companies> | undefined | null) => {
-    if (selectedCompany === company) {
-      setSelectedCompany(undefined);
-    } else {
-      setSelectedCompany(company);
+    if (company) {
+      if (includes(selectedCompanies, company)) {
+        setSelectedCompanies(
+          filter(selectedCompanies, c => c.id !== company?.id),
+        );
+      } else {
+        setSelectedCompanies([...selectedCompanies, company]);
+      }
     }
   };
 
   const handleSendEmails = async () => {
-    if (selectedCompany?.id) {
+    if (selectedCompanies.length > 0) {
       sendInvitationEmailMutation({
-        companyId: selectedCompany.id,
+        companyIds: selectedCompanies.map(company => company.id as number),
       });
     }
   };
+
+  const handleSendAllEmails = async () => {
+    const notifiedCompanies = get(
+      userById?.users,
+      '0.feature_flags.notifiedInvestorCompanies',
+      {},
+    );
+
+    const notYetSentCompanies = filter(
+      companies,
+      c => !includes(notifiedCompanies, c),
+    );
+
+    sendInvitationEmailMutation({
+      companyIds: notYetSentCompanies.map(company => company?.id as number),
+    });
+  };
+
+  const emails = reduce(
+    selectedCompanies,
+    (acc, c) => acc + (c.teamMembers?.length ?? 0),
+    0,
+  );
 
   return (
     <div className="p-5 bg-white rounded-lg border border-black/10">
@@ -113,8 +140,8 @@ export const ElemInviteInvestmentMembers = () => {
               <div
                 key={company?.id}
                 className={`flex flex-row items-center py-2 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 hover:cursor-pointer ${
-                  selectedCompany?.id === company?.id
-                    ? 'border-primary-700'
+                  includes(selectedCompanies, company)
+                    ? 'border-primary-500'
                     : ''
                 }`}
                 onClick={() => handleClick(company)}
@@ -157,25 +184,30 @@ export const ElemInviteInvestmentMembers = () => {
           )}
         </div>
 
-        <div className="flex flex-row gap-4 mt-2">
+        <div className="flex flex-row gap-4 mt-2 items-center text-center">
           <ElemButton
             btn="purple"
             onClick={handleSendEmails}
             loading={isLoading}
-            disabled={
-              !user ||
-              selectedCompany === undefined ||
-              selectedCompany?.teamMembers?.length === 0
-            }
+            disabled={!user || selectedCompanies.length === 0 || emails === 0}
           >
             Invite
           </ElemButton>
 
-          {selectedCompany !== undefined && (
+          {selectedCompanies.length !== 0 && (
             <div className="text-sm text-slate-400 my-auto">
-              {selectedCompany?.teamMembers?.length} people will be invited
+              {emails} people will be invited
             </div>
           )}
+
+          <ElemButton
+            btn="purple"
+            onClick={handleSendAllEmails}
+            loading={isLoading}
+            disabled={!user}
+          >
+            Invite all
+          </ElemButton>
         </div>
       </div>
     </div>

@@ -35,3 +35,11 @@ query GetInvestmentRoundById($id: Int!) {
     }
   }
 }
+
+query GetInvestmentInsightByLocation($where: investment_rounds_bool_exp!) {
+  investment_rounds_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

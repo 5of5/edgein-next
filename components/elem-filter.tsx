@@ -27,6 +27,7 @@ import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
 import { ElemFilterLocation } from './elem-filter-location';
 import { ElemAddFilter } from './elem-add-filter';
+import { getGeometryPlace } from '@/utils/helpers';
 
 type Props = {
   className?: string;
@@ -127,7 +128,7 @@ export const ElemFilter: FC<Props> = ({
         ...prev?.address,
         value: {
           ...value,
-          geometry: { type: 'Point', coordinates: value.Geometry?.Point },
+          geometry: getGeometryPlace(value),
         },
       },
     }));

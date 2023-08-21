@@ -5,6 +5,8 @@ import {
   GROUP_NAME_MAX_LENGTH,
   GROUP_DESCRIPTION_MAX_LENGTH,
   EMAIL_MAX_LENGTH,
+  ONBOARDING_MIN_LOCATIONS,
+  ONBOARDING_MIN_TAGS,
 } from './constants';
 
 export const findPeopleByEmailSchema = z
@@ -24,7 +26,7 @@ export const inviteToEdgeInPayloadSchema = z
         EMAIL_MAX_LENGTH,
         `Email should be maximum of ${EMAIL_MAX_LENGTH} characters.`,
       ),
-    personId: z.number().nullable(),
+    personId: z.number().optional(),
   })
   .array();
 
@@ -59,5 +61,46 @@ export const listSchema = z.object({
     .max(
       LIST_NAME_MAX_LENGTH,
       `List name should be maximum of ${LIST_NAME_MAX_LENGTH} characters.`,
+    ),
+});
+
+export const getLocationInsightSchema = z.object({
+  segment: z.string().nonempty('Segment is required'),
+  locations: z.string().nonempty('Location is required'),
+});
+
+export const addOnboardingSchema = z.object({
+  segment: z.string().nonempty('Segment is required'),
+  exploreChoice: z.string().nonempty('Explore choice is required'),
+  locationTags: z
+    .array(z.string())
+    .min(
+      ONBOARDING_MIN_LOCATIONS,
+      `Should have at least ${ONBOARDING_MIN_LOCATIONS} location`,
+    ),
+  locationDetails: z
+    .array(
+      z.object({
+        label: z.string().optional(),
+        city: z.string().optional(),
+        state: z.string().optional(),
+        county: z.string().optional(),
+        country: z.string().optional(),
+        categories: z.array(z.string()).optional(),
+        geometry: z.object({
+          type: z.string(),
+          coordinates: z.array(z.number()),
+        }),
+      }),
+    )
+    .min(
+      ONBOARDING_MIN_LOCATIONS,
+      `Should have at least ${ONBOARDING_MIN_LOCATIONS} location`,
+    ),
+  industryTags: z
+    .array(z.string())
+    .min(
+      ONBOARDING_MIN_TAGS,
+      `Should have at least ${ONBOARDING_MIN_TAGS} tags`,
     ),
 });

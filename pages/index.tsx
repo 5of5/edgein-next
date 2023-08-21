@@ -8,9 +8,11 @@ import { Tab, Transition } from '@headlessui/react';
 import { useIntercom } from 'react-use-intercom';
 import parse from 'html-react-parser';
 import { usePopup } from '@/context/popup-context';
+import { useRouter } from 'next/router';
 
 const Home = () => {
   const { user, loading } = useUser();
+  const router = useRouter();
 
   const { setShowPopup } = usePopup();
 
@@ -194,7 +196,7 @@ const Home = () => {
             <div className="mt-6">
               <ElemButton
                 arrow
-                onClick={() => setShowPopup('signup')}
+                onClick={() => router.push('/companies')}
                 btn="primary"
                 size="lg"
               >
@@ -548,7 +550,7 @@ const Home = () => {
 
             <div className="mt-8 flex flex-col justify-center space-y-6 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
               <ElemButton
-                onClick={() => setShowPopup('signup')}
+                onClick={() => router.push('/companies')}
                 btn="amber"
                 arrow
                 className="whitespace-nowrap w-fit mx-auto sm:mx-0"
