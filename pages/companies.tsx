@@ -390,7 +390,7 @@ const Companies: NextPage<Props> = ({
               ))}
 
               <CompaniesByFilter
-                headingText={`Just acquired`}
+                headingText={`Recently acquired`}
                 tagOnClick={filterByTag}
                 itemsPerPage={ITEMS_PER_PAGE}
                 isTableView={tableLayout}
@@ -446,7 +446,7 @@ const Companies: NextPage<Props> = ({
             </>
           ) : tableLayout && companies?.length != 0 ? (
             <>
-              {user && (
+              {showPersonalized && (
                 <div className="text-2xl font-medium mt-4">All companies</div>
               )}
               <CompaniesTable
@@ -462,7 +462,7 @@ const Companies: NextPage<Props> = ({
             </>
           ) : (
             <>
-              {user && (
+              {showPersonalized && (
                 <div className="text-2xl font-medium my-4">All companies</div>
               )}
               <div

@@ -58,8 +58,8 @@ locals {
         ],
         interval : 30,
         timeout : 5,
-        retries : 3,
-        startPeriod : 60
+        retries : 1,
+        startPeriod : 120
       },
       environment : local.ecr_environment,
       secrets : local.ecr_secrets,
@@ -95,11 +95,13 @@ resource "aws_ecs_task_definition" "hasura" {
 }
 
 resource "aws_ecs_service" "hasura" {
+  depends_on = [aws_db_instance.main]
+
   name                              = "${local.project_name}-hasura"
   cluster                           = data.terraform_remote_state.shared.outputs.aws_ecs_cluster_edgein.id
   task_definition                   = aws_ecs_task_definition.hasura.arn
   desired_count                     = 1
-  health_check_grace_period_seconds = 30
+  health_check_grace_period_seconds = 240
   wait_for_steady_state             = true
 
   capacity_provider_strategy {

@@ -1,7 +1,17 @@
 import CookieService from '../utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
+import { verify } from '../utils/googlebot-verify';
 
 const USAGE_LIMIT = 10;
+
+const getIp = (req: NextRequest) => {
+  let ip = req.ip ?? req.headers.get('x-real-ip');
+  const forwardedFor = req.headers.get('x-forwarded-for');
+  if (!ip && forwardedFor) {
+    ip = forwardedFor.split(',').at(0) ?? 'Unknown';
+  }
+  return ip ?? 'Unknown';
+};
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
@@ -9,8 +19,9 @@ export async function middleware(req: NextRequest) {
     CookieService.getAuthToken(req.cookies),
   );
 
+  // we want users to fill onboarding again
   if (userExists && url.pathname === '/') {
-    if (!userExists.onboarding_information) {
+    if (!userExists.onboarding_information?.locationDetails) {
       return NextResponse.redirect(new URL('/onboarding', req.url));
     }
     return NextResponse.rewrite(new URL('/companies', req.url));
@@ -65,6 +76,13 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.next();
   }
+  if (!userExists) {
+    const isGoogle = verify(getIp(req));
+    if (isGoogle) {
+      return NextResponse.next();
+    }
+  }
+
   let user;
   const redirectPath = url.pathname.startsWith('/api')
     ? ''
@@ -98,7 +116,8 @@ export async function middleware(req: NextRequest) {
     } else {
       if (
         url.pathname === '/sign-in/' ||
-        (url.pathname === '/onboarding/' && user.onboarding_information)
+        (url.pathname === '/onboarding/' &&
+          user.onboarding_information?.locationDetails)
       ) {
         return NextResponse.redirect(new URL('/companies', req.url));
       }
@@ -106,7 +125,7 @@ export async function middleware(req: NextRequest) {
       if (
         !url.pathname.startsWith('/api/') &&
         url.pathname !== '/onboarding/' &&
-        !user.onboarding_information
+        !user.onboarding_information?.locationDetails
       ) {
         return NextResponse.redirect(new URL('/onboarding', req.url));
       }
