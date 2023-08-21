@@ -22,6 +22,7 @@ import {
 import { useUser } from '@/context/user-context';
 import { GENERAL_ERROR_MESSAGE, ONBOARDING_QUESTION } from '@/utils/constants';
 import useToast from '@/hooks/use-toast';
+import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 import { getGeometryPlace } from '@/utils/helpers';
 
 export default function Onboarding() {
@@ -131,47 +132,39 @@ export default function Onboarding() {
   return (
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
       <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
-        <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-32 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-          <nav
-            className="fixed top-0 left-0 right-0 bg-white z-50 px-5 py-4 flex items-center justify-center border-b border-slate-200"
-            aria-label="Global"
-          >
-            <Link href="/" passHref>
-              <a className="w-auto">
-                <ElemLogo mode="logo" className="h-6 w-auto" />
-              </a>
-            </Link>
+        <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-20 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+          <ElemSignInHeader
+            rightComponent={
+              currentStep >= 4 ? (
+                <ElemButton
+                  btn="white"
+                  loading={isLoadingSaveToList || isSubmittingOnboarding}
+                  onClick={handleSkip}
+                >
+                  Skip
+                </ElemButton>
+              ) : null
+            }
+          />
 
-            {currentStep >= 4 && (
-              <ElemButton
-                btn="white"
-                className="!absolute right-5"
-                loading={isLoadingSaveToList || isSubmittingOnboarding}
-                onClick={handleSkip}
-              >
-                Skip
-              </ElemButton>
-            )}
-          </nav>
-
-          <h3 className="text-lg font-medium text-slate-900">
+          <h3 className="text-lg font-medium text-gray-900">
             {currentStep !== 5
               ? "Let's personalize your EdgeIn"
               : 'One last step...'}
           </h3>
 
-          <div className="flex items-center gap-3 mt-3">
-            <p className="text-slate-500 text-xs">{`Step ${currentStep} of 5`}</p>
-            <ul className="flex gap-2">
+          <div className="flex items-center gap-2 mt-3">
+            <p className="text-slate-500 text-[10px]">{`Step ${currentStep} of 5`}</p>
+            <ul className="flex gap-1.5">
               {Array.from({ length: 5 }, (_, i) => (
                 <li
                   key={i}
                   className={`${
                     i + 1 === currentStep ? 'bg-primary-100' : 'bg-transparent'
-                  } relative w-8 h-8 rounded-full `}
+                  } relative w-5 h-5 rounded-full `}
                 >
                   <span
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full ${
+                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full ${
                       i + 1 <= currentStep ? 'bg-primary-500' : 'bg-slate-200'
                     }`}
                   />
