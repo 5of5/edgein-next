@@ -1,6 +1,7 @@
 import { runGraphQl } from '@/utils';
 import { GetServerSidePropsContext } from 'next';
 import { escape } from 'lodash';
+import { query } from '@/graphql/hasuraAdmin';
 
 export const PER_PAGE_LIMIT = 10_000;
 
@@ -37,11 +38,8 @@ export async function generateXMLSiteMap<
   offset: number,
 ) {
   // We make an API call to gather the URLs for our site
-  const { data } = await runGraphQl<T>(
-    graphqlQuery,
-    { limit: PER_PAGE_LIMIT, offset: offset * PER_PAGE_LIMIT },
-    undefined,
-    true,
+  const { data } = await query<T>(
+    { query: graphqlQuery, variables: { limit: PER_PAGE_LIMIT, offset: offset * PER_PAGE_LIMIT }},
   );
 
   const array = graphqlAccessor(data);
