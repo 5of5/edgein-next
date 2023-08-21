@@ -3,7 +3,12 @@ import { query } from '@/graphql/hasuraAdmin';
 
 export const PER_PAGE_LIMIT = 10_000;
 
-export const getRootUrl = () => process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : process.env.NODE_ENV === 'production' ? 'https://edgein.io' : 'http://localhost:3000';
+export const getRootUrl = () =>
+  process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : process.env.NODE_ENV === 'production'
+    ? 'https://edgein.io'
+    : 'http://localhost:3000';
 
 export async function generateXMLSiteMapPages<
   T,
@@ -15,14 +20,13 @@ export async function generateXMLSiteMapPages<
   offset: number,
 ) {
   // We make an API call to gather the URLs for our site
-  const { data } = await query<T>(
-    { query: graphqlQuery, variables: { limit: PER_PAGE_LIMIT, offset: offset * PER_PAGE_LIMIT }},
-  );
+  const { data } = await query<T>({
+    query: graphqlQuery,
+    variables: { limit: PER_PAGE_LIMIT, offset: offset * PER_PAGE_LIMIT },
+  });
 
   const array = graphqlAccessor(data);
   const rootUrl = getRootUrl();
-
-
 
   return array.map(({ slug, updated_at }) => ({
     loc: `${rootUrl}/${folder}/${escape(slug || '')}`,

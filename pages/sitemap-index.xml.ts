@@ -1,9 +1,9 @@
 import { PUBLIC_PAGES } from './_middleware';
-import { getServerSideSitemapLegacy } from 'next-sitemap'
-import { GetServerSideProps } from 'next'
+import { getServerSideSitemapLegacy } from 'next-sitemap';
+import { GetServerSideProps } from 'next';
 import { getRootUrl } from '@/utils/sitemap';
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
   // Method to source urls from cms
   // const urls = await fetch('https//example.com/api')
 
@@ -16,8 +16,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // priority
   }));
 
-  return getServerSideSitemapLegacy(ctx, fields)
-}
+  return getServerSideSitemapLegacy(ctx, fields);
+};
 
 // Default export to prevent next.js errors
 export default function SiteMapIndex() {}

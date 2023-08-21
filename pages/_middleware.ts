@@ -16,7 +16,7 @@ export const PUBLIC_PAGES = [
   `/brand-assets/`,
   `/team/`,
   `/404/`,
-]
+];
 
 const PUBLIC_API = [
   `/api/login-attempt/`,
@@ -36,7 +36,7 @@ const PUBLIC_API = [
   `/api/batch-job/`,
   `/api/data-runs/`,
   `/api/query/completions/`,
-]
+];
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();

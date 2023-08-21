@@ -10,7 +10,7 @@ import {
 } from '@/graphql/types';
 import { generateXMLSiteMapPages } from '@/utils/sitemap';
 import { GetServerSidePropsContext } from 'next';
-import { getServerSideSitemapLegacy } from 'next-sitemap'
+import { getServerSideSitemapLegacy } from 'next-sitemap';
 
 function SiteMap() {
   // getServerSideProps will do the heavy lifting
@@ -21,9 +21,9 @@ export async function getServerSideProps(
 ) {
   const offset = parseInt(ctx.params.offset) || 0;
   let fields: {
-    loc: string,
-    lastmod: string,
-  }[] = []
+    loc: string;
+    lastmod: string;
+  }[] = [];
   switch (ctx.params.type) {
     case 'companies':
       fields = await generateXMLSiteMapPages(
@@ -32,6 +32,7 @@ export async function getServerSideProps(
         ctx.params.type,
         offset,
       );
+      break;
     case 'events':
       fields = await generateXMLSiteMapPages(
         GetEventsPathsDocument,
@@ -39,6 +40,7 @@ export async function getServerSideProps(
         ctx.params.type,
         offset,
       );
+      break;
     case 'investors':
       fields = await generateXMLSiteMapPages(
         GetVcFirmsPathDocument,
@@ -46,6 +48,7 @@ export async function getServerSideProps(
         ctx.params.type,
         offset,
       );
+      break;
     case 'people':
       fields = await generateXMLSiteMapPages(
         GetPersonsPathDocument,
@@ -53,8 +56,9 @@ export async function getServerSideProps(
         ctx.params.type,
         offset,
       );
+      break;
   }
-  return getServerSideSitemapLegacy(ctx, fields)
+  return getServerSideSitemapLegacy(ctx, fields);
 }
 
 export default SiteMap;
