@@ -33,15 +33,19 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
   };
 
   const onSearchAddress = async (keyword: string) => {
-    const input = {
-      IndexName: locationService.getPlaceIndex(),
-      Text: keyword,
-    };
+    if (keyword.trim()) {
+      const input = {
+        IndexName: locationService.getPlaceIndex(),
+        Text: keyword,
+      };
 
-    const placeSuggestionResponse =
-      await locationService.searchPlaceSuggestions(input);
+      const placeSuggestionResponse =
+        await locationService.searchPlaceSuggestions(input);
 
-    setOptions(placeSuggestionResponse.Results);
+      setOptions(placeSuggestionResponse.Results);
+    } else {
+      setOptions([]);
+    }
   };
 
   const debouncedSearch = useMemo(
