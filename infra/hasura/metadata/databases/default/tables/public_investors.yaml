@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: investors
+  schema: public
 object_relationships:
   - name: person
     using:
@@ -22,7 +22,6 @@ insert_permissions:
         - title
         - id
         - external_id
-      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:

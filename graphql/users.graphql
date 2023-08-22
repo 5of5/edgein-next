@@ -3,6 +3,7 @@ query GetUserProfile($id: Int!) {
     id
     credits
     billing_org_id
+    preferences
     organization_companies {
       id
       company {
@@ -222,6 +223,7 @@ query GetUserById($id: Int) {
     additional_emails
     onboarding_information
     feature_flags
+    preferences
   }
 }
 
@@ -525,6 +527,27 @@ mutation UpdateUserFeatureFlags($id: Int!, $feature_flags: jsonb) {
         id
       }
       feature_flags
+    }
+  }
+}
+
+mutation UpdateUserPreferences($id: Int!, $preferences: jsonb!) {
+  update_users(
+    where: { id: { _eq: $id } }
+    _set: { preferences: $preferences }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      preferences
     }
   }
 }
