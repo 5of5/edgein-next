@@ -528,7 +528,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
               href={`/people/${users?.users_by_pk?.person?.slug}/`}
               btn="purple"
               arrow
-              className="mt-2 sm:mt-0">
+              className="mt-2 sm:mt-0"
+            >
               View Profile
             </ElemButton>
           )}
@@ -550,7 +551,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
                 <ElemButton
                   btn="primary-light"
                   onClick={() => setShowPopup('search')}
-                  className="mt-4">
+                  className="mt-4"
+                >
                   <IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
                   Search your name
                 </ElemButton>

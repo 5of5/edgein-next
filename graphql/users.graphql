@@ -531,9 +531,7 @@ mutation UpdateUserFeatureFlags($id: Int!, $feature_flags: jsonb) {
   }
 }
 
-mutation UpdateUserPreferences(
-  $id: Int!, $preferences: jsonb!
-) {
+mutation UpdateUserPreferences($id: Int!, $preferences: jsonb!) {
   update_users(
     where: { id: { _eq: $id } }
     _set: { preferences: $preferences }
