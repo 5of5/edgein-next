@@ -3,17 +3,20 @@ import { CompaniesList } from '@/components/my-list/companies-list';
 import { InvestorsList } from '@/components/my-list/investors-list';
 import { ElemListInformation } from '@/components/my-list/elem-list-information';
 import { IconCustomList } from '@/components/icons';
-
 import {
   useGetListUserGroupsQuery,
   List_User_Groups_Bool_Exp,
   List_Members_Bool_Exp,
   useGetListMembersQuery,
+  GetListsDocument,
+  GetListsQuery,
+  Lists_Bool_Exp,
 } from '@/graphql/types';
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { find } from 'lodash';
+import { runGraphQl } from '@/utils';
 import {
   getNameFromListName,
   getUserIdFromListCreator,
@@ -307,7 +310,6 @@ const MyList: NextPage<Props> = () => {
           <PeopleList listId={theListId} listName={listName} />
         </>
       )}
-
       {theListCreatorId != user?.id && !isFollowing && (
         <div className="mx-4">
           <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
@@ -329,10 +331,45 @@ const MyList: NextPage<Props> = () => {
           </div>
         </div>
       )}
-
       <Toaster />
     </DashboardLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const { data: lists } = await runGraphQl<GetListsQuery>(
+    GetListsDocument,
+    {
+      limit: null,
+      offset: null,
+      where: {
+        id: { _eq: Number(context.params?.listId || 0) },
+      } as Lists_Bool_Exp,
+    },
+    context.req.cookies,
+  );
+
+  if (!lists?.lists[0]) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const list = lists?.lists[0];
+
+  // let metaDescription = null;
+  // if (list?.description) {
+  //   metaDescription = list.description;
+  // }
+
+  return {
+    props: {
+      metaTitle: list
+        ? `${getNameFromListName(list)} - Edgein.io`
+        : 'List - Edgein.io',
+      //metaDescription: 'List description',
+    },
+  };
 };
 
 export default MyList;

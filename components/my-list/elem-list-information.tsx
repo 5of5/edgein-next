@@ -24,6 +24,7 @@ import moment from 'moment-timezone';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
+import { ElemSocialShare } from '../elem-social-share';
 
 type Props = {
   list: any;
@@ -117,7 +118,7 @@ export const ElemListInformation: FC<Props> = ({
           {isListCreator ? (
             <button
               type="button"
-              className="inline-flex items-start lg:items-center justify-start hover:underline"
+              className="inline-flex items-start lg:items-center justify-start underline hover:no-underline"
               onClick={onOpenSettingsDialog}
             >
               <span className="font-medium text-left text-xl capitalize">
@@ -157,6 +158,10 @@ export const ElemListInformation: FC<Props> = ({
 
         {isCustomList && (
           <div className="flex items-center gap-x-2 shrink-0">
+            <ElemSocialShare
+              resourceName={`"${listName}" list`}
+              resourceTwitterUrl={null}
+            />
             {isListCreator && (
               <ElemButton
                 btn="default"
@@ -182,7 +187,6 @@ export const ElemListInformation: FC<Props> = ({
                 loading={isFollowButtonLoading}
                 onClick={onFollowList}
               >
-                <IconCheck className="w-5 h-5 mr-1" />
                 Following
               </ElemButton>
             )}
