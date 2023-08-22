@@ -160,49 +160,45 @@ export default function Account() {
         </div>
 
         <EditSection heading="Invite a friend">
-          <h3 className="font-medium">
-            Get 1 month free for every person you invite
-          </h3>
-          <p className="mt-2 text-gray-600 text-sm">
-            Invite your friends to EdgeIn and for each friend who signs up
-            through your referral, you&apos;ll receive $14.99 in credit.
-            That&apos;s 1 month of EdgeIn Contributor for free! The more people
-            who sign up, the more credit you&apos;ll get.
-          </p>
-
-          {userProfile?.users_by_pk?.credits > 0 &&
-            !user?.entitlements.viewEmails && (
-              <p className="mt-2 text-primary-500">
-                You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
-                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
-                out and log back in to activate.
+          <div className="grid gap-y-6">
+            <div>
+              <h3 className="font-medium">
+                Get 1 month free for every person you invite
+              </h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                Invite your friends to EdgeIn and for each friend who signs up
+                through your referral, you&apos;ll receive $14.99 in credit.
+                That&apos;s 1 month of EdgeIn Contributor for free! The more
+                people who sign up, the more credit you&apos;ll get.
               </p>
-            )}
+            </div>
 
-          {userProfile?.users_by_pk?.credits > 0 &&
-            user?.entitlements.viewEmails && (
-              <p className="mt-2 text-primary-500">
-                You have EdgeIn Contributor active for{' '}
-                {numberOfMonthsFromCredits}{' '}
-                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
-              </p>
-            )}
+            {userProfile?.users_by_pk?.credits > 0 &&
+              !user?.entitlements.viewEmails && (
+                <p className="mt-2 text-primary-500">
+                  You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
+                  {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
+                  out and log back in to activate.
+                </p>
+              )}
 
-          <div className="mt-6">
+            {userProfile?.users_by_pk?.credits > 0 &&
+              user?.entitlements.viewEmails && (
+                <p className="mt-2 text-primary-500">
+                  You have EdgeIn Contributor active for{' '}
+                  {numberOfMonthsFromCredits}{' '}
+                  {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
+                </p>
+              )}
+
             <ElemInviteUser />
-          </div>
 
-          {isInvestor && (
-            <div className="mt-6">
-              <ElemInviteInvestmentMembers />
-            </div>
-          )}
+            {isInvestor && <ElemInviteInvestmentMembers />}
 
-          {user && user.reference_id && (
-            <div className="mt-6">
+            {user && user.reference_id && (
               <ElemInviteLinks user={user} personSlug={personSlug} />
-            </div>
-          )}
+            )}
+          </div>
         </EditSection>
       </div>
 
@@ -320,23 +316,27 @@ export default function Account() {
             </EditSection>
           )}
 
-          <EditSection heading="Subscription">
+          <EditSection
+            heading="Subscription"
+            right={
+              userProfile &&
+              (userProfile.users_by_pk?.billing_org_id ||
+                userProfile.users_by_pk?.credits > 0) ? (
+                <ElemButton onClick={onBillingClick} btn="default" className="">
+                  Manage subscription
+                </ElemButton>
+              ) : (
+                <></>
+              )
+            }
+          >
             {userProfile &&
             (userProfile.users_by_pk?.billing_org_id ||
               userProfile.users_by_pk?.credits > 0) ? (
               <div>
                 <div className="flex items-center space-x-1">
                   <IconContributor className="h-6 w-6 text-primary-500" />
-                  <p className="text-slate-600">EdgeIn Contributor</p>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <ElemButton
-                    onClick={onBillingClick}
-                    btn="primary-light"
-                    className="mt-2 text-primary-500"
-                  >
-                    <span>Manage</span>
-                  </ElemButton>
+                  <p className="text-sm text-gray-600">EdgeIn Contributor</p>
                 </div>
               </div>
             ) : (
