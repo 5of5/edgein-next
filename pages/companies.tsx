@@ -44,6 +44,7 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import moment from 'moment-timezone';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -109,10 +110,23 @@ const Companies: NextPage<Props> = ({
   const offset =
     user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
-  const defaultFilters = [
+  const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
     { slug: { _neq: '' } },
     { library: { _contains: selectedLibrary } },
   ];
+
+  if (selectedStatusTag?.value !== 'Dead') {
+    defaultFilters.push({
+      _or: [
+        {
+          _not: {
+            status_tags: { _contains: 'Dead' },
+          },
+        },
+        { status_tags: { _is_null: true } },
+      ],
+    });
+  }
 
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: defaultFilters,
@@ -343,6 +357,30 @@ const Companies: NextPage<Props> = ({
               {personalizedTags.locationTags.map((location, index) => (
                 <CompaniesByFilter
                   key={`${location}-${index}`}
+                  headingText={`Recently updated in ${location}`}
+                  tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+
+              {personalizedTags.locationTags.map((location, index) => (
+                <CompaniesByFilter
+                  key={`${location}-${index}`}
                   headingText={`New in ${location}`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -350,6 +388,13 @@ const Companies: NextPage<Props> = ({
                   filters={{
                     _and: [
                       ...defaultFilters,
+                      {
+                        created_at: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format('YYYY-MM-DD'),
+                        },
+                      },
                       {
                         location_json: {
                           _cast: {
@@ -390,10 +435,58 @@ const Companies: NextPage<Props> = ({
               ))}
 
               <CompaniesByFilter
+                headingText="Recently funded"
+                tagOnClick={filterByTag}
+                itemsPerPage={ITEMS_PER_PAGE}
+                isTableView={tableLayout}
+                orderBy={{
+                  investment_rounds_aggregate: {
+                    sum: {
+                      amount: Order_By.Desc,
+                    },
+                  },
+                }}
+                filters={{
+                  _and: [
+                    ...defaultFilters,
+                    {
+                      investment_rounds: {
+                        round_date: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format('YYYY-MM-DD'),
+                        },
+                      },
+                    },
+                  ],
+                }}
+              />
+
+              <CompaniesByFilter
+                headingText="Recently founded"
+                tagOnClick={filterByTag}
+                itemsPerPage={ITEMS_PER_PAGE}
+                isTableView={tableLayout}
+                filters={{
+                  _and: [
+                    ...defaultFilters,
+                    {
+                      year_founded: {
+                        _gte: moment().subtract(1, 'year').year().toString(),
+                      },
+                    },
+                  ],
+                }}
+              />
+
+              <CompaniesByFilter
                 headingText={`Recently acquired`}
                 tagOnClick={filterByTag}
                 itemsPerPage={ITEMS_PER_PAGE}
                 isTableView={tableLayout}
+                orderBy={{
+                  created_at: Order_By.Desc,
+                }}
                 filters={{
                   _and: [
                     ...defaultFilters,
@@ -530,7 +623,20 @@ export const getServerSideProps: GetServerSideProps = async context => {
       offset: 0,
       limit: 50,
       where: {
-        _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
+        _and: [
+          { slug: { _neq: '' } },
+          {
+            _or: [
+              {
+                _not: {
+                  status_tags: { _contains: 'Dead' },
+                },
+              },
+              { status_tags: { _is_null: true } },
+            ],
+          },
+          { library: { _contains: 'Web3' } },
+        ],
       },
       orderBy: [{ name: Order_By.Asc }],
     },

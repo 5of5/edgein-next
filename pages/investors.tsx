@@ -44,6 +44,7 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import moment from 'moment-timezone';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -109,10 +110,23 @@ const Investors: NextPage<Props> = ({
   const offset =
     user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
-  const defaultFilters = [
+  const defaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
     { slug: { _neq: '' } },
     { library: { _contains: selectedLibrary } },
   ];
+
+  if (selectedStatusTag?.value !== 'Dead') {
+    defaultFilters.push({
+      _or: [
+        {
+          _not: {
+            status_tags: { _contains: 'Dead' },
+          },
+        },
+        { status_tags: { _is_null: true } },
+      ],
+    });
+  }
 
   const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
     _and: defaultFilters,
@@ -350,7 +364,7 @@ const Investors: NextPage<Props> = ({
                 {personalizedTags.locationTags.map(location => (
                   <InvestorsByFilter
                     key={location}
-                    headingText={`New in ${location}`}
+                    headingText={`Recently updated in ${location}`}
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={tableLayout}
@@ -397,6 +411,52 @@ const Investors: NextPage<Props> = ({
                     }}
                   />
                 ))}
+
+                {personalizedTags.locationTags.map(location => (
+                  <InvestorsByFilter
+                    key={location}
+                    headingText="Recently active investors"
+                    tagOnClick={filterByTag}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={tableLayout}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          investments: {
+                            investment_round: {
+                              round_date: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format('YYYY-MM-DD'),
+                              },
+                            },
+                          },
+                        },
+                        {
+                          location_json: {
+                            _cast: {
+                              String: {
+                                _ilike: `%"city": "${location}"%`,
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                ))}
+
+                <InvestorsByFilter
+                  headingText="Recent exits"
+                  tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
+                  /** TO-DO: update this filters */
+                  filters={{
+                    _and: [...defaultFilters],
+                  }}
+                />
               </div>
             )}
 
@@ -521,7 +581,20 @@ export const getServerSideProps: GetServerSideProps = async context => {
       offset: 0,
       limit: 50,
       where: {
-        _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
+        _and: [
+          { slug: { _neq: '' } },
+          {
+            _or: [
+              {
+                _not: {
+                  status_tags: { _contains: 'Dead' },
+                },
+              },
+              { status_tags: { _is_null: true } },
+            ],
+          },
+          { library: { _contains: 'Web3' } },
+        ],
       },
       orderBy: [{ name: Order_By.Asc }],
     },

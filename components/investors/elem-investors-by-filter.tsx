@@ -1,4 +1,5 @@
 import {
+  Investors_Order_By,
   Order_By,
   useGetVcFirmsQuery,
   Vc_Firms,
@@ -16,6 +17,7 @@ import { InvestorsTable } from './elem-investors-table';
 type Props = {
   headingText: string;
   filters: DeepPartial<Vc_Firms_Bool_Exp>;
+  orderBy?: DeepPartial<Investors_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
   isTableView?: boolean;
@@ -24,6 +26,7 @@ type Props = {
 export const InvestorsByFilter: FC<Props> = ({
   headingText,
   filters,
+  orderBy,
   itemsPerPage,
   tagOnClick,
   isTableView = false,
@@ -34,7 +37,7 @@ export const InvestorsByFilter: FC<Props> = ({
     offset: page * itemsPerPage,
     limit: itemsPerPage,
     // @ts-expect-error this should work
-    orderBy: [{ updated_at: Order_By.Desc }],
+    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
     where: filters as Vc_Firms_Bool_Exp,
   });
 

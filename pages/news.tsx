@@ -82,6 +82,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   const { sortChoices, orderByParam, orderByQuery } =
     useDashboardSortBy<News_Order_By>({
+      defaultSortBy: 'newest',
       ascendingSortKey: 'text',
       descendingSortKey: 'text',
       newestSortKey: 'date',

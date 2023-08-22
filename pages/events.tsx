@@ -82,15 +82,24 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter({ resetPage: () => setPage(0) });
+    useDashboardFilter({
+      dateCondition: selectedTab?.value === 'past' ? 'past' : 'next',
+      resetPage: () => setPage(0),
+    });
 
   const limit = 50;
   const offset = limit * page;
 
-  const defaultFilters = [
+  const defaultFilters: DeepPartial<Events_Bool_Exp>[] = [
     { slug: { _neq: '' } },
     { library: { _contains: selectedLibrary } },
   ];
+
+  if (selectedTab?.value !== 'past') {
+    defaultFilters.push({
+      start_date: { _gte: moment().format('YYYY-MM-DD') },
+    });
+  }
 
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
@@ -98,6 +107,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const { orderByQuery, orderByParam, sortChoices } =
     useDashboardSortBy<Events_Order_By>({
+      defaultSortBy: 'oldest',
       newestSortKey: 'start_date',
       oldestSortKey: 'start_date',
     });
@@ -217,7 +227,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     offset,
     limit,
     where: filters as Events_Bool_Exp,
-    orderBy: [orderByQuery],
+    orderBy: [
+      selectedTab?.value === 'past'
+        ? ({ start_date: Order_By.Desc } as Events_Order_By)
+        : orderByQuery,
+    ],
   });
 
   if (!isLoading && initialLoad) {
@@ -252,7 +266,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               onSelectFilterOption={onSelectFilterOption}
             />
 
-            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            {!selectedTab?.value && (
+              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            )}
           </div>
         </div>
 
@@ -290,7 +306,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             personalizedTags.locationTags.map(location => (
               <EventsByFilter
                 key={location}
-                headingText={`New in ${location}`}
+                headingText={`Recently updated in ${location}`}
                 tagOnClick={onClickType}
                 itemsPerPage={ITEMS_PER_PAGE}
                 filters={{
