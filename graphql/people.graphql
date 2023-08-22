@@ -107,14 +107,6 @@ query GetPerson($slug: String!) {
   }
 }
 
-query GetPersonsPath {
-  people(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
-    id
-    name
-    slug
-  }
-}
-
 query GetAllPersons {
   people {
     id

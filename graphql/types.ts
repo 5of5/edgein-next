@@ -6404,7 +6404,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Scalars['String'];
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -28257,11 +28257,6 @@ export type GetCompaniesRecentQueryVariables = Exact<{
 
 export type GetCompaniesRecentQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, layer: string | null, tags: any | null, logo: any | null, overview: string | null, total_employees: any | null, investor_amount: any | null, date_added: any | null, sentiment: any | null, status_tags: any | null, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, amount: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }> };
 
-export type GetCompaniesPathsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string }> };
-
 export type GetRelevantCompaniesQueryVariables = Exact<{
   where: Companies_Bool_Exp;
   limit: InputMaybe<Scalars['Int']>;
@@ -28367,14 +28362,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -28382,7 +28377,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -28404,14 +28399,14 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string | null, status: string } | null }> };
 
 export type GetEventInsightByLocationQueryVariables = Exact<{
   where: Events_Bool_Exp;
@@ -29019,11 +29014,6 @@ export type GetPersonQueryVariables = Exact<{
 
 export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }> };
 
-export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string }> };
-
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -29105,6 +29095,43 @@ export type InsertEditAccessMutationVariables = Exact<{
 
 
 export type InsertEditAccessMutation = { __typename?: 'mutation_root', insert_resource_edit_access_one: { __typename?: 'resource_edit_access', id: number, user_id: number, resource_id: number, resource_type: string } | null };
+
+export type GetEventsPathsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, updated_at: any }> };
+
+export type GetCompaniesPathsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, updated_at: any }> };
+
+export type GetPersonsPathQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string, updated_at: any | null }> };
+
+export type GetVcFirmsPathQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, updated_at: any | null }> };
+
+export type GetSiteMapAggregatesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSiteMapAggregatesQuery = { __typename?: 'query_root', companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null }, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null }, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null }, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertTeamMemberMutationVariables = Exact<{
   data: Team_Members_Insert_Input;
@@ -29309,11 +29336,6 @@ export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
 
 
 export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, tags: any | null, latest_investment: any | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }> };
-
-export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string }> };
 
 export type GetRelevantVcFirmsQueryVariables = Exact<{
   where: Vc_Firms_Bool_Exp;
@@ -30016,34 +30038,6 @@ useGetCompaniesRecentQuery.getKey = (variables: GetCompaniesRecentQueryVariables
 ;
 
 useGetCompaniesRecentQuery.fetcher = (variables: GetCompaniesRecentQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesRecentQuery, GetCompaniesRecentQueryVariables>(GetCompaniesRecentDocument, variables, options);
-export const GetCompaniesPathsDocument = `
-    query GetCompaniesPaths {
-  companies(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
-    id
-    name
-    slug
-  }
-}
-    `;
-export const useGetCompaniesPathsQuery = <
-      TData = GetCompaniesPathsQuery,
-      TError = Error
-    >(
-      variables?: GetCompaniesPathsQueryVariables,
-      options?: UseQueryOptions<GetCompaniesPathsQuery, TError, TData>
-    ) =>
-    useQuery<GetCompaniesPathsQuery, TError, TData>(
-      variables === undefined ? ['GetCompaniesPaths'] : ['GetCompaniesPaths', variables],
-      fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables),
-      options
-    );
-useGetCompaniesPathsQuery.document = GetCompaniesPathsDocument;
-
-
-useGetCompaniesPathsQuery.getKey = (variables?: GetCompaniesPathsQueryVariables) => variables === undefined ? ['GetCompaniesPaths'] : ['GetCompaniesPaths', variables];
-;
-
-useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables, options);
 export const GetRelevantCompaniesDocument = `
     query GetRelevantCompanies($where: companies_bool_exp!, $limit: Int) {
   companies(where: $where, limit: $limit) {
@@ -33402,34 +33396,6 @@ useGetPersonQuery.getKey = (variables: GetPersonQueryVariables) => ['GetPerson',
 ;
 
 useGetPersonQuery.fetcher = (variables: GetPersonQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonQuery, GetPersonQueryVariables>(GetPersonDocument, variables, options);
-export const GetPersonsPathDocument = `
-    query GetPersonsPath {
-  people(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
-    id
-    name
-    slug
-  }
-}
-    `;
-export const useGetPersonsPathQuery = <
-      TData = GetPersonsPathQuery,
-      TError = Error
-    >(
-      variables?: GetPersonsPathQueryVariables,
-      options?: UseQueryOptions<GetPersonsPathQuery, TError, TData>
-    ) =>
-    useQuery<GetPersonsPathQuery, TError, TData>(
-      variables === undefined ? ['GetPersonsPath'] : ['GetPersonsPath', variables],
-      fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables),
-      options
-    );
-useGetPersonsPathQuery.document = GetPersonsPathDocument;
-
-
-useGetPersonsPathQuery.getKey = (variables?: GetPersonsPathQueryVariables) => variables === undefined ? ['GetPersonsPath'] : ['GetPersonsPath', variables];
-;
-
-useGetPersonsPathQuery.fetcher = (variables?: GetPersonsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables, options);
 export const GetAllPersonsDocument = `
     query GetAllPersons {
   people {
@@ -33783,6 +33749,185 @@ export const useInsertEditAccessMutation = <
       options
     );
 useInsertEditAccessMutation.fetcher = (variables?: InsertEditAccessMutationVariables, options?: RequestInit['headers']) => fetcher<InsertEditAccessMutation, InsertEditAccessMutationVariables>(InsertEditAccessDocument, variables, options);
+export const GetEventsPathsDocument = `
+    query GetEventsPaths($limit: Int, $offset: Int) {
+  events(
+    where: {status: {_eq: "published"}}
+    order_by: {slug: asc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    updated_at
+  }
+}
+    `;
+export const useGetEventsPathsQuery = <
+      TData = GetEventsPathsQuery,
+      TError = Error
+    >(
+      variables?: GetEventsPathsQueryVariables,
+      options?: UseQueryOptions<GetEventsPathsQuery, TError, TData>
+    ) =>
+    useQuery<GetEventsPathsQuery, TError, TData>(
+      variables === undefined ? ['GetEventsPaths'] : ['GetEventsPaths', variables],
+      fetcher<GetEventsPathsQuery, GetEventsPathsQueryVariables>(GetEventsPathsDocument, variables),
+      options
+    );
+useGetEventsPathsQuery.document = GetEventsPathsDocument;
+
+
+useGetEventsPathsQuery.getKey = (variables?: GetEventsPathsQueryVariables) => variables === undefined ? ['GetEventsPaths'] : ['GetEventsPaths', variables];
+;
+
+useGetEventsPathsQuery.fetcher = (variables?: GetEventsPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventsPathsQuery, GetEventsPathsQueryVariables>(GetEventsPathsDocument, variables, options);
+export const GetCompaniesPathsDocument = `
+    query GetCompaniesPaths($limit: Int, $offset: Int) {
+  companies(
+    where: {status: {_eq: "published"}}
+    order_by: {slug: asc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    updated_at
+  }
+}
+    `;
+export const useGetCompaniesPathsQuery = <
+      TData = GetCompaniesPathsQuery,
+      TError = Error
+    >(
+      variables?: GetCompaniesPathsQueryVariables,
+      options?: UseQueryOptions<GetCompaniesPathsQuery, TError, TData>
+    ) =>
+    useQuery<GetCompaniesPathsQuery, TError, TData>(
+      variables === undefined ? ['GetCompaniesPaths'] : ['GetCompaniesPaths', variables],
+      fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables),
+      options
+    );
+useGetCompaniesPathsQuery.document = GetCompaniesPathsDocument;
+
+
+useGetCompaniesPathsQuery.getKey = (variables?: GetCompaniesPathsQueryVariables) => variables === undefined ? ['GetCompaniesPaths'] : ['GetCompaniesPaths', variables];
+;
+
+useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables, options);
+export const GetPersonsPathDocument = `
+    query GetPersonsPath($limit: Int, $offset: Int) {
+  people(
+    where: {status: {_eq: "published"}}
+    order_by: {slug: asc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    updated_at
+  }
+}
+    `;
+export const useGetPersonsPathQuery = <
+      TData = GetPersonsPathQuery,
+      TError = Error
+    >(
+      variables?: GetPersonsPathQueryVariables,
+      options?: UseQueryOptions<GetPersonsPathQuery, TError, TData>
+    ) =>
+    useQuery<GetPersonsPathQuery, TError, TData>(
+      variables === undefined ? ['GetPersonsPath'] : ['GetPersonsPath', variables],
+      fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables),
+      options
+    );
+useGetPersonsPathQuery.document = GetPersonsPathDocument;
+
+
+useGetPersonsPathQuery.getKey = (variables?: GetPersonsPathQueryVariables) => variables === undefined ? ['GetPersonsPath'] : ['GetPersonsPath', variables];
+;
+
+useGetPersonsPathQuery.fetcher = (variables?: GetPersonsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables, options);
+export const GetVcFirmsPathDocument = `
+    query GetVCFirmsPath($limit: Int, $offset: Int) {
+  vc_firms(
+    where: {status: {_eq: "published"}}
+    order_by: {slug: asc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    updated_at
+  }
+}
+    `;
+export const useGetVcFirmsPathQuery = <
+      TData = GetVcFirmsPathQuery,
+      TError = Error
+    >(
+      variables?: GetVcFirmsPathQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsPathQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsPathQuery, TError, TData>(
+      variables === undefined ? ['GetVCFirmsPath'] : ['GetVCFirmsPath', variables],
+      fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables),
+      options
+    );
+useGetVcFirmsPathQuery.document = GetVcFirmsPathDocument;
+
+
+useGetVcFirmsPathQuery.getKey = (variables?: GetVcFirmsPathQueryVariables) => variables === undefined ? ['GetVCFirmsPath'] : ['GetVCFirmsPath', variables];
+;
+
+useGetVcFirmsPathQuery.fetcher = (variables?: GetVcFirmsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables, options);
+export const GetSiteMapAggregatesDocument = `
+    query GetSiteMapAggregates {
+  companies_aggregate(where: {status: {_eq: "published"}}) {
+    aggregate {
+      count
+    }
+  }
+  events_aggregate(where: {status: {_eq: "published"}}) {
+    aggregate {
+      count
+    }
+  }
+  people_aggregate(where: {status: {_eq: "published"}}) {
+    aggregate {
+      count
+    }
+  }
+  vc_firms_aggregate(where: {status: {_eq: "published"}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetSiteMapAggregatesQuery = <
+      TData = GetSiteMapAggregatesQuery,
+      TError = Error
+    >(
+      variables?: GetSiteMapAggregatesQueryVariables,
+      options?: UseQueryOptions<GetSiteMapAggregatesQuery, TError, TData>
+    ) =>
+    useQuery<GetSiteMapAggregatesQuery, TError, TData>(
+      variables === undefined ? ['GetSiteMapAggregates'] : ['GetSiteMapAggregates', variables],
+      fetcher<GetSiteMapAggregatesQuery, GetSiteMapAggregatesQueryVariables>(GetSiteMapAggregatesDocument, variables),
+      options
+    );
+useGetSiteMapAggregatesQuery.document = GetSiteMapAggregatesDocument;
+
+
+useGetSiteMapAggregatesQuery.getKey = (variables?: GetSiteMapAggregatesQueryVariables) => variables === undefined ? ['GetSiteMapAggregates'] : ['GetSiteMapAggregates', variables];
+;
+
+useGetSiteMapAggregatesQuery.fetcher = (variables?: GetSiteMapAggregatesQueryVariables, options?: RequestInit['headers']) => fetcher<GetSiteMapAggregatesQuery, GetSiteMapAggregatesQueryVariables>(GetSiteMapAggregatesDocument, variables, options);
 export const UpsertTeamMemberDocument = `
     mutation UpsertTeamMember($data: team_members_insert_input!) {
   insert_team_members_one(
@@ -34993,34 +35138,6 @@ useGetVcFirmsRecentInvestmentsQuery.getKey = (variables: GetVcFirmsRecentInvestm
 ;
 
 useGetVcFirmsRecentInvestmentsQuery.fetcher = (variables: GetVcFirmsRecentInvestmentsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsRecentInvestmentsQuery, GetVcFirmsRecentInvestmentsQueryVariables>(GetVcFirmsRecentInvestmentsDocument, variables, options);
-export const GetVcFirmsPathDocument = `
-    query GetVCFirmsPath {
-  vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
-    id
-    name
-    slug
-  }
-}
-    `;
-export const useGetVcFirmsPathQuery = <
-      TData = GetVcFirmsPathQuery,
-      TError = Error
-    >(
-      variables?: GetVcFirmsPathQueryVariables,
-      options?: UseQueryOptions<GetVcFirmsPathQuery, TError, TData>
-    ) =>
-    useQuery<GetVcFirmsPathQuery, TError, TData>(
-      variables === undefined ? ['GetVCFirmsPath'] : ['GetVCFirmsPath', variables],
-      fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables),
-      options
-    );
-useGetVcFirmsPathQuery.document = GetVcFirmsPathDocument;
-
-
-useGetVcFirmsPathQuery.getKey = (variables?: GetVcFirmsPathQueryVariables) => variables === undefined ? ['GetVCFirmsPath'] : ['GetVCFirmsPath', variables];
-;
-
-useGetVcFirmsPathQuery.fetcher = (variables?: GetVcFirmsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables, options);
 export const GetRelevantVcFirmsDocument = `
     query GetRelevantVCFirms($where: vc_firms_bool_exp!, $limit: Int) {
   vc_firms(where: $where, limit: $limit) {

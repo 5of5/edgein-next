@@ -381,7 +381,6 @@ export const CompaniesTable: FC<Props> = ({
     getTableBodyProps,
     headerGroups,
     rows,
-    page,
     prepareRow,
     setSortBy,
     allColumns,
@@ -629,7 +628,7 @@ export const CompaniesTable: FC<Props> = ({
             {...getTableBodyProps()}
             className="bg-white divide-y divide-gray-300 flex-1"
           >
-            {page.map(row => {
+            {rows.map(row => {
               prepareRow(row);
               const { key, ...restRowProps } = row.getRowProps();
 
