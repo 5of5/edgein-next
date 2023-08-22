@@ -39,7 +39,6 @@ export const ProfileEditDailyEmails: React.FC<Props> = ({ user }) => {
     <EditSection heading="Daily emails">
       <InputSwitch
         label=""
-        // Set default showDraftData is true
         checked={dailyEmails}
         onChange={handleSwitchDailyEmails}
       />
