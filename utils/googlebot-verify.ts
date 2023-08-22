@@ -23,7 +23,6 @@ type Googlebot = {
 // edge environments do not have access to node dns module
 // so the back up is to implement an ip lookup based on the prefixes provided by google
 
-
 export const verify = (ip?: string): boolean => {
   if (!ip) {
     return false;
