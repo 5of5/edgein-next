@@ -4,10 +4,10 @@ import { query } from '@/graphql/hasuraAdmin';
 export const PER_PAGE_LIMIT = 10_000;
 
 export const getRootUrl = () =>
-  process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : process.env.NODE_ENV === 'production'
+  process.env.NODE_ENV === 'production'
     ? 'https://edgein.io'
+    : process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : 'http://localhost:3000';
 
 export async function generateXMLSiteMapPages<
