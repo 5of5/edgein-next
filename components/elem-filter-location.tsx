@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, ReactNode, useState } from 'react';
 import { Combobox } from '@headlessui/react';
 import iso from 'iso-3166-1';
 import { FilterOptionKeys } from '@/models/Filter';
@@ -11,7 +11,7 @@ import { Place, SearchForSuggestionsResult } from '@aws-sdk/client-location';
 type Props = {
   open: boolean;
   option: Extract<FilterOptionKeys, 'country' | 'state' | 'city'>;
-  title: string;
+  title: string | ReactNode;
   heading?: string;
   checkedAny?: boolean;
   checkedNone?: boolean;
@@ -63,7 +63,7 @@ export const ElemFilterLocation: FC<Props> = ({
   const handleGetTagValue = (place: Place) => {
     switch (option) {
       case 'country':
-        return iso.whereAlpha3(place?.Country || '')?.country;
+        return iso.whereAlpha3(place?.Country || '')?.country || place?.Country;
       case 'state':
         return place?.Region;
       default:
@@ -71,7 +71,7 @@ export const ElemFilterLocation: FC<Props> = ({
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     onInputChange(event);
   };

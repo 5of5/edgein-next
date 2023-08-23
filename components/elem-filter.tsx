@@ -423,9 +423,15 @@ export const ElemFilter: FC<Props> = ({
                   key={option}
                   open={Boolean(filters[option]?.open)}
                   option={option}
-                  title={`${optionMetadata.title} (${
-                    filters?.[option]?.tags?.length || 0
-                  })`}
+                  title={
+                    numOfTags > 0 && (
+                      <div>
+                        {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
+                        {filters?.[option]?.condition === 'none' ? 'not ' : ''}
+                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                      </div>
+                    )
+                  }
                   heading={optionMetadata.heading}
                   checkedAny={filters?.[option]?.condition === 'any'}
                   checkedNone={filters?.[option]?.condition === 'none'}
