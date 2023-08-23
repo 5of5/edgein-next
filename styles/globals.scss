@@ -68,18 +68,18 @@
     .cloudsponge-back-button,
     .cloudsponge-close-button,
     .cloudsponge-menu-button {
-      @apply  text-gray-900 bg-gray-100 border-b border-gray-200;
-      .cloudsponge-h1{
+      @apply text-gray-900 bg-gray-100 border-b border-gray-200;
+      .cloudsponge-h1 {
         @apply font-medium;
       }
     }
     .cloudsponge-widget {
-      @apply font-sans bg-gray-50;
+      @apply font-sans bg-white;
     }
     .cloudsponge-providers-list {
       @apply my-6 mx-auto;
-      a {
-        @apply bg-gray-100 hover:bg-gray-200;
+      li a {
+        @apply font-normal rounded-lg border-solid border border-gray-200 hover:bg-gray-50;
       }
     }
     .cloudsponge-copyright {
