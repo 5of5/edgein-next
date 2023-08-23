@@ -25,7 +25,6 @@ insert_permissions:
         - external_id
         - round
         - round_date
-      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:

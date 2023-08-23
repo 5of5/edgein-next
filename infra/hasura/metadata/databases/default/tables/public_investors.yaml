@@ -22,13 +22,13 @@ insert_permissions:
         - title
         - id
         - external_id
-      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:
       columns:
         - created_at
         - end_date
+        - founder
         - function
         - id
         - person_id
@@ -46,21 +46,23 @@ select_permissions:
   - role: user
     permission:
       columns:
+        - end_date
+        - external_id
+        - founder
+        - function
         - id
         - person_id
-        - vc_firm_id
-        - end_date
-        - start_date
-        - external_id
-        - function
         - seniority
+        - start_date
         - title
+        - vc_firm_id
       filter: {}
   - role: viewer
     permission:
       columns:
         - created_at
         - end_date
+        - founder
         - function
         - id
         - person_id

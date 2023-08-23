@@ -47,7 +47,7 @@ export const ElemInvestments: React.FC<Props> = ({
   );
 
   const emptyCell = React.useMemo(
-    () => <div className="text-slate-400">&mdash;</div>,
+    () => <div className="text-gray-500">&mdash;</div>,
     [],
   );
 
@@ -347,7 +347,7 @@ export const ElemInvestments: React.FC<Props> = ({
   };
 
   return (
-    <section className={`rounded-lg border border-gray-300 ${className}`}>
+    <section className={`border border-gray-300 rounded-lg ${className}`}>
       {heading && (
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>

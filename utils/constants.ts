@@ -411,11 +411,11 @@ export const companyChoices = [
     name: 'Trending',
     icon: '🔥',
   },
-  // {
-  //   id: 'Raising',
-  //   name: 'Raising',
-  //   icon: '💸',
-  // },
+  {
+    id: 'Raising',
+    name: 'Raising',
+    icon: '💸',
+  },
   {
     id: 'Acquired',
     name: 'Acquired',
@@ -544,31 +544,17 @@ export const currencyChoices = [
     name: 'SGD',
   },
 ];
-// {
-//   id: 'Trending',
-//   name: 'Trending',
-//   icon: '🔥',
-// },
-// {
-//   id: 'Raising',
-//   name: 'Raising',
-//   icon: '💸',
-// },
-// {
-//   id: 'Acquired',
-//   name: 'Acquired',
-//   icon: '🏡',
-// },
-// {
-//   id: 'Dead',
-//   name: 'Dead',
-//   icon: '💀',
 
 export const investorChoices = [
   {
     id: 'Trending',
     name: 'Trending',
     icon: '🔥',
+  },
+  {
+    id: 'Acquired',
+    name: 'Acquired',
+    icon: '🏡',
   },
   {
     id: 'Dead',
@@ -2004,6 +1990,7 @@ export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
 export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
   'mdinsdale@mac.com',
   'dinghan@capital6.com',
+  'skrinak@gmail.com',
 ];
 
 export const LIST_NAME_MIN_LENGTH = 3;

@@ -367,7 +367,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   {item.icon && (
                     <item.icon
                       title={showInfo[item.text] ? item.text : ''}
-                      className="h-6 w-6 mr-2 shrink-0 text-dark-500"
+                      className="h-6 w-6 mr-2 shrink-0"
                     />
                   )}
                   {showInfo[item.text] ? (
@@ -406,10 +406,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
           <li
             key={i}
             onClick={onInfoClick('email')}
-            className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+            className={`${baseClasses} flex-1 items-center justify-between cursor-pointer`}
           >
             <div className="flex items-center">
-              <IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
+              <IconEmail className="h-6 w-6 shrink-0 mr-2" />
               <div className="break-all">
                 {showInfo['email'] ? (
                   email

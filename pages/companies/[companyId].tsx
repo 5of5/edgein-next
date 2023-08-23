@@ -71,6 +71,7 @@ const Company: NextPage<Props> = (props: Props) => {
   const [overviewMore, setOverviewMore] = useState(false);
   const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
   const [overviewDivHeight, setOverviewDivHeight] = useState(0);
+  const [overviewDivScrollHeight, setOverviewDivScrollHeight] = useState(0);
 
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
   const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -124,7 +125,8 @@ const Company: NextPage<Props> = (props: Props) => {
 
   useEffect(() => {
     if (company.overview) {
-      setOverviewDivHeight(overviewDiv.current.scrollHeight);
+      setOverviewDivHeight(overviewDiv.current.clientHeight);
+      setOverviewDivScrollHeight(overviewDiv.current.scrollHeight);
     }
   }, [company]);
 
@@ -206,7 +208,7 @@ const Company: NextPage<Props> = (props: Props) => {
               placeholderClass="text-slate-300"
             />
           </div>
-          <div className="w-full col-span-5 mt-7 lg:mt-4">
+          <div className="w-full col-span-5 mt-7 lg:mt-0">
             <div className="shrink-0">
               <h1 className="self-end inline-block text-4xl font-medium">
                 {company.name}
@@ -256,14 +258,14 @@ const Company: NextPage<Props> = (props: Props) => {
               <>
                 <div
                   ref={overviewDiv}
-                  className={`mt-4 text-sm text-gray-500 prose ${
-                    overviewMore ? '' : 'line-clamp-3'
+                  className={`mt-4 text-sm text-gray-500 ${
+                    overviewMore ? '' : 'line-clamp-5'
                   }`}
                 >
                   {parse(stripHtmlTags(company.overview))}
                 </div>
 
-                {overviewDivHeight > 84 && (
+                {overviewDivScrollHeight > overviewDivHeight && (
                   <ElemButton
                     onClick={() => setOverviewMore(!overviewMore)}
                     btn="transparent"
@@ -419,10 +421,7 @@ const Company: NextPage<Props> = (props: Props) => {
               </div>
             )}
 
-            <div
-              ref={newsRef}
-              className="w-full mt-7 border border-gray-300 rounded-lg"
-            >
+            <div ref={newsRef} className="mt-7">
               {isNewsOrganization ? (
                 <ElemNewsArticles
                   heading={
