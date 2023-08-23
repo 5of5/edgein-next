@@ -74,7 +74,7 @@ jobs:
           echo 'auth0_client_secret = "${{ secrets.AUTH0_CLIENT_SECRET }}"' >> input.tfvars
           echo 'server_cpu = 512' >> input.tfvars
           echo 'server_memory = 1024' >> input.tfvars
-          echo 'db_instance_class = "db.t4g.small"' >> input.tfvars
+          echo 'auth0_client_secret = "db.t4g.small"' >> input.tfvars
 
       - name: Terraform Init
         id: init

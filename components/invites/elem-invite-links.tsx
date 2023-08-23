@@ -86,19 +86,14 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
   ];
 
   return (
-    <div className="relative p-5 bg-white rounded-lg border border-gray-200">
-      <h3 className="font-medium">Share your referral link</h3>
-      <p className="text-sm text-gray-500">
+    <div className="relative p-5 bg-white rounded-lg border border-black/10">
+      <h3 className="font-bold">Share your referral link</h3>
+      <p className="mt-2 text-sm text-slate-600">
         Copy and paste it or send it directly to your friends
       </p>
-      <div className="mt-2 relative">
+      <div className="relative">
         <div className="absolute right-1 top-2 z-10">
-          <ElemButton
-            onClick={() => onCopy()}
-            btn="default"
-            size="sm"
-            className="!px-1.5 rounded-lg"
-          >
+          <ElemButton onClick={() => onCopy()} btn="gray" size="sm">
             <IconCopy className="w-5 h-5" />
           </ElemButton>
         </div>
@@ -110,13 +105,14 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
           readOnly
         />
       </div>
-      <div className="mt-4 flex flex-wrap items-center gap-2 lg:space-x-2 lg:gap-0">
-        <div className="text-sm">Share on:</div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2 lg:space-x-2 lg:gap-0">
+        <div>Share on:</div>
         {list.map(link => (
           <div key={link.text}>
             <ElemButton
               onClick={link.onClick}
-              btn="default"
+              btn="gray"
               size="sm"
               roundedFull={true}
               className="px-2.5"

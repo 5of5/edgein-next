@@ -55,7 +55,7 @@ const ElemNewsArticles: React.FC<Props> = ({
   const { show } = useIntercom();
 
   return (
-    <section className="border border-gray-300 rounded-lg">
+    <div>
       <div className="flex items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">{heading ? heading : 'News'}</h2>
       </div>
@@ -65,7 +65,14 @@ const ElemNewsArticles: React.FC<Props> = ({
           <>
             <ul className="flex flex-col">
               {articles.map(item => {
-                return <ElemNewsHeading news={item} key={item.id} />;
+                return (
+                  <li
+                    key={item.id}
+                    className="relative pl-6 overflow-hidden group last:-mb-4"
+                  >
+                    <ElemNewsHeading news={item} />
+                  </li>
+                );
               })}
             </ul>
 
@@ -92,7 +99,7 @@ const ElemNewsArticles: React.FC<Props> = ({
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 

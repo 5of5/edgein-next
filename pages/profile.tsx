@@ -29,7 +29,6 @@ import { usePopup } from '@/context/popup-context';
 // import { InputDate } from "@/components/InputDate";
 // import { GetStaticProps } from "next";
 import { EditSection } from '@/components/dashboard/edit-section';
-import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
 // import { functionChoicesTM } from "@/utils/constants";
 // import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 
@@ -603,7 +602,6 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
         ) : (
           <>
             <ProfileEditName />
-            <ProfileEditDailyEmails user={users!.users_by_pk} />
             <ProfileEditEmail />
 
             {users?.users_by_pk?.person && (

@@ -1,4 +1,0 @@
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- alter table "public"."users" add column "preferences" JSONB
---  not null default jsonb_build_object('daily_emails', true);

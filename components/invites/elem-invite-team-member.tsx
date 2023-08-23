@@ -52,7 +52,7 @@ export const ElemInviteTeamMember: FC<Props> = ({
   };
 
   return (
-    <div className="flex items-center justify-between px-5 py-2 group snap-start">
+    <div className="flex items-center justify-between px-8 py-3 group snap-start hover:text-primary-500">
       <ElemTooltip
         content={
           <>
@@ -68,14 +68,14 @@ export const ElemInviteTeamMember: FC<Props> = ({
           onClick={handleClickInvite}
         >
           <ElemPhoto
-            wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden border border-gray-200 rounded-full"
-            imgClass="object-contain w-full h-full"
+            wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
+            imgClass="object-contain w-full h-full border border-slate-100 "
             photo={teamMember?.person?.picture}
-            placeholder="user"
-            placeholderClass="text-gray-300"
+            placeholder={'user'}
+            placeholderClass="text-slate-300"
             imgAlt={teamMember?.person?.name || ''}
           />
-          <p className="font-medium text-sm capitalize underline group-hover:no-underline">
+          <p className="font-bold capitalize">
             {teamMember?.person?.name || ''}
           </p>
         </div>
@@ -83,7 +83,7 @@ export const ElemInviteTeamMember: FC<Props> = ({
 
       <ElemButton
         onClick={handleClickInvite}
-        btn="default"
+        btn="gray"
         loading={isLoading}
         className={isInvitationSent ? ' cursor-auto pointer-events-none' : ''}
       >

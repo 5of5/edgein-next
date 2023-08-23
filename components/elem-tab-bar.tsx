@@ -42,7 +42,7 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
   useEffect(() => {
     if (tabs) {
       const handleScroll = () => {
-        const scrollPosition = window ? window.scrollY : 0;
+        const scrollPosition = window.scrollY;
 
         tabs.forEach((tab, tabIndex) => {
           if (

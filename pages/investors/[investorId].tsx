@@ -51,7 +51,6 @@ const VCFirm: NextPage<Props> = props => {
   const [overviewMore, setOverviewMore] = useState(false);
   const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
   const [overviewDivHeight, setOverviewDivHeight] = useState(0);
-  const [overviewDivScrollHeight, setOverviewDivScrollHeight] = useState(0);
 
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
   const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -76,8 +75,7 @@ const VCFirm: NextPage<Props> = props => {
 
   useEffect(() => {
     if (vcfirm.overview) {
-      setOverviewDivHeight(overviewDiv.current.clientHeight);
-      setOverviewDivScrollHeight(overviewDiv.current.scrollHeight);
+      setOverviewDivHeight(overviewDiv.current.scrollHeight);
     }
   }, [vcfirm]);
 
@@ -180,12 +178,12 @@ const VCFirm: NextPage<Props> = props => {
                 <div
                   ref={overviewDiv}
                   className={`mt-4 text-sm text-gray-500 prose ${
-                    overviewMore ? '' : 'line-clamp-5'
+                    overviewMore ? '' : 'line-clamp-3'
                   }`}
                 >
                   {parse(stripHtmlTags(vcfirm.overview))}
                 </div>
-                {overviewDivScrollHeight > overviewDivHeight && (
+                {overviewDivHeight > 84 && (
                   <ElemButton
                     onClick={() => setOverviewMore(!overviewMore)}
                     btn="transparent"

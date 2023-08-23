@@ -89,6 +89,7 @@ insert_permissions:
         - website
         - white_paper
         - year_founded
+      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:

@@ -1,121 +1,108 @@
-import { FC } from 'react';
-import { Team_Members, Investors } from '@/graphql/types';
+import { Team_Members } from '@/graphql/types';
+import { IconEditPencil } from '@/components/icons';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import { ElemPhoto } from '@/components/elem-photo';
 import Link from 'next/link';
 import { getFullAddress } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
-import { useIntercom } from 'react-use-intercom';
-import { ElemButton } from '../elem-button';
 
 type Props = {
   className?: string;
   heading?: string;
-  jobs?: Team_Members[] | Investors[];
-  resourceUrl?: string;
+  team_members?: Team_Members[];
+  showEdit?: boolean;
 };
 
-export const ElemJobsList: FC<Props> = ({
-  className = '',
+export const ElemJobsList: React.FC<Props> = ({
+  className,
   heading,
-  jobs,
-  resourceUrl,
+  team_members,
+  showEdit,
 }) => {
-  const { showNewMessages } = useIntercom();
-
   return (
-    <section className={`border border-gray-300 rounded-lg ${className}`}>
-      <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>
+    <>
+      <div className={`w-full p-5 bg-white shadow rounded-lg ${className}`}>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold">{heading}</h2>
+          {showEdit && (
+            <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+              <IconEditPencil title="Edit" />
+            </button>
+          )}
+        </div>
 
-      <div className="px-4 divide-y divide-gray-300">
-        {!jobs || jobs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-4">
-            <div className="text-gray-500">No work experience info listed.</div>
-            <ElemButton
-              className="mt-2"
-              onClick={() =>
-                showNewMessages(
-                  `Hi EdgeIn, I'd like to request work experience info on ${resourceUrl}`,
-                )
-              }
-              btn="default"
-            >
-              Request data or contribute
-            </ElemButton>
-          </div>
-        ) : (
-          jobs.map((job: any, index: number) => {
-            let organization;
-            if (job.company) {
-              organization = job.company;
-            } else if (job.vc_firm) {
-              organization = job.vc_firm;
-            }
+        <div className="mt-2 border border-black/10 rounded-lg">
+          <div className="flex flex-col divide-y divide-y-black/10">
+            {!team_members || team_members.length === 0 ? (
+              <div className="flex space-x-4 p-4">No job info listed.</div>
+            ) : (
+              team_members.map((team, index: number) => {
+                const isEmptyLocationJson = values(
+                  team.company?.location_json,
+                ).every(isEmpty);
+                let locationText = '';
+                if (!isEmptyLocationJson) {
+                  locationText = getFullAddress(team.company?.location_json);
+                }
 
-            const isEmptyLocationJson = values(
-              organization?.location_json,
-            ).every(isEmpty);
-            let locationText = '';
-            if (!isEmptyLocationJson) {
-              locationText = getFullAddress(organization?.location_json);
-            }
-
-            const slug = job.company
-              ? `/companies/${organization.slug}`
-              : job.vc_firm
-              ? `/investors/${organization.slug}`
-              : null;
-
-            const logo = (
-              <ElemPhoto
-                photo={organization?.logo}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
-                imgClass="object-fit max-w-full max-h-full"
-                imgAlt={organization?.name}
-                placeholderClass="p-1 text-gray-300"
-                placeholder="company"
-              />
-            );
-
-            return (
-              <div className="flex space-x-4 py-4" key={index}>
-                {slug ? (
-                  <Link href={slug}>
-                    <a>{logo}</a>
-                  </Link>
-                ) : (
-                  logo
-                )}
-
-                <div>
-                  <h3 className="font-medium">{job.title}</h3>
-                  <div className="text-gray-500 text-sm">
-                    {slug ? (
-                      <Link href={slug}>
-                        <a className="block underline hover:no-underline">
-                          {organization.name}
+                return (
+                  <div className="flex space-x-4 p-4" key={index}>
+                    {team.company?.slug ? (
+                      <Link href={`/companies/${team.company.slug}`}>
+                        <a>
+                          <ElemPhoto
+                            photo={team.company?.logo}
+                            wrapClass="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg border border-black/10"
+                            imgClass="object-fit max-w-full max-h-full"
+                            imgAlt={team.company?.name || 'Logo'}
+                            placeholderClass="text-slate-300"
+                          />
                         </a>
                       </Link>
-                    ) : organization?.name ? (
-                      <>{organization?.name}</>
                     ) : (
-                      <>Undisclosed organization</>
+                      <ElemPhoto
+                        photo={team.company?.logo}
+                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
+                        imgClass="object-fit max-w-full max-h-full"
+                        imgAlt={team.company?.name || 'Logo'}
+                        placeholderClass="text-slate-300"
+                      />
                     )}
-                    <div className="flex space-x-2">
-                      <span>
-                        {getWorkDurationFromAndTo(job.start_date, job.end_date)}
-                      </span>
-                      <span>&middot;</span>
-                      <span>{getTimeOfWork(job.start_date, job.end_date)}</span>
+
+                    <div className="text-slate-600">
+                      <h3 className="font-bold">{team.title}</h3>
+                      {team.company?.slug ? (
+                        <Link href={`/companies/${team.company.slug}`}>
+                          <a className="block hover:text-primary-500">
+                            {team.company.name}
+                          </a>
+                        </Link>
+                      ) : team.company?.name ? (
+                        <>{team.company?.name}</>
+                      ) : (
+                        <>Undisclosed company</>
+                      )}
+                      <div className="flex space-x-2">
+                        <span>
+                          {getWorkDurationFromAndTo(
+                            team.start_date,
+                            team.end_date,
+                          )}
+                        </span>
+                        <span>&middot;</span>
+                        <span>
+                          {getTimeOfWork(team.start_date, team.end_date)}
+                        </span>
+                      </div>
+                      {locationText}
                     </div>
-                    {locationText}
                   </div>
-                </div>
-              </div>
-            );
-          })
-        )}
+                );
+              })
+            )}
+          </div>
+        </div>
       </div>
-    </section>
+    </>
   );
 };

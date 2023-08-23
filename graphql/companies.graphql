@@ -278,6 +278,14 @@ query GetCompaniesRecent(
   }
 }
 
+query GetCompaniesPaths {
+  companies(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
+    id
+    name
+    slug
+  }
+}
+
 query GetRelevantCompanies($where: companies_bool_exp!, $limit: Int) {
   companies(where: $where, limit: $limit) {
     id
