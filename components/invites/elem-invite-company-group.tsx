@@ -9,18 +9,18 @@ type Props = {
 
 export const ElemInviteCompanyGroup: FC<Props> = ({ company }) => {
   return (
-    <div className="flex items-center justify-between group snap-start hover:text-primary-500">
+    <div className="flex items-center justify-between group snap-start">
       <ElemTooltip content={company?.name} direction="top-start">
         <div className="flex grow items-center gap-x-2 cursor-pointer hover:opacity-75">
           <ElemPhoto
-            wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
-            imgClass="object-contain w-full h-full border border-slate-100 "
+            wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden border border-gray-200 rounded-lg"
+            imgClass="object-contain w-full h-full"
             photo={company?.logo}
-            placeholder={'user'}
-            placeholderClass="text-slate-300"
+            placeholder="company"
+            placeholderClass="p-1 text-gray-300"
             imgAlt={company?.name || ''}
           />
-          <p className="font-bold capitalize">{company?.name || ''}</p>
+          <p className="font-medium capitalize">{company?.name || ''}</p>
         </div>
       </ElemTooltip>
     </div>

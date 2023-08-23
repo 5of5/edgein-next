@@ -1,57 +1,57 @@
 table:
-  schema: public
   name: users
+  schema: public
 object_relationships:
   - name: billing_org
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: billing_org
-        insertion_order: null
         column_mapping:
           billing_org_id: id
+        insertion_order: null
+        remote_table:
+          name: billing_org
+          schema: public
   - name: person
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: people
-        insertion_order: null
         column_mapping:
           person_id: id
+        insertion_order: null
+        remote_table:
+          name: people
+          schema: public
 array_relationships:
   - name: list_members
     using:
       foreign_key_constraint_on:
         column: user_id
         table:
-          schema: public
           name: list_members
+          schema: public
   - name: organization_companies
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: companies_edit_access
-        insertion_order: null
         column_mapping:
           id: user_id
+        insertion_order: null
+        remote_table:
+          name: companies_edit_access
+          schema: public
   - name: organization_vc_firms
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: vc_firms_edit_access
-        insertion_order: null
         column_mapping:
           id: user_id
+        insertion_order: null
+        remote_table:
+          name: vc_firms_edit_access
+          schema: public
 computed_fields:
   - name: credits
     definition:
       function:
-        schema: public
         name: user_credits
+        schema: public
 select_permissions:
   - role: viewer
     permission:
@@ -69,6 +69,7 @@ select_permissions:
         - is_auth0_verified
         - onboarding_information
         - person_id
+        - preferences
         - reference_id
         - reference_user_id
         - role

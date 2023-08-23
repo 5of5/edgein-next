@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: investments
+  schema: public
 object_relationships:
   - name: investment_round
     using:
@@ -21,7 +21,6 @@ insert_permissions:
         - vc_firm_id
         - id
         - external_id
-      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:

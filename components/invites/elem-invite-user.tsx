@@ -73,21 +73,21 @@ export const ElemInviteUser = () => {
   };
 
   return (
-    <div>
+    <>
       {teamMembers.length > 0 && (
-        <div className="relative bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
-          <div className="sticky top-0 z-10 px-3 py-1.5 shadow bg-white">
-            <h3 className="font-bold text-slate-600">Invite your team</h3>
-            <p className="text-sm text-slate-600">
+        <div className="relative bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div className="sticky top-0 z-10 px-5 py-2 bg-white border-b border-gray-200">
+            <h3 className="font-medium">Invite your team</h3>
+            <p className="text-sm text-gray-500">
               Invite people that are part of your team
             </p>
           </div>
-          <div className="max-h-[325px] overflow-x-hidden overflow-y-scroll scroll-smooth snap-y snap-mandatory touch-pan-y">
+          <div className="max-h-[325px] overflow-x-hidden overflow-y-scroll scroll-smooth scrollbar-hide snap-y snap-mandatory touch-pan-y divide-y divide-gray-200">
             {Object.keys(membersGroupByCompany).map(companyId => (
               <Disclosure key={companyId} defaultOpen>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between items-center w-full px-4 py-1 bg-slate-100 focus:outline-none hover:opacity-75">
+                    <Disclosure.Button className="flex justify-between items-center w-full px-5 py-1 bg-gray-50 focus:outline-none hover:opacity-75">
                       <ElemInviteCompanyGroup
                         company={membersGroupByCompany[companyId][0].company}
                       />
@@ -98,7 +98,7 @@ export const ElemInviteUser = () => {
                       />
                     </Disclosure.Button>
 
-                    <Disclosure.Panel>
+                    <Disclosure.Panel className="pl-3">
                       {membersGroupByCompany[companyId].map(mem => (
                         <ElemInviteTeamMember
                           key={mem.id}
@@ -119,18 +119,17 @@ export const ElemInviteUser = () => {
         </div>
       )}
 
-      <div className="mt-4">
+      <div>
         <div className="relative p-5 bg-white rounded-lg border border-black/10">
           {sendInvitationEmailResponse &&
           sendInvitationEmailResponse.length > 0 ? (
             <>
               <div className="w-full text-center">
                 <IconPaperAirplane
-                  className="mx-auto h-12 w-12 text-slate-300"
+                  className="mx-auto h-12 w-12 text-gray-200"
                   title="Invitation Sent"
                 />
-                <h3 className="mt-2 text-lg font-bold">Invitation details</h3>
-                <p className="mt-1 text-primary-500 hover:underline"></p>
+                <h3 className="mt-2 text-lg font-medium">Invitation details</h3>
               </div>
 
               <ul className="mt-4 list-disc list-outside pl-4">
@@ -138,9 +137,9 @@ export const ElemInviteUser = () => {
                   (res: InviteToEdgeInResponse, index: number) => {
                     if (res.status === 200) {
                       return (
-                        <li className="text-slate-500 text-sm" key={index}>
+                        <li className="text-gray-500 text-sm" key={index}>
                           {`Invitation has been sent to `}
-                          <span className="font-bold">
+                          <span className="font-medium">
                             {res.emails[index]}
                           </span>{' '}
                           successfully.
@@ -150,8 +149,8 @@ export const ElemInviteUser = () => {
                     return (
                       <li className="text-red-500 text-sm" key={index}>
                         {`Failed to send invitation to email `}
-                        <span className="font-bold">{res.emails[index]}</span>.
-                        Please try again later.
+                        <span className="font-medium">{res.emails[index]}</span>
+                        . Please try again later.
                       </li>
                     );
                   },
@@ -183,7 +182,7 @@ export const ElemInviteUser = () => {
 
               <div className="flex items-center gap-4 mt-4">
                 <ElemButton
-                  btn="purple"
+                  btn="primary"
                   onClick={handleClickSendInvites}
                   loading={isLoading}
                   disabled={selectedPeople.length === 0}
@@ -197,6 +196,6 @@ export const ElemInviteUser = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -7,7 +7,7 @@ import {
 } from '@/utils/reaction';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
-import { IconX, IconListPlus, IconListSaved } from '@/components/icons';
+import { IconX, IconPlus } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
 import { InputCheckbox } from '@/components/input-checkbox';
 import toast, { Toaster } from 'react-hot-toast';
@@ -288,37 +288,38 @@ export const ElemSaveToList: FC<Props> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-                <Dialog.Title className="text-xl font-medium flex items-center justify-between">
-                  <span>Save to List</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsOpen(false), setShowNew(false);
-                    }}
-                    className="focus-visible:outline-none"
-                  >
-                    <IconX className="w-5 h-5" />
-                  </button>
-                </Dialog.Title>
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg px-4 py-3 bg-white shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+                <div className="pb-3 border-b border-gray-200">
+                  <Dialog.Title className="text-xl font-medium flex items-center justify-between">
+                    <span>Save to List</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsOpen(false), setShowNew(false);
+                      }}
+                      className="focus-visible:outline-none"
+                    >
+                      <IconX className="w-5 h-5" />
+                    </button>
+                  </Dialog.Title>
 
-                {listsData.length === 0 && (
-                  <p className="mt-2 text-slate-500">
-                    Group organizations that matter to you in a list so you can
-                    compare, sort, and more.
-                  </p>
-                )}
+                  {listsData.length === 0 && (
+                    <p className="mt-2 text-gray-500">
+                      Save organizations that matter to you in a list so you can
+                      compare, sort, and more.
+                    </p>
+                  )}
+                </div>
 
-                <ul className="max-h-96 overflow-y-auto scrollbar-hide divide-y divide-gray-200">
+                <ul className="max-h-96 pt-3 overflow-y-auto scrollbar-hide grid gap-y-1">
                   {listsData?.map(list => {
                     const selected = isSelected(list);
 
                     return (
                       <li key={list.id}>
                         <InputCheckbox
-                          className="w-full hover:bg-gray-100"
-                          inputClass="ml-3"
-                          labelClass="grow py-3 pr-3"
+                          className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100"
+                          labelClass="grow text-sm"
                           label={getNameFromListName(list)}
                           checked={selected}
                           onClick={e => onClickHandler(e, list, selected)}
@@ -329,23 +330,24 @@ export const ElemSaveToList: FC<Props> = ({
                 </ul>
 
                 {!showNew && listsData.length > 0 && (
-                  <div className="flex border-t border-slate-300 p-3">
-                    <div className="ml-auto">
-                      <ElemButton
-                        btn="default"
-                        onClick={() => setShowNew(true)}
-                      >
-                        Create new list
-                      </ElemButton>
-                    </div>
+                  <div className="pt-3">
+                    <ElemButton
+                      onClick={() => setShowNew(true)}
+                      className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100"
+                    >
+                      <IconPlus className="w-4 h-4 " />
+                      <span className="self-start text-sm">
+                        Save to new list
+                      </span>
+                    </ElemButton>
                   </div>
                 )}
 
                 {(showNew || listsData.length === 0) && (
-                  <div className="mt-3 ease-in-out duration-300">
+                  <div className="pt-3">
                     <label>
                       <InputText
-                        label="Name"
+                        label="New list name"
                         type="text"
                         onChange={e => setListName(e.target.value)}
                         value={listName}
@@ -372,7 +374,7 @@ export const ElemSaveToList: FC<Props> = ({
                         roundedFull
                         btn="purple"
                       >
-                        Create
+                        Create list
                       </ElemButton>
                     </div>
                   </div>

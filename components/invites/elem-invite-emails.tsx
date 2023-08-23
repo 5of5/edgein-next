@@ -79,46 +79,42 @@ const ElemInviteEmails: FC<Props> = ({
   return (
     <Combobox value={selectedPeople} onChange={handleSelect} multiple>
       <div className="relative">
-        <div className="flex flex-col gap-1">
-          <label className="font-bold">{label}</label>
-          {description && (
-            <p className="text-sm text-slate-600">{description}</p>
-          )}
-          <div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
-            {selectedPeople.length > 0 && (
-              <ul className="flex flex-wrap gap-2">
-                {selectedPeople.map((person, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1"
+        <label className="font-medium">{label}</label>
+        {description && <p className="text-sm text-gray-500">{description}</p>}
+        <div className="mt-2 flex flex-wrap gap-2 px-3 py-2 rounded-lg ring-1 ring-gray-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
+          {selectedPeople.length > 0 && (
+            <ul className="flex flex-wrap gap-2">
+              {selectedPeople.map((person, index) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-1 bg-gray-100 rounded-lg px-2 py-1"
+                >
+                  {person.name ? (
+                    <div title={person.work_email}>{person?.name}</div>
+                  ) : (
+                    <div title={person.work_email}>{person?.work_email}</div>
+                  )}
+                  <button
+                    onClick={() => handleRemove(index)}
+                    className="focus:outline-none"
+                    title="Remove"
                   >
-                    {person.name ? (
-                      <div title={person.work_email}>{person?.name}</div>
-                    ) : (
-                      <div title={person.work_email}>{person?.work_email}</div>
-                    )}
-                    <button
-                      onClick={() => handleRemove(index)}
-                      className="focus:outline-none"
+                    <IconX
+                      className="w-3 h-3 ml-1 cursor-pointer hover:text-primary-500"
                       title="Remove"
-                    >
-                      <IconX
-                        className="w-3 h-3 ml-1 cursor-pointer hover:text-primary-500"
-                        title="Remove"
-                      />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <Combobox.Input
-              className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
-              placeholder={placeholder || 'e.g: Ashley or ashley@edgein.io'}
-              autoComplete={'off'}
-              ref={inputRef}
-              onChange={handleChangeQuery}
-            />
-          </div>
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <Combobox.Input
+            className="flex-1 p-0 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-gray-300 focus:outline-none focus:ring-0"
+            placeholder={placeholder || 'e.g: Ashley or ashley@edgein.io'}
+            autoComplete={'off'}
+            ref={inputRef}
+            onChange={handleChangeQuery}
+          />
         </div>
 
         {isDuplicatedEmail && (
@@ -134,7 +130,7 @@ const ElemInviteEmails: FC<Props> = ({
         )}
 
         {query && !isDuplicatedEmail && !emailError && (
-          <Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
+          <Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-gray-200 w-full max-h-60 overflow-scroll scrollbar-hide">
             {isLoading && query !== '' ? (
               <div className="px-4 py-2">
                 {Array.from({ length: 3 }, (_, i) => (
@@ -146,27 +142,27 @@ const ElemInviteEmails: FC<Props> = ({
                 <Combobox.Option
                   key={item.id}
                   value={item}
-                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
+                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50"
                 >
                   {item?.picture ? (
                     <ElemPhoto
                       wrapClass="w-10 h-10 aspect-square shrink-0"
-                      imgClass="object-cover rounded-full border border-slate-100"
+                      imgClass="object-cover rounded-full border border-gray-200"
                       photo={item.picture}
-                      placeholder="user2"
-                      placeholderClass="text-slate-300"
+                      placeholder="user"
+                      placeholderClass="text-gray-300"
                       imgAlt={item.name}
                     />
                   ) : (
-                    <div className="flex flex-shrink-0 items-center justify-center aspect-square w-10 rounded-full bg-slate-200 text-dark-500 text-xl capitalize">
+                    <div className="flex flex-shrink-0 items-center justify-center aspect-square w-10 rounded-full bg-gray-100 text-xl capitalize">
                       {item?.name?.charAt(0)}
                     </div>
                   )}
 
-                  <div className="flex-shrink-0">{item?.name}</div>
+                  <div className="flex-shrink-0 text-sm">{item?.name}</div>
                   {item?.work_email && (
                     <div
-                      className="text-sm text-slate-600 truncate"
+                      className="text-sm text-gray-500 truncate"
                       title={item.work_email}
                     >
                       {item.work_email}
@@ -176,10 +172,6 @@ const ElemInviteEmails: FC<Props> = ({
               ))
             ) : (
               <div className="text-center">
-                {query != '' && (
-                  <div className="px-6 py-4 text-lg font-bold">Not Found</div>
-                )}
-
                 {validator.isEmail(query) &&
                   !emailError &&
                   !isDuplicatedEmail && (
@@ -189,10 +181,9 @@ const ElemInviteEmails: FC<Props> = ({
                         name: query,
                         work_email: query,
                       }}
-                      className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
+                      className="px-4 py-2 cursor-pointer underline hover:no-underline hover:bg-gray-50"
                     >
-                      Send an invitation to email address{' '}
-                      <span className="font-bold">{query}</span>
+                      Add <span className="font-medium">{query}</span>
                     </Combobox.Option>
                   )}
               </div>
