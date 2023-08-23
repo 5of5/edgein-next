@@ -17,7 +17,7 @@ import { InvestorsTable } from './elem-investors-table';
 type Props = {
   headingText: string;
   filters: DeepPartial<Vc_Firms_Bool_Exp>;
-  secondaryFilters?: DeepPartial<Vc_Firms_Bool_Exp>;
+  fallbackFilters?: DeepPartial<Vc_Firms_Bool_Exp>;
   orderBy?: DeepPartial<Investors_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
@@ -27,7 +27,7 @@ type Props = {
 export const InvestorsByFilter: FC<Props> = ({
   headingText,
   filters,
-  secondaryFilters,
+  fallbackFilters,
   orderBy,
   itemsPerPage,
   tagOnClick,
@@ -53,9 +53,9 @@ export const InvestorsByFilter: FC<Props> = ({
       limit: itemsPerPage,
       // @ts-expect-error this should work
       orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
-      where: secondaryFilters as Vc_Firms_Bool_Exp,
+      where: fallbackFilters as Vc_Firms_Bool_Exp,
     },
-    { enabled: Boolean(secondaryFilters) && data?.vc_firms?.length === 0 },
+    { enabled: Boolean(fallbackFilters) && data?.vc_firms?.length === 0 },
   );
 
   if (isLoading || isLoadingSecondary) {
@@ -82,12 +82,12 @@ export const InvestorsByFilter: FC<Props> = ({
   }
 
   const vc_firms =
-    data?.vc_firms?.length === 0 && secondaryFilters
+    data?.vc_firms?.length === 0 && fallbackFilters
       ? secondaryData?.vc_firms
       : data?.vc_firms;
 
   const vc_firms_aggregate =
-    data?.vc_firms?.length === 0 && secondaryFilters
+    data?.vc_firms?.length === 0 && fallbackFilters
       ? secondaryData?.vc_firms_aggregate
       : data?.vc_firms_aggregate;
 
@@ -99,7 +99,7 @@ export const InvestorsByFilter: FC<Props> = ({
           investors={vc_firms}
           pageNumber={page}
           itemsPerPage={itemsPerPage}
-          shownItems={vc_firms?.length}
+          shownItems={vc_firms?.length ?? 0}
           totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
           onClickPrev={previousPage}
           onClickNext={nextPage}
@@ -117,7 +117,7 @@ export const InvestorsByFilter: FC<Props> = ({
           </div>
 
           <Pagination
-            shownItems={vc_firms?.length}
+            shownItems={vc_firms?.length ?? 0}
             totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
             page={page}
             itemsPerPage={itemsPerPage}

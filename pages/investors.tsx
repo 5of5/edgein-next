@@ -26,7 +26,11 @@ import {
   Order_By,
 } from '@/graphql/types';
 import { runGraphQl } from '@/utils';
-import { investorChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
+import {
+  investorChoices,
+  ISO_DATE_FORMAT,
+  NEW_CATEGORY_LIMIT,
+} from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
@@ -438,7 +442,7 @@ const Investors: NextPage<Props> = ({
                               round_date: {
                                 _gte: moment()
                                   .subtract(28, 'days')
-                                  .format('YYYY-MM-DD'),
+                                  .format(ISO_DATE_FORMAT),
                               },
                             },
                           },
@@ -454,7 +458,7 @@ const Investors: NextPage<Props> = ({
                         },
                       ],
                     }}
-                    secondaryFilters={{
+                    fallbackFilters={{
                       _and: [
                         ...defaultFilters,
                         {
@@ -463,7 +467,7 @@ const Investors: NextPage<Props> = ({
                               round_date: {
                                 _gte: moment()
                                   .subtract(28, 'days')
-                                  .format('YYYY-MM-DD'),
+                                  .format(ISO_DATE_FORMAT),
                               },
                             },
                           },

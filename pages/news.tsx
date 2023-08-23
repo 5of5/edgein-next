@@ -29,6 +29,7 @@ import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
+  ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
@@ -117,15 +118,17 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   if (selectedTab?.value === 'today') {
     filters._and?.push({
-      date: { _eq: moment().format('YYYY-MM-DD') },
+      date: { _eq: moment().format(ISO_DATE_FORMAT) },
     });
   }
 
   if (selectedTab?.value === '7days') {
     filters._and?.push({
       _and: [
-        { date: { _gte: moment().subtract(7, 'days').format('YYYY-MM-DD') } },
-        { date: { _lte: moment().format('YYYY-MM-DD') } },
+        {
+          date: { _gte: moment().subtract(7, 'days').format(ISO_DATE_FORMAT) },
+        },
+        { date: { _lte: moment().format(ISO_DATE_FORMAT) } },
       ],
     });
   }

@@ -32,6 +32,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
+  ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
@@ -101,7 +102,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   if (selectedTab?.value !== 'past') {
     defaultFilters.push({
-      start_date: { _gte: moment().format('YYYY-MM-DD') },
+      start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
     });
   }
 

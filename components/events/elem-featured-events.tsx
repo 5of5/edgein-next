@@ -13,6 +13,7 @@ import { ElemEventCard } from './elem-event-card';
 import moment from 'moment-timezone';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { ISO_DATE_FORMAT } from '@/utils/constants';
 
 type Props = {
   className?: string;
@@ -36,7 +37,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
         slug: { _neq: '' },
         is_featured: { _eq: true },
         library: { _contains: selectedLibrary },
-        end_date: { _gte: moment().format('YYYY-MM-DD') },
+        end_date: { _gte: moment().format(ISO_DATE_FORMAT) },
       },
     ],
   };

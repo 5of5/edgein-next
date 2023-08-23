@@ -8,6 +8,7 @@ import useDisclosureState from '@/hooks/use-disclosure-state';
 import {
   MY_NOTES_MENU_OPEN_KEY,
   SIDEBAR_DEFAULT_NOTES_LIMIT,
+  SIDEBAR_LIMIT_ITEMS,
 } from '@/utils/constants';
 import { useGetNotesMenuQuery } from '@/graphql/types';
 
@@ -25,7 +26,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
 
   const { data } = useGetNotesMenuQuery(
     { user_id: user?.id || 0 },
-    { enabled: Boolean(user) },
+    { enabled: Boolean(user?.id) },
   );
 
   const onRedirectToSignIn = () => {
@@ -107,7 +108,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
                       </li>
                     );
                   })}
-                {data?.notes && data.notes.length > 5 && (
+                {data?.notes && data.notes.length > SIDEBAR_LIMIT_ITEMS && (
                   <li role="button">
                     <Link href="/notes/">
                       <a className="flex items-center space-x-2 py-2 pl-7 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900">

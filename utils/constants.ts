@@ -2022,6 +2022,8 @@ export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
 
 export const SIDEBAR_DEFAULT_NOTES_LIMIT = 3;
 
+export const SIDEBAR_LIMIT_ITEMS = 5;
+
 export const NEW_CATEGORY_LIMIT = 33;
 
 export const segmentChoices: SegmentOption[] = [
@@ -2062,3 +2064,5 @@ export const onboardingExploreChoices = [
 export const ONBOARDING_DEFAULT_TAGS_LIMIT = 20;
 export const ONBOARDING_MIN_LOCATIONS = 1;
 export const ONBOARDING_MIN_TAGS = 3;
+
+export const ISO_DATE_FORMAT = 'YYYY-MM-DD';

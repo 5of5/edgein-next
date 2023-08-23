@@ -26,7 +26,11 @@ import {
 import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
-import { companyChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
+import {
+  companyChoices,
+  ISO_DATE_FORMAT,
+  NEW_CATEGORY_LIMIT,
+} from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
@@ -289,7 +293,7 @@ const Companies: NextPage<Props> = ({
           />
 
           <div className="flex flex-wrap gap-2">
-            {isDisplaySelectLibrary && <ElemLibrarySelector />}
+            {!isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemDropdown
               IconComponent={tableLayout ? IconTable : IconGroup}
@@ -405,7 +409,7 @@ const Companies: NextPage<Props> = ({
                         created_at: {
                           _gte: moment()
                             .subtract(28, 'days')
-                            .format('YYYY-MM-DD'),
+                            .format(ISO_DATE_FORMAT),
                         },
                       },
                       {
@@ -467,7 +471,7 @@ const Companies: NextPage<Props> = ({
                         round_date: {
                           _gte: moment()
                             .subtract(28, 'days')
-                            .format('YYYY-MM-DD'),
+                            .format(ISO_DATE_FORMAT),
                         },
                       },
                     },

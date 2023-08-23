@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { libraryChoices } from '@/utils/constants';
 import { useUser } from '@/context/user-context';
-import { IconChevronDownMini, IconCheck } from './icons';
+import { IconChevronDownMini, IconCheck, IconMarket } from './icons';
 import { ElemButton } from './elem-button';
 
 const ElemLibrarySelector = () => {
@@ -25,6 +25,7 @@ const ElemLibrarySelector = () => {
           roundedFull={false}
           className="rounded-lg"
         >
+          <IconMarket className="w-4 h-4 text-gray-400 mr-1.5" />
           {selectedLibrary}
           <IconChevronDownMini
             className="w-5 h-5 ml-1"

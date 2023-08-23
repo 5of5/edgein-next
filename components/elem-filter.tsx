@@ -21,7 +21,7 @@ import { ElemFilterPopup } from './elem-filter-popup';
 import ElemAddressFilter from './elem-address-filter';
 import { InputText } from './input-text';
 import { InputSelect } from './input-select';
-import { eventSizeChoices } from '@/utils/constants';
+import { eventSizeChoices, ISO_DATE_FORMAT } from '@/utils/constants';
 import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
@@ -675,13 +675,13 @@ export const ElemFilter: FC<Props> = ({
                           from{' '}
                           <b>
                             {moment(filters?.[option]?.fromDate).format(
-                              'YYYY-MM-DD',
+                              ISO_DATE_FORMAT,
                             )}
                           </b>{' '}
                           to{' '}
                           <b>
                             {moment(filters?.[option]?.toDate).format(
-                              'YYYY-MM-DD',
+                              ISO_DATE_FORMAT,
                             )}
                           </b>
                         </>
@@ -754,7 +754,7 @@ export const ElemFilter: FC<Props> = ({
                         value={
                           filters?.[option]?.fromDate
                             ? moment(filters?.[option]?.fromDate).format(
-                                'YYYY-MM-DD',
+                                ISO_DATE_FORMAT,
                               )
                             : ''
                         }
@@ -769,7 +769,7 @@ export const ElemFilter: FC<Props> = ({
                         value={
                           filters?.[option]?.toDate
                             ? moment(filters?.[option]?.toDate).format(
-                                'YYYY-MM-DD',
+                                ISO_DATE_FORMAT,
                               )
                             : ''
                         }

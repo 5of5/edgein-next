@@ -9,6 +9,7 @@ import useDisclosureState from '@/hooks/use-disclosure-state';
 import {
   MY_GROUPS_MENU_OPEN_KEY,
   SIDEBAR_DEFAULT_GROUPS_LIMIT,
+  SIDEBAR_LIMIT_ITEMS,
 } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 
@@ -150,7 +151,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                   </li>
                 )}
 
-                {myGroups.length > 5 && (
+                {myGroups.length > SIDEBAR_LIMIT_ITEMS && (
                   <li role="button">
                     <Link href="/groups/">
                       <a className="flex items-center space-x-2 py-2 pl-7 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900">

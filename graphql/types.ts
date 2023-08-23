@@ -30103,7 +30103,11 @@ useFindCommentByIdQuery.getKey = (variables: FindCommentByIdQueryVariables) => [
 useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, options?: RequestInit['headers']) => fetcher<FindCommentByIdQuery, FindCommentByIdQueryVariables>(FindCommentByIdDocument, variables, options);
 export const GetNotesMenuDocument = `
     query GetNotesMenu($user_id: Int!) {
-  notes(where: {created_by: {_eq: $user_id}}, limit: 10) {
+  notes(
+    where: {created_by: {_eq: $user_id}}
+    limit: 10
+    order_by: {created_at: asc}
+  ) {
     id
     notes
   }
