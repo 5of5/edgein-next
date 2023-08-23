@@ -1,34 +1,34 @@
 table:
-  name: event_organization
   schema: public
+  name: event_organization
 object_relationships:
   - name: company
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: companies
+        insertion_order: null
         column_mapping:
           company_id: id
-        insertion_order: null
-        remote_table:
-          name: companies
-          schema: public
   - name: event
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: events
+        insertion_order: null
         column_mapping:
           event_id: id
-        insertion_order: null
-        remote_table:
-          name: events
-          schema: public
   - name: vc_firm
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: vc_firms
+        insertion_order: null
         column_mapping:
           vc_firm_id: id
-        insertion_order: null
-        remote_table:
-          name: vc_firms
-          schema: public
 select_permissions:
   - role: viewer
     permission:
