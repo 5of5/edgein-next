@@ -69,7 +69,7 @@ const ListActions = ({ onCreate }: any) => {
   return (
     <TopToolbar>
       <Button
-        label="Add as Team Member"
+        label="Add as Company Team Member"
         variant="text"
         onClick={onCreate}
         startIcon={<ContentCreate />}

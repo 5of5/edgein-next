@@ -73,7 +73,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 } shadow-sm cursor-pointer hover:bg-slate-50`}
                 onClick={() => {
                   if (item === 'Something else') {
-                    showNewMessages();
+                    showNewMessages(`Hi EdgeIn, I'd like to explore `);
                   }
                   onChangeExploreChoice(item);
                 }}

@@ -29,6 +29,7 @@ import { usePopup } from '@/context/popup-context';
 // import { InputDate } from "@/components/InputDate";
 // import { GetStaticProps } from "next";
 import { EditSection } from '@/components/dashboard/edit-section';
+import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
 // import { functionChoicesTM } from "@/utils/constants";
 // import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 
@@ -526,8 +527,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
               href={`/people/${users?.users_by_pk?.person?.slug}/`}
               btn="purple"
               arrow
-              className="mt-2 sm:mt-0"
-            >
+              className="mt-2 sm:mt-0">
               View Profile
             </ElemButton>
           )}
@@ -549,8 +549,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
                 <ElemButton
                   btn="primary-light"
                   onClick={() => setShowPopup('search')}
-                  className="mt-4"
-                >
+                  className="mt-4">
                   <IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
                   Search your name
                 </ElemButton>
@@ -602,6 +601,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
         ) : (
           <>
             <ProfileEditName />
+            <ProfileEditDailyEmails user={users!.users_by_pk} />
             <ProfileEditEmail />
 
             {users?.users_by_pk?.person && (

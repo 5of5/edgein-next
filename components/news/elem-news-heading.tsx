@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { formatDate } from '@/utils';
 import { IconExternalLink } from '@/components/icons';
 import { News } from '@/graphql/types';
+import moment from 'moment-timezone';
 
 type Props = {
   news: News;
@@ -18,11 +18,9 @@ const ElemNewsHeading: React.FC<Props> = ({
   showPoweredBy = false,
 }) => {
   return (
-    <div>
-      <span className="absolute h-full top-0 bottom-0 left-0">
-        <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-        <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-      </span>
+    <li className="relative pl-6 overflow-hidden group last:-mb-4">
+      <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+      <span className="absolute block top-2 left-1 w-2 h-2 rounded-full bg-primary-300 transition-all group-hover:bg-primary-500"></span>
 
       <div className="mb-4">
         <div className="inline leading-7 text-gray-600">
@@ -36,25 +34,21 @@ const ElemNewsHeading: React.FC<Props> = ({
               </a>
             </Link>
           ) : (
-            <div className="inline font-medium">{news.text}</div>
+            <p className="font-medium text-sm">{news.text}</p>
           )}
           <div className="flex items-center gap-x-2">
             {isPublisher && (
-              <span className="bg-slate-200 self-start text-xs font-medium leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
+              <div className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full">
                 Publisher
-              </span>
+              </div>
             )}
             {isAuthor && (
-              <span className="bg-slate-200 self-start text-xs font-medium leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
+              <div className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full">
                 Author
-              </span>
+              </div>
             )}
             <p className="text-sm">
-              {formatDate(news.date as string, {
-                month: 'short',
-                day: '2-digit',
-                year: 'numeric',
-              })}
+              {moment(news.date).format('ll')}
               {showPoweredBy && (
                 <>
                   <span>{` • powered by `}</span>
@@ -65,7 +59,9 @@ const ElemNewsHeading: React.FC<Props> = ({
                         : 'cryptopanic'
                     }`}
                   >
-                    <a>{news?.source?.poweredby || 'CryptoPanic'}</a>
+                    <a className="underline hover:no-underline">
+                      {news?.source?.poweredby || 'CryptoPanic'}
+                    </a>
                   </Link>
                 </>
               )}
@@ -73,7 +69,7 @@ const ElemNewsHeading: React.FC<Props> = ({
           </div>
         </div>
       </div>
-    </div>
+    </li>
   );
 };
 

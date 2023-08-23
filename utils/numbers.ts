@@ -149,9 +149,28 @@ export const getTimeOfWork = (startDate: string, endDate: string) => {
 
   const timeDiff = end ? end.diff(start) : today.diff(start);
 
-  return `${moment.duration(timeDiff).years()} yrs ${moment
-    .duration(timeDiff)
-    .months()} mo`;
+  const years = moment.duration(timeDiff).years();
+  const months = moment.duration(timeDiff).months();
+
+  let durationYears;
+  if (years === 1) {
+    durationYears = years + ' yr';
+  } else if (years > 1) {
+    durationYears = years + ' yrs';
+  } else {
+    durationYears = '';
+  }
+
+  let durationMonths;
+  if (months === 1) {
+    durationMonths = months + ' mo';
+  } else if (months > 1) {
+    durationMonths = months + ' mos';
+  } else {
+    durationMonths = '';
+  }
+
+  return `${durationYears} ${durationMonths}`;
 };
 
 export const getTimeString = (value: Date) => {

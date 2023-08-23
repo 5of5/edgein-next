@@ -34,7 +34,7 @@ export const ElemOnboardingSurvey: FC<Props> = ({
             rows={8}
             onChange={e => onChangeAnswer(e.target.value)}
             required
-            className="ring-inset focus:ring-inset"
+            className="text-sm placeholder:text-slate-400 ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
       </div>

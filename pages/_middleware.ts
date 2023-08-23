@@ -1,16 +1,50 @@
-import CookieService from '../utils/cookie';
+import CookieService from '@/utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
-import { verify } from '../utils/googlebot-verify';
+import { verify } from '@/utils/googlebot-verify';
 
 const USAGE_LIMIT = 10;
 
+// This is used to generate a sitemap for the site
+export const PUBLIC_PAGES = [
+  `/`,
+  `/sign-in/`,
+  `/contact/`,
+  `/privacy/`,
+  `/terms/`,
+  `/support/`,
+  `/pricing/`,
+  `/brand-assets/`,
+  `/team/`,
+  `/404/`,
+];
+
+const PUBLIC_API = [
+  `/api/login-attempt/`,
+  `/api/graphql-query/`,
+  `/api/get-access-token/`,
+  `/api/refresh-token/`,
+  `/api/login/`,
+  `/api/user/`,
+  `/api/register/`,
+  `/api/signin/`,
+  `/api/change-password/`,
+  `/api/access-token-from-code/`,
+  `/api/stripe-webhook/`,
+  `/admin/app/`,
+  `/admin/admin/`,
+  `/api/submit-data/`,
+  `/api/batch-job/`,
+  `/api/data-runs/`,
+  `/api/query/completions/`,
+  ];
+
 const getIp = (req: NextRequest) => {
-  let ip = req.ip ?? req.headers.get('x-real-ip');
+  let ip = req.ip ?? req.headers.get('x-real-ip') ?? undefined;
   const forwardedFor = req.headers.get('x-forwarded-for');
   if (!ip && forwardedFor) {
-    ip = forwardedFor.split(',').at(0) ?? 'Unknown';
+    ip = forwardedFor.split(',').at(0);
   }
-  return ip ?? 'Unknown';
+  return ip;
 };
 
 export async function middleware(req: NextRequest) {
@@ -31,35 +65,8 @@ export async function middleware(req: NextRequest) {
   // the pages/sites folder and its respective contents. This can also be done
   // via rewrites to a custom 404 page
   if (
-    [
-      `/`,
-      `/sign-in/`,
-      `/contact/`,
-      `/privacy/`,
-      `/terms/`,
-      `/support/`,
-      `/pricing/`,
-      `/brand-assets/`,
-      `/team/`,
-      `/404/`,
-      `/api/login-attempt/`,
-      `/api/graphql-query/`,
-      `/api/get-access-token/`,
-      `/api/refresh-token/`,
-      `/api/login/`,
-      `/api/user/`,
-      `/api/register/`,
-      `/api/signin/`,
-      `/api/change-password/`,
-      `/api/access-token-from-code/`,
-      `/api/stripe-webhook/`,
-      `/admin/app/`,
-      `/admin/admin/`,
-      `/api/submit-data/`,
-      `/api/batch-job/`,
-      `/api/data-runs/`,
-      `/api/query/completions/`,
-    ].includes(url.pathname) ||
+    PUBLIC_PAGES.includes(url.pathname) ||
+    PUBLIC_API.includes(url.pathname) ||
     url.pathname.endsWith('.png') ||
     url.pathname.endsWith('.jpg') ||
     url.pathname.endsWith('.svg') ||
@@ -67,6 +74,10 @@ export async function middleware(req: NextRequest) {
     // process.env.DEV_MODE
     req.method === 'HEAD'
   ) {
+    return NextResponse.next();
+  }
+
+  if (url.pathname.startsWith('/sitemap')) {
     return NextResponse.next();
   }
 
