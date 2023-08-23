@@ -1,6 +1,6 @@
 table:
-  name: investments
   schema: public
+  name: investments
 object_relationships:
   - name: investment_round
     using:
