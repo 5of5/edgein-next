@@ -7,7 +7,11 @@ import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import moment from 'moment-timezone';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconSortDashboard,
+} from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import {
   GetEventsDocument,
@@ -267,7 +271,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             />
 
             {!selectedTab?.value && (
-              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
             )}
           </div>
         </div>

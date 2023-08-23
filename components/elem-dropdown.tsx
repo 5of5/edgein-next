@@ -1,10 +1,11 @@
 import { FC, Fragment, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { IconChevronDownMini, IconCheck } from './icons';
+import { IconChevronDownMini, IconCheck, IconProps } from './icons';
 import { ElemButton } from './elem-button';
 
 type Props = {
   className?: string;
+  IconComponent?: FC<IconProps>;
   defaultItem?: number;
   items: Array<{
     id: number;
@@ -16,6 +17,7 @@ type Props = {
 
 export const ElemDropdown: FC<Props> = ({
   className = '',
+  IconComponent,
   defaultItem = 0,
   items,
 }) => {
@@ -25,6 +27,9 @@ export const ElemDropdown: FC<Props> = ({
     <Popover className={`relative shrink-0 ${className}`}>
       <Popover.Button as="div">
         <ElemButton btn="default" roundedFull={false} className="rounded-lg">
+          {IconComponent && (
+            <IconComponent className="w-4 h-4 mr-1.5 text-gray-400" />
+          )}
           {items[activeItem].label}
           <IconChevronDownMini className="w-5 h-5 ml-1" />
         </ElemButton>

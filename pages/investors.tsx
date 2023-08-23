@@ -8,7 +8,13 @@ import {
 import { ElemButton } from '@/components/elem-button';
 import { Pagination } from '@/components/pagination';
 import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconSortDashboard,
+  IconTable,
+  IconGroup,
+} from '@/components/icons';
 import { InvestorsTable } from '@/components/investors/elem-investors-table';
 import {
   GetVcFirmsDocument,
@@ -288,7 +294,10 @@ const Investors: NextPage<Props> = ({
 
             <div className="flex flex-wrap gap-2">
               {isDisplaySelectLibrary && <ElemLibrarySelector />}
-              <ElemDropdown items={layoutItems} />
+              <ElemDropdown
+                IconComponent={tableLayout ? IconTable : IconGroup}
+                items={layoutItems}
+              />
 
               <ElemAddFilter
                 resourceType="vc_firms"
@@ -297,6 +306,7 @@ const Investors: NextPage<Props> = ({
 
               {!isNewTabSelected && (
                 <ElemDropdown
+                  IconComponent={IconSortDashboard}
                   defaultItem={defaultOrderBy}
                   items={sortChoices}
                 />

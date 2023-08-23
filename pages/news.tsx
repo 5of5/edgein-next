@@ -9,7 +9,11 @@ import { PlaceholderNewsCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '../utils';
 import toast, { Toaster } from 'react-hot-toast';
-import { IconAnnotation, IconSearch } from '@/components/icons';
+import {
+  IconAnnotation,
+  IconSearch,
+  IconSortDashboard,
+} from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
@@ -163,7 +167,11 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             {!selectedTab?.value && (
-              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
             )}
           </div>
         </div>

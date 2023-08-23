@@ -195,3 +195,10 @@ query FindCommentById($id: Int!) {
     created_by_user_id
   }
 }
+
+query GetNotesMenu($user_id: Int!) {
+  notes(where: { created_by: { _eq: $user_id } }, limit: 10) {
+    id
+    notes
+  }
+}

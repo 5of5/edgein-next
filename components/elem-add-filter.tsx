@@ -8,6 +8,7 @@ import {
 import { useUser } from '@/context/user-context';
 import {
   IconChevronDownMini,
+  IconFilterDashboard,
   IconLockClosed,
   IconPlus,
 } from '@/components/icons';
@@ -62,6 +63,7 @@ export const ElemAddFilter: FC<Props> = ({
               roundedFull={false}
               className="rounded-lg"
             >
+              <IconFilterDashboard className="w-4 h-4 mr-1.5 text-gray-400" />
               Filters
               <IconChevronDownMini className="w-5 h-5 ml-1" />
             </ElemButton>

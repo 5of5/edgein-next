@@ -28975,6 +28975,13 @@ export type FindCommentByIdQueryVariables = Exact<{
 
 export type FindCommentByIdQuery = { __typename?: 'query_root', comments: Array<{ __typename?: 'comments', id: number, created_by_user_id: number }> };
 
+export type GetNotesMenuQueryVariables = Exact<{
+  user_id: Scalars['Int'];
+}>;
+
+
+export type GetNotesMenuQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string }> };
+
 export type GetNotificationsForUserQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -33105,6 +33112,33 @@ useFindCommentByIdQuery.getKey = (variables: FindCommentByIdQueryVariables) => [
 ;
 
 useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, options?: RequestInit['headers']) => fetcher<FindCommentByIdQuery, FindCommentByIdQueryVariables>(FindCommentByIdDocument, variables, options);
+export const GetNotesMenuDocument = `
+    query GetNotesMenu($user_id: Int!) {
+  notes(where: {created_by: {_eq: $user_id}}, limit: 10) {
+    id
+    notes
+  }
+}
+    `;
+export const useGetNotesMenuQuery = <
+      TData = GetNotesMenuQuery,
+      TError = Error
+    >(
+      variables: GetNotesMenuQueryVariables,
+      options?: UseQueryOptions<GetNotesMenuQuery, TError, TData>
+    ) =>
+    useQuery<GetNotesMenuQuery, TError, TData>(
+      ['GetNotesMenu', variables],
+      fetcher<GetNotesMenuQuery, GetNotesMenuQueryVariables>(GetNotesMenuDocument, variables),
+      options
+    );
+useGetNotesMenuQuery.document = GetNotesMenuDocument;
+
+
+useGetNotesMenuQuery.getKey = (variables: GetNotesMenuQueryVariables) => ['GetNotesMenu', variables];
+;
+
+useGetNotesMenuQuery.fetcher = (variables: GetNotesMenuQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotesMenuQuery, GetNotesMenuQueryVariables>(GetNotesMenuDocument, variables, options);
 export const GetNotificationsForUserDocument = `
     query GetNotificationsForUser($limit: Int, $offset: Int, $user: Int!) {
   notifications(

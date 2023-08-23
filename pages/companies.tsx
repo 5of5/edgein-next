@@ -7,7 +7,13 @@ import {
 } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconSortDashboard,
+  IconGroup,
+  IconTable,
+} from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
   Order_By,
@@ -285,7 +291,10 @@ const Companies: NextPage<Props> = ({
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
-            <ElemDropdown items={layoutItems} />
+            <ElemDropdown
+              IconComponent={tableLayout ? IconTable : IconGroup}
+              items={layoutItems}
+            />
 
             <ElemAddFilter
               resourceType="companies"
@@ -293,7 +302,11 @@ const Companies: NextPage<Props> = ({
             />
 
             {!isNewTabSelected && (
-              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
             )}
           </div>
         </div>

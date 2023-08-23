@@ -2715,3 +2715,45 @@ export const IconMicrosoftOutlook: FC<IconProps> = ({ className }) => {
     </svg>
   );
 };
+
+export const IconFilterDashboard: FC<IconProps> = ({ className, title }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      viewBox="0 0 14 14"
+      fill="none"
+      stroke="currentColor"
+    >
+      <title>{title ? title : 'Filter'}</title>
+      <path
+        d="M7 1.75C8.60708 1.75 10.1821 1.88534 11.7151 2.1455C12.026 2.198 12.25 2.46984 12.25 2.78484V3.39383C12.25 3.5662 12.2161 3.73687 12.1501 3.89611C12.0841 4.05535 11.9875 4.20004 11.8656 4.32192L8.69692 7.49058C8.57504 7.61246 8.47836 7.75715 8.4124 7.91639C8.34645 8.07563 8.3125 8.24631 8.3125 8.41867V10.1261C8.31255 10.3699 8.24468 10.6089 8.1165 10.8163C7.98833 11.0237 7.80492 11.1913 7.58683 11.3003L5.6875 12.25V8.41867C5.6875 8.24631 5.65355 8.07563 5.5876 7.91639C5.52164 7.75715 5.42496 7.61246 5.30308 7.49058L2.13442 4.32192C2.01254 4.20004 1.91586 4.05535 1.8499 3.89611C1.78395 3.73687 1.75 3.5662 1.75 3.39383V2.78484C1.75 2.46984 1.974 2.198 2.28492 2.1455C3.84275 1.88175 5.42 1.74945 7 1.75Z"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const IconSortDashboard: FC<IconProps> = ({ className, title }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      viewBox="0 0 14 14"
+      fill="none"
+      stroke="currentColor"
+    >
+      <title>{title ? title : 'Sort'}</title>
+      <path
+        d="M1.75 4.375L4.375 1.75M4.375 1.75L7 4.375M4.375 1.75V9.625M12.25 9.625L9.625 12.25M9.625 12.25L7 9.625M9.625 12.25V4.375"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
