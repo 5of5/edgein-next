@@ -1,3 +1,4 @@
+@use './cloudsponge';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -56,35 +57,6 @@
       transparent 6px,
       transparent 12px
     );
-  }
-}
-
-/* Cloudsponge: replace appearance */
-#cloudsponge-root-holder {
-  #cloudsponge-address-book {
-    @apply bg-transparent;
-
-    .cloudsponge-topbar,
-    .cloudsponge-back-button,
-    .cloudsponge-close-button,
-    .cloudsponge-menu-button {
-      @apply text-gray-900 bg-gray-100 border-b border-gray-200;
-      .cloudsponge-h1 {
-        @apply font-medium;
-      }
-    }
-    .cloudsponge-widget {
-      @apply font-sans bg-white;
-    }
-    .cloudsponge-providers-list {
-      @apply my-6 mx-auto;
-      li a {
-        @apply font-normal rounded-lg border-solid border border-gray-200 hover:bg-gray-50;
-      }
-    }
-    .cloudsponge-copyright {
-      @apply hidden;
-    }
   }
 }
 
