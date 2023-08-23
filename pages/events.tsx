@@ -319,8 +319,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 itemsPerPage={ITEMS_PER_PAGE}
                 filters={{
                   _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
+                    ...defaultFilters,
                     {
                       location_json: {
                         _cast: {

@@ -454,19 +454,35 @@ const Investors: NextPage<Props> = ({
                         },
                       ],
                     }}
+                    secondaryFilters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          investments: {
+                            investment_round: {
+                              round_date: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format('YYYY-MM-DD'),
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
                   />
                 ))}
 
-                <InvestorsByFilter
+                {/** TO-DO: update this filters */}
+                {/* <InvestorsByFilter
                   headingText="Recent exits"
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
-                  /** TO-DO: update this filters */
                   filters={{
                     _and: [...defaultFilters],
                   }}
-                />
+                /> */}
               </div>
             )}
 

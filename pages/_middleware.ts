@@ -36,7 +36,7 @@ const PUBLIC_API = [
   `/api/batch-job/`,
   `/api/data-runs/`,
   `/api/query/completions/`,
-  ];
+];
 
 const getIp = (req: NextRequest) => {
   let ip = req.ip ?? req.headers.get('x-real-ip') ?? undefined;
