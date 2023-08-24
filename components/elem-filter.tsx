@@ -31,6 +31,7 @@ import { getGeometryPlace } from '@/utils/helpers';
 type Props = {
   className?: string;
   resourceType: 'companies' | 'vc_firms' | 'events';
+  excludeFilters?: string[];
   filterValues: Filters | null;
   onChangeFilterValues: (values: Filters | null) => void;
   dateCondition?: DateCondition;
@@ -43,6 +44,7 @@ type Props = {
 export const ElemFilter: FC<Props> = ({
   className = '',
   resourceType,
+  excludeFilters = [],
   filterValues,
   dateCondition = 'past',
   onChangeFilterValues,
@@ -896,6 +898,7 @@ export const ElemFilter: FC<Props> = ({
         {filters && Object.keys(filters).length > 0 && (
           <ElemAddFilter
             resourceType={resourceType}
+            excludeFilters={excludeFilters}
             type="icon"
             onSelectFilterOption={onSelectFilterOption}
           />

@@ -2020,8 +2020,6 @@ export const SIDEBAR_DEFAULT_LISTS_LIMIT = 2;
 
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
 
-export const SIDEBAR_DEFAULT_NOTES_LIMIT = 3;
-
 export const SIDEBAR_LIMIT_ITEMS = 5;
 
 export const NEW_CATEGORY_LIMIT = 33;

@@ -268,6 +268,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
             <ElemAddFilter
               resourceType="events"
+              excludeFilters={
+                ['past', 'upcoming'].includes(selectedTab?.value ?? '')
+                  ? ['eventDate']
+                  : []
+              }
               onSelectFilterOption={onSelectFilterOption}
             />
 
@@ -285,6 +290,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           <div className="mx-6 my-3">
             <ElemFilter
               resourceType="events"
+              excludeFilters={
+                ['past', 'upcoming'].includes(selectedTab?.value ?? '')
+                  ? ['eventDate']
+                  : []
+              }
               filterValues={selectedFilters}
               dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
               onSelectFilterOption={onSelectFilterOption}

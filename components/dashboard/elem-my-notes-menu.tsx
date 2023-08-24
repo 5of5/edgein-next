@@ -5,12 +5,7 @@ import { IconChevronDownMini } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { Disclosure } from '@headlessui/react';
 import useDisclosureState from '@/hooks/use-disclosure-state';
-import {
-  MY_NOTES_MENU_OPEN_KEY,
-  SIDEBAR_DEFAULT_NOTES_LIMIT,
-  SIDEBAR_LIMIT_ITEMS,
-} from '@/utils/constants';
-import { useGetNotesMenuQuery } from '@/graphql/types';
+import { MY_NOTES_MENU_OPEN_KEY } from '@/utils/constants';
 
 type Props = {
   className?: string;
@@ -22,11 +17,6 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
 
   const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
     MY_NOTES_MENU_OPEN_KEY,
-  );
-
-  const { data } = useGetNotesMenuQuery(
-    { user_id: user?.id || 0 },
-    { enabled: Boolean(user?.id) },
   );
 
   const onRedirectToSignIn = () => {
@@ -90,33 +80,16 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
 
             {user && (
               <Disclosure.Panel as="ul" className="ml-2">
-                {data?.notes
-                  ?.slice(0, SIDEBAR_DEFAULT_NOTES_LIMIT)
-                  .map(note => {
-                    return (
-                      <li key={note.id} role="button">
-                        <Link href="/notes">
-                          <a
-                            className="flex items-center space-x-2 py-2 pl-7 pr-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
-                            title={note.notes}
-                          >
-                            <span className="line-clamp-1 break-all">
-                              {note.notes}
-                            </span>
-                          </a>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                {data?.notes && data.notes.length > SIDEBAR_LIMIT_ITEMS && (
-                  <li role="button">
-                    <Link href="/notes/">
-                      <a className="flex items-center space-x-2 py-2 pl-7 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900">
-                        See all
-                      </a>
-                    </Link>
-                  </li>
-                )}
+                <li role="button">
+                  <Link href="/notes">
+                    <a
+                      className="flex items-center space-x-2 py-2 pl-7 pr-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
+                      title="notes"
+                    >
+                      <span className="line-clamp-1 break-all">Notes</span>
+                    </a>
+                  </Link>
+                </li>
               </Disclosure.Panel>
             )}
           </>
