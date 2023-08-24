@@ -293,7 +293,7 @@ const Companies: NextPage<Props> = ({
           />
 
           <div className="flex flex-wrap gap-2">
-            {!isDisplaySelectLibrary && <ElemLibrarySelector />}
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             <ElemDropdown
               IconComponent={tableLayout ? IconTable : IconGroup}
