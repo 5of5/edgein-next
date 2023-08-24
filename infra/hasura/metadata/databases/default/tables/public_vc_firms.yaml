@@ -123,6 +123,7 @@ select_permissions:
         - name
         - num_of_exits
         - num_of_investments
+        - num_of_views
         - overview
         - sentiment
         - slug
