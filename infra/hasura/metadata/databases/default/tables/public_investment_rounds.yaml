@@ -1,6 +1,6 @@
 table:
-  name: investment_rounds
   schema: public
+  name: investment_rounds
 object_relationships:
   - name: company
     using:
@@ -11,8 +11,8 @@ array_relationships:
       foreign_key_constraint_on:
         column: round_id
         table:
-          name: investments
           schema: public
+          name: investments
 insert_permissions:
   - role: user
     permission:
