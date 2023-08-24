@@ -69,6 +69,7 @@ select_permissions:
         - is_auth0_verified
         - onboarding_information
         - person_id
+        - preferences
         - reference_id
         - reference_user_id
         - role

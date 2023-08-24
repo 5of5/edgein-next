@@ -68,6 +68,7 @@ select_permissions:
       columns:
         - created_at
         - created_by_id
+        - description
         - id
         - name
         - public

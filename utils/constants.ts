@@ -1990,6 +1990,7 @@ export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
 export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
   'mdinsdale@mac.com',
   'dinghan@capital6.com',
+  'skrinak@gmail.com',
 ];
 
 export const LIST_NAME_MIN_LENGTH = 3;

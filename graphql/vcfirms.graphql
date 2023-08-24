@@ -29,6 +29,7 @@ query GetVCFirm($slug: String!) {
       start_date
       end_date
       seniority
+      founder
       title
     }
     investments {

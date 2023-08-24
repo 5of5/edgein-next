@@ -64,7 +64,6 @@ insert_permissions:
         - name
         - slug
         - website
-      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:
