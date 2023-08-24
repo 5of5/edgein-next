@@ -1,15 +1,8 @@
 import { Dialog, Transition, Switch } from '@headlessui/react';
 import { FC, Fragment, useState } from 'react';
-import { ModalListName } from '@/components/my-list/modal-list-name';
-import {
-  IconX,
-  IconTrash,
-  IconCustomList,
-  IconChevronDownMini,
-  IconSettings,
-  IconCheck,
-} from '@/components/icons';
-import { EmojiHot, EmojiLike, EmojiCrap } from '@/components/emojis';
+import { ModalListName } from './modal-list-name';
+import { ModalListDescription } from './modal-list-description';
+import { IconX, IconSettings } from '@/components/icons';
 import { ModalListGroups } from './modal-list-groups';
 import { ElemDeleteConfirmModal } from '../elem-delete-confirm-modal';
 import Link from 'next/link';
@@ -31,6 +24,7 @@ type Props = {
   allowEdit?: boolean;
   groups: Array<any>;
   onSaveListName: (name: string) => void;
+  onSaveListDescription: (name: string) => void;
   onDeleteList: (id: number) => void;
   onAddGroups: (ids: Array<number>) => void;
   onChangePublic: (value: boolean) => void;
@@ -43,6 +37,7 @@ export const ElemListInformation: FC<Props> = ({
   list,
   groups,
   onSaveListName,
+  onSaveListDescription,
   onDeleteList,
   onAddGroups,
   onChangePublic,
@@ -55,6 +50,7 @@ export const ElemListInformation: FC<Props> = ({
 
   const [listSettingsModal, setListSettingsModal] = useState(false);
   const [listNameModal, setListNameModal] = useState(false);
+  const [listDescriptionModal, setListDescriptionModal] = useState(false);
   const [listDeleteModal, setListDeleteModal] = useState(false);
   const [listGroupsModal, setListGroupsModal] = useState(false);
 
@@ -85,7 +81,7 @@ export const ElemListInformation: FC<Props> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between flex-wrap space-y-2 px-4 py-3 border-b border-gray-300 lg:space-y-0">
+      <div className="flex items-center justify-between flex-wrap space-y-2 mb-6 px-4 py-3 border-b border-gray-200 lg:space-y-0">
         <div>
           <ElemDashboardBreadcrumb
             breadcrumbs={[
@@ -131,6 +127,10 @@ export const ElemListInformation: FC<Props> = ({
                 ? getNameFromListName(list)
                 : toLabel(router.query.slug as string)}
             </h1>
+          )}
+
+          {list?.description && (
+            <p className="text-gray-500 text-sm mb-3">{list?.description}</p>
           )}
 
           {list?.created_by && (
@@ -223,43 +223,64 @@ export const ElemListInformation: FC<Props> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-slate-100 shadow-xl transition-all overflow-hidden">
-                  <div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
-                    <h2 className="text-xl font-bold capitalize">
+                <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-gray-50 shadow-xl transition-all overflow-hidden">
+                  <div className="flex items-center justify-between px-6 py-2 bg-white border-b border-gray-200">
+                    <h2 className="text-xl font-medium capitalize">
                       {getNameFromListName(list)}
                     </h2>
                     <button
                       onClick={onCloseSettingsDialog}
                       type="button"
-                      className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
+                      className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-gray-50"
                     >
                       <IconX className="h-6 w-6" title="close" />
                     </button>
                   </div>
 
                   <div className="p-6 flex flex-col gap-y-4">
-                    <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
+                    <div className="bg-white rounded-lg border border-gray-200 divide-y divide-gray-200 overflow-hidden">
                       <button
-                        className="flex justify-between w-full p-3 hover:bg-slate-100"
+                        className="flex justify-between w-full p-3 hover:bg-gray-50"
                         onClick={() => setListNameModal(true)}
                       >
                         <div className="text-left">
-                          <h3 className="font-bold">Name</h3>
+                          <h3 className="font-medium">Name</h3>
                           <p className="capitalize">
                             {getNameFromListName(list)}
                           </p>
                         </div>
-                        <div className="text-primary-500 text-sm font-bold">
+                        <div className="text-primary-500 text-sm font-medium">
                           Edit
                         </div>
                       </button>
 
                       <button
-                        className="flex justify-between w-full p-3 hover:bg-slate-100"
+                        className="flex justify-between w-full p-3 hover:bg-gray-50"
+                        onClick={() => setListDescriptionModal(true)}
+                      >
+                        <div className="text-left">
+                          <h3 className="font-medium">Description</h3>
+                          <p
+                            className={`capitalize ${
+                              list?.description != null ? '' : 'text-gray-500'
+                            }`}
+                          >
+                            {list?.description
+                              ? list?.description
+                              : 'Add description'}
+                          </p>
+                        </div>
+                        <div className="text-primary-500 text-sm font-medium">
+                          Edit
+                        </div>
+                      </button>
+
+                      <button
+                        className="flex justify-between w-full p-3 hover:bg-gray-50"
                         onClick={() => setListGroupsModal(true)}
                       >
                         <div className="text-left">
-                          <h3 className="font-bold">Groups</h3>
+                          <h3 className="font-medium">Groups</h3>
                           {groups.length > 0 ? (
                             <div className="flex flex-wrap gap-2 mt-2">
                               {groups.map((item: any, index: number) => {
@@ -269,7 +290,7 @@ export const ElemListInformation: FC<Props> = ({
                                 return (
                                   <p
                                     key={index}
-                                    className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+                                    className="capitalize bg-gray-100 px-2 py-1 rounded-md"
                                   >
                                     {item?.name}
                                   </p>
@@ -277,17 +298,17 @@ export const ElemListInformation: FC<Props> = ({
                               })}
                             </div>
                           ) : (
-                            <p className="text-slate-500">Share with group</p>
+                            <p className="text-gray-500">Share with group</p>
                           )}
                         </div>
-                        <div className="text-primary-500 text-sm font-bold">
+                        <div className="text-primary-500 text-sm font-medium">
                           Edit
                         </div>
                       </button>
 
                       <div>
-                        <div className="flex items-center justify-between space-x-1 p-3 cursor-pointer hover:bg-slate-100">
-                          <p className="font-bold">Public</p>
+                        <div className="flex items-center justify-between space-x-1 p-3 cursor-pointer hover:bg-gray-50">
+                          <p className="font-medium">Public</p>
                           <Switch
                             checked={isPublicList}
                             onChange={onChangePublic}
@@ -307,7 +328,7 @@ export const ElemListInformation: FC<Props> = ({
 
                       <div className="flex justify-between w-full p-3">
                         <div className="text-left">
-                          <h3 className="font-bold">Created by</h3>
+                          <h3 className="font-medium">Created by</h3>
                           <p>
                             <span className="capitalize">
                               {list?.created_by?.person?.name ||
@@ -319,19 +340,15 @@ export const ElemListInformation: FC<Props> = ({
                         </div>
                       </div>
                     </div>
-                    <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
+                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                       <button
-                        className="flex justify-between w-full p-3 hover:bg-slate-100"
+                        className="w-full p-3 text-rose-500 hover:bg-red-500 hover:text-white"
                         onClick={() => {
                           setListDeleteModal(true);
                         }}
                       >
-                        <div className="text-left text-rose-500">
-                          <h3 className="flex items-center font-bold">
-                            <IconTrash
-                              className="h-5 w-5 mr-2"
-                              title="Delete List"
-                            />
+                        <div className="text-left ">
+                          <h3 className="flex items-center font-medium">
                             Delete List
                           </h3>
                         </div>
@@ -344,6 +361,12 @@ export const ElemListInformation: FC<Props> = ({
                     theListName={getNameFromListName(list) ?? ''}
                     onSave={onSaveListName}
                   />
+                  <ModalListDescription
+                    isOpen={listDescriptionModal}
+                    onCloseModal={() => setListDescriptionModal(false)}
+                    listDescription={list?.description ?? ''}
+                    onSave={onSaveListDescription}
+                  />
                   <ElemDeleteConfirmModal
                     isOpen={listDeleteModal}
                     title="Delete this list?"
@@ -351,7 +374,7 @@ export const ElemListInformation: FC<Props> = ({
                       <div>
                         When you delete a list, everything in it will be removed
                         immediately.
-                        <span className="font-bold inline">
+                        <span className="font-medium inline">
                           This can&lsquo;t be undone.
                         </span>
                       </div>

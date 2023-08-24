@@ -2,6 +2,7 @@ query GetFollowsByUser($user_id: Int!) {
   list_members(where: { user_id: { _eq: $user_id } }) {
     list {
       name
+      description
       id
       public
       created_by_id

@@ -188,6 +188,7 @@ query GetLists($limit: Int, $offset: Int, $where: lists_bool_exp!) {
   ) {
     id
     name
+    description
     public
     created_at
     updated_at
