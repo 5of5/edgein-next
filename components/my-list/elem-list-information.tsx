@@ -21,7 +21,6 @@ import { ElemSocialShare } from '../elem-social-share';
 
 type Props = {
   list: any;
-  allowEdit?: boolean;
   groups: Array<any>;
   onSaveListName: (name: string) => void;
   onSaveListDescription: (name: string) => void;
@@ -81,115 +80,139 @@ export const ElemListInformation: FC<Props> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between flex-wrap space-y-2 mb-6 px-4 py-3 border-b border-gray-200 lg:space-y-0">
-        <div>
-          <ElemDashboardBreadcrumb
-            breadcrumbs={[
-              {
-                name: 'my-lists',
-                to: '/lists',
-                component: 'Lists',
-              },
-              {
-                name: 'current',
-                component: isListCreator ? (
+      <div className="mb-4 px-4 py-3 border-b border-gray-200">
+        <ElemDashboardBreadcrumb
+          breadcrumbs={[
+            {
+              name: 'my-lists',
+              to: '/lists',
+              component: 'Lists',
+            },
+            {
+              name: 'current',
+              component: isListCreator ? (
+                <button
+                  onClick={onOpenSettingsDialog}
+                  className="inline-flex items-center justify-start hover:underline"
+                >
+                  <span className="text-left capitalize">
+                    {getNameFromListName(list)}
+                  </span>
+                </button>
+              ) : (
+                <h1 className="text-left capitalize">
+                  {list
+                    ? getNameFromListName(list)
+                    : toLabel(router.query.slug as string)}
+                </h1>
+              ),
+            },
+          ]}
+        />
+
+        <div className="flex items-center justify-between flex-wrap space-y-2 lg:space-y-0">
+          <div className="max-w-2xl">
+            <div className="flex items-center space-x-2">
+              {isListCreator && isCustomList ? (
+                <>
                   <button
+                    type="button"
+                    className="inline-flex items-start lg:items-center justify-start hover:underline"
                     onClick={onOpenSettingsDialog}
-                    className="inline-flex items-center justify-start hover:underline"
                   >
-                    <span className="text-left capitalize">
+                    <span className="font-medium text-left text-xl capitalize">
                       {getNameFromListName(list)}
                     </span>
                   </button>
-                ) : (
-                  <h1 className="text-left capitalize">
-                    {list
-                      ? getNameFromListName(list)
-                      : toLabel(router.query.slug as string)}
-                  </h1>
-                ),
-              },
-            ]}
-          />
-          {isListCreator ? (
-            <button
-              type="button"
-              className="inline-flex items-start lg:items-center justify-start underline hover:no-underline"
-              onClick={onOpenSettingsDialog}
-            >
-              <span className="font-medium text-left text-xl capitalize">
-                {getNameFromListName(list)}
-              </span>
-            </button>
-          ) : (
-            <h1 className="mr-2 font-medium text-xl capitalize">
-              {list
-                ? getNameFromListName(list)
-                : toLabel(router.query.slug as string)}
-            </h1>
-          )}
-
-          {list?.description && (
-            <p className="text-gray-500 text-sm mb-3">{list?.description}</p>
-          )}
-
-          {list?.created_by && (
-            <p className="pt-1 text-sm text-gray-500">
-              {list?.created_by?.person ? (
-                <>
-                  By{' '}
-                  <Link
-                    href={`/people/${list?.created_by?.person?.slug}`}
-                    passHref
+                  <button
+                    type="button"
+                    className="text-primary-500 text-sm font-medium"
+                    onClick={onOpenSettingsDialog}
                   >
-                    <a className="hover:underline">
-                      {list?.created_by?.person?.name}
-                    </a>
-                  </Link>
+                    Edit
+                  </button>
                 </>
               ) : (
-                <span>By {list?.created_by?.display_name}</span>
+                <h1 className="mr-2 font-medium text-xl capitalize">
+                  {list
+                    ? getNameFromListName(list)
+                    : toLabel(router.query.slug as string)}
+                </h1>
               )}
-              <span aria-hidden="true"> · </span>
-              {moment(list?.created_at).format('LL')}
-            </p>
+            </div>
+
+            <div className="flex items-center">
+              <div className="text-sm text-gray-500">
+                {isPublicList === true ? 'Public list' : 'Private list'}
+
+                {list?.created_by && (
+                  <>
+                    <span aria-hidden="true"> · </span>
+                    {list?.created_by?.person ? (
+                      <>
+                        By{' '}
+                        <Link
+                          href={`/people/${list?.created_by?.person?.slug}`}
+                          passHref
+                        >
+                          <a className="hover:underline">
+                            {list?.created_by?.person?.name}
+                          </a>
+                        </Link>
+                      </>
+                    ) : (
+                      <span>By {list?.created_by?.display_name}</span>
+                    )}
+                    <span aria-hidden="true"> · </span>
+                    {moment(list?.created_at).format('LL')}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {isCustomList && (
+            <div className="flex items-center gap-x-2 shrink-0">
+              <ElemSocialShare
+                resourceName={`"${listName}" list`}
+                resourceTwitterUrl={null}
+              />
+              {isListCreator && (
+                <ElemButton
+                  btn="default"
+                  className="gap-x-1 lg:!pl-3"
+                  onClick={onOpenSettingsDialog}
+                >
+                  <IconSettings className="hidden sm:block w-5 h-5" />
+                  <span>Settings</span>
+                </ElemButton>
+              )}
+
+              {!isFollowing && (
+                <ElemButton
+                  btn="purple"
+                  loading={isFollowButtonLoading}
+                  onClick={onFollowList}
+                >
+                  Follow
+                </ElemButton>
+              )}
+              {isFollowing && !isListCreator && (
+                <ElemButton
+                  btn="default"
+                  loading={isFollowButtonLoading}
+                  onClick={onFollowList}
+                >
+                  Following
+                </ElemButton>
+              )}
+            </div>
           )}
         </div>
 
-        {isCustomList && (
-          <div className="flex items-center gap-x-2 shrink-0">
-            <ElemSocialShare
-              resourceName={`"${listName}" list`}
-              resourceTwitterUrl={null}
-            />
-            {isListCreator && (
-              <ElemButton
-                btn="default"
-                className="gap-x-1 lg:!pl-3"
-                onClick={onOpenSettingsDialog}
-              >
-                <IconSettings className="hidden sm:block w-5 h-5" />
-                <span>Settings</span>
-              </ElemButton>
-            )}
-            {!isFollowing && (
-              <ElemButton
-                btn="purple"
-                loading={isFollowButtonLoading}
-                onClick={onFollowList}
-              >
-                Follow
-              </ElemButton>
-            )}
-            {isFollowing && !isListCreator && (
-              <ElemButton
-                btn="default"
-                loading={isFollowButtonLoading}
-                onClick={onFollowList}
-              >
-                Following
-              </ElemButton>
-            )}
+        {list?.description && (
+          <div className="pt-2 max-w-xl text-gray-500 text-sm">
+            {list?.description}
           </div>
         )}
       </div>
@@ -225,9 +248,7 @@ export const ElemListInformation: FC<Props> = ({
               >
                 <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-gray-50 shadow-xl transition-all overflow-hidden">
                   <div className="flex items-center justify-between px-6 py-2 bg-white border-b border-gray-200">
-                    <h2 className="text-xl font-medium capitalize">
-                      {getNameFromListName(list)}
-                    </h2>
+                    <h2 className="text-xl font-medium">List settings</h2>
                     <button
                       onClick={onCloseSettingsDialog}
                       type="button"
@@ -298,7 +319,9 @@ export const ElemListInformation: FC<Props> = ({
                               })}
                             </div>
                           ) : (
-                            <p className="text-gray-500">Share with group</p>
+                            <p className="text-gray-500">
+                              Share list with group
+                            </p>
                           )}
                         </div>
                         <div className="text-primary-500 text-sm font-medium">
@@ -382,7 +405,6 @@ export const ElemListInformation: FC<Props> = ({
                     onClose={() => setListDeleteModal(false)}
                     onDelete={() => onDeleteList(list?.id)}
                   />
-
                   <ModalListGroups
                     isOpen={listGroupsModal}
                     onCloseModal={() => setListGroupsModal(false)}

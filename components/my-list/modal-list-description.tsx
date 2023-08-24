@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { FC, Fragment, useState, useEffect } from 'react';
 import { ElemButton } from '@/components/elem-button';
-import { InputText } from '@/components/input-text';
+import { InputTextarea } from '../input-textarea';
 import { IconX } from '@/components/icons';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
@@ -90,11 +90,12 @@ export const ModalListDescription: FC<Props> = ({
                 </div>
                 <div className="p-6 flex flex-col gap-y-6">
                   <div>
-                    <InputText
-                      onChange={e => validateDescription(e?.target.value)}
+                    <InputTextarea
                       name="Description"
-                      type="text"
+                      rows={4}
                       value={description}
+                      onChange={e => validateDescription(e?.target.value)}
+                      placeholder="Add description"
                       className={`${
                         error === ''
                           ? 'ring-1 ring-slate-200'
