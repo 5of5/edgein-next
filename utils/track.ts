@@ -1,6 +1,6 @@
 type TrackActionType = {
   resourceId?: number;
-  resourceType?: 'companies' | 'vc_firms' | 'people' | 'news' | 'events';
+  resourceType?: 'companies' | 'vc_firms' | 'people' | 'news';
   properties?: any;
   pathname: string;
 };

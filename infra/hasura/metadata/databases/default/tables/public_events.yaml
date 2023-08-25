@@ -50,7 +50,6 @@ select_permissions:
         - location_json
         - name
         - notes
-        - num_of_views
         - overview
         - parent_event_id
         - price

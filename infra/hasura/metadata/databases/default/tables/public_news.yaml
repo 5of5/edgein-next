@@ -31,7 +31,6 @@ select_permissions:
         - library
         - link
         - metadata
-        - num_of_views
         - source
         - status
         - text

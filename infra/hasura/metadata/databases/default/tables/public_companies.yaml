@@ -211,7 +211,6 @@ select_permissions:
         - medium
         - name
         - notes
-        - num_of_views
         - overview
         - reddit
         - search_count
