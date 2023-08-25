@@ -2025,6 +2025,8 @@ export const SIDEBAR_LIMIT_ITEMS = 5;
 
 export const NEW_CATEGORY_LIMIT = 33;
 
+export const TRENDING_CATEGORY_LIMIT = 25;
+
 export const segmentChoices: SegmentOption[] = [
   {
     title: 'Executive',
