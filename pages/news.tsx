@@ -27,6 +27,7 @@ import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
+  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
@@ -110,6 +111,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab]);
 
+  if (selectedTab?.value === 'trending') {
+    filters._and?.push({
+      num_of_views: { _is_null: false },
+    });
+  }
+
   if (selectedTab?.value === 'today') {
     filters._and?.push({
       date: { _eq: moment().format('YYYY-MM-DD') },
@@ -131,8 +138,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     isLoading,
   } = useGetNewsQuery({
     offset,
-    limit,
-    orderBy: [orderByQuery],
+    limit: selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+    orderBy: [
+      selectedTab?.value === 'trending'
+        ? ({ num_of_views: Order_By.Desc } as News_Order_By)
+        : orderByQuery,
+    ],
     where: filters as News_Bool_Exp,
   });
 
@@ -253,6 +264,11 @@ export const getStaticProps: GetStaticProps = async context => {
 export default NewsPage;
 
 const newsTab: DashboardCategory[] = [
+  {
+    title: 'Trending',
+    value: 'trending',
+    icon: '🔥',
+  },
   {
     title: 'Today',
     value: 'today',

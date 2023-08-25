@@ -30,6 +30,7 @@ import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
+  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
@@ -195,6 +196,12 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     });
   }
 
+  if (selectedTab?.value === 'trending') {
+    filters._and?.push({
+      num_of_views: { _is_null: false },
+    });
+  }
+
   if (
     selectedTab?.value === 'upcoming' &&
     !selectedFilters?.eventDate?.condition
@@ -209,15 +216,29 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       start_date: { _lte: selectedTab?.date },
     });
   }
+
+  const getOrderBy = () => {
+    if (selectedTab?.value === 'past') {
+      return { start_date: Order_By.Desc };
+    }
+
+    if (selectedTab?.value === 'trending') {
+      return { num_of_views: Order_By.Desc };
+    }
+
+    return orderByQuery;
+  };
+
   const {
     data: eventsData,
     error,
     isLoading,
   } = useGetEventsQuery({
     offset,
-    limit,
+    limit: selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+
     where: filters as Events_Bool_Exp,
-    orderBy: [orderByQuery],
+    orderBy: [getOrderBy() as Events_Order_By],
   });
 
   if (!isLoading && initialLoad) {
@@ -286,30 +307,60 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         <ElemInviteBanner className="mx-6 my-3" />
 
         <div className="mx-6">
-          {showPersonalized &&
-            personalizedTags.locationTags.map(location => (
-              <EventsByFilter
-                key={location}
-                headingText={`New in ${location}`}
-                tagOnClick={onClickType}
-                itemsPerPage={ITEMS_PER_PAGE}
-                filters={{
-                  _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
-                    {
-                      location_json: {
-                        _cast: {
-                          String: {
-                            _ilike: `%"city": "${location}"%`,
+          {showPersonalized && (
+            <div className="flex flex-col gap-4 gap-x-16">
+              {personalizedTags.locationTags.map(location => (
+                <EventsByFilter
+                  key={location}
+                  headingText={`Trending in ${location}`}
+                  tagOnClick={onClickType}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    num_of_views: Order_By.Desc,
+                  }}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      { num_of_views: { _is_null: false } },
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
+                            },
                           },
                         },
                       },
-                    },
-                  ],
-                }}
-              />
-            ))}
+                    ],
+                  }}
+                />
+              ))}
+
+              {personalizedTags.locationTags.map(location => (
+                <EventsByFilter
+                  key={location}
+                  headingText={`New in ${location}`}
+                  tagOnClick={onClickType}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  filters={{
+                    _and: [
+                      { slug: { _neq: '' } },
+                      { library: { _contains: selectedLibrary } },
+                      {
+                        location_json: {
+                          _cast: {
+                            String: {
+                              _ilike: `%"city": "${location}"%`,
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+            </div>
+          )}
 
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
@@ -429,6 +480,12 @@ const eventTabs: DashboardCategory[] = [
     value: 'featured',
     date: '',
     icon: '📣',
+  },
+  {
+    title: 'Trending',
+    value: 'trending',
+    date: '',
+    icon: '🔥',
   },
   {
     title: 'Upcoming',

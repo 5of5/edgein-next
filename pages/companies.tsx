@@ -20,7 +20,11 @@ import {
 import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
-import { companyChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
+import {
+  companyChoices,
+  NEW_CATEGORY_LIMIT,
+  TRENDING_CATEGORY_LIMIT,
+} from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
@@ -205,6 +209,10 @@ const Companies: NextPage<Props> = ({
       filters._and?.push({
         date_added: { _neq: new Date(0) },
       });
+    } else if (selectedStatusTag.value === 'Trending') {
+      filters._and?.push({
+        num_of_views: { _is_null: false },
+      });
     } else {
       filters._and?.push({
         status_tags: { _contains: selectedStatusTag.value },
@@ -212,19 +220,39 @@ const Companies: NextPage<Props> = ({
     }
   }
 
+  const getLimit = () => {
+    if (isNewTabSelected) {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return limit;
+  };
+
+  const getOrderBy = () => {
+    if (isNewTabSelected) {
+      return { date_added: Order_By.Desc };
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return { num_of_views: Order_By.Desc };
+    }
+
+    return orderByQuery;
+  };
+
   const {
     data: companiesData,
     error,
     isLoading,
   } = useGetCompaniesQuery({
     offset: isNewTabSelected ? null : offset,
-    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
+    limit: getLimit(),
     where: filters as Companies_Bool_Exp,
-    orderBy: [
-      isNewTabSelected
-        ? ({ date_added: Order_By.Desc } as Companies_Order_By)
-        : orderByQuery,
-    ],
+    orderBy: [getOrderBy() as Companies_Order_By],
   });
 
   if (!isLoading && initialLoad) {
@@ -322,10 +350,13 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
+                  orderBy={{
+                    num_of_views: Order_By.Desc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
-                      { status_tags: { _contains: 'Trending' } },
+                      { num_of_views: { _is_null: false } },
                       {
                         location_json: {
                           _cast: {

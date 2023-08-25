@@ -37,6 +37,7 @@ import moment from 'moment-timezone';
 import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { usePopup } from '@/context/popup-context';
+import { onTrackView } from '@/utils/track';
 
 type Props = {
   event: GetEventQuery['events'][0];
@@ -73,7 +74,15 @@ const Event: NextPage<Props> = props => {
   );
 
   useEffect(() => {
-    if (eventData) setEvent(eventData.events[0]);
+    if (eventData) {
+      setEvent(eventData.events[0]);
+      onTrackView({
+        resourceId: eventData.events[0]?.id,
+        resourceType: 'events',
+        pathname: router.asPath,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventData]);
 
   const onOpenLinkPersonDialog = () => {

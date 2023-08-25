@@ -1,6 +1,7 @@
 import {
   Events,
   Events_Bool_Exp,
+  Events_Order_By,
   Order_By,
   useGetEventsQuery,
 } from '@/graphql/types';
@@ -16,6 +17,7 @@ import { PlaceholderEventCard } from '../placeholders';
 type Props = {
   headingText: string;
   filters: DeepPartial<Events_Bool_Exp>;
+  orderBy?: DeepPartial<Events_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
 };
@@ -23,6 +25,7 @@ type Props = {
 export const EventsByFilter: FC<Props> = ({
   headingText,
   filters,
+  orderBy,
   itemsPerPage,
   tagOnClick,
 }) => {
@@ -32,7 +35,7 @@ export const EventsByFilter: FC<Props> = ({
     offset: page * itemsPerPage,
     limit: itemsPerPage,
     // @ts-expect-error this should work
-    orderBy: [{ updated_at: Order_By.Desc }],
+    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
     where: filters as Events_Bool_Exp,
   });
 

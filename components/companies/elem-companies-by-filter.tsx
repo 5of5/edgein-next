@@ -1,6 +1,7 @@
 import {
   Companies,
   Companies_Bool_Exp,
+  Companies_Order_By,
   Order_By,
   useGetCompaniesQuery,
 } from '@/graphql/types';
@@ -16,6 +17,7 @@ import { ElemCompanyCard } from './elem-company-card';
 type Props = {
   headingText: string;
   filters: DeepPartial<Companies_Bool_Exp>;
+  orderBy?: DeepPartial<Companies_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
   isTableView?: boolean;
@@ -24,6 +26,7 @@ type Props = {
 export const CompaniesByFilter: FC<Props> = ({
   headingText,
   filters,
+  orderBy,
   itemsPerPage,
   tagOnClick,
   isTableView = false,
@@ -34,7 +37,7 @@ export const CompaniesByFilter: FC<Props> = ({
     offset: page * itemsPerPage,
     limit: itemsPerPage,
     // @ts-expect-error this should work
-    orderBy: [{ updated_at: Order_By.Desc }],
+    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
     where: filters as Companies_Bool_Exp,
   });
 
