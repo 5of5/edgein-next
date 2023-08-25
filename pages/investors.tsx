@@ -30,7 +30,6 @@ import {
   investorChoices,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
-  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
@@ -233,10 +232,6 @@ const Investors: NextPage<Props> = ({
       filters._and?.push({
         created_at: { _neq: new Date(0) },
       });
-    } else if (selectedStatusTag.value === 'Trending') {
-      filters._and?.push({
-        num_of_views: { _is_null: false },
-      });
     } else {
       filters._and?.push({
         status_tags: { _contains: selectedStatusTag.value },
@@ -244,39 +239,19 @@ const Investors: NextPage<Props> = ({
     }
   }
 
-  const getLimit = () => {
-    if (isNewTabSelected) {
-      return NEW_CATEGORY_LIMIT;
-    }
-
-    if (selectedStatusTag?.value === 'Trending') {
-      return TRENDING_CATEGORY_LIMIT;
-    }
-
-    return limit;
-  };
-
-  const getOrderBy = () => {
-    if (isNewTabSelected) {
-      return { created_at: Order_By.Desc };
-    }
-
-    if (selectedStatusTag?.value === 'Trending') {
-      return { num_of_views: Order_By.Desc };
-    }
-
-    return orderByQuery;
-  };
-
   const {
     data: vcFirmsData,
     error,
     isLoading,
   } = useGetVcFirmsQuery({
     offset: isNewTabSelected ? null : offset,
-    limit: getLimit(),
+    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
     where: filters as Vc_Firms_Bool_Exp,
-    orderBy: [getOrderBy() as Vc_Firms_Order_By],
+    orderBy: [
+      isNewTabSelected
+        ? ({ created_at: Order_By.Desc } as Vc_Firms_Order_By)
+        : orderByQuery,
+    ],
   });
 
   if (!isLoading && initialLoad) {
@@ -381,13 +356,11 @@ const Investors: NextPage<Props> = ({
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={tableLayout}
-                    orderBy={{
-                      num_of_views: Order_By.Desc,
-                    }}
                     filters={{
                       _and: [
-                        ...defaultFilters,
-                        { num_of_views: { _is_null: false } },
+                        { slug: { _neq: '' } },
+                        { library: { _contains: selectedLibrary } },
+                        { status_tags: { _contains: 'Trending' } },
                         {
                           location_json: {
                             _cast: {

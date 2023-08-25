@@ -30,7 +30,6 @@ import {
   companyChoices,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
-  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
@@ -230,10 +229,6 @@ const Companies: NextPage<Props> = ({
       filters._and?.push({
         date_added: { _neq: new Date(0) },
       });
-    } else if (selectedStatusTag.value === 'Trending') {
-      filters._and?.push({
-        num_of_views: { _is_null: false },
-      });
     } else {
       filters._and?.push({
         status_tags: { _contains: selectedStatusTag.value },
@@ -241,39 +236,19 @@ const Companies: NextPage<Props> = ({
     }
   }
 
-  const getLimit = () => {
-    if (isNewTabSelected) {
-      return NEW_CATEGORY_LIMIT;
-    }
-
-    if (selectedStatusTag?.value === 'Trending') {
-      return TRENDING_CATEGORY_LIMIT;
-    }
-
-    return limit;
-  };
-
-  const getOrderBy = () => {
-    if (isNewTabSelected) {
-      return { date_added: Order_By.Desc };
-    }
-
-    if (selectedStatusTag?.value === 'Trending') {
-      return { num_of_views: Order_By.Desc };
-    }
-
-    return orderByQuery;
-  };
-
   const {
     data: companiesData,
     error,
     isLoading,
   } = useGetCompaniesQuery({
     offset: isNewTabSelected ? null : offset,
-    limit: getLimit(),
+    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
     where: filters as Companies_Bool_Exp,
-    orderBy: [getOrderBy() as Companies_Order_By],
+    orderBy: [
+      isNewTabSelected
+        ? ({ date_added: Order_By.Desc } as Companies_Order_By)
+        : orderByQuery,
+    ],
   });
 
   if (!isLoading && initialLoad) {
@@ -378,13 +353,10 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
-                  orderBy={{
-                    num_of_views: Order_By.Desc,
-                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
-                      { num_of_views: { _is_null: false } },
+                      { status_tags: { _contains: 'Trending' } },
                       {
                         location_json: {
                           _cast: {
