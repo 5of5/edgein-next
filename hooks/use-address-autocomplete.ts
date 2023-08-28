@@ -48,7 +48,8 @@ const useAddressAutocomplete = (filterCategories?: string[]) => {
       }
       setIsLoadingPlaceSuggestions(false);
     },
-    [filterCategories],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   const debouncedSearch = useMemo(
