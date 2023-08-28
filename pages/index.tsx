@@ -198,13 +198,12 @@ const Home = () => {
                 arrow
                 onClick={() => router.push('/companies')}
                 btn="primary"
-                size="lg"
+                size="md"
               >
-                Start for free
+                Access now
               </ElemButton>
-
-              <p className="mt-2 italic text-xs text-gray-500">
-                *no credit card required
+              <p className="text-center mt-2 italic text-xs text-gray-500">
+                No login required.
               </p>
             </div>
           </div>
