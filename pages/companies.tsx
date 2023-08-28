@@ -374,7 +374,7 @@ const Companies: NextPage<Props> = ({
               {personalizedTags.locationTags.map((location, index) => (
                 <CompaniesByFilter
                   key={`${location}-${index}`}
-                  headingText={`New in ${location}`}
+                  headingText={`Recently updated in ${location}`}
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}

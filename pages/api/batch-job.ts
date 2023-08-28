@@ -80,18 +80,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     [],
   );
 
-      // Update the views in the last 24 hours for companies
-      await client.query(
-        `UPDATE companies company SET num_of_views = (SELECT count(id)
+  // Update the views in the last 24 hours for companies
+  await client.query(
+    `UPDATE companies company SET num_of_views = (SELECT count(id)
         FROM actions
         WHERE action = 'View'
         AND resource = 'companies'
         AND resource_id = company.id
         AND created_at >= now() - interval '24 hours');`,
-        [],
-      );
-    
-  
+    [],
+  );
 
   // Update the views in the last 24 hours for vc_firms
   await client.query(
@@ -104,16 +102,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     [],
   );
 
-    // Update the views in the last 24 hours for events
-    await client.query(
-      `UPDATE events event SET num_of_views = (SELECT count(id)
+  // Update the views in the last 24 hours for events
+  await client.query(
+    `UPDATE events event SET num_of_views = (SELECT count(id)
       FROM actions
       WHERE action = 'View'
       AND resource = 'events'
       AND resource_id = event.id
       AND created_at >= now() - interval '24 hours');`,
-      [],
-    );
+    [],
+  );
 
   // Update the views in the last 24 hours for news
   await client.query(

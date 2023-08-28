@@ -339,13 +339,12 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               {personalizedTags.locationTags.map(location => (
                 <EventsByFilter
                   key={location}
-                  headingText={`New in ${location}`}
+                  headingText={`Recently updated in ${location}`}
                   tagOnClick={onClickType}
                   itemsPerPage={ITEMS_PER_PAGE}
                   filters={{
                     _and: [
-                      { slug: { _neq: '' } },
-                      { library: { _contains: selectedLibrary } },
+                      ...defaultFilters,
                       {
                         location_json: {
                           _cast: {
