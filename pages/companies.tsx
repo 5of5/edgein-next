@@ -240,16 +240,19 @@ const Companies: NextPage<Props> = ({
     data: companiesData,
     error,
     isLoading,
-  } = useGetCompaniesQuery({
-    offset: isNewTabSelected ? null : offset,
-    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
-    where: filters as Companies_Bool_Exp,
-    orderBy: [
-      isNewTabSelected
-        ? ({ date_added: Order_By.Desc } as Companies_Order_By)
-        : orderByQuery,
-    ],
-  });
+  } = useGetCompaniesQuery(
+    {
+      offset: isNewTabSelected ? null : offset,
+      limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
+      where: filters as Companies_Bool_Exp,
+      orderBy: [
+        isNewTabSelected
+          ? ({ date_added: Order_By.Desc } as Companies_Order_By)
+          : orderByQuery,
+      ],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);

@@ -35,13 +35,16 @@ export const InvestorsByFilter: FC<Props> = ({
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetVcFirmsQuery({
-    offset: page * itemsPerPage,
-    limit: itemsPerPage,
-    // @ts-expect-error this should work
-    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
-    where: filters as Vc_Firms_Bool_Exp,
-  });
+  const { data, isLoading, error } = useGetVcFirmsQuery(
+    {
+      offset: page * itemsPerPage,
+      limit: itemsPerPage,
+      // @ts-expect-error this should work
+      orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
+      where: filters as Vc_Firms_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   const {
     data: secondaryData,
@@ -55,7 +58,10 @@ export const InvestorsByFilter: FC<Props> = ({
       orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
       where: fallbackFilters as Vc_Firms_Bool_Exp,
     },
-    { enabled: Boolean(fallbackFilters) && data?.vc_firms?.length === 0 },
+    {
+      enabled: Boolean(fallbackFilters) && data?.vc_firms?.length === 0,
+      refetchOnWindowFocus: false,
+    },
   );
 
   if (isLoading || isLoadingSecondary) {

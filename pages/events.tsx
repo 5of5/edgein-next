@@ -228,16 +228,19 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     data: eventsData,
     error,
     isLoading,
-  } = useGetEventsQuery({
-    offset,
-    limit,
-    where: filters as Events_Bool_Exp,
-    orderBy: [
-      selectedTab?.value === 'past'
-        ? ({ start_date: Order_By.Desc } as Events_Order_By)
-        : orderByQuery,
-    ],
-  });
+  } = useGetEventsQuery(
+    {
+      offset,
+      limit,
+      where: filters as Events_Bool_Exp,
+      orderBy: [
+        selectedTab?.value === 'past'
+          ? ({ start_date: Order_By.Desc } as Events_Order_By)
+          : orderByQuery,
+      ],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -452,6 +455,7 @@ export const getStaticProps: GetStaticProps = async context => {
       eventsCount: events?.events_aggregate.aggregate?.count || 0,
       initialEvents: events?.events || [],
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 

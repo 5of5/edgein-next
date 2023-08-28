@@ -137,12 +137,15 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     data: newsData,
     error,
     isLoading,
-  } = useGetNewsQuery({
-    offset,
-    limit,
-    orderBy: [orderByQuery],
-    where: filters as News_Bool_Exp,
-  });
+  } = useGetNewsQuery(
+    {
+      offset,
+      limit,
+      orderBy: [orderByQuery],
+      where: filters as News_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -259,6 +262,7 @@ export const getStaticProps: GetStaticProps = async context => {
       initialNews: news?.news || [],
       newsTab,
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 

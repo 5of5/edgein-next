@@ -33,13 +33,16 @@ export const CompaniesByFilter: FC<Props> = ({
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetCompaniesQuery({
-    offset: page * itemsPerPage,
-    limit: itemsPerPage,
-    // @ts-expect-error this should work
-    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
-    where: filters as Companies_Bool_Exp,
-  });
+  const { data, isLoading, error } = useGetCompaniesQuery(
+    {
+      offset: page * itemsPerPage,
+      limit: itemsPerPage,
+      // @ts-expect-error this should work
+      orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
+      where: filters as Companies_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (isLoading) {
     return (
