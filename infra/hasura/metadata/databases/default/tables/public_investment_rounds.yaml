@@ -25,6 +25,7 @@ insert_permissions:
         - external_id
         - round
         - round_date
+      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:
@@ -65,5 +66,4 @@ select_permissions:
       filter:
         status:
           _eq: published
-      limit: 250
-      allow_aggregations: true
+      limit: 50

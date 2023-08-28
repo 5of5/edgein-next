@@ -21,6 +21,7 @@ insert_permissions:
         - id
         - name
         - ticker
+      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:
