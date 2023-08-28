@@ -25,6 +25,7 @@ import { eventSizeChoices } from '@/utils/constants';
 import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
+import { ElemFilterLocation } from './elem-filter-location';
 import { ElemAddFilter } from './elem-add-filter';
 import { getGeometryPlace } from '@/utils/helpers';
 
@@ -414,15 +415,43 @@ export const ElemFilter: FC<Props> = ({
             if (
               option === 'country' ||
               option === 'state' ||
-              option === 'city' ||
-              option === 'fundingInvestors' ||
-              option === 'fundedCompanies'
+              option === 'city'
             ) {
+              const numOfTags = filters?.[option]?.tags?.length || 0;
+              return (
+                <ElemFilterLocation
+                  key={option}
+                  open={Boolean(filters[option]?.open)}
+                  option={option}
+                  title={
+                    numOfTags > 0 && (
+                      <div>
+                        {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
+                        {filters?.[option]?.condition === 'none' ? 'not ' : ''}
+                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                      </div>
+                    )
+                  }
+                  heading={optionMetadata.heading}
+                  checkedAny={filters?.[option]?.condition === 'any'}
+                  checkedNone={filters?.[option]?.condition === 'none'}
+                  tags={filters?.[option]?.tags || []}
+                  placeholder={optionMetadata.placeholder}
+                  onOpenFilterPopup={onOpenFilterPopup}
+                  onCloseFilterPopup={onCloseFilterPopup}
+                  onClearFilterOption={onClearFilterOption}
+                  onApplyFilter={onApplyFilter}
+                  onChangeCondition={onChangeCondition}
+                  onChangeTags={onChangeTags}
+                />
+              );
+            }
+            if (option === 'fundingInvestors' || option === 'fundedCompanies') {
               const numOfTags = filters?.[option]?.tags?.length || 0;
               return (
                 <ElemFilterTagsInput
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   option={option}
                   title={
                     numOfTags > 0 && (
@@ -451,14 +480,14 @@ export const ElemFilter: FC<Props> = ({
             if (option === 'address') {
               return (
                 <ElemFilterPopup
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={
                     filters[option]?.value && (
                       <div>
                         Address is{' '}
                         <b>{`${filters[option]?.distance} miles `}</b>
-                        around <b>{filters[option]?.value?.formattedAddress}</b>
+                        around <b>{filters[option]?.value?.Label}</b>
                       </div>
                     )
                   }
@@ -496,7 +525,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterTagsInput
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   option={option}
                   title={
                     numOfTags > 0 && (
@@ -532,7 +561,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={
                     numOfTags > 0 && (
@@ -594,7 +623,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={
                     <div>
@@ -664,7 +693,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={
                     <div>
@@ -792,7 +821,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={
                     <div>
@@ -856,7 +885,7 @@ export const ElemFilter: FC<Props> = ({
               return (
                 <ElemFilterPopup
                   key={option}
-                  open={!!filters[option]?.open}
+                  open={Boolean(filters[option]?.open)}
                   name={option}
                   title={
                     filters[option]?.value && (
