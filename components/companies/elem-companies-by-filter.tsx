@@ -3,7 +3,7 @@ import {
   Companies_Bool_Exp,
   Companies_Order_By,
   Order_By,
-  useGetCompaniesQuery,
+  useGetPersonalizedCompaniesQuery,
 } from '@/graphql/types';
 import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
@@ -33,7 +33,7 @@ export const CompaniesByFilter: FC<Props> = ({
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetCompaniesQuery(
+  const { data, isLoading, error } = useGetPersonalizedCompaniesQuery(
     {
       offset: page * itemsPerPage,
       limit: itemsPerPage,

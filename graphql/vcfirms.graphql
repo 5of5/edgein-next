@@ -325,3 +325,32 @@ query GetVcFirmInsightByLocation($where: vc_firms_bool_exp!) {
     }
   }
 }
+
+query GetPersonalizedVcFirms(
+  $limit: Int
+  $offset: Int
+  $orderBy: [vc_firms_order_by!]
+  $where: vc_firms_bool_exp!
+) {
+  vc_firms(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+    id
+    slug
+    logo
+    name
+    num_of_investments
+    tags
+    overview
+    website
+    linkedin
+    twitter
+    follows {
+      id
+      list_id
+    }
+  }
+  vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

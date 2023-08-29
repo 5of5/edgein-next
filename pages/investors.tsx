@@ -121,7 +121,6 @@ const Investors: NextPage<Props> = ({
     user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
   const defaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
-    { slug: { _neq: '' } },
     { library: { _contains: selectedLibrary } },
   ];
 
@@ -361,7 +360,6 @@ const Investors: NextPage<Props> = ({
                     isTableView={tableLayout}
                     filters={{
                       _and: [
-                        { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         { status_tags: { _contains: 'Trending' } },
                         {
@@ -387,7 +385,6 @@ const Investors: NextPage<Props> = ({
                     isTableView={tableLayout}
                     filters={{
                       _and: [
-                        { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
                           location_json: {
@@ -412,7 +409,6 @@ const Investors: NextPage<Props> = ({
                     isTableView={tableLayout}
                     filters={{
                       _and: [
-                        { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
                           status_tags: {
@@ -615,7 +611,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       limit: 50,
       where: {
         _and: [
-          { slug: { _neq: '' } },
           {
             _or: [
               {

@@ -1,7 +1,7 @@
 import {
   Investors_Order_By,
   Order_By,
-  useGetVcFirmsQuery,
+  useGetPersonalizedVcFirmsQuery,
   Vc_Firms,
   Vc_Firms_Bool_Exp,
 } from '@/graphql/types';
@@ -35,7 +35,7 @@ export const InvestorsByFilter: FC<Props> = ({
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetVcFirmsQuery(
+  const { data, isLoading, error } = useGetPersonalizedVcFirmsQuery(
     {
       offset: page * itemsPerPage,
       limit: itemsPerPage,
@@ -50,7 +50,7 @@ export const InvestorsByFilter: FC<Props> = ({
     data: secondaryData,
     isLoading: isLoadingSecondary,
     error: secondaryError,
-  } = useGetVcFirmsQuery(
+  } = useGetPersonalizedVcFirmsQuery(
     {
       offset: page * itemsPerPage,
       limit: itemsPerPage,

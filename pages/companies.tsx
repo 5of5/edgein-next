@@ -121,7 +121,6 @@ const Companies: NextPage<Props> = ({
     user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
   const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
-    { slug: { _neq: '' } },
     { library: { _contains: selectedLibrary } },
   ];
 
@@ -644,7 +643,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       limit: 50,
       where: {
         _and: [
-          { slug: { _neq: '' } },
           {
             _or: [
               {
