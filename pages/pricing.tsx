@@ -29,21 +29,22 @@ const Pricing = () => {
           }
         },
         description:
-          'Signup today and get instant access to the largest community dataset in Web3, exclusively on the EdgeIn platform.',
+          'Instant access to browse the largest community dataset in Web3, exclusively on the EdgeIn platform.',
         features: [
-          'Unlimited Search',
-          'Daily Carousel',
-          'View Profile Pages',
-          'React to Projects / Deals',
-          'Request Data',
-          'Create / Share up to 5 Lists',
-          'Create / Manage Groups with up to 3 members',
+          'Unlimited search',
+          'Access to view organization profiles and updates on investors, events, and news.',
+          'Email updates of relevant news in your area based on personalization and tags.',
+          'Make data requests and updates on EdgeIn, fulfilled in <20 minutes.',
+          'Create and manage up to 5 personal lists.',
+          'Create and manage 3 personal or public groups to hunt and discuss your interests.',
+          'Access the EdgeIn community telegram to request datasets and features.',
+          'See referral credits for contributing data and inviting members to the community. Upgrade to access your credits and help us make EdgeIn work for everyone!',
         ],
         cta: user
           ? user.billing_org || user.credits > 0
             ? ''
             : 'Current Plan'
-          : 'Sign up',
+          : 'Access Now',
         mostPopular: false,
       },
       {
@@ -60,19 +61,13 @@ const Pricing = () => {
           }
         },
         description:
-          'As a Contributor, you help support our free community data model. Get real-time updates on the companies, people, deals and events you’re most interested in, giving you an unprecedented edge in Web3.',
+          'Contributors are serious Web3 builders who need connections to our community today. They help us build and pay for the fresh network/data.',
         features: [
-          'Unlimited Search',
-          'Daily Carousel',
-          'View Profile Pages',
-          'React to Projects / Deals',
-          'Request / Correct Data *earn credits for data contributions made to EdgeIn',
-          'Create / Share Unlimited Lists',
-          'Create / Manage Groups with up to 5,000 members',
-          'Real-Time Notifications on Saved Companies, Projects and Investors in Lists',
-          'Referral Link Activation',
-          'View Emails on User Profiles',
-          'Personalized Daily Carousel **launching late 2023',
+          'Access to public, social and email information for quick connection to other Web3 executives.',
+          'Unlimited lists.',
+          'Unlimited groups.',
+          '2X earning on referrals and data contribution.',
+          '24/7, concierge human support for data requests, edits and prioritization.',
         ],
         cta: user
           ? user.billing_org
@@ -133,7 +128,7 @@ const Pricing = () => {
                   className={`relative flex flex-col bg-white shadow p-7 ${
                     tier.mostPopular
                       ? 'mt-8 rounded-lg lg:mt-0 border-2 border-primary-500'
-                      : 'rounded-bl-lg rounded-tl-lg my-14'
+                      : 'rounded-bl-lg rounded-tl-lg mt-14'
                   }`}
                   key={tier.title}
                 >

@@ -155,7 +155,7 @@ const IconArrowLeft: React.FC<IconProps> = ({
         className="transition ease-in-out duration-150 group-hover:-translate-x-0.5"
         d="M5 1.36365L1 5.00001L5 8.63637"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -163,7 +163,7 @@ const IconArrowLeft: React.FC<IconProps> = ({
         className="opacity-0 group-hover:opacity-100"
         d="M5 5H1"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -184,7 +184,7 @@ const IconArrow: React.FC<IconProps> = ({ className, title = 'Arrow' }) => {
         className="transition ease-in-out duration-150 group-hover:translate-x-0.5"
         d="M1 1.36365L5 5.00001L1 8.63637"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -192,7 +192,7 @@ const IconArrow: React.FC<IconProps> = ({ className, title = 'Arrow' }) => {
         className="opacity-0 group-hover:opacity-100"
         d="M5 5H1"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
