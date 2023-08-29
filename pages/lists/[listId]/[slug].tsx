@@ -386,7 +386,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const list = lists?.lists[0];
 
-  const metaImage = `https://edgein.io/images/og/test.jpg`;
+  const metaImage = `https://edgein.io/images/og/list-sharing.jpg`;
 
   const metaTitle = list
     ? `"${getNameFromListName(list)}" list - Edgein.io`
