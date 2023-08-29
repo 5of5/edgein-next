@@ -35,6 +35,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const response = await Promise.all(
     params.map(async ({ email, personId }) => {
       const mailParams: InviteToEdgeInMailParams = {
+        isExistedUser: false,
+        recipientName: email,
+        organizationName: '',
         emails: [email],
         senderName: user.display_name || '',
         senderEmail: user.email || '',
@@ -58,15 +61,30 @@ export const sendInvitationMail = async (
   mailParams: InviteToEdgeInMailParams,
   options: EmailOptions = { useBcc: false },
 ) => {
-  const { emails, senderName, senderEmail, signUpUrl } = mailParams;
+  const {
+    isExistedUser,
+    recipientName,
+    organizationName,
+    emails,
+    senderName,
+    senderEmail,
+    signUpUrl,
+  } = mailParams;
 
   const emailHtml = render(
     InviteUserEmail({
+      isExistedUser,
+      recipientName,
+      organizationName,
       senderName,
       senderEmail,
       signUpUrl,
     }),
   );
+
+  const subject = isExistedUser
+    ? `${organizationName} portfolio invitation - add your company and founder data on Edgein.io`
+    : `${senderName} (${senderEmail}) invited you to EdgeIn`;
 
   const destination = options.useBcc
     ? { BccAddresses: emails }
@@ -84,7 +102,7 @@ export const sendInvitationMail = async (
         },
         Subject: {
           Charset: 'UTF-8',
-          Data: `${senderName} (${senderEmail}) invited you to EdgeIn`,
+          Data: subject,
         },
       },
       Source: env.SES_SOURCE,

@@ -317,11 +317,9 @@ export default function Account() {
             </EditSection>
           )}
 
-          {
-            userProfile && (
-              <ProfileEditDailyEmails user={userProfile.users_by_pk} />
-            )
-          }
+          {userProfile && (
+            <ProfileEditDailyEmails user={userProfile.users_by_pk} />
+          )}
 
           <EditSection
             heading="Subscription"
