@@ -20,6 +20,7 @@
     "docker:stop": "npm run docker-compose -- down",
     "hasura": "cd infra/hasura && hasura --skip-update-check",
     "codegen": "graphql-codegen --config graphql/codegen.js",
+    "db:seed": "cd scripts/db && sh load-seed-data.sh",
     "api:test": "jest --config=test-api/api-test.config.js --testPathPattern=test-api",
     "api:build": "cd server-api/ && rimraf build && npx tsc && cp .env build/server-api",
     "api:dev": "cd server-api/ && set NODE_ENV=development && nodemon -e ts --exec ts-node -r tsconfig-paths/register index.ts",
