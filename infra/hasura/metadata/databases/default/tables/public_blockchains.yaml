@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: blockchains
+  schema: public
 select_permissions:
   - role: api_viewer
     permission:
