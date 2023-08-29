@@ -97,8 +97,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       sendInvitationMail(
         {
           isExistedUser: true,
-          /** TO DO: Get recipient name when send bulk emails */
-          recipientName: '',
           organizationName,
           emails,
           senderName: user.display_name || '',

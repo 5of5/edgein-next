@@ -35,9 +35,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const response = await Promise.all(
     params.map(async ({ email, personId }) => {
       const mailParams: InviteToEdgeInMailParams = {
-        isExistedUser: false,
-        recipientName: email,
-        organizationName: '',
         emails: [email],
         senderName: user.display_name || '',
         senderEmail: user.email || '',
@@ -63,7 +60,6 @@ export const sendInvitationMail = async (
 ) => {
   const {
     isExistedUser,
-    recipientName,
     organizationName,
     emails,
     senderName,
@@ -74,7 +70,6 @@ export const sendInvitationMail = async (
   const emailHtml = render(
     InviteUserEmail({
       isExistedUser,
-      recipientName,
       organizationName,
       senderName,
       senderEmail,

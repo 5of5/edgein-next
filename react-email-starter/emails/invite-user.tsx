@@ -5,7 +5,6 @@ import EmailLayout from '../components/layout';
 
 type InviteUserEmailProps = Pick<
   InviteToEdgeInMailParams,
-  | 'recipientName'
   | 'isExistedUser'
   | 'senderName'
   | 'senderEmail'
@@ -15,7 +14,6 @@ type InviteUserEmailProps = Pick<
 
 const InviteUserEmail = ({
   isExistedUser,
-  recipientName,
   senderName,
   senderEmail,
   signUpUrl,
@@ -25,7 +23,7 @@ const InviteUserEmail = ({
     <EmailLayout>
       <Section className="px-[40px] py-[12px]">
         <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mb-4">
-          Hi <strong>{recipientName}</strong>,
+          Hi,
         </Text>
 
         {isExistedUser ? (
