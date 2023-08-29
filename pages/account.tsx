@@ -20,6 +20,7 @@ import { ElemInviteInvestmentMembers } from '@/components/invites/elem-invite-in
 
 import validator from 'validator';
 import { isEmpty } from 'lodash';
+import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
@@ -315,6 +316,12 @@ export default function Account() {
               )}
             </EditSection>
           )}
+
+          {
+            userProfile && (
+              <ProfileEditDailyEmails user={userProfile.users_by_pk} />
+            )
+          }
 
           <EditSection
             heading="Subscription"
