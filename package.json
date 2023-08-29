@@ -17,6 +17,7 @@
     "prepare-husky": "husky install",
     "docker-compose": "docker compose -f ./infra/docker-compose.yml --env-file ./infra/.dockerenv",
     "docker:start": "npm run docker-compose -- up -d",
+    "docker:stop": "npm run docker-compose -- down",
     "hasura": "cd infra/hasura && hasura --skip-update-check",
     "codegen": "graphql-codegen --config graphql/codegen.js",
     "api:test": "jest --config=test-api/api-test.config.js --testPathPattern=test-api",
