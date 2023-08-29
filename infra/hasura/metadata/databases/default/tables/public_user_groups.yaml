@@ -1,47 +1,47 @@
 table:
-  schema: public
   name: user_groups
+  schema: public
 object_relationships:
   - name: created_by
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: users_public
-        insertion_order: null
         column_mapping:
           created_by_user_id: id
+        insertion_order: null
+        remote_table:
+          name: users_public
+          schema: public
 array_relationships:
   - name: list_user_groups
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: list_user_groups
-        insertion_order: null
         column_mapping:
           id: user_group_id
+        insertion_order: null
+        remote_table:
+          name: list_user_groups
+          schema: public
   - name: notes
     using:
       foreign_key_constraint_on:
         column: user_group_id
         table:
-          schema: public
           name: notes
+          schema: public
   - name: user_group_invites
     using:
       foreign_key_constraint_on:
         column: user_group_id
         table:
-          schema: public
           name: user_group_invites
+          schema: public
   - name: user_group_members
     using:
       foreign_key_constraint_on:
         column: user_group_id
         table:
-          schema: public
           name: user_group_members
+          schema: public
 select_permissions:
   - role: viewer
     permission:
