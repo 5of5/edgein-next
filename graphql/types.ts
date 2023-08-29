@@ -2475,8 +2475,6 @@ export enum Companies_Constraint {
   /** unique or primary key constraint on columns "id" */
   CompaniesPkey = 'companies_pkey',
   /** unique or primary key constraint on columns "slug" */
-  CompaniesSlugIdx = 'companies_slug_idx',
-  /** unique or primary key constraint on columns "slug" */
   CompaniesSlugKey = 'companies_slug_key'
 }
 
@@ -29177,43 +29175,6 @@ export type InsertEditAccessMutationVariables = Exact<{
 
 export type InsertEditAccessMutation = { __typename?: 'mutation_root', insert_resource_edit_access_one: { __typename?: 'resource_edit_access', id: number, user_id: number, resource_id: number, resource_type: string } | null };
 
-export type GetEventsPathsQueryVariables = Exact<{
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, updated_at: any }> };
-
-export type GetCompaniesPathsQueryVariables = Exact<{
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, updated_at: any }> };
-
-export type GetPersonsPathQueryVariables = Exact<{
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string, updated_at: any | null }> };
-
-export type GetVcFirmsPathQueryVariables = Exact<{
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, updated_at: any | null }> };
-
-export type GetSiteMapAggregatesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetSiteMapAggregatesQuery = { __typename?: 'query_root', companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null }, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null }, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null }, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
-
 export type UpsertTeamMemberMutationVariables = Exact<{
   data: Team_Members_Insert_Input;
 }>;
@@ -29256,7 +29217,7 @@ export type GetUserProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, credits: any | null, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
+export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, credits: any | null, billing_org_id: number | null, preferences: any, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
 
 export type GetUserByPersonIdQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -29292,7 +29253,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -29391,6 +29352,14 @@ export type UpdateUserFeatureFlagsMutationVariables = Exact<{
 
 
 export type UpdateUserFeatureFlagsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, feature_flags: any, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserPreferencesMutationVariables = Exact<{
+  id: Scalars['Int'];
+  preferences: Scalars['jsonb'];
+}>;
+
+
+export type UpdateUserPreferencesMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, preferences: any, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -34054,6 +34023,7 @@ export const GetUserProfileDocument = `
     id
     credits
     billing_org_id
+    preferences
     organization_companies {
       id
       company {
@@ -34364,6 +34334,7 @@ export const GetUserByIdDocument = `
     additional_emails
     onboarding_information
     feature_flags
+    preferences
   }
 }
     `;
@@ -34816,6 +34787,35 @@ export const useUpdateUserFeatureFlagsMutation = <
       options
     );
 useUpdateUserFeatureFlagsMutation.fetcher = (variables: UpdateUserFeatureFlagsMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserFeatureFlagsMutation, UpdateUserFeatureFlagsMutationVariables>(UpdateUserFeatureFlagsDocument, variables, options);
+export const UpdateUserPreferencesDocument = `
+    mutation UpdateUserPreferences($id: Int!, $preferences: jsonb!) {
+  update_users(where: {id: {_eq: $id}}, _set: {preferences: $preferences}) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      preferences
+    }
+  }
+}
+    `;
+export const useUpdateUserPreferencesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserPreferencesMutation, TError, UpdateUserPreferencesMutationVariables, TContext>) =>
+    useMutation<UpdateUserPreferencesMutation, TError, UpdateUserPreferencesMutationVariables, TContext>(
+      ['UpdateUserPreferences'],
+      (variables?: UpdateUserPreferencesMutationVariables) => fetcher<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>(UpdateUserPreferencesDocument, variables)(),
+      options
+    );
+useUpdateUserPreferencesMutation.fetcher = (variables: UpdateUserPreferencesMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>(UpdateUserPreferencesDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
