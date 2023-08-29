@@ -194,7 +194,11 @@ export default function Account() {
 
             <ElemInviteUser />
 
-            {isInvestor && <ElemInviteInvestmentMembers />}
+            {isInvestor && (
+              <ElemInviteInvestmentMembers
+                vcFirmName={investorData?.investors[0]?.vc_firm?.name || ''}
+              />
+            )}
 
             {user && user.reference_id && (
               <ElemInviteLinks user={user} personSlug={personSlug} />
@@ -317,11 +321,9 @@ export default function Account() {
             </EditSection>
           )}
 
-          {
-            userProfile && (
-              <ProfileEditDailyEmails user={userProfile.users_by_pk} />
-            )
-          }
+          {userProfile && (
+            <ProfileEditDailyEmails user={userProfile.users_by_pk} />
+          )}
 
           <EditSection
             heading="Subscription"
