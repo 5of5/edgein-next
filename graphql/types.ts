@@ -28774,7 +28774,7 @@ export type GetInvestorByPersonIdQueryVariables = Exact<{
 }>;
 
 
-export type GetInvestorByPersonIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null }> };
+export type GetInvestorByPersonIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null, vc_firm: { __typename?: 'vc_firms', name: string | null } | null }> };
 
 export type GetInvestorMailingListQueryVariables = Exact<{
   personId: Scalars['Int'];
@@ -28789,7 +28789,7 @@ export type GetAdminInvestorMailingListQueryVariables = Exact<{
 }>;
 
 
-export type GetAdminInvestorMailingListQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm: { __typename?: 'vc_firms', investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, teamMembers: Array<{ __typename?: 'team_members', id: number, email_address: string | null, person_id: number | null }>, teamMembers_aggregate: { __typename?: 'team_members_aggregate', aggregate: { __typename?: 'team_members_aggregate_fields', count: number } | null } } | null } | null }> } | null }> };
+export type GetAdminInvestorMailingListQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm: { __typename?: 'vc_firms', investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, teamMembers: Array<{ __typename?: 'team_members', id: number, email_address: string | null, person_id: number | null, person: { __typename?: 'people', name: string | null } | null }>, teamMembers_aggregate: { __typename?: 'team_members_aggregate', aggregate: { __typename?: 'team_members_aggregate_fields', count: number } | null } } | null } | null }> } | null }> };
 
 export type GetInvitedPeopleByUserIdQueryVariables = Exact<{
   userId: Scalars['Int'];
@@ -29177,6 +29177,43 @@ export type InsertEditAccessMutationVariables = Exact<{
 
 export type InsertEditAccessMutation = { __typename?: 'mutation_root', insert_resource_edit_access_one: { __typename?: 'resource_edit_access', id: number, user_id: number, resource_id: number, resource_type: string } | null };
 
+export type GetEventsPathsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, updated_at: any }> };
+
+export type GetCompaniesPathsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, updated_at: any }> };
+
+export type GetPersonsPathQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string, updated_at: any | null }> };
+
+export type GetVcFirmsPathQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, updated_at: any | null }> };
+
+export type GetSiteMapAggregatesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSiteMapAggregatesQuery = { __typename?: 'query_root', companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null }, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null }, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null }, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+
 export type UpsertTeamMemberMutationVariables = Exact<{
   data: Team_Members_Insert_Input;
 }>;
@@ -29360,7 +29397,7 @@ export type GetVcFirmQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, location_json: any | null, twitter: string | null, library: any | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }>, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }> };
+export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, location_json: any | null, twitter: string | null, library: any | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }>, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }> };
 
 export type GetVcFirmsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -32052,6 +32089,9 @@ export const GetInvestorByPersonIdDocument = `
       slug
       status
     }
+    vc_firm {
+      name
+    }
   }
 }
     `;
@@ -32134,6 +32174,9 @@ export const GetAdminInvestorMailingListDocument = `
               id
               email_address
               person_id
+              person {
+                name
+              }
             }
             teamMembers_aggregate(where: {email_address: {_is_null: false}}) {
               aggregate {
@@ -34805,6 +34848,7 @@ export const GetVcFirmDocument = `
       start_date
       end_date
       seniority
+      founder
       title
     }
     investments {

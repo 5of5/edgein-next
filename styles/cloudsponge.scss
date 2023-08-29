@@ -1,0 +1,47 @@
+/* Cloudsponge: replace appearance (Replace #0097A7 with tw primary-500) */
+#cloudsponge-root-holder {
+  #cloudsponge-address-book {
+    @apply bg-transparent;
+    a {
+      @apply text-primary-500;
+    }
+    .cloudsponge-topbar,
+    .cloudsponge-back-button,
+    .cloudsponge-close-button,
+    .cloudsponge-menu-button {
+      @apply text-gray-900 bg-gray-100 border-b border-gray-200;
+      .cloudsponge-h1 {
+        @apply font-medium;
+      }
+    }
+    .cloudsponge-header {
+      @apply bg-white;
+    }
+    .cloudsponge-widget {
+      @apply font-sans bg-white;
+    }
+    .cloudsponge-providers-list {
+      @apply my-6 mx-auto;
+      li a {
+        @apply font-normal rounded-lg border-solid text-gray-900 border border-gray-200 hover:bg-gray-50;
+      }
+    }
+    .cloudsponge-dictionary a {
+      @apply text-primary-500;
+    }
+    ul.cloudsponge-contacts-list > li {
+      input[type='checkbox']:checked + label::before {
+        @apply text-primary-500;
+      }
+      &.cloudsponge-selected .cloudsponge-row-container {
+        @apply bg-gray-100;
+      }
+    }
+    .cloudsponge-button.cloudsponge-export-button {
+      @apply bg-primary-500 text-white hover:bg-blue-900;
+    }
+    .cloudsponge-copyright {
+      @apply hidden;
+    }
+  }
+}

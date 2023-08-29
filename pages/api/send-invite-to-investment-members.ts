@@ -53,7 +53,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!user.person?.id) return res.status(403).end();
 
-  if (!req.body?.companyIds) return res.status(400).end();
+  if (!req.body?.vcFirmName || !req.body?.companyIds)
+    return res.status(400).end();
+
+  const organizationName = req.body.vcFirmName;
 
   const companyIds = req.body.companyIds as number[];
 
@@ -93,6 +96,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     map(batchedEmails, emails =>
       sendInvitationMail(
         {
+          isExistedUser: true,
+          organizationName,
           emails,
           senderName: user.display_name || '',
           senderEmail: user.email || '',

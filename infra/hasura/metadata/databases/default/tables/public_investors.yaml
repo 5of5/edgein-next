@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: investors
+  schema: public
 object_relationships:
   - name: person
     using:
