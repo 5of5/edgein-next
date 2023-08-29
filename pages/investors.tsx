@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { NextPage, GetServerSideProps } from 'next';
+import type { NextPage, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import {
   PlaceholderInvestorCard,
@@ -603,7 +603,7 @@ const Investors: NextPage<Props> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async context => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
     GetVcFirmsDocument,
     {
@@ -626,7 +626,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
       orderBy: [{ name: Order_By.Asc }],
     },
-    context.req.cookies,
   );
 
   return {
@@ -638,6 +637,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       initialVCFirms: vcFirms?.vc_firms || [],
       investorsStatusTags,
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 
