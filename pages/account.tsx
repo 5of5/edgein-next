@@ -194,7 +194,11 @@ export default function Account() {
 
             <ElemInviteUser />
 
-            {isInvestor && <ElemInviteInvestmentMembers />}
+            {isInvestor && (
+              <ElemInviteInvestmentMembers
+                vcFirmName={investorData?.investors[0]?.vc_firm?.name || ''}
+              />
+            )}
 
             {user && user.reference_id && (
               <ElemInviteLinks user={user} personSlug={personSlug} />

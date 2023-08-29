@@ -35,6 +35,9 @@ query GetInvestorByPersonId($personId: Int!) {
       slug
       status
     }
+    vc_firm {
+      name
+    }
   }
 }
 

@@ -25705,7 +25705,7 @@ export type GetInvestorByPersonIdQueryVariables = Exact<{
 }>;
 
 
-export type GetInvestorByPersonIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null }> };
+export type GetInvestorByPersonIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null, vc_firm: { __typename?: 'vc_firms', name: string | null } | null }> };
 
 export type GetInvestorMailingListQueryVariables = Exact<{
   personId: Scalars['Int'];
@@ -28988,6 +28988,9 @@ export const GetInvestorByPersonIdDocument = `
       name
       slug
       status
+    }
+    vc_firm {
+      name
     }
   }
 }
