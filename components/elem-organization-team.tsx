@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import { People, Team_Members } from '@/graphql/types';
+import { People, Team_Members, Investors } from '@/graphql/types';
 import { ElemPersonCard } from '@/components/elem-person-card';
-import { IconEditPencil } from '@/components/icons';
 import { ElemFilterTags } from '@/components/elem-filter-tags';
 import { uniq, compact, sortBy } from 'lodash';
-import { ElemBulkSavePeople } from '../elem-bulk-save-people';
-import { ElemButton } from '../elem-button';
+import { ElemBulkSavePeople } from './elem-bulk-save-people';
+import { ElemButton } from './elem-button';
 import { useIntercom } from 'react-use-intercom';
 
 type Props = {
   className?: string;
   heading?: string;
   resourceName?: string;
-  people: Team_Members[];
+  people: Team_Members[] | Investors[];
   showTags?: boolean;
   allowToSaveTeam?: boolean;
-  // tags?: Maybe<string>[] | null
 };
 
-export const ElemTeamGrid: React.FC<Props> = ({
+export const ElemOrganizationTeam: React.FC<Props> = ({
   className,
   heading,
   resourceName,
@@ -30,19 +28,23 @@ export const ElemTeamGrid: React.FC<Props> = ({
 
   // Show founders first
   const allTags = compact(
-    uniq(['All Members', ...sortBy(people.map(people => people.function))]),
+    uniq([
+      'All Members',
+      ...sortBy(people.map((people: any) => people.function)),
+    ]),
   );
   const [selectedTag, setSelectedTag] = useState<string | null>('All Members');
+
   const peopleFoundersFirst =
     selectedTag === 'All Members'
       ? people.sort(function (a: any, b: any) {
           return b.founder - a.founder;
         })
-      : people
-          .filter(p => p.function === selectedTag)
-          .sort(function (a: any, b: any) {
+      : ((people as any)
+          .filter((p: any) => p.function === selectedTag)
+          .sort((a: any, b: any) => {
             return b.founder - a.founder;
-          });
+          }) as any);
 
   // Show inactive members last
   const peopleInactiveLast = [...peopleFoundersFirst]
