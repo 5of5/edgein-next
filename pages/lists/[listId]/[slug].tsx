@@ -386,6 +386,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   const list = lists?.lists[0];
+  const listAuthor = list?.created_by?.person?.name
+    ? `By ${list?.created_by?.person?.name} - `
+    : '';
 
   const metaImage = `https://edgein.io/images/og/list-sharing.jpg`;
 
@@ -395,7 +398,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   let metaDescription = null;
   if (list.description) {
-    metaDescription = list.description;
+    metaDescription = listAuthor + list.description;
   }
 
   return {
