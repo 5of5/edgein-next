@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { Dialog } from '@headlessui/react';
@@ -26,7 +26,6 @@ import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 import { getGeometryPlace } from '@/utils/helpers';
 import { useStateParams } from '@/hooks/use-state-params';
 
-
 export default function Onboarding() {
   const router = useRouter();
 
@@ -39,7 +38,7 @@ export default function Onboarding() {
     'step',
     step => step.toString(),
     step => Number(step),
-);
+  );
 
   const [segment, setSegment] = useState<Segment>();
 
@@ -54,6 +53,13 @@ export default function Onboarding() {
   const [people, setPeople] = useState<HitPeopleProps['hit'][]>([]);
 
   const [surveyAnswer, setSurveyAnswer] = useState<string>('');
+
+  useEffect(() => {
+    if (currentStep !== 1) {
+      setCurrentStep(1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { mutate: saveToList, isLoading: isLoadingSaveToList } = useMutation(
     () =>
