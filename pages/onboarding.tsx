@@ -1,26 +1,15 @@
 import { useState, useEffect } from 'react';
 import type { GetStaticProps } from 'next';
-import Link from 'next/link';
 import { Dialog } from '@headlessui/react';
 import { Place } from '@aws-sdk/client-location';
 import { useMutation } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { ElemButton } from '@/components/elem-button';
-import { ElemLogo } from '@/components/elem-logo';
 import { ElemOnboardingSegmenting } from '@/components/onboarding/elem-onboarding-segmenting';
 import { ElemOnboardingLocation } from '@/components/onboarding/elem-onboarding-location';
 import { ElemOnboardingTags } from '@/components/onboarding/elem-onboarding-tags';
-import { ElemOnboardingSurvey } from '@/components/onboarding/elem-onboarding-survey';
-import { ElemOnboardingSaveList } from '@/components/onboarding/elem-onboarding-save-list';
 import { Segment } from '@/types/onboarding';
-import {
-  HitCompaniesProps,
-  HitInvestorsProps,
-  HitPeopleProps,
-} from '@/components/search-modal';
-import { useUser } from '@/context/user-context';
-import { GENERAL_ERROR_MESSAGE, ONBOARDING_QUESTION } from '@/utils/constants';
+import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
 import useToast from '@/hooks/use-toast';
 import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 import { getGeometryPlace } from '@/utils/helpers';
@@ -28,8 +17,6 @@ import { useStateParams } from '@/hooks/use-state-params';
 
 export default function Onboarding() {
   const router = useRouter();
-
-  const { refreshProfile } = useUser();
 
   const { toast } = useToast();
 
@@ -48,46 +35,12 @@ export default function Onboarding() {
 
   const [tags, setTags] = useState<string[]>([]);
 
-  const [companies, setCompanies] = useState<HitCompaniesProps['hit'][]>([]);
-  const [investors, setInvestors] = useState<HitInvestorsProps['hit'][]>([]);
-  const [people, setPeople] = useState<HitPeopleProps['hit'][]>([]);
-
-  const [surveyAnswer, setSurveyAnswer] = useState<string>('');
-
   useEffect(() => {
     if (currentStep !== 1) {
       setCurrentStep(1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const { mutate: saveToList, isLoading: isLoadingSaveToList } = useMutation(
-    () =>
-      fetch('/api/multiple-resources-to-list/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sentiment: 'My first list',
-          companyIds: [...companies.map(item => item.objectID)],
-          vcFirmIds: [...investors.map(item => item.objectID)],
-          peopleIds: [...people.map(item => item.objectID)],
-        }),
-      }),
-    {
-      onSuccess: async response => {
-        if (response.status === 200) {
-          refreshProfile();
-          submitOnboarding();
-        } else {
-          const error = await response.json();
-          toast(error.error || GENERAL_ERROR_MESSAGE, 'error');
-        }
-      },
-    },
-  );
 
   const { mutate: submitOnboarding, isLoading: isSubmittingOnboarding } =
     useMutation(
@@ -112,12 +65,6 @@ export default function Onboarding() {
               categories: item.Categories,
             })),
             industryTags: tags,
-            questions: [
-              {
-                name: ONBOARDING_QUESTION,
-                answer: surveyAnswer,
-              },
-            ],
           }),
         }),
       {
@@ -132,44 +79,20 @@ export default function Onboarding() {
       },
     );
 
-  const handleSkip = () => {
-    if (currentStep === 4) {
-      setCurrentStep(5);
-    }
-
-    if (currentStep === 5) {
-      submitOnboarding();
-    }
-  };
-
   return (
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
       <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
         <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-20 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-          <ElemSignInHeader
-            rightComponent={
-              currentStep >= 4 ? (
-                <ElemButton
-                  btn="white"
-                  loading={isLoadingSaveToList || isSubmittingOnboarding}
-                  onClick={handleSkip}
-                >
-                  Skip
-                </ElemButton>
-              ) : null
-            }
-          />
+          <ElemSignInHeader />
 
           <h3 className="text-lg font-medium text-gray-900">
-            {currentStep !== 5
-              ? "Let's personalize your EdgeIn"
-              : 'One last step...'}
+            Let&apos;s personalize your EdgeIn
           </h3>
 
           <div className="flex items-center gap-2 mt-3">
-            <p className="text-slate-500 text-[10px]">{`Step ${currentStep} of 5`}</p>
+            <p className="text-slate-500 text-[10px]">{`Step ${currentStep} of 3`}</p>
             <ul className="flex gap-1.5">
-              {Array.from({ length: 5 }, (_, i) => (
+              {Array.from({ length: 3 }, (_, i) => (
                 <li
                   key={i}
                   className={`${
@@ -210,34 +133,11 @@ export default function Onboarding() {
             )}
             {currentStep === 3 && (
               <ElemOnboardingTags
+                isSubmittingOnboarding={isSubmittingOnboarding}
                 tags={tags}
                 onChangeTags={setTags}
                 onNext={() => {
-                  setCurrentStep(4);
-                }}
-              />
-            )}
-            {currentStep === 4 && (
-              <ElemOnboardingSaveList
-                segment={segment}
-                companies={companies}
-                investors={investors}
-                people={people}
-                onChangeCompanies={setCompanies}
-                onChangeInvestors={setInvestors}
-                onChangePeople={setPeople}
-                onNext={() => {
-                  setCurrentStep(5);
-                }}
-              />
-            )}
-            {currentStep === 5 && (
-              <ElemOnboardingSurvey
-                isLoading={isLoadingSaveToList || isSubmittingOnboarding}
-                answer={surveyAnswer}
-                onChangeAnswer={setSurveyAnswer}
-                onNext={() => {
-                  saveToList();
+                  submitOnboarding();
                 }}
               />
             )}
