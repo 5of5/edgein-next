@@ -8,6 +8,7 @@ import {
 import { useUser } from '@/context/user-context';
 import {
   IconChevronDownMini,
+  IconFilterDashboard,
   IconLockClosed,
   IconPlus,
 } from '@/components/icons';
@@ -19,18 +20,21 @@ type CategoryFilterOptionProps = {
     category?: string;
     items: Array<{ label: string; value: string; isPremium?: boolean }>;
   }>;
+  excludeFilters: string[];
   onSelectFilterOption: (event: MouseEvent<HTMLButtonElement>) => void;
   onOpenUpgradeDialog: () => void;
 };
 
 type Props = {
   resourceType: 'companies' | 'vc_firms' | 'events';
+  excludeFilters?: string[];
   type?: 'icon' | 'button';
   onSelectFilterOption: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const ElemAddFilter: FC<Props> = ({
   resourceType,
+  excludeFilters = [],
   type = 'button',
   onSelectFilterOption,
 }) => {
@@ -62,6 +66,7 @@ export const ElemAddFilter: FC<Props> = ({
               roundedFull={false}
               className="rounded-lg"
             >
+              <IconFilterDashboard className="w-4 h-4 mr-1.5 text-gray-400" />
               Filters
               <IconChevronDownMini className="w-5 h-5 ml-1" />
             </ElemButton>
@@ -90,6 +95,7 @@ export const ElemAddFilter: FC<Props> = ({
                       0,
                       categoryFilterOptionsEndIndex,
                     )}
+                    excludeFilters={excludeFilters}
                     onSelectFilterOption={event => {
                       close();
                       onSelectFilterOption(event);
@@ -100,6 +106,7 @@ export const ElemAddFilter: FC<Props> = ({
                 <div className="mt-6 lg:mt-0">
                   <CategoryFilterOption
                     options={filterOptions.slice(categoryFilterOptionsEndIndex)}
+                    excludeFilters={excludeFilters}
                     onSelectFilterOption={event => {
                       close();
                       onSelectFilterOption(event);
@@ -122,6 +129,7 @@ export const ElemAddFilter: FC<Props> = ({
 
 const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
   options,
+  excludeFilters,
   onSelectFilterOption,
   onOpenUpgradeDialog,
 }) => {
@@ -142,38 +150,44 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
           )}
 
           <ul className="list-none text-gray-600">
-            {option.items.map(item => (
-              <li key={item.value}>
-                {item.isPremium ? (
-                  <button
-                    onClick={
-                      userCanUseFilter
-                        ? onSelectFilterOption
-                        : onOpenUpgradeDialog
-                    }
-                    name={item.value}
-                    className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
-                  >
-                    {!userCanUseFilter && (
-                      <IconLockClosed
-                        className="inline-block w-4 h-4 text-primary-500 shrink-0 mr-1"
-                        strokeWidth={2}
-                      />
-                    )}
+            {option.items.map(item => {
+              if (excludeFilters.includes(item.value)) {
+                return null;
+              }
 
-                    {item.label}
-                  </button>
-                ) : (
-                  <button
-                    onClick={onSelectFilterOption}
-                    name={item.value}
-                    className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
-                  >
-                    {item.label}
-                  </button>
-                )}
-              </li>
-            ))}
+              return (
+                <li key={item.value}>
+                  {item.isPremium ? (
+                    <button
+                      onClick={
+                        userCanUseFilter
+                          ? onSelectFilterOption
+                          : onOpenUpgradeDialog
+                      }
+                      name={item.value}
+                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                    >
+                      {!userCanUseFilter && (
+                        <IconLockClosed
+                          className="inline-block w-4 h-4 text-primary-500 shrink-0 mr-1"
+                          strokeWidth={2}
+                        />
+                      )}
+
+                      {item.label}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={onSelectFilterOption}
+                      name={item.value}
+                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                    >
+                      {item.label}
+                    </button>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       ))}

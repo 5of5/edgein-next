@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { NextPage, GetServerSideProps } from 'next';
+import type { NextPage, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import {
   PlaceholderCompanyCard,
@@ -7,7 +7,13 @@ import {
 } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconSortDashboard,
+  IconGroup,
+  IconTable,
+} from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
   Order_By,
@@ -20,7 +26,11 @@ import {
 import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
-import { companyChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
+import {
+  companyChoices,
+  ISO_DATE_FORMAT,
+  NEW_CATEGORY_LIMIT,
+} from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
@@ -44,6 +54,7 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import moment from 'moment-timezone';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -109,10 +120,22 @@ const Companies: NextPage<Props> = ({
   const offset =
     user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
-  const defaultFilters = [
-    { slug: { _neq: '' } },
+  const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
   ];
+
+  if (selectedStatusTag?.value !== 'Dead') {
+    defaultFilters.push({
+      _or: [
+        {
+          _not: {
+            status_tags: { _contains: 'Dead' },
+          },
+        },
+        { status_tags: { _is_null: true } },
+      ],
+    });
+  }
 
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: defaultFilters,
@@ -216,16 +239,19 @@ const Companies: NextPage<Props> = ({
     data: companiesData,
     error,
     isLoading,
-  } = useGetCompaniesQuery({
-    offset: isNewTabSelected ? null : offset,
-    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
-    where: filters as Companies_Bool_Exp,
-    orderBy: [
-      isNewTabSelected
-        ? ({ date_added: Order_By.Desc } as Companies_Order_By)
-        : orderByQuery,
-    ],
-  });
+  } = useGetCompaniesQuery(
+    {
+      offset: isNewTabSelected ? null : offset,
+      limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
+      where: filters as Companies_Bool_Exp,
+      orderBy: [
+        isNewTabSelected
+          ? ({ date_added: Order_By.Desc } as Companies_Order_By)
+          : orderByQuery,
+      ],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -271,7 +297,10 @@ const Companies: NextPage<Props> = ({
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
-            <ElemDropdown items={layoutItems} />
+            <ElemDropdown
+              IconComponent={tableLayout ? IconTable : IconGroup}
+              items={layoutItems}
+            />
 
             <ElemAddFilter
               resourceType="companies"
@@ -279,7 +308,11 @@ const Companies: NextPage<Props> = ({
             />
 
             {!isNewTabSelected && (
-              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
             )}
           </div>
         </div>
@@ -325,13 +358,10 @@ const Companies: NextPage<Props> = ({
                   filters={{
                     _and: [
                       ...defaultFilters,
-                      { status_tags: { _contains: 'Trending' } },
                       {
                         location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
+                          _contains: {
+                            city: `${location}`,
                           },
                         },
                       },
@@ -352,10 +382,37 @@ const Companies: NextPage<Props> = ({
                       ...defaultFilters,
                       {
                         location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
+                          _contains: {
+                            city: `${location}`,
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+
+              {personalizedTags.locationTags.map((location, index) => (
+                <CompaniesByFilter
+                  key={`${location}-${index}`}
+                  headingText={`New in ${location}`}
+                  tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        created_at: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
+                        },
+                      },
+                      {
+                        location_json: {
+                          _contains: {
+                            city: `${location}`,
                           },
                         },
                       },
@@ -390,10 +447,58 @@ const Companies: NextPage<Props> = ({
               ))}
 
               <CompaniesByFilter
+                headingText="Recently funded"
+                tagOnClick={filterByTag}
+                itemsPerPage={ITEMS_PER_PAGE}
+                isTableView={tableLayout}
+                orderBy={{
+                  investment_rounds_aggregate: {
+                    sum: {
+                      amount: Order_By.Desc,
+                    },
+                  },
+                }}
+                filters={{
+                  _and: [
+                    ...defaultFilters,
+                    {
+                      investment_rounds: {
+                        round_date: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
+                        },
+                      },
+                    },
+                  ],
+                }}
+              />
+
+              <CompaniesByFilter
+                headingText="Recently founded"
+                tagOnClick={filterByTag}
+                itemsPerPage={ITEMS_PER_PAGE}
+                isTableView={tableLayout}
+                filters={{
+                  _and: [
+                    ...defaultFilters,
+                    {
+                      year_founded: {
+                        _gte: moment().subtract(1, 'year').year().toString(),
+                      },
+                    },
+                  ],
+                }}
+              />
+
+              <CompaniesByFilter
                 headingText={`Recently acquired`}
                 tagOnClick={filterByTag}
                 itemsPerPage={ITEMS_PER_PAGE}
                 isTableView={tableLayout}
+                orderBy={{
+                  created_at: Order_By.Desc,
+                }}
                 filters={{
                   _and: [
                     ...defaultFilters,
@@ -523,18 +628,29 @@ const Companies: NextPage<Props> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async context => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data: companies } = await runGraphQl<GetCompaniesQuery>(
     GetCompaniesDocument,
     {
       offset: 0,
       limit: 50,
       where: {
-        _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
+        _and: [
+          {
+            _or: [
+              {
+                _not: {
+                  status_tags: { _contains: 'Dead' },
+                },
+              },
+              { status_tags: { _is_null: true } },
+            ],
+          },
+          { library: { _contains: 'Web3' } },
+        ],
       },
       orderBy: [{ name: Order_By.Asc }],
     },
-    context.req.cookies,
   );
 
   return {
@@ -546,6 +662,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       initialCompanies: companies?.companies || [],
       companyStatusTags,
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 

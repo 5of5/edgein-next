@@ -7,7 +7,11 @@ import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import moment from 'moment-timezone';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconSortDashboard,
+} from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import {
   GetEventsDocument,
@@ -28,6 +32,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
+  ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
@@ -82,15 +87,24 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter({ resetPage: () => setPage(0) });
+    useDashboardFilter({
+      dateCondition: selectedTab?.value === 'past' ? 'past' : 'next',
+      resetPage: () => setPage(0),
+    });
 
   const limit = 50;
   const offset = limit * page;
 
-  const defaultFilters = [
+  const defaultFilters: DeepPartial<Events_Bool_Exp>[] = [
     { slug: { _neq: '' } },
     { library: { _contains: selectedLibrary } },
   ];
+
+  if (selectedTab?.value !== 'past') {
+    defaultFilters.push({
+      start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
+    });
+  }
 
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
@@ -98,6 +112,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const { orderByQuery, orderByParam, sortChoices } =
     useDashboardSortBy<Events_Order_By>({
+      defaultSortBy: 'oldest',
       newestSortKey: 'start_date',
       oldestSortKey: 'start_date',
     });
@@ -213,12 +228,19 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     data: eventsData,
     error,
     isLoading,
-  } = useGetEventsQuery({
-    offset,
-    limit,
-    where: filters as Events_Bool_Exp,
-    orderBy: [orderByQuery],
-  });
+  } = useGetEventsQuery(
+    {
+      offset,
+      limit,
+      where: filters as Events_Bool_Exp,
+      orderBy: [
+        selectedTab?.value === 'past'
+          ? ({ start_date: Order_By.Desc } as Events_Order_By)
+          : orderByQuery,
+      ],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -249,10 +271,21 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
             <ElemAddFilter
               resourceType="events"
+              excludeFilters={
+                ['past', 'upcoming'].includes(selectedTab?.value ?? '')
+                  ? ['eventDate']
+                  : []
+              }
               onSelectFilterOption={onSelectFilterOption}
             />
 
-            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            {!selectedTab?.value && (
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
+            )}
           </div>
         </div>
 
@@ -260,6 +293,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           <div className="mx-6 my-3">
             <ElemFilter
               resourceType="events"
+              excludeFilters={
+                ['past', 'upcoming'].includes(selectedTab?.value ?? '')
+                  ? ['eventDate']
+                  : []
+              }
               filterValues={selectedFilters}
               dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
               onSelectFilterOption={onSelectFilterOption}
@@ -295,14 +333,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 itemsPerPage={ITEMS_PER_PAGE}
                 filters={{
                   _and: [
-                    { slug: { _neq: '' } },
-                    { library: { _contains: selectedLibrary } },
+                    ...defaultFilters,
                     {
                       location_json: {
-                        _cast: {
-                          String: {
-                            _ilike: `%"city": "${location}"%`,
-                          },
+                        _contains: {
+                          city: `${location}`,
                         },
                       },
                     },
@@ -418,6 +453,7 @@ export const getStaticProps: GetStaticProps = async context => {
       eventsCount: events?.events_aggregate.aggregate?.count || 0,
       initialEvents: events?.events || [],
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 
