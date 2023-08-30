@@ -170,15 +170,13 @@ export const TheNavbar: FC<Props> = ({}) => {
           />
 
           <div className="flex items-center group space-x-2 lg:space-x-3">
-            {user && (
-              <ElemButton
-                onClick={() => setShowPopup('search')}
-                btn="gray"
-                className="h-9 w-9 !px-0 !py-0 sm:hidden"
-              >
-                <IconSearch className="h-5 w-5" />
-              </ElemButton>
-            )}
+            <ElemButton
+              onClick={() => setShowPopup('search')}
+              btn="gray"
+              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+            >
+              <IconSearch className="h-5 w-5" />
+            </ElemButton>
 
             <Popover className="relative">
               <Popover.Button className="flex items-center focus:outline-none">

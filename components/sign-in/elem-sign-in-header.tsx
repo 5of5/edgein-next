@@ -13,7 +13,7 @@ export const ElemSignInHeader: FC<Props> = ({ rightComponent }) => {
       aria-label="Global"
     >
       <Link href="/" passHref>
-        <a className="w-auto">
+        <a className="w-auto outline-none">
           <ElemLogo mode="logo" className="h-6 w-auto" />
         </a>
       </Link>

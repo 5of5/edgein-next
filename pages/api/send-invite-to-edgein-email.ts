@@ -58,15 +58,28 @@ export const sendInvitationMail = async (
   mailParams: InviteToEdgeInMailParams,
   options: EmailOptions = { useBcc: false },
 ) => {
-  const { emails, senderName, senderEmail, signUpUrl } = mailParams;
+  const {
+    isExistedUser,
+    organizationName,
+    emails,
+    senderName,
+    senderEmail,
+    signUpUrl,
+  } = mailParams;
 
   const emailHtml = render(
     InviteUserEmail({
+      isExistedUser,
+      organizationName,
       senderName,
       senderEmail,
       signUpUrl,
     }),
   );
+
+  const subject = isExistedUser
+    ? `${organizationName} portfolio invitation - add your company and founder data on Edgein.io`
+    : `${senderName} (${senderEmail}) invited you to EdgeIn`;
 
   const destination = options.useBcc
     ? { BccAddresses: emails }
@@ -84,7 +97,7 @@ export const sendInvitationMail = async (
         },
         Subject: {
           Charset: 'UTF-8',
-          Data: `${senderName} (${senderEmail}) invited you to EdgeIn`,
+          Data: subject,
         },
       },
       Source: env.SES_SOURCE,

@@ -513,6 +513,10 @@ export const roundChoices = [
     name: 'Venture Round',
   },
   {
+    id: 'Post-IPO Equity',
+    name: 'Post-IPO Equity',
+  },
+  {
     id: 'Acquisition',
     name: 'Acquisition',
   },

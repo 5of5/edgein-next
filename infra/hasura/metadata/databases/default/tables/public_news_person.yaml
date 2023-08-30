@@ -1,25 +1,25 @@
 table:
-  schema: public
   name: news_person
+  schema: public
 object_relationships:
   - name: news
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: news
-        insertion_order: null
         column_mapping:
           news_id: id
+        insertion_order: null
+        remote_table:
+          name: news
+          schema: public
   - name: people
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: people
-        insertion_order: null
         column_mapping:
           person_id: id
+        insertion_order: null
+        remote_table:
+          name: people
+          schema: public
 select_permissions:
   - role: viewer
     permission:
