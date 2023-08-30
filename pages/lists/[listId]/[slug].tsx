@@ -3,30 +3,31 @@ import { CompaniesList } from '@/components/my-list/companies-list';
 import { InvestorsList } from '@/components/my-list/investors-list';
 import { ElemListInformation } from '@/components/my-list/elem-list-information';
 import { IconCustomList } from '@/components/icons';
-
 import {
   useGetListUserGroupsQuery,
   List_User_Groups_Bool_Exp,
   List_Members_Bool_Exp,
   useGetListMembersQuery,
+  GetListsDocument,
+  GetListsQuery,
 } from '@/graphql/types';
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { find } from 'lodash';
-import {
-  getNameFromListName,
-  getUserIdFromListCreator,
-} from '@/utils/reaction';
+import { runGraphQl } from '@/utils';
+import { getNameFromListName } from '@/utils/reaction';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { PeopleList } from '@/components/my-list/people-list';
 import { useMutation } from 'react-query';
 
-type Props = {};
+type Props = {
+  list: GetListsQuery['lists'][0];
+};
 
-const MyList: NextPage<Props> = () => {
+const MyList: NextPage<Props> = (props: Props) => {
   const { listAndFollows: lists, refreshProfile, user } = useUser();
   const router = useRouter();
 
@@ -50,6 +51,8 @@ const MyList: NextPage<Props> = () => {
   const [selectedListName, setSelectedListName] = useState<null | string>(
     router.query.slug as string,
   );
+
+  const [listDescription, setListDescription] = useState<null | string>('');
 
   const [isCustomList, setIsCustomList] = useState(false);
 
@@ -88,6 +91,40 @@ const MyList: NextPage<Props> = () => {
             }`}
           >
             List updated
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      );
+    }
+  };
+
+  const onSaveListDescription = async (description: string) => {
+    const updateDescRes = await fetch(`/api/update-list/`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: parseInt(router.query.listId as string),
+        payload: { description },
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (updateDescRes.ok) {
+      setListDescription(description);
+      refreshProfile();
+      toast.custom(
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+              t.visible ? 'animate-fade-in-up' : 'opacity-0'
+            }`}
+          >
+            List description updated
           </div>
         ),
         {
@@ -243,10 +280,14 @@ const MyList: NextPage<Props> = () => {
           return list ? getNameFromListName(list) : '';
         });
 
+        setListDescription(() => {
+          return list ? list.description : '';
+        });
+
         setTheListPublic(!!list?.public);
 
         setTheListCreatorId(() => {
-          return list ? getUserIdFromListCreator(list) : '';
+          return list ? list.created_by_id : '';
         });
 
         setIsCustomList(() => {
@@ -261,16 +302,7 @@ const MyList: NextPage<Props> = () => {
         );
       }
     }
-  }, [
-    lists,
-    router.query.listId,
-    router.query.slug,
-    setTheList,
-    setSelectedListName,
-    setTheListCreatorId,
-    setIsCustomList,
-    setTheListPublic,
-  ]);
+  }, [lists, router.query]);
 
   const listName = selectedListName === 'crap' ? 'sh**' : selectedListName;
 
@@ -290,6 +322,7 @@ const MyList: NextPage<Props> = () => {
         list={theList}
         groups={groups?.list_user_groups?.map(group => group.user_group) || []}
         onSaveListName={onSaveListName}
+        onSaveListDescription={onSaveListDescription}
         onDeleteList={onDeleteList}
         onAddGroups={onAddGroups}
         onChangePublic={onChangePublic}
@@ -297,7 +330,6 @@ const MyList: NextPage<Props> = () => {
         isFollowButtonLoading={isFollowButtonLoading}
         onFollowList={handleFollowList}
       />
-
       {(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
         <>
           <CompaniesList listId={theListId} listName={listName} />
@@ -329,10 +361,51 @@ const MyList: NextPage<Props> = () => {
           </div>
         </div>
       )}
-
       <Toaster />
     </DashboardLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const { data: lists } = await runGraphQl<GetListsQuery>(
+    GetListsDocument,
+    {
+      limit: null,
+      offset: null,
+      where: {
+        id: { _eq: parseInt(context.params?.listId as string) },
+      },
+    },
+    context.req.cookies,
+  );
+
+  if (!lists?.lists[0]) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const list = lists?.lists[0];
+
+  const metaImage = `https://edgein.io/images/og/list-sharing.jpg`;
+
+  const metaTitle = list
+    ? `"${getNameFromListName(list)}" list - Edgein.io`
+    : 'List - Edgein.io';
+
+  let metaDescription = null;
+  if (list.description) {
+    metaDescription = list.description;
+  }
+
+  return {
+    props: {
+      metaImage,
+      metaTitle,
+      metaDescription,
+      list,
+    },
+  };
 };
 
 export default MyList;
