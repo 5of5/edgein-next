@@ -364,10 +364,8 @@ const Investors: NextPage<Props> = ({
                         { status_tags: { _contains: 'Trending' } },
                         {
                           location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
+                            _contains: {
+                              city: `${location}`,
                             },
                           },
                         },
@@ -388,10 +386,8 @@ const Investors: NextPage<Props> = ({
                         { library: { _contains: selectedLibrary } },
                         {
                           location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
+                            _contains: {
+                              city: `${location}`,
                             },
                           },
                         },
@@ -448,10 +444,8 @@ const Investors: NextPage<Props> = ({
                         },
                         {
                           location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
+                            _contains: {
+                              city: `${location}`,
                             },
                           },
                         },

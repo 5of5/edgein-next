@@ -358,13 +358,10 @@ const Companies: NextPage<Props> = ({
                   filters={{
                     _and: [
                       ...defaultFilters,
-                      { status_tags: { _contains: 'Trending' } },
                       {
                         location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
+                          _contains: {
+                            city: `${location}`,
                           },
                         },
                       },
@@ -385,10 +382,8 @@ const Companies: NextPage<Props> = ({
                       ...defaultFilters,
                       {
                         location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
+                          _contains: {
+                            city: `${location}`,
                           },
                         },
                       },
@@ -416,10 +411,8 @@ const Companies: NextPage<Props> = ({
                       },
                       {
                         location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
+                          _contains: {
+                            city: `${location}`,
                           },
                         },
                       },

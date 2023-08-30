@@ -336,10 +336,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                     ...defaultFilters,
                     {
                       location_json: {
-                        _cast: {
-                          String: {
-                            _ilike: `%"city": "${location}"%`,
-                          },
+                        _contains: {
+                          city: `${location}`,
                         },
                       },
                     },
