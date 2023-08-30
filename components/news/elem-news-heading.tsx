@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { IconExternalLink } from '@/components/icons';
 import { News } from '@/graphql/types';
 import moment from 'moment-timezone';
+import { onTrackView } from '@/utils/track';
+import { useRouter } from 'next/router';
 
 type Props = {
   news: News;
@@ -17,6 +19,16 @@ const ElemNewsHeading: React.FC<Props> = ({
   isAuthor = false,
   showPoweredBy = false,
 }) => {
+  const router = useRouter();
+
+  const handleLinkClick = () => {
+    onTrackView({
+      resourceId: news.id,
+      resourceType: 'news',
+      pathname: router.asPath,
+    });
+  };
+
   return (
     <li className="relative pl-6 overflow-hidden group last:-mb-4">
       <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
@@ -26,7 +38,11 @@ const ElemNewsHeading: React.FC<Props> = ({
         <div className="inline leading-7 text-gray-600">
           {news?.link ? (
             <Link href={news.link}>
-              <a className="font-medium text-sm" target="_blank">
+              <a
+                className="font-medium text-sm"
+                target="_blank"
+                onClick={handleLinkClick}
+              >
                 <span className="underline hover:no-underline">
                   {news.text}
                 </span>

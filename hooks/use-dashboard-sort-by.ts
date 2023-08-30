@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { useStateParams } from './use-state-params';
 
 type DashboardSortByConfig = {
+  defaultSortBy?: 'ascending' | 'descending' | 'newest' | 'oldest';
   ascendingSortKey?: string;
   descendingSortKey?: string;
   newestSortKey?: string;
@@ -12,6 +13,7 @@ type DashboardSortByConfig = {
 
 function useDashboardSortBy<T>(config?: DashboardSortByConfig) {
   const {
+    defaultSortBy = 'ascending',
     ascendingSortKey = 'name',
     descendingSortKey = 'name',
     newestSortKey = 'updated_at',
@@ -19,7 +21,7 @@ function useDashboardSortBy<T>(config?: DashboardSortByConfig) {
   } = config || {};
 
   const [orderByParam, setOrderByParam] = useStateParams<Order_By_Option>(
-    'ascending',
+    defaultSortBy,
     'orderBy',
   );
 

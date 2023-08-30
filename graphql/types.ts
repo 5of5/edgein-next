@@ -25531,6 +25531,16 @@ export type GetCompanyInsightByLocationQueryVariables = Exact<{
 
 export type GetCompanyInsightByLocationQuery = { __typename?: 'query_root', companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
+export type GetPersonalizedCompaniesQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<Companies_Order_By> | Companies_Order_By>;
+  where: Companies_Bool_Exp;
+}>;
+
+
+export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, status_tags: any | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -26629,6 +26639,16 @@ export type GetVcFirmInsightByLocationQueryVariables = Exact<{
 
 export type GetVcFirmInsightByLocationQuery = { __typename?: 'query_root', vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
+export type GetPersonalizedVcFirmsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<Vc_Firms_Order_By> | Vc_Firms_Order_By>;
+  where: Vc_Firms_Bool_Exp;
+}>;
+
+
+export type GetPersonalizedVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, slug: string, logo: any | null, name: string | null, num_of_investments: number | null, tags: any | null, overview: string | null, website: string | null, linkedin: string | null, twitter: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
 }>;
@@ -27455,6 +27475,55 @@ useGetCompanyInsightByLocationQuery.getKey = (variables: GetCompanyInsightByLoca
 ;
 
 useGetCompanyInsightByLocationQuery.fetcher = (variables: GetCompanyInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyInsightByLocationQuery, GetCompanyInsightByLocationQueryVariables>(GetCompanyInsightByLocationDocument, variables, options);
+export const GetPersonalizedCompaniesDocument = `
+    query GetPersonalizedCompanies($limit: Int, $offset: Int, $orderBy: [companies_order_by!], $where: companies_bool_exp!) {
+  companies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+    id
+    slug
+    logo
+    name
+    coin {
+      ticker
+    }
+    tags
+    status_tags
+    overview
+    follows {
+      id
+      list_id
+    }
+    website
+    twitter
+    company_linkedin
+    github
+    discord
+  }
+  companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetPersonalizedCompaniesQuery = <
+      TData = GetPersonalizedCompaniesQuery,
+      TError = Error
+    >(
+      variables: GetPersonalizedCompaniesQueryVariables,
+      options?: UseQueryOptions<GetPersonalizedCompaniesQuery, TError, TData>
+    ) =>
+    useQuery<GetPersonalizedCompaniesQuery, TError, TData>(
+      ['GetPersonalizedCompanies', variables],
+      fetcher<GetPersonalizedCompaniesQuery, GetPersonalizedCompaniesQueryVariables>(GetPersonalizedCompaniesDocument, variables),
+      options
+    );
+useGetPersonalizedCompaniesQuery.document = GetPersonalizedCompaniesDocument;
+
+
+useGetPersonalizedCompaniesQuery.getKey = (variables: GetPersonalizedCompaniesQueryVariables) => ['GetPersonalizedCompanies', variables];
+;
+
+useGetPersonalizedCompaniesQuery.fetcher = (variables: GetPersonalizedCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonalizedCompaniesQuery, GetPersonalizedCompaniesQueryVariables>(GetPersonalizedCompaniesDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -32649,6 +32718,50 @@ useGetVcFirmInsightByLocationQuery.getKey = (variables: GetVcFirmInsightByLocati
 ;
 
 useGetVcFirmInsightByLocationQuery.fetcher = (variables: GetVcFirmInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmInsightByLocationQuery, GetVcFirmInsightByLocationQueryVariables>(GetVcFirmInsightByLocationDocument, variables, options);
+export const GetPersonalizedVcFirmsDocument = `
+    query GetPersonalizedVcFirms($limit: Int, $offset: Int, $orderBy: [vc_firms_order_by!], $where: vc_firms_bool_exp!) {
+  vc_firms(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+    id
+    slug
+    logo
+    name
+    num_of_investments
+    tags
+    overview
+    website
+    linkedin
+    twitter
+    follows {
+      id
+      list_id
+    }
+  }
+  vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetPersonalizedVcFirmsQuery = <
+      TData = GetPersonalizedVcFirmsQuery,
+      TError = Error
+    >(
+      variables: GetPersonalizedVcFirmsQueryVariables,
+      options?: UseQueryOptions<GetPersonalizedVcFirmsQuery, TError, TData>
+    ) =>
+    useQuery<GetPersonalizedVcFirmsQuery, TError, TData>(
+      ['GetPersonalizedVcFirms', variables],
+      fetcher<GetPersonalizedVcFirmsQuery, GetPersonalizedVcFirmsQueryVariables>(GetPersonalizedVcFirmsDocument, variables),
+      options
+    );
+useGetPersonalizedVcFirmsQuery.document = GetPersonalizedVcFirmsDocument;
+
+
+useGetPersonalizedVcFirmsQuery.getKey = (variables: GetPersonalizedVcFirmsQueryVariables) => ['GetPersonalizedVcFirms', variables];
+;
+
+useGetPersonalizedVcFirmsQuery.fetcher = (variables: GetPersonalizedVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonalizedVcFirmsQuery, GetPersonalizedVcFirmsQueryVariables>(GetPersonalizedVcFirmsDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

@@ -9,6 +9,7 @@ import useDisclosureState from '@/hooks/use-disclosure-state';
 import {
   MY_GROUPS_MENU_OPEN_KEY,
   SIDEBAR_DEFAULT_GROUPS_LIMIT,
+  SIDEBAR_LIMIT_ITEMS,
 } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 
@@ -64,7 +65,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
       return onRedirectToSignIn();
     }
 
-    return onDisclosureButtonClick;
+    return onDisclosureButtonClick();
   };
 
   const onClickCreate = () => {
@@ -79,65 +80,86 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
     return onOpenCreateGroupDialog();
   };
 
-  const [groupsLimit, setGroupsLimit] = useState(SIDEBAR_DEFAULT_GROUPS_LIMIT);
-
   return (
     <div className={className}>
       <Disclosure defaultOpen={isDefaultOpen}>
         {({ open }) => (
           <>
             <div className="w-full flex items-center justify-between group">
-              <Disclosure.Button
-                className="flex items-center grow space-x-2 py-1.5 px-2 focus:outline-none"
-                data-expanded={open}
-                ref={btnRef}
-                onClick={onClickHeader}
-              >
-                {user && (
-                  <IconChevronDownMini
-                    className={`${
-                      open ? 'rotate-0' : '-rotate-90 '
-                    } w-4 h-4 transform transition-all`}
-                  />
+              <div className="flex items-center grow space-x-2 p-2">
+                <Disclosure.Button
+                  className="focus:outline-none"
+                  data-expanded={open}
+                  ref={btnRef}
+                  onClick={onClickHeader}
+                >
+                  {user && (
+                    <IconChevronDownMini
+                      className={`rounded-md hover:bg-gray-100 ${
+                        open ? 'rotate-0' : '-rotate-90 '
+                      } w-5 h-5 transform transition-all`}
+                    />
+                  )}
+                </Disclosure.Button>
+                {user ? (
+                  <Link href="/groups">
+                    <a className="font-medium text-sm">Groups</a>
+                  </Link>
+                ) : (
+                  <p className="font-medium text-sm">Groups</p>
                 )}
-                <span className="font-medium text-sm">Groups</span>
-              </Disclosure.Button>
+              </div>
 
               <button
                 onClick={onClickCreate}
-                className="flex items-center justify-center rounded-full hover:bg-gray-100"
+                className="flex items-center justify-center rounded-md hover:bg-gray-100"
               >
-                <IconPlusSmall className="h-3 w-3" title="Create List" />
+                <IconPlusSmall className="h-5 w-5" title="Create List" />
               </button>
             </div>
 
             {user && (
-              <Disclosure.Panel as="ul" className="ml-6">
-                {displayedGroups.slice(0, groupsLimit)?.map(group => {
-                  return (
-                    <li key={group.id} role="button">
-                      <Link href={`/groups/${group.id}/`}>
-                        <a
-                          className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                            group.id,
-                          )}`}
-                          title={group.name}
-                        >
-                          <span className="line-clamp-1 break-all">
-                            {group.name}
-                          </span>
-                        </a>
-                      </Link>
-                    </li>
-                  );
-                })}
-                <li role="button">
-                  <Link href="/groups/">
-                    <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
-                      See all
-                    </a>
-                  </Link>
-                </li>
+              <Disclosure.Panel as="ul" className="ml-2">
+                {displayedGroups
+                  .slice(0, SIDEBAR_DEFAULT_GROUPS_LIMIT)
+                  ?.map(group => {
+                    return (
+                      <li key={group.id} role="button">
+                        <Link href={`/groups/${group.id}/`}>
+                          <a
+                            className={`flex items-center space-x-2 py-2 pl-7 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                              group.id,
+                            )}`}
+                            title={group.name}
+                          >
+                            <span className="line-clamp-1 break-all">
+                              {group.name}
+                            </span>
+                          </a>
+                        </Link>
+                      </li>
+                    );
+                  })}
+
+                {myGroups.length === 0 && (
+                  <li
+                    role="button"
+                    onClick={onClickCreate}
+                    className="flex items-center space-x-2 py-2 pl-7 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
+                  >
+                    Add a new group
+                  </li>
+                )}
+
+                {myGroups.length > SIDEBAR_LIMIT_ITEMS && (
+                  <li role="button">
+                    <Link href="/groups/">
+                      <a className="flex items-center space-x-2 py-2 pl-7 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900">
+                        See all
+                      </a>
+                    </Link>
+                  </li>
+                )}
               </Disclosure.Panel>
             )}
           </>
