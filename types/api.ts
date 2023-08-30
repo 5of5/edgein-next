@@ -4,10 +4,12 @@ export type InviteToEdgeInPayload = {
 };
 
 export type InviteToEdgeInMailParams = {
+  isExistedUser?: boolean;
   emails: string[];
   senderName: string;
   senderEmail: string;
   signUpUrl: string;
+  organizationName?: string;
 };
 
 export type EmailOptions = {

@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: actions
+  schema: public
 select_permissions:
   - role: viewer
     permission:
