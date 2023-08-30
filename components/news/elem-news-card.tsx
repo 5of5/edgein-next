@@ -15,6 +15,8 @@ import parse from 'html-react-parser';
 import { formatDateShown } from '@/utils';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemTags } from '@/components/elem-tags';
+import { onTrackView } from '@/utils/track';
+import { useRouter } from 'next/router';
 
 type Props = {
   className?: string;
@@ -22,6 +24,8 @@ type Props = {
 };
 
 export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
+  const router = useRouter();
+
   const [postData, setPostData] = useState(newsPost);
 
   useEffect(() => {
@@ -29,7 +33,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
   }, [newsPost]);
 
   const {
-    // id,
+    id,
     kind,
     date,
     link,
@@ -72,13 +76,23 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
     org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
   );
 
+  const handleLinkClick = () => {
+    onTrackView({
+      resourceId: id,
+      resourceType: 'news',
+      pathname: router.asPath,
+    });
+  };
+
   return (
     <div className={`flex flex-col w-full ${className}`}>
       {link && (
         <div>
           <h2 className="font-medium break-words" title={text ?? ''}>
             <Link href={link}>
-              <a target="_blank">{text}</a>
+              <a target="_blank" onClick={handleLinkClick}>
+                {text}
+              </a>
             </Link>
           </h2>
           <p className="mt-3 text-xs text-gray-500">{formatDateShown(date)}</p>
@@ -95,7 +109,11 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
           {link && metadata?.image && (
             <div className="mt-3 text-gray-400">
               <Link href={link}>
-                <a target="_blank" className="block mb-2">
+                <a
+                  target="_blank"
+                  className="block mb-2"
+                  onClick={handleLinkClick}
+                >
                   {metadata?.image && (
                     <img
                       src={metadata?.image}
@@ -115,6 +133,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
                 }`}
+                onClick={handleLinkClick}
               >
                 {parse(stripHtmlTags(metadata?.description))}
               </a>

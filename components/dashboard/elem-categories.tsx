@@ -26,7 +26,7 @@ export const ElemCategories: FC<Props> = ({
             onClick={() => onChangeCategory(selected ? null : category)}
             btn="gray"
             roundedFull={false}
-            className={`rounded-lg ${
+            className={`py-2 rounded-lg ${
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''

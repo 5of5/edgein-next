@@ -1906,9 +1906,12 @@ export type Companies = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
+  data_enriched_at: Maybe<Scalars['timestamp']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
+  domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
+  enrichment_priority: Scalars['Int'];
   external_id: Maybe<Scalars['String']>;
   facebook: Maybe<Scalars['String']>;
   /** An array relationship */
@@ -2177,6 +2180,7 @@ export type Companies_Append_Input = {
 export type Companies_Avg_Fields = {
   __typename?: 'companies_avg_fields';
   coin_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
@@ -2198,9 +2202,12 @@ export type Companies_Bool_Exp = {
   coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  data_enriched_at: InputMaybe<Timestamp_Comparison_Exp>;
   date_added: InputMaybe<Date_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
+  domain_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   email_domain: InputMaybe<String_Comparison_Exp>;
+  enrichment_priority: InputMaybe<Int_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Companies_Bool_Exp>;
@@ -2577,6 +2584,7 @@ export type Companies_Edit_Access_Variance_Order_By = {
 /** input type for incrementing numeric columns in table "companies" */
 export type Companies_Inc_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
   search_count: InputMaybe<Scalars['Int']>;
@@ -2595,9 +2603,12 @@ export type Companies_Insert_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamp']>;
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
+  domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_domain: InputMaybe<Scalars['String']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
@@ -2659,9 +2670,12 @@ export type Companies_Max_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamp']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
+  domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   facebook: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -2710,9 +2724,12 @@ export type Companies_Min_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamp']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
+  domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   facebook: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -2784,9 +2801,12 @@ export type Companies_Order_By = {
   coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  data_enriched_at: InputMaybe<Order_By>;
   date_added: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
+  domain_enriched_at: InputMaybe<Order_By>;
   email_domain: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   facebook: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
@@ -2871,11 +2891,17 @@ export enum Companies_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
   DateAdded = 'date_added',
   /** column name */
   Discord = 'discord',
   /** column name */
+  DomainEnrichedAt = 'domain_enriched_at',
+  /** column name */
   EmailDomain = 'email_domain',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -2972,9 +2998,12 @@ export type Companies_Set_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamp']>;
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
+  domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_domain: InputMaybe<Scalars['String']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook: InputMaybe<Scalars['String']>;
   geopoint: InputMaybe<Scalars['geography']>;
@@ -3023,6 +3052,7 @@ export type Companies_Set_Input = {
 export type Companies_Stddev_Fields = {
   __typename?: 'companies_stddev_fields';
   coin_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
@@ -3034,6 +3064,7 @@ export type Companies_Stddev_Fields = {
 export type Companies_Stddev_Pop_Fields = {
   __typename?: 'companies_stddev_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
@@ -3045,6 +3076,7 @@ export type Companies_Stddev_Pop_Fields = {
 export type Companies_Stddev_Samp_Fields = {
   __typename?: 'companies_stddev_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
@@ -3056,6 +3088,7 @@ export type Companies_Stddev_Samp_Fields = {
 export type Companies_Sum_Fields = {
   __typename?: 'companies_sum_fields';
   coin_id: Maybe<Scalars['Int']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
   search_count: Maybe<Scalars['Int']>;
@@ -3082,11 +3115,17 @@ export enum Companies_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
   DateAdded = 'date_added',
   /** column name */
   Discord = 'discord',
   /** column name */
+  DomainEnrichedAt = 'domain_enriched_at',
+  /** column name */
   EmailDomain = 'email_domain',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -3177,6 +3216,7 @@ export enum Companies_Update_Column {
 export type Companies_Var_Pop_Fields = {
   __typename?: 'companies_var_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
@@ -3188,6 +3228,7 @@ export type Companies_Var_Pop_Fields = {
 export type Companies_Var_Samp_Fields = {
   __typename?: 'companies_var_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
@@ -3199,6 +3240,7 @@ export type Companies_Var_Samp_Fields = {
 export type Companies_Variance_Fields = {
   __typename?: 'companies_variance_fields';
   coin_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
@@ -5765,7 +5807,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Scalars['String'];
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -8494,7 +8536,9 @@ export type Investors = {
   __typename?: 'investors';
   created_at: Scalars['timestamptz'];
   email_address: Maybe<Scalars['String']>;
+  email_enriched_at: Maybe<Scalars['timestamptz']>;
   end_date: Maybe<Scalars['date']>;
+  enrichment_priority: Scalars['Int'];
   external_id: Maybe<Scalars['String']>;
   founder: Maybe<Scalars['Boolean']>;
   function: Maybe<Scalars['String']>;
@@ -8566,6 +8610,7 @@ export type Investors_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Investors_Avg_Fields = {
   __typename?: 'investors_avg_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
@@ -8573,6 +8618,7 @@ export type Investors_Avg_Fields = {
 
 /** order by avg() on columns of table "investors" */
 export type Investors_Avg_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -8585,7 +8631,9 @@ export type Investors_Bool_Exp = {
   _or: InputMaybe<Array<Investors_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   email_address: InputMaybe<String_Comparison_Exp>;
+  email_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   end_date: InputMaybe<Date_Comparison_Exp>;
+  enrichment_priority: InputMaybe<Int_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   founder: InputMaybe<Boolean_Comparison_Exp>;
   function: InputMaybe<String_Comparison_Exp>;
@@ -8612,6 +8660,7 @@ export enum Investors_Constraint {
 
 /** input type for incrementing numeric columns in table "investors" */
 export type Investors_Inc_Input = {
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
@@ -8621,7 +8670,9 @@ export type Investors_Inc_Input = {
 export type Investors_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   email_address: InputMaybe<Scalars['String']>;
+  email_enriched_at: InputMaybe<Scalars['timestamptz']>;
   end_date: InputMaybe<Scalars['date']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   founder: InputMaybe<Scalars['Boolean']>;
   function: InputMaybe<Scalars['String']>;
@@ -8641,7 +8692,9 @@ export type Investors_Max_Fields = {
   __typename?: 'investors_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
   email_address: Maybe<Scalars['String']>;
+  email_enriched_at: Maybe<Scalars['timestamptz']>;
   end_date: Maybe<Scalars['date']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   function: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
@@ -8657,7 +8710,9 @@ export type Investors_Max_Fields = {
 export type Investors_Max_Order_By = {
   created_at: InputMaybe<Order_By>;
   email_address: InputMaybe<Order_By>;
+  email_enriched_at: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   function: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -8674,7 +8729,9 @@ export type Investors_Min_Fields = {
   __typename?: 'investors_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
   email_address: Maybe<Scalars['String']>;
+  email_enriched_at: Maybe<Scalars['timestamptz']>;
   end_date: Maybe<Scalars['date']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   function: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
@@ -8690,7 +8747,9 @@ export type Investors_Min_Fields = {
 export type Investors_Min_Order_By = {
   created_at: InputMaybe<Order_By>;
   email_address: InputMaybe<Order_By>;
+  email_enriched_at: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   function: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -8722,7 +8781,9 @@ export type Investors_On_Conflict = {
 export type Investors_Order_By = {
   created_at: InputMaybe<Order_By>;
   email_address: InputMaybe<Order_By>;
+  email_enriched_at: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   founder: InputMaybe<Order_By>;
   function: InputMaybe<Order_By>;
@@ -8749,7 +8810,11 @@ export enum Investors_Select_Column {
   /** column name */
   EmailAddress = 'email_address',
   /** column name */
+  EmailEnrichedAt = 'email_enriched_at',
+  /** column name */
   EndDate = 'end_date',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -8776,7 +8841,9 @@ export enum Investors_Select_Column {
 export type Investors_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   email_address: InputMaybe<Scalars['String']>;
+  email_enriched_at: InputMaybe<Scalars['timestamptz']>;
   end_date: InputMaybe<Scalars['date']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   founder: InputMaybe<Scalars['Boolean']>;
   function: InputMaybe<Scalars['String']>;
@@ -8792,6 +8859,7 @@ export type Investors_Set_Input = {
 /** aggregate stddev on columns */
 export type Investors_Stddev_Fields = {
   __typename?: 'investors_stddev_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
@@ -8799,6 +8867,7 @@ export type Investors_Stddev_Fields = {
 
 /** order by stddev() on columns of table "investors" */
 export type Investors_Stddev_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -8807,6 +8876,7 @@ export type Investors_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Investors_Stddev_Pop_Fields = {
   __typename?: 'investors_stddev_pop_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
@@ -8814,6 +8884,7 @@ export type Investors_Stddev_Pop_Fields = {
 
 /** order by stddev_pop() on columns of table "investors" */
 export type Investors_Stddev_Pop_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -8822,6 +8893,7 @@ export type Investors_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Investors_Stddev_Samp_Fields = {
   __typename?: 'investors_stddev_samp_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
@@ -8829,6 +8901,7 @@ export type Investors_Stddev_Samp_Fields = {
 
 /** order by stddev_samp() on columns of table "investors" */
 export type Investors_Stddev_Samp_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -8837,6 +8910,7 @@ export type Investors_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Investors_Sum_Fields = {
   __typename?: 'investors_sum_fields';
+  enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -8844,6 +8918,7 @@ export type Investors_Sum_Fields = {
 
 /** order by sum() on columns of table "investors" */
 export type Investors_Sum_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -8856,7 +8931,11 @@ export enum Investors_Update_Column {
   /** column name */
   EmailAddress = 'email_address',
   /** column name */
+  EmailEnrichedAt = 'email_enriched_at',
+  /** column name */
   EndDate = 'end_date',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -8882,6 +8961,7 @@ export enum Investors_Update_Column {
 /** aggregate var_pop on columns */
 export type Investors_Var_Pop_Fields = {
   __typename?: 'investors_var_pop_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
@@ -8889,6 +8969,7 @@ export type Investors_Var_Pop_Fields = {
 
 /** order by var_pop() on columns of table "investors" */
 export type Investors_Var_Pop_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -8897,6 +8978,7 @@ export type Investors_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Investors_Var_Samp_Fields = {
   __typename?: 'investors_var_samp_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
@@ -8904,6 +8986,7 @@ export type Investors_Var_Samp_Fields = {
 
 /** order by var_samp() on columns of table "investors" */
 export type Investors_Var_Samp_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -8912,6 +8995,7 @@ export type Investors_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Investors_Variance_Fields = {
   __typename?: 'investors_variance_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
@@ -8919,6 +9003,7 @@ export type Investors_Variance_Fields = {
 
 /** order by variance() on columns of table "investors" */
 export type Investors_Variance_Order_By = {
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -16869,8 +16954,10 @@ export type People = {
   city: Maybe<Scalars['String']>;
   country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: Maybe<Scalars['jsonb']>;
+  enrichment_priority: Scalars['Int'];
   external_id: Maybe<Scalars['String']>;
   facebook_url: Maybe<Scalars['String']>;
   /** An array relationship */
@@ -17070,6 +17157,7 @@ export type People_Append_Input = {
 /** aggregate avg on columns */
 export type People_Avg_Fields = {
   __typename?: 'people_avg_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -17082,7 +17170,9 @@ export type People_Bool_Exp = {
   city: InputMaybe<String_Comparison_Exp>;
   country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  data_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   email: InputMaybe<Jsonb_Comparison_Exp>;
+  enrichment_priority: InputMaybe<Int_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook_url: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_People_Bool_Exp>;
@@ -17143,6 +17233,7 @@ export type People_Delete_Key_Input = {
 
 /** input type for incrementing numeric columns in table "people" */
 export type People_Inc_Input = {
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
 };
 
@@ -17152,8 +17243,10 @@ export type People_Insert_Input = {
   city: InputMaybe<Scalars['String']>;
   country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_People_Arr_Rel_Insert_Input>;
@@ -17185,6 +17278,8 @@ export type People_Max_Fields = {
   city: Maybe<Scalars['String']>;
   country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -17208,6 +17303,8 @@ export type People_Min_Fields = {
   city: Maybe<Scalars['String']>;
   country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -17253,7 +17350,9 @@ export type People_Order_By = {
   city: InputMaybe<Order_By>;
   country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  data_enriched_at: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   facebook_url: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_People_Aggregate_Order_By>;
@@ -17302,7 +17401,11 @@ export enum People_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
   Email = 'email',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -17343,8 +17446,10 @@ export type People_Set_Input = {
   city: InputMaybe<Scalars['String']>;
   country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
@@ -17366,24 +17471,28 @@ export type People_Set_Input = {
 /** aggregate stddev on columns */
 export type People_Stddev_Fields = {
   __typename?: 'people_stddev_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type People_Stddev_Pop_Fields = {
   __typename?: 'people_stddev_pop_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type People_Stddev_Samp_Fields = {
   __typename?: 'people_stddev_samp_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type People_Sum_Fields = {
   __typename?: 'people_sum_fields';
+  enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
 };
 
@@ -17398,7 +17507,11 @@ export enum People_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
   Email = 'email',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -17436,18 +17549,21 @@ export enum People_Update_Column {
 /** aggregate var_pop on columns */
 export type People_Var_Pop_Fields = {
   __typename?: 'people_var_pop_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type People_Var_Samp_Fields = {
   __typename?: 'people_var_samp_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type People_Variance_Fields = {
   __typename?: 'people_variance_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -21456,8 +21572,11 @@ export type Team_Members = {
   company: Maybe<Companies>;
   company_id: Maybe<Scalars['Int']>;
   created_at: Scalars['timestamptz'];
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
   email_address: Maybe<Scalars['String']>;
+  email_enriched_at: Maybe<Scalars['timestamptz']>;
   end_date: Maybe<Scalars['date']>;
+  enrichment_priority: Scalars['Int'];
   external_id: Maybe<Scalars['String']>;
   founder: Maybe<Scalars['Boolean']>;
   function: Maybe<Scalars['String']>;
@@ -21526,6 +21645,7 @@ export type Team_Members_Arr_Rel_Insert_Input = {
 export type Team_Members_Avg_Fields = {
   __typename?: 'team_members_avg_fields';
   company_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
 };
@@ -21533,6 +21653,7 @@ export type Team_Members_Avg_Fields = {
 /** order by avg() on columns of table "team_members" */
 export type Team_Members_Avg_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -21545,8 +21666,11 @@ export type Team_Members_Bool_Exp = {
   company: InputMaybe<Companies_Bool_Exp>;
   company_id: InputMaybe<Int_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  data_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   email_address: InputMaybe<String_Comparison_Exp>;
+  email_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   end_date: InputMaybe<Date_Comparison_Exp>;
+  enrichment_priority: InputMaybe<Int_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   founder: InputMaybe<Boolean_Comparison_Exp>;
   function: InputMaybe<String_Comparison_Exp>;
@@ -21571,6 +21695,7 @@ export enum Team_Members_Constraint {
 /** input type for incrementing numeric columns in table "team_members" */
 export type Team_Members_Inc_Input = {
   company_id: InputMaybe<Scalars['Int']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
 };
@@ -21580,8 +21705,11 @@ export type Team_Members_Insert_Input = {
   company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
   company_id: InputMaybe<Scalars['Int']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_address: InputMaybe<Scalars['String']>;
+  email_enriched_at: InputMaybe<Scalars['timestamptz']>;
   end_date: InputMaybe<Scalars['date']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   founder: InputMaybe<Scalars['Boolean']>;
   function: InputMaybe<Scalars['String']>;
@@ -21598,8 +21726,11 @@ export type Team_Members_Max_Fields = {
   __typename?: 'team_members_max_fields';
   company_id: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
   email_address: Maybe<Scalars['String']>;
+  email_enriched_at: Maybe<Scalars['timestamptz']>;
   end_date: Maybe<Scalars['date']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   function: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
@@ -21613,8 +21744,11 @@ export type Team_Members_Max_Fields = {
 export type Team_Members_Max_Order_By = {
   company_id: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  data_enriched_at: InputMaybe<Order_By>;
   email_address: InputMaybe<Order_By>;
+  email_enriched_at: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   function: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -21629,8 +21763,11 @@ export type Team_Members_Min_Fields = {
   __typename?: 'team_members_min_fields';
   company_id: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
   email_address: Maybe<Scalars['String']>;
+  email_enriched_at: Maybe<Scalars['timestamptz']>;
   end_date: Maybe<Scalars['date']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   function: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
@@ -21644,8 +21781,11 @@ export type Team_Members_Min_Fields = {
 export type Team_Members_Min_Order_By = {
   company_id: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  data_enriched_at: InputMaybe<Order_By>;
   email_address: InputMaybe<Order_By>;
+  email_enriched_at: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   function: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -21676,8 +21816,11 @@ export type Team_Members_Order_By = {
   company: InputMaybe<Companies_Order_By>;
   company_id: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  data_enriched_at: InputMaybe<Order_By>;
   email_address: InputMaybe<Order_By>;
+  email_enriched_at: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   founder: InputMaybe<Order_By>;
   function: InputMaybe<Order_By>;
@@ -21701,9 +21844,15 @@ export enum Team_Members_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
   EmailAddress = 'email_address',
   /** column name */
+  EmailEnrichedAt = 'email_enriched_at',
+  /** column name */
   EndDate = 'end_date',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -21726,8 +21875,11 @@ export enum Team_Members_Select_Column {
 export type Team_Members_Set_Input = {
   company_id: InputMaybe<Scalars['Int']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_address: InputMaybe<Scalars['String']>;
+  email_enriched_at: InputMaybe<Scalars['timestamptz']>;
   end_date: InputMaybe<Scalars['date']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   founder: InputMaybe<Scalars['Boolean']>;
   function: InputMaybe<Scalars['String']>;
@@ -21742,6 +21894,7 @@ export type Team_Members_Set_Input = {
 export type Team_Members_Stddev_Fields = {
   __typename?: 'team_members_stddev_fields';
   company_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
 };
@@ -21749,6 +21902,7 @@ export type Team_Members_Stddev_Fields = {
 /** order by stddev() on columns of table "team_members" */
 export type Team_Members_Stddev_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -21757,6 +21911,7 @@ export type Team_Members_Stddev_Order_By = {
 export type Team_Members_Stddev_Pop_Fields = {
   __typename?: 'team_members_stddev_pop_fields';
   company_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
 };
@@ -21764,6 +21919,7 @@ export type Team_Members_Stddev_Pop_Fields = {
 /** order by stddev_pop() on columns of table "team_members" */
 export type Team_Members_Stddev_Pop_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -21772,6 +21928,7 @@ export type Team_Members_Stddev_Pop_Order_By = {
 export type Team_Members_Stddev_Samp_Fields = {
   __typename?: 'team_members_stddev_samp_fields';
   company_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
 };
@@ -21779,6 +21936,7 @@ export type Team_Members_Stddev_Samp_Fields = {
 /** order by stddev_samp() on columns of table "team_members" */
 export type Team_Members_Stddev_Samp_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -21787,6 +21945,7 @@ export type Team_Members_Stddev_Samp_Order_By = {
 export type Team_Members_Sum_Fields = {
   __typename?: 'team_members_sum_fields';
   company_id: Maybe<Scalars['Int']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
 };
@@ -21794,6 +21953,7 @@ export type Team_Members_Sum_Fields = {
 /** order by sum() on columns of table "team_members" */
 export type Team_Members_Sum_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -21805,9 +21965,15 @@ export enum Team_Members_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
   EmailAddress = 'email_address',
   /** column name */
+  EmailEnrichedAt = 'email_enriched_at',
+  /** column name */
   EndDate = 'end_date',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -21830,6 +21996,7 @@ export enum Team_Members_Update_Column {
 export type Team_Members_Var_Pop_Fields = {
   __typename?: 'team_members_var_pop_fields';
   company_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
 };
@@ -21837,6 +22004,7 @@ export type Team_Members_Var_Pop_Fields = {
 /** order by var_pop() on columns of table "team_members" */
 export type Team_Members_Var_Pop_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -21845,6 +22013,7 @@ export type Team_Members_Var_Pop_Order_By = {
 export type Team_Members_Var_Samp_Fields = {
   __typename?: 'team_members_var_samp_fields';
   company_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
 };
@@ -21852,6 +22021,7 @@ export type Team_Members_Var_Samp_Fields = {
 /** order by var_samp() on columns of table "team_members" */
 export type Team_Members_Var_Samp_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -21860,6 +22030,7 @@ export type Team_Members_Var_Samp_Order_By = {
 export type Team_Members_Variance_Fields = {
   __typename?: 'team_members_variance_fields';
   company_id: Maybe<Scalars['Float']>;
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
 };
@@ -21867,6 +22038,7 @@ export type Team_Members_Variance_Fields = {
 /** order by variance() on columns of table "team_members" */
 export type Team_Members_Variance_Order_By = {
   company_id: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
 };
@@ -23942,7 +24114,10 @@ export type Users_Variance_Fields = {
 export type Vc_Firms = {
   __typename?: 'vc_firms';
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
+  domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
+  enrichment_priority: Scalars['Int'];
   external_id: Maybe<Scalars['String']>;
   /** An array relationship */
   follows: Array<Follows_Vc_Firms>;
@@ -24193,6 +24368,7 @@ export type Vc_Firms_Append_Input = {
 /** aggregate avg on columns */
 export type Vc_Firms_Avg_Fields = {
   __typename?: 'vc_firms_avg_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
@@ -24206,7 +24382,10 @@ export type Vc_Firms_Bool_Exp = {
   _not: InputMaybe<Vc_Firms_Bool_Exp>;
   _or: InputMaybe<Array<Vc_Firms_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  data_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  domain_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   email_domain: InputMaybe<String_Comparison_Exp>;
+  enrichment_priority: InputMaybe<Int_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
   from_links: InputMaybe<Resource_Links_Bool_Exp>;
@@ -24565,6 +24744,7 @@ export type Vc_Firms_Edit_Access_Variance_Order_By = {
 
 /** input type for incrementing numeric columns in table "vc_firms" */
 export type Vc_Firms_Inc_Input = {
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investment_amount_total: InputMaybe<Scalars['bigint']>;
   num_of_exits: InputMaybe<Scalars['Int']>;
@@ -24575,7 +24755,10 @@ export type Vc_Firms_Inc_Input = {
 /** input type for inserting data into table "vc_firms" */
 export type Vc_Firms_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
+  domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_domain: InputMaybe<Scalars['String']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Vc_Firms_Arr_Rel_Insert_Input>;
   from_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
@@ -24613,7 +24796,10 @@ export type Vc_Firms_Insert_Input = {
 export type Vc_Firms_Max_Fields = {
   __typename?: 'vc_firms_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
+  domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
@@ -24638,7 +24824,10 @@ export type Vc_Firms_Max_Fields = {
 export type Vc_Firms_Min_Fields = {
   __typename?: 'vc_firms_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  data_enriched_at: Maybe<Scalars['timestamptz']>;
+  domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
+  enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
@@ -24685,7 +24874,10 @@ export type Vc_Firms_On_Conflict = {
 /** Ordering options when selecting data from "vc_firms". */
 export type Vc_Firms_Order_By = {
   created_at: InputMaybe<Order_By>;
+  data_enriched_at: InputMaybe<Order_By>;
+  domain_enriched_at: InputMaybe<Order_By>;
   email_domain: InputMaybe<Order_By>;
+  enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Order_By>;
   from_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
@@ -24739,7 +24931,13 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
+  DomainEnrichedAt = 'domain_enriched_at',
+  /** column name */
   EmailDomain = 'email_domain',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -24795,7 +24993,10 @@ export enum Vc_Firms_Select_Column {
 /** input type for updating data in table "vc_firms" */
 export type Vc_Firms_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
+  domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_domain: InputMaybe<Scalars['String']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
@@ -24826,6 +25027,7 @@ export type Vc_Firms_Set_Input = {
 /** aggregate stddev on columns */
 export type Vc_Firms_Stddev_Fields = {
   __typename?: 'vc_firms_stddev_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
@@ -24836,6 +25038,7 @@ export type Vc_Firms_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Vc_Firms_Stddev_Pop_Fields = {
   __typename?: 'vc_firms_stddev_pop_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
@@ -24846,6 +25049,7 @@ export type Vc_Firms_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Vc_Firms_Stddev_Samp_Fields = {
   __typename?: 'vc_firms_stddev_samp_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
@@ -24856,6 +25060,7 @@ export type Vc_Firms_Stddev_Samp_Fields = {
 /** aggregate sum on columns */
 export type Vc_Firms_Sum_Fields = {
   __typename?: 'vc_firms_sum_fields';
+  enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
   num_of_exits: Maybe<Scalars['Int']>;
@@ -24868,7 +25073,13 @@ export enum Vc_Firms_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DataEnrichedAt = 'data_enriched_at',
+  /** column name */
+  DomainEnrichedAt = 'domain_enriched_at',
+  /** column name */
   EmailDomain = 'email_domain',
+  /** column name */
+  EnrichmentPriority = 'enrichment_priority',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -24924,6 +25135,7 @@ export enum Vc_Firms_Update_Column {
 /** aggregate var_pop on columns */
 export type Vc_Firms_Var_Pop_Fields = {
   __typename?: 'vc_firms_var_pop_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
@@ -24934,6 +25146,7 @@ export type Vc_Firms_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Vc_Firms_Var_Samp_Fields = {
   __typename?: 'vc_firms_var_samp_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
@@ -24944,6 +25157,7 @@ export type Vc_Firms_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Vc_Firms_Variance_Fields = {
   __typename?: 'vc_firms_variance_fields';
+  enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
@@ -25317,6 +25531,16 @@ export type GetCompanyInsightByLocationQueryVariables = Exact<{
 
 export type GetCompanyInsightByLocationQuery = { __typename?: 'query_root', companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
+export type GetPersonalizedCompaniesQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<Companies_Order_By> | Companies_Order_By>;
+  where: Companies_Bool_Exp;
+}>;
+
+
+export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, status_tags: any | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -25369,14 +25593,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -25384,7 +25608,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -25406,14 +25630,14 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string | null, status: string } | null }> };
 
 export type GetEventInsightByLocationQueryVariables = Exact<{
   where: Events_Bool_Exp;
@@ -26109,7 +26333,7 @@ export type GetEventsPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, updated_at: any }> };
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, updated_at: any }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -26414,6 +26638,16 @@ export type GetVcFirmInsightByLocationQueryVariables = Exact<{
 
 
 export type GetVcFirmInsightByLocationQuery = { __typename?: 'query_root', vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+
+export type GetPersonalizedVcFirmsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<Vc_Firms_Order_By> | Vc_Firms_Order_By>;
+  where: Vc_Firms_Bool_Exp;
+}>;
+
+
+export type GetPersonalizedVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, slug: string, logo: any | null, name: string | null, num_of_investments: number | null, tags: any | null, overview: string | null, website: string | null, linkedin: string | null, twitter: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
@@ -27241,6 +27475,55 @@ useGetCompanyInsightByLocationQuery.getKey = (variables: GetCompanyInsightByLoca
 ;
 
 useGetCompanyInsightByLocationQuery.fetcher = (variables: GetCompanyInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyInsightByLocationQuery, GetCompanyInsightByLocationQueryVariables>(GetCompanyInsightByLocationDocument, variables, options);
+export const GetPersonalizedCompaniesDocument = `
+    query GetPersonalizedCompanies($limit: Int, $offset: Int, $orderBy: [companies_order_by!], $where: companies_bool_exp!) {
+  companies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+    id
+    slug
+    logo
+    name
+    coin {
+      ticker
+    }
+    tags
+    status_tags
+    overview
+    follows {
+      id
+      list_id
+    }
+    website
+    twitter
+    company_linkedin
+    github
+    discord
+  }
+  companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetPersonalizedCompaniesQuery = <
+      TData = GetPersonalizedCompaniesQuery,
+      TError = Error
+    >(
+      variables: GetPersonalizedCompaniesQueryVariables,
+      options?: UseQueryOptions<GetPersonalizedCompaniesQuery, TError, TData>
+    ) =>
+    useQuery<GetPersonalizedCompaniesQuery, TError, TData>(
+      ['GetPersonalizedCompanies', variables],
+      fetcher<GetPersonalizedCompaniesQuery, GetPersonalizedCompaniesQueryVariables>(GetPersonalizedCompaniesDocument, variables),
+      options
+    );
+useGetPersonalizedCompaniesQuery.document = GetPersonalizedCompaniesDocument;
+
+
+useGetPersonalizedCompaniesQuery.getKey = (variables: GetPersonalizedCompaniesQueryVariables) => ['GetPersonalizedCompanies', variables];
+;
+
+useGetPersonalizedCompaniesQuery.fetcher = (variables: GetPersonalizedCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonalizedCompaniesQuery, GetPersonalizedCompaniesQueryVariables>(GetPersonalizedCompaniesDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -32435,6 +32718,50 @@ useGetVcFirmInsightByLocationQuery.getKey = (variables: GetVcFirmInsightByLocati
 ;
 
 useGetVcFirmInsightByLocationQuery.fetcher = (variables: GetVcFirmInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmInsightByLocationQuery, GetVcFirmInsightByLocationQueryVariables>(GetVcFirmInsightByLocationDocument, variables, options);
+export const GetPersonalizedVcFirmsDocument = `
+    query GetPersonalizedVcFirms($limit: Int, $offset: Int, $orderBy: [vc_firms_order_by!], $where: vc_firms_bool_exp!) {
+  vc_firms(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+    id
+    slug
+    logo
+    name
+    num_of_investments
+    tags
+    overview
+    website
+    linkedin
+    twitter
+    follows {
+      id
+      list_id
+    }
+  }
+  vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetPersonalizedVcFirmsQuery = <
+      TData = GetPersonalizedVcFirmsQuery,
+      TError = Error
+    >(
+      variables: GetPersonalizedVcFirmsQueryVariables,
+      options?: UseQueryOptions<GetPersonalizedVcFirmsQuery, TError, TData>
+    ) =>
+    useQuery<GetPersonalizedVcFirmsQuery, TError, TData>(
+      ['GetPersonalizedVcFirms', variables],
+      fetcher<GetPersonalizedVcFirmsQuery, GetPersonalizedVcFirmsQueryVariables>(GetPersonalizedVcFirmsDocument, variables),
+      options
+    );
+useGetPersonalizedVcFirmsQuery.document = GetPersonalizedVcFirmsDocument;
+
+
+useGetPersonalizedVcFirmsQuery.getKey = (variables: GetPersonalizedVcFirmsQueryVariables) => ['GetPersonalizedVcFirms', variables];
+;
+
+useGetPersonalizedVcFirmsQuery.fetcher = (variables: GetPersonalizedVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonalizedVcFirmsQuery, GetPersonalizedVcFirmsQueryVariables>(GetPersonalizedVcFirmsDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

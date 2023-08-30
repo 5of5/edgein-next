@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { GetStaticProps } from 'next';
 import { Dialog } from '@headlessui/react';
 import { Place } from '@aws-sdk/client-location';
@@ -13,13 +13,19 @@ import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
 import useToast from '@/hooks/use-toast';
 import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 import { getGeometryPlace } from '@/utils/helpers';
+import { useStateParams } from '@/hooks/use-state-params';
 
 export default function Onboarding() {
   const router = useRouter();
 
   const { toast } = useToast();
 
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useStateParams(
+    1,
+    'step',
+    step => step.toString(),
+    step => Number(step),
+  );
 
   const [segment, setSegment] = useState<Segment>();
 
@@ -28,6 +34,13 @@ export default function Onboarding() {
   const [locations, setLocations] = useState<Place[]>([]);
 
   const [tags, setTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (currentStep !== 1) {
+      setCurrentStep(1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { mutate: submitOnboarding, isLoading: isSubmittingOnboarding } =
     useMutation(

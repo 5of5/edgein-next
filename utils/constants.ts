@@ -673,7 +673,8 @@ export const web3Tags: Tag[] = [
   'NFT',
   'Bitcoin',
   'Ethereum',
-  'NEAR/OWC',
+  'NEAR',
+  'Stellar',
   'Cosmos',
   'Cardano',
   'OWC',
@@ -2019,9 +2020,11 @@ export const CARD_DEFAULT_TAGS_LIMIT = 3;
 
 export const CARD_MAX_TAGS_LIMIT = 50;
 
-export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
+export const SIDEBAR_DEFAULT_LISTS_LIMIT = 2;
 
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
+
+export const SIDEBAR_LIMIT_ITEMS = 5;
 
 export const NEW_CATEGORY_LIMIT = 33;
 
@@ -2063,3 +2066,5 @@ export const onboardingExploreChoices = [
 export const ONBOARDING_DEFAULT_TAGS_LIMIT = 20;
 export const ONBOARDING_MIN_LOCATIONS = 1;
 export const ONBOARDING_MIN_TAGS = 3;
+
+export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
