@@ -202,7 +202,7 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <div>
-              {props.value.length > 0 ? (
+              {props.value?.length > 0 ? (
                 <>
                   {props.value?.map((item: any, index: number) => {
                     return (
@@ -341,7 +341,7 @@ export const CompaniesTable: FC<Props> = ({
               {props.value > 0 ? (
                 <>${numberWithCommas(props.value)}</>
               ) : props.value === 0 &&
-                props.row.original?.investment_rounds.length > 0 ? (
+                props.row.original?.investment_rounds?.length > 0 ? (
                 <>Undisclosed Capital</>
               ) : (
                 <EmptyCell />
@@ -440,11 +440,10 @@ export const CompaniesTable: FC<Props> = ({
                   onClick={onOpenUpgradeDialog}
                   btn="white"
                   roundedFull={true}
-                  className={`!p-1.5 aspect-square ${
-                    pageNumber * itemsPerPage > 0
+                  className={`!p-1.5 aspect-square ${pageNumber * itemsPerPage > 0
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
+                    }`}
                 >
                   <IconChevronLeft className="h-5 w-5" />
                 </ElemButton>
@@ -453,11 +452,10 @@ export const CompaniesTable: FC<Props> = ({
                   onClick={onOpenUpgradeDialog}
                   btn="white"
                   roundedFull={true}
-                  className={`!p-1.5 aspect-square ${
-                    totalItems > shownItemsEnd
+                  className={`!p-1.5 aspect-square ${totalItems > shownItemsEnd
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
+                    }`}
                 >
                   <IconChevronRight className="h-5 w-5" />
                 </ElemButton>
@@ -470,11 +468,10 @@ export const CompaniesTable: FC<Props> = ({
                   }
                   btn="white"
                   roundedFull={true}
-                  className={`!p-1.5 aspect-square ${
-                    pageNumber * itemsPerPage > 0
+                  className={`!p-1.5 aspect-square ${pageNumber * itemsPerPage > 0
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
+                    }`}
                 >
                   <IconChevronLeft className="h-5 w-5" />
                 </ElemButton>
@@ -483,11 +480,10 @@ export const CompaniesTable: FC<Props> = ({
                   onClick={totalItems > shownItemsEnd ? onClickNext : undefined}
                   btn="white"
                   roundedFull={true}
-                  className={`!p-1.5 aspect-square ${
-                    totalItems > shownItemsEnd
+                  className={`!p-1.5 aspect-square ${totalItems > shownItemsEnd
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
+                    }`}
                 >
                   <IconChevronRight className="h-5 w-5" />
                 </ElemButton>
@@ -543,12 +539,11 @@ export const CompaniesTable: FC<Props> = ({
                               {column.canSort && (
                                 <Menu.Item
                                   as="button"
-                                  className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
-                                    column.isSorted &&
-                                    column.isSortedDesc === false
+                                  className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${column.isSorted &&
+                                      column.isSortedDesc === false
                                       ? 'text-primary-500'
                                       : ''
-                                  }`}
+                                    }`}
                                   onClick={(e: any) => {
                                     column.getHeaderProps(
                                       setSortBy([
@@ -565,12 +560,11 @@ export const CompaniesTable: FC<Props> = ({
                               {column.canSort && (
                                 <Menu.Item
                                   as="button"
-                                  className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
-                                    column.isSorted &&
-                                    column.isSortedDesc === true
+                                  className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${column.isSorted &&
+                                      column.isSortedDesc === true
                                       ? 'text-primary-500'
                                       : ''
-                                  }`}
+                                    }`}
                                   onClick={(e: any) => {
                                     column.getHeaderProps(
                                       setSortBy([
@@ -603,17 +597,15 @@ export const CompaniesTable: FC<Props> = ({
 
                           <div
                             {...column.getResizerProps()}
-                            className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${
-                              column.isResizing ? 'isResizing select-none' : ''
-                            }`}
+                            className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${column.isResizing ? 'isResizing select-none' : ''
+                              }`}
                             onClick={event => event.stopPropagation()}
                           >
                             <div
-                              className={`w-px h-full translate-x-0.5 ${
-                                column.isResizing
+                              className={`w-px h-full translate-x-0.5 ${column.isResizing
                                   ? 'bg-primary-500'
                                   : 'bg-black/10 group-hover:bg-primary-500'
-                              }`}
+                                }`}
                             ></div>
                           </div>
                         </div>
