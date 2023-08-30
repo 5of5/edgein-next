@@ -25715,7 +25715,7 @@ export type GetInvestorByPersonIdQueryVariables = Exact<{
 }>;
 
 
-export type GetInvestorByPersonIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null }> };
+export type GetInvestorByPersonIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, status: string } | null, vc_firm: { __typename?: 'vc_firms', name: string | null } | null }> };
 
 export type GetInvestorMailingListQueryVariables = Exact<{
   personId: Scalars['Int'];
@@ -25730,7 +25730,7 @@ export type GetAdminInvestorMailingListQueryVariables = Exact<{
 }>;
 
 
-export type GetAdminInvestorMailingListQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm: { __typename?: 'vc_firms', investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, teamMembers: Array<{ __typename?: 'team_members', id: number, email_address: string | null, person_id: number | null }>, teamMembers_aggregate: { __typename?: 'team_members_aggregate', aggregate: { __typename?: 'team_members_aggregate_fields', count: number } | null } } | null } | null }> } | null }> };
+export type GetAdminInvestorMailingListQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm: { __typename?: 'vc_firms', investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, teamMembers: Array<{ __typename?: 'team_members', id: number, email_address: string | null, person_id: number | null, person: { __typename?: 'people', name: string | null } | null }>, teamMembers_aggregate: { __typename?: 'team_members_aggregate', aggregate: { __typename?: 'team_members_aggregate_fields', count: number } | null } } | null } | null }> } | null }> };
 
 export type GetInvitedPeopleByUserIdQueryVariables = Exact<{
   userId: Scalars['Int'];
@@ -29058,6 +29058,9 @@ export const GetInvestorByPersonIdDocument = `
       slug
       status
     }
+    vc_firm {
+      name
+    }
   }
 }
     `;
@@ -29140,6 +29143,9 @@ export const GetAdminInvestorMailingListDocument = `
               id
               email_address
               person_id
+              person {
+                name
+              }
             }
             teamMembers_aggregate(where: {email_address: {_is_null: false}}) {
               aggregate {
