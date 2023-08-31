@@ -271,13 +271,15 @@ const Investors: NextPage<Props> = ({
     data: vcFirmsData,
     error,
     isLoading,
-  } = useGetVcFirmsQuery({
-    offset: isNewTabSelected ? null : offset,
-    limit: getLimit(),
-    where: filters as Vc_Firms_Bool_Exp,
-    orderBy: [getOrderBy() as Vc_Firms_Order_By],
-  },
-  { refetchOnWindowFocus: false },);
+  } = useGetVcFirmsQuery(
+    {
+      offset: isNewTabSelected ? null : offset,
+      limit: getLimit(),
+      where: filters as Vc_Firms_Bool_Exp,
+      orderBy: [getOrderBy() as Vc_Firms_Order_By],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);

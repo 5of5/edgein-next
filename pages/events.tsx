@@ -175,7 +175,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -189,7 +190,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -274,7 +276,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       <div className="relative">
         <div
           className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <ElemCategories
             categories={eventTabs}
             selectedCategory={selectedTab}
@@ -403,7 +406,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                         `Hi EdgeIn, I'd like to report an error on events page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
@@ -424,7 +428,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 )}
                 <div
                   data-testid="events"
-                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                >
                   {events?.map(event => (
                     <ElemEventCard key={event.id} event={event} />
                   ))}
@@ -459,7 +464,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                     )
                   }
                   btn="white"
-                  className="mt-3">
+                  className="mt-3"
+                >
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>

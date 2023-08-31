@@ -268,13 +268,15 @@ const Companies: NextPage<Props> = ({
     data: companiesData,
     error,
     isLoading,
-  } = useGetCompaniesQuery({
-    offset: isNewTabSelected ? null : offset,
-    limit: getLimit(),
-    where: filters as Companies_Bool_Exp,
-    orderBy: [getOrderBy() as Companies_Order_By],
-  },
-  { refetchOnWindowFocus: false },);
+  } = useGetCompaniesQuery(
+    {
+      offset: isNewTabSelected ? null : offset,
+      limit: getLimit(),
+      where: filters as Companies_Bool_Exp,
+      orderBy: [getOrderBy() as Companies_Order_By],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);

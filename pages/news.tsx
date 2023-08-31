@@ -144,17 +144,20 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     data: newsData,
     error,
     isLoading,
-  } = useGetNewsQuery({
-    offset,
-    limit: selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
-    orderBy: [
-      selectedTab?.value === 'trending'
-        ? ({ num_of_views: Order_By.Desc } as News_Order_By)
-        : orderByQuery,
-    ],
-    where: filters as News_Bool_Exp,
-  },
-  { refetchOnWindowFocus: false },);
+  } = useGetNewsQuery(
+    {
+      offset,
+      limit:
+        selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+      orderBy: [
+        selectedTab?.value === 'trending'
+          ? ({ num_of_views: Order_By.Desc } as News_Order_By)
+          : orderByQuery,
+      ],
+      where: filters as News_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
