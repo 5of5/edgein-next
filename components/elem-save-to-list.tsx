@@ -114,6 +114,7 @@ export const ElemSaveToList: FC<Props> = ({
           list = {
             __typename: 'lists',
             name: listName,
+            description: '',
             id: -1,
             created_by_id: user.id,
             created_by: null,

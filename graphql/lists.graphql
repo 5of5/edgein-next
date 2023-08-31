@@ -188,6 +188,7 @@ query GetLists($limit: Int, $offset: Int, $where: lists_bool_exp!) {
   ) {
     id
     name
+    description
     public
     created_at
     updated_at
@@ -195,6 +196,12 @@ query GetLists($limit: Int, $offset: Int, $where: lists_bool_exp!) {
       id
       display_name
       email
+      person {
+        id
+        name
+        slug
+        picture
+      }
     }
     list_members {
       id
