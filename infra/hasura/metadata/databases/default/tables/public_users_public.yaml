@@ -1,35 +1,35 @@
 table:
-  name: users_public
   schema: public
+  name: users_public
 object_relationships:
   - name: person
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: people
+        insertion_order: null
         column_mapping:
           person_id: id
-        insertion_order: null
-        remote_table:
-          name: people
-          schema: public
 array_relationships:
   - name: list_members
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: list_members
+        insertion_order: null
         column_mapping:
           id: user_id
-        insertion_order: null
-        remote_table:
-          name: list_members
-          schema: public
   - name: user_group_members
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: user_group_members
+        insertion_order: null
         column_mapping:
           id: user_id
-        insertion_order: null
-        remote_table:
-          name: user_group_members
-          schema: public
 select_permissions:
   - role: viewer
     permission:
