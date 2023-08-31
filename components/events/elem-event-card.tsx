@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
+import moment from 'moment-timezone';
 import Link from 'next/link';
 import { GetEventsQuery } from '@/graphql/types';
 import {
@@ -7,15 +8,15 @@ import {
   randomImageOfCity,
 } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
-import { formatDateShown } from '@/utils';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { ElemButton } from '@/components/elem-button';
 import {
   IconGlobe,
-  IconLinkedIn,
   IconTwitter,
-  IconGithub,
+  IconFacebook,
+  IconInstagram,
   IconDiscord,
+  IconTelegram,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -54,11 +55,11 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
     end_date,
     link,
     event_person,
-    // TO DO: add twitter, linkedin, github, discord to GetEventsQuery
-    // twitter,
-    // linkedin,
-    // github,
-    // discord,
+    twitter,
+    facebook,
+    instagram,
+    discord,
+    telegram,
   } = event;
 
   const attendees = event_person?.filter(item => item.type === 'attendee');
@@ -144,6 +145,13 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
     }
   };
 
+  const dateIsTodayOrBefore = (date: Date) => {
+    const dateToday = moment().format('YYYY-MM-D');
+    const isBefore = moment(dateToday).isBefore(date);
+
+    return isBefore;
+  };
+
   return (
     <div className="flex flex-col w-full">
       <Link href={`/events/${slug}`}>
@@ -180,12 +188,12 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
 
       {start_date && (
         <p className="text-sm text-gray-500">
-          {formatDateShown(start_date)}
+          {moment(start_date).format('MMM D, YYYY')}
 
           {end_date && (
             <>
               &nbsp;&ndash;&nbsp;
-              {formatDateShown(end_date)}
+              {moment(end_date).format('MMM D, YYYY')}
             </>
           )}
         </p>
@@ -210,25 +218,14 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
           {link && (
             <Link href={link}>
               <a target="_blank">
-                <IconGlobe className="h-6 w-6 text-gray-400" />
+                <ElemTooltip content="Website" mode="light">
+                  <div>
+                    <IconGlobe className="h-6 w-6 text-gray-400" title={link} />
+                  </div>
+                </ElemTooltip>
               </a>
             </Link>
           )}
-
-          {/* {userCanViewLinkedIn && linkedin ? (
-            <Link href={linkedin}>
-              <a target="_blank">
-                <IconLinkedIn className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          ) : !userCanViewLinkedIn && linkedin ? (
-            <button onClick={() => setIsOpenUpgradeDialog(true)}>
-              <IconLinkedIn className="h-6 w-6 text-gray-400" />
-            </button>
-          ) : (
-            <></>
-          )} 
-
           {twitter && (
             <Link href={twitter}>
               <a target="_blank">
@@ -236,10 +233,17 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
               </a>
             </Link>
           )}
-          {github && (
-            <Link href={github}>
+          {facebook && (
+            <Link href={facebook}>
               <a target="_blank">
-                <IconGithub className="h-6 w-6 text-gray-400" />
+                <IconFacebook className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          )}
+          {instagram && (
+            <Link href={instagram}>
+              <a target="_blank">
+                <IconInstagram className="h-6 w-6 text-gray-400" />
               </a>
             </Link>
           )}
@@ -250,7 +254,13 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
               </a>
             </Link>
           )}
-          */}
+          {telegram && (
+            <Link href={telegram}>
+              <a target="_blank">
+                <IconTelegram className="h-6 w-6 text-gray-400" />
+              </a>
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -259,11 +269,16 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
           )}
 
           <ElemButton
+            btn={isAttended ? 'primary-light' : 'default'}
             onClick={handleClickAttend}
-            btn="default"
+            loading={isLoadingGoingEvent}
             className="px-2.5"
           >
-            {isAttended ? 'Attended' : 'Attend'}
+            {isAttended && dateIsTodayOrBefore(end_date)
+              ? 'Attending'
+              : isAttended && !dateIsTodayOrBefore(end_date)
+              ? 'Attended'
+              : 'Attend'}
           </ElemButton>
         </div>
       </div>
