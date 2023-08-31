@@ -202,7 +202,7 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => {
           return (
             <div>
-              {props.value.length > 0 ? (
+              {props.value?.length > 0 ? (
                 <>
                   {props.value?.map((item: any, index: number) => {
                     return (
@@ -341,7 +341,7 @@ export const CompaniesTable: FC<Props> = ({
               {props.value > 0 ? (
                 <>${numberWithCommas(props.value)}</>
               ) : props.value === 0 &&
-                props.row.original?.investment_rounds.length > 0 ? (
+                props.row.original?.investment_rounds?.length > 0 ? (
                 <>Undisclosed Capital</>
               ) : (
                 <EmptyCell />

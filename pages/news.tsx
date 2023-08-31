@@ -9,7 +9,11 @@ import { PlaceholderNewsCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '../utils';
 import toast, { Toaster } from 'react-hot-toast';
-import { IconAnnotation, IconSearch } from '@/components/icons';
+import {
+  IconAnnotation,
+  IconSearch,
+  IconSortDashboard,
+} from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
@@ -25,6 +29,7 @@ import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
+  ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
   TRENDING_CATEGORY_LIMIT,
@@ -83,6 +88,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   const { sortChoices, orderByParam, orderByQuery } =
     useDashboardSortBy<News_Order_By>({
+      defaultSortBy: 'newest',
       ascendingSortKey: 'text',
       descendingSortKey: 'text',
       newestSortKey: 'date',
@@ -119,15 +125,17 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   if (selectedTab?.value === 'today') {
     filters._and?.push({
-      date: { _eq: moment().format('YYYY-MM-DD') },
+      date: { _eq: moment().format(ISO_DATE_FORMAT) },
     });
   }
 
   if (selectedTab?.value === '7days') {
     filters._and?.push({
       _and: [
-        { date: { _gte: moment().subtract(7, 'days').format('YYYY-MM-DD') } },
-        { date: { _lte: moment().format('YYYY-MM-DD') } },
+        {
+          date: { _gte: moment().subtract(7, 'days').format(ISO_DATE_FORMAT) },
+        },
+        { date: { _lte: moment().format(ISO_DATE_FORMAT) } },
       ],
     });
   }
@@ -145,7 +153,8 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
         : orderByQuery,
     ],
     where: filters as News_Bool_Exp,
-  });
+  },
+  { refetchOnWindowFocus: false },);
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -173,7 +182,11 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
             {!selectedTab?.value && (
-              <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
             )}
           </div>
         </div>
@@ -258,6 +271,7 @@ export const getStaticProps: GetStaticProps = async context => {
       initialNews: news?.news || [],
       newsTab,
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 

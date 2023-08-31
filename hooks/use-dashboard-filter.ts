@@ -1,14 +1,15 @@
-import { MouseEvent, useState } from 'react';
-import { FilterOptionKeys } from '@/models/Filter';
+import { MouseEvent } from 'react';
+import { DateCondition, FilterOptionKeys } from '@/models/Filter';
 import { getDefaultFilter } from '@/utils/filter';
 import useFilterParams from './use-filter-params';
 import { Filters } from '@/models/Filter';
 
 type Props = {
+  dateCondition?: DateCondition;
   resetPage?: () => void;
 };
 
-const useDashboardFilter = ({ resetPage }: Props) => {
+const useDashboardFilter = ({ dateCondition = 'past', resetPage }: Props) => {
   const { selectedFilters, setSelectedFilters } = useFilterParams();
 
   const onSelectFilterOption = (event: MouseEvent<HTMLButtonElement>) => {
@@ -16,7 +17,7 @@ const useDashboardFilter = ({ resetPage }: Props) => {
     setSelectedFilters({
       ...selectedFilters,
       [name]: {
-        ...getDefaultFilter(name as FilterOptionKeys),
+        ...getDefaultFilter(name as FilterOptionKeys, dateCondition),
         open: true,
       },
     });

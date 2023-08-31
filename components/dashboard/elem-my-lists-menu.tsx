@@ -157,44 +157,50 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     return onOpenCreateListDialog();
   };
 
-  const [listsLimit, setListsLimit] = useState(SIDEBAR_DEFAULT_LISTS_LIMIT);
-
   return (
     <div className={className}>
       <Disclosure defaultOpen={isDefaultOpen}>
         {({ open }) => (
           <>
             <div className="w-full flex items-center justify-between">
-              <Disclosure.Button
-                className="flex items-center grow space-x-2 py-1.5 px-2 focus:outline-none"
-                data-expanded={open}
-                ref={btnRef}
-                onClick={onClickHeader}
-              >
-                {user && (
-                  <IconChevronDownMini
-                    className={`${
-                      open ? 'rotate-0' : '-rotate-90 '
-                    } w-4 h-4 transform transition-all`}
-                  />
+              <div className="flex items-center grow space-x-2 p-2">
+                <Disclosure.Button
+                  className="focus:outline-none"
+                  data-expanded={open}
+                  ref={btnRef}
+                  onClick={onClickHeader}
+                >
+                  {user && (
+                    <IconChevronDownMini
+                      className={`rounded-md hover:bg-gray-100 ${
+                        open ? 'rotate-0' : '-rotate-90 '
+                      } w-5 h-5 transform transition-all`}
+                    />
+                  )}
+                </Disclosure.Button>
+                {user ? (
+                  <Link href="/lists">
+                    <a className="font-medium text-sm">Lists</a>
+                  </Link>
+                ) : (
+                  <p className="font-medium text-sm">Lists</p>
                 )}
-                <span className="font-medium text-sm">Lists</span>
-              </Disclosure.Button>
+              </div>
 
               <button
                 onClick={onClickCreate}
-                className="flex items-center justify-center rounded-full hover:bg-gray-100"
+                className="flex items-center justify-center rounded-md hover:bg-gray-100"
               >
-                <IconPlusSmall className="h-3 w-3" title="Create List" />
+                <IconPlusSmall className="h-5 w-5" title="Create List" />
               </button>
             </div>
 
             {user && (
-              <Disclosure.Panel as="ul" className="ml-6">
+              <Disclosure.Panel as="ul" className="ml-2">
                 <li role="button">
                   <Link href={`/lists/${hotId}/hot`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-2 pl-7 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
                         hotId,
                         'hot',
                       )} `}
@@ -209,7 +215,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <Link href={`/lists/${likeId}/like`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-2 pl-7 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
                         likeId,
                         'like',
                       )}`}
@@ -224,7 +230,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 <li role="button">
                   <Link href={`/lists/${crapId}/sh**`}>
                     <a
-                      className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
+                      className={`flex items-center space-x-2 py-2 pl-7 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
                         crapId,
                         'sh**',
                       )} `}
@@ -236,39 +242,53 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     </a>
                   </Link>
                 </li>
-                {createdLists.slice(0, listsLimit)?.map(list => {
-                  return (
-                    <li key={list.id} role="button">
-                      <Link
-                        href={`/lists/${list.id}/${kebabCase(
-                          getNameFromListName(list),
-                        )}`}
-                      >
-                        <a
-                          className={`flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 ${getActiveClass(
-                            list.id,
-                            kebabCase(getNameFromListName(list)),
+                {createdLists
+                  .slice(0, SIDEBAR_DEFAULT_LISTS_LIMIT)
+                  ?.map(list => {
+                    return (
+                      <li key={list.id} role="button">
+                        <Link
+                          href={`/lists/${list.id}/${kebabCase(
+                            getNameFromListName(list),
                           )}`}
                         >
-                          <span className="line-clamp-1 break-all flex-1">
-                            {getNameFromListName(list)}
-                          </span>
-                          <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-sm">
-                            {list.total_no_of_resources}
-                          </div>
-                        </a>
-                      </Link>
-                    </li>
-                  );
-                })}
+                          <a
+                            className={`flex items-center space-x-2 py-2 pl-7 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                              list.id,
+                              kebabCase(getNameFromListName(list)),
+                            )}`}
+                          >
+                            <span className="line-clamp-1 break-all flex-1">
+                              {getNameFromListName(list)}
+                            </span>
+                            <div className="bg-gray-100 inline-block rounded-full py-0.5 px-2 text-sm">
+                              {list.total_no_of_resources}
+                            </div>
+                          </a>
+                        </Link>
+                      </li>
+                    );
+                  })}
 
-                <li role="button">
-                  <Link href="/lists/">
-                    <a className="flex items-center space-x-2 py-1.5 px-2 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100">
-                      See all
-                    </a>
-                  </Link>
-                </li>
+                {createdLists.length === 0 && (
+                  <li
+                    role="button"
+                    onClick={onClickCreate}
+                    className="flex items-center space-x-2 py-2 pl-7 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
+                  >
+                    Add a new list
+                  </li>
+                )}
+
+                {createdLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
+                  <li role="button">
+                    <Link href="/lists/">
+                      <a className="flex items-center space-x-2 py-2 pl-7 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900">
+                        See all
+                      </a>
+                    </Link>
+                  </li>
+                )}
               </Disclosure.Panel>
             )}
           </>

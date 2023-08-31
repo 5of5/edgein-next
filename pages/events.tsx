@@ -7,7 +7,11 @@ import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import moment from 'moment-timezone';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconSortDashboard,
+} from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import {
   GetEventsDocument,
@@ -28,6 +32,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useUser } from '@/context/user-context';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
+  ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
   TRENDING_CATEGORY_LIMIT,
@@ -83,15 +88,24 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter({ resetPage: () => setPage(0) });
+    useDashboardFilter({
+      dateCondition: selectedTab?.value === 'past' ? 'past' : 'next',
+      resetPage: () => setPage(0),
+    });
 
   const limit = 50;
   const offset = limit * page;
 
-  const defaultFilters = [
+  const defaultFilters: DeepPartial<Events_Bool_Exp>[] = [
     { slug: { _neq: '' } },
     { library: { _contains: selectedLibrary } },
   ];
+
+  if (selectedTab?.value !== 'past') {
+    defaultFilters.push({
+      start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
+    });
+  }
 
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
@@ -99,6 +113,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const { orderByQuery, orderByParam, sortChoices } =
     useDashboardSortBy<Events_Order_By>({
+      defaultSortBy: 'oldest',
       newestSortKey: 'start_date',
       oldestSortKey: 'start_date',
     });
@@ -160,8 +175,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -175,8 +189,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -233,13 +246,17 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     data: eventsData,
     error,
     isLoading,
-  } = useGetEventsQuery({
-    offset,
-    limit: selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+  } = useGetEventsQuery(
+    {
+      offset,
+      limit:
+        selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
 
-    where: filters as Events_Bool_Exp,
-    orderBy: [getOrderBy() as Events_Order_By],
-  });
+      where: filters as Events_Bool_Exp,
+      orderBy: [getOrderBy() as Events_Order_By],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -257,8 +274,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       <div className="relative">
         <div
           className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
-          role="tablist"
-        >
+          role="tablist">
           <ElemCategories
             categories={eventTabs}
             selectedCategory={selectedTab}
@@ -270,10 +286,21 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
             <ElemAddFilter
               resourceType="events"
+              excludeFilters={
+                ['past', 'upcoming'].includes(selectedTab?.value ?? '')
+                  ? ['eventDate']
+                  : []
+              }
               onSelectFilterOption={onSelectFilterOption}
             />
 
-            <ElemDropdown defaultItem={defaultOrderBy} items={sortChoices} />
+            {!selectedTab?.value && (
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
+            )}
           </div>
         </div>
 
@@ -281,6 +308,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           <div className="mx-6 my-3">
             <ElemFilter
               resourceType="events"
+              excludeFilters={
+                ['past', 'upcoming'].includes(selectedTab?.value ?? '')
+                  ? ['eventDate']
+                  : []
+              }
               filterValues={selectedFilters}
               dateCondition={selectedTab?.value === 'past' ? 'past' : 'next'}
               onSelectFilterOption={onSelectFilterOption}
@@ -324,10 +356,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                       { num_of_views: { _is_null: false } },
                       {
                         location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
+                          _contains: {
+                            city: `${location}`,
                           },
                         },
                       },
@@ -347,10 +377,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                       ...defaultFilters,
                       {
                         location_json: {
-                          _cast: {
-                            String: {
-                              _ilike: `%"city": "${location}"%`,
-                            },
+                          _contains: {
+                            city: `${location}`,
                           },
                         },
                       },
@@ -375,8 +403,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                         `Hi EdgeIn, I'd like to report an error on events page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
+                    className="inline underline decoration-primary-500 hover:text-primary-500">
                     <span>report error</span>
                   </button>
                   .
@@ -397,8 +424,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 )}
                 <div
                   data-testid="events"
-                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                >
+                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {events?.map(event => (
                     <ElemEventCard key={event.id} event={event} />
                   ))}
@@ -433,8 +459,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                     )
                   }
                   btn="white"
-                  className="mt-3"
-                >
+                  className="mt-3">
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>
@@ -468,6 +493,7 @@ export const getStaticProps: GetStaticProps = async context => {
       eventsCount: events?.events_aggregate.aggregate?.count || 0,
       initialEvents: events?.events || [],
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 

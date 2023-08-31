@@ -1,6 +1,6 @@
 import {
   Order_By,
-  useGetVcFirmsQuery,
+  useGetPersonalizedVcFirmsQuery,
   Vc_Firms,
   Vc_Firms_Bool_Exp,
   Vc_Firms_Order_By,
@@ -17,6 +17,7 @@ import { InvestorsTable } from './elem-investors-table';
 type Props = {
   headingText: string;
   filters: DeepPartial<Vc_Firms_Bool_Exp>;
+  fallbackFilters?: DeepPartial<Vc_Firms_Bool_Exp>;
   orderBy?: DeepPartial<Vc_Firms_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
@@ -26,6 +27,7 @@ type Props = {
 export const InvestorsByFilter: FC<Props> = ({
   headingText,
   filters,
+  fallbackFilters,
   orderBy,
   itemsPerPage,
   tagOnClick,
@@ -33,15 +35,36 @@ export const InvestorsByFilter: FC<Props> = ({
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetVcFirmsQuery({
-    offset: page * itemsPerPage,
-    limit: itemsPerPage,
-    // @ts-expect-error this should work
-    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
-    where: filters as Vc_Firms_Bool_Exp,
-  });
+  const { data, isLoading, error } = useGetPersonalizedVcFirmsQuery(
+    {
+      offset: page * itemsPerPage,
+      limit: itemsPerPage,
+      // @ts-expect-error this should work
+      orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
+      where: filters as Vc_Firms_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
-  if (isLoading) {
+  const {
+    data: secondaryData,
+    isLoading: isLoadingSecondary,
+    error: secondaryError,
+  } = useGetPersonalizedVcFirmsQuery(
+    {
+      offset: page * itemsPerPage,
+      limit: itemsPerPage,
+      // @ts-expect-error this should work
+      orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
+      where: fallbackFilters as Vc_Firms_Bool_Exp,
+    },
+    {
+      enabled: Boolean(fallbackFilters) && data?.vc_firms?.length === 0,
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  if (isLoading || isLoadingSecondary) {
     return (
       <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-16">
         {times(itemsPerPage, index => (
@@ -53,14 +76,26 @@ export const InvestorsByFilter: FC<Props> = ({
 
   if (
     error ||
-    !data?.vc_firms ||
-    !data?.vc_firms_aggregate ||
-    data.vc_firms.length === 0
+    secondaryError ||
+    ((!data?.vc_firms ||
+      !data?.vc_firms_aggregate ||
+      data.vc_firms.length === 0) &&
+      (!secondaryData?.vc_firms ||
+        !secondaryData?.vc_firms_aggregate ||
+        secondaryData.vc_firms.length === 0))
   ) {
     return <></>;
   }
 
-  const { vc_firms, vc_firms_aggregate } = data;
+  const vc_firms =
+    data?.vc_firms?.length === 0 && fallbackFilters
+      ? secondaryData?.vc_firms
+      : data?.vc_firms;
+
+  const vc_firms_aggregate =
+    data?.vc_firms?.length === 0 && fallbackFilters
+      ? secondaryData?.vc_firms_aggregate
+      : data?.vc_firms_aggregate;
 
   return (
     <div>
@@ -70,8 +105,8 @@ export const InvestorsByFilter: FC<Props> = ({
           investors={vc_firms}
           pageNumber={page}
           itemsPerPage={itemsPerPage}
-          shownItems={vc_firms.length}
-          totalItems={vc_firms_aggregate.aggregate?.count ?? 0}
+          shownItems={vc_firms?.length ?? 0}
+          totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
           onClickPrev={previousPage}
           onClickNext={nextPage}
           filterByTag={tagOnClick}
@@ -82,14 +117,14 @@ export const InvestorsByFilter: FC<Props> = ({
             data-testid="personalizedCompanies"
             className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           >
-            {vc_firms.map(vcFirm => (
+            {vc_firms?.map(vcFirm => (
               <ElemInvestorCard key={vcFirm.id} vcFirm={vcFirm as Vc_Firms} />
             ))}
           </div>
 
           <Pagination
-            shownItems={vc_firms.length}
-            totalItems={vc_firms_aggregate.aggregate?.count ?? 0}
+            shownItems={vc_firms?.length ?? 0}
+            totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
             page={page}
             itemsPerPage={itemsPerPage}
             onClickPrev={previousPage}

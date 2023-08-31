@@ -1,4 +1,5 @@
 import moment from 'moment-timezone';
+import { ISO_DATE_FORMAT } from './constants';
 
 export const formatDate = (
   dateString: string | number,
@@ -67,7 +68,7 @@ export const formatTime = (
 };
 
 export const formatDateShown = (date: Date) => {
-  const localDate = moment(date).local().format('YYYY-MM-DD');
+  const localDate = moment(date).local().format(ISO_DATE_FORMAT);
   return moment(localDate).format('LL');
 };
 

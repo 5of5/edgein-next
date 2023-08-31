@@ -37,8 +37,14 @@ export const ProfileEditDailyEmails: React.FC<Props> = ({ user }) => {
 
   return (
     <EditSection heading="Daily emails">
+      <p className="text-gray-600 text-sm">
+        Turn on or turn off emails with the latest personalised daily digest
+        about closed investments, trending companies, upcoming events in your
+        area or recent news.
+      </p>
       <InputSwitch
         label=""
+        className="mt-2 -ml-2"
         checked={dailyEmails}
         onChange={handleSwitchDailyEmails}
       />

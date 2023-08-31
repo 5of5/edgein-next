@@ -5,12 +5,14 @@ import { getSelectableWeb3Tags } from '@/utils/helpers';
 import { ElemButton } from '../elem-button';
 
 type Props = {
+  isSubmittingOnboarding: boolean;
   tags: string[];
   onChangeTags: (tags: string[]) => void;
   onNext: () => void;
 };
 
 export const ElemOnboardingTags: FC<Props> = ({
+  isSubmittingOnboarding,
   tags,
   onChangeTags,
   onNext,
@@ -80,10 +82,11 @@ export const ElemOnboardingTags: FC<Props> = ({
         btn="primary"
         size="md"
         className="max-w-sm w-full mt-16"
+        loading={isSubmittingOnboarding}
         disabled={tags.length < 3}
         onClick={onNext}
       >
-        Next
+        Finish
       </ElemButton>
 
       <div className="flex justify-center gap-1 mt-5">

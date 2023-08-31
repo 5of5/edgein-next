@@ -20,6 +20,7 @@ import { ElemInviteInvestmentMembers } from '@/components/invites/elem-invite-in
 
 import validator from 'validator';
 import { isEmpty } from 'lodash';
+import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
@@ -193,7 +194,11 @@ export default function Account() {
 
             <ElemInviteUser />
 
-            {isInvestor && <ElemInviteInvestmentMembers />}
+            {isInvestor && (
+              <ElemInviteInvestmentMembers
+                vcFirmName={investorData?.investors[0]?.vc_firm?.name || ''}
+              />
+            )}
 
             {user && user.reference_id && (
               <ElemInviteLinks user={user} personSlug={personSlug} />
@@ -314,6 +319,10 @@ export default function Account() {
                 </div>
               )}
             </EditSection>
+          )}
+
+          {userProfile && (
+            <ProfileEditDailyEmails user={userProfile.users_by_pk} />
           )}
 
           <EditSection

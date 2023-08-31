@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { IconPlusSmall, IconChevronDownMini } from '@/components/icons';
+import { IconChevronDownMini } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { Disclosure } from '@headlessui/react';
 import useDisclosureState from '@/hooks/use-disclosure-state';
@@ -37,21 +37,29 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
         {({ open }) => (
           <>
             <div className="w-full flex items-center justify-between">
-              <Disclosure.Button
-                className="flex items-center grow space-x-2 py-1.5 px-2 focus:outline-none"
-                data-expanded={open}
-                ref={btnRef}
-                onClick={onClickHeader}
-              >
-                {user && (
-                  <IconChevronDownMini
-                    className={`${
-                      open ? 'rotate-0' : '-rotate-90 '
-                    } w-4 h-4 transform transition-all`}
-                  />
+              <div className="flex items-center grow space-x-2 p-2">
+                <Disclosure.Button
+                  className="focus:outline-none"
+                  data-expanded={open}
+                  ref={btnRef}
+                  onClick={onClickHeader}
+                >
+                  {user && (
+                    <IconChevronDownMini
+                      className={`rounded-md hover:bg-gray-100 ${
+                        open ? 'rotate-0' : '-rotate-90 '
+                      } w-5 h-5 transform transition-all`}
+                    />
+                  )}
+                </Disclosure.Button>
+                {user ? (
+                  <Link href="/notes">
+                    <a className="font-medium text-sm">Notes</a>
+                  </Link>
+                ) : (
+                  <p className="font-medium text-sm">Notes</p>
                 )}
-                <span className="font-medium text-sm">Notes</span>
-              </Disclosure.Button>
+              </div>
               {/* ) : (
                 <button
                   onClick={() => {
@@ -71,23 +79,14 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
             </div>
 
             {user && (
-              <Disclosure.Panel as="ul" className="ml-6 space-y-1">
+              <Disclosure.Panel as="ul" className="ml-2">
                 <li role="button">
-                  <Link href="/notes/">
+                  <Link href="/notes">
                     <a
-                      className={`${
-                        router.asPath.includes('/notes')
-                          ? 'bg-gray-100 text-gray-900'
-                          : 'text-gray-600'
-                      } flex items-center space-x-2 py-1.5 px-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100`}
+                      className="flex items-center space-x-2 py-2 pl-7 pr-2 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
                       title="notes"
                     >
-                      <span className="line-clamp-1 break-all flex-1 text-sm">
-                        Notes
-                      </span>
-                      {/* <div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
-											{notes.total_no_of_resources} 
-										</div>*/}
+                      <span className="line-clamp-1 break-all">Notes</span>
                     </a>
                   </Link>
                 </li>

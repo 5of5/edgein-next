@@ -31,13 +31,16 @@ export const EventsByFilter: FC<Props> = ({
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetEventsQuery({
-    offset: page * itemsPerPage,
-    limit: itemsPerPage,
-    // @ts-expect-error this should work
-    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
-    where: filters as Events_Bool_Exp,
-  });
+  const { data, isLoading, error } = useGetEventsQuery(
+    {
+      offset: page * itemsPerPage,
+      limit: itemsPerPage,
+      // @ts-expect-error this should work
+      orderBy: [{ updated_at: Order_By.Desc }],
+      where: filters as Events_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (isLoading) {
     return (

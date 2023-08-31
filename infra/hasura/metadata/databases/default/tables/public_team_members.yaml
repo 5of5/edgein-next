@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: team_members
+  schema: public
 object_relationships:
   - name: company
     using:
@@ -23,6 +23,7 @@ insert_permissions:
         - function
         - seniority
         - title
+      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:

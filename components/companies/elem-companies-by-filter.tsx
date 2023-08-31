@@ -3,7 +3,7 @@ import {
   Companies_Bool_Exp,
   Companies_Order_By,
   Order_By,
-  useGetCompaniesQuery,
+  useGetPersonalizedCompaniesQuery,
 } from '@/graphql/types';
 import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
@@ -33,13 +33,16 @@ export const CompaniesByFilter: FC<Props> = ({
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetCompaniesQuery({
-    offset: page * itemsPerPage,
-    limit: itemsPerPage,
-    // @ts-expect-error this should work
-    orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
-    where: filters as Companies_Bool_Exp,
-  });
+  const { data, isLoading, error } = useGetPersonalizedCompaniesQuery(
+    {
+      offset: page * itemsPerPage,
+      limit: itemsPerPage,
+      // @ts-expect-error this should work
+      orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
+      where: filters as Companies_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (isLoading) {
     return (

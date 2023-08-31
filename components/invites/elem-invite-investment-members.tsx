@@ -11,7 +11,7 @@ import { ElemButton } from '../elem-button';
 import { filter, flatten, get, has, includes, reduce, uniqBy } from 'lodash';
 import { DeepPartial } from '@/types/common';
 import { ElemPhoto } from '../elem-photo';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 const getInvestedInCompanies = (investors: DeepPartial<Investors>[]) => {
   const companies = investors.map(investor => {
@@ -43,7 +43,11 @@ type SendInvitationPayload = {
   companyIds: number[];
 };
 
-export const ElemInviteInvestmentMembers = () => {
+type Props = {
+  vcFirmName: string;
+};
+
+export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
   const [selectedCompanies, setSelectedCompanies] = useState<
     DeepPartial<Companies>[]
   >([]);
@@ -75,7 +79,7 @@ export const ElemInviteInvestmentMembers = () => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ companyIds }),
+        body: JSON.stringify({ vcFirmName, companyIds }),
       }),
     onSuccess: () => setSelectedCompanies([]),
     onSettled: () => refetchUser(),
