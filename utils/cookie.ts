@@ -4,10 +4,10 @@ import { UserToken, User } from '@/models/user';
 import { jwtVerify, SignJWT } from 'jose';
 import type { NextApiResponse } from 'next';
 
-const TOKEN_NAME = 'api_token';
-const USAGE_NAME = 'e_token';
-const MAX_AGE = 60 * 60 * 24 * 90; // 90 days
-const USAGE_AGE = 60 * 60 * 24; // 1 days
+export const TOKEN_NAME = 'api_token';
+export const USAGE_NAME = 'e_token';
+export const MAX_AGE = 60 * 60 * 24 * 90; // 90 days
+export const USAGE_AGE = 60 * 60 * 24; // 1 days
 const hasuraClaims = (userId: string) => ({
   'https://hasura.io/jwt/claims': {
     'x-hasura-allowed-roles': ['user', 'viewer'],
