@@ -7,6 +7,7 @@ import {
   EMAIL_MAX_LENGTH,
   ONBOARDING_MIN_LOCATIONS,
   ONBOARDING_MIN_TAGS,
+  ONBOARDING_MIN_EXPLORE_CHOICES,
 } from './constants';
 
 export const findPeopleByEmailSchema = z
@@ -71,7 +72,12 @@ export const getLocationInsightSchema = z.object({
 
 export const addOnboardingSchema = z.object({
   segment: z.string().nonempty('Segment is required'),
-  exploreChoice: z.string().nonempty('Explore choice is required'),
+  exploreChoices: z
+    .array(z.string())
+    .min(
+      ONBOARDING_MIN_EXPLORE_CHOICES,
+      `Should have at least ${ONBOARDING_MIN_EXPLORE_CHOICES} explore choice`,
+    ),
   locationTags: z
     .array(z.string())
     .min(

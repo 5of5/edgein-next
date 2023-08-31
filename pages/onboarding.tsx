@@ -29,7 +29,7 @@ export default function Onboarding() {
 
   const [segment, setSegment] = useState<Segment>();
 
-  const [exploreChoice, setExploreChoice] = useState('');
+  const [exploreChoices, setExploreChoices] = useState<string[]>([]);
 
   const [locations, setLocations] = useState<Place[]>([]);
 
@@ -53,7 +53,7 @@ export default function Onboarding() {
           },
           body: JSON.stringify({
             segment,
-            exploreChoice,
+            exploreChoices,
             locationTags: locations.map(item => item.Label),
             locationDetails: locations.map(item => ({
               label: item.Label,
@@ -113,8 +113,8 @@ export default function Onboarding() {
             {currentStep === 1 && (
               <ElemOnboardingSegmenting
                 selectedSegment={segment}
-                exploreChoice={exploreChoice}
-                onChangeExploreChoice={setExploreChoice}
+                exploreChoices={exploreChoices}
+                onChangeExploreChoices={setExploreChoices}
                 onChangeSegment={setSegment}
                 onNext={() => {
                   setCurrentStep(2);
