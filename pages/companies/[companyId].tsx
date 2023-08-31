@@ -6,7 +6,7 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { ElemCredibility } from '@/components/company/elem-credibility';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/company/elem-investments';
-import { ElemTeamGrid } from '@/components/company/elem-team-grid';
+import { ElemOrganizationTeam } from '@/components/elem-organization-team';
 import { runGraphQl } from '@/utils';
 import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
 import { ElemCohort } from '@/components/company/elem-cohort';
@@ -445,6 +445,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
             <div ref={activityRef} className="w-full mt-7">
               <ElemOrganizationActivity
+                resourceName={company.name || ''}
                 resourceType="companies"
                 resourceInvestments={sortedInvestmentRounds}
               />
@@ -453,7 +454,7 @@ const Company: NextPage<Props> = (props: Props) => {
         </div>
 
         <div ref={teamRef} className="mt-7">
-          <ElemTeamGrid
+          <ElemOrganizationTeam
             heading="Team"
             resourceName={company.name || ''}
             people={company.teamMembers}

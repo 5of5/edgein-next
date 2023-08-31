@@ -7,12 +7,14 @@ import { Investment_Rounds } from '@/graphql/types';
 
 type Props = {
   heading?: string;
+  resourceName?: string;
   resourceType: 'companies' | 'vc_firms';
   resourceInvestments: Array<Investment_Rounds>;
 };
 
 export const ElemOrganizationActivity: React.FC<Props> = ({
   heading,
+  resourceName,
   resourceType,
   resourceInvestments,
 }) => {
@@ -20,7 +22,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
   const showMoreActivity = () => {
     setActivityLimit(activityLimit + 10);
   };
-  const { show } = useIntercom();
+  const { showNewMessages } = useIntercom();
 
   return (
     <div className="rounded-lg border border-gray-300">
@@ -70,7 +72,15 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
             <div className="text-gray-500">
               There is no recent activity for this organization.
             </div>
-            <ElemButton onClick={show} btn="default" className="mt-3">
+            <ElemButton
+              onClick={() =>
+                showNewMessages(
+                  `Hi EdgeIn, I'd like to request more data on ${resourceName}`,
+                )
+              }
+              btn="default"
+              className="mt-3"
+            >
               Request data or contribute
             </ElemButton>
           </div>

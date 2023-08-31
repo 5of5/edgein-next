@@ -8,8 +8,7 @@ import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemReactions } from '@/components/elem-reactions';
-import { ElemTeamGrid } from '@/components/company/elem-team-grid';
-import { ElemInvestorGrid } from '@/components/investor/elem-investor-grid';
+import { ElemOrganizationTeam } from '@/components/elem-organization-team';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { ElemOrganizationActivity } from '@/components/elem-organization-activity';
@@ -30,7 +29,6 @@ import { ElemButton } from '@/components/elem-button';
 import { onTrackView } from '@/utils/track';
 import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
-import { Popups } from '@/components/the-navbar';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -55,6 +53,7 @@ const VCFirm: NextPage<Props> = props => {
 
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
   const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const activityRef = useRef() as MutableRefObject<HTMLDivElement>;
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -103,19 +102,16 @@ const VCFirm: NextPage<Props> = props => {
   const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
   //TabBar
-  const tabBarItems = [{ name: 'Overview', ref: overviewRef }];
-  if (props.sortNews.length > 0) {
-    tabBarItems.push({ name: 'News', ref: newsRef });
-  }
-  if (vcfirm.investors.length > 0) {
-    tabBarItems.push({ name: 'Team', ref: teamRef });
-  }
-  if (sortedInvestmentRounds.length > 0) {
-    tabBarItems.push({
+  const tabBarItems = [
+    { name: 'Overview', ref: overviewRef },
+    { name: 'News', ref: newsRef },
+    { name: 'Activity', ref: activityRef },
+    { name: 'Team', ref: teamRef },
+    {
       name: 'Investments',
       ref: investmentRef,
-    });
-  }
+    },
+  ];
 
   const parentLinks = vcfirm?.to_links?.find(
     item => item.link_type === 'child',
@@ -251,42 +247,41 @@ const VCFirm: NextPage<Props> = props => {
                 resourceName={vcfirm.name || ''}
               />
             </div>
-            {props.sortNews.length > 0 && (
-              <div ref={newsRef} className="w-full mt-7">
-                <ElemNewsList
-                  resourceType="vc_firms"
-                  resourceId={vcfirm.id}
-                  news={props.sortNews}
-                />
-              </div>
-            )}
-            <div className="w-full mt-7">
+            <div ref={newsRef} className="mt-7">
+              <ElemNewsList
+                heading="News"
+                resourceName={vcfirm.name || ''}
+                resourceType="vc_firms"
+                resourceId={vcfirm.id}
+                news={props.sortNews}
+              />
+            </div>
+
+            <div ref={activityRef} className="w-full mt-7">
               <ElemOrganizationActivity
+                resourceName={vcfirm.name || ''}
                 resourceType="vc_firms"
                 resourceInvestments={sortedInvestmentRounds}
               />
             </div>
           </div>
         </div>
-        {vcfirm.investors.length > 0 && (
-          <div ref={teamRef} className="mt-7" id="team">
-            <ElemInvestorGrid
-              // tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
-              showEdit={false}
-              heading="Team"
-              people={vcfirm.investors}
-            />
-          </div>
-        )}
 
-        {sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
-          <section ref={investmentRef} className="mt-7" id="investments">
-            <ElemInvestments
-              heading="Investments"
-              investments={sortedInvestmentRounds.filter(n => n)}
-            />
-          </section>
-        )}
+        <div ref={teamRef} className="mt-7">
+          <ElemOrganizationTeam
+            heading="Team"
+            resourceName={vcfirm.name || ''}
+            people={vcfirm.investors}
+          />
+        </div>
+
+        <div ref={investmentRef} className="mt-7" id="investments">
+          <ElemInvestments
+            heading="Investments"
+            resourceName={vcfirm.name || ''}
+            investments={sortedInvestmentRounds.filter(n => n)}
+          />
+        </div>
 
         {subOrganizations?.length > 0 && (
           <ElemSubOrganizations
@@ -295,12 +290,6 @@ const VCFirm: NextPage<Props> = props => {
             subOrganizations={subOrganizations}
           />
         )}
-
-        {/* <div className="mt-7 rounded-lg bg-white shadow">
-				{vcfirm && (
-					<ElemRecentInvestments heading="Similar Investors" />
-				)}
-			</div> */}
       </div>
     </DashboardLayout>
   );
