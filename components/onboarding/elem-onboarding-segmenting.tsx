@@ -47,7 +47,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             key={item.title}
             className={`px-6 py-4 rounded-lg border ${
               item.title === selectedSegment
-                ? 'border-primary-500'
+                ? 'border-primary-500 bg-gray-50'
                 : 'border-slate-300'
             } shadow-sm cursor-pointer hover:bg-gray-50`}
             onClick={() => onChangeSegment(item.title)}
@@ -76,7 +76,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 key={item}
                 className={`px-6 py-4 rounded-lg border ${
                   exploreChoices.includes(item)
-                    ? 'border-primary-500'
+                    ? 'border-primary-500 bg-gray-50'
                     : 'border-slate-300'
                 } shadow-sm cursor-pointer hover:bg-gray-50`}
                 onClick={() => {
