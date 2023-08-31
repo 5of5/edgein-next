@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useRef, useEffect } from 'react';
 import { onboardingExploreChoices, segmentChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
 import { Segment } from '@/types/onboarding';
@@ -6,20 +6,28 @@ import { useIntercom } from 'react-use-intercom';
 
 type Props = {
   selectedSegment?: Segment;
-  exploreChoice?: string;
+  exploreChoices: string[];
   onChangeSegment: (segment: Segment) => void;
-  onChangeExploreChoice: (choice: string) => void;
+  onChangeExploreChoices: (choices: string[]) => void;
   onNext: () => void;
 };
 
 export const ElemOnboardingSegmenting: FC<Props> = ({
   selectedSegment,
-  exploreChoice,
+  exploreChoices,
   onChangeSegment,
-  onChangeExploreChoice,
+  onChangeExploreChoices,
   onNext,
 }) => {
   const { showNewMessages } = useIntercom();
+
+  const exploreChoicesRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedSegment) {
+      exploreChoicesRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [selectedSegment]);
 
   return (
     <>
@@ -39,9 +47,9 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             key={item.title}
             className={`px-6 py-4 rounded-lg border ${
               item.title === selectedSegment
-                ? 'border-primary-500'
+                ? 'border-primary-500 bg-gray-50'
                 : 'border-slate-300'
-            } shadow-sm cursor-pointer hover:bg-slate-50`}
+            } shadow-sm cursor-pointer hover:bg-gray-50`}
             onClick={() => onChangeSegment(item.title)}
           >
             <p className="text-slate-900 text-sm font-medium">{item.title}</p>
@@ -51,7 +59,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
       </ul>
 
       {selectedSegment && (
-        <div className="max-w-sm">
+        <div ref={exploreChoicesRef} className="max-w-sm">
           <div className="flex pt-12 pb-8 items-center">
             <div className="flex-grow border-t border-black/10"></div>
           </div>
@@ -67,15 +75,23 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
               <li
                 key={item}
                 className={`px-6 py-4 rounded-lg border ${
-                  item === exploreChoice
-                    ? 'border-primary-500'
+                  exploreChoices.includes(item)
+                    ? 'border-primary-500 bg-gray-50'
                     : 'border-slate-300'
-                } shadow-sm cursor-pointer hover:bg-slate-50`}
+                } shadow-sm cursor-pointer hover:bg-gray-50`}
                 onClick={() => {
                   if (item === 'Something else') {
                     showNewMessages(`Hi EdgeIn, I'd like to explore `);
                   }
-                  onChangeExploreChoice(item);
+                  onChangeExploreChoices(
+                    exploreChoices.includes(item)
+                      ? [
+                          ...exploreChoices.filter(
+                            exploreItem => exploreItem !== item,
+                          ),
+                        ]
+                      : [...exploreChoices, item],
+                  );
                 }}
               >
                 <p className="text-slate-900 text-sm">{item}</p>
@@ -86,7 +102,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             btn="primary"
             size="md"
             className="max-w-sm w-full mt-16"
-            disabled={!exploreChoice}
+            disabled={exploreChoices.length === 0}
             onClick={onNext}
           >
             Next
