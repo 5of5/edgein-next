@@ -1,8 +1,9 @@
 import {
   Companies,
   Companies_Bool_Exp,
+  Companies_Order_By,
   Order_By,
-  useGetCompaniesQuery,
+  useGetPersonalizedCompaniesQuery,
 } from '@/graphql/types';
 import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
@@ -16,6 +17,7 @@ import { ElemCompanyCard } from './elem-company-card';
 type Props = {
   headingText: string;
   filters: DeepPartial<Companies_Bool_Exp>;
+  orderBy?: DeepPartial<Companies_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
   isTableView?: boolean;
@@ -24,19 +26,23 @@ type Props = {
 export const CompaniesByFilter: FC<Props> = ({
   headingText,
   filters,
+  orderBy,
   itemsPerPage,
   tagOnClick,
   isTableView = false,
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
-  const { data, isLoading, error } = useGetCompaniesQuery({
-    offset: page * itemsPerPage,
-    limit: itemsPerPage,
-    // @ts-expect-error this should work
-    orderBy: [{ updated_at: Order_By.Desc }],
-    where: filters as Companies_Bool_Exp,
-  });
+  const { data, isLoading, error } = useGetPersonalizedCompaniesQuery(
+    {
+      offset: page * itemsPerPage,
+      limit: itemsPerPage,
+      // @ts-expect-error this should work
+      orderBy: [orderBy ?? { updated_at: Order_By.Desc }],
+      where: filters as Companies_Bool_Exp,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (isLoading) {
     return (

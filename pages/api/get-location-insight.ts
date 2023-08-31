@@ -16,6 +16,7 @@ import {
 import { Segment } from '@/types/onboarding';
 import { zodValidate } from '@/utils/validation';
 import { getLocationInsightSchema } from '@/utils/schema';
+import { ISO_DATE_FORMAT } from '@/utils/constants';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') return res.status(405).end();
@@ -46,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               { status: { _eq: 'published' } },
               {
                 round_date: {
-                  _gte: moment().subtract(28, 'days').format('YYYY-MM-DD'),
+                  _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
                 },
               },
               {
@@ -70,7 +71,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               { status: { _eq: 'published' } },
               {
                 created_at: {
-                  _gte: moment().subtract(28, 'days').format('YYYY-MM-DD'),
+                  _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
                 },
               },
               {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { NextPage, GetServerSideProps } from 'next';
+import type { NextPage, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import {
   PlaceholderInvestorCard,
@@ -8,7 +8,13 @@ import {
 import { ElemButton } from '@/components/elem-button';
 import { Pagination } from '@/components/pagination';
 import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
-import { IconSearch, IconAnnotation } from '@/components/icons';
+import {
+  IconSearch,
+  IconAnnotation,
+  IconSortDashboard,
+  IconTable,
+  IconGroup,
+} from '@/components/icons';
 import { InvestorsTable } from '@/components/investors/elem-investors-table';
 import {
   GetVcFirmsDocument,
@@ -20,7 +26,11 @@ import {
   Order_By,
 } from '@/graphql/types';
 import { runGraphQl } from '@/utils';
-import { investorChoices, NEW_CATEGORY_LIMIT } from '@/utils/constants';
+import {
+  investorChoices,
+  ISO_DATE_FORMAT,
+  NEW_CATEGORY_LIMIT,
+} from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
@@ -44,6 +54,7 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import moment from 'moment-timezone';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -109,10 +120,22 @@ const Investors: NextPage<Props> = ({
   const offset =
     user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
-  const defaultFilters = [
-    { slug: { _neq: '' } },
+  const defaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
   ];
+
+  if (selectedStatusTag?.value !== 'Dead') {
+    defaultFilters.push({
+      _or: [
+        {
+          _not: {
+            status_tags: { _contains: 'Dead' },
+          },
+        },
+        { status_tags: { _is_null: true } },
+      ],
+    });
+  }
 
   const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
     _and: defaultFilters,
@@ -219,16 +242,19 @@ const Investors: NextPage<Props> = ({
     data: vcFirmsData,
     error,
     isLoading,
-  } = useGetVcFirmsQuery({
-    offset: isNewTabSelected ? null : offset,
-    limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
-    where: filters as Vc_Firms_Bool_Exp,
-    orderBy: [
-      isNewTabSelected
-        ? ({ created_at: Order_By.Desc } as Vc_Firms_Order_By)
-        : orderByQuery,
-    ],
-  });
+  } = useGetVcFirmsQuery(
+    {
+      offset: isNewTabSelected ? null : offset,
+      limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
+      where: filters as Vc_Firms_Bool_Exp,
+      orderBy: [
+        isNewTabSelected
+          ? ({ created_at: Order_By.Desc } as Vc_Firms_Order_By)
+          : orderByQuery,
+      ],
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
@@ -274,7 +300,10 @@ const Investors: NextPage<Props> = ({
 
             <div className="flex flex-wrap gap-2">
               {isDisplaySelectLibrary && <ElemLibrarySelector />}
-              <ElemDropdown items={layoutItems} />
+              <ElemDropdown
+                IconComponent={tableLayout ? IconTable : IconGroup}
+                items={layoutItems}
+              />
 
               <ElemAddFilter
                 resourceType="vc_firms"
@@ -283,6 +312,7 @@ const Investors: NextPage<Props> = ({
 
               {!isNewTabSelected && (
                 <ElemDropdown
+                  IconComponent={IconSortDashboard}
                   defaultItem={defaultOrderBy}
                   items={sortChoices}
                 />
@@ -330,15 +360,12 @@ const Investors: NextPage<Props> = ({
                     isTableView={tableLayout}
                     filters={{
                       _and: [
-                        { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         { status_tags: { _contains: 'Trending' } },
                         {
                           location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
+                            _contains: {
+                              city: `${location}`,
                             },
                           },
                         },
@@ -356,14 +383,11 @@ const Investors: NextPage<Props> = ({
                     isTableView={tableLayout}
                     filters={{
                       _and: [
-                        { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
                           location_json: {
-                            _cast: {
-                              String: {
-                                _ilike: `%"city": "${location}"%`,
-                              },
+                            _contains: {
+                              city: `${location}`,
                             },
                           },
                         },
@@ -381,7 +405,6 @@ const Investors: NextPage<Props> = ({
                     isTableView={tableLayout}
                     filters={{
                       _and: [
-                        { slug: { _neq: '' } },
                         { library: { _contains: selectedLibrary } },
                         {
                           status_tags: {
@@ -397,6 +420,66 @@ const Investors: NextPage<Props> = ({
                     }}
                   />
                 ))}
+
+                {personalizedTags.locationTags.map(location => (
+                  <InvestorsByFilter
+                    key={location}
+                    headingText="Recently active investors"
+                    tagOnClick={filterByTag}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={tableLayout}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          investments: {
+                            investment_round: {
+                              round_date: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format(ISO_DATE_FORMAT),
+                              },
+                            },
+                          },
+                        },
+                        {
+                          location_json: {
+                            _contains: {
+                              city: `${location}`,
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                    fallbackFilters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          investments: {
+                            investment_round: {
+                              round_date: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format(ISO_DATE_FORMAT),
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                ))}
+
+                {/** TO-DO: update this filters */}
+                {/* <InvestorsByFilter
+                  headingText="Recent exits"
+                  tagOnClick={filterByTag}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  isTableView={tableLayout}
+                  filters={{
+                    _and: [...defaultFilters],
+                  }}
+                /> */}
               </div>
             )}
 
@@ -514,18 +597,29 @@ const Investors: NextPage<Props> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async context => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
     GetVcFirmsDocument,
     {
       offset: 0,
       limit: 50,
       where: {
-        _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
+        _and: [
+          {
+            _or: [
+              {
+                _not: {
+                  status_tags: { _contains: 'Dead' },
+                },
+              },
+              { status_tags: { _is_null: true } },
+            ],
+          },
+          { library: { _contains: 'Web3' } },
+        ],
       },
       orderBy: [{ name: Order_By.Asc }],
     },
-    context.req.cookies,
   );
 
   return {
@@ -537,6 +631,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       initialVCFirms: vcFirms?.vc_firms || [],
       investorsStatusTags,
     },
+    revalidate: 60 * 60 * 2,
   };
 };
 

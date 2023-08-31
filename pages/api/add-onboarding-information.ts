@@ -12,11 +12,6 @@ import UserService from '@/utils/users';
 import { zodValidate } from '@/utils/validation';
 import { addOnboardingSchema } from '@/utils/schema';
 
-type QUESTION = {
-  name: string;
-  answer: string[];
-};
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
 
@@ -30,7 +25,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const locationTags = req.body.locationTags;
   const locationDetails = req.body.locationDetails;
   const industryTags = req.body.industryTags;
-  const questions = req.body.questions;
 
   const { errors } = zodValidate(req.body, addOnboardingSchema);
 
@@ -47,7 +41,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       locationTags,
       locationDetails,
       industryTags,
-      questions,
     };
 
     const response = await mutate<UpdateUserOnboardingInformationMutation>({
@@ -80,10 +73,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               title: 'Email',
               value: user.email,
             },
-            ...questions.map((item: QUESTION) => ({
-              title: item.name,
-              value: item.answer,
-            })),
           ],
         },
       ],
