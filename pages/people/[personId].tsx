@@ -29,6 +29,7 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import moment from 'moment-timezone';
 
 type Props = {
   person: People;
@@ -296,7 +297,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
-  const getInvestments = people.people[0].investments
+  const person = people.people[0];
+
+  const getInvestments = person.investments
     .filter(
       item =>
         typeof item.investment_round === 'object' &&
@@ -316,7 +319,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     .reverse();
 
   const sortNews =
-    people.people[0].news_links
+    person.news_links
       ?.slice()
       ?.map(item => ({ ...item.news }))
       ?.filter(item => item.status === 'published')
@@ -327,15 +330,73 @@ export const getServerSideProps: GetServerSideProps = async context => {
       })
       .reverse() || [];
 
+  // Person organizations tags
+  const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
+  const companyTags = flatten(
+    person.team_members.map(item => item?.company?.tags),
+  );
+  const organizationsTags = union(vcFirmTags, companyTags).filter(item => item);
+
+  const organizationsTagsList = organizationsTags
+    .map((tag, index) => {
+      const separator =
+        index === organizationsTags.length - 2
+          ? ', and '
+          : index === organizationsTags.length - 1
+          ? ''
+          : ', ';
+      return `${tag}${separator}`;
+    })
+    .join('');
+
+  // Person jobs
+  const vcFirmWorkExperience = flatten(person.investors as Investors[]);
+  const companyWorkExperience = flatten(person.team_members as Team_Members[]);
+  const allJobs: (Investors | Team_Members)[] = [
+    ...vcFirmWorkExperience,
+    ...companyWorkExperience,
+  ];
+
+  const allJobsOrderByStartDateDesc = orderBy(
+    allJobs,
+    [item => item.start_date],
+    ['desc'],
+  );
+  const latestJob: any = allJobsOrderByStartDateDesc[0];
+
+  // Meta fields
+  const role = latestJob.title ? `${latestJob.title} at ` : '';
+  const organizationName = latestJob?.vc_firm
+    ? `${latestJob.vc_firm.name}`
+    : latestJob?.company
+    ? `${latestJob.company.name}`
+    : 'undisclosed organization';
+  const startingDate = latestJob.start_date
+    ? ` from ${moment(latestJob.start_date).format('MMM YYYY')}`
+    : '';
+  const personTags =
+    organizationsTagsList.length > 0
+      ? ` Interested in ${organizationsTagsList}.`
+      : '';
+
   let metaTitle = null;
-  if (people.people[0].name) {
-    metaTitle = people.people[0].name + ' Profile - EdgeIn.io';
+  if (person.name) {
+    metaTitle = `${person.name} | EdgeIn ${person.library[0]} Professionals Profile - Contact Information`;
+    person.name + ' | EdgeIn  Professionals Profile - Contact Information';
+  }
+
+  let metaDescription = null;
+  if (person.name) {
+    metaDescription = `${
+      person.country ? person.country + ' - ' : ''
+    }${role}${organizationName}${startingDate}.${personTags}`;
   }
 
   return {
     props: {
       metaTitle,
-      person: people.people[0],
+      metaDescription,
+      person,
       sortByDateAscInvestments,
       sortNews,
     },
