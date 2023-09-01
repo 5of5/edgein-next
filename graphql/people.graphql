@@ -107,6 +107,75 @@ query GetPerson($slug: String!) {
   }
 }
 
+query GetPeople(
+  $limit: Int
+  $offset: Int
+  $orderBy: [people_order_by!]
+  $where: people_bool_exp!
+) {
+  people(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+    id
+    created_at
+    name
+    personal_email
+    picture
+    slug
+    status
+    type
+    work_email
+    linkedin
+    github
+    city
+    country
+    facebook_url
+    twitter_url
+    website_url
+    investors {
+      id
+      end_date
+      start_date
+      founder
+      function
+      title
+      vc_firm {
+        id
+        slug
+        name
+        logo
+        overview
+        location_json
+        tags
+      }
+    }
+    team_members {
+      id
+      end_date
+      start_date
+      founder
+      function
+      title
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+        location_json
+        tags
+      }
+    }
+    follows {
+      id
+      list_id
+    }
+  }
+  people_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
 query GetAllPersons {
   people {
     id
