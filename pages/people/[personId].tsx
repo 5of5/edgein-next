@@ -338,7 +338,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const organizationsTags = union(vcFirmTags, companyTags).filter(item => item);
 
   const organizationsTagsList = organizationsTags
-    .map((tag, index) => {
+    ?.map((tag, index) => {
       const separator =
         index === organizationsTags.length - 2
           ? ', and '
@@ -365,16 +365,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const latestJob: any = allJobsOrderByStartDateDesc[0];
 
   // Meta fields
-  const role = latestJob.title ? `${latestJob.title} at ` : '';
-  const organizationName = latestJob?.vc_firm
+  const metaPersonCountry = person.country ? `${person.country} - ` : '';
+  const metaRole = latestJob.title ? `${latestJob.title} at ` : '';
+  const metaOrganizationName = latestJob?.vc_firm
     ? `${latestJob.vc_firm.name}`
     : latestJob?.company
     ? `${latestJob.company.name}`
     : 'undisclosed organization';
-  const startingDate = latestJob.start_date
+  const metaStartingDate = latestJob.start_date
     ? ` from ${moment(latestJob.start_date).format('MMM YYYY')}`
     : '';
-  const personTags =
+  const metaPersonTags =
     organizationsTagsList.length > 0
       ? ` Interested in ${organizationsTagsList}.`
       : '';
@@ -382,14 +383,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
   let metaTitle = null;
   if (person.name) {
     metaTitle = `${person.name} | EdgeIn ${person.library[0]} Professionals Profile - Contact Information`;
-    person.name + ' | EdgeIn  Professionals Profile - Contact Information';
   }
 
   let metaDescription = null;
-  if (person.name) {
-    metaDescription = `${
-      person.country ? person.country + ' - ' : ''
-    }${role}${organizationName}${startingDate}.${personTags}`;
+  if (
+    metaPersonCountry ||
+    metaRole ||
+    metaOrganizationName ||
+    metaStartingDate ||
+    metaPersonTags
+  ) {
+    metaDescription = `${metaPersonCountry}${metaRole}${metaOrganizationName}${metaStartingDate}.${metaPersonTags}`;
   }
 
   return {

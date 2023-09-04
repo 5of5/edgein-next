@@ -529,15 +529,57 @@ export const getServerSideProps: GetServerSideProps = async context => {
       })
       .reverse() || [];
 
+  // Meta
+  const metaWebsiteUrl = company.website || null;
+  const metaFounded = company.year_founded
+    ? `Founded in ${company.year_founded} `
+    : '';
+
+  const city = company.location_json?.city || null;
+  const country = company.location_json?.country || null;
+
+  const metaLocation =
+    city && country
+      ? `in ${city} (${country}) | `
+      : city
+      ? `in ${city} | `
+      : country
+      ? `in ${country} | `
+      : '';
+
+  const metaEmployees = company.total_employees
+    ? `${company.total_employees} Employees | `
+    : '';
+
+  const tagsList = company.tags
+    ?.map((tag: String, index: number) => {
+      const separator =
+        index === company.tags.length - 2
+          ? ', and '
+          : index === company.tags.length - 1
+          ? ''
+          : ', ';
+      return `${tag}${separator}`;
+    })
+    .join('');
+
+  const metaTags = company.tags?.length > 0 ? `Category ${tagsList} | ` : '';
+
   let metaTitle = null;
   if (company.name) {
-    metaTitle =
-      company.name +
-      ' Company Profile: Credibility, Velocity & Investors - EdgeIn.io';
+    metaTitle = `${company.name} | EdgeIn ${company.library[0]} Company Profile - Contact Information`;
   }
+
   let metaDescription = null;
-  if (company.overview) {
-    metaDescription = company.overview;
+  if (
+    metaWebsiteUrl ||
+    metaFounded ||
+    metaLocation ||
+    metaEmployees ||
+    metaTags ||
+    company.overview
+  ) {
+    metaDescription = `${metaWebsiteUrl} ${metaFounded}${metaLocation}${metaEmployees}${metaTags}${company.overview}`;
   }
 
   if (company.tags?.includes('News')) {

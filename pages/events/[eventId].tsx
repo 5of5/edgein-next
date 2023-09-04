@@ -431,14 +431,49 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const event = sortBy(events?.events, 'status').reverse()[0];
 
+  //Meta
+  const metaWebsiteUrl = event.link ? event.link : '';
+
+  const city = event.location_json?.city || null;
+  const country = event.location_json?.country || null;
+
+  const metaLocation =
+    city && country
+      ? `Event in ${city} (${country})`
+      : city
+      ? `Event in ${city}`
+      : country
+      ? `Event in ${country}`
+      : '';
+
+  const metaStartDate = event.start_date
+    ? ` | Event date ${moment(event.start_date).format('MMM D, YYYY')}`
+    : '';
+
+  const tagsList = event.types
+    ?.map((tag: String, index: number) => {
+      const separator =
+        index === event.types.length - 2
+          ? ', and '
+          : index === event.types.length - 1
+          ? ''
+          : ', ';
+      return `${tag}${separator}`;
+    })
+    .join('');
+
+  const metaTags = event.types?.length > 0 ? ` | Topics about ${tagsList}` : '';
+
   let metaTitle = null;
   if (event.name) {
-    metaTitle = event.name + ': Speakers, Sponsors, & Activity - EdgeIn.io';
+    metaTitle = `${event.name} | EdgeIn ${event.library[0]} Event - Get more information`;
   }
-  let metaDescription = null;
 
+  let metaDescription = null;
   if (event?.overview) {
-    metaDescription = event.overview;
+    metaDescription = `${metaWebsiteUrl} ${metaLocation}${metaTags}${metaStartDate}${
+      event.overview ? ` | ${event.overview}` : ''
+    }`;
   }
 
   let metaImage = null;
