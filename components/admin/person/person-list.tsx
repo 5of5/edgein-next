@@ -48,10 +48,7 @@ export const PersonList = () => {
             enrichmentPriority: 1,
           };
 
-          const { status, data } = await axios.post(
-            '/api/ingest/people',
-            body,
-          );
+          const { status, data } = await axios.post('/api/ingest/people', body);
 
           if (status !== 200) {
             console.error(data);

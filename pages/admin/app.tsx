@@ -188,89 +188,89 @@ const AdminApp = () => {
 
   const onTransformData = useCallback(
     (adminDataProvider: DataProvider<string>) =>
-    ({
-      ...adminDataProvider,
-      getList: async (type, obj) => {
-        // eslint-disable-next-line prefer-const
-        let { data, ...metadata } = await adminDataProvider.getList(type, {
-          ...obj,
-          pagination: {
-            ...obj.pagination,
-            perPage: ADMIN_REFERENCE_INPUT_PER_PAGE,
-          },
-        });
-        if (isTypeReferenceToResourceLink(type)) {
-          data = data.map(val => ({
-            ...val,
-            ...getParentSubOrganizations(val),
-          }));
-        }
-        if (type === 'news') {
-          data = data.map(val => ({
-            ...val,
-            company_ids: val?.organizations
-              ?.filter((item: any) => item.company_id)
-              ?.map((item: any) => item.company_id),
-            vc_firm_ids: val?.organizations
-              ?.filter((item: any) => item.vc_firm_id)
-              ?.map((item: any) => item.vc_firm_id),
-          }));
-        }
-        return {
-          data,
-          ...metadata,
-        };
-      },
-      getOne: async (type, obj) => {
-        // eslint-disable-next-line prefer-const
-        let { data, ...metadata } = await adminDataProvider.getOne(type, obj);
-        if (type === 'news') {
-          data = {
-            ...data,
-            source: data?.source ? JSON.stringify(data.source) : '',
-            metadata: data?.metadata ? JSON.stringify(data.metadata) : '',
+      ({
+        ...adminDataProvider,
+        getList: async (type, obj) => {
+          // eslint-disable-next-line prefer-const
+          let { data, ...metadata } = await adminDataProvider.getList(type, {
+            ...obj,
+            pagination: {
+              ...obj.pagination,
+              perPage: ADMIN_REFERENCE_INPUT_PER_PAGE,
+            },
+          });
+          if (isTypeReferenceToResourceLink(type)) {
+            data = data.map(val => ({
+              ...val,
+              ...getParentSubOrganizations(val),
+            }));
+          }
+          if (type === 'news') {
+            data = data.map(val => ({
+              ...val,
+              company_ids: val?.organizations
+                ?.filter((item: any) => item.company_id)
+                ?.map((item: any) => item.company_id),
+              vc_firm_ids: val?.organizations
+                ?.filter((item: any) => item.vc_firm_id)
+                ?.map((item: any) => item.vc_firm_id),
+            }));
+          }
+          return {
+            data,
+            ...metadata,
           };
-        }
-        return {
-          data,
-          ...metadata,
-        };
-      },
-      create: (type, obj) =>
-        onSubmitData(
-          type,
-          nullInputTransform(nullableInputs, type, obj),
-          'POST',
-        ),
-      update: (type, obj) =>
-        onSubmitData(
-          type,
-          nullInputTransform(nullableInputs, type, obj),
-          'PUT',
-        ),
-      deleteMany: async (type, obj: any) => {
-        const response = await Promise.all(
-          obj.ids.map(async (id: number) => {
-            await onSubmitData(
-              type,
-              nullInputTransform(nullableInputs, type, {
-                id,
-                previousData: { id },
-              }),
-              'DELETE',
-            );
-            return { id };
-          }),
-        );
-        return { data: response };
-      },
-      delete: (type, obj) =>
-        onSubmitData(
-          type,
-          nullInputTransform(nullableInputs, type, obj),
-          'DELETE',
-        ),
-    } as DataProvider<string>),
+        },
+        getOne: async (type, obj) => {
+          // eslint-disable-next-line prefer-const
+          let { data, ...metadata } = await adminDataProvider.getOne(type, obj);
+          if (type === 'news') {
+            data = {
+              ...data,
+              source: data?.source ? JSON.stringify(data.source) : '',
+              metadata: data?.metadata ? JSON.stringify(data.metadata) : '',
+            };
+          }
+          return {
+            data,
+            ...metadata,
+          };
+        },
+        create: (type, obj) =>
+          onSubmitData(
+            type,
+            nullInputTransform(nullableInputs, type, obj),
+            'POST',
+          ),
+        update: (type, obj) =>
+          onSubmitData(
+            type,
+            nullInputTransform(nullableInputs, type, obj),
+            'PUT',
+          ),
+        deleteMany: async (type, obj: any) => {
+          const response = await Promise.all(
+            obj.ids.map(async (id: number) => {
+              await onSubmitData(
+                type,
+                nullInputTransform(nullableInputs, type, {
+                  id,
+                  previousData: { id },
+                }),
+                'DELETE',
+              );
+              return { id };
+            }),
+          );
+          return { data: response };
+        },
+        delete: (type, obj) =>
+          onSubmitData(
+            type,
+            nullInputTransform(nullableInputs, type, obj),
+            'DELETE',
+          ),
+      } as DataProvider<string>),
     [],
   );
 
@@ -281,19 +281,14 @@ const AdminApp = () => {
 
   if (!dataProvider || !user) return <p>Loading...</p>;
 
-  const getResourceProps = (
-    name: string,
-    list: any,
-    edit: any,
-    create: any,
-  ) =>
+  const getResourceProps = (name: string, list: any, edit: any, create: any) =>
     user.role !== 'cms-readonly'
       ? {
-        name,
-        list,
-        edit,
-        create,
-      }
+          name,
+          list,
+          edit,
+          create,
+        }
       : { name, list };
 
   return (
