@@ -381,6 +381,13 @@ const Companies: NextPage<Props> = ({
                     _and: [
                       ...defaultFilters,
                       {
+                        created_at: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
+                        },
+                      },
+                      {
                         location_json: {
                           _contains: {
                             city: `${location}`,
@@ -403,7 +410,7 @@ const Companies: NextPage<Props> = ({
                     _and: [
                       ...defaultFilters,
                       {
-                        created_at: {
+                        updated_at: {
                           _gte: moment()
                             .subtract(28, 'days')
                             .format(ISO_DATE_FORMAT),
