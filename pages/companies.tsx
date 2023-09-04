@@ -193,8 +193,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -208,8 +207,7 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -280,14 +278,12 @@ const Companies: NextPage<Props> = ({
   ];
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
-
   return (
     <DashboardLayout>
       <div className="relative">
         <div
           className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
-          role="tablist"
-        >
+          role="tablist">
           <ElemCategories
             categories={companyStatusTags}
             selectedCategory={selectedStatusTag}
@@ -306,14 +302,6 @@ const Companies: NextPage<Props> = ({
               resourceType="companies"
               onSelectFilterOption={onSelectFilterOption}
             />
-
-            {!isNewTabSelected && (
-              <ElemDropdown
-                IconComponent={IconSortDashboard}
-                defaultItem={defaultOrderBy}
-                items={sortChoices}
-              />
-            )}
           </div>
         </div>
 
@@ -355,6 +343,10 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
+                  orderBy={{
+                    //updated_at: Order_By.Desc,
+                    datapoints_count: Order_By.Desc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -377,6 +369,10 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
+                  orderBy={{
+                    updated_at: Order_By.Desc,
+                    datapoints_count: Order_By.Desc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -406,6 +402,10 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
+                  orderBy={{
+                    created_at: Order_By.Desc,
+                    datapoints_count: Order_By.Desc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -413,6 +413,13 @@ const Companies: NextPage<Props> = ({
                         updated_at: {
                           _gte: moment()
                             .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
+                        },
+                      },
+                      {
+                        year_founded: {
+                          _gte: moment()
+                            .subtract(1, 'years')
                             .format(ISO_DATE_FORMAT),
                         },
                       },
@@ -464,6 +471,7 @@ const Companies: NextPage<Props> = ({
                       amount: Order_By.Desc,
                     },
                   },
+                  datapoints_count: Order_By.Desc,
                 }}
                 filters={{
                   _and: [
@@ -486,32 +494,16 @@ const Companies: NextPage<Props> = ({
                 tagOnClick={filterByTag}
                 itemsPerPage={ITEMS_PER_PAGE}
                 isTableView={tableLayout}
+                orderBy={{
+                  year_founded: Order_By.Desc,
+                  datapoints_count: Order_By.Desc,
+                }}
                 filters={{
                   _and: [
                     ...defaultFilters,
                     {
                       year_founded: {
                         _gte: moment().subtract(1, 'year').year().toString(),
-                      },
-                    },
-                  ],
-                }}
-              />
-
-              <CompaniesByFilter
-                headingText={`Recently acquired`}
-                tagOnClick={filterByTag}
-                itemsPerPage={ITEMS_PER_PAGE}
-                isTableView={tableLayout}
-                orderBy={{
-                  created_at: Order_By.Desc,
-                }}
-                filters={{
-                  _and: [
-                    ...defaultFilters,
-                    {
-                      status_tags: {
-                        _contains: 'Acquired',
                       },
                     },
                   ],
@@ -534,8 +526,7 @@ const Companies: NextPage<Props> = ({
                         `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
+                    className="inline underline decoration-primary-500 hover:text-primary-500">
                     <span>report error</span>
                   </button>
                   .
@@ -559,7 +550,16 @@ const Companies: NextPage<Props> = ({
           ) : tableLayout && companies?.length != 0 ? (
             <>
               {showPersonalized && (
-                <div className="text-2xl font-medium mt-4">All companies</div>
+                <div className="flex justify-between pt-4">
+                  <div className="text-2xl font-medium">All companies</div>
+                  {!isNewTabSelected && (
+                    <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      defaultItem={defaultOrderBy}
+                      items={sortChoices}
+                    />
+                  )}
+                </div>
               )}
               <CompaniesTable
                 companies={companies}
@@ -575,12 +575,20 @@ const Companies: NextPage<Props> = ({
           ) : (
             <>
               {showPersonalized && (
-                <div className="text-2xl font-medium my-4">All companies</div>
+                <div className="flex justify-between pt-4">
+                  <div className="text-2xl font-medium">All companies</div>
+                  {!isNewTabSelected && (
+                    <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      defaultItem={defaultOrderBy}
+                      items={sortChoices}
+                    />
+                  )}
+                </div>
               )}
               <div
                 data-testid="companies"
-                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4"
-              >
+                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4">
                 {companies?.map(company => {
                   return (
                     <ElemCompanyCard
@@ -620,8 +628,7 @@ const Companies: NextPage<Props> = ({
                   )
                 }
                 btn="white"
-                className="mt-3"
-              >
+                className="mt-3">
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>
