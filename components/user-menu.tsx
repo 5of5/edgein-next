@@ -16,12 +16,16 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
 
   const userMenuItems = [
     {
-      label: 'Account Settings',
-      href: '/account',
+      label: 'Invite a friend',
+      href: '/invite-a-friend',
     },
     {
-      label: 'Profile Settings',
+      label: 'Profile settings',
       href: '/profile',
+    },
+    {
+      label: 'Account settings',
+      href: '/account',
     },
     {
       label: 'Sign out',
@@ -68,14 +72,14 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
         <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
           {({ close }) => (
             <div>
-              <div className="w-full text-left text-sm px-4 py-2 border-b border-gray-200">
-                Signed in as
-                <div className="font-medium">{user?.email}</div>
+              <div className="w-full text-left text-xs px-4 py-2 border-b border-gray-200">
+                <span className="text-gray-600">Signed in as</span>
+                <div className="font-medium break-words text-gray-900">{user?.email}</div>
               </div>
               {userMenuItems.map((item, index) => (
                 <Link href={item.href ? item.href : ''} key={index}>
                   <a
-                    className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                    className="flex text-gray-600 items-center gap-x-2 cursor-pointer w-full text-left text-xs px-4 py-2 m-0 transition-all hover:bg-gray-100"
                     onClick={() => {
                       item.onClick && item.onClick();
                       close();
