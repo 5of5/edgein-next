@@ -383,3 +383,16 @@ query GetPersonalizedCompanies(
     }
   }
 }
+  
+mutation InsertCompanies($objects: [companies_insert_input!]!) {
+  insert_companies(objects: $objects) {
+    returning {
+      id
+      status
+      slug
+      enrichment_priority
+      website
+      company_linkedin
+    }
+  }
+}

@@ -1,32 +1,95 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  MutableRefObject,
+  PropsWithChildren,
+  ReactElement,
+  useRef,
+} from 'react';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import {
   List,
   Datagrid,
   Pagination,
   BulkDeleteButton,
   BulkExportButton,
+  TopToolbar,
+  Button,
+  CreateButton,
+  ExportButton,
 } from 'react-admin';
 
 type Props = {
   filters?: ReactElement | ReactElement[];
-  disableDelete?: boolean;
+  enableDelete?: boolean;
+  enableIngest?: boolean;
+  onClickIngest?: () => void;
+  onFileChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ListBulkActions = (props: { disableDelete: boolean }) => (
+type ListBulkActionProps = {
+  enableDelete: boolean;
+};
+
+const ListActions = ({
+  enableIngest,
+  onFileChange,
+  fileUploadRef,
+}: {
+  enableIngest: boolean;
+  onFileChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  fileUploadRef: MutableRefObject<any>;
+}) => {
+  return (
+    <TopToolbar>
+      <CreateButton />
+      {enableIngest && (
+        <>
+          <Button
+            label="Ingest"
+            variant="text"
+            onClick={() => fileUploadRef.current.click()}
+            startIcon={<FileUploadIcon />}
+          />
+          <input
+            type="file"
+            onChange={onFileChange}
+            ref={fileUploadRef}
+            style={{ display: 'none' }}
+          />
+        </>
+      )}
+      <ExportButton />
+    </TopToolbar>
+  );
+};
+
+const ListBulkActions = ({ enableDelete }: ListBulkActionProps) => (
   <>
-    {props.disableDelete ? <></> : <BulkDeleteButton />}
+    {enableDelete && <BulkDeleteButton />}
     <BulkExportButton />
   </>
 );
 
 const ElemList: FC<PropsWithChildren<Props>> = ({
   filters,
-  disableDelete,
+  enableDelete = false,
+  enableIngest = false,
+  onFileChange,
   children,
 }) => {
+  const fileUploadRef = useRef(null);
+
   return (
     <List
       filters={filters}
+      actions={
+        <ListActions
+          enableIngest={enableIngest}
+          onFileChange={onFileChange}
+          fileUploadRef={fileUploadRef}
+        />
+      }
       pagination={<Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />}
       sx={{
         '.MuiToolbar-root': {
@@ -56,9 +119,7 @@ const ElemList: FC<PropsWithChildren<Props>> = ({
       }}
     >
       <Datagrid
-        bulkActionButtons={
-          <ListBulkActions disableDelete={disableDelete || false} />
-        }
+        bulkActionButtons={<ListBulkActions enableDelete={enableDelete} />}
       >
         {children}
       </Datagrid>

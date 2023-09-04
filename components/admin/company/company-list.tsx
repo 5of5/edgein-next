@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import {
   Button,
   FunctionField,
@@ -16,12 +16,17 @@ import {
   ReferenceInput,
   SelectInput,
   SelectArrayInput,
+  DateField,
+  useNotify,
 } from 'react-admin';
 import { Chip } from '@mui/material';
 import { companyLayerChoices } from '../../../utils/constants';
 import ElemList from '../elem-list';
 import { useAuth } from '@/hooks/use-auth';
 import { getAllTags } from '@/utils/helpers';
+import { z } from 'zod';
+import { IngestCompaniesReqBody } from '@/pages/api/ingest/companies';
+import axios from 'axios';
 
 type QuickFilterProps = {
   label: string;
@@ -69,11 +74,51 @@ const filters = [
   />,
 ];
 
+const CompaniesToIngest = z.preprocess(
+  val => String(val).trim().split('\n'),
+  z.array(z.string()),
+);
+
 export const CompanyList = () => {
   const { user } = useAuth();
+  const notify = useNotify();
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filereader = new FileReader();
+
+      filereader.onload = async () => {
+        const parsed = CompaniesToIngest.safeParse(filereader.result);
+
+        if (parsed.success) {
+          const body: IngestCompaniesReqBody = {
+            companies: parsed.data,
+            enrichmentPriority: 1,
+          };
+
+          const { status, data } = await axios.post(
+            '/api/ingest/companies',
+            body,
+          );
+
+          if (status !== 200) {
+            console.error(data);
+            notify('Ingestion unsuccessful', { type: 'error' });
+          }
+
+          notify('Ingestion successful', { type: 'success' });
+        } else {
+          console.log(parsed.error);
+
+          notify('File in an incorrect format', { type: 'error' });
+        }
+      };
+      filereader.readAsText(e.target.files[0]);
+    }
+  };
 
   return (
-    <ElemList filters={filters}>
+    <ElemList filters={filters} enableIngest onFileChange={handleFileChange}>
       {user?.role !== 'cms-readonly' && <EditButton />}
       <FunctionField
         render={(record: any) => (
@@ -181,6 +226,9 @@ export const CompanyList = () => {
         }
       />
       {/* <TextField source="counter" /> */}
+      <DateField source="data_enriched_at" />
+      <DateField source="domain_enriched_at" />
+      <NumberField source="enrichment_priority" />
     </ElemList>
   );
 };
