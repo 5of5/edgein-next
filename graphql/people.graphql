@@ -300,3 +300,18 @@ query GetSignUpProfile($email: String, $name: String) {
     facebook_url
   }
 }
+
+mutation InsertPeople($objects: [people_insert_input!]!) {
+  insert_people(
+    objects: $objects
+    on_conflict: { constraint: people_slug_key, update_columns: [] }
+  ) {
+    returning {
+      id
+      status
+      linkedin
+      slug
+      enrichment_priority
+    }
+  }
+}

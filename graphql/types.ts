@@ -26316,6 +26316,13 @@ export type GetSignUpProfileQueryVariables = Exact<{
 
 export type GetSignUpProfileQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, website_url: string | null, linkedin: string | null, twitter_url: string | null, github: string | null, facebook_url: string | null }> };
 
+export type InsertPeopleMutationVariables = Exact<{
+  objects: Array<People_Insert_Input> | People_Insert_Input;
+}>;
+
+
+export type InsertPeopleMutation = { __typename?: 'mutation_root', insert_people: { __typename?: 'people_mutation_response', returning: Array<{ __typename?: 'people', id: number, status: string, linkedin: string | null, slug: string, enrichment_priority: number }> } | null };
+
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
 }>;
@@ -27531,7 +27538,10 @@ useGetPersonalizedCompaniesQuery.getKey = (variables: GetPersonalizedCompaniesQu
 useGetPersonalizedCompaniesQuery.fetcher = (variables: GetPersonalizedCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonalizedCompaniesQuery, GetPersonalizedCompaniesQueryVariables>(GetPersonalizedCompaniesDocument, variables, options);
 export const InsertCompaniesDocument = `
     mutation InsertCompanies($objects: [companies_insert_input!]!) {
-  insert_companies(objects: $objects) {
+  insert_companies(
+    objects: $objects
+    on_conflict: {constraint: companies_slug_key, update_columns: []}
+  ) {
     returning {
       id
       status
@@ -31052,6 +31062,32 @@ useGetSignUpProfileQuery.getKey = (variables?: GetSignUpProfileQueryVariables) =
 ;
 
 useGetSignUpProfileQuery.fetcher = (variables?: GetSignUpProfileQueryVariables, options?: RequestInit['headers']) => fetcher<GetSignUpProfileQuery, GetSignUpProfileQueryVariables>(GetSignUpProfileDocument, variables, options);
+export const InsertPeopleDocument = `
+    mutation InsertPeople($objects: [people_insert_input!]!) {
+  insert_people(
+    objects: $objects
+    on_conflict: {constraint: people_slug_key, update_columns: []}
+  ) {
+    returning {
+      id
+      status
+      linkedin
+      slug
+      enrichment_priority
+    }
+  }
+}
+    `;
+export const useInsertPeopleMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertPeopleMutation, TError, InsertPeopleMutationVariables, TContext>) =>
+    useMutation<InsertPeopleMutation, TError, InsertPeopleMutationVariables, TContext>(
+      ['InsertPeople'],
+      (variables?: InsertPeopleMutationVariables) => fetcher<InsertPeopleMutation, InsertPeopleMutationVariables>(InsertPeopleDocument, variables)(),
+      options
+    );
+useInsertPeopleMutation.fetcher = (variables: InsertPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertPeopleMutation, InsertPeopleMutationVariables>(InsertPeopleDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {
