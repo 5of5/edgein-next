@@ -550,7 +550,7 @@ const Companies: NextPage<Props> = ({
           ) : tableLayout && companies?.length != 0 ? (
             <>
               {showPersonalized && (
-                <div className="flex justify-between pt-4">
+                <div className="flex justify-between py-4">
                   <div className="text-2xl font-medium">All companies</div>
                   {!isNewTabSelected && (
                     <ElemDropdown
@@ -575,7 +575,7 @@ const Companies: NextPage<Props> = ({
           ) : (
             <>
               {showPersonalized && (
-                <div className="flex justify-between pt-4">
+                <div className="flex justify-between py-4">
                   <div className="text-2xl font-medium">All companies</div>
                   {!isNewTabSelected && (
                     <ElemDropdown
@@ -588,7 +588,7 @@ const Companies: NextPage<Props> = ({
               )}
               <div
                 data-testid="companies"
-                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4">
+                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                 {companies?.map(company => {
                   return (
                     <ElemCompanyCard
