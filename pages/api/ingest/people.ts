@@ -4,21 +4,16 @@ import CookieService from '@/utils/cookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import { InsertPeopleDocument, InsertPeopleMutation } from '@/graphql/types';
+import { IngestPeopleReqSchema } from '@/utils/schema';
 
-const RequestBody = z.object({
-  apiKey: z.string().optional(),
-  people: z.array(z.string()).min(1),
-  enrichmentPriority: z.number().int().min(0),
-});
-
-export type IngestPeopleReqBody = z.infer<typeof RequestBody>;
+export type IngestPeopleReqBody = z.infer<typeof IngestPeopleReqSchema>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const parseResponse = RequestBody.safeParse(req.body);
+  const parseResponse = IngestPeopleReqSchema.safeParse(req.body);
 
   if (!parseResponse.success) {
     return res.status(400).json({

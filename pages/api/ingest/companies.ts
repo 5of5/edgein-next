@@ -7,21 +7,16 @@ import { partnerLookUp } from '@/utils/submit-data';
 import CookieService from '@/utils/cookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
+import { IngestCompaniesReqSchema } from '@/utils/schema';
 
-const RequestBody = z.object({
-  apiKey: z.string().optional(),
-  companies: z.array(z.string()).min(1),
-  enrichmentPriority: z.number().int().min(0),
-});
-
-export type IngestCompaniesReqBody = z.infer<typeof RequestBody>;
+export type IngestCompaniesReqBody = z.infer<typeof IngestCompaniesReqSchema>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const parseResponse = RequestBody.safeParse(req.body);
+  const parseResponse = IngestCompaniesReqSchema.safeParse(req.body);
 
   if (!parseResponse.success) {
     return res.status(400).json({
