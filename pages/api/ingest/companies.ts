@@ -56,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const { hostname } = new URL(url);
 
-      const slug =  hostname.split('.').at(0);
+      const slug = hostname.split('.').at(0);
 
       if (!slug) {
         throw Error('Error while parsing slug');
