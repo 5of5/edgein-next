@@ -27,6 +27,7 @@ import { getAllTags } from '@/utils/helpers';
 import { z } from 'zod';
 import { IngestCompaniesReqBody } from '@/pages/api/ingest/companies';
 import axios from 'axios';
+import { InsertCompaniesMutation } from '@/graphql/types';
 
 type QuickFilterProps = {
   label: string;
@@ -96,17 +97,22 @@ export const CompanyList = () => {
             enrichmentPriority: 1,
           };
 
-          const { status, data } = await axios.post(
+          const { status, data } = await axios.post<InsertCompaniesMutation>(
             '/api/ingest/companies',
             body,
           );
 
           if (status !== 200) {
             console.error(data);
-            notify('Ingestion unsuccessful', { type: 'error' });
+            notify('Ingestion unsuccessful, check console for error', {
+              type: 'error',
+            });
           }
 
-          notify('Ingestion successful', { type: 'success' });
+          notify(
+            `Ingested ${data.insert_companies?.returning.length}/${parsed.data.length} companies`,
+            { type: 'success' },
+          );
         } else {
           console.log(parsed.error);
 

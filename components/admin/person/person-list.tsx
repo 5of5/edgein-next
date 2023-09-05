@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { IngestPeopleReqBody } from '@/pages/api/ingest/people';
 import { z } from 'zod';
 import axios from 'axios';
+import { InsertPeopleMutation } from '@/graphql/types';
 
 const filters = [
   <TextInput
@@ -48,14 +49,22 @@ export const PersonList = () => {
             enrichmentPriority: 1,
           };
 
-          const { status, data } = await axios.post('/api/ingest/people', body);
+          const { status, data } = await axios.post<InsertPeopleMutation>(
+            '/api/ingest/people',
+            body,
+          );
 
           if (status !== 200) {
             console.error(data);
-            notify('Ingestion unsuccessful', { type: 'error' });
+            notify('Ingestion unsuccessful, check console for error', {
+              type: 'error',
+            });
           }
 
-          notify('Ingestion successful', { type: 'success' });
+          notify(
+            `Ingested ${data.insert_people?.returning.length}/${parsed.data.length} people`,
+            { type: 'success' },
+          );
         } else {
           console.log(parsed.error);
 
