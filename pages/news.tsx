@@ -171,14 +171,14 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
-            {!selectedTab?.value && (
+            {/* removed in qol-ui-fixes */}
+            {/* {!selectedTab?.value && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 defaultItem={defaultOrderBy}
                 items={sortChoices}
               />
-            )}
+            )} */}
           </div>
         </div>
 
