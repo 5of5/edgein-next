@@ -367,7 +367,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               <>
                 {showPersonalized && (
                   <div className="flex justify-between my-4">
-                    <div className="text-2xl font-medium">All Events</div>
+                    <div className="text-4xl font-medium">All Events</div>
                     <ElemDropdown
                       IconComponent={IconSortDashboard}
                       defaultItem={defaultOrderBy}

@@ -99,7 +99,7 @@ export const InvestorsByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-2xl font-medium my-4">{headingText}</div>
+      <div className="text-4xl font-medium my-4">{headingText}</div>
       {isTableView ? (
         <InvestorsTable
           investors={vc_firms}

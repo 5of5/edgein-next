@@ -511,7 +511,7 @@ const Investors: NextPage<Props> = ({
               <>
                 {showPersonalized && (
                   <div className="flex justify-between my-4">
-                    <div className="text-2xl font-medium">All investors</div>
+                    <div className="text-4xl font-medium">All investors</div>
                     {!isNewTabSelected && (
                       <ElemDropdown
                         IconComponent={IconSortDashboard}
@@ -536,7 +536,7 @@ const Investors: NextPage<Props> = ({
               <>
                 {showPersonalized && (
                   <div className="flex justify-between my-4">
-                    <div className="text-2xl font-medium">All investors</div>
+                    <div className="text-4xl font-medium">All investors</div>
                     {!isNewTabSelected && (
                       <ElemDropdown
                         IconComponent={IconSortDashboard}

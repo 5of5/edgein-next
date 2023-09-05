@@ -551,7 +551,7 @@ const Companies: NextPage<Props> = ({
             <>
               {showPersonalized && (
                 <div className="flex justify-between py-4">
-                  <div className="text-2xl font-medium">All companies</div>
+                  <div className="text-4xl font-medium">All companies</div>
                   {!isNewTabSelected && (
                     <ElemDropdown
                       IconComponent={IconSortDashboard}
@@ -576,7 +576,7 @@ const Companies: NextPage<Props> = ({
             <>
               {showPersonalized && (
                 <div className="flex justify-between py-4">
-                  <div className="text-2xl font-medium">All companies</div>
+                  <div className="text-4xl font-medium">All companies</div>
                   {!isNewTabSelected && (
                     <ElemDropdown
                       IconComponent={IconSortDashboard}
