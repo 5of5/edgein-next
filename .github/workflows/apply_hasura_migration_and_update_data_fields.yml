@@ -3,16 +3,37 @@ on:
   push:
     branches: 
       - main
+  workflow_dispatch:
+    inputs:
 
 env:
   HASURA_ENDPOINT: https://graphql.edgein.dev
   HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
+  PG_CONNECTION_STRING: ${{ secrets.PG_CONNECTION_STRING }}
 
 jobs:
   apply-hasura-update-data_fields:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Load environment variables from .env file
+        uses: falti/dotenv-action@v1.0.4
 
       - name: Hasura migrate
         uses: tibotiber/hasura-action@v3.0
@@ -46,5 +67,7 @@ jobs:
 
       - name: Update data fields
         working-directory: ./scripts
+        env:
+          PG_CONNECTION_STRING: ${{ env.PG_CONNECTION_STRING }}
         shell: bash
         run: npx ts-node update_data_fields.ts
