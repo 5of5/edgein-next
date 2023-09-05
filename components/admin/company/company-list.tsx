@@ -26,7 +26,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { getAllTags } from '@/utils/helpers';
 import { z } from 'zod';
 import { IngestCompaniesReqBody } from '@/pages/api/ingest/companies';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { InsertCompaniesMutation } from '@/graphql/types';
 
 type QuickFilterProps = {
@@ -97,27 +97,58 @@ export const CompanyList = () => {
             enrichmentPriority: 1,
           };
 
-          const { status, data } = await axios.post<InsertCompaniesMutation>(
-            '/api/ingest/companies',
-            body,
-          );
+          try {
+            const { status, data } = await axios.post<InsertCompaniesMutation>(
+              '/api/ingest/companies',
+              body,
+            );
 
-          if (status !== 200) {
-            console.error(data);
-            notify('Ingestion unsuccessful, check console for error', {
-              type: 'error',
-            });
+            if (status === 201) {
+              if (
+                parsed.data.length !== data.insert_companies?.returning.length
+              ) {
+                console.warn({
+                  ingestedCompanies: data.insert_companies?.returning,
+                });
+
+                notify(
+                  `Ingested ${data.insert_companies?.returning.length}/${parsed.data.length} companies, check console for details`,
+                  { type: 'warning', autoHideDuration: 10 * 1000 },
+                );
+              } else {
+                notify(
+                  `Ingested ${data.insert_companies?.returning.length}/${parsed.data.length} companies`,
+                  { type: 'success' },
+                );
+              }
+            }
+          } catch (error) {
+            console.error(error);
+
+            if (error instanceof AxiosError) {
+              notify(
+                `Ingestion unsuccessful, check console for error\n${error.message}`,
+                {
+                  type: 'error',
+                  multiLine: true,
+                  autoHideDuration: 15 * 1000,
+                },
+              );
+            }
           }
-
-          notify(
-            `Ingested ${data.insert_companies?.returning.length}/${parsed.data.length} companies`,
-            { type: 'success' },
-          );
         } else {
-          console.log(parsed.error);
+          console.error(parsed.error);
 
           notify('File in an incorrect format', { type: 'error' });
+          notify(parsed.error.toString(), {
+            type: 'error',
+            multiLine: true,
+            autoHideDuration: 15 * 1000,
+          });
         }
+
+        // Reset input so the file can be uploaded again
+        e.target.value = '';
       };
       filereader.readAsText(e.target.files[0]);
     }

@@ -13,7 +13,7 @@ import ElemList from '../elem-list';
 import { useAuth } from '@/hooks/use-auth';
 import { IngestPeopleReqBody } from '@/pages/api/ingest/people';
 import { z } from 'zod';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { InsertPeopleMutation } from '@/graphql/types';
 
 const filters = [
@@ -49,27 +49,54 @@ export const PersonList = () => {
             enrichmentPriority: 1,
           };
 
-          const { status, data } = await axios.post<InsertPeopleMutation>(
-            '/api/ingest/people',
-            body,
-          );
+          try {
+            const { status, data } = await axios.post<InsertPeopleMutation>(
+              '/api/ingest/people',
+              body,
+            );
+            if (status === 201) {
+              if (parsed.data.length !== data.insert_people?.returning.length) {
+                console.warn({
+                  ingestedCompanies: data.insert_people?.returning,
+                });
 
-          if (status !== 200) {
-            console.error(data);
-            notify('Ingestion unsuccessful, check console for error', {
-              type: 'error',
-            });
+                notify(
+                  `Ingested ${data.insert_people?.returning.length}/${parsed.data.length} people, check console for details`,
+                  { type: 'warning', autoHideDuration: 10 * 1000 },
+                );
+              } else {
+                notify(
+                  `Ingested ${data.insert_people?.returning.length}/${parsed.data.length} people`,
+                  { type: 'success' },
+                );
+              }
+            }
+          } catch (error) {
+            console.error(error);
+
+            if (error instanceof AxiosError) {
+              notify(
+                `Ingestion unsuccessful, check console for error\n${error.message}`,
+                {
+                  type: 'error',
+                  multiLine: true,
+                  autoHideDuration: 15 * 1000,
+                },
+              );
+            }
           }
-
-          notify(
-            `Ingested ${data.insert_people?.returning.length}/${parsed.data.length} people`,
-            { type: 'success' },
-          );
         } else {
-          console.log(parsed.error);
+          console.error(parsed.error);
 
-          notify('File in an incorrect format', { type: 'error' });
+          notify(parsed.error.toString(), {
+            type: 'error',
+            multiLine: true,
+            autoHideDuration: 15 * 1000,
+          });
         }
+
+        // Reset input so the file can be uploaded again
+        e.target.value = '';
       };
       filereader.readAsText(e.target.files[0]);
     }
