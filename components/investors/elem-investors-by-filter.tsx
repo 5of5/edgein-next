@@ -4,6 +4,7 @@ import {
   useGetPersonalizedVcFirmsQuery,
   Vc_Firms,
   Vc_Firms_Bool_Exp,
+  Vc_Firms_Order_By,
 } from '@/graphql/types';
 import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
@@ -18,7 +19,7 @@ type Props = {
   headingText: string;
   filters: DeepPartial<Vc_Firms_Bool_Exp>;
   fallbackFilters?: DeepPartial<Vc_Firms_Bool_Exp>;
-  orderBy?: DeepPartial<Investors_Order_By>;
+  orderBy?: DeepPartial<Vc_Firms_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
   isTableView?: boolean;
