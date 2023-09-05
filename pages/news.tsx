@@ -39,6 +39,10 @@ import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import { getPersonalizedData } from '@/utils/personalizedTags';
+import { NewsByFilter } from '@/components/news/elem-news-by-filter';
+
+const ITEMS_PER_PAGE = 8;
 
 type Props = {
   newsCount: number;
@@ -51,6 +55,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const router = useRouter();
   const { showNewMessages } = useIntercom();
   const { user, listAndFollows, myGroups } = useUser();
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -156,13 +161,14 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ? newsCount
     : newsData?.news_aggregate?.aggregate?.count || 0;
 
+  const showPersonalized = user && !selectedTab;
+
   return (
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
-          role="tablist"
-        >
+          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          role="tablist">
           <ElemCategories
             categories={newsTab}
             selectedCategory={selectedTab}
@@ -182,9 +188,52 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
           </div>
         </div>
 
-        <ElemInviteBanner className="mx-6 my-3" />
+        <ElemInviteBanner className="mx-8 my-3" />
 
-        <div className="mx-6">
+        <div className="mx-8">
+          {showPersonalized && (
+            <div className="flex flex-col gap-4 gap-x-16">
+              {personalizedTags.locationTags.map((location, index) => (
+                <NewsByFilter
+                  key={`${location}-${index}`}
+                  headingText={`Trending in ${location}`}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    updated_at: Order_By.Desc,
+                  }}
+                  filters={
+                    {
+                      _or: [
+                        {
+                          organizations: {
+                            company: {
+                              location_json: {
+                                _contains: {
+                                  city: `${location}`,
+                                },
+                              },
+                            },
+                          },
+                        },
+                        {
+                          organizations: {
+                            vc_firm: {
+                              location_json: {
+                                _contains: {
+                                  city: `${location}`,
+                                },
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }
+                  }
+                />
+              ))}
+            </div>
+          )}
+
           {news?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
               <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -201,14 +250,20 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                     )
                   }
                   btn="white"
-                  className="mt-3"
-                >
+                  className="mt-3">
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>
               </div>
             </div>
           )}
+
+          {showPersonalized && (
+            <div className="flex justify-between">
+              <div className="text-4xl font-medium">All news</div>
+            </div>
+          )}
+
           <div className="mt-4 grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <h4>Error loading news</h4>
