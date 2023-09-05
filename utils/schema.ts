@@ -110,3 +110,15 @@ export const addOnboardingSchema = z.object({
       `Should have at least ${ONBOARDING_MIN_TAGS} tags`,
     ),
 });
+
+export const IngestCompaniesReqSchema = z.object({
+  apiKey: z.string().optional(),
+  companies: z.array(z.string()).min(1),
+  enrichmentPriority: z.number().int().min(0),
+});
+
+export const IngestPeopleReqSchema = z.object({
+  apiKey: z.string().optional(),
+  people: z.array(z.string()).min(1),
+  enrichmentPriority: z.number().int().min(0),
+});

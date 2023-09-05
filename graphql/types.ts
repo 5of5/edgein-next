@@ -5805,7 +5805,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Scalars['String'];
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -25539,6 +25539,13 @@ export type GetPersonalizedCompaniesQueryVariables = Exact<{
 
 export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, status_tags: any | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
+export type InsertCompaniesMutationVariables = Exact<{
+  objects: Array<Companies_Insert_Input> | Companies_Insert_Input;
+}>;
+
+
+export type InsertCompaniesMutation = { __typename?: 'mutation_root', insert_companies: { __typename?: 'companies_mutation_response', returning: Array<{ __typename?: 'companies', id: number, status: string, slug: string, enrichment_priority: number, website: string | null, company_linkedin: string | null }> } | null };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -25591,14 +25598,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -25606,7 +25613,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -25628,14 +25635,14 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string | null, status: string } | null }> };
 
 export type GetEventInsightByLocationQueryVariables = Exact<{
   where: Events_Bool_Exp;
@@ -26309,6 +26316,13 @@ export type GetSignUpProfileQueryVariables = Exact<{
 
 export type GetSignUpProfileQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, website_url: string | null, linkedin: string | null, twitter_url: string | null, github: string | null, facebook_url: string | null }> };
 
+export type InsertPeopleMutationVariables = Exact<{
+  objects: Array<People_Insert_Input> | People_Insert_Input;
+}>;
+
+
+export type InsertPeopleMutation = { __typename?: 'mutation_root', insert_people: { __typename?: 'people_mutation_response', returning: Array<{ __typename?: 'people', id: number, status: string, linkedin: string | null, slug: string, enrichment_priority: number }> } | null };
+
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
 }>;
@@ -26331,7 +26345,7 @@ export type GetEventsPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, updated_at: any }> };
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, updated_at: any }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -27522,6 +27536,33 @@ useGetPersonalizedCompaniesQuery.getKey = (variables: GetPersonalizedCompaniesQu
 ;
 
 useGetPersonalizedCompaniesQuery.fetcher = (variables: GetPersonalizedCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonalizedCompaniesQuery, GetPersonalizedCompaniesQueryVariables>(GetPersonalizedCompaniesDocument, variables, options);
+export const InsertCompaniesDocument = `
+    mutation InsertCompanies($objects: [companies_insert_input!]!) {
+  insert_companies(
+    objects: $objects
+    on_conflict: {constraint: companies_slug_key, update_columns: []}
+  ) {
+    returning {
+      id
+      status
+      slug
+      enrichment_priority
+      website
+      company_linkedin
+    }
+  }
+}
+    `;
+export const useInsertCompaniesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertCompaniesMutation, TError, InsertCompaniesMutationVariables, TContext>) =>
+    useMutation<InsertCompaniesMutation, TError, InsertCompaniesMutationVariables, TContext>(
+      ['InsertCompanies'],
+      (variables?: InsertCompaniesMutationVariables) => fetcher<InsertCompaniesMutation, InsertCompaniesMutationVariables>(InsertCompaniesDocument, variables)(),
+      options
+    );
+useInsertCompaniesMutation.fetcher = (variables: InsertCompaniesMutationVariables, options?: RequestInit['headers']) => fetcher<InsertCompaniesMutation, InsertCompaniesMutationVariables>(InsertCompaniesDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -31021,6 +31062,32 @@ useGetSignUpProfileQuery.getKey = (variables?: GetSignUpProfileQueryVariables) =
 ;
 
 useGetSignUpProfileQuery.fetcher = (variables?: GetSignUpProfileQueryVariables, options?: RequestInit['headers']) => fetcher<GetSignUpProfileQuery, GetSignUpProfileQueryVariables>(GetSignUpProfileDocument, variables, options);
+export const InsertPeopleDocument = `
+    mutation InsertPeople($objects: [people_insert_input!]!) {
+  insert_people(
+    objects: $objects
+    on_conflict: {constraint: people_slug_key, update_columns: []}
+  ) {
+    returning {
+      id
+      status
+      linkedin
+      slug
+      enrichment_priority
+    }
+  }
+}
+    `;
+export const useInsertPeopleMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertPeopleMutation, TError, InsertPeopleMutationVariables, TContext>) =>
+    useMutation<InsertPeopleMutation, TError, InsertPeopleMutationVariables, TContext>(
+      ['InsertPeople'],
+      (variables?: InsertPeopleMutationVariables) => fetcher<InsertPeopleMutation, InsertPeopleMutationVariables>(InsertPeopleDocument, variables)(),
+      options
+    );
+useInsertPeopleMutation.fetcher = (variables: InsertPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertPeopleMutation, InsertPeopleMutationVariables>(InsertPeopleDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {
