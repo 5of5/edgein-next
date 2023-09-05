@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       return {
-        status: 'draft',
+        status: 'to_be_enriched',
         website,
         slug: slugify(slug),
         enrichment_priority: enrichmentPriority,
