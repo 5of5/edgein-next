@@ -25,24 +25,15 @@ import {
 } from '@/graphql/types';
 import type { People } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
-import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import { ElemPersonCard } from '@/components/people/elem-person-card';
-import {
-  companyChoices,
-  ISO_DATE_FORMAT,
-  NEW_CATEGORY_LIMIT,
-} from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
-import { processCompaniesFilters } from '@/utils/filter';
-import { ElemFilter } from '@/components/elem-filter';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ElemAddFilter } from '@/components/elem-add-filter';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
@@ -161,7 +152,8 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -175,7 +167,8 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -185,9 +178,6 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
           },
         );
   };
-
-  /** Handle selected filter params */
-  processCompaniesFilters(filters, selectedFilters, defaultFilters);
 
   const {
     data: peopleData,
@@ -210,7 +200,7 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
   const people = initialLoad ? initialPeople : peopleData?.people;
   const people_aggregate = initialLoad
     ? peopleCount
-    : peopleData?.people.length || 0; //peopleData?.people_aggregate?.aggregate?.count || 0;
+    : peopleData?.people_aggregate?.aggregate?.count || 0;
 
   const { showNewMessages } = useIntercom();
 
@@ -236,7 +226,8 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
       <div className="relative">
         <div
           className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
@@ -244,12 +235,6 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
               IconComponent={tableLayout ? IconTable : IconGroup}
               items={layoutItems}
             />
-
-            {/* <ElemDropdown
-                IconComponent={IconSortDashboard}
-                defaultItem={defaultOrderBy}
-                items={sortChoices}
-              /> */}
           </div>
         </div>
 
@@ -270,7 +255,8 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
                         `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
@@ -314,7 +300,8 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
               )}
               <div
                 data-testid="people"
-                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4">
+                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4"
+              >
                 {people?.map(person => {
                   return (
                     <ElemPersonCard key={person.id} person={person as People} />
@@ -351,7 +338,8 @@ const People: NextPage<Props> = ({ peopleCount, initialPeople }) => {
                   )
                 }
                 btn="white"
-                className="mt-3">
+                className="mt-3"
+              >
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>
@@ -379,7 +367,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       metaTitle: 'Web3 People - EdgeIn.io',
       metaDescription: 'People in the Web3 market.',
-      peopleCount: people?.people_aggregate?.aggregate?.count || 0, //people?.people?.length || 0,
+      peopleCount: people?.people_aggregate?.aggregate?.count || 0,
       initialPeople: people?.people || [],
     },
     revalidate: 60 * 60 * 2,
@@ -387,10 +375,3 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default People;
-
-export interface NumericFilter {
-  title: string;
-  description?: string;
-  rangeStart: number;
-  rangeEnd: number;
-}
