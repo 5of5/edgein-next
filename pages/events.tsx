@@ -255,7 +255,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
           role="tablist">
           <ElemCategories
             categories={eventTabs}
@@ -279,7 +279,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         </div>
 
         {selectedFilters && (
-          <div className="mx-6 my-3">
+          <div className="mx-8 my-3">
             <ElemFilter
               resourceType="events"
               excludeFilters={
@@ -310,9 +310,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </div>
         )}
 
-        <ElemInviteBanner className="mx-6 my-3" />
+        <ElemInviteBanner className="mx-8 my-3" />
 
-        <div className="mx-6">
+        <div className="mx-8">
           {showPersonalized && (
             <div className="flex flex-col gap-4 gap-x-16">
               {personalizedTags.locationTags.map(location => (
