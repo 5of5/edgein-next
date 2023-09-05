@@ -74,7 +74,9 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
             <div>
               <div className="w-full text-left text-xs px-4 py-2 border-b border-gray-200">
                 <span className="text-gray-600">Signed in as</span>
-                <div className="font-medium break-words text-gray-900">{user?.email}</div>
+                <div className="font-medium break-words text-gray-900">
+                  {user?.email}
+                </div>
               </div>
               {userMenuItems.map((item, index) => (
                 <Link href={item.href ? item.href : ''} key={index}>

@@ -5,9 +5,7 @@ import { InputText } from '@/components/input-text';
 import { IconLinkedInAlt, IconContributor } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { EditSection } from '@/components/dashboard/edit-section';
-import {
-  useGetUserProfileQuery,
-} from '@/graphql/types';
+import { useGetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';

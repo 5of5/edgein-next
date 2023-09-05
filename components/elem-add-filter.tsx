@@ -71,9 +71,10 @@ export const ElemAddFilter: FC<Props> = ({
               <IconChevronDownMini className="w-5 h-5 ml-1" />
             </ElemButton>
           ) : (
-            <ElemButton btn="gray" size="sm" className="!p-1">
-              <IconPlus className="w-4 h-4" />
-            </ElemButton>
+            <IconPlus
+              strokeWidth={3}
+              className="w-5 h-5 p-0.5 text-gray-500 cursor-pointer hover:bg-gray-100 hover:rounded-lg"
+            />
           )}
         </Popover.Button>
 
@@ -149,7 +150,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
             </h3>
           )}
 
-          <ul className="list-none text-gray-600">
+          <ul className="list-none text-gray-600 border-b border-gray-100">
             {option.items.map(item => {
               if (excludeFilters.includes(item.value)) {
                 return null;
@@ -165,11 +166,11 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                           : onOpenUpgradeDialog
                       }
                       name={item.value}
-                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-400 px-4 py-2 m-0 transition-all hover:bg-gray-100"
                     >
                       {!userCanUseFilter && (
                         <IconLockClosed
-                          className="inline-block w-4 h-4 text-primary-500 shrink-0 mr-1"
+                          className="inline-block w-4 h-4 shrink-0 mr-1"
                           strokeWidth={2}
                         />
                       )}

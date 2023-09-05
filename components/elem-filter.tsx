@@ -22,12 +22,12 @@ import ElemAddressFilter from './elem-address-filter';
 import { InputText } from './input-text';
 import { InputSelect } from './input-select';
 import { eventSizeChoices, ISO_DATE_FORMAT } from '@/utils/constants';
-import InputSwitch from './input-switch';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
 import { ElemFilterLocation } from './elem-filter-location';
 import { ElemAddFilter } from './elem-add-filter';
 import { getGeometryPlace } from '@/utils/helpers';
+import ElemFilterCheckboxTags from './elem-filter-checkbox-tags';
 
 type Props = {
   className?: string;
@@ -498,7 +498,7 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-bold text-sm">
+                  <div className="font-medium text-sm">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex items-center flex-wrap gap-2">
@@ -508,7 +508,7 @@ export const ElemFilter: FC<Props> = ({
                       onChange={onChangeDistance}
                       value={filters[option]?.distance}
                       name="distance"
-                      className="w-16"
+                      className="w-16 !rounded-2lg"
                     />
                     <span>miles from this address:</span>
                   </div>
@@ -561,10 +561,10 @@ export const ElemFilter: FC<Props> = ({
                 optionMetadata.choices?.length;
               const numOfTags = filters?.[option]?.tags?.length || 0;
               return (
-                <ElemFilterPopup
+                <ElemFilterCheckboxTags
                   key={option}
                   open={Boolean(filters[option]?.open)}
-                  name={option}
+                  option={option}
                   title={
                     numOfTags > 0 && (
                       <>
@@ -573,47 +573,17 @@ export const ElemFilter: FC<Props> = ({
                       </>
                     )
                   }
-                  onOpen={onOpenFilterPopup}
-                  onClose={onCloseFilterPopup}
-                  onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                  popupClass="max-w-xl"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="text-bold text-sm mb-1">
-                      {optionMetadata.heading}
-                    </div>
-                    <InputSwitch
-                      label="Select All"
-                      checked={isSelectedAll}
-                      onChange={v =>
-                        onToggleSelectAllTags(option, v, optionMetadata.choices)
-                      }
-                    />
-                  </div>
-                  <ul className="grid grid-cols-2 gap-x-3 overflow-y-auto scrollbar-hide lg:grid-cols-4">
-                    {optionMetadata.choices?.map(choice => (
-                      <li
-                        key={choice.id}
-                        className="flex items-baseline w-full text-sm text-left font-medium"
-                      >
-                        <label className="relative flex items-baseline gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:text-primary-500 hover:bg-slate-100">
-                          <input
-                            id={choice.id}
-                            name={choice.id}
-                            type="checkbox"
-                            checked={filters?.[option]?.tags?.some(
-                              item => item === choice.id,
-                            )}
-                            onChange={e => onChangeCheckbox(e, option)}
-                            className="appearance-none w-4 h-4 border rounded border-slate-300 translate-y-1 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-                          />
-                          <div className="break-words">{choice.name}</div>
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </ElemFilterPopup>
+                  heading={optionMetadata.heading}
+                  isSelectedAll={isSelectedAll}
+                  choices={optionMetadata.choices}
+                  tags={filters?.[option]?.tags}
+                  onOpenFilterPopup={onOpenFilterPopup}
+                  onCloseFilterPopup={onCloseFilterPopup}
+                  onClearFilterOption={onClearFilterOption}
+                  onApplyFilter={onApplyFilter}
+                  onToggleSelectAllTags={onToggleSelectAllTags}
+                  onChangeCheckbox={onChangeCheckbox}
+                />
               );
             }
 
@@ -639,12 +609,12 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-bold text-sm">
+                  <div className="font-medium text-sm mb-3">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex items-center space-x-4">
                     <div className="grow">
-                      <div className="text-sm text-slate-600">Min</div>
+                      <div className="text-sm text-slate-600 mb-2">Min</div>
                       <input
                         name={`${option}.minVal`}
                         type="text"
@@ -652,12 +622,12 @@ export const ElemFilter: FC<Props> = ({
                         onChange={onChangeRangeInput}
                         onBlur={onBlurAmount}
                         onFocus={onFocusAmount}
-                        className="appearance-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="appearance-none border-none w-full border border-slate-200 rounded-2lg px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
                     <div className="pt-4 flex-none">{'–'}</div>
                     <div className="grow">
-                      <div className="text-sm text-slate-600">Max</div>
+                      <div className="text-sm text-slate-600 mb-2">Max</div>
                       <input
                         name={`${option}.maxVal`}
                         type="text"
@@ -665,7 +635,7 @@ export const ElemFilter: FC<Props> = ({
                         onChange={onChangeRangeInput}
                         onBlur={onBlurAmount}
                         onFocus={onFocusAmount}
-                        className="appearance-none border-none w-full border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="appearance-none border-none w-full border border-slate-200 rounded-2lg px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
                   </div>
@@ -730,7 +700,7 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-bold text-sm">
+                  <div className="font-medium text-sm">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex flex-col gap-2 mt-2">
@@ -790,7 +760,7 @@ export const ElemFilter: FC<Props> = ({
                             : ''
                         }
                         onChange={onChangeDateRange}
-                        className="block max-w-sm placeholder-slate-500"
+                        className="block max-w-sm placeholder-slate-500 !rounded-2lg"
                         min={optionMetadata.minDate}
                         max={optionMetadata.maxDate}
                       />
@@ -805,7 +775,7 @@ export const ElemFilter: FC<Props> = ({
                             : ''
                         }
                         onChange={onChangeDateRange}
-                        className="block max-w-sm placeholder-slate-500"
+                        className="block max-w-sm placeholder-slate-500 !rounded-2lg"
                         min={optionMetadata.minDate}
                         max={optionMetadata.maxDate}
                       />
@@ -837,31 +807,31 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-bold text-sm">
+                  <div className="font-medium text-sm">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="">
-                      <div className="text-sm text-slate-600">Min</div>
+                      <div className="text-sm text-slate-600 mb-2">Min</div>
                       <input
                         type="text"
                         name={`${option}.minVal`}
                         value={filters?.[option]?.minVal}
                         onChange={onChangeRangeInput}
                         defaultValue={0}
-                        className="appearance-none border-none w-20 border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="appearance-none border-none w-20 border border-slate-200 rounded-2lg px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
                     <div className="pt-4">{'–'}</div>
                     <div className="">
-                      <div className="text-sm text-slate-600">Max</div>
+                      <div className="text-sm text-slate-600 mb-2">Max</div>
                       <input
                         type="text"
                         name={`${option}.maxVal`}
                         value={filters?.[option]?.maxVal}
                         onChange={onChangeRangeInput}
                         defaultValue="Any"
-                        className="appearance-none border-none w-20 border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="appearance-none border-none w-20 border border-slate-200 rounded-2lg px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
                   </div>
@@ -902,7 +872,7 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-bold text-sm">
+                  <div className="font-medium text-sm">
                     {optionMetadata.heading}
                   </div>
                   <div className="py-2">

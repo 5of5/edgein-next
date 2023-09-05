@@ -106,7 +106,7 @@ export const ElemFilterLocation: FC<Props> = ({
       onClear={onClearFilterOption}
       onApply={handleApplyFilter}
     >
-      <div className="font-bold text-sm">{heading}</div>
+      <div className="font-medium text-sm">{heading}</div>
       <div className="flex flex-col gap-4 mt-2">
         <div>
           {onChangeCondition && (
@@ -114,14 +114,14 @@ export const ElemFilterLocation: FC<Props> = ({
               name={option}
               value="any"
               checked={checkedAny}
-              label="is any of these"
+              label="Is"
               onChange={event => onChangeCondition(event, option)}
             />
           )}
 
           <div className="relative">
             <Combobox onChange={handleSelect}>
-              <div className="flex flex-wrap items-center p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
+              <div className="flex flex-wrap items-center p-2 rounded-3xl ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
                 {tags.length > 0 && (
                   <ul className="flex flex-wrap gap-2">
                     {tags.map(item => (
@@ -146,7 +146,7 @@ export const ElemFilterLocation: FC<Props> = ({
                 )}
                 {!isLoadingPlace && (
                   <Combobox.Input
-                    className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                    className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-full border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
                     displayValue={(value: Place) => value?.Label || ''}
                     placeholder={placeholder}
                     value={inputValue}
@@ -172,7 +172,7 @@ export const ElemFilterLocation: FC<Props> = ({
               name={option}
               value="none"
               checked={checkedNone}
-              label="is none of these"
+              label="Is not"
               onChange={event => onChangeCondition(event, option)}
               labelClass="mb-0.5"
             />

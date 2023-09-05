@@ -87,6 +87,7 @@ module.exports = {
         600: '6',
       },
       borderRadius: {
+        '2lg': '1.125rem',
         '4xl': '2rem',
         '5xl': '2.5rem',
       },
