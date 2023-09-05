@@ -313,27 +313,63 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         <ElemInviteBanner className="mx-6 my-3" />
 
         <div className="mx-6">
-          {showPersonalized &&
-            personalizedTags.locationTags.map(location => (
-              <EventsByFilter
-                key={location}
-                headingText={`Recently updated in ${location}`}
-                tagOnClick={onClickType}
-                itemsPerPage={ITEMS_PER_PAGE}
-                filters={{
-                  _and: [
-                    ...defaultFilters,
-                    {
-                      location_json: {
-                        _contains: {
-                          city: `${location}`,
+          {showPersonalized && (
+            <div className="flex flex-col gap-4 gap-x-16">
+              {personalizedTags.locationTags.map(location => (
+                <EventsByFilter
+                  key={location}
+                  headingText={`Upcoming in ${location}`}
+                  tagOnClick={onClickType}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    start_date: Order_By.Asc,
+                  }}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        location_json: {
+                          _contains: {
+                            city: `${location}`,
+                          },
                         },
                       },
-                    },
-                  ],
-                }}
-              />
-            ))}
+                    ],
+                  }}
+                />
+              ))}
+              {personalizedTags.locationTags.map(location => (
+                <EventsByFilter
+                  key={location}
+                  headingText={`Recently updated in ${location}`}
+                  tagOnClick={onClickType}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    start_date: Order_By.Asc,
+                  }}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        location_json: {
+                          _contains: {
+                            city: `${location}`,
+                          },
+                        },
+                      },
+                      {
+                        updated_at: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+            </div>
+          )}
 
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
@@ -368,11 +404,12 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 {showPersonalized && (
                   <div className="flex justify-between my-4">
                     <div className="text-4xl font-medium">All Events</div>
-                    <ElemDropdown
+                    {/* Removed in qol-ui-fixes */}
+                    {/* <ElemDropdown
                       IconComponent={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
-                    />
+                    /> */}
                   </div>
                 )}
                 <div
