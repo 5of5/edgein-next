@@ -7,7 +7,7 @@ import { ElemCredibility } from '@/components/company/elem-credibility';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/company/elem-investments';
 import { ElemOrganizationTeam } from '@/components/elem-organization-team';
-import { runGraphQl } from '@/utils';
+import { runGraphQl, getCityAndCountry, toSentence } from '@/utils';
 import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
 import { ElemCohort } from '@/components/company/elem-cohort';
 import { ElemTabBar } from '@/components/elem-tab-bar';
@@ -535,35 +535,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
     ? `Founded in ${company.year_founded} `
     : '';
 
-  const city = company.location_json?.city || null;
-  const country = company.location_json?.country || null;
-
-  const metaLocation =
-    city && country
-      ? `in ${city} (${country}) | `
-      : city
-      ? `in ${city} | `
-      : country
-      ? `in ${country} | `
-      : '';
+  const metaLocation = getCityAndCountry(
+    company.location_json?.city,
+    company.location_json?.country,
+  );
 
   const metaEmployees = company.total_employees
     ? `${company.total_employees} Employees | `
     : '';
 
-  const tagsList = company.tags
-    ?.map((tag: String, index: number) => {
-      const separator =
-        index === company.tags.length - 2
-          ? ', and '
-          : index === company.tags.length - 1
-          ? ''
-          : ', ';
-      return `${tag}${separator}`;
-    })
-    .join('');
-
-  const metaTags = company.tags?.length > 0 ? `Category ${tagsList} | ` : '';
+  const metaTags =
+    company.tags?.length > 0 ? `Category ${toSentence(company.tags)} | ` : '';
 
   let metaTitle = null;
   if (company.name) {

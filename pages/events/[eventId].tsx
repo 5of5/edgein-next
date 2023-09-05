@@ -5,7 +5,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemTags } from '@/components/elem-tags';
-import { formatDateShown, runGraphQl } from '@/utils';
+import {
+  formatDateShown,
+  runGraphQl,
+  getCityAndCountry,
+  toSentence,
+} from '@/utils';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -434,35 +439,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
   //Meta
   const metaWebsiteUrl = event.link ? event.link : '';
 
-  const city = event.location_json?.city || null;
-  const country = event.location_json?.country || null;
-
-  const metaLocation =
-    city && country
-      ? `Event in ${city} (${country})`
-      : city
-      ? `Event in ${city}`
-      : country
-      ? `Event in ${country}`
-      : '';
+  const metaLocation = getCityAndCountry(
+    event.location_json?.city,
+    event.location_json?.country,
+  );
 
   const metaStartDate = event.start_date
     ? ` | Event date ${moment(event.start_date).format('MMM D, YYYY')}`
     : '';
 
-  const tagsList = event.types
-    ?.map((tag: String, index: number) => {
-      const separator =
-        index === event.types.length - 2
-          ? ', and '
-          : index === event.types.length - 1
-          ? ''
-          : ', ';
-      return `${tag}${separator}`;
-    })
-    .join('');
-
-  const metaTags = event.types?.length > 0 ? ` | Topics about ${tagsList}` : '';
+  const metaTags =
+    event.types?.length > 0 ? ` | Topics about ${toSentence(event.types)}` : '';
 
   let metaTitle = null;
   if (event.name) {

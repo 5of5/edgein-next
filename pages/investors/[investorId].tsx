@@ -15,7 +15,7 @@ import { ElemOrganizationActivity } from '@/components/elem-organization-activit
 import parse from 'html-react-parser';
 import { stripHtmlTags } from '@/utils/text';
 
-import { runGraphQl } from '@/utils';
+import { runGraphQl, getCityAndCountry, toSentence } from '@/utils';
 import {
   GetVcFirmDocument,
   GetVcFirmQuery,
@@ -346,36 +346,18 @@ export const getServerSideProps: GetServerSideProps = async context => {
     ? `Founded in ${vcfirm.year_founded} `
     : '';
 
-  const city = vcfirm.location_json?.city || null;
-  const country = vcfirm.location_json?.country || null;
-
-  const metaLocation =
-    city && country
-      ? `in ${city} (${country})`
-      : city
-      ? `in ${city}`
-      : country
-      ? `in ${country}`
-      : '';
+  const metaLocation = getCityAndCountry(
+    vcfirm.location_json?.city,
+    vcfirm.location_json?.country,
+  );
 
   const metaInvestments =
     vcfirm.investments.length > 0
       ? ` | ${vcfirm.investments.length} confirmed investments`
       : '';
 
-  const tagsList = vcfirm.tags
-    ?.map((tag: String, index: number) => {
-      const separator =
-        index === vcfirm.tags.length - 2
-          ? ', and '
-          : index === vcfirm.tags.length - 1
-          ? ''
-          : ', ';
-      return `${tag}${separator}`;
-    })
-    .join('');
-
-  const metaTags = vcfirm.tags?.length > 0 ? ` | Invests in ${tagsList}` : '';
+  const metaTags =
+    vcfirm.tags?.length > 0 ? ` | Invests in ${toSentence(vcfirm.tags)}` : '';
 
   let metaTitle = null;
   if (vcfirm.name) {

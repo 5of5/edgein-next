@@ -7,7 +7,11 @@ import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
-import { runGraphQl, removeSpecialCharacterFromString } from '@/utils';
+import {
+  runGraphQl,
+  removeSpecialCharacterFromString,
+  toSentence,
+} from '@/utils';
 import {
   GetPersonDocument,
   GetPersonQuery,
@@ -337,18 +341,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
   );
   const organizationsTags = union(vcFirmTags, companyTags).filter(item => item);
 
-  const organizationsTagsList = organizationsTags
-    ?.map((tag, index) => {
-      const separator =
-        index === organizationsTags.length - 2
-          ? ', and '
-          : index === organizationsTags.length - 1
-          ? ''
-          : ', ';
-      return `${tag}${separator}`;
-    })
-    .join('');
-
   // Person jobs
   const vcFirmWorkExperience = flatten(person.investors as Investors[]);
   const companyWorkExperience = flatten(person.team_members as Team_Members[]);
@@ -376,8 +368,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
     ? ` from ${moment(latestJob.start_date).format('MMM YYYY')}`
     : '';
   const metaPersonTags =
-    organizationsTagsList.length > 0
-      ? ` Interested in ${organizationsTagsList}.`
+    organizationsTags.length > 0
+      ? ` Interested in ${toSentence(organizationsTags)}.`
       : '';
 
   let metaTitle = null;
