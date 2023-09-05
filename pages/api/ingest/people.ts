@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import { InsertPeopleDocument, InsertPeopleMutation } from '@/graphql/types';
 import { IngestPeopleReqSchema } from '@/utils/schema';
+import slugify from 'slugify';
 
 export type IngestPeopleReqBody = z.infer<typeof IngestPeopleReqSchema>;
 
@@ -56,7 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return {
         status: 'draft',
         linkedin: linkedInUrl,
-        slug,
+        slug: slugify(slug),
         enrichment_priority: enrichmentPriority,
       };
     } catch (error) {

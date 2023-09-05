@@ -8,6 +8,7 @@ import CookieService from '@/utils/cookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import { IngestCompaniesReqSchema } from '@/utils/schema';
+import slugify from 'slugify';
 
 export type IngestCompaniesReqBody = z.infer<typeof IngestCompaniesReqSchema>;
 
@@ -55,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const { hostname } = new URL(url);
 
-      const slug = hostname.split('.').at(0);
+      const slug =  hostname.split('.').at(0);
 
       if (!slug) {
         throw Error('Error while parsing slug');
@@ -64,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return {
         status: 'draft',
         website,
-        slug,
+        slug: slugify(slug),
         enrichment_priority: enrichmentPriority,
       };
     } catch (error) {
