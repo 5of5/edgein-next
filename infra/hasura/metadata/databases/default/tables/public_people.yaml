@@ -130,6 +130,8 @@ select_permissions:
       filter:
         status:
           _eq: published
+      limit: 50
+      allow_aggregations: true
   - role: viewer
     permission:
       columns:
@@ -157,3 +159,4 @@ select_permissions:
         status:
           _eq: published
       limit: 50
+      allow_aggregations: true
