@@ -370,9 +370,19 @@ const Investors: NextPage<Props> = ({
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={tableLayout}
+                    orderBy={{
+                      updated_at: Order_By.Desc
+                    }}
                     filters={{
                       _and: [
                         { library: { _contains: selectedLibrary } },
+                        {
+                          updated_at: {
+                            _gte: moment()
+                              .subtract(28, 'days')
+                              .format(ISO_DATE_FORMAT),
+                          },
+                        },
                         {
                           location_json: {
                             _contains: {
