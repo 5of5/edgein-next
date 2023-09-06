@@ -141,6 +141,8 @@ select_permissions:
         - updated_at
         - website
         - year_founded
+      computed_fields:
+        - datapoints_count
       filter:
         status:
           _eq: published
