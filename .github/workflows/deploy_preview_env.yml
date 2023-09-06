@@ -32,6 +32,7 @@ jobs:
 
       # If the workflow in workspace is already running from a previous commit, wait for it to finish
       - uses: devkeydet/action-environment-queue@v1
+        name: Wait if other run is running
         with:
           environment: ${{ env.WORKSPACE }}
 
