@@ -33,7 +33,16 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
             </a>
           </Link>
         ) : (
-          <p className="font-medium text-sm">Notes</p>
+          <div className="flex items-center space-x-3 px-2.5 py-1">
+            <IconSidebarNotes
+              className={`w-5 h-5 ${
+                router.asPath.includes('/notes')
+                  ? 'text-primary-500'
+                  : 'text-gray-900'
+              }`}
+            />
+            <p className="font-medium text-sm text-gray-900">Notes</p>
+          </div>
         )}
         {/* ) : (
                 <button
