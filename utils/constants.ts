@@ -1934,15 +1934,15 @@ export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
 export const DEBOUNCE_TIME = 700;
 
 export const GROUPS_TABS: GroupsTabItem[] = [
-  { id: 'my-groups', name: 'My Groups' },
   { id: 'discover', name: 'Discover' },
   { id: 'joined', name: 'Joined' },
+  { id: 'my-groups', name: 'My Groups' },
 ];
 
 export const LISTS_TABS: ListsTabItem[] = [
-  { id: 'my-lists', name: 'My Lists' },
   { id: 'discover', name: 'Discover' },
   { id: 'following', name: 'Following' },
+  { id: 'my-lists', name: 'My Lists' },
 ];
 
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
