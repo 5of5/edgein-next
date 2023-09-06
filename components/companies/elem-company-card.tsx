@@ -14,9 +14,12 @@ import {
   IconTwitter,
   IconGithub,
   IconDiscord,
+  IconLocation,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
+import { isEmpty, values } from 'lodash';
+import { getFullAddress } from '@/utils/helpers';
 
 type Props = {
   company: Companies;
@@ -52,8 +55,10 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
     company_linkedin,
     github,
     discord,
+    location_json,
   } = company;
 
+  const isEmptyLocationJson = values(location_json).every(isEmpty);
   const isRaisingCompany =
     status_tags && status_tags.length > 0 && status_tags.includes('Raising');
 
@@ -66,13 +71,13 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full border border-gray-200 rounded-md p-[16px]">
       <Link href={`/companies/${slug}`}>
         <a>
           <div className="flex shrink-0 w-full">
             <ElemPhoto
               photo={logo}
-              wrapClass="flex items-center justify-center shrink-0 w-36 aspect-square bg-white rounded-lg overflow-hidden border border-gray-200"
+              wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
               imgClass="object-fit max-w-full max-h-full"
               imgAlt={name}
               placeholderClass="text-slate-300"
@@ -82,7 +87,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
       </Link>
 
       <Link href={`/companies/${slug}`}>
-        <a className="flex items-center mt-3">
+        <a className="flex items-center mt-4">
           <ElemTooltip content={name} mode="light">
             <h3 className="text-xl font-medium truncate">{name}</h3>
           </ElemTooltip>
@@ -110,6 +115,15 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
           </>
         )}
 
+        {!isEmptyLocationJson && (
+          <div className="flex pt-1.5 items-center">
+            <IconLocation title={getFullAddress(location_json)} className="h-3 w-3 shrink-0" />
+            <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
+              {getFullAddress(location_json)}
+            </span>
+          </div>
+        )}
+
         {tags && (
           <ElemTags
             className="mt-4"
@@ -121,11 +135,11 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
       </div>
 
       <div className="flex items-center justify-between mt-4 gap-x-5">
-        <div className="flex items-center space-x-0.5">
+        <div className="flex items-center space-x-1.5">
           {website && (
             <Link href={website}>
               <a target="_blank">
-                <IconGlobe className="h-6 w-6 text-gray-400" />
+                <IconGlobe className="h-3.5 w-3.5 text-gray-400" />
               </a>
             </Link>
           )}
@@ -134,12 +148,12 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
             userCanViewLinkedIn ? (
               <Link href={company_linkedin}>
                 <a target="_blank">
-                  <IconLinkedIn className="h-6 w-6 text-gray-400" />
+                  <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
                 </a>
               </Link>
             ) : (
               <button onClick={onClickCompanyLinkedin}>
-                <IconLinkedIn className="h-6 w-6 text-gray-400" />
+                <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
               </button>
             )
           ) : null}
@@ -147,21 +161,21 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
           {twitter && (
             <Link href={twitter}>
               <a target="_blank">
-                <IconTwitter className="h-6 w-6 text-gray-400" />
+                <IconTwitter className="h-3.5 w-3.5 text-gray-400" />
               </a>
             </Link>
           )}
           {github && (
             <Link href={github}>
               <a target="_blank">
-                <IconGithub className="h-6 w-6 text-gray-400" />
+                <IconGithub className="h-3.5 w-3.5 text-gray-400" />
               </a>
             </Link>
           )}
           {discord && (
             <Link href={discord}>
               <a target="_blank">
-                <IconDiscord className="h-6 w-6 text-gray-400" />
+                <IconDiscord className="h-3.5 w-3.5 text-gray-400" />
               </a>
             </Link>
           )}
