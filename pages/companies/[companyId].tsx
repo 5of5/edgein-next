@@ -90,12 +90,6 @@ const Company: NextPage<Props> = (props: Props) => {
   });
 
   useEffect(() => {
-    if (selectedLibrary && !company.library?.includes(selectedLibrary)) {
-      router.push('/companies');
-    }
-  }, [company, selectedLibrary, router]);
-
-  useEffect(() => {
     if (companyData) {
       onTrackView({
         resourceId: companyData?.companies[0]?.id,
