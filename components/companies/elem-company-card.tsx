@@ -71,38 +71,40 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-md p-[16px]">
-      <Link href={`/companies/${slug}`}>
-        <a>
-          <div className="flex shrink-0 w-full">
-            <ElemPhoto
-              photo={logo}
-              wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
-              imgClass="object-fit max-w-full max-h-full"
-              imgAlt={name}
-              placeholderClass="text-slate-300"
-            />
-          </div>
-        </a>
-      </Link>
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px]">
+      <div className="flex flex-col justify-between h-full">
+        <div>
+          <Link href={`/companies/${slug}`}>
+            <a>
+              <div className="flex shrink-0 w-full">
+                <ElemPhoto
+                  photo={logo}
+                  wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
+                  imgClass="object-fit max-w-full max-h-full"
+                  imgAlt={name}
+                  placeholderClass="text-slate-300"
+                />
+              </div>
+            </a>
+          </Link>
 
-      <Link href={`/companies/${slug}`}>
-        <a className="flex items-center mt-4">
-          <ElemTooltip content={name} mode="light">
-            <h3 className="text-xl font-medium truncate">{name}</h3>
-          </ElemTooltip>
-          {coin && (
-            <ElemTooltip content={`Token`} mode="light" className="">
-              <span className="uppercase ml-1">{coin.ticker}</span>
-            </ElemTooltip>
-          )}
-        </a>
-      </Link>
+          <Link href={`/companies/${slug}`}>
+            <a className="flex items-center mt-4">
+              <ElemTooltip content={name} mode="light">
+                <h3 className="text-xl font-medium truncate">{name}</h3>
+              </ElemTooltip>
+              {coin && (
+                <ElemTooltip content={`Token`} mode="light" className="">
+                  <span className="uppercase ml-1">{coin.ticker}</span>
+                </ElemTooltip>
+              )}
+            </a>
+          </Link>
 
-      <div className="mt-2">
-        {overview && (
-          <>
-            {/* <ElemTooltip
+          <div className="mt-2">
+            {overview && (
+              <>
+                {/* <ElemTooltip
             content={overview}
             mode="light"
             direction="bottom"
@@ -111,84 +113,91 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
             className="">
             <div className="text-sm line-clamp-3">{overview}</div>
           </ElemTooltip> */}
-            <div className="text-sm line-clamp-3 text-gray-500">{overview}</div>
-          </>
-        )}
+                <div className="text-sm line-clamp-3 text-gray-500">
+                  {overview}
+                </div>
+              </>
+            )}
 
-        {!isEmptyLocationJson && (
-          <div className="flex pt-1.5 items-center">
-            <IconLocation title={getFullAddress(location_json)} className="h-3 w-3 shrink-0" />
-            <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
-              {getFullAddress(location_json)}
-            </span>
+            {!isEmptyLocationJson && (
+              <div className="flex pt-1.5 items-center">
+                <IconLocation
+                  title={getFullAddress(location_json)}
+                  className="h-3 w-3 shrink-0"
+                />
+                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
+                  {getFullAddress(location_json)}
+                </span>
+              </div>
+            )}
+
+            {tags && (
+              <ElemTags
+                className="mt-4"
+                limit={CARD_DEFAULT_TAGS_LIMIT}
+                resourceType={'companies'}
+                tags={tags}
+              />
+            )}
           </div>
-        )}
-
-        {tags && (
-          <ElemTags
-            className="mt-4"
-            limit={CARD_DEFAULT_TAGS_LIMIT}
-            resourceType={'companies'}
-            tags={tags}
-          />
-        )}
-      </div>
-
-      <div className="flex items-center justify-between mt-4 gap-x-5">
-        <div className="flex items-center space-x-1.5">
-          {website && (
-            <Link href={website}>
-              <a target="_blank">
-                <IconGlobe className="h-3.5 w-3.5 text-gray-400" />
-              </a>
-            </Link>
-          )}
-
-          {company_linkedin ? (
-            userCanViewLinkedIn ? (
-              <Link href={company_linkedin}>
-                <a target="_blank">
-                  <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
-                </a>
-              </Link>
-            ) : (
-              <button onClick={onClickCompanyLinkedin}>
-                <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
-              </button>
-            )
-          ) : null}
-
-          {twitter && (
-            <Link href={twitter}>
-              <a target="_blank">
-                <IconTwitter className="h-3.5 w-3.5 text-gray-400" />
-              </a>
-            </Link>
-          )}
-          {github && (
-            <Link href={github}>
-              <a target="_blank">
-                <IconGithub className="h-3.5 w-3.5 text-gray-400" />
-              </a>
-            </Link>
-          )}
-          {discord && (
-            <Link href={discord}>
-              <a target="_blank">
-                <IconDiscord className="h-3.5 w-3.5 text-gray-400" />
-              </a>
-            </Link>
-          )}
         </div>
 
-        <ElemSaveToList
-          resourceName={name}
-          resourceId={id}
-          resourceType={'companies'}
-          slug={slug!}
-          buttonStyle="default"
-          follows={follows}
-        />
+        <div className="flex items-center justify-between mt-4 gap-x-5">
+          <div className="flex items-center space-x-1.5">
+            {website && (
+              <Link href={website}>
+                <a target="_blank">
+                  <IconGlobe className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+
+            {company_linkedin ? (
+              userCanViewLinkedIn ? (
+                <Link href={company_linkedin}>
+                  <a target="_blank">
+                    <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
+                  </a>
+                </Link>
+              ) : (
+                <button onClick={onClickCompanyLinkedin}>
+                  <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
+                </button>
+              )
+            ) : null}
+
+            {twitter && (
+              <Link href={twitter}>
+                <a target="_blank">
+                  <IconTwitter className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+            {github && (
+              <Link href={github}>
+                <a target="_blank">
+                  <IconGithub className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+            {discord && (
+              <Link href={discord}>
+                <a target="_blank">
+                  <IconDiscord className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+          </div>
+
+          <ElemSaveToList
+            resourceName={name}
+            resourceId={id}
+            resourceType={'companies'}
+            slug={slug!}
+            buttonStyle="default"
+            follows={follows}
+          />
+        </div>
       </div>
       <ElemUpgradeDialog
         isOpen={isOpenUpgradeDialog}
