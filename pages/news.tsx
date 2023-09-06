@@ -9,11 +9,7 @@ import { PlaceholderNewsCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '../utils';
 import toast, { Toaster } from 'react-hot-toast';
-import {
-  IconAnnotation,
-  IconSearch,
-  IconSortDashboard,
-} from '@/components/icons';
+import { IconAnnotation, IconSearch } from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
@@ -34,8 +30,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
@@ -50,7 +44,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const router = useRouter();
   const { showNewMessages } = useIntercom();
-  const { user, listAndFollows, myGroups } = useUser();
+  const { user } = useUser();
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -84,19 +78,6 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       { library: { _contains: selectedLibrary } },
     ],
   };
-
-  const { sortChoices, orderByParam, orderByQuery } =
-    useDashboardSortBy<News_Order_By>({
-      defaultSortBy: 'newest',
-      ascendingSortKey: 'text',
-      descendingSortKey: 'text',
-      newestSortKey: 'date',
-      oldestSortKey: 'date',
-    });
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -141,7 +122,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     {
       offset,
       limit,
-      orderBy: [orderByQuery],
+      orderBy: [{ date: Order_By.Desc } as News_Order_By],
       where: filters as News_Bool_Exp,
     },
     { refetchOnWindowFocus: false },
@@ -160,7 +141,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 pt-0.5 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -171,20 +152,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
-            {!selectedTab?.value && (
-              <ElemDropdown
-                IconComponent={IconSortDashboard}
-                defaultItem={defaultOrderBy}
-                items={sortChoices}
-              />
-            )}
           </div>
         </div>
 
-        <ElemInviteBanner className="mx-6 my-3" />
+        <ElemInviteBanner className="mx-8 my-3" />
 
-        <div className="mx-6">
+        <div className="mx-8">
           {news?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
               <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">

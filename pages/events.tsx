@@ -7,11 +7,7 @@ import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import moment from 'moment-timezone';
-import {
-  IconSearch,
-  IconAnnotation,
-  IconSortDashboard,
-} from '@/components/icons';
+import { IconSearch, IconAnnotation } from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import {
   GetEventsDocument,
@@ -37,8 +33,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
@@ -109,17 +103,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
   };
-
-  const { orderByQuery, orderByParam, sortChoices } =
-    useDashboardSortBy<Events_Order_By>({
-      defaultSortBy: 'oldest',
-      newestSortKey: 'start_date',
-      oldestSortKey: 'start_date',
-    });
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -234,9 +217,10 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       limit,
       where: filters as Events_Bool_Exp,
       orderBy: [
-        selectedTab?.value === 'past'
-          ? ({ start_date: Order_By.Desc } as Events_Order_By)
-          : orderByQuery,
+        {
+          start_date:
+            selectedTab?.value === 'past' ? Order_By.Desc : Order_By.Asc,
+        } as Events_Order_By,
       ],
     },
     { refetchOnWindowFocus: false },
@@ -257,7 +241,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -278,19 +262,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               }
               onSelectFilterOption={onSelectFilterOption}
             />
-
-            {!selectedTab?.value && (
-              <ElemDropdown
-                IconComponent={IconSortDashboard}
-                defaultItem={defaultOrderBy}
-                items={sortChoices}
-              />
-            )}
           </div>
         </div>
 
         {selectedFilters && (
-          <div className="mx-6 my-3">
+          <div className="mx-8 my-3">
             <ElemFilter
               resourceType="events"
               excludeFilters={
@@ -321,9 +297,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </div>
         )}
 
-        <ElemInviteBanner className="mx-6 my-3" />
+        <ElemInviteBanner className="mx-8 my-3" />
 
-        <div className="mx-6">
+        <div className="mx-8">
           {showPersonalized &&
             personalizedTags.locationTags.map(location => (
               <EventsByFilter
