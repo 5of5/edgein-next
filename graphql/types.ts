@@ -24117,6 +24117,8 @@ export type Vc_Firms = {
   __typename?: 'vc_firms';
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
+  /** A computed field, executes function "vc_firms_datapoints" */
+  datapoints_count: Maybe<Scalars['Int']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
   enrichment_priority: Scalars['Int'];
@@ -24385,6 +24387,7 @@ export type Vc_Firms_Bool_Exp = {
   _or: InputMaybe<Array<Vc_Firms_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  datapoints_count: InputMaybe<Int_Comparison_Exp>;
   domain_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   email_domain: InputMaybe<String_Comparison_Exp>;
   enrichment_priority: InputMaybe<Int_Comparison_Exp>;
@@ -24877,6 +24880,7 @@ export type Vc_Firms_On_Conflict = {
 export type Vc_Firms_Order_By = {
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
+  datapoints_count: InputMaybe<Order_By>;
   domain_enriched_at: InputMaybe<Order_By>;
   email_domain: InputMaybe<Order_By>;
   enrichment_priority: InputMaybe<Order_By>;
