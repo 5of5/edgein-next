@@ -289,7 +289,7 @@ const Investors: NextPage<Props> = ({
       <div className="relative">
         <div>
           <div
-            className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+            className="px-6 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
             role="tablist"
           >
             <ElemCategories

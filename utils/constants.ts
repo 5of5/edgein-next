@@ -1065,9 +1065,6 @@ export const eventsFilterOptions = [
 ];
 
 export const MY_EDGEIN_MENU_OPEN_KEY = 'disclosure-my-edgein-menu-default-open';
-export const MY_LISTS_MENU_OPEN_KEY = 'disclosure-my-lists-menu-default-open';
-export const MY_NOTES_MENU_OPEN_KEY = 'disclosure-my-notes-menu-default-open';
-export const MY_GROUPS_MENU_OPEN_KEY = 'disclosure-my-groups-menu-default-open';
 export const EXPLORE_MENU_OPEN_KEY = 'disclosure-explore-menu-default-open';
 export const SHOW_INVITE_BANNER = 'show-invite-banner';
 
