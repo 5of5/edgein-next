@@ -890,7 +890,7 @@ export const companiesFilterOptions = [
         isPremium: true,
       },
       {
-        label: 'Total funding amount',
+        label: 'Total funding',
         value: 'fundingAmount',
         isPremium: true,
       },
@@ -923,37 +923,35 @@ export const investorsFilterOptions = [
     category: 'Location',
     items: [
       {
-        label: 'Add country',
+        label: 'Country',
         value: 'country',
       },
       {
-        label: 'Add state',
+        label: 'State',
         value: 'state',
       },
       {
-        label: 'Add city',
+        label: 'City',
         value: 'city',
       },
       {
-        label: 'Add address',
+        label: 'Address',
         value: 'address',
       },
     ],
   },
   {
-    category: 'Description keywords',
     items: [
       {
-        label: 'Add keywords',
+        label: 'Keywords',
         value: 'keywords',
       },
     ],
   },
   {
-    category: 'Tags',
     items: [
       {
-        label: 'Select tags',
+        label: 'Tags',
         value: 'industry',
       },
     ],
@@ -967,7 +965,7 @@ export const investorsFilterOptions = [
         isPremium: true,
       },
       {
-        label: 'Investment amount total',
+        label: 'Total investment',
         value: 'investmentAmountTotal',
         isPremium: true,
       },
@@ -994,7 +992,6 @@ export const investorsFilterOptions = [
     ],
   },
   {
-    category: 'Team',
     items: [
       {
         label: 'Team size',
@@ -1010,64 +1007,55 @@ export const eventsFilterOptions = [
     category: 'Location',
     items: [
       {
-        label: 'Add country',
+        label: 'Country',
         value: 'country',
       },
       {
-        label: 'Add state',
+        label: 'State',
         value: 'state',
       },
       {
-        label: 'Add city',
+        label: 'City',
         value: 'city',
       },
       {
-        label: 'Add address',
+        label: 'Address',
         value: 'address',
       },
     ],
   },
   {
-    category: 'Details',
     items: [
       {
-        label: 'Select date',
+        label: 'Keywords',
+        value: 'keywords',
+      },
+    ],
+  },
+  {
+    category: 'Event details',
+    items: [
+      {
+        label: 'Type',
+        value: 'eventType',
+      },
+      {
+        label: 'Date',
         value: 'eventDate',
       },
       {
-        label: 'Select price',
+        label: 'Price',
         value: 'eventPrice',
       },
       {
-        label: 'Select size',
+        label: 'Size',
         value: 'eventSize',
-      },
-    ],
-  },
-  {
-    category: 'Event types',
-    items: [
-      {
-        label: 'Select type',
-        value: 'eventType',
-      },
-    ],
-  },
-  {
-    category: 'Description keywords',
-    items: [
-      {
-        label: 'Add keywords',
-        value: 'keywords',
       },
     ],
   },
 ];
 
 export const MY_EDGEIN_MENU_OPEN_KEY = 'disclosure-my-edgein-menu-default-open';
-export const MY_LISTS_MENU_OPEN_KEY = 'disclosure-my-lists-menu-default-open';
-export const MY_NOTES_MENU_OPEN_KEY = 'disclosure-my-notes-menu-default-open';
-export const MY_GROUPS_MENU_OPEN_KEY = 'disclosure-my-groups-menu-default-open';
 export const EXPLORE_MENU_OPEN_KEY = 'disclosure-explore-menu-default-open';
 export const SHOW_INVITE_BANNER = 'show-invite-banner';
 
@@ -1946,15 +1934,15 @@ export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
 export const DEBOUNCE_TIME = 700;
 
 export const GROUPS_TABS: GroupsTabItem[] = [
-  { id: 'my-groups', name: 'My Groups' },
   { id: 'discover', name: 'Discover' },
   { id: 'joined', name: 'Joined' },
+  { id: 'my-groups', name: 'My Groups' },
 ];
 
 export const LISTS_TABS: ListsTabItem[] = [
-  { id: 'my-lists', name: 'My Lists' },
   { id: 'discover', name: 'Discover' },
   { id: 'following', name: 'Following' },
+  { id: 'my-lists', name: 'My Lists' },
 ];
 
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
@@ -2020,11 +2008,11 @@ export const CARD_DEFAULT_TAGS_LIMIT = 3;
 
 export const CARD_MAX_TAGS_LIMIT = 50;
 
-export const SIDEBAR_DEFAULT_LISTS_LIMIT = 2;
+export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
 
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
 
-export const SIDEBAR_LIMIT_ITEMS = 5;
+export const DEFAULT_FILTER_TAGS_OFFSET = 10;
 
 export const NEW_CATEGORY_LIMIT = 33;
 

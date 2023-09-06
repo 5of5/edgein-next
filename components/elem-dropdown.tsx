@@ -11,6 +11,7 @@ type Props = {
     id: number;
     label: string;
     value: string;
+    StartIcon?: FC<IconProps>;
     onClick: () => void;
   }>;
 };
@@ -31,7 +32,7 @@ export const ElemDropdown: FC<Props> = ({
             <IconComponent className="w-4 h-4 mr-1.5 text-gray-400" />
           )}
           {items[activeItem].label}
-          <IconChevronDownMini className="w-5 h-5 ml-1" />
+          <IconChevronDownMini className="w-5 h-5 ml-1.5" />
         </ElemButton>
       </Popover.Button>
 
@@ -47,24 +48,38 @@ export const ElemDropdown: FC<Props> = ({
         <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
           {({ close }) => (
             <div>
-              {items.map(item => (
-                <button
-                  key={item.id}
-                  className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
-                  onClick={() => {
-                    item.onClick();
-                    setActiveItem(item.id);
-                    close();
-                  }}
-                >
-                  <IconCheck
-                    className={`w-4 h-4 text-primary-500 ${
-                      item.id === activeItem ? 'opacity-100' : 'opacity-0'
-                    }`}
-                  />
-                  {item.label}
-                </button>
-              ))}
+              {items.map(item => {
+                const isActiveItem = item.id === activeItem;
+                return (
+                  <button
+                    key={item.id}
+                    className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
+                      isActiveItem ? 'font-medium' : 'font-normal'
+                    } px-4 py-2 m-0 transition-all hover:bg-gray-100`}
+                    onClick={() => {
+                      item.onClick();
+                      setActiveItem(item.id);
+                      close();
+                    }}
+                  >
+                    {item.StartIcon ? (
+                      <item.StartIcon
+                        className={`w-4 h-4  ${
+                          isActiveItem ? 'text-primary-500' : 'text-gray-400'
+                        }`}
+                      />
+                    ) : (
+                      <IconCheck
+                        className={`w-4 h-4 text-primary-500 ${
+                          isActiveItem ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    )}
+
+                    {item.label}
+                  </button>
+                );
+              })}
             </div>
           )}
         </Popover.Panel>

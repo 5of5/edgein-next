@@ -73,7 +73,7 @@ const ElemFilterTagsInput: FC<Props> = ({
       onClear={onClearFilterOption}
       onApply={handleApplyFilter}
     >
-      <div className="font-bold text-sm">{heading}</div>
+      <div className="font-medium text-sm">{heading}</div>
       <div className="flex flex-col gap-4 mt-2">
         <div>
           {onChangeCondition && (
@@ -81,7 +81,7 @@ const ElemFilterTagsInput: FC<Props> = ({
               name={option}
               value="any"
               checked={checkedAny}
-              label="is"
+              label="Is"
               onChange={event => onChangeCondition(event, option)}
             />
           )}
@@ -101,7 +101,7 @@ const ElemFilterTagsInput: FC<Props> = ({
               name={option}
               value="none"
               checked={checkedNone}
-              label="is not"
+              label="Is not"
               onChange={event => onChangeCondition(event, option)}
               labelClass="mb-0.5"
             />

@@ -275,14 +275,16 @@ const Companies: NextPage<Props> = ({
   const layoutItems = [
     {
       id: 0,
-      label: 'Grid View',
+      label: 'Grid view',
       value: 'grid',
+      StartIcon: IconGroup,
       onClick: () => setTableLayout(false),
     },
     {
       id: 1,
-      label: 'Table View',
+      label: 'Table view',
       value: 'table',
+      StartIcon: IconTable,
       onClick: () => setTableLayout(true),
     },
   ];
@@ -326,7 +328,7 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -358,7 +360,7 @@ const Companies: NextPage<Props> = ({
         </div>
 
         {selectedFilters && (
-          <div className="mx-6 my-3">
+          <div className="mx-8 my-3">
             <ElemFilter
               resourceType="companies"
               filterValues={selectedFilters}
@@ -383,9 +385,9 @@ const Companies: NextPage<Props> = ({
           </div>
         )}
 
-        <ElemInviteBanner className="mx-6 my-3" />
+        <ElemInviteBanner className="mx-8 my-3" />
 
-        <div className="mx-6">
+        <div className="mx-8">
           {showPersonalized && (
             <div className="flex flex-col gap-4 gap-x-16">
               {personalizedTags.locationTags.map((location, index) => (
