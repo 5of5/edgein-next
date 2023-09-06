@@ -166,7 +166,9 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                           : onOpenUpgradeDialog
                       }
                       name={item.value}
-                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-400 px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                      className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
+                        userCanUseFilter ? '' : 'text-gray-400'
+                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}
                     >
                       {!userCanUseFilter && (
                         <IconLockClosed

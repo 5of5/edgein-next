@@ -890,7 +890,7 @@ export const companiesFilterOptions = [
         isPremium: true,
       },
       {
-        label: 'Total funding amount',
+        label: 'Total funding',
         value: 'fundingAmount',
         isPremium: true,
       },
@@ -923,37 +923,35 @@ export const investorsFilterOptions = [
     category: 'Location',
     items: [
       {
-        label: 'Add country',
+        label: 'Country',
         value: 'country',
       },
       {
-        label: 'Add state',
+        label: 'State',
         value: 'state',
       },
       {
-        label: 'Add city',
+        label: 'City',
         value: 'city',
       },
       {
-        label: 'Add address',
+        label: 'Address',
         value: 'address',
       },
     ],
   },
   {
-    category: 'Description keywords',
     items: [
       {
-        label: 'Add keywords',
+        label: 'Keywords',
         value: 'keywords',
       },
     ],
   },
   {
-    category: 'Tags',
     items: [
       {
-        label: 'Select tags',
+        label: 'Tags',
         value: 'industry',
       },
     ],
@@ -967,7 +965,7 @@ export const investorsFilterOptions = [
         isPremium: true,
       },
       {
-        label: 'Investment amount total',
+        label: 'Total investment',
         value: 'investmentAmountTotal',
         isPremium: true,
       },
@@ -994,7 +992,6 @@ export const investorsFilterOptions = [
     ],
   },
   {
-    category: 'Team',
     items: [
       {
         label: 'Team size',
@@ -1010,55 +1007,49 @@ export const eventsFilterOptions = [
     category: 'Location',
     items: [
       {
-        label: 'Add country',
+        label: 'Country',
         value: 'country',
       },
       {
-        label: 'Add state',
+        label: 'State',
         value: 'state',
       },
       {
-        label: 'Add city',
+        label: 'City',
         value: 'city',
       },
       {
-        label: 'Add address',
+        label: 'Address',
         value: 'address',
       },
     ],
   },
   {
-    category: 'Details',
     items: [
       {
-        label: 'Select date',
+        label: 'Keywords',
+        value: 'keywords',
+      },
+    ],
+  },
+  {
+    category: 'Event details',
+    items: [
+      {
+        label: 'Type',
+        value: 'eventType',
+      },
+      {
+        label: 'Date',
         value: 'eventDate',
       },
       {
-        label: 'Select price',
+        label: 'Price',
         value: 'eventPrice',
       },
       {
-        label: 'Select size',
+        label: 'Size',
         value: 'eventSize',
-      },
-    ],
-  },
-  {
-    category: 'Event types',
-    items: [
-      {
-        label: 'Select type',
-        value: 'eventType',
-      },
-    ],
-  },
-  {
-    category: 'Description keywords',
-    items: [
-      {
-        label: 'Add keywords',
-        value: 'keywords',
       },
     ],
   },
