@@ -238,6 +238,8 @@ select_permissions:
         - white_paper
         - year_founded
         - youtube
+      computed_fields:
+        - datapoints_count
       filter:
         status:
           _eq: published
