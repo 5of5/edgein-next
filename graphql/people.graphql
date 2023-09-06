@@ -2,6 +2,7 @@ query GetPerson($slug: String!) {
   people(where: { slug: { _eq: $slug } }) {
     id
     name
+    library
     personal_email
     picture
     slug
