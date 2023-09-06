@@ -49,6 +49,7 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
@@ -99,8 +100,6 @@ const Companies: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const [sortBy, setSortBy] = useState('mostRelevant');
-
   const [page, setPage] = useStateParams<number>(
     0,
     'page',
@@ -141,6 +140,13 @@ const Companies: NextPage<Props> = ({
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Companies_Order_By>();
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -229,24 +235,6 @@ const Companies: NextPage<Props> = ({
     }
   }
 
-  let orderByQuery: DeepPartial<Companies_Order_By> = {
-    datapoints_count: Order_By.Desc,
-  };
-
-  if (isNewTabSelected) {
-    orderByQuery = { date_added: Order_By.Desc };
-  } else if (sortBy === 'lastUpdate') {
-    orderByQuery = { updated_at: Order_By.Desc };
-  } else if (sortBy === 'totalFundingLowToHigh') {
-    orderByQuery = { investor_amount: Order_By.Asc };
-  } else if (sortBy === 'totalFundingHighToLow') {
-    orderByQuery = { investor_amount: Order_By.DescNullsLast };
-  } else if (sortBy === 'lastFundingDate') {
-    orderByQuery = {
-      investment_rounds_aggregate: { max: { round_date: Order_By.Desc } },
-    };
-  }
-
   const {
     data: companiesData,
     error,
@@ -256,7 +244,11 @@ const Companies: NextPage<Props> = ({
       offset: isNewTabSelected ? null : offset,
       limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
       where: filters as Companies_Bool_Exp,
-      orderBy: orderByQuery as Companies_Order_By,
+      orderBy: [
+        isNewTabSelected
+          ? ({ date_added: Order_By.Desc } as Companies_Order_By)
+          : orderByQuery,
+      ],
     },
     { refetchOnWindowFocus: false },
   );
@@ -286,39 +278,6 @@ const Companies: NextPage<Props> = ({
       value: 'table',
       StartIcon: IconTable,
       onClick: () => setTableLayout(true),
-    },
-  ];
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Most relevant',
-      value: 'mostRelevant',
-      onClick: () => setSortBy('mostRelevant'),
-    },
-    {
-      id: 1,
-      label: 'Last update (new to old)',
-      value: 'lastUpdate',
-      onClick: () => setSortBy('lastUpdate'),
-    },
-    {
-      id: 2,
-      label: 'Total funding (low to high)',
-      value: 'totalFundingLowToHigh',
-      onClick: () => setSortBy('totalFundingLowToHigh'),
-    },
-    {
-      id: 3,
-      label: 'Total funding (high to low)',
-      value: 'totalFundingHighToLow',
-      onClick: () => setSortBy('totalFundingHighToLow'),
-    },
-    {
-      id: 4,
-      label: 'Last funding date (new to old)',
-      value: 'lastFundingDate',
-      onClick: () => setSortBy('lastFundingDate'),
     },
   ];
 
@@ -353,7 +312,8 @@ const Companies: NextPage<Props> = ({
             {!isNewTabSelected && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
-                items={sortItems}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
               />
             )}
           </div>

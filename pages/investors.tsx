@@ -48,6 +48,7 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
@@ -99,8 +100,6 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const [sortBy, setSortBy] = useState('mostRelevant');
-
   const [page, setPage] = useStateParams<number>(
     0,
     'page',
@@ -141,6 +140,13 @@ const Investors: NextPage<Props> = ({
   const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Vc_Firms_Order_By>();
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -232,24 +238,6 @@ const Investors: NextPage<Props> = ({
     }
   }
 
-  let orderByQuery: DeepPartial<Vc_Firms_Order_By> = {
-    datapoints_count: Order_By.Desc,
-  };
-
-  if (isNewTabSelected) {
-    orderByQuery = { created_at: Order_By.Desc };
-  } else if (sortBy === 'lastUpdate') {
-    orderByQuery = { updated_at: Order_By.Desc };
-  } else if (sortBy === 'totalInvestmentLowToHigh') {
-    orderByQuery = { investment_amount_total: Order_By.Asc };
-  } else if (sortBy === 'totalInvestmentHighToLow') {
-    orderByQuery = { investment_amount_total: Order_By.DescNullsLast };
-  } else if (sortBy === 'lastInvestmentDate') {
-    orderByQuery = {
-      latest_investment: Order_By.DescNullsLast,
-    };
-  }
-
   const {
     data: vcFirmsData,
     error,
@@ -259,7 +247,11 @@ const Investors: NextPage<Props> = ({
       offset: isNewTabSelected ? null : offset,
       limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
       where: filters as Vc_Firms_Bool_Exp,
-      orderBy: orderByQuery as Vc_Firms_Order_By,
+      orderBy: [
+        isNewTabSelected
+          ? ({ created_at: Order_By.Desc } as Vc_Firms_Order_By)
+          : orderByQuery,
+      ],
     },
     { refetchOnWindowFocus: false },
   );
@@ -289,39 +281,6 @@ const Investors: NextPage<Props> = ({
       value: 'table',
       StartIcon: IconTable,
       onClick: () => setTableLayout(true),
-    },
-  ];
-
-  const sortItems = [
-    {
-      id: 0,
-      label: 'Most relevant',
-      value: 'mostRelevant',
-      onClick: () => setSortBy('mostRelevant'),
-    },
-    {
-      id: 1,
-      label: 'Last update (new to old)',
-      value: 'lastUpdate',
-      onClick: () => setSortBy('lastUpdate'),
-    },
-    {
-      id: 2,
-      label: 'Total investment (low to high)',
-      value: 'totalInvestmentLowToHigh',
-      onClick: () => setSortBy('totalInvestmentLowToHigh'),
-    },
-    {
-      id: 3,
-      label: 'Total investment (high to low)',
-      value: 'totalInvestmentHighToLow',
-      onClick: () => setSortBy('totalInvestmentHighToLow'),
-    },
-    {
-      id: 4,
-      label: 'Last investment date (new to old)',
-      value: 'lastInvestmentDate',
-      onClick: () => setSortBy('lastInvestmentDate'),
     },
   ];
 
@@ -356,7 +315,8 @@ const Investors: NextPage<Props> = ({
               {!isNewTabSelected && (
                 <ElemDropdown
                   IconComponent={IconSortDashboard}
-                  items={sortItems}
+                  defaultItem={defaultOrderBy}
+                  items={sortChoices}
                 />
               )}
             </div>
