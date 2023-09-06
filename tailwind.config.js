@@ -69,6 +69,9 @@ module.exports = {
           25: '#fcfcfc',
         },
         blue,
+        pink: {
+          25: '#DE177A',
+        },
         transparent: 'transparent',
       },
       padding: {
@@ -87,6 +90,7 @@ module.exports = {
         600: '6',
       },
       borderRadius: {
+        '2lg': '1.125rem',
         '4xl': '2rem',
         '5xl': '2.5rem',
       },
