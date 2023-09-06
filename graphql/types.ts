@@ -1907,6 +1907,8 @@ export type Companies = {
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamp']>;
+  /** A computed field, executes function "companies_datapoints" */
+  datapoints_count: Maybe<Scalars['Int']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
@@ -2203,6 +2205,7 @@ export type Companies_Bool_Exp = {
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamp_Comparison_Exp>;
+  datapoints_count: InputMaybe<Int_Comparison_Exp>;
   date_added: InputMaybe<Date_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
   domain_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -2800,6 +2803,7 @@ export type Companies_Order_By = {
   company_linkedin: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
+  datapoints_count: InputMaybe<Order_By>;
   date_added: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
   domain_enriched_at: InputMaybe<Order_By>;
@@ -24113,6 +24117,8 @@ export type Vc_Firms = {
   __typename?: 'vc_firms';
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
+  /** A computed field, executes function "vc_firms_datapoints" */
+  datapoints_count: Maybe<Scalars['Int']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
   enrichment_priority: Scalars['Int'];
@@ -24381,6 +24387,7 @@ export type Vc_Firms_Bool_Exp = {
   _or: InputMaybe<Array<Vc_Firms_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  datapoints_count: InputMaybe<Int_Comparison_Exp>;
   domain_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   email_domain: InputMaybe<String_Comparison_Exp>;
   enrichment_priority: InputMaybe<Int_Comparison_Exp>;
@@ -24873,6 +24880,7 @@ export type Vc_Firms_On_Conflict = {
 export type Vc_Firms_Order_By = {
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
+  datapoints_count: InputMaybe<Order_By>;
   domain_enriched_at: InputMaybe<Order_By>;
   email_domain: InputMaybe<Order_By>;
   enrichment_priority: InputMaybe<Order_By>;
