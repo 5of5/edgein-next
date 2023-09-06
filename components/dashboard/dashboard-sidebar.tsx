@@ -88,7 +88,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   return (
     <div className={`p-4 text-gray-600 ${className}`}>
       <nav>
-        <ul className="border-b border-gray-200 pb-8">
+        <ul className="border-b border-gray-200 pb-8 space-y-1">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>
               <Link href={item.href}>

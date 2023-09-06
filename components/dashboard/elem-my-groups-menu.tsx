@@ -4,10 +4,7 @@ import { useRouter } from 'next/router';
 import { IconSidebarGroups } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
-import {
-  SIDEBAR_DEFAULT_GROUPS_LIMIT,
-  SIDEBAR_LIMIT_ITEMS,
-} from '@/utils/constants';
+import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 
 type Props = {
@@ -100,7 +97,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
       </div>
 
       {user && (
-        <ul className="mt-1">
+        <ul className="mt-1 space-y-1">
           {displayedGroups
             .slice(0, SIDEBAR_DEFAULT_GROUPS_LIMIT)
             ?.map(group => {
@@ -125,20 +122,10 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
           <li
             role="button"
             onClick={onClickCreate}
-            className="flex items-center space-x-2 py-2 pl-4 mt-1 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
+            className="flex items-center space-x-2 py-2 pl-4 mt-1 font-normal text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
           >
             Add a new group
           </li>
-
-          {myGroups.length > SIDEBAR_LIMIT_ITEMS && (
-            <li role="button">
-              <Link href="/groups/">
-                <a className="flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900">
-                  See all
-                </a>
-              </Link>
-            </li>
-          )}
         </ul>
       )}
 

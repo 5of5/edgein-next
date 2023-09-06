@@ -62,7 +62,7 @@ const ElemFilterCheckboxTags: FC<Props> = ({
       <div className="flex items-center justify-between mb-2">
         <div className="font-medium text-sm mb-1">{heading}</div>
         <InputSwitch
-          label="Select All"
+          label="Select all"
           checked={isSelectedAll}
           onChange={v => onToggleSelectAllTags(option, v, choices)}
         />
@@ -71,7 +71,11 @@ const ElemFilterCheckboxTags: FC<Props> = ({
         {displayedChoices.map(choice => (
           <li
             key={choice.id}
-            className="flex items-baseline w-full text-sm text-left font-medium"
+            className={`flex items-baseline w-full text-sm text-left ${
+              tags?.some(item => item === choice.id)
+                ? 'font-medium'
+                : 'font-normal'
+            }`}
           >
             <label className="relative flex items-baseline gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:text-primary-500 hover:bg-slate-100">
               <input
@@ -82,7 +86,7 @@ const ElemFilterCheckboxTags: FC<Props> = ({
                 onChange={e => onChangeCheckbox(e, option)}
                 className="appearance-none w-4 h-4 border rounded border-slate-300 translate-y-1 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
               />
-              <div className="break-words">{choice.name}</div>
+              <div className="break-words text-gray-600">{choice.name}</div>
             </label>
           </li>
         ))}

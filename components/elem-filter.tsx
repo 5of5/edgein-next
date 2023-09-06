@@ -501,8 +501,10 @@ export const ElemFilter: FC<Props> = ({
                   <div className="font-medium text-sm">
                     {optionMetadata.heading}
                   </div>
-                  <div className="flex items-center flex-wrap gap-2">
-                    <span>Find within</span>
+                  <div className="flex items-center flex-wrap gap-1 mt-1.5">
+                    <span className="text-sm font-normal text-gray-500">
+                      Find within
+                    </span>
                     <InputText
                       type="number"
                       onChange={onChangeDistance}
@@ -510,9 +512,11 @@ export const ElemFilter: FC<Props> = ({
                       name="distance"
                       className="w-16 !rounded-2lg"
                     />
-                    <span>miles from this address:</span>
                   </div>
-                  <div className="flex flex-col gap-2 mt-4">
+                  <p className="text-sm font-normal text-gray-500 mt-3">
+                    miles from this address:
+                  </p>
+                  <div className="flex flex-col gap-2 mt-1.5">
                     <ElemAddressFilter
                       value={filters[option]?.value}
                       onChange={onChangeAddress}

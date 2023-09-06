@@ -24,14 +24,12 @@ const ElemLibrarySelector = () => {
           btn="default"
           roundedFull={false}
           className={`rounded-lg border ${
-            selectedLibrary === 'Web3'
-              ? 'border-primary-500'
-              : 'border-pink-500'
+            selectedLibrary === 'Web3' ? 'border-primary-500' : 'border-pink-25'
           }`}
         >
           <IconMarket
             className={`w-4 h-4 ${
-              selectedLibrary === 'Web3' ? 'text-primary-500' : 'text-pink-500'
+              selectedLibrary === 'Web3' ? 'text-primary-500' : 'text-pink-25'
             } mr-1.5`}
           />
           {selectedLibrary}
@@ -70,7 +68,7 @@ const ElemLibrarySelector = () => {
                     className={`w-4 h-4 ${
                       selectedLibrary === 'Web3'
                         ? 'text-primary-500'
-                        : 'text-pink-500'
+                        : 'text-pink-25'
                     } ${
                       item.id === selectedLibrary ? 'opacity-100' : 'opacity-0'
                     }`}
@@ -78,7 +76,7 @@ const ElemLibrarySelector = () => {
                   />
                   {item.name}
                   {item.id === 'AI' && (
-                    <span className="px-2.5 py-0.5 rounded-2lg bg-pink-500 bg-opacity-15 text-xs text-pink-600 font-medium">
+                    <span className="px-2.5 py-0.5 rounded-2lg bg-pink-25 bg-opacity-15 text-xs text-pink-25 font-medium">
                       New
                     </span>
                   )}

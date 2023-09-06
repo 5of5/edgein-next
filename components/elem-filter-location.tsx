@@ -121,7 +121,7 @@ export const ElemFilterLocation: FC<Props> = ({
 
           <div className="relative">
             <Combobox onChange={handleSelect}>
-              <div className="flex flex-wrap items-center p-2 rounded-3xl ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
+              <div className="flex flex-wrap items-center px-2 py-1.5 rounded-3xl ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
                 {tags.length > 0 && (
                   <ul className="flex flex-wrap gap-2">
                     {tags.map(item => (
@@ -146,7 +146,7 @@ export const ElemFilterLocation: FC<Props> = ({
                 )}
                 {!isLoadingPlace && (
                   <Combobox.Input
-                    className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-full border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                    className="flex-1 px-3 py-1 text-dark-500 text-sm relative bg-white rounded-full border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
                     displayValue={(value: Place) => value?.Label || ''}
                     placeholder={placeholder}
                     value={inputValue}

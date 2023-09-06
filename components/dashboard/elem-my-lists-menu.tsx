@@ -113,8 +113,8 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       </div>
 
       {user && (
-        <ul className="mt-1">
-          {lists.map(listItem => {
+        <ul className="mt-1 space-y-1">
+          {lists.slice(0, SIDEBAR_DEFAULT_LISTS_LIMIT).map(listItem => {
             const listItemId = listItem.id;
 
             const listItemName = getNameFromListName(listItem);
@@ -148,20 +148,10 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
           <li
             role="button"
             onClick={onClickCreate}
-            className="flex items-center space-x-2 py-2 pl-4 mt-1 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
+            className="flex items-center space-x-2 py-2 pl-4 mt-1 font-normal text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
           >
             Add a new list
           </li>
-
-          {createdLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
-            <li role="button">
-              <Link href="/lists/">
-                <a className="flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900">
-                  See all
-                </a>
-              </Link>
-            </li>
-          )}
         </ul>
       )}
 

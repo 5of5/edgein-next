@@ -69,6 +69,9 @@ module.exports = {
           25: '#fcfcfc',
         },
         blue,
+        pink: {
+          25: '#DE177A',
+        },
         transparent: 'transparent',
       },
       padding: {
