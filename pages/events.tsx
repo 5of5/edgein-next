@@ -255,7 +255,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist">
           <ElemCategories
             categories={eventTabs}
@@ -402,7 +402,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             events?.length !== 0 && (
               <>
                 {showPersonalized && (
-                  <div className="flex justify-between my-4">
+                  <div className="flex justify-between my-8">
                     <div className="text-4xl font-medium">All Events</div>
                     {/* Removed in qol-ui-fixes */}
                     {/* <ElemDropdown

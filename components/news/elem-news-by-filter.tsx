@@ -56,7 +56,7 @@ export const NewsByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-4xl font-medium my-4">{headingText}</div>
+      <div className="text-4xl font-medium my-8">{headingText}</div>
 
       <div>
         <div

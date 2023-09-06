@@ -284,7 +284,7 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist">
           <ElemCategories
             categories={companyStatusTags}
@@ -552,7 +552,7 @@ const Companies: NextPage<Props> = ({
           ) : tableLayout && companies?.length != 0 ? (
             <>
               {showPersonalized && (
-                <div className="flex justify-between py-4">
+                <div className="flex justify-between py-8">
                   <div className="text-4xl font-medium">All companies</div>
                   {!isNewTabSelected && (
                     <ElemDropdown
@@ -577,7 +577,7 @@ const Companies: NextPage<Props> = ({
           ) : (
             <>
               {showPersonalized && (
-                <div className="flex justify-between py-4">
+                <div className="flex justify-between py-8">
                   <div className="text-4xl font-medium">All companies</div>
                   {!isNewTabSelected && (
                     <ElemDropdown

@@ -167,7 +167,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist">
           <ElemCategories
             categories={newsTab}
@@ -259,12 +259,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
           )}
 
           {showPersonalized && (
-            <div className="flex justify-between">
+            <div className="flex justify-between py-8">
               <div className="text-4xl font-medium">All news</div>
             </div>
           )}
 
-          <div className="mt-4 grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <h4>Error loading news</h4>
             ) : isLoading && !initialLoad ? (

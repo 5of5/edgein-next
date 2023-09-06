@@ -287,7 +287,7 @@ const Investors: NextPage<Props> = ({
       <div className="relative">
         <div>
           <div
-            className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+            className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
             role="tablist">
             <ElemCategories
               categories={investorsStatusTags}
@@ -520,7 +520,7 @@ const Investors: NextPage<Props> = ({
             ) : tableLayout && vcFirms?.length != 0 ? (
               <>
                 {showPersonalized && (
-                  <div className="flex justify-between my-4">
+                  <div className="flex justify-between my-8">
                     <div className="text-4xl font-medium">All investors</div>
                     {!isNewTabSelected && (
                       <ElemDropdown
@@ -545,7 +545,7 @@ const Investors: NextPage<Props> = ({
             ) : (
               <>
                 {showPersonalized && (
-                  <div className="flex justify-between my-4">
+                  <div className="flex justify-between my-8">
                     <div className="text-4xl font-medium">All investors</div>
                     {!isNewTabSelected && (
                       <ElemDropdown
