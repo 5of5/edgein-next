@@ -30,6 +30,11 @@ jobs:
           else
             echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
           fi
+          
+      # If the workflow in workspace is already running from a previous commit, wait for it to finish
+      - uses: devkeydet/action-environment-queue@v1
+        with:
+          environment: ${{ env.WORKSPACE }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
