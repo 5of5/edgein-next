@@ -2,6 +2,7 @@ import { FC, ChangeEvent, useState, ReactNode } from 'react';
 import { FilterOptionKeys, FilterOptionMetadata } from '@/models/Filter';
 import { ElemFilterPopup } from './elem-filter-popup';
 import InputSwitch from './input-switch';
+import { DEFAULT_FILTER_TAGS_OFFSET } from '@/utils/constants';
 
 type Props = {
   open: boolean;
@@ -46,7 +47,9 @@ const ElemFilterCheckboxTags: FC<Props> = ({
 }) => {
   const [showAll, setShowAll] = useState(false);
 
-  const displayedChoices = showAll ? choices : choices.slice(0, 10);
+  const displayedChoices = showAll
+    ? choices
+    : choices.slice(0, DEFAULT_FILTER_TAGS_OFFSET);
 
   return (
     <ElemFilterPopup
