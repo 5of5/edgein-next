@@ -224,7 +224,9 @@ const Companies: NextPage<Props> = ({
   if (selectedStatusTag?.value) {
     if (isNewTabSelected) {
       filters._and?.push({
-        date_added: { _neq: new Date(0) },
+        date_added: {
+          _lte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
+        },
       });
     } else {
       filters._and?.push({
