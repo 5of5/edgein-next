@@ -7,7 +7,11 @@ import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
-import { runGraphQl, removeSpecialCharacterFromString } from '@/utils';
+import {
+  runGraphQl,
+  removeSpecialCharacterFromString,
+  toSentence,
+} from '@/utils';
 import {
   GetPersonDocument,
   GetPersonQuery,
@@ -29,6 +33,7 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import moment from 'moment-timezone';
 
 type Props = {
   person: People;
@@ -296,7 +301,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
-  const getInvestments = people.people[0].investments
+  const person = people.people[0];
+
+  const getInvestments = person.investments
     .filter(
       item =>
         typeof item.investment_round === 'object' &&
@@ -316,7 +323,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     .reverse();
 
   const sortNews =
-    people.people[0].news_links
+    person.news_links
       ?.slice()
       ?.map(item => ({ ...item.news }))
       ?.filter(item => item.status === 'published')
@@ -327,15 +334,65 @@ export const getServerSideProps: GetServerSideProps = async context => {
       })
       .reverse() || [];
 
+  // Person organizations tags
+  const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
+  const companyTags = flatten(
+    person.team_members.map(item => item?.company?.tags),
+  );
+  const organizationsTags = union(vcFirmTags, companyTags).filter(item => item);
+
+  // Person jobs
+  const vcFirmWorkExperience = flatten(person.investors as Investors[]);
+  const companyWorkExperience = flatten(person.team_members as Team_Members[]);
+  const allJobs: (Investors | Team_Members)[] = [
+    ...vcFirmWorkExperience,
+    ...companyWorkExperience,
+  ];
+
+  const allJobsOrderByStartDateDesc = orderBy(
+    allJobs,
+    [item => item.start_date],
+    ['desc'],
+  );
+  const latestJob: any = allJobsOrderByStartDateDesc[0];
+
+  // Meta fields
+  const metaPersonCountry = person.country ? `${person.country} - ` : '';
+  const metaRole = latestJob.title ? `${latestJob.title} at ` : '';
+  const metaOrganizationName = latestJob?.vc_firm
+    ? `${latestJob.vc_firm.name}`
+    : latestJob?.company
+    ? `${latestJob.company.name}`
+    : 'undisclosed organization';
+  const metaStartingDate = latestJob.start_date
+    ? ` from ${moment(latestJob.start_date).format('MMM YYYY')}`
+    : '';
+  const metaPersonTags =
+    organizationsTags.length > 0
+      ? ` Interested in ${toSentence(organizationsTags)}.`
+      : '';
+
   let metaTitle = null;
-  if (people.people[0].name) {
-    metaTitle = people.people[0].name + ' Profile - EdgeIn.io';
+  if (person.name) {
+    metaTitle = `${person.name} | EdgeIn ${person.library[0]} Professionals Profile - Contact Information`;
+  }
+
+  let metaDescription = null;
+  if (
+    metaPersonCountry ||
+    metaRole ||
+    metaOrganizationName ||
+    metaStartingDate ||
+    metaPersonTags
+  ) {
+    metaDescription = `${metaPersonCountry}${metaRole}${metaOrganizationName}${metaStartingDate}.${metaPersonTags}`;
   }
 
   return {
     props: {
       metaTitle,
-      person: people.people[0],
+      metaDescription,
+      person,
       sortByDateAscInvestments,
       sortNews,
     },

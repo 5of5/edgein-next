@@ -1,67 +1,73 @@
 table:
-  name: companies
   schema: public
+  name: companies
 object_relationships:
   - name: coin
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: coins
+        insertion_order: null
         column_mapping:
           coin_id: id
-        insertion_order: null
-        remote_table:
-          name: coins
-          schema: public
 array_relationships:
   - name: follows
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: follows_companies
+        insertion_order: null
         column_mapping:
           id: resource_id
-        insertion_order: null
-        remote_table:
-          name: follows_companies
-          schema: public
   - name: from_links
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
         column_mapping:
           id: from_company_id
-        insertion_order: null
-        remote_table:
-          name: resource_links
-          schema: public
   - name: investment_rounds
     using:
       foreign_key_constraint_on:
         column: company_id
         table:
-          name: investment_rounds
           schema: public
+          name: investment_rounds
   - name: news_links
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: news_organizations
+        insertion_order: null
         column_mapping:
           id: company_id
-        insertion_order: null
-        remote_table:
-          name: news_organizations
-          schema: public
   - name: teamMembers
     using:
       foreign_key_constraint_on:
         column: company_id
         table:
-          name: team_members
           schema: public
+          name: team_members
   - name: to_links
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
         column_mapping:
           id: to_company_id
-        insertion_order: null
-        remote_table:
-          name: resource_links
-          schema: public
+computed_fields:
+  - name: datapoints_count
+    definition:
+      function:
+        schema: public
+        name: companies_datapoints
 insert_permissions:
   - role: user
     permission:
@@ -232,6 +238,8 @@ select_permissions:
         - white_paper
         - year_founded
         - youtube
+      computed_fields:
+        - datapoints_count
       filter:
         status:
           _eq: published

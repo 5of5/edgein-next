@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // params
   const segment = req.body.segment;
-  const exploreChoice = req.body.exploreChoice;
+  const exploreChoices = req.body.exploreChoices;
   const locationTags = req.body.locationTags;
   const locationDetails = req.body.locationDetails;
   const industryTags = req.body.industryTags;
@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const onboardingInformationObj: any = {
       segment,
-      exploreChoice,
+      exploreChoices,
       locationTags,
       locationDetails,
       industryTags,

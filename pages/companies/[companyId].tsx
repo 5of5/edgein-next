@@ -6,8 +6,8 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { ElemCredibility } from '@/components/company/elem-credibility';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/company/elem-investments';
-import { ElemTeamGrid } from '@/components/company/elem-team-grid';
-import { runGraphQl } from '@/utils';
+import { ElemOrganizationTeam } from '@/components/elem-organization-team';
+import { runGraphQl, getCityAndCountry, toSentence } from '@/utils';
 import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
 import { ElemCohort } from '@/components/company/elem-cohort';
 import { ElemTabBar } from '@/components/elem-tab-bar';
@@ -88,12 +88,6 @@ const Company: NextPage<Props> = (props: Props) => {
   } = useGetCompanyQuery({
     slug: companyId as string,
   });
-
-  useEffect(() => {
-    if (selectedLibrary && !company.library?.includes(selectedLibrary)) {
-      router.push('/companies');
-    }
-  }, [company, selectedLibrary, router]);
 
   useEffect(() => {
     if (companyData) {
@@ -445,6 +439,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
             <div ref={activityRef} className="w-full mt-7">
               <ElemOrganizationActivity
+                resourceName={company.name || ''}
                 resourceType="companies"
                 resourceInvestments={sortedInvestmentRounds}
               />
@@ -453,7 +448,7 @@ const Company: NextPage<Props> = (props: Props) => {
         </div>
 
         <div ref={teamRef} className="mt-7">
-          <ElemTeamGrid
+          <ElemOrganizationTeam
             heading="Team"
             resourceName={company.name || ''}
             people={company.teamMembers}
@@ -528,15 +523,39 @@ export const getServerSideProps: GetServerSideProps = async context => {
       })
       .reverse() || [];
 
+  // Meta
+  const metaWebsiteUrl = company.website || null;
+  const metaFounded = company.year_founded
+    ? `Founded in ${company.year_founded} `
+    : '';
+
+  const metaLocation = getCityAndCountry(
+    company.location_json?.city,
+    company.location_json?.country,
+  );
+
+  const metaEmployees = company.total_employees
+    ? `${company.total_employees} Employees | `
+    : '';
+
+  const metaTags =
+    company.tags?.length > 0 ? `Category ${toSentence(company.tags)} | ` : '';
+
   let metaTitle = null;
   if (company.name) {
-    metaTitle =
-      company.name +
-      ' Company Profile: Credibility, Velocity & Investors - EdgeIn.io';
+    metaTitle = `${company.name} | EdgeIn ${company.library[0]} Company Profile - Contact Information`;
   }
+
   let metaDescription = null;
-  if (company.overview) {
-    metaDescription = company.overview;
+  if (
+    metaWebsiteUrl ||
+    metaFounded ||
+    metaLocation ||
+    metaEmployees ||
+    metaTags ||
+    company.overview
+  ) {
+    metaDescription = `${metaWebsiteUrl} ${metaFounded}${metaLocation}${metaEmployees}${metaTags}${company.overview}`;
   }
 
   if (company.tags?.includes('News')) {

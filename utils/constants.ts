@@ -2031,38 +2031,40 @@ export const NEW_CATEGORY_LIMIT = 33;
 export const segmentChoices: SegmentOption[] = [
   {
     title: 'Executive',
-    description: 'Company Founder, C-Suite Executive,...',
+    description: 'Company Founder, C-Suite Executive, etc.',
   },
   {
     title: 'Investor',
-    description: 'Limited Partner, Investment Analyst,...',
+    description: 'Limited Partner, Investment Analyst, etc.',
   },
   {
     title: 'Sales or Business Developer',
-    description: 'GTM, Sales or Business Development Manager,...',
+    description: 'GTM, Sales or Business Development Manager, etc.',
   },
   {
     title: 'Event Organizer',
-    description: 'Event Manager, Community Manager,...',
+    description: 'Event Manager, Community Manager, etc.',
   },
   {
     title: 'Creator or Publisher',
-    description: 'Journalist, PR Manager,...',
+    description: 'Journalist, PR Manager, etc.',
   },
   {
     title: 'Team Member',
-    description: 'Product, Engineer, Designer, Operations,...',
+    description: 'Product, Engineer, Designer, Operations, etc.',
   },
 ];
 
 export const onboardingExploreChoices = [
   'Interesting companies',
   'Investors and recent investments',
+  'People and connections',
   'Events in my area',
   'Alpha market news',
   'Something else',
 ];
 
+export const ONBOARDING_MIN_EXPLORE_CHOICES = 1;
 export const ONBOARDING_DEFAULT_TAGS_LIMIT = 20;
 export const ONBOARDING_MIN_LOCATIONS = 1;
 export const ONBOARDING_MIN_TAGS = 3;

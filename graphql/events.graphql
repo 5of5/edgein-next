@@ -22,6 +22,11 @@ query GetEvents(
     end_date
     end_time
     timezone
+    twitter
+    facebook
+    instagram
+    discord
+    telegram
     is_featured
     created_at
     event_person {
@@ -65,6 +70,7 @@ query GetEvent($slug: String!) {
     is_featured
     attachments
     created_at
+    library
     event_person {
       id
       type

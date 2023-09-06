@@ -45,6 +45,7 @@ export const ElemPersonCard: React.FC<Props> = ({
   }
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+  const [showEmails, setShowEmails] = useState(false);
 
   const onOpenUpgradeDialog = () => {
     setIsOpenUpgradeDialog(true);
@@ -58,7 +59,7 @@ export const ElemPersonCard: React.FC<Props> = ({
     toast.custom(
       t => (
         <div
-          className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+          className={`bg-gray-900 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
@@ -83,11 +84,11 @@ export const ElemPersonCard: React.FC<Props> = ({
           <a className="hover:opacity-75">
             <ElemPhoto
               photo={photo}
-              wrapClass="flex items-center justify-center shrink-0 w-20 h-20 rounded-lg overflow-hidden"
+              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
               imgClass="object-cover w-full h-full"
               imgAlt={heading}
               placeholder="user"
-              placeholderClass="text-slate-300"
+              placeholderClass="text-gray-300"
             />
           </a>
         </Link>
@@ -121,7 +122,7 @@ export const ElemPersonCard: React.FC<Props> = ({
             </a>
           </Link>
 
-          <div className="inline-flex space-x-2 py-1">
+          <div className="flex space-x-2 pt-1">
             {user?.entitlements?.viewEmails && linkedin ? (
               <ElemTooltip size="md" content="View LinkedIn Profile">
                 <div>
@@ -151,73 +152,32 @@ export const ElemPersonCard: React.FC<Props> = ({
             )}
 
             {user?.entitlements?.viewEmails && personEmails.length > 0 ? (
-              <Popover className="relative">
-                <ElemTooltip
-                  size="md"
-                  content={`${
-                    personEmails.length === 1 ? 'View Email' : 'View Emails'
-                  }`}
-                >
-                  <Popover.Button
-                    className="relative inline-flex space-x-1 items-center group hover:text-primary-500 focus:outline-none focus-visible:ring-0 transition-all"
-                    title={
-                      personEmails.length === 1
-                        ? '1 email'
-                        : `${personEmails.length} emails`
-                    }
+              <ElemTooltip
+                size="md"
+                content={`${
+                  personEmails.length === 1 ? 'View Email' : 'View Emails'
+                }`}
+              >
+                <div>
+                  <button
+                    onClick={() => setShowEmails(!showEmails)}
+                    className="flex items-center space-x-1 text-sm"
                   >
                     <IconEmail title="Email" className="h-6 w-6" />
-                    <span className="text-sm">
+                    <div>
                       {personEmails.length === 1
                         ? '1 email'
                         : `${personEmails.length} emails`}
-                    </span>
-                  </Popover.Button>
-                </ElemTooltip>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-200"
-                  enterFrom="opacity-0 translate-y-1"
-                  enterTo="opacity-100 translate-y-0"
-                  leave="transition ease-in duration-150"
-                  leaveFrom="opacity-100 translate-y-0"
-                  leaveTo="opacity-0 translate-y-1"
-                >
-                  <Popover.Panel className="absolute z-10 left-1/2 -translate-x-1/2 block bg-white rounded-lg shadow-md p-1 lg:left-0 lg:translate-x-0">
-                    {({ close }) => (
-                      <ul>
-                        {personEmails?.map((email, index) => {
-                          return (
-                            <li
-                              key={index}
-                              onClick={() => {
-                                close();
-                                onCopyEmail(email);
-                              }}
-                              className="flex space-x-2 py-1 px-2 rounded-md flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200"
-                            >
-                              <div className="flex items-center">{email}</div>
-                              <div className="flex items-center text-primary-500">
-                                <IconCopy
-                                  title="copy"
-                                  className="h-5 w-5 mr-1 shrink-0"
-                                />
-                                copy
-                              </div>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </Popover.Panel>
-                </Transition>
-              </Popover>
+                    </div>
+                  </button>
+                </div>
+              </ElemTooltip>
             ) : personEmails.length > 0 ? (
               <ElemTooltip size="md" content="Premium feature">
                 <div>
                   <button
                     onClick={onOpenUpgradeDialog}
-                    className="inline-flex items-center space-x-1 text-slate-600"
+                    className="inline-flex items-center space-x-1 text-gray-500"
                   >
                     <IconEmail title="Email" className="h-6 w-6" />
                     <span className="text-sm">
@@ -232,8 +192,27 @@ export const ElemPersonCard: React.FC<Props> = ({
               <></>
             )}
           </div>
+          {showEmails && (
+            <ul>
+              {personEmails?.map((email, index) => {
+                return (
+                  <li key={index}>
+                    <button
+                      onClick={() => {
+                        onCopyEmail(email);
+                      }}
+                      className="text-gray-500 underline text-sm hover:no-underline"
+                    >
+                      {email}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </div>
+
       <Toaster />
       <ElemUpgradeDialog
         isOpen={isOpenUpgradeDialog}

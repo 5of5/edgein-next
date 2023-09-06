@@ -1,6 +1,6 @@
 table:
-  name: invited_people
   schema: public
+  name: invited_people
 select_permissions:
   - role: viewer
     permission:
