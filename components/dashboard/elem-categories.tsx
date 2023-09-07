@@ -32,7 +32,9 @@ export const ElemCategories: FC<Props> = ({
                 : ''
             }`}
           >
-            {category.icon && <div className="w-5 h-5">{category.icon}</div>}
+            {category.icon && (
+              <div className="w-5 h-5 mr-1.5">{category.icon}</div>
+            )}
             {category.title}
           </ElemButton>
         );

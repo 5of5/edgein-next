@@ -28097,7 +28097,10 @@ useGetEventInsightByLocationQuery.getKey = (variables: GetEventInsightByLocation
 useGetEventInsightByLocationQuery.fetcher = (variables: GetEventInsightByLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventInsightByLocationQuery, GetEventInsightByLocationQueryVariables>(GetEventInsightByLocationDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
-  list_members(where: {user_id: {_eq: $user_id}}) {
+  list_members(
+    where: {user_id: {_eq: $user_id}}
+    order_by: {list: {updated_at: desc}}
+  ) {
     list {
       name
       description
@@ -28454,7 +28457,10 @@ useCheckFollowExistsQuery.getKey = (variables: CheckFollowExistsQueryVariables) 
 useCheckFollowExistsQuery.fetcher = (variables: CheckFollowExistsQueryVariables, options?: RequestInit['headers']) => fetcher<CheckFollowExistsQuery, CheckFollowExistsQueryVariables>(CheckFollowExistsDocument, variables, options);
 export const GetGroupsOfUserDocument = `
     query GetGroupsOfUser($user_id: Int!) {
-  user_group_members(where: {user_id: {_eq: $user_id}}) {
+  user_group_members(
+    where: {user_id: {_eq: $user_id}}
+    order_by: {user_group: {updated_at: desc}}
+  ) {
     id
     user_id
     user {
