@@ -26245,7 +26245,7 @@ export type GetUnreadNotificationsQueryVariables = Exact<{
 }>;
 
 
-export type GetUnreadNotificationsQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number }>, notifications_aggregate: { __typename?: 'notifications_aggregate', aggregate: { __typename?: 'notifications_aggregate_fields', count: number } | null } };
+export type GetUnreadNotificationsQuery = { __typename?: 'query_root', notifications_aggregate: { __typename?: 'notifications_aggregate', aggregate: { __typename?: 'notifications_aggregate_fields', count: number } | null } };
 
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -30598,11 +30598,6 @@ export const useInsertNotificationActionsMutation = <
 useInsertNotificationActionsMutation.fetcher = (variables: InsertNotificationActionsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNotificationActionsMutation, InsertNotificationActionsMutationVariables>(InsertNotificationActionsDocument, variables, options);
 export const GetUnreadNotificationsDocument = `
     query GetUnreadNotifications($user_id: Int!) {
-  notifications(
-    where: {_and: [{target_user_id: {_eq: $user_id}}, {event_type: {_neq: "Delete Data"}}, {read: {_eq: false}}, {_or: [{_and: [{company_id: {_is_null: false}}, {company: {status: {_neq: "draft"}}}]}, {_and: [{vc_firm_id: {_is_null: false}}, {vc_firm: {status: {_neq: "draft"}}}]}]}]}
-  ) {
-    id
-  }
   notifications_aggregate(
     where: {_and: [{target_user_id: {_eq: $user_id}}, {event_type: {_neq: "Delete Data"}}, {read: {_eq: false}}, {_or: [{_and: [{company_id: {_is_null: false}}, {company: {status: {_neq: "draft"}}}]}, {_and: [{vc_firm_id: {_is_null: false}}, {vc_firm: {status: {_neq: "draft"}}}]}]}]}
   ) {
