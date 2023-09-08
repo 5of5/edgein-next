@@ -1,8 +1,8 @@
 import type { NextPage, GetStaticProps } from 'next';
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { ElemButton } from '../components/elem-button';
-import { runGraphQl } from '../utils';
+import { ElemButton } from '../../components/elem-button';
+import { runGraphQl } from '../../utils';
 import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
 import { PlaceholderEventCard } from '@/components/placeholders';
@@ -32,7 +32,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
-import useLibrary from '@/hooks/use-library';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
@@ -49,12 +48,11 @@ type Props = {
 
 const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
-  const { user } = useUser();
+  const { user, selectedLibrary } = useUser();
 
   const personalizedTags = getPersonalizedData({ user });
 
   const router = useRouter();
-  const { selectedLibrary } = useLibrary();
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -432,6 +430,13 @@ export const getStaticProps: GetStaticProps = async context => {
     revalidate: 60 * 60 * 2,
   };
 };
+
+export async function getStaticPaths() {
+  return {
+    paths: ['/web3/events', '/ai/events'],
+    fallback: true,
+  };
+}
 
 export default Events;
 

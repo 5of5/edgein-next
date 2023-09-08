@@ -3,9 +3,11 @@ import { nanoid } from 'nanoid';
 import { UserToken, User } from '@/models/user';
 import { jwtVerify, SignJWT } from 'jose';
 import type { NextApiResponse } from 'next';
+import { Library } from '@/types/common';
 
 export const TOKEN_NAME = 'api_token';
 export const USAGE_NAME = 'e_token';
+export const LIBRARY_COOKIE = 'library';
 export const MAX_AGE = 60 * 60 * 24 * 90; // 90 days
 export const USAGE_AGE = 60 * 60 * 24; // 1 days
 const hasuraClaims = (userId: string) => ({
@@ -151,6 +153,14 @@ async function createUsageToken(userData: {}) {
     .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET));
 }
 
+function setLibraryCookie(res: NextApiResponse, library: Library) {
+  res.setHeader('Set-Cookie', [createCookie(LIBRARY_COOKIE, library, MAX_AGE)]);
+}
+
+function getLibraryCookie(cookies: Record<string, string>) {
+  return cookies[LIBRARY_COOKIE] || 'Web3';
+}
+
 const exp = {
   setTokenCookie,
   setUsageCookie,
@@ -161,6 +171,8 @@ const exp = {
   clearTokenCookie,
   createUserToken,
   createUsageToken,
+  setLibraryCookie,
+  getLibraryCookie,
 };
 
 export default exp;

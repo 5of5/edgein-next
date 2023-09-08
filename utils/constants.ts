@@ -1929,8 +1929,6 @@ export const newsPersonTypes = [
   },
 ];
 
-export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
-
 export const DEBOUNCE_TIME = 700;
 
 export const GROUPS_TABS: GroupsTabItem[] = [

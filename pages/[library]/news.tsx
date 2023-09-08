@@ -7,7 +7,7 @@ import { ElemNewsCard } from '@/components/news/elem-news-card';
 import { useIntercom } from 'react-use-intercom';
 import { PlaceholderNewsCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
-import { runGraphQl } from '../utils';
+import { runGraphQl } from '../../utils';
 import toast, { Toaster } from 'react-hot-toast';
 import { IconAnnotation, IconSearch } from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
@@ -29,7 +29,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
-import useLibrary from '@/hooks/use-library';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
@@ -44,7 +43,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const router = useRouter();
   const { showNewMessages } = useIntercom();
-  const { user } = useUser();
+  const { user, selectedLibrary } = useUser();
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -52,8 +51,6 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
         user.email.endsWith(domain),
       ));
-
-  const { selectedLibrary } = useLibrary();
 
   const [selectedTab, setSelectedTab] =
     useStateParams<DashboardCategory | null>(
@@ -238,6 +235,13 @@ export const getStaticProps: GetStaticProps = async context => {
     revalidate: 60 * 60 * 2,
   };
 };
+
+export async function getStaticPaths() {
+  return {
+    paths: ['/web3/news', '/ai/news'],
+    fallback: true,
+  };
+}
 
 export default NewsPage;
 

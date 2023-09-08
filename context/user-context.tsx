@@ -20,7 +20,6 @@ import { filterExcludeNotifications } from '@/utils/notifications';
 import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
 import { redirect_url } from '@/utils/auth';
 import useLibrary from '@/hooks/use-library';
-import { libraryChoices } from '@/utils/constants';
 import { Library, LibraryTag } from '@/types/common';
 
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
@@ -164,16 +163,8 @@ const UserProvider: React.FC<Props> = props => {
   );
 
   const { selectedLibrary, onChangeLibrary } = useLibrary();
-  const [library, setLibrary] = useState<LibraryTag | undefined>();
-
-  useEffect(() => {
-    if (selectedLibrary && selectedLibrary !== library?.id) {
-      setLibrary(libraryChoices.find(item => item.id === selectedLibrary));
-    }
-  }, [selectedLibrary, library]);
 
   const handleSelectLibrary = (value: LibraryTag) => {
-    setLibrary(value);
     onChangeLibrary(value.id);
   };
 
@@ -185,7 +176,7 @@ const UserProvider: React.FC<Props> = props => {
         listAndFollows,
         myGroups,
         unreadNotifications,
-        selectedLibrary: library?.id,
+        selectedLibrary,
         onChangeLibrary: handleSelectLibrary,
         refetchMyGroups,
         refetchUnreadNotifications,

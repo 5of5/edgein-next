@@ -37,7 +37,6 @@ import { onTrackView } from '@/utils/track';
 import { ElemFilter } from '@/components/elem-filter';
 import { processInvestorsFilters } from '@/utils/filter';
 import { useIntercom } from 'react-use-intercom';
-import useLibrary from '@/hooks/use-library';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
@@ -69,15 +68,13 @@ const Investors: NextPage<Props> = ({
   initialVCFirms,
   investorsStatusTags,
 }) => {
-  const { user } = useUser();
+  const { user, selectedLibrary } = useUser();
 
   const personalizedTags = getPersonalizedData({ user });
 
   const [initialLoad, setInitialLoad] = useState(true);
 
   const router = useRouter();
-
-  const { selectedLibrary } = useLibrary();
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -636,6 +633,13 @@ export const getStaticProps: GetStaticProps = async () => {
     revalidate: 60 * 60 * 2,
   };
 };
+
+export async function getStaticPaths() {
+  return {
+    paths: ['/web3/investors', '/ai/investors'],
+    fallback: true,
+  };
+}
 
 export default Investors;
 

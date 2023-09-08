@@ -1,22 +1,48 @@
+import { useState } from 'react';
+import { useQuery, useMutation } from 'react-query';
+import { useRouter } from 'next/router';
 import { Library } from '@/types/common';
-import { LOCAL_STORAGE_LIBRARY_KEY } from '@/utils/constants';
 
 const useLibrary = () => {
-  let selectedLibrary: Library = 'Web3';
-  if (
-    typeof window !== 'undefined' &&
-    localStorage.getItem(LOCAL_STORAGE_LIBRARY_KEY)
-  ) {
-    selectedLibrary =
-      localStorage.getItem(LOCAL_STORAGE_LIBRARY_KEY) !== undefined
-        ? (localStorage.getItem(LOCAL_STORAGE_LIBRARY_KEY) as Library)
-        : 'Web3';
-  }
+  const router = useRouter();
+
+  const [selectedLibrary, setSelectedLibrary] = useState<Library>('Web3');
+
+  useQuery(
+    ['get-library'],
+    async () => await fetch('/api/library/').then(res => res.json()),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess(data) {
+        setSelectedLibrary(data.library);
+      },
+    },
+  );
+
+  const { mutate: changeLibrary } = useMutation(
+    (library: Library) =>
+      fetch('/api/change-library/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          library,
+        }),
+      }),
+    {
+      onSuccess: (response, library) => {
+        if (response.status === 200) {
+          setSelectedLibrary(library);
+          router.push(router.asPath.replace(/ai|web3/i, library.toLowerCase()));
+        }
+      },
+    },
+  );
 
   const onChangeLibrary = (value: Library) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(LOCAL_STORAGE_LIBRARY_KEY, value);
-    }
+    changeLibrary(value);
   };
 
   return {

@@ -47,7 +47,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
-import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
@@ -69,7 +68,7 @@ const Companies: NextPage<Props> = ({
   initialCompanies,
   companyStatusTags,
 }) => {
-  const { user } = useUser();
+  const { user, selectedLibrary } = useUser();
 
   const personalizedTags = getPersonalizedData({ user });
 
@@ -83,8 +82,6 @@ const Companies: NextPage<Props> = ({
       SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
         user.email.endsWith(domain),
       ));
-
-  const { selectedLibrary } = useLibrary();
 
   // Company status-tag filter
   const [selectedStatusTag, setSelectedStatusTag] =
@@ -667,6 +664,13 @@ export const getStaticProps: GetStaticProps = async () => {
     revalidate: 60 * 60 * 2,
   };
 };
+
+export async function getStaticPaths() {
+  return {
+    paths: ['/web3/companies', '/ai/companies'],
+    fallback: true,
+  };
+}
 
 export default Companies;
 

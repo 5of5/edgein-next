@@ -95,6 +95,17 @@ export async function middleware(req: NextRequest) {
       }
     }
 
+    if (
+      ['/companies', '/investors', '/events', '/news'].some(urlItem =>
+        url.pathname.startsWith(urlItem),
+      )
+    ) {
+      const library = CookieService.getLibraryCookie(req.cookies);
+      return NextResponse.redirect(
+        new URL(`/${library?.toLowerCase()}${url.pathname}`, req.url),
+      );
+    }
+
     const redirectPath = url.pathname.startsWith('/api')
       ? ''
       : `redirect=${encodeURIComponent(url.pathname)}`;
