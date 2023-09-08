@@ -79,6 +79,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       '/companies',
       '/investors',
       '/events',
+      '/notifications',
       '/news',
       '/people',
       '/groups',
