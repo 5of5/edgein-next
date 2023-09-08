@@ -30,14 +30,10 @@ type Props = {};
 
 export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
-  const { user, listAndFollows, myGroups, unreadNotifications } = useUser();
+  const { user, listAndFollows, myGroups, unreadNotificationsCount } = useUser();
 
   const { showPopup, setShowPopup } = usePopup();
   const { showSidebar, setShowSidebar } = useSidebar();
-
-  const notificationsCount = unreadNotifications
-    ? unreadNotifications.length
-    : 0;
 
   const hotListId =
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
@@ -217,10 +213,10 @@ export const TheNavbar: FC<Props> = ({}) => {
               <>
                 <Link href="/notifications" passHref>
                   <a className="relative flex items-center justify-center w-9 h-9">
-                    {notificationsCount > 0 && (
+                    {unreadNotificationsCount > 0 && (
                       <div className="absolute flex items-center justify-center -top-[2px] -right-[2px] w-5 h-5 rounded-full bg-primary-500 border border-white">
                         <div className="text-white font-bold text-[10px] text-center">
-                          {notificationsCount > 99 ? '99+' : notificationsCount}
+                          {unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount}
                         </div>
                       </div>
                     )}

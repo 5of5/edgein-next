@@ -25,7 +25,7 @@ import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
 const DEFAULT_LIMIT = 10;
 
 const Notifications: NextPage = () => {
-  const { user, unreadNotifications, refetchUnreadNotifications } = useUser();
+  const { user, unreadNotificationsCount, refetchUnreadNotifications } = useUser();
 
   const [notificationList, setNotificationList] = useState<
     GetNotificationsForUserQuery['notifications']
@@ -120,7 +120,7 @@ const Notifications: NextPage = () => {
         <div className="border border-gray-200 rounded-lg ring-2 ring-white">
           <div className="flex items-center justify-between mb-2 pt-4 px-4">
             <h2 className="text-xl font-medium">Notifications</h2>
-            {unreadNotifications.length > 0 && (
+            {unreadNotificationsCount > 0 && (
               <button
                 className="flex items-center text-sm hover:text-primary-500"
                 onClick={() => markAsRead(undefined, true)}
