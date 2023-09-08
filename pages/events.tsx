@@ -92,6 +92,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       resetPage: () => setPage(0),
     });
 
+  const isSortDropdownVisible = ['past'].includes(selectedTab?.value || '');
   const limit = 50;
   const offset = limit * page;
 
@@ -102,11 +103,14 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   if (selectedTab?.value !== 'past') {
     if (selectedTab?.value === 'upcoming') {
-      defaultFilters.push({
-        start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
-      }, {
-        start_date: { _lte: moment().add(7, 'days').format(ISO_DATE_FORMAT) }
-      });
+      defaultFilters.push(
+        {
+          start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
+        },
+        {
+          start_date: { _lte: moment().add(7, 'days').format(ISO_DATE_FORMAT) },
+        },
+      );
     } else {
       defaultFilters.push({
         start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
@@ -230,6 +234,12 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       start_date: { _lte: selectedTab?.date },
     });
   }
+
+  const orderBy = [orderByQuery];
+  if (selectedTab?.value === 'past') {
+    orderBy.push({ start_date: Order_By.Desc } as Events_Order_By);
+  }
+
   const {
     data: eventsData,
     error,
@@ -239,11 +249,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       offset,
       limit,
       where: filters as Events_Bool_Exp,
-      orderBy: [
-        selectedTab?.value === 'past'
-          ? ({ start_date: Order_By.Desc } as Events_Order_By)
-          : orderByQuery,
-      ],
+      orderBy,
     },
     { refetchOnWindowFocus: false },
   );
@@ -283,6 +289,14 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               }
               onSelectFilterOption={onSelectFilterOption}
             />
+
+            {isSortDropdownVisible && (
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
+            )}
           </div>
         </div>
 
