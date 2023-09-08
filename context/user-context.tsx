@@ -156,7 +156,8 @@ const UserProvider: React.FC<Props> = props => {
     );
   }, [groups]);
 
-  let unreadNotificationsCount = notifications?.aggragate.count || 0;
+  const unreadNotificationsCount =
+    notifications?.notifications_aggregate?.aggregate?.count || 0;
 
   const { selectedLibrary, onChangeLibrary } = useLibrary();
   const [library, setLibrary] = useState<LibraryTag | undefined>();

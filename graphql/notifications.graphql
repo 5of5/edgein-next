@@ -129,6 +129,33 @@ query GetUnreadNotifications($user_id: Int!) {
       ]
     }
   ) {
+    id
+  }
+  notifications_aggregate(
+    where: {
+      _and: [
+        { target_user_id: { _eq: $user_id } }
+        { event_type: { _neq: "Delete Data" } }
+        { read: { _eq: false } }
+        {
+          _or: [
+            {
+              _and: [
+                { company_id: { _is_null: false } }
+                { company: { status: { _neq: "draft" } } }
+              ]
+            }
+            {
+              _and: [
+                { vc_firm_id: { _is_null: false } }
+                { vc_firm: { status: { _neq: "draft" } } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ) {
     aggregate {
       count
     }

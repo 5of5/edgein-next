@@ -30,7 +30,8 @@ type Props = {};
 
 export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
-  const { user, listAndFollows, myGroups, unreadNotificationsCount } = useUser();
+  const { user, listAndFollows, myGroups, unreadNotificationsCount } =
+    useUser();
 
   const { showPopup, setShowPopup } = usePopup();
   const { showSidebar, setShowSidebar } = useSidebar();
@@ -216,7 +217,9 @@ export const TheNavbar: FC<Props> = ({}) => {
                     {unreadNotificationsCount > 0 && (
                       <div className="absolute flex items-center justify-center -top-[2px] -right-[2px] w-5 h-5 rounded-full bg-primary-500 border border-white">
                         <div className="text-white font-bold text-[10px] text-center">
-                          {unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount}
+                          {unreadNotificationsCount > 99
+                            ? '99+'
+                            : unreadNotificationsCount}
                         </div>
                       </div>
                     )}

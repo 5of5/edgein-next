@@ -25,7 +25,8 @@ import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
 const DEFAULT_LIMIT = 10;
 
 const Notifications: NextPage = () => {
-  const { user, unreadNotificationsCount, refetchUnreadNotifications } = useUser();
+  const { user, unreadNotificationsCount, refetchUnreadNotifications } =
+    useUser();
 
   const [notificationList, setNotificationList] = useState<
     GetNotificationsForUserQuery['notifications']
