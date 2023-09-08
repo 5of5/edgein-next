@@ -4,6 +4,7 @@ import {
   useGetPersonalizedVcFirmsQuery,
   Vc_Firms,
   Vc_Firms_Bool_Exp,
+  Vc_Firms_Order_By,
 } from '@/graphql/types';
 import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
@@ -18,7 +19,7 @@ type Props = {
   headingText: string;
   filters: DeepPartial<Vc_Firms_Bool_Exp>;
   fallbackFilters?: DeepPartial<Vc_Firms_Bool_Exp>;
-  orderBy?: DeepPartial<Investors_Order_By>;
+  orderBy?: DeepPartial<Vc_Firms_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
   isTableView?: boolean;
@@ -99,7 +100,7 @@ export const InvestorsByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-2xl font-medium my-4">{headingText}</div>
+      <div className="text-4xl font-medium my-4">{headingText}</div>
       {isTableView ? (
         <InvestorsTable
           investors={vc_firms}
@@ -115,7 +116,7 @@ export const InvestorsByFilter: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+            className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
           >
             {vc_firms?.map(vcFirm => (
               <ElemInvestorCard key={vcFirm.id} vcFirm={vcFirm as Vc_Firms} />

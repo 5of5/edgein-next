@@ -17,6 +17,8 @@ import {
   IconInstagram,
   IconDiscord,
   IconTelegram,
+  IconLocation,
+  IconTicket,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -42,12 +44,9 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
   const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] = useState(false);
 
   const {
-    id,
     slug,
     name,
-    overview,
     price,
-    venue_name,
     location_json,
     banner,
     types,
@@ -153,120 +152,144 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
   };
 
   return (
-    <div className="flex flex-col w-full">
-      <Link href={`/events/${slug}`}>
-        <a className="flex shrink-0 w-full">
-          <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
-            <div
-              className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
-              style={{
-                backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
-              }}
-            ></div>
-            <img
-              className="relative"
-              src={eventImageUrl}
-              alt={name}
-              onError={e => {
-                (e.target as HTMLImageElement).src = randomImageOfCity(
-                  location_json?.city,
-                );
-                (e.target as HTMLImageElement).onerror = null; // prevents looping
-              }}
-            />
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[18px]">
+      <div className="flex flex-col justify-between h-full">
+        <div>
+          <Link href={`/events/${slug}`}>
+            <a className="flex shrink-0 w-full">
+              <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
+                <div
+                  className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+                  style={{
+                    backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
+                  }}
+                ></div>
+                <img
+                  className="relative"
+                  src={eventImageUrl}
+                  alt={name}
+                  onError={e => {
+                    (e.target as HTMLImageElement).src = randomImageOfCity(
+                      location_json?.city,
+                    );
+                    (e.target as HTMLImageElement).onerror = null; // prevents looping
+                  }}
+                />
+              </div>
+            </a>
+          </Link>
+
+          <Link href={`/events/${slug}`}>
+            <a className="flex items-center mt-3">
+              <ElemTooltip content={name} mode="light">
+                <h3 className="text-lg font-medium truncate pb-1.5">{name}</h3>
+              </ElemTooltip>
+            </a>
+          </Link>
+
+          <div className="text-xs">
+            {start_date && (
+              <p className="text-sm text-gray-500">
+                {moment(start_date).format('MMM D, YYYY')}
+
+                {end_date && (
+                  <>
+                    &nbsp;&ndash;&nbsp;
+                    {moment(end_date).format('MMM D, YYYY')}
+                  </>
+                )}
+              </p>
+            )}
+
+            {!isEmptyLocation && (
+              <div className="flex pt-1.5 items-center">
+                <IconLocation
+                  title={getFullAddress(location_json)}
+                  className="h-3 w-3 shrink-0"
+                />
+                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
+                  {getFullAddress(location_json)}
+                </span>
+              </div>
+            )}
+
+            {eventPrice && (
+              <div className="flex pt-1.5 items-center">
+                <IconTicket
+                  title={
+                    isEmptyLocation ? getFullAddress(location_json) : eventPrice
+                  }
+                  className="h-3 w-3 shrink-0"
+                />
+                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
+                  {eventPrice}
+                </span>
+              </div>
+            )}
           </div>
-        </a>
-      </Link>
 
-      <Link href={`/events/${slug}`}>
-        <a className="flex items-center mt-3">
-          <ElemTooltip content={name} mode="light">
-            <h3 className="text-xl font-medium truncate">{name}</h3>
-          </ElemTooltip>
-        </a>
-      </Link>
-
-      {start_date && (
-        <p className="text-sm text-gray-500">
-          {moment(start_date).format('MMM D, YYYY')}
-
-          {end_date && (
-            <>
-              &nbsp;&ndash;&nbsp;
-              {moment(end_date).format('MMM D, YYYY')}
-            </>
-          )}
-        </p>
-      )}
-
-      {!isEmptyLocation && (
-        <p className="text-sm text-gray-500">{getFullAddress(location_json)}</p>
-      )}
-
-      {tags && (
-        <ElemTags
-          className="mt-4"
-          limit={CARD_DEFAULT_TAGS_LIMIT}
-          filter={'eventType'}
-          resourceType={'events'}
-          tags={tags}
-        />
-      )}
-
-      <div className="flex items-center justify-between mt-4 gap-x-5">
-        <div className="flex items-center space-x-0.5">
-          {link && (
-            <Link href={link}>
-              <a target="_blank">
-                <ElemTooltip content="Website" mode="light">
-                  <div>
-                    <IconGlobe className="h-6 w-6 text-gray-400" title={link} />
-                  </div>
-                </ElemTooltip>
-              </a>
-            </Link>
-          )}
-          {twitter && (
-            <Link href={twitter}>
-              <a target="_blank">
-                <IconTwitter className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          )}
-          {facebook && (
-            <Link href={facebook}>
-              <a target="_blank">
-                <IconFacebook className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          )}
-          {instagram && (
-            <Link href={instagram}>
-              <a target="_blank">
-                <IconInstagram className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          )}
-          {discord && (
-            <Link href={discord}>
-              <a target="_blank">
-                <IconDiscord className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          )}
-          {telegram && (
-            <Link href={telegram}>
-              <a target="_blank">
-                <IconTelegram className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
+          {tags && (
+            <ElemTags
+              className="mt-4"
+              limit={CARD_DEFAULT_TAGS_LIMIT}
+              filter={'eventType'}
+              resourceType={'events'}
+              tags={tags}
+            />
           )}
         </div>
-
-        <div className="flex items-center gap-2">
-          {eventPrice && (
-            <div className="text-xs text-gray-500">{eventPrice}</div>
-          )}
+        <div className="flex items-center justify-between mt-4 gap-x-5">
+          <div className="flex items-center space-x-0.5">
+            {link && (
+              <Link href={link}>
+                <a target="_blank">
+                  <ElemTooltip content="Website" mode="light">
+                    <div>
+                      <IconGlobe
+                        className="h-3.5 w-3.5 text-gray-400"
+                        title={link}
+                      />
+                    </div>
+                  </ElemTooltip>
+                </a>
+              </Link>
+            )}
+            {twitter && (
+              <Link href={twitter}>
+                <a target="_blank">
+                  <IconTwitter className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+            {facebook && (
+              <Link href={facebook}>
+                <a target="_blank">
+                  <IconFacebook className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+            {instagram && (
+              <Link href={instagram}>
+                <a target="_blank">
+                  <IconInstagram className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+            {discord && (
+              <Link href={discord}>
+                <a target="_blank">
+                  <IconDiscord className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+            {telegram && (
+              <Link href={telegram}>
+                <a target="_blank">
+                  <IconTelegram className="h-3.5 w-3.5 text-gray-400" />
+                </a>
+              </Link>
+            )}
+          </div>
 
           <ElemButton
             btn={isAttended ? 'primary-light' : 'default'}
@@ -282,7 +305,6 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
           </ElemButton>
         </div>
       </div>
-
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
         title="You have not linked your account to a profile on EdgeIn"
