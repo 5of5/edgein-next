@@ -1,13 +1,6 @@
 import { FC, useEffect, useState, Fragment } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
-// import { ElemReactions } from '@/components/elem-reactions';
-// import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTooltip } from '@/components/elem-tooltip';
-// import {
-//   IconExternalLink,
-//   IconNewspaper,
-//   IconPlayCircle,
-// } from '@/components/icons';
 import { GetNewsQuery } from '@/graphql/types';
 import Link from 'next/link';
 import { getCleanWebsiteUrl, stripHtmlTags } from '@/utils/text';
@@ -39,9 +32,6 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
     link,
     text,
     source,
-    // created_at,
-    // updated_at,
-    // status,
     metadata,
     organizations,
   } = postData;
