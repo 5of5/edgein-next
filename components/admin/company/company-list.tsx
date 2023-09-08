@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import {
   Button,
   FunctionField,
@@ -16,12 +16,18 @@ import {
   ReferenceInput,
   SelectInput,
   SelectArrayInput,
+  DateField,
+  useNotify,
 } from 'react-admin';
 import { Chip } from '@mui/material';
 import { companyLayerChoices } from '../../../utils/constants';
 import ElemList from '../elem-list';
 import { useAuth } from '@/hooks/use-auth';
 import { getAllTags } from '@/utils/helpers';
+import { z } from 'zod';
+import { IngestCompaniesReqBody } from '@/pages/api/ingest/companies';
+import axios, { AxiosError } from 'axios';
+import { InsertCompaniesMutation } from '@/graphql/types';
 
 type QuickFilterProps = {
   label: string;
@@ -69,11 +75,87 @@ const filters = [
   />,
 ];
 
+const CompaniesToIngest = z.preprocess(
+  val => String(val).trim().split('\n'),
+  z.array(z.string()),
+);
+
 export const CompanyList = () => {
   const { user } = useAuth();
+  const notify = useNotify();
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filereader = new FileReader();
+
+      filereader.onload = async () => {
+        const parsed = CompaniesToIngest.safeParse(filereader.result);
+
+        if (parsed.success) {
+          const body: IngestCompaniesReqBody = {
+            companies: parsed.data,
+            enrichmentPriority: 1,
+          };
+
+          try {
+            const { status, data } = await axios.post<InsertCompaniesMutation>(
+              '/api/ingest/companies',
+              body,
+            );
+
+            if (status === 201) {
+              if (
+                parsed.data.length !== data.insert_companies?.returning.length
+              ) {
+                console.warn({
+                  ingestedCompanies: data.insert_companies?.returning,
+                });
+
+                notify(
+                  `Ingested ${data.insert_companies?.returning.length}/${parsed.data.length} companies, check console for details`,
+                  { type: 'warning', autoHideDuration: 10 * 1000 },
+                );
+              } else {
+                notify(
+                  `Ingested ${data.insert_companies?.returning.length}/${parsed.data.length} companies`,
+                  { type: 'success' },
+                );
+              }
+            }
+          } catch (error) {
+            console.error(error);
+
+            if (error instanceof AxiosError) {
+              notify(
+                `Ingestion unsuccessful, check console for error\n${error.message}`,
+                {
+                  type: 'error',
+                  multiLine: true,
+                  autoHideDuration: 15 * 1000,
+                },
+              );
+            }
+          }
+        } else {
+          console.error(parsed.error);
+
+          notify('File in an incorrect format', { type: 'error' });
+          notify(parsed.error.toString(), {
+            type: 'error',
+            multiLine: true,
+            autoHideDuration: 15 * 1000,
+          });
+        }
+
+        // Reset input so the file can be uploaded again
+        e.target.value = '';
+      };
+      filereader.readAsText(e.target.files[0]);
+    }
+  };
 
   return (
-    <ElemList filters={filters}>
+    <ElemList filters={filters} enableIngest onFileChange={handleFileChange}>
       {user?.role !== 'cms-readonly' && <EditButton />}
       <FunctionField
         render={(record: any) => (
@@ -181,6 +263,9 @@ export const CompanyList = () => {
         }
       />
       {/* <TextField source="counter" /> */}
+      <DateField source="data_enriched_at" />
+      <DateField source="domain_enriched_at" />
+      <NumberField source="enrichment_priority" />
     </ElemList>
   );
 };

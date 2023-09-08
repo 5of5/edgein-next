@@ -70,6 +70,7 @@ query GetEvent($slug: String!) {
     is_featured
     attachments
     created_at
+    library
     event_person {
       id
       type

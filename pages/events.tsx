@@ -37,13 +37,13 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import { ElemDropdown } from '@/components/elem-dropdown';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -121,17 +121,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
   };
-
-  const { orderByQuery, orderByParam, sortChoices } =
-    useDashboardSortBy<Events_Order_By>({
-      defaultSortBy: 'oldest',
-      newestSortKey: 'start_date',
-      oldestSortKey: 'start_date',
-    });
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -235,10 +224,21 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     });
   }
 
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Events_Order_By>({
+      defaultSortBy: 'oldest',
+      newestSortKey: 'start_date',
+      oldestSortKey: 'start_date',
+    });
+
   const orderBy = [orderByQuery];
   if (selectedTab?.value === 'past') {
     orderBy.push({ start_date: Order_By.Desc } as Events_Order_By);
   }
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
 
   const {
     data: eventsData,
@@ -269,7 +269,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist">
           <ElemCategories
             categories={eventTabs}

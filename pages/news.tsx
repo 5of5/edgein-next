@@ -9,11 +9,7 @@ import { PlaceholderNewsCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '../utils';
 import toast, { Toaster } from 'react-hot-toast';
-import {
-  IconAnnotation,
-  IconSearch,
-  IconSortDashboard,
-} from '@/components/icons';
+import { IconAnnotation, IconSearch } from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
@@ -34,8 +30,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
@@ -90,19 +84,6 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ],
   };
 
-  const { sortChoices, orderByParam, orderByQuery } =
-    useDashboardSortBy<News_Order_By>({
-      defaultSortBy: 'newest',
-      ascendingSortKey: 'text',
-      descendingSortKey: 'text',
-      newestSortKey: 'date',
-      oldestSortKey: 'date',
-    });
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
-
   useEffect(() => {
     if (!initialLoad) {
       setPage(0);
@@ -146,7 +127,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     {
       offset,
       limit,
-      orderBy: [orderByQuery],
+      orderBy: [{ date: Order_By.Desc } as News_Order_By],
       where: filters as News_Bool_Exp,
     },
     { refetchOnWindowFocus: false },
@@ -167,8 +148,9 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist">
+          className="px-8 pt-0.5 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+          role="tablist"
+        >
           <ElemCategories
             categories={newsTab}
             selectedCategory={selectedTab}

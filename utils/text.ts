@@ -174,3 +174,28 @@ export const getCleanWebsiteUrl = (rawUrl: any, protocol?: boolean) => {
 
   return rawUrl.split('//').pop().split('/')[0].replace('www.', '');
 };
+
+export const getCityAndCountry = (city?: string, country?: string): string => {
+  if (!city && !country) {
+    return '';
+  }
+
+  const cityAndCountry =
+    city && country
+      ? `in ${city} (${country}) | `
+      : city
+      ? `in ${city} | `
+      : country
+      ? `in ${country} | `
+      : '';
+
+  return cityAndCountry;
+};
+
+export const toSentence = (items?: Array<string>) => {
+  if (!items) {
+    return '';
+  }
+
+  return items.join(', ').replace(/,\s([^,]+)$/, ' and $1');
+};

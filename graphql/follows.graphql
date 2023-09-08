@@ -1,5 +1,8 @@
 query GetFollowsByUser($user_id: Int!) {
-  list_members(where: { user_id: { _eq: $user_id } }) {
+  list_members(
+    where: { user_id: { _eq: $user_id } }
+    order_by: { list: { updated_at: desc } }
+  ) {
     list {
       name
       description

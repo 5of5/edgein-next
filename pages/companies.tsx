@@ -269,14 +269,16 @@ const Companies: NextPage<Props> = ({
   const layoutItems = [
     {
       id: 0,
-      label: 'Grid View',
+      label: 'Grid view',
       value: 'grid',
+      StartIcon: IconGroup,
       onClick: () => setTableLayout(false),
     },
     {
       id: 1,
-      label: 'Table View',
+      label: 'Table view',
       value: 'table',
+      StartIcon: IconTable,
       onClick: () => setTableLayout(true),
     },
   ];
@@ -286,8 +288,9 @@ const Companies: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-8 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist">
+          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+          role="tablist"
+        >
           <ElemCategories
             categories={companyStatusTags}
             selectedCategory={selectedStatusTag}

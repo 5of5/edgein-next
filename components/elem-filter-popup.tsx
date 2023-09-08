@@ -31,6 +31,8 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
   children,
   popupClass,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -45,6 +47,13 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   });
+
+  useEffect(() => {
+    if (!open && !title) {
+      onClearFilterOption();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, title]);
 
   const onOpenFilterOption = () => {
     onOpen(name);
@@ -62,8 +71,18 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
     onApply(name);
   };
 
+  let popupPosition = 'left-0';
+  if (containerRef.current && wrapperRef.current) {
+    if (
+      containerRef.current.offsetLeft + wrapperRef.current.offsetWidth >
+      window.innerWidth
+    ) {
+      popupPosition = 'right-0';
+    }
+  }
+
   return (
-    <div className="snap-start shrink-0 relative max-w-full">
+    <div ref={containerRef} className="snap-start shrink-0 relative max-w-full">
       <div className="flex items-center min-h-[32px] bg-primary-500 text-white text-sm rounded-full px-3 py-1">
         <button
           onClick={onOpenFilterOption}
@@ -79,10 +98,10 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
       {open && (
         <div
           ref={wrapperRef}
-          className={`absolute z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}
+          className={`absolute top-10 ${popupPosition} z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}
         >
-          <div className="px-4 py-2">{children}</div>
-          <div className="flex justify-end items-center gap-x-4 px-4 py-2 border-t border-gray-300">
+          <div className="px-4 py-3">{children}</div>
+          <div className="flex justify-end items-center gap-x-4 px-4 py-2 border-t border-gray-100">
             <button
               onClick={onClearFilterOption}
               name={name}

@@ -23,9 +23,15 @@ const ElemLibrarySelector = () => {
           //onClick={() => setSelectedStatusTag(tab)}
           btn="default"
           roundedFull={false}
-          className="rounded-lg"
+          className={`rounded-lg border ${
+            selectedLibrary === 'Web3' ? 'border-primary-500' : 'border-pink-25'
+          }`}
         >
-          <IconMarket className="w-4 h-4 text-gray-400 mr-1.5" />
+          <IconMarket
+            className={`w-4 h-4 ${
+              selectedLibrary === 'Web3' ? 'text-primary-500' : 'text-pink-25'
+            } mr-1.5`}
+          />
           {selectedLibrary}
           <IconChevronDownMini
             className="w-5 h-5 ml-1"
@@ -49,7 +55,9 @@ const ElemLibrarySelector = () => {
               {libraryChoices.map(item => (
                 <button
                   key={item.id}
-                  className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100`}
+                  className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
+                    item.id === selectedLibrary ? 'font-medium' : 'font-normal'
+                  } px-4 py-2 m-0 transition-all hover:bg-gray-100`}
                   title={item?.id}
                   onClick={() => {
                     onChangeLibrary(item);
@@ -57,12 +65,21 @@ const ElemLibrarySelector = () => {
                   }}
                 >
                   <IconCheck
-                    className={`w-4 h-4 text-primary-500 ${
+                    className={`w-4 h-4 ${
+                      selectedLibrary === 'Web3'
+                        ? 'text-primary-500'
+                        : 'text-pink-25'
+                    } ${
                       item.id === selectedLibrary ? 'opacity-100' : 'opacity-0'
                     }`}
                     title={`${item?.id} Selected`}
                   />
                   {item.name}
+                  {item.id === 'AI' && (
+                    <span className="px-2.5 py-0.5 rounded-2lg bg-pink-25 bg-opacity-15 text-xs text-pink-25 font-medium">
+                      New
+                    </span>
+                  )}
                 </button>
               ))}
             </>

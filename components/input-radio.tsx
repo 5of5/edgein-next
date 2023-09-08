@@ -23,7 +23,7 @@ export const InputRadio: React.FC<Props> = ({
 }) => {
   return (
     <label
-      className={`flex items-center text-sm font-normal text-slate-600 cursor-pointer mb-1 ${labelClass}`}
+      className={`flex items-center text-sm font-normal text-gray-500 cursor-pointer mb-1 ${labelClass}`}
     >
       <input
         type="radio"

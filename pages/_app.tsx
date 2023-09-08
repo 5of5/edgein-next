@@ -83,6 +83,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       '/people',
       '/groups',
       '/account',
+      '/invite-a-friend',
       '/profile',
       '/lists',
       '/notes',

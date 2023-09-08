@@ -32,7 +32,7 @@ const ElemAddressFilter: FC<Props> = ({ value, onChange }) => {
         <Combobox.Input
           className={`relative w-full appearance-none border-none ${
             isLoadingPlace ? 'text-dark-400 animate-pulse' : 'text-dark-500'
-          } bg-white rounded-md pl-3 pr-10 py-1.5 text-left ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500`}
+          } bg-white rounded-2lg pl-3 pr-10 py-2 text-left text-sm ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500`}
           displayValue={(value: Place) =>
             isLoadingPlace ? 'Loading...' : value?.Label || ''
           }
