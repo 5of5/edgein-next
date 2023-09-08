@@ -44,7 +44,7 @@ export const EventsByFilter: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {times(4, index => (
           <PlaceholderEventCard key={index} />
         ))}
@@ -68,7 +68,7 @@ export const EventsByFilter: FC<Props> = ({
       <div className="text-4xl font-medium my-8">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         {events.map(event => (
           <ElemEventCard key={event.id} event={event as Events} />

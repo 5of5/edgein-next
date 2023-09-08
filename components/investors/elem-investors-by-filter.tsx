@@ -67,7 +67,7 @@ export const InvestorsByFilter: FC<Props> = ({
 
   if (isLoading || isLoadingSecondary) {
     return (
-      <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-16">
+      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-16">
         {times(itemsPerPage, index => (
           <PlaceholderInvestorCard key={index} />
         ))}
@@ -116,7 +116,7 @@ export const InvestorsByFilter: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
+            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
           >
             {vc_firms?.map(vcFirm => (
               <ElemInvestorCard key={vcFirm.id} vcFirm={vcFirm as Vc_Firms} />

@@ -106,7 +106,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               <div className="flex pt-1.5 items-center">
                 <IconLocation
                   title={getFullAddress(location_json)}
-                  className="h-3 w-3 shrink-0"
+                  className="h-3 w-3 shrink-0 self-start mt-1"
                 />
                 <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
                   {getFullAddress(location_json)}
@@ -142,7 +142,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               {website && (
                 <Link href={website}>
                   <a target="_blank">
-                    <IconGlobe className="h-3.5 w-3.5 text-gray-400" />
+                    <IconGlobe className="h-5 w-5 text-gray-400" />
                   </a>
                 </Link>
               )}
@@ -151,12 +151,12 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 userCanViewLinkedIn ? (
                   <Link href={linkedin}>
                     <a target="_blank">
-                      <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
+                      <IconLinkedIn className="h-5 w-5 text-gray-400" />
                     </a>
                   </Link>
                 ) : (
                   <button onClick={onClickInvestorLinkedin}>
-                    <IconLinkedIn className="h-3.5 w-3.5 text-gray-400" />
+                    <IconLinkedIn className="h-5 w-5 text-gray-400" />
                   </button>
                 )
               ) : null}
@@ -164,7 +164,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               {twitter && (
                 <Link href={twitter}>
                   <a target="_blank">
-                    <IconTwitter className="h-3.5 w-3.5 text-gray-400" />
+                    <IconTwitter className="h-5 w-5 text-gray-400" />
                   </a>
                 </Link>
               )}
@@ -173,14 +173,14 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
           {github && (
             <Link href={github}>
               <a target="_blank">
-                <IconGithub className="h-3.5 w-3.5 text-gray-400" />
+                <IconGithub className="h-5 w-5 text-gray-400" />
               </a>
             </Link>
           )}
           {discord && (
             <Link href={discord}>
               <a target="_blank">
-                <IconDiscord className="h-3.5 w-3.5 text-gray-400" />
+                <IconDiscord className="h-5 w-5 text-gray-400" />
               </a>
             </Link>
           )} */}
