@@ -306,7 +306,7 @@ const Companies: NextPage<Props> = ({
               resourceType="companies"
               onSelectFilterOption={onSelectFilterOption}
             />
-            
+
             {isSortDropdownVisible && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
@@ -567,13 +567,6 @@ const Companies: NextPage<Props> = ({
                 </div>
               )}
 
-              {isTrendingTabSelected && (
-                <ElemDropdown
-                  IconComponent={IconSortDashboard}
-                  defaultItem={defaultOrderBy}
-                  items={sortChoices}
-                />
-              )}
               <CompaniesTable
                 companies={companies}
                 pageNumber={page}
