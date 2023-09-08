@@ -668,7 +668,7 @@ export const getStaticProps: GetStaticProps = async () => {
 export async function getStaticPaths() {
   return {
     paths: ['/web3/companies', '/ai/companies'],
-    fallback: true,
+    fallback: false,
   };
 }
 

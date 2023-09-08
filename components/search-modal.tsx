@@ -23,8 +23,8 @@ import {
 import Link from 'next/link';
 import { getEventBanner, randomImageOfCity } from '@/utils/helpers';
 import { formatDate } from '@/utils/numbers';
-import useLibrary from '@/hooks/use-library';
 import { parseIndexName } from '@/utils/algolia';
+import { useUser } from '@/context/user-context';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -391,7 +391,7 @@ const HitNews = () =>
 export default function SearchModal(props: any) {
   const emptyView = React.useRef(true);
 
-  const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useUser();
 
   const onClose = () => {
     props.onClose();

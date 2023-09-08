@@ -11,9 +11,9 @@ import {
 } from '@/graphql/types';
 import { ElemEventCard } from './elem-event-card';
 import moment from 'moment-timezone';
-import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { ISO_DATE_FORMAT } from '@/utils/constants';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   className?: string;
@@ -26,7 +26,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
   heading,
   itemsLimit,
 }) => {
-  const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useUser();
 
   const limit = itemsLimit ? itemsLimit : 33;
   const offset = null;

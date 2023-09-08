@@ -434,7 +434,7 @@ export const getStaticProps: GetStaticProps = async context => {
 export async function getStaticPaths() {
   return {
     paths: ['/web3/events', '/ai/events'],
-    fallback: true,
+    fallback: false,
   };
 }
 

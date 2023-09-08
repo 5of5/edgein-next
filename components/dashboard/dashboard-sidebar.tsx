@@ -1,4 +1,3 @@
-import { useAuth } from '@/hooks/use-auth';
 import { FC, useEffect, useState } from 'react';
 import {
   IconCash,
@@ -11,6 +10,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ExploreMenuItem } from '@/types/common';
+import { useUser } from '@/context/user-context';
 
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,
@@ -27,7 +27,7 @@ type Props = {
 };
 
 export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
-  const { user } = useAuth();
+  const { user, selectedLibrary } = useUser();
   const router = useRouter();
 
   const [organizations, setOrganizations] = useState(
@@ -64,22 +64,22 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   const exploreMenu: ExploreMenuItem[] = [
     {
-      href: '/companies/',
+      href: `/${selectedLibrary.toLowerCase()}/companies/`,
       icon: IconCompanies,
       title: 'Companies',
     },
     {
-      href: '/investors/',
+      href: `/${selectedLibrary.toLowerCase()}/investors/`,
       icon: IconCash,
       title: 'Investors',
     },
     {
-      href: '/events/',
+      href: `/${selectedLibrary.toLowerCase()}/events/`,
       icon: IconCalendarDays,
       title: 'Events',
     },
     {
-      href: '/news/',
+      href: `/${selectedLibrary.toLowerCase()}/news/`,
       icon: IconNewspaper,
       title: 'News',
     },

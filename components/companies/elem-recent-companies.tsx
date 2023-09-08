@@ -10,9 +10,9 @@ import {
 } from '@/graphql/types';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
-import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { ElemTags } from '@/components/elem-tags';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   className?: string;
@@ -25,7 +25,7 @@ export const ElemRecentCompanies: FC<Props> = ({
   heading,
   itemsLimit,
 }) => {
-  const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useUser();
 
   const limit = itemsLimit ? itemsLimit : 33;
   const offset = null;

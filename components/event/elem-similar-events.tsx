@@ -11,8 +11,8 @@ import {
   useGetEventsQuery,
 } from '@/graphql/types';
 import { ElemEventCard } from '../events/elem-event-card';
-import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   className?: string;
@@ -32,7 +32,7 @@ export const ElemSimilarEvents: FC<Props> = ({
 
   const router = useRouter();
 
-  const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useUser();
 
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: [

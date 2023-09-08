@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { PlaceholderInvestorCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
@@ -9,10 +9,9 @@ import {
 } from '@/graphql/types';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
-import { useAuth } from '@/hooks/use-auth';
 import { formatDate } from '@/utils';
-import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   className?: string;
@@ -25,9 +24,7 @@ export const ElemRecentInvestments: FC<Props> = ({
   heading,
   itemsLimit,
 }) => {
-  const { user } = useAuth();
-
-  const { selectedLibrary } = useLibrary();
+  const { user, selectedLibrary } = useUser();
 
   const limit = itemsLimit ? itemsLimit : 33;
   const offset = null;

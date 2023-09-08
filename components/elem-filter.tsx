@@ -22,12 +22,12 @@ import ElemAddressFilter from './elem-address-filter';
 import { InputText } from './input-text';
 import { InputSelect } from './input-select';
 import { eventSizeChoices, ISO_DATE_FORMAT } from '@/utils/constants';
-import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
 import { ElemFilterLocation } from './elem-filter-location';
 import { ElemAddFilter } from './elem-add-filter';
 import { getGeometryPlace } from '@/utils/helpers';
 import ElemFilterCheckboxTags from './elem-filter-checkbox-tags';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   className?: string;
@@ -54,7 +54,7 @@ export const ElemFilter: FC<Props> = ({
   onClearOption,
   onReset,
 }) => {
-  const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useUser();
 
   const [filters, setFilters] = useState<Filters | null>(filterValues);
 

@@ -239,7 +239,7 @@ export const getStaticProps: GetStaticProps = async context => {
 export async function getStaticPaths() {
   return {
     paths: ['/web3/news', '/ai/news'],
-    fallback: true,
+    fallback: false,
   };
 }
 

@@ -31,7 +31,7 @@ type UserValue = {
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][];
   myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][];
   unreadNotificationsCount: number;
-  selectedLibrary?: Library;
+  selectedLibrary: Library;
   onChangeLibrary: (value: LibraryTag) => void;
   refetchMyGroups: any;
   refetchUnreadNotifications: () => void;
@@ -44,6 +44,7 @@ const userContext = React.createContext<UserValue>({
   listAndFollows: [],
   myGroups: [],
   unreadNotificationsCount: 0,
+  selectedLibrary: 'Web3',
   onChangeLibrary: () => {},
   refetchMyGroups: () => {},
   refetchUnreadNotifications: () => {},

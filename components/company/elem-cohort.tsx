@@ -10,8 +10,8 @@ import {
   Maybe,
   useGetCompaniesRecentQuery,
 } from '@/graphql/types';
-import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { useUser } from '@/context/user-context';
 
 type Props = {
   className?: string;
@@ -28,7 +28,7 @@ export const ElemCohort: FC<Props> = ({
   tag1,
   tag2,
 }) => {
-  const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useUser();
 
   const limit = 12;
   const offset = null;
