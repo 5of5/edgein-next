@@ -61,7 +61,8 @@ export const NewsByFilter: FC<Props> = ({
       <div>
         <div
           data-testid="personalizedCompanies"
-          className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4">
+          className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4"
+        >
           {news.map(post => (
             <ElemNewsCard key={post.id} newsPost={post} />
           ))}

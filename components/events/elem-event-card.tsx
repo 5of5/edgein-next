@@ -117,7 +117,8 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
                 <div
                   className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                     t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                  }`}>
+                  }`}
+                >
                   {err?.message}
                 </div>
               ),
@@ -161,7 +162,8 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
                   className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
                   style={{
                     backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
-                  }}></div>
+                  }}
+                ></div>
                 <img
                   className="relative"
                   src={eventImageUrl}
@@ -293,7 +295,8 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
             btn={isAttended ? 'primary-light' : 'default'}
             onClick={handleClickAttend}
             loading={isLoadingGoingEvent}
-            className="px-2.5">
+            className="px-2.5"
+          >
             {isAttended && dateIsTodayOrBefore(end_date)
               ? 'Attending'
               : isAttended && !dateIsTodayOrBefore(end_date)

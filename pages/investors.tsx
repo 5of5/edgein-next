@@ -199,7 +199,8 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -213,7 +214,8 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -513,7 +515,8 @@ const Investors: NextPage<Props> = ({
                           `Hi EdgeIn, I'd like to report an error on investors page`,
                         )
                       }
-                      className="inline underline decoration-primary-500 hover:text-primary-500">
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
                       <span>report error</span>
                     </button>
                     .
@@ -575,7 +578,8 @@ const Investors: NextPage<Props> = ({
                 )}
                 <div
                   data-testid="investors"
-                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                >
                   {vcFirms?.map(vcfirm => (
                     <ElemInvestorCard
                       key={vcfirm.id}
@@ -613,7 +617,8 @@ const Investors: NextPage<Props> = ({
                     )
                   }
                   btn="white"
-                  className="mt-3">
+                  className="mt-3"
+                >
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>

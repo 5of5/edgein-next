@@ -27,7 +27,7 @@ export const EventsByFilter: FC<Props> = ({
   filters,
   itemsPerPage,
   tagOnClick,
-  orderBy
+  orderBy,
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 

@@ -183,34 +183,32 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                   orderBy={{
                     updated_at: Order_By.Desc,
                   }}
-                  filters={
-                    {
-                      _or: [
-                        {
-                          organizations: {
-                            company: {
-                              location_json: {
-                                _contains: {
-                                  city: `${location}`,
-                                },
+                  filters={{
+                    _or: [
+                      {
+                        organizations: {
+                          company: {
+                            location_json: {
+                              _contains: {
+                                city: `${location}`,
                               },
                             },
                           },
                         },
-                        {
-                          organizations: {
-                            vc_firm: {
-                              location_json: {
-                                _contains: {
-                                  city: `${location}`,
-                                },
+                      },
+                      {
+                        organizations: {
+                          vc_firm: {
+                            location_json: {
+                              _contains: {
+                                city: `${location}`,
                               },
                             },
                           },
                         },
-                      ],
-                    }
-                  }
+                      },
+                    ],
+                  }}
                 />
               ))}
             </div>
@@ -232,7 +230,8 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                     )
                   }
                   btn="white"
-                  className="mt-3">
+                  className="mt-3"
+                >
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>

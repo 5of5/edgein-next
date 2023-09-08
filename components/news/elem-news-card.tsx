@@ -25,16 +25,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
     setPostData(newsPost);
   }, [newsPost]);
 
-  const {
-    id,
-    kind,
-    date,
-    link,
-    text,
-    source,
-    metadata,
-    organizations,
-  } = postData;
+  const { id, kind, date, link, text, source, metadata, organizations } =
+    postData;
   const orgs = organizations as {
     company?: {
       tags: string[];
@@ -76,7 +68,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
 
   return (
     <div
-      className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] ${className}`}>
+      className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] ${className}`}
+    >
       {link && (
         <div className="flex flex-col justify-between h-full">
           <div>
@@ -106,7 +99,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   <a
                     target="_blank"
                     className="block mb-2"
-                    onClick={handleLinkClick}>
+                    onClick={handleLinkClick}
+                  >
                     {metadata?.image && (
                       <img
                         src={metadata?.image}
@@ -126,7 +120,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   className={`text-sm text-gray-500 mt-4 ${
                     metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
                   }`}
-                  onClick={handleLinkClick}>
+                  onClick={handleLinkClick}
+                >
                   {parse(stripHtmlTags(metadata?.description))}
                 </a>
               </Link>
@@ -134,7 +129,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
               <p
                 className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-                }`}>
+                }`}
+              >
                 {parse(stripHtmlTags(metadata?.description))}
               </p>
             )}
@@ -169,7 +165,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                               imgAlt={organization?.name}
                               placeholderClass="text-slate-300"
                             />
-                          }>
+                          }
+                        >
                           <div className="inline-block">
                             <Link href={slug}>
                               <a className="break-words border-b border-gray-600">
@@ -198,7 +195,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                         : publisher.vc_firm
                         ? `/investors/${publisher.vc_firm?.slug}`
                         : ''
-                    }>
+                    }
+                  >
                     <a target="_blank" className="">
                       {publisher.company?.name || publisher.vc_firm?.name}
                     </a>
@@ -217,7 +215,8 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                     source?.poweredby?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'
-                  }`}>
+                  }`}
+                >
                   <a>{source?.poweredby || 'CryptoPanic'}</a>
                 </Link>
               </p>
