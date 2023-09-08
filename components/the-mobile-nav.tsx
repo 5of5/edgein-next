@@ -39,7 +39,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   className = '',
   setShowPopup,
 }) => {
-  const { user, unreadNotifications } = useUser();
+  const { user, unreadNotificationsCount } = useUser();
 
   const router = useRouter();
 
@@ -153,7 +153,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 >
                   {item?.icon && (
                     <div className="relative flex items-center justify-center h-7 aspect-square">
-                      {unreadNotifications.length > 0 &&
+                      {unreadNotificationsCount > 0 &&
                         item.title === 'Notifications' && (
                           <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
                         )}
