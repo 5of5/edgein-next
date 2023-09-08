@@ -44,7 +44,7 @@ const userContext = React.createContext<UserValue>({
   loading: true,
   listAndFollows: [],
   myGroups: [],
-  unreadNotifications: [],
+  unreadNotificationsCount: 0,
   onChangeLibrary: () => {},
   refetchMyGroups: () => {},
   refetchUnreadNotifications: () => {},
