@@ -386,7 +386,7 @@ const Companies: NextPage<Props> = ({
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
                   orderBy={{
-                    updated_at: Order_By.Desc
+                    updated_at: Order_By.Desc,
                   }}
                   filters={{
                     _and: [
@@ -418,7 +418,7 @@ const Companies: NextPage<Props> = ({
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
                   orderBy={{
-                    created_at: Order_By.Desc
+                    created_at: Order_By.Desc,
                   }}
                   filters={{
                     _and: [
@@ -484,7 +484,7 @@ const Companies: NextPage<Props> = ({
                     sum: {
                       amount: Order_By.Desc,
                     },
-                  }
+                  },
                 }}
                 filters={{
                   _and: [
@@ -508,7 +508,7 @@ const Companies: NextPage<Props> = ({
                 itemsPerPage={ITEMS_PER_PAGE}
                 isTableView={tableLayout}
                 orderBy={{
-                  year_founded: Order_By.Desc
+                  year_founded: Order_By.Desc,
                 }}
                 filters={{
                   _and: [
