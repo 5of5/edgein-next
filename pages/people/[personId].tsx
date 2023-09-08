@@ -358,13 +358,13 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   // Meta fields
   const metaPersonCountry = person.country ? `${person.country} - ` : '';
-  const metaRole = latestJob.title ? `${latestJob.title} at ` : '';
+  const metaRole = latestJob?.title ? `${latestJob?.title} at ` : '';
   const metaOrganizationName = latestJob?.vc_firm
     ? `${latestJob.vc_firm.name}`
     : latestJob?.company
     ? `${latestJob.company.name}`
     : 'undisclosed organization';
-  const metaStartingDate = latestJob.start_date
+  const metaStartingDate = latestJob?.start_date
     ? ` from ${moment(latestJob.start_date).format('MMM YYYY')}`
     : '';
   const metaPersonTags =
