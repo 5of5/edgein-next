@@ -97,7 +97,9 @@ const Companies: NextPage<Props> = ({
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
-
+  const isSortDropdownVisible = ['Dead', 'Raising'].includes(
+    selectedStatusTag?.value || '',
+  );
   const [tableLayout, setTableLayout] = useState(false);
 
   const [page, setPage] = useStateParams<number>(
@@ -225,7 +227,7 @@ const Companies: NextPage<Props> = ({
     if (isNewTabSelected) {
       filters._and?.push({
         date_added: {
-          _lte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
+          _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
         },
       });
     } else {
@@ -304,6 +306,14 @@ const Companies: NextPage<Props> = ({
               resourceType="companies"
               onSelectFilterOption={onSelectFilterOption}
             />
+            
+            {isSortDropdownVisible && (
+              <ElemDropdown
+                IconComponent={IconSortDashboard}
+                defaultItem={defaultOrderBy}
+                items={sortChoices}
+              />
+            )}
           </div>
         </div>
 
@@ -554,14 +564,15 @@ const Companies: NextPage<Props> = ({
               {showPersonalized && (
                 <div className="flex justify-between py-8">
                   <div className="text-4xl font-medium">All companies</div>
-                  {!isNewTabSelected && (
-                    <ElemDropdown
-                      IconComponent={IconSortDashboard}
-                      defaultItem={defaultOrderBy}
-                      items={sortChoices}
-                    />
-                  )}
                 </div>
+              )}
+
+              {isTrendingTabSelected && (
+                <ElemDropdown
+                  IconComponent={IconSortDashboard}
+                  defaultItem={defaultOrderBy}
+                  items={sortChoices}
+                />
               )}
               <CompaniesTable
                 companies={companies}
