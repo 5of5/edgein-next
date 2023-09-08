@@ -339,7 +339,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
         <div className="mx-8">
           {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-16">
+            <div className="flex flex-col gap-4 gap-x-8">
               {personalizedTags.locationTags.map(location => (
                 <EventsByFilter
                   key={location}
@@ -419,7 +419,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               </div>
             </div>
           ) : isLoading && !initialLoad ? (
-            <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {Array.from({ length: 9 }, (_, i) => (
                 <PlaceholderEventCard key={i} />
               ))}

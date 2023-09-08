@@ -174,7 +174,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
         <div className="mx-8">
           {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-16">
+            <div className="flex flex-col gap-4 gap-x-8">
               {personalizedTags.locationTags.map((location, index) => (
                 <NewsByFilter
                   key={`${location}-${index}`}
@@ -245,7 +245,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             </div>
           )}
 
-          <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <h4>Error loading news</h4>
             ) : isLoading && !initialLoad ? (
