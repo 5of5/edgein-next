@@ -54,12 +54,16 @@ export async function middleware(req: NextRequest) {
       CookieService.getAuthToken(req.cookies),
     );
 
+    const library = CookieService.getLibraryCookie(req.cookies);
+
     // we want users to fill onboarding again
     if (userExists && url.pathname === '/') {
       if (!userExists.onboarding_information?.locationDetails) {
         return NextResponse.redirect(new URL('/onboarding', req.url));
       }
-      return NextResponse.rewrite(new URL('/companies', req.url));
+      return NextResponse.rewrite(
+        new URL(`/${library?.toLowerCase()}/companies`, req.url),
+      );
     }
 
     // Prevent security issues – users should not be able to canonically access
@@ -100,7 +104,6 @@ export async function middleware(req: NextRequest) {
         url.pathname.startsWith(urlItem),
       )
     ) {
-      const library = CookieService.getLibraryCookie(req.cookies);
       return NextResponse.redirect(
         new URL(`/${library?.toLowerCase()}${url.pathname}`, req.url),
       );
