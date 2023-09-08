@@ -101,9 +101,17 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   ];
 
   if (selectedTab?.value !== 'past') {
-    defaultFilters.push({
-      start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
-    });
+    if (selectedTab?.value === 'upcoming') {
+      defaultFilters.push({
+        start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
+      }, {
+        start_date: { _lte: moment().add(7, 'days').format(ISO_DATE_FORMAT) }
+      });
+    } else {
+      defaultFilters.push({
+        start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
+      });
+    }
   }
 
   const filters: DeepPartial<Events_Bool_Exp> = {
@@ -414,7 +422,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 )}
                 <div
                   data-testid="events"
-                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4">
                   {events?.map(event => (
                     <ElemEventCard key={event.id} event={event} />
                   ))}
@@ -497,7 +505,7 @@ const eventTabs: DashboardCategory[] = [
     icon: '📣',
   },
   {
-    title: 'Upcoming',
+    title: 'Next 7 days',
     value: 'upcoming',
     date: moment().toISOString(),
     icon: '✨',
