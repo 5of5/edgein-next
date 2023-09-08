@@ -214,7 +214,9 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
             {eventPrice && (
               <div className="flex pt-1.5 items-center">
                 <IconTicket
-                  title={getFullAddress(location_json)}
+                  title={
+                    isEmptyLocation ? getFullAddress(location_json) : eventPrice
+                  }
                   className="h-3 w-3 shrink-0"
                 />
                 <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
