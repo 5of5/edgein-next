@@ -30,7 +30,7 @@ type UserValue = {
   loading: boolean;
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][];
   myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][];
-  unreadNotifications: GetUnreadNotificationsQuery['notifications'];
+  unreadNotificationsCount: number;
   selectedLibrary?: Library;
   onChangeLibrary: (value: LibraryTag) => void;
   refetchMyGroups: any;
@@ -43,7 +43,7 @@ const userContext = React.createContext<UserValue>({
   loading: true,
   listAndFollows: [],
   myGroups: [],
-  unreadNotifications: [],
+  unreadNotificationsCount: 0,
   onChangeLibrary: () => {},
   refetchMyGroups: () => {},
   refetchUnreadNotifications: () => {},
@@ -155,12 +155,8 @@ const UserProvider: React.FC<Props> = props => {
     );
   }, [groups]);
 
-  let unreadNotifications = notifications?.notifications || [];
-
-  unreadNotifications = filterExcludeNotifications(
-    unreadNotifications as Notifications[],
-    NOTIFICATION_EXCLUDE_PROPERTIES,
-  );
+  const unreadNotificationsCount =
+    notifications?.notifications_aggregate?.aggregate?.count || 0;
 
   const { selectedLibrary, onChangeLibrary } = useLibrary();
 
@@ -175,7 +171,7 @@ const UserProvider: React.FC<Props> = props => {
         loading,
         listAndFollows,
         myGroups,
-        unreadNotifications,
+        unreadNotificationsCount,
         selectedLibrary,
         onChangeLibrary: handleSelectLibrary,
         refetchMyGroups,
