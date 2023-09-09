@@ -197,7 +197,7 @@ jobs:
 
       - name: Update data fields
         if: steps.changes-in-hasura.outputs.src == 'true'
-        working-directory: setup/scripts
+        working-directory: scripts
         env:
           PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}
         shell: bash
