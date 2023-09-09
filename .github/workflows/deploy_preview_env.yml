@@ -123,7 +123,10 @@ jobs:
         run: terraform ${{ env.ACTION_TYPE }} --auto-approve -var-file="input.tfvars"
 
   post-apply:
-    needs: run-terraform
+    needs:
+      - run-terraform
+      - determine-action
+      - determine-workspace
     timeout-minutes: 60
     runs-on: ubuntu-latest
     if: needs.determine-action.outputs.action_type == 'apply'
@@ -224,7 +227,10 @@ jobs:
             });
 
   post-destroy:
-    needs: run-terraform
+    needs:
+      - run-terraform
+      - determine-action
+      - determine-workspace
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
