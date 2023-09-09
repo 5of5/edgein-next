@@ -4,6 +4,7 @@ on:
     types:
       - opened
       - synchronize
+      - closed
   workflow_dispatch:
     inputs:
       workspace:
@@ -12,22 +13,54 @@ on:
         default: preview
 
 env:
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_REGION: ${{vars.AWS_REGION}}
   PROJECT_NAME: edgein
 
-jobs:
-  deploy:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
 
+jobs:
+  determine-workspace:
+    runs-on: ubuntu-latest
+    outputs:
+      workspace: ${{ steps.set-action.outputs.workspace }}
+    steps:
       - name: Set workspace
+        id: set-action
         run: |
           if [[ "${{ github.event.inputs.workspace }}" == "preview" || -z "${{ github.event.inputs.workspace }}" ]]; then
-            echo WORKSPACE=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
+            echo "::set-output name=workspace::pr-${{ github.event.pull_request.number }}"
           else
-            echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
+            echo "::set-output name=workspace::${{ github.event.inputs.workspace }}"
           fi
+
+  determine-action:
+    runs-on: ubuntu-latest
+    outputs:
+      action_type: ${{ steps.set-action.outputs.action_type }}
+    steps:
+      - name: Check PR event
+        id: set-action
+        run: |
+          if [[ "${{ github.event.action }}" == "opened" || "${{ github.event.action }}" == "synchronize" ]]; then
+            echo "::set-output name=action_type::apply"
+          else
+            echo "::set-output name=action_type::destroy"
+          fi
+
+  setup:
+    needs:
+      - determine-workspace
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: needs.determine-workspace.outputs.workspace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -97,11 +130,24 @@ jobs:
         id: select-workspace
         working-directory: infra/terraform/application
         run: terraform workspace select -or-create ${{ env.WORKSPACE }}
-        
-      - name: Create preview environment
-        working-directory: infra/terraform/application
-        run: terraform apply --auto-approve -var-file="input.tfvars"
 
+  run-terraform:
+    needs: determine-action
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      ACTION_TYPE: needs.determine-action.outputs.action_type
+    steps:
+      - name: Run terraform
+        working-directory: infra/terraform/application
+        run: terraform ${{ env.ACTION_TYPE }} --auto-approve -var-file="input.tfvars"
+
+  post-apply:
+    needs: run-terraform
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: needs.determine-action.outputs.action_type == 'apply'
+    steps:
       - name: Get outputs
         uses: dflook/terraform-output@v1
         id: tf-outputs
@@ -191,3 +237,21 @@ jobs:
               issue_number: context.issue.number,
               body: body
             });
+
+  post-destroy:
+    needs: run-terraform
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: needs.determine-workspace.outputs.workspace
+    if: needs.determine-action.outputs.action_type == 'destroy'
+    steps:
+      - name: Switch to default
+        id: select-default-workspace
+        working-directory: infra/terraform/application
+        run: terraform workspace select default
+
+      - name: Remove workspace
+        id: remove-workspace
+        working-directory: infra/terraform/application
+        run: terraform workspace delete ${{ env.WORKSPACE }}
