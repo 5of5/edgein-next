@@ -32,9 +32,9 @@ jobs:
         id: set-action
         run: |
           if [[ "${{ github.event.inputs.workspace }}" == "preview" || -z "${{ github.event.inputs.workspace }}" ]]; then
-            echo "::set-output name=workspace::pr-${{ github.event.pull_request.number }}"
+            echo "workspace=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=workspace::${{ github.event.inputs.workspace }}"
+            echo "workspace=${{ github.event.inputs.workspace }}" >> $GITHUB_OUTPUT
           fi
 
   determine-action:
@@ -46,9 +46,9 @@ jobs:
         id: set-action
         run: |
           if [[ "${{ github.event.action }}" == "opened" || "${{ github.event.action }}" == "synchronize" ]]; then
-            echo "::set-output name=action_type::apply"
+            echo "action_type=apply" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=action_type::destroy"
+            echo "action_type=destroy" >> $GITHUB_OUTPUT
           fi
 
   run-terraform:
