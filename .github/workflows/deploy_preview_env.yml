@@ -57,7 +57,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: needs.determine-workspace.outputs.workspace
+      WORKSPACE: ${{ needs.determine-workspace.outputs.workspace }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -138,7 +138,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
-      ACTION_TYPE: needs.determine-action.outputs.action_type
+      ACTION_TYPE: ${{ needs.determine-action.outputs.action_type }}
     steps:
       - name: Run terraform
         working-directory: setup/infra/terraform/application
@@ -245,7 +245,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: needs.determine-workspace.outputs.workspace
+      WORKSPACE: ${{ needs.determine-workspace.outputs.workspace }}
     if: needs.determine-action.outputs.action_type == 'destroy'
     steps:
       - name: Switch to default
