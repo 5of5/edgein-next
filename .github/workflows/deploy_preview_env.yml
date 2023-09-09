@@ -141,7 +141,7 @@ jobs:
       ACTION_TYPE: needs.determine-action.outputs.action_type
     steps:
       - name: Run terraform
-        working-directory: infra/terraform/application
+        working-directory: setup/infra/terraform/application
         run: terraform ${{ env.ACTION_TYPE }} --auto-approve -var-file="input.tfvars"
 
   post-apply:
@@ -154,16 +154,16 @@ jobs:
         uses: dflook/terraform-output@v1
         id: tf-outputs
         with:
-          path: infra/terraform/application
+          path: setup/infra/terraform/application
           workspace: ${{ env.WORKSPACE }}
 
       - name: Fetch Terraform hasura endpoint output
-        working-directory: infra/terraform/application
+        working-directory: setup/infra/terraform/application
         id: tf-hasura-endpoint-output
         run: echo "TF_OUT_HASURA_ENDPOINT=${{ steps.tf-outputs.outputs.hasura_endpoint }}" >> $GITHUB_ENV
 
       - name: Fetch Hasura admin secrete
-        working-directory: infra/terraform/application
+        working-directory: setup/infra/terraform/application
         id: hasura-admin-secret
         run: |
           value=$(aws ssm get-parameter --name ${{ steps.tf-outputs.outputs.hasura_admin_secrete_ssm_path }} --with-decryption --query 'Parameter.Value' --output text)
@@ -174,7 +174,7 @@ jobs:
         with:
           filters: |
             src:
-              - 'infra/hasura/**'
+              - 'setup/infra/hasura/**'
 
       - name: Hasura migrate
         if: steps.changes-in-hasura.outputs.src == 'true'
@@ -182,7 +182,7 @@ jobs:
         with:
           args: migrate apply --database-name default
         env:
-          HASURA_WORKDIR: ./infra/hasura
+          HASURA_WORKDIR: setup/infra/hasura
           HASURA_ENGINE_VERSION: v2.29.1
           HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
@@ -193,7 +193,7 @@ jobs:
         with:
           args: metadata clear
         env:
-          HASURA_WORKDIR: ./infra/hasura
+          HASURA_WORKDIR: setup/infra/hasura
           HASURA_ENGINE_VERSION: v2.29.1
           HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
@@ -204,14 +204,14 @@ jobs:
         with:
           args: metadata apply
         env:
-          HASURA_WORKDIR: ./infra/hasura
+          HASURA_WORKDIR: setup/infra/hasura
           HASURA_ENGINE_VERSION: v2.29.1
           HASURA_ENDPOINT: ${{ env.TF_OUT_HASURA_ENDPOINT }}
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Update data fields
         if: steps.changes-in-hasura.outputs.src == 'true'
-        working-directory: ./scripts
+        working-directory: setup/scripts
         env:
           PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}
         shell: bash
@@ -250,10 +250,10 @@ jobs:
     steps:
       - name: Switch to default
         id: select-default-workspace
-        working-directory: infra/terraform/application
+        working-directory: setup/infra/terraform/application
         run: terraform workspace select default
 
       - name: Remove workspace
         id: remove-workspace
-        working-directory: infra/terraform/application
+        working-directory: setup/infra/terraform/application
         run: terraform workspace delete ${{ env.WORKSPACE }}
