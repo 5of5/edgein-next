@@ -132,7 +132,9 @@ jobs:
         run: terraform workspace select -or-create ${{ env.WORKSPACE }}
 
   run-terraform:
-    needs: determine-action
+    needs:
+      - setup
+      - determine-action
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
