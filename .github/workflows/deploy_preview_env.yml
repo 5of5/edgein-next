@@ -54,6 +54,7 @@ jobs:
   run-terraform:
     needs:
       - determine-workspace
+      - determine-action
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
