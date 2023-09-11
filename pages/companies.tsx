@@ -68,7 +68,6 @@ const Companies: NextPage<Props> = ({
   initialCompanies,
   companyStatusTags,
 }) => {
-  console.log('deploy test');
   const { user } = useUser();
 
   const personalizedTags = getPersonalizedData({ user });
@@ -251,7 +250,7 @@ const Companies: NextPage<Props> = ({
       investment_rounds_aggregate: { max: { round_date: Order_By.Desc } },
     };
   }
-
+  
   const {
     data: companiesData,
     error,
