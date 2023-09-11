@@ -4,6 +4,7 @@ on:
     types:
       - opened
       - synchronize
+      - closed
   workflow_dispatch:
     inputs:
       workspace:
@@ -12,22 +13,71 @@ on:
         default: preview
 
 env:
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_REGION: ${{vars.AWS_REGION}}
   PROJECT_NAME: edgein
 
-jobs:
-  deploy:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
 
+jobs:
+  determine-workspace:
+    runs-on: ubuntu-latest
+    outputs:
+      workspace: ${{ steps.set-action.outputs.workspace }}
+    steps:
       - name: Set workspace
+        id: set-action
         run: |
           if [[ "${{ github.event.inputs.workspace }}" == "preview" || -z "${{ github.event.inputs.workspace }}" ]]; then
-            echo WORKSPACE=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
+            echo "workspace=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           else
-            echo WORKSPACE=${{ github.event.inputs.workspace }} >> $GITHUB_ENV
+            echo "workspace=${{ github.event.inputs.workspace }}" >> $GITHUB_OUTPUT
           fi
+
+  determine-action:
+    runs-on: ubuntu-latest
+    outputs:
+      action_type: ${{ steps.set-action.outputs.action_type }}
+    steps:
+      - name: Check PR event
+        id: set-action
+        run: |
+          if [[ "${{ github.event.action }}" == "opened" || "${{ github.event.action }}" == "synchronize" ]]; then
+            echo "action_type=apply" >> $GITHUB_OUTPUT
+          else
+            echo "action_type=destroy" >> $GITHUB_OUTPUT
+          fi
+
+  determine-hasura-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      hasura_changed: ${{ steps.changes-in-hasura.outputs.src }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: changes-in-hasura
+        with:
+          filters: |
+            src:
+              - 'infra/hasura/**'
+
+  run-terraform:
+    needs:
+      - determine-workspace
+      - determine-action
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: ${{ needs.determine-workspace.outputs.workspace }}
+      ACTION_TYPE: ${{ needs.determine-action.outputs.action_type }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -35,21 +85,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: npm ci
 
       - name: Load environment variables from .env file
         uses: falti/dotenv-action@v1.0.4
@@ -97,39 +132,65 @@ jobs:
         id: select-workspace
         working-directory: infra/terraform/application
         run: terraform workspace select -or-create ${{ env.WORKSPACE }}
-        
-      - name: Create preview environment
+
+      - name: Run terraform
         working-directory: infra/terraform/application
-        run: terraform apply --auto-approve -var-file="input.tfvars"
+        run: terraform ${{ env.ACTION_TYPE }} --auto-approve -var-file="input.tfvars"
+
+  hasura-update:
+    needs:
+      - run-terraform
+      - determine-action
+      - determine-workspace
+      - determine-hasura-changes
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: needs.determine-action.outputs.action_type == 'apply' && needs.determine-hasura-changes.outputs.hasura_changed == 'true'
+    env:
+      WORKSPACE: ${{ needs.determine-workspace.outputs.workspace }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Load environment variables from .env file
+        uses: falti/dotenv-action@v1.0.4
 
       - name: Get outputs
         uses: dflook/terraform-output@v1
         id: tf-outputs
         with:
-          path: infra/terraform/application
+          path: ./infra/terraform/application
           workspace: ${{ env.WORKSPACE }}
 
       - name: Fetch Terraform hasura endpoint output
-        working-directory: infra/terraform/application
+        working-directory: ./infra/terraform/application
         id: tf-hasura-endpoint-output
         run: echo "TF_OUT_HASURA_ENDPOINT=${{ steps.tf-outputs.outputs.hasura_endpoint }}" >> $GITHUB_ENV
 
       - name: Fetch Hasura admin secrete
-        working-directory: infra/terraform/application
+        working-directory: ./infra/terraform/application
         id: hasura-admin-secret
         run: |
           value=$(aws ssm get-parameter --name ${{ steps.tf-outputs.outputs.hasura_admin_secrete_ssm_path }} --with-decryption --query 'Parameter.Value' --output text)
           echo "HASURA_ADMIN_SECRET=$value" >> $GITHUB_ENV
 
-      - uses: dorny/paths-filter@v2
-        id: changes-in-hasura
-        with:
-          filters: |
-            src:
-              - 'infra/hasura/**'
-
       - name: Hasura migrate
-        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: migrate apply --database-name default
@@ -140,7 +201,6 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura clear
-        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: metadata clear
@@ -151,7 +211,6 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura apply
-        if: steps.changes-in-hasura.outputs.src == 'true'
         uses: tibotiber/hasura-action@v3.0
         with:
           args: metadata apply
@@ -162,12 +221,45 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Update data fields
-        if: steps.changes-in-hasura.outputs.src == 'true'
-        working-directory: ./scripts
+        working-directory: scripts
         env:
           PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}
         shell: bash
         run: npx ts-node update_data_fields.ts
+
+  post-apply:
+    needs:
+      - run-terraform
+      - hasura-update
+      - determine-action
+      - determine-workspace
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: needs.determine-action.outputs.action_type == 'apply'
+    env:
+      WORKSPACE: ${{ needs.determine-workspace.outputs.workspace }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get outputs
+        uses: dflook/terraform-output@v1
+        id: tf-outputs
+        with:
+          path: ./infra/terraform/application
+          workspace: ${{ env.WORKSPACE }}
+
+      - name: Fetch Terraform hasura endpoint output
+        working-directory: ./infra/terraform/application
+        id: tf-hasura-endpoint-output
+        run: echo "TF_OUT_HASURA_ENDPOINT=${{ steps.tf-outputs.outputs.hasura_endpoint }}" >> $GITHUB_ENV
+
+      - name: Fetch Hasura admin secrete
+        working-directory: ./infra/terraform/application
+        id: hasura-admin-secret
+        run: |
+          value=$(aws ssm get-parameter --name ${{ steps.tf-outputs.outputs.hasura_admin_secrete_ssm_path }} --with-decryption --query 'Parameter.Value' --output text)
+          echo "HASURA_ADMIN_SECRET=$value" >> $GITHUB_ENV
 
       - name: View context attributes
         uses: actions/github-script@v6
@@ -191,3 +283,50 @@ jobs:
               issue_number: context.issue.number,
               body: body
             });
+
+  post-destroy:
+    needs:
+      - run-terraform
+      - determine-action
+      - determine-workspace
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: ${{ needs.determine-workspace.outputs.workspace }}
+    if: needs.determine-action.outputs.action_type == 'destroy'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Config Terraform plugin cache
+        working-directory: infra/terraform/application
+        run: |
+          echo 'plugin_cache_dir="$HOME/.terraform.d/plugin-cache"' >~/.terraformrc
+          mkdir --parents ~/.terraform.d/plugin-cache
+
+      - name: Cache Terraform
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      - name: Terraform Init
+        id: init
+        working-directory: infra/terraform/application
+        run: terraform init
+
+      - name: Switch to default
+        id: select-default-workspace
+        working-directory: ./infra/terraform/application
+        run: terraform workspace select default
+
+      - name: Remove workspace
+        id: remove-workspace
+        working-directory: ./infra/terraform/application
+        run: terraform workspace delete ${{ env.WORKSPACE }}

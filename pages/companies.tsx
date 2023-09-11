@@ -97,7 +97,9 @@ const Companies: NextPage<Props> = ({
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
-
+  const isSortDropdownVisible = ['Dead', 'Raising'].includes(
+    selectedStatusTag?.value || '',
+  );
   const [tableLayout, setTableLayout] = useState(false);
 
   const [sortBy, setSortBy] = useState('mostRelevant');
@@ -221,7 +223,9 @@ const Companies: NextPage<Props> = ({
   if (selectedStatusTag?.value) {
     if (isNewTabSelected) {
       filters._and?.push({
-        date_added: { _neq: new Date(0) },
+        date_added: {
+          _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
+        },
       });
     } else {
       filters._and?.push({
@@ -324,7 +328,6 @@ const Companies: NextPage<Props> = ({
   ];
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
-
   return (
     <DashboardLayout>
       <div className="relative">
@@ -351,7 +354,7 @@ const Companies: NextPage<Props> = ({
               onSelectFilterOption={onSelectFilterOption}
             />
 
-            {!isNewTabSelected && (
+            {isSortDropdownVisible && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 items={sortItems}
@@ -390,7 +393,7 @@ const Companies: NextPage<Props> = ({
 
         <div className="mx-8">
           {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-16">
+            <div className="flex flex-col gap-4 gap-x-8">
               {personalizedTags.locationTags.map((location, index) => (
                 <CompaniesByFilter
                   key={`${location}-${index}`}
@@ -398,6 +401,9 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
+                  orderBy={{
+                    updated_at: Order_By.Desc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -420,9 +426,19 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
+                  orderBy={{
+                    updated_at: Order_By.Desc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
+                      {
+                        created_at: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
+                        },
+                      },
                       {
                         location_json: {
                           _contains: {
@@ -442,13 +458,23 @@ const Companies: NextPage<Props> = ({
                   tagOnClick={filterByTag}
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
+                  orderBy={{
+                    created_at: Order_By.Desc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
                       {
-                        created_at: {
+                        updated_at: {
                           _gte: moment()
                             .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
+                        },
+                      },
+                      {
+                        year_founded: {
+                          _gte: moment()
+                            .subtract(1, 'years')
                             .format(ISO_DATE_FORMAT),
                         },
                       },
@@ -522,32 +548,15 @@ const Companies: NextPage<Props> = ({
                 tagOnClick={filterByTag}
                 itemsPerPage={ITEMS_PER_PAGE}
                 isTableView={tableLayout}
+                orderBy={{
+                  year_founded: Order_By.Desc,
+                }}
                 filters={{
                   _and: [
                     ...defaultFilters,
                     {
                       year_founded: {
                         _gte: moment().subtract(1, 'year').year().toString(),
-                      },
-                    },
-                  ],
-                }}
-              />
-
-              <CompaniesByFilter
-                headingText={`Recently acquired`}
-                tagOnClick={filterByTag}
-                itemsPerPage={ITEMS_PER_PAGE}
-                isTableView={tableLayout}
-                orderBy={{
-                  created_at: Order_By.Desc,
-                }}
-                filters={{
-                  _and: [
-                    ...defaultFilters,
-                    {
-                      status_tags: {
-                        _contains: 'Acquired',
                       },
                     },
                   ],
@@ -585,7 +594,7 @@ const Companies: NextPage<Props> = ({
                   <PlaceholderTable />
                 </div>
               ) : (
-                <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {Array.from({ length: 9 }, (_, i) => (
                     <PlaceholderCompanyCard key={i} />
                   ))}
@@ -595,8 +604,11 @@ const Companies: NextPage<Props> = ({
           ) : tableLayout && companies?.length != 0 ? (
             <>
               {showPersonalized && (
-                <div className="text-2xl font-medium mt-4">All companies</div>
+                <div className="flex justify-between py-8">
+                  <div className="text-4xl font-medium">All companies</div>
+                </div>
               )}
+
               <CompaniesTable
                 companies={companies}
                 pageNumber={page}
@@ -611,11 +623,20 @@ const Companies: NextPage<Props> = ({
           ) : (
             <>
               {showPersonalized && (
-                <div className="text-2xl font-medium my-4">All companies</div>
+                <div className="flex justify-between py-8">
+                  <div className="text-4xl font-medium">All companies</div>
+                  {!isNewTabSelected && (
+                    <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      defaultItem={defaultOrderBy}
+                      items={sortChoices}
+                    />
+                  )}
+                </div>
               )}
               <div
                 data-testid="companies"
-                className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4"
+                className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
               >
                 {companies?.map(company => {
                   return (

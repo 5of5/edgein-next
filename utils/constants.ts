@@ -556,11 +556,6 @@ export const investorChoices = [
     icon: '🔥',
   },
   {
-    id: 'Acquired',
-    name: 'Acquired',
-    icon: '🏡',
-  },
-  {
     id: 'Dead',
     name: 'Dead',
     icon: '💀',
