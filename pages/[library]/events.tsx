@@ -279,7 +279,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           />
 
           <div className="flex flex-wrap gap-2">
-            {isDisplaySelectLibrary && <ElemLibrarySelector />}
+            {isDisplaySelectLibrary && !initialLoad && <ElemLibrarySelector />}
 
             <ElemAddFilter
               resourceType="events"

@@ -304,7 +304,9 @@ const Investors: NextPage<Props> = ({
             />
 
             <div className="flex flex-wrap gap-2">
-              {isDisplaySelectLibrary && <ElemLibrarySelector />}
+              {isDisplaySelectLibrary && !initialLoad && (
+                <ElemLibrarySelector />
+              )}
               <ElemDropdown
                 IconComponent={tableLayout ? IconTable : IconGroup}
                 items={layoutItems}
