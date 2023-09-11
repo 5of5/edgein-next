@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { Library } from '@/types/common';
-import { LIBRARY_COOKIE } from '@/utils/constants';
+import { LIBRARY_COOKIE } from '@/utils/cookie';
 import useCookieState from './use-cookie-state';
 
 const useLibrary = () => {

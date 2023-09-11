@@ -12,7 +12,7 @@ function useCookieState<T>(
   const [value, setValue] = useState<T>(initialCookieValue);
 
   useEffect(() => {
-    Cookies.set(key, value as unknown as string, options);
+    Cookies.set(key, value as string, options);
   }, [key, value, options]);
 
   return [value, setValue];

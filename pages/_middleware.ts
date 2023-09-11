@@ -1,7 +1,6 @@
 import CookieService, { TOKEN_NAME } from '@/utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
 import { verify } from '@/utils/googlebot-verify';
-import { LIBRARY_COOKIE } from '@/utils/constants';
 
 const USAGE_LIMIT = 10;
 
@@ -55,7 +54,7 @@ export async function middleware(req: NextRequest) {
       CookieService.getAuthToken(req.cookies),
     );
 
-    const library = req.cookies[LIBRARY_COOKIE] || 'Web3';
+    const library = CookieService.getLibraryCookie(req.cookies);
 
     // we want users to fill onboarding again
     if (userExists && url.pathname === '/') {
@@ -101,8 +100,8 @@ export async function middleware(req: NextRequest) {
     }
 
     if (
-      ['/companies', '/investors', '/events', '/news'].some(urlItem =>
-        url.pathname.startsWith(urlItem),
+      ['/companies', '/investors', '/events', '/news', '/people'].some(
+        urlItem => url.pathname.startsWith(urlItem),
       )
     ) {
       return NextResponse.redirect(

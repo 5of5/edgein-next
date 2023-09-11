@@ -6,6 +6,7 @@ import type { NextApiResponse } from 'next';
 
 export const TOKEN_NAME = 'api_token';
 export const USAGE_NAME = 'e_token';
+export const LIBRARY_COOKIE = 'library';
 export const MAX_AGE = 60 * 60 * 24 * 90; // 90 days
 export const USAGE_AGE = 60 * 60 * 24; // 1 days
 const hasuraClaims = (userId: string) => ({
@@ -76,6 +77,10 @@ function getAuthToken(cookies: Record<string, string>) {
 
 function getUsageToken(cookies: Record<string, string>) {
   return cookies[USAGE_NAME];
+}
+
+function getLibraryCookie(cookies: Record<string, string>) {
+  return cookies[LIBRARY_COOKIE] || 'Web3';
 }
 
 async function getUser(
@@ -156,6 +161,7 @@ const exp = {
   setUsageCookie,
   getAuthToken,
   getUsageToken,
+  getLibraryCookie,
   getUsage,
   getUser,
   clearTokenCookie,
