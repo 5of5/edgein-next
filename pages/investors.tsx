@@ -585,8 +585,7 @@ const Investors: NextPage<Props> = ({
                     {!isNewTabSelected && (
                       <ElemDropdown
                         IconComponent={IconSortDashboard}
-                        defaultItem={defaultOrderBy}
-                        items={sortChoices}
+                        items={sortItems}
                       />
                     )}
                   </div>
@@ -610,8 +609,7 @@ const Investors: NextPage<Props> = ({
                     {!isNewTabSelected && (
                       <ElemDropdown
                         IconComponent={IconSortDashboard}
-                        defaultItem={defaultOrderBy}
-                        items={sortChoices}
+                        items={sortItems}
                       />
                     )}
                   </div>
