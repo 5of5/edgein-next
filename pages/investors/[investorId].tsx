@@ -15,7 +15,7 @@ import { ElemOrganizationActivity } from '@/components/elem-organization-activit
 import parse from 'html-react-parser';
 import { stripHtmlTags } from '@/utils/text';
 
-import { runGraphQl } from '@/utils';
+import { runGraphQl, getCityAndCountry, toSentence } from '@/utils';
 import {
   GetVcFirmDocument,
   GetVcFirmQuery,
@@ -308,7 +308,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
-  const getInvestments = vc_firms.vc_firms[0].investments.map(round => {
+  const vcfirm = vc_firms.vc_firms[0];
+
+  const getInvestments = vcfirm.investments.map(round => {
     if (typeof round.investment_round === 'object' && round.investment_round) {
       return round.investment_round;
     } else {
@@ -327,7 +329,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     .reverse();
 
   const sortNews =
-    vc_firms.vc_firms[0].news_links
+    vcfirm.news_links
       ?.slice()
       ?.map(item => ({ ...item.news, type: 'news' }))
       ?.filter(item => item.status === 'published')
@@ -338,16 +340,46 @@ export const getServerSideProps: GetServerSideProps = async context => {
       })
       .reverse() || [];
 
+  // Meta
+  const metaWebsiteUrl = vcfirm.website ? vcfirm.website : '';
+  const metaFounded = vcfirm.year_founded
+    ? `Founded in ${vcfirm.year_founded} `
+    : '';
+
+  const metaLocation = getCityAndCountry(
+    vcfirm.location_json?.city,
+    vcfirm.location_json?.country,
+  );
+
+  const metaInvestments =
+    vcfirm.investments.length > 0
+      ? ` | ${vcfirm.investments.length} confirmed investments`
+      : '';
+
+  const metaTags =
+    vcfirm.tags?.length > 0 ? ` | Invests in ${toSentence(vcfirm.tags)}` : '';
+
   let metaTitle = null;
-  if (vc_firms.vc_firms[0].name) {
-    metaTitle =
-      vc_firms.vc_firms[0].name + ' Investor Profile & Funding - EdgeIn.io';
+  if (vcfirm.name) {
+    metaTitle = `${vcfirm.name} | EdgeIn ${vcfirm.library[0]} Investor Profile - Contact Information`;
+  }
+
+  let metaDescription = null;
+  if (
+    metaWebsiteUrl ||
+    metaFounded ||
+    metaLocation ||
+    metaInvestments ||
+    metaTags
+  ) {
+    metaDescription = `${metaWebsiteUrl} ${metaFounded}${metaLocation}${metaInvestments}${metaTags}`;
   }
 
   return {
     props: {
       metaTitle,
-      vcfirm: vc_firms.vc_firms[0],
+      metaDescription,
+      vcfirm,
       getInvestments,
       sortByDateAscInvestments,
       sortNews,

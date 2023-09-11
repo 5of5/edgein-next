@@ -1,56 +1,56 @@
 table:
-  name: people
   schema: public
+  name: people
 object_relationships:
   - name: user
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: users_public
+        insertion_order: null
         column_mapping:
           id: person_id
-        insertion_order: null
-        remote_table:
-          name: users_public
-          schema: public
 array_relationships:
   - name: follows
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: follows_people
+        insertion_order: null
         column_mapping:
           id: resource_id
-        insertion_order: null
-        remote_table:
-          name: follows_people
-          schema: public
   - name: investments
     using:
       foreign_key_constraint_on:
         column: person_id
         table:
-          name: investments
           schema: public
+          name: investments
   - name: investors
     using:
       foreign_key_constraint_on:
         column: person_id
         table:
-          name: investors
           schema: public
+          name: investors
   - name: news_links
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: news_person
+        insertion_order: null
         column_mapping:
           id: person_id
-        insertion_order: null
-        remote_table:
-          name: news_person
-          schema: public
   - name: team_members
     using:
       foreign_key_constraint_on:
         column: person_id
         table:
-          name: team_members
           schema: public
+          name: team_members
 insert_permissions:
   - role: user
     permission:
@@ -130,6 +130,8 @@ select_permissions:
       filter:
         status:
           _eq: published
+      limit: 50
+      allow_aggregations: true
   - role: viewer
     permission:
       columns:
@@ -157,3 +159,4 @@ select_permissions:
         status:
           _eq: published
       limit: 50
+      allow_aggregations: true

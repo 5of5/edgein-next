@@ -104,7 +104,7 @@ mutation InsertNotificationActions(
 }
 
 query GetUnreadNotifications($user_id: Int!) {
-  notifications(
+  notifications_aggregate(
     where: {
       _and: [
         { target_user_id: { _eq: $user_id } }
@@ -128,17 +128,9 @@ query GetUnreadNotifications($user_id: Int!) {
         }
       ]
     }
-    limit: 100
   ) {
-    id
-    read
-    notification_actions {
-      id
-      action_id
-      action {
-        id
-        properties
-      }
+    aggregate {
+      count
     }
   }
 }

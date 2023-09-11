@@ -113,21 +113,21 @@ export const getFilterOptionMetadata = (
       return {
         title: 'Country',
         heading: 'Country',
-        placeholder: 'Enter country name',
+        placeholder: 'Try “United States”',
       };
 
     case 'state':
       return {
         title: 'State',
         heading: 'State',
-        placeholder: 'Enter state name',
+        placeholder: 'Try “California”',
       };
 
     case 'city':
       return {
         title: 'City',
         heading: 'City',
-        placeholder: 'Enter city name',
+        placeholder: 'Try “San Francisco”',
       };
 
     case 'address':
@@ -139,9 +139,9 @@ export const getFilterOptionMetadata = (
     case 'keywords':
       return {
         title: 'Keywords',
-        heading: 'Description Keywords',
-        placeholder: 'Add keyword, press enter ⏎',
-        subtext: 'e.g. ai, platform, blockchain, wallet, nft...',
+        heading: 'Keywords',
+        placeholder: 'Add a keyword, press enter ⏎',
+        subtext: 'E.g., AI, platform, blockchain, wallet, nft…',
       };
 
     case 'industry':

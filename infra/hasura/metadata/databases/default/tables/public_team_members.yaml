@@ -1,6 +1,6 @@
 table:
-  name: team_members
   schema: public
+  name: team_members
 object_relationships:
   - name: company
     using:

@@ -98,6 +98,9 @@ const Investors: NextPage<Props> = ({
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
+  const isSortDropdownVisible = ['Dead', 'Raising'].includes(
+    selectedStatusTag?.value || '',
+  );
 
   const [tableLayout, setTableLayout] = useState(false);
 
@@ -230,7 +233,10 @@ const Investors: NextPage<Props> = ({
   if (selectedStatusTag?.value) {
     if (isNewTabSelected) {
       filters._and?.push({
-        created_at: { _neq: new Date(0) },
+        //created_at: { _neq: new Date(0) },
+        created_at: {
+          _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
+        },
       });
     } else if (selectedStatusTag.value === 'Trending') {
       filters._and?.push({
@@ -295,14 +301,16 @@ const Investors: NextPage<Props> = ({
   const layoutItems = [
     {
       id: 0,
-      label: 'Grid View',
+      label: 'Grid view',
       value: 'grid',
+      StartIcon: IconGroup,
       onClick: () => setTableLayout(false),
     },
     {
       id: 1,
-      label: 'Table View',
+      label: 'Table view',
       value: 'table',
+      StartIcon: IconTable,
       onClick: () => setTableLayout(true),
     },
   ];
@@ -314,7 +322,7 @@ const Investors: NextPage<Props> = ({
       <div className="relative">
         <div>
           <div
-            className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+            className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
             role="tablist"
           >
             <ElemCategories
@@ -335,7 +343,7 @@ const Investors: NextPage<Props> = ({
                 onSelectFilterOption={onSelectFilterOption}
               />
 
-              {!isNewTabSelected && (
+              {isSortDropdownVisible && (
                 <ElemDropdown
                   IconComponent={IconSortDashboard}
                   defaultItem={defaultOrderBy}
@@ -346,7 +354,7 @@ const Investors: NextPage<Props> = ({
           </div>
 
           {selectedFilters && (
-            <div className="mx-6 my-3">
+            <div className="mx-8 my-3">
               <ElemFilter
                 resourceType="vc_firms"
                 filterValues={selectedFilters}
@@ -371,11 +379,11 @@ const Investors: NextPage<Props> = ({
             </div>
           )}
 
-          <ElemInviteBanner className="mx-6 my-3" />
+          <ElemInviteBanner className="mx-8 my-3" />
 
-          <div className="mx-6">
+          <div className="mx-8">
             {showPersonalized && (
-              <div className="flex flex-col gap-4 gap-x-16">
+              <div className="flex flex-col gap-4 gap-x-8">
                 {personalizedTags.locationTags.map(location => (
                   <InvestorsByFilter
                     key={location}
@@ -409,9 +417,19 @@ const Investors: NextPage<Props> = ({
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={tableLayout}
+                    orderBy={{
+                      updated_at: Order_By.Desc,
+                    }}
                     filters={{
                       _and: [
                         { library: { _contains: selectedLibrary } },
+                        {
+                          updated_at: {
+                            _gte: moment()
+                              .subtract(28, 'days')
+                              .format(ISO_DATE_FORMAT),
+                          },
+                        },
                         {
                           location_json: {
                             _contains: {
@@ -540,7 +558,7 @@ const Investors: NextPage<Props> = ({
                     <PlaceholderTable />
                   </div>
                 ) : (
-                  <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {Array.from({ length: 9 }, (_, i) => (
                       <PlaceholderInvestorCard key={i} />
                     ))}
@@ -550,7 +568,16 @@ const Investors: NextPage<Props> = ({
             ) : tableLayout && vcFirms?.length != 0 ? (
               <>
                 {showPersonalized && (
-                  <div className="text-2xl font-medium mt-4">All investors</div>
+                  <div className="flex justify-between my-8">
+                    <div className="text-4xl font-medium">All investors</div>
+                    {!isNewTabSelected && (
+                      <ElemDropdown
+                        IconComponent={IconSortDashboard}
+                        defaultItem={defaultOrderBy}
+                        items={sortChoices}
+                      />
+                    )}
+                  </div>
                 )}
                 <InvestorsTable
                   investors={vcFirms}
@@ -566,11 +593,20 @@ const Investors: NextPage<Props> = ({
             ) : (
               <>
                 {showPersonalized && (
-                  <div className="text-2xl font-medium my-4">All investors</div>
+                  <div className="flex justify-between my-8">
+                    <div className="text-4xl font-medium">All investors</div>
+                    {!isNewTabSelected && (
+                      <ElemDropdown
+                        IconComponent={IconSortDashboard}
+                        defaultItem={defaultOrderBy}
+                        items={sortChoices}
+                      />
+                    )}
+                  </div>
                 )}
                 <div
                   data-testid="investors"
-                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                 >
                   {vcFirms?.map(vcfirm => (
                     <ElemInvestorCard

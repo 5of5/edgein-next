@@ -38,13 +38,13 @@ import {
   TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
+import { ElemDropdown } from '@/components/elem-dropdown';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -93,6 +93,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       resetPage: () => setPage(0),
     });
 
+  const isSortDropdownVisible = ['past'].includes(selectedTab?.value || '');
   const limit = 50;
   const offset = limit * page;
 
@@ -102,25 +103,25 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   ];
 
   if (selectedTab?.value !== 'past') {
-    defaultFilters.push({
-      start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
-    });
+    if (selectedTab?.value === 'upcoming') {
+      defaultFilters.push(
+        {
+          start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
+        },
+        {
+          start_date: { _lte: moment().add(7, 'days').format(ISO_DATE_FORMAT) },
+        },
+      );
+    } else {
+      defaultFilters.push({
+        start_date: { _gte: moment().format(ISO_DATE_FORMAT) },
+      });
+    }
   }
 
   const filters: DeepPartial<Events_Bool_Exp> = {
     _and: defaultFilters,
   };
-
-  const { orderByQuery, orderByParam, sortChoices } =
-    useDashboardSortBy<Events_Order_By>({
-      defaultSortBy: 'oldest',
-      newestSortKey: 'start_date',
-      oldestSortKey: 'start_date',
-    });
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -232,6 +233,17 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     });
   }
 
+  const { orderByQuery, orderByParam, sortChoices } =
+    useDashboardSortBy<Events_Order_By>({
+      defaultSortBy: 'oldest',
+      newestSortKey: 'start_date',
+      oldestSortKey: 'start_date',
+    });
+
+  const defaultOrderBy = sortChoices.find(
+    sortItem => sortItem.value === orderByParam,
+  )?.id;
+
   const getOrderBy = () => {
     if (selectedTab?.value === 'past') {
       return { start_date: Order_By.Desc };
@@ -275,7 +287,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -297,7 +309,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               onSelectFilterOption={onSelectFilterOption}
             />
 
-            {!selectedTab?.value && (
+            {isSortDropdownVisible && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 defaultItem={defaultOrderBy}
@@ -308,7 +320,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         </div>
 
         {selectedFilters && (
-          <div className="mx-6 my-3">
+          <div className="mx-8 my-3">
             <ElemFilter
               resourceType="events"
               excludeFilters={
@@ -339,11 +351,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </div>
         )}
 
-        <ElemInviteBanner className="mx-6 my-3" />
+        <ElemInviteBanner className="mx-8 my-3" />
 
-        <div className="mx-6">
+        <div className="mx-8">
           {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-16">
+            <div className="flex flex-col gap-4 gap-x-8">
               {personalizedTags.locationTags.map(location => (
                 <EventsByFilter
                   key={location}
@@ -372,9 +384,12 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               {personalizedTags.locationTags.map(location => (
                 <EventsByFilter
                   key={location}
-                  headingText={`Recently updated in ${location}`}
+                  headingText={`Upcoming in ${location}`}
                   tagOnClick={onClickType}
                   itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    start_date: Order_By.Asc,
+                  }}
                   filters={{
                     _and: [
                       ...defaultFilters,
@@ -383,6 +398,37 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                           _contains: {
                             city: `${location}`,
                           },
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+
+              {personalizedTags.locationTags.map(location => (
+                <EventsByFilter
+                  key={location}
+                  headingText={`Recently updated in ${location}`}
+                  tagOnClick={onClickType}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    start_date: Order_By.Asc,
+                  }}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      {
+                        location_json: {
+                          _contains: {
+                            city: `${location}`,
+                          },
+                        },
+                      },
+                      {
+                        updated_at: {
+                          _gte: moment()
+                            .subtract(28, 'days')
+                            .format(ISO_DATE_FORMAT),
                         },
                       },
                     ],
@@ -415,7 +461,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               </div>
             </div>
           ) : isLoading && !initialLoad ? (
-            <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {Array.from({ length: 9 }, (_, i) => (
                 <PlaceholderEventCard key={i} />
               ))}
@@ -424,11 +470,19 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             events?.length !== 0 && (
               <>
                 {showPersonalized && (
-                  <div className="text-2xl font-medium my-4">All Events</div>
+                  <div className="flex justify-between my-8">
+                    <div className="text-4xl font-medium">All Events</div>
+                    {/* Removed in qol-ui-fixes */}
+                    {/* <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      defaultItem={defaultOrderBy}
+                      items={sortChoices}
+                    /> */}
+                  </div>
                 )}
                 <div
                   data-testid="events"
-                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
                 >
                   {events?.map(event => (
                     <ElemEventCard key={event.id} event={event} />
@@ -519,7 +573,7 @@ const eventTabs: DashboardCategory[] = [
     icon: '🔥',
   },
   {
-    title: 'Upcoming',
+    title: 'Next 7 days',
     value: 'upcoming',
     date: moment().toISOString(),
     icon: '✨',

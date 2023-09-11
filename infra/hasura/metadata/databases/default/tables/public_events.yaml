@@ -1,35 +1,35 @@
 table:
-  name: events
   schema: public
+  name: events
 object_relationships:
   - name: parent_event
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: events
+        insertion_order: null
         column_mapping:
           parent_event_id: id
-        insertion_order: null
-        remote_table:
-          name: events
-          schema: public
 array_relationships:
   - name: event_organization
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: event_organization
+        insertion_order: null
         column_mapping:
           id: event_id
-        insertion_order: null
-        remote_table:
-          name: event_organization
-          schema: public
   - name: event_person
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: event_person
+        insertion_order: null
         column_mapping:
           id: event_id
-        insertion_order: null
-        remote_table:
-          name: event_person
-          schema: public
 select_permissions:
   - role: viewer
     permission:

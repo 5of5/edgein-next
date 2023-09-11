@@ -1,35 +1,35 @@
 table:
-  name: notifications
   schema: public
+  name: notifications
 object_relationships:
   - name: company
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: companies
+        insertion_order: null
         column_mapping:
           company_id: id
-        insertion_order: null
-        remote_table:
-          name: companies
-          schema: public
   - name: vc_firm
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: vc_firms
+        insertion_order: null
         column_mapping:
           vc_firm_id: id
-        insertion_order: null
-        remote_table:
-          name: vc_firms
-          schema: public
 array_relationships:
   - name: notification_actions
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: notification_actions
+        insertion_order: null
         column_mapping:
           id: notification_id
-        insertion_order: null
-        remote_table:
-          name: notification_actions
-          schema: public
 select_permissions:
   - role: viewer
     permission:

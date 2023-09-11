@@ -2,6 +2,7 @@ query GetPerson($slug: String!) {
   people(where: { slug: { _eq: $slug } }) {
     id
     name
+    library
     personal_email
     picture
     slug
@@ -298,5 +299,20 @@ query GetSignUpProfile($email: String, $name: String) {
     twitter_url
     github
     facebook_url
+  }
+}
+
+mutation InsertPeople($objects: [people_insert_input!]!) {
+  insert_people(
+    objects: $objects
+    on_conflict: { constraint: people_slug_key, update_columns: [] }
+  ) {
+    returning {
+      id
+      status
+      linkedin
+      slug
+      enrichment_priority
+    }
   }
 }

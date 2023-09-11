@@ -1,57 +1,63 @@
 table:
-  name: vc_firms
   schema: public
+  name: vc_firms
 array_relationships:
   - name: follows
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: follows_vc_firms
+        insertion_order: null
         column_mapping:
           id: resource_id
-        insertion_order: null
-        remote_table:
-          name: follows_vc_firms
-          schema: public
   - name: from_links
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
         column_mapping:
           id: from_vc_firm_id
-        insertion_order: null
-        remote_table:
-          name: resource_links
-          schema: public
   - name: investments
     using:
       foreign_key_constraint_on:
         column: vc_firm_id
         table:
-          name: investments
           schema: public
+          name: investments
   - name: investors
     using:
       foreign_key_constraint_on:
         column: vc_firm_id
         table:
-          name: investors
           schema: public
+          name: investors
   - name: news_links
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: news_organizations
+        insertion_order: null
         column_mapping:
           id: vc_firm_id
-        insertion_order: null
-        remote_table:
-          name: news_organizations
-          schema: public
   - name: to_links
     using:
       manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
         column_mapping:
           id: to_vc_firm_id
-        insertion_order: null
-        remote_table:
-          name: resource_links
-          schema: public
+computed_fields:
+  - name: datapoints_count
+    definition:
+      function:
+        schema: public
+        name: vc_firms_datapoints
 insert_permissions:
   - role: user
     permission:
@@ -136,6 +142,8 @@ select_permissions:
         - updated_at
         - website
         - year_founded
+      computed_fields:
+        - datapoints_count
       filter:
         status:
           _eq: published

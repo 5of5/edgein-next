@@ -9,11 +9,7 @@ import { PlaceholderNewsCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '../utils';
 import toast, { Toaster } from 'react-hot-toast';
-import {
-  IconAnnotation,
-  IconSearch,
-  IconSortDashboard,
-} from '@/components/icons';
+import { IconAnnotation, IconSearch } from '@/components/icons';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
@@ -35,11 +31,13 @@ import {
   TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
+import { getPersonalizedData } from '@/utils/personalizedTags';
+import { NewsByFilter } from '@/components/news/elem-news-by-filter';
+
+const ITEMS_PER_PAGE = 8;
 
 type Props = {
   newsCount: number;
@@ -52,6 +50,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const router = useRouter();
   const { showNewMessages } = useIntercom();
   const { user, listAndFollows, myGroups } = useUser();
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -85,19 +84,6 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       { library: { _contains: selectedLibrary } },
     ],
   };
-
-  const { sortChoices, orderByParam, orderByQuery } =
-    useDashboardSortBy<News_Order_By>({
-      defaultSortBy: 'newest',
-      ascendingSortKey: 'text',
-      descendingSortKey: 'text',
-      newestSortKey: 'date',
-      oldestSortKey: 'date',
-    });
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -152,7 +138,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       orderBy: [
         selectedTab?.value === 'trending'
           ? ({ num_of_views: Order_By.Desc } as News_Order_By)
-          : orderByQuery,
+          : ({ date: Order_By.Desc } as News_Order_By),
       ],
       where: filters as News_Bool_Exp,
     },
@@ -168,11 +154,13 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ? newsCount
     : newsData?.news_aggregate?.aggregate?.count || 0;
 
+  const showPersonalized = user && !selectedTab;
+
   return (
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-6 py-3 flex flex-wrap gap-3 items-center justify-between border-b border-gray-200 lg:items-center"
+          className="px-8 pt-0.5 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist"
         >
           <ElemCategories
@@ -183,20 +171,61 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
-            {!selectedTab?.value && (
+            {/* removed in qol-ui-fixes */}
+            {/* {!selectedTab?.value && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 defaultItem={defaultOrderBy}
                 items={sortChoices}
               />
-            )}
+            )} */}
           </div>
         </div>
 
-        <ElemInviteBanner className="mx-6 my-3" />
+        <ElemInviteBanner className="mx-8 my-3" />
 
-        <div className="mx-6">
+        <div className="mx-8">
+          {showPersonalized && (
+            <div className="flex flex-col gap-4 gap-x-8">
+              {personalizedTags.locationTags.map((location, index) => (
+                <NewsByFilter
+                  key={`${location}-${index}`}
+                  headingText={`Trending in ${location}`}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    updated_at: Order_By.Desc,
+                  }}
+                  filters={{
+                    _or: [
+                      {
+                        organizations: {
+                          company: {
+                            location_json: {
+                              _contains: {
+                                city: `${location}`,
+                              },
+                            },
+                          },
+                        },
+                      },
+                      {
+                        organizations: {
+                          vc_firm: {
+                            location_json: {
+                              _contains: {
+                                city: `${location}`,
+                              },
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+            </div>
+          )}
+
           {news?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
               <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -221,7 +250,14 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
               </div>
             </div>
           )}
-          <div className="mt-4 grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+
+          {showPersonalized && (
+            <div className="flex justify-between py-8">
+              <div className="text-4xl font-medium">All news</div>
+            </div>
+          )}
+
+          <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <h4>Error loading news</h4>
             ) : isLoading && !initialLoad ? (

@@ -9,8 +9,6 @@ import {
   eventBannerList,
   EXPLORE_MENU_OPEN_KEY,
   MY_EDGEIN_MENU_OPEN_KEY,
-  MY_GROUPS_MENU_OPEN_KEY,
-  MY_LISTS_MENU_OPEN_KEY,
   NON_SELECTABLE_WEB_3_TAGS,
   web3Tags,
 } from './constants';
@@ -111,12 +109,7 @@ export const clearLocalStorage = () => {
 
     if (
       key &&
-      ![
-        MY_EDGEIN_MENU_OPEN_KEY,
-        MY_LISTS_MENU_OPEN_KEY,
-        MY_GROUPS_MENU_OPEN_KEY,
-        EXPLORE_MENU_OPEN_KEY,
-      ].includes(key)
+      ![MY_EDGEIN_MENU_OPEN_KEY, EXPLORE_MENU_OPEN_KEY].includes(key)
     ) {
       localStorage.removeItem(key);
     }
