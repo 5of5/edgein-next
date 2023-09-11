@@ -25541,7 +25541,7 @@ export type GetPersonalizedCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, status_tags: any | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
 export type InsertCompaniesMutationVariables = Exact<{
   objects: Array<Companies_Insert_Input> | Companies_Insert_Input;
@@ -26245,7 +26245,7 @@ export type GetUnreadNotificationsQueryVariables = Exact<{
 }>;
 
 
-export type GetUnreadNotificationsQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }> }> };
+export type GetUnreadNotificationsQuery = { __typename?: 'query_root', notifications_aggregate: { __typename?: 'notifications_aggregate', aggregate: { __typename?: 'notifications_aggregate_fields', count: number } | null } };
 
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -26663,7 +26663,7 @@ export type GetPersonalizedVcFirmsQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonalizedVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, slug: string, logo: any | null, name: string | null, num_of_investments: number | null, tags: any | null, overview: string | null, website: string | null, linkedin: string | null, twitter: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+export type GetPersonalizedVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, slug: string, logo: any | null, name: string | null, num_of_investments: number | null, tags: any | null, location_json: any | null, overview: string | null, website: string | null, linkedin: string | null, twitter: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
@@ -27502,6 +27502,7 @@ export const GetPersonalizedCompaniesDocument = `
       ticker
     }
     tags
+    location_json
     status_tags
     overview
     follows {
@@ -30598,19 +30599,11 @@ export const useInsertNotificationActionsMutation = <
 useInsertNotificationActionsMutation.fetcher = (variables: InsertNotificationActionsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNotificationActionsMutation, InsertNotificationActionsMutationVariables>(InsertNotificationActionsDocument, variables, options);
 export const GetUnreadNotificationsDocument = `
     query GetUnreadNotifications($user_id: Int!) {
-  notifications(
+  notifications_aggregate(
     where: {_and: [{target_user_id: {_eq: $user_id}}, {event_type: {_neq: "Delete Data"}}, {read: {_eq: false}}, {_or: [{_and: [{company_id: {_is_null: false}}, {company: {status: {_neq: "draft"}}}]}, {_and: [{vc_firm_id: {_is_null: false}}, {vc_firm: {status: {_neq: "draft"}}}]}]}]}
-    limit: 100
   ) {
-    id
-    read
-    notification_actions {
-      id
-      action_id
-      action {
-        id
-        properties
-      }
+    aggregate {
+      count
     }
   }
 }
@@ -32817,6 +32810,7 @@ export const GetPersonalizedVcFirmsDocument = `
     name
     num_of_investments
     tags
+    location_json
     overview
     website
     linkedin

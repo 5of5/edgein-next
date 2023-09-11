@@ -365,6 +365,7 @@ query GetPersonalizedCompanies(
       ticker
     }
     tags
+    location_json
     status_tags
     overview
     follows {

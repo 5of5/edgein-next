@@ -339,6 +339,7 @@ query GetPersonalizedVcFirms(
     name
     num_of_investments
     tags
+    location_json
     overview
     website
     linkedin
