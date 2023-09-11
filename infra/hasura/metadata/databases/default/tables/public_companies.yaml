@@ -62,12 +62,6 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: to_company_id
-computed_fields:
-  - name: datapoints_count
-    definition:
-      function:
-        schema: public
-        name: companies_datapoints
 insert_permissions:
   - role: user
     permission:
@@ -197,6 +191,7 @@ select_permissions:
         - coin_id
         - company_linkedin
         - created_at
+        - datapoints_count
         - date_added
         - discord
         - facebook
@@ -238,8 +233,6 @@ select_permissions:
         - white_paper
         - year_founded
         - youtube
-      computed_fields:
-        - datapoints_count
       filter:
         status:
           _eq: published

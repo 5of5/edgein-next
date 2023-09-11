@@ -52,12 +52,6 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: to_vc_firm_id
-computed_fields:
-  - name: datapoints_count
-    definition:
-      function:
-        schema: public
-        name: vc_firms_datapoints
 insert_permissions:
   - role: user
     permission:
@@ -118,6 +112,7 @@ select_permissions:
     permission:
       columns:
         - created_at
+        - datapoints_count
         - geopoint
         - id
         - investment_amount_total
@@ -141,8 +136,6 @@ select_permissions:
         - updated_at
         - website
         - year_founded
-      computed_fields:
-        - datapoints_count
       filter:
         status:
           _eq: published
