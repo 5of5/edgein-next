@@ -68,7 +68,7 @@ const Companies: NextPage<Props> = ({
   initialCompanies,
   companyStatusTags,
 }) => {
-  console.log('deploy test')
+  console.log('deploy test');
   const { user } = useUser();
 
   const personalizedTags = getPersonalizedData({ user });
