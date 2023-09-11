@@ -14,3 +14,4 @@ BEGIN
      RETURN col_count + investors_count + investments_count;
 END;
 $function$;
+
