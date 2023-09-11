@@ -94,6 +94,9 @@ const Investors: NextPage<Props> = ({
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
+  const isSortDropdownVisible = ['Dead', 'Raising'].includes(
+    selectedStatusTag?.value || '',
+  );
 
   const [tableLayout, setTableLayout] = useState(false);
 
@@ -226,7 +229,10 @@ const Investors: NextPage<Props> = ({
   if (selectedStatusTag?.value) {
     if (isNewTabSelected) {
       filters._and?.push({
-        created_at: { _neq: new Date(0) },
+        //created_at: { _neq: new Date(0) },
+        created_at: {
+          _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
+        },
       });
     } else {
       filters._and?.push({
@@ -309,7 +315,7 @@ const Investors: NextPage<Props> = ({
                 onSelectFilterOption={onSelectFilterOption}
               />
 
-              {!isNewTabSelected && (
+              {isSortDropdownVisible && (
                 <ElemDropdown
                   IconComponent={IconSortDashboard}
                   defaultItem={defaultOrderBy}
@@ -349,7 +355,7 @@ const Investors: NextPage<Props> = ({
 
           <div className="mx-8">
             {showPersonalized && (
-              <div className="flex flex-col gap-4 gap-x-16">
+              <div className="flex flex-col gap-4 gap-x-8">
                 {personalizedTags.locationTags.map(location => (
                   <InvestorsByFilter
                     key={location}
@@ -380,9 +386,19 @@ const Investors: NextPage<Props> = ({
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={tableLayout}
+                    orderBy={{
+                      updated_at: Order_By.Desc,
+                    }}
                     filters={{
                       _and: [
                         { library: { _contains: selectedLibrary } },
+                        {
+                          updated_at: {
+                            _gte: moment()
+                              .subtract(28, 'days')
+                              .format(ISO_DATE_FORMAT),
+                          },
+                        },
                         {
                           location_json: {
                             _contains: {
@@ -511,7 +527,7 @@ const Investors: NextPage<Props> = ({
                     <PlaceholderTable />
                   </div>
                 ) : (
-                  <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {Array.from({ length: 9 }, (_, i) => (
                       <PlaceholderInvestorCard key={i} />
                     ))}
@@ -521,7 +537,16 @@ const Investors: NextPage<Props> = ({
             ) : tableLayout && vcFirms?.length != 0 ? (
               <>
                 {showPersonalized && (
-                  <div className="text-2xl font-medium mt-4">All investors</div>
+                  <div className="flex justify-between my-8">
+                    <div className="text-4xl font-medium">All investors</div>
+                    {!isNewTabSelected && (
+                      <ElemDropdown
+                        IconComponent={IconSortDashboard}
+                        defaultItem={defaultOrderBy}
+                        items={sortChoices}
+                      />
+                    )}
+                  </div>
                 )}
                 <InvestorsTable
                   investors={vcFirms}
@@ -537,11 +562,20 @@ const Investors: NextPage<Props> = ({
             ) : (
               <>
                 {showPersonalized && (
-                  <div className="text-2xl font-medium my-4">All investors</div>
+                  <div className="flex justify-between my-8">
+                    <div className="text-4xl font-medium">All investors</div>
+                    {!isNewTabSelected && (
+                      <ElemDropdown
+                        IconComponent={IconSortDashboard}
+                        defaultItem={defaultOrderBy}
+                        items={sortChoices}
+                      />
+                    )}
+                  </div>
                 )}
                 <div
                   data-testid="investors"
-                  className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                 >
                   {vcFirms?.map(vcfirm => (
                     <ElemInvestorCard
