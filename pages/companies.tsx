@@ -356,6 +356,9 @@ const Companies: NextPage<Props> = ({
   ];
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
+
+  const pageTitle = `All ${user ? selectedLibrary : ''} companies`;
+
   return (
     <DashboardLayout>
       <div className="relative">

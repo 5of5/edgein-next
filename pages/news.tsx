@@ -156,6 +156,8 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   const showPersonalized = user && !selectedTab;
 
+  const pageTitle = `All ${user ? selectedLibrary : ''} news`;
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -251,11 +253,9 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             </div>
           )}
 
-          {showPersonalized && (
-            <div className="flex justify-between py-8">
-              <div className="text-4xl font-medium">All news</div>
-            </div>
-          )}
+          <div className="flex justify-between py-8">
+            <div className="text-4xl font-medium">{pageTitle}</div>
+          </div>
 
           <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (

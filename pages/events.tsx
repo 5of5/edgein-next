@@ -283,6 +283,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const showPersonalized = user && !selectedFilters && !selectedTab;
 
+  const pageTitle = `All ${user ? selectedLibrary : ''} events`;
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -469,17 +471,15 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           ) : (
             events?.length !== 0 && (
               <>
-                {showPersonalized && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">All Events</div>
-                    {/* Removed in qol-ui-fixes */}
-                    {/* <ElemDropdown
+                <div className="flex justify-between my-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                  {/* Removed in qol-ui-fixes */}
+                  {/* <ElemDropdown
                       IconComponent={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
                     /> */}
-                  </div>
-                )}
+                </div>
                 <div
                   data-testid="events"
                   className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"

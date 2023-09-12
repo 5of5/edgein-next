@@ -362,6 +362,8 @@ const Investors: NextPage<Props> = ({
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
+  const pageTitle = `All ${user ? selectedLibrary : ''} investors`;
+
   return (
     <DashboardLayout>
       <div className="relative">
