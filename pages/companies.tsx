@@ -286,6 +286,9 @@ const Companies: NextPage<Props> = ({
   ];
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
+
+  const pageTitle = `All ${user ? selectedLibrary : ''} companies`;
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -562,11 +565,9 @@ const Companies: NextPage<Props> = ({
             </>
           ) : tableLayout && companies?.length != 0 ? (
             <>
-              {showPersonalized && (
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">All companies</div>
-                </div>
-              )}
+              <div className="flex justify-between py-8">
+                <div className="text-4xl font-medium">{pageTitle}</div>
+              </div>
 
               <CompaniesTable
                 companies={companies}
@@ -581,18 +582,16 @@ const Companies: NextPage<Props> = ({
             </>
           ) : (
             <>
-              {showPersonalized && (
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">All companies</div>
-                  {!isNewTabSelected && (
-                    <ElemDropdown
-                      IconComponent={IconSortDashboard}
-                      defaultItem={defaultOrderBy}
-                      items={sortChoices}
-                    />
-                  )}
-                </div>
-              )}
+              <div className="flex justify-between py-8">
+                <div className="text-4xl font-medium">{pageTitle}</div>
+                {!isNewTabSelected && (
+                  <ElemDropdown
+                    IconComponent={IconSortDashboard}
+                    defaultItem={defaultOrderBy}
+                    items={sortChoices}
+                  />
+                )}
+              </div>
               <div
                 data-testid="companies"
                 className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
