@@ -45,6 +45,7 @@ import { ElemTags } from '@/components/elem-tags';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemReactions } from '@/components/elem-reactions';
+import useEmptyLibrary from '@/hooks/use-empty-library';
 
 type Props = {
   company: Companies;
@@ -130,15 +131,7 @@ const Company: NextPage<Props> = (props: Props) => {
     }
   }, [company]);
 
-  useEffect(() => {
-    if (
-      router.query.library !== 'tech' &&
-      company &&
-      (!company.library || company.library.length === 0)
-    ) {
-      router.replace(`/tech/companies/${company.slug}`);
-    }
-  }, [company, router]);
+  useEmptyLibrary('companies', company.library, company.slug);
 
   useEffect(() => {
     if (companyData) setCompany(companyData?.companies[0] as any);

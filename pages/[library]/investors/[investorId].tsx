@@ -32,6 +32,7 @@ import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import useEmptyLibrary from '@/hooks/use-empty-library';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -80,15 +81,7 @@ const VCFirm: NextPage<Props> = props => {
     }
   }, [vcfirm]);
 
-  useEffect(() => {
-    if (
-      router.query.library !== 'tech' &&
-      vcfirm &&
-      (!vcfirm.library || vcfirm.library.length === 0)
-    ) {
-      router.replace(`/tech/investors/${vcfirm.slug}`);
-    }
-  }, [vcfirm, router]);
+  useEmptyLibrary('investors', vcfirm.library, vcfirm.slug);
 
   useEffect(() => {
     if (vcFirmData) {

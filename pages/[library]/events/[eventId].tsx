@@ -42,6 +42,7 @@ import moment from 'moment-timezone';
 import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { usePopup } from '@/context/popup-context';
+import useEmptyLibrary from '@/hooks/use-empty-library';
 
 type Props = {
   event: GetEventQuery['events'][0];
@@ -77,15 +78,7 @@ const Event: NextPage<Props> = props => {
     { enabled: !!event.id },
   );
 
-  useEffect(() => {
-    if (
-      router.query.library !== 'tech' &&
-      event &&
-      (!event.library || event.library.length === 0)
-    ) {
-      router.replace(`/tech/events/${event.slug}`);
-    }
-  }, [event, router]);
+  useEmptyLibrary('events', event.library, event.slug);
 
   useEffect(() => {
     if (eventData) setEvent(eventData.events[0]);

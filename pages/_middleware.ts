@@ -38,6 +38,14 @@ const PUBLIC_API = [
   `/api/query/completions/`,
 ];
 
+const URL_INCLUDE_LIBRARY_RESOURCES = [
+  '/companies',
+  '/investors',
+  '/events',
+  '/news',
+  '/people',
+];
+
 const getIp = (req: NextRequest) => {
   let ip = req.ip ?? req.headers.get('x-real-ip') ?? undefined;
   const forwardedFor = req.headers.get('x-forwarded-for');
@@ -100,8 +108,8 @@ export async function middleware(req: NextRequest) {
     }
 
     if (
-      ['/companies', '/investors', '/events', '/news', '/people'].some(
-        urlItem => url.pathname.startsWith(urlItem),
+      URL_INCLUDE_LIBRARY_RESOURCES.some(urlItem =>
+        url.pathname.startsWith(urlItem),
       )
     ) {
       return NextResponse.redirect(

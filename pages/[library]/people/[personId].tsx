@@ -34,6 +34,7 @@ import ElemNewsList from '@/components/news/elem-news-list';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import moment from 'moment-timezone';
+import useEmptyLibrary from '@/hooks/use-empty-library';
 
 type Props = {
   person: People;
@@ -65,15 +66,7 @@ const Person: NextPage<Props> = (props: Props) => {
     if (personData) setPerson(personData?.people[0] as People);
   }, [personData]);
 
-  useEffect(() => {
-    if (
-      router.query.library !== 'tech' &&
-      person &&
-      (!person.library || person.library.length === 0)
-    ) {
-      router.replace(`/tech/people/${person.slug}`);
-    }
-  }, [person, router]);
+  useEmptyLibrary('people', person.library, person.slug);
 
   const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
