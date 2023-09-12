@@ -103,16 +103,8 @@ export const TheNavbar: FC<Props> = ({}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.invite, user]);
 
-  const onBackFromForgotPassword = () => {
-    router.push('/sign-in');
-  };
-
   const onModalClose = () => {
-    if (router.asPath.includes('/sign-in/')) {
-      redirectToSignIn();
-    } else {
-      setShowPopup(false);
-    }
+    setShowPopup(false);
   };
 
   const redirectToSignIn = () => {
@@ -258,7 +250,6 @@ export const TheNavbar: FC<Props> = ({}) => {
           <ForgotPasswordModal
             show={showPopup === 'forgotPassword'}
             onClose={onModalClose}
-            onBack={onBackFromForgotPassword}
           />
           <SearchModal
             show={showPopup === 'search'}

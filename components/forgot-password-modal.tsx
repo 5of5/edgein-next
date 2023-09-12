@@ -10,7 +10,6 @@ export enum ErrorCode {
 type Props = {
   show: boolean;
   onClose: () => void;
-  onBack: () => void;
 };
 
 export default function ForgotPasswordModal(props: Props) {
@@ -53,11 +52,9 @@ export default function ForgotPasswordModal(props: Props) {
 
   const onClose = () => {
     props.onClose();
-  };
-
-  const onBack = () => {
-    props.onBack();
-    setIsMailSent(false);
+    if (isMailSent) {
+      setIsMailSent(false);
+    }
   };
 
   return (
@@ -106,7 +103,7 @@ export default function ForgotPasswordModal(props: Props) {
                       )}
                       <div className="sm:col-span-3 mt-4">
                         <ElemButton
-                          onClick={onBack}
+                          onClick={onClose}
                           btn="primary"
                           loading={isLoading}
                         >
@@ -124,7 +121,7 @@ export default function ForgotPasswordModal(props: Props) {
                       </p>
 
                       <div className="mt-4 flex flex-col space-y-1">
-                        <label className="font-bold cursor-text">Email</label>
+                        <label className="font-bold">Email</label>
                         <input
                           name="email"
                           type="email"
@@ -145,7 +142,7 @@ export default function ForgotPasswordModal(props: Props) {
                             Reset Password
                           </ElemButton>
                           <ElemButton
-                            onClick={onBack}
+                            onClick={onClose}
                             btn="transparent"
                             loading={isLoading}
                             className="px-0 ml-2 sm:ml-4"
