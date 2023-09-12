@@ -59,6 +59,7 @@ const queryForPeopleList = async (date: any, library: Library) => {
     query: GetPeopleByDateDocument,
     variables: { date, library },
   });
+  console.log('queryForPeopleList', data.data.people)
   return data.data.people;
 };
 
