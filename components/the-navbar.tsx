@@ -6,7 +6,6 @@ import { ElemLogo } from '@/components/elem-logo';
 import { ElemButton } from '@/components/elem-button';
 import { UserMenu } from '@/components/user-menu';
 import UsageModal from '@/components/usage-modal';
-import ForgotPasswordModal from '@/components/forgot-password-modal';
 import {
   IconSearch,
   IconBell,
@@ -24,7 +23,7 @@ import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
 
-export type Popups = 'forgotPassword' | 'search' | 'usage' | false;
+export type Popups = 'search' | 'usage' | false;
 
 type Props = {};
 
@@ -247,10 +246,6 @@ export const TheNavbar: FC<Props> = ({}) => {
             onClose={onModalClose}
           />
 
-          <ForgotPasswordModal
-            show={showPopup === 'forgotPassword'}
-            onClose={onModalClose}
-          />
           <SearchModal
             show={showPopup === 'search'}
             onClose={() => setShowPopup(false)}
