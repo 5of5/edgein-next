@@ -1,1 +1,1 @@
-DROP INDEX IF EXISTS "public"."actions_created_at";
+DROP INDEX IF EXISTS "public"."idx_created_at";
