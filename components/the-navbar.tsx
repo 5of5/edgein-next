@@ -125,6 +125,10 @@ export const TheNavbar: FC<Props> = ({}) => {
       href: '/support',
     },
     {
+      label: 'Pricing',
+      href: '/pricing',
+    },
+    {
       label: 'Press',
       href: 'mailto:press@edgein.io',
     },
