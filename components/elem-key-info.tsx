@@ -395,7 +395,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   )}
                 </div>
                 {!showInfo[item.text] && (
-                  <IconLockClosed className="h-5 w-5 shrink-0 text-gray-400" />
+                  <IconLockClosed
+                    className="h-4 w-4 shrink-0 text-gray-400"
+                    strokeWidth={2}
+                  />
                 )}
               </li>
             );
@@ -433,7 +436,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
             </div>
             <div className="flex items-center text-primary-500">
               {!showInfo['email'] && (
-                <IconLockClosed className="h-5 w-5 shrink-0 text-gray-400" />
+                <IconLockClosed
+                  className="h-4 w-4 shrink-0 text-gray-400"
+                  strokeWidth={2}
+                />
               )}
             </div>
           </li>,

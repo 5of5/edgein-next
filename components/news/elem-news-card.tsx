@@ -68,7 +68,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
 
   return (
     <div
-      className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] hover:border-gray-500 ${className}`}
+      className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] hover:border-gray-400 ${className}`}
     >
       {link && (
         <div className="flex flex-col justify-between h-full">
