@@ -62,6 +62,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router]);
 
   // Meta
+  const canonicalUrl = (
+    `https://edgein.io` + (router.asPath === '/' ? '' : router.asPath)
+  ).split('?')[0];
+
   const metaTitle = pageProps.metaTitle
     ? pageProps.metaTitle
     : 'Web3-focused data intelligence for success - EdgeIn.io';
@@ -102,6 +106,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} key="description" />
+        <link rel="canonical" href={canonicalUrl} />
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
@@ -123,7 +128,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           content={metaDescription}
           key="og-description"
         />
-        <meta property="og:url" content="https://edgein.io/" key="og-url" />
+        <meta property="og:url" content={canonicalUrl} key="og-url" />
         <meta property="og:type" content="website" key="og-type" />
         <meta property="og:image" content={`${metaImage}`} key="og-image" />
       </Head>
