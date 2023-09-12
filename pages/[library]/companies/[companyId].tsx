@@ -131,6 +131,16 @@ const Company: NextPage<Props> = (props: Props) => {
   }, [company]);
 
   useEffect(() => {
+    if (
+      router.query.library !== 'tech' &&
+      company &&
+      (!company.library || company.library.length === 0)
+    ) {
+      router.replace(`/tech/companies/${company.slug}`);
+    }
+  }, [company, router]);
+
+  useEffect(() => {
     if (companyData) setCompany(companyData?.companies[0] as any);
   }, [companyData]);
 

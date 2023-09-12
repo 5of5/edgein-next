@@ -26349,7 +26349,7 @@ export type GetEventsPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, updated_at: any }> };
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, updated_at: any, library: any | null }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -26357,7 +26357,7 @@ export type GetCompaniesPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, updated_at: any }> };
+export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, updated_at: any, library: any | null }> };
 
 export type GetPersonsPathQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -26365,7 +26365,7 @@ export type GetPersonsPathQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string, updated_at: any | null }> };
+export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string, updated_at: any | null, library: any | null }> };
 
 export type GetVcFirmsPathQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -26373,7 +26373,7 @@ export type GetVcFirmsPathQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, updated_at: any | null }> };
+export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, updated_at: any | null, library: any | null }> };
 
 export type GetSiteMapAggregatesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -31148,6 +31148,7 @@ export const GetEventsPathsDocument = `
     name
     slug
     updated_at
+    library
   }
 }
     `;
@@ -31182,6 +31183,7 @@ export const GetCompaniesPathsDocument = `
     name
     slug
     updated_at
+    library
   }
 }
     `;
@@ -31216,6 +31218,7 @@ export const GetPersonsPathDocument = `
     name
     slug
     updated_at
+    library
   }
 }
     `;
@@ -31250,6 +31253,7 @@ export const GetVcFirmsPathDocument = `
     name
     slug
     updated_at
+    library
   }
 }
     `;

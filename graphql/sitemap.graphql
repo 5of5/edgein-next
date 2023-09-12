@@ -9,6 +9,7 @@ query GetEventsPaths($limit: Int, $offset: Int) {
     name
     slug
     updated_at
+    library
   }
 }
 
@@ -23,6 +24,7 @@ query GetCompaniesPaths($limit: Int, $offset: Int) {
     name
     slug
     updated_at
+    library
   }
 }
 
@@ -37,6 +39,7 @@ query GetPersonsPath($limit: Int, $offset: Int) {
     name
     slug
     updated_at
+    library
   }
 }
 
@@ -51,6 +54,7 @@ query GetVCFirmsPath($limit: Int, $offset: Int) {
     name
     slug
     updated_at
+    library
   }
 }
 

@@ -78,6 +78,16 @@ const Event: NextPage<Props> = props => {
   );
 
   useEffect(() => {
+    if (
+      router.query.library !== 'tech' &&
+      event &&
+      (!event.library || event.library.length === 0)
+    ) {
+      router.replace(`/tech/events/${event.slug}`);
+    }
+  }, [event, router]);
+
+  useEffect(() => {
     if (eventData) setEvent(eventData.events[0]);
   }, [eventData]);
 

@@ -65,6 +65,16 @@ const Person: NextPage<Props> = (props: Props) => {
     if (personData) setPerson(personData?.people[0] as People);
   }, [personData]);
 
+  useEffect(() => {
+    if (
+      router.query.library !== 'tech' &&
+      person &&
+      (!person.library || person.library.length === 0)
+    ) {
+      router.replace(`/tech/people/${person.slug}`);
+    }
+  }, [person, router]);
+
   const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
   useEffect(() => {

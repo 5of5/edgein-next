@@ -12,7 +12,7 @@ export const getRootUrl = () =>
 
 export async function generateXMLSiteMapPages<
   T,
-  Arr extends { slug: string | null; updated_at: string },
+  Arr extends { slug: string | null; library: string[]; updated_at: string },
 >(
   graphqlQuery: string,
   graphqlAccessor: (result?: T) => Arr[],
@@ -28,8 +28,10 @@ export async function generateXMLSiteMapPages<
   const array = graphqlAccessor(data);
   const rootUrl = getRootUrl();
 
-  return array.map(({ slug, updated_at }) => ({
-    loc: `${rootUrl}/${folder}/${escape(slug || '')}`,
+  return array.map(({ slug, library, updated_at }) => ({
+    loc: `${rootUrl}/${library[0]?.toLowerCase() || 'tech'}/${folder}/${escape(
+      slug || '',
+    )}`,
     lastmod: updated_at,
   }));
 }

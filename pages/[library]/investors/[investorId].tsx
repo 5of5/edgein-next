@@ -81,6 +81,16 @@ const VCFirm: NextPage<Props> = props => {
   }, [vcfirm]);
 
   useEffect(() => {
+    if (
+      router.query.library !== 'tech' &&
+      vcfirm &&
+      (!vcfirm.library || vcfirm.library.length === 0)
+    ) {
+      router.replace(`/tech/investors/${vcfirm.slug}`);
+    }
+  }, [vcfirm, router]);
+
+  useEffect(() => {
     if (vcFirmData) {
       onTrackView({
         resourceId: vcFirmData?.vc_firms[0]?.id,
