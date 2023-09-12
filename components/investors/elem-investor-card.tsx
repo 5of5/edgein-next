@@ -59,7 +59,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] hover:border-gray-400">
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/investors/${slug}`}>
