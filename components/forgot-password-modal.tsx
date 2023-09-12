@@ -1,6 +1,7 @@
 import { useState, Fragment } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { Dialog, Transition } from '@headlessui/react';
+import { InputText } from './input-text';
 
 export enum ErrorCode {
   USER_NOT_EXISTS = 404,
@@ -10,7 +11,6 @@ export enum ErrorCode {
 type Props = {
   show: boolean;
   onClose: () => void;
-  onBack: () => void;
 };
 
 export default function ForgotPasswordModal(props: Props) {
@@ -25,6 +25,7 @@ export default function ForgotPasswordModal(props: Props) {
       return;
     }
     try {
+      setIsLoading(true);
       setError('');
       const response = await fetch('/api/change-password/', {
         method: 'POST',
@@ -34,6 +35,7 @@ export default function ForgotPasswordModal(props: Props) {
         },
         body: JSON.stringify({ email }),
       }).then(res => res.json());
+      setIsLoading(false);
       if (!response.status && response.success === true) {
         setIsMailSent(true);
       }
@@ -53,11 +55,10 @@ export default function ForgotPasswordModal(props: Props) {
 
   const onClose = () => {
     props.onClose();
-  };
-
-  const onBack = () => {
-    props.onBack();
-    setIsMailSent(false);
+    setEmail('');
+    if (isMailSent) {
+      setIsMailSent(false);
+    }
   };
 
   return (
@@ -86,17 +87,17 @@ export default function ForgotPasswordModal(props: Props) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
+              <Dialog.Panel className="max-w-xl w-full px-6 py-2 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
                 <div className="max-w-md mx-auto w-full">
                   {isMailSent ? (
                     <>
-                      <h1 className="text-2xl font-bold lg:text-3xl">
+                      <h1 className="text-xl font-bold">
                         {error === ''
                           ? 'Password reset email sent'
                           : 'Looks like you signed up through LinkedIn'}
                       </h1>
                       {error === '' ? (
-                        <p className="mt-2">
+                        <p className="mt-2 text-gray-600 text-sm">
                           Look for an email from{' '}
                           <span className="font-bold">support@edgein.io</span>.
                           Check your Spam or Bulk Mail folders.
@@ -106,9 +107,9 @@ export default function ForgotPasswordModal(props: Props) {
                       )}
                       <div className="sm:col-span-3 mt-4">
                         <ElemButton
-                          onClick={onBack}
+                          className="px-4"
+                          onClick={onClose}
                           btn="primary"
-                          loading={isLoading}
                         >
                           Return to login
                         </ElemButton>
@@ -116,38 +117,39 @@ export default function ForgotPasswordModal(props: Props) {
                     </>
                   ) : (
                     <>
-                      <h1 className="text-2xl font-bold lg:text-3xl">
+                      <h1 className="mb-2 text-xl font-bold">
                         Forgot Password?
                       </h1>
-                      <p>
+                      <p className="text-gray-600 text-sm">
                         No worries, we&rsquo;ll send you reset instructions.
                       </p>
 
                       <div className="mt-4 flex flex-col space-y-1">
-                        <label className="font-bold cursor-text">Email</label>
-                        <input
+                        <label className="font-medium text-sm cursor-text">
+                          Email
+                        </label>
+                        <InputText
                           name="email"
                           type="email"
                           value={email}
                           disabled={isLoading}
                           onChange={event => setEmail(event?.target.value)}
                           placeholder="example@email.com"
-                          className="mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
 
                         <div>
                           <ElemButton
-                            className="mt-4"
+                            className="mt-4 px-4"
                             onClick={handleSubmit}
                             btn="primary"
+                            disabled={!email}
                             loading={isLoading}
                           >
                             Reset Password
                           </ElemButton>
                           <ElemButton
-                            onClick={onBack}
+                            onClick={onClose}
                             btn="transparent"
-                            loading={isLoading}
                             className="px-0 ml-2 sm:ml-4"
                           >
                             Cancel
