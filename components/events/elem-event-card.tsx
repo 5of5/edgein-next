@@ -152,7 +152,7 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[18px]">
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/events/${slug}`}>
@@ -246,7 +246,7 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
                   <ElemTooltip content="Website" mode="light">
                     <div>
                       <IconGlobe
-                        className="h-5 w-5 text-gray-400"
+                        className="h-5 w-5 text-gray-600"
                         title={link}
                       />
                     </div>
@@ -257,35 +257,35 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
             {twitter && (
               <Link href={twitter}>
                 <a target="_blank">
-                  <IconTwitter className="h-5 w-5 text-gray-400" />
+                  <IconTwitter className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {facebook && (
               <Link href={facebook}>
                 <a target="_blank">
-                  <IconFacebook className="h-5 w-5 text-gray-400" />
+                  <IconFacebook className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {instagram && (
               <Link href={instagram}>
                 <a target="_blank">
-                  <IconInstagram className="h-5 w-5 text-gray-400" />
+                  <IconInstagram className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {discord && (
               <Link href={discord}>
                 <a target="_blank">
-                  <IconDiscord className="h-5 w-5 text-gray-400" />
+                  <IconDiscord className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {telegram && (
               <Link href={telegram}>
                 <a target="_blank">
-                  <IconTelegram className="h-5 w-5 text-gray-400" />
+                  <IconTelegram className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
