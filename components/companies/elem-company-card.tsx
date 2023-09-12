@@ -71,7 +71,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px]">
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] hover:border-gray-500">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/companies/${slug}`}>
@@ -85,40 +85,25 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                   placeholderClass="text-slate-300"
                 />
               </div>
-            </a>
-          </Link>
-
-          <Link href={`/companies/${slug}`}>
-            <a className="flex items-center mt-4">
-              <ElemTooltip content={name} mode="light">
-                <h3 className="text-xl font-medium truncate">{name}</h3>
-              </ElemTooltip>
-              {coin && (
-                <ElemTooltip content={`Token`} mode="light" className="">
-                  <span className="uppercase ml-1">{coin.ticker}</span>
+              <div className="flex items-center mt-4">
+                <ElemTooltip content={name} mode="light">
+                  <h3 className="text-xl font-medium truncate">{name}</h3>
                 </ElemTooltip>
+                {coin && (
+                  <ElemTooltip content={`Token`} mode="light" className="">
+                    <span className="uppercase ml-1">{coin.ticker}</span>
+                  </ElemTooltip>
+                )}
+              </div>
+              {overview && (
+                <div className="mt-2 text-sm line-clamp-3 text-gray-500">
+                  {overview}
+                </div>
               )}
             </a>
           </Link>
 
-          <div className="mt-2">
-            {overview && (
-              <>
-                {/* <ElemTooltip
-            content={overview}
-            mode="light"
-            direction="bottom"
-            size="lg"
-            delay={1200}
-            className="">
-            <div className="text-sm line-clamp-3">{overview}</div>
-          </ElemTooltip> */}
-                <div className="text-sm line-clamp-3 text-gray-500">
-                  {overview}
-                </div>
-              </>
-            )}
-
+          <div>
             {!isEmptyLocationJson && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
@@ -147,7 +132,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
             {website && (
               <Link href={website}>
                 <a target="_blank">
-                  <IconGlobe className="h-5 w-5 text-gray-400" />
+                  <IconGlobe className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
@@ -156,7 +141,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
               userCanViewLinkedIn ? (
                 <Link href={company_linkedin}>
                   <a target="_blank">
-                    <IconLinkedIn className="h-5 w-5 text-gray-400" />
+                    <IconLinkedIn className="h-5 w-5 text-gray-600" />
                   </a>
                 </Link>
               ) : (
@@ -169,21 +154,21 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
             {twitter && (
               <Link href={twitter}>
                 <a target="_blank">
-                  <IconTwitter className="h-5 w-5 text-gray-400" />
+                  <IconTwitter className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {github && (
               <Link href={github}>
                 <a target="_blank">
-                  <IconGithub className="h-5 w-5 text-gray-400" />
+                  <IconGithub className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {discord && (
               <Link href={discord}>
                 <a target="_blank">
-                  <IconDiscord className="h-5 w-5 text-gray-400" />
+                  <IconDiscord className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}

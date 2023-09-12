@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { values, isEmpty } from 'lodash';
 import {
   IconProps,
@@ -19,11 +19,10 @@ import {
   IconFacebook,
   IconDiscord,
   IconGlassdoor,
-  IconEye,
-  IconEyeSlash,
   IconHome,
   IconTicket,
   IconDocument,
+  IconLockClosed,
 } from '@/components/icons';
 import {
   getTwitterHandle,
@@ -324,12 +323,17 @@ export const ElemKeyInfo: React.FC<Props> = ({
     <section className={`border border-gray-300 rounded-lg ${className}`}>
       {heading && <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>}
 
-      <ul className="flex flex-col space-y-3 text-sm p-4">
+      <ul className="flex flex-col space-y-4 text-sm p-4">
         {infoItems.map((item, index: number) => {
-          let itemInner = (
+          let itemInner: ReactElement = (
             <>
               {item.icon && (
-                <item.icon title={item.text} className="h-6 w-6 shrink-0" />
+                <item.icon
+                  title={item.text}
+                  className={`${
+                    item.link?.length ? 'text-primary-500' : ''
+                  } h-5 w-5 shrink-0`}
+                />
               )}
               <span className="break-words min-w-0">{item.text}</span>
             </>
@@ -367,12 +371,16 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   {item.icon && (
                     <item.icon
                       title={showInfo[item.text] ? item.text : ''}
-                      className="h-6 w-6 mr-2 shrink-0"
+                      className={`${
+                        showInfo[item.text]
+                          ? 'text-primary-500'
+                          : 'text-gray-400'
+                      } h-5 w-5 mr-2 shrink-0`}
                     />
                   )}
                   {showInfo[item.text] ? (
                     <a
-                      className={`break-all transition-all `}
+                      className="break-all transition-all underline hover:no-underline"
                       href={item.link}
                       target={item.target ? item.target : '_blank'}
                       rel="noopener noreferrer"
@@ -381,20 +389,14 @@ export const ElemKeyInfo: React.FC<Props> = ({
                       {item.text}
                     </a>
                   ) : (
-                    <>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</>
+                    <span className="text-gray-400">
+                      &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
+                    </span>
                   )}
                 </div>
-                <div className="flex items-center text-primary-500">
-                  {showInfo[item.text] ? (
-                    <>
-                      <IconEyeSlash className="h-5 w-5 shrink-0 mr-1" /> hide
-                    </>
-                  ) : (
-                    <>
-                      <IconEye className="h-5 w-5 shrink-0 mr-1" /> show
-                    </>
-                  )}
-                </div>
+                {!showInfo[item.text] && (
+                  <IconLockClosed className="h-5 w-5 shrink-0 text-gray-400" />
+                )}
               </li>
             );
           } else {
@@ -409,26 +411,29 @@ export const ElemKeyInfo: React.FC<Props> = ({
             className={`${baseClasses} flex-1 items-center justify-between cursor-pointer`}
           >
             <div className="flex items-center">
-              <IconEmail className="h-6 w-6 shrink-0 mr-2" />
+              <IconEmail
+                className={`${
+                  showInfo['email'] ? 'text-primary-500' : 'text-gray-400'
+                } h-5 w-5 mr-2 shrink-0`}
+              />
               <div className="break-all">
                 {showInfo['email'] ? (
-                  email
+                  <a
+                    href={`mailto:${email}`}
+                    className="underline hover:no-underline"
+                  >
+                    {email}
+                  </a>
                 ) : (
-                  <>
+                  <span className="text-gray-400">
                     &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-                  </>
+                  </span>
                 )}
               </div>
             </div>
             <div className="flex items-center text-primary-500">
-              {showInfo['email'] ? (
-                <>
-                  <IconEyeSlash className="h-5 w-5 shrink-0 mr-1" /> hide
-                </>
-              ) : (
-                <>
-                  <IconEye className="h-5 w-5 shrink-0 mr-1" /> show
-                </>
+              {!showInfo['email'] && (
+                <IconLockClosed className="h-5 w-5 shrink-0 text-gray-400" />
               )}
             </div>
           </li>,
