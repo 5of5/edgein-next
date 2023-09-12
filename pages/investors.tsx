@@ -563,50 +563,12 @@ const Investors: NextPage<Props> = ({
                   </div>
                 </div>
               </div>
-            ) : isLoading && !initialLoad ? (
-              <>
-                {tableLayout ? (
-                  <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                    <PlaceholderTable />
-                  </div>
-                ) : (
-                  <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                    {Array.from({ length: 9 }, (_, i) => (
-                      <PlaceholderInvestorCard key={i} />
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : tableLayout && vcFirms?.length != 0 ? (
-              <>
-                {showPersonalized && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">All investors</div>
-                    {!isNewTabSelected && (
-                      <ElemDropdown
-                        IconComponent={IconSortDashboard}
-                        items={sortItems}
-                      />
-                    )}
-                  </div>
-                )}
-                <InvestorsTable
-                  investors={vcFirms}
-                  pageNumber={page}
-                  itemsPerPage={limit}
-                  shownItems={vcFirms?.length}
-                  totalItems={vcfirms_aggregate}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  filterByTag={filterByTag}
-                />
-              </>
             ) : (
               <>
                 {showPersonalized && (
                   <div className="flex justify-between my-8">
                     <div className="text-4xl font-medium">All investors</div>
-                    {!isNewTabSelected && (
+                    {!tableLayout && !isNewTabSelected && (
                       <ElemDropdown
                         IconComponent={IconSortDashboard}
                         items={sortItems}
@@ -614,27 +576,71 @@ const Investors: NextPage<Props> = ({
                     )}
                   </div>
                 )}
-                <div
-                  data-testid="investors"
-                  className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                >
-                  {vcFirms?.map(vcfirm => (
-                    <ElemInvestorCard
-                      key={vcfirm.id}
-                      vcFirm={vcfirm as Vc_Firms}
+                {isLoading && !initialLoad ? (
+                  <>
+                    {tableLayout ? (
+                      <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                        <PlaceholderTable />
+                      </div>
+                    ) : (
+                      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                        {Array.from({ length: 9 }, (_, i) => (
+                          <PlaceholderInvestorCard key={i} />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : tableLayout && vcFirms?.length != 0 ? (
+                  <>
+                    {showPersonalized && (
+                      <div className="flex justify-between my-8">
+                        <div className="text-4xl font-medium">
+                          All investors
+                        </div>
+                        {!isNewTabSelected && (
+                          <ElemDropdown
+                            IconComponent={IconSortDashboard}
+                            items={sortItems}
+                          />
+                        )}
+                      </div>
+                    )}
+                    <InvestorsTable
+                      investors={vcFirms}
+                      pageNumber={page}
+                      itemsPerPage={limit}
+                      shownItems={vcFirms?.length}
+                      totalItems={vcfirms_aggregate}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      filterByTag={filterByTag}
                     />
-                  ))}
-                </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      data-testid="investors"
+                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    >
+                      {vcFirms?.map(vcfirm => (
+                        <ElemInvestorCard
+                          key={vcfirm.id}
+                          vcFirm={vcfirm as Vc_Firms}
+                        />
+                      ))}
+                    </div>
 
-                <Pagination
-                  shownItems={vcFirms?.length}
-                  totalItems={vcfirms_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
-                />
+                    <Pagination
+                      shownItems={vcFirms?.length}
+                      totalItems={vcfirms_aggregate}
+                      page={page}
+                      itemsPerPage={limit}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      onClickToPage={selectedPage => setPage(selectedPage)}
+                    />
+                  </>
+                )}
               </>
             )}
           </div>

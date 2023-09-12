@@ -250,7 +250,7 @@ const Companies: NextPage<Props> = ({
       investment_rounds_aggregate: { max: { round_date: Order_By.Desc } },
     };
   }
-  
+
   const {
     data: companiesData,
     error,
@@ -586,45 +586,12 @@ const Companies: NextPage<Props> = ({
                 </div>
               </div>
             </div>
-          ) : isLoading && !initialLoad ? (
-            <>
-              {tableLayout ? (
-                <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                  <PlaceholderTable />
-                </div>
-              ) : (
-                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                  {Array.from({ length: 9 }, (_, i) => (
-                    <PlaceholderCompanyCard key={i} />
-                  ))}
-                </div>
-              )}
-            </>
-          ) : tableLayout && companies?.length != 0 ? (
-            <>
-              {showPersonalized && (
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">All companies</div>
-                </div>
-              )}
-
-              <CompaniesTable
-                companies={companies}
-                pageNumber={page}
-                itemsPerPage={limit}
-                shownItems={companies?.length}
-                totalItems={companies_aggregate}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                filterByTag={filterByTag}
-              />
-            </>
           ) : (
             <>
               {showPersonalized && (
                 <div className="flex justify-between py-8">
                   <div className="text-4xl font-medium">All companies</div>
-                  {!isNewTabSelected && (
+                  {!tableLayout && !isNewTabSelected && (
                     <ElemDropdown
                       IconComponent={IconSortDashboard}
                       items={sortItems}
@@ -632,29 +599,66 @@ const Companies: NextPage<Props> = ({
                   )}
                 </div>
               )}
-              <div
-                data-testid="companies"
-                className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-              >
-                {companies?.map(company => {
-                  return (
-                    <ElemCompanyCard
-                      key={company.id}
-                      company={company as Companies}
-                    />
-                  );
-                })}
-              </div>
+              {isLoading && !initialLoad ? (
+                <>
+                  {tableLayout ? (
+                    <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                      <PlaceholderTable />
+                    </div>
+                  ) : (
+                    <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                      {Array.from({ length: 9 }, (_, i) => (
+                        <PlaceholderCompanyCard key={i} />
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : tableLayout && companies?.length != 0 ? (
+                <>
+                  {showPersonalized && (
+                    <div className="flex justify-between py-8">
+                      <div className="text-4xl font-medium">All companies</div>
+                    </div>
+                  )}
 
-              <Pagination
-                shownItems={companies?.length}
-                totalItems={companies_aggregate}
-                page={page}
-                itemsPerPage={limit}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                onClickToPage={selectedPage => setPage(selectedPage)}
-              />
+                  <CompaniesTable
+                    companies={companies}
+                    pageNumber={page}
+                    itemsPerPage={limit}
+                    shownItems={companies?.length}
+                    totalItems={companies_aggregate}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    filterByTag={filterByTag}
+                  />
+                </>
+              ) : (
+                <>
+                  <div
+                    data-testid="companies"
+                    className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  >
+                    {companies?.map(company => {
+                      return (
+                        <ElemCompanyCard
+                          key={company.id}
+                          company={company as Companies}
+                        />
+                      );
+                    })}
+                  </div>
+
+                  <Pagination
+                    shownItems={companies?.length}
+                    totalItems={companies_aggregate}
+                    page={page}
+                    itemsPerPage={limit}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    onClickToPage={selectedPage => setPage(selectedPage)}
+                  />
+                </>
+              )}
             </>
           )}
         </div>
