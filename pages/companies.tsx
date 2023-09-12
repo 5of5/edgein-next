@@ -30,6 +30,7 @@ import {
   companyChoices,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
+  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
@@ -226,6 +227,10 @@ const Companies: NextPage<Props> = ({
           _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
         },
       });
+    } else if (selectedStatusTag.value === 'Trending') {
+      filters._and?.push({
+        num_of_views: { _is_null: false },
+      });
     } else {
       filters._and?.push({
         status_tags: { _contains: selectedStatusTag.value },
@@ -251,6 +256,30 @@ const Companies: NextPage<Props> = ({
     };
   }
 
+  const getLimit = () => {
+    if (isNewTabSelected) {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return limit;
+  };
+
+  const getOrderBy = () => {
+    if (isNewTabSelected) {
+      return { date_added: Order_By.Desc };
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return { num_of_views: Order_By.Desc };
+    }
+
+    return orderByQuery;
+  };
+
   const {
     data: companiesData,
     error,
@@ -258,9 +287,9 @@ const Companies: NextPage<Props> = ({
   } = useGetCompaniesQuery(
     {
       offset: isNewTabSelected ? null : offset,
-      limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
+      limit: getLimit(),
       where: filters as Companies_Bool_Exp,
-      orderBy: orderByQuery as Companies_Order_By,
+      orderBy: [getOrderBy() as Companies_Order_By],
     },
     { refetchOnWindowFocus: false },
   );
@@ -401,11 +430,12 @@ const Companies: NextPage<Props> = ({
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
                   orderBy={{
-                    updated_at: Order_By.Desc,
+                    num_of_views: Order_By.Desc,
                   }}
                   filters={{
                     _and: [
                       ...defaultFilters,
+                      { num_of_views: { _is_null: false } },
                       {
                         location_json: {
                           _contains: {
