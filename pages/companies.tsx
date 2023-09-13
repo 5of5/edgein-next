@@ -101,9 +101,6 @@ const Companies: NextPage<Props> = ({
     selectedStatusTag?.value || '',
   );
 
-  const isAllAcompaniesDropdownVisible = [
-
-  ]
   const [tableLayout, setTableLayout] = useState(false);
 
   const [sortBy, setSortBy] = useState('mostRelevant');
@@ -621,15 +618,15 @@ const Companies: NextPage<Props> = ({
             </div>
           ) : (
             <>
-              <div className="flex justify-between py-8">
-                <div className="text-4xl font-medium">{pageTitle}</div>
-                {/* {isNewTabSelected && (
+              {!selectedStatusTag && (
+                <div className="flex justify-between py-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
                   <ElemDropdown
                     IconComponent={IconSortDashboard}
                     items={sortItems}
                   />
-                )} */}
-              </div>
+                </div>
+              )}
 
               {isLoading && !initialLoad ? (
                 <>
@@ -647,9 +644,11 @@ const Companies: NextPage<Props> = ({
                 </>
               ) : tableLayout && companies?.length != 0 ? (
                 <>
-                  <div className="flex justify-between py-8">
-                    <div className="text-4xl font-medium">{pageTitle}</div>
-                  </div>
+                  {!selectedStatusTag && (
+                    <div className="flex justify-between py-8">
+                      <div className="text-4xl font-medium">{pageTitle}</div>
+                    </div>
+                  )}
 
                   <CompaniesTable
                     companies={companies}

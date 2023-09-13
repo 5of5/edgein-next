@@ -597,15 +597,15 @@ const Investors: NextPage<Props> = ({
               </div>
             ) : (
               <>
-                <div className="flex justify-between my-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
-                  {/* {isNewTabSelected && (
+                {!selectedStatusTag && (
+                  <div className="flex justify-between my-8">
+                    <div className="text-4xl font-medium">{pageTitle}</div>
                     <ElemDropdown
                       IconComponent={IconSortDashboard}
                       items={sortItems}
                     />
-                  )} */}
-                </div>
+                  </div>
+                )}
                 {isLoading && !initialLoad ? (
                   <>
                     {tableLayout ? (
@@ -622,15 +622,15 @@ const Investors: NextPage<Props> = ({
                   </>
                 ) : tableLayout && vcFirms?.length != 0 ? (
                   <>
-                    <div className="flex justify-between my-8">
-                      <div className="text-4xl font-medium">{pageTitle}</div>
-                      {/* {isNewTabSelected && (
+                    {!selectedStatusTag && (
+                      <div className="flex justify-between my-8">
+                        <div className="text-4xl font-medium">{pageTitle}</div>
                         <ElemDropdown
                           IconComponent={IconSortDashboard}
                           items={sortItems}
                         />
-                      )} */}
-                    </div>
+                      </div>
+                    )}
 
                     <InvestorsTable
                       investors={vcFirms}
