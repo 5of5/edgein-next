@@ -46,6 +46,7 @@ import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemReactions } from '@/components/elem-reactions';
 import useEmptyLibrary from '@/hooks/use-empty-library';
+import { isValidLibraryUrl } from '@/utils/helpers';
 
 type Props = {
   company: Companies;
@@ -503,7 +504,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const company = sortBy(companies?.companies, 'status').reverse()[0];
 
-  if (company.library[0]?.toLowerCase() !== context.params?.library) {
+  if (!isValidLibraryUrl(company.library[0], context.params?.library as string)) {
     return {
       notFound: true,
     };

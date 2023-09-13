@@ -30,6 +30,7 @@ import { ElemSimilarEvents } from '@/components/event/elem-similar-events';
 import {
   getEventBanner,
   getFullAddress,
+  isValidLibraryUrl,
   randomImageOfCity,
 } from '@/utils/helpers';
 import Link from 'next/link';
@@ -439,7 +440,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const event = sortBy(events?.events, 'status').reverse()[0];
 
-  if (event.library[0]?.toLowerCase() !== context.params?.library) {
+  if (!isValidLibraryUrl(event.library[0], context.params?.library as string)) {
     return {
       notFound: true,
     };

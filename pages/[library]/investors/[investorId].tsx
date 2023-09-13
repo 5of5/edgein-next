@@ -33,6 +33,7 @@ import ElemNewsList from '@/components/news/elem-news-list';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import useEmptyLibrary from '@/hooks/use-empty-library';
+import { isValidLibraryUrl } from '@/utils/helpers';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -313,7 +314,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const vcfirm = vc_firms.vc_firms[0];
 
-  if (vcfirm.library[0]?.toLowerCase() !== context.params?.library) {
+  if (!isValidLibraryUrl(vcfirm.library[0], context.params?.library as string)) {
     return {
       notFound: true,
     };

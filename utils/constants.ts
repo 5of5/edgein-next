@@ -2051,3 +2051,5 @@ export const ONBOARDING_MIN_LOCATIONS = 1;
 export const ONBOARDING_MIN_TAGS = 3;
 
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
+
+export const LIBRARY_URL_PARAMS = ["web3", "ai", "tech"];

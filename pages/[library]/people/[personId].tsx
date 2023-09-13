@@ -35,6 +35,7 @@ import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import moment from 'moment-timezone';
 import useEmptyLibrary from '@/hooks/use-empty-library';
+import { isValidLibraryUrl } from '@/utils/helpers';
 
 type Props = {
   person: People;
@@ -306,7 +307,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const person = people.people[0];
 
-  if (person.library[0]?.toLowerCase() !== context.params?.library) {
+  if (!isValidLibraryUrl(person.library[0], context.params?.library as string)) {
     return {
       notFound: true,
     };

@@ -8,6 +8,7 @@ import {
   aiTags,
   eventBannerList,
   EXPLORE_MENU_OPEN_KEY,
+  LIBRARY_URL_PARAMS,
   MY_EDGEIN_MENU_OPEN_KEY,
   NON_SELECTABLE_WEB_3_TAGS,
   web3Tags,
@@ -159,3 +160,18 @@ export const getGeometryPlace = (place: Place) => ({
   type: 'Point',
   coordinates: place.Geometry?.Point,
 });
+
+export const isValidLibraryUrl = (
+  resourceLibrary: string | undefined,
+  urlLibrary: string,
+) => {
+  if (
+    LIBRARY_URL_PARAMS.includes(urlLibrary) &&
+    (!resourceLibrary ||
+      (resourceLibrary && resourceLibrary.toLowerCase() === urlLibrary))
+  ) {
+    return true;
+  }
+
+  return false;
+};
