@@ -2011,6 +2011,8 @@ export const DEFAULT_FILTER_TAGS_OFFSET = 10;
 
 export const NEW_CATEGORY_LIMIT = 33;
 
+export const TRENDING_CATEGORY_LIMIT = 25;
+
 export const segmentChoices: SegmentOption[] = [
   {
     title: 'Executive',

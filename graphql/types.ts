@@ -1950,6 +1950,7 @@ export type Companies = {
   /** An aggregate relationship */
   news_links_aggregate: News_Organizations_Aggregate;
   notes: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   reddit: Maybe<Scalars['String']>;
   search_count: Maybe<Scalars['Int']>;
@@ -2185,6 +2186,7 @@ export type Companies_Avg_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
@@ -2235,6 +2237,7 @@ export type Companies_Bool_Exp = {
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Organizations_Bool_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
+  num_of_views: InputMaybe<Int_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   reddit: InputMaybe<String_Comparison_Exp>;
   search_count: InputMaybe<Int_Comparison_Exp>;
@@ -2588,6 +2591,7 @@ export type Companies_Inc_Input = {
   enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   search_count: InputMaybe<Scalars['Int']>;
   total_employees: InputMaybe<Scalars['numeric']>;
   trajectory: InputMaybe<Scalars['float8']>;
@@ -2634,6 +2638,7 @@ export type Companies_Insert_Input = {
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
   notes: InputMaybe<Scalars['String']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   reddit: InputMaybe<Scalars['String']>;
   search_count: InputMaybe<Scalars['Int']>;
@@ -2693,6 +2698,7 @@ export type Companies_Max_Fields = {
   medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   reddit: Maybe<Scalars['String']>;
   search_count: Maybe<Scalars['Int']>;
@@ -2747,6 +2753,7 @@ export type Companies_Min_Fields = {
   medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   reddit: Maybe<Scalars['String']>;
   search_count: Maybe<Scalars['Int']>;
@@ -2833,6 +2840,7 @@ export type Companies_Order_By = {
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
   notes: InputMaybe<Order_By>;
+  num_of_views: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
   reddit: InputMaybe<Order_By>;
   search_count: InputMaybe<Order_By>;
@@ -2945,6 +2953,8 @@ export enum Companies_Select_Column {
   /** column name */
   Notes = 'notes',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Overview = 'overview',
   /** column name */
   Reddit = 'reddit',
@@ -3026,6 +3036,7 @@ export type Companies_Set_Input = {
   medium: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   reddit: InputMaybe<Scalars['String']>;
   search_count: InputMaybe<Scalars['Int']>;
@@ -3057,6 +3068,7 @@ export type Companies_Stddev_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
@@ -3069,6 +3081,7 @@ export type Companies_Stddev_Pop_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
@@ -3081,6 +3094,7 @@ export type Companies_Stddev_Samp_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
@@ -3093,6 +3107,7 @@ export type Companies_Sum_Fields = {
   enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
+  num_of_views: Maybe<Scalars['Int']>;
   search_count: Maybe<Scalars['Int']>;
   total_employees: Maybe<Scalars['numeric']>;
   trajectory: Maybe<Scalars['float8']>;
@@ -3169,6 +3184,8 @@ export enum Companies_Update_Column {
   /** column name */
   Notes = 'notes',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Overview = 'overview',
   /** column name */
   Reddit = 'reddit',
@@ -3221,6 +3238,7 @@ export type Companies_Var_Pop_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
@@ -3233,6 +3251,7 @@ export type Companies_Var_Samp_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
@@ -3245,6 +3264,7 @@ export type Companies_Variance_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
   trajectory: Maybe<Scalars['Float']>;
@@ -5803,6 +5823,7 @@ export type Events = {
   location_json: Maybe<Scalars['jsonb']>;
   name: Scalars['String'];
   notes: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   /** An object relationship */
   parent_event: Maybe<Events>;
@@ -5934,6 +5955,7 @@ export type Events_Append_Input = {
 export type Events_Avg_Fields = {
   __typename?: 'events_avg_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
   price: Maybe<Scalars['Float']>;
 };
@@ -5961,6 +5983,7 @@ export type Events_Bool_Exp = {
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
+  num_of_views: InputMaybe<Int_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   parent_event: InputMaybe<Events_Bool_Exp>;
   parent_event_id: InputMaybe<Int_Comparison_Exp>;
@@ -6016,6 +6039,7 @@ export type Events_Delete_Key_Input = {
 /** input type for incrementing numeric columns in table "events" */
 export type Events_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
   price: InputMaybe<Scalars['numeric']>;
 };
@@ -6040,6 +6064,7 @@ export type Events_Insert_Input = {
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   parent_event: InputMaybe<Events_Obj_Rel_Insert_Input>;
   parent_event_id: InputMaybe<Scalars['Int']>;
@@ -6069,6 +6094,7 @@ export type Events_Max_Fields = {
   link: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
@@ -6095,6 +6121,7 @@ export type Events_Min_Fields = {
   link: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
@@ -6152,6 +6179,7 @@ export type Events_Order_By = {
   location_json: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
+  num_of_views: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
   parent_event: InputMaybe<Events_Order_By>;
   parent_event_id: InputMaybe<Order_By>;
@@ -6218,6 +6246,8 @@ export enum Events_Select_Column {
   /** column name */
   Notes = 'notes',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Overview = 'overview',
   /** column name */
   ParentEventId = 'parent_event_id',
@@ -6265,6 +6295,7 @@ export type Events_Set_Input = {
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
   price: InputMaybe<Scalars['numeric']>;
@@ -6285,6 +6316,7 @@ export type Events_Set_Input = {
 export type Events_Stddev_Fields = {
   __typename?: 'events_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
   price: Maybe<Scalars['Float']>;
 };
@@ -6293,6 +6325,7 @@ export type Events_Stddev_Fields = {
 export type Events_Stddev_Pop_Fields = {
   __typename?: 'events_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
   price: Maybe<Scalars['Float']>;
 };
@@ -6301,6 +6334,7 @@ export type Events_Stddev_Pop_Fields = {
 export type Events_Stddev_Samp_Fields = {
   __typename?: 'events_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
   price: Maybe<Scalars['Float']>;
 };
@@ -6309,6 +6343,7 @@ export type Events_Stddev_Samp_Fields = {
 export type Events_Sum_Fields = {
   __typename?: 'events_sum_fields';
   id: Maybe<Scalars['Int']>;
+  num_of_views: Maybe<Scalars['Int']>;
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
 };
@@ -6348,6 +6383,8 @@ export enum Events_Update_Column {
   /** column name */
   Notes = 'notes',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Overview = 'overview',
   /** column name */
   ParentEventId = 'parent_event_id',
@@ -6381,6 +6418,7 @@ export enum Events_Update_Column {
 export type Events_Var_Pop_Fields = {
   __typename?: 'events_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
   price: Maybe<Scalars['Float']>;
 };
@@ -6389,6 +6427,7 @@ export type Events_Var_Pop_Fields = {
 export type Events_Var_Samp_Fields = {
   __typename?: 'events_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
   price: Maybe<Scalars['Float']>;
 };
@@ -6397,6 +6436,7 @@ export type Events_Var_Samp_Fields = {
 export type Events_Variance_Fields = {
   __typename?: 'events_variance_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
   price: Maybe<Scalars['Float']>;
 };
@@ -14180,6 +14220,7 @@ export type News = {
   library: Maybe<Scalars['jsonb']>;
   link: Maybe<Scalars['String']>;
   metadata: Maybe<Scalars['jsonb']>;
+  num_of_views: Maybe<Scalars['Int']>;
   /** An array relationship */
   organizations: Array<News_Organizations>;
   /** An aggregate relationship */
@@ -14293,6 +14334,7 @@ export type News_Append_Input = {
 export type News_Avg_Fields = {
   __typename?: 'news_avg_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "news". All fields are combined with a logical 'AND'. */
@@ -14307,6 +14349,7 @@ export type News_Bool_Exp = {
   library: InputMaybe<Jsonb_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
   metadata: InputMaybe<Jsonb_Comparison_Exp>;
+  num_of_views: InputMaybe<Int_Comparison_Exp>;
   organizations: InputMaybe<News_Organizations_Bool_Exp>;
   people: InputMaybe<News_Person_Bool_Exp>;
   source: InputMaybe<Jsonb_Comparison_Exp>;
@@ -14345,6 +14388,7 @@ export type News_Delete_Key_Input = {
 /** input type for incrementing numeric columns in table "news" */
 export type News_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "news" */
@@ -14356,6 +14400,7 @@ export type News_Insert_Input = {
   library: InputMaybe<Scalars['jsonb']>;
   link: InputMaybe<Scalars['String']>;
   metadata: InputMaybe<Scalars['jsonb']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   organizations: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
   people: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
   source: InputMaybe<Scalars['jsonb']>;
@@ -14372,6 +14417,7 @@ export type News_Max_Fields = {
   id: Maybe<Scalars['Int']>;
   kind: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   status: Maybe<Scalars['String']>;
   text: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -14385,6 +14431,7 @@ export type News_Min_Fields = {
   id: Maybe<Scalars['Int']>;
   kind: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
+  num_of_views: Maybe<Scalars['Int']>;
   status: Maybe<Scalars['String']>;
   text: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -14422,6 +14469,7 @@ export type News_Order_By = {
   library: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
   metadata: InputMaybe<Order_By>;
+  num_of_views: InputMaybe<Order_By>;
   organizations_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
   people_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
   source: InputMaybe<Order_By>;
@@ -15636,6 +15684,8 @@ export enum News_Select_Column {
   /** column name */
   Metadata = 'metadata',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Source = 'source',
   /** column name */
   Status = 'status',
@@ -15654,6 +15704,7 @@ export type News_Set_Input = {
   library: InputMaybe<Scalars['jsonb']>;
   link: InputMaybe<Scalars['String']>;
   metadata: InputMaybe<Scalars['jsonb']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   source: InputMaybe<Scalars['jsonb']>;
   status: InputMaybe<Scalars['String']>;
   text: InputMaybe<Scalars['String']>;
@@ -15664,24 +15715,28 @@ export type News_Set_Input = {
 export type News_Stddev_Fields = {
   __typename?: 'news_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type News_Stddev_Pop_Fields = {
   __typename?: 'news_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type News_Stddev_Samp_Fields = {
   __typename?: 'news_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type News_Sum_Fields = {
   __typename?: 'news_sum_fields';
   id: Maybe<Scalars['Int']>;
+  num_of_views: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "news" */
@@ -15701,6 +15756,8 @@ export enum News_Update_Column {
   /** column name */
   Metadata = 'metadata',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Source = 'source',
   /** column name */
   Status = 'status',
@@ -15714,18 +15771,21 @@ export enum News_Update_Column {
 export type News_Var_Pop_Fields = {
   __typename?: 'news_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type News_Var_Samp_Fields = {
   __typename?: 'news_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type News_Variance_Fields = {
   __typename?: 'news_variance_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "notes" */
@@ -24155,6 +24215,7 @@ export type Vc_Firms = {
   news_links_aggregate: News_Organizations_Aggregate;
   num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   sentiment: Maybe<Scalars['jsonb']>;
   slug: Scalars['String'];
@@ -24377,6 +24438,7 @@ export type Vc_Firms_Avg_Fields = {
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   team_size: Maybe<Scalars['Float']>;
 };
 
@@ -24409,6 +24471,7 @@ export type Vc_Firms_Bool_Exp = {
   news_links: InputMaybe<News_Organizations_Bool_Exp>;
   num_of_exits: InputMaybe<Int_Comparison_Exp>;
   num_of_investments: InputMaybe<Int_Comparison_Exp>;
+  num_of_views: InputMaybe<Int_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   sentiment: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
@@ -24754,6 +24817,7 @@ export type Vc_Firms_Inc_Input = {
   investment_amount_total: InputMaybe<Scalars['bigint']>;
   num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   team_size: InputMaybe<Scalars['Int']>;
 };
 
@@ -24782,6 +24846,7 @@ export type Vc_Firms_Insert_Input = {
   news_links: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
   num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
@@ -24814,6 +24879,7 @@ export type Vc_Firms_Max_Fields = {
   name: Maybe<Scalars['String']>;
   num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
@@ -24842,6 +24908,7 @@ export type Vc_Firms_Min_Fields = {
   name: Maybe<Scalars['String']>;
   num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
+  num_of_views: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
@@ -24902,6 +24969,7 @@ export type Vc_Firms_Order_By = {
   news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
   num_of_exits: InputMaybe<Order_By>;
   num_of_investments: InputMaybe<Order_By>;
+  num_of_views: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
   sentiment: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
@@ -24971,6 +25039,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   NumOfInvestments = 'num_of_investments',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Overview = 'overview',
   /** column name */
   Sentiment = 'sentiment',
@@ -25016,6 +25086,7 @@ export type Vc_Firms_Set_Input = {
   name: InputMaybe<Scalars['String']>;
   num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
+  num_of_views: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
@@ -25038,6 +25109,7 @@ export type Vc_Firms_Stddev_Fields = {
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   team_size: Maybe<Scalars['Float']>;
 };
 
@@ -25049,6 +25121,7 @@ export type Vc_Firms_Stddev_Pop_Fields = {
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   team_size: Maybe<Scalars['Float']>;
 };
 
@@ -25060,6 +25133,7 @@ export type Vc_Firms_Stddev_Samp_Fields = {
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   team_size: Maybe<Scalars['Float']>;
 };
 
@@ -25071,6 +25145,7 @@ export type Vc_Firms_Sum_Fields = {
   investment_amount_total: Maybe<Scalars['bigint']>;
   num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
+  num_of_views: Maybe<Scalars['Int']>;
   team_size: Maybe<Scalars['Int']>;
 };
 
@@ -25113,6 +25188,8 @@ export enum Vc_Firms_Update_Column {
   /** column name */
   NumOfInvestments = 'num_of_investments',
   /** column name */
+  NumOfViews = 'num_of_views',
+  /** column name */
   Overview = 'overview',
   /** column name */
   Sentiment = 'sentiment',
@@ -25146,6 +25223,7 @@ export type Vc_Firms_Var_Pop_Fields = {
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   team_size: Maybe<Scalars['Float']>;
 };
 
@@ -25157,6 +25235,7 @@ export type Vc_Firms_Var_Samp_Fields = {
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   team_size: Maybe<Scalars['Float']>;
 };
 
@@ -25168,6 +25247,7 @@ export type Vc_Firms_Variance_Fields = {
   investment_amount_total: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  num_of_views: Maybe<Scalars['Float']>;
   team_size: Maybe<Scalars['Float']>;
 };
 
