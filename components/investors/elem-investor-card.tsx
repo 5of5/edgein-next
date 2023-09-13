@@ -64,7 +64,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
         <div>
           <Link href={`/investors/${slug}`}>
             <a>
-              <div className="flex shrink-0 w-full">
+              <div className="flex shrink-0 w-full items-center gap-4">
                 <ElemPhoto
                   photo={logo}
                   wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
@@ -72,13 +72,12 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                   imgAlt={name}
                   placeholderClass="text-slate-300"
                 />
-              </div>
-
-              <div className="flex items-center mt-4">
                 <ElemTooltip content={name} mode="light">
                   <h3 className="text-xl font-medium truncate">{name}</h3>
                 </ElemTooltip>
               </div>
+
+              <div className="flex items-center mt-4"></div>
 
               {overview && (
                 <div className="mt-2 text-sm line-clamp-3 text-gray-500">
