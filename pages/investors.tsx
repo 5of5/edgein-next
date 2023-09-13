@@ -599,12 +599,12 @@ const Investors: NextPage<Props> = ({
               <>
                 <div className="flex justify-between my-8">
                   <div className="text-4xl font-medium">{pageTitle}</div>
-                  {!isNewTabSelected && (
+                  {/* {isNewTabSelected && (
                     <ElemDropdown
                       IconComponent={IconSortDashboard}
                       items={sortItems}
                     />
-                  )}
+                  )} */}
                 </div>
                 {isLoading && !initialLoad ? (
                   <>
@@ -624,12 +624,12 @@ const Investors: NextPage<Props> = ({
                   <>
                     <div className="flex justify-between my-8">
                       <div className="text-4xl font-medium">{pageTitle}</div>
-                      {!isNewTabSelected && (
+                      {/* {isNewTabSelected && (
                         <ElemDropdown
                           IconComponent={IconSortDashboard}
                           items={sortItems}
                         />
-                      )}
+                      )} */}
                     </div>
 
                     <InvestorsTable

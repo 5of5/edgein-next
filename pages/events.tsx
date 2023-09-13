@@ -243,19 +243,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const defaultOrderBy = sortChoices.find(
     sortItem => sortItem.value === orderByParam,
   )?.id;
-
-  const getOrderBy = () => {
-    if (selectedTab?.value === 'past') {
-      return { start_date: Order_By.Desc };
-    }
-
-    if (selectedTab?.value === 'trending') {
-      return { num_of_views: Order_By.Desc };
-    }
-
-    return orderByQuery;
-  };
-
+  
   const {
     data: eventsData,
     error,
@@ -267,7 +255,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
 
       where: filters as Events_Bool_Exp,
-      orderBy: [getOrderBy() as Events_Order_By],
+      orderBy: orderByQuery,
     },
     { refetchOnWindowFocus: false },
   );

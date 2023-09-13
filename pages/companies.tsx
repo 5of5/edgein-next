@@ -100,6 +100,10 @@ const Companies: NextPage<Props> = ({
   const isSortDropdownVisible = ['Dead', 'Raising'].includes(
     selectedStatusTag?.value || '',
   );
+
+  const isAllAcompaniesDropdownVisible = [
+
+  ]
   const [tableLayout, setTableLayout] = useState(false);
 
   const [sortBy, setSortBy] = useState('mostRelevant');
@@ -619,12 +623,12 @@ const Companies: NextPage<Props> = ({
             <>
               <div className="flex justify-between py-8">
                 <div className="text-4xl font-medium">{pageTitle}</div>
-                {!isNewTabSelected && (
+                {/* {isNewTabSelected && (
                   <ElemDropdown
                     IconComponent={IconSortDashboard}
                     items={sortItems}
                   />
-                )}
+                )} */}
               </div>
 
               {isLoading && !initialLoad ? (
