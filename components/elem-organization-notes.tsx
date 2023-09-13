@@ -1,17 +1,18 @@
 import React, { useState, FC } from 'react';
-import { Notes_Bool_Exp, useGetNotesQuery } from '@/graphql/types';
+import {
+  Notes_Bool_Exp,
+  useGetNotesQuery,
+  useGetUserProfileQuery,
+} from '@/graphql/types';
 import { PlaceholderNote } from './placeholders';
 import { ElemButton } from './elem-button';
+import { ElemRequiredProfileDialog } from './elem-required-profile-dialog';
 import ElemNoteForm from './elem-note-form';
 import { ElemPhoto } from './elem-photo';
+import { usePopup } from '@/context/popup-context';
 import { useUser } from '@/context/user-context';
-import {
-  IconPlus,
-  IconLockClosed,
-  IconInformationCircle,
-} from '@/components/icons';
+import { IconPlus } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
-import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
 import { useRouter } from 'next/router';
 
@@ -30,11 +31,24 @@ const ElemOrganizationNotes: FC<Props> = ({
 
   const { user, myGroups } = useUser();
 
+  const { setShowPopup } = usePopup();
+
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
+
+  const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
+    useState<boolean>(false);
+
+  const { data: users } = useGetUserProfileQuery({
+    id: user?.id ?? 0,
+  });
+
+  const userHasProfile = users?.users_by_pk?.person ? true : false;
 
   const onOpenNoteForm = () => {
     if (!user) {
       router.push('/sign-in');
+    } else if (!userHasProfile) {
+      onOpenLinkPersonDialog();
     } else {
       setIsOpenNoteForm(true);
     }
@@ -42,6 +56,22 @@ const ElemOrganizationNotes: FC<Props> = ({
 
   const onCloseNoteForm = () => {
     setIsOpenNoteForm(false);
+  };
+
+  const onOpenLinkPersonDialog = () => {
+    setIsOpenLinkPersonDialog(true);
+  };
+
+  const onCloseLinkPersonDialog = () => {
+    setIsOpenLinkPersonDialog(false);
+  };
+
+  const onClickSearchName = () => {
+    onCloseLinkPersonDialog();
+
+    if (setShowPopup) {
+      setShowPopup('search');
+    }
   };
 
   const {
@@ -125,13 +155,21 @@ const ElemOrganizationNotes: FC<Props> = ({
                   key={item.id}
                   data={item}
                   refetch={refetch}
-                  layout={`${item.user_group_id ? 'groupAndAuthor' : 'author'}`}
+                  layout="author"
                 />
               ))}
             </div>
           )}
         </div>
       )}
+
+      <ElemRequiredProfileDialog
+        isOpen={isOpenLinkPersonDialog}
+        title="You have not linked your account to a profile on EdgeIn"
+        content="Search your name and claim profile to be able to comment."
+        onClose={onCloseLinkPersonDialog}
+        onClickSearch={onClickSearchName}
+      />
 
       <ElemNoteForm
         isOpen={isOpenNoteForm}

@@ -95,16 +95,7 @@ const Notes: FC<Props> = () => {
         ) : (
           <div className="flex flex-col gap-y-4 max-w-2xl">
             {sortedNotes.map(item => (
-              <ElemNoteCard
-                key={item.id}
-                data={item}
-                refetch={refetchNotes}
-                layout={`${
-                  item.user_group_id
-                    ? 'groupAndAuthor'
-                    : 'organizationAndAuthor'
-                }`}
-              />
+              <ElemNoteCard key={item.id} data={item} refetch={refetchNotes} />
             ))}
           </div>
         )}
