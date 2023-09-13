@@ -104,15 +104,15 @@ query GetVCFirm($slug: String!) {
         total_employees
         investor_amount
         year_founded
-        investment_rounds_aggregate {
-          aggregate {
-            count
-          }
-        }
-        investment_rounds(order_by: { round_date: desc }, limit: 1) {
-          round
-          round_date
-        }
+        # investment_rounds_aggregate {
+        #   aggregate {
+        #     count
+        #   }
+        # }
+        # investment_rounds(order_by: { round_date: desc }, limit: 1) {
+        #   round
+        #   round_date
+        # }
         follows {
           id
           list_id

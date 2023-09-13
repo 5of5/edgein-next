@@ -119,15 +119,15 @@ query GetCompany($slug: String!) {
         total_employees
         investor_amount
         year_founded
-        investment_rounds_aggregate {
-          aggregate {
-            count
-          }
-        }
-        investment_rounds(order_by: { round_date: desc }, limit: 1) {
-          round
-          round_date
-        }
+        # investment_rounds_aggregate {
+        #   aggregate {
+        #     count
+        #   }
+        # }
+        # investment_rounds(order_by: { round_date: desc }, limit: 1) {
+        #   round
+        #   round_date
+        # }
         status_tags
         follows {
           id
@@ -230,11 +230,11 @@ query GetCompanies(
     }
     year_founded
     total_employees
-    investment_rounds_aggregate {
-      aggregate {
-        count
-      }
-    }
+    # investment_rounds_aggregate {
+    #   aggregate {
+    #     count
+    #   }
+    # }
     teamMembers {
       id
       person {
@@ -285,11 +285,11 @@ query GetCompaniesRecent(
     total_employees
     investor_amount
     year_founded
-    investment_rounds_aggregate {
-      aggregate {
-        count
-      }
-    }
+    # investment_rounds_aggregate {
+    #   aggregate {
+    #     count
+    #   }
+    # }
     date_added
     sentiment
     status_tags
@@ -398,15 +398,15 @@ query GetPersonalizedCompanies(
     total_employees
     investor_amount
     year_founded
-    investment_rounds_aggregate {
-      aggregate {
-        count
-      }
-    }
-    investment_rounds(order_by: { round_date: desc }, limit: 1) {
-      round
-      round_date
-    }
+    # investment_rounds_aggregate {
+    #   aggregate {
+    #     count
+    #   }
+    # }
+    # investment_rounds(order_by: { round_date: desc }, limit: 1) {
+    #   round
+    #   round_date
+    # }
     overview
     follows {
       id
