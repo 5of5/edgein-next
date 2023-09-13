@@ -1,22 +1,19 @@
 import { People, Investors, Team_Members } from '@/graphql/types';
-import { FC, useEffect, useState, Fragment } from 'react';
+import { FC, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
-import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import Link from 'next/link';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
-import { flatten, union, orderBy, first } from 'lodash';
+import { flatten, union, orderBy } from 'lodash';
 import {
-  IconGlobe,
   IconLinkedIn,
   IconEmail,
   IconTwitter,
   IconGithub,
-  IconDiscord,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -32,6 +29,10 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
   const [showEmails, setShowEmails] = useState(false);
 
   const { user } = useUser();
+
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
 
   const onCloseUpgradeDialog = () => {
     setIsOpenUpgradeDialog(false);
@@ -65,6 +66,10 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
     item => item,
   );
   const jobsByDateDesc = orderBy(mergedJobs, [item => item.end_date], ['desc']);
+
+  const vcFirmTags = flatten(investors.map(item => item?.vc_firm?.tags));
+  const companyTags = flatten(team_members.map(item => item?.company?.tags));
+  const personTags = union(vcFirmTags, companyTags).filter(item => item);
 
   const onClickShowEmails = () => {
     if (!user) {
@@ -164,40 +169,14 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
         </div>
       </div>
 
-      <div className="mt-2">
-        {/* <div className="flex items-center">
-              <IconEmail className="h-6 w-6 shrink-0 mr-2" />
-              <div className="break-all">
-                {showInfo['email'] ? (
-                  email
-                ) : (
-                  <>
-                    &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-                  </>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center text-primary-500">
-              {showInfo['email'] ? (
-                <>
-                  <IconEyeSlash className="h-5 w-5 shrink-0 mr-1" /> hide
-                </>
-              ) : (
-                <>
-                  <IconEye className="h-5 w-5 shrink-0 mr-1" /> show
-                </>
-              )}
-            </div> */}
-
-        {/* {tags && (
-          <ElemTags
-            className="mt-4"
-            limit={CARD_DEFAULT_TAGS_LIMIT}
-            resourceType={'people'}
-            tags={tags}
-          />
-        )} */}
-      </div>
+      {personTags.length > 0 && (
+        <ElemTags
+          className="mt-2"
+          limit={CARD_DEFAULT_TAGS_LIMIT}
+          resourceType={'people'}
+          tags={personTags}
+        />
+      )}
 
       <div className="flex items-center justify-between mt-2 gap-x-5">
         <div className="flex items-center space-x-0.5">
@@ -227,16 +206,26 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             </ElemTooltip>
           ) : null}
 
-          {personEmails.length > 0 ? (
+          {user?.entitlements?.viewEmails && personEmails.length > 0 ? (
             <ElemTooltip
               size="md"
-              content={
-                !user?.entitlements?.viewEmails
-                  ? 'View Emails'
-                  : 'Premium feature'
-              }>
+              content={`${
+                personEmails.length === 1 ? 'View Email' : 'View Emails'
+              }`}
+            >
               <div>
                 <button className="block" onClick={onClickShowEmails}>
+                  <IconEmail
+                    title="Email"
+                    className="h-6 w-6 shrink-0 text-gray-400"
+                  />
+                </button>
+              </div>
+            </ElemTooltip>
+          ) : personEmails.length > 0 ? (
+            <ElemTooltip size="md" content="Premium feature">
+              <div>
+                <button onClick={onOpenUpgradeDialog} className="block">
                   <IconEmail
                     title="Email"
                     className="h-6 w-6 shrink-0 text-gray-400"

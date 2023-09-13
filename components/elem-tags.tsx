@@ -3,7 +3,7 @@ import { MAX_TAGS_LIMIT } from '@/utils/constants';
 
 type Props = {
   className?: string;
-  resourceType: 'companies' | 'investors' | 'events' | 'news';
+  resourceType: 'companies' | 'investors' | 'events' | 'news' | 'people';
   tags?: (string | null)[];
   filter?: string;
   limit?: number;
