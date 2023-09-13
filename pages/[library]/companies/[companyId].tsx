@@ -503,6 +503,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const company = sortBy(companies?.companies, 'status').reverse()[0];
 
+  if (company.library[0]?.toLowerCase() !== context.params?.library) {
+    return {
+      notFound: true,
+    };
+  }
+
   const sortRounds =
     company.investment_rounds
       ?.slice()

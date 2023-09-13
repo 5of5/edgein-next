@@ -439,6 +439,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const event = sortBy(events?.events, 'status').reverse()[0];
 
+  if (event.library[0]?.toLowerCase() !== context.params?.library) {
+    return {
+      notFound: true,
+    };
+  }
+
   //Meta
   const metaWebsiteUrl = event.link ? event.link : '';
 

@@ -313,6 +313,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const vcfirm = vc_firms.vc_firms[0];
 
+  if (vcfirm.library[0]?.toLowerCase() !== context.params?.library) {
+    return {
+      notFound: true,
+    };
+  }
+
   const getInvestments = vcfirm.investments.map(round => {
     if (typeof round.investment_round === 'object' && round.investment_round) {
       return round.investment_round;

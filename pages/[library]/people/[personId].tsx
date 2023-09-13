@@ -306,6 +306,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const person = people.people[0];
 
+  if (person.library[0]?.toLowerCase() !== context.params?.library) {
+    return {
+      notFound: true,
+    };
+  }
+
   const getInvestments = person.investments
     .filter(
       item =>
