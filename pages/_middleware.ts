@@ -2,11 +2,12 @@ import CookieService, { TOKEN_NAME } from '@/utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
 import { verify } from '@/utils/googlebot-verify';
 
-const USAGE_LIMIT = 10;
+const USAGE_LIMIT = 2;
 
 // This is used to generate a sitemap for the site
 export const PUBLIC_PAGES = [
   `/`,
+  `/login/`,
   `/sign-in/`,
   `/contact/`,
   `/privacy/`,
@@ -135,7 +136,7 @@ export async function middleware(req: NextRequest) {
       if (
         !usage ||
         usage.pages < USAGE_LIMIT ||
-        (url.pathname.startsWith('/api/') && usage.pages === USAGE_LIMIT)
+        (url.pathname.startsWith('/api/') && usage.pages >= USAGE_LIMIT)
       ) {
         const newUsageToken = await CookieService.createUsageToken({
           pages:
@@ -144,7 +145,7 @@ export async function middleware(req: NextRequest) {
         return CookieService.setUsageCookie(NextResponse.next(), newUsageToken);
       } else {
         return NextResponse.redirect(
-          new URL(`/sign-in/?usage=true&${redirectPath}`, req.url),
+          new URL(`/login/?usage=true&${redirectPath}`, req.url),
         );
       }
     } else {

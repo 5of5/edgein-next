@@ -7,7 +7,6 @@ import { Dialog, Transition } from '@headlessui/react';
 
 type Props = {
   show: boolean;
-  onLogin: () => void;
   onClose: () => void;
 };
 
@@ -16,9 +15,19 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {}, [props.show]);
 
+  const onRedirectToSignIn = () => {
+    router.push(
+      `/sign-in/${
+        router.query.redirect
+          ? `?redirect=${encodeURIComponent(router.query.redirect as string)}`
+          : ''
+      }`,
+    );
+  };
+
   const onSignUp = () => {
     props.onClose();
-    router.push('/sign-in');
+    onRedirectToSignIn();
   };
 
   const onClose = () => {
@@ -26,7 +35,8 @@ const UsageModal: React.FC<Props> = (props: Props) => {
   };
 
   const onLogin = () => {
-    props.onLogin();
+    props.onClose();
+    onRedirectToSignIn();
   };
 
   const features = [

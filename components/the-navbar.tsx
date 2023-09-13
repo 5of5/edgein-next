@@ -39,7 +39,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
-    if (!showPopup && router.asPath.includes('/sign-in/')) {
+    if (!showPopup && router.asPath.includes('/login/')) {
       setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
 
@@ -240,11 +240,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             )}
           </div>
 
-          <UsageModal
-            onLogin={redirectToSignIn}
-            show={showPopup === 'usage'}
-            onClose={onModalClose}
-          />
+          <UsageModal show={showPopup === 'usage'} onClose={onModalClose} />
 
           <SearchModal
             show={showPopup === 'search'}
