@@ -141,6 +141,9 @@ query GetCompany($slug: String!) {
         tags
         sentiment
         overview
+        year_founded
+        investment_amount_total
+        num_of_investments
         logo
         follows {
           id

@@ -17,6 +17,7 @@ import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { useRouter } from 'next/router';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
+import { convertToInternationalCurrencySystem } from '@/utils';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -38,7 +39,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
     slug,
     logo,
     name,
-    num_of_investments,
     tags,
     overview,
     follows,
@@ -46,6 +46,9 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
     linkedin,
     twitter,
     location_json,
+    year_founded,
+    investment_amount_total,
+    num_of_investments,
   } = vcFirm;
 
   const isEmptyLocationJson = values(location_json).every(isEmpty);
@@ -77,7 +80,30 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 </ElemTooltip>
               </div>
 
-              <div className="flex items-center mt-4"></div>
+              <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
+                <div className="flex flex-col">
+                  <span className="text-xs">Founded</span>
+                  <span className="text-sm font-medium">
+                    {year_founded ?? '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Investments</span>
+                  <span className="text-sm font-medium">
+                    {num_of_investments ?? '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Funding</span>
+                  <span className="text-sm font-medium">
+                    {investment_amount_total
+                      ? convertToInternationalCurrencySystem(
+                          Number(investment_amount_total),
+                        )
+                      : '-'}
+                  </span>
+                </div>
+              </div>
 
               {overview && (
                 <div className="mt-2 text-sm line-clamp-3 text-gray-500">
