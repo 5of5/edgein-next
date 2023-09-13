@@ -1907,8 +1907,7 @@ export type Companies = {
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamp']>;
-  /** A computed field, executes function "companies_datapoints" */
-  datapoints_count: Maybe<Scalars['Int']>;
+  datapoints_count: Scalars['Int'];
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
@@ -2183,6 +2182,7 @@ export type Companies_Append_Input = {
 export type Companies_Avg_Fields = {
   __typename?: 'companies_avg_fields';
   coin_id: Maybe<Scalars['Float']>;
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -2588,6 +2588,7 @@ export type Companies_Edit_Access_Variance_Order_By = {
 /** input type for incrementing numeric columns in table "companies" */
 export type Companies_Inc_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
+  datapoints_count: InputMaybe<Scalars['Int']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
@@ -2609,6 +2610,7 @@ export type Companies_Insert_Input = {
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
+  datapoints_count: InputMaybe<Scalars['Int']>;
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
   domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
@@ -2677,6 +2679,7 @@ export type Companies_Max_Fields = {
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
@@ -2732,6 +2735,7 @@ export type Companies_Min_Fields = {
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
@@ -2903,6 +2907,8 @@ export enum Companies_Select_Column {
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
   /** column name */
+  DatapointsCount = 'datapoints_count',
+  /** column name */
   DateAdded = 'date_added',
   /** column name */
   Discord = 'discord',
@@ -3011,6 +3017,7 @@ export type Companies_Set_Input = {
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
+  datapoints_count: InputMaybe<Scalars['Int']>;
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
   domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
@@ -3065,6 +3072,7 @@ export type Companies_Set_Input = {
 export type Companies_Stddev_Fields = {
   __typename?: 'companies_stddev_fields';
   coin_id: Maybe<Scalars['Float']>;
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3078,6 +3086,7 @@ export type Companies_Stddev_Fields = {
 export type Companies_Stddev_Pop_Fields = {
   __typename?: 'companies_stddev_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3091,6 +3100,7 @@ export type Companies_Stddev_Pop_Fields = {
 export type Companies_Stddev_Samp_Fields = {
   __typename?: 'companies_stddev_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3104,6 +3114,7 @@ export type Companies_Stddev_Samp_Fields = {
 export type Companies_Sum_Fields = {
   __typename?: 'companies_sum_fields';
   coin_id: Maybe<Scalars['Int']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
@@ -3133,6 +3144,8 @@ export enum Companies_Update_Column {
   CreatedAt = 'created_at',
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
+  /** column name */
+  DatapointsCount = 'datapoints_count',
   /** column name */
   DateAdded = 'date_added',
   /** column name */
@@ -3235,6 +3248,7 @@ export enum Companies_Update_Column {
 export type Companies_Var_Pop_Fields = {
   __typename?: 'companies_var_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3248,6 +3262,7 @@ export type Companies_Var_Pop_Fields = {
 export type Companies_Var_Samp_Fields = {
   __typename?: 'companies_var_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3261,6 +3276,7 @@ export type Companies_Var_Samp_Fields = {
 export type Companies_Variance_Fields = {
   __typename?: 'companies_variance_fields';
   coin_id: Maybe<Scalars['Float']>;
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -24177,8 +24193,7 @@ export type Vc_Firms = {
   __typename?: 'vc_firms';
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
-  /** A computed field, executes function "vc_firms_datapoints" */
-  datapoints_count: Maybe<Scalars['Int']>;
+  datapoints_count: Scalars['Int'];
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
   enrichment_priority: Scalars['Int'];
@@ -24433,6 +24448,7 @@ export type Vc_Firms_Append_Input = {
 /** aggregate avg on columns */
 export type Vc_Firms_Avg_Fields = {
   __typename?: 'vc_firms_avg_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
@@ -24812,6 +24828,7 @@ export type Vc_Firms_Edit_Access_Variance_Order_By = {
 
 /** input type for incrementing numeric columns in table "vc_firms" */
 export type Vc_Firms_Inc_Input = {
+  datapoints_count: InputMaybe<Scalars['Int']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investment_amount_total: InputMaybe<Scalars['bigint']>;
@@ -24825,6 +24842,7 @@ export type Vc_Firms_Inc_Input = {
 export type Vc_Firms_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamptz']>;
+  datapoints_count: InputMaybe<Scalars['Int']>;
   domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_domain: InputMaybe<Scalars['String']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
@@ -24867,6 +24885,7 @@ export type Vc_Firms_Max_Fields = {
   __typename?: 'vc_firms_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
   enrichment_priority: Maybe<Scalars['Int']>;
@@ -24896,6 +24915,7 @@ export type Vc_Firms_Min_Fields = {
   __typename?: 'vc_firms_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   domain_enriched_at: Maybe<Scalars['timestamptz']>;
   email_domain: Maybe<Scalars['String']>;
   enrichment_priority: Maybe<Scalars['Int']>;
@@ -25007,6 +25027,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
   /** column name */
+  DatapointsCount = 'datapoints_count',
+  /** column name */
   DomainEnrichedAt = 'domain_enriched_at',
   /** column name */
   EmailDomain = 'email_domain',
@@ -25070,6 +25092,7 @@ export enum Vc_Firms_Select_Column {
 export type Vc_Firms_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamptz']>;
+  datapoints_count: InputMaybe<Scalars['Int']>;
   domain_enriched_at: InputMaybe<Scalars['timestamptz']>;
   email_domain: InputMaybe<Scalars['String']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
@@ -25104,6 +25127,7 @@ export type Vc_Firms_Set_Input = {
 /** aggregate stddev on columns */
 export type Vc_Firms_Stddev_Fields = {
   __typename?: 'vc_firms_stddev_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
@@ -25116,6 +25140,7 @@ export type Vc_Firms_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Vc_Firms_Stddev_Pop_Fields = {
   __typename?: 'vc_firms_stddev_pop_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
@@ -25128,6 +25153,7 @@ export type Vc_Firms_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Vc_Firms_Stddev_Samp_Fields = {
   __typename?: 'vc_firms_stddev_samp_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
@@ -25140,6 +25166,7 @@ export type Vc_Firms_Stddev_Samp_Fields = {
 /** aggregate sum on columns */
 export type Vc_Firms_Sum_Fields = {
   __typename?: 'vc_firms_sum_fields';
+  datapoints_count: Maybe<Scalars['Int']>;
   enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
@@ -25155,6 +25182,8 @@ export enum Vc_Firms_Update_Column {
   CreatedAt = 'created_at',
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
+  /** column name */
+  DatapointsCount = 'datapoints_count',
   /** column name */
   DomainEnrichedAt = 'domain_enriched_at',
   /** column name */
@@ -25218,6 +25247,7 @@ export enum Vc_Firms_Update_Column {
 /** aggregate var_pop on columns */
 export type Vc_Firms_Var_Pop_Fields = {
   __typename?: 'vc_firms_var_pop_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
@@ -25230,6 +25260,7 @@ export type Vc_Firms_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Vc_Firms_Var_Samp_Fields = {
   __typename?: 'vc_firms_var_samp_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
@@ -25242,6 +25273,7 @@ export type Vc_Firms_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Vc_Firms_Variance_Fields = {
   __typename?: 'vc_firms_variance_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
