@@ -15591,12 +15591,6 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_People_ManyArgs = {
-  updates: Array<People_Updates>;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdate_Reset_PasswordsArgs = {
   _inc: InputMaybe<Reset_Passwords_Inc_Input>;
   _set: InputMaybe<Reset_Passwords_Set_Input>;
@@ -18972,6 +18966,7 @@ export type People = {
   country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamptz']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: Maybe<Scalars['jsonb']>;
   enrichment_priority: Scalars['Int'];
@@ -19174,6 +19169,7 @@ export type People_Append_Input = {
 /** aggregate avg on columns */
 export type People_Avg_Fields = {
   __typename?: 'people_avg_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
@@ -19188,29 +19184,25 @@ export type People_Bool_Exp = {
   country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  datapoints_count: InputMaybe<Int_Comparison_Exp>;
   email: InputMaybe<Jsonb_Comparison_Exp>;
   enrichment_priority: InputMaybe<Int_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook_url: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_People_Bool_Exp>;
-  follows_aggregate: InputMaybe<Follows_People_Aggregate_Bool_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
-  investments_aggregate: InputMaybe<Investments_Aggregate_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
-  investors_aggregate: InputMaybe<Investors_Aggregate_Bool_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Person_Bool_Exp>;
-  news_links_aggregate: InputMaybe<News_Person_Aggregate_Bool_Exp>;
   personal_email: InputMaybe<String_Comparison_Exp>;
   picture: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   team_members: InputMaybe<Team_Members_Bool_Exp>;
-  team_members_aggregate: InputMaybe<Team_Members_Aggregate_Bool_Exp>;
   twitter_url: InputMaybe<String_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -19221,11 +19213,11 @@ export type People_Bool_Exp = {
 
 /** unique or primary key constraints on table "people" */
 export enum People_Constraint {
-  /** unique or primary key constraint on columns "external_id" */
+  /** unique or primary key constraint */
   PeopleExternalIdKey = 'people_external_id_key',
-  /** unique or primary key constraint on columns "id" */
+  /** unique or primary key constraint */
   PeoplePkey = 'people_pkey',
-  /** unique or primary key constraint on columns "slug" */
+  /** unique or primary key constraint */
   PeopleSlugKey = 'people_slug_key'
 }
 
@@ -19255,6 +19247,7 @@ export type People_Delete_Key_Input = {
 
 /** input type for incrementing numeric columns in table "people" */
 export type People_Inc_Input = {
+  datapoints_count: InputMaybe<Scalars['Int']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
 };
@@ -19266,6 +19259,7 @@ export type People_Insert_Input = {
   country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamptz']>;
+  datapoints_count: InputMaybe<Scalars['Int']>;
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
@@ -19301,6 +19295,7 @@ export type People_Max_Fields = {
   country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   facebook_url: Maybe<Scalars['String']>;
@@ -19326,6 +19321,7 @@ export type People_Min_Fields = {
   country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
+  datapoints_count: Maybe<Scalars['Int']>;
   enrichment_priority: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   facebook_url: Maybe<Scalars['String']>;
@@ -19373,6 +19369,7 @@ export type People_Order_By = {
   country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
+  datapoints_count: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   enrichment_priority: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
@@ -19425,6 +19422,8 @@ export enum People_Select_Column {
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
   /** column name */
+  DatapointsCount = 'datapoints_count',
+  /** column name */
   Email = 'email',
   /** column name */
   EnrichmentPriority = 'enrichment_priority',
@@ -19469,6 +19468,7 @@ export type People_Set_Input = {
   country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamptz']>;
+  datapoints_count: InputMaybe<Scalars['Int']>;
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
@@ -19493,6 +19493,7 @@ export type People_Set_Input = {
 /** aggregate stddev on columns */
 export type People_Stddev_Fields = {
   __typename?: 'people_stddev_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
@@ -19500,6 +19501,7 @@ export type People_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type People_Stddev_Pop_Fields = {
   __typename?: 'people_stddev_pop_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
@@ -19507,49 +19509,15 @@ export type People_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type People_Stddev_Samp_Fields = {
   __typename?: 'people_stddev_samp_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-};
-
-/** Streaming cursor of the table "people" */
-export type People_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: People_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type People_Stream_Cursor_Value_Input = {
-  about: InputMaybe<Scalars['String']>;
-  city: InputMaybe<Scalars['String']>;
-  country: InputMaybe<Scalars['String']>;
-  created_at: InputMaybe<Scalars['timestamptz']>;
-  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
-  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
-  email: InputMaybe<Scalars['jsonb']>;
-  enrichment_priority: InputMaybe<Scalars['Int']>;
-  external_id: InputMaybe<Scalars['String']>;
-  facebook_url: InputMaybe<Scalars['String']>;
-  github: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['Int']>;
-  library: InputMaybe<Scalars['jsonb']>;
-  linkedin: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  personal_email: InputMaybe<Scalars['String']>;
-  picture: InputMaybe<Scalars['jsonb']>;
-  slug: InputMaybe<Scalars['String']>;
-  status: InputMaybe<Scalars['String']>;
-  twitter_url: InputMaybe<Scalars['String']>;
-  type: InputMaybe<Scalars['String']>;
-  updated_at: InputMaybe<Scalars['timestamptz']>;
-  website_url: InputMaybe<Scalars['String']>;
-  work_email: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate sum on columns */
 export type People_Sum_Fields = {
   __typename?: 'people_sum_fields';
+  datapoints_count: Maybe<Scalars['Int']>;
   enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
 };
@@ -19566,6 +19534,8 @@ export enum People_Update_Column {
   CreatedAt = 'created_at',
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
+  /** column name */
+  DatapointsCount = 'datapoints_count',
   /** column name */
   Email = 'email',
   /** column name */
@@ -19604,28 +19574,10 @@ export enum People_Update_Column {
   WorkEmail = 'work_email'
 }
 
-export type People_Updates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append: InputMaybe<People_Append_Input>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _delete_at_path: InputMaybe<People_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _delete_elem: InputMaybe<People_Delete_Elem_Input>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _delete_key: InputMaybe<People_Delete_Key_Input>;
-  /** increments the numeric columns with given value of the filtered values */
-  _inc: InputMaybe<People_Inc_Input>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend: InputMaybe<People_Prepend_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<People_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: People_Bool_Exp;
-};
-
 /** aggregate var_pop on columns */
 export type People_Var_Pop_Fields = {
   __typename?: 'people_var_pop_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
@@ -19633,6 +19585,7 @@ export type People_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type People_Var_Samp_Fields = {
   __typename?: 'people_var_samp_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
@@ -19640,6 +19593,7 @@ export type People_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type People_Variance_Fields = {
   __typename?: 'people_variance_fields';
+  datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
@@ -23839,13 +23793,6 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 export type Subscription_RootPeople_By_PkArgs = {
   id: Scalars['Int'];
-};
-
-
-export type Subscription_RootPeople_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<People_Stream_Cursor_Input>>;
-  where: InputMaybe<People_Bool_Exp>;
 };
 
 
@@ -28699,14 +28646,15 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -30864,6 +30812,7 @@ export const GetEventsDocument = `
     telegram
     is_featured
     created_at
+    library
     event_person {
       id
       type

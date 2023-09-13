@@ -1,5 +1,5 @@
 import { People, Investors, Team_Members } from '@/graphql/types';
-import { FC, useState, Fragment } from 'react';
+import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
@@ -9,14 +9,10 @@ import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import Link from 'next/link';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { flatten, union, orderBy } from 'lodash';
-import {
-  IconLinkedIn,
-  IconEmail,
-  IconTwitter,
-  IconGithub,
-} from '@/components/icons';
+import { IconLinkedIn, IconEmail, IconLocation } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
+import { getFullAddress } from '@/utils/helpers';
 
 type Props = {
   person: People;
@@ -26,7 +22,6 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
   const router = useRouter();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-  const [showEmails, setShowEmails] = useState(false);
 
   const { user } = useUser();
 
@@ -47,8 +42,6 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
     picture,
     slug,
     linkedin,
-    github,
-    twitter_url,
     follows,
     investors,
     team_members,
@@ -71,17 +64,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
   const companyTags = flatten(team_members.map(item => item?.company?.tags));
   const personTags = union(vcFirmTags, companyTags).filter(item => item);
 
-  const onClickShowEmails = () => {
-    if (!user) {
-      router.push('/sign-in');
-    } else if (!user?.entitlements.viewEmails) {
-      setShowEmails(!showEmails);
-    } else {
-      setIsOpenUpgradeDialog(true);
-    }
-  };
-
-  const onClickLinkedin = () => {
+  const onClickPremiumFeature = () => {
     if (!user) {
       router.push('/sign-in');
     } else {
@@ -90,10 +73,11 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
   };
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex gap-2 shrink-0 w-full">
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
+      {' '}
+      <div className="w-full">
         <Link href={`/people/${slug}`}>
-          <a>
+          <a className="flex items-center gap-x-4 mb-4">
             <ElemPhoto
               photo={picture}
               wrapClass="flex items-center justify-center shrink-0 w-12  aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
@@ -102,15 +86,12 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
               placeholderClass="text-gray-500"
               placeholder="user"
             />
+            <h3 className="font-medium truncate" title={name ? name : ''}>
+              {name}
+            </h3>
           </a>
         </Link>
         <div>
-          <h3 className="font-medium truncate" title={name ? name : ''}>
-            <Link href={`/people/${slug}`}>
-              <a>{name}</a>
-            </Link>
-          </h3>
-
           {jobsByDateDesc?.slice(0, 1).map((job: any, index: number) => {
             let organization;
             if (job.company) {
@@ -125,15 +106,26 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
               ? `/investors/${organization.slug}`
               : null;
 
+            const location =
+              job.company?.location_json || job.vc_firm?.location_json;
+
             return (
               <div key={index} className="text-gray-500 text-sm">
+                {location && (
+                  <div className="flex gap-x-1 mb-2">
+                    <IconLocation className="w-5 h-5" strokeWidth={1.5} />
+                    <span className="leading-5">
+                      {getFullAddress(location)}
+                    </span>
+                  </div>
+                )}
                 <div>
                   {job.title}
                   {slug ? (
                     <>
                       {' at '}
                       <Link href={slug}>
-                        <a className="underline hover:no-underline">
+                        <a className="text-gray-700 underline hover:no-underline">
                           {organization.name}
                         </a>
                       </Link>
@@ -156,30 +148,38 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
               </div>
             );
           })}
-
-          <div className="text-gray-500 text-sm">
-            {showEmails && (
-              <>
-                {personEmails?.map((email, i: number) => [
-                  <Fragment key={i}>{email}</Fragment>,
-                ])}
-              </>
-            )}
-          </div>
         </div>
       </div>
-
       {personTags.length > 0 && (
         <ElemTags
-          className="mt-2"
+          className="my-5"
           limit={CARD_DEFAULT_TAGS_LIMIT}
           resourceType={'people'}
           tags={personTags}
         />
       )}
-
       <div className="flex items-center justify-between mt-2 gap-x-5">
-        <div className="flex items-center space-x-0.5">
+        <div className="flex items-center space-x-1.5">
+          {user?.entitlements?.viewEmails && personEmails.length > 0 ? (
+            <a href={`mailto:${personEmails[0]}`}>
+              <IconEmail
+                title="Email"
+                className="h-5 w-5 shrink-0 text-gray-600"
+              />
+            </a>
+          ) : personEmails.length > 0 ? (
+            <ElemTooltip size="md" content="Premium feature">
+              <div>
+                <button onClick={onClickPremiumFeature} className="block">
+                  <IconEmail
+                    title="Email"
+                    className="h-5 w-5 shrink-0 text-gray-400"
+                  />
+                </button>
+              </div>
+            </ElemTooltip>
+          ) : null}
+
           {user?.entitlements?.viewEmails && linkedin ? (
             <ElemTooltip size="md" content="View LinkedIn Profile">
               <div>
@@ -187,7 +187,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   <a className="block" target="_blank" rel="noreferrer">
                     <IconLinkedIn
                       title="LinkedIn"
-                      className="h-6 w-6 shrink-0 text-gray-400"
+                      className="h-5 w-5 shrink-0 text-gray-600"
                     />
                   </a>
                 </Link>
@@ -196,59 +196,15 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
           ) : linkedin ? (
             <ElemTooltip size="md" content="Premium feature">
               <div>
-                <button className="block" onClick={onClickLinkedin}>
+                <button className="block" onClick={onClickPremiumFeature}>
                   <IconLinkedIn
                     title="LinkedIn"
-                    className="h-6 w-6 shrink-0 text-gray-400"
+                    className="h-5 w-5 shrink-0 text-gray-400"
                   />
                 </button>
               </div>
             </ElemTooltip>
           ) : null}
-
-          {user?.entitlements?.viewEmails && personEmails.length > 0 ? (
-            <ElemTooltip
-              size="md"
-              content={`${
-                personEmails.length === 1 ? 'View Email' : 'View Emails'
-              }`}
-            >
-              <div>
-                <button className="block" onClick={onClickShowEmails}>
-                  <IconEmail
-                    title="Email"
-                    className="h-6 w-6 shrink-0 text-gray-400"
-                  />
-                </button>
-              </div>
-            </ElemTooltip>
-          ) : personEmails.length > 0 ? (
-            <ElemTooltip size="md" content="Premium feature">
-              <div>
-                <button onClick={onOpenUpgradeDialog} className="block">
-                  <IconEmail
-                    title="Email"
-                    className="h-6 w-6 shrink-0 text-gray-400"
-                  />
-                </button>
-              </div>
-            </ElemTooltip>
-          ) : null}
-
-          {twitter_url && (
-            <Link href={twitter_url}>
-              <a target="_blank">
-                <IconTwitter className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          )}
-          {github && (
-            <Link href={github}>
-              <a target="_blank">
-                <IconGithub className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
-          )}
         </div>
 
         <ElemSaveToList

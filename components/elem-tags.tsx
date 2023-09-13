@@ -25,7 +25,7 @@ export const ElemTags: React.FC<Props> = ({
   if (tags) {
     return (
       <div className={`flex flex-wrap overflow-clip gap-2 ${className}`}>
-        {resourceType === 'news'
+        {['news', 'people'].includes(resourceType)
           ? tags.slice(0, tagsLimit).map((tag, index: number) => {
               return (
                 <div

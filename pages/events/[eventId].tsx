@@ -453,7 +453,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   let metaTitle = null;
   if (event.name) {
-    metaTitle = `${event.name} | EdgeIn ${event.library[0]} Event - Get more information`;
+    metaTitle = `${event.name} | EdgeIn ${event.library?.[0]} Event - Get more information`;
   }
 
   let metaDescription = null;
