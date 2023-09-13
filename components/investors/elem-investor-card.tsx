@@ -59,7 +59,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px]">
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/investors/${slug}`}>
@@ -73,35 +73,22 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                   placeholderClass="text-slate-300"
                 />
               </div>
-            </a>
-          </Link>
 
-          <Link href={`/investors/${slug}`}>
-            <a className="flex items-center mt-4">
-              <ElemTooltip content={name} mode="light">
-                <h3 className="text-xl font-medium truncate">{name}</h3>
-              </ElemTooltip>
-            </a>
-          </Link>
+              <div className="flex items-center mt-4">
+                <ElemTooltip content={name} mode="light">
+                  <h3 className="text-xl font-medium truncate">{name}</h3>
+                </ElemTooltip>
+              </div>
 
-          <div className="mt-2">
-            {overview && (
-              <>
-                {/* <ElemTooltip
-            content={overview}
-            mode="light"
-            direction="bottom"
-            size="lg"
-            delay={1200}
-            className="">
-            <div className="text-sm line-clamp-3">{overview}</div>
-          </ElemTooltip> */}
-                <div className="text-sm line-clamp-3 text-gray-500">
+              {overview && (
+                <div className="mt-2 text-sm line-clamp-3 text-gray-500">
                   {overview}
                 </div>
-              </>
-            )}
+              )}
+            </a>
+          </Link>
 
+          <div>
             {!isEmptyLocationJson && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
@@ -142,7 +129,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               {website && (
                 <Link href={website}>
                   <a target="_blank">
-                    <IconGlobe className="h-5 w-5 text-gray-400" />
+                    <IconGlobe className="h-5 w-5 text-gray-600" />
                   </a>
                 </Link>
               )}
@@ -151,7 +138,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 userCanViewLinkedIn ? (
                   <Link href={linkedin}>
                     <a target="_blank">
-                      <IconLinkedIn className="h-5 w-5 text-gray-400" />
+                      <IconLinkedIn className="h-5 w-5 text-gray-600" />
                     </a>
                   </Link>
                 ) : (
@@ -164,7 +151,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               {twitter && (
                 <Link href={twitter}>
                   <a target="_blank">
-                    <IconTwitter className="h-5 w-5 text-gray-400" />
+                    <IconTwitter className="h-5 w-5 text-gray-600" />
                   </a>
                 </Link>
               )}
@@ -173,14 +160,14 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
           {github && (
             <Link href={github}>
               <a target="_blank">
-                <IconGithub className="h-5 w-5 text-gray-400" />
+                <IconGithub className="h-5 w-5 text-gray-600" />
               </a>
             </Link>
           )}
           {discord && (
             <Link href={discord}>
               <a target="_blank">
-                <IconDiscord className="h-5 w-5 text-gray-400" />
+                <IconDiscord className="h-5 w-5 text-gray-600" />
               </a>
             </Link>
           )} */}

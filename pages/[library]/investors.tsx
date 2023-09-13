@@ -289,6 +289,8 @@ const Investors: NextPage<Props> = ({
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
+  const pageTitle = `All ${user ? selectedLibrary : ''} investors`;
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -538,18 +540,16 @@ const Investors: NextPage<Props> = ({
               </>
             ) : tableLayout && vcFirms?.length != 0 ? (
               <>
-                {showPersonalized && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">All investors</div>
-                    {!isNewTabSelected && (
-                      <ElemDropdown
-                        IconComponent={IconSortDashboard}
-                        defaultItem={defaultOrderBy}
-                        items={sortChoices}
-                      />
-                    )}
-                  </div>
-                )}
+                <div className="flex justify-between my-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                  {!isNewTabSelected && (
+                    <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      defaultItem={defaultOrderBy}
+                      items={sortChoices}
+                    />
+                  )}
+                </div>
                 <InvestorsTable
                   investors={vcFirms}
                   pageNumber={page}
@@ -563,18 +563,16 @@ const Investors: NextPage<Props> = ({
               </>
             ) : (
               <>
-                {showPersonalized && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">All investors</div>
-                    {!isNewTabSelected && (
-                      <ElemDropdown
-                        IconComponent={IconSortDashboard}
-                        defaultItem={defaultOrderBy}
-                        items={sortChoices}
-                      />
-                    )}
-                  </div>
-                )}
+                <div className="flex justify-between my-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                  {!isNewTabSelected && (
+                    <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      defaultItem={defaultOrderBy}
+                      items={sortChoices}
+                    />
+                  )}
+                </div>
                 <div
                   data-testid="investors"
                   className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"

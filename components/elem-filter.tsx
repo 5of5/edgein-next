@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, Fragment } from 'react';
-import { omit, cloneDeep } from 'lodash';
+import { omit, cloneDeep, lowerCase } from 'lodash';
 import moment from 'moment-timezone';
 import {
   convertCurrencyStringToIntNumber,
@@ -694,7 +694,9 @@ export const ElemFilter: FC<Props> = ({
                         <>
                           {' '}
                           in{' '}
-                          <b>{`${dateCondition} ${filters?.[option]?.condition}`}</b>
+                          <b>{`${dateCondition} ${lowerCase(
+                            filters?.[option]?.condition,
+                          )}`}</b>
                         </>
                       )}
                     </div>
