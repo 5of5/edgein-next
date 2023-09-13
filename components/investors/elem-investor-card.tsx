@@ -76,7 +76,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                   placeholderClass="text-slate-300"
                 />
                 <ElemTooltip content={name} mode="light">
-                  <h3 className="text-xl font-medium truncate">{name}</h3>
+                  <h3 className="text-lg font-medium truncate">{name}</h3>
                 </ElemTooltip>
               </div>
 
@@ -97,9 +97,9 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                   <span className="text-xs">Funding</span>
                   <span className="text-sm font-medium">
                     {investment_amount_total
-                      ? convertToInternationalCurrencySystem(
+                      ? `$${convertToInternationalCurrencySystem(
                           Number(investment_amount_total),
-                        )
+                        )}`
                       : '-'}
                   </span>
                 </div>
@@ -122,17 +122,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 />
                 <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
                   {getFullAddress(location_json)}
-                </span>
-              </div>
-            )}
-
-            {num_of_investments !== null && num_of_investments > 0 && (
-              <div className="flex pt-1.5 items-center">
-                <IconCash title="Investment" className="h-3 w-3 shrink-0" />
-                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
-                  <span className="mr-1">{num_of_investments}</span>
-                  Investment
-                  {num_of_investments > 1 && 's'}
                 </span>
               </div>
             )}

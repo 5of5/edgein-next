@@ -130,9 +130,9 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                   <span className="text-xs">Funding</span>
                   <span className="text-sm font-medium">
                     {investor_amount
-                      ? convertToInternationalCurrencySystem(
+                      ? `$${convertToInternationalCurrencySystem(
                           Number(investor_amount),
-                        )
+                        )}`
                       : '-'}
                   </span>
                 </div>
