@@ -6,7 +6,7 @@ import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconLinkedInAlt, IconExclamationTriangle } from '@/components/icons';
 import { redirect_url } from '@/utils/auth';
-import { usePopup } from '@/context/popup-context';
+import ForgotPasswordModal from '../forgot-password-modal';
 
 type Props = {
   onNext: (email: string) => void;
@@ -15,7 +15,7 @@ type Props = {
 export const ElemLogin: FC<Props> = ({ onNext }) => {
   const router = useRouter();
 
-  const { setShowPopup } = usePopup();
+  const [openForgotPasswordModal, setOpenForgotPasswordModal] = useState(false);
 
   const [isExistedEmail, setIsExistedEmail] = useState(false);
   const [email, setEmail] = useState('');
@@ -128,10 +128,6 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
     }
   };
 
-  const handleForgotPassword = () => {
-    setShowPopup('forgotPassword');
-  };
-
   const handleContinueWithLinkedin = () => {
     const url = `${
       process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL
@@ -180,7 +176,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                     <div className="flex justify-between">
                       <span>Password</span>
                       <span
-                        onClick={handleForgotPassword}
+                        onClick={() => setOpenForgotPasswordModal(true)}
                         className="text-slate-500 cursor-pointer underline"
                       >
                         Forgot your password?
@@ -257,6 +253,11 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
         </a>
         .
       </p>
+
+      <ForgotPasswordModal
+        show={openForgotPasswordModal}
+        onClose={() => setOpenForgotPasswordModal(false)}
+      />
     </>
   );
 };
