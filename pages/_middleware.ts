@@ -2,7 +2,7 @@ import CookieService, { TOKEN_NAME } from '@/utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
 import { verify } from '@/utils/googlebot-verify';
 
-const USAGE_LIMIT = 2;
+const USAGE_LIMIT = 10;
 
 // This is used to generate a sitemap for the site
 export const PUBLIC_PAGES = [
