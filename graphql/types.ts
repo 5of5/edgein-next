@@ -15591,6 +15591,12 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_People_ManyArgs = {
+  updates: Array<People_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Reset_PasswordsArgs = {
   _inc: InputMaybe<Reset_Passwords_Inc_Input>;
   _set: InputMaybe<Reset_Passwords_Set_Input>;
@@ -19190,19 +19196,24 @@ export type People_Bool_Exp = {
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook_url: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_People_Bool_Exp>;
+  follows_aggregate: InputMaybe<Follows_People_Aggregate_Bool_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
+  investments_aggregate: InputMaybe<Investments_Aggregate_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
+  investors_aggregate: InputMaybe<Investors_Aggregate_Bool_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Person_Bool_Exp>;
+  news_links_aggregate: InputMaybe<News_Person_Aggregate_Bool_Exp>;
   personal_email: InputMaybe<String_Comparison_Exp>;
   picture: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   team_members: InputMaybe<Team_Members_Bool_Exp>;
+  team_members_aggregate: InputMaybe<Team_Members_Aggregate_Bool_Exp>;
   twitter_url: InputMaybe<String_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -19213,11 +19224,11 @@ export type People_Bool_Exp = {
 
 /** unique or primary key constraints on table "people" */
 export enum People_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "external_id" */
   PeopleExternalIdKey = 'people_external_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PeoplePkey = 'people_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "slug" */
   PeopleSlugKey = 'people_slug_key'
 }
 
@@ -19514,6 +19525,42 @@ export type People_Stddev_Samp_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** Streaming cursor of the table "people" */
+export type People_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: People_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type People_Stream_Cursor_Value_Input = {
+  about: InputMaybe<Scalars['String']>;
+  city: InputMaybe<Scalars['String']>;
+  country: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  data_enriched_at: InputMaybe<Scalars['timestamptz']>;
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['jsonb']>;
+  enrichment_priority: InputMaybe<Scalars['Int']>;
+  external_id: InputMaybe<Scalars['String']>;
+  facebook_url: InputMaybe<Scalars['String']>;
+  github: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  library: InputMaybe<Scalars['jsonb']>;
+  linkedin: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  personal_email: InputMaybe<Scalars['String']>;
+  picture: InputMaybe<Scalars['jsonb']>;
+  slug: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  twitter_url: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  website_url: InputMaybe<Scalars['String']>;
+  work_email: InputMaybe<Scalars['String']>;
+};
+
 /** aggregate sum on columns */
 export type People_Sum_Fields = {
   __typename?: 'people_sum_fields';
@@ -19573,6 +19620,25 @@ export enum People_Update_Column {
   /** column name */
   WorkEmail = 'work_email'
 }
+
+export type People_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<People_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<People_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<People_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<People_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<People_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<People_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<People_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: People_Bool_Exp;
+};
 
 /** aggregate var_pop on columns */
 export type People_Var_Pop_Fields = {
@@ -23793,6 +23859,13 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 export type Subscription_RootPeople_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootPeople_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<People_Stream_Cursor_Input>>;
+  where: InputMaybe<People_Bool_Exp>;
 };
 
 
