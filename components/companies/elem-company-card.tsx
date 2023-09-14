@@ -20,6 +20,7 @@ import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
+import { convertToInternationalCurrencySystem, formatDate } from '@/utils';
 
 type Props = {
   company: Companies;
@@ -56,6 +57,11 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
     github,
     discord,
     location_json,
+    total_employees,
+    investor_amount,
+    year_founded,
+    investment_rounds_aggregate,
+    investment_rounds,
   } = company;
 
   const isEmptyLocationJson = values(location_json).every(isEmpty);
@@ -76,7 +82,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
         <div>
           <Link href={`/companies/${slug}`}>
             <a>
-              <div className="flex shrink-0 w-full">
+              <div className="flex shrink-0 w-full items-center gap-4">
                 <ElemPhoto
                   photo={logo}
                   wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
@@ -84,10 +90,8 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                   imgAlt={name}
                   placeholderClass="text-slate-300"
                 />
-              </div>
-              <div className="flex items-center mt-4">
                 <ElemTooltip content={name} mode="light">
-                  <h3 className="text-xl font-medium truncate">{name}</h3>
+                  <h3 className="text-lg font-medium truncate">{name}</h3>
                 </ElemTooltip>
                 {coin && (
                   <ElemTooltip content={`Token`} mode="light" className="">
@@ -95,8 +99,59 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                   </ElemTooltip>
                 )}
               </div>
+
+              <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
+                <div className="flex flex-col">
+                  <span className="text-xs">Founded</span>
+                  <span className="text-sm font-medium">
+                    {year_founded ?? '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Stage</span>
+                  <span className="text-sm font-medium">
+                    {investment_rounds?.[0]?.round ?? '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Employees</span>
+                  <span className="text-sm font-medium">
+                    {total_employees ?? '-'}
+                  </span>
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs">No of rounds</span>
+                  <span className="text-sm font-medium">
+                    {investment_rounds_aggregate?.aggregate?.count ?? '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Funding</span>
+                  <span className="text-sm font-medium">
+                    {investor_amount
+                      ? `$${convertToInternationalCurrencySystem(
+                          Number(investor_amount),
+                        )}`
+                      : '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Latest round</span>
+                  <span className="text-sm font-medium">
+                    {investment_rounds?.[0]?.round_date
+                      ? formatDate(investment_rounds?.[0]?.round_date, {
+                          month: 'short',
+                          day: '2-digit',
+                          year: 'numeric',
+                        })
+                      : '-'}
+                  </span>
+                </div>
+              </div>
+
               {overview && (
-                <div className="mt-2 text-sm line-clamp-3 text-gray-500">
+                <div className="mt-4 text-sm line-clamp-3 text-gray-500">
                   {overview}
                 </div>
               )}
