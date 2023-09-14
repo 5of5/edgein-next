@@ -186,35 +186,50 @@ const People: NextPage<Props> = ({
                 </div>
               </div>
             </div>
-          ) : isLoading && !initialLoad ? (
-            <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderPersonCard key={i} />
-              ))}
-            </div>
           ) : (
             <>
-              <div className="text-4xl font-medium my-4">{pageTitle}</div>
-              <div
-                data-testid="people"
-                className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-              >
-                {people?.map(person => {
-                  return (
-                    <ElemPersonCard key={person.id} person={person as People} />
-                  );
-                })}
+              <div className="flex justify-between my-6">
+                <div className="text-4xl font-medium mt-4">{pageTitle}</div>
+                {/* Removed in qol-ui-fixes */}
+                {/* <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      defaultItem={defaultOrderBy}
+                      items={sortChoices}
+                    /> */}
               </div>
+              {isLoading && !initialLoad ? (
+                <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <PlaceholderPersonCard key={i} />
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <div
+                    data-testid="people"
+                    className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  >
+                    {people?.map(person => {
+                      return (
+                        <ElemPersonCard
+                          key={person.id}
+                          person={person as People}
+                        />
+                      );
+                    })}
+                  </div>
 
-              <Pagination
-                shownItems={people?.length}
-                totalItems={people_aggregate}
-                page={page}
-                itemsPerPage={limit}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                onClickToPage={selectedPage => setPage(selectedPage)}
-              />
+                  <Pagination
+                    shownItems={people?.length}
+                    totalItems={people_aggregate}
+                    page={page}
+                    itemsPerPage={limit}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    onClickToPage={selectedPage => setPage(selectedPage)}
+                  />
+                </>
+              )}
             </>
           )}
         </div>
