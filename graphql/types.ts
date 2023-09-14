@@ -26706,7 +26706,7 @@ export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, tags: any | null, latest_investment: any | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }> };
+export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, tags: any | null, latest_investment: any | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null } | null }>, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }> };
 
 export type GetRelevantVcFirmsQueryVariables = Exact<{
   where: Vc_Firms_Bool_Exp;
@@ -32611,6 +32611,17 @@ export const GetVcFirmsRecentInvestmentsDocument = `
     num_of_investments
     sentiment
     overview
+    investments(
+      limit: 1
+      order_by: {investment_round: {round_date: desc_nulls_last}}
+    ) {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+      }
+    }
     follows {
       id
       list_id
