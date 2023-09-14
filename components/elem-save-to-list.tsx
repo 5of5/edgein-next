@@ -16,6 +16,7 @@ import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
+import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 
 type Props = {
   resourceName: string | null;
@@ -52,6 +53,7 @@ export const ElemSaveToList: FC<Props> = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [listsData, setListsData] = useState([] as List[]);
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
@@ -212,6 +214,14 @@ export const ElemSaveToList: FC<Props> = ({
     }
   };
 
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+  const onCloseUpgradeDialog = () => {
+    setIsOpen(true);
+    setIsOpenUpgradeDialog(false);
+  };
+
   const handleCreate = async () => {
     if (error || !listName || !user) {
       return;
@@ -248,6 +258,16 @@ export const ElemSaveToList: FC<Props> = ({
     }
   };
 
+  const onClickShowCreateNew = () => {
+    const userListsLimit = user?.entitlements.listsCount ?? 5;
+
+    if (listsData.length > userListsLimit) {
+      onOpenUpgradeDialog();
+    } else {
+      setShowNew(true);
+    }
+  };
+
   return (
     <>
       <ElemButton
@@ -265,7 +285,7 @@ export const ElemSaveToList: FC<Props> = ({
           onClose={() => {
             setIsOpen(false), setShowNew(false);
           }}
-          className="relative z-[60]"
+          className="relative z-[40]"
         >
           <Transition.Child
             as={Fragment}
@@ -279,7 +299,7 @@ export const ElemSaveToList: FC<Props> = ({
             <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed inset-0 z-[50] my-0 min-h-0 flex flex-col items-center justify-center">
+          <div className="fixed inset-0 z-10 my-0 min-h-0 flex flex-col items-center justify-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -333,7 +353,7 @@ export const ElemSaveToList: FC<Props> = ({
                 {!showNew && listsData.length > 0 && (
                   <div className="pt-3">
                     <ElemButton
-                      onClick={() => setShowNew(true)}
+                      onClick={onClickShowCreateNew}
                       className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100"
                     >
                       <IconPlus className="w-4 h-4 " />
@@ -386,6 +406,11 @@ export const ElemSaveToList: FC<Props> = ({
           <Toaster />
         </Dialog>
       </Transition.Root>
+
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
     </>
   );
 };
