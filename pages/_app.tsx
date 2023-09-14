@@ -80,6 +80,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   React.useEffect(() => {
     const pagesWithoutFooter = [
+      '/home',
       '/companies',
       '/investors',
       '/events',
@@ -135,8 +136,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Script
         src="https://aggle.net/js?pid=J9GEZNSN8"
         strategy="afterInteractive"
-        type="js"
-      ></Script>
+        type="js"></Script>
       <div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
         <QueryClientProvider client={queryClient}>
           {pageProps.noLayout ? (
