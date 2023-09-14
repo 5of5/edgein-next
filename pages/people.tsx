@@ -146,14 +146,15 @@ const People: NextPage<Props> = ({
     <DashboardLayout>
       <div className="relative">
         <div
-          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-end lg:items-center"
           role="tablist"
         >
-          <ElemCategories
+          {/** TO-DO: Temporary hide new category for now */}
+          {/* <ElemCategories
             categories={peopleTabs}
             selectedCategory={selectedTab}
             onChangeCategory={tab => setSelectedTab(tab)}
-          />
+          /> */}
 
           <div className="flex flex-wrap gap-2">
             {isDisplaySelectLibrary && <ElemLibrarySelector />}
