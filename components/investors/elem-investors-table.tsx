@@ -304,85 +304,86 @@ export const InvestorsTable: FC<Props> = ({
         },
         width: 40,
       },
-      {
-        Header: 'Last Investment Date',
-        accessor: (data: {
-          investments: {
-            [x: string]: any;
-            investment_round: Object;
-          };
-        }) => {
-          const investmentRounds = data?.investments?.flatMap(
-            (item: any) => item.investment_round,
-          );
+      // Ed commented these out because the query to get them is too slow and needs to be optimizing before we bring them back
+      // {
+      //   Header: 'Last Investment Date',
+      //   accessor: (data: {
+      //     investments: {
+      //       [x: string]: any;
+      //       investment_round: Object;
+      //     };
+      //   }) => {
+      //     const investmentRounds = data?.investments?.flatMap(
+      //       (item: any) => item.investment_round,
+      //     );
 
-          if (!investmentRounds) {
-            return 0;
-          } else {
-            const latestRound = getLatestRound(investmentRounds);
+      //     if (!investmentRounds) {
+      //       return 0;
+      //     } else {
+      //       const latestRound = getLatestRound(investmentRounds);
 
-            const out = latestRound?.round_date ? latestRound?.round_date : 0;
+      //       const out = latestRound?.round_date ? latestRound?.round_date : 0;
 
-            return out;
-          }
-        },
-        Cell: (props: any) => {
-          return (
-            <div>
-              {props.value ? moment(props.value).format('LL') : emptyCell}
-            </div>
-          );
-        },
-        width: 120,
-      },
-      {
-        Header: 'Last Investment Type',
-        accessor: (data: {
-          investments: {
-            [x: string]: any;
-            investment_round: Object;
-          };
-        }) => {
-          const investmentRounds = data?.investments?.flatMap(
-            (item: any) => item.investment_round,
-          );
+      //       return out;
+      //     }
+      //   },
+      //   Cell: (props: any) => {
+      //     return (
+      //       <div>
+      //         {props.value ? moment(props.value).format('LL') : emptyCell}
+      //       </div>
+      //     );
+      //   },
+      //   width: 120,
+      // },
+      // {
+      //   Header: 'Last Investment Type',
+      //   accessor: (data: {
+      //     investments: {
+      //       [x: string]: any;
+      //       investment_round: Object;
+      //     };
+      //   }) => {
+      //     const investmentRounds = data?.investments?.flatMap(
+      //       (item: any) => item.investment_round,
+      //     );
 
-          if (!investmentRounds) {
-            return 0;
-          } else {
-            const latestRound = getLatestRound(investmentRounds);
+      //     if (!investmentRounds) {
+      //       return 0;
+      //     } else {
+      //       const latestRound = getLatestRound(investmentRounds);
 
-            const out = latestRound?.round ? latestRound?.round : 0;
+      //       const out = latestRound?.round ? latestRound?.round : 0;
 
-            return out;
-          }
-        },
-        Cell: (props: any) => {
-          return <div>{props.value ? props.value : emptyCell}</div>;
-        },
-      },
-      {
-        Header: 'Last Investment Amount',
-        accessor: (data: {
-          investments: {
-            [x: string]: any;
-            investment_round: Object;
-          };
-        }) => {
-          const investmentRounds = data?.investments?.flatMap(
-            (item: any) => item.investment_round,
-          );
+      //       return out;
+      //     }
+      //   },
+      //   Cell: (props: any) => {
+      //     return <div>{props.value ? props.value : emptyCell}</div>;
+      //   },
+      // },
+      // {
+      //   Header: 'Last Investment Amount',
+      //   accessor: (data: {
+      //     investments: {
+      //       [x: string]: any;
+      //       investment_round: Object;
+      //     };
+      //   }) => {
+      //     const investmentRounds = data?.investments?.flatMap(
+      //       (item: any) => item.investment_round,
+      //     );
 
-          if (!investmentRounds) {
-            return 0;
-          } else {
-            const latestRound = getLatestRound(investmentRounds);
+      //     if (!investmentRounds) {
+      //       return 0;
+      //     } else {
+      //       const latestRound = getLatestRound(investmentRounds);
 
-            const out = latestRound?.amount ? latestRound?.amount : 0;
+      //       const out = latestRound?.amount ? latestRound?.amount : 0;
 
-            return out;
-          }
-        },
+      //       return out;
+      //     }
+      //   },
         Cell: (props: any) => {
           return (
             <div>

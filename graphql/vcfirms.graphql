@@ -162,42 +162,6 @@ query GetVCFirms(
     website
     num_of_investments
     year_founded
-    investors {
-      id
-      person {
-        id
-        slug
-        name
-      }
-    }
-    investments {
-      investment_round {
-        id
-        round_date
-        round
-        amount
-        company {
-          id
-          slug
-          name
-          tags
-          logo
-        }
-        investments {
-          id
-          vc_firm {
-            id
-            slug
-            name
-          }
-          person {
-            id
-            slug
-            name
-          }
-        }
-      }
-    }
     sentiment
     follows {
       id
