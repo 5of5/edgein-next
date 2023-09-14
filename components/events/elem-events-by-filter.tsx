@@ -13,6 +13,7 @@ import { ElemFilter } from '../elem-filter';
 import { ElemEventCard } from '../events/elem-event-card';
 import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
+import { CardType } from '../companies/elem-company-card';
 
 type Props = {
   headingText: string;
@@ -20,6 +21,7 @@ type Props = {
   orderBy?: DeepPartial<Events_Order_By>;
   itemsPerPage: number;
   tagOnClick: any;
+  cardType?: CardType;
 };
 
 export const EventsByFilter: FC<Props> = ({
@@ -28,6 +30,7 @@ export const EventsByFilter: FC<Props> = ({
   itemsPerPage,
   tagOnClick,
   orderBy,
+  cardType = 'full',
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
@@ -68,10 +71,13 @@ export const EventsByFilter: FC<Props> = ({
       <div className="text-4xl font-medium my-8">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-      >
+        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {events.map(event => (
-          <ElemEventCard key={event.id} event={event as Events} />
+          <ElemEventCard
+            key={event.id}
+            event={event as Events}
+            type={cardType}
+          />
         ))}
       </div>
 

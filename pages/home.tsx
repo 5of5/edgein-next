@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Order_By, Companies_Bool_Exp } from '@/graphql/types';
@@ -47,17 +47,15 @@ const Home: NextPage = () => {
   };
 
   const getFirstOrDefaultCategory = () => {
-    if (categories.length) {
-      return {
-        title: categories[0],
-        value: categories[0].toLowerCase(),
-      };
-    }
     return {
-      title: GLOBAL_TAG,
-      value: GLOBAL_TAG.toLowerCase(),
+      title: categories[0],
+      value: categories[0].toLowerCase(),
     };
   };
+
+  // useEffect(() => {
+
+  // }, [user, locationTags]);
 
   const [selectedStatusTag, setSelectedStatusTag] =
     useState<DashboardCategory | null>(getFirstOrDefaultCategory());
@@ -108,7 +106,7 @@ const Home: NextPage = () => {
           <div className="mx-8">
             <div className="flex flex-col gap-4 gap-x-8">
               <CompaniesByFilter
-                cardType='compact'
+                cardType="compact"
                 headingText={`Companies`}
                 tagOnClick={null}
                 itemsPerPage={ITEMS_PER_PAGE}
@@ -138,7 +136,7 @@ const Home: NextPage = () => {
               />
 
               <InvestorsByFilter
-                cardType='compact'
+                cardType="compact"
                 headingText={`Investors`}
                 tagOnClick={null}
                 itemsPerPage={ITEMS_PER_PAGE}
@@ -170,7 +168,7 @@ const Home: NextPage = () => {
               {isSelectedTagLocation && (
                 <>
                   <CompaniesByFilter
-                    cardType='compact'
+                    cardType="compact"
                     headingText="New companies ✨"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
@@ -201,6 +199,7 @@ const Home: NextPage = () => {
                   />
 
                   <EventsByFilter
+                    cardType="compact"
                     headingText={`Upcoming events 🗓️`}
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
@@ -230,7 +229,7 @@ const Home: NextPage = () => {
                   <div>
                     <h2>Recently updated 🔄</h2>
                     <CompaniesByFilter
-                      cardType='compact'
+                      cardType="compact"
                       headingText={`Companies`}
                       tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
@@ -259,7 +258,7 @@ const Home: NextPage = () => {
                       }}
                     />
                     <InvestorsByFilter
-                      cardType='compact'
+                      cardType="compact"
                       headingText={`Investors`}
                       tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
@@ -288,6 +287,7 @@ const Home: NextPage = () => {
                       }}
                     />
                     <EventsByFilter
+                      cardType="compact"
                       headingText={`Events`}
                       tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
@@ -328,7 +328,7 @@ const Home: NextPage = () => {
               <div>
                 <h2>Companies 🏢</h2>
                 <CompaniesByFilter
-                  cardType='compact'
+                  cardType="compact"
                   headingText="Recently funded"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -356,7 +356,7 @@ const Home: NextPage = () => {
                   }}
                 />
                 <CompaniesByFilter
-                  cardType='compact'
+                  cardType="compact"
                   headingText="Recently founded"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -379,7 +379,7 @@ const Home: NextPage = () => {
               <div>
                 <h2>Investors 💵</h2>
                 <InvestorsByFilter
-                  cardType='compact'
+                  cardType="compact"
                   headingText="Recently active investors"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -402,7 +402,7 @@ const Home: NextPage = () => {
                   }}
                 />
                 <InvestorsByFilter
-                  cardType='compact'
+                  cardType="compact"
                   headingText="Recent exits"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
