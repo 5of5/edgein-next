@@ -303,31 +303,6 @@ const formatValue = (data: any, dataType: string) => {
   }
 };
 
-const validateValue = (
-  resourceType: ResourceTypes,
-  field: string,
-  value: any,
-  library: Library[],
-) => {
-  let isValidated = true;
-  switch (resourceType) {
-    case 'companies':
-    case 'vc_firms': {
-      const tagChoices = getTagChoicesByLibraries(library);
-      if (
-        field === 'tags' &&
-        !value.every((tag: string) =>
-          tagChoices.map(item => item.id).includes(tag),
-        )
-      )
-        isValidated = false;
-      break;
-    }
-  }
-
-  return isValidated;
-};
-
 const notFoundAction = async (
   resourceType: ResourceTypes,
   resourceObj: Record<string, any>,
@@ -447,27 +422,6 @@ export const mutateActionAndDataRaw = async (
           );
         if (dataField.data_type)
           transformedValue = formatValue(transformedValue, dataField.data_type);
-        if (
-          !validateValue(
-            resourceType,
-            field,
-            transformedValue,
-            resourceObj?.library || existedData?.library,
-          )
-        ) {
-          const dataObject = [
-            {
-              resource: resourceType,
-              field,
-              value: resourceObj[field],
-              partner: partnerId,
-              accuracy_weight: 1,
-              resource_id: resourceId,
-            },
-          ];
-          await insertDataDiscard(dataObject);
-          continue;
-        }
 
         if (
           !existedData ||
