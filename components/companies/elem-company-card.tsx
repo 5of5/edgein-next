@@ -20,7 +20,11 @@ import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
-import { convertToInternationalCurrencySystem, formatDate } from '@/utils';
+import {
+  convertToInternationalCurrencySystem,
+  formatDate,
+  numberWithCommas,
+} from '@/utils';
 
 type Props = {
   company: Companies;
@@ -116,20 +120,25 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                 <div className="flex flex-col">
                   <span className="text-xs">Employees</span>
                   <span className="text-sm font-medium">
-                    {total_employees ?? '-'}
+                    {total_employees && total_employees > 0
+                      ? numberWithCommas(total_employees)
+                      : '-'}
                   </span>
                 </div>
 
                 <div className="flex flex-col">
-                  <span className="text-xs">No of rounds</span>
+                  <span className="text-xs">Rounds</span>
                   <span className="text-sm font-medium">
-                    {investment_rounds_aggregate?.aggregate?.count ?? '-'}
+                    {investment_rounds_aggregate?.aggregate?.count &&
+                    investment_rounds_aggregate?.aggregate?.count > 0
+                      ? investment_rounds_aggregate?.aggregate?.count
+                      : '-'}
                   </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs">Funding</span>
                   <span className="text-sm font-medium">
-                    {investor_amount
+                    {investor_amount && investor_amount > 0
                       ? `$${convertToInternationalCurrencySystem(
                           Number(investor_amount),
                         )}`

@@ -84,19 +84,21 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 <div className="flex flex-col">
                   <span className="text-xs">Founded</span>
                   <span className="text-sm font-medium">
-                    {year_founded ?? '-'}
+                    {year_founded && year_founded !== '' ? year_founded : '-'}
                   </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs">Investments</span>
                   <span className="text-sm font-medium">
-                    {num_of_investments ?? '-'}
+                    {num_of_investments && num_of_investments > 0
+                      ? num_of_investments
+                      : '-'}
                   </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs">Funding</span>
                   <span className="text-sm font-medium">
-                    {investment_amount_total
+                    {investment_amount_total && investment_amount_total > 0
                       ? `$${convertToInternationalCurrencySystem(
                           Number(investment_amount_total),
                         )}`
