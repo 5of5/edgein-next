@@ -104,14 +104,6 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
         <div>
           {currentJob && (
             <div className="text-gray-500 text-sm">
-              {currentJob.organization?.location_json && (
-                <div className="flex gap-x-1 mb-2">
-                  <IconLocation className="w-5 h-5" strokeWidth={1.5} />
-                  <span className="leading-5">
-                    {getFullAddress(currentJob.organization.location_json)}
-                  </span>
-                </div>
-              )}
               <div>
                 {currentJob.title}
                 {currentJob.organization?.slug ? (
@@ -142,6 +134,14 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   <span>&middot;</span>
                   <span>
                     {getTimeOfWork(currentJob.start_date, currentJob.end_date)}
+                  </span>
+                </div>
+              )}
+              {currentJob.organization?.location_json && (
+                <div className="flex gap-x-1 mt-2">
+                  <IconLocation className="w-5 h-5" strokeWidth={1.5} />
+                  <span className="leading-5">
+                    {getFullAddress(currentJob.organization.location_json)}
                   </span>
                 </div>
               )}

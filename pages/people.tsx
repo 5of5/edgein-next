@@ -118,7 +118,11 @@ const People: NextPage<Props> = ({
       offset: offset,
       limit: limit,
       where: filters as People_Bool_Exp,
-      orderBy: [{ created_at: Order_By.Desc } as People_Order_By],
+      orderBy: [
+        selectedTab?.value === 'new'
+          ? ({ created_at: Order_By.Desc } as People_Order_By)
+          : ({ updated_at: Order_By.DescNullsLast } as People_Order_By),
+      ],
     },
     { refetchOnWindowFocus: false },
   );
@@ -189,7 +193,7 @@ const People: NextPage<Props> = ({
             </div>
           ) : (
             <>
-              <div className="text-2xl font-medium my-4">{pageTitle}</div>
+              <div className="text-4xl font-medium my-4">{pageTitle}</div>
               <div
                 data-testid="people"
                 className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
@@ -250,7 +254,7 @@ export const getStaticProps: GetStaticProps = async () => {
     where: {
       _and: [{ library: { _contains: 'Web3' } }],
     },
-    orderBy: [{ created_at: Order_By.Desc }],
+    orderBy: [{ updated_at: Order_By.Desc }],
   });
 
   return {
