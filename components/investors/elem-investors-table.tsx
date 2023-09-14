@@ -309,7 +309,10 @@ export const InvestorsTable: FC<Props> = ({
         Header: 'Last Investment Date',
         accessor: (data: {
           investments: {
-            investment_round: Pick<Investment_Rounds, 'amount' | 'round' | 'round_date' | 'id'>;
+            investment_round: Pick<
+              Investment_Rounds,
+              'amount' | 'round' | 'round_date' | 'id'
+            >;
           }[];
         }) => {
           const latestRound = data?.investments?.[0]?.investment_round;
@@ -329,7 +332,10 @@ export const InvestorsTable: FC<Props> = ({
         Header: 'Last Investment Type',
         accessor: (data: {
           investments: {
-            investment_round: Pick<Investment_Rounds, 'amount' | 'round' | 'round_date' | 'id'>;
+            investment_round: Pick<
+              Investment_Rounds,
+              'amount' | 'round' | 'round_date' | 'id'
+            >;
           }[];
         }) => {
           const latestRound = data?.investments?.[0]?.investment_round;
@@ -344,7 +350,10 @@ export const InvestorsTable: FC<Props> = ({
         Header: 'Last Investment Amount',
         accessor: (data: {
           investments: {
-            investment_round: Pick<Investment_Rounds, 'amount' | 'round' | 'round_date' | 'id'>;
+            investment_round: Pick<
+              Investment_Rounds,
+              'amount' | 'round' | 'round_date' | 'id'
+            >;
           }[];
         }) => {
           const latestRound = data?.investments?.[0]?.investment_round;

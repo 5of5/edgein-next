@@ -195,7 +195,10 @@ query GetVCFirmsRecentInvestments(
     num_of_investments
     sentiment
     overview
-    investments(limit:1, order_by:{investment_round:{round_date:desc_nulls_last}}) {
+    investments(
+      limit: 1
+      order_by: { investment_round: { round_date: desc_nulls_last } }
+    ) {
       investment_round {
         id
         round_date
