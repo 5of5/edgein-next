@@ -30,7 +30,7 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { ElemCategories } from '@/components/dashboard/elem-categories';
+// import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
 
 type Props = {
