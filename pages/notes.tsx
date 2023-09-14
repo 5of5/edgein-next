@@ -6,7 +6,6 @@ import { IconDocumentDownload } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
 import { PlaceholderNote } from '@/components/placeholders';
 import { orderBy } from 'lodash';
-//import { useAuth } from "@/hooks/useAuth";
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 
@@ -66,27 +65,30 @@ const Notes: FC<Props> = () => {
         ) : isLoading ? (
           <div className="flex flex-col gap-y-4 mt-4">
             {Array.from({ length: 2 }, (_, i) => (
-              <div key={i} className="max-w-2xl bg-white shadow rounded-lg">
+              <div
+                key={i}
+                className="max-w-2xl border border-gray-300 rounded-lg"
+              >
                 <PlaceholderNote />
               </div>
             ))}
           </div>
         ) : notes.length === 0 ? (
-          <div className="max-w-2xl bg-white shadow rounded-lg px-5 py-4">
-            <div className="w-full p-12 text-center">
+          <div className="max-w-2xl border border-gray-300 rounded-lg px-5 py-4">
+            <div className="text-center">
               <IconDocumentDownload
-                className="mx-auto h-12 w-12 text-slate-300"
+                className="mx-auto h-12 w-12 text-gray-300"
                 title="notes"
               />
-              <h3 className="mt-2 text-lg font-bold">No notes yet.</h3>
-              <p className="mt-1 text-slate-600">
+              <h3 className="mt-2 text-lg font-medium">No notes yet.</h3>
+              <p className="mt-1 text-gray-500">
                 Get started by creating a note in a company or investor profile.
               </p>
               <div className="mt-2 flex justify-center space-x-2">
-                <ElemButton href="/companies" btn="white" arrow>
+                <ElemButton href="/companies" btn="default">
                   Companies
                 </ElemButton>
-                <ElemButton href="/investors" btn="white" arrow>
+                <ElemButton href="/investors" btn="default">
                   Investors
                 </ElemButton>
               </div>

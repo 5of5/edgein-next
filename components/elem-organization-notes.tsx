@@ -138,7 +138,7 @@ const ElemOrganizationNotes: FC<Props> = ({
               imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
               imgAlt={user?.display_name}
               placeholder="user"
-              placeholderClass="text-slate-300"
+              placeholderClass="text-gray-300"
             />
             <div
               className="w-full cursor-pointer px-4 py-2 border border-gray-300 text-gray-500 text-sm rounded-lg"
@@ -150,14 +150,16 @@ const ElemOrganizationNotes: FC<Props> = ({
 
           {sortedNotes?.length != 0 && (
             <div className="mt-4 grid grid-cols-1 gap-4">
-              {sortedNotes.map(item => (
-                <ElemNoteCard
-                  key={item.id}
-                  data={item}
-                  refetch={refetch}
-                  layout="author"
-                />
-              ))}
+              {sortedNotes.map(note => {
+                return (
+                  <ElemNoteCard
+                    key={note.id}
+                    data={note}
+                    refetch={refetch}
+                    layout="author"
+                  />
+                );
+              })}
             </div>
           )}
         </div>
@@ -166,7 +168,7 @@ const ElemOrganizationNotes: FC<Props> = ({
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
         title="You have not linked your account to a profile on EdgeIn"
-        content="Search your name and claim profile to be able to comment."
+        content="Search your name and claim profile to create note."
         onClose={onCloseLinkPersonDialog}
         onClickSearch={onClickSearchName}
       />
