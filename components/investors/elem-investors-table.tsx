@@ -384,14 +384,14 @@ export const InvestorsTable: FC<Props> = ({
       //       return out;
       //     }
       //   },
-        Cell: (props: any) => {
-          return (
-            <div>
-              {props.value ? <>${numberWithCommas(props.value)}</> : emptyCell}
-            </div>
-          );
-        },
-      },
+      //   Cell: (props: any) => {
+      //     return (
+      //       <div>
+      //         {props.value ? <>${numberWithCommas(props.value)}</> : emptyCell}
+      //       </div>
+      //     );
+      //   },
+      // },
       {
         Header: 'Reactions',
         accessor: 'vc_firm' as const,
