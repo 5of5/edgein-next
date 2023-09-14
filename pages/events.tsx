@@ -244,18 +244,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     sortItem => sortItem.value === orderByParam,
   )?.id;
 
-  const getOrderBy = () => {
-    if (selectedTab?.value === 'past') {
-      return { start_date: Order_By.Desc };
-    }
-
-    if (selectedTab?.value === 'trending') {
-      return { num_of_views: Order_By.Desc };
-    }
-
-    return orderByQuery;
-  };
-
   const {
     data: eventsData,
     error,
@@ -267,7 +255,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
 
       where: filters as Events_Bool_Exp,
-      orderBy: [getOrderBy() as Events_Order_By],
+      orderBy: orderByQuery,
     },
     { refetchOnWindowFocus: false },
   );
@@ -283,7 +271,10 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const showPersonalized = user && !selectedFilters && !selectedTab;
 
-  const pageTitle = `All ${user ? selectedLibrary : ''} events`;
+  const pageTitle =
+    selectedTab?.value === 'upcoming'
+      ? `${user ? `${selectedLibrary} events` : 'Events'} in the next 7 days`
+      : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} events`;
 
   return (
     <DashboardLayout>
@@ -462,44 +453,48 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 </div>
               </div>
             </div>
-          ) : isLoading && !initialLoad ? (
-            <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderEventCard key={i} />
-              ))}
-            </div>
           ) : (
-            events?.length !== 0 && (
-              <>
-                <div className="flex justify-between my-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
-                  {/* Removed in qol-ui-fixes */}
-                  {/* <ElemDropdown
+            <>
+              <div className="flex justify-between my-8">
+                <div className="text-4xl font-medium">{pageTitle}</div>
+                {/* Removed in qol-ui-fixes */}
+                {/* <ElemDropdown
                       IconComponent={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
                     /> */}
-                </div>
-                <div
-                  data-testid="events"
-                  className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
-                >
-                  {events?.map(event => (
-                    <ElemEventCard key={event.id} event={event} />
+              </div>
+              {isLoading && !initialLoad ? (
+                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <PlaceholderEventCard key={i} />
                   ))}
                 </div>
+              ) : (
+                events?.length !== 0 && (
+                  <>
+                    <div
+                      data-testid="events"
+                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
+                    >
+                      {events?.map(event => (
+                        <ElemEventCard key={event.id} event={event} />
+                      ))}
+                    </div>
 
-                <Pagination
-                  shownItems={events?.length}
-                  totalItems={events_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
-                />
-              </>
-            )
+                    <Pagination
+                      shownItems={events?.length}
+                      totalItems={events_aggregate}
+                      page={page}
+                      itemsPerPage={limit}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      onClickToPage={selectedPage => setPage(selectedPage)}
+                    />
+                  </>
+                )
+              )}
+            </>
           )}
 
           {events?.length === 0 && (

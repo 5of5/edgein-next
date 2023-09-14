@@ -362,7 +362,9 @@ const Investors: NextPage<Props> = ({
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
-  const pageTitle = `All ${user ? selectedLibrary : ''} investors`;
+  const pageTitle = `${selectedStatusTag?.title || 'All'} ${
+    user ? selectedLibrary : ''
+  } investors`;
 
   return (
     <DashboardLayout>
@@ -603,7 +605,7 @@ const Investors: NextPage<Props> = ({
               <>
                 <div className="flex justify-between my-8">
                   <div className="text-4xl font-medium">{pageTitle}</div>
-                  {!isNewTabSelected && (
+                  {!selectedStatusTag && (
                     <ElemDropdown
                       IconComponent={IconSortDashboard}
                       items={sortItems}
@@ -628,7 +630,7 @@ const Investors: NextPage<Props> = ({
                   <>
                     <div className="flex justify-between my-8">
                       <div className="text-4xl font-medium">{pageTitle}</div>
-                      {!isNewTabSelected && (
+                      {!selectedStatusTag && (
                         <ElemDropdown
                           IconComponent={IconSortDashboard}
                           items={sortItems}
