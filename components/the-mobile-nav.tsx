@@ -21,6 +21,7 @@ import {
   IconUserCircle,
   IconSearch,
   IconX,
+  IconHome,
 } from '@/components/icons';
 import { Transition } from '@headlessui/react';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -58,85 +59,84 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     setNavOpen(false);
   };
 
-  const baseNav: ExploreMenuItem[] = useMemo(
-    () => [
-      {
-        icon: IconCompanies,
-        title: 'Companies',
-        href: '/companies',
-      },
-      {
-        icon: IconCash,
-        title: 'Investors',
-        href: '/investors',
-      },
-      {
-        icon: IconCalendar,
-        title: 'Events',
-        href: '/events',
-      },
-      {
-        icon: IconNewspaper,
-        title: 'News',
-        href: '/news',
-      },
-    ],
-    [],
-  );
+  const baseNav: ExploreMenuItem[] = [
+    {
+      icon: IconCompanies,
+      title: 'Companies',
+      href: '/companies',
+    },
+    {
+      icon: IconCash,
+      title: 'Investors',
+      href: '/investors',
+    },
+    {
+      icon: IconCalendar,
+      title: 'Events',
+      href: '/events',
+    },
+    {
+      icon: IconNewspaper,
+      title: 'News',
+      href: '/news',
+    },
+  ];
 
-  const bottomNav: ExploreMenuItem[] = useMemo(
-    () => [
-      ...baseNav,
-      {
-        icon: IconBell,
-        title: 'Notifications',
-        href: '/notifications',
-      },
-    ],
-    [baseNav],
-  );
+  const bottomNav: ExploreMenuItem[] = [
+    ...(user
+      ? [
+          {
+            href: '/home/',
+            icon: IconHome,
+            title: 'Home',
+          },
+        ]
+      : []),
+    ...baseNav,
+    {
+      icon: IconBell,
+      title: 'Notifications',
+      href: '/notifications',
+    },
+  ];
 
-  const menuPanel: ExploreMenuItem[] = useMemo(
-    () => [
-      ...(user
-        ? [
-            {
-              icon: IconDocumentDownload,
-              title: 'Notes',
-              href: '/notes',
-            },
-            {
-              icon: IconGroup,
-              title: 'Groups',
-              href: '/groups',
-            },
-            {
-              icon: IconCustomList,
-              title: 'Lists',
-              href: '/lists',
-            },
-          ]
-        : []),
-      ...baseNav,
-      ...(user
-        ? [
-            {
-              icon: IconSettings,
-              title: 'Account Settings',
-              href: '/account',
-            },
-          ]
-        : []),
-    ],
-    [baseNav, user],
-  );
+  const menuPanel: ExploreMenuItem[] = [
+    ...(user
+      ? [
+          {
+            icon: IconDocumentDownload,
+            title: 'Notes',
+            href: '/notes',
+          },
+          {
+            icon: IconGroup,
+            title: 'Groups',
+            href: '/groups',
+          },
+          {
+            icon: IconCustomList,
+            title: 'Lists',
+            href: '/lists',
+          },
+        ]
+      : []),
+    ...baseNav,
+    ...(user
+      ? [
+          {
+            icon: IconSettings,
+            title: 'Account Settings',
+            href: '/account',
+          },
+        ]
+      : []),
+  ];
 
   return (
     <>
       <div
-        className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
-      >
-        <ul className="grid grid-cols-6 w-full bg-white px-0.5 pb-0.5">
+        className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}>
+        <ul className="grid grid-cols-8 w-full bg-white px-0.5 pb-0.5">
           {bottomNav.map((item, index) => (
             <li
               key={index}
@@ -144,13 +144,11 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 router.pathname == item?.href && navOpen === false
                   ? 'border-t-2 border-primary-500'
                   : 'border-t-2 border-transparent'
-              }`}
-            >
+              }`}>
               <Link href={item?.href ? item.href : ''}>
                 <a
                   onClick={onClose}
-                  className="flex flex-col items-center h-full text-[11px]"
-                >
+                  className="flex flex-col items-center h-full text-[11px]">
                   {item?.icon && (
                     <div className="relative flex items-center justify-center h-7 aspect-square">
                       {unreadNotificationsCount > 0 &&
@@ -174,12 +172,10 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
               navOpen
                 ? 'border-t-2 border-primary-500'
                 : 'border-t-2 border-transparent'
-            }`}
-          >
+            }`}>
             <a
               onClick={onToggleMenu}
-              className="flex flex-col items-center h-full text-[11px] cursor-pointer"
-            >
+              className="flex flex-col items-center h-full text-[11px] cursor-pointer">
               {user?.person?.picture ? (
                 <ElemPhoto
                   photo={user?.person?.picture}
@@ -209,8 +205,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
         enterTo="translate-x-0"
         leave="transition ease-in-out duration-300 transform"
         leaveFrom="translate-x-0"
-        leaveTo="translate-x-full"
-      >
+        leaveTo="translate-x-full">
         <div className="fixed -top-12 left-0 right-0 bottom-0 z-40">
           <div className="bg-gray-50 h-screen">
             <div className="flex justify-between items-center px-4 py-3">
@@ -219,15 +214,13 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 <ElemButton
                   onClick={onOpenSearch}
                   btn="gray"
-                  className="h-9 w-9 !px-0 !py-0"
-                >
+                  className="h-9 w-9 !px-0 !py-0">
                   <IconSearch className="h-5 w-5" strokeWidth={1.5} />
                 </ElemButton>
                 <ElemButton
                   onClick={onClose}
                   btn="gray"
-                  className="h-9 w-9 !px-0 !py-0 outline-none"
-                >
+                  className="h-9 w-9 !px-0 !py-0 outline-none">
                   <IconX className="h-5 w-5" />
                 </ElemButton>
               </div>
@@ -238,8 +231,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                   <Link href={item?.href ? item.href : ''}>
                     <a
                       onClick={onClose}
-                      className="block p-3 outline-none bg-white shadow rounded-lg"
-                    >
+                      className="block p-3 outline-none bg-white shadow rounded-lg">
                       {item?.icon && (
                         <item.icon
                           title={item.title}
@@ -261,16 +253,14 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                     UserService.logout();
                     setNavOpen(false);
                   }}
-                  className="w-full"
-                >
+                  className="w-full">
                   Sign out
                 </ElemButton>
               ) : (
                 <ElemButton
                   onClick={() => router.push('/companies')}
                   btn="primary"
-                  className="w-full"
-                >
+                  className="w-full">
                   Start for free
                 </ElemButton>
               )}

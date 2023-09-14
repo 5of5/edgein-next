@@ -5,6 +5,7 @@ import {
   IconCompanies,
   IconCalendarDays,
   IconNewspaper,
+  IconHome,
 } from '@/components/icons';
 import { Resource_Edit_Access, useGetUserProfileQuery } from '@/graphql/types';
 import dynamic from 'next/dynamic';
@@ -62,7 +63,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
     }
   }, [users]);
 
-  const exploreMenu: ExploreMenuItem[] = [
+  let exploreMenu: ExploreMenuItem[] = [
     {
       href: '/companies/',
       icon: IconCompanies,
@@ -84,6 +85,17 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
       title: 'News',
     },
   ];
+
+  if(user) {
+    exploreMenu = [
+      {
+        href: '/home/',
+        icon: IconHome,
+        title: 'Home',
+      },
+      ...exploreMenu
+    ];
+  }
 
   return (
     <div className={`p-4 text-gray-600 ${className}`}>

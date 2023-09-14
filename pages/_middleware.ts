@@ -59,7 +59,7 @@ export async function middleware(req: NextRequest) {
       if (!userExists.onboarding_information?.locationDetails) {
         return NextResponse.redirect(new URL('/onboarding', req.url));
       }
-      return NextResponse.rewrite(new URL('/companies', req.url));
+      return NextResponse.rewrite(new URL('/home', req.url));
     }
 
     // Prevent security issues – users should not be able to canonically access
@@ -131,7 +131,7 @@ export async function middleware(req: NextRequest) {
         (url.pathname === '/onboarding/' &&
           user.onboarding_information?.locationDetails)
       ) {
-        return NextResponse.redirect(new URL('/companies', req.url));
+        return NextResponse.redirect(new URL('/home', req.url));
       }
 
       if (
