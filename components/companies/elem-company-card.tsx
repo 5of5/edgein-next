@@ -26,11 +26,14 @@ import {
   numberWithCommas,
 } from '@/utils';
 
+export type CardType = 'full' | 'compact';
+
 type Props = {
   company: Companies;
+  type?: CardType;
 };
 
-export const ElemCompanyCard: FC<Props> = ({ company }) => {
+export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
   const router = useRouter();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -158,8 +161,8 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                   </span>
                 </div>
               </div>
-
-              {overview && (
+              
+              {type === 'full' && overview && (
                 <div className="mt-4 text-sm line-clamp-3 text-gray-500">
                   {overview}
                 </div>
@@ -168,7 +171,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
           </Link>
 
           <div>
-            {!isEmptyLocationJson && (
+            {type === 'full' && !isEmptyLocationJson && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
                   title={getFullAddress(location_json)}

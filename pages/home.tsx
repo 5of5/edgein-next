@@ -108,6 +108,7 @@ const Home: NextPage = () => {
           <div className="mx-8">
             <div className="flex flex-col gap-4 gap-x-8">
               <CompaniesByFilter
+                cardType='compact'
                 headingText={`Companies`}
                 tagOnClick={null}
                 itemsPerPage={ITEMS_PER_PAGE}
@@ -137,6 +138,7 @@ const Home: NextPage = () => {
               />
 
               <InvestorsByFilter
+                cardType='compact'
                 headingText={`Investors`}
                 tagOnClick={null}
                 itemsPerPage={ITEMS_PER_PAGE}
@@ -168,6 +170,7 @@ const Home: NextPage = () => {
               {isSelectedTagLocation && (
                 <>
                   <CompaniesByFilter
+                    cardType='compact'
                     headingText="New companies ✨"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
@@ -227,6 +230,7 @@ const Home: NextPage = () => {
                   <div>
                     <h2>Recently updated 🔄</h2>
                     <CompaniesByFilter
+                      cardType='compact'
                       headingText={`Companies`}
                       tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
@@ -255,6 +259,7 @@ const Home: NextPage = () => {
                       }}
                     />
                     <InvestorsByFilter
+                      cardType='compact'
                       headingText={`Investors`}
                       tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
@@ -323,6 +328,7 @@ const Home: NextPage = () => {
               <div>
                 <h2>Companies 🏢</h2>
                 <CompaniesByFilter
+                  cardType='compact'
                   headingText="Recently funded"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -350,6 +356,7 @@ const Home: NextPage = () => {
                   }}
                 />
                 <CompaniesByFilter
+                  cardType='compact'
                   headingText="Recently founded"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -372,6 +379,7 @@ const Home: NextPage = () => {
               <div>
                 <h2>Investors 💵</h2>
                 <InvestorsByFilter
+                  cardType='compact'
                   headingText="Recently active investors"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -394,6 +402,7 @@ const Home: NextPage = () => {
                   }}
                 />
                 <InvestorsByFilter
+                  cardType='compact'
                   headingText="Recent exits"
                   tagOnClick={null}
                   itemsPerPage={ITEMS_PER_PAGE}
