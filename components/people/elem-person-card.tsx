@@ -151,16 +151,17 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                 )}
               </div>
             )}
+            {personTags.length > 0 && (
+              <ElemTags
+                className="my-4"
+                limit={CARD_DEFAULT_TAGS_LIMIT}
+                resourceType={'people'}
+                tags={personTags}
+              />
+            )}
           </div>
         </div>
-        {personTags.length > 0 && (
-          <ElemTags
-            className="my-4"
-            limit={CARD_DEFAULT_TAGS_LIMIT}
-            resourceType={'people'}
-            tags={personTags}
-          />
-        )}
+
         <div className="flex items-center justify-between mt-2 gap-x-5">
           <div className="flex items-center space-x-1.5">
             {user?.entitlements?.viewEmails && personEmails.length > 0 ? (
