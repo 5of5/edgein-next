@@ -20,7 +20,7 @@ import {
   IconPaperAirplane,
   IconPaperAirplaneSolid,
 } from '@/components/icons';
-import { GetNotesQuery, useGetUserProfileQuery } from '@/graphql/types';
+import { GetNotesQuery, useGetUserByIdQuery } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
 import { Popover, Transition } from '@headlessui/react';
 import { InputTextarea } from '../input-textarea';
@@ -101,11 +101,15 @@ const ElemNoteCard: React.FC<Props> = ({
   const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
     useState<boolean>(false);
 
-  const { data: users } = useGetUserProfileQuery({
-    id: user?.id ?? 0,
+  const { data: userById } = useGetUserByIdQuery({
+    id: data?.created_by || 0,
   });
 
-  const userHasProfile = users?.users_by_pk?.person ? true : false;
+  const userHasProfile = userById?.users[0]?.person ? true : false;
+
+  const noteCreatedByName = userHasProfile
+    ? data?.created_by_user?.person?.name || data?.created_by_user?.display_name
+    : userById?.users[0]?.display_name || userById?.users[0]?.person?.name;
 
   // Edit Notes
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
@@ -439,6 +443,7 @@ const ElemNoteCard: React.FC<Props> = ({
                     />
                   </a>
                 </Link>
+
                 {data?.created_by_user?.person ? (
                   <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
                     <a className="absolute -right-1 -bottom-1">
@@ -446,10 +451,7 @@ const ElemNoteCard: React.FC<Props> = ({
                         photo={data?.created_by_user?.person?.picture}
                         wrapClass=""
                         imgClass="object-fit h-7 w-7 border border-white rounded-full"
-                        imgAlt={
-                          data?.created_by_user?.person?.name ||
-                          data?.created_by_user?.display_name
-                        }
+                        imgAlt={noteCreatedByName}
                         placeholder="user"
                         placeholderClass="text-gray-300 bg-white p-0"
                       />
@@ -459,7 +461,7 @@ const ElemNoteCard: React.FC<Props> = ({
                   <ElemPhoto
                     wrapClass="absolute -right-1 -bottom-1"
                     imgClass="object-fit h-7 w-7 border border-white rounded-full"
-                    imgAlt={`Created by`}
+                    imgAlt={noteCreatedByName}
                     placeholder="user"
                     placeholderClass="text-gray-300 bg-white p-0"
                   />
@@ -474,11 +476,7 @@ const ElemNoteCard: React.FC<Props> = ({
                         photo={data?.created_by_user?.person?.picture}
                         wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
                         imgClass="object-fit max-w-full max-h-full rounded-full"
-                        imgAlt={
-                          data?.created_by_user?.person?.name ||
-                          data?.created_by_user?.display_name ||
-                          `User: ${data?.created_by}`
-                        }
+                        imgAlt={noteCreatedByName}
                         placeholder="user"
                         placeholderClass="text-gray-300 bg-white p-0"
                       />
@@ -488,7 +486,7 @@ const ElemNoteCard: React.FC<Props> = ({
                   <ElemPhoto
                     wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
                     imgClass="object-fit max-w-full max-h-full rounded-full"
-                    imgAlt={`Created by`}
+                    imgAlt={noteCreatedByName}
                     placeholder="user"
                     placeholderClass="text-gray-300 bg-white p-0"
                   />
@@ -507,9 +505,7 @@ const ElemNoteCard: React.FC<Props> = ({
                     </a>
                   </Link>
                 ) : (
-                  <div className="inline font-medium">
-                    {data.created_by_user?.person?.name}
-                  </div>
+                  <div className="inline font-medium">{noteCreatedByName}</div>
                 )}{' '}
                 {layout === 'organizationAndAuthor' && (
                   <div className="inline">
