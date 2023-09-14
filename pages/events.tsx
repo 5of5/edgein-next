@@ -176,7 +176,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -190,7 +191,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -269,14 +271,18 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   const showPersonalized = user && !selectedFilters && !selectedTab;
 
-  const pageTitle = `All ${user ? selectedLibrary : ''} events`;
+  const pageTitle =
+    selectedTab?.value === 'upcoming'
+      ? `${user ? `${selectedLibrary} events` : 'Events'} in the next 7 days`
+      : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} events`;
 
   return (
     <DashboardLayout>
       <div className="relative">
         <div
           className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <ElemCategories
             categories={eventTabs}
             selectedCategory={selectedTab}
@@ -439,52 +445,56 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                         `Hi EdgeIn, I'd like to report an error on events page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
                 </div>
               </div>
             </div>
-          ) : isLoading && !initialLoad ? (
-            <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderEventCard key={i} />
-              ))}
-            </div>
           ) : (
-            events?.length !== 0 && (
-              <>
-                {!selectedTab && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">{pageTitle}</div>
-                    {/* Removed in qol-ui-fixes */}
-                    {/* <ElemDropdown
+            <>
+              <div className="flex justify-between my-8">
+                <div className="text-4xl font-medium">{pageTitle}</div>
+                {/* Removed in qol-ui-fixes */}
+                {/* <ElemDropdown
                       IconComponent={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
                     /> */}
-                  </div>
-                )}
-                <div
-                  data-testid="events"
-                  className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4">
-                  {events?.map(event => (
-                    <ElemEventCard key={event.id} event={event} />
+              </div>
+              {isLoading && !initialLoad ? (
+                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <PlaceholderEventCard key={i} />
                   ))}
                 </div>
+              ) : (
+                events?.length !== 0 && (
+                  <>
+                    <div
+                      data-testid="events"
+                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
+                    >
+                      {events?.map(event => (
+                        <ElemEventCard key={event.id} event={event} />
+                      ))}
+                    </div>
 
-                <Pagination
-                  shownItems={events?.length}
-                  totalItems={events_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
-                />
-              </>
-            )
+                    <Pagination
+                      shownItems={events?.length}
+                      totalItems={events_aggregate}
+                      page={page}
+                      itemsPerPage={limit}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      onClickToPage={selectedPage => setPage(selectedPage)}
+                    />
+                  </>
+                )
+              )}
+            </>
           )}
 
           {events?.length === 0 && (
@@ -503,7 +513,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                     )
                   }
                   btn="white"
-                  className="mt-3">
+                  className="mt-3"
+                >
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>
