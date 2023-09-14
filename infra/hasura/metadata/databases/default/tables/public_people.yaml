@@ -139,6 +139,7 @@ select_permissions:
         - city
         - country
         - created_at
+        - datapoints_count
         - email
         - facebook_url
         - github
