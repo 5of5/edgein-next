@@ -122,3 +122,25 @@ export const IngestPeopleReqSchema = z.object({
   people: z.array(z.string()).min(1),
   enrichmentPriority: z.number().int().min(0),
 });
+
+export const IncomingNewsItemSchema = z.object({
+  date: z.date(),
+  text: z.string(),
+  link: z.string(),
+  kind: z.literal('news'),
+  status: z.enum(['draft', 'published']),
+  source: z.object({
+      url: z.string(),
+      path: z.string(),
+      title:z.string(),
+      domain: z.string(),
+      region: z.literal("en"),
+      poweredby: z.string(),
+  }), 
+  metadata: z.object({
+      image: z.string().optional(),
+      description: z.string().optional(),
+  }),
+  authors: z.array(z.string()).optional(),
+  library: z.array(z.string()),
+});

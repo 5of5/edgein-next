@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import { processNotificationOnSubmitData } from '@/utils/notifications';
 import {
-  ActionType,
   ResourceTypes,
   isResourceType,
   NODE_NAME,
@@ -10,65 +9,21 @@ import {
 } from '@/utils/constants';
 import { User } from '@/models/user';
 import {
-  partnerLookUp,
   resourceIdLookup,
   fieldLookup,
   mutateActionAndDataRaw,
   deleteMainTableRecord,
   insertActionDataChange,
   markDataRawAsInactive,
-  insertDataDiscard,
+  validateRequest,
 } from '@/utils/submit-data';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import CookieService from '@/utils/cookie';
 import {
   convertNextToCommonRequest,
   convertNextToCommonResp,
   CommonRequest,
   CommonResponse,
 } from '@/utils/api';
-
-const addSpecialRelationships = async (
-  resourceType: ResourceTypes,
-  resourceObj: Record<string, any>,
-) => {
-  try {
-    const specialRelationships: Array<Record<string, any>> = [];
-    if (resourceType === 'news') {
-      const newsContent = resourceObj?.metadata?.description;
-      if (newsContent) {
-        const newsPeople: Array<Record<string, any>> = [];
-        const newscompanies: Array<Record<string, any>> = [];
-        const ret = await fetch(
-          `${process.env.DANDLEION_API_URL}?text=${newsContent}&include=types&token=${process.env.DANDLEION_API_TOKEN}`,
-        );
-        const data = await ret.json();
-        if (data.annotations)
-          for (const entity of data.annotations) {
-            if (
-              entity.types.includes('http://dbpedia.org/ontology/Person') &&
-              !newsPeople.map(item => item['people:name']).includes(entity.spot)
-            )
-              newsPeople.push({ 'people:name': entity.spot });
-            else if (
-              !newscompanies
-                .map(item => item['companies:name'])
-                .includes(entity.spot)
-            )
-              newscompanies.push({ 'companies:name': entity.spot });
-          }
-
-        if (newsPeople.length > 0)
-          specialRelationships.push({ news_person: newsPeople });
-        if (newscompanies.length > 0)
-          specialRelationships.push({ news_organizations: newscompanies });
-      }
-    }
-    return specialRelationships;
-  } catch (error: any) {
-    return [];
-  }
-};
 
 const handleResource = async (
   partnerId: number,
@@ -78,9 +33,7 @@ const handleResource = async (
   resourceType: ResourceTypes,
   forceUpdate: Boolean,
 ) => {
-  const resourceRelationships: Array<Record<string, any>> = [
-    ...(await addSpecialRelationships(resourceType, resourceObj)),
-  ];
+  const resourceRelationships: Array<Record<string, any>> = [];
   for (const key in resourceObj) {
     if (isResourceType(key)) {
       resourceRelationships.push({ [key]: resourceObj[key] });
@@ -154,16 +107,10 @@ export const commonHandler = async (
   req: CommonRequest,
   res: CommonResponse,
 ) => {
-  if (!['POST', 'PUT', 'DELETE'].includes(req.method as string))
-    return res.status(405).send({ message: 'Method is not allowed' });
-  let user: (User & { _iat?: number }) | null = null;
-  try {
-    const token = CookieService.getAuthToken(req.cookies);
-    user = await CookieService.getUser(token);
-  } catch (error) {
-    user = null;
-  }
-  const apiKey: string = req.body.partner_api_key;
+  const validate = await validateRequest(req, res);
+  if (!validate) return;
+  const { partnerId, user } = validate;
+  if (!partnerId && !user) return res.status(400).send({ message: 'Bad Request' });
   const resourceType: ResourceTypes = req.body.resource_type;
   const resourceIdentifier:
     | Array<Array<Record<string, any>>>
@@ -175,25 +122,14 @@ export const commonHandler = async (
   let resourceIdentifiers: Array<Array<Record<string, any>>> = [];
   let resourceIds: Array<number | undefined> = [];
   let resourceObjs: Array<Record<string, any>> = [];
-  let partnerId = 0;
 
   try {
     if (
-      apiKey === undefined ||
       resourceIdentifier === undefined ||
       resourceObj === undefined ||
       resourceType === undefined
-    )
+    ) {
       return res.status(400).send({ message: 'Bad Request' });
-
-    // Identify partner or admin
-    const partner = await partnerLookUp(apiKey);
-    if (partner?.id === undefined) {
-      if (!(user?.role === 'admin')) {
-        return res.status(401).send({ message: 'Unauthorized Partner' });
-      }
-    } else {
-      partnerId = partner.id;
     }
 
     // Resource object can be an array (for one record) or an array of array (for list of records)

@@ -27,6 +27,8 @@ import {
   isResourceType,
   RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from './constants';
+import CookieService from '@/utils/cookie';
+import { CommonRequest, CommonResponse } from './api';
 
 export const partnerLookUp = async (apiKey: string) => {
   const {
@@ -59,10 +61,9 @@ export const resourceIdLookup = async (
       if (!identifierMethod) identifierMethod = '_eq';
 
       argumentList.push(
-        `$${item.field}: ${
-          typeof item.value === 'number' || item.field === 'id'
-            ? 'Int!'
-            : 'String!'
+        `$${item.field}: ${typeof item.value === 'number' || item.field === 'id'
+          ? 'Int!'
+          : 'String!'
         }`,
       );
       filterClauses.push(
@@ -366,6 +367,117 @@ const notFoundAction = async (
   });
 };
 
+type validateAndTransformFieldReturn = 
+  { success: true, validData: Record<string, any>} |
+  { success: false, invalidData: Record<string, any>}
+
+export const validateAndTransformField = async (fieldPathLookup: string, field: string, isAdmin: boolean, resourceType: ResourceTypes, resourceObj: Record<string, any>, library: Library[], currentTime: Date, partnerId: number, userId: number | undefined, resourceId: number): Promise<validateAndTransformFieldReturn> => {
+  let value = resourceObj[field];
+  const dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
+  if (
+    dataField === undefined ||
+    (dataField?.restricted_admin && isAdmin)
+  )
+    return {
+      success: false,
+      invalidData: {
+        resource: resourceType,
+        field,
+        message: 'Invalid Field',
+      }
+    };
+  else {
+    let transformedValue = value;
+    if (dataField.regex_transform)
+      transformedValue = util.format(
+        dataField.regex_transform,
+        transformedValue,
+      );
+    if (dataField.data_type)
+      transformedValue = formatValue(transformedValue, dataField.data_type);
+    if (
+      !validateValue(
+        resourceType,
+        field,
+        transformedValue,
+        library,
+      )
+    ) {
+      const dataObject = [
+        {
+          resource: resourceType,
+          field,
+          value: resourceObj[field],
+          partner: partnerId,
+          accuracy_weight: 1,
+          resource_id: resourceId,
+        },
+      ];
+      await insertDataDiscard(dataObject);
+      return {
+        success: false,
+        invalidData: {}
+      }
+    }
+
+    return {
+      success: true,
+      validData: {
+        created_at: currentTime,
+        partner: partnerId,
+        user_id: userId,
+        resource: resourceType,
+        resource_id: resourceId,
+        field,
+        value: transformedValue === null ? '' : transformedValue,
+        accuracy_weight: 1,
+      }
+    };
+  }
+}
+
+type convertLookupFieldReturn = 
+  { success: true, field: string, value: string} |
+  { success: false, invalidData: Record<string, any>}
+
+export const convertLookupField = async (resourceType: ResourceTypes, resourceId: number, resourceObj: Record<string, any>, field: string): Promise<convertLookupFieldReturn> => {
+    // If field is lookup pattern <resource_type>:<field>
+    // we convert the field to <resource_type>_id and lookup for its value
+    let value = resourceObj[field];
+    if (field.includes(':') && field.split(':').length == 2) {
+      const [lookupResourceType, lookupField] = field.split(':');
+      if (isResourceType(lookupResourceType)) {
+        const lookupResource: string = NODE_NAME[lookupResourceType];
+        if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
+          value = await resourceIdLookup(lookupResourceType, [
+            { field: lookupField, value },
+          ]);
+          field =
+            lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
+          if (!value && !resourceId) {
+            // Insert new record but lookup value is not found
+            await notFoundAction(resourceType, resourceObj);
+            throw new Error(`Lookup value not found ${resourceType}`);
+          }
+          return { field, value, success: true };
+        } else {
+          return { success: false, invalidData: {
+            resource: lookupResourceType,
+            lookupField,
+            message: 'Invalid Field',
+          }};
+        }
+      } else {
+        return { success: false, invalidData: {
+          resource: lookupResourceType,
+          lookupField,
+          message: 'Invalid Resource Type',
+        }};
+      }
+    }
+    return { field, value, success: true };
+}
+
 export const mutateActionAndDataRaw = async (
   partnerId: number,
   user: User | null,
@@ -392,113 +504,38 @@ export const mutateActionAndDataRaw = async (
 
   for (let field in resourceObj) {
     let value = resourceObj[field];
-    // If field is lookup pattern <resource_type>:<field>
-    // we convert the field to <resource_type>_id and lookup for its value
-    if (field.includes(':') && field.split(':').length == 2) {
-      const [lookupResourceType, lookupField] = field.split(':');
-      if (isResourceType(lookupResourceType)) {
-        const lookupResource: string = NODE_NAME[lookupResourceType];
-        if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
-          value = await resourceIdLookup(lookupResourceType, [
-            { field: lookupField, value },
-          ]);
-          field =
-            lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
-          if (!value && !resourceId) {
-            // Insert new record but lookup value is not found
-            await notFoundAction(resourceType, resourceObj);
-            throw new Error(`Lookup value not found ${resourceType}`);
-          }
-        } else {
-          invalidData.push({
-            resource: lookupResourceType,
-            lookupField,
-            message: 'Invalid Field',
-          });
-          continue;
-        }
-      } else {
-        invalidData.push({
-          resource: lookupResourceType,
-          lookupField,
-          message: 'Invalid Resource Type',
-        });
-        continue;
-      }
+    const convert = await convertLookupField(resourceType, resourceId, resourceObj, field)
+    if (!convert.success) {
+      invalidData.push(convert.invalidData)
+      continue;
+    }
+    field = convert.field;
+    value = convert.value;
+
+    if (notInsertValueType(value) && !resourceId) {
+      continue;
     }
 
-    if ((!resourceId && !notInsertValueType(value)) || resourceId) {
-      const dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
-      if (
-        dataField === undefined ||
-        (dataField?.restricted_admin && user?.role !== 'admin')
-      )
-        invalidData.push({
-          resource: resourceType,
-          field,
-          message: 'Invalid Field',
-        });
-      else {
-        let transformedValue = value;
-        if (dataField.regex_transform)
-          transformedValue = util.format(
-            dataField.regex_transform,
-            transformedValue,
-          );
-        if (dataField.data_type)
-          transformedValue = formatValue(transformedValue, dataField.data_type);
-        if (
-          !validateValue(
-            resourceType,
-            field,
-            transformedValue,
-            resourceObj?.library || existedData?.library,
-          )
-        ) {
-          const dataObject = [
-            {
-              resource: resourceType,
-              field,
-              value: resourceObj[field],
-              partner: partnerId,
-              accuracy_weight: 1,
-              resource_id: resourceId,
-            },
-          ];
-          await insertDataDiscard(dataObject);
-          continue;
-        }
-
-        if (
-          !existedData ||
-          (notInsertValueType(existedData[field]) &&
-            !notInsertValueType(value)) ||
-          forceUpdate
-        )
-          setMainTableValues[field] = transformedValue;
-
-        validData.push({
-          created_at: currentTime,
-          partner: partnerId,
-          user_id: user?.id,
-          resource: resourceType,
-          resource_id: resourceId,
-          field,
-          value: transformedValue === null ? '' : transformedValue,
-          accuracy_weight: 1,
-        });
-
-        const actionResponse = await insertActionDataChange(
-          resourceId ? 'Change Data' : 'Insert Data',
-          resourceId,
-          resourceType,
-          { [field]: value },
-          user?.id,
-          partnerId,
-        );
-        actions.push(actionResponse?.id || 0);
-      }
+    const validateTransform = await validateAndTransformField(fieldPathLookup, field, user?.role === 'admin', resourceType, resourceObj, resourceObj.library || existedData.library , currentTime, partnerId, user?.id, resourceId)
+    if (!validateTransform.success) {
+      invalidData.push(validateTransform.invalidData)
+      continue;
     }
+    validData.push(validateTransform.validData)
+  }
+
+  for (let validDataIndex in validData) {
+    const validDataValue = validData[validDataIndex];
+    const actionResponse = await insertActionDataChange(
+      resourceId ? 'Change Data' : 'Insert Data',
+      resourceId,
+      resourceType,
+      { [validDataValue.field]: validDataValue.value },
+      user?.id,
+      partnerId,
+    );
+    actions.push(actionResponse?.id || 0);
+    setMainTableValues[validDataValue.field] = validDataValue.value;
   }
 
   if (resourceId)
@@ -527,3 +564,52 @@ export const getCompanyByRoundId = async (round_id: number) => {
   });
   return investment_rounds[0];
 };
+
+export const validateRequest = async (req: CommonRequest, res: CommonResponse) => {
+  if (!['POST', 'PUT', 'DELETE'].includes(req.method as string)) {
+    res.status(405).send({ message: 'Method is not allowed' });
+    return;
+  }
+  let user: (User & { _iat?: number }) | null = null;
+  try {
+    const token = CookieService.getAuthToken(req.cookies);
+    user = await CookieService.getUser(token);
+  } catch (error) {
+    user = null;
+  }
+  const apiKey: string = req.body.partner_api_key;
+  const resourceType: ResourceTypes = req.body.resource_type;
+  const resourceIdentifier:
+    | Array<Array<Record<string, any>>>
+    | Array<Record<string, any>> = req.body.resource_identifier;
+  const resourceObj: Array<Record<string, any>> | Record<string, any> =
+    req.body.resource;
+
+  let partnerId = 0;
+
+  if (
+    apiKey === undefined ||
+    resourceIdentifier === undefined ||
+    resourceObj === undefined ||
+    resourceType === undefined
+  ) {
+    res.status(400).send({ message: 'Bad Request' });
+    return;
+  }
+
+  // Identify partner or admin
+  const partner = await partnerLookUp(apiKey);
+  if (partner?.id === undefined) {
+    if (!(user?.role === 'admin')) {
+      res.status(401).send({ message: 'Unauthorized Partner' });
+      return;
+    }
+  } else {
+    partnerId = partner.id;
+  }
+
+  return {
+    partnerId,
+    user
+  }
+}
