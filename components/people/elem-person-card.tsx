@@ -1,4 +1,4 @@
-import { People, Investors, Team_Members } from '@/graphql/types';
+import { People } from '@/graphql/types';
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -53,12 +53,22 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
     ...(email ? [email] : []),
   ];
 
-  const getVcFirmJobs = investors as Investors[];
-  const getCompanyJobs = team_members as Team_Members[];
-  const mergedJobs = union(getVcFirmJobs, getCompanyJobs as any).filter(
-    item => item,
-  );
+  const mergedJobs = [
+    ...investors.map(item => ({
+      ...item,
+      type: 'investors',
+      organization: item.vc_firm,
+    })),
+    ...team_members.map(item => ({
+      ...item,
+      type: 'companies',
+      organization: item.company,
+    })),
+  ];
+
   const jobsByDateDesc = orderBy(mergedJobs, [item => item.end_date], ['desc']);
+
+  const currentJob = jobsByDateDesc[jobsByDateDesc.length - 1];
 
   const vcFirmTags = flatten(investors.map(item => item?.vc_firm?.tags));
   const companyTags = flatten(team_members.map(item => item?.company?.tags));
@@ -92,62 +102,51 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
           </a>
         </Link>
         <div>
-          {jobsByDateDesc?.slice(0, 1).map((job: any, index: number) => {
-            let organization;
-            if (job.company) {
-              organization = job.company;
-            } else if (job.vc_firm) {
-              organization = job.vc_firm;
-            }
-
-            const slug = job.company
-              ? `/companies/${organization.slug}`
-              : job.vc_firm
-              ? `/investors/${organization.slug}`
-              : null;
-
-            const location =
-              job.company?.location_json || job.vc_firm?.location_json;
-
-            return (
-              <div key={index} className="text-gray-500 text-sm">
-                {location && (
-                  <div className="flex gap-x-1 mb-2">
-                    <IconLocation className="w-5 h-5" strokeWidth={1.5} />
-                    <span className="leading-5">
-                      {getFullAddress(location)}
-                    </span>
-                  </div>
-                )}
-                <div>
-                  {job.title}
-                  {slug ? (
-                    <>
-                      {' at '}
-                      <Link href={slug}>
-                        <a className="text-gray-700 underline hover:no-underline">
-                          {organization.name}
-                        </a>
-                      </Link>
-                    </>
-                  ) : organization?.name ? (
-                    <> at {organization?.name}</>
-                  ) : (
-                    <> at Undisclosed organization</>
-                  )}
+          {currentJob && (
+            <div className="text-gray-500 text-sm">
+              {currentJob.organization?.location_json && (
+                <div className="flex gap-x-1 mb-2">
+                  <IconLocation className="w-5 h-5" strokeWidth={1.5} />
+                  <span className="leading-5">
+                    {getFullAddress(currentJob.organization.location_json)}
+                  </span>
                 </div>
-                {job.start_date && (
-                  <div className="flex space-x-1">
-                    <span>
-                      {getWorkDurationFromAndTo(job.start_date, job.end_date)}
-                    </span>
-                    <span>&middot;</span>
-                    <span>{getTimeOfWork(job.start_date, job.end_date)}</span>
-                  </div>
+              )}
+              <div>
+                {currentJob.title}
+                {currentJob.organization?.slug ? (
+                  <>
+                    {' at '}
+                    <Link
+                      href={`/${currentJob.type}/${currentJob.organization.slug}`}
+                    >
+                      <a className="text-gray-700 underline hover:no-underline">
+                        {currentJob.organization.name}
+                      </a>
+                    </Link>
+                  </>
+                ) : currentJob.organization?.name ? (
+                  <> at {currentJob.organization?.name}</>
+                ) : (
+                  <> at Undisclosed organization</>
                 )}
               </div>
-            );
-          })}
+              {currentJob.start_date && (
+                <div className="flex space-x-1">
+                  <span>
+                    {getWorkDurationFromAndTo(
+                      currentJob.start_date,
+                      currentJob.end_date,
+                    )}
+                  </span>
+                  <span>&middot;</span>
+                  <span>
+                    {getTimeOfWork(currentJob.start_date, currentJob.end_date)}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
       {personTags.length > 0 && (

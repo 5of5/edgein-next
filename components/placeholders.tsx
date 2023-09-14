@@ -1,4 +1,6 @@
-export const PlaceholderCompanyCard: React.FC = () => {
+import { FC } from 'react';
+
+export const PlaceholderCompanyCard: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
@@ -24,7 +26,7 @@ export const PlaceholderCompanyCard: React.FC = () => {
   );
 };
 
-export const PlaceholderNote: React.FC = () => {
+export const PlaceholderNote: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast px-5 py-4 bg-white rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
@@ -49,7 +51,7 @@ export const PlaceholderNote: React.FC = () => {
   );
 };
 
-export const PlaceholderPerson: React.FC = () => {
+export const PlaceholderPerson: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast bg-white rounded-lg md:h-full">
       <div className="flex items-center shrink-0 w-full py-2">
@@ -60,7 +62,7 @@ export const PlaceholderPerson: React.FC = () => {
   );
 };
 
-export const PlaceholderActivity: React.FC = () => {
+export const PlaceholderActivity: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast p-1 mb-6 bg-white rounded-lg md:h-full">
       <div className="flex items-center shrink-0 w-full mb-3 space-x-2">
@@ -74,7 +76,7 @@ export const PlaceholderActivity: React.FC = () => {
   );
 };
 
-export const PlaceholderNotification: React.FC = () => {
+export const PlaceholderNotification: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast p-2 bg-white rounded-lg md:h-full">
       <div className="flex items-center shrink-0 w-full">
@@ -89,7 +91,7 @@ export const PlaceholderNotification: React.FC = () => {
   );
 };
 
-export const PlaceholderTable: React.FC = () => {
+export const PlaceholderTable: FC = () => {
   return (
     <>
       <table className="animate-pulse-fast table-auto min-w-full divide-y divide-black/10 overscroll-x-none">
@@ -199,7 +201,7 @@ export const PlaceholderTable: React.FC = () => {
   );
 };
 
-export const PlaceholderInvestorCard: React.FC = () => {
+export const PlaceholderInvestorCard: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast p-5 bg-white border border-dark-500/10 rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
@@ -220,7 +222,7 @@ export const PlaceholderInvestorCard: React.FC = () => {
   );
 };
 
-export const PlaceholderEventCard: React.FC = () => {
+export const PlaceholderEventCard: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast p-5 bg-white border border-dark-500/10 rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
@@ -243,7 +245,7 @@ export const PlaceholderEventCard: React.FC = () => {
   );
 };
 
-export const PlaceholderNewsCard: React.FC = () => {
+export const PlaceholderNewsCard: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast px-5 py-4 bg-white rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
@@ -268,7 +270,7 @@ export const PlaceholderNewsCard: React.FC = () => {
   );
 };
 
-export const PlaceholderPersonCard: React.FC = () => {
+export const PlaceholderPersonCard: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">

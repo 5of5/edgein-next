@@ -118,11 +118,7 @@ const People: NextPage<Props> = ({
       offset: offset,
       limit: limit,
       where: filters as People_Bool_Exp,
-      orderBy: [
-        selectedTab?.value === 'new'
-          ? ({ created_at: Order_By.Desc } as People_Order_By)
-          : ({ datapoints_count: Order_By.DescNullsLast } as People_Order_By),
-      ],
+      orderBy: [{ created_at: Order_By.Desc } as People_Order_By],
     },
     { refetchOnWindowFocus: false },
   );
@@ -138,7 +134,9 @@ const People: NextPage<Props> = ({
 
   const { showNewMessages } = useIntercom();
 
-  const pageTitle = `All ${user ? selectedLibrary : ''} people`;
+  const pageTitle = `${selectedTab?.title || 'All'} ${
+    user ? selectedLibrary : ''
+  } people`;
 
   return (
     <DashboardLayout>
@@ -154,7 +152,7 @@ const People: NextPage<Props> = ({
           />
 
           <div className="flex flex-wrap gap-2">
-            {!isDisplaySelectLibrary && <ElemLibrarySelector />}
+            {isDisplaySelectLibrary && <ElemLibrarySelector />}
           </div>
         </div>
 
@@ -252,7 +250,7 @@ export const getStaticProps: GetStaticProps = async () => {
     where: {
       _and: [{ library: { _contains: 'Web3' } }],
     },
-    orderBy: [{ datapoints_count: Order_By.DescNullsLast }],
+    orderBy: [{ created_at: Order_By.Desc }],
   });
 
   return {
