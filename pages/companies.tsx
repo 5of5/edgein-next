@@ -100,6 +100,7 @@ const Companies: NextPage<Props> = ({
   const isSortDropdownVisible = ['Dead', 'Raising'].includes(
     selectedStatusTag?.value || '',
   );
+
   const [tableLayout, setTableLayout] = useState(false);
 
   const [sortBy, setSortBy] = useState('mostRelevant');
@@ -357,7 +358,9 @@ const Companies: NextPage<Props> = ({
 
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
 
-  const pageTitle = `All ${user ? selectedLibrary : ''} companies`;
+  const pageTitle = `${selectedStatusTag?.title || 'All'} ${
+    user ? selectedLibrary : ''
+  } companies`;
 
   return (
     <DashboardLayout>
@@ -623,7 +626,7 @@ const Companies: NextPage<Props> = ({
             <>
               <div className="flex justify-between py-8">
                 <div className="text-4xl font-medium">{pageTitle}</div>
-                {!isNewTabSelected && (
+                {!selectedStatusTag && (
                   <ElemDropdown
                     IconComponent={IconSortDashboard}
                     items={sortItems}
