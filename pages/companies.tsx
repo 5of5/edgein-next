@@ -625,6 +625,7 @@ const Companies: NextPage<Props> = ({
           ) : (
             <>
               <div className="flex justify-between py-8">
+                This one
                 <div className="text-4xl font-medium">{pageTitle}</div>
                 {!selectedStatusTag && (
                   <ElemDropdown
@@ -650,10 +651,6 @@ const Companies: NextPage<Props> = ({
                 </>
               ) : tableLayout && companies?.length != 0 ? (
                 <>
-                  <div className="flex justify-between py-8">
-                    <div className="text-4xl font-medium">{pageTitle}</div>
-                  </div>
-
                   <CompaniesTable
                     companies={companies}
                     pageNumber={page}

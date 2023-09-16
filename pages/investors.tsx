@@ -628,16 +628,6 @@ const Investors: NextPage<Props> = ({
                   </>
                 ) : tableLayout && vcFirms?.length != 0 ? (
                   <>
-                    <div className="flex justify-between my-8">
-                      <div className="text-4xl font-medium">{pageTitle}</div>
-                      {!selectedStatusTag && (
-                        <ElemDropdown
-                          IconComponent={IconSortDashboard}
-                          items={sortItems}
-                        />
-                      )}
-                    </div>
-
                     <InvestorsTable
                       investors={vcFirms}
                       pageNumber={page}
