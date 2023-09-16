@@ -1,7 +1,8 @@
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useGetNotesQuery, Notes_Bool_Exp } from '@/graphql/types';
+import { useRouter } from 'next/router';
 import { GetStaticProps } from 'next';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { IconDocumentDownload } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
 import { PlaceholderNote } from '@/components/placeholders';
@@ -12,7 +13,19 @@ import { ElemButton } from '@/components/elem-button';
 type Props = {};
 
 const Notes: FC<Props> = () => {
+  const router = useRouter();
   const { user, myGroups } = useUser();
+
+  useEffect(() => {
+    if (!user) {
+      redirectToSignIn();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const redirectToSignIn = () => {
+    router.push('/sign-in');
+  };
 
   const {
     data: noteList,
