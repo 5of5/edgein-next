@@ -29,6 +29,7 @@ query GetEvents(
     telegram
     is_featured
     created_at
+    library
     event_person {
       id
       type

@@ -156,7 +156,10 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   const showPersonalized = user && !selectedTab;
 
-  const pageTitle = `All ${user ? selectedLibrary : ''} news`;
+  const pageTitle =
+    selectedTab?.value === '7days'
+      ? `${user ? `${selectedLibrary} news` : 'News'} from the last 7 days`
+      : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} news`;
 
   return (
     <DashboardLayout>
@@ -228,31 +231,6 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             </div>
           )}
 
-          {news?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
-
           <div className="flex justify-between py-8">
             <div className="text-4xl font-medium">{pageTitle}</div>
           </div>
@@ -281,6 +259,31 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             onClickToPage={selectedPage => setPage(selectedPage)}
           />
         </div>
+
+        {news?.length === 0 && (
+          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+              <div className="mt-1 text-lg text-slate-600">
+                Please check spelling, try different filters, or tell us about
+                missing data.
+              </div>
+              <ElemButton
+                onClick={() =>
+                  showNewMessages(
+                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                  )
+                }
+                btn="white"
+                className="mt-3"
+              >
+                <IconAnnotation className="w-6 h-6 mr-1" />
+                Tell us about missing data
+              </ElemButton>
+            </div>
+          </div>
+        )}
 
         <Toaster />
       </div>
