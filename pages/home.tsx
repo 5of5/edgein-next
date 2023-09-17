@@ -21,6 +21,9 @@ import CookieService from '@/utils/cookie';
 import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import moment from 'moment';
 import { EventsByFilter } from '@/components/events/elem-events-by-filter';
+import { CompaniesByFilterInSection } from '@/components/companies/elem-companies-by-filter-insection';
+import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
+import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -53,12 +56,13 @@ const Home: NextPage = () => {
     };
   };
 
-  // useEffect(() => {
-
-  // }, [user, locationTags]);
-
   const [selectedStatusTag, setSelectedStatusTag] =
     useState<DashboardCategory | null>(getFirstOrDefaultCategory());
+
+  useEffect(() => {
+    setSelectedStatusTag(getFirstOrDefaultCategory());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const isSelectedTagLocation = locationTags.includes(
     selectedStatusTag?.title || '',
@@ -105,71 +109,285 @@ const Home: NextPage = () => {
         {selectedStatusTag && selectedStatusTag.title !== GLOBAL_TAG && (
           <div className="mx-8">
             <div className="flex flex-col gap-4 gap-x-8">
-              <CompaniesByFilter
-                cardType="compact"
-                headingText={`Companies`}
-                tagOnClick={null}
-                itemsPerPage={ITEMS_PER_PAGE}
-                isTableView={false}
-                orderBy={{
-                  num_of_views: Order_By.Desc,
-                }}
-                filters={{
-                  _and: [
-                    ...defaultFilters,
-                    { num_of_views: { _is_null: false } },
-                    isSelectedTagLocation
-                      ? {
-                          location_json: {
-                            _contains: {
-                              city: `${selectedStatusTag.title}`,
+              <div className="mt-9">
+                <h2 className="text-2xl font-medium">Trending 🔥</h2>
+                <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <CompaniesByFilterInSection
+                    cardType="compact"
+                    headingText={`Companies`}
+                    tagOnClick={null}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={false}
+                    orderBy={{
+                      num_of_views: Order_By.Desc,
+                    }}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        { num_of_views: { _is_null: false } },
+                        isSelectedTagLocation
+                          ? {
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            }
+                          : {
+                              tags: {
+                                _contains: selectedStatusTag.title,
+                              },
                             },
-                          },
-                        }
-                      : {
-                          tags: {
-                            _contains: selectedStatusTag.title,
-                          },
-                        },
-                  ],
-                }}
-              />
+                      ],
+                    }}
+                  />
 
-              <InvestorsByFilter
-                cardType="compact"
-                headingText={`Investors`}
-                tagOnClick={null}
-                itemsPerPage={ITEMS_PER_PAGE}
-                isTableView={false}
-                orderBy={{
-                  num_of_views: Order_By.Desc,
-                }}
-                filters={{
-                  _and: [
-                    ...defaultFilters,
-                    { num_of_views: { _is_null: false } },
-                    isSelectedTagLocation
-                      ? {
-                          location_json: {
-                            _contains: {
-                              city: `${selectedStatusTag.title}`,
+                  <InvestorsByFilterInSection
+                    cardType="compact"
+                    headingText={`Investors`}
+                    tagOnClick={null}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={false}
+                    orderBy={{
+                      num_of_views: Order_By.Desc,
+                    }}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        { num_of_views: { _is_null: false } },
+                        isSelectedTagLocation
+                          ? {
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            }
+                          : {
+                              tags: {
+                                _contains: selectedStatusTag.title,
+                              },
                             },
-                          },
-                        }
-                      : {
-                          tags: {
-                            _contains: selectedStatusTag.title,
-                          },
-                        },
-                  ],
-                }}
-              />
+                      ],
+                    }}
+                  />
+
+                  <div className="mb-4" />
+                </div>
+              </div>
 
               {isSelectedTagLocation && (
                 <>
-                  <CompaniesByFilter
+                  <div className="mt-16">
+                    <h2 className="text-2xl font-medium">New companies ✨</h2>
+                    <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <CompaniesByFilterInSection
+                        cardType="compact"
+                        headingText=""
+                        tagOnClick={null}
+                        itemsPerPage={ITEMS_PER_PAGE}
+                        isTableView={false}
+                        orderBy={{
+                          year_founded: Order_By.Desc,
+                        }}
+                        filters={{
+                          _and: [
+                            ...defaultFilters,
+                            {
+                              year_founded: {
+                                _gte: moment()
+                                  .subtract(1, 'year')
+                                  .year()
+                                  .toString(),
+                              },
+                            },
+                            {
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            },
+                          ],
+                        }}
+                      />
+
+                      <div className="mb-4" />
+                    </div>
+                  </div>
+
+                  <div className="mt-16">
+                    <h2 className="text-2xl font-medium">Upcoming events 🗓️</h2>
+                    <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <EventsByFilterInSection
+                        cardType="compact"
+                        headingText=""
+                        tagOnClick={null}
+                        itemsPerPage={ITEMS_PER_PAGE}
+                        orderBy={{
+                          start_date: Order_By.Asc,
+                        }}
+                        filters={{
+                          _and: [
+                            ...defaultFilters,
+                            {
+                              start_date: {
+                                _gte: moment().format(ISO_DATE_FORMAT),
+                              },
+                            },
+                            {
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            },
+                          ],
+                        }}
+                      />
+                      <div className="mb-4" />
+                    </div>
+                  </div>
+
+                  <div className="mt-16">
+                    <h2 className="text-2xl font-medium">
+                      Recently updated 🔄
+                    </h2>
+                    <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <CompaniesByFilterInSection
+                        cardType="compact"
+                        headingText={`Companies`}
+                        tagOnClick={null}
+                        itemsPerPage={ITEMS_PER_PAGE}
+                        isTableView={false}
+                        orderBy={{
+                          updated_at: Order_By.Desc,
+                        }}
+                        filters={{
+                          _and: [
+                            ...defaultFilters,
+                            {
+                              updated_at: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format(ISO_DATE_FORMAT),
+                              },
+                            },
+                            {
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            },
+                          ],
+                        }}
+                      />
+                      <InvestorsByFilterInSection
+                        cardType="compact"
+                        headingText={`Investors`}
+                        tagOnClick={null}
+                        itemsPerPage={ITEMS_PER_PAGE}
+                        isTableView={false}
+                        orderBy={{
+                          updated_at: Order_By.Desc,
+                        }}
+                        filters={{
+                          _and: [
+                            { library: { _contains: selectedLibrary } },
+                            {
+                              updated_at: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format(ISO_DATE_FORMAT),
+                              },
+                            },
+                            {
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            },
+                          ],
+                        }}
+                      />
+                      <EventsByFilterInSection
+                        cardType="compact"
+                        headingText={`Events`}
+                        tagOnClick={null}
+                        itemsPerPage={ITEMS_PER_PAGE}
+                        orderBy={{
+                          start_date: Order_By.Asc,
+                        }}
+                        filters={{
+                          _and: [
+                            ...defaultFilters,
+                            {
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            },
+                            {
+                              updated_at: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format(ISO_DATE_FORMAT),
+                              },
+                            },
+                          ],
+                        }}
+                      />
+
+                      <div className="mb-4" />
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Global */}
+        {selectedStatusTag && selectedStatusTag.title === GLOBAL_TAG && (
+          <div className="mx-8">
+            <div className="flex flex-col gap-4 gap-x-8">
+              <div className="mt-9">
+                <h2 className="text-2xl font-medium">Companies 🏢</h2>
+                <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <CompaniesByFilterInSection
                     cardType="compact"
-                    headingText="New companies ✨"
+                    headingText="Recently funded"
+                    tagOnClick={null}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={false}
+                    orderBy={{
+                      investment_rounds_aggregate: {
+                        sum: {
+                          amount: Order_By.Desc,
+                        },
+                      },
+                    }}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          investment_rounds: {
+                            round_date: {
+                              _gte: moment()
+                                .subtract(28, 'days')
+                                .format(ISO_DATE_FORMAT),
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                  <CompaniesByFilterInSection
+                    cardType="compact"
+                    headingText="Recently founded"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -187,237 +405,59 @@ const Home: NextPage = () => {
                               .toString(),
                           },
                         },
-                        {
-                          location_json: {
-                            _contains: {
-                              city: `${selectedStatusTag.title}`,
-                            },
-                          },
-                        },
                       ],
                     }}
                   />
 
-                  <EventsByFilter
+                  <div className="mb-4" />
+                </div>
+              </div>
+
+              <div className="mt-16">
+                <h2 className="text-2xl font-medium">Investors 💵</h2>
+                <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <InvestorsByFilterInSection
                     cardType="compact"
-                    headingText={`Upcoming events 🗓️`}
+                    headingText="Recently active investors"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
-                    orderBy={{
-                      start_date: Order_By.Asc,
-                    }}
+                    isTableView={false}
                     filters={{
                       _and: [
                         ...defaultFilters,
                         {
-                          start_date: {
-                            _gte: moment().format(ISO_DATE_FORMAT),
-                          },
-                        },
-                        {
-                          location_json: {
-                            _contains: {
-                              city: `${selectedStatusTag.title}`,
+                          investments: {
+                            investment_round: {
+                              round_date: {
+                                _gte: moment()
+                                  .subtract(28, 'days')
+                                  .format(ISO_DATE_FORMAT),
+                              },
                             },
                           },
                         },
                       ],
                     }}
                   />
-
-                  {/* Recently updated */}
-                  <div>
-                    <h2>Recently updated 🔄</h2>
-                    <CompaniesByFilter
-                      cardType="compact"
-                      headingText={`Companies`}
-                      tagOnClick={null}
-                      itemsPerPage={ITEMS_PER_PAGE}
-                      isTableView={false}
-                      orderBy={{
-                        updated_at: Order_By.Desc,
-                      }}
-                      filters={{
-                        _and: [
-                          ...defaultFilters,
-                          {
-                            updated_at: {
-                              _gte: moment()
-                                .subtract(28, 'days')
-                                .format(ISO_DATE_FORMAT),
-                            },
-                          },
-                          {
-                            location_json: {
-                              _contains: {
-                                city: `${selectedStatusTag.title}`,
-                              },
-                            },
-                          },
-                        ],
-                      }}
-                    />
-                    <InvestorsByFilter
-                      cardType="compact"
-                      headingText={`Investors`}
-                      tagOnClick={null}
-                      itemsPerPage={ITEMS_PER_PAGE}
-                      isTableView={false}
-                      orderBy={{
-                        updated_at: Order_By.Desc,
-                      }}
-                      filters={{
-                        _and: [
-                          { library: { _contains: selectedLibrary } },
-                          {
-                            updated_at: {
-                              _gte: moment()
-                                .subtract(28, 'days')
-                                .format(ISO_DATE_FORMAT),
-                            },
-                          },
-                          {
-                            location_json: {
-                              _contains: {
-                                city: `${selectedStatusTag.title}`,
-                              },
-                            },
-                          },
-                        ],
-                      }}
-                    />
-                    <EventsByFilter
-                      cardType="compact"
-                      headingText={`Events`}
-                      tagOnClick={null}
-                      itemsPerPage={ITEMS_PER_PAGE}
-                      orderBy={{
-                        start_date: Order_By.Asc,
-                      }}
-                      filters={{
-                        _and: [
-                          ...defaultFilters,
-                          {
-                            location_json: {
-                              _contains: {
-                                city: `${selectedStatusTag.title}`,
-                              },
-                            },
-                          },
-                          {
-                            updated_at: {
-                              _gte: moment()
-                                .subtract(28, 'days')
-                                .format(ISO_DATE_FORMAT),
-                            },
-                          },
-                        ],
-                      }}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Global */}
-        {selectedStatusTag && selectedStatusTag.title === GLOBAL_TAG && (
-          <div className="mx-8">
-            <div className="flex flex-col gap-4 gap-x-8">
-              <div>
-                <h2>Companies 🏢</h2>
-                <CompaniesByFilter
-                  cardType="compact"
-                  headingText="Recently funded"
-                  tagOnClick={null}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={false}
-                  orderBy={{
-                    investment_rounds_aggregate: {
-                      sum: {
-                        amount: Order_By.Desc,
-                      },
-                    },
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        investment_rounds: {
-                          round_date: {
-                            _gte: moment()
-                              .subtract(28, 'days')
-                              .format(ISO_DATE_FORMAT),
+                  <InvestorsByFilterInSection
+                    cardType="compact"
+                    headingText="Recent exits"
+                    tagOnClick={null}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    isTableView={false}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          num_of_exits: {
+                            _gte: 0,
                           },
                         },
-                      },
-                    ],
-                  }}
-                />
-                <CompaniesByFilter
-                  cardType="compact"
-                  headingText="Recently founded"
-                  tagOnClick={null}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={false}
-                  orderBy={{
-                    year_founded: Order_By.Desc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        year_founded: {
-                          _gte: moment().subtract(1, 'year').year().toString(),
-                        },
-                      },
-                    ],
-                  }}
-                />
-              </div>
-              <div>
-                <h2>Investors 💵</h2>
-                <InvestorsByFilter
-                  cardType="compact"
-                  headingText="Recently active investors"
-                  tagOnClick={null}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={false}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        investments: {
-                          investment_round: {
-                            round_date: {
-                              _gte: moment()
-                                .subtract(28, 'days')
-                                .format(ISO_DATE_FORMAT),
-                            },
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-                <InvestorsByFilter
-                  cardType="compact"
-                  headingText="Recent exits"
-                  tagOnClick={null}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={false}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        num_of_exits: {
-                          _gte: 0,
-                        },
-                      },
-                    ],
-                  }}
-                />
+                      ],
+                    }}
+                  />
+                  <div className="mb-4" />
+                </div>
               </div>
             </div>
           </div>
