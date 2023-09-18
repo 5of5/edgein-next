@@ -97,9 +97,9 @@ const Companies: NextPage<Props> = ({
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
-  const isSortDropdownVisible = ['Dead', 'Raising'].includes(
-    selectedStatusTag?.value || '',
-  ) || !selectedStatusTag;
+  const isSortDropdownVisible =
+    ['Dead', 'Raising'].includes(selectedStatusTag?.value || '') ||
+    !selectedStatusTag;
 
   const [tableLayout, setTableLayout] = useState(false);
 

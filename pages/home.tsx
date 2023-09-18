@@ -90,10 +90,11 @@ const Home: NextPage = () => {
         </div>
 
         <ElemInviteBanner className="mx-8 mt-3" />
-        
+
         <div
           className="mt-8 px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <ElemCategories
             categories={categories.map((category, i) => ({
               title: category,
