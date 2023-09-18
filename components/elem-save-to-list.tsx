@@ -16,6 +16,7 @@ import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
+import { FREE_USER_MAXIMUM_LISTS } from '@/utils/constants';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 
 type Props = {
@@ -259,7 +260,8 @@ export const ElemSaveToList: FC<Props> = ({
   };
 
   const onClickShowCreateNew = () => {
-    const userListsLimit = user?.entitlements.listsCount ?? 5;
+    const userListsLimit =
+      user?.entitlements.listsCount ?? FREE_USER_MAXIMUM_LISTS;
 
     if (listsData.length > userListsLimit) {
       onOpenUpgradeDialog();
