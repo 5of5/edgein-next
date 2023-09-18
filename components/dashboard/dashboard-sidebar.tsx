@@ -92,14 +92,14 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
     },
   ];
 
-  if(user) {
+  if (user) {
     exploreMenu = [
       {
         href: '/home/',
         icon: IconHome,
         title: 'Home',
       },
-      ...exploreMenu
+      ...exploreMenu,
     ];
   }
 

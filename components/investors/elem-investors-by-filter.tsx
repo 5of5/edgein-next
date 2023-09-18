@@ -118,7 +118,8 @@ export const InvestorsByFilter: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8">
+            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
+          >
             {vc_firms?.map(vcFirm => (
               <ElemInvestorCard
                 key={vcFirm.id}

@@ -161,7 +161,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
                   </span>
                 </div>
               </div>
-              
+
               {type === 'full' && overview && (
                 <div className="mt-4 text-sm line-clamp-3 text-gray-500">
                   {overview}

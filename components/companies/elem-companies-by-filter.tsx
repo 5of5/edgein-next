@@ -31,7 +31,7 @@ export const CompaniesByFilter: FC<Props> = ({
   itemsPerPage,
   tagOnClick,
   isTableView = false,
-  cardType = 'full'
+  cardType = 'full',
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
