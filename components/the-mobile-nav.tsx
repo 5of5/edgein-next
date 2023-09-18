@@ -21,6 +21,7 @@ import {
   IconUserCircle,
   IconSearch,
   IconX,
+  IconUserGroup,
 } from '@/components/icons';
 import { Transition } from '@headlessui/react';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -80,6 +81,11 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
         title: 'News',
         href: '/news',
       },
+      {
+        icon: IconUserGroup,
+        title: 'People',
+        href: '/people',
+      },
     ],
     [],
   );
@@ -136,7 +142,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
       <div
         className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
       >
-        <ul className="grid grid-cols-6 w-full bg-white px-0.5 pb-0.5">
+        <ul className="grid grid-cols-7 w-full bg-white px-0.5 pb-0.5">
           {bottomNav.map((item, index) => (
             <li
               key={index}

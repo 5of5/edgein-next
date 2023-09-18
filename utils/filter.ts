@@ -999,6 +999,7 @@ export const getGroupsFilters = (
           id: { _eq: userId },
         },
       },
+      created_by_user_id: { _neq: userId },
     };
     return filters;
   }
@@ -1032,6 +1033,7 @@ export const getListsFilters = (selectedTab: ListsTabType, userId: number) => {
       list_members: {
         user_id: { _eq: userId },
       },
+      created_by_id: { _neq: userId },
     };
     return filters;
   }
