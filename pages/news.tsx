@@ -190,74 +190,80 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
         <ElemInviteBanner className="mx-8 my-3" />
 
         <div className="mx-8">
-          {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-8">
-              {personalizedTags.locationTags.map((location, index) => (
-                <NewsByFilter
-                  key={`${location}-${index}`}
-                  headingText={`Trending in ${location}`}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  orderBy={{
-                    updated_at: Order_By.Desc,
-                  }}
-                  filters={{
-                    _or: [
-                      {
-                        organizations: {
-                          company: {
-                            location_json: {
-                              _contains: {
-                                city: `${location}`,
-                              },
-                            },
-                          },
-                        },
-                      },
-                      {
-                        organizations: {
-                          vc_firm: {
-                            location_json: {
-                              _contains: {
-                                city: `${location}`,
-                              },
-                            },
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-            </div>
-          )}
-
-          <div className="flex justify-between py-8">
-            <div className="text-4xl font-medium">{pageTitle}</div>
-          </div>
-
-          <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-            {error ? (
-              <h4>Error loading news</h4>
-            ) : isLoading && !initialLoad ? (
+          <div className="flex flex-col gap-8 mt-6">
+            {showPersonalized && (
               <>
-                {Array.from({ length: 6 }, (_, i) => (
-                  <PlaceholderNewsCard key={i} />
+                {personalizedTags.locationTags.map((location, index) => (
+                  <NewsByFilter
+                    key={`${location}-${index}`}
+                    headingText={`Trending in ${location}`}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    orderBy={{
+                      updated_at: Order_By.Desc,
+                    }}
+                    filters={{
+                      _or: [
+                        {
+                          organizations: {
+                            company: {
+                              location_json: {
+                                _contains: {
+                                  city: `${location}`,
+                                },
+                              },
+                            },
+                          },
+                        },
+                        {
+                          organizations: {
+                            vc_firm: {
+                              location_json: {
+                                _contains: {
+                                  city: `${location}`,
+                                },
+                              },
+                            },
+                          },
+                        },
+                      ],
+                    }}
+                  />
                 ))}
               </>
-            ) : (
-              news?.map(item => <ElemNewsCard key={item.id} newsPost={item} />)
             )}
-          </div>
 
-          <Pagination
-            shownItems={news?.length}
-            totalItems={news_aggregate}
-            page={page}
-            itemsPerPage={limit}
-            onClickPrev={() => setPage(page - 1)}
-            onClickNext={() => setPage(page + 1)}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
+            <div>
+              <div className="flex justify-between py-8">
+                <div className="text-4xl font-medium">{pageTitle}</div>
+              </div>
+
+              <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                {error ? (
+                  <h4>Error loading news</h4>
+                ) : isLoading && !initialLoad ? (
+                  <>
+                    {Array.from({ length: 6 }, (_, i) => (
+                      <PlaceholderNewsCard key={i} />
+                    ))}
+                  </>
+                ) : (
+                  news?.map(item => (
+                    <ElemNewsCard key={item.id} newsPost={item} />
+                  ))
+                )}
+              </div>
+
+              <Pagination
+                shownItems={news?.length}
+                totalItems={news_aggregate}
+                page={page}
+                itemsPerPage={limit}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                onClickToPage={selectedPage => setPage(selectedPage)}
+              />
+            </div>
+          </div>
         </div>
 
         {news?.length === 0 && (
