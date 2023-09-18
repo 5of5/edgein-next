@@ -22,6 +22,7 @@ import {
   IconSearch,
   IconX,
   IconHome,
+  IconUserGroup,
 } from '@/components/icons';
 import { Transition } from '@headlessui/react';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -79,6 +80,11 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
       icon: IconNewspaper,
       title: 'News',
       href: '/news',
+    },
+    {
+      icon: IconUserGroup,
+      title: 'People',
+      href: '/people',
     },
   ];
 

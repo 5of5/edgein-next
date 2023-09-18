@@ -6,6 +6,7 @@ import {
   IconCalendarDays,
   IconNewspaper,
   IconHome,
+  IconUserGroup,
 } from '@/components/icons';
 import { Resource_Edit_Access, useGetUserProfileQuery } from '@/graphql/types';
 import dynamic from 'next/dynamic';
@@ -83,6 +84,11 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
       href: '/news/',
       icon: IconNewspaper,
       title: 'News',
+    },
+    {
+      href: '/people/',
+      icon: IconUserGroup,
+      title: 'People',
     },
   ];
 
