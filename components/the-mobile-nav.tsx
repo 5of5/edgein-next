@@ -142,7 +142,11 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
       <div
         className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
       >
-        <ul className={`grid grid-cols-${bottomNav.length + 1} w-full bg-white px-0.5 pb-0.5`}>
+        <ul
+          className={`grid grid-cols-${
+            bottomNav.length + 1
+          } w-full bg-white px-0.5 pb-0.5`}
+        >
           {bottomNav.map((item, index) => (
             <li
               key={index}

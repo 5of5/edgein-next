@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { Order_By, Companies_Bool_Exp } from '@/graphql/types';
+import {
+  Order_By,
+  Companies_Bool_Exp,
+  Vc_Firms_Bool_Exp,
+} from '@/graphql/types';
 import { Toaster } from 'react-hot-toast';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
@@ -14,13 +18,10 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
-import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import CookieService from '@/utils/cookie';
-import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import moment from 'moment';
-import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { CompaniesByFilterInSection } from '@/components/companies/elem-companies-by-filter-insection';
 import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
 import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
@@ -46,9 +47,9 @@ const Home: NextPage = () => {
     { library: { _contains: selectedLibrary } },
   ];
 
-  const filters: DeepPartial<Companies_Bool_Exp> = {
-    _and: defaultFilters,
-  };
+  const investorsDefaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
+    { library: { _contains: selectedLibrary } },
+  ];
 
   const getFirstOrDefaultCategory = () => {
     return {
@@ -157,7 +158,7 @@ const Home: NextPage = () => {
                     }}
                     filters={{
                       _and: [
-                        ...defaultFilters,
+                        ...investorsDefaultFilters,
                         { num_of_views: { _is_null: false } },
                         isSelectedTagLocation
                           ? {
@@ -428,7 +429,7 @@ const Home: NextPage = () => {
                     isTableView={false}
                     filters={{
                       _and: [
-                        ...defaultFilters,
+                        ...investorsDefaultFilters,
                         {
                           investments: {
                             investment_round: {
@@ -451,7 +452,7 @@ const Home: NextPage = () => {
                     isTableView={false}
                     filters={{
                       _and: [
-                        ...defaultFilters,
+                        ...investorsDefaultFilters,
                         {
                           num_of_exits: {
                             _gte: 0,
