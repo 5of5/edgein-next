@@ -65,7 +65,7 @@ export const EventsByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-4xl font-medium my-8">{headingText}</div>
+      <div className="text-4xl font-medium mb-5">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
         className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"

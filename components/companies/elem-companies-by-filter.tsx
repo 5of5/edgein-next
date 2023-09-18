@@ -67,7 +67,7 @@ export const CompaniesByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-4xl font-medium my-4">{headingText}</div>
+      <div className="text-4xl font-medium mb-5">{headingText}</div>
       {isTableView ? (
         <CompaniesTable
           companies={companies}
@@ -83,7 +83,7 @@ export const CompaniesByFilter: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
+            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {companies.map(company => (
               <ElemCompanyCard

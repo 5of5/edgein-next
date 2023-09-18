@@ -347,180 +347,182 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         <ElemInviteBanner className="mx-8 my-3" />
 
         <div className="mx-8">
-          {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-8">
-              {personalizedTags.locationTags.map(location => (
-                <EventsByFilter
-                  key={location}
-                  headingText={`Trending in ${location}`}
-                  tagOnClick={onClickType}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  orderBy={{
-                    num_of_views: Order_By.Desc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      { num_of_views: { _is_null: false } },
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
+          <div className="flex flex-col gap-8 mt-6">
+            {showPersonalized && (
+              <>
+                {personalizedTags.locationTags.map(location => (
+                  <EventsByFilter
+                    key={location}
+                    headingText={`Trending in ${location}`}
+                    tagOnClick={onClickType}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    orderBy={{
+                      num_of_views: Order_By.Desc,
+                    }}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        { num_of_views: { _is_null: false } },
+                        {
+                          location_json: {
+                            _contains: {
+                              city: `${location}`,
+                            },
                           },
                         },
-                      },
-                    ],
-                  }}
-                />
-              ))}
+                      ],
+                    }}
+                  />
+                ))}
 
-              {personalizedTags.locationTags.map(location => (
-                <EventsByFilter
-                  key={location}
-                  headingText={`Upcoming in ${location}`}
-                  tagOnClick={onClickType}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  orderBy={{
-                    start_date: Order_By.Asc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
+                {personalizedTags.locationTags.map(location => (
+                  <EventsByFilter
+                    key={location}
+                    headingText={`Upcoming in ${location}`}
+                    tagOnClick={onClickType}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    orderBy={{
+                      start_date: Order_By.Asc,
+                    }}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          location_json: {
+                            _contains: {
+                              city: `${location}`,
+                            },
                           },
                         },
-                      },
-                    ],
-                  }}
-                />
-              ))}
+                      ],
+                    }}
+                  />
+                ))}
 
-              {personalizedTags.locationTags.map(location => (
-                <EventsByFilter
-                  key={location}
-                  headingText={`Recently updated in ${location}`}
-                  tagOnClick={onClickType}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  orderBy={{
-                    start_date: Order_By.Asc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
+                {personalizedTags.locationTags.map(location => (
+                  <EventsByFilter
+                    key={location}
+                    headingText={`Recently updated in ${location}`}
+                    tagOnClick={onClickType}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    orderBy={{
+                      start_date: Order_By.Asc,
+                    }}
+                    filters={{
+                      _and: [
+                        ...defaultFilters,
+                        {
+                          location_json: {
+                            _contains: {
+                              city: `${location}`,
+                            },
                           },
                         },
-                      },
-                      {
-                        updated_at: {
-                          _gte: moment()
-                            .subtract(28, 'days')
-                            .format(ISO_DATE_FORMAT),
+                        {
+                          updated_at: {
+                            _gte: moment()
+                              .subtract(28, 'days')
+                              .format(ISO_DATE_FORMAT),
+                          },
                         },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-            </div>
-          )}
+                      ],
+                    }}
+                  />
+                ))}
+              </>
+            )}
 
-          {error ? (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-              <div className="max-w-xl mx-auto">
-                <h4 className="mt-5 text-3xl font-bold">
-                  Error loading events
-                </h4>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, reset filters, or{' '}
-                  <button
-                    onClick={() =>
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to report an error on events page`,
-                      )
-                    }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
-                    <span>report error</span>
-                  </button>
-                  .
+            {error ? (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+                <div className="max-w-xl mx-auto">
+                  <h4 className="mt-5 text-3xl font-bold">
+                    Error loading events
+                  </h4>
+                  <div className="mt-1 text-lg text-slate-600">
+                    Please check spelling, reset filters, or{' '}
+                    <button
+                      onClick={() =>
+                        showNewMessages(
+                          `Hi EdgeIn, I'd like to report an error on events page`,
+                        )
+                      }
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
+                      <span>report error</span>
+                    </button>
+                    .
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <>
-              <div className="flex justify-between my-8">
-                <div className="text-4xl font-medium">{pageTitle}</div>
-                {/* Removed in qol-ui-fixes */}
-                {/* <ElemDropdown
+            ) : (
+              <div>
+                <div className="flex justify-between mb-5">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                  {/* Removed in qol-ui-fixes */}
+                  {/* <ElemDropdown
                       IconComponent={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
                     /> */}
-              </div>
-              {isLoading && !initialLoad ? (
-                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                  {Array.from({ length: 9 }, (_, i) => (
-                    <PlaceholderEventCard key={i} />
-                  ))}
                 </div>
-              ) : (
-                events?.length !== 0 && (
-                  <>
-                    <div
-                      data-testid="events"
-                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
-                    >
-                      {events?.map(event => (
-                        <ElemEventCard key={event.id} event={event} />
-                      ))}
-                    </div>
+                {isLoading && !initialLoad ? (
+                  <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    {Array.from({ length: 9 }, (_, i) => (
+                      <PlaceholderEventCard key={i} />
+                    ))}
+                  </div>
+                ) : (
+                  events?.length !== 0 && (
+                    <>
+                      <div
+                        data-testid="events"
+                        className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
+                      >
+                        {events?.map(event => (
+                          <ElemEventCard key={event.id} event={event} />
+                        ))}
+                      </div>
 
-                    <Pagination
-                      shownItems={events?.length}
-                      totalItems={events_aggregate}
-                      page={page}
-                      itemsPerPage={limit}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      onClickToPage={selectedPage => setPage(selectedPage)}
-                    />
-                  </>
-                )
-              )}
-            </>
-          )}
-
-          {events?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
+                      <Pagination
+                        shownItems={events?.length}
+                        totalItems={events_aggregate}
+                        page={page}
+                        itemsPerPage={limit}
+                        onClickPrev={() => setPage(page - 1)}
+                        onClickNext={() => setPage(page + 1)}
+                        onClickToPage={selectedPage => setPage(selectedPage)}
+                      />
+                    </>
+                  )
+                )}
               </div>
-            </div>
-          )}
+            )}
+
+            {events?.length === 0 && (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+                <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                  <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                  <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                  <div className="mt-1 text-lg text-slate-600">
+                    Please check spelling, try different filters, or tell us
+                    about missing data.
+                  </div>
+                  <ElemButton
+                    onClick={() =>
+                      showNewMessages(
+                        `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                      )
+                    }
+                    btn="white"
+                    className="mt-3"
+                  >
+                    <IconAnnotation className="w-6 h-6 mr-1" />
+                    Tell us about missing data
+                  </ElemButton>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <Toaster />

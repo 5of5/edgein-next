@@ -188,8 +188,8 @@ const People: NextPage<Props> = ({
             </div>
           ) : (
             <>
-              <div className="flex justify-between my-6">
-                <div className="text-4xl font-medium mt-4">{pageTitle}</div>
+              <div className="flex justify-between mt-6 mb-5">
+                <div className="text-4xl font-medium">{pageTitle}</div>
                 {/* Removed in qol-ui-fixes */}
                 {/* <ElemDropdown
                       IconComponent={IconSortDashboard}
