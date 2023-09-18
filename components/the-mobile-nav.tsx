@@ -21,6 +21,7 @@ import {
   IconUserCircle,
   IconSearch,
   IconX,
+  IconHome,
   IconUserGroup,
 } from '@/components/icons';
 import { Transition } from '@headlessui/react';
@@ -59,90 +60,93 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     setNavOpen(false);
   };
 
-  const baseNav: ExploreMenuItem[] = useMemo(
-    () => [
-      {
-        icon: IconCompanies,
-        title: 'Companies',
-        href: '/companies',
-      },
-      {
-        icon: IconCash,
-        title: 'Investors',
-        href: '/investors',
-      },
-      {
-        icon: IconCalendar,
-        title: 'Events',
-        href: '/events',
-      },
-      {
-        icon: IconNewspaper,
-        title: 'News',
-        href: '/news',
-      },
-      {
-        icon: IconUserGroup,
-        title: 'People',
-        href: '/people',
-      },
-    ],
-    [],
-  );
+  const baseNav: ExploreMenuItem[] = [
+    {
+      icon: IconCompanies,
+      title: 'Companies',
+      href: '/companies',
+    },
+    {
+      icon: IconCash,
+      title: 'Investors',
+      href: '/investors',
+    },
+    {
+      icon: IconCalendar,
+      title: 'Events',
+      href: '/events',
+    },
+    {
+      icon: IconNewspaper,
+      title: 'News',
+      href: '/news',
+    },
+    {
+      icon: IconUserGroup,
+      title: 'People',
+      href: '/people',
+    },
+  ];
 
-  const bottomNav: ExploreMenuItem[] = useMemo(
-    () => [
-      ...baseNav,
-      {
-        icon: IconBell,
-        title: 'Notifications',
-        href: '/notifications',
-      },
-    ],
-    [baseNav],
-  );
+  const bottomNav: ExploreMenuItem[] = [
+    ...(user
+      ? [
+          {
+            href: '/home',
+            icon: IconHome,
+            title: 'Home',
+          },
+        ]
+      : []),
+    ...baseNav,
+    {
+      icon: IconBell,
+      title: 'Notifications',
+      href: '/notifications',
+    },
+  ];
 
-  const menuPanel: ExploreMenuItem[] = useMemo(
-    () => [
-      ...(user
-        ? [
-            {
-              icon: IconDocumentDownload,
-              title: 'Notes',
-              href: '/notes',
-            },
-            {
-              icon: IconGroup,
-              title: 'Groups',
-              href: '/groups',
-            },
-            {
-              icon: IconCustomList,
-              title: 'Lists',
-              href: '/lists',
-            },
-          ]
-        : []),
-      ...baseNav,
-      ...(user
-        ? [
-            {
-              icon: IconSettings,
-              title: 'Account Settings',
-              href: '/account',
-            },
-          ]
-        : []),
-    ],
-    [baseNav, user],
-  );
-
+  const menuPanel: ExploreMenuItem[] = [
+    ...(user
+      ? [
+          {
+            icon: IconDocumentDownload,
+            title: 'Notes',
+            href: '/notes',
+          },
+          {
+            icon: IconGroup,
+            title: 'Groups',
+            href: '/groups',
+          },
+          {
+            icon: IconCustomList,
+            title: 'Lists',
+            href: '/lists',
+          },
+        ]
+      : []),
+    ...baseNav,
+    ...(user
+      ? [
+          {
+            icon: IconSettings,
+            title: 'Account Settings',
+            href: '/account',
+          },
+        ]
+      : []),
+  ];
   return (
     <>
       <div
         className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
       >
-        <ul className="grid grid-cols-7 w-full bg-white px-0.5 pb-0.5">
+        <ul
+          className={`grid ${
+            user ? 'grid-cols-8' : 'grid-cols-7'
+          } w-full bg-white px-0.5 pb-0.5`}
+        >
           {bottomNav.map((item, index) => (
             <li
               key={index}

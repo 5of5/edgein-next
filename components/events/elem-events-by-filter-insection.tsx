@@ -10,7 +10,7 @@ import { DeepPartial } from '@/types/common';
 import { times } from 'lodash';
 import { FC } from 'react';
 import { ElemFilter } from '../elem-filter';
-import { ElemEventCard } from '../events/elem-event-card';
+import { ElemEventCard } from './elem-event-card';
 import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
 import { CardType } from '../companies/elem-company-card';
@@ -24,7 +24,7 @@ type Props = {
   cardType?: CardType;
 };
 
-export const EventsByFilter: FC<Props> = ({
+export const EventsByFilterInSection: FC<Props> = ({
   headingText,
   filters,
   itemsPerPage,
@@ -68,7 +68,7 @@ export const EventsByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-4xl font-medium my-8">{headingText}</div>
+      <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
         className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
@@ -82,15 +82,17 @@ export const EventsByFilter: FC<Props> = ({
         ))}
       </div>
 
-      <Pagination
-        shownItems={events.length}
-        totalItems={events_aggregate.aggregate?.count ?? 0}
-        page={page}
-        itemsPerPage={itemsPerPage}
-        onClickPrev={previousPage}
-        onClickNext={nextPage}
-        onClickToPage={selectedPage => setPage(selectedPage)}
-      />
+      <div className="py-3 px-4">
+        <Pagination
+          shownItems={events.length}
+          totalItems={events_aggregate.aggregate?.count ?? 0}
+          page={page}
+          itemsPerPage={itemsPerPage}
+          onClickPrev={previousPage}
+          onClickNext={nextPage}
+          onClickToPage={selectedPage => setPage(selectedPage)}
+        />
+      </div>
     </div>
   );
 };

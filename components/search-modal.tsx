@@ -405,7 +405,7 @@ export default function SearchModal(props: any) {
       result => result.results?.nbHits === 0,
     );
 
-    if (emptyView.current) {
+    if (!results._state.query) {
       return (
         <div className="px-6 py-1 mt-5 text-center">
           <FigureSearch className="mx-auto h-36 lg:h-40" />
@@ -415,9 +415,7 @@ export default function SearchModal(props: any) {
           <div style={{ display: 'none' }}>{children}</div>
         </div>
       );
-    }
-
-    if (allEmpty) {
+    } else if (allEmpty) {
       return (
         <div className="w-full mt-5 px-6 py-1">
           <h3 className="font-bold">No results for “{results.query}“</h3>
@@ -431,6 +429,7 @@ export default function SearchModal(props: any) {
         </div>
       );
     }
+
     return children;
   }
 
@@ -495,10 +494,6 @@ export default function SearchModal(props: any) {
                         className="w-full"
                         placeholder="Quick Search..."
                         autoFocus={true}
-                        queryHook={(query, search) => {
-                          emptyView.current = query.length === 0;
-                          search(query);
-                        }}
                         classNames={{
                           submitIcon: 'hidden',
                           resetIcon: 'hidden',
@@ -528,7 +523,7 @@ export default function SearchModal(props: any) {
                       >
                         <Configure hitsPerPage={4} />
                         <h3 className="font-bold mt-5 mx-6">Companies</h3>
-                        <EmptyQueryBoundary>
+                        <EmptyQueryBoundary fallback={null}>
                           <InfiniteHits
                             hitComponent={HitCompanies(
                               onClose,
@@ -555,7 +550,7 @@ export default function SearchModal(props: any) {
                       >
                         <Configure hitsPerPage={4} />
                         <h3 className="font-bold mt-5 mx-6">Investors</h3>
-                        <EmptyQueryBoundary>
+                        <EmptyQueryBoundary fallback={null}>
                           <InfiniteHits
                             hitComponent={HitInvestors(
                               onClose,
@@ -605,7 +600,7 @@ export default function SearchModal(props: any) {
                       >
                         <Configure hitsPerPage={4} />
                         <h3 className="font-bold mt-5 mx-6">Events</h3>
-                        <EmptyQueryBoundary>
+                        <EmptyQueryBoundary fallback={null}>
                           <InfiniteHits
                             hitComponent={HitEvents(
                               onClose,
@@ -630,7 +625,7 @@ export default function SearchModal(props: any) {
                       >
                         <Configure hitsPerPage={4} />
                         <h3 className="font-bold mt-5 mx-6">News</h3>
-                        <EmptyQueryBoundary>
+                        <EmptyQueryBoundary fallback={null}>
                           <InfiniteHits
                             hitComponent={HitNews()}
                             showPrevious={false}
