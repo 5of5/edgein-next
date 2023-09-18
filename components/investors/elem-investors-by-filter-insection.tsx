@@ -128,15 +128,17 @@ export const InvestorsByFilterInSection: FC<Props> = ({
             ))}
           </div>
 
-          <Pagination
-            shownItems={vc_firms?.length ?? 0}
-            totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
-            page={page}
-            itemsPerPage={itemsPerPage}
-            onClickPrev={previousPage}
-            onClickNext={nextPage}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
+          <div className="py-3 px-4">
+            <Pagination
+              shownItems={vc_firms?.length ?? 0}
+              totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
+              page={page}
+              itemsPerPage={itemsPerPage}
+              onClickPrev={previousPage}
+              onClickNext={nextPage}
+              onClickToPage={selectedPage => setPage(selectedPage)}
+            />
+          </div>
         </div>
       )}
     </div>

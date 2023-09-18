@@ -81,15 +81,17 @@ export const EventsByFilterInSection: FC<Props> = ({
         ))}
       </div>
 
-      <Pagination
-        shownItems={events.length}
-        totalItems={events_aggregate.aggregate?.count ?? 0}
-        page={page}
-        itemsPerPage={itemsPerPage}
-        onClickPrev={previousPage}
-        onClickNext={nextPage}
-        onClickToPage={selectedPage => setPage(selectedPage)}
-      />
+      <div className="py-3 px-4">
+        <Pagination
+          shownItems={events.length}
+          totalItems={events_aggregate.aggregate?.count ?? 0}
+          page={page}
+          itemsPerPage={itemsPerPage}
+          onClickPrev={previousPage}
+          onClickNext={nextPage}
+          onClickToPage={selectedPage => setPage(selectedPage)}
+        />
+      </div>
     </div>
   );
 };

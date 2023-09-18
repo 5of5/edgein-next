@@ -46,8 +46,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
   return (
     <nav
       className={`${className} flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0`}
-      aria-label="Pagination"
-    >
+      aria-label="Pagination">
       <div className="flex-1 text-gray-500 text-sm">
         {shownItems === 0 ? (
           <></>
@@ -78,8 +77,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
               <>
                 <li
                   className="hidden cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500 sm:block"
-                  onClick={() => handleClickToPage(0)}
-                >
+                  onClick={() => handleClickToPage(0)}>
                   1
                 </li>
                 <li className="hidden font-bold px-3 py-1.5 text-slate-400 sm:block">
@@ -91,8 +89,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
             {page > 0 && (
               <li
                 className="cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500"
-                onClick={() => handleClickToPage(page - 1)}
-              >
+                onClick={() => handleClickToPage(page - 1)}>
                 {page}
               </li>
             )}
@@ -104,8 +101,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
             {totalItems > shownItemsEnd && (
               <li
                 className="cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500"
-                onClick={() => handleClickToPage(page + 1)}
-              >
+                onClick={() => handleClickToPage(page + 1)}>
                 {page + 2}
               </li>
             )}
@@ -117,8 +113,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
                 </li>
                 <li
                   className="hidden cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500 sm:block"
-                  onClick={() => handleClickToPage(totalPages - 1)}
-                >
+                  onClick={() => handleClickToPage(totalPages - 1)}>
                   {totalPages}
                 </li>
               </>
@@ -130,8 +125,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           <ElemButton
             onClick={onClickNext}
             className={numeric ? '' : 'sm:ml-3'}
-            btn="default"
-          >
+            btn="default">
             Next
           </ElemButton>
         )}
