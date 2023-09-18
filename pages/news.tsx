@@ -28,6 +28,7 @@ import {
   ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
+  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { onTrackView } from '@/utils/track';
@@ -102,6 +103,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab]);
 
+  if (selectedTab?.value === 'trending') {
+    filters._and?.push({
+      num_of_views: { _is_null: false },
+    });
+  }
+
   if (selectedTab?.value === 'today') {
     filters._and?.push({
       date: { _eq: moment().format(ISO_DATE_FORMAT) },
@@ -126,8 +133,13 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   } = useGetNewsQuery(
     {
       offset,
-      limit,
-      orderBy: [{ date: Order_By.Desc } as News_Order_By],
+      limit:
+        selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+      orderBy: [
+        selectedTab?.value === 'trending'
+          ? ({ num_of_views: Order_By.Desc } as News_Order_By)
+          : ({ date: Order_By.Desc } as News_Order_By),
+      ],
       where: filters as News_Bool_Exp,
     },
     { refetchOnWindowFocus: false },
@@ -143,6 +155,11 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     : newsData?.news_aggregate?.aggregate?.count || 0;
 
   const showPersonalized = user && !selectedTab;
+
+  const pageTitle =
+    selectedTab?.value === '7days'
+      ? `${user ? `${selectedLibrary} news` : 'News'} from the last 7 days`
+      : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} news`;
 
   return (
     <DashboardLayout>
@@ -214,36 +231,9 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             </div>
           )}
 
-          {news?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
-
-          {showPersonalized && (
-            <div className="flex justify-between py-8">
-              <div className="text-4xl font-medium">All news</div>
-            </div>
-          )}
+          <div className="flex justify-between py-8">
+            <div className="text-4xl font-medium">{pageTitle}</div>
+          </div>
 
           <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
@@ -269,6 +259,31 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             onClickToPage={selectedPage => setPage(selectedPage)}
           />
         </div>
+
+        {news?.length === 0 && (
+          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+              <div className="mt-1 text-lg text-slate-600">
+                Please check spelling, try different filters, or tell us about
+                missing data.
+              </div>
+              <ElemButton
+                onClick={() =>
+                  showNewMessages(
+                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                  )
+                }
+                btn="white"
+                className="mt-3"
+              >
+                <IconAnnotation className="w-6 h-6 mr-1" />
+                Tell us about missing data
+              </ElemButton>
+            </div>
+          </div>
+        )}
 
         <Toaster />
       </div>
@@ -305,6 +320,11 @@ export const getStaticProps: GetStaticProps = async context => {
 export default NewsPage;
 
 const newsTab: DashboardCategory[] = [
+  {
+    title: 'Trending',
+    value: 'trending',
+    icon: '🔥',
+  },
   {
     title: 'Today',
     value: 'today',

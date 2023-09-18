@@ -20,6 +20,11 @@ import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
+import {
+  convertToInternationalCurrencySystem,
+  formatDate,
+  numberWithCommas,
+} from '@/utils';
 
 type Props = {
   company: Companies;
@@ -56,6 +61,11 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
     github,
     discord,
     location_json,
+    total_employees,
+    investor_amount,
+    year_founded,
+    investment_rounds_aggregate,
+    investment_rounds,
   } = company;
 
   const isEmptyLocationJson = values(location_json).every(isEmpty);
@@ -71,12 +81,12 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px]">
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/companies/${slug}`}>
             <a>
-              <div className="flex shrink-0 w-full">
+              <div className="flex shrink-0 w-full items-center gap-4">
                 <ElemPhoto
                   photo={logo}
                   wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
@@ -84,41 +94,80 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                   imgAlt={name}
                   placeholderClass="text-slate-300"
                 />
-              </div>
-            </a>
-          </Link>
-
-          <Link href={`/companies/${slug}`}>
-            <a className="flex items-center mt-4">
-              <ElemTooltip content={name} mode="light">
-                <h3 className="text-xl font-medium truncate">{name}</h3>
-              </ElemTooltip>
-              {coin && (
-                <ElemTooltip content={`Token`} mode="light" className="">
-                  <span className="uppercase ml-1">{coin.ticker}</span>
+                <ElemTooltip content={name} mode="light">
+                  <h3 className="text-lg font-medium truncate">{name}</h3>
                 </ElemTooltip>
+                {coin && (
+                  <ElemTooltip content={`Token`} mode="light" className="">
+                    <span className="uppercase ml-1">{coin.ticker}</span>
+                  </ElemTooltip>
+                )}
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
+                <div className="flex flex-col">
+                  <span className="text-xs">Founded</span>
+                  <span className="text-sm font-medium">
+                    {year_founded ?? '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Stage</span>
+                  <span className="text-sm font-medium">
+                    {investment_rounds?.[0]?.round ?? '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Employees</span>
+                  <span className="text-sm font-medium">
+                    {total_employees && total_employees > 0
+                      ? numberWithCommas(total_employees)
+                      : '-'}
+                  </span>
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs">Rounds</span>
+                  <span className="text-sm font-medium">
+                    {investment_rounds_aggregate?.aggregate?.count &&
+                    investment_rounds_aggregate?.aggregate?.count > 0
+                      ? investment_rounds_aggregate?.aggregate?.count
+                      : '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Funding</span>
+                  <span className="text-sm font-medium">
+                    {investor_amount && investor_amount > 0
+                      ? `$${convertToInternationalCurrencySystem(
+                          Number(investor_amount),
+                        )}`
+                      : '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Latest round</span>
+                  <span className="text-sm font-medium">
+                    {investment_rounds?.[0]?.round_date
+                      ? formatDate(investment_rounds?.[0]?.round_date, {
+                          month: 'short',
+                          day: '2-digit',
+                          year: 'numeric',
+                        })
+                      : '-'}
+                  </span>
+                </div>
+              </div>
+
+              {overview && (
+                <div className="mt-4 text-sm line-clamp-3 text-gray-500">
+                  {overview}
+                </div>
               )}
             </a>
           </Link>
 
-          <div className="mt-2">
-            {overview && (
-              <>
-                {/* <ElemTooltip
-            content={overview}
-            mode="light"
-            direction="bottom"
-            size="lg"
-            delay={1200}
-            className="">
-            <div className="text-sm line-clamp-3">{overview}</div>
-          </ElemTooltip> */}
-                <div className="text-sm line-clamp-3 text-gray-500">
-                  {overview}
-                </div>
-              </>
-            )}
-
+          <div>
             {!isEmptyLocationJson && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
@@ -147,7 +196,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
             {website && (
               <Link href={website}>
                 <a target="_blank">
-                  <IconGlobe className="h-5 w-5 text-gray-400" />
+                  <IconGlobe className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
@@ -156,7 +205,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
               userCanViewLinkedIn ? (
                 <Link href={company_linkedin}>
                   <a target="_blank">
-                    <IconLinkedIn className="h-5 w-5 text-gray-400" />
+                    <IconLinkedIn className="h-5 w-5 text-gray-600" />
                   </a>
                 </Link>
               ) : (
@@ -169,21 +218,21 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
             {twitter && (
               <Link href={twitter}>
                 <a target="_blank">
-                  <IconTwitter className="h-5 w-5 text-gray-400" />
+                  <IconTwitter className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {github && (
               <Link href={github}>
                 <a target="_blank">
-                  <IconGithub className="h-5 w-5 text-gray-400" />
+                  <IconGithub className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}
             {discord && (
               <Link href={discord}>
                 <a target="_blank">
-                  <IconDiscord className="h-5 w-5 text-gray-400" />
+                  <IconDiscord className="h-5 w-5 text-gray-600" />
                 </a>
               </Link>
             )}

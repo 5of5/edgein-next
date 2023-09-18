@@ -1,5 +1,4 @@
 import {
-  Investors_Order_By,
   Order_By,
   useGetPersonalizedVcFirmsQuery,
   Vc_Firms,

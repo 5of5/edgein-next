@@ -160,8 +160,8 @@ export const getFilterOptionMetadata = (
 
     case 'fundingAmount':
       return {
-        title: 'Funding amount',
-        heading: 'Total funding amount',
+        title: 'Total funding',
+        heading: 'Total funding',
         min: 0,
         max: 50000000,
         step: 500,
@@ -198,8 +198,8 @@ export const getFilterOptionMetadata = (
 
     case 'investmentAmountTotal':
       return {
-        title: 'Investment amount',
-        heading: 'Investment amount total',
+        title: 'Total investment',
+        heading: 'Total investment',
         min: 0,
         max: 50000000,
         step: 500,
@@ -999,6 +999,7 @@ export const getGroupsFilters = (
           id: { _eq: userId },
         },
       },
+      created_by_user_id: { _neq: userId },
     };
     return filters;
   }
@@ -1032,6 +1033,7 @@ export const getListsFilters = (selectedTab: ListsTabType, userId: number) => {
       list_members: {
         user_id: { _eq: userId },
       },
+      created_by_id: { _neq: userId },
     };
     return filters;
   }

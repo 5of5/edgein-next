@@ -17,7 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //let headers: {'x-hasura-role'?: string} & { Authorization: string } |
     | { 'x-hasura-admin-secret': string };
 
-  if (
+  if (!user) {
+    headers = {
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
+      'x-hasura-role': process.env.HASURA_VIEWER ?? '',
+      'x-hasura-user-id': '0',
+    };
+  } else if (
     user &&
     (user.role === 'user' ||
       req.headers['is-viewer'] === 'true' ||

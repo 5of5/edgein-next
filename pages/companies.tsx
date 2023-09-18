@@ -30,6 +30,7 @@ import {
   companyChoices,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
+  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
@@ -49,7 +50,6 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
@@ -100,7 +100,10 @@ const Companies: NextPage<Props> = ({
   const isSortDropdownVisible = ['Dead', 'Raising'].includes(
     selectedStatusTag?.value || '',
   );
+
   const [tableLayout, setTableLayout] = useState(false);
+
+  const [sortBy, setSortBy] = useState('mostRelevant');
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -142,13 +145,6 @@ const Companies: NextPage<Props> = ({
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: defaultFilters,
   };
-
-  const { orderByQuery, orderByParam, sortChoices } =
-    useDashboardSortBy<Companies_Order_By>();
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -232,12 +228,58 @@ const Companies: NextPage<Props> = ({
           _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
         },
       });
+    } else if (selectedStatusTag.value === 'Trending') {
+      filters._and?.push({
+        num_of_views: { _is_null: false },
+      });
     } else {
       filters._and?.push({
         status_tags: { _contains: selectedStatusTag.value },
       });
     }
   }
+
+  let orderByQuery: DeepPartial<Companies_Order_By> = {
+    datapoints_count: Order_By.Desc,
+  };
+
+  if (isNewTabSelected) {
+    orderByQuery = { date_added: Order_By.Desc };
+  } else if (sortBy === 'lastUpdate') {
+    orderByQuery = { updated_at: Order_By.Desc };
+  } else if (sortBy === 'totalFundingLowToHigh') {
+    orderByQuery = { investor_amount: Order_By.Asc };
+  } else if (sortBy === 'totalFundingHighToLow') {
+    orderByQuery = { investor_amount: Order_By.DescNullsLast };
+  } else if (sortBy === 'lastFundingDate') {
+    orderByQuery = {
+      investment_rounds_aggregate: { max: { round_date: Order_By.Desc } },
+    };
+  }
+
+  const getLimit = () => {
+    if (isNewTabSelected) {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return limit;
+  };
+
+  const getOrderBy = () => {
+    if (isNewTabSelected) {
+      return { date_added: Order_By.Desc };
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return { num_of_views: Order_By.Desc };
+    }
+
+    return orderByQuery;
+  };
 
   const {
     data: companiesData,
@@ -246,13 +288,9 @@ const Companies: NextPage<Props> = ({
   } = useGetCompaniesQuery(
     {
       offset: isNewTabSelected ? null : offset,
-      limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
+      limit: getLimit(),
       where: filters as Companies_Bool_Exp,
-      orderBy: [
-        isNewTabSelected
-          ? ({ date_added: Order_By.Desc } as Companies_Order_By)
-          : orderByQuery,
-      ],
+      orderBy: [getOrderBy() as Companies_Order_By],
     },
     { refetchOnWindowFocus: false },
   );
@@ -285,7 +323,45 @@ const Companies: NextPage<Props> = ({
     },
   ];
 
+  const sortItems = [
+    {
+      id: 0,
+      label: 'Most relevant',
+      value: 'mostRelevant',
+      onClick: () => setSortBy('mostRelevant'),
+    },
+    {
+      id: 1,
+      label: 'Last update (new to old)',
+      value: 'lastUpdate',
+      onClick: () => setSortBy('lastUpdate'),
+    },
+    {
+      id: 2,
+      label: 'Total funding (low to high)',
+      value: 'totalFundingLowToHigh',
+      onClick: () => setSortBy('totalFundingLowToHigh'),
+    },
+    {
+      id: 3,
+      label: 'Total funding (high to low)',
+      value: 'totalFundingHighToLow',
+      onClick: () => setSortBy('totalFundingHighToLow'),
+    },
+    {
+      id: 4,
+      label: 'Last funding date (new to old)',
+      value: 'lastFundingDate',
+      onClick: () => setSortBy('lastFundingDate'),
+    },
+  ];
+
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
+
+  const pageTitle = `${selectedStatusTag?.title || 'All'} ${
+    user ? selectedLibrary : ''
+  } companies`;
+
   return (
     <DashboardLayout>
       <div className="relative">
@@ -315,8 +391,7 @@ const Companies: NextPage<Props> = ({
             {isSortDropdownVisible && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
-                defaultItem={defaultOrderBy}
-                items={sortChoices}
+                items={sortItems}
               />
             )}
           </div>
@@ -361,11 +436,12 @@ const Companies: NextPage<Props> = ({
                   itemsPerPage={ITEMS_PER_PAGE}
                   isTableView={tableLayout}
                   orderBy={{
-                    updated_at: Order_By.Desc,
+                    num_of_views: Order_By.Desc,
                   }}
                   filters={{
                     _and: [
                       ...defaultFilters,
+                      { num_of_views: { _is_null: false } },
                       {
                         location_json: {
                           _contains: {
@@ -546,76 +622,76 @@ const Companies: NextPage<Props> = ({
                 </div>
               </div>
             </div>
-          ) : isLoading && !initialLoad ? (
-            <>
-              {tableLayout ? (
-                <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                  <PlaceholderTable />
-                </div>
-              ) : (
-                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                  {Array.from({ length: 9 }, (_, i) => (
-                    <PlaceholderCompanyCard key={i} />
-                  ))}
-                </div>
-              )}
-            </>
-          ) : tableLayout && companies?.length != 0 ? (
-            <>
-              {showPersonalized && (
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">All companies</div>
-                </div>
-              )}
-
-              <CompaniesTable
-                companies={companies}
-                pageNumber={page}
-                itemsPerPage={limit}
-                shownItems={companies?.length}
-                totalItems={companies_aggregate}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                filterByTag={filterByTag}
-              />
-            </>
           ) : (
             <>
-              {showPersonalized && (
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">All companies</div>
-                  {!isNewTabSelected && (
-                    <ElemDropdown
-                      IconComponent={IconSortDashboard}
-                      defaultItem={defaultOrderBy}
-                      items={sortChoices}
-                    />
-                  )}
-                </div>
-              )}
-              <div
-                data-testid="companies"
-                className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-              >
-                {companies?.map(company => {
-                  return (
-                    <ElemCompanyCard
-                      key={company.id}
-                      company={company as Companies}
-                    />
-                  );
-                })}
+              <div className="flex justify-between py-8">
+                <div className="text-4xl font-medium">{pageTitle}</div>
+                {!selectedStatusTag && (
+                  <ElemDropdown
+                    IconComponent={IconSortDashboard}
+                    items={sortItems}
+                  />
+                )}
               </div>
 
-              <Pagination
-                shownItems={companies?.length}
-                totalItems={companies_aggregate}
-                page={page}
-                itemsPerPage={limit}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                onClickToPage={selectedPage => setPage(selectedPage)}
-              />
+              {isLoading && !initialLoad ? (
+                <>
+                  {tableLayout ? (
+                    <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                      <PlaceholderTable />
+                    </div>
+                  ) : (
+                    <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                      {Array.from({ length: 9 }, (_, i) => (
+                        <PlaceholderCompanyCard key={i} />
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : tableLayout && companies?.length != 0 ? (
+                <>
+                  <div className="flex justify-between py-8">
+                    <div className="text-4xl font-medium">{pageTitle}</div>
+                  </div>
+
+                  <CompaniesTable
+                    companies={companies}
+                    pageNumber={page}
+                    itemsPerPage={limit}
+                    shownItems={companies?.length}
+                    totalItems={companies_aggregate}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    filterByTag={filterByTag}
+                  />
+                </>
+              ) : (
+                <>
+                  <div
+                    data-testid="companies"
+                    className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  >
+                    {companies?.map(company => {
+                      return (
+                        <ElemCompanyCard
+                          key={company.id}
+                          company={company as Companies}
+                        />
+                      );
+                    })}
+                  </div>
+
+                  <Pagination
+                    shownItems={companies?.length}
+                    totalItems={companies_aggregate}
+                    page={page}
+                    itemsPerPage={limit}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    onClickToPage={selectedPage => setPage(selectedPage)}
+                  />
+                </>
+              )}
             </>
           )}
         </div>

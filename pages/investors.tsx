@@ -30,6 +30,7 @@ import {
   investorChoices,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
+  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
@@ -48,7 +49,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
-import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemAddFilter } from '@/components/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
@@ -103,6 +103,8 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
+  const [sortBy, setSortBy] = useState('mostRelevant');
+
   const [page, setPage] = useStateParams<number>(
     0,
     'page',
@@ -143,13 +145,6 @@ const Investors: NextPage<Props> = ({
   const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
     _and: defaultFilters,
   };
-
-  const { orderByQuery, orderByParam, sortChoices } =
-    useDashboardSortBy<Vc_Firms_Order_By>();
-
-  const defaultOrderBy = sortChoices.find(
-    sortItem => sortItem.value === orderByParam,
-  )?.id;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -237,11 +232,57 @@ const Investors: NextPage<Props> = ({
           _gte: moment().subtract(28, 'days').format(ISO_DATE_FORMAT),
         },
       });
+    } else if (selectedStatusTag.value === 'Trending') {
+      filters._and?.push({
+        num_of_views: { _is_null: false },
+      });
     } else {
       filters._and?.push({
         status_tags: { _contains: selectedStatusTag.value },
       });
     }
+  }
+
+  const getLimit = () => {
+    if (isNewTabSelected) {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return limit;
+  };
+
+  const getOrderBy = () => {
+    if (isNewTabSelected) {
+      return { created_at: Order_By.Desc };
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return { num_of_views: Order_By.Desc };
+    }
+
+    return orderByQuery;
+  };
+
+  let orderByQuery: DeepPartial<Vc_Firms_Order_By> = {
+    datapoints_count: Order_By.Desc,
+  };
+
+  if (isNewTabSelected) {
+    orderByQuery = { created_at: Order_By.Desc };
+  } else if (sortBy === 'lastUpdate') {
+    orderByQuery = { updated_at: Order_By.Desc };
+  } else if (sortBy === 'totalInvestmentLowToHigh') {
+    orderByQuery = { investment_amount_total: Order_By.Asc };
+  } else if (sortBy === 'totalInvestmentHighToLow') {
+    orderByQuery = { investment_amount_total: Order_By.DescNullsLast };
+  } else if (sortBy === 'lastInvestmentDate') {
+    orderByQuery = {
+      latest_investment: Order_By.DescNullsLast,
+    };
   }
 
   const {
@@ -251,13 +292,9 @@ const Investors: NextPage<Props> = ({
   } = useGetVcFirmsQuery(
     {
       offset: isNewTabSelected ? null : offset,
-      limit: isNewTabSelected ? NEW_CATEGORY_LIMIT : limit,
+      limit: getLimit(),
       where: filters as Vc_Firms_Bool_Exp,
-      orderBy: [
-        isNewTabSelected
-          ? ({ created_at: Order_By.Desc } as Vc_Firms_Order_By)
-          : orderByQuery,
-      ],
+      orderBy: [getOrderBy() as Vc_Firms_Order_By],
     },
     { refetchOnWindowFocus: false },
   );
@@ -290,7 +327,44 @@ const Investors: NextPage<Props> = ({
     },
   ];
 
+  const sortItems = [
+    {
+      id: 0,
+      label: 'Most relevant',
+      value: 'mostRelevant',
+      onClick: () => setSortBy('mostRelevant'),
+    },
+    {
+      id: 1,
+      label: 'Last update (new to old)',
+      value: 'lastUpdate',
+      onClick: () => setSortBy('lastUpdate'),
+    },
+    {
+      id: 2,
+      label: 'Total investment (low to high)',
+      value: 'totalInvestmentLowToHigh',
+      onClick: () => setSortBy('totalInvestmentLowToHigh'),
+    },
+    {
+      id: 3,
+      label: 'Total investment (high to low)',
+      value: 'totalInvestmentHighToLow',
+      onClick: () => setSortBy('totalInvestmentHighToLow'),
+    },
+    {
+      id: 4,
+      label: 'Last investment date (new to old)',
+      value: 'lastInvestmentDate',
+      onClick: () => setSortBy('lastInvestmentDate'),
+    },
+  ];
+
   const showPersonalized = user && !selectedFilters && !selectedStatusTag;
+
+  const pageTitle = `${selectedStatusTag?.title || 'All'} ${
+    user ? selectedLibrary : ''
+  } investors`;
 
   return (
     <DashboardLayout>
@@ -321,8 +395,7 @@ const Investors: NextPage<Props> = ({
               {isSortDropdownVisible && (
                 <ElemDropdown
                   IconComponent={IconSortDashboard}
-                  defaultItem={defaultOrderBy}
-                  items={sortChoices}
+                  items={sortItems}
                 />
               )}
             </div>
@@ -366,10 +439,15 @@ const Investors: NextPage<Props> = ({
                     tagOnClick={filterByTag}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={tableLayout}
+                    orderBy={{
+                      num_of_views: Order_By.Desc,
+                    }}
                     filters={{
                       _and: [
-                        { library: { _contains: selectedLibrary } },
-                        { status_tags: { _contains: 'Trending' } },
+                        // { library: { _contains: selectedLibrary } },
+                        // { status_tags: { _contains: 'Trending' } },
+                        ...defaultFilters,
+                        { num_of_views: { _is_null: false } },
                         {
                           location_json: {
                             _contains: {
@@ -523,80 +601,79 @@ const Investors: NextPage<Props> = ({
                   </div>
                 </div>
               </div>
-            ) : isLoading && !initialLoad ? (
-              <>
-                {tableLayout ? (
-                  <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                    <PlaceholderTable />
-                  </div>
-                ) : (
-                  <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                    {Array.from({ length: 9 }, (_, i) => (
-                      <PlaceholderInvestorCard key={i} />
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : tableLayout && vcFirms?.length != 0 ? (
-              <>
-                {showPersonalized && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">All investors</div>
-                    {!isNewTabSelected && (
-                      <ElemDropdown
-                        IconComponent={IconSortDashboard}
-                        defaultItem={defaultOrderBy}
-                        items={sortChoices}
-                      />
-                    )}
-                  </div>
-                )}
-                <InvestorsTable
-                  investors={vcFirms}
-                  pageNumber={page}
-                  itemsPerPage={limit}
-                  shownItems={vcFirms?.length}
-                  totalItems={vcfirms_aggregate}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  filterByTag={filterByTag}
-                />
-              </>
             ) : (
               <>
-                {showPersonalized && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">All investors</div>
-                    {!isNewTabSelected && (
-                      <ElemDropdown
-                        IconComponent={IconSortDashboard}
-                        defaultItem={defaultOrderBy}
-                        items={sortChoices}
-                      />
-                    )}
-                  </div>
-                )}
-                <div
-                  data-testid="investors"
-                  className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                >
-                  {vcFirms?.map(vcfirm => (
-                    <ElemInvestorCard
-                      key={vcfirm.id}
-                      vcFirm={vcfirm as Vc_Firms}
+                <div className="flex justify-between my-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                  {!selectedStatusTag && (
+                    <ElemDropdown
+                      IconComponent={IconSortDashboard}
+                      items={sortItems}
                     />
-                  ))}
+                  )}
                 </div>
+                {isLoading && !initialLoad ? (
+                  <>
+                    {tableLayout ? (
+                      <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                        <PlaceholderTable />
+                      </div>
+                    ) : (
+                      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                        {Array.from({ length: 9 }, (_, i) => (
+                          <PlaceholderInvestorCard key={i} />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : tableLayout && vcFirms?.length != 0 ? (
+                  <>
+                    <div className="flex justify-between my-8">
+                      <div className="text-4xl font-medium">{pageTitle}</div>
+                      {!selectedStatusTag && (
+                        <ElemDropdown
+                          IconComponent={IconSortDashboard}
+                          items={sortItems}
+                        />
+                      )}
+                    </div>
 
-                <Pagination
-                  shownItems={vcFirms?.length}
-                  totalItems={vcfirms_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
-                />
+                    <InvestorsTable
+                      investors={vcFirms}
+                      pageNumber={page}
+                      itemsPerPage={limit}
+                      shownItems={vcFirms?.length}
+                      totalItems={vcfirms_aggregate}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      filterByTag={filterByTag}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div
+                      data-testid="investors"
+                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    >
+                      {vcFirms?.map(vcfirm => (
+                        <ElemInvestorCard
+                          key={vcfirm.id}
+                          vcFirm={vcfirm as Vc_Firms}
+                        />
+                      ))}
+                    </div>
+
+                    <Pagination
+                      shownItems={vcFirms?.length}
+                      totalItems={vcfirms_aggregate}
+                      page={page}
+                      itemsPerPage={limit}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      onClickToPage={selectedPage => setPage(selectedPage)}
+                    />
+                  </>
+                )}
               </>
             )}
           </div>

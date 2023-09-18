@@ -17,6 +17,7 @@ import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { useRouter } from 'next/router';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
+import { convertToInternationalCurrencySystem } from '@/utils';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -38,7 +39,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
     slug,
     logo,
     name,
-    num_of_investments,
     tags,
     overview,
     follows,
@@ -46,6 +46,9 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
     linkedin,
     twitter,
     location_json,
+    year_founded,
+    investment_amount_total,
+    num_of_investments,
   } = vcFirm;
 
   const isEmptyLocationJson = values(location_json).every(isEmpty);
@@ -59,12 +62,12 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px]">
+    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/investors/${slug}`}>
             <a>
-              <div className="flex shrink-0 w-full">
+              <div className="flex shrink-0 w-full items-center gap-4">
                 <ElemPhoto
                   photo={logo}
                   wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
@@ -72,36 +75,47 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                   imgAlt={name}
                   placeholderClass="text-slate-300"
                 />
+                <ElemTooltip content={name} mode="light">
+                  <h3 className="text-lg font-medium truncate">{name}</h3>
+                </ElemTooltip>
               </div>
-            </a>
-          </Link>
 
-          <Link href={`/investors/${slug}`}>
-            <a className="flex items-center mt-4">
-              <ElemTooltip content={name} mode="light">
-                <h3 className="text-xl font-medium truncate">{name}</h3>
-              </ElemTooltip>
-            </a>
-          </Link>
+              <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
+                <div className="flex flex-col">
+                  <span className="text-xs">Founded</span>
+                  <span className="text-sm font-medium">
+                    {year_founded && year_founded !== '' ? year_founded : '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Investments</span>
+                  <span className="text-sm font-medium">
+                    {num_of_investments && num_of_investments > 0
+                      ? num_of_investments
+                      : '-'}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs">Funding</span>
+                  <span className="text-sm font-medium">
+                    {investment_amount_total && investment_amount_total > 0
+                      ? `$${convertToInternationalCurrencySystem(
+                          Number(investment_amount_total),
+                        )}`
+                      : '-'}
+                  </span>
+                </div>
+              </div>
 
-          <div className="mt-2">
-            {overview && (
-              <>
-                {/* <ElemTooltip
-            content={overview}
-            mode="light"
-            direction="bottom"
-            size="lg"
-            delay={1200}
-            className="">
-            <div className="text-sm line-clamp-3">{overview}</div>
-          </ElemTooltip> */}
-                <div className="text-sm line-clamp-3 text-gray-500">
+              {overview && (
+                <div className="mt-2 text-sm line-clamp-3 text-gray-500">
                   {overview}
                 </div>
-              </>
-            )}
+              )}
+            </a>
+          </Link>
 
+          <div>
             {!isEmptyLocationJson && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
@@ -110,17 +124,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 />
                 <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
                   {getFullAddress(location_json)}
-                </span>
-              </div>
-            )}
-
-            {num_of_investments !== null && num_of_investments > 0 && (
-              <div className="flex pt-1.5 items-center">
-                <IconCash title="Investment" className="h-3 w-3 shrink-0" />
-                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
-                  <span className="mr-1">{num_of_investments}</span>
-                  Investment
-                  {num_of_investments > 1 && 's'}
                 </span>
               </div>
             )}
@@ -142,7 +145,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               {website && (
                 <Link href={website}>
                   <a target="_blank">
-                    <IconGlobe className="h-5 w-5 text-gray-400" />
+                    <IconGlobe className="h-5 w-5 text-gray-600" />
                   </a>
                 </Link>
               )}
@@ -151,7 +154,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 userCanViewLinkedIn ? (
                   <Link href={linkedin}>
                     <a target="_blank">
-                      <IconLinkedIn className="h-5 w-5 text-gray-400" />
+                      <IconLinkedIn className="h-5 w-5 text-gray-600" />
                     </a>
                   </Link>
                 ) : (
@@ -164,7 +167,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               {twitter && (
                 <Link href={twitter}>
                   <a target="_blank">
-                    <IconTwitter className="h-5 w-5 text-gray-400" />
+                    <IconTwitter className="h-5 w-5 text-gray-600" />
                   </a>
                 </Link>
               )}
@@ -173,14 +176,14 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
           {github && (
             <Link href={github}>
               <a target="_blank">
-                <IconGithub className="h-5 w-5 text-gray-400" />
+                <IconGithub className="h-5 w-5 text-gray-600" />
               </a>
             </Link>
           )}
           {discord && (
             <Link href={discord}>
               <a target="_blank">
-                <IconDiscord className="h-5 w-5 text-gray-400" />
+                <IconDiscord className="h-5 w-5 text-gray-600" />
               </a>
             </Link>
           )} */}

@@ -101,6 +101,18 @@ query GetVCFirm($slug: String!) {
         sentiment
         overview
         logo
+        total_employees
+        investor_amount
+        year_founded
+        investment_rounds_aggregate {
+          aggregate {
+            count
+          }
+        }
+        investment_rounds(order_by: { round_date: desc }, limit: 1) {
+          round
+          round_date
+        }
         follows {
           id
           list_id
@@ -112,6 +124,9 @@ query GetVCFirm($slug: String!) {
         slug
         tags
         sentiment
+        year_founded
+        investment_amount_total
+        num_of_investments
         overview
         logo
         follows {
@@ -162,42 +177,6 @@ query GetVCFirms(
     website
     num_of_investments
     year_founded
-    investors {
-      id
-      person {
-        id
-        slug
-        name
-      }
-    }
-    investments {
-      investment_round {
-        id
-        round_date
-        round
-        amount
-        company {
-          id
-          slug
-          name
-          tags
-          logo
-        }
-        investments {
-          id
-          vc_firm {
-            id
-            slug
-            name
-          }
-          person {
-            id
-            slug
-            name
-          }
-        }
-      }
-    }
     sentiment
     follows {
       id
@@ -231,6 +210,17 @@ query GetVCFirmsRecentInvestments(
     num_of_investments
     sentiment
     overview
+    investments(
+      limit: 1
+      order_by: { investment_round: { round_date: desc_nulls_last } }
+    ) {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+      }
+    }
     follows {
       id
       list_id
@@ -338,6 +328,8 @@ query GetPersonalizedVcFirms(
     logo
     name
     num_of_investments
+    year_founded
+    investment_amount_total
     tags
     location_json
     overview

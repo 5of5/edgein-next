@@ -35,6 +35,7 @@ import {
   ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
+  TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
@@ -211,6 +212,12 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     });
   }
 
+  if (selectedTab?.value === 'trending') {
+    filters._and?.push({
+      num_of_views: { _is_null: false },
+    });
+  }
+
   if (
     selectedTab?.value === 'upcoming' &&
     !selectedFilters?.eventDate?.condition
@@ -233,11 +240,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       oldestSortKey: 'start_date',
     });
 
-  const orderBy = [orderByQuery];
-  if (selectedTab?.value === 'past') {
-    orderBy.push({ start_date: Order_By.Desc } as Events_Order_By);
-  }
-
   const defaultOrderBy = sortChoices.find(
     sortItem => sortItem.value === orderByParam,
   )?.id;
@@ -249,9 +251,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   } = useGetEventsQuery(
     {
       offset,
-      limit,
+      limit:
+        selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+
       where: filters as Events_Bool_Exp,
-      orderBy,
+      orderBy: orderByQuery,
     },
     { refetchOnWindowFocus: false },
   );
@@ -266,6 +270,11 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
   const showPersonalized = user && !selectedFilters && !selectedTab;
+
+  const pageTitle =
+    selectedTab?.value === 'upcoming'
+      ? `${user ? `${selectedLibrary} events` : 'Events'} in the next 7 days`
+      : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} events`;
 
   return (
     <DashboardLayout>
@@ -343,6 +352,31 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               {personalizedTags.locationTags.map(location => (
                 <EventsByFilter
                   key={location}
+                  headingText={`Trending in ${location}`}
+                  tagOnClick={onClickType}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  orderBy={{
+                    num_of_views: Order_By.Desc,
+                  }}
+                  filters={{
+                    _and: [
+                      ...defaultFilters,
+                      { num_of_views: { _is_null: false } },
+                      {
+                        location_json: {
+                          _contains: {
+                            city: `${location}`,
+                          },
+                        },
+                      },
+                    ],
+                  }}
+                />
+              ))}
+
+              {personalizedTags.locationTags.map(location => (
+                <EventsByFilter
+                  key={location}
                   headingText={`Upcoming in ${location}`}
                   tagOnClick={onClickType}
                   itemsPerPage={ITEMS_PER_PAGE}
@@ -363,6 +397,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                   }}
                 />
               ))}
+
               {personalizedTags.locationTags.map(location => (
                 <EventsByFilter
                   key={location}
@@ -418,46 +453,48 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 </div>
               </div>
             </div>
-          ) : isLoading && !initialLoad ? (
-            <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderEventCard key={i} />
-              ))}
-            </div>
           ) : (
-            events?.length !== 0 && (
-              <>
-                {showPersonalized && (
-                  <div className="flex justify-between my-8">
-                    <div className="text-4xl font-medium">All Events</div>
-                    {/* Removed in qol-ui-fixes */}
-                    {/* <ElemDropdown
+            <>
+              <div className="flex justify-between my-8">
+                <div className="text-4xl font-medium">{pageTitle}</div>
+                {/* Removed in qol-ui-fixes */}
+                {/* <ElemDropdown
                       IconComponent={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
                     /> */}
-                  </div>
-                )}
-                <div
-                  data-testid="events"
-                  className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
-                >
-                  {events?.map(event => (
-                    <ElemEventCard key={event.id} event={event} />
+              </div>
+              {isLoading && !initialLoad ? (
+                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <PlaceholderEventCard key={i} />
                   ))}
                 </div>
+              ) : (
+                events?.length !== 0 && (
+                  <>
+                    <div
+                      data-testid="events"
+                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
+                    >
+                      {events?.map(event => (
+                        <ElemEventCard key={event.id} event={event} />
+                      ))}
+                    </div>
 
-                <Pagination
-                  shownItems={events?.length}
-                  totalItems={events_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
-                />
-              </>
-            )
+                    <Pagination
+                      shownItems={events?.length}
+                      totalItems={events_aggregate}
+                      page={page}
+                      itemsPerPage={limit}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      onClickToPage={selectedPage => setPage(selectedPage)}
+                    />
+                  </>
+                )
+              )}
+            </>
           )}
 
           {events?.length === 0 && (
@@ -523,6 +560,12 @@ const eventTabs: DashboardCategory[] = [
     value: 'featured',
     date: '',
     icon: '📣',
+  },
+  {
+    title: 'Trending',
+    value: 'trending',
+    date: '',
+    icon: '🔥',
   },
   {
     title: 'Next 7 days',
