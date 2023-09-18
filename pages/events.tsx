@@ -269,8 +269,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
 
-  const showPersonalized = user && !selectedFilters && !selectedTab;
-
   const pageTitle =
     selectedTab?.value === 'upcoming'
       ? `${user ? `${selectedLibrary} events` : 'Events'} in the next 7 days`
@@ -347,90 +345,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         <ElemInviteBanner className="mx-8 my-3" />
 
         <div className="mx-8">
-          {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-8">
-              {personalizedTags.locationTags.map(location => (
-                <EventsByFilter
-                  key={location}
-                  headingText={`Trending in ${location}`}
-                  tagOnClick={onClickType}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  orderBy={{
-                    num_of_views: Order_By.Desc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      { num_of_views: { _is_null: false } },
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-
-              {personalizedTags.locationTags.map(location => (
-                <EventsByFilter
-                  key={location}
-                  headingText={`Upcoming in ${location}`}
-                  tagOnClick={onClickType}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  orderBy={{
-                    start_date: Order_By.Asc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-
-              {personalizedTags.locationTags.map(location => (
-                <EventsByFilter
-                  key={location}
-                  headingText={`Recently updated in ${location}`}
-                  tagOnClick={onClickType}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  orderBy={{
-                    start_date: Order_By.Asc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
-                          },
-                        },
-                      },
-                      {
-                        updated_at: {
-                          _gte: moment()
-                            .subtract(28, 'days')
-                            .format(ISO_DATE_FORMAT),
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-            </div>
-          )}
-
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">
