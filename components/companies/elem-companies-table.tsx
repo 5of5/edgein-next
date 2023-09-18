@@ -19,6 +19,7 @@ import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { loadStripe } from '@/utils/stripe';
 import { ElemTags } from '@/components/elem-tags';
+import { Investment_Rounds_Aggregate } from '@/graphql/types';
 
 import {
   useTable,
@@ -123,8 +124,7 @@ export const CompaniesTable: FC<Props> = ({
         Cell: (props: any) => (
           <a
             href={`/companies/` + props.row.original?.slug}
-            className="flex items-center space-x-3 shrink-0 group transition-all"
-          >
+            className="flex items-center space-x-3 shrink-0 group transition-all">
             <ElemPhoto
               photo={props.row.original?.logo}
               wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
@@ -196,39 +196,39 @@ export const CompaniesTable: FC<Props> = ({
         },
         width: 120,
       },
-      {
-        Header: 'Team',
-        accessor: 'teamMembers' as const,
-        Cell: (props: any) => {
-          return (
-            <div>
-              {props.value?.length > 0 ? (
-                <>
-                  {props.value?.map((item: any, index: number) => {
-                    return (
-                      <div key={item?.id} className="inline">
-                        <a
-                          key={item?.person?.id}
-                          href={`/people/${item.person?.slug}`}
-                          className="underline hover:no-underline"
-                        >
-                          {item.person?.name}
-                        </a>
-                        {last(props.value) === item ? '' : ','}{' '}
-                      </div>
-                    );
-                  })}
-                </>
-              ) : (
-                <EmptyCell />
-              )}
-            </div>
-          );
-        },
-        disableSortBy: true,
-        width: 300,
-        minWidth: 200,
-      },
+      // {
+      //   Header: 'Team',
+      //   accessor: 'teamMembers' as const,
+      //   Cell: (props: any) => {
+      //     return (
+      //       <div>
+      //         {props.value?.length > 0 ? (
+      //           <>
+      //             {props.value?.map((item: any, index: number) => {
+      //               return (
+      //                 <div key={item?.id} className="inline">
+      //                   <a
+      //                     key={item?.person?.id}
+      //                     href={`/people/${item.person?.slug}`}
+      //                     className="underline hover:no-underline"
+      //                   >
+      //                     {item.person?.name}
+      //                   </a>
+      //                   {last(props.value) === item ? '' : ','}{' '}
+      //                 </div>
+      //               );
+      //             })}
+      //           </>
+      //         ) : (
+      //           <EmptyCell />
+      //         )}
+      //       </div>
+      //     );
+      //   },
+      //   disableSortBy: true,
+      //   width: 300,
+      //   minWidth: 200,
+      // },
       {
         Header: 'City',
         accessor: 'location_json.city' as const,
@@ -264,17 +264,36 @@ export const CompaniesTable: FC<Props> = ({
         },
         width: 120,
       },
+      // {
+      //   Header: 'Total Funding',
+      //   accessor: (data: { investment_rounds: Array<any> }) => {
+      //     const totalFunding = data.investment_rounds?.reduce(
+      //       (total: number, currentValue: any) =>
+      //         (total = total + currentValue.amount),
+      //       0,
+      //     );
+
+      //     return totalFunding;
+      //   },
+      //   Cell: (props: any) => {
+      //     return (
+      //       <div>
+      //         {props.value > 0 ? (
+      //           <>${numberWithCommas(props.value)}</>
+      //         ) : props.value === 0 &&
+      //           props.row.original?.investment_rounds.length > 0 ? (
+      //           <>Undisclosed Capital</>
+      //         ) : (
+      //           <EmptyCell />
+      //         )}
+      //       </div>
+      //     );
+      //   },
+      //   width: 140,
+      // },
       {
         Header: 'Total Funding',
-        accessor: (data: { investment_rounds: Array<any> }) => {
-          const totalFunding = data.investment_rounds?.reduce(
-            (total: number, currentValue: any) =>
-              (total = total + currentValue.amount),
-            0,
-          );
-
-          return totalFunding;
-        },
+        accessor: 'investor_amount' as const,
         Cell: (props: any) => {
           return (
             <div>
@@ -284,7 +303,7 @@ export const CompaniesTable: FC<Props> = ({
                 props.row.original?.investment_rounds.length > 0 ? (
                 <>Undisclosed Capital</>
               ) : (
-                <>${props.value}</>
+                <EmptyCell />
               )}
             </div>
           );
@@ -293,15 +312,28 @@ export const CompaniesTable: FC<Props> = ({
       },
       {
         Header: '# Funding Rounds',
-        accessor: 'investment_rounds.length' as const,
+        accessor: (data: {
+          investment_rounds_aggregate: Investment_Rounds_Aggregate;
+        }) => {
+          if (!data.investment_rounds_aggregate) {
+            return 0;
+          } else {
+            const out = data.investment_rounds_aggregate?.aggregate?.count
+              ? data.investment_rounds_aggregate?.aggregate?.count
+              : 0;
+
+            return out;
+          }
+        },
         Cell: (props: any) => {
-          const numberOfRounds = props.value;
-          return <>{numberOfRounds ? numberOfRounds : <EmptyCell />}</>;
+          return (
+            <>{props.value && props.value > 0 ? props.value : <EmptyCell />}</>
+          );
         },
         width: 100,
       },
       {
-        Header: 'Last Funding Date',
+        Header: 'Latest Round Date',
         accessor: (data: { investment_rounds: Array<any> }) => {
           if (!data.investment_rounds) {
             return 0;
@@ -323,7 +355,7 @@ export const CompaniesTable: FC<Props> = ({
         width: 120,
       },
       {
-        Header: 'Last Funding Total',
+        Header: 'Latest Round Total',
         accessor: (data: { investment_rounds: Array<any> }) => {
           if (!data.investment_rounds) {
             return 0;
@@ -352,7 +384,7 @@ export const CompaniesTable: FC<Props> = ({
         width: 140,
       },
       {
-        Header: 'Last Funding Type',
+        Header: 'Funding Stage',
         accessor: (data: { investment_rounds: Array<any> }) => {
           if (!data.investment_rounds) {
             return 0;
@@ -444,8 +476,7 @@ export const CompaniesTable: FC<Props> = ({
                     pageNumber * itemsPerPage > 0
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
-                >
+                  }`}>
                   <IconChevronLeft className="h-5 w-5" />
                 </ElemButton>
 
@@ -457,8 +488,7 @@ export const CompaniesTable: FC<Props> = ({
                     totalItems > shownItemsEnd
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
-                >
+                  }`}>
                   <IconChevronRight className="h-5 w-5" />
                 </ElemButton>
               </>
@@ -474,8 +504,7 @@ export const CompaniesTable: FC<Props> = ({
                     pageNumber * itemsPerPage > 0
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
-                >
+                  }`}>
                   <IconChevronLeft className="h-5 w-5" />
                 </ElemButton>
 
@@ -487,8 +516,7 @@ export const CompaniesTable: FC<Props> = ({
                     totalItems > shownItemsEnd
                       ? ''
                       : 'opacity-50 cursor-default hover:!bg-white hover:!text-current'
-                  }`}
-                >
+                  }`}>
                   <IconChevronRight className="h-5 w-5" />
                 </ElemButton>
               </>
@@ -500,8 +528,7 @@ export const CompaniesTable: FC<Props> = ({
       <div className="overflow-auto border border-gray-300 rounded-lg overflow-y-hidden">
         <table
           {...getTableProps()}
-          className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none"
-        >
+          className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none">
           <thead className="">
             {headerGroups.map(headerGroup => {
               const { key, ...restHeaderGroupProps } =
@@ -510,8 +537,7 @@ export const CompaniesTable: FC<Props> = ({
                 <tr
                   key={key}
                   {...restHeaderGroupProps}
-                  className="table-row min-w-full bg-gray-25 text-gray-600"
-                >
+                  className="table-row min-w-full bg-gray-25 text-gray-600">
                   {headerGroup.headers.map((column: any) => {
                     const { key, ...restColumnProps }: any = ({} = {
                       ...column.getHeaderProps({
@@ -527,14 +553,12 @@ export const CompaniesTable: FC<Props> = ({
                       <th
                         key={key}
                         {...restColumnProps}
-                        className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
-                      >
+                        className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}>
                         <div className="flex items-center min-w-content">
                           {column.render('Header')}
                           <Menu
                             as="div"
-                            className="relative inline-block text-left ml-1"
-                          >
+                            className="relative inline-block text-left ml-1">
                             <Menu.Button className="block align-middle text-gray-400 rounded-full hover:bg-slate-100">
                               <IconChevronDownMini className="h-5 w-5" />
                             </Menu.Button>
@@ -555,8 +579,7 @@ export const CompaniesTable: FC<Props> = ({
                                         { id: column.id, desc: false },
                                       ]),
                                     );
-                                  }}
-                                >
+                                  }}>
                                   <IconSortUp className="mr-1 h-5 w-5 inline-block" />
                                   Sort Ascending
                                 </Menu.Item>
@@ -577,8 +600,7 @@ export const CompaniesTable: FC<Props> = ({
                                         { id: column.id, desc: true },
                                       ]),
                                     );
-                                  }}
-                                >
+                                  }}>
                                   <IconSortDown className="mr-1 h-5 w-5 inline-block" />
                                   Sort Descending
                                 </Menu.Item>
@@ -592,8 +614,7 @@ export const CompaniesTable: FC<Props> = ({
                                     column.getHeaderProps(
                                       column.toggleHidden(),
                                     );
-                                  }}
-                                >
+                                  }}>
                                   <IconX className="mr-1 h-5 w-5 inline-block" />
                                   Hide Column
                                 </Menu.Item>
@@ -606,15 +627,13 @@ export const CompaniesTable: FC<Props> = ({
                             className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${
                               column.isResizing ? 'isResizing select-none' : ''
                             }`}
-                            onClick={event => event.stopPropagation()}
-                          >
+                            onClick={event => event.stopPropagation()}>
                             <div
                               className={`w-px h-full translate-x-0.5 ${
                                 column.isResizing
                                   ? 'bg-primary-500'
                                   : 'bg-black/10 group-hover:bg-primary-500'
-                              }`}
-                            ></div>
+                              }`}></div>
                           </div>
                         </div>
                       </th>
@@ -626,8 +645,7 @@ export const CompaniesTable: FC<Props> = ({
           </thead>
           <tbody
             {...getTableBodyProps()}
-            className="bg-white divide-y divide-gray-300 flex-1"
-          >
+            className="bg-white divide-y divide-gray-300 flex-1">
             {rows.map(row => {
               prepareRow(row);
               const { key, ...restRowProps } = row.getRowProps();
@@ -647,8 +665,7 @@ export const CompaniesTable: FC<Props> = ({
                       <td
                         key={key}
                         {...restCellProps}
-                        className="align-middle text-sm p-2"
-                      >
+                        className="align-middle text-sm p-2">
                         {cell.render('Cell')}
                       </td>
                     );
@@ -669,8 +686,7 @@ export const CompaniesTable: FC<Props> = ({
                       <td
                         key={ii}
                         className="min-w-[200px] align-middle text-sm p-2 blur-sm"
-                        role="cell"
-                      >
+                        role="cell">
                         <div className="flex items-center h-10">
                           add figure here
                         </div>
