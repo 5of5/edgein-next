@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, FC } from 'react';
+import { useState, useEffect, Fragment, FC, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -102,9 +102,9 @@ export const TheNavbar: FC<Props> = ({}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.invite, user]);
 
-  const onModalClose = () => {
+  const onModalClose = useCallback(() => {
     setShowPopup(false);
-  };
+  }, [setShowPopup]);
 
   const redirectToSignIn = () => {
     router.push('/sign-in');
@@ -248,7 +248,7 @@ export const TheNavbar: FC<Props> = ({}) => {
 
           <SearchModal
             show={showPopup === 'search'}
-            onClose={() => setShowPopup(false)}
+            onClose={onModalClose}
           />
         </nav>
       </div>
