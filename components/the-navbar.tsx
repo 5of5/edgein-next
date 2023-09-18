@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, FC, useCallback } from 'react';
+import { useEffect, Fragment, FC, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -246,10 +246,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             onClose={onModalClose}
           />
 
-          <SearchModal
-            show={showPopup === 'search'}
-            onClose={onModalClose}
-          />
+          <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
         </nav>
       </div>
 
