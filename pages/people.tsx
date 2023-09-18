@@ -188,7 +188,7 @@ const People: NextPage<Props> = ({
             </div>
           ) : (
             <>
-              <div className="flex justify-between mt-6 mb-5">
+              <div className="flex justify-between py-8">
                 <div className="text-4xl font-medium">{pageTitle}</div>
                 {/* Removed in qol-ui-fixes */}
                 {/* <ElemDropdown

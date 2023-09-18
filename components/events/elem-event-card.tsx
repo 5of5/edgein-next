@@ -153,7 +153,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
+    <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/events/${slug}`}>

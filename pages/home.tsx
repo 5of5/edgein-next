@@ -24,6 +24,7 @@ import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { CompaniesByFilterInSection } from '@/components/companies/elem-companies-by-filter-insection';
 import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
 import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -73,12 +74,12 @@ const Home: NextPage = () => {
     <DashboardLayout>
       <div className="relative">
         {/* hero */}
-        <div className="mx-8 my-8">
+        <div className="mx-8 mt-8">
           <div className="flex flex-col gap-4 gap-x-8">
             <span className="text-4xl font-medium">{`Hello, ${
               user?.display_name?.split(' ')[0] || ''
             }`}</span>
-            <span className="text-sm mt-1 font-normal text-gray-500">
+            <span className="text-sm font-normal text-gray-500 mb-3">
               Your personalized overview of the most relevant data, updated
               daily.{' '}
               <span className="underline cursor-pointer" onClick={show}>
@@ -88,8 +89,10 @@ const Home: NextPage = () => {
           </div>
         </div>
 
+        <ElemInviteBanner className="mx-8 mt-3" />
+        
         <div
-          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+          className="mt-8 px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
           role="tablist">
           <ElemCategories
             categories={categories.map((category, i) => ({

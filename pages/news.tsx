@@ -233,11 +233,11 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             )}
 
             <div>
-              <div className="flex justify-between mb-5">
+              <div className="flex justify-between py-8">
                 <div className="text-4xl font-medium">{pageTitle}</div>
               </div>
 
-              <div className="grid gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+              <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                 {error ? (
                   <h4>Error loading news</h4>
                 ) : isLoading && !initialLoad ? (

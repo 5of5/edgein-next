@@ -369,7 +369,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             </div>
           ) : (
             <>
-              <div className="flex justify-between my-8">
+              <div className="flex justify-between py-8">
                 <div className="text-4xl font-medium">{pageTitle}</div>
                 {/* Removed in qol-ui-fixes */}
                 {/* <ElemDropdown

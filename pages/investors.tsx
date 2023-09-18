@@ -448,9 +448,10 @@ const Investors: NextPage<Props> = ({
               </div>
             ) : (
               <>
-                <div className="flex justify-between my-8">
+                <div className="flex justify-between py-8">
                   <div className="text-4xl font-medium">{pageTitle}</div>
                 </div>
+
                 {isLoading && !initialLoad ? (
                   <>
                     {tableLayout ? (
