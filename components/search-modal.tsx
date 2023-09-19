@@ -1,5 +1,5 @@
 import { Dialog, Tab, Transition } from '@headlessui/react';
-import { Fragment, useState, useRef } from 'react';
+import { FC, ReactElement, Fragment, useState, useRef } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Hit as AlgoliaHit } from 'instantsearch.js';
 import { every } from 'lodash';
@@ -84,6 +84,15 @@ type HitNewsProps = {
     poweredBy: string;
     empty: boolean;
   }>;
+};
+
+type MasterEmptyQueryBoundaryProps = {
+  children: ReactElement;
+};
+
+type EmptyQueryBoundaryProps = {
+  children: ReactElement;
+  emptyText?: string;
 };
 
 const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
@@ -399,7 +408,9 @@ export default function SearchModal(props: any) {
     props.onClose();
   };
 
-  function MasterEmptyQueryBoundary({ children, emptyText = '' }: any) {
+  const MasterEmptyQueryBoundary: FC<MasterEmptyQueryBoundaryProps> = ({
+    children,
+  }) => {
     const { scopedResults, results } = useInstantSearch();
 
     const allEmpty = every(
@@ -433,9 +444,12 @@ export default function SearchModal(props: any) {
     }
 
     return children;
-  }
+  };
 
-  function EmptyQueryBoundary({ children, emptyText = '' }: any) {
+  const EmptyQueryBoundary: FC<EmptyQueryBoundaryProps> = ({
+    children,
+    emptyText = '',
+  }) => {
     const { results } = useInstantSearch();
 
     if (results._state.query === '') {
@@ -457,9 +471,9 @@ export default function SearchModal(props: any) {
       );
     }
     return children;
-  }
+  };
 
-  function ResultTabList() {
+  const ResultTabList = () => {
     const { scopedResults } = useInstantSearch();
 
     const getNumOfRecords = (indexes: string[]) => {
@@ -576,7 +590,7 @@ export default function SearchModal(props: any) {
         </Tab>
       </Tab.List>
     );
-  }
+  };
 
   return (
     <>
@@ -654,7 +668,7 @@ export default function SearchModal(props: any) {
                               {/* <h3 className="font-medium mt-5 mx-6">
                                 Companies
                               </h3> */}
-                              <EmptyQueryBoundary fallback={null}>
+                              <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitCompanies(
                                     onClose,
@@ -682,7 +696,7 @@ export default function SearchModal(props: any) {
                             >
                               <Configure hitsPerPage={10} />
                               {/* <h3 className="font-medium mt-5 mx-6">Investors</h3> */}
-                              <EmptyQueryBoundary fallback={null}>
+                              <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitInvestors(
                                     onClose,
@@ -738,7 +752,7 @@ export default function SearchModal(props: any) {
                             >
                               <Configure hitsPerPage={10} />
                               {/* <h3 className="font-medium mt-5 mx-6">Events</h3> */}
-                              <EmptyQueryBoundary fallback={null}>
+                              <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitEvents(
                                     onClose,
@@ -764,7 +778,7 @@ export default function SearchModal(props: any) {
                             >
                               <Configure hitsPerPage={10} />
                               {/* <h3 className="font-medium mt-5 mx-6">News</h3> */}
-                              <EmptyQueryBoundary fallback={null}>
+                              <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitNews()}
                                   showPrevious={false}
