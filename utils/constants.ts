@@ -2003,6 +2003,8 @@ export const CARD_DEFAULT_TAGS_LIMIT = 3;
 
 export const CARD_MAX_TAGS_LIMIT = 50;
 
+export const FREE_USER_MAXIMUM_LISTS = 5;
+
 export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
 
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;

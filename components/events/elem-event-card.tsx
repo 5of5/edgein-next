@@ -27,12 +27,14 @@ import { useMutation } from 'react-query';
 import { toast, Toaster } from 'react-hot-toast';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import { usePopup } from '@/context/popup-context';
+import { CardType } from '../companies/elem-company-card';
 
 type Props = {
   event: GetEventsQuery['events'][0];
+  type?: CardType;
 };
 
-export const ElemEventCard: FC<Props> = ({ event }) => {
+export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
   const { user } = useUser();
 
   const { setShowPopup } = usePopup();
@@ -152,7 +154,7 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
+    <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/events/${slug}`}>
@@ -201,7 +203,7 @@ export const ElemEventCard: FC<Props> = ({ event }) => {
               </p>
             )}
 
-            {!isEmptyLocation && (
+            {type === 'full' && !isEmptyLocation && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
                   title={getFullAddress(location_json)}

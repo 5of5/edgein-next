@@ -201,61 +201,38 @@ query GetCompanies(
 ) {
   companies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
-    name
     slug
-    layer
-    location
-    location_json
-    tags
+    logo
+    name
     coin {
       ticker
     }
-    sentiment
-    investor_amount
-    investment_rounds(order_by: { round_date: desc }) {
-      round
-      round_date
-      amount
-      investments {
-        person {
-          slug
-          name
-        }
-        vc_firm {
-          slug
-          name
-        }
-        amount
-      }
-    }
-    year_founded
+    tags
+    location_json
+    status_tags
     total_employees
+    investor_amount
+    year_founded
     investment_rounds_aggregate {
       aggregate {
         count
       }
     }
-    teamMembers {
-      id
-      person {
-        id
-        slug
-        name
-      }
+    investment_rounds(limit: 1, order_by: { round_date: desc_nulls_last }) {
+      round
+      round_date
+      amount
     }
-    logo
     overview
-    github
-    company_linkedin
-    market_verified
-    velocity_linkedin
-    velocity_token
-    website
-    status_tags
     follows {
       id
       list_id
     }
+    website
+    twitter
+    company_linkedin
+    github
+    discord
   }
   companies_aggregate(where: $where) {
     aggregate {

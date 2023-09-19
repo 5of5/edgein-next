@@ -1,7 +1,7 @@
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useGetNotesQuery, Notes_Bool_Exp } from '@/graphql/types';
 import { GetStaticProps } from 'next';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { IconDocumentDownload } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
 import { PlaceholderNote } from '@/components/placeholders';
@@ -9,12 +9,25 @@ import { orderBy } from 'lodash';
 //import { useAuth } from "@/hooks/useAuth";
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
+import { useRouter } from 'next/router';
 
 type Props = {};
 
 const Notes: FC<Props> = () => {
   const { user, myGroups } = useUser();
 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      redirectToSignIn();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const redirectToSignIn = () => {
+    router.push('/sign-in');
+  };
   const {
     data: noteList,
     error,
