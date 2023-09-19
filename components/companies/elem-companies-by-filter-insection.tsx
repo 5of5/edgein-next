@@ -62,7 +62,12 @@ export const CompaniesByFilterInSection: FC<Props> = ({
     !data?.companies_aggregate ||
     data.companies.length === 0
   ) {
-    return <></>;
+    return (
+      <div className="text-lg text-center mx-8 my-6">
+        Sorry, we couldn&apos;t find any companies today. Check back in
+        tomorrow!
+      </div>
+    );
   }
 
   const { companies, companies_aggregate } = data;

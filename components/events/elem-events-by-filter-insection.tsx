@@ -9,7 +9,6 @@ import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
 import { times } from 'lodash';
 import { FC } from 'react';
-import { ElemFilter } from '../elem-filter';
 import { ElemEventCard } from './elem-event-card';
 import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
@@ -61,7 +60,11 @@ export const EventsByFilterInSection: FC<Props> = ({
     !data?.events_aggregate ||
     data.events.length === 0
   ) {
-    return <></>;
+    return (
+      <div className="text-lg text-center mx-8 my-6">
+        Sorry, we couldn&apos;t find any events today. Check back in tomorrow!
+      </div>
+    );
   }
 
   const { events, events_aggregate } = data;

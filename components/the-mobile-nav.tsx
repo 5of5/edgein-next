@@ -72,16 +72,6 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
       href: '/investors',
     },
     {
-      icon: IconCalendar,
-      title: 'Events',
-      href: '/events',
-    },
-    {
-      icon: IconNewspaper,
-      title: 'News',
-      href: '/news',
-    },
-    {
       icon: IconUserGroup,
       title: 'People',
       href: '/people',
@@ -110,9 +100,9 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     ...(user
       ? [
           {
-            icon: IconDocumentDownload,
-            title: 'Notes',
-            href: '/notes',
+            icon: IconCustomList,
+            title: 'Lists',
+            href: '/lists',
           },
           {
             icon: IconGroup,
@@ -120,13 +110,23 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
             href: '/groups',
           },
           {
-            icon: IconCustomList,
-            title: 'Lists',
-            href: '/lists',
+            icon: IconDocumentDownload,
+            title: 'Notes',
+            href: '/notes',
           },
         ]
       : []),
     ...baseNav,
+    {
+      icon: IconCalendar,
+      title: 'Events',
+      href: '/events',
+    },
+    {
+      icon: IconNewspaper,
+      title: 'News',
+      href: '/news',
+    },
     ...(user
       ? [
           {
@@ -144,7 +144,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
       >
         <ul
           className={`grid ${
-            user ? 'grid-cols-8' : 'grid-cols-7'
+            user ? 'grid-cols-6' : 'grid-cols-5'
           } w-full bg-white px-0.5 pb-0.5`}
         >
           {bottomNav.map((item, index) => (
