@@ -87,7 +87,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
         !secondaryData?.vc_firms_aggregate ||
         secondaryData.vc_firms.length === 0))
   ) {
-    return <></>;
+    return <div className='text-lg text-center mx-8 my-6'>Sorry... could not find any investors</div>;
   }
 
   const vc_firms =

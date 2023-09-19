@@ -9,7 +9,6 @@ import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
 import { times } from 'lodash';
 import { FC } from 'react';
-import { ElemFilter } from '../elem-filter';
 import { ElemEventCard } from './elem-event-card';
 import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
@@ -61,7 +60,11 @@ export const EventsByFilterInSection: FC<Props> = ({
     !data?.events_aggregate ||
     data.events.length === 0
   ) {
-    return <></>;
+    return (
+      <div className="text-lg text-center mx-8 my-6">
+        Sorry... could not find any events
+      </div>
+    );
   }
 
   const { events, events_aggregate } = data;
@@ -71,8 +74,7 @@ export const EventsByFilterInSection: FC<Props> = ({
       <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-      >
+        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {events.map(event => (
           <ElemEventCard
             key={event.id}

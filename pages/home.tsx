@@ -26,6 +26,7 @@ import { CompaniesByFilterInSection } from '@/components/companies/elem-companie
 import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
 import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ElemFilterSection } from '@/components/elem-filter-section';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -77,12 +78,11 @@ const Home: NextPage = () => {
         {/* hero */}
         <div className="mx-8 mt-8">
           <div className="flex flex-col gap-4 gap-x-8">
-            <span className="text-4xl font-medium">{`Hello, ${
-              user?.display_name?.split(' ')[0] || ''
-            }`}</span>
+            <span className="text-4xl font-medium">{`Hello, ${user?.display_name?.split(' ')[0] || ''
+              }`}</span>
             <span className="text-sm font-normal text-gray-500 mb-3">
               Your personalized overview of the most relevant data, updated
-              daily.{' '}
+              daily.&nbsp;
               <span className="underline cursor-pointer" onClick={show}>
                 We&rsquo;d love your feedback
               </span>
@@ -94,8 +94,7 @@ const Home: NextPage = () => {
 
         <div
           className="mt-8 px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist"
-        >
+          role="tablist">
           <ElemCategories
             categories={categories.map((category, i) => ({
               title: category,
@@ -119,7 +118,7 @@ const Home: NextPage = () => {
                 <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                   <CompaniesByFilterInSection
                     cardType="compact"
-                    headingText={`Companies`}
+                    headingText="Companies"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -132,24 +131,24 @@ const Home: NextPage = () => {
                         { num_of_views: { _is_null: false } },
                         isSelectedTagLocation
                           ? {
-                              location_json: {
-                                _contains: {
-                                  city: `${selectedStatusTag.title}`,
-                                },
-                              },
-                            }
-                          : {
-                              tags: {
-                                _contains: selectedStatusTag.title,
+                            location_json: {
+                              _contains: {
+                                city: `${selectedStatusTag.title}`,
                               },
                             },
+                          }
+                          : {
+                            tags: {
+                              _contains: selectedStatusTag.title,
+                            },
+                          },
                       ],
                     }}
                   />
 
                   <InvestorsByFilterInSection
                     cardType="compact"
-                    headingText={`Investors`}
+                    headingText="Investors"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -162,22 +161,20 @@ const Home: NextPage = () => {
                         { num_of_views: { _is_null: false } },
                         isSelectedTagLocation
                           ? {
-                              location_json: {
-                                _contains: {
-                                  city: `${selectedStatusTag.title}`,
-                                },
-                              },
-                            }
-                          : {
-                              tags: {
-                                _contains: selectedStatusTag.title,
+                            location_json: {
+                              _contains: {
+                                city: `${selectedStatusTag.title}`,
                               },
                             },
+                          }
+                          : {
+                            tags: {
+                              _contains: selectedStatusTag.title,
+                            },
+                          },
                       ],
                     }}
                   />
-
-                  <div className="mb-4" />
                 </div>
               </div>
 
@@ -216,8 +213,6 @@ const Home: NextPage = () => {
                           ],
                         }}
                       />
-
-                      <div className="mb-4" />
                     </div>
                   </div>
 
@@ -250,7 +245,6 @@ const Home: NextPage = () => {
                           ],
                         }}
                       />
-                      <div className="mb-4" />
                     </div>
                   </div>
 
@@ -319,7 +313,7 @@ const Home: NextPage = () => {
                       />
                       <EventsByFilterInSection
                         cardType="compact"
-                        headingText={`Events`}
+                        headingText="Events"
                         tagOnClick={null}
                         itemsPerPage={ITEMS_PER_PAGE}
                         orderBy={{
@@ -345,8 +339,6 @@ const Home: NextPage = () => {
                           ],
                         }}
                       />
-
-                      <div className="mb-4" />
                     </div>
                   </div>
                 </>
@@ -413,8 +405,6 @@ const Home: NextPage = () => {
                       ],
                     }}
                   />
-
-                  <div className="mb-4" />
                 </div>
               </div>
 
@@ -446,7 +436,7 @@ const Home: NextPage = () => {
                   />
                   <InvestorsByFilterInSection
                     cardType="compact"
-                    headingText="Recent exits"
+                    headingText="Exits"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -461,7 +451,6 @@ const Home: NextPage = () => {
                       ],
                     }}
                   />
-                  <div className="mb-4" />
                 </div>
               </div>
             </div>
