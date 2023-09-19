@@ -532,7 +532,7 @@ export default function SearchModal(props: any) {
     };
 
     return (
-      <Tab.List className="whitespace-nowrap flex gap-2 my-2 px-6 py-1 font-medium bg-white transition-all">
+      <Tab.List className="whitespace-nowrap flex gap-2 my-2 px-6 py-1 font-medium bg-white transition-all overflow-x-scroll">
         <Tab
           className={({ selected }) =>
             `${
@@ -653,6 +653,7 @@ export default function SearchModal(props: any) {
                         selectedIndex={tabSelectedIndex}
                         onChange={setTabSelectedIndex}
                       >
+                        
                         <ResultTabList />
                         <Tab.Panels>
                           <Tab.Panel unmount={false}>
@@ -664,10 +665,6 @@ export default function SearchModal(props: any) {
                               }
                             >
                               <Configure hitsPerPage={10} />
-
-                              {/* <h3 className="font-medium mt-5 mx-6">
-                                Companies
-                              </h3> */}
                               <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitCompanies(
@@ -695,7 +692,6 @@ export default function SearchModal(props: any) {
                               }
                             >
                               <Configure hitsPerPage={10} />
-                              {/* <h3 className="font-medium mt-5 mx-6">Investors</h3> */}
                               <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitInvestors(
@@ -723,7 +719,6 @@ export default function SearchModal(props: any) {
                               }
                             >
                               <Configure hitsPerPage={10} />
-                              {/* <h3 className="font-medium mt-5 mx-6">People</h3> */}
                               <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitPeople(
@@ -751,7 +746,6 @@ export default function SearchModal(props: any) {
                               }
                             >
                               <Configure hitsPerPage={10} />
-                              {/* <h3 className="font-medium mt-5 mx-6">Events</h3> */}
                               <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitEvents(
@@ -777,7 +771,6 @@ export default function SearchModal(props: any) {
                               }
                             >
                               <Configure hitsPerPage={10} />
-                              {/* <h3 className="font-medium mt-5 mx-6">News</h3> */}
                               <EmptyQueryBoundary>
                                 <InfiniteHits
                                   hitComponent={HitNews()}
