@@ -82,7 +82,7 @@ export default function Onboarding() {
   return (
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
       <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
-        <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-20 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+        <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-20 bg-white overflow-x-hidden overflow-y-auto scrollbar-hide">
           <ElemSignInHeader />
 
           <h3 className="text-lg font-medium text-gray-900">
