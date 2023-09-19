@@ -78,8 +78,9 @@ const Home: NextPage = () => {
         {/* hero */}
         <div className="mx-8 mt-8">
           <div className="flex flex-col gap-4 gap-x-8">
-            <span className="text-4xl font-medium">{`Hello, ${user?.display_name?.split(' ')[0] || ''
-              }`}</span>
+            <span className="text-4xl font-medium">{`Hello, ${
+              user?.display_name?.split(' ')[0] || ''
+            }`}</span>
             <span className="text-sm font-normal text-gray-500 mb-3">
               Your personalized overview of the most relevant data, updated
               daily.&nbsp;
@@ -94,7 +95,8 @@ const Home: NextPage = () => {
 
         <div
           className="mt-8 px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <ElemCategories
             categories={categories.map((category, i) => ({
               title: category,
@@ -131,17 +133,17 @@ const Home: NextPage = () => {
                         { num_of_views: { _is_null: false } },
                         isSelectedTagLocation
                           ? {
-                            location_json: {
-                              _contains: {
-                                city: `${selectedStatusTag.title}`,
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            }
+                          : {
+                              tags: {
+                                _contains: selectedStatusTag.title,
                               },
                             },
-                          }
-                          : {
-                            tags: {
-                              _contains: selectedStatusTag.title,
-                            },
-                          },
                       ],
                     }}
                   />
@@ -161,17 +163,17 @@ const Home: NextPage = () => {
                         { num_of_views: { _is_null: false } },
                         isSelectedTagLocation
                           ? {
-                            location_json: {
-                              _contains: {
-                                city: `${selectedStatusTag.title}`,
+                              location_json: {
+                                _contains: {
+                                  city: `${selectedStatusTag.title}`,
+                                },
+                              },
+                            }
+                          : {
+                              tags: {
+                                _contains: selectedStatusTag.title,
                               },
                             },
-                          }
-                          : {
-                            tags: {
-                              _contains: selectedStatusTag.title,
-                            },
-                          },
                       ],
                     }}
                   />
