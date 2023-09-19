@@ -89,7 +89,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
   ) {
     return (
       <div className="text-lg text-center mx-8 my-6">
-        Sorry... could not find any investors
+        Sorry, we couldn&apos;t find any investors today. Check back in tomorrow!
       </div>
     );
   }
