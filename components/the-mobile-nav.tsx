@@ -100,19 +100,9 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     ...(user
       ? [
           {
-            icon: IconCalendar,
-            title: 'Events',
-            href: '/events',
-          },
-          {
-            icon: IconNewspaper,
-            title: 'News',
-            href: '/news',
-          },
-          {
-            icon: IconDocumentDownload,
-            title: 'Notes',
-            href: '/notes',
+            icon: IconCustomList,
+            title: 'Lists',
+            href: '/lists',
           },
           {
             icon: IconGroup,
@@ -120,13 +110,23 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
             href: '/groups',
           },
           {
-            icon: IconCustomList,
-            title: 'Lists',
-            href: '/lists',
+            icon: IconDocumentDownload,
+            title: 'Notes',
+            href: '/notes',
           },
         ]
       : []),
     ...baseNav,
+    {
+      icon: IconCalendar,
+      title: 'Events',
+      href: '/events',
+    },
+    {
+      icon: IconNewspaper,
+      title: 'News',
+      href: '/news',
+    },
     ...(user
       ? [
           {
