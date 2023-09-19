@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import {
   Order_By,
   Companies_Bool_Exp,
@@ -26,7 +25,6 @@ import { CompaniesByFilterInSection } from '@/components/companies/elem-companie
 import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
 import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { ElemFilterSection } from '@/components/elem-filter-section';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -98,7 +96,7 @@ const Home: NextPage = () => {
           role="tablist"
         >
           <ElemCategories
-            categories={categories.map((category, i) => ({
+            categories={categories.map((category) => ({
               title: category,
               value: category.toLowerCase(),
             }))}
