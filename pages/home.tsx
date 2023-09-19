@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import {
   Order_By,
   Companies_Bool_Exp,
@@ -82,7 +81,7 @@ const Home: NextPage = () => {
             }`}</span>
             <span className="text-sm font-normal text-gray-500 mb-3">
               Your personalized overview of the most relevant data, updated
-              daily.{' '}
+              daily.&nbsp;
               <span className="underline cursor-pointer" onClick={show}>
                 We&rsquo;d love your feedback
               </span>
@@ -97,7 +96,7 @@ const Home: NextPage = () => {
           role="tablist"
         >
           <ElemCategories
-            categories={categories.map((category, i) => ({
+            categories={categories.map((category) => ({
               title: category,
               value: category.toLowerCase(),
             }))}
@@ -119,7 +118,7 @@ const Home: NextPage = () => {
                 <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                   <CompaniesByFilterInSection
                     cardType="compact"
-                    headingText={`Companies`}
+                    headingText="Companies"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -149,7 +148,7 @@ const Home: NextPage = () => {
 
                   <InvestorsByFilterInSection
                     cardType="compact"
-                    headingText={`Investors`}
+                    headingText="Investors"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -176,8 +175,6 @@ const Home: NextPage = () => {
                       ],
                     }}
                   />
-
-                  <div className="mb-4" />
                 </div>
               </div>
 
@@ -216,8 +213,6 @@ const Home: NextPage = () => {
                           ],
                         }}
                       />
-
-                      <div className="mb-4" />
                     </div>
                   </div>
 
@@ -250,7 +245,6 @@ const Home: NextPage = () => {
                           ],
                         }}
                       />
-                      <div className="mb-4" />
                     </div>
                   </div>
 
@@ -319,7 +313,7 @@ const Home: NextPage = () => {
                       />
                       <EventsByFilterInSection
                         cardType="compact"
-                        headingText={`Events`}
+                        headingText="Events"
                         tagOnClick={null}
                         itemsPerPage={ITEMS_PER_PAGE}
                         orderBy={{
@@ -345,8 +339,6 @@ const Home: NextPage = () => {
                           ],
                         }}
                       />
-
-                      <div className="mb-4" />
                     </div>
                   </div>
                 </>
@@ -413,8 +405,6 @@ const Home: NextPage = () => {
                       ],
                     }}
                   />
-
-                  <div className="mb-4" />
                 </div>
               </div>
 
@@ -446,7 +436,7 @@ const Home: NextPage = () => {
                   />
                   <InvestorsByFilterInSection
                     cardType="compact"
-                    headingText="Recent exits"
+                    headingText="Exits"
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -461,7 +451,6 @@ const Home: NextPage = () => {
                       ],
                     }}
                   />
-                  <div className="mb-4" />
                 </div>
               </div>
             </div>
