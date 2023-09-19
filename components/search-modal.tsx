@@ -459,6 +459,125 @@ export default function SearchModal(props: any) {
     return children;
   }
 
+  function ResultTabList() {
+    const { scopedResults } = useInstantSearch();
+
+    const getNumOfRecords = (indexes: string[]) => {
+      const scopedIndex = scopedResults.find(resultItem =>
+        indexes.includes(resultItem.indexId),
+      );
+      if (!scopedIndex) {
+        return undefined;
+      }
+
+      return scopedIndex?.results?.nbHits;
+    };
+
+    const getTabTitle = (
+      resourceType: 'companies' | 'vc_firms' | 'people' | 'events' | 'news',
+    ) => {
+      switch (resourceType) {
+        case 'companies':
+          return `Companies${
+            getNumOfRecords(['companies', 'ai_companies']) === undefined
+              ? ''
+              : ` (${getNumOfRecords(['companies', 'ai_companies'])})`
+          }`;
+
+        case 'vc_firms':
+          return `Investors${
+            getNumOfRecords(['vc_firms', 'ai_vc_firms']) === undefined
+              ? ''
+              : ` (${getNumOfRecords(['vc_firms', 'ai_vc_firms'])})`
+          }`;
+
+        case 'people':
+          return `People${
+            getNumOfRecords(['people', 'ai_people']) === undefined
+              ? ''
+              : ` (${getNumOfRecords(['people', 'ai_people'])})`
+          }`;
+
+        case 'events':
+          return `Events${
+            getNumOfRecords(['events', 'ai_events']) === undefined
+              ? ''
+              : ` (${getNumOfRecords(['events', 'ai_events'])})`
+          }`;
+
+        case 'news':
+          return `News${
+            getNumOfRecords(['news', 'ai_news']) === undefined
+              ? ''
+              : ` (${getNumOfRecords(['news', 'ai_news'])})`
+          }`;
+
+        default:
+          return '';
+      }
+    };
+
+    return (
+      <Tab.List className="whitespace-nowrap flex gap-2 my-2 px-6 py-1 font-medium bg-white transition-all">
+        <Tab
+          className={({ selected }) =>
+            `${
+              selected
+                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                : ''
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+          }
+        >
+          {getTabTitle('companies')}
+        </Tab>
+        <Tab
+          className={({ selected }) =>
+            `${
+              selected
+                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                : ''
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+          }
+        >
+          {getTabTitle('vc_firms')}
+        </Tab>
+        <Tab
+          className={({ selected }) =>
+            `${
+              selected
+                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                : ''
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+          }
+        >
+          {getTabTitle('people')}
+        </Tab>
+        <Tab
+          className={({ selected }) =>
+            `${
+              selected
+                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                : ''
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+          }
+        >
+          {getTabTitle('events')}
+        </Tab>
+        <Tab
+          className={({ selected }) =>
+            `${
+              selected
+                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                : ''
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+          }
+        >
+          {getTabTitle('news')}
+        </Tab>
+      </Tab.List>
+    );
+  }
+
   return (
     <>
       <Transition appear show={props.show} as={Fragment}>
@@ -520,65 +639,9 @@ export default function SearchModal(props: any) {
                         selectedIndex={tabSelectedIndex}
                         onChange={setTabSelectedIndex}
                       >
-                        <Tab.List className="whitespace-nowrap flex gap-2 my-2 px-6 py-1 font-medium bg-white transition-all">
-                          <Tab
-                            className={({ selected }) =>
-                              `${
-                                selected
-                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                                  : ''
-                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-                            }
-                          >
-                            Companies
-                          </Tab>
-                          <Tab
-                            className={({ selected }) =>
-                              `${
-                                selected
-                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                                  : ''
-                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-                            }
-                          >
-                            Investors
-                          </Tab>
-                          <Tab
-                            className={({ selected }) =>
-                              `${
-                                selected
-                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                                  : ''
-                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-                            }
-                          >
-                            People
-                          </Tab>
-                          <Tab
-                            className={({ selected }) =>
-                              `${
-                                selected
-                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                                  : ''
-                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-                            }
-                          >
-                            Events
-                          </Tab>
-                          <Tab
-                            className={({ selected }) =>
-                              `${
-                                selected
-                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                                  : ''
-                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-                            }
-                          >
-                            News
-                          </Tab>
-                        </Tab.List>
+                        <ResultTabList />
                         <Tab.Panels>
-                          <Tab.Panel>
+                          <Tab.Panel unmount={false}>
                             <Index
                               indexName={
                                 selectedLibrary === 'Web3'
@@ -609,7 +672,7 @@ export default function SearchModal(props: any) {
                               </EmptyQueryBoundary>
                             </Index>
                           </Tab.Panel>
-                          <Tab.Panel>
+                          <Tab.Panel unmount={false}>
                             <Index
                               indexName={
                                 selectedLibrary === 'Web3'
@@ -637,7 +700,7 @@ export default function SearchModal(props: any) {
                               </EmptyQueryBoundary>
                             </Index>
                           </Tab.Panel>
-                          <Tab.Panel>
+                          <Tab.Panel unmount={false}>
                             <Index
                               indexName={
                                 selectedLibrary === 'Web3'
@@ -665,7 +728,7 @@ export default function SearchModal(props: any) {
                               </EmptyQueryBoundary>
                             </Index>
                           </Tab.Panel>
-                          <Tab.Panel>
+                          <Tab.Panel unmount={false}>
                             <Index
                               indexName={
                                 selectedLibrary === 'Web3'
@@ -693,7 +756,7 @@ export default function SearchModal(props: any) {
                               </EmptyQueryBoundary>
                             </Index>
                           </Tab.Panel>
-                          <Tab.Panel>
+                          <Tab.Panel unmount={false}>
                             <Index
                               indexName={
                                 selectedLibrary === 'Web3' ? 'news' : 'ai_news'
