@@ -348,12 +348,12 @@ const Companies: NextPage<Props> = ({
       value: 'totalFundingHighToLow',
       onClick: () => setSortBy('totalFundingHighToLow'),
     },
-    {
-      id: 4,
-      label: 'Last funding date (new to old)',
-      value: 'lastFundingDate',
-      onClick: () => setSortBy('lastFundingDate'),
-    },
+    // {
+    //   id: 4,
+    //   label: 'Last funding date (new to old)',
+    //   value: 'lastFundingDate',
+    //   onClick: () => setSortBy('lastFundingDate'),
+    // },
   ];
 
   const pageTitle = `${selectedStatusTag?.title || 'All'} ${
