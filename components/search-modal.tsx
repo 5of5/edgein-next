@@ -1,5 +1,5 @@
-import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment } from 'react';
+import { Dialog, Tab, Transition } from '@headlessui/react';
+import { Fragment, useState, useRef } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Hit as AlgoliaHit } from 'instantsearch.js';
 import { every } from 'lodash';
@@ -16,7 +16,7 @@ import { FigureSearch } from '@/components/figures';
 import {
   IconSearch,
   IconChevronRight,
-  IconUser,
+  IconUserPlaceholder,
   IconImage,
   IconExternalLink,
 } from '@/components/icons';
@@ -104,9 +104,9 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
               redirect(`/companies/${hit.objectID}`);
             }
           }}
-          className="flex items-center px-6 py-1 group hover:bg-slate-100"
+          className="flex items-center px-6 py-1 group hover:bg-gray-100"
         >
-          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
             {hit.logo ? (
               <img
                 className="object-contain max-w-full max-h-full"
@@ -114,11 +114,11 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
                 alt={hit.name}
               />
             ) : (
-              <IconImage className="object-contain max-w-full max-h-full text-slate-200" />
+              <IconImage className="object-contain max-w-full max-h-full text-gray-200" />
             )}
           </div>
           <div className="flex grow">
-            <h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
+            <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
               <Highlight
                 attribute="name"
                 hit={hit}
@@ -140,7 +140,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
                 />
               </div>
             )}
-            <p className="ml-2 text-sm text-slate-600 line-clamp-1">
+            <p className="ml-2 text-sm text-gray-500 line-clamp-1">
               <Highlight
                 attribute="overview"
                 hit={hit}
@@ -168,7 +168,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         passHref
       >
         <a
-          className="flex items-center px-6 py-1 group hover:bg-slate-100"
+          className="flex items-center px-6 py-1 group hover:bg-gray-100"
           onClick={() => {
             onClose();
             if (isAdmin && redirect) {
@@ -176,7 +176,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             }
           }}
         >
-          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
             {hit.logo ? (
               <img
                 className="object-contain max-w-full max-h-full"
@@ -184,10 +184,10 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
                 alt={hit.name}
               />
             ) : (
-              <IconImage className="object-contain max-w-full max-h-full text-slate-200" />
+              <IconImage className="object-contain max-w-full max-h-full text-gray-200" />
             )}
           </div>
-          <h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
+          <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
             <Highlight
               attribute="name"
               hit={hit}
@@ -215,7 +215,7 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         passHref
       >
         <a
-          className="flex items-center px-6 py-1 group hover:bg-slate-100"
+          className="flex items-center px-6 py-1 group hover:bg-gray-100"
           onClick={() => {
             onClose();
             if (isAdmin && redirect) {
@@ -223,18 +223,18 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             }
           }}
         >
-          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+          <div className="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-white overflow-hidden border border-gray-200">
             {hit.picture ? (
               <img
-                className="object-contain max-w-full max-h-full"
+                className="object-fit max-w-full max-h-full"
                 src={hit.picture}
                 alt={hit.name}
               />
             ) : (
-              <IconUser className="object-contain max-w-full max-h-full text-slate-200" />
+              <IconUserPlaceholder className="object-fit max-w-full max-h-full text-gray-400" />
             )}
           </div>
-          <h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
+          <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
             <Highlight
               attribute="name"
               hit={hit}
@@ -268,9 +268,9 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
               redirect(`/events/${hit.objectID}`);
             }
           }}
-          className="flex items-center px-6 py-1 group hover:bg-slate-100"
+          className="flex items-center px-6 py-1 group hover:bg-gray-100"
         >
-          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
             <img
               className="object-contain max-w-full max-h-full"
               src={hit.banner || getEventBanner(hit.location_json?.city)}
@@ -285,7 +285,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           </div>
 
           <div className="flex grow">
-            <h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
+            <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
               <Highlight
                 attribute="name"
                 hit={hit}
@@ -297,7 +297,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             </h2>
 
             {hit.start_date && (
-              <p className="ml-2 text-sm text-slate-600 line-clamp-1">
+              <p className="ml-2 text-sm text-gray-500 line-clamp-1">
                 {formatDate(hit.start_date, {
                   month: 'short',
                   day: '2-digit',
@@ -345,12 +345,12 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 const HitNews = () =>
   function HitNews({ hit }: HitNewsProps) {
     return (
-      <div className="px-6 py-2 group hover:bg-slate-100">
-        <div className="inline text-base font-bold text-slate-600">
+      <div className="px-6 py-2 group hover:bg-gray-100">
+        <div className="inline text-base font-medium text-gray-500">
           {hit.link ? (
             <>
               <Link href={hit.link}>
-                <a className="border-b border-primary-500" target="_blank">
+                <a className="underline hover:no-underline" target="_blank">
                   <Highlight
                     attribute="text"
                     hit={hit}
@@ -389,7 +389,9 @@ const HitNews = () =>
   };
 
 export default function SearchModal(props: any) {
-  const emptyView = React.useRef(true);
+  const emptyView = useRef(true);
+
+  const [tabSelectedIndex, setTabSelectedIndex] = useState<number>(0);
 
   const { selectedLibrary } = useLibrary();
 
@@ -418,7 +420,7 @@ export default function SearchModal(props: any) {
     } else if (allEmpty) {
       return (
         <div className="w-full mt-5 px-6 py-1">
-          <h3 className="font-bold">No results for “{results.query}“</h3>
+          <h3 className="font-medium">No results for “{results.query}“</h3>
           <p>
             <Link href={`/contact/`} passHref>
               <a onClick={onClose} className="text-primary-500">
@@ -437,7 +439,7 @@ export default function SearchModal(props: any) {
     const { results } = useInstantSearch();
 
     if (results._state.query === '') {
-      return <div className="px-6 py-1 text-slate-600">{emptyText}</div>;
+      return <div className="px-6 py-1 text-gray-500">{emptyText}</div>;
     } else if (results?.nbHits === 0) {
       return (
         <div className="w-full px-6 py-1">
@@ -488,8 +490,8 @@ export default function SearchModal(props: any) {
                     searchClient={searchClient}
                     indexName="companies"
                   >
-                    <header className="relative flex items-center z-10 p-0 px-4 border-b border-slate-100">
-                      <IconSearch className="h-6 w-6 text-slate-600" />
+                    <header className="relative flex items-center z-10 p-0 px-4 border-b border-gray-100">
+                      <IconSearch className="h-6 w-6 text-gray-500" />
                       <SearchBox
                         className="w-full"
                         placeholder="Quick Search..."
@@ -500,144 +502,221 @@ export default function SearchModal(props: any) {
                           loadingIndicator: 'hidden',
                           form: 'flex',
                           input:
-                            'appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 border-none placeholder:text-slate-400 focus:bg-transparent focus:border-none focus:ring-0',
+                            'appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 border-none placeholder:text-gray-500 focus:bg-transparent focus:border-none focus:ring-0',
                         }}
                       />
                       <button
                         onClick={onClose}
                         type="reset"
                         arial-label="cancel"
-                        className="appearance-none w-8 justify-items-end p-1 bg-white border border-slate-100 rounded-md text-slate-600 font-bold text-[9px] hover:shadow-sm"
+                        className="appearance-none w-8 justify-items-end p-1 bg-white border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm"
                       >
                         ESC
                       </button>
                     </header>
 
                     <MasterEmptyQueryBoundary>
-                      <Index
-                        indexName={
-                          selectedLibrary === 'Web3'
-                            ? 'companies'
-                            : 'ai_companies'
-                        }
+                      <Tab.Group
+                        selectedIndex={tabSelectedIndex}
+                        onChange={setTabSelectedIndex}
                       >
-                        <Configure hitsPerPage={4} />
-                        <h3 className="font-bold mt-5 mx-6">Companies</h3>
-                        <EmptyQueryBoundary fallback={null}>
-                          <InfiniteHits
-                            hitComponent={HitCompanies(
-                              onClose,
-                              props.isAdmin,
-                              props.redirect,
-                            )}
-                            showPrevious={false}
-                            classNames={{
-                              list: 'my-2 border-y border-slate-100 divide-y divide-slate-100',
-                              loadMore:
-                                'w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                              disabledLoadMore: 'hidden',
-                            }}
-                          />
-                        </EmptyQueryBoundary>
-                      </Index>
+                        <Tab.List className="whitespace-nowrap flex gap-2 my-2 px-6 py-1 font-medium bg-white transition-all">
+                          <Tab
+                            className={({ selected }) =>
+                              `${
+                                selected
+                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                                  : ''
+                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                            }
+                          >
+                            Companies
+                          </Tab>
+                          <Tab
+                            className={({ selected }) =>
+                              `${
+                                selected
+                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                                  : ''
+                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                            }
+                          >
+                            Investors
+                          </Tab>
+                          <Tab
+                            className={({ selected }) =>
+                              `${
+                                selected
+                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                                  : ''
+                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                            }
+                          >
+                            People
+                          </Tab>
+                          <Tab
+                            className={({ selected }) =>
+                              `${
+                                selected
+                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                                  : ''
+                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                            }
+                          >
+                            Events
+                          </Tab>
+                          <Tab
+                            className={({ selected }) =>
+                              `${
+                                selected
+                                  ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                                  : ''
+                              } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                            }
+                          >
+                            News
+                          </Tab>
+                        </Tab.List>
+                        <Tab.Panels>
+                          <Tab.Panel>
+                            <Index
+                              indexName={
+                                selectedLibrary === 'Web3'
+                                  ? 'companies'
+                                  : 'ai_companies'
+                              }
+                            >
+                              <Configure hitsPerPage={10} />
 
-                      <Index
-                        indexName={
-                          selectedLibrary === 'Web3'
-                            ? 'vc_firms'
-                            : 'ai_vc_firms'
-                        }
-                      >
-                        <Configure hitsPerPage={4} />
-                        <h3 className="font-bold mt-5 mx-6">Investors</h3>
-                        <EmptyQueryBoundary fallback={null}>
-                          <InfiniteHits
-                            hitComponent={HitInvestors(
-                              onClose,
-                              props.isAdmin,
-                              props.redirect,
-                            )}
-                            showPrevious={false}
-                            classNames={{
-                              list: 'my-2 border-y border-slate-100 divide-y divide-slate-100',
-                              loadMore:
-                                'w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                              disabledLoadMore: 'hidden',
-                            }}
-                          />
-                        </EmptyQueryBoundary>
-                      </Index>
-
-                      <Index
-                        indexName={
-                          selectedLibrary === 'Web3' ? 'people' : 'ai_people'
-                        }
-                      >
-                        <Configure hitsPerPage={4} />
-                        <h3 className="font-bold mt-5 mx-6">People</h3>
-                        <EmptyQueryBoundary>
-                          <InfiniteHits
-                            hitComponent={HitPeople(
-                              onClose,
-                              props.isAdmin,
-                              props.redirect,
-                            )}
-                            showPrevious={false}
-                            classNames={{
-                              list: 'my-2 border-y border-slate-100 divide-y divide-slate-100',
-                              loadMore:
-                                'w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500',
-                              disabledLoadMore: 'hidden',
-                            }}
-                          />
-                        </EmptyQueryBoundary>
-                      </Index>
-
-                      <Index
-                        indexName={
-                          selectedLibrary === 'Web3' ? 'events' : 'ai_events'
-                        }
-                      >
-                        <Configure hitsPerPage={4} />
-                        <h3 className="font-bold mt-5 mx-6">Events</h3>
-                        <EmptyQueryBoundary fallback={null}>
-                          <InfiniteHits
-                            hitComponent={HitEvents(
-                              onClose,
-                              props.isAdmin,
-                              props.redirect,
-                            )}
-                            showPrevious={false}
-                            classNames={{
-                              list: 'my-2 border-y border-slate-100 divide-y divide-slate-100',
-                              loadMore:
-                                'w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                              disabledLoadMore: 'hidden',
-                            }}
-                          />
-                        </EmptyQueryBoundary>
-                      </Index>
-
-                      <Index
-                        indexName={
-                          selectedLibrary === 'Web3' ? 'news' : 'ai_news'
-                        }
-                      >
-                        <Configure hitsPerPage={4} />
-                        <h3 className="font-bold mt-5 mx-6">News</h3>
-                        <EmptyQueryBoundary fallback={null}>
-                          <InfiniteHits
-                            hitComponent={HitNews()}
-                            showPrevious={false}
-                            classNames={{
-                              list: 'my-2 border-y border-slate-100 divide-y divide-slate-100',
-                              loadMore:
-                                'w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                              disabledLoadMore: 'hidden',
-                            }}
-                          />
-                        </EmptyQueryBoundary>
-                      </Index>
+                              {/* <h3 className="font-medium mt-5 mx-6">
+                                Companies
+                              </h3> */}
+                              <EmptyQueryBoundary fallback={null}>
+                                <InfiniteHits
+                                  hitComponent={HitCompanies(
+                                    onClose,
+                                    props.isAdmin,
+                                    props.redirect,
+                                  )}
+                                  showPrevious={false}
+                                  classNames={{
+                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                                    loadMore:
+                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                                    disabledLoadMore: 'hidden',
+                                  }}
+                                />
+                              </EmptyQueryBoundary>
+                            </Index>
+                          </Tab.Panel>
+                          <Tab.Panel>
+                            <Index
+                              indexName={
+                                selectedLibrary === 'Web3'
+                                  ? 'vc_firms'
+                                  : 'ai_vc_firms'
+                              }
+                            >
+                              <Configure hitsPerPage={10} />
+                              {/* <h3 className="font-medium mt-5 mx-6">Investors</h3> */}
+                              <EmptyQueryBoundary fallback={null}>
+                                <InfiniteHits
+                                  hitComponent={HitInvestors(
+                                    onClose,
+                                    props.isAdmin,
+                                    props.redirect,
+                                  )}
+                                  showPrevious={false}
+                                  classNames={{
+                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                                    loadMore:
+                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                                    disabledLoadMore: 'hidden',
+                                  }}
+                                />
+                              </EmptyQueryBoundary>
+                            </Index>
+                          </Tab.Panel>
+                          <Tab.Panel>
+                            <Index
+                              indexName={
+                                selectedLibrary === 'Web3'
+                                  ? 'people'
+                                  : 'ai_people'
+                              }
+                            >
+                              <Configure hitsPerPage={10} />
+                              {/* <h3 className="font-medium mt-5 mx-6">People</h3> */}
+                              <EmptyQueryBoundary>
+                                <InfiniteHits
+                                  hitComponent={HitPeople(
+                                    onClose,
+                                    props.isAdmin,
+                                    props.redirect,
+                                  )}
+                                  showPrevious={false}
+                                  classNames={{
+                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                                    loadMore:
+                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500',
+                                    disabledLoadMore: 'hidden',
+                                  }}
+                                />
+                              </EmptyQueryBoundary>
+                            </Index>
+                          </Tab.Panel>
+                          <Tab.Panel>
+                            <Index
+                              indexName={
+                                selectedLibrary === 'Web3'
+                                  ? 'events'
+                                  : 'ai_events'
+                              }
+                            >
+                              <Configure hitsPerPage={10} />
+                              {/* <h3 className="font-medium mt-5 mx-6">Events</h3> */}
+                              <EmptyQueryBoundary fallback={null}>
+                                <InfiniteHits
+                                  hitComponent={HitEvents(
+                                    onClose,
+                                    props.isAdmin,
+                                    props.redirect,
+                                  )}
+                                  showPrevious={false}
+                                  classNames={{
+                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                                    loadMore:
+                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                                    disabledLoadMore: 'hidden',
+                                  }}
+                                />
+                              </EmptyQueryBoundary>
+                            </Index>
+                          </Tab.Panel>
+                          <Tab.Panel>
+                            <Index
+                              indexName={
+                                selectedLibrary === 'Web3' ? 'news' : 'ai_news'
+                              }
+                            >
+                              <Configure hitsPerPage={10} />
+                              {/* <h3 className="font-medium mt-5 mx-6">News</h3> */}
+                              <EmptyQueryBoundary fallback={null}>
+                                <InfiniteHits
+                                  hitComponent={HitNews()}
+                                  showPrevious={false}
+                                  classNames={{
+                                    list: 'my-2 border-y border-gray-100 divide-y divide-gray-100',
+                                    loadMore:
+                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                                    disabledLoadMore: 'hidden',
+                                  }}
+                                />
+                              </EmptyQueryBoundary>
+                            </Index>
+                          </Tab.Panel>
+                        </Tab.Panels>
+                      </Tab.Group>
                     </MasterEmptyQueryBoundary>
                   </InstantSearch>
                 </Dialog.Panel>
