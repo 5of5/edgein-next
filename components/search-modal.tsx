@@ -653,7 +653,6 @@ export default function SearchModal(props: any) {
                         selectedIndex={tabSelectedIndex}
                         onChange={setTabSelectedIndex}
                       >
-                        
                         <ResultTabList />
                         <Tab.Panels>
                           <Tab.Panel unmount={false}>

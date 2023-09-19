@@ -96,7 +96,7 @@ const Home: NextPage = () => {
           role="tablist"
         >
           <ElemCategories
-            categories={categories.map((category) => ({
+            categories={categories.map(category => ({
               title: category,
               value: category.toLowerCase(),
             }))}
