@@ -18,10 +18,14 @@ export const ElemPillsPeople: React.FC<Props> = ({
     setTeamLimit(TABLE_MAX_TEAM_LIMIT);
   };
 
+  const teamFoundersFirst = items?.sort(function (a: any, b: any) {
+    return b.founder - a.founder;
+  });
+
   if (items) {
     return (
       <div className={`flex flex-wrap overflow-clip gap-2 ${className}`}>
-        {items.slice(0, teamLimit).map((item, index: number) => {
+        {teamFoundersFirst?.slice(0, teamLimit).map((item, index: number) => {
           return (
             <a key={index} href={`/people/${item.person?.slug}`}>
               <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">

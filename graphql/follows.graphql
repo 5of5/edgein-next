@@ -77,6 +77,7 @@ query GetCompaniesByListId(
       }
       teamMembers {
         id
+        founder
         person {
           id
           slug
@@ -152,6 +153,7 @@ query GetVcFirmsByListId(
       tags
       investors {
         id
+        founder
         person {
           id
           slug

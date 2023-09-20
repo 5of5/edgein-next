@@ -170,10 +170,12 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
           return (
             <div className="flex flex-wrap overflow-clip gap-2">
               {props.value?.length ? (
-                <ElemPillsPeople
-                  items={props.value}
-                  limit={TABLE_DEFAULT_TEAM_LIMIT}
-                />
+                <>
+                  <ElemPillsPeople
+                    items={props.value}
+                    limit={TABLE_DEFAULT_TEAM_LIMIT}
+                  />
+                </>
               ) : (
                 <TableEmptyCell />
               )}
