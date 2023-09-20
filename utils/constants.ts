@@ -2015,6 +2015,10 @@ export const NEW_CATEGORY_LIMIT = 33;
 
 export const TRENDING_CATEGORY_LIMIT = 25;
 
+export const COMPANY_PROFILE_DEFAULT_TAGS_LIMIT = 5;
+
+export const INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT = 5;
+
 export const segmentChoices: SegmentOption[] = [
   {
     title: 'Executive',
