@@ -41,7 +41,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
         </p>
       </div>
 
-      <ul className="mt-8 grid grid-cols-2 gap-3">
+      <ul className="mt-8 grid grid-cols-2 gap-3 px-2 md:px-0">
         {segmentChoices.map(item => (
           <li
             key={item.title}

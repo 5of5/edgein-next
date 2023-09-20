@@ -62,6 +62,7 @@ query GetCompaniesByListId(
     company {
       id
       name
+      website
       logo
       sentiment
       location
@@ -134,12 +135,13 @@ query GetVcFirmsByListId(
     vc_firm {
       id
       name
+      website
       num_of_investments
       latest_investment
       sentiment
       logo
       slug
-      location
+      location_json
       year_founded
       overview
       tags

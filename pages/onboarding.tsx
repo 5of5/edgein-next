@@ -36,9 +36,7 @@ export default function Onboarding() {
   const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
-    if (currentStep !== 1) {
-      setCurrentStep(1);
-    }
+    setCurrentStep(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
