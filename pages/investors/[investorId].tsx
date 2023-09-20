@@ -32,6 +32,7 @@ import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -141,6 +142,7 @@ const VCFirm: NextPage<Props> = props => {
             {vcfirm.tags?.length > 0 && (
               <ElemTags
                 className="mt-4"
+                limit={INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT}
                 resourceType={'investors'}
                 tags={vcfirm.tags}
               />

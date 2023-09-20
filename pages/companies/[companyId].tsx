@@ -28,7 +28,10 @@ import {
   Order_By,
 } from '@/graphql/types';
 // import { ElemReactions } from '@/components/elem-reactions';
-import { tokenInfoMetrics } from '@/utils/constants';
+import {
+  COMPANY_PROFILE_DEFAULT_TAGS_LIMIT,
+  tokenInfoMetrics,
+} from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
 import parse from 'html-react-parser';
@@ -220,6 +223,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
             <ElemTags
               className="mt-4"
+              limit={COMPANY_PROFILE_DEFAULT_TAGS_LIMIT}
               resourceType={'companies'}
               tags={company.tags}
             />
