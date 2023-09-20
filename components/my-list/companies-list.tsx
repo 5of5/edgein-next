@@ -4,11 +4,13 @@ import moment from 'moment-timezone';
 import React, { FC, useMemo, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { numberWithCommas } from '@/utils';
+import { TABLE_DEFAULT_TEAM_LIMIT } from '@/utils/constants';
 import Link from 'next/link';
 import { TableEmptyCell } from './table-empty-cell';
 import { Table } from './table';
 import { PlaceholderTable } from '../placeholders';
 import { ElemTags } from '@/components/elem-tags';
+import { ElemPillsPeople } from '@/components/elem-pills-people';
 import { ElemTooltip } from '../elem-tooltip';
 
 type Props = {
@@ -162,6 +164,43 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         width: 100,
       },
       {
+        Header: 'Team',
+        accessor: 'company.teamMembers' as const,
+        Cell: (props: any) => {
+          return (
+            <div className="flex flex-wrap overflow-clip gap-2">
+              {props.value?.length ? (
+                <ElemPillsPeople
+                  items={props.value}
+                  limit={TABLE_DEFAULT_TEAM_LIMIT}
+                />
+              ) : (
+                <TableEmptyCell />
+              )}
+            </div>
+          );
+        },
+        disableSortBy: true,
+        width: 450,
+        minWidth: 300,
+      },
+      {
+        Header: 'Employees',
+        accessor: 'company.total_employees' as const,
+        Cell: (props: any) => {
+          return (
+            <>
+              {props.value ? (
+                <p>{numberWithCommas(props.value)}</p>
+              ) : (
+                <TableEmptyCell />
+              )}
+            </>
+          );
+        },
+        width: 200,
+      },
+      {
         Header: 'City',
         accessor: 'company.location_json.city' as const,
         Cell: (props: any) => {
@@ -190,22 +229,6 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         accessor: 'company.year_founded' as const,
         Cell: (props: any) => {
           return <>{props.value ? <p>{props.value}</p> : <TableEmptyCell />}</>;
-        },
-        width: 200,
-      },
-      {
-        Header: 'Employees',
-        accessor: 'company.total_employees' as const,
-        Cell: (props: any) => {
-          return (
-            <>
-              {props.value ? (
-                <p>{numberWithCommas(props.value)}</p>
-              ) : (
-                <TableEmptyCell />
-              )}
-            </>
-          );
         },
         width: 200,
       },

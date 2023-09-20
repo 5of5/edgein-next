@@ -3,11 +3,13 @@ import { first } from 'lodash';
 import moment from 'moment-timezone';
 import { useGetVcFirmsByListIdQuery } from '@/graphql/types';
 import { numberWithCommas } from '@/utils';
+import { TABLE_DEFAULT_TEAM_LIMIT } from '@/utils/constants';
 import { ElemPhoto } from '@/components/elem-photo';
 import { PlaceholderTable } from '../placeholders';
 import { Table } from './table';
 import { TableEmptyCell } from './table-empty-cell';
 import { ElemTags } from '@/components/elem-tags';
+import { ElemPillsPeople } from '@/components/elem-pills-people';
 import Link from 'next/link';
 import { ElemTooltip } from '../elem-tooltip';
 
@@ -193,6 +195,27 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         ),
         disableSortBy: true,
         width: 400,
+      },
+      {
+        Header: 'Team',
+        accessor: 'vc_firm.investors' as const,
+        Cell: (props: any) => {
+          return (
+            <div className="flex flex-wrap overflow-clip gap-2">
+              {props.value?.length ? (
+                <ElemPillsPeople
+                  items={props.value}
+                  limit={TABLE_DEFAULT_TEAM_LIMIT}
+                />
+              ) : (
+                <TableEmptyCell />
+              )}
+            </div>
+          );
+        },
+        disableSortBy: true,
+        width: 450,
+        minWidth: 300,
       },
       {
         Header: 'City',
