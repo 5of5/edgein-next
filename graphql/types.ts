@@ -28890,7 +28890,7 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, website: string | null, logo: any | null, sentiment: any | null, location: string | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -28900,7 +28900,7 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location: string | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }>, follows_vc_firms_aggregate: { __typename?: 'follows_vc_firms_aggregate', aggregate: { __typename?: 'follows_vc_firms_aggregate_fields', count: number } | null } };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, website: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location_json: any | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }>, follows_vc_firms_aggregate: { __typename?: 'follows_vc_firms_aggregate', aggregate: { __typename?: 'follows_vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertFollowsMutationVariables = Exact<{
   listId: InputMaybe<Scalars['Int']>;
@@ -31412,6 +31412,7 @@ export const GetCompaniesByListIdDocument = `
     company {
       id
       name
+      website
       logo
       sentiment
       location
@@ -31475,12 +31476,13 @@ export const GetVcFirmsByListIdDocument = `
     vc_firm {
       id
       name
+      website
       num_of_investments
       latest_investment
       sentiment
       logo
       slug
-      location
+      location_json
       year_founded
       overview
       tags

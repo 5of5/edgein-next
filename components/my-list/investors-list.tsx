@@ -9,6 +9,7 @@ import { Table } from './table';
 import { TableEmptyCell } from './table-empty-cell';
 import { ElemTags } from '@/components/elem-tags';
 import Link from 'next/link';
+import { ElemTooltip } from '../elem-tooltip';
 
 type Props = {
   listId: number;
@@ -84,26 +85,60 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         Header: 'Name',
         accessor: 'vc_firm.name' as const,
         Cell: (props: any) => (
-          <div>
+          <div className="flex items-center space-x-3">
             <a
               href={`/investors/` + props.row.original?.vc_firm?.slug}
-              className="flex items-center space-x-3 shrink-0 transition-all"
+              className="shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.vc_firm?.logo}
                 wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
-                placeholderClass="text-slate-300"
+                placeholderClass="text-gray-300"
               />
-              <p className="font-medium line-clamp-2 break-words hover:underline">
-                {props.value}
-              </p>
             </a>
+
+            <div>
+              <a
+                href={`/investors/` + props.row.original?.vc_firm?.slug}
+                className="font-medium line-clamp-2 break-words hover:underline"
+              >
+                {props.value}
+              </a>
+              {props.row.original?.vc_firm?.website && (
+                <a
+                  href={props.row.original.vc_firm.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="break-words hover:underline text-sm text-gray-500"
+                >
+                  {props.row.original.vc_firm.website}
+                </a>
+              )}
+            </div>
           </div>
         ),
-        width: 170,
-        minWidth: 200,
+        // Cell: (props: any) => (
+        //   <div>
+        //     <a
+        //       href={`/investors/` + props.row.original?.vc_firm?.slug}
+        //       className="flex items-center space-x-3 shrink-0 transition-all">
+        //       <ElemPhoto
+        //         photo={props.row.original?.vc_firm?.logo}
+        //         wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
+        //         imgClass="object-fit max-w-full max-h-full"
+        //         imgAlt={props.value}
+        //         placeholderClass="text-slate-300"
+        //       />
+        //       <p className="font-medium line-clamp-2 break-words hover:underline">
+        //         {props.value}
+        //       </p>
+        //     </a>
+        //   </div>
+        // ),
+        width: 300,
+        minWidth: 300,
         disableHiding: true,
       },
       {
@@ -112,9 +147,23 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <div>
             {props.value ? (
-              <p className="line-clamp-3 text-sm text-gray-500">
+              <>
+                <ElemTooltip
+                  content={props.value}
+                  mode="light"
+                  direction="top"
+                  size="lg"
+                  delay={1200}
+                  className="max-h-72 overflow-y-scroll"
+                >
+                  <div className="text-sm line-clamp-3 text-gray-500">
+                    {props.value}
+                  </div>
+                </ElemTooltip>
+                {/* <p className="line-clamp-3 text-sm text-gray-500">
                 {props.value}
-              </p>
+              </p> */}
+              </>
             ) : (
               <TableEmptyCell />
             )}
@@ -131,7 +180,11 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
           <>
             {props.value ? (
               <>
-                <ElemTags resourceType={'investors'} tags={props.value} />
+                <ElemTags
+                  resourceType={'investors'}
+                  tags={props.value}
+                  limit={6}
+                />
               </>
             ) : (
               <TableEmptyCell />
@@ -142,12 +195,27 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         width: 400,
       },
       {
-        Header: 'Location',
-        accessor: 'vc_firm.location' as const,
+        Header: 'City',
+        accessor: 'vc_firm.location_json.city' as const,
         Cell: (props: any) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
-        disableSortBy: true,
+        width: 200,
+      },
+      {
+        Header: 'State',
+        accessor: 'vc_firm.location_json.state' as const,
+        Cell: (props: any) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+        width: 200,
+      },
+      {
+        Header: 'Country',
+        accessor: 'vc_firm.location_json.country' as const,
+        Cell: (props: any) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
         width: 200,
       },
       {
