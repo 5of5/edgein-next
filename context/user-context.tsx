@@ -168,10 +168,13 @@ const UserProvider: React.FC<Props> = props => {
     }
   }, [selectedLibrary, library]);
 
-  const handleSelectLibrary = useCallback(() => (value: LibraryTag) => {
-    setLibrary(value);
-    onChangeLibrary(value.id);
-  }, [setLibrary, onChangeLibrary]);
+  const handleSelectLibrary = useCallback(
+    () => (value: LibraryTag) => {
+      setLibrary(value);
+      onChangeLibrary(value.id);
+    },
+    [setLibrary, onChangeLibrary],
+  );
 
   const cachedUser = useMemo(
     () => ({
