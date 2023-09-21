@@ -186,27 +186,29 @@ const Notifications: NextPage = () => {
                       {enableExpand && (
                         <Disclosure.Panel className="pl-16 lg:pl-18 pr-6 pt-2 pb-6">
                           <ul className="pl-1 list-disc list-inside space-y-2">
-                            {extensions.map((item: any) => (
-                              <li key={item.field} className="text-sm">
-                                {`Updated `}
-                                <Link
-                                  href={getNotificationOrganizationLink(
-                                    notification,
-                                  )}
-                                  passHref
-                                >
-                                  <a className="font-medium hover:text-primary-500">
-                                    {item.field === 'velocity_linkedin' ? (
-                                      <>velocity</>
-                                    ) : item.field === 'location_json' ? (
-                                      <>location</>
-                                    ) : (
-                                      <>{item.field.replace('_', ' ')}</>
+                            {extensions
+                              .filter(extensionItem => extensionItem.field)
+                              .map(item => (
+                                <li key={item.field} className="text-sm">
+                                  {`Updated `}
+                                  <Link
+                                    href={getNotificationOrganizationLink(
+                                      notification,
                                     )}
-                                  </a>
-                                </Link>
-                              </li>
-                            ))}
+                                    passHref
+                                  >
+                                    <a className="font-medium hover:text-primary-500">
+                                      {item.field === 'velocity_linkedin' ? (
+                                        <>velocity</>
+                                      ) : item.field === 'location_json' ? (
+                                        <>location</>
+                                      ) : (
+                                        <>{item.field.replace('_', ' ')}</>
+                                      )}
+                                    </a>
+                                  </Link>
+                                </li>
+                              ))}
                           </ul>
                         </Disclosure.Panel>
                       )}
