@@ -249,7 +249,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
                     <div>
                       <IconGlobe
                         className="h-5 w-5 text-gray-600"
-                        title={link}
+                        title="Website"
                       />
                     </div>
                   </ElemTooltip>

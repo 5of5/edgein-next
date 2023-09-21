@@ -74,7 +74,10 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
             {isPublicGroup ? (
               <div className="flex text-sm">
-                <IconGlobe className="w-5 h-5 shrink-0 mr-2 text-gray-500" />
+                <IconGlobe
+                  title="Public"
+                  className="w-5 h-5 shrink-0 mr-2 text-gray-500"
+                />
                 <div>
                   <h4>Public</h4>
                   <p className="text-gray-500">Anyone can find this group.</p>
@@ -82,7 +85,10 @@ export const ElemGroupAbout: React.FC<Props> = ({
               </div>
             ) : (
               <div className="flex text-sm">
-                <IconLockClosed className="w-5 h-5 shrink-0 mr-2 text-gray-500" />
+                <IconLockClosed
+                  title="Private"
+                  className="w-5 h-5 shrink-0 mr-2 text-gray-500"
+                />
                 <div>
                   <h4 className="font-mediun">Private</h4>
                   <p className="text-gray-500">
