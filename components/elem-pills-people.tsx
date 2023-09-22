@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { TABLE_MAX_TEAM_LIMIT } from '@/utils/constants';
+import { Team_Members, Investors } from '@/graphql/types';
 
 type Props = {
   className?: string;
-  items?: (string | null | any)[];
+  items?: Team_Members[] | Investors[];
   limit?: number;
 };
 
@@ -18,8 +19,8 @@ export const ElemPillsPeople: FC<Props> = ({
     setTeamLimit(TABLE_MAX_TEAM_LIMIT);
   };
 
-  const teamFoundersFirst = items?.sort(function (a: any, b: any) {
-    return b.founder - a.founder;
+  const teamFoundersFirst = items?.sort(a => {
+    return a.founder ? -1 : 1;
   });
 
   if (items) {
