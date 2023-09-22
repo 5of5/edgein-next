@@ -15,6 +15,10 @@ export const ElemPillsPeople: FC<Props> = ({
 }) => {
   const [teamLimit, setTeamLimit] = useState(limit);
 
+  if (!items) {
+    return null;
+  }
+
   const showMoreTeam = () => {
     setTeamLimit(TABLE_MAX_TEAM_LIMIT);
   };
@@ -23,29 +27,26 @@ export const ElemPillsPeople: FC<Props> = ({
     return a.founder ? -1 : 1;
   });
 
-  if (items) {
-    return (
-      <div className={`flex flex-wrap overflow-clip gap-2 ${className}`}>
-        {teamFoundersFirst?.slice(0, teamLimit).map((item, index: number) => {
-          return (
-            <a key={index} href={`/people/${item.person?.slug}`}>
-              <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
-                {item.person?.name}
-              </button>
-            </a>
-          );
-        })}
+  return (
+    <div className={`flex flex-wrap overflow-clip gap-2 ${className}`}>
+      {teamFoundersFirst?.slice(0, teamLimit).map((item, index: number) => {
+        return (
+          <a key={index} href={`/people/${item.person?.slug}`}>
+            <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
+              {item.person?.name}
+            </button>
+          </a>
+        );
+      })}
 
-        {teamLimit < items.length && (
-          <button
-            onClick={showMoreTeam}
-            className="text-xs text-gray-500 font-medium py-1"
-          >
-            {items.length - teamLimit} more
-          </button>
-        )}
-      </div>
-    );
-  }
-  return null;
+      {teamLimit < items.length && (
+        <button
+          onClick={showMoreTeam}
+          className="text-xs text-gray-500 font-medium py-1"
+        >
+          {items.length - teamLimit} more
+        </button>
+      )}
+    </div>
+  );
 };
