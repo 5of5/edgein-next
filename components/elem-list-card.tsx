@@ -11,6 +11,7 @@ import { DeepPartial, GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
+import { IconGlobe, IconLockClosed } from './icons';
 
 type ResourceDataType<T> = T;
 
@@ -145,10 +146,31 @@ export const ElemListCard: FC<Props> = ({
       </div>
 
       <div className="grow">
-        <p className="inline text-gray-500 text-sm">
+        <div className="inline-block items-center text-gray-500 text-sm">
+          {resource.public ? (
+            <ElemTooltip content="Public" direction="top" mode="light">
+              <div className="inline">
+                <IconGlobe
+                  className="inline-block w-4 h-4 shrink-0"
+                  title="Public"
+                />
+              </div>
+            </ElemTooltip>
+          ) : (
+            <ElemTooltip content="Private" direction="top" mode="light">
+              <div className="inline">
+                <IconLockClosed
+                  className="inline-block w-4 h-4 shrink-0"
+                  title="Private"
+                />
+              </div>
+            </ElemTooltip>
+          )}
+
           {isResourceList ? (
             members.length > 0 && (
               <>
+                {' • '}
                 {members.length}
                 {members.length > 1 ? ' Followers' : ' Follower'}
               </>
@@ -157,6 +179,7 @@ export const ElemListCard: FC<Props> = ({
             <>
               {members.length > 0 && (
                 <>
+                  {' • '}
                   {members.length}
                   {members.length > 1 ? ' Members' : ' Member'}
                 </>
@@ -179,7 +202,7 @@ export const ElemListCard: FC<Props> = ({
               )}
             </>
           )}
-        </p>
+        </div>
 
         <p className="text-sm text-gray-500">
           Updated {formatDateShown(resource.updated_at)}
