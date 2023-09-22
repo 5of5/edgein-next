@@ -146,12 +146,12 @@ export const ElemListCard: FC<Props> = ({
       </div>
 
       <div className="grow">
-        <div className="inline-block items-center text-gray-500 text-sm bg-red-300">
+        <div className="inline-block items-center text-gray-500 text-sm">
           {resource.public ? (
             <ElemTooltip content="Public" direction="top" mode="light">
               <div className="inline">
                 <IconGlobe
-                  className="inline-block w-5 h-5 shrink-0"
+                  className="inline-block w-4 h-4 shrink-0"
                   title="Public"
                 />
               </div>
@@ -160,7 +160,7 @@ export const ElemListCard: FC<Props> = ({
             <ElemTooltip content="Private" direction="top" mode="light">
               <div className="inline">
                 <IconLockClosed
-                  className="inline-block w-5 h-5 shrink-0"
+                  className="inline-block w-4 h-4 shrink-0"
                   title="Private"
                 />
               </div>
