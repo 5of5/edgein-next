@@ -80,8 +80,7 @@ const Notes: FC<Props> = () => {
             {Array.from({ length: 2 }, (_, i) => (
               <div
                 key={i}
-                className="max-w-2xl border border-gray-300 rounded-lg"
-              >
+                className="max-w-2xl border border-gray-300 rounded-lg">
                 <PlaceholderNote />
               </div>
             ))}

@@ -26,11 +26,14 @@ import {
   numberWithCommas,
 } from '@/utils';
 
+export type CardType = 'full' | 'compact';
+
 type Props = {
   company: Companies;
+  type?: CardType;
 };
 
-export const ElemCompanyCard: FC<Props> = ({ company }) => {
+export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
   const router = useRouter();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -81,7 +84,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
+    <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/companies/${slug}`}>
@@ -159,7 +162,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
                 </div>
               </div>
 
-              {overview && (
+              {type === 'full' && overview && (
                 <div className="mt-4 text-sm line-clamp-3 text-gray-500">
                   {overview}
                 </div>
@@ -168,7 +171,7 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
           </Link>
 
           <div>
-            {!isEmptyLocationJson && (
+            {type === 'full' && !isEmptyLocationJson && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
                   title={getFullAddress(location_json)}
@@ -196,7 +199,10 @@ export const ElemCompanyCard: FC<Props> = ({ company }) => {
             {website && (
               <Link href={website}>
                 <a target="_blank">
-                  <IconGlobe className="h-5 w-5 text-gray-600" />
+                  <IconGlobe
+                    title="Website"
+                    className="h-5 w-5 text-gray-600"
+                  />
                 </a>
               </Link>
             )}

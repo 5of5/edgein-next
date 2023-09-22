@@ -2003,6 +2003,8 @@ export const CARD_DEFAULT_TAGS_LIMIT = 3;
 
 export const CARD_MAX_TAGS_LIMIT = 50;
 
+export const FREE_USER_MAXIMUM_LISTS = 5;
+
 export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
 
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
@@ -2012,6 +2014,10 @@ export const DEFAULT_FILTER_TAGS_OFFSET = 10;
 export const NEW_CATEGORY_LIMIT = 33;
 
 export const TRENDING_CATEGORY_LIMIT = 25;
+
+export const COMPANY_PROFILE_DEFAULT_TAGS_LIMIT = 5;
+
+export const INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT = 5;
 
 export const segmentChoices: SegmentOption[] = [
   {

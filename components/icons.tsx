@@ -1450,7 +1450,7 @@ export const IconGlobe: FC<IconProps> = ({ className, title, strokeWidth }) => {
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor"
     >
-      <title>{title ? title : 'Globe'}</title>
+      <title>{title ? title : 'Website'}</title>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

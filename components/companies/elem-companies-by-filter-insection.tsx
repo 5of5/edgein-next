@@ -24,7 +24,7 @@ type Props = {
   cardType?: CardType;
 };
 
-export const CompaniesByFilter: FC<Props> = ({
+export const CompaniesByFilterInSection: FC<Props> = ({
   headingText,
   filters,
   orderBy,
@@ -62,14 +62,19 @@ export const CompaniesByFilter: FC<Props> = ({
     !data?.companies_aggregate ||
     data.companies.length === 0
   ) {
-    return <></>;
+    return (
+      <div className="text-lg text-center mx-8 my-6">
+        Sorry, we couldn&apos;t find any companies today. Check back in
+        tomorrow!
+      </div>
+    );
   }
 
   const { companies, companies_aggregate } = data;
 
   return (
     <div>
-      <div className="text-4xl font-medium my-4">{headingText}</div>
+      <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
       {isTableView ? (
         <CompaniesTable
           companies={companies}
@@ -85,7 +90,7 @@ export const CompaniesByFilter: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
+            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {companies.map(company => (
               <ElemCompanyCard
@@ -96,15 +101,17 @@ export const CompaniesByFilter: FC<Props> = ({
             ))}
           </div>
 
-          <Pagination
-            shownItems={companies.length}
-            totalItems={companies_aggregate.aggregate?.count ?? 0}
-            page={page}
-            itemsPerPage={itemsPerPage}
-            onClickPrev={previousPage}
-            onClickNext={nextPage}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
+          <div className="py-3 px-4">
+            <Pagination
+              shownItems={companies.length}
+              totalItems={companies_aggregate.aggregate?.count ?? 0}
+              page={page}
+              itemsPerPage={itemsPerPage}
+              onClickPrev={previousPage}
+              onClickNext={nextPage}
+              onClickToPage={selectedPage => setPage(selectedPage)}
+            />
+          </div>
         </div>
       )}
     </div>

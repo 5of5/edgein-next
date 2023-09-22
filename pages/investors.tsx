@@ -97,9 +97,9 @@ const Investors: NextPage<Props> = ({
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
-  const isSortDropdownVisible = ['Dead', 'Raising'].includes(
-    selectedStatusTag?.value || '',
-  );
+  const isSortDropdownVisible =
+    ['Dead', 'Raising'].includes(selectedStatusTag?.value || '') ||
+    !selectedStatusTag;
 
   const [tableLayout, setTableLayout] = useState(false);
 
@@ -360,8 +360,6 @@ const Investors: NextPage<Props> = ({
     },
   ];
 
-  const showPersonalized = user && !selectedFilters && !selectedStatusTag;
-
   const pageTitle = `${selectedStatusTag?.title || 'All'} ${
     user ? selectedLibrary : ''
   } investors`;
@@ -430,155 +428,6 @@ const Investors: NextPage<Props> = ({
           <ElemInviteBanner className="mx-8 my-3" />
 
           <div className="mx-8">
-            {showPersonalized && (
-              <div className="flex flex-col gap-4 gap-x-8">
-                {personalizedTags.locationTags.map(location => (
-                  <InvestorsByFilter
-                    key={location}
-                    headingText={`Trending in ${location}`}
-                    tagOnClick={filterByTag}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    isTableView={tableLayout}
-                    orderBy={{
-                      num_of_views: Order_By.Desc,
-                    }}
-                    filters={{
-                      _and: [
-                        // { library: { _contains: selectedLibrary } },
-                        // { status_tags: { _contains: 'Trending' } },
-                        ...defaultFilters,
-                        { num_of_views: { _is_null: false } },
-                        {
-                          location_json: {
-                            _contains: {
-                              city: `${location}`,
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                  />
-                ))}
-
-                {personalizedTags.locationTags.map(location => (
-                  <InvestorsByFilter
-                    key={location}
-                    headingText={`Recently updated in ${location}`}
-                    tagOnClick={filterByTag}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    isTableView={tableLayout}
-                    orderBy={{
-                      updated_at: Order_By.Desc,
-                    }}
-                    filters={{
-                      _and: [
-                        { library: { _contains: selectedLibrary } },
-                        {
-                          updated_at: {
-                            _gte: moment()
-                              .subtract(28, 'days')
-                              .format(ISO_DATE_FORMAT),
-                          },
-                        },
-                        {
-                          location_json: {
-                            _contains: {
-                              city: `${location}`,
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                  />
-                ))}
-
-                {personalizedTags.industryTags.map(industry => (
-                  <InvestorsByFilter
-                    key={industry}
-                    headingText={`Trending in ${industry}`}
-                    tagOnClick={filterByTag}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    isTableView={tableLayout}
-                    filters={{
-                      _and: [
-                        { library: { _contains: selectedLibrary } },
-                        {
-                          status_tags: {
-                            _contains: 'Trending',
-                          },
-                        },
-                        {
-                          tags: {
-                            _contains: industry,
-                          },
-                        },
-                      ],
-                    }}
-                  />
-                ))}
-
-                {personalizedTags.locationTags.map(location => (
-                  <InvestorsByFilter
-                    key={location}
-                    headingText="Recently active investors"
-                    tagOnClick={filterByTag}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    isTableView={tableLayout}
-                    filters={{
-                      _and: [
-                        ...defaultFilters,
-                        {
-                          investments: {
-                            investment_round: {
-                              round_date: {
-                                _gte: moment()
-                                  .subtract(28, 'days')
-                                  .format(ISO_DATE_FORMAT),
-                              },
-                            },
-                          },
-                        },
-                        {
-                          location_json: {
-                            _contains: {
-                              city: `${location}`,
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                    fallbackFilters={{
-                      _and: [
-                        ...defaultFilters,
-                        {
-                          investments: {
-                            investment_round: {
-                              round_date: {
-                                _gte: moment()
-                                  .subtract(28, 'days')
-                                  .format(ISO_DATE_FORMAT),
-                              },
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                  />
-                ))}
-
-                {/** TO-DO: update this filters */}
-                {/* <InvestorsByFilter
-                  headingText="Recent exits"
-                  tagOnClick={filterByTag}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={tableLayout}
-                  filters={{
-                    _and: [...defaultFilters],
-                  }}
-                /> */}
-              </div>
-            )}
-
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
@@ -603,15 +452,10 @@ const Investors: NextPage<Props> = ({
               </div>
             ) : (
               <>
-                <div className="flex justify-between my-8">
+                <div className="flex justify-between py-8">
                   <div className="text-4xl font-medium">{pageTitle}</div>
-                  {!selectedStatusTag && (
-                    <ElemDropdown
-                      IconComponent={IconSortDashboard}
-                      items={sortItems}
-                    />
-                  )}
                 </div>
+
                 {isLoading && !initialLoad ? (
                   <>
                     {tableLayout ? (
@@ -627,28 +471,16 @@ const Investors: NextPage<Props> = ({
                     )}
                   </>
                 ) : tableLayout && vcFirms?.length != 0 ? (
-                  <>
-                    <div className="flex justify-between my-8">
-                      <div className="text-4xl font-medium">{pageTitle}</div>
-                      {!selectedStatusTag && (
-                        <ElemDropdown
-                          IconComponent={IconSortDashboard}
-                          items={sortItems}
-                        />
-                      )}
-                    </div>
-
-                    <InvestorsTable
-                      investors={vcFirms}
-                      pageNumber={page}
-                      itemsPerPage={limit}
-                      shownItems={vcFirms?.length}
-                      totalItems={vcfirms_aggregate}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      filterByTag={filterByTag}
-                    />
-                  </>
+                  <InvestorsTable
+                    investors={vcFirms}
+                    pageNumber={page}
+                    itemsPerPage={limit}
+                    shownItems={vcFirms?.length}
+                    totalItems={vcfirms_aggregate}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    filterByTag={filterByTag}
+                  />
                 ) : (
                   <>
                     <div

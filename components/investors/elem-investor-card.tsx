@@ -18,12 +18,14 @@ import { useRouter } from 'next/router';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
 import { convertToInternationalCurrencySystem } from '@/utils';
+import { CardType } from '../companies/elem-company-card';
 
 type Props = {
   vcFirm: Vc_Firms;
+  type?: CardType;
 };
 
-export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
+export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
   const router = useRouter();
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -62,7 +64,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
+    <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <Link href={`/investors/${slug}`}>
@@ -107,7 +109,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
                 </div>
               </div>
 
-              {overview && (
+              {type === 'full' && overview && (
                 <div className="mt-2 text-sm line-clamp-3 text-gray-500">
                   {overview}
                 </div>
@@ -116,7 +118,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
           </Link>
 
           <div>
-            {!isEmptyLocationJson && (
+            {type === 'full' && !isEmptyLocationJson && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
                   title={getFullAddress(location_json)}
@@ -145,7 +147,10 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
               {website && (
                 <Link href={website}>
                   <a target="_blank">
-                    <IconGlobe className="h-5 w-5 text-gray-600" />
+                    <IconGlobe
+                      title="Website"
+                      className="h-5 w-5 text-gray-600"
+                    />
                   </a>
                 </Link>
               )}

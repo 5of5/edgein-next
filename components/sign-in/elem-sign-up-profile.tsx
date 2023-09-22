@@ -46,7 +46,7 @@ export const ElemSignUpProfile: FC<Props> = ({
           {person?.website_url && (
             <Link href={person.website_url}>
               <a target="_blank">
-                <IconGlobe className="h-6 w-6 text-gray-400" />
+                <IconGlobe title="Website" className="h-6 w-6 text-gray-400" />
               </a>
             </Link>
           )}

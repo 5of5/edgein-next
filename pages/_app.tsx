@@ -80,6 +80,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   React.useEffect(() => {
     const pagesWithoutFooter = [
+      '/home',
       '/companies',
       '/investors',
       '/events',

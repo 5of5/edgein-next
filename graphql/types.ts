@@ -28689,7 +28689,7 @@ export type GetCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, layer: string | null, location: string | null, location_json: any | null, tags: any | null, sentiment: any | null, investor_amount: any | null, year_founded: string | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, website: string | null, status_tags: any | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null, amount: any | null, investments: Array<{ __typename?: 'investments', amount: any | null, person: { __typename?: 'people', slug: string, name: string | null } | null, vc_firm: { __typename?: 'vc_firms', slug: string, name: string | null } | null }> }>, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, teamMembers: Array<{ __typename?: 'team_members', id: number, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null, amount: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
 export type GetCompaniesRecentQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -28890,7 +28890,7 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, website: string | null, logo: any | null, sentiment: any | null, location: string | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -28900,7 +28900,7 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location: string | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }>, follows_vc_firms_aggregate: { __typename?: 'follows_vc_firms_aggregate', aggregate: { __typename?: 'follows_vc_firms_aggregate_fields', count: number } | null } };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, website: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location_json: any | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }>, follows_vc_firms_aggregate: { __typename?: 'follows_vc_firms_aggregate', aggregate: { __typename?: 'follows_vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertFollowsMutationVariables = Exact<{
   listId: InputMaybe<Scalars['Int']>;
@@ -30421,61 +30421,38 @@ export const GetCompaniesDocument = `
     query GetCompanies($limit: Int, $offset: Int, $orderBy: [companies_order_by!], $where: companies_bool_exp!) {
   companies(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
-    name
     slug
-    layer
-    location
-    location_json
-    tags
+    logo
+    name
     coin {
       ticker
     }
-    sentiment
-    investor_amount
-    investment_rounds(order_by: {round_date: desc}) {
-      round
-      round_date
-      amount
-      investments {
-        person {
-          slug
-          name
-        }
-        vc_firm {
-          slug
-          name
-        }
-        amount
-      }
-    }
-    year_founded
+    tags
+    location_json
+    status_tags
     total_employees
+    investor_amount
+    year_founded
     investment_rounds_aggregate {
       aggregate {
         count
       }
     }
-    teamMembers {
-      id
-      person {
-        id
-        slug
-        name
-      }
+    investment_rounds(limit: 1, order_by: {round_date: desc_nulls_last}) {
+      round
+      round_date
+      amount
     }
-    logo
     overview
-    github
-    company_linkedin
-    market_verified
-    velocity_linkedin
-    velocity_token
-    website
-    status_tags
     follows {
       id
       list_id
     }
+    website
+    twitter
+    company_linkedin
+    github
+    discord
   }
   companies_aggregate(where: $where) {
     aggregate {
@@ -31435,6 +31412,7 @@ export const GetCompaniesByListIdDocument = `
     company {
       id
       name
+      website
       logo
       sentiment
       location
@@ -31498,12 +31476,13 @@ export const GetVcFirmsByListIdDocument = `
     vc_firm {
       id
       name
+      website
       num_of_investments
       latest_investment
       sentiment
       logo
       slug
-      location
+      location_json
       year_founded
       overview
       tags

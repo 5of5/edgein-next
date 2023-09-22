@@ -149,8 +149,8 @@ export const getNotificationChangedData = (
       return {
         message: `has been updated`,
         extensions: notification.notification_actions.map(item => ({
-          field: Object.keys(item?.action?.properties)[0],
-          value: Object.values(item?.action?.properties)[0],
+          field: Object.keys(item?.action?.properties || {})[0],
+          value: Object.values(item?.action?.properties || {})[0],
         })),
       };
     }
