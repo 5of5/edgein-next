@@ -7,12 +7,17 @@ import {
 } from '@/graphql/types';
 import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
-import { times } from 'lodash';
+import { companyStatusTags } from '@/utils/constants';
+import { filter, times } from 'lodash';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { ElemButton } from '../elem-button';
 import { Pagination } from '../pagination';
 import { PlaceholderCompanyCard } from '../placeholders';
 import { CompaniesTable } from './elem-companies-table';
 import { CardType, ElemCompanyCard } from './elem-company-card';
+
+export type FilterInSectionType = 'pagination' | 'see-all';
 
 type Props = {
   headingText: string;
@@ -22,6 +27,7 @@ type Props = {
   tagOnClick: any;
   isTableView?: boolean;
   cardType?: CardType;
+  filterInSectionType?: FilterInSectionType;
 };
 
 export const CompaniesByFilterInSection: FC<Props> = ({
@@ -32,7 +38,9 @@ export const CompaniesByFilterInSection: FC<Props> = ({
   tagOnClick,
   isTableView = false,
   cardType = 'full',
+  filterInSectionType = 'see-all',
 }) => {
+  const router = useRouter();
   const { page, setPage, nextPage, previousPage } = usePagination();
 
   const { data, isLoading, error } = useGetPersonalizedCompaniesQuery(
@@ -45,6 +53,37 @@ export const CompaniesByFilterInSection: FC<Props> = ({
     },
     { refetchOnWindowFocus: false },
   );
+
+  let encodedFilters = '';
+  let encodedStatusTag = '';
+  let encodedSortBy = '';
+
+  // console.log(filters)
+  // console.log(orderBy)
+
+  filters._and?.forEach(filterObj => {
+    if (filterObj?.tags?._contains) {
+      encodedFilters += `{"industry":{"tags":["${filterObj?.tags._contains}"]}}`;
+    }
+
+    if (filterObj?.location_json?._contains.city) {
+      encodedFilters += `{"city":{"condition":"any","tags":["${filterObj?.location_json?._contains.city}"]}}`;
+    }
+  });
+
+  if (orderBy?.num_of_views && orderBy?.num_of_views === Order_By.Desc) {
+    encodedStatusTag += companyStatusTags
+      .findIndex(statusTag => statusTag.title === 'Trending')
+      .toString();
+  }
+
+  if (orderBy?.updated_at && orderBy?.updated_at === Order_By.Desc) {
+    encodedSortBy += 'lastUpdate';
+  }
+
+  encodedFilters = encodeURIComponent(encodedFilters);
+  encodedStatusTag = encodeURIComponent(encodedStatusTag);
+  encodedSortBy = encodeURIComponent(encodedSortBy);
 
   if (isLoading) {
     return (
@@ -90,8 +129,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-          >
+            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {companies.map(company => (
               <ElemCompanyCard
                 key={company.id}
@@ -101,17 +139,32 @@ export const CompaniesByFilterInSection: FC<Props> = ({
             ))}
           </div>
 
-          <div className="py-3 px-4">
-            <Pagination
-              shownItems={companies.length}
-              totalItems={companies_aggregate.aggregate?.count ?? 0}
-              page={page}
-              itemsPerPage={itemsPerPage}
-              onClickPrev={previousPage}
-              onClickNext={nextPage}
-              onClickToPage={selectedPage => setPage(selectedPage)}
-            />
-          </div>
+          {filterInSectionType === 'pagination' ? (
+            <div className="py-3 px-4">
+              <Pagination
+                shownItems={companies.length}
+                totalItems={companies_aggregate.aggregate?.count ?? 0}
+                page={page}
+                itemsPerPage={itemsPerPage}
+                onClickPrev={previousPage}
+                onClickNext={nextPage}
+                onClickToPage={selectedPage => setPage(selectedPage)}
+              />
+            </div>
+          ) : (
+            <div className="py-3 flex justify-end">
+              <ElemButton
+                onClick={() => {
+                  router.push(
+                    `/companies/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                  );
+                }}
+                btn="primary"
+                size="sm">
+                See all
+              </ElemButton>
+            </div>
+          )}
         </div>
       )}
     </div>

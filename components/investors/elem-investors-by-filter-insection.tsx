@@ -14,6 +14,7 @@ import { PlaceholderInvestorCard } from '../placeholders';
 import { ElemInvestorCard } from './elem-investor-card';
 import { InvestorsTable } from './elem-investors-table';
 import { CardType } from '../companies/elem-company-card';
+import { FilterInSectionType } from '../companies/elem-companies-by-filter-insection';
 
 type Props = {
   headingText: string;
@@ -24,6 +25,7 @@ type Props = {
   tagOnClick: any;
   isTableView?: boolean;
   cardType?: CardType;
+  filterInSectionType?: FilterInSectionType;
 };
 
 export const InvestorsByFilterInSection: FC<Props> = ({
@@ -35,6 +37,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
   tagOnClick,
   isTableView = false,
   cardType = 'full',
+  filterInSectionType = 'see-all',
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 

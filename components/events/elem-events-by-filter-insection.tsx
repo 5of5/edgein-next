@@ -13,6 +13,7 @@ import { ElemEventCard } from './elem-event-card';
 import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
 import { CardType } from '../companies/elem-company-card';
+import { FilterInSectionType } from '../companies/elem-companies-by-filter-insection';
 
 type Props = {
   headingText: string;
@@ -21,6 +22,7 @@ type Props = {
   itemsPerPage: number;
   tagOnClick: any;
   cardType?: CardType;
+  filterInSectionType?: FilterInSectionType;
 };
 
 export const EventsByFilterInSection: FC<Props> = ({
@@ -30,6 +32,7 @@ export const EventsByFilterInSection: FC<Props> = ({
   tagOnClick,
   orderBy,
   cardType = 'full',
+  filterInSectionType = 'see-all',
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
@@ -85,17 +88,32 @@ export const EventsByFilterInSection: FC<Props> = ({
         ))}
       </div>
 
-      <div className="py-3 px-4">
-        <Pagination
-          shownItems={events.length}
-          totalItems={events_aggregate.aggregate?.count ?? 0}
-          page={page}
-          itemsPerPage={itemsPerPage}
-          onClickPrev={previousPage}
-          onClickNext={nextPage}
-          onClickToPage={selectedPage => setPage(selectedPage)}
-        />
-      </div>
+      {filterInSectionType === 'pagination' ? (
+        <div className="py-3 px-4">
+          <Pagination
+            shownItems={events.length}
+            totalItems={events_aggregate.aggregate?.count ?? 0}
+            page={page}
+            itemsPerPage={itemsPerPage}
+            onClickPrev={previousPage}
+            onClickNext={nextPage}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
+        </div>
+      ) : (
+        <div className="py-3 px-4">
+          <Pagination
+            shownItems={events.length}
+            totalItems={events_aggregate.aggregate?.count ?? 0}
+            page={page}
+            itemsPerPage={itemsPerPage}
+            onClickPrev={previousPage}
+            onClickNext={nextPage}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
+        </div>
+      )} 
+     
     </div>
   );
 };

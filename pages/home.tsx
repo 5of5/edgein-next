@@ -25,11 +25,14 @@ import { CompaniesByFilterInSection } from '@/components/companies/elem-companie
 import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
 import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { onTrackView } from '@/utils/track';
+import { useRouter } from 'next/router';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const { user } = useUser();
   const { industryTags, locationTags } = getPersonalizedData({ user });
   const categories = [...locationTags, GLOBAL_TAG, ...industryTags];
@@ -64,6 +67,13 @@ const Home: NextPage = () => {
     setSelectedStatusTag(getFirstOrDefaultCategory());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  // useEffect(() => {
+  //   onTrackView({
+  //     pathname: router.pathname,
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const isSelectedTagLocation = locationTags.includes(
     selectedStatusTag?.title || '',
