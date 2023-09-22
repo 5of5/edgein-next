@@ -7,7 +7,7 @@ type Props = {
   limit?: number;
 };
 
-export const ElemPillsPeople: React.FC<Props> = ({
+export const ElemPillsPeople: FC<Props> = ({
   className,
   items,
   limit = TABLE_MAX_TEAM_LIMIT,
