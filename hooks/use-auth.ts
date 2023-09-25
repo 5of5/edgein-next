@@ -3,6 +3,8 @@ import { useCallback, useMemo } from 'react';
 import useSWR from 'swr';
 import { useSWRConfig } from 'swr';
 
+const THROTTLE_INTERVAL = 30 * 60000; //30m in ms
+
 function fetcher(route: string) {
   /* our token cookie gets sent with this request */
   return fetch(route)
@@ -35,7 +37,9 @@ export function useAuth() {
     data: user,
     error,
     isValidating,
-  } = useSWR<User>('/api/user/', fetcher, { revalidateOnFocus: false });
+  } = useSWR<User>('/api/user/', fetcher, {
+    focusThrottleInterval: THROTTLE_INTERVAL,
+  });
   const { mutate } = useSWRConfig();
   const loading = isValidating;
 
