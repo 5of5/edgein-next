@@ -68,6 +68,28 @@ export default function Onboarding() {
       {
         onSuccess: async response => {
           if (response.status === 200) {
+            generateFirstList();
+          } else {
+            const error = await response.json();
+            toast(error.error || GENERAL_ERROR_MESSAGE, 'error');
+          }
+        },
+      },
+    );
+
+  const { mutate: generateFirstList, isLoading: isGenerateFirstListLoading } =
+    useMutation(
+      () =>
+        fetch('/api/generate-first-list/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }),
+      {
+        onSuccess: async response => {
+          if (response.status === 200) {
             router.reload();
           } else {
             const error = await response.json();
@@ -131,7 +153,9 @@ export default function Onboarding() {
             )}
             {currentStep === 3 && (
               <ElemOnboardingTags
-                isSubmittingOnboarding={isSubmittingOnboarding}
+                isSubmittingOnboarding={
+                  isSubmittingOnboarding || isGenerateFirstListLoading
+                }
                 tags={tags}
                 onChangeTags={setTags}
                 onNext={() => {

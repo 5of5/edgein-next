@@ -137,7 +137,9 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     <span className="line-clamp-1 break-all flex-1">
                       {listItemName === 'crap'
                         ? 'Sh**'
-                        : startCase(listItemName)}
+                        : ['hot', 'like'].includes(listItemName)
+                        ? startCase(listItemName)
+                        : listItemName}
                     </span>
                   </a>
                 </Link>
