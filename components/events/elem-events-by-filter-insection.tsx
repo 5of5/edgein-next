@@ -90,8 +90,7 @@ export const EventsByFilterInSection: FC<Props> = ({
       <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-      >
+        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {events.map(event => (
           <ElemEventCard
             key={event.id}
@@ -114,25 +113,26 @@ export const EventsByFilterInSection: FC<Props> = ({
           />
         )}
 
-        {filterInSectionType === 'see-all' && isEnabledSeeAll && (
-          <div className="flex justify-end">
-            <ElemButton
-              onClick={() => {
-                if (isPremiumFilter && !userCanUsePremiumFilter) {
-                  onOpenUpgradeDialog();
-                  return;
-                }
-                router.push(
-                  `/events/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
-                );
-              }}
-              btn="primary"
-              size="sm"
-            >
-              See all
-            </ElemButton>
-          </div>
-        )}
+        {filterInSectionType === 'see-all' &&
+          isEnabledSeeAll &&
+          (events_aggregate.aggregate?.count ?? 0) > itemsPerPage && (
+            <div className="flex justify-end">
+              <ElemButton
+                onClick={() => {
+                  if (isPremiumFilter && !userCanUsePremiumFilter) {
+                    onOpenUpgradeDialog();
+                    return;
+                  }
+                  router.push(
+                    `/events/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
+                  );
+                }}
+                btn="primary"
+                size="sm">
+                See all
+              </ElemButton>
+            </div>
+          )}
       </div>
     </div>
   );

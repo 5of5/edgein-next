@@ -107,8 +107,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-          >
+            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {companies.map(company => (
               <ElemCompanyCard
                 key={company.id}
@@ -131,25 +130,26 @@ export const CompaniesByFilterInSection: FC<Props> = ({
               />
             )}
 
-            {filterInSectionType === 'see-all' && isEnabledSeeAll && (
-              <div className="flex justify-end">
-                <ElemButton
-                  onClick={() => {
-                    if (isPremiumFilter && !userCanUsePremiumFilter) {
-                      onOpenUpgradeDialog();
-                      return;
-                    }
-                    router.push(
-                      `/companies/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
-                    );
-                  }}
-                  btn="primary"
-                  size="sm"
-                >
-                  See all
-                </ElemButton>
-              </div>
-            )}
+            {filterInSectionType === 'see-all' &&
+              isEnabledSeeAll &&
+              (companies_aggregate.aggregate?.count ?? 0) > itemsPerPage && (
+                <div className="flex justify-end">
+                  <ElemButton
+                    onClick={() => {
+                      if (isPremiumFilter && !userCanUsePremiumFilter) {
+                        onOpenUpgradeDialog();
+                        return;
+                      }
+                      router.push(
+                        `/companies/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                      );
+                    }}
+                    btn="primary"
+                    size="sm">
+                    See all
+                  </ElemButton>
+                </div>
+              )}
           </div>
         </div>
       )}
