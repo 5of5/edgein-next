@@ -97,7 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               userData.id,
               userData.additional_emails,
             );
-            userData = {...userData, ...newUserData}
+            userData = { ...userData, ...newUserData };
           }
         }
       }
@@ -114,7 +114,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userData.email,
           auth_linkedin_id!,
         );
-        userData = {...userData, ...newUserData}
+        userData = { ...userData, ...newUserData };
       }
       // update the auth0_verified
       if (userData && !userData.is_auth0_verified) {
