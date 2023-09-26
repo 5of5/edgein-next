@@ -1,7 +1,13 @@
 import { FC, useState, useMemo } from 'react';
 import { first } from 'lodash';
 import moment from 'moment-timezone';
-import { useGetVcFirmsByListIdQuery } from '@/graphql/types';
+import {
+  useGetVcFirmsByListIdQuery,
+  Investments,
+  Investment_Rounds,
+  Vc_Firms,
+  Team_Members,
+} from '@/graphql/types';
 import { numberWithCommas } from '@/utils';
 import { TABLE_DEFAULT_TEAM_LIMIT } from '@/utils/constants';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -10,7 +16,6 @@ import { Table } from './table';
 import { TableEmptyCell } from './table-empty-cell';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemPillsPeople } from '@/components/elem-pills-people';
-import Link from 'next/link';
 import { ElemTooltip } from '../elem-tooltip';
 
 type Props = {
@@ -61,10 +66,10 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
     return funding;
   }, [investors]);
 
-  const getLatestRound = (rounds: any) => {
-    const latestRound: any = first(
+  const getLatestRound = (rounds: Investment_Rounds[]) => {
+    const latestRound = first(
       rounds
-        .sort(
+        ?.sort(
           (
             a: { round_date: string | number | Date },
             b: { round_date: string | number | Date },
@@ -86,7 +91,14 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Name',
         accessor: 'vc_firm.name' as const,
-        Cell: (props: any) => (
+        Cell: (props: {
+          value: string;
+          row: {
+            original: {
+              vc_firm?: Vc_Firms;
+            };
+          };
+        }) => (
           <div className="flex items-center space-x-3">
             <a
               href={`/investors/` + props.row.original?.vc_firm?.slug}
@@ -121,24 +133,6 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
             </div>
           </div>
         ),
-        // Cell: (props: any) => (
-        //   <div>
-        //     <a
-        //       href={`/investors/` + props.row.original?.vc_firm?.slug}
-        //       className="flex items-center space-x-3 shrink-0 transition-all">
-        //       <ElemPhoto
-        //         photo={props.row.original?.vc_firm?.logo}
-        //         wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
-        //         imgClass="object-fit max-w-full max-h-full"
-        //         imgAlt={props.value}
-        //         placeholderClass="text-slate-300"
-        //       />
-        //       <p className="font-medium line-clamp-2 break-words hover:underline">
-        //         {props.value}
-        //       </p>
-        //     </a>
-        //   </div>
-        // ),
         width: 300,
         minWidth: 300,
         disableHiding: true,
@@ -146,26 +140,21 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Description',
         accessor: 'vc_firm.overview' as const,
-        Cell: (props: any) => (
+        Cell: (props: { value: string }) => (
           <div>
             {props.value ? (
-              <>
-                <ElemTooltip
-                  content={props.value}
-                  mode="light"
-                  direction="top"
-                  size="lg"
-                  delay={1200}
-                  className="max-h-72 overflow-y-scroll"
-                >
-                  <div className="text-sm line-clamp-3 text-gray-500">
-                    {props.value}
-                  </div>
-                </ElemTooltip>
-                {/* <p className="line-clamp-3 text-sm text-gray-500">
-                {props.value}
-              </p> */}
-              </>
+              <ElemTooltip
+                content={props.value}
+                mode="light"
+                direction="top"
+                size="lg"
+                delay={1200}
+                className="max-h-72 overflow-y-scroll"
+              >
+                <div className="text-sm line-clamp-3 text-gray-500">
+                  {props.value}
+                </div>
+              </ElemTooltip>
             ) : (
               <TableEmptyCell />
             )}
@@ -178,7 +167,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Tags',
         accessor: 'vc_firm.tags' as const,
-        Cell: (props: any) => (
+        Cell: (props: { value: Array<string> }) => (
           <>
             {props.value ? (
               <>
@@ -199,7 +188,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Team',
         accessor: 'vc_firm.investors' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: Team_Members[] }) => {
           return (
             <div className="flex flex-wrap overflow-clip gap-2">
               {props.value?.length ? (
@@ -220,7 +209,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'City',
         accessor: 'vc_firm.location_json.city' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: string }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
         width: 200,
@@ -228,7 +217,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'State',
         accessor: 'vc_firm.location_json.state' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: string }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
         width: 200,
@@ -236,7 +225,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Country',
         accessor: 'vc_firm.location_json.country' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: string }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
         width: 200,
@@ -244,34 +233,27 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Founded',
         accessor: 'vc_firm.year_founded' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: string }) => {
           return <>{props.value ? <p>{props.value}</p> : <TableEmptyCell />}</>;
         },
         width: 200,
       },
       {
         Header: 'Investments Total',
-        accessor: (data: {
-          vc_firm: {
-            investments: {
-              [x: string]: any;
-              investment_round: Object;
-            };
-          };
-        }) => {
+        accessor: (data: { vc_firm: Vc_Firms }) => {
           const investmentRounds = data.vc_firm?.investments?.flatMap(
             (item: any) => item.investment_round,
           );
 
           const investmentsTotal = investmentRounds?.reduce(
-            (total: number, currentValue: any) =>
-              (total = total + (currentValue ? currentValue.amount : 0)),
+            (total: number, round: Investments) =>
+              (total = total + (round ? round.amount : 0)),
             0,
           );
 
           return investmentsTotal;
         },
-        Cell: (props: any) => {
+        Cell: (props: { value: number }) => {
           return (
             <div>
               {props.value ? (
@@ -287,7 +269,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       {
         Header: '# Investment Rounds',
         accessor: 'vc_firm.num_of_investments' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: number }) => {
           return <>{props.value ? props.value : <TableEmptyCell />}</>;
         },
         width: 40,
@@ -296,27 +278,28 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         Header: 'Last Investment Date',
         accessor: (data: {
           vc_firm: {
-            investments: {
-              [x: string]: any;
-              investment_round: Object;
-            };
+            investments: Investments[];
           };
         }) => {
           const investmentRounds = data.vc_firm?.investments?.flatMap(
-            (item: any) => item.investment_round,
+            (item: any) => item?.investment_round,
           );
 
           if (!investmentRounds) {
-            return 0;
+            return null;
           } else {
-            const latestRound = getLatestRound(investmentRounds);
+            const latestRound = investmentRounds
+              ? getLatestRound(investmentRounds)
+              : null;
 
-            const out = latestRound?.round_date ? latestRound?.round_date : 0;
+            const out = latestRound?.round_date
+              ? latestRound?.round_date
+              : null;
 
             return out;
           }
         },
-        Cell: (props: any) => {
+        Cell: (props: { value: Date }) => {
           return (
             <div>
               {props.value ? (
@@ -333,10 +316,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         Header: 'Last Investment Type',
         accessor: (data: {
           vc_firm: {
-            investments: {
-              [x: string]: any;
-              investment_round: Object;
-            };
+            investments: Investments[];
           };
         }) => {
           const investmentRounds = data.vc_firm?.investments?.flatMap(
@@ -344,16 +324,16 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
           );
 
           if (!investmentRounds) {
-            return 0;
+            return null;
           } else {
             const latestRound = getLatestRound(investmentRounds);
 
-            const out = latestRound?.round ? latestRound?.round : 0;
+            const out = latestRound?.round ? latestRound?.round : null;
 
             return out;
           }
         },
-        Cell: (props: any) => {
+        Cell: (props: { value: string }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
       },
