@@ -92,9 +92,13 @@ const Companies: NextPage<Props> = ({
     useStateParams<DashboardCategory | null>(
       null,
       'statusTag',
-      companyLayer =>
-        companyLayer ? companyStatusTags.indexOf(companyLayer).toString() : '',
-      index => companyStatusTags[Number(index)],
+      companyLayer => (companyLayer ? companyLayer.value : ''),
+      selectedStatusTag =>
+        companyStatusTags[
+          companyStatusTags.findIndex(
+            statusTag => statusTag.value === selectedStatusTag,
+          )
+        ],
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';

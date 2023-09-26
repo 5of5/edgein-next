@@ -1076,7 +1076,7 @@ export const getHomepageEncodedURI = (
         encodedFilters += `{"city":{"condition":"any","tags":["${filterObj?.location_json?._contains.city}"]}}`;
       }
 
-      // Recently funded, paid feature
+      // Recently funded, premium feature
       if (
         'investment_rounds' in filterObj &&
         filterObj?.investment_rounds?.round_date?._gte
@@ -1088,7 +1088,7 @@ export const getHomepageEncodedURI = (
         isPremiumFilter = true;
       }
 
-      // Recently active investors
+      // Recently active investors, premium feature
       if (
         'investments' in filterObj &&
         filterObj?.investments?.investment_round?.round_date?._gte
@@ -1102,11 +1102,8 @@ export const getHomepageEncodedURI = (
     }
   });
 
-  // TODO: index of trending tag
   if (orderBy?.num_of_views && orderBy?.num_of_views === Order_By.Desc) {
-    encodedStatusTag += companyStatusTags
-      .findIndex(statusTag => statusTag.title === 'Trending')
-      .toString();
+    encodedStatusTag += 'Trending';
   }
 
   if (orderBy?.updated_at && orderBy?.updated_at === Order_By.Desc) {
