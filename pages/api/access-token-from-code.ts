@@ -93,10 +93,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userData = await UserService.findOneUserByEmail(loggedInUser.email);
           if (!userData.additional_emails.includes(userInfo.email)) {
             userData.additional_emails.push(userInfo.email);
-            userData = await UserService.updateAllowedEmailArray(
+            const newUserData = await UserService.updateAllowedEmailArray(
               userData.id,
               userData.additional_emails,
             );
+            userData = { ...userData, ...newUserData };
           }
         }
       }
@@ -109,10 +110,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ) {
         isUserPassPrimaryAccount = true;
         const auth_linkedin_id = auth0SubInfo.pop();
-        userData = await UserService.updateAuth0LinkedInId(
+        const newUserData = await UserService.updateAuth0LinkedInId(
           userData.email,
           auth_linkedin_id!,
         );
+        userData = { ...userData, ...newUserData };
       }
       // update the auth0_verified
       if (userData && !userData.is_auth0_verified) {
