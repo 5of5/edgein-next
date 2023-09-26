@@ -12,6 +12,11 @@ import GroupService from '@/utils/groups';
 import { makeAuthService, UserInfo } from '@/services/auth.service';
 import { mutate } from '@/graphql/hasuraAdmin';
 import { onFindPeopleByLinkedin } from './add-onboarding-information';
+import async from 'react-select/dist/declarations/src/async/index';
+import UserTransactionsService, {
+  REFERRAL_CREDITS_AMOUNT,
+  REGISTRATION_CREDITS_AMOUNT,
+} from '@/utils/userTransactions';
 
 const authService = makeAuthService();
 
@@ -96,6 +101,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
       // upsert user info
       userData = await UserService.upsertUser(objectData);
+
+      // If we have referenced user, add extra credits to him
+      if (referenceUserId && !isNaN(Number(referenceUserId))) {
+        await UserTransactionsService.onInsertTransaction(
+          referenceUserId as number,
+          REFERRAL_CREDITS_AMOUNT,
+        );
+      }
     }
     // update the linkedIn id in user
     if (userData && !userData.auth0_user_pass_id) {
@@ -128,6 +141,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isUserPassPrimaryAccount,
       isLinkedInPrimaryAccount,
       userData,
+    );
+
+    // Add registration credits to new user
+    await UserTransactionsService.onInsertTransaction(
+      userData.id,
+      REGISTRATION_CREDITS_AMOUNT,
     );
 
     const userToken = UserService.createToken(userData, true);

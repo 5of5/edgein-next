@@ -23,9 +23,8 @@ export default function Account() {
   );
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
-  const numberOfMonthsFromCredits = Math.ceil(
-    userProfile?.users_by_pk?.credits / 14.99,
-  );
+  const numberOfCredits = userProfile?.users_by_pk?.credits || 0;
+  const numberOfMonthsFromCredits = Math.ceil(numberOfCredits / 1500);
 
   const { data: investorData } = useGetInvestorByPersonIdQuery(
     {
@@ -59,24 +58,27 @@ export default function Account() {
               </p>
             </div>
 
-            {userProfile?.users_by_pk?.credits > 0 &&
-              !user?.entitlements.viewEmails && (
-                <p className="mt-2 text-primary-500">
-                  You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
-                  {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
-                  out and log back in to activate.
-                </p>
-              )}
+            {numberOfCredits > 0 && !user?.entitlements.viewEmails && (
+              <p className="mt-2 text-primary-500">
+                You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
+                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
+                out and log back in to activate.
+              </p>
+            )}
 
-            {userProfile?.users_by_pk?.credits > 0 &&
-              user?.entitlements.viewEmails && (
-                <p className="mt-2 text-primary-500">
-                  You have EdgeIn Contributor active for{' '}
-                  {numberOfMonthsFromCredits}{' '}
-                  {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
-                </p>
-              )}
+            {numberOfCredits > 0 && user?.entitlements.viewEmails && (
+              <p className="mt-2 text-primary-500">
+                You have EdgeIn Contributor active for{' '}
+                {numberOfMonthsFromCredits}{' '}
+                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
+              </p>
+            )}
 
+            {numberOfCredits > 0 && (
+              <span className="text-primary-500">
+                {numberOfCredits} credits available.
+              </span>
+            )}
             <ElemInviteUser />
 
             {isInvestor && (
