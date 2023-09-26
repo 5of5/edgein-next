@@ -14,6 +14,9 @@ import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
 import { CardType } from '../companies/elem-company-card';
 import { FilterInSectionType } from '../companies/elem-companies-by-filter-insection';
+import { ElemButton } from '../elem-button';
+import { useRouter } from 'next/router';
+import { getHomepageEncodedURI } from '@/utils/filter';
 
 type Props = {
   headingText: string;
@@ -23,6 +26,9 @@ type Props = {
   tagOnClick: any;
   cardType?: CardType;
   filterInSectionType?: FilterInSectionType;
+  onOpenUpgradeDialog: () => void;
+  userCanUsePremiumFilter: boolean;
+  isEnabledSeeAll?: boolean;
 };
 
 export const EventsByFilterInSection: FC<Props> = ({
@@ -33,7 +39,11 @@ export const EventsByFilterInSection: FC<Props> = ({
   orderBy,
   cardType = 'full',
   filterInSectionType = 'see-all',
+  onOpenUpgradeDialog,
+  userCanUsePremiumFilter,
+  isEnabledSeeAll = true,
 }) => {
+  const router = useRouter();
   const { page, setPage, nextPage, previousPage } = usePagination();
 
   const { data, isLoading, error } = useGetEventsQuery(
@@ -46,6 +56,9 @@ export const EventsByFilterInSection: FC<Props> = ({
     },
     { refetchOnWindowFocus: false },
   );
+
+  const { encodedFilters, encodedStatusTag, isPremiumFilter } =
+    getHomepageEncodedURI(filters, orderBy);
 
   if (isLoading) {
     return (
@@ -88,8 +101,8 @@ export const EventsByFilterInSection: FC<Props> = ({
         ))}
       </div>
 
-      {filterInSectionType === 'pagination' ? (
-        <div className="py-3 px-4">
+      <div className="py-3 px-4">
+        {filterInSectionType === 'pagination' && (
           <Pagination
             shownItems={events.length}
             totalItems={events_aggregate.aggregate?.count ?? 0}
@@ -99,21 +112,28 @@ export const EventsByFilterInSection: FC<Props> = ({
             onClickNext={nextPage}
             onClickToPage={selectedPage => setPage(selectedPage)}
           />
-        </div>
-      ) : (
-        <div className="py-3 px-4">
-          <Pagination
-            shownItems={events.length}
-            totalItems={events_aggregate.aggregate?.count ?? 0}
-            page={page}
-            itemsPerPage={itemsPerPage}
-            onClickPrev={previousPage}
-            onClickNext={nextPage}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
-        </div>
-      )} 
-     
+        )}
+
+        {filterInSectionType === 'see-all' && isEnabledSeeAll && (
+          <div className="flex justify-end">
+            <ElemButton
+              onClick={() => {
+                if (isPremiumFilter && !userCanUsePremiumFilter) {
+                  onOpenUpgradeDialog();
+                  return;
+                }
+                router.push(
+                  `/events/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
+                );
+              }}
+              btn="primary"
+              size="sm"
+            >
+              See all
+            </ElemButton>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

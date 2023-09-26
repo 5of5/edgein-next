@@ -15,6 +15,9 @@ import { ElemInvestorCard } from './elem-investor-card';
 import { InvestorsTable } from './elem-investors-table';
 import { CardType } from '../companies/elem-company-card';
 import { FilterInSectionType } from '../companies/elem-companies-by-filter-insection';
+import { getHomepageEncodedURI } from '@/utils/filter';
+import { ElemButton } from '../elem-button';
+import { useRouter } from 'next/router';
 
 type Props = {
   headingText: string;
@@ -26,6 +29,9 @@ type Props = {
   isTableView?: boolean;
   cardType?: CardType;
   filterInSectionType?: FilterInSectionType;
+  onOpenUpgradeDialog: () => void;
+  userCanUsePremiumFilter: boolean;
+  isEnabledSeeAll?: boolean;
 };
 
 export const InvestorsByFilterInSection: FC<Props> = ({
@@ -38,7 +44,11 @@ export const InvestorsByFilterInSection: FC<Props> = ({
   isTableView = false,
   cardType = 'full',
   filterInSectionType = 'see-all',
+  onOpenUpgradeDialog,
+  userCanUsePremiumFilter,
+  isEnabledSeeAll = true,
 }) => {
+  const router = useRouter();
   const { page, setPage, nextPage, previousPage } = usePagination();
 
   const { data, isLoading, error } = useGetPersonalizedVcFirmsQuery(
@@ -69,6 +79,9 @@ export const InvestorsByFilterInSection: FC<Props> = ({
       refetchOnWindowFocus: false,
     },
   );
+
+  const { encodedFilters, encodedStatusTag, encodedSortBy, isPremiumFilter } =
+    getHomepageEncodedURI(filters, orderBy);
 
   if (isLoading || isLoadingSecondary) {
     return (
@@ -138,15 +151,37 @@ export const InvestorsByFilterInSection: FC<Props> = ({
           </div>
 
           <div className="py-3 px-4">
-            <Pagination
-              shownItems={vc_firms?.length ?? 0}
-              totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
-              page={page}
-              itemsPerPage={itemsPerPage}
-              onClickPrev={previousPage}
-              onClickNext={nextPage}
-              onClickToPage={selectedPage => setPage(selectedPage)}
-            />
+            {filterInSectionType === 'pagination' && (
+              <Pagination
+                shownItems={vc_firms?.length ?? 0}
+                totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
+                page={page}
+                itemsPerPage={itemsPerPage}
+                onClickPrev={previousPage}
+                onClickNext={nextPage}
+                onClickToPage={selectedPage => setPage(selectedPage)}
+              />
+            )}
+
+            {filterInSectionType === 'see-all' && isEnabledSeeAll && (
+              <div className="flex justify-end">
+                <ElemButton
+                  onClick={() => {
+                    if (isPremiumFilter && !userCanUsePremiumFilter) {
+                      onOpenUpgradeDialog();
+                      return;
+                    }
+                    router.push(
+                      `/investors/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                    );
+                  }}
+                  btn="primary"
+                  size="sm"
+                >
+                  See all
+                </ElemButton>
+              </div>
+            )}
           </div>
         </div>
       )}

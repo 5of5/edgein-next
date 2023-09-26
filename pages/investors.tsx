@@ -103,7 +103,7 @@ const Investors: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const [sortBy, setSortBy] = useState('mostRelevant');
+  const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -394,6 +394,9 @@ const Investors: NextPage<Props> = ({
                 <ElemDropdown
                   IconComponent={IconSortDashboard}
                   items={sortItems}
+                  defaultItem={sortItems.findIndex(
+                    sortItem => sortItem.value === sortBy,
+                  )}
                 />
               )}
             </div>

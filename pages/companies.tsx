@@ -192,7 +192,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -206,7 +207,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -364,7 +366,8 @@ const Companies: NextPage<Props> = ({
       <div className="relative">
         <div
           className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <ElemCategories
             categories={companyStatusTags}
             selectedCategory={selectedStatusTag}
@@ -439,7 +442,8 @@ const Companies: NextPage<Props> = ({
                         `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
@@ -483,7 +487,8 @@ const Companies: NextPage<Props> = ({
                 <>
                   <div
                     data-testid="companies"
-                    className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  >
                     {companies?.map(company => {
                       return (
                         <ElemCompanyCard
@@ -525,7 +530,8 @@ const Companies: NextPage<Props> = ({
                   )
                 }
                 btn="white"
-                className="mt-3">
+                className="mt-3"
+              >
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>
