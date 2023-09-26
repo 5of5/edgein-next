@@ -83,12 +83,12 @@ const Home: NextPage = () => {
     setIsOpenUpgradeDialog(false);
   };
 
-  // useEffect(() => {
-  //   onTrackView({
-  //     pathname: router.pathname,
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    onTrackView({
+      pathname: router.pathname,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const isSelectedTagLocation = locationTags.includes(
     selectedStatusTag?.title || '',
