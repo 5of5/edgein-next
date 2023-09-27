@@ -229,7 +229,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   hmac.update(String(userData.id));
 
   const entitlements: Entitlements =
-    userData.billing_org_id || userData.premimum_until > 0
+    userData.billing_org_id || userData.credits > 0
       ? {
           viewEmails: true,
           groupsCount: 5000,
