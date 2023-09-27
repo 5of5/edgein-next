@@ -48,13 +48,13 @@ export default function Account() {
           <div className="grid gap-y-6">
             <div>
               <h3 className="font-medium">
-                Get 1 month free for every person you invite
+                Share EdgeIn and get 1,500 credits
               </h3>
               <p className="mt-2 text-gray-600 text-sm">
-                Invite your friends to EdgeIn and for each friend who signs up
-                through your referral, you&apos;ll receive $14.99 in credit.
-                That&apos;s 1 month of EdgeIn Contributor for free! The more
-                people who sign up, the more credit you&apos;ll get.
+                Invite your friends to EdgeIn, and we'll give you 1,500 credits
+                for every friend who signs up through your referral. That's 1
+                month of EdgeIn Contributor, completely free! The more people
+                who sign up, the more credits you'll get.
               </p>
             </div>
 
