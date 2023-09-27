@@ -23551,7 +23551,9 @@ export type User_Transactions = {
   __typename?: 'user_transactions';
   amount: Scalars['Int'];
   created_at: Scalars['timestamp'];
+  created_by: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
+  note: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
 };
 
@@ -23589,6 +23591,7 @@ export type User_Transactions_Aggregate_FieldsCountArgs = {
 export type User_Transactions_Avg_Fields = {
   __typename?: 'user_transactions_avg_fields';
   amount: Maybe<Scalars['Float']>;
+  created_by: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -23600,7 +23603,9 @@ export type User_Transactions_Bool_Exp = {
   _or: InputMaybe<Array<User_Transactions_Bool_Exp>>;
   amount: InputMaybe<Int_Comparison_Exp>;
   created_at: InputMaybe<Timestamp_Comparison_Exp>;
+  created_by: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  note: InputMaybe<String_Comparison_Exp>;
   user_id: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -23613,6 +23618,7 @@ export enum User_Transactions_Constraint {
 /** input type for incrementing numeric columns in table "user_transactions" */
 export type User_Transactions_Inc_Input = {
   amount: InputMaybe<Scalars['Int']>;
+  created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   user_id: InputMaybe<Scalars['Int']>;
 };
@@ -23621,7 +23627,9 @@ export type User_Transactions_Inc_Input = {
 export type User_Transactions_Insert_Input = {
   amount: InputMaybe<Scalars['Int']>;
   created_at: InputMaybe<Scalars['timestamp']>;
+  created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  note: InputMaybe<Scalars['String']>;
   user_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -23630,7 +23638,9 @@ export type User_Transactions_Max_Fields = {
   __typename?: 'user_transactions_max_fields';
   amount: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamp']>;
+  created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  note: Maybe<Scalars['String']>;
   user_id: Maybe<Scalars['Int']>;
 };
 
@@ -23639,7 +23649,9 @@ export type User_Transactions_Min_Fields = {
   __typename?: 'user_transactions_min_fields';
   amount: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamp']>;
+  created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  note: Maybe<Scalars['String']>;
   user_id: Maybe<Scalars['Int']>;
 };
 
@@ -23663,7 +23675,9 @@ export type User_Transactions_On_Conflict = {
 export type User_Transactions_Order_By = {
   amount: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  note: InputMaybe<Order_By>;
   user_id: InputMaybe<Order_By>;
 };
 
@@ -23679,7 +23693,11 @@ export enum User_Transactions_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  CreatedBy = 'created_by',
+  /** column name */
   Id = 'id',
+  /** column name */
+  Note = 'note',
   /** column name */
   UserId = 'user_id'
 }
@@ -23688,7 +23706,9 @@ export enum User_Transactions_Select_Column {
 export type User_Transactions_Set_Input = {
   amount: InputMaybe<Scalars['Int']>;
   created_at: InputMaybe<Scalars['timestamp']>;
+  created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  note: InputMaybe<Scalars['String']>;
   user_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -23696,6 +23716,7 @@ export type User_Transactions_Set_Input = {
 export type User_Transactions_Stddev_Fields = {
   __typename?: 'user_transactions_stddev_fields';
   amount: Maybe<Scalars['Float']>;
+  created_by: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -23704,6 +23725,7 @@ export type User_Transactions_Stddev_Fields = {
 export type User_Transactions_Stddev_Pop_Fields = {
   __typename?: 'user_transactions_stddev_pop_fields';
   amount: Maybe<Scalars['Float']>;
+  created_by: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -23712,6 +23734,7 @@ export type User_Transactions_Stddev_Pop_Fields = {
 export type User_Transactions_Stddev_Samp_Fields = {
   __typename?: 'user_transactions_stddev_samp_fields';
   amount: Maybe<Scalars['Float']>;
+  created_by: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -23720,6 +23743,7 @@ export type User_Transactions_Stddev_Samp_Fields = {
 export type User_Transactions_Sum_Fields = {
   __typename?: 'user_transactions_sum_fields';
   amount: Maybe<Scalars['Int']>;
+  created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   user_id: Maybe<Scalars['Int']>;
 };
@@ -23731,7 +23755,11 @@ export enum User_Transactions_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  CreatedBy = 'created_by',
+  /** column name */
   Id = 'id',
+  /** column name */
+  Note = 'note',
   /** column name */
   UserId = 'user_id'
 }
@@ -23740,6 +23768,7 @@ export enum User_Transactions_Update_Column {
 export type User_Transactions_Var_Pop_Fields = {
   __typename?: 'user_transactions_var_pop_fields';
   amount: Maybe<Scalars['Float']>;
+  created_by: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -23748,6 +23777,7 @@ export type User_Transactions_Var_Pop_Fields = {
 export type User_Transactions_Var_Samp_Fields = {
   __typename?: 'user_transactions_var_samp_fields';
   amount: Maybe<Scalars['Float']>;
+  created_by: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -23756,6 +23786,7 @@ export type User_Transactions_Var_Samp_Fields = {
 export type User_Transactions_Variance_Fields = {
   __typename?: 'user_transactions_variance_fields';
   amount: Maybe<Scalars['Float']>;
+  created_by: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -23799,6 +23830,7 @@ export type Users = {
   reference_id: Scalars['String'];
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+  use_credits_system: Scalars['Boolean'];
 };
 
 
@@ -23961,6 +23993,7 @@ export type Users_Bool_Exp = {
   reference_id: InputMaybe<String_Comparison_Exp>;
   reference_user_id: InputMaybe<Int_Comparison_Exp>;
   role: InputMaybe<String_Comparison_Exp>;
+  use_credits_system: InputMaybe<Boolean_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "users" */
@@ -24030,6 +24063,7 @@ export type Users_Insert_Input = {
   reference_id: InputMaybe<Scalars['String']>;
   reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
+  use_credits_system: InputMaybe<Scalars['Boolean']>;
 };
 
 /** aggregate max on columns */
@@ -24115,6 +24149,7 @@ export type Users_Order_By = {
   reference_id: InputMaybe<Order_By>;
   reference_user_id: InputMaybe<Order_By>;
   role: InputMaybe<Order_By>;
+  use_credits_system: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: users */
@@ -24406,7 +24441,9 @@ export enum Users_Select_Column {
   /** column name */
   ReferenceUserId = 'reference_user_id',
   /** column name */
-  Role = 'role'
+  Role = 'role',
+  /** column name */
+  UseCreditsSystem = 'use_credits_system'
 }
 
 /** input type for updating data in table "users" */
@@ -24429,6 +24466,7 @@ export type Users_Set_Input = {
   reference_id: InputMaybe<Scalars['String']>;
   reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
+  use_credits_system: InputMaybe<Scalars['Boolean']>;
 };
 
 /** aggregate stddev on columns */
@@ -24504,7 +24542,9 @@ export enum Users_Update_Column {
   /** column name */
   ReferenceUserId = 'reference_user_id',
   /** column name */
-  Role = 'role'
+  Role = 'role',
+  /** column name */
+  UseCreditsSystem = 'use_credits_system'
 }
 
 /** aggregate var_pop on columns */
@@ -26894,7 +26934,7 @@ export type InsertUserTransactionMutationVariables = Exact<{
 }>;
 
 
-export type InsertUserTransactionMutation = { __typename?: 'mutation_root', insert_user_transactions_one: { __typename?: 'user_transactions', user_id: number, amount: number } | null };
+export type InsertUserTransactionMutation = { __typename?: 'mutation_root', insert_user_transactions_one: { __typename?: 'user_transactions', user_id: number, amount: number, note: string | null } | null };
 
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -32055,6 +32095,7 @@ export const InsertUserTransactionDocument = `
   insert_user_transactions_one(object: $object) {
     user_id
     amount
+    note
   }
 }
     `;

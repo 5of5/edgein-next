@@ -2,5 +2,6 @@ mutation InsertUserTransaction($object: user_transactions_insert_input!) {
   insert_user_transactions_one(object: $object) {
     user_id
     amount
+    note
   }
 }

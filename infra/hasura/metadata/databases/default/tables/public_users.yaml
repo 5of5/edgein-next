@@ -73,6 +73,7 @@ select_permissions:
         - reference_id
         - reference_user_id
         - role
+        - use_credits_system
       computed_fields:
         - credits
       filter:
