@@ -52,7 +52,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     /** Update user token */
-    const newUserToken = await UserService.generateToken({ userId: user.id, isFirstLogin: false });
+    const newUserToken = await UserService.generateToken({
+      userId: user.id,
+      isFirstLogin: false,
+    });
     const token = await CookieService.createUserToken(newUserToken);
     CookieService.setTokenCookie(res, token);
 

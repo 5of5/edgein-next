@@ -130,7 +130,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       userData,
     );
 
-    const userToken = await UserService.generateToken({userId: userData.id, isFirstLogin: true});
+    const userToken = await UserService.generateToken({
+      userId: userData.id,
+      isFirstLogin: true,
+    });
 
     // Author a couple of cookies to persist a user's session
     const token = await CookieService.createUserToken(userToken);

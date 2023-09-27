@@ -86,7 +86,6 @@ async function findOneUserByIdForToken(id: number) {
   return data.data.users[0];
 }
 
-
 async function findOneUserById(id: number) {
   const data = await query<GetUserByIdQuery>({
     query: GetUserByIdDocument,
@@ -211,15 +210,19 @@ async function findOneUserByPersonId(person_id: number) {
   return data.data.users[0];
 }
 
-const generateToken = async (props: {userId: number, isFirstLogin: boolean} | {email: string, isFirstLogin: boolean} ): Promise<UserToken> => {
+const generateToken = async (
+  props:
+    | { userId: number; isFirstLogin: boolean }
+    | { email: string; isFirstLogin: boolean },
+): Promise<UserToken> => {
   if ('email' in props) {
     const userData = await findOneUserByEmailForToken(props.email);
-    return createToken(userData, props.isFirstLogin);  
+    return createToken(userData, props.isFirstLogin);
   } else {
     const userData = await findOneUserByIdForToken(props.userId);
-    return createToken(userData, props.isFirstLogin);  
+    return createToken(userData, props.isFirstLogin);
   }
-}
+};
 
 const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
