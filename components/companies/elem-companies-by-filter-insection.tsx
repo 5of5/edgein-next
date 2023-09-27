@@ -118,23 +118,25 @@ export const CompaniesByFilterInSection: FC<Props> = ({
             ))}
           </div>
 
-          <div className="py-3 px-4">
+          <div className="py-3">
             {filterInSectionType === 'pagination' && (
-              <Pagination
-                shownItems={companies.length}
-                totalItems={companies_aggregate.aggregate?.count ?? 0}
-                page={page}
-                itemsPerPage={itemsPerPage}
-                onClickPrev={previousPage}
-                onClickNext={nextPage}
-                onClickToPage={selectedPage => setPage(selectedPage)}
-              />
+              <div className=" px-4">
+                <Pagination
+                  shownItems={companies.length}
+                  totalItems={companies_aggregate.aggregate?.count ?? 0}
+                  page={page}
+                  itemsPerPage={itemsPerPage}
+                  onClickPrev={previousPage}
+                  onClickNext={nextPage}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
+              </div>
             )}
 
             {filterInSectionType === 'see-all' &&
               isEnabledSeeAll &&
               (companies_aggregate.aggregate?.count ?? 0) > itemsPerPage && (
-                <div className="flex justify-end">
+                <div className="flex justify-end py-3">
                   <ElemButton
                     onClick={() => {
                       if (isPremiumFilter && !userCanUsePremiumFilter) {
