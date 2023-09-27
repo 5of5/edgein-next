@@ -29688,7 +29688,23 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+
+export type UserForTokenFragment = { __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null };
+
+export type GetUserByIdForTokenQueryVariables = Exact<{
+  id: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetUserByIdForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+
+export type GetUserByEmailForTokenQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -29725,7 +29741,7 @@ export type UpdateUserAuth0LinkedInIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, onboarding_information: any | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, auth0_linkedin_id: string | null }> } | null };
 
 export type UpdateUserAuth0UserPassIdMutationVariables = Exact<{
   email: Scalars['String'];
@@ -29748,7 +29764,7 @@ export type UpdateUserAdditionalEmailsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, additional_emails: any }> } | null };
 
 export type GetUserByAdditionalEmailQueryVariables = Exact<{
   email: InputMaybe<Scalars['jsonb']>;
@@ -29902,7 +29918,33 @@ export type UpsertWaitlistEmailMutationVariables = Exact<{
 
 export type UpsertWaitlistEmailMutation = { __typename?: 'mutation_root', insert_waitlist_emails: { __typename?: 'waitlist_emails_mutation_response', returning: Array<{ __typename?: 'waitlist_emails', id: number, email: string }> } | null };
 
-
+export const UserForTokenFragmentDoc = `
+    fragment UserForToken on users {
+  id
+  email
+  role
+  external_id
+  is_auth0_verified
+  display_name
+  auth0_linkedin_id
+  auth0_user_pass_id
+  reference_id
+  credits
+  billing_org_id
+  billing_org {
+    customer_id
+  }
+  person {
+    name
+    picture
+  }
+  additional_emails
+  onboarding_information
+  feature_flags
+  preferences
+  active
+}
+    `;
 export const InsertActionDocument = `
     mutation InsertAction($object: actions_insert_input!) {
   insert_actions_one(object: $object) {
@@ -35110,6 +35152,7 @@ export const GetUserByIdDocument = `
     billing_org_id
     billing_org {
       customer_id
+      status
     }
     person {
       name
@@ -35141,6 +35184,58 @@ useGetUserByIdQuery.getKey = (variables?: GetUserByIdQueryVariables) => variable
 ;
 
 useGetUserByIdQuery.fetcher = (variables?: GetUserByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, variables, options);
+export const GetUserByIdForTokenDocument = `
+    query GetUserByIdForToken($id: Int) {
+  users(where: {id: {_eq: $id}}, limit: 1) {
+    ...UserForToken
+  }
+}
+    ${UserForTokenFragmentDoc}`;
+export const useGetUserByIdForTokenQuery = <
+      TData = GetUserByIdForTokenQuery,
+      TError = Error
+    >(
+      variables?: GetUserByIdForTokenQueryVariables,
+      options?: UseQueryOptions<GetUserByIdForTokenQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByIdForTokenQuery, TError, TData>(
+      variables === undefined ? ['GetUserByIdForToken'] : ['GetUserByIdForToken', variables],
+      fetcher<GetUserByIdForTokenQuery, GetUserByIdForTokenQueryVariables>(GetUserByIdForTokenDocument, variables),
+      options
+    );
+useGetUserByIdForTokenQuery.document = GetUserByIdForTokenDocument;
+
+
+useGetUserByIdForTokenQuery.getKey = (variables?: GetUserByIdForTokenQueryVariables) => variables === undefined ? ['GetUserByIdForToken'] : ['GetUserByIdForToken', variables];
+;
+
+useGetUserByIdForTokenQuery.fetcher = (variables?: GetUserByIdForTokenQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByIdForTokenQuery, GetUserByIdForTokenQueryVariables>(GetUserByIdForTokenDocument, variables, options);
+export const GetUserByEmailForTokenDocument = `
+    query GetUserByEmailForToken($email: String!) {
+  users(where: {email: {_eq: $email}}, limit: 1) {
+    ...UserForToken
+  }
+}
+    ${UserForTokenFragmentDoc}`;
+export const useGetUserByEmailForTokenQuery = <
+      TData = GetUserByEmailForTokenQuery,
+      TError = Error
+    >(
+      variables: GetUserByEmailForTokenQueryVariables,
+      options?: UseQueryOptions<GetUserByEmailForTokenQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByEmailForTokenQuery, TError, TData>(
+      ['GetUserByEmailForToken', variables],
+      fetcher<GetUserByEmailForTokenQuery, GetUserByEmailForTokenQueryVariables>(GetUserByEmailForTokenDocument, variables),
+      options
+    );
+useGetUserByEmailForTokenQuery.document = GetUserByEmailForTokenDocument;
+
+
+useGetUserByEmailForTokenQuery.getKey = (variables: GetUserByEmailForTokenQueryVariables) => ['GetUserByEmailForToken', variables];
+;
+
+useGetUserByEmailForTokenQuery.fetcher = (variables: GetUserByEmailForTokenQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByEmailForTokenQuery, GetUserByEmailForTokenQueryVariables>(GetUserByEmailForTokenDocument, variables, options);
 export const UpdateUserBillingOrgDocument = `
     mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
   update_users_by_pk(
@@ -35251,25 +35346,7 @@ export const UpdateUserAuth0LinkedInIdDocument = `
     affected_rows
     returning {
       id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
       auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      credits
-      billing_org_id
-      onboarding_information
-      person {
-        name
-        picture
-        slug
-        id
-      }
-      additional_emails
-      active
     }
   }
 }
@@ -35378,25 +35455,7 @@ export const UpdateUserAdditionalEmailsDocument = `
     affected_rows
     returning {
       id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
-      auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      credits
-      billing_org_id
-      person {
-        name
-        picture
-        slug
-        id
-      }
       additional_emails
-      onboarding_information
-      active
     }
   }
 }

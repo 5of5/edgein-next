@@ -10,10 +10,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     // check user has done signup or not
-    const userData = await UserService.findOneUserById(user.id);
-
-    const userToken = UserService.createToken(userData, false);
-
+    const userToken = await UserService.generateToken({
+      userId: user.id,
+      isFirstLogin: false,
+    });
     const token = await CookieService.createUserToken(userToken);
     CookieService.setTokenCookie(res, token);
   } catch (ex: any) {

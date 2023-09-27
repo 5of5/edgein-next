@@ -58,7 +58,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
       }
 
-      const userToken = UserService.createToken(emailExist, isFirstLogin);
+      const userToken = await UserService.generateToken({
+        userId: emailExist.id,
+        isFirstLogin: false,
+      });
 
       // Author a couple of cookies to persist a user's session
       const token = await CookieService.createUserToken(userToken);

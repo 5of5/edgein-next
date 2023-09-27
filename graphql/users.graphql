@@ -215,6 +215,7 @@ query GetUserById($id: Int) {
     billing_org_id
     billing_org {
       customer_id
+      status
     }
     person {
       name
@@ -224,6 +225,44 @@ query GetUserById($id: Int) {
     onboarding_information
     feature_flags
     preferences
+  }
+}
+
+fragment UserForToken on users {
+  id
+  email
+  role
+  external_id
+  is_auth0_verified
+  display_name
+  auth0_linkedin_id
+  auth0_user_pass_id
+  reference_id
+  credits
+  billing_org_id
+  billing_org {
+    customer_id
+  }
+  person {
+    name
+    picture
+  }
+  additional_emails
+  onboarding_information
+  feature_flags
+  preferences
+  active
+}
+
+query GetUserByIdForToken($id: Int) {
+  users(where: { id: { _eq: $id } }, limit: 1) {
+    ...UserForToken
+  }
+}
+
+query GetUserByEmailForToken($email: String!) {
+  users(where: { email: { _eq: $email } }, limit: 1) {
+    ...UserForToken
   }
 }
 
@@ -327,25 +366,7 @@ mutation UpdateUserAuth0LinkedInId(
     affected_rows
     returning {
       id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
       auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      credits
-      billing_org_id
-      onboarding_information
-      person {
-        name
-        picture
-        slug
-        id
-      }
-      additional_emails
-      active
     }
   }
 }
@@ -415,25 +436,7 @@ mutation UpdateUserAdditionalEmails($id: Int!, $additional_emails: jsonb) {
     affected_rows
     returning {
       id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
-      auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      credits
-      billing_org_id
-      person {
-        name
-        picture
-        slug
-        id
-      }
       additional_emails
-      onboarding_information
-      active
     }
   }
 }
