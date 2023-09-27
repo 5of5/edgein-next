@@ -51,11 +51,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const people = await generatedPeople(industryTags, locationTags);
 
     if (companies.length > 0 || vcFirms.length > 0 || people.length > 0) {
-      const listName = `✨ ${user.display_name}\'s first list`;
+      const listName = `${user.display_name}'s first list`;
 
       const list = await upsertList(listName, user, token);
 
-      await Promise.all(
+      await Promise.all([
         companies.map(async company => {
           await upsertFollow(
             list?.id || 0,
@@ -65,23 +65,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             token,
           );
         }),
-      );
-
-      await Promise.all(
         vcFirms.map(async vcFirm => {
           await upsertFollow(list?.id || 0, vcFirm.id, 'vc_firms', user, token);
         }),
-      );
-
-      await Promise.all(
         people.map(async person => {
           await upsertFollow(list?.id || 0, person.id, 'people', user, token);
         }),
-      );
+      ]);
     }
 
     return res.status(200).send({ companies, vcFirms, people });
-  } catch (error: any) {
+  } catch (error) {
     return res
       .status(500)
       .send({ error: 'Something went wrong. Please try again later.' });
