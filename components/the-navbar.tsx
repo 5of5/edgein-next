@@ -16,7 +16,7 @@ import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { useUser } from '@/context/user-context';
 import { ElemSearchBox } from './elem-search-box';
-import { find, first } from 'lodash';
+import { find } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import { Popover, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
@@ -134,14 +134,12 @@ export const TheNavbar: FC<Props> = ({}) => {
       <div className="px-1 py-1 sm:px-3 sm:py-2 border-b border-gray-200 bg-white/80 backdrop-blur">
         <nav
           className="flex items-center justify-between lg:justify-start w-full mx-auto"
-          aria-label="Global"
-        >
+          aria-label="Global">
           <div className="flex items-center gap-3">
             <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
               btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden"
-            >
+              className="h-9 w-9 !px-0 !py-0 sm:hidden">
               <IconBars3 className="h-6 w-6" />
             </ElemButton>
 
@@ -165,8 +163,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             <ElemButton
               onClick={() => setShowPopup('search')}
               btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden"
-            >
+              className="h-9 w-9 !px-0 !py-0 sm:hidden">
               <IconSearch className="h-5 w-5" />
             </ElemButton>
 
@@ -182,8 +179,7 @@ export const TheNavbar: FC<Props> = ({}) => {
                 enterTo="opacity-100 translate-y-0"
                 leave="transition ease-in duration-150"
                 leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
+                leaveTo="opacity-0 translate-y-1">
                 <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
                   {({ close }) => (
                     <>
@@ -193,8 +189,7 @@ export const TheNavbar: FC<Props> = ({}) => {
                             className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
                             onClick={() => {
                               close();
-                            }}
-                          >
+                            }}>
                             {item.label}
                           </a>
                         </Link>
@@ -210,7 +205,7 @@ export const TheNavbar: FC<Props> = ({}) => {
                 <Link href="/notifications" passHref>
                   <a className="relative flex items-center justify-center w-9 h-9">
                     {unreadNotificationsCount > 0 && (
-                      <div className="absolute flex items-center justify-center -top-[2px] -right-[2px] w-5 h-5 rounded-full bg-primary-500 border border-white">
+                      <div className="absolute flex items-center justify-center -top-[2px] -right-[4px] h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
                         <div className="text-white font-bold text-[10px] text-center">
                           {unreadNotificationsCount > 99
                             ? '99+'
