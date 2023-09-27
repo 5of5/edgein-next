@@ -113,7 +113,8 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
                 <a
                   className={`${
                     router.asPath.includes(item.href) ? 'bg-gray-100' : ''
-                  } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}>
+                  } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+                >
                   <item.icon
                     className={`w-5 h-5 ${
                       router.asPath.includes(item.href)

@@ -31,7 +31,8 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
             enterTo="opacity-100"
             leave="transition-opacity ease-linear duration-300"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0">
+            leaveTo="opacity-0"
+          >
             <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
           </Transition.Child>
           <div className="fixed inset-0 z-40 flex">
@@ -42,7 +43,8 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
               enterTo="translate-x-0"
               leave="transition ease-in-out duration-300 transform"
               leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full">
+              leaveTo="-translate-x-full"
+            >
               <Dialog.Panel className="relative max-w-xs w-full bg-white flex flex-col flex-1 overflow-y-auto scrollbar-hide">
                 <DashboardSidebar />
               </Dialog.Panel>
