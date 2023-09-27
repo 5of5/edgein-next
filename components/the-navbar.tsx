@@ -134,12 +134,14 @@ export const TheNavbar: FC<Props> = ({}) => {
       <div className="px-1 py-1 sm:px-3 sm:py-2 border-b border-gray-200 bg-white/80 backdrop-blur">
         <nav
           className="flex items-center justify-between lg:justify-start w-full mx-auto"
-          aria-label="Global">
+          aria-label="Global"
+        >
           <div className="flex items-center gap-3">
             <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
               btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden">
+              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+            >
               <IconBars3 className="h-6 w-6" />
             </ElemButton>
 
@@ -163,7 +165,8 @@ export const TheNavbar: FC<Props> = ({}) => {
             <ElemButton
               onClick={() => setShowPopup('search')}
               btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden">
+              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+            >
               <IconSearch className="h-5 w-5" />
             </ElemButton>
 
@@ -179,7 +182,8 @@ export const TheNavbar: FC<Props> = ({}) => {
                 enterTo="opacity-100 translate-y-0"
                 leave="transition ease-in duration-150"
                 leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1">
+                leaveTo="opacity-0 translate-y-1"
+              >
                 <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
                   {({ close }) => (
                     <>
@@ -189,7 +193,8 @@ export const TheNavbar: FC<Props> = ({}) => {
                             className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
                             onClick={() => {
                               close();
-                            }}>
+                            }}
+                          >
                             {item.label}
                           </a>
                         </Link>
