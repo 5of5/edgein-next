@@ -105,7 +105,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   return (
     <div className={`p-4 text-gray-600 ${className}`}>
-      <nav>
+      <nav className="pb-64">
         <ul className="border-b border-gray-200 pb-8 space-y-1">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>
@@ -113,8 +113,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
                 <a
                   className={`${
                     router.asPath.includes(item.href) ? 'bg-gray-100' : ''
-                  } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-                >
+                  } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}>
                   <item.icon
                     className={`w-5 h-5 ${
                       router.asPath.includes(item.href)
