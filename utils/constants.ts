@@ -1,4 +1,4 @@
-import { Library, LibraryTag, Tag } from '@/types/common';
+import { DashboardCategory, Library, LibraryTag, Tag } from '@/types/common';
 import {
   email,
   required,
@@ -426,6 +426,21 @@ export const companyChoices = [
     name: 'Dead',
     icon: '💀',
   },
+];
+
+export const companyStatusTags: DashboardCategory[] = [
+  {
+    title: 'New',
+    value: 'new',
+    icon: '✨',
+  },
+  ...companyChoices.map(option => {
+    return {
+      title: option.name,
+      value: option.id,
+      icon: option.icon,
+    };
+  }),
 ];
 
 export const companyLayerChoices = [

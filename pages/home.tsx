@@ -25,11 +25,15 @@ import { CompaniesByFilterInSection } from '@/components/companies/elem-companie
 import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
 import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { onTrackView } from '@/utils/track';
+import { useRouter } from 'next/router';
+import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const { user } = useUser();
   const { industryTags, locationTags } = getPersonalizedData({ user });
   const categories = [...locationTags, GLOBAL_TAG, ...industryTags];
@@ -64,6 +68,27 @@ const Home: NextPage = () => {
     setSelectedStatusTag(getFirstOrDefaultCategory());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] =
+    useState<boolean>(false);
+
+  const userCanUsePremiumFilter = user?.entitlements.viewEmails
+    ? user?.entitlements.viewEmails
+    : false;
+
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+  const onCloseUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(false);
+  };
+
+  useEffect(() => {
+    onTrackView({
+      pathname: router.pathname,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const isSelectedTagLocation = locationTags.includes(
     selectedStatusTag?.title || '',
@@ -117,6 +142,8 @@ const Home: NextPage = () => {
                 <h2 className="text-2xl font-medium">Trending 🔥</h2>
                 <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                   <CompaniesByFilterInSection
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                    userCanUsePremiumFilter={userCanUsePremiumFilter}
                     cardType="compact"
                     headingText="Companies"
                     tagOnClick={null}
@@ -147,6 +174,8 @@ const Home: NextPage = () => {
                   />
 
                   <InvestorsByFilterInSection
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                    userCanUsePremiumFilter={userCanUsePremiumFilter}
                     cardType="compact"
                     headingText="Investors"
                     tagOnClick={null}
@@ -184,11 +213,14 @@ const Home: NextPage = () => {
                     <h2 className="text-2xl font-medium">New companies ✨</h2>
                     <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                       <CompaniesByFilterInSection
+                        onOpenUpgradeDialog={onOpenUpgradeDialog}
+                        userCanUsePremiumFilter={userCanUsePremiumFilter}
                         cardType="compact"
                         headingText=""
                         tagOnClick={null}
                         itemsPerPage={ITEMS_PER_PAGE}
                         isTableView={false}
+                        isEnabledSeeAll={false}
                         orderBy={{
                           year_founded: Order_By.Desc,
                         }}
@@ -220,6 +252,8 @@ const Home: NextPage = () => {
                     <h2 className="text-2xl font-medium">Upcoming events 🗓️</h2>
                     <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                       <EventsByFilterInSection
+                        onOpenUpgradeDialog={onOpenUpgradeDialog}
+                        userCanUsePremiumFilter={userCanUsePremiumFilter}
                         cardType="compact"
                         headingText=""
                         tagOnClick={null}
@@ -254,6 +288,8 @@ const Home: NextPage = () => {
                     </h2>
                     <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                       <CompaniesByFilterInSection
+                        onOpenUpgradeDialog={onOpenUpgradeDialog}
+                        userCanUsePremiumFilter={userCanUsePremiumFilter}
                         cardType="compact"
                         headingText={`Companies`}
                         tagOnClick={null}
@@ -283,6 +319,8 @@ const Home: NextPage = () => {
                         }}
                       />
                       <InvestorsByFilterInSection
+                        onOpenUpgradeDialog={onOpenUpgradeDialog}
+                        userCanUsePremiumFilter={userCanUsePremiumFilter}
                         cardType="compact"
                         headingText={`Investors`}
                         tagOnClick={null}
@@ -312,9 +350,12 @@ const Home: NextPage = () => {
                         }}
                       />
                       <EventsByFilterInSection
+                        onOpenUpgradeDialog={onOpenUpgradeDialog}
+                        userCanUsePremiumFilter={userCanUsePremiumFilter}
                         cardType="compact"
                         headingText="Events"
                         tagOnClick={null}
+                        isEnabledSeeAll={false}
                         itemsPerPage={ITEMS_PER_PAGE}
                         orderBy={{
                           start_date: Order_By.Asc,
@@ -355,6 +396,8 @@ const Home: NextPage = () => {
                 <h2 className="text-2xl font-medium">Companies 🏢</h2>
                 <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                   <CompaniesByFilterInSection
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                    userCanUsePremiumFilter={userCanUsePremiumFilter}
                     cardType="compact"
                     headingText="Recently funded"
                     tagOnClick={null}
@@ -383,8 +426,11 @@ const Home: NextPage = () => {
                     }}
                   />
                   <CompaniesByFilterInSection
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                    userCanUsePremiumFilter={userCanUsePremiumFilter}
                     cardType="compact"
                     headingText="Recently founded"
+                    isEnabledSeeAll={false}
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -412,6 +458,8 @@ const Home: NextPage = () => {
                 <h2 className="text-2xl font-medium">Investors 💵</h2>
                 <div className="border rounded-2xl border-gray-200 mt-5 px-6">
                   <InvestorsByFilterInSection
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                    userCanUsePremiumFilter={userCanUsePremiumFilter}
                     cardType="compact"
                     headingText="Recently active investors"
                     tagOnClick={null}
@@ -435,8 +483,11 @@ const Home: NextPage = () => {
                     }}
                   />
                   <InvestorsByFilterInSection
+                    onOpenUpgradeDialog={onOpenUpgradeDialog}
+                    userCanUsePremiumFilter={userCanUsePremiumFilter}
                     cardType="compact"
                     headingText="Exits"
+                    isEnabledSeeAll={false}
                     tagOnClick={null}
                     itemsPerPage={ITEMS_PER_PAGE}
                     isTableView={false}
@@ -458,6 +509,10 @@ const Home: NextPage = () => {
         )}
 
         <Toaster />
+        <ElemUpgradeDialog
+          isOpen={isOpenUpgradeDialog}
+          onClose={onCloseUpgradeDialog}
+        />
       </div>
     </DashboardLayout>
   );

@@ -75,9 +75,14 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [selectedTab, setSelectedTab] =
     useStateParams<DashboardCategory | null>(
       null,
-      'tab',
-      statusTag => (statusTag ? eventTabs.indexOf(statusTag).toString() : ''),
-      index => eventTabs[Number(index)],
+      'statusTag',
+      statusTag => (statusTag ? statusTag.value : ''),
+      selectedStatusTag =>
+        eventTabs[
+          eventTabs.findIndex(
+            statusTag => statusTag.value === selectedStatusTag,
+          )
+        ],
     );
 
   const [page, setPage] = useStateParams<number>(
@@ -212,7 +217,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     });
   }
 
-  if (selectedTab?.value === 'trending') {
+  if (selectedTab?.value === 'Trending') {
     filters._and?.push({
       num_of_views: { _is_null: false },
     });
@@ -252,7 +257,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     {
       offset,
       limit:
-        selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+        selectedTab?.value === 'Trending' ? TRENDING_CATEGORY_LIMIT : limit,
 
       where: filters as Events_Bool_Exp,
       orderBy: orderByQuery,
@@ -477,7 +482,7 @@ const eventTabs: DashboardCategory[] = [
   },
   {
     title: 'Trending',
-    value: 'trending',
+    value: 'Trending',
     date: '',
     icon: '🔥',
   },

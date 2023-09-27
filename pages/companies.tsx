@@ -28,6 +28,7 @@ import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import {
   companyChoices,
+  companyStatusTags,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
   TRENDING_CATEGORY_LIMIT,
@@ -91,9 +92,13 @@ const Companies: NextPage<Props> = ({
     useStateParams<DashboardCategory | null>(
       null,
       'statusTag',
-      companyLayer =>
-        companyLayer ? companyStatusTags.indexOf(companyLayer).toString() : '',
-      index => companyStatusTags[Number(index)],
+      companyLayer => (companyLayer ? companyLayer.value : ''),
+      selectedStatusTag =>
+        companyStatusTags[
+          companyStatusTags.findIndex(
+            statusTag => statusTag.value === selectedStatusTag,
+          )
+        ],
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
@@ -103,7 +108,7 @@ const Companies: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const [sortBy, setSortBy] = useState('mostRelevant');
+  const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -390,6 +395,9 @@ const Companies: NextPage<Props> = ({
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 items={sortItems}
+                defaultItem={sortItems.findIndex(
+                  sortItem => sortItem.value === sortBy,
+                )}
               />
             )}
           </div>
@@ -587,20 +595,3 @@ export interface NumericFilter {
   rangeStart: number;
   rangeEnd: number;
 }
-
-const companyStatusTagValues = companyChoices.map(option => {
-  return {
-    title: option.name,
-    value: option.id,
-    icon: option.icon,
-  };
-});
-
-const companyStatusTags: DashboardCategory[] = [
-  {
-    title: 'New',
-    value: 'new',
-    icon: '✨',
-  },
-  ...companyStatusTagValues,
-];
