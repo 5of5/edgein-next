@@ -30,6 +30,10 @@ import {
   GetPersonQuery,
   GetUserByPersonIdQuery,
   GetUserByPersonIdDocument,
+  GetUserByEmailForTokenDocument,
+  GetUserByIdForTokenQuery,
+  GetUserByIdForTokenDocument,
+  GetUserByEmailForTokenQuery,
 } from '@/graphql/types';
 import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
@@ -65,6 +69,23 @@ async function findOneUserByEmail(email: string) {
   });
   return data.data.users[0];
 }
+
+async function findOneUserByEmailForToken(email: string) {
+  const data = await query<GetUserByEmailForTokenQuery>({
+    query: GetUserByEmailForTokenDocument,
+    variables: { email },
+  });
+  return data.data.users[0];
+}
+
+async function findOneUserByIdForToken(id: number) {
+  const data = await query<GetUserByIdForTokenQuery>({
+    query: GetUserByIdForTokenDocument,
+    variables: { id },
+  });
+  return data.data.users[0];
+}
+
 
 async function findOneUserById(id: number) {
   const data = await query<GetUserByIdQuery>({
@@ -190,12 +211,22 @@ async function findOneUserByPersonId(person_id: number) {
   return data.data.users[0];
 }
 
+const generateToken = async (props: {userId: number, isFirstLogin: boolean} | {email: string, isFirstLogin: boolean} ): Promise<UserToken> => {
+  if ('email' in props) {
+    const userData = await findOneUserByEmailForToken(props.email);
+    return createToken(userData, props.isFirstLogin);  
+  } else {
+    const userData = await findOneUserByIdForToken(props.userId);
+    return createToken(userData, props.isFirstLogin);  
+  }
+}
+
 const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
   hmac.update(String(userData.id));
 
   const entitlements: Entitlements =
-    userData.billing_org_id || userData.credits > 0
+    userData.billing_org_id || userData.premimum_until > 0
       ? {
           viewEmails: true,
           groupsCount: 5000,
@@ -282,6 +313,9 @@ const UserService = {
   findOnePeopleBySlug,
   findOneUserByPersonId,
   createToken,
+  generateToken,
+  findOneUserByEmailForToken,
+  findOneUserByIdForToken,
   findUserByPk,
   logout,
 };

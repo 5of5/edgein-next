@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (new Date().getTime() > user._iat * 1000 + 1000 * 60 * 5) {
         // is token older than 5 mins
 
-        const dbUser = await UserService.findOneUserByEmail(user?.email);
+        const dbUser = await UserService.findOneUserByEmailForToken(user?.email);
         if (!dbUser || dbUser.active === false) {
           return res.status(403).end();
         }

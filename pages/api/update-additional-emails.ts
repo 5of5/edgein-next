@@ -19,9 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       additionalEmails,
     );
 
-    const userData = await UserService.findOneUserById(user.id);
-
-    const newUserToken = UserService.createToken(userData, false);
+    const newUserToken = await UserService.generateToken({ userId: user?.id, isFirstLogin: false });
 
     const token = await CookieService.createUserToken(newUserToken);
     CookieService.setTokenCookie(res, token);
