@@ -24,7 +24,13 @@ declare global {
   }
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   // App Page Preloader

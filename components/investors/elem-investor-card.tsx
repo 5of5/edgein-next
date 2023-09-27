@@ -147,7 +147,10 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
               {website && (
                 <Link href={website}>
                   <a target="_blank">
-                    <IconGlobe className="h-5 w-5 text-gray-600" />
+                    <IconGlobe
+                      title="Website"
+                      className="h-5 w-5 text-gray-600"
+                    />
                   </a>
                 </Link>
               )}
