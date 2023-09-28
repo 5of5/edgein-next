@@ -16,6 +16,7 @@ import async from 'react-select/dist/declarations/src/async/index';
 import UserTransactionsService, {
   REFERRAL_CREDITS_AMOUNT,
   REGISTRATION_CREDITS_AMOUNT,
+  TRANSACTION_SYSTEM_NOTE,
 } from '@/utils/userTransactions';
 
 const authService = makeAuthService();
@@ -107,6 +108,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await UserTransactionsService.onInsertTransaction(
           referenceUserId as number,
           REFERRAL_CREDITS_AMOUNT,
+          `${TRANSACTION_SYSTEM_NOTE} - registration referral bonus`
         );
       }
     }
@@ -147,6 +149,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await UserTransactionsService.onInsertTransaction(
       userData.id,
       REGISTRATION_CREDITS_AMOUNT,
+      `${TRANSACTION_SYSTEM_NOTE} - registration bonus`
     );
 
     const userToken = UserService.createToken(userData, true);

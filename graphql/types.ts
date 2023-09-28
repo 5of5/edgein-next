@@ -23810,6 +23810,7 @@ export type Users = {
   feature_flags: Scalars['jsonb'];
   id: Scalars['Int'];
   is_auth0_verified: Maybe<Scalars['Boolean']>;
+  last_transaction_expiration: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   list_members: Array<List_Members>;
   /** An aggregate relationship */
@@ -23983,6 +23984,7 @@ export type Users_Bool_Exp = {
   feature_flags: InputMaybe<Jsonb_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   is_auth0_verified: InputMaybe<Boolean_Comparison_Exp>;
+  last_transaction_expiration: InputMaybe<Timestamptz_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
   onboarding_information: InputMaybe<Jsonb_Comparison_Exp>;
   organization_companies: InputMaybe<Companies_Edit_Access_Bool_Exp>;
@@ -24053,6 +24055,7 @@ export type Users_Insert_Input = {
   feature_flags: InputMaybe<Scalars['jsonb']>;
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
+  last_transaction_expiration: InputMaybe<Scalars['timestamptz']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   onboarding_information: InputMaybe<Scalars['jsonb']>;
   organization_companies: InputMaybe<Companies_Edit_Access_Arr_Rel_Insert_Input>;
@@ -24077,6 +24080,7 @@ export type Users_Max_Fields = {
   email: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  last_transaction_expiration: Maybe<Scalars['timestamptz']>;
   person_id: Maybe<Scalars['Int']>;
   reference_id: Maybe<Scalars['String']>;
   reference_user_id: Maybe<Scalars['Int']>;
@@ -24094,6 +24098,7 @@ export type Users_Min_Fields = {
   email: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  last_transaction_expiration: Maybe<Scalars['timestamptz']>;
   person_id: Maybe<Scalars['Int']>;
   reference_id: Maybe<Scalars['String']>;
   reference_user_id: Maybe<Scalars['Int']>;
@@ -24139,6 +24144,7 @@ export type Users_Order_By = {
   feature_flags: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   is_auth0_verified: InputMaybe<Order_By>;
+  last_transaction_expiration: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   onboarding_information: InputMaybe<Order_By>;
   organization_companies_aggregate: InputMaybe<Companies_Edit_Access_Aggregate_Order_By>;
@@ -24431,6 +24437,8 @@ export enum Users_Select_Column {
   /** column name */
   IsAuth0Verified = 'is_auth0_verified',
   /** column name */
+  LastTransactionExpiration = 'last_transaction_expiration',
+  /** column name */
   OnboardingInformation = 'onboarding_information',
   /** column name */
   PersonId = 'person_id',
@@ -24460,6 +24468,7 @@ export type Users_Set_Input = {
   feature_flags: InputMaybe<Scalars['jsonb']>;
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
+  last_transaction_expiration: InputMaybe<Scalars['timestamptz']>;
   onboarding_information: InputMaybe<Scalars['jsonb']>;
   person_id: InputMaybe<Scalars['Int']>;
   preferences: InputMaybe<Scalars['jsonb']>;
@@ -24531,6 +24540,8 @@ export enum Users_Update_Column {
   Id = 'id',
   /** column name */
   IsAuth0Verified = 'is_auth0_verified',
+  /** column name */
+  LastTransactionExpiration = 'last_transaction_expiration',
   /** column name */
   OnboardingInformation = 'onboarding_information',
   /** column name */
@@ -26941,14 +26952,14 @@ export type GetUserProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, credits: any | null, billing_org_id: number | null, preferences: any, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
+export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, preferences: any, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
 
 export type GetUserByPersonIdQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
 
-export type GetUserByPersonIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, credits: any | null, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null }> };
+export type GetUserByPersonIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null }> };
 
 export type GetUserByPkQueryVariables = Exact<{
   userId: Scalars['Int'];
@@ -26970,14 +26981,14 @@ export type GetUserByEmailQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, onboarding_information: any | null, feature_flags: any, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, onboarding_information: any | null, feature_flags: any, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, use_credits_system: boolean, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -26986,6 +26997,22 @@ export type UpdateUserBillingOrgMutationVariables = Exact<{
 
 
 export type UpdateUserBillingOrgMutation = { __typename?: 'mutation_root', update_users_by_pk: { __typename?: 'users', id: number } | null };
+
+export type UpdateUserUseCreditsSystemMutationVariables = Exact<{
+  user_id: Scalars['Int'];
+  use_credits_system: InputMaybe<Scalars['Boolean']>;
+}>;
+
+
+export type UpdateUserUseCreditsSystemMutation = { __typename?: 'mutation_root', update_users_by_pk: { __typename?: 'users', id: number } | null };
+
+export type UpdateUserExpirationOfLastValidTransactionMutationVariables = Exact<{
+  user_id: Scalars['Int'];
+  last_transaction_expiration: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type UpdateUserExpirationOfLastValidTransactionMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number } | null };
 
 export type UpsertUsersMutationVariables = Exact<{
   external_id: InputMaybe<Scalars['String']>;
@@ -26998,7 +27025,7 @@ export type UpsertUsersMutationVariables = Exact<{
 }>;
 
 
-export type UpsertUsersMutation = { __typename?: 'mutation_root', insert_users: { __typename?: 'users_mutation_response', returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpsertUsersMutation = { __typename?: 'mutation_root', insert_users: { __typename?: 'users_mutation_response', returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type UpdateUserEmailVerifiedStatusMutationVariables = Exact<{
   email: Scalars['String'];
@@ -27006,7 +27033,7 @@ export type UpdateUserEmailVerifiedStatusMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserEmailVerifiedStatusMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserEmailVerifiedStatusMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type UpdateUserAuth0LinkedInIdMutationVariables = Exact<{
   email: Scalars['String'];
@@ -27014,7 +27041,7 @@ export type UpdateUserAuth0LinkedInIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type UpdateUserAuth0UserPassIdMutationVariables = Exact<{
   email: Scalars['String'];
@@ -27022,14 +27049,14 @@ export type UpdateUserAuth0UserPassIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAuth0UserPassIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserAuth0UserPassIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type GetUserByReferenceIdQueryVariables = Exact<{
   reference_id: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetUserByReferenceIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+export type GetUserByReferenceIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
 export type UpdateUserAdditionalEmailsMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -27037,14 +27064,14 @@ export type UpdateUserAdditionalEmailsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type GetUserByAdditionalEmailQueryVariables = Exact<{
   email: InputMaybe<Scalars['jsonb']>;
 }>;
 
 
-export type GetUserByAdditionalEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+export type GetUserByAdditionalEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
 export type UpdateUserOnboardingInformationMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -32114,6 +32141,8 @@ export const GetUserProfileDocument = `
   users_by_pk(id: $id) {
     id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     preferences
     organization_companies {
@@ -32214,6 +32243,8 @@ export const GetUserByPersonIdDocument = `
   users(where: {person_id: {_eq: $person_id}}) {
     id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     organization_companies {
       id
@@ -32369,6 +32400,8 @@ export const GetUserByEmailDocument = `
     auth0_user_pass_id
     reference_id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     person {
       name
@@ -32414,6 +32447,7 @@ export const GetUserByIdDocument = `
     auth0_linkedin_id
     auth0_user_pass_id
     reference_id
+    use_credits_system
     credits
     billing_org_id
     billing_org {
@@ -32469,6 +32503,46 @@ export const useUpdateUserBillingOrgMutation = <
       options
     );
 useUpdateUserBillingOrgMutation.fetcher = (variables: UpdateUserBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserBillingOrgMutation, UpdateUserBillingOrgMutationVariables>(UpdateUserBillingOrgDocument, variables, options);
+export const UpdateUserUseCreditsSystemDocument = `
+    mutation UpdateUserUseCreditsSystem($user_id: Int!, $use_credits_system: Boolean) {
+  update_users_by_pk(
+    pk_columns: {id: $user_id}
+    _set: {use_credits_system: $use_credits_system}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpdateUserUseCreditsSystemMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserUseCreditsSystemMutation, TError, UpdateUserUseCreditsSystemMutationVariables, TContext>) =>
+    useMutation<UpdateUserUseCreditsSystemMutation, TError, UpdateUserUseCreditsSystemMutationVariables, TContext>(
+      ['UpdateUserUseCreditsSystem'],
+      (variables?: UpdateUserUseCreditsSystemMutationVariables) => fetcher<UpdateUserUseCreditsSystemMutation, UpdateUserUseCreditsSystemMutationVariables>(UpdateUserUseCreditsSystemDocument, variables)(),
+      options
+    );
+useUpdateUserUseCreditsSystemMutation.fetcher = (variables: UpdateUserUseCreditsSystemMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserUseCreditsSystemMutation, UpdateUserUseCreditsSystemMutationVariables>(UpdateUserUseCreditsSystemDocument, variables, options);
+export const UpdateUserExpirationOfLastValidTransactionDocument = `
+    mutation UpdateUserExpirationOfLastValidTransaction($user_id: Int!, $last_transaction_expiration: timestamptz) {
+  update_users(
+    where: {id: {_eq: $user_id}, use_credits_system: {_eq: true}}
+    _set: {last_transaction_expiration: $last_transaction_expiration}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const useUpdateUserExpirationOfLastValidTransactionMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserExpirationOfLastValidTransactionMutation, TError, UpdateUserExpirationOfLastValidTransactionMutationVariables, TContext>) =>
+    useMutation<UpdateUserExpirationOfLastValidTransactionMutation, TError, UpdateUserExpirationOfLastValidTransactionMutationVariables, TContext>(
+      ['UpdateUserExpirationOfLastValidTransaction'],
+      (variables?: UpdateUserExpirationOfLastValidTransactionMutationVariables) => fetcher<UpdateUserExpirationOfLastValidTransactionMutation, UpdateUserExpirationOfLastValidTransactionMutationVariables>(UpdateUserExpirationOfLastValidTransactionDocument, variables)(),
+      options
+    );
+useUpdateUserExpirationOfLastValidTransactionMutation.fetcher = (variables: UpdateUserExpirationOfLastValidTransactionMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserExpirationOfLastValidTransactionMutation, UpdateUserExpirationOfLastValidTransactionMutationVariables>(UpdateUserExpirationOfLastValidTransactionDocument, variables, options);
 export const UpsertUsersDocument = `
     mutation UpsertUsers($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String, $reference_user_id: Int) {
   insert_users(
@@ -32486,6 +32560,8 @@ export const UpsertUsersDocument = `
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -32527,6 +32603,8 @@ export const UpdateUserEmailVerifiedStatusDocument = `
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -32568,6 +32646,8 @@ export const UpdateUserAuth0LinkedInIdDocument = `
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -32609,6 +32689,8 @@ export const UpdateUserAuth0UserPassIdDocument = `
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -32645,6 +32727,8 @@ export const GetUserByReferenceIdDocument = `
     auth0_user_pass_id
     reference_id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     person {
       name
@@ -32694,6 +32778,8 @@ export const UpdateUserAdditionalEmailsDocument = `
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -32730,6 +32816,8 @@ export const GetUserByAdditionalEmailDocument = `
     auth0_user_pass_id
     reference_id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     person {
       name

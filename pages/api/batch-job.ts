@@ -66,15 +66,27 @@ const handleUserTransactions = async (client: Client) => {
       ${userIdsToDecreaseCreditsMonthly
         .map(
           (userId, i) =>
-            `('${userId}', '${-CREDITS_PER_MONTH}', '${TRANSACTION_SYSTEM_NOTE}')${
+            `('${userId}', '${-CREDITS_PER_MONTH}', '${TRANSACTION_SYSTEM_NOTE} - monthly subscription')${
               i === userIdsToDecreaseCreditsMonthly.length - 1 ? ';' : ','
             }`,
         )
         .join('\n')}
         `);
+
+    //#2 update last_transaction_expiration to current date + 30days
+    await client.query(`
+    UPDATE users SET last_transaction_expiration = NOW() + INTERVAL '30 days' WHERE id IN (${userIdsToDecreaseCreditsMonthly
+      .map(
+        (userId, i) =>
+          `'${userId}'${
+            i !== userIdsToDecreaseCreditsMonthly.length - 1 ? ',' : ''
+          }`,
+      )
+      .join('\n')});
+      `);
   }
 
-  //#2 disable credits system for users without no more credits
+  //#3 disable credits system for users without no more credits
   if (userIdsToDisableCreditsSystem.length) {
     await client.query(`
     UPDATE users SET use_credits_system = false WHERE id IN (${userIdsToDisableCreditsSystem

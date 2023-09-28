@@ -8,7 +8,10 @@ export const REGISTRATION_CREDITS_AMOUNT = 4500;
 import {
   InsertUserTransactionDocument,
   InsertUserTransactionMutation,
+  UpdateUserExpirationOfLastValidTransactionDocument,
+  UpdateUserExpirationOfLastValidTransactionMutation,
 } from '@/graphql/types';
+import moment from 'moment';
 
 const onInsertTransaction = async (
   user_id: number,
@@ -27,6 +30,15 @@ const onInsertTransaction = async (
       },
     },
   });
+
+  await mutate<UpdateUserExpirationOfLastValidTransactionMutation>({
+    mutation: UpdateUserExpirationOfLastValidTransactionDocument,
+    variables: {
+      user_id,
+      last_transaction_expiration: moment().add(30, 'days').toDate()
+    },
+  });
+  
   return insert_user_transactions_one;
 };
 

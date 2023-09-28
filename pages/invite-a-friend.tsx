@@ -9,22 +9,48 @@ import {
 import { ElemInviteUser } from '@/components/invites/elem-invite-user';
 import { ElemInviteInvestmentMembers } from '@/components/invites/elem-invite-investment-members';
 import { isEmpty } from 'lodash';
+import { ElemButton } from '@/components/elem-button';
+import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
+import { useMutation } from 'react-query';
 
 export default function Account() {
   const { user } = useAuth();
+  const { data: userProfile, refetch: refetchUserProfile } =
+    useGetUserProfileQuery(
+      {
+        id: user?.id || 0,
+      },
+      {
+        enabled: !!user,
+      },
+    );
 
-  const { data: userProfile } = useGetUserProfileQuery(
-    {
-      id: user?.id || 0,
-    },
-    {
-      enabled: !!user,
-    },
-  );
+  const { mutate: toggleCreditsSystem, isLoading: isTogglingCreditsSystem } =
+    useMutation(
+      async () => {
+        await fetch('/api/toggle-credits-system', {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            enableCreditsSystem: !userProfile?.users_by_pk?.use_credits_system,
+          }),
+        });
+      },
+      {
+        onSuccess: () => {
+          refetchUserProfile();
+        },
+      },
+    );
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
   const numberOfCredits = userProfile?.users_by_pk?.credits || 0;
-  const numberOfMonthsFromCredits = Math.ceil(numberOfCredits / 1500);
+  const numberOfMonthsFromCredits = Math.ceil(
+    numberOfCredits / CREDITS_PER_MONTH,
+  );
 
   const { data: investorData } = useGetInvestorByPersonIdQuery(
     {
@@ -36,6 +62,16 @@ export default function Account() {
   );
 
   const isInvestor = !isEmpty(investorData?.investors);
+
+  const edgeInContributorButtonEnabled =
+    userProfile?.users_by_pk?.use_credits_system ||
+    (!userProfile?.users_by_pk?.use_credits_system &&
+      userProfile?.users_by_pk?.credits >= CREDITS_PER_MONTH);
+
+  const edgeInContributorButtonTitle = userProfile?.users_by_pk
+    ?.use_credits_system
+    ? 'Cancel EdgeIn Contributor'
+    : 'Get EdgeIn Contributor';
 
   return (
     <DashboardLayout>
@@ -51,34 +87,39 @@ export default function Account() {
                 Share EdgeIn and get 1,500 credits
               </h3>
               <p className="mt-2 text-gray-600 text-sm">
-                Invite your friends to EdgeIn, and we'll give you 1,500 credits
-                for every friend who signs up through your referral. That's 1
-                month of EdgeIn Contributor, completely free! The more people
-                who sign up, the more credits you'll get.
+                Invite your friends to EdgeIn, and we&apos;ll give you 1,500
+                credits for every friend who signs in through your referral.
+                That&apos;s 1 month of EdgeIn Contributor, completely free! The
+                more people who sign in, the more credits you&apos;ll get.
               </p>
             </div>
 
-            {numberOfCredits > 0 && !user?.entitlements.viewEmails && (
-              <p className="mt-2 text-primary-500">
-                You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
-                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
-                out and log back in to activate.
-              </p>
-            )}
-
-            {numberOfCredits > 0 && user?.entitlements.viewEmails && (
-              <p className="mt-2 text-primary-500">
-                You have EdgeIn Contributor active for{' '}
-                {numberOfMonthsFromCredits}{' '}
-                {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
-              </p>
-            )}
-
-            {numberOfCredits > 0 && (
-              <span className="text-primary-500">
-                {numberOfCredits} credits available.
+            <div>
+              <span className="text-sm font-medium pl-0.5 font-sans">
+                Current credits
               </span>
-            )}
+              <div className="flex mt-3">
+                <span className="bg-primary-500 border rounded-lg py-3 px-6 text-white text-3xl font-semibold">
+                  {numberOfCredits.toLocaleString()}
+                </span>
+                <div className="block ml-6">
+                  <ElemButton
+                    className="cloudsponge-launch"
+                    btn="default"
+                    disabled={!edgeInContributorButtonEnabled}
+                    onClick={() => toggleCreditsSystem()}>
+                    {edgeInContributorButtonTitle}
+                  </ElemButton>
+
+                  <p className="mt-2 text-xs text-gray-500">
+                    Your credits give you {numberOfMonthsFromCredits}{' '}
+                    {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} for
+                    free.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <ElemInviteUser />
 
             {isInvestor && (

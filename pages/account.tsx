@@ -128,6 +128,9 @@ export default function Account() {
     refreshUser();
   };
 
+  const haveSubscriptionFromCredits =
+    userProfile?.users_by_pk?.use_credits_system &&
+    new Date(userProfile?.users_by_pk?.last_transaction_expiration) > new Date();
   return (
     <DashboardLayout>
       <div className="px-4 py-3 border-gray-200">
@@ -143,8 +146,7 @@ export default function Account() {
                 <ElemButton
                   onClick={() => {}}
                   btn="default"
-                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
-                >
+                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white">
                   <IconLinkedInAlt className="h-5 w-5" />
                   <span>Connected</span>
                 </ElemButton>
@@ -153,15 +155,13 @@ export default function Account() {
                   <ElemButton
                     onClick={onLinkedInClick}
                     btn="default"
-                    className="space-x-1  hover:!text-[#0077B5]"
-                  >
+                    className="space-x-1  hover:!text-[#0077B5]">
                     <IconLinkedInAlt className="h-5 w-5 text-[#0077B5]" />{' '}
                     <span>LinkedIn</span>
                   </ElemButton>
                 </>
               )
-            }
-          >
+            }>
             <div>
               <p className="text-sm text-gray-600">
                 Connect your LinkedIn account to validate your profile and
@@ -179,15 +179,13 @@ export default function Account() {
                 !isEditPassword ? (
                   <ElemButton
                     onClick={() => setEditPassword(true)}
-                    btn="default"
-                  >
+                    btn="default">
                     Edit
                   </ElemButton>
                 ) : (
                   <></>
                 )
-              }
-            >
+              }>
               {!isEditPassword ? (
                 <p className="text-gray-600 text-sm">
                   Use a strong password that you are not using elsewhere.
@@ -228,14 +226,12 @@ export default function Account() {
                     <ElemButton
                       btn="purple"
                       className="mr-2"
-                      onClick={onChangePassword}
-                    >
+                      onClick={onChangePassword}>
                       Save Changes
                     </ElemButton>
                     <ElemButton
                       onClick={() => setEditPassword(false)}
-                      btn="default"
-                    >
+                      btn="default">
                       Cancel
                     </ElemButton>
                   </div>
@@ -253,18 +249,18 @@ export default function Account() {
             right={
               userProfile &&
               (userProfile.users_by_pk?.billing_org_id ||
-                userProfile.users_by_pk?.credits > 0) ? (
+                userProfile.users_by_pk?.last_transaction_expiration >
+                  new Date()) ? (
                 <ElemButton onClick={onBillingClick} btn="default" className="">
                   Manage subscription
                 </ElemButton>
               ) : (
                 <></>
               )
-            }
-          >
+            }>
             {userProfile &&
             (userProfile.users_by_pk?.billing_org_id ||
-              userProfile.users_by_pk?.credits > 0) ? (
+              haveSubscriptionFromCredits) ? (
               <div>
                 <div className="flex items-center space-x-1">
                   <IconContributor className="h-6 w-6 text-primary-500" />
@@ -285,8 +281,7 @@ export default function Account() {
                   onClick={onBillingClick}
                   btn="primary-light"
                   arrow
-                  className="mt-4 text-primary-500"
-                >
+                  className="mt-4 text-primary-500">
                   Start your free trial
                 </ElemButton>
               </div>

@@ -67,6 +67,7 @@ select_permissions:
         - feature_flags
         - id
         - is_auth0_verified
+        - last_transaction_expiration
         - onboarding_information
         - person_id
         - preferences

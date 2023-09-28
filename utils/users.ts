@@ -194,8 +194,10 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
   hmac.update(String(userData.id));
 
+  const currentDate = new Date();
   const entitlements: Entitlements =
-    userData.billing_org_id || userData.credits > 0
+    userData.billing_org_id ||
+    userData.last_transaction_expiration < currentDate
       ? {
           viewEmails: true,
           groupsCount: 5000,
@@ -213,6 +215,8 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     role: userData.role,
     isFirstLogin,
     credits: userData.credits,
+    use_credits_system: userData.use_credits_system,
+    last_transaction_expiration: userData.use_credits_system,
     billing_org_id: userData.billing_org_id,
     billing_org: userData.billing_org,
     display_name: userData.display_name,
