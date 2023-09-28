@@ -347,3 +347,9 @@ query GetPersonalizedVcFirms(
     }
   }
 }
+
+query GetVcFirmsByTagsAndLocation($limit: Int, $where: vc_firms_bool_exp!) {
+  vc_firms(where: $where, limit: $limit) {
+    id
+  }
+}

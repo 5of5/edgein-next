@@ -385,3 +385,9 @@ mutation InsertPeople($objects: [people_insert_input!]!) {
     }
   }
 }
+
+query GetPeopleByTagsAndLocation($limit: Int, $where: people_bool_exp!) {
+  people(where: $where, limit: $limit) {
+    id
+  }
+}

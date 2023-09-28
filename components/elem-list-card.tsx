@@ -2,12 +2,13 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { kebabCase, startCase } from 'lodash';
+import { kebabCase } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { getNameFromListName } from '@/utils/reaction';
 import { formatDateShown, truncateWords } from '@/utils';
-import { GetGroupsQuery, GetListsQuery, Lists } from '@/graphql/types';
-import { DeepPartial, GroupsTabItem, ListsTabItem } from '@/types/common';
+import { getListDisplayName } from '@/utils/lists';
+import { GetGroupsQuery, GetListsQuery } from '@/graphql/types';
+import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
@@ -39,18 +40,9 @@ export const ElemListCard: FC<Props> = ({
 
   const { user, refreshProfile, refetchMyGroups } = useUser();
 
-  const getListName = (listData: DeepPartial<Lists>) => {
-    const name = getNameFromListName(listData);
-    if (['hot', 'like', 'crap'].includes(name)) {
-      return startCase(name);
-    }
-
-    return name;
-  };
-
   const isResourceList = resource.resourceType === 'list';
 
-  const name = isResourceList ? getListName(resource) : resource.name;
+  const name = isResourceList ? getListDisplayName(resource) : resource.name;
 
   const description = isResourceList ? name : resource.description;
 
