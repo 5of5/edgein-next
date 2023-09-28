@@ -41,17 +41,16 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
         </p>
       </div>
 
-      <ul className="mt-8 grid grid-cols-2 gap-3 px-2 md:px-0">
+      <ul className="max-w-3xl mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
         {segmentChoices.map(item => (
           <li
             key={item.title}
-            className={`px-6 py-4 rounded-lg border ${
+            className={`px-4 py-4 rounded-lg border ${
               item.title === selectedSegment
                 ? 'border-primary-500 bg-gray-50'
                 : 'border-slate-300'
-            } shadow-sm cursor-pointer hover:bg-gray-50`}
-            onClick={() => onChangeSegment(item.title)}
-          >
+            } shadow-sm cursor-pointer hover:bg-gray-50 md:px-6`}
+            onClick={() => onChangeSegment(item.title)}>
             <p className="text-slate-900 text-sm font-medium">{item.title}</p>
             <p className="text-slate-500 text-xs">{item.description}</p>
           </li>
@@ -92,8 +91,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                         ]
                       : [...exploreChoices, item],
                   );
-                }}
-              >
+                }}>
                 <p className="text-slate-900 text-sm">{item}</p>
               </li>
             ))}
@@ -101,10 +99,9 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
           <ElemButton
             btn="primary"
             size="md"
-            className="max-w-sm w-full mt-16"
+            className="max-w-sm w-full mt-8 md:mt-16"
             disabled={exploreChoices.length === 0}
-            onClick={onNext}
-          >
+            onClick={onNext}>
             Next
           </ElemButton>
         </div>
