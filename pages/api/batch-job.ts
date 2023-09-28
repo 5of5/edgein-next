@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       FROM investment_rounds AS t1 INNER JOIN investments AS t2
       ON t1.id = t2.round_id
       WHERE t1.company_id IS NOT NULL AND t2.vc_firm_id IS NOT NULL
-        AND t1.round IN ('Acquisition', 'ICO')
+        AND t1.round IN ('Acquisition', 'Token Round')
     ) AS t3 
     WHERE vc_firm_id = vc.id
     GROUP BY vc_firm_id)`,
