@@ -62,7 +62,8 @@ export const ElemOnboardingTags: FC<Props> = ({
             }`}
             onClick={() => {
               handleToggleTag(tagItem.id);
-            }}>
+            }}
+          >
             {tagItem.name}
           </li>
         ))}
@@ -71,7 +72,8 @@ export const ElemOnboardingTags: FC<Props> = ({
       {limit < tagChoices.length && (
         <button
           className="text-gray-500 text-xs underline hover:text-gray-800"
-          onClick={handleLoadMore}>
+          onClick={handleLoadMore}
+        >
           Load more
         </button>
       )}
@@ -82,7 +84,8 @@ export const ElemOnboardingTags: FC<Props> = ({
         className="max-w-sm w-full mt-8 md:mt-16"
         loading={isSubmittingOnboarding}
         disabled={tags.length < 3}
-        onClick={onNext}>
+        onClick={onNext}
+      >
         Finish
       </ElemButton>
 
@@ -92,7 +95,8 @@ export const ElemOnboardingTags: FC<Props> = ({
         </p>
         <button
           className="text-gray-500 text-xs underline hover:text-gray-800"
-          onClick={() => showNewMessages(`Hi EdgeIn, I'd like to see `)}>
+          onClick={() => showNewMessages(`Hi EdgeIn, I'd like to see `)}
+        >
           Let us know
         </button>
       </div>

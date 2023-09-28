@@ -95,7 +95,8 @@ export default function Onboarding() {
                   key={i}
                   className={`${
                     i + 1 === currentStep ? 'bg-primary-100' : 'bg-transparent'
-                  } relative w-5 h-5 rounded-full `}>
+                  } relative w-5 h-5 rounded-full `}
+                >
                   <span
                     className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full ${
                       i + 1 <= currentStep ? 'bg-primary-500' : 'bg-slate-200'

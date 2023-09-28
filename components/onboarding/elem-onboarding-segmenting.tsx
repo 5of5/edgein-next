@@ -50,7 +50,8 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 ? 'border-primary-500 bg-gray-50'
                 : 'border-slate-300'
             } shadow-sm cursor-pointer hover:bg-gray-50 md:px-6`}
-            onClick={() => onChangeSegment(item.title)}>
+            onClick={() => onChangeSegment(item.title)}
+          >
             <p className="text-slate-900 text-sm font-medium">{item.title}</p>
             <p className="text-slate-500 text-xs">{item.description}</p>
           </li>
@@ -91,7 +92,8 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                         ]
                       : [...exploreChoices, item],
                   );
-                }}>
+                }}
+              >
                 <p className="text-slate-900 text-sm">{item}</p>
               </li>
             ))}
@@ -101,7 +103,8 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             size="md"
             className="max-w-sm w-full mt-8 md:mt-16"
             disabled={exploreChoices.length === 0}
-            onClick={onNext}>
+            onClick={onNext}
+          >
             Next
           </ElemButton>
         </div>
