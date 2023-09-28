@@ -81,7 +81,7 @@ export const ElemOnboardingTags: FC<Props> = ({
       <ElemButton
         btn="primary"
         size="md"
-        className="max-w-sm w-full mt-16"
+        className="max-w-sm w-full mt-8 md:mt-16"
         loading={isSubmittingOnboarding}
         disabled={tags.length < 3}
         onClick={onNext}

@@ -83,7 +83,7 @@ export default function Onboarding() {
         <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-20 bg-white overflow-x-hidden overflow-y-auto scrollbar-hide">
           <ElemSignInHeader />
 
-          <h3 className="text-lg font-medium text-gray-900">
+          <h3 className="text-lg font-medium text-gray-900 px-4 lg:px-0">
             Let&apos;s personalize your EdgeIn
           </h3>
 
@@ -107,7 +107,7 @@ export default function Onboarding() {
             </ul>
           </div>
 
-          <div className="mt-16 flex flex-col items-center">
+          <div className="mt-8 md:mt-16 flex flex-col items-center px-4 md:px-0">
             {currentStep === 1 && (
               <ElemOnboardingSegmenting
                 selectedSegment={segment}
