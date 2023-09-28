@@ -196,7 +196,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
 
   const currentDate = new Date();
   const entitlements: Entitlements =
-    userData.billing_org_id ||
+    userData?.billing_org?.status === 'active' ||
     userData.last_transaction_expiration < currentDate
       ? {
           viewEmails: true,

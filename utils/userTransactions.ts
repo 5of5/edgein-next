@@ -35,10 +35,10 @@ const onInsertTransaction = async (
     mutation: UpdateUserExpirationOfLastValidTransactionDocument,
     variables: {
       user_id,
-      last_transaction_expiration: moment().add(30, 'days').toDate()
+      last_transaction_expiration: moment().add(30, 'days').toDate(),
     },
   });
-  
+
   return insert_user_transactions_one;
 };
 

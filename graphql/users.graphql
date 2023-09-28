@@ -5,6 +5,9 @@ query GetUserProfile($id: Int!) {
     use_credits_system
     last_transaction_expiration
     billing_org_id
+    billing_org {
+      status
+    }
     preferences
     organization_companies {
       id
@@ -222,6 +225,7 @@ query GetUserById($id: Int) {
     billing_org_id
     billing_org {
       customer_id
+      status
     }
     person {
       name
@@ -243,7 +247,10 @@ mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
   }
 }
 
-mutation UpdateUserUseCreditsSystem($user_id: Int!, $use_credits_system: Boolean) {
+mutation UpdateUserUseCreditsSystem(
+  $user_id: Int!
+  $use_credits_system: Boolean
+) {
   update_users_by_pk(
     pk_columns: { id: $user_id }
     _set: { use_credits_system: $use_credits_system }
@@ -252,12 +259,15 @@ mutation UpdateUserUseCreditsSystem($user_id: Int!, $use_credits_system: Boolean
   }
 }
 
-mutation UpdateUserExpirationOfLastValidTransaction($user_id: Int!, $last_transaction_expiration: timestamptz) {
+mutation UpdateUserExpirationOfLastValidTransaction(
+  $user_id: Int!
+  $last_transaction_expiration: timestamptz
+) {
   update_users(
-	  where: { id: {_eq: $user_id}, use_credits_system: {_eq: true} }
+    where: { id: { _eq: $user_id }, use_credits_system: { _eq: true } }
     _set: { last_transaction_expiration: $last_transaction_expiration }
   ) {
- 		affected_rows
+    affected_rows
   }
 }
 

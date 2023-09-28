@@ -17,11 +17,12 @@ export type User = {
   auth0_linkedin_id?: string | null;
   auth0_user_pass_id?: string | null;
   credits: number;
-  use_credits_system: boolean,
-  last_transaction_expiration?: Date,
+  use_credits_system: boolean;
+  last_transaction_expiration?: Date;
   billing_org_id?: string;
   billing_org?: {
     customer_id?: string;
+    status?: string;
   };
   person?: {
     name: string;

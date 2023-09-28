@@ -108,7 +108,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await UserTransactionsService.onInsertTransaction(
           referenceUserId as number,
           REFERRAL_CREDITS_AMOUNT,
-          `${TRANSACTION_SYSTEM_NOTE} - registration referral bonus`
+          `${TRANSACTION_SYSTEM_NOTE} - registration referral bonus`,
         );
       }
     }
@@ -149,7 +149,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await UserTransactionsService.onInsertTransaction(
       userData.id,
       REGISTRATION_CREDITS_AMOUNT,
-      `${TRANSACTION_SYSTEM_NOTE} - registration bonus`
+      `${TRANSACTION_SYSTEM_NOTE} - registration bonus`,
     );
 
     const userToken = UserService.createToken(userData, true);
