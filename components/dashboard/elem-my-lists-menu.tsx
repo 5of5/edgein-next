@@ -1,5 +1,5 @@
 import { getNameFromListName } from '@/utils/reaction';
-import { kebabCase, partition, startCase } from 'lodash';
+import { kebabCase, partition } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
@@ -8,6 +8,7 @@ import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { CreateListDialog } from '../my-list/create-list-dialog';
 import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
+import { getListDisplayName } from '@/utils/lists';
 
 type Props = {
   className?: string;
@@ -135,9 +136,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     )} `}
                   >
                     <span className="line-clamp-1 break-all flex-1">
-                      {listItemName === 'crap'
-                        ? 'Sh**'
-                        : startCase(listItemName)}
+                      {getListDisplayName(listItem)}
                     </span>
                   </a>
                 </Link>
