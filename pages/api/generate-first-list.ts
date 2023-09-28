@@ -51,7 +51,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const people = await generatedPeople(industryTags, locationTags);
 
     if (companies.length > 0 || vcFirms.length > 0 || people.length > 0) {
-      const listName = `${user.display_name}'s first list`;
+      const displayName = user.display_name || '';
+      const firstName = displayName.indexOf(' ') !== -1 ? displayName.split(' ')[0] : displayName;
+      const listName = `${firstName}'s first list`;
 
       const list = await upsertList(listName, user, token);
 
