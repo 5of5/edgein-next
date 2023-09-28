@@ -520,8 +520,8 @@ export const roundChoices = [
     name: 'Series H',
   },
   {
-    id: 'ICO',
-    name: 'ICO',
+    id: 'Token Round',
+    name: 'Token Round',
   },
   {
     id: 'Venture Round',
