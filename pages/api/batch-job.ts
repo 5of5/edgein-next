@@ -11,7 +11,7 @@ const handleUserTransactions = async (client: Client) => {
   const userExpiredTransactions = await client.query(`
   -- #1 get only those user_ids where last unique transaction timestamp by user_id is greater then 30 days
   -- #2 get credits_for that user_id
-  -- #3 filter out records for users that has not enabled credits_spending
+  -- #3 filter out records for users that don't have enabled credits_spending
   SELECT 
     user_id, 
     highest_created_at, 
@@ -86,7 +86,7 @@ const handleUserTransactions = async (client: Client) => {
       `);
   }
 
-  //#3 disable credits system for users without no more credits
+  //#3 disable credits system for users without credits
   if (userIdsToDisableCreditsSystem.length) {
     await client.query(`
     UPDATE users SET use_credits_system = false WHERE id IN (${userIdsToDisableCreditsSystem
@@ -135,8 +135,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       FROM investment_rounds AS t1 INNER JOIN investments AS t2
       ON t1.id = t2.round_id
       WHERE t1.company_id IS NOT NULL AND t2.vc_firm_id IS NOT NULL
-        AND t1.round IN ('Acquisition', 'ICO')
-    ) AS t3
+        AND t1.round IN ('Acquisition', 'Token Round')
+    ) AS t3 
     WHERE vc_firm_id = vc.id
     GROUP BY vc_firm_id)`,
     [],

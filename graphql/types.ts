@@ -26063,6 +26063,14 @@ export type InsertCompaniesMutationVariables = Exact<{
 
 export type InsertCompaniesMutation = { __typename?: 'mutation_root', insert_companies: { __typename?: 'companies_mutation_response', returning: Array<{ __typename?: 'companies', id: number, status: string, slug: string, enrichment_priority: number, website: string | null, company_linkedin: string | null }> } | null };
 
+export type GetCompaniesByTagsAndLocationQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  where: Companies_Bool_Exp;
+}>;
+
+
+export type GetCompaniesByTagsAndLocationQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number }> };
+
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -26850,6 +26858,14 @@ export type InsertPeopleMutationVariables = Exact<{
 
 export type InsertPeopleMutation = { __typename?: 'mutation_root', insert_people: { __typename?: 'people_mutation_response', returning: Array<{ __typename?: 'people', id: number, status: string, linkedin: string | null, slug: string, enrichment_priority: number }> } | null };
 
+export type GetPeopleByTagsAndLocationQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  where: People_Bool_Exp;
+}>;
+
+
+export type GetPeopleByTagsAndLocationQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number }> };
+
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
 }>;
@@ -27041,7 +27057,7 @@ export type UpdateUserAuth0LinkedInIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, onboarding_information: any | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type UpdateUserAuth0UserPassIdMutationVariables = Exact<{
   email: Scalars['String'];
@@ -27064,7 +27080,7 @@ export type UpdateUserAdditionalEmailsMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
 
 export type GetUserByAdditionalEmailQueryVariables = Exact<{
   email: InputMaybe<Scalars['jsonb']>;
@@ -27210,6 +27226,14 @@ export type GetPersonalizedVcFirmsQueryVariables = Exact<{
 
 
 export type GetPersonalizedVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, slug: string, logo: any | null, name: string | null, num_of_investments: number | null, year_founded: string | null, investment_amount_total: any | null, tags: any | null, location_json: any | null, overview: string | null, website: string | null, linkedin: string | null, twitter: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+
+export type GetVcFirmsByTagsAndLocationQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  where: Vc_Firms_Bool_Exp;
+}>;
+
+
+export type GetVcFirmsByTagsAndLocationQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number }> };
 
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
@@ -28131,6 +28155,32 @@ export const useInsertCompaniesMutation = <
       options
     );
 useInsertCompaniesMutation.fetcher = (variables: InsertCompaniesMutationVariables, options?: RequestInit['headers']) => fetcher<InsertCompaniesMutation, InsertCompaniesMutationVariables>(InsertCompaniesDocument, variables, options);
+export const GetCompaniesByTagsAndLocationDocument = `
+    query GetCompaniesByTagsAndLocation($limit: Int, $where: companies_bool_exp!) {
+  companies(where: $where, limit: $limit) {
+    id
+  }
+}
+    `;
+export const useGetCompaniesByTagsAndLocationQuery = <
+      TData = GetCompaniesByTagsAndLocationQuery,
+      TError = Error
+    >(
+      variables: GetCompaniesByTagsAndLocationQueryVariables,
+      options?: UseQueryOptions<GetCompaniesByTagsAndLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetCompaniesByTagsAndLocationQuery, TError, TData>(
+      ['GetCompaniesByTagsAndLocation', variables],
+      fetcher<GetCompaniesByTagsAndLocationQuery, GetCompaniesByTagsAndLocationQueryVariables>(GetCompaniesByTagsAndLocationDocument, variables),
+      options
+    );
+useGetCompaniesByTagsAndLocationQuery.document = GetCompaniesByTagsAndLocationDocument;
+
+
+useGetCompaniesByTagsAndLocationQuery.getKey = (variables: GetCompaniesByTagsAndLocationQueryVariables) => ['GetCompaniesByTagsAndLocation', variables];
+;
+
+useGetCompaniesByTagsAndLocationQuery.fetcher = (variables: GetCompaniesByTagsAndLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesByTagsAndLocationQuery, GetCompaniesByTagsAndLocationQueryVariables>(GetCompaniesByTagsAndLocationDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {
@@ -31743,6 +31793,32 @@ export const useInsertPeopleMutation = <
       options
     );
 useInsertPeopleMutation.fetcher = (variables: InsertPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertPeopleMutation, InsertPeopleMutationVariables>(InsertPeopleDocument, variables, options);
+export const GetPeopleByTagsAndLocationDocument = `
+    query GetPeopleByTagsAndLocation($limit: Int, $where: people_bool_exp!) {
+  people(where: $where, limit: $limit) {
+    id
+  }
+}
+    `;
+export const useGetPeopleByTagsAndLocationQuery = <
+      TData = GetPeopleByTagsAndLocationQuery,
+      TError = Error
+    >(
+      variables: GetPeopleByTagsAndLocationQueryVariables,
+      options?: UseQueryOptions<GetPeopleByTagsAndLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetPeopleByTagsAndLocationQuery, TError, TData>(
+      ['GetPeopleByTagsAndLocation', variables],
+      fetcher<GetPeopleByTagsAndLocationQuery, GetPeopleByTagsAndLocationQueryVariables>(GetPeopleByTagsAndLocationDocument, variables),
+      options
+    );
+useGetPeopleByTagsAndLocationQuery.document = GetPeopleByTagsAndLocationDocument;
+
+
+useGetPeopleByTagsAndLocationQuery.getKey = (variables: GetPeopleByTagsAndLocationQueryVariables) => ['GetPeopleByTagsAndLocation', variables];
+;
+
+useGetPeopleByTagsAndLocationQuery.fetcher = (variables: GetPeopleByTagsAndLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByTagsAndLocationQuery, GetPeopleByTagsAndLocationQueryVariables>(GetPeopleByTagsAndLocationDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {
@@ -32653,6 +32729,7 @@ export const UpdateUserAuth0LinkedInIdDocument = `
       use_credits_system
       last_transaction_expiration
       billing_org_id
+      onboarding_information
       person {
         name
         picture
@@ -32792,6 +32869,7 @@ export const UpdateUserAdditionalEmailsDocument = `
         id
       }
       additional_emails
+      onboarding_information
       active
     }
   }
@@ -33572,6 +33650,32 @@ useGetPersonalizedVcFirmsQuery.getKey = (variables: GetPersonalizedVcFirmsQueryV
 ;
 
 useGetPersonalizedVcFirmsQuery.fetcher = (variables: GetPersonalizedVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonalizedVcFirmsQuery, GetPersonalizedVcFirmsQueryVariables>(GetPersonalizedVcFirmsDocument, variables, options);
+export const GetVcFirmsByTagsAndLocationDocument = `
+    query GetVcFirmsByTagsAndLocation($limit: Int, $where: vc_firms_bool_exp!) {
+  vc_firms(where: $where, limit: $limit) {
+    id
+  }
+}
+    `;
+export const useGetVcFirmsByTagsAndLocationQuery = <
+      TData = GetVcFirmsByTagsAndLocationQuery,
+      TError = Error
+    >(
+      variables: GetVcFirmsByTagsAndLocationQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsByTagsAndLocationQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsByTagsAndLocationQuery, TError, TData>(
+      ['GetVcFirmsByTagsAndLocation', variables],
+      fetcher<GetVcFirmsByTagsAndLocationQuery, GetVcFirmsByTagsAndLocationQueryVariables>(GetVcFirmsByTagsAndLocationDocument, variables),
+      options
+    );
+useGetVcFirmsByTagsAndLocationQuery.document = GetVcFirmsByTagsAndLocationDocument;
+
+
+useGetVcFirmsByTagsAndLocationQuery.getKey = (variables: GetVcFirmsByTagsAndLocationQueryVariables) => ['GetVcFirmsByTagsAndLocation', variables];
+;
+
+useGetVcFirmsByTagsAndLocationQuery.fetcher = (variables: GetVcFirmsByTagsAndLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByTagsAndLocationQuery, GetVcFirmsByTagsAndLocationQueryVariables>(GetVcFirmsByTagsAndLocationDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

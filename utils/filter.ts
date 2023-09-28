@@ -8,10 +8,14 @@ import {
 } from '@/models/Filter';
 import {
   Companies_Bool_Exp,
+  Companies_Order_By,
   Events_Bool_Exp,
+  Events_Order_By,
   Lists_Bool_Exp,
+  Order_By,
   User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
+  Vc_Firms_Order_By,
 } from '@/graphql/types';
 import {
   DeepPartial,
@@ -19,7 +23,13 @@ import {
   Library,
   ListsTabType,
 } from '@/types/common';
-import { aiTags, eventTypeChoices, roundChoices } from '@/utils/constants';
+import {
+  aiTags,
+  companyStatusTags,
+  eventTypeChoices,
+  ISO_DATE_FORMAT,
+  roundChoices,
+} from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { getSelectableWeb3Tags } from './helpers';
 
@@ -1039,4 +1049,75 @@ export const getListsFilters = (selectedTab: ListsTabType, userId: number) => {
   }
 
   return filters;
+};
+
+export const getHomepageEncodedURI = (
+  filters:
+    | DeepPartial<Vc_Firms_Bool_Exp>
+    | DeepPartial<Companies_Bool_Exp>
+    | DeepPartial<Events_Bool_Exp>,
+  orderBy?:
+    | DeepPartial<Vc_Firms_Order_By>
+    | DeepPartial<Companies_Order_By>
+    | DeepPartial<Events_Order_By>,
+) => {
+  let encodedFilters = '';
+  let encodedStatusTag = '';
+  let encodedSortBy = '';
+  let isPremiumFilter = false;
+
+  filters._and?.forEach(filterObj => {
+    if (filterObj) {
+      if ('tags' in filterObj && filterObj?.tags?._contains) {
+        encodedFilters += `{"industry":{"tags":["${filterObj?.tags._contains}"]}}`;
+      }
+
+      if (filterObj?.location_json?._contains.city) {
+        encodedFilters += `{"city":{"condition":"any","tags":["${filterObj?.location_json?._contains.city}"]}}`;
+      }
+
+      // Recently funded, premium feature
+      if (
+        'investment_rounds' in filterObj &&
+        filterObj?.investment_rounds?.round_date?._gte
+      ) {
+        encodedFilters += `{"lastFundingDate":{"condition":"custom","fromDate": "${
+          filterObj?.investment_rounds?.round_date?._gte
+        }" ,"toDate": "${moment().format(ISO_DATE_FORMAT)}"}}`;
+
+        isPremiumFilter = true;
+      }
+
+      // Recently active investors, premium feature
+      if (
+        'investments' in filterObj &&
+        filterObj?.investments?.investment_round?.round_date?._gte
+      ) {
+        encodedFilters += `{"lastInvestmentDate":{"condition":"custom","fromDate": "${
+          filterObj?.investments?.investment_round?.round_date?._gte
+        }" ,"toDate": "${moment().format(ISO_DATE_FORMAT)}"}}`;
+
+        isPremiumFilter = true;
+      }
+    }
+  });
+
+  if (orderBy?.num_of_views && orderBy?.num_of_views === Order_By.Desc) {
+    encodedStatusTag += 'Trending';
+  }
+
+  if (orderBy?.updated_at && orderBy?.updated_at === Order_By.Desc) {
+    encodedSortBy += 'lastUpdate';
+  }
+
+  encodedFilters = encodeURIComponent(encodedFilters);
+  encodedStatusTag = encodeURIComponent(encodedStatusTag);
+  encodedSortBy = encodeURIComponent(encodedSortBy);
+
+  return {
+    encodedFilters,
+    encodedStatusTag,
+    encodedSortBy,
+    isPremiumFilter,
+  };
 };

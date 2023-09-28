@@ -34,13 +34,14 @@ const ElemNotificationItem: FC<Props> = ({
       <div className="flex items-center space-x-2 sm:pr-20">
         <ElemPhoto
           photo={organization?.logo}
-          wrapClass="flex items-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200"
+          wrapClass="flex items-center shrink-0 w-12 h-12 bg-white border border-gray-200 rounded-lg overflow-hidden"
           imgClass="object-fit max-w-full max-h-full"
-          imgAlt="Company Name"
-          placeholderClass="text-slate-300"
+          imgAlt={organization?.name}
+          placeholderClass="text-gray-300 p-1"
+          placeholder="company"
         />
         <div className={notification.read ? 'opacity-60' : ''}>
-          <div className="inline text-sm leading-tight text-left lg:text-base">
+          <div className="inline text-sm leading-tight text-left">
             <ElemNotificationMessage
               message={message}
               notification={notification}
@@ -48,7 +49,7 @@ const ElemNotificationItem: FC<Props> = ({
             {extensions.length > 0 && (
               <>
                 {' | '}
-                <span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
+                <span className="leading-tight text-primary-500 underline hover:no-underline">
                   Details
                 </span>
                 <IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
@@ -58,7 +59,7 @@ const ElemNotificationItem: FC<Props> = ({
 
           <div className="text-left">
             <span
-              className={`text-sm  ${
+              className={`text-xs  ${
                 notification.read ? '' : 'font-medium text-primary-500'
               }`}
             >

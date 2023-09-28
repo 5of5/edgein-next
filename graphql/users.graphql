@@ -378,6 +378,7 @@ mutation UpdateUserAuth0LinkedInId(
       use_credits_system
       last_transaction_expiration
       billing_org_id
+      onboarding_information
       person {
         name
         picture
@@ -478,6 +479,7 @@ mutation UpdateUserAdditionalEmails($id: Int!, $additional_emails: jsonb) {
         id
       }
       additional_emails
+      onboarding_information
       active
     }
   }
