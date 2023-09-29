@@ -12,6 +12,9 @@ import { isEmpty } from 'lodash';
 import { ElemButton } from '@/components/elem-button';
 import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 import { useMutation } from 'react-query';
+import axios from 'axios';
+
+const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system';
 
 export default function Account() {
   const { user } = useAuth();
@@ -25,26 +28,15 @@ export default function Account() {
       },
     );
 
-  const { mutate: toggleCreditsSystem, isLoading: isTogglingCreditsSystem } =
-    useMutation(
-      async () => {
-        await fetch('/api/toggle-credits-system', {
-          method: 'PUT',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            enableCreditsSystem: !userProfile?.users_by_pk?.use_credits_system,
-          }),
-        });
-      },
-      {
-        onSuccess: () => {
-          refetchUserProfile();
-        },
-      },
-    );
+  const { mutate: toggleCreditsSystem } = useMutation(
+    async () =>
+      await axios.put(TOGGLE_CREDITS_SYSTEM_API_URL, {
+        enableCreditsSystem: !userProfile?.users_by_pk?.use_credits_system,
+      }),
+    {
+      onSuccess: () => refetchUserProfile(),
+    },
+  );
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
   const numberOfCredits = userProfile?.users_by_pk?.credits || 0;
@@ -107,8 +99,7 @@ export default function Account() {
                     className="cloudsponge-launch"
                     btn="default"
                     disabled={!edgeInContributorButtonEnabled}
-                    onClick={() => toggleCreditsSystem()}
-                  >
+                    onClick={() => toggleCreditsSystem()}>
                     {edgeInContributorButtonTitle}
                   </ElemButton>
 

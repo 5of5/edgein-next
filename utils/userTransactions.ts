@@ -4,6 +4,7 @@ export const TRANSACTION_SYSTEM_NOTE = 'transaction-system';
 export const CREDITS_PER_MONTH = 1500;
 export const REFERRAL_CREDITS_AMOUNT = 1500;
 export const REGISTRATION_CREDITS_AMOUNT = 4500;
+export const CREDITS_SPENDING_INTERVAL = 30; // NOTE: in days
 
 import {
   InsertUserTransactionDocument,
@@ -31,11 +32,13 @@ const onInsertTransaction = async (
     },
   });
 
+  //NOTE(David): we update last_transaction_expiration user field for user that has enabled credits_system
+  //to current date + 30days
   await mutate<UpdateUserExpirationOfLastValidTransactionMutation>({
     mutation: UpdateUserExpirationOfLastValidTransactionDocument,
     variables: {
       user_id,
-      last_transaction_expiration: moment().add(30, 'days').toDate(),
+      last_transaction_expiration: moment().add(CREDITS_SPENDING_INTERVAL, 'days').toDate(),
     },
   });
 

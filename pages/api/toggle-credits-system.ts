@@ -1,11 +1,6 @@
 import UserService from '../../utils/users';
 import CookieService from '../../utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { mutate } from '@/graphql/hasuraAdmin';
-import {
-  UpdateUserUseCreditsSystemDocument,
-  UpdateUserUseCreditsSystemMutation,
-} from '@/graphql/types';
 import UserTransactionsService, {
   CREDITS_PER_MONTH,
 } from '@/utils/userTransactions';
@@ -15,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const enableCreditsSystem: boolean = req.body.enableCreditsSystem;
+  const enableCreditsSystem: boolean | undefined = req.body.enableCreditsSystem;
   if (enableCreditsSystem === undefined) {
     res
       .status(400)
@@ -35,17 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (enableCreditsSystem && userData.credits >= CREDITS_PER_MONTH) {
-      await mutate<UpdateUserUseCreditsSystemMutation>(
-        {
-          mutation: UpdateUserUseCreditsSystemDocument,
-          variables: {
-            user_id: user.id,
-            use_credits_system: true,
-          },
-        },
-        token,
-      );
-
+      await UserService.updateUseCreditsSystem(user.id, true);
       await UserTransactionsService.onInsertTransaction(
         user.id,
         -CREDITS_PER_MONTH,
@@ -54,16 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (!enableCreditsSystem) {
-      await mutate<UpdateUserUseCreditsSystemMutation>(
-        {
-          mutation: UpdateUserUseCreditsSystemDocument,
-          variables: {
-            user_id: user.id,
-            use_credits_system: false,
-          },
-        },
-        token,
-      );
+      await UserService.updateUseCreditsSystem(user.id, false);
     }
 
     return res.send({ success: true });

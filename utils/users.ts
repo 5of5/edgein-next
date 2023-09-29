@@ -30,6 +30,8 @@ import {
   GetPersonQuery,
   GetUserByPersonIdQuery,
   GetUserByPersonIdDocument,
+  UpdateUserUseCreditsSystemDocument,
+  UpdateUserUseCreditsSystemMutation,
 } from '@/graphql/types';
 import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
@@ -145,6 +147,18 @@ async function updateAuth0UserPassId(
     variables: { email, auth0_user_pass_id },
   });
   return data.data.update_users?.returning[0];
+}
+
+async function updateUseCreditsSystem(userId: number, useCreditsSystem: boolean) {
+  await mutate<UpdateUserUseCreditsSystemMutation>(
+    {
+      mutation: UpdateUserUseCreditsSystemDocument,
+      variables: {
+        user_id: userId,
+        use_credits_system: useCreditsSystem,
+      },
+    },
+  );
 }
 
 async function findOneUserByReferenceId(reference_id: string) {
@@ -275,6 +289,7 @@ const UserService = {
   mutateForWaitlistEmail,
   findOneUserByEmail,
   findOneUserById,
+  updateUseCreditsSystem,
   updateBillingOrg,
   upsertUser,
   updateEmailVerifiedStatus,

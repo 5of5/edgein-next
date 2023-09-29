@@ -4,12 +4,14 @@ import { Client } from 'pg';
 import { NextApiResponse, NextApiRequest } from 'next';
 import {
   CREDITS_PER_MONTH,
+  CREDITS_SPENDING_INTERVAL,
   TRANSACTION_SYSTEM_NOTE,
 } from '@/utils/userTransactions';
 
 const handleUserTransactions = async (client: Client) => {
   const userExpiredTransactions = await client.query(`
-  -- #1 get only those user_ids where last unique transaction timestamp by user_id is greater then 30 days
+  -- NOTE(David): brief description of that the query does
+  -- #1 get only those user_ids where last unique transaction timestamp by user_id is greater then CREDITS_SPENDING_INTERVAL
   -- #2 get credits_for that user_id
   -- #3 filter out records for users that don't have enabled credits_spending
   SELECT 
@@ -48,14 +50,14 @@ const handleUserTransactions = async (client: Client) => {
   const userIdsToDecreaseCreditsMonthly: number[] = [];
   const userIdsToDisableCreditsSystem: number[] = [];
 
-  for (const userTransaction of userExpiredTransactions.rows) {
-    if (userTransaction.total_amount - CREDITS_PER_MONTH < 0) {
-      userIdsToDisableCreditsSystem.push(userTransaction.user_id);
-    } else if (userTransaction.total_amount - CREDITS_PER_MONTH === 0) {
-      userIdsToDecreaseCreditsMonthly.push(userTransaction.user_id);
-      userIdsToDisableCreditsSystem.push(userTransaction.user_id);
+  for (const { total_amount, user_id } of userExpiredTransactions.rows) {
+    if (total_amount - CREDITS_PER_MONTH < 0) {
+      userIdsToDisableCreditsSystem.push(user_id);
+    } else if (total_amount - CREDITS_PER_MONTH === 0) {
+      userIdsToDecreaseCreditsMonthly.push(user_id);
+      userIdsToDisableCreditsSystem.push(user_id);
     } else {
-      userIdsToDecreaseCreditsMonthly.push(userTransaction.user_id);
+      userIdsToDecreaseCreditsMonthly.push(user_id);
     }
   }
 
@@ -73,9 +75,9 @@ const handleUserTransactions = async (client: Client) => {
         .join('\n')}
         `);
 
-    //#2 update last_transaction_expiration to current date + 30days
+    //#2 update last_transaction_expiration to current date + CREDITS_SPENDING_INTERVAL
     await client.query(`
-    UPDATE users SET last_transaction_expiration = NOW() + INTERVAL '30 days' WHERE id IN (${userIdsToDecreaseCreditsMonthly
+    UPDATE users SET last_transaction_expiration = NOW() + INTERVAL '${CREDITS_SPENDING_INTERVAL} days' WHERE id IN (${userIdsToDecreaseCreditsMonthly
       .map(
         (userId, i) =>
           `'${userId}'${
