@@ -4,19 +4,19 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import UserTransactionsService, {
   CREDITS_PER_MONTH,
 } from '@/utils/userTransactions';
+import { toggleCreditsSystemSchema } from '@/utils/schema';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'PUT') {
     res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const enableCreditsSystem: boolean | undefined = req.body.enableCreditsSystem;
-  if (enableCreditsSystem === undefined) {
-    res
-      .status(400)
-      .json({ message: 'Missing enableCreditsSystem attribute in body' });
+  const parsedSchema = toggleCreditsSystemSchema.safeParse(req.body);
+  if (!parsedSchema.success) {
+    return res.status(400).json({ message: parsedSchema.error.message });
   }
 
+  const { enableCreditsSystem } = parsedSchema.data;
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
