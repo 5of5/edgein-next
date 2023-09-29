@@ -13,6 +13,7 @@ import { ElemButton } from '@/components/elem-button';
 import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 import { useMutation } from 'react-query';
 import axios from 'axios';
+import moment from 'moment';
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system';
 
@@ -65,6 +66,23 @@ export default function Account() {
     ? 'Cancel EdgeIn Contributor'
     : 'Get EdgeIn Contributor';
 
+  let creditsLabelMessage = '';
+  if (userProfile?.users_by_pk?.use_credits_system) {
+    if (userProfile?.users_by_pk?.last_transaction_expiration) {
+      creditsLabelMessage = `Your subscription is active until ${moment(
+        userProfile?.users_by_pk?.last_transaction_expiration,
+      ).format('MMMM D, YYYY')}`;
+    }
+  } else {
+    if (userProfile?.users_by_pk?.credits > 0) {
+      creditsLabelMessage = `Your credits give you {numberOfMonthsFromCredits}{' '}
+      {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} for
+      free.`;
+    } else {
+      creditsLabelMessage = `Start by inviting your friends and colleagues.`;
+    }
+  }
+
   return (
     <DashboardLayout>
       <div className="px-4 py-3">
@@ -86,10 +104,8 @@ export default function Account() {
               </p>
             </div>
 
-            <div>
-              <span className="text-sm font-medium pl-0.5 font-sans">
-                Current credits
-              </span>
+            <div className="my-6">
+              <h3 className="font-medium pl-0.5 font-sans">Current credits</h3>
               <div className="flex mt-3">
                 <span className="bg-primary-500 border rounded-lg py-3 px-6 text-white text-3xl font-semibold">
                   {numberOfCredits.toLocaleString()}
@@ -105,9 +121,7 @@ export default function Account() {
                   </ElemButton>
 
                   <p className="mt-2 text-xs text-gray-500">
-                    Your credits give you {numberOfMonthsFromCredits}{' '}
-                    {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} for
-                    free.
+                    {creditsLabelMessage}
                   </p>
                 </div>
               </div>
