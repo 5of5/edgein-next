@@ -30,6 +30,8 @@ import {
   GetPersonQuery,
   GetUserByPersonIdQuery,
   GetUserByPersonIdDocument,
+  UpdateUserUseCreditsSystemDocument,
+  UpdateUserUseCreditsSystemMutation,
 } from '@/graphql/types';
 import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
@@ -147,6 +149,19 @@ async function updateAuth0UserPassId(
   return data.data.update_users?.returning[0];
 }
 
+async function updateUseCreditsSystem(
+  userId: number,
+  useCreditsSystem: boolean,
+) {
+  await mutate<UpdateUserUseCreditsSystemMutation>({
+    mutation: UpdateUserUseCreditsSystemDocument,
+    variables: {
+      user_id: userId,
+      use_credits_system: useCreditsSystem,
+    },
+  });
+}
+
 async function findOneUserByReferenceId(reference_id: string) {
   const data = await query<GetUserByReferenceIdQuery>({
     query: GetUserByReferenceIdDocument,
@@ -194,8 +209,10 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
   hmac.update(String(userData.id));
 
+  const currentDate = new Date();
   const entitlements: Entitlements =
-    userData.billing_org_id || userData.credits > 0
+    userData?.billing_org?.status === 'active' ||
+    userData.last_transaction_expiration < currentDate
       ? {
           viewEmails: true,
           groupsCount: 5000,
@@ -213,6 +230,8 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     role: userData.role,
     isFirstLogin,
     credits: userData.credits,
+    use_credits_system: userData.use_credits_system,
+    last_transaction_expiration: userData.use_credits_system,
     billing_org_id: userData.billing_org_id,
     billing_org: userData.billing_org,
     display_name: userData.display_name,
@@ -271,6 +290,7 @@ const UserService = {
   mutateForWaitlistEmail,
   findOneUserByEmail,
   findOneUserById,
+  updateUseCreditsSystem,
   updateBillingOrg,
   upsertUser,
   updateEmailVerifiedStatus,

@@ -9,22 +9,40 @@ import {
 import { ElemInviteUser } from '@/components/invites/elem-invite-user';
 import { ElemInviteInvestmentMembers } from '@/components/invites/elem-invite-investment-members';
 import { isEmpty } from 'lodash';
+import { ElemButton } from '@/components/elem-button';
+import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
+import { useMutation } from 'react-query';
+import axios from 'axios';
+import moment from 'moment';
+
+const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system';
 
 export default function Account() {
   const { user } = useAuth();
+  const { data: userProfile, refetch: refetchUserProfile } =
+    useGetUserProfileQuery(
+      {
+        id: user?.id || 0,
+      },
+      {
+        enabled: !!user,
+      },
+    );
 
-  const { data: userProfile } = useGetUserProfileQuery(
+  const { mutate: toggleCreditsSystem } = useMutation(
+    async () =>
+      await axios.put(TOGGLE_CREDITS_SYSTEM_API_URL, {
+        enableCreditsSystem: !userProfile?.users_by_pk?.use_credits_system,
+      }),
     {
-      id: user?.id || 0,
-    },
-    {
-      enabled: !!user,
+      onSuccess: () => refetchUserProfile(),
     },
   );
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
+  const numberOfCredits = userProfile?.users_by_pk?.credits || 0;
   const numberOfMonthsFromCredits = Math.ceil(
-    userProfile?.users_by_pk?.credits / 14.99,
+    numberOfCredits / CREDITS_PER_MONTH,
   );
 
   const { data: investorData } = useGetInvestorByPersonIdQuery(
@@ -38,6 +56,33 @@ export default function Account() {
 
   const isInvestor = !isEmpty(investorData?.investors);
 
+  const edgeInContributorButtonEnabled =
+    userProfile?.users_by_pk?.use_credits_system ||
+    (!userProfile?.users_by_pk?.use_credits_system &&
+      userProfile?.users_by_pk?.credits >= CREDITS_PER_MONTH);
+
+  const edgeInContributorButtonTitle = userProfile?.users_by_pk
+    ?.use_credits_system
+    ? 'Cancel EdgeIn Contributor'
+    : 'Get EdgeIn Contributor';
+
+  let creditsLabelMessage = '';
+  if (userProfile?.users_by_pk?.use_credits_system) {
+    if (userProfile?.users_by_pk?.last_transaction_expiration) {
+      creditsLabelMessage = `Your subscription is active until ${moment(
+        userProfile?.users_by_pk?.last_transaction_expiration,
+      ).format('MMMM D, YYYY')}`;
+    }
+  } else {
+    if (userProfile?.users_by_pk?.credits > 0) {
+      creditsLabelMessage = `Your credits give you {numberOfMonthsFromCredits}{' '}
+      {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} for
+      free.`;
+    } else {
+      creditsLabelMessage = `Start by inviting your friends and colleagues.`;
+    }
+  }
+
   return (
     <DashboardLayout>
       <div className="px-4 py-3">
@@ -49,33 +94,38 @@ export default function Account() {
           <div className="grid gap-y-6">
             <div>
               <h3 className="font-medium">
-                Get 1 month free for every person you invite
+                Share EdgeIn and get 1,500 credits
               </h3>
               <p className="mt-2 text-gray-600 text-sm">
-                Invite your friends to EdgeIn and for each friend who signs up
-                through your referral, you&apos;ll receive $14.99 in credit.
-                That&apos;s 1 month of EdgeIn Contributor for free! The more
-                people who sign up, the more credit you&apos;ll get.
+                Invite your friends to EdgeIn, and we&apos;ll give you 1,500
+                credits for every friend who signs in through your referral.
+                That&apos;s 1 month of EdgeIn Contributor, completely free! The
+                more people who sign in, the more credits you&apos;ll get.
               </p>
             </div>
 
-            {userProfile?.users_by_pk?.credits > 0 &&
-              !user?.entitlements.viewEmails && (
-                <p className="mt-2 text-primary-500">
-                  You have EdgeIn Contributor for {numberOfMonthsFromCredits}{' '}
-                  {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free. Log
-                  out and log back in to activate.
-                </p>
-              )}
+            <div className="my-6">
+              <h3 className="font-medium pl-0.5 font-sans">Current credits</h3>
+              <div className="flex mt-3">
+                <span className="bg-primary-500 border rounded-lg py-3 px-6 text-white text-3xl font-semibold">
+                  {numberOfCredits.toLocaleString()}
+                </span>
+                <div className="block ml-6">
+                  <ElemButton
+                    className="cloudsponge-launch"
+                    btn="default"
+                    disabled={!edgeInContributorButtonEnabled}
+                    onClick={() => toggleCreditsSystem()}
+                  >
+                    {edgeInContributorButtonTitle}
+                  </ElemButton>
 
-            {userProfile?.users_by_pk?.credits > 0 &&
-              user?.entitlements.viewEmails && (
-                <p className="mt-2 text-primary-500">
-                  You have EdgeIn Contributor active for{' '}
-                  {numberOfMonthsFromCredits}{' '}
-                  {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} free.
-                </p>
-              )}
+                  <p className="mt-2 text-xs text-gray-500">
+                    {creditsLabelMessage}
+                  </p>
+                </div>
+              </div>
+            </div>
 
             <ElemInviteUser />
 

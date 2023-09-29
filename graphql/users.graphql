@@ -2,7 +2,12 @@ query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
     id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
+    billing_org {
+      status
+    }
     preferences
     organization_companies {
       id
@@ -82,6 +87,8 @@ query GetUserByPersonId($person_id: Int!) {
   users(where: { person_id: { _eq: $person_id } }) {
     id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     organization_companies {
       id
@@ -186,6 +193,8 @@ query GetUserByEmail($email: String) {
     auth0_user_pass_id
     reference_id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     person {
       name
@@ -211,10 +220,12 @@ query GetUserById($id: Int) {
     auth0_linkedin_id
     auth0_user_pass_id
     reference_id
+    use_credits_system
     credits
     billing_org_id
     billing_org {
       customer_id
+      status
     }
     person {
       name
@@ -233,6 +244,30 @@ mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
     _set: { billing_org_id: $billingOrgId }
   ) {
     id
+  }
+}
+
+mutation UpdateUserUseCreditsSystem(
+  $user_id: Int!
+  $use_credits_system: Boolean
+) {
+  update_users_by_pk(
+    pk_columns: { id: $user_id }
+    _set: { use_credits_system: $use_credits_system }
+  ) {
+    id
+  }
+}
+
+mutation UpdateUserExpirationOfLastValidTransaction(
+  $user_id: Int!
+  $last_transaction_expiration: timestamptz
+) {
+  update_users(
+    where: { id: { _eq: $user_id }, use_credits_system: { _eq: true } }
+    _set: { last_transaction_expiration: $last_transaction_expiration }
+  ) {
+    affected_rows
   }
 }
 
@@ -270,6 +305,8 @@ mutation UpsertUsers(
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -303,6 +340,8 @@ mutation UpdateUserEmailVerifiedStatus(
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -336,6 +375,8 @@ mutation UpdateUserAuth0LinkedInId(
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       onboarding_information
       person {
@@ -370,6 +411,8 @@ mutation UpdateUserAuth0UserPassId(
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -395,6 +438,8 @@ query GetUserByReferenceId($reference_id: String) {
     auth0_user_pass_id
     reference_id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     person {
       name
@@ -424,6 +469,8 @@ mutation UpdateUserAdditionalEmails($id: Int!, $additional_emails: jsonb) {
       auth0_user_pass_id
       reference_id
       credits
+      use_credits_system
+      last_transaction_expiration
       billing_org_id
       person {
         name
@@ -450,6 +497,8 @@ query GetUserByAdditionalEmail($email: jsonb) {
     auth0_user_pass_id
     reference_id
     credits
+    use_credits_system
+    last_transaction_expiration
     billing_org_id
     person {
       name
