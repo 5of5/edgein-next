@@ -99,7 +99,8 @@ export default function Account() {
                     className="cloudsponge-launch"
                     btn="default"
                     disabled={!edgeInContributorButtonEnabled}
-                    onClick={() => toggleCreditsSystem()}>
+                    onClick={() => toggleCreditsSystem()}
+                  >
                     {edgeInContributorButtonTitle}
                   </ElemButton>
 

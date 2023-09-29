@@ -38,7 +38,9 @@ const onInsertTransaction = async (
     mutation: UpdateUserExpirationOfLastValidTransactionDocument,
     variables: {
       user_id,
-      last_transaction_expiration: moment().add(CREDITS_SPENDING_INTERVAL, 'days').toDate(),
+      last_transaction_expiration: moment()
+        .add(CREDITS_SPENDING_INTERVAL, 'days')
+        .toDate(),
     },
   });
 

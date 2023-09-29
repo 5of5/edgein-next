@@ -149,16 +149,17 @@ async function updateAuth0UserPassId(
   return data.data.update_users?.returning[0];
 }
 
-async function updateUseCreditsSystem(userId: number, useCreditsSystem: boolean) {
-  await mutate<UpdateUserUseCreditsSystemMutation>(
-    {
-      mutation: UpdateUserUseCreditsSystemDocument,
-      variables: {
-        user_id: userId,
-        use_credits_system: useCreditsSystem,
-      },
+async function updateUseCreditsSystem(
+  userId: number,
+  useCreditsSystem: boolean,
+) {
+  await mutate<UpdateUserUseCreditsSystemMutation>({
+    mutation: UpdateUserUseCreditsSystemDocument,
+    variables: {
+      user_id: userId,
+      use_credits_system: useCreditsSystem,
     },
-  );
+  });
 }
 
 async function findOneUserByReferenceId(reference_id: string) {
