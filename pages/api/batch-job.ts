@@ -10,9 +10,9 @@ import {
 
 const handleUserTransactions = async (client: Client) => {
   const userExpiredTransactions = await client.query(`
-  -- NOTE(David): brief description of that the query does
+  -- NOTE(David): brief description of what this query does
   -- #1 get only those user_ids where last unique transaction timestamp by user_id is greater then CREDITS_SPENDING_INTERVAL
-  -- #2 get credits_for that user_id
+  -- #2 add credits_for that user_id
   -- #3 filter out records for users that don't have enabled credits_spending
   SELECT 
     user_id, 
@@ -36,7 +36,7 @@ const handleUserTransactions = async (client: Client) => {
         user_id
     ) t1 
   WHERE 
-    CURRENT_TIMESTAMP - t1.highest_created_at >= INTERVAL '30 days' 
+    CURRENT_TIMESTAMP - t1.highest_created_at >= INTERVAL '${CREDITS_SPENDING_INTERVAL} days' 
     AND (
       SELECT 
         use_credits_system 
@@ -61,7 +61,7 @@ const handleUserTransactions = async (client: Client) => {
     }
   }
 
-  //#1 decrease credits per month for users with enough credits
+  //#1 - decrease credits per month for users with enough credits, and update last_transaction_expiration
   if (userIdsToDecreaseCreditsMonthly.length) {
     await client.query(`
     INSERT INTO user_transactions(user_id, amount, note) VALUES
@@ -75,7 +75,7 @@ const handleUserTransactions = async (client: Client) => {
         .join('\n')}
         `);
 
-    //#2 update last_transaction_expiration to current date + CREDITS_SPENDING_INTERVAL
+    //#2 - update last_transaction_expiration to current date + CREDITS_SPENDING_INTERVAL
     await client.query(`
     UPDATE users SET last_transaction_expiration = NOW() + INTERVAL '${CREDITS_SPENDING_INTERVAL} days' WHERE id IN (${userIdsToDecreaseCreditsMonthly
       .map(
@@ -88,7 +88,7 @@ const handleUserTransactions = async (client: Client) => {
       `);
   }
 
-  //#3 disable credits system for users without credits
+  //#3 - disable credits system for users without credits
   if (userIdsToDisableCreditsSystem.length) {
     await client.query(`
     UPDATE users SET use_credits_system = false WHERE id IN (${userIdsToDisableCreditsSystem
