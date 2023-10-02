@@ -520,8 +520,8 @@ export const roundChoices = [
     name: 'Series H',
   },
   {
-    id: 'ICO',
-    name: 'ICO',
+    id: 'Token Round',
+    name: 'Token Round',
   },
   {
     id: 'Venture Round',
@@ -2076,3 +2076,7 @@ export const ONBOARDING_MIN_LOCATIONS = 1;
 export const ONBOARDING_MIN_TAGS = 3;
 
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
+
+export const AUTO_GENERATED_LIST_MAXIMUM_COMPANIES = 30;
+export const AUTO_GENERATED_LIST_MAXIMUM_INVESTORS = 10;
+export const AUTO_GENERATED_LIST_MAXIMUM_PEOPLE = 10;

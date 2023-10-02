@@ -16,7 +16,7 @@ import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { useUser } from '@/context/user-context';
 import { ElemSearchBox } from './elem-search-box';
-import { find, first } from 'lodash';
+import { find } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import { Popover, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
@@ -210,7 +210,7 @@ export const TheNavbar: FC<Props> = ({}) => {
                 <Link href="/notifications" passHref>
                   <a className="relative flex items-center justify-center w-9 h-9">
                     {unreadNotificationsCount > 0 && (
-                      <div className="absolute flex items-center justify-center -top-[2px] -right-[2px] w-5 h-5 rounded-full bg-primary-500 border border-white">
+                      <div className="absolute flex items-center justify-center -top-[2px] -right-[4px] h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
                         <div className="text-white font-bold text-[10px] text-center">
                           {unreadNotificationsCount > 99
                             ? '99+'

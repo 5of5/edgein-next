@@ -94,7 +94,7 @@ export const ElemOnboardingLocation: FC<Props> = ({
       <ElemButton
         btn="primary"
         size="md"
-        className="max-w-sm w-full mt-16"
+        className="max-w-sm w-full mt-8 md:mt-16"
         disabled={locations.length === 0}
         onClick={onNext}
       >

@@ -10,10 +10,12 @@ import { useRouter } from 'next/router';
 
 const Pricing = () => {
   const router = useRouter();
-
   const { user } = useUser();
-
   const { setShowPopup } = usePopup();
+
+  const haveSubscriptionFromCredits =
+    user?.use_credits_system &&
+    new Date(user?.last_transaction_expiration || 0) > new Date();
 
   const pricing = {
     tiers: [
@@ -41,7 +43,7 @@ const Pricing = () => {
           'See referral credits for contributing data and inviting members to the community. Upgrade to access your credits and help us make EdgeIn work for everyone!',
         ],
         cta: user
-          ? user.billing_org || user.credits > 0
+          ? user.billing_org?.status === 'active' || haveSubscriptionFromCredits
             ? ''
             : 'Current Plan'
           : 'Access Now',
@@ -70,7 +72,7 @@ const Pricing = () => {
           '24/7, concierge human support for data requests, edits and prioritization.',
         ],
         cta: user
-          ? user.billing_org
+          ? user.billing_org?.status === 'active'
             ? 'Current Plan'
             : 'Free Trial'
           : 'Free Trial',

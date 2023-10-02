@@ -48,6 +48,7 @@
 - '!include public_user_group_members.yaml'
 - '!include public_user_groups.yaml'
 - '!include public_user_tokens.yaml'
+- '!include public_user_transactions.yaml'
 - '!include public_users.yaml'
 - '!include public_users_public.yaml'
 - '!include public_vc_firms.yaml'

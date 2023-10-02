@@ -417,3 +417,9 @@ mutation InsertCompanies($objects: [companies_insert_input!]!) {
     }
   }
 }
+
+query GetCompaniesByTagsAndLocation($limit: Int, $where: companies_bool_exp!) {
+  companies(where: $where, limit: $limit) {
+    id
+  }
+}
