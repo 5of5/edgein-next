@@ -152,7 +152,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       `${TRANSACTION_SYSTEM_NOTE} - registration bonus`,
     );
 
-    const userToken = UserService.createToken(userData, true);
+    const userToken = await UserService.generateToken({
+      userId: userData.id,
+      isFirstLogin: true,
+    });
 
     // Author a couple of cookies to persist a user's session
     const token = await CookieService.createUserToken(userToken);
