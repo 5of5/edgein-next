@@ -398,6 +398,7 @@ const Companies: NextPage<Props> = ({
                 defaultItem={sortItems.findIndex(
                   sortItem => sortItem.value === sortBy,
                 )}
+                firstItemDivided
               />
             )}
           </div>

@@ -67,12 +67,14 @@ select_permissions:
         - feature_flags
         - id
         - is_auth0_verified
+        - last_transaction_expiration
         - onboarding_information
         - person_id
         - preferences
         - reference_id
         - reference_user_id
         - role
+        - use_credits_system
       computed_fields:
         - credits
       filter:

@@ -52,7 +52,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (companies.length > 0 || vcFirms.length > 0 || people.length > 0) {
       const displayName = user.display_name || '';
-      const firstName = displayName.indexOf(' ') !== -1 ? displayName.split(' ')[0] : displayName;
+      const firstName =
+        displayName.indexOf(' ') !== -1
+          ? displayName.split(' ')[0]
+          : displayName;
       const listName = `${firstName}'s first list`;
 
       const list = await upsertList(listName, user, token);

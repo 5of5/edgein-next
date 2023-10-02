@@ -144,7 +144,7 @@ const MyList: NextPage<Props> = (props: Props) => {
       const hotId =
         find(lists, list => 'hot' === getNameFromListName(list))?.id || 0;
 
-      router.push(`/lists/${hotId}/hot`);
+      router.push('/lists');
       //router.reload();
       refreshProfile();
       toast.custom(

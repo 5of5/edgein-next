@@ -1,0 +1,1 @@
+CREATE TABLE "public"."user_transactions" ("id" serial NOT NULL, "user_id" integer NOT NULL, "amount" integer NOT NULL, "created_at" Timestamp NOT NULL DEFAULT now(), PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON UPDATE restrict ON DELETE restrict, UNIQUE ("id"));
