@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const showDraftData: boolean = req.body.showDraftData;
 
   try {
-    const userData = await UserService.findOneUserById(user.id);
+    const userData = await UserService.findOneUserByIdForToken(user.id);
 
     const userToken = UserService.createToken(
       { ...userData, showDraftData },
