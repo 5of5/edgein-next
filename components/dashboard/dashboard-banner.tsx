@@ -5,7 +5,8 @@ import { ElemButton } from '../elem-button';
 import { useUser } from '@/context/user-context';
 import { IconCurrencyDollar, IconGift, IconX } from '../icons';
 import { numberWithCommas } from '@/utils';
-import { useRouter } from 'next/router';
+import useLocalStorageState from '@/hooks/use-local-storage-state';
+import { LOCAL_STORAGE_SIDEBAR_BANNER_KEY } from '@/utils/constants';
 
 type Props = {
   className?: string;
@@ -13,9 +14,11 @@ type Props = {
 
 export const DashboardBanner: FC<Props> = ({ className = '' }) => {
   const { user } = useUser();
-  const router = useRouter();
 
-  const [showBanner, setShowBanner] = useState(false);
+  const { value: showBanner, onChange: onChangeShowBanner } =
+    useLocalStorageState(LOCAL_STORAGE_SIDEBAR_BANNER_KEY);
+
+  const [isHide, setIsHide] = useState(true);
 
   const isVisitor = !user;
 
@@ -27,26 +30,18 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setShowBanner(true);
+      setIsHide(false);
     }, 2000);
   }, []);
 
-  // const onClickBanner = () => {
-  //   if (!user) {
-  //     router.push('/sign-in');
-  //   } else {
-  //     router.push('/invite-a-friend');
-  //   }
-  // };
-
   const onHideBanner = () => {
-    setShowBanner(false);
+    onChangeShowBanner('false');
   };
 
   return (
     <div className={`${className}`}>
       <Transition
-        show={showBanner}
+        show={!isHide && showBanner !== 'false'}
         as="div"
         enter="transform ease-out duration-300"
         enterFrom="translate-y-10 opacity-0"
