@@ -108,16 +108,14 @@ export const getDefaultFilter = (
         formattedMinVal: convertToInternationalCurrencySystem(0),
         formattedMaxVal: convertToInternationalCurrencySystem(100),
       };
-    case 'role': {
+    case 'role':
       return {
         tags: [],
       };
-    }
-    case 'name': {
+    case 'name':
       return {
         tags: [],
       };
-    }
 
     default:
       return null;
