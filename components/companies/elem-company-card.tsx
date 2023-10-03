@@ -44,6 +44,10 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
     ? user?.entitlements.viewEmails
     : false;
 
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+
   const onCloseUpgradeDialog = () => {
     setIsOpenUpgradeDialog(false);
   };
@@ -74,14 +78,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
   const isEmptyLocationJson = values(location_json).every(isEmpty);
   const isRaisingCompany =
     status_tags && status_tags.length > 0 && status_tags.includes('Raising');
-
-  const onClickCompanyLinkedin = () => {
-    if (!user) {
-      router.push('/sign-in');
-    } else {
-      setIsOpenUpgradeDialog(true);
-    }
-  };
 
   return (
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
@@ -215,7 +211,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
                   </a>
                 </Link>
               ) : (
-                <button onClick={onClickCompanyLinkedin}>
+                <button onClick={onOpenUpgradeDialog}>
                   <IconLinkedIn className="h-5 w-5 text-gray-400" />
                 </button>
               )
