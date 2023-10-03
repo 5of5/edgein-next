@@ -74,14 +74,6 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
   const companyTags = flatten(team_members.map(item => item?.company?.tags));
   const personTags = union(vcFirmTags, companyTags).filter(item => item);
 
-  const onClickPremiumFeature = () => {
-    if (!user) {
-      router.push('/sign-in');
-    } else {
-      setIsOpenUpgradeDialog(true);
-    }
-  };
-
   return (
     <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       {' '}
@@ -174,7 +166,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             ) : personEmails.length > 0 ? (
               <ElemTooltip size="md" content="Premium feature">
                 <div>
-                  <button onClick={onClickPremiumFeature} className="block">
+                  <button onClick={onOpenUpgradeDialog} className="block">
                     <IconEmail
                       title="Email"
                       className="h-5 w-5 shrink-0 text-gray-400"
@@ -200,7 +192,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             ) : linkedin ? (
               <ElemTooltip size="md" content="Premium feature">
                 <div>
-                  <button className="block" onClick={onClickPremiumFeature}>
+                  <button className="block" onClick={onOpenUpgradeDialog}>
                     <IconLinkedIn
                       title="LinkedIn"
                       className="h-5 w-5 shrink-0 text-gray-400"

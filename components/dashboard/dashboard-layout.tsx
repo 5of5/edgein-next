@@ -1,13 +1,14 @@
-import { Fragment, useState, FC, PropsWithChildren, useContext } from 'react';
+import { Fragment, FC, ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { ElemButton } from '@/components/elem-button';
-import { IconX, IconWindowSidebar } from '@/components/icons';
 import { DashboardSidebar } from './dashboard-sidebar';
+import { DashboardBanner } from './dashboard-banner';
 import { useSidebar } from '@/context/sidebar-context';
 
-type Props = {};
+type Props = {
+  children: ReactNode;
+};
 
-export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
+export const DashboardLayout: FC<Props> = ({ children }) => {
   const { showSidebar, setShowSidebar } = useSidebar();
 
   return (
@@ -15,6 +16,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
       <div className="relative mt-2">
         <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-64 mt-12 border-r border-gray-200 overflow-y-auto scrollbar-hide lg:block">
           <DashboardSidebar />
+          <DashboardBanner className="fixed bottom-0 w-64 p-3" />
         </div>
 
         <div className="min-h-[calc(100vh_-_3rem)] mb-20 lg:pl-64">
@@ -45,10 +47,8 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative max-w-xs w-full bg-white flex-1 flex flex-col">
-                <div className="flex-1 h-0 overflow-y-auto scrollbar-hide">
-                  <DashboardSidebar />
-                </div>
+              <Dialog.Panel className="relative max-w-xs w-full bg-white flex flex-col flex-1 overflow-y-auto scrollbar-hide">
+                <DashboardSidebar />
               </Dialog.Panel>
             </Transition.Child>
             <div className="flex-shrink-0 w-14">

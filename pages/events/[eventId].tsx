@@ -43,6 +43,7 @@ import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { usePopup } from '@/context/popup-context';
 import { onTrackView } from '@/utils/track';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   event: GetEventQuery['events'][0];
@@ -292,6 +293,8 @@ const Event: NextPage<Props> = props => {
             </Link>
           </div>
         )}
+
+        <ElemInviteBanner className="mt-7" />
 
         <ElemTabBar
           className="mt-7 flex-wrap"

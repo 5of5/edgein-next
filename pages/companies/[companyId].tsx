@@ -48,6 +48,7 @@ import { ElemTags } from '@/components/elem-tags';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemReactions } from '@/components/elem-reactions';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   company: Companies;
@@ -354,6 +355,9 @@ const Company: NextPage<Props> = (props: Props) => {
             )}
           </div>
         </div>
+
+        <ElemInviteBanner className="mt-7" />
+
         <ElemTabBar
           className="mt-7"
           tabs={tabBarItems}
