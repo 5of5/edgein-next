@@ -14,6 +14,7 @@ import {
   Lists_Bool_Exp,
   Order_By,
   People_Bool_Exp,
+  People_Order_By,
   User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
   Vc_Firms_Order_By,
@@ -1237,11 +1238,13 @@ export const getHomepageEncodedURI = (
   filters:
     | DeepPartial<Vc_Firms_Bool_Exp>
     | DeepPartial<Companies_Bool_Exp>
-    | DeepPartial<Events_Bool_Exp>,
+    | DeepPartial<Events_Bool_Exp>
+    | DeepPartial<People_Bool_Exp>,
   orderBy?:
     | DeepPartial<Vc_Firms_Order_By>
     | DeepPartial<Companies_Order_By>
-    | DeepPartial<Events_Order_By>,
+    | DeepPartial<Events_Order_By>
+    | DeepPartial<People_Order_By>,
 ) => {
   let encodedFilters = '';
   let encodedStatusTag = '';
@@ -1254,7 +1257,10 @@ export const getHomepageEncodedURI = (
         encodedFilters += `{"industry":{"tags":["${filterObj?.tags._contains}"]}}`;
       }
 
-      if (filterObj?.location_json?._contains.city) {
+      if (
+        'location_json' in filterObj &&
+        filterObj?.location_json?._contains.city
+      ) {
         encodedFilters += `{"city":{"condition":"any","tags":["${filterObj?.location_json?._contains.city}"]}}`;
       }
 
@@ -1284,7 +1290,12 @@ export const getHomepageEncodedURI = (
     }
   });
 
-  if (orderBy?.num_of_views && orderBy?.num_of_views === Order_By.Desc) {
+  if (
+    orderBy &&
+    'num_of_views' in orderBy &&
+    orderBy?.num_of_views &&
+    orderBy?.num_of_views === Order_By.Desc
+  ) {
     encodedStatusTag += 'Trending';
   }
 
