@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ElemButton } from '../elem-button';
 import { useUser } from '@/context/user-context';
 import { IconCurrencyDollar, IconGift, IconX } from '../icons';
+import { numberWithCommas } from '@/utils';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -89,7 +90,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
             <div>
               <h3 className="font-medium text-gray-900">
                 {isPaidUser && userHasCredits
-                  ? `${user?.credits} credits available`
+                  ? `${numberWithCommas(user?.credits)} credits available`
                   : isPaidUser
                   ? 'Get EdgeIn for Free'
                   : isFreeUser
@@ -99,7 +100,9 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
               </h3>
               <p className="mt-1 text-sm text-gray-500">
                 {isPaidUser && userHasCredits
-                  ? 'You can use your credits to get 3 months of EdgeIn Contributor.'
+                  ? `You can use your credits to get ${
+                      user?.credits / 1500
+                    } months of EdgeIn Contributor.`
                   : isPaidUser
                   ? 'Invite a friend and get 1,500 credits for 1 month of EdgeIn Contributor for free.'
                   : isFreeUser
