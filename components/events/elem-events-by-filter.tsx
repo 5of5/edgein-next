@@ -9,7 +9,6 @@ import usePagination from '@/hooks/use-pagination';
 import { DeepPartial } from '@/types/common';
 import { times } from 'lodash';
 import { FC } from 'react';
-import { ElemFilter } from '../elem-filter';
 import { ElemEventCard } from '../events/elem-event-card';
 import { Pagination } from '../pagination';
 import { PlaceholderEventCard } from '../placeholders';
@@ -71,8 +70,7 @@ export const EventsByFilter: FC<Props> = ({
       <div className="text-4xl font-medium my-8">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-      >
+        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {events.map(event => (
           <ElemEventCard
             key={event.id}

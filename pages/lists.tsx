@@ -17,7 +17,7 @@ import { useIntercom } from 'react-use-intercom';
 import { ListsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { LISTS_TABS } from '@/utils/constants';
-import { getListsFilters } from '@/utils/filter';
+import { getListsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { ElemListCard } from '@/components/elem-list-card';
@@ -128,7 +128,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
 
   return (
     <DashboardLayout>
-      <div className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200">
+      <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
         <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
           {LISTS_TABS &&
             LISTS_TABS.map((tab: any, index: number) =>
@@ -140,8 +140,11 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                   onClick={() => setSelectedListTab(tab)}
                   btn="gray"
                   roundedFull={false}
-                  className="rounded-lg"
-                >
+                  className={`py-2 rounded-lg ${
+                    selectedListTab?.id === tab.id
+                      ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                      : ''
+                  }`}>
                   {tab.name}
                 </ElemButton>
               ),
@@ -156,14 +159,12 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
           onClickCreateList={onClickCreateList}
         />
       ) : (
-        <div className="px-4 pb-2">
-          <h1 className="font-medium text-xl capitalize">
-            {selectedListTab.name}
-          </h1>
+        <div className="px-8 pb-2">
+          <h1 className="text-4xl font-medium">{selectedListTab.name}</h1>
         </div>
       )}
 
-      <div className="px-4 py-3">
+      <div className="px-8 py-3">
         <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
@@ -177,8 +178,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                         `Hi EdgeIn, I'd like to report an error on lists page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
+                    className="inline underline decoration-primary-500 hover:text-primary-500">
                     <span>report error</span>
                   </button>
                   .

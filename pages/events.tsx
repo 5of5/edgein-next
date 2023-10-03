@@ -23,8 +23,8 @@ import {
 } from '@/graphql/types';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
-import { ElemFilter } from '@/components/elem-filter';
-import { processEventsFilters } from '@/utils/filter';
+import { ElemFilter } from '@/components/filters/elem-filter';
+import { processEventsFilters } from '@/components/filters/processor';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
@@ -39,14 +39,11 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemDropdown } from '@/components/elem-dropdown';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   eventTabs: DashboardCategory[];
@@ -57,11 +54,10 @@ type Props = {
 const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -181,8 +177,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -196,8 +191,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{type}&rdquo; Filter
             </div>
           ),
@@ -284,8 +278,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
       <div className="relative">
         <div
           className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist"
-        >
+          role="tablist">
           <ElemCategories
             categories={eventTabs}
             selectedCategory={selectedTab}
@@ -310,6 +303,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 IconComponent={IconSortDashboard}
                 defaultItem={defaultOrderBy}
                 items={sortChoices}
+                firstItemDivided
               />
             )}
           </div>
@@ -364,8 +358,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                         `Hi EdgeIn, I'd like to report an error on events page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
+                    className="inline underline decoration-primary-500 hover:text-primary-500">
                     <span>report error</span>
                   </button>
                   .
@@ -394,8 +387,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                   <>
                     <div
                       data-testid="events"
-                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
-                    >
+                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4">
                       {events?.map(event => (
                         <ElemEventCard key={event.id} event={event} />
                       ))}
@@ -432,8 +424,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                     )
                   }
                   btn="white"
-                  className="mt-3"
-                >
+                  className="mt-3">
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>

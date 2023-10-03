@@ -105,7 +105,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   return (
     <div className={`p-4 text-gray-600 ${className}`}>
-      <nav>
+      <nav className="pb-52">
         <ul className="border-b border-gray-200 pb-8 space-y-1">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>
@@ -129,7 +129,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
           ))}
         </ul>
 
-        <div className="mt-8 space-y-4">
+        <div className={`mt-8 ${user ? 'space-y-4' : 'space-y-1'}`}>
           <ElemMyListsMenu />
           <ElemMyGroupsMenu />
           <ElemMyNotesMenu />

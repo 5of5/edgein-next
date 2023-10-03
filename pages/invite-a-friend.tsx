@@ -75,8 +75,8 @@ export default function Account() {
     }
   } else {
     if (userProfile?.users_by_pk?.credits > 0) {
-      creditsLabelMessage = `Your credits give you {numberOfMonthsFromCredits}{' '}
-      {numberOfMonthsFromCredits > 1 ? 'months' : 'month'} for
+      creditsLabelMessage = `Your credits give you ${numberOfMonthsFromCredits}${' '}
+      ${numberOfMonthsFromCredits > 1 ? 'months' : 'month'} for
       free.`;
     } else {
       creditsLabelMessage = `Start by inviting your friends and colleagues.`;

@@ -35,8 +35,8 @@ import {
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
-import { ElemFilter } from '@/components/elem-filter';
-import { processInvestorsFilters } from '@/utils/filter';
+import { ElemFilter } from '@/components/filters/elem-filter';
+import { processInvestorsFilters } from '@/components/filters/processor';
 import { useIntercom } from 'react-use-intercom';
 import useLibrary from '@/hooks/use-library';
 import { DashboardCategory, DeepPartial } from '@/types/common';
@@ -49,10 +49,9 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
 
@@ -69,15 +68,13 @@ const Investors: NextPage<Props> = ({
   initialVCFirms,
   investorsStatusTags,
 }) => {
-  const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const { user } = useUser();
   const router = useRouter();
-
   const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -198,8 +195,7 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -213,8 +209,7 @@ const Investors: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -374,8 +369,7 @@ const Investors: NextPage<Props> = ({
         <div>
           <div
             className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-            role="tablist"
-          >
+            role="tablist">
             <ElemCategories
               categories={investorsStatusTags}
               selectedCategory={selectedStatusTag}
@@ -401,6 +395,7 @@ const Investors: NextPage<Props> = ({
                   defaultItem={sortItems.findIndex(
                     sortItem => sortItem.value === sortBy,
                   )}
+                  firstItemDivided
                 />
               )}
             </div>
@@ -449,8 +444,7 @@ const Investors: NextPage<Props> = ({
                           `Hi EdgeIn, I'd like to report an error on investors page`,
                         )
                       }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
+                      className="inline underline decoration-primary-500 hover:text-primary-500">
                       <span>report error</span>
                     </button>
                     .
@@ -492,8 +486,7 @@ const Investors: NextPage<Props> = ({
                   <>
                     <div
                       data-testid="investors"
-                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                    >
+                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                       {vcFirms?.map(vcfirm => (
                         <ElemInvestorCard
                           key={vcfirm.id}
@@ -533,8 +526,7 @@ const Investors: NextPage<Props> = ({
                     )
                   }
                   btn="white"
-                  className="mt-3"
-                >
+                  className="mt-3">
                   <IconAnnotation className="w-6 h-6 mr-1" />
                   Tell us about missing data
                 </ElemButton>
