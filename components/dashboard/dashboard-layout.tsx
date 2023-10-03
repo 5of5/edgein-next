@@ -14,7 +14,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
       <div className="relative mt-2">
         <div className="hidden fixed z-10 inset-0 top-0 left-0 right-auto w-64 mt-12 border-r border-gray-200 overflow-y-auto scrollbar-hide lg:block">
           <DashboardSidebar />
-          <DashboardBanner className="fixed bottom-0 w-64 p-4" />
+          <DashboardBanner className="fixed bottom-0 w-64 p-3" />
         </div>
 
         <div className="min-h-[calc(100vh_-_3rem)] mb-20 lg:pl-64">
