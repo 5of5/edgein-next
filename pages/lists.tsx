@@ -144,7 +144,8 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                     selectedListTab?.id === tab.id
                       ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                       : ''
-                  }`}>
+                  }`}
+                >
                   {tab.name}
                 </ElemButton>
               ),
@@ -178,7 +179,8 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                         `Hi EdgeIn, I'd like to report an error on lists page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .

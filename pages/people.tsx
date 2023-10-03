@@ -154,7 +154,8 @@ const People: NextPage<Props> = ({
       <div className="relative">
         <div
           className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-end lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           {/** TO-DO: Temporary hide new category for now */}
           {/* <ElemCategories
             categories={peopleTabs}
@@ -217,7 +218,8 @@ const People: NextPage<Props> = ({
                         `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
@@ -245,7 +247,8 @@ const People: NextPage<Props> = ({
                 <>
                   <div
                     data-testid="people"
-                    className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  >
                     {people?.map(person => {
                       return (
                         <ElemPersonCard
@@ -287,7 +290,8 @@ const People: NextPage<Props> = ({
                   )
                 }
                 btn="white"
-                className="mt-3">
+                className="mt-3"
+              >
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>
