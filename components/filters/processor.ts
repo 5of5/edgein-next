@@ -13,6 +13,7 @@ import {
   Events_Order_By,
   Lists_Bool_Exp,
   Order_By,
+  People_Bool_Exp,
   User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
   Vc_Firms_Order_By,
@@ -25,13 +26,12 @@ import {
 } from '@/types/common';
 import {
   aiTags,
-  companyStatusTags,
   eventTypeChoices,
   ISO_DATE_FORMAT,
   roundChoices,
 } from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
-import { getSelectableWeb3Tags } from './helpers';
+import { getSelectableWeb3Tags } from '@/utils/helpers';
 
 export const getDefaultFilter = (
   name: FilterOptionKeys,
@@ -108,6 +108,17 @@ export const getDefaultFilter = (
         formattedMinVal: convertToInternationalCurrencySystem(0),
         formattedMaxVal: convertToInternationalCurrencySystem(100),
       };
+    case 'role': {
+      return {
+        tags: [],
+      };
+    }
+    case 'name': {
+      return {
+        tags: [],
+      };
+    }
+
     default:
       return null;
   }
@@ -152,6 +163,21 @@ export const getFilterOptionMetadata = (
         heading: 'Keywords',
         placeholder: 'Add a keyword, press enter ⏎',
         subtext: 'E.g., AI, platform, blockchain, wallet, nft…',
+      };
+    case 'role':
+      return {
+        title: 'Role',
+        heading: 'Role',
+        placeholder: 'Add a role, press enter ⏎',
+        subtext: 'E.g., Co-founder, Software Engineer…',
+      };
+
+    case 'name':
+      return {
+        title: 'Name',
+        heading: 'Name',
+        placeholder: 'Add a name, press enter ⏎',
+        subtext: 'E.g., Smith, Erik…',
       };
 
     case 'industry':
@@ -972,6 +998,164 @@ export const processEventsFilters = (
           end_date: { _lte: selectedFilters.eventDate.toDate },
         },
       ],
+    });
+  }
+};
+
+const createFilterForPeopleLocation = (
+  selectedFilters: Filters,
+  type: 'country' | 'state' | 'city',
+) => {
+  const { condition, tags } = selectedFilters?.[type] || {};
+  if (!tags?.length) {
+    return;
+  }
+
+  const filterObject = tags.map((item: string) => ({
+    _or: [
+      {
+        investors: {
+          vc_firm: {
+            location_json: {
+              _cast: {
+                String: { _ilike: `%"${type}": "${item}"%` },
+              },
+            },
+          },
+        },
+      },
+      {
+        team_members: {
+          company: {
+            location_json: {
+              _cast: {
+                String: { _ilike: `%"${type}": "${item}"%` },
+              },
+            },
+          },
+        },
+      },
+    ],
+  }));
+
+  if (condition === 'any') {
+    return {
+      _or: filterObject,
+    };
+  }
+  if (condition === 'none') {
+    return {
+      _or: [
+        {
+          _not: {
+            _or: filterObject,
+          },
+        },
+        {
+          [type]: { _is_null: true },
+        },
+      ],
+    };
+  }
+};
+
+export const processPeopleFilter = (
+  filters: DeepPartial<People_Bool_Exp>,
+  selectedFilters: Filters | null,
+  defaultFilters: DeepPartial<People_Bool_Exp[]>,
+) => {
+  if (!selectedFilters || isEmpty(selectedFilters)) {
+    filters._and = defaultFilters;
+    return;
+  }
+
+  const locationFilters = ['country', 'state', 'city'] as const;
+  locationFilters.forEach(value => {
+    const filter = createFilterForPeopleLocation(selectedFilters, value);
+    if (filter) {
+      filters._and?.push(filter);
+    }
+  });
+
+  if (selectedFilters?.address?.value) {
+    filters._and?.push({
+      _or: [
+        {
+          team_members: {
+            company: {
+              geopoint: {
+                _st_d_within: {
+                  distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+                  from: selectedFilters.address.value?.geometry,
+                },
+              },
+            },
+          },
+        },
+        {
+          investors: {
+            vc_firm: {
+              geopoint: {
+                _st_d_within: {
+                  distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+                  from: selectedFilters.address.value?.geometry,
+                },
+              },
+            },
+          },
+        },
+      ],
+    });
+  }
+  if (selectedFilters?.industry?.tags?.length) {
+    filters._and?.push({
+      _and: selectedFilters.industry.tags.map(item => ({
+        _or: [
+          {
+            team_members: {
+              company: {
+                tags: { _contains: item },
+              },
+            },
+          },
+          {
+            investors: {
+              vc_firm: {
+                tags: { _contains: item },
+              },
+            },
+          },
+        ],
+      })),
+    });
+  }
+
+  if (selectedFilters?.role?.tags?.length) {
+    filters._and?.push({
+      // There is role if user selects multiple roles
+      _or: selectedFilters.role.tags.map(item => ({
+        _or: [
+          {
+            team_members: {
+              title: { _ilike: `%${item}%` },
+            },
+          },
+          {
+            investors: {
+              title: { _ilike: `%${item}%` },
+            },
+          },
+        ],
+      })),
+    });
+  }
+
+  if (selectedFilters?.name?.tags?.length) {
+    filters._and?.push({
+      // There is role if user selects multiple roles
+      _or: selectedFilters.name.tags.map(item => ({
+        name: { _ilike: `%${item}%` },
+      })),
     });
   }
 };

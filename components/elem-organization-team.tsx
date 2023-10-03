@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { People, Team_Members, Investors } from '@/graphql/types';
 import { ElemPersonCard } from '@/components/elem-person-card';
-import { ElemFilterTags } from '@/components/elem-filter-tags';
+import { ElemFilterTags } from '@/components/filters/elem-filter-tags';
 import { uniq, compact, sortBy } from 'lodash';
 import { ElemBulkSavePeople } from './elem-bulk-save-people';
 import { ElemButton } from './elem-button';
@@ -80,8 +80,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                   `Hi EdgeIn, I'd like to request team data on ${resourceName}`,
                 )
               }
-              btn="default"
-            >
+              btn="default">
               Request data or contribute
             </ElemButton>
           </div>

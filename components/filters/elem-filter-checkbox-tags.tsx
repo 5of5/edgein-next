@@ -1,7 +1,7 @@
 import { FC, ChangeEvent, useState, ReactNode } from 'react';
 import { FilterOptionKeys, FilterOptionMetadata } from '@/models/Filter';
 import { ElemFilterPopup } from './elem-filter-popup';
-import InputSwitch from './input-switch';
+import InputSwitch from '../input-switch';
 import { DEFAULT_FILTER_TAGS_OFFSET } from '@/utils/constants';
 
 type Props = {
@@ -60,8 +60,7 @@ const ElemFilterCheckboxTags: FC<Props> = ({
       onOpen={onOpenFilterPopup}
       onClose={onCloseFilterPopup}
       onClear={onClearFilterOption}
-      onApply={onApplyFilter}
-    >
+      onApply={onApplyFilter}>
       <div className="flex items-center justify-between mb-2">
         <div className="font-medium text-sm mb-1">{heading}</div>
         <InputSwitch
@@ -78,8 +77,7 @@ const ElemFilterCheckboxTags: FC<Props> = ({
               tags?.some(item => item === choice.id)
                 ? 'font-medium'
                 : 'font-normal'
-            }`}
-          >
+            }`}>
             <label className="relative flex items-baseline gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:text-primary-500 hover:bg-slate-100">
               <input
                 id={choice.id}
@@ -96,8 +94,7 @@ const ElemFilterCheckboxTags: FC<Props> = ({
         {!showAll && (
           <li
             className="px-2 py-1.5 text-sm text-gray-600 cursor-pointer hover:font-medium"
-            onClick={() => setShowAll(true)}
-          >
+            onClick={() => setShowAll(true)}>
             See all
           </li>
         )}

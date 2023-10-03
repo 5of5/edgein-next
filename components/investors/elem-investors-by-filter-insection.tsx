@@ -15,7 +15,7 @@ import { ElemInvestorCard } from './elem-investor-card';
 import { InvestorsTable } from './elem-investors-table';
 import { CardType } from '../companies/elem-company-card';
 import { FilterInSectionType } from '../companies/elem-companies-by-filter-insection';
-import { getHomepageEncodedURI } from '@/utils/filter';
+import { getHomepageEncodedURI } from '@/components/filters/processor';
 import { ElemButton } from '../elem-button';
 import { useRouter } from 'next/router';
 
@@ -139,8 +139,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-          >
+            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {vc_firms?.map(vcFirm => (
               <ElemInvestorCard
                 key={vcFirm.id}
@@ -180,8 +179,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
                       );
                     }}
                     btn="primary"
-                    size="sm"
-                  >
+                    size="sm">
                     See all
                   </ElemButton>
                 </div>
