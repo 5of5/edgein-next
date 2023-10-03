@@ -19,7 +19,7 @@ import { useIntercom } from 'react-use-intercom';
 import { GroupsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { GROUPS_TABS } from '@/utils/constants';
-import { getGroupsFilters } from '@/utils/filter';
+import { getGroupsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
@@ -144,8 +144,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                     selectedGroupTab?.id === tab.id
                       ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                       : ''
-                  }`}
-                >
+                  }`}>
                   {tab.name}
                 </ElemButton>
               ),
@@ -175,8 +174,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
               <ElemButton
                 onClick={onClickCreateGroup}
                 btn="primary"
-                className="mt-3"
-              >
+                className="mt-3">
                 <IconGroupPlus className="w-6 h-6 mr-1" />
                 Create New Group
               </ElemButton>
@@ -189,8 +187,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                   })
                 }
                 btn="primary"
-                className="mt-3"
-              >
+                className="mt-3">
                 <IconGroupPlus className="w-6 h-6 mr-1" />
                 Discover groups
               </ElemButton>
@@ -221,8 +218,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                         `Hi EdgeIn, I'd like to report an error on groups page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
+                    className="inline underline decoration-primary-500 hover:text-primary-500">
                     <span>report error</span>
                   </button>
                   .

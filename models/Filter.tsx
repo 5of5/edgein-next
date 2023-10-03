@@ -131,6 +131,14 @@ export type Filters = {
     open?: boolean;
     value?: Record<string, any>;
   };
+  role?: {
+    open?: boolean;
+    tags: Array<string>;
+  };
+  name?: {
+    open?: boolean;
+    tags: Array<string>;
+  };
 };
 
 export type FilterOptionKeys = keyof Filters;

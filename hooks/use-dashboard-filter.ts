@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 import { DateCondition, FilterOptionKeys } from '@/models/Filter';
-import { getDefaultFilter } from '@/utils/filter';
+import { getDefaultFilter } from '@/components/filters/processor';
 import useFilterParams from './use-filter-params';
 import { Filters } from '@/models/Filter';
 

@@ -4,7 +4,8 @@ import {
   companiesFilterOptions,
   investorsFilterOptions,
   eventsFilterOptions,
-} from '@/utils/constants';
+  peopleFilterOptions,
+} from './constants';
 import { useUser } from '@/context/user-context';
 import {
   IconChevronDownMini,
@@ -12,8 +13,10 @@ import {
   IconLockClosed,
   IconPlus,
 } from '@/components/icons';
-import { ElemUpgradeDialog } from './elem-upgrade-dialog';
-import { ElemButton } from './elem-button';
+import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
+import { ElemButton } from '../elem-button';
+import { get } from 'lodash';
+import { ResourceTypes } from './types';
 
 type CategoryFilterOptionProps = {
   options: Array<{
@@ -26,11 +29,18 @@ type CategoryFilterOptionProps = {
 };
 
 type Props = {
-  resourceType: 'companies' | 'vc_firms' | 'events';
+  resourceType: ResourceTypes;
   excludeFilters?: string[];
   type?: 'icon' | 'button';
   onSelectFilterOption: (event: MouseEvent<HTMLButtonElement>) => void;
 };
+
+const FILTER_OPTIONS: Record<ResourceTypes, any> = {
+  companies: companiesFilterOptions,
+  vc_firms: investorsFilterOptions,
+  events: eventsFilterOptions,
+  people: peopleFilterOptions,
+} as const;
 
 export const ElemAddFilter: FC<Props> = ({
   resourceType,
@@ -38,12 +48,7 @@ export const ElemAddFilter: FC<Props> = ({
   type = 'button',
   onSelectFilterOption,
 }) => {
-  const filterOptions = {
-    companies: companiesFilterOptions,
-    vc_firms: investorsFilterOptions,
-    events: eventsFilterOptions,
-  }[resourceType];
-
+  const filterOptions = get(FILTER_OPTIONS, resourceType, []);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] =
     useState<boolean>(false);
 
@@ -64,8 +69,7 @@ export const ElemAddFilter: FC<Props> = ({
             <ElemButton
               btn="default"
               roundedFull={false}
-              className="rounded-lg"
-            >
+              className="rounded-lg">
               <IconFilterDashboard className="w-4 h-4 mr-1.5 text-gray-400" />
               Filters
               <IconChevronDownMini className="w-5 h-5 ml-1" />
@@ -85,8 +89,7 @@ export const ElemAddFilter: FC<Props> = ({
           enterTo="opacity-100 translate-y-0"
           leave="transition ease-in duration-150"
           leaveFrom="opacity-100 translate-y-0"
-          leaveTo="opacity-0 translate-y-1"
-        >
+          leaveTo="opacity-0 translate-y-1">
           <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
             {({ close }) => (
               <div>
@@ -168,8 +171,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                       name={item.value}
                       className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
                         userCanUseFilter ? '' : 'text-gray-400'
-                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}
-                    >
+                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}>
                       {!userCanUseFilter && (
                         <IconLockClosed
                           className="inline-block w-4 h-4 shrink-0 mr-1"
@@ -183,8 +185,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                     <button
                       onClick={onSelectFilterOption}
                       name={item.value}
-                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
-                    >
+                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100">
                       {item.label}
                     </button>
                   )}
