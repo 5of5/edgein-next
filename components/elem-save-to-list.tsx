@@ -18,6 +18,7 @@ import { find, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
 import { FREE_USER_MAXIMUM_LISTS } from '@/utils/constants';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
+import { ElemWithSignInModal } from './elem-with-sign-in-modal';
 
 type Props = {
   resourceName: string | null;
@@ -252,11 +253,7 @@ export const ElemSaveToList: FC<Props> = ({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!user) {
-      router.push('/sign-in');
-    } else {
-      setIsOpen(true);
-    }
+    setIsOpen(true);
   };
 
   const onClickShowCreateNew = () => {
@@ -272,14 +269,29 @@ export const ElemSaveToList: FC<Props> = ({
 
   return (
     <>
-      <ElemButton
-        onClick={onSaveButton}
-        btn={buttonStyle}
-        roundedFull={true}
-        className={`px-2.5 ${isSaved ? savedButtonStyle : ''}`}
-      >
-        {isSaved ? 'Saved' : 'Save to list'}
-      </ElemButton>
+      {user ? (
+        <ElemButton
+          onClick={onSaveButton}
+          roundedFull={true}
+          btn={buttonStyle}
+          className={`px-2.5 ${isSaved ? savedButtonStyle : ''}`}
+        >
+          {isSaved ? 'Saved' : 'Save to list'}
+        </ElemButton>
+      ) : (
+        <ElemWithSignInModal
+          text="Sign in to save this profile into a list. We'll even let you know of all the updates."
+          buttonComponent={open => (
+            <ElemButton
+              roundedFull={true}
+              btn={buttonStyle}
+              className={`px-2.5 ${open ? 'border border-primary-500' : ''}`}
+            >
+              Save to list
+            </ElemButton>
+          )}
+        />
+      )}
 
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog

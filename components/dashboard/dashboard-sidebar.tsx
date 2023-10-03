@@ -129,7 +129,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
           ))}
         </ul>
 
-        <div className="mt-8 space-y-4">
+        <div className={`mt-8 ${user ? 'space-y-4' : 'space-y-1'}`}>
           <ElemMyListsMenu />
           <ElemMyGroupsMenu />
           <ElemMyNotesMenu />
