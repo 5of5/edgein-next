@@ -1,12 +1,14 @@
-import { Fragment, FC, PropsWithChildren } from 'react';
+import { Fragment, FC, ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DashboardSidebar } from './dashboard-sidebar';
 import { DashboardBanner } from './dashboard-banner';
 import { useSidebar } from '@/context/sidebar-context';
 
-type Props = {};
+type Props = {
+  children: ReactNode;
+};
 
-export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
+export const DashboardLayout: FC<Props> = ({ children }) => {
   const { showSidebar, setShowSidebar } = useSidebar();
 
   return (

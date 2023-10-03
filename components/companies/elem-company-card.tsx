@@ -44,13 +44,9 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
     ? user?.entitlements.viewEmails
     : false;
 
-  const onOpenUpgradeDialog = () => {
-    setIsOpenUpgradeDialog(true);
-  };
+  const onOpenUpgradeDialog = () => setIsOpenUpgradeDialog(true);
 
-  const onCloseUpgradeDialog = () => {
-    setIsOpenUpgradeDialog(false);
-  };
+  const onCloseUpgradeDialog = () => setIsOpenUpgradeDialog(false);
 
   const {
     id,

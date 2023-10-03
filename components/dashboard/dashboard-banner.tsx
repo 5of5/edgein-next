@@ -18,7 +18,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
   const { value: showBanner, onChange: onChangeShowBanner } =
     useLocalStorageState(LOCAL_STORAGE_SIDEBAR_BANNER_KEY);
 
-  const [isHide, setIsHide] = useState(true);
+  const [isHidden, setIsHidden] = useState(true);
 
   const isVisitor = !user;
 
@@ -30,7 +30,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setIsHide(false);
+      setIsHidden(false);
     }, 2000);
   }, []);
 
@@ -41,7 +41,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
   return (
     <div className={`${className}`}>
       <Transition
-        show={!isHide && showBanner !== 'false'}
+        show={!isHidden && showBanner !== 'false'}
         as="div"
         enter="transform ease-out duration-300"
         enterFrom="translate-y-10 opacity-0"
