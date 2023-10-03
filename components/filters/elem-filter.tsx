@@ -396,13 +396,15 @@ export const ElemFilter: FC<Props> = ({
     }
   };
 
-  const extractTagsArrayToText = (tags: string[], disjunction = false) => {
+  const extractTagsArrayToText = (tags: string[], useDisjunction = false) => {
     const numOfTags = tags.length;
     return tags.map((tagItem, tagIndex) => (
       <Fragment key={tagItem}>
         <span className="font-medium">{tagItem}</span>
         {tagIndex < numOfTags - 1 &&
-          (tagIndex < numOfTags - 2 ? ', ' : ` ${disjunction ? 'or' : 'and'} `)}
+          (tagIndex < numOfTags - 2
+            ? ', '
+            : ` ${useDisjunction ? 'or' : 'and'} `)}
       </Fragment>
     ));
   };
@@ -533,7 +535,7 @@ export const ElemFilter: FC<Props> = ({
               option === 'role' ||
               option === 'name'
             ) {
-              const isDisjunction = ['role', 'name'].includes(option);
+              const shouldUseDisjunction = ['role', 'name'].includes(option);
               const tags = filters?.[option]?.tags || [];
               const numOfTags = tags.length;
               return (
@@ -545,8 +547,11 @@ export const ElemFilter: FC<Props> = ({
                     numOfTags > 0 && (
                       <div>
                         {optionMetadata.title}{' '}
-                        {numOfTags > 1 && !isDisjunction ? 'are' : 'is'}{' '}
-                        {extractTagsArrayToText(tags, isDisjunction)}
+                        {/*With disjunction we want to keep is instead of are*/}
+                        {numOfTags > 1 && !shouldUseDisjunction
+                          ? 'are'
+                          : 'is'}{' '}
+                        {extractTagsArrayToText(tags, shouldUseDisjunction)}
                       </div>
                     )
                   }
