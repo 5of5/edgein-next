@@ -192,6 +192,88 @@ query GetCompany($slug: String!) {
     }
   }
 }
+  
+query GetFullCompanyById($id: Int!) {
+  companies(where: { id: { _eq: $id } }) {
+    id
+    slug
+    layer
+    layer_detail
+    name
+    logo
+    total_employees
+    github
+    notes
+    overview
+    website
+    careers_page
+    company_linkedin
+    year_founded
+    investor_amount
+    total_valuation
+    white_paper
+    market_verified
+    velocity_linkedin
+    velocity_token
+    external_id
+    date_added
+    ico_start
+    ico_end
+    audit_file
+    tags
+    sentiment
+    status
+    aliases
+    twitter
+    discord
+    glassdoor
+    location
+    bitcointalk
+    facebook
+    instagram
+    medium
+    reddit
+    telegram
+    youtube
+    blockchain_explorer
+    status_tags
+    location_json
+    geopoint
+    library
+    search_count
+    web_domain
+    email_domain
+    team_enrichment_status
+    follows {
+      id
+      resource_id
+    }
+    from_links {
+      id
+      from_company_id
+    }
+    to_links {
+      id
+      to_company_id
+    }
+    investment_rounds {
+      id
+      company_id
+    }
+    news_links {
+      id
+      company_id
+    }
+    teamMembers { 
+      id
+      company_id
+    }
+    coin {
+      id
+      company_id
+    }
+  }
+}
 
 query GetCompanies(
   $limit: Int
