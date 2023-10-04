@@ -244,34 +244,6 @@ query GetFullCompanyById($id: Int!) {
     web_domain
     email_domain
     team_enrichment_status
-    follows {
-      id
-      resource_id
-    }
-    from_links {
-      id
-      from_company_id
-    }
-    to_links {
-      id
-      to_company_id
-    }
-    investment_rounds {
-      id
-      company_id
-    }
-    news_links {
-      id
-      company_id
-    }
-    teamMembers { 
-      id
-      company_id
-    }
-    coin {
-      id
-      company_id
-    }
   }
 }
 
