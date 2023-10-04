@@ -7,6 +7,8 @@ import {
   CREDITS_SPENDING_INTERVAL,
   TRANSACTION_SYSTEM_NOTE,
 } from '@/utils/userTransactions';
+import { BatchJobReqSchema } from '@/utils/schema';
+import { partnerLookUp } from '@/utils/submit-data';
 
 const handleUserTransactions = async (client: Client) => {
   const userExpiredTransactions = await client.query(`
@@ -105,8 +107,32 @@ const handleUserTransactions = async (client: Client) => {
 
 //TODO(David): add authentication !
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' });
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
+  }
+
+  const parseResponse = BatchJobReqSchema.safeParse(req.body);
+
+  if (!parseResponse.success) {
+    return res.status(400).json({
+      error: parseResponse.error.errors,
+      message: 'Invalid request body',
+    });
+  }
+
+  const { apiKey } = parseResponse.data;
+  if (!apiKey) {
+    return res.status(401).json({
+      message: 'Missing apiKey',
+    });
+  } else {
+    const partner = await partnerLookUp(apiKey);
+
+    if (!partner) {
+      return res.status(401).json({
+        message: 'Invalid api key',
+      });
+    }
   }
 
   const client = await getClient();
