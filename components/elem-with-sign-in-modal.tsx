@@ -33,7 +33,7 @@ export const ElemWithSignInModal: FC<Props> = ({
 
   return (
     <div className={wrapperClass}>
-      <Popover className="">
+      <Popover>
         {({ open }) => (
           <>
             <Popover.Button

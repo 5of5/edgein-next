@@ -104,7 +104,8 @@ export const ElemFilterLocation: FC<Props> = ({
       onOpen={onOpenFilterPopup}
       onClose={onCloseFilterPopup}
       onClear={onClearFilterOption}
-      onApply={handleApplyFilter}>
+      onApply={handleApplyFilter}
+    >
       <div className="font-medium text-sm">{heading}</div>
       <div className="flex flex-col gap-4 mt-2">
         <div>
@@ -126,12 +127,14 @@ export const ElemFilterLocation: FC<Props> = ({
                     {tags.map(item => (
                       <li
                         key={item}
-                        className="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full text-sm bg-slate-200">
+                        className="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full text-sm bg-slate-200"
+                      >
                         {item}
                         <button
                           onClick={() => handleRemove(item)}
                           className="focus:outline-none"
-                          title="Remove">
+                          title="Remove"
+                        >
                           <IconX className="w-3 h-3" title="Remove" />
                         </button>
                       </li>
@@ -211,7 +214,8 @@ const ComboboxResults: FC<ComboboxResultsProps> = ({
             }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
           }
           key={item.PlaceId}
-          value={item}>
+          value={item}
+        >
           {item.Text}
         </Combobox.Option>
       ))}
