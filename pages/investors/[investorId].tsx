@@ -33,6 +33,7 @@ import ElemNewsList from '@/components/news/elem-news-list';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -215,8 +216,10 @@ const VCFirm: NextPage<Props> = props => {
           </div>
         </div>
 
+        <ElemInviteBanner className="mt-7" />
+
         <ElemTabBar
-          className="mt-7 border-b-0"
+          className="mt-7"
           tabs={tabBarItems}
           resourceName={vcfirm.name}
         />

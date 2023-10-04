@@ -6,6 +6,7 @@ import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
+import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 
 type Props = {
   className?: string;
@@ -83,16 +84,24 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             </a>
           </Link>
         ) : (
-          <div className="flex items-center space-x-3 px-2.5 py-1">
-            <IconSidebarGroups
-              className={`w-5 h-5 ${
-                router.asPath.includes('/groups')
-                  ? 'text-primary-500'
-                  : 'text-gray-900'
-              }`}
-            />
-            <p className="font-medium text-sm text-gray-900">Groups</p>
-          </div>
+          <ElemWithSignInModal
+            wrapperClass="w-full"
+            text="Sign in to collaborate on notes, share insights, and track leads in one group with your team or friends."
+            buttonComponent={open => (
+              <button
+                className={`${
+                  open ? 'bg-gray-100' : ''
+                } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+              >
+                <IconSidebarGroups
+                  className={`w-5 h-5 ${
+                    open ? 'text-primary-500' : 'text-gray-900'
+                  }`}
+                />
+                <p className="font-medium text-sm text-gray-900">Groups</p>
+              </button>
+            )}
+          />
         )}
       </div>
 

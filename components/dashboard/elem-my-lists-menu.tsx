@@ -9,6 +9,7 @@ import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { CreateListDialog } from '../my-list/create-list-dialog';
 import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getListDisplayName } from '@/utils/lists';
+import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 
 type Props = {
   className?: string;
@@ -100,16 +101,24 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             </a>
           </Link>
         ) : (
-          <div className="flex items-center space-x-3 px-2.5 py-1">
-            <IconSidebarList
-              className={`w-5 h-5 ${
-                router.asPath.includes('/lists')
-                  ? 'text-primary-500'
-                  : 'text-gray-900'
-              }`}
-            />
-            <p className="font-medium text-sm text-gray-900">Lists</p>
-          </div>
+          <ElemWithSignInModal
+            wrapperClass="w-full"
+            text="Sign in to use lists for tracking and updates on interesting companies, investors, and people."
+            buttonComponent={open => (
+              <button
+                className={`${
+                  open ? 'bg-gray-100' : ''
+                } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+              >
+                <IconSidebarList
+                  className={`w-5 h-5 ${
+                    open ? 'text-primary-500' : 'text-gray-900'
+                  }`}
+                />
+                <p className="font-medium text-sm text-gray-900">Lists</p>
+              </button>
+            )}
+          />
         )}
       </div>
 

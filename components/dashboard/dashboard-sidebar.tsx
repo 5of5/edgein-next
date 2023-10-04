@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ExploreMenuItem } from '@/types/common';
+import { DashboardBanner } from './dashboard-banner';
 
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,
@@ -104,8 +105,8 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   }
 
   return (
-    <div className={`p-4 text-gray-600 ${className}`}>
-      <nav>
+    <div className={`overflow-y-auto h-full scrollbar-hide ${className}`}>
+      <nav className="px-4 pt-4 pb-52 text-gray-600">
         <ul className="border-b border-gray-200 pb-8 space-y-1">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>
@@ -129,12 +130,14 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
           ))}
         </ul>
 
-        <div className="mt-8 space-y-4">
+        <div className={`mt-8 ${user ? 'space-y-4' : 'space-y-1'}`}>
           <ElemMyListsMenu />
           <ElemMyGroupsMenu />
           <ElemMyNotesMenu />
         </div>
       </nav>
+
+      <DashboardBanner className="fixed bottom-0 w-64 p-3" />
     </div>
   );
 };
