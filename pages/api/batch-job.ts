@@ -1,5 +1,6 @@
 import { getClient } from '@/scripts/postgres-helpers';
 import { Client } from 'pg';
+import CookieService from '@/utils/cookie';
 
 import { NextApiResponse, NextApiRequest } from 'next';
 import {
@@ -112,7 +113,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const parseResponse = BatchJobReqSchema.safeParse(req.body);
-
   if (!parseResponse.success) {
     return res.status(400).json({
       error: parseResponse.error.errors,
@@ -122,12 +122,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { apiKey } = parseResponse.data;
   if (!apiKey) {
-    return res.status(401).json({
-      message: 'Missing apiKey',
-    });
+    const token = CookieService.getAuthToken(req.cookies);
+    const user = await CookieService.getUser(token);
+
+    if (!user) {
+      return res.status(401).json({
+        message: 'Missing token and apiKey',
+      });
+    }
   } else {
     const partner = await partnerLookUp(apiKey);
-
     if (!partner) {
       return res.status(401).json({
         message: 'Invalid api key',
