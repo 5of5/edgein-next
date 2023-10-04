@@ -1,5 +1,4 @@
 import { FC, Fragment, ReactElement, useState } from 'react';
-import Link from 'next/link';
 import { usePopper } from 'react-popper';
 import { Popover, Transition } from '@headlessui/react';
 import { ElemButton } from './elem-button';
@@ -38,8 +37,9 @@ export const ElemWithSignInModal: FC<Props> = ({
         {({ open }) => (
           <>
             <Popover.Button
+              as="div"
               ref={setReferenceElement}
-              className="w-full ring-0 outline-none"
+              className="w-full ring-0 outline-none cursor-pointer"
             >
               {buttonComponent(open)}
             </Popover.Button>
@@ -62,9 +62,9 @@ export const ElemWithSignInModal: FC<Props> = ({
                   <p className="text-gray-500 text-sm font-normal mb-3">
                     {text}
                   </p>
-                  <Link href="/sign-in" passHref>
-                    <ElemButton btn="primary">Sign in</ElemButton>
-                  </Link>
+                  <ElemButton btn="primary" href="/sign-in">
+                    Sign in
+                  </ElemButton>
                 </div>
               </Popover.Panel>
             </Transition>
