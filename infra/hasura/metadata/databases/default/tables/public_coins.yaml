@@ -1,16 +1,16 @@
 table:
-  schema: public
   name: coins
+  schema: public
 object_relationships:
   - name: blockchain
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: blockchains
-        insertion_order: null
         column_mapping:
           blockchain_id: id
+        insertion_order: null
+        remote_table:
+          name: blockchains
+          schema: public
 insert_permissions:
   - role: user
     permission:
@@ -21,7 +21,6 @@ insert_permissions:
         - id
         - name
         - ticker
-      backend_only: false
 select_permissions:
   - role: api_viewer
     permission:
