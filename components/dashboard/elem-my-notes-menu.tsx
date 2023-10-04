@@ -38,10 +38,10 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
             wrapperClass="w-full"
             text="Sign in to make private or public notes on companies and investors profiles."
             buttonComponent={open => (
-              <div
+              <button
                 className={`${
                   open ? 'bg-gray-100' : ''
-                } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+                } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
               >
                 <IconSidebarNotes
                   className={`w-5 h-5 ${
@@ -49,26 +49,10 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
                   }`}
                 />
                 <p className="font-medium text-sm text-gray-900">Notes</p>
-              </div>
+              </button>
             )}
           />
         )}
-        {/* ) : (
-                <button
-                  onClick={() => {
-                    onRedirectToSignIn();
-                  }}
-                  className="flex items-center grow space-x-2 py-1.5 px-2 focus:outline-none">
-                  <span className="font-medium text-sm">Notes</span>
-                </button>
-              )} */}
-
-        {/* <button
-                onClick={() => {}}
-                className="flex items-center justify-center rounded-full hover:bg-gray-100"
-              >
-                <IconPlusSmall className="h-6 w-6" title="Create List" />
-              </button> */}
       </div>
     </div>
   );
