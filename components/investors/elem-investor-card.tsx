@@ -19,6 +19,7 @@ import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { CardType } from '../companies/elem-company-card';
+import { ElemSocialIconGroup } from '../elem-social-icon-group';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -142,41 +143,26 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
         </div>
 
         <div className="flex items-center justify-between mt-4 gap-x-5">
-          {(website || linkedin || twitter) && (
-            <div className="flex items-center space-x-1.5">
-              {website && (
-                <Link href={website}>
-                  <a target="_blank">
-                    <IconGlobe
-                      title="Website"
-                      className="h-5 w-5 text-gray-600"
-                    />
-                  </a>
-                </Link>
-              )}
+          <ElemSocialIconGroup
+            resources={[
+              {
+                value: website,
+                title: 'Website',
+                icon: IconGlobe,
+              },
+              {
+                isPremium: true,
+                value: linkedin,
+                icon: IconLinkedIn,
+              },
+              {
+                value: twitter,
+                icon: IconTwitter,
+              },
+            ]}
+          />
 
-              {linkedin ? (
-                userCanViewLinkedIn ? (
-                  <Link href={linkedin}>
-                    <a target="_blank">
-                      <IconLinkedIn className="h-5 w-5 text-gray-600" />
-                    </a>
-                  </Link>
-                ) : (
-                  <button onClick={onClickInvestorLinkedin}>
-                    <IconLinkedIn className="h-5 w-5 text-gray-400" />
-                  </button>
-                )
-              ) : null}
-
-              {twitter && (
-                <Link href={twitter}>
-                  <a target="_blank">
-                    <IconTwitter className="h-5 w-5 text-gray-600" />
-                  </a>
-                </Link>
-              )}
-              {/*
+          {/*
             TO DO: add github and discord fields to vc_firms in db
           {github && (
             <Link href={github}>
@@ -192,8 +178,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
               </a>
             </Link>
           )} */}
-            </div>
-          )}
 
           <ElemSaveToList
             resourceName={vcFirm.name}

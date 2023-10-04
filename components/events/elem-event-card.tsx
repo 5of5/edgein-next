@@ -28,6 +28,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import { usePopup } from '@/context/popup-context';
 import { CardType } from '../companies/elem-company-card';
+import { ElemSocialIconGroup } from '../elem-social-icon-group';
 
 type Props = {
   event: GetEventsQuery['events'][0];
@@ -241,57 +242,36 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
           )}
         </div>
         <div className="flex items-center justify-between mt-4 gap-x-5">
-          <div className="flex items-center space-x-0.5">
-            {link && (
-              <Link href={link}>
-                <a target="_blank">
-                  <ElemTooltip content="Website" mode="light">
-                    <div>
-                      <IconGlobe
-                        className="h-5 w-5 text-gray-600"
-                        title="Website"
-                      />
-                    </div>
-                  </ElemTooltip>
-                </a>
-              </Link>
-            )}
-            {twitter && (
-              <Link href={twitter}>
-                <a target="_blank">
-                  <IconTwitter className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {facebook && (
-              <Link href={facebook}>
-                <a target="_blank">
-                  <IconFacebook className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {instagram && (
-              <Link href={instagram}>
-                <a target="_blank">
-                  <IconInstagram className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {discord && (
-              <Link href={discord}>
-                <a target="_blank">
-                  <IconDiscord className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {telegram && (
-              <Link href={telegram}>
-                <a target="_blank">
-                  <IconTelegram className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-          </div>
+          <ElemSocialIconGroup
+            resources={[
+              {
+                value: link,
+                title: 'Website',
+                icon: IconGlobe,
+              },
+              {
+                value: twitter,
+                icon: IconTwitter,
+              },
+              {
+                value: facebook,
+                icon: IconFacebook,
+              },
+              {
+                value: instagram,
+                icon: IconInstagram,
+              },
+
+              {
+                value: discord,
+                icon: IconDiscord,
+              },
+              {
+                value: telegram,
+                icon: IconTelegram,
+              },
+            ]}
+          />
 
           <ElemButton
             btn={isAttended ? 'primary-light' : 'default'}

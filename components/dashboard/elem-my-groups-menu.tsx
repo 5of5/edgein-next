@@ -7,6 +7,7 @@ import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
+import { ElemSidebarItem } from './elem-sidebar-item';
 
 type Props = {
   className?: string;
@@ -67,22 +68,11 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
     <div className={className}>
       <div className="w-full flex items-center justify-between group">
         {user ? (
-          <Link href="/groups">
-            <a
-              className={`${
-                router.asPath.includes('/groups') ? 'bg-gray-100' : ''
-              } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-            >
-              <IconSidebarGroups
-                className={`w-5 h-5 ${
-                  router.asPath.includes('/groups')
-                    ? 'text-primary-500'
-                    : 'text-gray-900'
-                }`}
-              />
-              <span className="text-sm">Groups</span>
-            </a>
-          </Link>
+          <ElemSidebarItem
+            url="/groups"
+            text="Groups"
+            IconComponent={IconSidebarGroups}
+          />
         ) : (
           <ElemWithSignInModal
             wrapperClass="w-full"

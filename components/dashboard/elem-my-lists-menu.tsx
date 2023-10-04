@@ -10,6 +10,7 @@ import { CreateListDialog } from '../my-list/create-list-dialog';
 import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getListDisplayName } from '@/utils/lists';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
+import { ElemSidebarItem } from './elem-sidebar-item';
 
 type Props = {
   className?: string;
@@ -84,22 +85,11 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     <div className={className}>
       <div className="w-full flex items-center justify-between">
         {user ? (
-          <Link href="/lists">
-            <a
-              className={`${
-                router.asPath.includes('/lists') ? 'bg-gray-100' : ''
-              } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-            >
-              <IconSidebarList
-                className={`w-5 h-5 ${
-                  router.asPath.includes('/lists')
-                    ? 'text-primary-500'
-                    : 'text-gray-900'
-                }`}
-              />
-              <span className="text-sm">Lists</span>
-            </a>
-          </Link>
+          <ElemSidebarItem
+            url="/lists"
+            text="Lists"
+            IconComponent={IconSidebarList}
+          />
         ) : (
           <ElemWithSignInModal
             wrapperClass="w-full"

@@ -25,6 +25,7 @@ import {
   formatDate,
   numberWithCommas,
 } from '@/utils';
+import { ElemSocialIconGroup } from '../elem-social-icon-group';
 
 export type CardType = 'full' | 'compact';
 
@@ -187,54 +188,32 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
         </div>
 
         <div className="flex items-center justify-between mt-4 gap-x-5">
-          <div className="flex items-center space-x-1.5">
-            {website && (
-              <Link href={website}>
-                <a target="_blank">
-                  <IconGlobe
-                    title="Website"
-                    className="h-5 w-5 text-gray-600"
-                  />
-                </a>
-              </Link>
-            )}
-
-            {company_linkedin ? (
-              userCanViewLinkedIn ? (
-                <Link href={company_linkedin}>
-                  <a target="_blank">
-                    <IconLinkedIn className="h-5 w-5 text-gray-600" />
-                  </a>
-                </Link>
-              ) : (
-                <button onClick={onOpenUpgradeDialog}>
-                  <IconLinkedIn className="h-5 w-5 text-gray-400" />
-                </button>
-              )
-            ) : null}
-
-            {twitter && (
-              <Link href={twitter}>
-                <a target="_blank">
-                  <IconTwitter className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {github && (
-              <Link href={github}>
-                <a target="_blank">
-                  <IconGithub className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {discord && (
-              <Link href={discord}>
-                <a target="_blank">
-                  <IconDiscord className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-          </div>
+          <ElemSocialIconGroup
+            resources={[
+              {
+                value: website,
+                title: 'Website',
+                icon: IconGlobe,
+              },
+              {
+                isPremium: true,
+                value: company_linkedin,
+                icon: IconLinkedIn,
+              },
+              {
+                value: twitter,
+                icon: IconTwitter,
+              },
+              {
+                value: github,
+                icon: IconGithub,
+              },
+              {
+                value: discord,
+                icon: IconDiscord,
+              },
+            ]}
+          />
 
           <ElemSaveToList
             resourceName={name}
