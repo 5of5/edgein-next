@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  if(user.role !== 'admin') {
+  if (user.role !== 'admin') {
     return res.status(401).json({
       message: 'You are not an admin !',
     });
