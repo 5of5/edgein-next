@@ -42,6 +42,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await UserService.updateUseCreditsSystem(user.id, false);
     }
 
+    /** Update user token */
+    const newUserToken = await UserService.generateToken({
+      userId: user.id,
+      isFirstLogin: false,
+    });
+    const token = await CookieService.createUserToken(newUserToken);
+    CookieService.setTokenCookie(res, token);
+
     return res.send({ success: true });
   } catch (ex: any) {
     return res.status(400).send({ message: ex.message });

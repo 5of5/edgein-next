@@ -1,4 +1,3 @@
-import { useAuth } from '@/hooks/use-auth';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemInviteLinks } from '@/components/invites/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';
@@ -14,11 +13,12 @@ import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import moment from 'moment';
+import { useUser } from '@/context/user-context';
 
-const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system';
+const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
 
 export default function Account() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useUser();
   const { data: userProfile, refetch: refetchUserProfile } =
     useGetUserProfileQuery(
       {
@@ -35,7 +35,10 @@ export default function Account() {
         enableCreditsSystem: !userProfile?.users_by_pk?.use_credits_system,
       }),
     {
-      onSuccess: () => refetchUserProfile(),
+      onSuccess: () => {
+        refreshUser();
+        refetchUserProfile();
+      },
     },
   );
 
@@ -112,7 +115,6 @@ export default function Account() {
                 </span>
                 <div className="block ml-6">
                   <ElemButton
-                    className="cloudsponge-launch"
                     btn="default"
                     disabled={!edgeInContributorButtonEnabled}
                     onClick={() => toggleCreditsSystem()}
