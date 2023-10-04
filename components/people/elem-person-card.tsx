@@ -66,9 +66,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
     })),
   ];
 
-  const jobsByDateDesc = orderBy(mergedJobs, [item => item.end_date], ['desc']);
-
-  const currentJob = jobsByDateDesc[jobsByDateDesc.length - 1];
+  const currentJob = orderBy(mergedJobs, [item => item.end_date], ['desc'])[0];
 
   const vcFirmTags = flatten(investors.map(item => item?.vc_firm?.tags));
   const companyTags = flatten(team_members.map(item => item?.company?.tags));
@@ -111,8 +109,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                     <>
                       {' at '}
                       <Link
-                        href={`/${currentJob.type}/${currentJob.organization.slug}`}
-                      >
+                        href={`/${currentJob.type}/${currentJob.organization.slug}`}>
                         <a className="text-gray-700 underline hover:no-underline">
                           {currentJob.organization.name}
                         </a>
