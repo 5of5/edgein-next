@@ -101,7 +101,8 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                     <>
                       {' at '}
                       <Link
-                        href={`/${currentJob.type}/${currentJob.organization.slug}`}>
+                        href={`/${currentJob.type}/${currentJob.organization.slug}`}
+                      >
                         <a className="text-gray-700 underline hover:no-underline">
                           {currentJob.organization.name}
                         </a>
