@@ -69,7 +69,8 @@ export const ElemAddFilter: FC<Props> = ({
             <ElemButton
               btn="default"
               roundedFull={false}
-              className="rounded-lg">
+              className="rounded-lg"
+            >
               <IconFilterDashboard className="w-4 h-4 mr-1.5 text-gray-400" />
               Filters
               <IconChevronDownMini className="w-5 h-5 ml-1" />
@@ -89,7 +90,8 @@ export const ElemAddFilter: FC<Props> = ({
           enterTo="opacity-100 translate-y-0"
           leave="transition ease-in duration-150"
           leaveFrom="opacity-100 translate-y-0"
-          leaveTo="opacity-0 translate-y-1">
+          leaveTo="opacity-0 translate-y-1"
+        >
           <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
             {({ close }) => (
               <div>
@@ -171,7 +173,8 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                       name={item.value}
                       className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
                         userCanUseFilter ? '' : 'text-gray-400'
-                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}>
+                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}
+                    >
                       {!userCanUseFilter && (
                         <IconLockClosed
                           className="inline-block w-4 h-4 shrink-0 mr-1"
@@ -185,7 +188,8 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                     <button
                       onClick={onSelectFilterOption}
                       name={item.value}
-                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100">
+                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                    >
                       {item.label}
                     </button>
                   )}

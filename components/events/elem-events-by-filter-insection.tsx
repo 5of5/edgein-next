@@ -90,7 +90,8 @@ export const EventsByFilterInSection: FC<Props> = ({
       <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      >
         {events.map(event => (
           <ElemEventCard
             key={event.id}
@@ -130,7 +131,8 @@ export const EventsByFilterInSection: FC<Props> = ({
                   );
                 }}
                 btn="primary"
-                size="sm">
+                size="sm"
+              >
                 See all
               </ElemButton>
             </div>
