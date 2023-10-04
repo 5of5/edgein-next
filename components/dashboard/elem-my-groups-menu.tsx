@@ -78,10 +78,10 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             wrapperClass="w-full"
             text="Sign in to collaborate on notes, share insights, and track leads in one group with your team or friends."
             buttonComponent={open => (
-              <div
+              <button
                 className={`${
                   open ? 'bg-gray-100' : ''
-                } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+                } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
               >
                 <IconSidebarGroups
                   className={`w-5 h-5 ${
@@ -89,7 +89,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                   }`}
                 />
                 <p className="font-medium text-sm text-gray-900">Groups</p>
-              </div>
+              </button>
             )}
           />
         )}
