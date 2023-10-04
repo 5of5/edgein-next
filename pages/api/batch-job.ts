@@ -130,6 +130,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         message: 'Missing token and apiKey',
       });
     }
+
+    if (user.role !== 'admin') {
+      return res.status(401).json({
+        message: 'You are not an admin !',
+      });
+    }
   } else {
     const partner = await partnerLookUp(apiKey);
     if (!partner) {
