@@ -33,6 +33,8 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  // TODO: Use precalculate fields (location_json, tags, etc.)
+  // Remove old logic
   const {
     id,
     name,
@@ -68,6 +70,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
 
   const currentJob = orderBy(mergedJobs, [item => item.end_date], ['desc'])[0];
 
+  //TODO: Remove this logic and replace with precalculate fields
   const vcFirmTags = flatten(investors.map(item => item?.vc_firm?.tags));
   const companyTags = flatten(team_members.map(item => item?.company?.tags));
   const personTags = union(vcFirmTags, companyTags).filter(item => item);
@@ -101,8 +104,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                     <>
                       {' at '}
                       <Link
-                        href={`/${currentJob.type}/${currentJob.organization.slug}`}
-                      >
+                        href={`/${currentJob.type}/${currentJob.organization.slug}`}>
                         <a className="text-gray-700 underline hover:no-underline">
                           {currentJob.organization.name}
                         </a>
