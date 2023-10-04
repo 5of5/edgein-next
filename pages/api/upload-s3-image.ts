@@ -23,6 +23,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
+  if(user.role !== 'admin') {
+    return res.status(401).json({
+      message: 'You are not an admin !',
+    });
+  }
+
   try {
     // get extension of the file, prefix with  a dot if extension is found
     const ext = getExt(req.query.file);
