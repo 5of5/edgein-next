@@ -1,5 +1,6 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
+import CookieService from '@/utils/cookie';
 
 //AWS config set
 AWS.config.update({
@@ -10,6 +11,15 @@ AWS.config.update({
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
     res.status(405).json({ message: 'Method not allowed' });
+  }
+
+  const token = CookieService.getAuthToken(req.cookies);
+  const user = await CookieService.getUser(token);
+
+  if (!user) {
+    return res.status(401).json({
+      message: 'Missing token',
+    });
   }
 
   try {
