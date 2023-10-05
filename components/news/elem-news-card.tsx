@@ -2,7 +2,6 @@ import { FC, useEffect, useState, Fragment } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { GetNewsQuery } from '@/graphql/types';
-import Link from 'next/link';
 import { getCleanWebsiteUrl, stripHtmlTags } from '@/utils/text';
 import parse from 'html-react-parser';
 import { formatDateShown } from '@/utils';
@@ -11,6 +10,7 @@ import { ElemTags } from '@/components/elem-tags';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
 import { COMPANIES, INVESTORS } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -75,11 +75,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
         <div className="flex flex-col justify-between h-full">
           <div>
             <h2 className="font-medium break-words" title={text ?? ''}>
-              <Link href={link}>
-                <a target="_blank" onClick={handleLinkClick}>
-                  {text}
-                </a>
-              </Link>
+              <ElemLink href={link} target="_blank" onClick={handleLinkClick}>
+                {text}
+              </ElemLink>
             </h2>
             <p className="mt-3 text-xs text-gray-500">
               {formatDateShown(date)}
@@ -96,36 +94,34 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
 
             {link && metadata?.image && (
               <div className="mt-3 text-gray-400">
-                <Link href={link}>
-                  <a
-                    target="_blank"
-                    className="block mb-2"
-                    onClick={handleLinkClick}
-                  >
-                    {metadata?.image && (
-                      <img
-                        src={metadata?.image}
-                        alt={text}
-                        className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
-                      />
-                    )}{' '}
-                  </a>
-                </Link>
+                <ElemLink
+                  href={link}
+                  target="_blank"
+                  className="block mb-2"
+                  onClick={handleLinkClick}
+                >
+                  {metadata?.image && (
+                    <img
+                      src={metadata?.image}
+                      alt={text}
+                      className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
+                    />
+                  )}{' '}
+                </ElemLink>
               </div>
             )}
 
             {link ? (
-              <Link href={link}>
-                <a
-                  target="_blank"
-                  className={`text-sm text-gray-500 mt-4 ${
-                    metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-                  }`}
-                  onClick={handleLinkClick}
-                >
-                  {parse(stripHtmlTags(metadata?.description))}
-                </a>
-              </Link>
+              <ElemLink
+                href={link}
+                target="_blank"
+                className={`text-sm text-gray-500 mt-4 ${
+                  metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
+                }`}
+                onClick={handleLinkClick}
+              >
+                {parse(stripHtmlTags(metadata?.description))}
+              </ElemLink>
             ) : (
               <p
                 className={`text-sm text-gray-500 mt-4 ${
@@ -169,11 +165,12 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                           }
                         >
                           <div className="inline-block">
-                            <Link href={slug}>
-                              <a className="break-words border-b border-gray-600">
-                                {organization?.name}
-                              </a>
-                            </Link>
+                            <ElemLink
+                              href={slug}
+                              className="break-words border-b border-gray-600"
+                            >
+                              {organization?.name}
+                            </ElemLink>
                           </div>
                         </ElemTooltip>
                         {otherOrganizations.length === index + 1 ? '' : ', '}
@@ -189,7 +186,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
               <p className="text-xs text-gray-500">
                 {'From  '}
                 {publisher ? (
-                  <Link
+                  <ElemLink
                     href={
                       publisher.company
                         ? `${COMPANIES}/${publisher.company?.slug}`
@@ -197,29 +194,29 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                         ? `${INVESTORS}/${publisher.vc_firm?.slug}`
                         : ''
                     }
+                    target="_blank"
                   >
-                    <a target="_blank" className="">
-                      {publisher.company?.name || publisher.vc_firm?.name}
-                    </a>
-                  </Link>
+                    {publisher.company?.name || publisher.vc_firm?.name}
+                  </ElemLink>
                 ) : (
-                  <Link href={getCleanWebsiteUrl(link, true)}>
-                    <a target="_blank" className="">
-                      {getCleanWebsiteUrl(link, false)}
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={getCleanWebsiteUrl(link, true)}
+                    target="_blank"
+                  >
+                    {getCleanWebsiteUrl(link, false)}
+                  </ElemLink>
                 )}
                 {' • '}
                 Powered by{' '}
-                <Link
+                <ElemLink
                   href={`${COMPANIES}/${
                     source?.poweredby?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'
                   }`}
                 >
-                  <a>{source?.poweredby || 'CryptoPanic'}</a>
-                </Link>
+                  {source?.poweredby || 'CryptoPanic'}
+                </ElemLink>
               </p>
             )}
           </div>

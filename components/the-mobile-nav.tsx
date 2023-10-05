@@ -6,7 +6,6 @@ import {
   useState,
   useMemo,
 } from 'react';
-import Link from 'next/link';
 import { ElemButton } from './elem-button';
 import {
   IconCash,
@@ -44,6 +43,7 @@ import {
   NOTIFICATIONS,
   PEOPLE,
 } from '@/routes';
+import { ElemLink } from './elem-link';
 
 type Props = {
   className?: string;
@@ -169,26 +169,25 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                   : 'border-t-2 border-transparent'
               }`}
             >
-              <Link href={item?.href ? item.href : ''}>
-                <a
-                  onClick={onClose}
-                  className="flex flex-col items-center h-full text-[11px]"
-                >
-                  {item?.icon && (
-                    <div className="relative flex items-center justify-center h-7 aspect-square">
-                      {unreadNotificationsCount > 0 &&
-                        item.title === 'Notifications' && (
-                          <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
-                        )}
-                      <item.icon
-                        title={item.title}
-                        className="h-6 w-6 shrink-0 text-slate-600"
-                      />
-                    </div>
-                  )}
-                  {item?.title}
-                </a>
-              </Link>
+              <ElemLink
+                href={item?.href ? item.href : ''}
+                onClick={onClose}
+                className="flex flex-col items-center h-full text-[11px]"
+              >
+                {item?.icon && (
+                  <div className="relative flex items-center justify-center h-7 aspect-square">
+                    {unreadNotificationsCount > 0 &&
+                      item.title === 'Notifications' && (
+                        <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
+                      )}
+                    <item.icon
+                      title={item.title}
+                      className="h-6 w-6 shrink-0 text-slate-600"
+                    />
+                  </div>
+                )}
+                {item?.title}
+              </ElemLink>
             </li>
           ))}
 
@@ -258,20 +257,19 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
             <ul className="grid grid-cols-2 gap-4 px-4">
               {menuPanel.map((item, index) => (
                 <li key={index}>
-                  <Link href={item?.href ? item.href : ''}>
-                    <a
-                      onClick={onClose}
-                      className="block p-3 outline-none bg-white shadow rounded-lg"
-                    >
-                      {item?.icon && (
-                        <item.icon
-                          title={item.title}
-                          className="h-6 w-6 shrink-0"
-                        />
-                      )}
-                      <span className="leading-tight">{item?.title}</span>
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={item?.href ? item.href : ''}
+                    onClick={onClose}
+                    className="block p-3 outline-none bg-white shadow rounded-lg"
+                  >
+                    {item?.icon && (
+                      <item.icon
+                        title={item.title}
+                        className="h-6 w-6 shrink-0"
+                      />
+                    )}
+                    <span className="leading-tight">{item?.title}</span>
+                  </ElemLink>
                 </li>
               ))}
             </ul>

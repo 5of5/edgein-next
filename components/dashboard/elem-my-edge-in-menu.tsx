@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Disclosure } from '@headlessui/react';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -11,6 +10,7 @@ import { useAuth } from '@/hooks/use-auth';
 import useDisclosureState from '@/hooks/use-disclosure-state';
 import { MY_EDGEIN_MENU_OPEN_KEY } from '@/utils/constants';
 import { ACCOUNT, PROFILE } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 const ElemMyEdgeInMenu = () => {
   const { user } = useAuth();
@@ -46,42 +46,40 @@ const ElemMyEdgeInMenu = () => {
 
           <Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
             <li>
-              <Link href={PROFILE} passHref>
-                <a
-                  className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-                    `${PROFILE}/`,
-                  )}`}
-                >
-                  {user?.person?.picture ? (
-                    <ElemPhoto
-                      photo={user?.person?.picture}
-                      wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-full"
-                      imgClass="object-fit max-w-full max-h-full rounded-full"
-                      imgAlt={'profile'}
-                      placeholder="user"
-                      placeholderClass="text-slate-400 hover:text-slate-400"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center shrink-0 w-6 h-6 ">
-                      <IconUserCircle className="h-6 w-6 " />
-                    </div>
-                  )}
-                  <span>Profile Settings</span>
-                </a>
-              </Link>
+              <ElemLink
+                href={PROFILE}
+                className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+                  `${PROFILE}/`,
+                )}`}
+              >
+                {user?.person?.picture ? (
+                  <ElemPhoto
+                    photo={user?.person?.picture}
+                    wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-full"
+                    imgClass="object-fit max-w-full max-h-full rounded-full"
+                    imgAlt={'profile'}
+                    placeholder="user"
+                    placeholderClass="text-slate-400 hover:text-slate-400"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center shrink-0 w-6 h-6 ">
+                    <IconUserCircle className="h-6 w-6 " />
+                  </div>
+                )}
+                <span>Profile Settings</span>
+              </ElemLink>
             </li>
 
             <li>
-              <Link href={ACCOUNT} passHref>
-                <a
-                  className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-                    `${ACCOUNT}/`,
-                  )}`}
-                >
-                  <IconSettings className="h-6 w-6" />
-                  <span>Account Settings</span>
-                </a>
-              </Link>
+              <ElemLink
+                href={ACCOUNT}
+                className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+                  `${ACCOUNT}/`,
+                )}`}
+              >
+                <IconSettings className="h-6 w-6" />
+                <span>Account Settings</span>
+              </ElemLink>
             </li>
           </Disclosure.Panel>
         </>

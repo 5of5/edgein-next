@@ -20,12 +20,12 @@ import {
   IconImage,
   IconExternalLink,
 } from '@/components/icons';
-import Link from 'next/link';
 import { getEventBanner, randomImageOfCity } from '@/utils/helpers';
 import { formatDate } from '@/utils/numbers';
 import useLibrary from '@/hooks/use-library';
 import { parseIndexName } from '@/utils/algolia';
 import { COMPANIES, CONTACT, EVENTS, INVESTORS, PEOPLE } from '@/routes';
+import { ElemLink } from './elem-link';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -99,152 +99,188 @@ type EmptyQueryBoundaryProps = {
 const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
   function HitCompanies({ hit }: HitCompaniesProps) {
     return (
-      <Link
+      <ElemLink
         href={
           isAdmin
             ? `/admin/app/#/companies/${hit.objectID}`
             : `${COMPANIES}/${hit.slug}`
         }
-        passHref
+        onClick={() => {
+          onClose();
+          if (isAdmin && redirect) {
+            redirect(`${COMPANIES}/${hit.objectID}`);
+          }
+        }}
+        className="flex items-center px-6 py-1 group hover:bg-gray-100"
       >
-        <a
-          onClick={() => {
-            onClose();
-            if (isAdmin && redirect) {
-              redirect(`${COMPANIES}/${hit.objectID}`);
-            }
-          }}
-          className="flex items-center px-6 py-1 group hover:bg-gray-100"
-        >
-          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
-            {hit.logo ? (
-              <img
-                className="object-contain max-w-full max-h-full"
-                src={hit.logo}
-                alt={hit.name}
-              />
-            ) : (
-              <IconImage className="object-contain max-w-full max-h-full text-gray-200" />
-            )}
-          </div>
-          <div className="flex grow">
-            <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
+        <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
+          {hit.logo ? (
+            <img
+              className="object-contain max-w-full max-h-full"
+              src={hit.logo}
+              alt={hit.name}
+            />
+          ) : (
+            <IconImage className="object-contain max-w-full max-h-full text-gray-200" />
+          )}
+        </div>
+        <div className="flex grow">
+          <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
+            <Highlight
+              attribute="name"
+              hit={hit}
+              classNames={{
+                highlighted:
+                  'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent',
+              }}
+            />
+          </h2>
+          {hit.coinTicker && (
+            <div className="ml-2 uppercase">
               <Highlight
-                attribute="name"
+                attribute="coinTicker"
                 hit={hit}
                 classNames={{
                   highlighted:
-                    'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent',
+                    'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100',
                 }}
               />
-            </h2>
-            {hit.coinTicker && (
-              <div className="ml-2 uppercase">
-                <Highlight
-                  attribute="coinTicker"
-                  hit={hit}
-                  classNames={{
-                    highlighted:
-                      'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100',
-                  }}
-                />
-              </div>
-            )}
-            <p className="ml-2 text-sm text-gray-500 line-clamp-1">
-              <Highlight
-                attribute="overview"
-                hit={hit}
-                classNames={{
-                  highlighted: 'bg-primary-100',
-                }}
-              />
-            </p>
-          </div>
-          <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
-        </a>
-      </Link>
+            </div>
+          )}
+          <p className="ml-2 text-sm text-gray-500 line-clamp-1">
+            <Highlight
+              attribute="overview"
+              hit={hit}
+              classNames={{
+                highlighted: 'bg-primary-100',
+              }}
+            />
+          </p>
+        </div>
+        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+      </ElemLink>
     );
   };
 
 const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
   function HitInvestors({ hit }: HitInvestorsProps) {
     return (
-      <Link
+      <ElemLink
         href={
           isAdmin
             ? `/admin/app/#/vc_firms/${hit.objectID}`
             : `${INVESTORS}/${hit.slug}`
         }
-        passHref
+        className="flex items-center px-6 py-1 group hover:bg-gray-100"
+        onClick={() => {
+          onClose();
+          if (isAdmin && redirect) {
+            redirect(`/vc_firms/${hit.objectID}`);
+          }
+        }}
       >
-        <a
-          className="flex items-center px-6 py-1 group hover:bg-gray-100"
-          onClick={() => {
-            onClose();
-            if (isAdmin && redirect) {
-              redirect(`/vc_firms/${hit.objectID}`);
-            }
-          }}
-        >
-          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
-            {hit.logo ? (
-              <img
-                className="object-contain max-w-full max-h-full"
-                src={hit.logo}
-                alt={hit.name}
-              />
-            ) : (
-              <IconImage className="object-contain max-w-full max-h-full text-gray-200" />
-            )}
-          </div>
-          <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
-            <Highlight
-              attribute="name"
-              hit={hit}
-              classNames={{
-                highlighted:
-                  'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent',
-              }}
+        <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
+          {hit.logo ? (
+            <img
+              className="object-contain max-w-full max-h-full"
+              src={hit.logo}
+              alt={hit.name}
             />
-          </h2>
-          <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
-        </a>
-      </Link>
+          ) : (
+            <IconImage className="object-contain max-w-full max-h-full text-gray-200" />
+          )}
+        </div>
+        <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
+          <Highlight
+            attribute="name"
+            hit={hit}
+            classNames={{
+              highlighted:
+                'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent',
+            }}
+          />
+        </h2>
+        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+      </ElemLink>
     );
   };
 
 const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
   function HitPeople({ hit }: HitPeopleProps) {
     return (
-      <Link
+      <ElemLink
         href={
           isAdmin
             ? `/admin/app/#/people/${hit.objectID}`
             : `${PEOPLE}/${hit.slug}`
         }
-        passHref
+        className="flex items-center px-6 py-1 group hover:bg-gray-100"
+        onClick={() => {
+          onClose();
+          if (isAdmin && redirect) {
+            redirect(`/people/${hit.objectID}`);
+          }
+        }}
       >
-        <a
-          className="flex items-center px-6 py-1 group hover:bg-gray-100"
-          onClick={() => {
-            onClose();
-            if (isAdmin && redirect) {
-              redirect(`/people/${hit.objectID}`);
-            }
-          }}
-        >
-          <div className="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-white overflow-hidden border border-gray-200">
-            {hit.picture ? (
-              <img
-                className="object-fit max-w-full max-h-full"
-                src={hit.picture}
-                alt={hit.name}
-              />
-            ) : (
-              <IconUserPlaceholder className="object-fit max-w-full max-h-full text-gray-400" />
-            )}
-          </div>
-          <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
+        <div className="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-white overflow-hidden border border-gray-200">
+          {hit.picture ? (
+            <img
+              className="object-fit max-w-full max-h-full"
+              src={hit.picture}
+              alt={hit.name}
+            />
+          ) : (
+            <IconUserPlaceholder className="object-fit max-w-full max-h-full text-gray-400" />
+          )}
+        </div>
+        <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
+          <Highlight
+            attribute="name"
+            hit={hit}
+            classNames={{
+              highlighted:
+                'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent',
+            }}
+          />
+        </h2>
+        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+      </ElemLink>
+    );
+  };
+
+const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
+  function HitEvents({ hit }: HitEventsProps) {
+    return (
+      <ElemLink
+        href={
+          isAdmin
+            ? `/admin/app/#/events/${hit.objectID}`
+            : `${EVENTS}/${hit.slug}`
+        }
+        onClick={() => {
+          onClose();
+          if (isAdmin && redirect) {
+            redirect(`/events/${hit.objectID}`);
+          }
+        }}
+        className="flex items-center px-6 py-1 group hover:bg-gray-100"
+      >
+        <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
+          <img
+            className="object-contain max-w-full max-h-full"
+            src={hit.banner || getEventBanner(hit.location_json?.city)}
+            alt={hit.name}
+            onError={e => {
+              (e.target as HTMLImageElement).src = randomImageOfCity(
+                hit.location_json?.city,
+              );
+              (e.target as HTMLImageElement).onerror = null; // prevents looping
+            }}
+          />
+        </div>
+
+        <div className="flex grow">
+          <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
             <Highlight
               attribute="name"
               hit={hit}
@@ -254,67 +290,16 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
               }}
             />
           </h2>
-          <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
-        </a>
-      </Link>
-    );
-  };
 
-const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
-  function HitEvents({ hit }: HitEventsProps) {
-    return (
-      <Link
-        href={
-          isAdmin
-            ? `/admin/app/#/events/${hit.objectID}`
-            : `${EVENTS}/${hit.slug}`
-        }
-        passHref
-      >
-        <a
-          onClick={() => {
-            onClose();
-            if (isAdmin && redirect) {
-              redirect(`/events/${hit.objectID}`);
-            }
-          }}
-          className="flex items-center px-6 py-1 group hover:bg-gray-100"
-        >
-          <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
-            <img
-              className="object-contain max-w-full max-h-full"
-              src={hit.banner || getEventBanner(hit.location_json?.city)}
-              alt={hit.name}
-              onError={e => {
-                (e.target as HTMLImageElement).src = randomImageOfCity(
-                  hit.location_json?.city,
-                );
-                (e.target as HTMLImageElement).onerror = null; // prevents looping
-              }}
-            />
-          </div>
-
-          <div className="flex grow">
-            <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
-              <Highlight
-                attribute="name"
-                hit={hit}
-                classNames={{
-                  highlighted:
-                    'text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent',
-                }}
-              />
-            </h2>
-
-            {hit.start_date && (
-              <p className="ml-2 text-sm text-gray-500 line-clamp-1">
-                {formatDate(hit.start_date, {
-                  month: 'short',
-                  day: '2-digit',
-                  year: 'numeric',
-                  timeZone: hit.timezone || undefined,
-                })}
-                {/* <Highlight
+          {hit.start_date && (
+            <p className="ml-2 text-sm text-gray-500 line-clamp-1">
+              {formatDate(hit.start_date, {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
+                timeZone: hit.timezone || undefined,
+              })}
+              {/* <Highlight
 								attribute="start_date"
 								hit={hit}
 								classNames={{
@@ -323,16 +308,16 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 								}}
 							/> */}
 
-                {hit.end_date && (
-                  <>
-                    &nbsp;&ndash;&nbsp;
-                    {formatDate(hit.end_date, {
-                      month: 'short',
-                      day: '2-digit',
-                      year: 'numeric',
-                      timeZone: hit.timezone || undefined,
-                    })}
-                    {/* <Highlight
+              {hit.end_date && (
+                <>
+                  &nbsp;&ndash;&nbsp;
+                  {formatDate(hit.end_date, {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric',
+                    timeZone: hit.timezone || undefined,
+                  })}
+                  {/* <Highlight
 										attribute="end_date"
 										hit={hit}
 										classNames={{
@@ -340,15 +325,14 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 												"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
 										}}
 									/> */}
-                  </>
-                )}
-              </p>
-            )}
-          </div>
+                </>
+              )}
+            </p>
+          )}
+        </div>
 
-          <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
-        </a>
-      </Link>
+        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+      </ElemLink>
     );
   };
 
@@ -359,19 +343,20 @@ const HitNews = () =>
         <div className="inline text-base font-medium text-gray-500">
           {hit.link ? (
             <>
-              <Link href={hit.link}>
-                <a className="underline hover:no-underline" target="_blank">
-                  <Highlight
-                    attribute="text"
-                    hit={hit}
-                    classNames={{
-                      highlighted:
-                        'text-primary-500 opacity-100 bg-transparent',
-                    }}
-                  />
-                  <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
-                </a>
-              </Link>
+              <ElemLink
+                href={hit.link}
+                className="underline hover:no-underline"
+                target="_blank"
+              >
+                <Highlight
+                  attribute="text"
+                  hit={hit}
+                  classNames={{
+                    highlighted: 'text-primary-500 opacity-100 bg-transparent',
+                  }}
+                />
+                <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
+              </ElemLink>
             </>
           ) : (
             <Highlight
@@ -434,11 +419,13 @@ export default function SearchModal(props: any) {
         <div className="w-full mt-5 px-6 py-1">
           <h3 className="font-medium">No results for “{results.query}“</h3>
           <p>
-            <Link href={CONTACT} passHref>
-              <a onClick={onClose} className="text-primary-500">
-                Tell us about missing data.
-              </a>
-            </Link>
+            <ElemLink
+              href={CONTACT}
+              onClick={onClose}
+              className="text-primary-500"
+            >
+              Tell us about missing data.
+            </ElemLink>
           </p>
         </div>
       );
@@ -460,13 +447,13 @@ export default function SearchModal(props: any) {
         <div className="w-full px-6 py-1">
           <p>
             No results for “{results.query}“.{' '}
-            <Link href={CONTACT} passHref>
-              <a onClick={onClose} className="text-primary-500">
-                {`Tell us about missing ${parseIndexName(
-                  results._state.index,
-                )}.`}
-              </a>
-            </Link>
+            <ElemLink
+              href={CONTACT}
+              onClick={onClose}
+              className="text-primary-500"
+            >
+              {`Tell us about missing ${parseIndexName(results._state.index)}.`}
+            </ElemLink>
           </p>
         </div>
       );

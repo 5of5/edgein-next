@@ -7,8 +7,8 @@ import { User_Groups, User_Group_Members } from '@/graphql/types';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useUser } from '@/context/user-context';
-import Link from 'next/link';
 import { PEOPLE } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   group: User_Groups;
@@ -218,14 +218,13 @@ const ElemMemberTab: React.FC<Props> = ({
 
         if (member.user?.person?.slug) {
           return (
-            <Link
+            <ElemLink
               href={`${PEOPLE}/${member.user.person?.slug}`}
               key={member.id}
+              className="block cursor-pointer hover:bg-slate-100"
             >
-              <a className="block cursor-pointer hover:bg-slate-100">
-                {theMember}
-              </a>
-            </Link>
+              {theMember}
+            </ElemLink>
           );
         }
 

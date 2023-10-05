@@ -1,6 +1,5 @@
 import { getNameFromListName } from '@/utils/reaction';
 import { kebabCase, partition } from 'lodash';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { IconSidebarList } from '@/components/icons';
@@ -12,6 +11,7 @@ import { getListDisplayName } from '@/utils/lists';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
 import { LISTS, SIGN_IN } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -122,24 +122,19 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
             return (
               <li key={listItemId} role="button">
-                <Link
+                <ElemLink
                   href={`${LISTS}/${listItemId}/${
                     listItemName === 'crap' ? 'sh**' : kebabCase(listItemName)
                   }`}
+                  className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                    listItemId,
+                    listItemName === 'crap' ? 'sh**' : kebabCase(listItemName),
+                  )} `}
                 >
-                  <a
-                    className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
-                      listItemId,
-                      listItemName === 'crap'
-                        ? 'sh**'
-                        : kebabCase(listItemName),
-                    )} `}
-                  >
-                    <span className="line-clamp-1 break-all flex-1">
-                      {getListDisplayName(listItem)}
-                    </span>
-                  </a>
-                </Link>
+                  <span className="line-clamp-1 break-all flex-1">
+                    {getListDisplayName(listItem)}
+                  </span>
+                </ElemLink>
               </li>
             );
           })}

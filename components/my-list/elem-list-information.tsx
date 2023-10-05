@@ -5,7 +5,6 @@ import { ModalListDescription } from './modal-list-description';
 import { IconX, IconSettings } from '@/components/icons';
 import { ModalListGroups } from './modal-list-groups';
 import { ElemDeleteConfirmModal } from '../elem-delete-confirm-modal';
-import Link from 'next/link';
 import { ElemButton } from '@/components/elem-button';
 
 import {
@@ -19,6 +18,7 @@ import { useRouter } from 'next/router';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 import { ElemSocialShare } from '../elem-social-share';
 import { LISTS, PEOPLE } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   list: any;
@@ -152,14 +152,12 @@ export const ElemListInformation: FC<Props> = ({
                     {list?.created_by?.person ? (
                       <>
                         By{' '}
-                        <Link
+                        <ElemLink
                           href={`${PEOPLE}/${list?.created_by?.person?.slug}`}
-                          passHref
+                          className="hover:underline"
                         >
-                          <a className="hover:underline">
-                            {list?.created_by?.person?.name}
-                          </a>
-                        </Link>
+                          {list?.created_by?.person?.name}
+                        </ElemLink>
                       </>
                     ) : (
                       <span>By {list?.created_by?.display_name}</span>

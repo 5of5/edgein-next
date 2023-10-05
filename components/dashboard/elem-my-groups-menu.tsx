@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IconSidebarGroups } from '@/components/icons';
 import { useUser } from '@/context/user-context';
@@ -9,6 +8,7 @@ import { GROUPS, SIGN_IN } from '@/routes';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -103,18 +103,15 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             ?.map(group => {
               return (
                 <li key={group.id} role="button">
-                  <Link href={`${GROUPS}/${group.id}/`}>
-                    <a
-                      className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
-                        group.id,
-                      )}`}
-                      title={group.name}
-                    >
-                      <span className="line-clamp-1 break-all">
-                        {group.name}
-                      </span>
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={`${GROUPS}/${group.id}/`}
+                    className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                      group.id,
+                    )}`}
+                    title={group.name}
+                  >
+                    <span className="line-clamp-1 break-all">{group.name}</span>
+                  </ElemLink>
                 </li>
               );
             })}

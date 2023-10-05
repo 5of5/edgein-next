@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
-import Link from 'next/link';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { IconProps } from '@/components/icons';
+import { ElemLink } from './elem-link';
 
 type Resource = {
   isPremium?: boolean;
@@ -45,14 +45,16 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
         }
 
         return (
-          <Link key={resourceItem.value} href={resourceItem.value}>
-            <a target="_blank">
-              <resourceItem.icon
-                title={resourceItem.title}
-                className="h-5 w-5 text-gray-600"
-              />
-            </a>
-          </Link>
+          <ElemLink
+            key={resourceItem.value}
+            href={resourceItem.value}
+            target="_blank"
+          >
+            <resourceItem.icon
+              title={resourceItem.title}
+              className="h-5 w-5 text-gray-600"
+            />
+          </ElemLink>
         );
       })}
 

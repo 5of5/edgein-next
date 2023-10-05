@@ -8,7 +8,6 @@ import React, {
 import useSWR from 'swr';
 import moment from 'moment-timezone';
 import { ElemPhoto } from '../elem-photo';
-import Link from 'next/link';
 import {
   IconEllipsisVertical,
   IconEllipsisHorizontal,
@@ -30,6 +29,7 @@ import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import ElemNoteForm from '@/components/elem-note-form';
 import { usePopup } from '@/context/popup-context';
 import { GROUPS, PEOPLE } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   data: GetNotesQuery['notes'][0];
@@ -335,64 +335,61 @@ const ElemNoteCard: React.FC<Props> = ({
         <div className="relative flex items-center space-x-3 px-4 py-2">
           <div className="flex-shrink-0 relative">
             {layout === 'organizationAndAuthor' ? (
-              <Link href={resourceLink}>
-                <a>
-                  <ElemPhoto
-                    photo={resource?.logo}
-                    wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-white rounded-lg border border-gray-300"
-                    imgClass="object-fit max-w-full max-h-full"
-                    imgAlt={resource?.name}
-                  />
-                </a>
-              </Link>
+              <ElemLink href={resourceLink}>
+                <ElemPhoto
+                  photo={resource?.logo}
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-white rounded-lg border border-gray-300"
+                  imgClass="object-fit max-w-full max-h-full"
+                  imgAlt={resource?.name}
+                />
+              </ElemLink>
             ) : layout === 'groupAndAuthor' ? (
-              <Link href={`${GROUPS}/${data?.user_group?.id}`}>
-                <a>
-                  <div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-gray-100 rounded-lg border border-gray-100">
-                    <IconGroup
-                      className="w-7 h-7"
-                      title={data?.user_group?.name}
-                    />
-                  </div>
-                </a>
-              </Link>
+              <ElemLink href={`${GROUPS}/${data?.user_group?.id}`}>
+                <div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-gray-100 rounded-lg border border-gray-100">
+                  <IconGroup
+                    className="w-7 h-7"
+                    title={data?.user_group?.name}
+                  />
+                </div>
+              </ElemLink>
             ) : (
               // layout === "author"
-              <Link href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}>
-                <a>
-                  <ElemPhoto
-                    photo={data?.created_by_user?.person?.picture}
-                    wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
-                    imgClass="object-fit max-w-full max-h-full rounded-full"
-                    imgAlt={
-                      data?.created_by_user?.person?.name ||
-                      data?.created_by_user?.display_name ||
-                      `User: ${data?.created_by}`
-                    }
-                    placeholder="user"
-                    placeholderClass="text-gray-300 bg-white p-0"
-                  />
-                </a>
-              </Link>
+              <ElemLink
+                href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+              >
+                <ElemPhoto
+                  photo={data?.created_by_user?.person?.picture}
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
+                  imgClass="object-fit max-w-full max-h-full rounded-full"
+                  imgAlt={
+                    data?.created_by_user?.person?.name ||
+                    data?.created_by_user?.display_name ||
+                    `User: ${data?.created_by}`
+                  }
+                  placeholder="user"
+                  placeholderClass="text-gray-300 bg-white p-0"
+                />
+              </ElemLink>
             )}
 
             {(layout === 'organizationAndAuthor' ||
               layout === 'groupAndAuthor') && (
-              <Link href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}>
-                <a className="absolute -right-1 -bottom-1">
-                  <ElemPhoto
-                    photo={data?.created_by_user?.person?.picture}
-                    wrapClass=""
-                    imgClass="object-fit h-7 w-7 border border-white rounded-full"
-                    imgAlt={
-                      data?.created_by_user?.person?.name ||
-                      data?.created_by_user?.display_name
-                    }
-                    placeholder="user"
-                    placeholderClass="text-gray-300 bg-white p-0"
-                  />
-                </a>
-              </Link>
+              <ElemLink
+                href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                className="absolute -right-1 -bottom-1"
+              >
+                <ElemPhoto
+                  photo={data?.created_by_user?.person?.picture}
+                  wrapClass=""
+                  imgClass="object-fit h-7 w-7 border border-white rounded-full"
+                  imgAlt={
+                    data?.created_by_user?.person?.name ||
+                    data?.created_by_user?.display_name
+                  }
+                  placeholder="user"
+                  placeholderClass="text-gray-300 bg-white p-0"
+                />
+              </ElemLink>
             )}
           </div>
 
@@ -400,33 +397,30 @@ const ElemNoteCard: React.FC<Props> = ({
             <div>
               <h2 className="text-lg leading-tight font-medium underline-offset-1 hover:underline">
                 {layout === 'organizationAndAuthor' ? (
-                  <Link href={resourceLink}>
-                    <a>{resource?.name}</a>
-                  </Link>
+                  <ElemLink href={resourceLink}>{resource?.name}</ElemLink>
                 ) : layout === 'groupAndAuthor' ? (
-                  <Link href={`${GROUPS}/${data?.user_group?.id}`}>
-                    <a>{data?.user_group?.name}</a>
-                  </Link>
+                  <ElemLink href={`${GROUPS}/${data?.user_group?.id}`}>
+                    {data?.user_group?.name}
+                  </ElemLink>
                 ) : (
                   // layout === "author"
-                  <Link
+                  <ElemLink
                     href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
                   >
-                    <a>{data?.created_by_user?.person?.name}</a>
-                  </Link>
+                    {data?.created_by_user?.person?.name}
+                  </ElemLink>
                 )}
               </h2>
               <div className="text-sm text-slate-600">
                 {(layout === 'organizationAndAuthor' ||
                   layout === 'groupAndAuthor') && (
                   <>
-                    <Link
+                    <ElemLink
                       href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                      className="underline-offset-1 hover:underline"
                     >
-                      <a className="underline-offset-1 hover:underline">
-                        {data?.created_by_user?.person?.name}
-                      </a>
-                    </Link>
+                      {data?.created_by_user?.person?.name}
+                    </ElemLink>
                     <span aria-hidden="true"> · </span>
                   </>
                 )}
@@ -521,35 +515,32 @@ const ElemNoteCard: React.FC<Props> = ({
             {data.comments.map(comment => (
               <div key={comment.id} className="flex items-center gap-2">
                 <div className="flex items-start gap-2">
-                  <Link
+                  <ElemLink
                     href={`${PEOPLE}/${comment.created_by_user?.person?.slug}`}
                   >
-                    <a>
-                      <ElemPhoto
-                        photo={comment.created_by_user?.person?.picture}
-                        wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                        imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                        imgAlt={
-                          comment.created_by_user?.person?.name ||
-                          data?.created_by_user?.display_name
-                        }
-                        placeholder="user"
-                        placeholderClass="text-slate-300"
-                      />
-                    </a>
-                  </Link>
+                    <ElemPhoto
+                      photo={comment.created_by_user?.person?.picture}
+                      wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                      imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                      imgAlt={
+                        comment.created_by_user?.person?.name ||
+                        data?.created_by_user?.display_name
+                      }
+                      placeholder="user"
+                      placeholderClass="text-slate-300"
+                    />
+                  </ElemLink>
                   <div className="">
                     <div className="inline-flex py-2 px-3 text-sm bg-gray-100 rounded-lg">
                       <div>
                         <p className="">
-                          <Link
+                          <ElemLink
                             href={`${PEOPLE}/${comment.created_by_user?.person?.slug}`}
+                            className="font-medium hover:underline"
                           >
-                            <a className="font-medium hover:underline">
-                              {comment.created_by_user?.person?.name ||
-                                comment.created_by_user?.display_name}
-                            </a>
-                          </Link>
+                            {comment.created_by_user?.person?.name ||
+                              comment.created_by_user?.display_name}
+                          </ElemLink>
                           <span aria-hidden="true"> · </span>
                           <span className="text-slate-600">
                             {formatDateShown(comment?.created_at)}

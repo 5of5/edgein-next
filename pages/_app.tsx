@@ -29,6 +29,7 @@ import {
   NOTIFICATIONS,
   PEOPLE,
   PROFILE,
+  ROOT,
 } from '@/routes';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
@@ -84,7 +85,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // Meta
   const canonicalUrl = (
-    `https://edgein.io` + (router.asPath === '/' ? '' : router.asPath)
+    `https://edgein.io` + (router.asPath === ROOT ? '' : router.asPath)
   ).split('?')[0];
 
   const metaTitle = pageProps.metaTitle

@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { ElemButton } from '@/components/elem-button';
 import {
   FigureBlurredCircle,
@@ -14,6 +13,7 @@ import Builders from '@/public/images/builders.svg';
 import People from '@/public/images/people.svg';
 import { IconCheck } from '@/components/icons';
 import { COMPANIES, INVESTORS } from '@/routes';
+import { ElemLink } from '@/components/elem-link';
 
 const Enterprise = () => {
   const { user } = useUser();
@@ -206,17 +206,15 @@ const Enterprise = () => {
                   key={item.title}
                   className="flex items-center justify-center"
                 >
-                  <Link href={item.link}>
-                    <a className="block">
-                      {item.image && (
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-auto"
-                        />
-                      )}
-                    </a>
-                  </Link>
+                  <ElemLink href={item.link} className="block">
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-auto"
+                      />
+                    )}
+                  </ElemLink>
                 </div>
               ))}
             </div>

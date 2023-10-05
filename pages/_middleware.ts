@@ -13,6 +13,7 @@ import {
   TERMS,
   NOT_FOUND,
   COMPANIES,
+  ROOT,
 } from '@/routes';
 
 const USAGE_LIMIT = 10;
@@ -68,7 +69,7 @@ export async function middleware(req: NextRequest) {
     );
 
     // we want users to fill onboarding again
-    if (userExists && url.pathname === '/') {
+    if (userExists && url.pathname === ROOT) {
       if (!userExists.onboarding_information?.locationDetails) {
         return NextResponse.redirect(new URL(ONBOARDING, req.url));
       }

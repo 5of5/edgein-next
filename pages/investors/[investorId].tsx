@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, MutableRefObject } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemKeyInfo } from '@/components/elem-key-info';
@@ -35,6 +34,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { INVESTORS } from '@/routes';
+import { ElemLink } from '@/components/elem-link';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -153,25 +153,23 @@ const VCFirm: NextPage<Props> = props => {
             {parentOrganization && (
               <div className="mt-4">
                 <div className="font-bold text-sm">Sub-organization of:</div>
-                <Link
+                <ElemLink
                   href={`/${
                     parentLinks?.from_company ? 'companies' : 'investors'
                   }/${parentOrganization?.slug}`}
-                  passHref
+                  className="flex items-center gap-2 mt-1 group"
                 >
-                  <a className="flex items-center gap-2 mt-1 group">
-                    <ElemPhoto
-                      photo={parentOrganization?.logo}
-                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
-                      imgClass="object-contain w-full h-full"
-                      imgAlt={parentOrganization?.name}
-                      placeholderClass="text-slate-300"
-                    />
-                    <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
-                      {parentOrganization?.name}
-                    </h2>
-                  </a>
-                </Link>
+                  <ElemPhoto
+                    photo={parentOrganization?.logo}
+                    wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
+                    imgClass="object-contain w-full h-full"
+                    imgAlt={parentOrganization?.name}
+                    placeholderClass="text-slate-300"
+                  />
+                  <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                    {parentOrganization?.name}
+                  </h2>
+                </ElemLink>
               </div>
             )}
 

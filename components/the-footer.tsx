@@ -1,5 +1,4 @@
 import { ElemLogo } from './elem-logo';
-import Link from 'next/link';
 import { IconLinkedIn, IconTwitter, IconTelegram, IconDiscord } from './icons';
 import {
   BRAND_ASSETS,
@@ -10,6 +9,7 @@ import {
   TEAM,
   TERMS,
 } from '@/routes';
+import { ElemLink } from './elem-link';
 
 export const TheFooter = () => {
   const currentYear = new Date().getFullYear();
@@ -70,14 +70,12 @@ export const TheFooter = () => {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
-            <Link href="/" passHref>
-              <a>
-                <ElemLogo
-                  mode="logo"
-                  className="h-8 w-auto transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
-                />
-              </a>
-            </Link>
+            <ElemLink href="/">
+              <ElemLogo
+                mode="logo"
+                className="h-8 w-auto transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
+              />
+            </ElemLink>
           </div>
           <div className="mt-12 grid grid-cols-1 gap-8 xl:mt-0 xl:col-span-2">
             <div className="md:grid md:grid-cols-4 md:gap-8">

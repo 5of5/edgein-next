@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useIntercom } from 'react-use-intercom';
 import { formatDate } from '@/utils';
 import { ElemButton } from '../elem-button';
-import Link from 'next/link';
 import { COMPANIES, INVESTORS, PEOPLE } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   activities: Array<any>;
@@ -75,13 +75,12 @@ export const ElemEventActivity: React.FC<Props> = ({
                           <br /> */}
                           {activity?.type === 'attendee' ? (
                             <>
-                              <Link
+                              <ElemLink
                                 href={`${PEOPLE}/${activity?.person?.slug}`}
+                                className="font-medium underline hover:no-underline"
                               >
-                                <a className="font-medium underline hover:no-underline">
-                                  {activity?.person?.name}
-                                </a>
-                              </Link>
+                                {activity?.person?.name}
+                              </ElemLink>
                               {` is going to `}
                               <span className="font-medium capitalize">
                                 {eventName}
@@ -89,13 +88,12 @@ export const ElemEventActivity: React.FC<Props> = ({
                             </>
                           ) : activity?.type === 'speaker' ? (
                             <>
-                              <Link
+                              <ElemLink
                                 href={`${PEOPLE}/${activity?.person?.slug}`}
+                                className="font-medium underline hover:no-underline"
                               >
-                                <a className="font-medium underline hover:no-underline">
-                                  {activity?.person?.name}
-                                </a>
-                              </Link>
+                                {activity?.person?.name}
+                              </ElemLink>
                               {` was added as a `}
                               <span className="font-medium capitalize">
                                 {activity?.type}
@@ -103,7 +101,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                             </>
                           ) : activity?.type === 'organizer' ? (
                             <>
-                              <Link
+                              <ElemLink
                                 href={
                                   activity?.company
                                     ? `${COMPANIES}/${activity?.company?.slug}`
@@ -111,13 +109,12 @@ export const ElemEventActivity: React.FC<Props> = ({
                                     ? `${INVESTORS}/${activity?.vc_firm?.slug}`
                                     : `${PEOPLE}/${activity?.person?.slug}`
                                 }
+                                className="font-medium underline hover:no-underline"
                               >
-                                <a className="font-medium underline hover:no-underline">
-                                  {activity?.company?.name ||
-                                    activity?.vc_firm?.name ||
-                                    activity?.person?.name}
-                                </a>
-                              </Link>
+                                {activity?.company?.name ||
+                                  activity?.vc_firm?.name ||
+                                  activity?.person?.name}
+                              </ElemLink>
                               {` was added as an `}
                               <span className="font-medium capitalize">
                                 {activity?.type}
@@ -125,7 +122,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                             </>
                           ) : activity?.type === 'sponsor' ? (
                             <>
-                              <Link
+                              <ElemLink
                                 href={
                                   activity?.company
                                     ? `${COMPANIES}/${activity?.company?.slug}`
@@ -133,13 +130,12 @@ export const ElemEventActivity: React.FC<Props> = ({
                                     ? `${INVESTORS}/${activity?.vc_firm?.slug}`
                                     : `${PEOPLE}/${activity?.person?.slug}`
                                 }
+                                className="font-medium underline hover:no-underline"
                               >
-                                <a className="font-medium underline hover:no-underline">
-                                  {activity?.company?.name ||
-                                    activity?.vc_firm?.name ||
-                                    activity?.person?.name}
-                                </a>
-                              </Link>
+                                {activity?.company?.name ||
+                                  activity?.vc_firm?.name ||
+                                  activity?.person?.name}
+                              </ElemLink>
                               {` was added as a `}
                               <span className="font-medium capitalize">
                                 {activity?.type}

@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '../elem-photo';
-import Link from 'next/link';
 import {
   IconFacebook,
   IconGithub,
@@ -10,6 +9,7 @@ import {
   IconTwitter,
 } from '../icons';
 import { GetSignUpProfileQuery } from '@/graphql/types';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   isSubmittingSignUp: boolean;
@@ -44,42 +44,32 @@ export const ElemSignUpProfile: FC<Props> = ({
         <p className="text-slate-900 text-base mt-6">{person?.name}</p>
         <ul className="flex items-center gap-2 mt-3">
           {person?.website_url && (
-            <Link href={person.website_url}>
-              <a target="_blank">
-                <IconGlobe title="Website" className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
+            <ElemLink href={person.website_url} target="_blank">
+              <IconGlobe title="Website" className="h-6 w-6 text-gray-400" />
+            </ElemLink>
           )}
           {person?.linkedin && (
-            <Link href={person.linkedin}>
-              <a target="_blank">
-                <IconLinkedIn className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
+            <ElemLink href={person.linkedin} target="_blank">
+              <IconLinkedIn className="h-6 w-6 text-gray-400" />
+            </ElemLink>
           )}
           {person?.twitter_url && (
             <li>
-              <Link href={person.twitter_url}>
-                <a target="_blank">
-                  <IconTwitter className="h-6 w-6 text-gray-400" />
-                </a>
-              </Link>
+              <ElemLink href={person.twitter_url} target="_blank">
+                <IconTwitter className="h-6 w-6 text-gray-400" />
+              </ElemLink>
             </li>
           )}
 
           {person?.github && (
-            <Link href={person.github}>
-              <a target="_blank">
-                <IconGithub className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
+            <ElemLink href={person.github} target="_blank">
+              <IconGithub className="h-6 w-6 text-gray-400" />
+            </ElemLink>
           )}
           {person?.facebook_url && (
-            <Link href={person.facebook_url}>
-              <a target="_blank">
-                <IconFacebook className="h-6 w-6 text-gray-400" />
-              </a>
-            </Link>
+            <ElemLink href={person.facebook_url} target="_blank">
+              <IconFacebook className="h-6 w-6 text-gray-400" />
+            </ElemLink>
           )}
         </ul>
       </div>

@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
@@ -14,6 +13,7 @@ import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
 import { IconGlobe, IconLockClosed } from './icons';
+import { ElemLink } from './elem-link';
 
 type ResourceDataType<T> = T;
 
@@ -114,11 +114,12 @@ export const ElemListCard: FC<Props> = ({
 
   const ListItemName = (
     <div className="inline-block">
-      <Link href={resourceUrl} passHref>
-        <a className="inline-block font-medium underline break-words line-clamp-2">
-          {name}
-        </a>
-      </Link>
+      <ElemLink
+        href={resourceUrl}
+        className="inline-block font-medium underline break-words line-clamp-2"
+      >
+        {name}
+      </ElemLink>
     </div>
   );
 
@@ -227,15 +228,14 @@ export const ElemListCard: FC<Props> = ({
               </li>
             ))}
           </ul>
-          <Link href={resourceUrl} passHref>
-            <a className="font-medium text-sm text-gray-500 ml-1 hover:underline">
-              {members.length > 1
-                ? `${members.length} ${
-                    isResourceList ? 'Followers' : 'Members'
-                  }`
-                : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
-            </a>
-          </Link>
+          <ElemLink
+            href={resourceUrl}
+            className="font-medium text-sm text-gray-500 ml-1 hover:underline"
+          >
+            {members.length > 1
+              ? `${members.length} ${isResourceList ? 'Followers' : 'Members'}`
+              : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
+          </ElemLink>
         </div>
       </div>
       <div className="mt-4">
