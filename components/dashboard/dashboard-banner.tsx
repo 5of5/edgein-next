@@ -6,7 +6,7 @@ import { IconCurrencyDollar, IconGift, IconX } from '../icons';
 import { numberWithCommas } from '@/utils';
 import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { LOCAL_STORAGE_SIDEBAR_BANNER_KEY } from '@/utils/constants';
-import { INVITE_A_FRIEND, SIGN_IN } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -66,7 +66,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
         )}
 
         <ElemLink
-          href={user ? INVITE_A_FRIEND : SIGN_IN}
+          href={user ? ROUTES.INVITE_A_FRIEND : ROUTES.SIGN_IN}
           className={`flex p-3 border border-primary-500 bg-white rounded-xl ${
             isVisitor ? '' : 'gap-2'
           }`}

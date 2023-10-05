@@ -8,7 +8,7 @@ import { Tab, Transition } from '@headlessui/react';
 import { useIntercom } from 'react-use-intercom';
 import parse from 'html-react-parser';
 import { useRouter } from 'next/router';
-import { COMPANIES } from '@/routes';
+import { ROUTES } from '@/routes';
 
 const Home = () => {
   const { user, loading } = useUser();
@@ -254,7 +254,7 @@ const Home = () => {
             </p>
             <div className="mt-6 flex items-start gap-x-6">
               <ElemButton
-                onClick={() => router.push(COMPANIES)}
+                onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="primary"
                 arrow
                 size="md"
@@ -336,7 +336,7 @@ const Home = () => {
                       </ul>
                       <div className="mt-6 flex items-start gap-x-6">
                         <ElemButton
-                          onClick={() => router.push(COMPANIES)}
+                          onClick={() => router.push(ROUTES.COMPANIES)}
                           btn="primary"
                           arrow
                           size="md"
@@ -447,7 +447,7 @@ const Home = () => {
             })}
             <div className="mt-6 flex items-center">
               <ElemButton
-                onClick={() => router.push(COMPANIES)}
+                onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="primary"
                 arrow
                 size="md"
@@ -520,7 +520,7 @@ const Home = () => {
 
             <div className="mt-8 flex flex-col justify-center space-y-6 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
               <ElemButton
-                onClick={() => router.push(COMPANIES)}
+                onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="default"
                 size="md"
                 arrow

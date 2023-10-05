@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemMemberAvatarList } from '@/components/group/elem-member-avatar-list';
 import { SettingTabProps } from './elem-setting-dialog';
-import { PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -183,7 +183,9 @@ export const ElemGroupAbout: React.FC<Props> = ({
                     return (
                       <li key={mem.id}>
                         {mem.user?.person?.slug ? (
-                          <Link href={`${PEOPLE}/${mem.user?.person?.slug}/`}>
+                          <Link
+                            href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}
+                          >
                             <a>{admin}</a>
                           </Link>
                         ) : (

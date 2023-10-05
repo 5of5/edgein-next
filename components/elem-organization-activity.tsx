@@ -3,7 +3,7 @@ import { ElemButton } from './elem-button';
 import { formatDate, convertToIntNum } from '@/utils';
 import { useIntercom } from 'react-use-intercom';
 import { Investment_Rounds } from '@/graphql/types';
-import { COMPANIES, INVESTORS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
 type Props = {
@@ -135,7 +135,7 @@ const renderActivity = (
                       : ', ')}
                   {item.vc_firm && (
                     <ElemLink
-                      href={`${INVESTORS}/${item.vc_firm?.slug}`}
+                      href={`${ROUTES.INVESTORS}/${item.vc_firm?.slug}`}
                       className="underline hover:no-underline"
                     >
                       {item.vc_firm['name']}
@@ -144,7 +144,7 @@ const renderActivity = (
                   {item.vc_firm && item.person && <>/</>}
                   {item.person && (
                     <ElemLink
-                      href={`${PEOPLE}/${item.person['slug']}`}
+                      href={`${ROUTES.PEOPLE}/${item.person['slug']}`}
                       className="underline hover:no-underline"
                     >
                       {item.person['name']}
@@ -173,7 +173,7 @@ const renderActivity = (
       <div className="inline leading-7 text-gray-600 text-sm">
         {activity.company && (
           <ElemLink
-            href={`${COMPANIES}/${activity.company['slug']}`}
+            href={`${ROUTES.COMPANIES}/${activity.company['slug']}`}
             className="underline font-medium hover:no-underline"
           >
             {activity.company['name']}
@@ -214,7 +214,7 @@ const renderActivity = (
 
               {item.vc_firm && (
                 <ElemLink
-                  href={`${INVESTORS}/${item.vc_firm?.slug}`}
+                  href={`${ROUTES.INVESTORS}/${item.vc_firm?.slug}`}
                   className="underline hover:no-underline"
                 >
                   {item.vc_firm['name']}
@@ -224,7 +224,7 @@ const renderActivity = (
 
               {item.person && (
                 <ElemLink
-                  href={`${PEOPLE}/${item.person['slug']}`}
+                  href={`${ROUTES.PEOPLE}/${item.person['slug']}`}
                   className="underline hover:no-underline"
                 >
                   {item.person['name']}

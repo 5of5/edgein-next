@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 import { ExploreMenuItem } from '@/types/common';
 import { ElemSidebarItem } from './elem-sidebar-item';
 import { DashboardBanner } from './dashboard-banner';
-import { COMPANIES, EVENTS, HOME, INVESTORS, NEWS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,
@@ -68,27 +68,27 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   let exploreMenu: ExploreMenuItem[] = [
     {
-      href: COMPANIES,
+      href: ROUTES.COMPANIES,
       icon: IconCompanies,
       title: 'Companies',
     },
     {
-      href: INVESTORS,
+      href: ROUTES.INVESTORS,
       icon: IconCash,
       title: 'Investors',
     },
     {
-      href: EVENTS,
+      href: ROUTES.EVENTS,
       icon: IconCalendarDays,
       title: 'Events',
     },
     {
-      href: NEWS,
+      href: ROUTES.NEWS,
       icon: IconNewspaper,
       title: 'News',
     },
     {
-      href: PEOPLE,
+      href: ROUTES.PEOPLE,
       icon: IconUserGroup,
       title: 'People',
     },
@@ -97,7 +97,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   if (user) {
     exploreMenu = [
       {
-        href: HOME,
+        href: ROUTES.HOME,
         icon: IconHome,
         title: 'Home',
       },

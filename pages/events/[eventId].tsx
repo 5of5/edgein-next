@@ -43,7 +43,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { usePopup } from '@/context/popup-context';
 import { onTrackView } from '@/utils/track';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { EVENTS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
 
 type Props = {
@@ -248,7 +248,9 @@ const Event: NextPage<Props> = props => {
               <ul className="flex -space-x-3">
                 {attendees?.map(attendee => (
                   <li key={attendee.id}>
-                    <ElemLink href={`${PEOPLE}/${attendee.person?.slug}`}>
+                    <ElemLink
+                      href={`${ROUTES.PEOPLE}/${attendee.person?.slug}`}
+                    >
                       {attendee.person?.picture ? (
                         <ElemPhoto
                           photo={attendee.person.picture}
@@ -284,7 +286,7 @@ const Event: NextPage<Props> = props => {
           <div className="mt-4">
             <div className="font-bold text-sm">Sub-event of:</div>
             <ElemLink
-              href={`${EVENTS}/${event.parent_event.slug}`}
+              href={`${ROUTES.EVENTS}/${event.parent_event.slug}`}
               className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5"
             >
               <h2 className="inline group-hover:underline">

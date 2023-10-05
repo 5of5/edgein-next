@@ -21,15 +21,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
-import {
-  COMPANIES,
-  CONTACT,
-  NOTIFICATIONS,
-  PRICING,
-  ROOT,
-  SIGN_IN,
-  SUPPORT,
-} from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
 export type Popups = 'search' | 'usage' | false;
@@ -48,7 +40,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
-    if (!showPopup && router.asPath.includes(SIGN_IN)) {
+    if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
       setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
 
@@ -80,10 +72,10 @@ export const TheNavbar: FC<Props> = ({}) => {
       if (response.status !== 200) {
         const responseText = await response.clone().json();
         if (responseText.message) {
-          router.push(SIGN_IN);
+          router.push(ROUTES.SIGN_IN);
         }
       } else {
-        window.location.href = ROOT;
+        window.location.href = ROUTES.ROOT;
       }
     } catch (e) {
       console.log(e);
@@ -116,17 +108,17 @@ export const TheNavbar: FC<Props> = ({}) => {
   }, [setShowPopup]);
 
   const redirectToSignIn = () => {
-    router.push(SIGN_IN);
+    router.push(ROUTES.SIGN_IN);
   };
 
   const ellipsisDropdownItems = [
     {
       label: 'Support',
-      href: SUPPORT,
+      href: ROUTES.SUPPORT,
     },
     {
       label: 'Pricing',
-      href: PRICING,
+      href: ROUTES.PRICING,
     },
     {
       label: 'Press',
@@ -134,7 +126,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     },
     {
       label: 'Contact',
-      href: CONTACT,
+      href: ROUTES.CONTACT,
     },
   ];
 
@@ -154,7 +146,10 @@ export const TheNavbar: FC<Props> = ({}) => {
               <IconBars3 className="h-6 w-6" />
             </ElemButton>
 
-            <ElemLink href={user ? COMPANIES : ROOT} className="w-auto lg:w-64">
+            <ElemLink
+              href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
+              className="w-auto lg:w-64"
+            >
               <ElemLogo
                 mode="logo"
                 className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
@@ -215,7 +210,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             {user ? (
               <>
                 <ElemLink
-                  href={NOTIFICATIONS}
+                  href={ROUTES.NOTIFICATIONS}
                   className="relative flex items-center justify-center w-9 h-9"
                 >
                   {unreadNotificationsCount > 0 && (
@@ -234,7 +229,7 @@ export const TheNavbar: FC<Props> = ({}) => {
               </>
             ) : (
               <>
-                <ElemLink href={SIGN_IN} className="w-auto">
+                <ElemLink href={ROUTES.SIGN_IN} className="w-auto">
                   <ElemButton btn="purple" className="whitespace-nowrap">
                     Sign in
                   </ElemButton>

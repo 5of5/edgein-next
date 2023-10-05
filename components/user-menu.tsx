@@ -5,7 +5,7 @@ import React, { Fragment, FC } from 'react';
 import { IconUserCircle } from './icons';
 import { useUser } from '@/context/user-context';
 import UserService from '@/utils/users';
-import { ACCOUNT, INVITE_A_FRIEND, PROFILE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
 type Props = {
@@ -18,16 +18,16 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
   const userMenuItems = [
     {
       label: 'Invite a friend',
-      href: INVITE_A_FRIEND,
+      href: ROUTES.INVITE_A_FRIEND,
       className: 'text-primary-500',
     },
     {
       label: 'Profile settings',
-      href: PROFILE,
+      href: ROUTES.PROFILE,
     },
     {
       label: 'Account settings',
-      href: ACCOUNT,
+      href: ROUTES.ACCOUNT,
     },
     {
       label: 'Sign out',

@@ -17,7 +17,7 @@ import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 import { ElemSocialShare } from '../elem-social-share';
-import { LISTS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -86,7 +86,7 @@ export const ElemListInformation: FC<Props> = ({
           breadcrumbs={[
             {
               name: 'my-lists',
-              to: LISTS,
+              to: ROUTES.LISTS,
               component: 'Lists',
             },
             {
@@ -153,7 +153,7 @@ export const ElemListInformation: FC<Props> = ({
                       <>
                         By{' '}
                         <ElemLink
-                          href={`${PEOPLE}/${list?.created_by?.person?.slug}`}
+                          href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
                           className="hover:underline"
                         >
                           {list?.created_by?.person?.name}

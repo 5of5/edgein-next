@@ -28,7 +28,7 @@ import {
   usePagination,
 } from 'react-table';
 import { useRouter } from 'next/router';
-import { COMPANIES, SIGN_IN } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -67,7 +67,7 @@ export const CompaniesTable: FC<Props> = ({
 
   const onBillingClick = async () => {
     if (!user) {
-      router.push(SIGN_IN);
+      router.push(ROUTES.SIGN_IN);
     } else {
       loadStripe();
     }
@@ -124,7 +124,7 @@ export const CompaniesTable: FC<Props> = ({
         accessor: 'name' as const,
         Cell: (props: any) => (
           <a
-            href={`${COMPANIES}/` + props.row.original?.slug}
+            href={`${ROUTES.COMPANIES}/` + props.row.original?.slug}
             className="flex items-center space-x-3 shrink-0 group transition-all"
           >
             <ElemPhoto

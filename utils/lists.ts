@@ -40,7 +40,7 @@ import {
 import { User } from '@/models/user';
 import { DeepPartial } from '@/types/common';
 import { getNameFromListName } from './reaction';
-import { COMPANIES, INVESTORS } from '@/routes';
+import { ROUTES } from '@/routes';
 
 export const updateResourceSentimentCount = async (
   resourceType: 'companies' | 'vc_firms',
@@ -117,7 +117,7 @@ export const updateCompaniesSentimentCount = async (
   return {
     sentiment,
     revalidatePath: shouldInc
-      ? `${COMPANIES}/${data.companies_by_pk?.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
+      ? `${ROUTES.COMPANIES}/${data.companies_by_pk?.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
       : '',
   };
 };
@@ -171,7 +171,7 @@ export const updateVCFirmsSentimentCount = async (
   return {
     sentiment,
     revalidatePath: shouldInc
-      ? `${INVESTORS}/${data.vc_firms_by_pk?.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
+      ? `${ROUTES.INVESTORS}/${data.vc_firms_by_pk?.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
       : '',
   };
 };

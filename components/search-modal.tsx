@@ -24,7 +24,7 @@ import { getEventBanner, randomImageOfCity } from '@/utils/helpers';
 import { formatDate } from '@/utils/numbers';
 import useLibrary from '@/hooks/use-library';
 import { parseIndexName } from '@/utils/algolia';
-import { COMPANIES, CONTACT, EVENTS, INVESTORS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
 const searchClient = algoliasearch(
@@ -103,12 +103,12 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/companies/${hit.objectID}`
-            : `${COMPANIES}/${hit.slug}`
+            : `${ROUTES.COMPANIES}/${hit.slug}`
         }
         onClick={() => {
           onClose();
           if (isAdmin && redirect) {
-            redirect(`${COMPANIES}/${hit.objectID}`);
+            redirect(`${ROUTES.COMPANIES}/${hit.objectID}`);
           }
         }}
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
@@ -169,7 +169,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/vc_firms/${hit.objectID}`
-            : `${INVESTORS}/${hit.slug}`
+            : `${ROUTES.INVESTORS}/${hit.slug}`
         }
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
         onClick={() => {
@@ -212,7 +212,7 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/people/${hit.objectID}`
-            : `${PEOPLE}/${hit.slug}`
+            : `${ROUTES.PEOPLE}/${hit.slug}`
         }
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
         onClick={() => {
@@ -255,7 +255,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/events/${hit.objectID}`
-            : `${EVENTS}/${hit.slug}`
+            : `${ROUTES.EVENTS}/${hit.slug}`
         }
         onClick={() => {
           onClose();
@@ -420,7 +420,7 @@ export default function SearchModal(props: any) {
           <h3 className="font-medium">No results for “{results.query}“</h3>
           <p>
             <ElemLink
-              href={CONTACT}
+              href={ROUTES.CONTACT}
               onClick={onClose}
               className="text-primary-500"
             >
@@ -448,7 +448,7 @@ export default function SearchModal(props: any) {
           <p>
             No results for “{results.query}“.{' '}
             <ElemLink
-              href={CONTACT}
+              href={ROUTES.CONTACT}
               onClick={onClose}
               className="text-primary-500"
             >

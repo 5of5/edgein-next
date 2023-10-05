@@ -24,7 +24,7 @@ import {
 import { flatten, startCase, unionBy } from 'lodash';
 import { getFollowsByResource } from './lists';
 import { ActionType, ResourceTypes } from '@/utils/constants';
-import { EVENTS, INVESTORS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type NotificationParamType = {
   target_user_id: number;
@@ -249,7 +249,7 @@ export const getNotificationOrganizationLink = (
 ) =>
   notification.company?.slug
     ? `/${notification.follow_resource_type}/${notification.company?.slug}`
-    : `${INVESTORS}/${notification.vc_firm?.slug}`;
+    : `${ROUTES.INVESTORS}/${notification.vc_firm?.slug}`;
 
 /** Remember to run test when update getMessage function */
 export const getMessage = ({
@@ -270,10 +270,10 @@ export const getMessage = ({
       } funding round`;
     }
     if (resourceType === 'team_members') {
-      return `added [${teamMember?.person?.name}](${PEOPLE}/${teamMember?.person?.slug}/) to the team`;
+      return `added [${teamMember?.person?.name}](${ROUTES.PEOPLE}/${teamMember?.person?.slug}/) to the team`;
     }
     if (resourceType === 'investors') {
-      return `added [${investor?.person?.name}](${PEOPLE}/${investor?.person?.slug}/) to the team`;
+      return `added [${investor?.person?.name}](${ROUTES.PEOPLE}/${investor?.person?.slug}/) to the team`;
     }
     if (resourceType === 'investments') {
       return companyId
@@ -283,9 +283,9 @@ export const getMessage = ({
     if (resourceType === 'event_organization') {
       return `was added as ${
         organizationType === 'organizer' ? 'an' : 'a'
-      } **${organizationType}** of [${
-        eventOrganization?.event?.name
-      }](${EVENTS}/${eventOrganization?.event?.slug}/)`;
+      } **${organizationType}** of [${eventOrganization?.event?.name}](${
+        ROUTES.EVENTS
+      }/${eventOrganization?.event?.slug}/)`;
     }
   }
 
@@ -298,10 +298,10 @@ export const getMessage = ({
       } funding round`;
     }
     if (resourceType === 'team_members') {
-      return `updated [${teamMember?.person?.name}](${PEOPLE}/${teamMember?.person?.slug}/)'s role on the team`;
+      return `updated [${teamMember?.person?.name}](${ROUTES.PEOPLE}/${teamMember?.person?.slug}/)'s role on the team`;
     }
     if (resourceType === 'investors') {
-      return `updated [${investor?.person?.name}](${PEOPLE}/${investor?.person?.slug}/)'s role on the team`;
+      return `updated [${investor?.person?.name}](${ROUTES.PEOPLE}/${investor?.person?.slug}/)'s role on the team`;
     }
     if (resourceType === 'investments') {
       return companyId
@@ -309,7 +309,7 @@ export const getMessage = ({
         : 'updated investment information on their portfolio';
     }
     if (resourceType === 'event_organization') {
-      return `was updated to **${organizationType}** of [${eventOrganization?.event?.name}](${EVENTS}/${eventOrganization?.event?.slug}/)`;
+      return `was updated to **${organizationType}** of [${eventOrganization?.event?.name}](${ROUTES.EVENTS}/${eventOrganization?.event?.slug}/)`;
     }
   }
 

@@ -1,4 +1,4 @@
-import { COMPANIES } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemOrganizationCard } from '../elem-organization-card';
 
 type Props = {
@@ -20,7 +20,7 @@ export const ElemCompaniesGrid: React.FC<Props> = ({
           return (
             <ElemOrganizationCard
               key={company.id}
-              href={`${COMPANIES}/${company.slug}`}
+              href={`${ROUTES.COMPANIES}/${company.slug}`}
               photos={company.logo}
               heading={company.name}
               text={company.overview}

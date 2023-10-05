@@ -3,7 +3,7 @@ import { IconSidebarNotes } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
-import { NOTES } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -17,7 +17,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
       <div className="w-full flex items-center justify-between">
         {user ? (
           <ElemSidebarItem
-            url={NOTES}
+            url={ROUTES.NOTES}
             text="Notes"
             IconComponent={IconSidebarNotes}
           />

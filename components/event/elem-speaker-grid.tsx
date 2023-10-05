@@ -4,7 +4,7 @@ import { ElemPersonCard } from '@/components/elem-person-card';
 import { ElemBulkSavePeople } from '../elem-bulk-save-people';
 import { ElemButton } from '../elem-button';
 import { numberWithCommas } from '@/utils';
-import { PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   people: GetEventQuery['events'][0]['event_person'];
@@ -59,7 +59,7 @@ export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
                 {item.person && (
                   <ElemPersonCard
                     key={item.person.id}
-                    href={`${PEOPLE}/${item.person.slug}`}
+                    href={`${ROUTES.PEOPLE}/${item.person.slug}`}
                     photo={item.person.picture}
                     heading={item.person.name}
                     linkedin={item.person.linkedin}

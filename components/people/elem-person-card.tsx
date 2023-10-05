@@ -12,7 +12,7 @@ import { IconLinkedIn, IconEmail, IconLocation } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getFullAddress } from '@/utils/helpers';
-import { PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -82,7 +82,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
       <div className="flex flex-col justify-between h-full">
         <div className="w-full">
           <ElemLink
-            href={`${PEOPLE}/${slug}`}
+            href={`${ROUTES.PEOPLE}/${slug}`}
             className="flex items-center gap-x-4 mb-4"
           >
             <ElemPhoto

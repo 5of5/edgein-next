@@ -6,7 +6,7 @@ import { getFullAddress } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
 import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '../elem-button';
-import { COMPANIES, INVESTORS } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -62,9 +62,9 @@ export const ElemJobsList: FC<Props> = ({
             }
 
             const slug = job.company
-              ? `${COMPANIES}/${organization.slug}`
+              ? `${ROUTES.COMPANIES}/${organization.slug}`
               : job.vc_firm
-              ? `${INVESTORS}/${organization.slug}`
+              ? `${ROUTES.INVESTORS}/${organization.slug}`
               : null;
 
             const logo = (

@@ -22,7 +22,7 @@ import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { PeopleList } from '@/components/my-list/people-list';
 import { useMutation } from 'react-query';
-import { LISTS } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   list: GetListsQuery['lists'][0];
@@ -145,7 +145,7 @@ const MyList: NextPage<Props> = (props: Props) => {
       const hotId =
         find(lists, list => 'hot' === getNameFromListName(list))?.id || 0;
 
-      router.push(LISTS);
+      router.push(ROUTES.LISTS);
       //router.reload();
       refreshProfile();
       toast.custom(

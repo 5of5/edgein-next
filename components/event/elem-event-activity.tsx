@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useIntercom } from 'react-use-intercom';
 import { formatDate } from '@/utils';
 import { ElemButton } from '../elem-button';
-import { COMPANIES, INVESTORS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -76,7 +76,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                           {activity?.type === 'attendee' ? (
                             <>
                               <ElemLink
-                                href={`${PEOPLE}/${activity?.person?.slug}`}
+                                href={`${ROUTES.PEOPLE}/${activity?.person?.slug}`}
                                 className="font-medium underline hover:no-underline"
                               >
                                 {activity?.person?.name}
@@ -89,7 +89,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                           ) : activity?.type === 'speaker' ? (
                             <>
                               <ElemLink
-                                href={`${PEOPLE}/${activity?.person?.slug}`}
+                                href={`${ROUTES.PEOPLE}/${activity?.person?.slug}`}
                                 className="font-medium underline hover:no-underline"
                               >
                                 {activity?.person?.name}
@@ -104,10 +104,10 @@ export const ElemEventActivity: React.FC<Props> = ({
                               <ElemLink
                                 href={
                                   activity?.company
-                                    ? `${COMPANIES}/${activity?.company?.slug}`
+                                    ? `${ROUTES.COMPANIES}/${activity?.company?.slug}`
                                     : activity?.vc_firm
-                                    ? `${INVESTORS}/${activity?.vc_firm?.slug}`
-                                    : `${PEOPLE}/${activity?.person?.slug}`
+                                    ? `${ROUTES.INVESTORS}/${activity?.vc_firm?.slug}`
+                                    : `${ROUTES.PEOPLE}/${activity?.person?.slug}`
                                 }
                                 className="font-medium underline hover:no-underline"
                               >
@@ -125,10 +125,10 @@ export const ElemEventActivity: React.FC<Props> = ({
                               <ElemLink
                                 href={
                                   activity?.company
-                                    ? `${COMPANIES}/${activity?.company?.slug}`
+                                    ? `${ROUTES.COMPANIES}/${activity?.company?.slug}`
                                     : activity?.vc_firm
-                                    ? `${INVESTORS}/${activity?.vc_firm?.slug}`
-                                    : `${PEOPLE}/${activity?.person?.slug}`
+                                    ? `${ROUTES.INVESTORS}/${activity?.vc_firm?.slug}`
+                                    : `${ROUTES.PEOPLE}/${activity?.person?.slug}`
                                 }
                                 className="font-medium underline hover:no-underline"
                               >

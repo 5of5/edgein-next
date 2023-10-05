@@ -9,7 +9,7 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 import useDisclosureState from '@/hooks/use-disclosure-state';
 import { MY_EDGEIN_MENU_OPEN_KEY } from '@/utils/constants';
-import { ACCOUNT, PROFILE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 const ElemMyEdgeInMenu = () => {
@@ -47,9 +47,9 @@ const ElemMyEdgeInMenu = () => {
           <Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
             <li>
               <ElemLink
-                href={PROFILE}
+                href={ROUTES.PROFILE}
                 className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-                  `${PROFILE}/`,
+                  `${ROUTES.PROFILE}/`,
                 )}`}
               >
                 {user?.person?.picture ? (
@@ -72,9 +72,9 @@ const ElemMyEdgeInMenu = () => {
 
             <li>
               <ElemLink
-                href={ACCOUNT}
+                href={ROUTES.ACCOUNT}
                 className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-                  `${ACCOUNT}/`,
+                  `${ROUTES.ACCOUNT}/`,
                 )}`}
               >
                 <IconSettings className="h-6 w-6" />

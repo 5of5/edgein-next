@@ -18,7 +18,7 @@ import { FilterInSectionType } from '../companies/elem-companies-by-filter-insec
 import { getHomepageEncodedURI } from '@/components/filters/processor';
 import { ElemButton } from '../elem-button';
 import { useRouter } from 'next/router';
-import { INVESTORS } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   headingText: string;
@@ -177,7 +177,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
                         return;
                       }
                       router.push(
-                        `${INVESTORS}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                        `${ROUTES.INVESTORS}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
                       );
                     }}
                     btn="primary"

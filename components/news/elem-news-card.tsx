@@ -9,7 +9,7 @@ import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemTags } from '@/components/elem-tags';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
-import { COMPANIES, INVESTORS } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -137,9 +137,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 <>
                   {otherOrganizations.map((organizer: any, index: number) => {
                     const slug = organizer.company
-                      ? `${COMPANIES}/${organizer.company?.slug}`
+                      ? `${ROUTES.COMPANIES}/${organizer.company?.slug}`
                       : organizer.vc_firm
-                      ? `${INVESTORS}/${organizer.vc_firm?.slug}`
+                      ? `${ROUTES.INVESTORS}/${organizer.vc_firm?.slug}`
                       : '';
 
                     const organization = organizer.company
@@ -189,9 +189,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   <ElemLink
                     href={
                       publisher.company
-                        ? `${COMPANIES}/${publisher.company?.slug}`
+                        ? `${ROUTES.COMPANIES}/${publisher.company?.slug}`
                         : publisher.vc_firm
-                        ? `${INVESTORS}/${publisher.vc_firm?.slug}`
+                        ? `${ROUTES.INVESTORS}/${publisher.vc_firm?.slug}`
                         : ''
                     }
                     target="_blank"
@@ -209,7 +209,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 {' • '}
                 Powered by{' '}
                 <ElemLink
-                  href={`${COMPANIES}/${
+                  href={`${ROUTES.COMPANIES}/${
                     source?.poweredby?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'

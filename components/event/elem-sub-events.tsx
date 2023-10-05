@@ -7,7 +7,7 @@ import { ElemEventCard } from '../events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import { IconPlus } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { EVENTS } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -29,7 +29,7 @@ export const ElemSubEvents: FC<Props> = ({
     event.preventDefault();
 
     router.push(
-      `${EVENTS}/?filters=${encodeURIComponent(
+      `${ROUTES.EVENTS}/?filters=${encodeURIComponent(
         `{"eventType":{"tags":["${type}"]}}`,
       )}`,
     );

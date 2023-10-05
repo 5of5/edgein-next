@@ -6,7 +6,7 @@ import { uniq, compact, sortBy } from 'lodash';
 import { ElemBulkSavePeople } from './elem-bulk-save-people';
 import { ElemButton } from './elem-button';
 import { useIntercom } from 'react-use-intercom';
-import { PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -113,7 +113,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                     {teamMember.person && (
                       <ElemPersonCard
                         key={teamMember.person.id}
-                        href={`${PEOPLE}/${teamMember.person.slug}`}
+                        href={`${ROUTES.PEOPLE}/${teamMember.person.slug}`}
                         photo={teamMember.person.picture}
                         heading={teamMember.person.name}
                         founder={teamMember.founder}

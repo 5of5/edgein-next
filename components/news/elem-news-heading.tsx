@@ -4,7 +4,7 @@ import { News } from '@/graphql/types';
 import moment from 'moment-timezone';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
-import { COMPANIES } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -67,7 +67,7 @@ const ElemNewsHeading: React.FC<Props> = ({
                 <>
                   <span>{` • powered by `}</span>
                   <ElemLink
-                    href={`${COMPANIES}/${
+                    href={`${ROUTES.COMPANIES}/${
                       news?.source?.poweredby?.toLowerCase() === 'techcrunch'
                         ? 'techcrunch'
                         : 'cryptopanic'

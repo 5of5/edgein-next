@@ -14,7 +14,7 @@ import {
 import { useUser } from '@/context/user-context';
 import ElemAddListDialog from './elem-add-list-dialog';
 import differenceBy from 'lodash/differenceBy';
-import { LISTS } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -192,7 +192,7 @@ export const ElemGroupLists: React.FC<Props> = ({
                   className="flex space-x-4 justify-between items-start"
                 >
                   <ElemLink
-                    href={`${LISTS}/${item.id}/${kebabCase(
+                    href={`${ROUTES.LISTS}/${item.id}/${kebabCase(
                       getNameFromListName(item),
                     )}`}
                     className="flex items-start space-x-2 text-sm"

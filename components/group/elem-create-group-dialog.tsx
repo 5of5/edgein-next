@@ -8,7 +8,7 @@ import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
 import { Group, groupSchema } from '@/utils/schema';
 import { extractErrors, zodValidate } from '@/utils/validation';
-import { GROUPS } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   isOpen: boolean;
@@ -39,7 +39,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
     {
       onSuccess: data => {
         refetchMyGroups();
-        router.push(`${GROUPS}/${data.id}`);
+        router.push(`${ROUTES.GROUPS}/${data.id}`);
       },
     },
   );

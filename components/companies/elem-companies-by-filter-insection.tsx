@@ -16,7 +16,7 @@ import { Pagination } from '../pagination';
 import { PlaceholderCompanyCard } from '../placeholders';
 import { CompaniesTable } from './elem-companies-table';
 import { CardType, ElemCompanyCard } from './elem-company-card';
-import { COMPANIES } from '@/routes';
+import { ROUTES } from '@/routes';
 
 export type FilterInSectionType = 'pagination' | 'see-all';
 
@@ -145,7 +145,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
                         return;
                       }
                       router.push(
-                        `${COMPANIES}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                        `${ROUTES.COMPANIES}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
                       );
                     }}
                     btn="primary"

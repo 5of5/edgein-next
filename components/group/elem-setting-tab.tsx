@@ -8,7 +8,7 @@ import { User_Groups } from '@/graphql/types';
 import { IconSignOut, IconTrash, IconX } from '@/components/icons';
 import ElemSettingEditableField from './elem-setting-editable-field';
 import { ElemDeleteConfirmModal } from '../elem-delete-confirm-modal';
-import { GROUPS } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   group: User_Groups;
@@ -136,7 +136,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
     {
       onSuccess: () => {
         refetchMyGroups();
-        router.push(GROUPS);
+        router.push(ROUTES.GROUPS);
       },
     },
   );
@@ -156,7 +156,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
     {
       onSuccess: () => {
         refetchMyGroups();
-        router.push(GROUPS);
+        router.push(ROUTES.GROUPS);
       },
     },
   );

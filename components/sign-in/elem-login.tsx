@@ -7,7 +7,7 @@ import { InputText } from '@/components/input-text';
 import { IconLinkedInAlt, IconExclamationTriangle } from '@/components/icons';
 import { redirect_url } from '@/utils/auth';
 import ForgotPasswordModal from '../forgot-password-modal';
-import { ROOT } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   onNext: (email: string) => void;
@@ -66,7 +66,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
           if (router.query.redirect) {
             window.location.href = router.query.redirect as string;
           } else {
-            window.location.href = ROOT;
+            window.location.href = ROUTES.ROOT;
           }
         }
       },

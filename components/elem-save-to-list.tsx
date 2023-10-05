@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 import { FREE_USER_MAXIMUM_LISTS } from '@/utils/constants';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
-import { COMPANIES } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   resourceName: string | null;
@@ -180,7 +180,7 @@ export const ElemSaveToList: FC<Props> = ({
         resourceId,
         resourceType,
         listName,
-        pathname: `${COMPANIES}/${slug}`,
+        pathname: `${ROUTES.COMPANIES}/${slug}`,
       });
       if (newSentiment?.id) {
         setFollowsByResource(prev => {

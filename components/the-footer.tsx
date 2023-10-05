@@ -1,14 +1,6 @@
 import { ElemLogo } from './elem-logo';
 import { IconLinkedIn, IconTwitter, IconTelegram, IconDiscord } from './icons';
-import {
-  BRAND_ASSETS,
-  CONTACT,
-  PRICING,
-  PRIVACY,
-  SUPPORT,
-  TEAM,
-  TERMS,
-} from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
 export const TheFooter = () => {
@@ -21,18 +13,18 @@ export const TheFooter = () => {
     ],
     company: [
       // { name: "About", href: "https://www.5of5.vc/about" },
-      { name: 'Team', href: TEAM },
-      { name: 'Pricing', href: PRICING },
-      { name: 'Brand Assets', href: BRAND_ASSETS },
+      { name: 'Team', href: ROUTES.TEAM },
+      { name: 'Pricing', href: ROUTES.PRICING },
+      { name: 'Brand Assets', href: ROUTES.BRAND_ASSETS },
     ],
     resources: [
-      { name: 'Contact', href: CONTACT },
-      { name: 'Support', href: SUPPORT },
+      { name: 'Contact', href: ROUTES.CONTACT },
+      { name: 'Support', href: ROUTES.SUPPORT },
       { name: 'Press', href: 'mailto:press@edgein.io' },
     ],
     legal: [
-      { name: 'Privacy', href: PRIVACY },
-      { name: 'Terms', href: TERMS },
+      { name: 'Privacy', href: ROUTES.PRIVACY },
+      { name: 'Terms', href: ROUTES.TERMS },
     ],
     social: [
       {

@@ -1,4 +1,4 @@
-import { ACCOUNT } from '@/routes';
+import { ROUTES } from '@/routes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 import UserService from '../../utils/users';
@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // Authenticate your user.
         const session = await stripe.billingPortal.sessions.create({
           customer: dbuser.billing_org?.customer_id,
-          return_url: `${req.headers.origin}${ACCOUNT}`,
+          return_url: `${req.headers.origin}${ROUTES.ACCOUNT}`,
         });
         res.send({ success: true, redirect: session.url });
       } else {
@@ -45,8 +45,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             terms_of_service: 'required',
           },
           client_reference_id: user.id,
-          success_url: `${req.headers.origin}/api/refresh-user/?redirect=${ACCOUNT}/?success=true`,
-          cancel_url: `${req.headers.origin}${ACCOUNT}/?canceled=true`,
+          success_url: `${req.headers.origin}/api/refresh-user/?redirect=${ROUTES.ACCOUNT}/?success=true`,
+          cancel_url: `${req.headers.origin}${ROUTES.ACCOUNT}/?canceled=true`,
         });
         res.send({ success: true, redirect: session.url });
       }

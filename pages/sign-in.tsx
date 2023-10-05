@@ -12,7 +12,7 @@ import { ElemSignUpConfirm } from '@/components/sign-in/elem-sign-up-confirm';
 import { GetSignUpProfileQuery } from '@/graphql/types';
 import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 import { ElemLink } from '@/components/elem-link';
-import { ROOT } from '@/routes';
+import { ROUTES } from '@/routes';
 
 export type SignUpFormState = {
   firstName?: string;
@@ -80,7 +80,7 @@ export default function SignIn() {
           <ElemSignInHeader
             rightComponent={
               signUpStep === 0 ? (
-                <ElemLink href={ROOT}>
+                <ElemLink href={ROUTES.ROOT}>
                   <ElemButton btn="white">Back</ElemButton>
                 </ElemLink>
               ) : signUpStep === 1 ? (

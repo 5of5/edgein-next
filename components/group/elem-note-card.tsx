@@ -28,7 +28,7 @@ import { InputTextarea } from '../input-textarea';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import ElemNoteForm from '@/components/elem-note-form';
 import { usePopup } from '@/context/popup-context';
-import { GROUPS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -344,7 +344,7 @@ const ElemNoteCard: React.FC<Props> = ({
                 />
               </ElemLink>
             ) : layout === 'groupAndAuthor' ? (
-              <ElemLink href={`${GROUPS}/${data?.user_group?.id}`}>
+              <ElemLink href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}>
                 <div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-gray-100 rounded-lg border border-gray-100">
                   <IconGroup
                     className="w-7 h-7"
@@ -355,7 +355,7 @@ const ElemNoteCard: React.FC<Props> = ({
             ) : (
               // layout === "author"
               <ElemLink
-                href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
               >
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
@@ -375,7 +375,7 @@ const ElemNoteCard: React.FC<Props> = ({
             {(layout === 'organizationAndAuthor' ||
               layout === 'groupAndAuthor') && (
               <ElemLink
-                href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
                 className="absolute -right-1 -bottom-1"
               >
                 <ElemPhoto
@@ -399,13 +399,13 @@ const ElemNoteCard: React.FC<Props> = ({
                 {layout === 'organizationAndAuthor' ? (
                   <ElemLink href={resourceLink}>{resource?.name}</ElemLink>
                 ) : layout === 'groupAndAuthor' ? (
-                  <ElemLink href={`${GROUPS}/${data?.user_group?.id}`}>
+                  <ElemLink href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}>
                     {data?.user_group?.name}
                   </ElemLink>
                 ) : (
                   // layout === "author"
                   <ElemLink
-                    href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                    href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
                   >
                     {data?.created_by_user?.person?.name}
                   </ElemLink>
@@ -416,7 +416,7 @@ const ElemNoteCard: React.FC<Props> = ({
                   layout === 'groupAndAuthor') && (
                   <>
                     <ElemLink
-                      href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                      href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
                       className="underline-offset-1 hover:underline"
                     >
                       {data?.created_by_user?.person?.name}
@@ -516,7 +516,7 @@ const ElemNoteCard: React.FC<Props> = ({
               <div key={comment.id} className="flex items-center gap-2">
                 <div className="flex items-start gap-2">
                   <ElemLink
-                    href={`${PEOPLE}/${comment.created_by_user?.person?.slug}`}
+                    href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
                   >
                     <ElemPhoto
                       photo={comment.created_by_user?.person?.picture}
@@ -535,7 +535,7 @@ const ElemNoteCard: React.FC<Props> = ({
                       <div>
                         <p className="">
                           <ElemLink
-                            href={`${PEOPLE}/${comment.created_by_user?.person?.slug}`}
+                            href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
                             className="font-medium hover:underline"
                           >
                             {comment.created_by_user?.person?.name ||

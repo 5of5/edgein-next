@@ -1,7 +1,7 @@
 import React from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { User_Group_Members } from '@/graphql/types';
-import { PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -34,7 +34,7 @@ export const ElemMemberAvatarList: React.FC<Props> = ({ members }) => {
         return (
           <li key={mem.id}>
             {mem.user?.person?.slug ? (
-              <ElemLink href={`${PEOPLE}/${mem.user?.person?.slug}/`}>
+              <ElemLink href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}>
                 {member}
               </ElemLink>
             ) : (

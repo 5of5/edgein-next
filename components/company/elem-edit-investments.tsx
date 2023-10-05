@@ -5,7 +5,7 @@ import { IconEditPencil, IconSortUp, IconSortDown } from '@/components/icons';
 import { Pagination } from '@/components/pagination';
 import { numberWithCommas, formatDate } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
-import { INVESTORS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -81,7 +81,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
                       <ElemLink
-                        href={`${INVESTORS}/${investment.vc_firm.slug}`}
+                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
                         className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
@@ -93,7 +93,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 
                     {investment.person && (
                       <ElemLink
-                        href={`${PEOPLE}/${investment.person.slug}`}
+                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
                         className="investor flex items-center space-x-3 hover:opacity-70"
                       >
@@ -113,7 +113,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
                       <ElemLink
-                        href={`${INVESTORS}/${investment.vc_firm.slug}`}
+                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
                         className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
@@ -133,7 +133,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.person && (
                       <ElemLink
-                        href={`${PEOPLE}/${investment.person.slug}`}
+                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
                         className="investor flex items-center space-x-3 hover:opacity-70"
                       >

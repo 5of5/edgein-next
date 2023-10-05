@@ -5,7 +5,7 @@ import { removeSpecialCharacterFromString } from '@/utils';
 import { TableEmptyCell } from './table-empty-cell';
 import { PlaceholderTable } from '../placeholders';
 import { Table } from './table';
-import { PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 
 type Props = {
   listId: number;
@@ -46,7 +46,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <div>
             <a
-              href={`${PEOPLE}/` + props.row.original?.person?.slug}
+              href={`${ROUTES.PEOPLE}/` + props.row.original?.person?.slug}
               className="flex items-center space-x-3 shrink-0 transition-all"
             >
               <ElemPhoto

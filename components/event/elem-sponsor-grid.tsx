@@ -4,7 +4,7 @@ import { IconSortUp, IconSortDown } from '@/components/icons';
 import { ElemPhoto } from '@/components/elem-photo';
 import { Pagination } from '@/components/pagination';
 import { GetEventQuery } from '@/graphql/types';
-import { COMPANIES, INVESTORS } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -28,7 +28,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
             return (
               <div className="flex items-center shrink-0 w-full">
                 <ElemLink
-                  href={`${COMPANIES}/${props.row.original.company.slug}`}
+                  href={`${ROUTES.COMPANIES}/${props.row.original.company.slug}`}
                   className="company flex items-center space-x-3 hover:opacity-70"
                 >
                   <ElemPhoto
@@ -49,7 +49,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
             return (
               <div className="flex items-center shrink-0 w-full">
                 <ElemLink
-                  href={`${INVESTORS}/${props.row.original.vc_firm.slug}`}
+                  href={`${ROUTES.INVESTORS}/${props.row.original.vc_firm.slug}`}
                   className="investor flex items-center space-x-3 hover:opacity-70"
                 >
                   <ElemPhoto

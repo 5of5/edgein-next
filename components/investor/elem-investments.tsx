@@ -19,7 +19,7 @@ import { Menu } from '@headlessui/react';
 import { Pagination } from '@/components/pagination';
 import { ElemButton } from '../elem-button';
 import { useIntercom } from 'react-use-intercom';
-import { COMPANIES, INVESTORS, PEOPLE } from '@/routes';
+import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {
@@ -109,7 +109,7 @@ export const ElemInvestments: React.FC<Props> = ({
               emptyCell
             ) : (
               <ElemLink
-                href={`${COMPANIES}/${props.value.slug}`}
+                href={`${ROUTES.COMPANIES}/${props.value.slug}`}
                 className="company flex items-center space-x-3 hover:opacity-70"
               >
                 <ElemPhoto
@@ -172,7 +172,7 @@ export const ElemInvestments: React.FC<Props> = ({
                       >
                         {investment.vc_firm && (
                           <ElemLink
-                            href={`${INVESTORS}/${investment.vc_firm.slug}`}
+                            href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                             key={investment.vc_firm.id}
                             className="vcfirm flex items-center space-x-3 hover:opacity-70"
                           >
@@ -191,7 +191,7 @@ export const ElemInvestments: React.FC<Props> = ({
 
                         {investment.person && (
                           <ElemLink
-                            href={`${PEOPLE}/${investment.person.slug}`}
+                            href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                             key={investment.person.id}
                             className="investor flex items-center space-x-3 hover:opacity-70"
                           >
@@ -220,7 +220,7 @@ export const ElemInvestments: React.FC<Props> = ({
                       >
                         {investment.vc_firm && (
                           <ElemLink
-                            href={`${INVESTORS}/${investment.vc_firm.slug}`}
+                            href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                             key={investment.vc_firm.id}
                             className="vcfirm flex items-center space-x-3 hover:opacity-70"
                           >
@@ -248,7 +248,7 @@ export const ElemInvestments: React.FC<Props> = ({
                       >
                         {investment.person && (
                           <ElemLink
-                            href={`${PEOPLE}/${investment.person.slug}`}
+                            href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                             key={investment.person.id}
                             className="investor flex items-center space-x-3 hover:opacity-70"
                           >
