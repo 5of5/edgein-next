@@ -18,6 +18,7 @@ import { find, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
+import { ROUTES } from '@/routes';
 
 type Props = {
   resourceName: string | null;
@@ -178,7 +179,7 @@ export const ElemSaveToList: FC<Props> = ({
         resourceId,
         resourceType,
         listName,
-        pathname: `/companies/${slug}`,
+        pathname: `${ROUTES.COMPANIES}/${slug}`,
       });
       if (newSentiment?.id) {
         setFollowsByResource(prev => {

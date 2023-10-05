@@ -3,9 +3,10 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { IconEditPencil, IconSortUp, IconSortDown } from '@/components/icons';
 import { Pagination } from '@/components/pagination';
-import Link from 'next/link';
 import { numberWithCommas, formatDate } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -79,31 +80,29 @@ export const ElemEditInvestments: React.FC<Props> = ({
                 return (
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
-                      <Link
-                        href={`/investors/${investment.vc_firm.slug}`}
+                      <ElemLink
+                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
+                        className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
-                        <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-                          <span className="line-clamp-2">
-                            {`${investment.vc_firm.name}, `}
-                          </span>
-                        </a>
-                      </Link>
+                        <span className="line-clamp-2">
+                          {`${investment.vc_firm.name}, `}
+                        </span>
+                      </ElemLink>
                     )}
 
                     {investment.person && (
-                      <Link
-                        href={`/people/${investment.person.slug}`}
+                      <ElemLink
+                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
+                        className="investor flex items-center space-x-3 hover:opacity-70"
                       >
-                        <a className="investor flex items-center space-x-3 hover:opacity-70">
-                          <span className="line-clamp-2">
-                            {`${investment.person.name}${
-                              index < vcsWithPartner.length - 1 ? ', ' : ''
-                            }`}
-                          </span>
-                        </a>
-                      </Link>
+                        <span className="line-clamp-2">
+                          {`${investment.person.name}${
+                            index < vcsWithPartner.length - 1 ? ', ' : ''
+                          }`}
+                        </span>
+                      </ElemLink>
                     )}
                   </div>
                 );
@@ -113,18 +112,17 @@ export const ElemEditInvestments: React.FC<Props> = ({
                 return (
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
-                      <Link
-                        href={`/investors/${investment.vc_firm.slug}`}
+                      <ElemLink
+                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
+                        className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
-                        <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-                          <span className="line-clamp-2">
-                            {`${investment.vc_firm.name}${
-                              index < vcs.length - 1 ? ', ' : ''
-                            }`}
-                          </span>
-                        </a>
-                      </Link>
+                        <span className="line-clamp-2">
+                          {`${investment.vc_firm.name}${
+                            index < vcs.length - 1 ? ', ' : ''
+                          }`}
+                        </span>
+                      </ElemLink>
                     )}
                   </div>
                 );
@@ -134,18 +132,17 @@ export const ElemEditInvestments: React.FC<Props> = ({
                 return (
                   <div key={investment.id} className="flex">
                     {investment.person && (
-                      <Link
-                        href={`/people/${investment.person.slug}`}
+                      <ElemLink
+                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
+                        className="investor flex items-center space-x-3 hover:opacity-70"
                       >
-                        <a className="investor flex items-center space-x-3 hover:opacity-70">
-                          <span className="line-clamp-2">
-                            {`${investment.person.name}${
-                              index < angels.length - 1 ? ', ' : ''
-                            }`}
-                          </span>
-                        </a>
-                      </Link>
+                        <span className="line-clamp-2">
+                          {`${investment.person.name}${
+                            index < angels.length - 1 ? ', ' : ''
+                          }`}
+                        </span>
+                      </ElemLink>
                     )}
                   </div>
                 );

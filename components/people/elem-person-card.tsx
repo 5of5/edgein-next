@@ -6,13 +6,14 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
-import Link from 'next/link';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { flatten, union, orderBy } from 'lodash';
 import { IconLinkedIn, IconEmail, IconLocation } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getFullAddress } from '@/utils/helpers';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   person: People;
@@ -80,21 +81,22 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
       {' '}
       <div className="flex flex-col justify-between h-full">
         <div className="w-full">
-          <Link href={`/people/${slug}`}>
-            <a className="flex items-center gap-x-4 mb-4">
-              <ElemPhoto
-                photo={picture}
-                wrapClass="flex items-center justify-center shrink-0 w-12  aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
-                imgClass="object-fit max-w-full max-h-full"
-                imgAlt={name}
-                placeholderClass="text-gray-500"
-                placeholder="user"
-              />
-              <h3 className="font-medium truncate" title={name ? name : ''}>
-                {name}
-              </h3>
-            </a>
-          </Link>
+          <ElemLink
+            href={`${ROUTES.PEOPLE}/${slug}`}
+            className="flex items-center gap-x-4 mb-4"
+          >
+            <ElemPhoto
+              photo={picture}
+              wrapClass="flex items-center justify-center shrink-0 w-12  aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
+              imgClass="object-fit max-w-full max-h-full"
+              imgAlt={name}
+              placeholderClass="text-gray-500"
+              placeholder="user"
+            />
+            <h3 className="font-medium truncate" title={name ? name : ''}>
+              {name}
+            </h3>
+          </ElemLink>
           <div>
             {currentJob && (
               <div className="text-gray-500 text-sm">
@@ -103,12 +105,12 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   {currentJob.organization?.slug ? (
                     <>
                       {' at '}
-                      <Link
-                        href={`/${currentJob.type}/${currentJob.organization.slug}`}>
-                        <a className="text-gray-700 underline hover:no-underline">
-                          {currentJob.organization.name}
-                        </a>
-                      </Link>
+                      <ElemLink
+                        href={`/${currentJob.type}/${currentJob.organization.slug}`}
+                        className="text-gray-700 underline hover:no-underline"
+                      >
+                        {currentJob.organization.name}
+                      </ElemLink>
                     </>
                   ) : currentJob.organization?.name ? (
                     <> at {currentJob.organization?.name}</>
@@ -179,14 +181,17 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             {user?.entitlements?.viewEmails && linkedin ? (
               <ElemTooltip size="md" content="View LinkedIn Profile">
                 <div>
-                  <Link href={linkedin} passHref>
-                    <a className="block" target="_blank" rel="noreferrer">
-                      <IconLinkedIn
-                        title="LinkedIn"
-                        className="h-5 w-5 shrink-0 text-gray-600"
-                      />
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={linkedin}
+                    className="block"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconLinkedIn
+                      title="LinkedIn"
+                      className="h-5 w-5 shrink-0 text-gray-600"
+                    />
+                  </ElemLink>
                 </div>
               </ElemTooltip>
             ) : linkedin ? (

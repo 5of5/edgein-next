@@ -4,7 +4,6 @@ import { ElemPhoto } from '@/components/elem-photo';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
-import Link from 'next/link';
 import {
   IconGlobe,
   IconLinkedIn,
@@ -19,6 +18,9 @@ import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { CardType } from '../companies/elem-company-card';
+import { ElemSocialIconGroup } from '../elem-social-icon-group';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -57,7 +59,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
 
   const onClickInvestorLinkedin = () => {
     if (!user) {
-      router.push('/sign-in');
+      router.push(ROUTES.SIGN_IN);
     } else {
       setIsOpenUpgradeDialog(true);
     }
@@ -67,55 +69,53 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
-          <Link href={`/investors/${slug}`}>
-            <a>
-              <div className="flex shrink-0 w-full items-center gap-4">
-                <ElemPhoto
-                  photo={logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
-                  imgClass="object-fit max-w-full max-h-full"
-                  imgAlt={name}
-                  placeholderClass="text-slate-300"
-                />
-                <ElemTooltip content={name} mode="light">
-                  <h3 className="text-lg font-medium truncate">{name}</h3>
-                </ElemTooltip>
-              </div>
+          <ElemLink href={`${ROUTES.INVESTORS}/${slug}`}>
+            <div className="flex shrink-0 w-full items-center gap-4">
+              <ElemPhoto
+                photo={logo}
+                wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
+                imgClass="object-fit max-w-full max-h-full"
+                imgAlt={name}
+                placeholderClass="text-slate-300"
+              />
+              <ElemTooltip content={name} mode="light">
+                <h3 className="text-lg font-medium truncate">{name}</h3>
+              </ElemTooltip>
+            </div>
 
-              <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
-                <div className="flex flex-col">
-                  <span className="text-xs">Founded</span>
-                  <span className="text-sm font-medium">
-                    {year_founded && year_founded !== '' ? year_founded : '-'}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs">Investments</span>
-                  <span className="text-sm font-medium">
-                    {num_of_investments && num_of_investments > 0
-                      ? num_of_investments
-                      : '-'}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs">Funding</span>
-                  <span className="text-sm font-medium">
-                    {investment_amount_total && investment_amount_total > 0
-                      ? `$${convertToInternationalCurrencySystem(
-                          Number(investment_amount_total),
-                        )}`
-                      : '-'}
-                  </span>
-                </div>
+            <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
+              <div className="flex flex-col">
+                <span className="text-xs">Founded</span>
+                <span className="text-sm font-medium">
+                  {year_founded && year_founded !== '' ? year_founded : '-'}
+                </span>
               </div>
+              <div className="flex flex-col">
+                <span className="text-xs">Investments</span>
+                <span className="text-sm font-medium">
+                  {num_of_investments && num_of_investments > 0
+                    ? num_of_investments
+                    : '-'}
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs">Funding</span>
+                <span className="text-sm font-medium">
+                  {investment_amount_total && investment_amount_total > 0
+                    ? `$${convertToInternationalCurrencySystem(
+                        Number(investment_amount_total),
+                      )}`
+                    : '-'}
+                </span>
+              </div>
+            </div>
 
-              {type === 'full' && overview && (
-                <div className="mt-2 text-sm line-clamp-3 text-gray-500">
-                  {overview}
-                </div>
-              )}
-            </a>
-          </Link>
+            {type === 'full' && overview && (
+              <div className="mt-2 text-sm line-clamp-3 text-gray-500">
+                {overview}
+              </div>
+            )}
+          </ElemLink>
 
           <div>
             {type === 'full' && !isEmptyLocationJson && (
@@ -142,41 +142,26 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
         </div>
 
         <div className="flex items-center justify-between mt-4 gap-x-5">
-          {(website || linkedin || twitter) && (
-            <div className="flex items-center space-x-1.5">
-              {website && (
-                <Link href={website}>
-                  <a target="_blank">
-                    <IconGlobe
-                      title="Website"
-                      className="h-5 w-5 text-gray-600"
-                    />
-                  </a>
-                </Link>
-              )}
+          <ElemSocialIconGroup
+            resources={[
+              {
+                value: website,
+                title: 'Website',
+                icon: IconGlobe,
+              },
+              {
+                isPremium: true,
+                value: linkedin,
+                icon: IconLinkedIn,
+              },
+              {
+                value: twitter,
+                icon: IconTwitter,
+              },
+            ]}
+          />
 
-              {linkedin ? (
-                userCanViewLinkedIn ? (
-                  <Link href={linkedin}>
-                    <a target="_blank">
-                      <IconLinkedIn className="h-5 w-5 text-gray-600" />
-                    </a>
-                  </Link>
-                ) : (
-                  <button onClick={onClickInvestorLinkedin}>
-                    <IconLinkedIn className="h-5 w-5 text-gray-400" />
-                  </button>
-                )
-              ) : null}
-
-              {twitter && (
-                <Link href={twitter}>
-                  <a target="_blank">
-                    <IconTwitter className="h-5 w-5 text-gray-600" />
-                  </a>
-                </Link>
-              )}
-              {/*
+          {/*
             TO DO: add github and discord fields to vc_firms in db
           {github && (
             <Link href={github}>
@@ -192,8 +177,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
               </a>
             </Link>
           )} */}
-            </div>
-          )}
 
           <ElemSaveToList
             resourceName={vcFirm.name}

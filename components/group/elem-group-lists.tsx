@@ -5,7 +5,6 @@ import { kebabCase } from 'lodash';
 import { IconCustomList, IconPlus, IconCheck } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { getNameFromListName } from '@/utils/reaction';
-import Link from 'next/link';
 import {
   Lists,
   List_Members_Bool_Exp,
@@ -15,6 +14,8 @@ import {
 import { useUser } from '@/context/user-context';
 import ElemAddListDialog from './elem-add-list-dialog';
 import differenceBy from 'lodash/differenceBy';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -190,30 +191,29 @@ export const ElemGroupLists: React.FC<Props> = ({
                   key={item.id}
                   className="flex space-x-4 justify-between items-start"
                 >
-                  <Link
-                    href={`/lists/${item.id}/${kebabCase(
+                  <ElemLink
+                    href={`${ROUTES.LISTS}/${item.id}/${kebabCase(
                       getNameFromListName(item),
                     )}`}
+                    className="flex items-start space-x-2 text-sm"
                   >
-                    <a className="flex items-start space-x-2 text-sm">
-                      <div>
-                        <h3
-                          className="line-clamp-1 break-all font-medium hover:underline"
-                          title={getNameFromListName(item)}
-                        >
-                          {getNameFromListName(item)}
-                        </h3>
+                    <div>
+                      <h3
+                        className="line-clamp-1 break-all font-medium hover:underline"
+                        title={getNameFromListName(item)}
+                      >
+                        {getNameFromListName(item)}
+                      </h3>
 
-                        <p className="text-gray-500">
-                          <span className="capitalize">
-                            By {item.created_by?.display_name}
-                          </span>
-                          <span aria-hidden="true"> · </span>
-                          {formatDateShown(item?.created_at)}
-                        </p>
-                      </div>
-                    </a>
-                  </Link>
+                      <p className="text-gray-500">
+                        <span className="capitalize">
+                          By {item.created_by?.display_name}
+                        </span>
+                        <span aria-hidden="true"> · </span>
+                        {formatDateShown(item?.created_at)}
+                      </p>
+                    </div>
+                  </ElemLink>
 
                   <ElemButton
                     btn="default"

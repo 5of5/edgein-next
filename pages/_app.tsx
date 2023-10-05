@@ -15,6 +15,7 @@ import { UserProvider } from '@/context/user-context';
 import { PopupProvider } from '@/context/popup-context';
 import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
+import { ROUTES } from '@/routes';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
 
@@ -69,7 +70,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // Meta
   const canonicalUrl = (
-    `https://edgein.io` + (router.asPath === '/' ? '' : router.asPath)
+    `https://edgein.io` + (router.asPath === ROUTES.ROOT ? '' : router.asPath)
   ).split('?')[0];
 
   const metaTitle = pageProps.metaTitle
@@ -86,19 +87,19 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   React.useEffect(() => {
     const pagesWithoutFooter = [
-      '/home',
-      '/companies',
-      '/investors',
-      '/events',
-      '/notifications',
-      '/news',
-      '/people',
-      '/groups',
-      '/account',
-      '/invite-a-friend',
-      '/profile',
-      '/lists',
-      '/notes',
+      ROUTES.HOME,
+      ROUTES.COMPANIES,
+      ROUTES.INVESTORS,
+      ROUTES.EVENTS,
+      ROUTES.NOTIFICATIONS,
+      ROUTES.NEWS,
+      ROUTES.PEOPLE,
+      ROUTES.GROUPS,
+      ROUTES.ACCOUNT,
+      ROUTES.INVITE_A_FRIEND,
+      ROUTES.PROFILE,
+      ROUTES.LISTS,
+      ROUTES.NOTES,
     ];
 
     if (pagesWithoutFooter.some(pageUrl => router.pathname.includes(pageUrl))) {

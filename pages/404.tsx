@@ -1,9 +1,10 @@
 import React from 'react';
 import { FigureBlurredCircle } from '@/components/figures';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useIntercom } from 'react-use-intercom';
 import { usePopup } from '@/context/popup-context';
+import { ElemLink } from '@/components/elem-link';
+import { ROUTES } from '@/routes';
 
 const Custom404 = () => {
   const { show } = useIntercom();
@@ -43,9 +44,12 @@ const Custom404 = () => {
                 search bar
               </button>
               , return to our{' '}
-              <Link href={'/'}>
-                <a className="font-bold text-primary-500">front page</a>
-              </Link>
+              <ElemLink
+                href={ROUTES.ROOT}
+                className="font-bold text-primary-500"
+              >
+                front page
+              </ElemLink>
               , or{' '}
               <button
                 className="font-bold text-primary-500 focus:outline-0"
