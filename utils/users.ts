@@ -245,9 +245,12 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   hmac.update(String(userData.id));
 
   const currentDate = new Date();
+  const isCreditSystemActive =
+    userData.use_credits_system &&
+    new Date(userData.last_transaction_expiration) > currentDate;
+
   const entitlements: Entitlements =
-    userData?.billing_org?.status === 'active' ||
-    userData.last_transaction_expiration < currentDate
+    userData?.billing_org?.status === 'active' || isCreditSystemActive
       ? {
           viewEmails: true,
           groupsCount: 5000,
@@ -322,7 +325,7 @@ const logout = async () => {
 const getUserByCookies = async (cookies: Record<string, string>) => {
   const token = CookieService.getAuthToken(cookies);
   return await CookieService.getUser(token);
-}
+};
 
 const UserService = {
   queryForDisabledEmailCheck,

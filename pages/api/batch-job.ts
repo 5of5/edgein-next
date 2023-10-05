@@ -1,7 +1,6 @@
 import { getClient } from '@/scripts/postgres-helpers';
 import { Client } from 'pg';
 
-
 import { NextApiResponse, NextApiRequest } from 'next';
 import {
   CREDITS_PER_MONTH,

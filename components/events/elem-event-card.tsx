@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import moment from 'moment-timezone';
-import Link from 'next/link';
 import { GetEventsQuery } from '@/graphql/types';
 import {
   getEventBanner,
@@ -28,6 +27,9 @@ import { toast, Toaster } from 'react-hot-toast';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import { usePopup } from '@/context/popup-context';
 import { CardType } from '../companies/elem-company-card';
+import { ElemSocialIconGroup } from '../elem-social-icon-group';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   event: GetEventsQuery['events'][0];
@@ -157,37 +159,39 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
-          <Link href={`/events/${slug}`}>
-            <a className="flex shrink-0 w-full">
-              <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
-                <div
-                  className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
-                  style={{
-                    backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
-                  }}
-                ></div>
-                <img
-                  className="relative"
-                  src={eventImageUrl}
-                  alt={name}
-                  onError={e => {
-                    (e.target as HTMLImageElement).src = randomImageOfCity(
-                      location_json?.city,
-                    );
-                    (e.target as HTMLImageElement).onerror = null; // prevents looping
-                  }}
-                />
-              </div>
-            </a>
-          </Link>
+          <ElemLink
+            href={`${ROUTES.EVENTS}/${slug}`}
+            className="flex shrink-0 w-full"
+          >
+            <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
+              <div
+                className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+                style={{
+                  backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
+                }}
+              ></div>
+              <img
+                className="relative"
+                src={eventImageUrl}
+                alt={name}
+                onError={e => {
+                  (e.target as HTMLImageElement).src = randomImageOfCity(
+                    location_json?.city,
+                  );
+                  (e.target as HTMLImageElement).onerror = null; // prevents looping
+                }}
+              />
+            </div>
+          </ElemLink>
 
-          <Link href={`/events/${slug}`}>
-            <a className="flex items-center mt-3">
-              <ElemTooltip content={name} mode="light">
-                <h3 className="text-lg font-medium truncate pb-1.5">{name}</h3>
-              </ElemTooltip>
-            </a>
-          </Link>
+          <ElemLink
+            href={`${ROUTES.EVENTS}/${slug}`}
+            className="flex items-center mt-3"
+          >
+            <ElemTooltip content={name} mode="light">
+              <h3 className="text-lg font-medium truncate pb-1.5">{name}</h3>
+            </ElemTooltip>
+          </ElemLink>
 
           <div className="text-xs">
             {start_date && (
@@ -241,57 +245,36 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
           )}
         </div>
         <div className="flex items-center justify-between mt-4 gap-x-5">
-          <div className="flex items-center space-x-0.5">
-            {link && (
-              <Link href={link}>
-                <a target="_blank">
-                  <ElemTooltip content="Website" mode="light">
-                    <div>
-                      <IconGlobe
-                        className="h-5 w-5 text-gray-600"
-                        title="Website"
-                      />
-                    </div>
-                  </ElemTooltip>
-                </a>
-              </Link>
-            )}
-            {twitter && (
-              <Link href={twitter}>
-                <a target="_blank">
-                  <IconTwitter className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {facebook && (
-              <Link href={facebook}>
-                <a target="_blank">
-                  <IconFacebook className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {instagram && (
-              <Link href={instagram}>
-                <a target="_blank">
-                  <IconInstagram className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {discord && (
-              <Link href={discord}>
-                <a target="_blank">
-                  <IconDiscord className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-            {telegram && (
-              <Link href={telegram}>
-                <a target="_blank">
-                  <IconTelegram className="h-5 w-5 text-gray-600" />
-                </a>
-              </Link>
-            )}
-          </div>
+          <ElemSocialIconGroup
+            resources={[
+              {
+                value: link,
+                title: 'Website',
+                icon: IconGlobe,
+              },
+              {
+                value: twitter,
+                icon: IconTwitter,
+              },
+              {
+                value: facebook,
+                icon: IconFacebook,
+              },
+              {
+                value: instagram,
+                icon: IconInstagram,
+              },
+
+              {
+                value: discord,
+                icon: IconDiscord,
+              },
+              {
+                value: telegram,
+                icon: IconTelegram,
+              },
+            ]}
+          />
 
           <ElemButton
             btn={isAttended ? 'primary-light' : 'default'}

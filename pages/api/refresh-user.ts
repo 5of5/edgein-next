@@ -1,6 +1,7 @@
 import UserService from '../../utils/users';
 import CookieService from '../../utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { ROUTES } from '@/routes';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies);
@@ -21,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'GET') {
-    return res.redirect(redirect_uri || '/');
+    return res.redirect(redirect_uri || ROUTES.ROOT);
   } else {
     return res.send({ success: true });
   }

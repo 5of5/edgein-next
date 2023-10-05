@@ -4,8 +4,9 @@ import { Popover, Transition } from '@headlessui/react';
 import React, { Fragment, FC } from 'react';
 import { IconUserCircle } from './icons';
 import { useUser } from '@/context/user-context';
-import Link from 'next/link';
 import UserService from '@/utils/users';
+import { ROUTES } from '@/routes';
+import { ElemLink } from './elem-link';
 
 type Props = {
   className?: string;
@@ -17,16 +18,16 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
   const userMenuItems = [
     {
       label: 'Invite a friend',
-      href: '/invite-a-friend',
+      href: ROUTES.INVITE_A_FRIEND,
       className: 'text-primary-500',
     },
     {
       label: 'Profile settings',
-      href: '/profile',
+      href: ROUTES.PROFILE,
     },
     {
       label: 'Account settings',
-      href: '/account',
+      href: ROUTES.ACCOUNT,
     },
     {
       label: 'Sign out',
@@ -80,17 +81,17 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
                 </div>
               </div>
               {userMenuItems.map((item, index) => (
-                <Link href={item.href ? item.href : ''} key={index}>
-                  <a
-                    className={`flex text-gray-600 items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100 ${item.className}`}
-                    onClick={() => {
-                      item.onClick && item.onClick();
-                      close();
-                    }}
-                  >
-                    {item.label}
-                  </a>
-                </Link>
+                <ElemLink
+                  href={item.href ? item.href : ''}
+                  key={index}
+                  className={`flex text-gray-600 items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100 ${item.className}`}
+                  onClick={() => {
+                    item.onClick && item.onClick();
+                    close();
+                  }}
+                >
+                  {item.label}
+                </ElemLink>
               ))}
             </div>
           )}

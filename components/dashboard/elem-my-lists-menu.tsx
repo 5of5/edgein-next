@@ -1,6 +1,5 @@
 import { getNameFromListName } from '@/utils/reaction';
-import { kebabCase, partition } from 'lodash';
-import Link from 'next/link';
+import kebabCase from 'lodash/kebabCase';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { IconSidebarList } from '@/components/icons';
@@ -10,6 +9,9 @@ import { CreateListDialog } from '../my-list/create-list-dialog';
 import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getListDisplayName } from '@/utils/lists';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
+import { ElemSidebarItem } from './elem-sidebar-item';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -20,7 +22,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const { listAndFollows: lists, user } = useUser();
 
   const getActiveClass = (id: number, name: string) => {
-    return `/lists/${id}/${name}/` === router.asPath
+    return `${ROUTES.LISTS}/${id}/${name}/` === router.asPath
       ? 'bg-gray-100 text-gray-900'
       : 'text-gray-500';
   };
@@ -29,23 +31,6 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     list => !['hot', 'crap', 'like'].includes(getNameFromListName(list)),
   );
   //.sort((a, b) => (a.name < b.name ? -1 : 1));
-
-  const displayedCustomLists = getCustomLists.slice(
-    0,
-    user?.entitlements.listsCount
-      ? user?.entitlements.listsCount
-      : getCustomLists.length,
-  );
-
-  const partLists = partition(
-    displayedCustomLists,
-    o => o.created_by_id === user?.id,
-  );
-
-  const createdLists = [...partLists[0]];
-  const followedLists = [...partLists[1]];
-
-  const totalListCount = createdLists?.length + followedLists?.length;
 
   const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -65,7 +50,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   const onRedirectToSignIn = () => {
-    router.push('/sign-in');
+    router.push(ROUTES.SIGN_IN);
   };
 
   const onClickCreate = () => {
@@ -73,7 +58,10 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       return onRedirectToSignIn();
     }
 
-    if (getCustomLists.length > totalListCount) {
+    if (
+      user?.entitlements?.listsCount &&
+      getCustomLists.length > user.entitlements.listsCount
+    ) {
       return onOpenUpgradeDialog();
     }
 
@@ -84,22 +72,11 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     <div className={className}>
       <div className="w-full flex items-center justify-between">
         {user ? (
-          <Link href="/lists">
-            <a
-              className={`${
-                router.asPath.includes('/lists') ? 'bg-gray-100' : ''
-              } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-            >
-              <IconSidebarList
-                className={`w-5 h-5 ${
-                  router.asPath.includes('/lists')
-                    ? 'text-primary-500'
-                    : 'text-gray-900'
-                }`}
-              />
-              <span className="text-sm">Lists</span>
-            </a>
-          </Link>
+          <ElemSidebarItem
+            url={ROUTES.LISTS}
+            text="Lists"
+            IconComponent={IconSidebarList}
+          />
         ) : (
           <ElemWithSignInModal
             wrapperClass="w-full"
@@ -131,24 +108,19 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
             return (
               <li key={listItemId} role="button">
-                <Link
-                  href={`/lists/${listItemId}/${
+                <ElemLink
+                  href={`${ROUTES.LISTS}/${listItemId}/${
                     listItemName === 'crap' ? 'sh**' : kebabCase(listItemName)
                   }`}
+                  className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                    listItemId,
+                    listItemName === 'crap' ? 'sh**' : kebabCase(listItemName),
+                  )} `}
                 >
-                  <a
-                    className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
-                      listItemId,
-                      listItemName === 'crap'
-                        ? 'sh**'
-                        : kebabCase(listItemName),
-                    )} `}
-                  >
-                    <span className="line-clamp-1 break-all flex-1">
-                      {getListDisplayName(listItem)}
-                    </span>
-                  </a>
-                </Link>
+                  <span className="line-clamp-1 break-all flex-1">
+                    {getListDisplayName(listItem)}
+                  </span>
+                </ElemLink>
               </li>
             );
           })}

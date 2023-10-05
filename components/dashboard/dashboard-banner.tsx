@@ -1,12 +1,13 @@
 import { FC, useState, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
-import Link from 'next/link';
 import { ElemButton } from '../elem-button';
 import { useUser } from '@/context/user-context';
 import { IconCurrencyDollar, IconGift, IconX } from '../icons';
 import { numberWithCommas } from '@/utils';
 import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { LOCAL_STORAGE_SIDEBAR_BANNER_KEY } from '@/utils/constants';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -64,56 +65,55 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
           </div>
         )}
 
-        <Link href={user ? '/invite-a-friend' : '/sign-in'} passHref>
-          <a
-            className={`flex p-3 border border-primary-500 bg-white rounded-xl ${
-              isVisitor ? '' : 'gap-2'
-            }`}
-          >
-            {!isVisitor && (
-              <div className="pt-0.5">
-                {isPaidUser && userHasCredits ? (
-                  <IconCurrencyDollar className="w-5 h-5 text-primary-500" />
-                ) : isPaidUser ? (
-                  <IconGift className="w-5 h-5 text-primary-500" />
-                ) : isFreeUser ? (
-                  <IconCurrencyDollar className="w-5 h-5 text-primary-500" />
-                ) : null}
-              </div>
-            )}
-
-            <div>
-              <h3 className="font-medium text-gray-900">
-                {isPaidUser && userHasCredits
-                  ? `${numberWithCommas(user?.credits)} credits available`
-                  : isPaidUser
-                  ? 'Get EdgeIn for Free'
-                  : isFreeUser
-                  ? 'Get 1,500 credits'
-                  : // Visitor
-                    'Get more from EdgeIn'}
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                {isPaidUser && userHasCredits
-                  ? `You can use your credits to get ${
-                      user?.credits / 1500
-                    } months of EdgeIn Contributor.`
-                  : isPaidUser
-                  ? 'Invite a friend and get 1,500 credits for 1 month of EdgeIn Contributor for free.'
-                  : isFreeUser
-                  ? 'Share EdgeIn with your friend for 1 month of EdgeIn Contributor for free.'
-                  : // Visitor
-                    'Get unlimited browsing, personalized results, custom tools, and much more.'}
-              </p>
-
-              {isVisitor && (
-                <ElemButton btn="purple" className="mt-2 whitespace-nowrap">
-                  Sign in for free
-                </ElemButton>
-              )}
+        <ElemLink
+          href={user ? ROUTES.INVITE_A_FRIEND : ROUTES.SIGN_IN}
+          className={`flex p-3 border border-primary-500 bg-white rounded-xl ${
+            isVisitor ? '' : 'gap-2'
+          }`}
+        >
+          {!isVisitor && (
+            <div className="pt-0.5">
+              {isPaidUser && userHasCredits ? (
+                <IconCurrencyDollar className="w-5 h-5 text-primary-500" />
+              ) : isPaidUser ? (
+                <IconGift className="w-5 h-5 text-primary-500" />
+              ) : isFreeUser ? (
+                <IconCurrencyDollar className="w-5 h-5 text-primary-500" />
+              ) : null}
             </div>
-          </a>
-        </Link>
+          )}
+
+          <div>
+            <h3 className="font-medium text-gray-900">
+              {isPaidUser && userHasCredits
+                ? `${numberWithCommas(user?.credits)} credits available`
+                : isPaidUser
+                ? 'Get EdgeIn for Free'
+                : isFreeUser
+                ? 'Get 1,500 credits'
+                : // Visitor
+                  'Get more from EdgeIn'}
+            </h3>
+            <p className="mt-1 text-sm text-gray-500">
+              {isPaidUser && userHasCredits
+                ? `You can use your credits to get ${
+                    user?.credits / 1500
+                  } months of EdgeIn Contributor.`
+                : isPaidUser
+                ? 'Invite a friend and get 1,500 credits for 1 month of EdgeIn Contributor for free.'
+                : isFreeUser
+                ? 'Share EdgeIn with your friend for 1 month of EdgeIn Contributor for free.'
+                : // Visitor
+                  'Get unlimited browsing, personalized results, custom tools, and much more.'}
+            </p>
+
+            {isVisitor && (
+              <ElemButton btn="purple" className="mt-2 whitespace-nowrap">
+                Sign in for free
+              </ElemButton>
+            )}
+          </div>
+        </ElemLink>
       </Transition>
     </div>
   );

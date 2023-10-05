@@ -11,6 +11,7 @@ import { useUser } from '@/context/user-context';
 import hashSum from 'hash-sum';
 import { useRouter } from 'next/router';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -129,7 +130,7 @@ export const ElemReaction: FC<ReactionProps> = ({
     event.preventDefault();
 
     if (!user) {
-      router.push('/sign-in');
+      router.push(ROUTES.SIGN_IN);
     } else {
       setReactionState(prev => {
         let count = prev.count + (prev.alreadyReacted ? -1 : 1);

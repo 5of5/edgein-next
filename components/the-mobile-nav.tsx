@@ -6,7 +6,6 @@ import {
   useState,
   useMemo,
 } from 'react';
-import Link from 'next/link';
 import { ElemButton } from './elem-button';
 import {
   IconCash,
@@ -31,6 +30,8 @@ import { useRouter } from 'next/router';
 import { Popups } from '@/components/the-navbar';
 import UserService from '@/utils/users';
 import { ExploreMenuItem } from '@/types/common';
+import { ROUTES } from '@/routes';
+import { ElemLink } from './elem-link';
 
 type Props = {
   className?: string;
@@ -64,17 +65,17 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconCompanies,
       title: 'Companies',
-      href: '/companies',
+      href: ROUTES.COMPANIES,
     },
     {
       icon: IconCash,
       title: 'Investors',
-      href: '/investors',
+      href: ROUTES.INVESTORS,
     },
     {
       icon: IconUserGroup,
       title: 'People',
-      href: '/people',
+      href: ROUTES.PEOPLE,
     },
   ];
 
@@ -82,7 +83,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     ...(user
       ? [
           {
-            href: '/home',
+            href: ROUTES.HOME,
             icon: IconHome,
             title: 'Home',
           },
@@ -92,7 +93,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconBell,
       title: 'Notifications',
-      href: '/notifications',
+      href: ROUTES.NOTIFICATIONS,
     },
   ];
 
@@ -102,17 +103,17 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
           {
             icon: IconCustomList,
             title: 'Lists',
-            href: '/lists',
+            href: ROUTES.LISTS,
           },
           {
             icon: IconGroup,
             title: 'Groups',
-            href: '/groups',
+            href: ROUTES.GROUPS,
           },
           {
             icon: IconDocumentDownload,
             title: 'Notes',
-            href: '/notes',
+            href: ROUTES.NOTES,
           },
         ]
       : []),
@@ -120,19 +121,19 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconCalendar,
       title: 'Events',
-      href: '/events',
+      href: ROUTES.EVENTS,
     },
     {
       icon: IconNewspaper,
       title: 'News',
-      href: '/news',
+      href: ROUTES.NEWS,
     },
     ...(user
       ? [
           {
             icon: IconSettings,
             title: 'Account Settings',
-            href: '/account',
+            href: ROUTES.ACCOUNT,
           },
         ]
       : []),
@@ -156,26 +157,25 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                   : 'border-t-2 border-transparent'
               }`}
             >
-              <Link href={item?.href ? item.href : ''}>
-                <a
-                  onClick={onClose}
-                  className="flex flex-col items-center h-full text-[11px]"
-                >
-                  {item?.icon && (
-                    <div className="relative flex items-center justify-center h-7 aspect-square">
-                      {unreadNotificationsCount > 0 &&
-                        item.title === 'Notifications' && (
-                          <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
-                        )}
-                      <item.icon
-                        title={item.title}
-                        className="h-6 w-6 shrink-0 text-slate-600"
-                      />
-                    </div>
-                  )}
-                  {item?.title}
-                </a>
-              </Link>
+              <ElemLink
+                href={item?.href ? item.href : ''}
+                onClick={onClose}
+                className="flex flex-col items-center h-full text-[11px]"
+              >
+                {item?.icon && (
+                  <div className="relative flex items-center justify-center h-7 aspect-square">
+                    {unreadNotificationsCount > 0 &&
+                      item.title === 'Notifications' && (
+                        <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
+                      )}
+                    <item.icon
+                      title={item.title}
+                      className="h-6 w-6 shrink-0 text-slate-600"
+                    />
+                  </div>
+                )}
+                {item?.title}
+              </ElemLink>
             </li>
           ))}
 
@@ -245,20 +245,19 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
             <ul className="grid grid-cols-2 gap-4 px-4">
               {menuPanel.map((item, index) => (
                 <li key={index}>
-                  <Link href={item?.href ? item.href : ''}>
-                    <a
-                      onClick={onClose}
-                      className="block p-3 outline-none bg-white shadow rounded-lg"
-                    >
-                      {item?.icon && (
-                        <item.icon
-                          title={item.title}
-                          className="h-6 w-6 shrink-0"
-                        />
-                      )}
-                      <span className="leading-tight">{item?.title}</span>
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={item?.href ? item.href : ''}
+                    onClick={onClose}
+                    className="block p-3 outline-none bg-white shadow rounded-lg"
+                  >
+                    {item?.icon && (
+                      <item.icon
+                        title={item.title}
+                        className="h-6 w-6 shrink-0"
+                      />
+                    )}
+                    <span className="leading-tight">{item?.title}</span>
+                  </ElemLink>
                 </li>
               ))}
             </ul>
@@ -277,7 +276,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 </ElemButton>
               ) : (
                 <ElemButton
-                  onClick={() => router.push('/companies')}
+                  onClick={() => router.push(ROUTES.COMPANIES)}
                   btn="primary"
                   className="w-full"
                 >
