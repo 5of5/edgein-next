@@ -1011,9 +1011,11 @@ const createFilterForPeopleLocation = (
   }
 
   const filterObject = tags.map((item: string) => ({
-    location_json: {
-      _cast: {
-        String: { _ilike: `%"${type}": "${item}"%` },
+    people_computed_data: {
+      location_json: {
+        _cast: {
+          String: { _ilike: `%"${type}": "${item}"%` },
+        },
       },
     },
   }));
@@ -1032,7 +1034,9 @@ const createFilterForPeopleLocation = (
           },
         },
         {
-          location_json: { _is_null: true },
+          people_computed_data: {
+            location_json: { _is_null: true },
+          },
         },
       ],
     };
@@ -1059,10 +1063,12 @@ export const processPeopleFilter = (
 
   if (selectedFilters?.address?.value) {
     filters._and?.push({
-      geopoint: {
-        _st_d_within: {
-          distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
-          from: selectedFilters.address.value?.geometry,
+      people_computed_data: {
+        geopoint: {
+          _st_d_within: {
+            distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+            from: selectedFilters.address.value?.geometry,
+          },
         },
       },
     });
@@ -1070,7 +1076,9 @@ export const processPeopleFilter = (
   if (selectedFilters?.industry?.tags?.length) {
     filters._and?.push({
       _and: selectedFilters.industry.tags.map(item => ({
-        tags: { _contains: item },
+        people_computed_data: {
+          tags: { _contains: item },
+        },
       })),
     });
   }
@@ -1079,7 +1087,9 @@ export const processPeopleFilter = (
     filters._and?.push({
       // There is role if user selects multiple roles
       _or: selectedFilters.role.tags.map(item => ({
-        title: { _ilike: `%${item}%` },
+        people_computed_data: {
+          title: { _ilike: `%${item}%` },
+        },
       })),
     });
   }
