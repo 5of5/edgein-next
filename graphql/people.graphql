@@ -18,10 +18,6 @@ query GetPerson($slug: String!) {
     website_url
     about
     email
-    location_json
-    geopoint
-    tags
-    title
     investors {
       id
       end_date
@@ -110,6 +106,14 @@ query GetPerson($slug: String!) {
       list_id
     }
   }
+  people_computed_data {
+    title
+    tags
+    person_id
+    location_json
+    geopoint
+    id
+  }
 }
 
 query GetPeople(
@@ -135,10 +139,6 @@ query GetPeople(
     facebook_url
     twitter_url
     website_url
-    location_json
-    geopoint
-    tags
-    title
     investors {
       id
       end_date
@@ -177,6 +177,14 @@ query GetPeople(
       id
       list_id
     }
+  }
+  people_computed_data {
+    title
+    tags
+    person_id
+    location_json
+    geopoint
+    id
   }
   people_aggregate(where: $where) {
     aggregate {

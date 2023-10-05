@@ -1,0 +1,38 @@
+table:
+  name: people_computed_data
+  schema: public
+object_relationships:
+  - name: people_computed_data_person
+    using:
+      foreign_key_constraint_on: person_id
+select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - id
+        - person_id
+        - location_json
+        - tags
+        - title
+        - geopoint
+      filter: {}
+  - role: user
+    permission:
+      columns:
+        - id
+        - person_id
+        - location_json
+        - tags
+        - title
+        - geopoint
+      filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - person_id
+        - location_json
+        - tags
+        - title
+        - geopoint
+      filter: {}

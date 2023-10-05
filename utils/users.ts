@@ -325,7 +325,7 @@ const logout = async () => {
 const getUserByCookies = async (cookies: Record<string, string>) => {
   const token = CookieService.getAuthToken(cookies);
   return await CookieService.getUser(token);
-}
+};
 
 const UserService = {
   queryForDisabledEmailCheck,
