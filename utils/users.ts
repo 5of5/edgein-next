@@ -40,6 +40,7 @@ import {
 import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
 import { clearLocalStorage } from './helpers';
+import CookieService from '@/utils/cookie';
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
   const data = await query<GetAllowedEmailByEmailOrDomainQuery>({
@@ -318,12 +319,18 @@ const logout = async () => {
   }
 };
 
+const getUserByCookies = async (cookies: Record<string, string>) => {
+  const token = CookieService.getAuthToken(cookies);
+  return await CookieService.getUser(token);
+}
+
 const UserService = {
   queryForDisabledEmailCheck,
   queryForAllowedEmailCheck,
   mutateForWaitlistEmail,
   findOneUserByEmail,
   findOneUserById,
+  getUserByCookies,
   updateUseCreditsSystem,
   updateBillingOrg,
   upsertUser,
