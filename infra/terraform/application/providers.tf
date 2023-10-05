@@ -35,7 +35,7 @@ terraform {
     region         = "us-east-2"
     bucket         = "edgein-terraform-state"
     dynamodb_table = "edgein-terraform-state"
-    kms_key_id     = "arn:aws:kms:us-east-2:040293384119:alias/edgein-terraform-state"
+    kms_key_id     = "arn:aws:kms:us-east-2:040293384119:key/678da654-8610-4f79-8204-dcb4f90ed812"
     encrypt        = true
 
     key = "edgein/application.tfstate"
