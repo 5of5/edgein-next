@@ -8,6 +8,7 @@ import {
   syncPeople,
   syncVcFirms,
 } from '@/utils/algolia';
+import UserService from '@/utils/users';
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -15,6 +16,12 @@ const client = algoliasearch(
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { role } = (await UserService.getUserByCookies(req.cookies)) ?? {};
+  if (role !== 'admin') {
+    return res.status(401).json({
+      message: 'You are unauthorized for this operation!',
+    });
+  }
   // get the last sync datetime from db
   const lastSyncArray = await queryForLastSync();
   if (!lastSyncArray.length) return res.status(405).end();
