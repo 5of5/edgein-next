@@ -1,66 +1,66 @@
 table:
-  schema: public
   name: lists
+  schema: public
 object_relationships:
   - name: created_by
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: users_public
-        insertion_order: null
         column_mapping:
           created_by_id: id
+        insertion_order: null
+        remote_table:
+          name: users_public
+          schema: public
 array_relationships:
   - name: follows_companies
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: follows_companies
-        insertion_order: null
         column_mapping:
           id: list_id
+        insertion_order: null
+        remote_table:
+          name: follows_companies
+          schema: public
   - name: follows_people
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: follows_people
-        insertion_order: null
         column_mapping:
           id: list_id
+        insertion_order: null
+        remote_table:
+          name: follows_people
+          schema: public
   - name: follows_vcfirms
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: follows_vc_firms
-        insertion_order: null
         column_mapping:
           id: list_id
+        insertion_order: null
+        remote_table:
+          name: follows_vc_firms
+          schema: public
   - name: list_members
     using:
       foreign_key_constraint_on:
         column: list_id
         table:
-          schema: public
           name: list_members
+          schema: public
   - name: user_groups
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: list_user_groups
-        insertion_order: null
         column_mapping:
           id: list_id
+        insertion_order: null
+        remote_table:
+          name: list_user_groups
+          schema: public
 computed_fields:
   - name: total_no_of_resources
     definition:
       function:
-        schema: public
         name: lists_total_no_of_companies
+        schema: public
     comment: Computed field to get total no. of companies in a list
 select_permissions:
   - role: viewer

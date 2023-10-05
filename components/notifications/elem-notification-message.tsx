@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import { GetNotificationsForUserQuery } from '@/graphql/types';
 import { getNotificationOrganizationLink } from '@/utils/notifications';
 import { raise } from '@/utils';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   notification: GetNotificationsForUserQuery['notifications'][0];
@@ -24,9 +24,12 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
   ) {
     return (
       <div className="inline">
-        <Link href={getNotificationOrganizationLink(notification)} passHref>
-          <a className="underline hover:no-underline font-medium">{name}</a>
-        </Link>
+        <ElemLink
+          href={getNotificationOrganizationLink(notification)}
+          className="underline hover:no-underline font-medium"
+        >
+          {name}
+        </ElemLink>
         <span>{` ${message}`}</span>
       </div>
     );
@@ -37,11 +40,12 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
       components={{
         a: ({ href, children }) => {
           return (
-            <Link href={href as string} passHref>
-              <a className="underline hover:no-underline font-medium">
-                {children[0]}
-              </a>
-            </Link>
+            <ElemLink
+              href={href as string}
+              className="underline hover:no-underline font-medium"
+            >
+              {children[0]}
+            </ElemLink>
           );
         },
       }}

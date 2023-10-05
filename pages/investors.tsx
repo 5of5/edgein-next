@@ -35,8 +35,8 @@ import {
 import { useStateParams } from '@/hooks/use-state-params';
 import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
-import { ElemFilter } from '@/components/elem-filter';
-import { processInvestorsFilters } from '@/utils/filter';
+import { ElemFilter } from '@/components/filters/elem-filter';
+import { processInvestorsFilters } from '@/components/filters/processor';
 import { useIntercom } from 'react-use-intercom';
 import useLibrary from '@/hooks/use-library';
 import { DashboardCategory, DeepPartial } from '@/types/common';
@@ -49,10 +49,9 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { InvestorsByFilter } from '@/components/investors/elem-investors-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
 
@@ -69,15 +68,13 @@ const Investors: NextPage<Props> = ({
   initialVCFirms,
   investorsStatusTags,
 }) => {
-  const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const { user } = useUser();
   const router = useRouter();
-
   const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&

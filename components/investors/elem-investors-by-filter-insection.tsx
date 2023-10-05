@@ -15,9 +15,10 @@ import { ElemInvestorCard } from './elem-investor-card';
 import { InvestorsTable } from './elem-investors-table';
 import { CardType } from '../companies/elem-company-card';
 import { FilterInSectionType } from '../companies/elem-companies-by-filter-insection';
-import { getHomepageEncodedURI } from '@/utils/filter';
+import { getHomepageEncodedURI } from '@/components/filters/processor';
 import { ElemButton } from '../elem-button';
 import { useRouter } from 'next/router';
+import { ROUTES } from '@/routes';
 
 type Props = {
   headingText: string;
@@ -176,7 +177,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
                         return;
                       }
                       router.push(
-                        `/investors/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                        `${ROUTES.INVESTORS}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
                       );
                     }}
                     btn="primary"

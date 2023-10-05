@@ -6490,7 +6490,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Scalars['String'];
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -12692,6 +12692,10 @@ export type Mutation_Root = {
   delete_people: Maybe<People_Mutation_Response>;
   /** delete single row from the table: "people" */
   delete_people_by_pk: Maybe<People>;
+  /** delete data from the table: "people_computed_data" */
+  delete_people_computed_data: Maybe<People_Computed_Data_Mutation_Response>;
+  /** delete single row from the table: "people_computed_data" */
+  delete_people_computed_data_by_pk: Maybe<People_Computed_Data>;
   /** delete data from the table: "reset_passwords" */
   delete_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
   /** delete single row from the table: "reset_passwords" */
@@ -12910,6 +12914,10 @@ export type Mutation_Root = {
   insert_notifications_one: Maybe<Notifications>;
   /** insert data into the table: "people" */
   insert_people: Maybe<People_Mutation_Response>;
+  /** insert data into the table: "people_computed_data" */
+  insert_people_computed_data: Maybe<People_Computed_Data_Mutation_Response>;
+  /** insert a single row into the table: "people_computed_data" */
+  insert_people_computed_data_one: Maybe<People_Computed_Data>;
   /** insert a single row into the table: "people" */
   insert_people_one: Maybe<People>;
   /** insert data into the table: "reset_passwords" */
@@ -13210,6 +13218,12 @@ export type Mutation_Root = {
   update_people: Maybe<People_Mutation_Response>;
   /** update single row of the table: "people" */
   update_people_by_pk: Maybe<People>;
+  /** update data of the table: "people_computed_data" */
+  update_people_computed_data: Maybe<People_Computed_Data_Mutation_Response>;
+  /** update single row of the table: "people_computed_data" */
+  update_people_computed_data_by_pk: Maybe<People_Computed_Data>;
+  /** update multiples rows of table: "people_computed_data" */
+  update_people_computed_data_many: Maybe<Array<Maybe<People_Computed_Data_Mutation_Response>>>;
   /** update multiples rows of table: "people" */
   update_people_many: Maybe<Array<Maybe<People_Mutation_Response>>>;
   /** update data of the table: "reset_passwords" */
@@ -13771,6 +13785,18 @@ export type Mutation_RootDelete_PeopleArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_People_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_People_Computed_DataArgs = {
+  where: People_Computed_Data_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_People_Computed_Data_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -14501,6 +14527,20 @@ export type Mutation_RootInsert_Notifications_OneArgs = {
 export type Mutation_RootInsert_PeopleArgs = {
   objects: Array<People_Insert_Input>;
   on_conflict: InputMaybe<People_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_People_Computed_DataArgs = {
+  objects: Array<People_Computed_Data_Insert_Input>;
+  on_conflict: InputMaybe<People_Computed_Data_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_People_Computed_Data_OneArgs = {
+  object: People_Computed_Data_Insert_Input;
+  on_conflict: InputMaybe<People_Computed_Data_On_Conflict>;
 };
 
 
@@ -15666,6 +15706,38 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
   _prepend: InputMaybe<People_Prepend_Input>;
   _set: InputMaybe<People_Set_Input>;
   pk_columns: People_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_People_Computed_DataArgs = {
+  _append: InputMaybe<People_Computed_Data_Append_Input>;
+  _delete_at_path: InputMaybe<People_Computed_Data_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<People_Computed_Data_Delete_Elem_Input>;
+  _delete_key: InputMaybe<People_Computed_Data_Delete_Key_Input>;
+  _inc: InputMaybe<People_Computed_Data_Inc_Input>;
+  _prepend: InputMaybe<People_Computed_Data_Prepend_Input>;
+  _set: InputMaybe<People_Computed_Data_Set_Input>;
+  where: People_Computed_Data_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_People_Computed_Data_By_PkArgs = {
+  _append: InputMaybe<People_Computed_Data_Append_Input>;
+  _delete_at_path: InputMaybe<People_Computed_Data_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<People_Computed_Data_Delete_Elem_Input>;
+  _delete_key: InputMaybe<People_Computed_Data_Delete_Key_Input>;
+  _inc: InputMaybe<People_Computed_Data_Inc_Input>;
+  _prepend: InputMaybe<People_Computed_Data_Prepend_Input>;
+  _set: InputMaybe<People_Computed_Data_Set_Input>;
+  pk_columns: People_Computed_Data_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_People_Computed_Data_ManyArgs = {
+  updates: Array<People_Computed_Data_Updates>;
 };
 
 
@@ -19121,6 +19193,8 @@ export type People = {
   news_links: Array<News_Person>;
   /** An aggregate relationship */
   news_links_aggregate: News_Person_Aggregate;
+  /** An object relationship */
+  people_computed_data: Maybe<People_Computed_Data>;
   personal_email: Maybe<Scalars['String']>;
   picture: Maybe<Scalars['jsonb']>;
   slug: Scalars['String'];
@@ -19330,6 +19404,7 @@ export type People_Bool_Exp = {
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Person_Bool_Exp>;
   news_links_aggregate: InputMaybe<News_Person_Aggregate_Bool_Exp>;
+  people_computed_data: InputMaybe<People_Computed_Data_Bool_Exp>;
   personal_email: InputMaybe<String_Comparison_Exp>;
   picture: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
@@ -19342,6 +19417,315 @@ export type People_Bool_Exp = {
   user: InputMaybe<Users_Public_Bool_Exp>;
   website_url: InputMaybe<String_Comparison_Exp>;
   work_email: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Computed data from it's relations for better performance */
+export type People_Computed_Data = {
+  __typename?: 'people_computed_data';
+  geopoint: Maybe<Scalars['geography']>;
+  id: Scalars['Int'];
+  location_json: Maybe<Scalars['jsonb']>;
+  person_id: Scalars['Int'];
+  tags: Maybe<Scalars['jsonb']>;
+  title: Maybe<Scalars['String']>;
+};
+
+
+/** Computed data from it's relations for better performance */
+export type People_Computed_DataLocation_JsonArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** Computed data from it's relations for better performance */
+export type People_Computed_DataTagsArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "people_computed_data" */
+export type People_Computed_Data_Aggregate = {
+  __typename?: 'people_computed_data_aggregate';
+  aggregate: Maybe<People_Computed_Data_Aggregate_Fields>;
+  nodes: Array<People_Computed_Data>;
+};
+
+/** aggregate fields of "people_computed_data" */
+export type People_Computed_Data_Aggregate_Fields = {
+  __typename?: 'people_computed_data_aggregate_fields';
+  avg: Maybe<People_Computed_Data_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<People_Computed_Data_Max_Fields>;
+  min: Maybe<People_Computed_Data_Min_Fields>;
+  stddev: Maybe<People_Computed_Data_Stddev_Fields>;
+  stddev_pop: Maybe<People_Computed_Data_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<People_Computed_Data_Stddev_Samp_Fields>;
+  sum: Maybe<People_Computed_Data_Sum_Fields>;
+  var_pop: Maybe<People_Computed_Data_Var_Pop_Fields>;
+  var_samp: Maybe<People_Computed_Data_Var_Samp_Fields>;
+  variance: Maybe<People_Computed_Data_Variance_Fields>;
+};
+
+
+/** aggregate fields of "people_computed_data" */
+export type People_Computed_Data_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<People_Computed_Data_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type People_Computed_Data_Append_Input = {
+  location_json: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type People_Computed_Data_Avg_Fields = {
+  __typename?: 'people_computed_data_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "people_computed_data". All fields are combined with a logical 'AND'. */
+export type People_Computed_Data_Bool_Exp = {
+  _and: InputMaybe<Array<People_Computed_Data_Bool_Exp>>;
+  _not: InputMaybe<People_Computed_Data_Bool_Exp>;
+  _or: InputMaybe<Array<People_Computed_Data_Bool_Exp>>;
+  geopoint: InputMaybe<Geography_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  location_json: InputMaybe<Jsonb_Comparison_Exp>;
+  person_id: InputMaybe<Int_Comparison_Exp>;
+  tags: InputMaybe<Jsonb_Comparison_Exp>;
+  title: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "people_computed_data" */
+export enum People_Computed_Data_Constraint {
+  /** unique or primary key constraint on columns "person_id" */
+  PeopleComputedDataPeopleIdKey = 'people_computed_data_people_id_key',
+  /** unique or primary key constraint on columns "id" */
+  PeopleComputedDataPkey = 'people_computed_data_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type People_Computed_Data_Delete_At_Path_Input = {
+  location_json: InputMaybe<Array<Scalars['String']>>;
+  tags: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type People_Computed_Data_Delete_Elem_Input = {
+  location_json: InputMaybe<Scalars['Int']>;
+  tags: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type People_Computed_Data_Delete_Key_Input = {
+  location_json: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "people_computed_data" */
+export type People_Computed_Data_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "people_computed_data" */
+export type People_Computed_Data_Insert_Input = {
+  geopoint: InputMaybe<Scalars['geography']>;
+  id: InputMaybe<Scalars['Int']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+  title: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type People_Computed_Data_Max_Fields = {
+  __typename?: 'people_computed_data_max_fields';
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+  title: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type People_Computed_Data_Min_Fields = {
+  __typename?: 'people_computed_data_min_fields';
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+  title: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "people_computed_data" */
+export type People_Computed_Data_Mutation_Response = {
+  __typename?: 'people_computed_data_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<People_Computed_Data>;
+};
+
+/** input type for inserting object relation for remote table "people_computed_data" */
+export type People_Computed_Data_Obj_Rel_Insert_Input = {
+  data: People_Computed_Data_Insert_Input;
+  /** upsert condition */
+  on_conflict: InputMaybe<People_Computed_Data_On_Conflict>;
+};
+
+/** on_conflict condition type for table "people_computed_data" */
+export type People_Computed_Data_On_Conflict = {
+  constraint: People_Computed_Data_Constraint;
+  update_columns: Array<People_Computed_Data_Update_Column>;
+  where: InputMaybe<People_Computed_Data_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "people_computed_data". */
+export type People_Computed_Data_Order_By = {
+  geopoint: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  location_json: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+  tags: InputMaybe<Order_By>;
+  title: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: people_computed_data */
+export type People_Computed_Data_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type People_Computed_Data_Prepend_Input = {
+  location_json: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "people_computed_data" */
+export enum People_Computed_Data_Select_Column {
+  /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LocationJson = 'location_json',
+  /** column name */
+  PersonId = 'person_id',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
+  Title = 'title'
+}
+
+/** input type for updating data in table "people_computed_data" */
+export type People_Computed_Data_Set_Input = {
+  geopoint: InputMaybe<Scalars['geography']>;
+  id: InputMaybe<Scalars['Int']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+  title: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type People_Computed_Data_Stddev_Fields = {
+  __typename?: 'people_computed_data_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type People_Computed_Data_Stddev_Pop_Fields = {
+  __typename?: 'people_computed_data_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type People_Computed_Data_Stddev_Samp_Fields = {
+  __typename?: 'people_computed_data_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "people_computed_data" */
+export type People_Computed_Data_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: People_Computed_Data_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type People_Computed_Data_Stream_Cursor_Value_Input = {
+  geopoint: InputMaybe<Scalars['geography']>;
+  id: InputMaybe<Scalars['Int']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+  title: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate sum on columns */
+export type People_Computed_Data_Sum_Fields = {
+  __typename?: 'people_computed_data_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "people_computed_data" */
+export enum People_Computed_Data_Update_Column {
+  /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LocationJson = 'location_json',
+  /** column name */
+  PersonId = 'person_id',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
+  Title = 'title'
+}
+
+export type People_Computed_Data_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append: InputMaybe<People_Computed_Data_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path: InputMaybe<People_Computed_Data_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem: InputMaybe<People_Computed_Data_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key: InputMaybe<People_Computed_Data_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<People_Computed_Data_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend: InputMaybe<People_Computed_Data_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<People_Computed_Data_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: People_Computed_Data_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type People_Computed_Data_Var_Pop_Fields = {
+  __typename?: 'people_computed_data_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type People_Computed_Data_Var_Samp_Fields = {
+  __typename?: 'people_computed_data_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type People_Computed_Data_Variance_Fields = {
+  __typename?: 'people_computed_data_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** unique or primary key constraints on table "people" */
@@ -19407,6 +19791,7 @@ export type People_Insert_Input = {
   linkedin: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
+  people_computed_data: InputMaybe<People_Computed_Data_Obj_Rel_Insert_Input>;
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
@@ -19516,6 +19901,7 @@ export type People_Order_By = {
   linkedin: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
+  people_computed_data: InputMaybe<People_Computed_Data_Order_By>;
   personal_email: InputMaybe<Order_By>;
   picture: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
@@ -20033,6 +20419,12 @@ export type Query_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "people_computed_data" */
+  people_computed_data: Array<People_Computed_Data>;
+  /** fetch aggregated fields from the table: "people_computed_data" */
+  people_computed_data_aggregate: People_Computed_Data_Aggregate;
+  /** fetch data from the table: "people_computed_data" using primary key columns */
+  people_computed_data_by_pk: Maybe<People_Computed_Data>;
   /** fetch data from the table: "reset_passwords" */
   reset_passwords: Array<Reset_Passwords>;
   /** fetch aggregated fields from the table: "reset_passwords" */
@@ -21058,6 +21450,29 @@ export type Query_RootPeople_AggregateArgs = {
 
 
 export type Query_RootPeople_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootPeople_Computed_DataArgs = {
+  distinct_on: InputMaybe<Array<People_Computed_Data_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<People_Computed_Data_Order_By>>;
+  where: InputMaybe<People_Computed_Data_Bool_Exp>;
+};
+
+
+export type Query_RootPeople_Computed_Data_AggregateArgs = {
+  distinct_on: InputMaybe<Array<People_Computed_Data_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<People_Computed_Data_Order_By>>;
+  where: InputMaybe<People_Computed_Data_Bool_Exp>;
+};
+
+
+export type Query_RootPeople_Computed_Data_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -22676,6 +23091,14 @@ export type Subscription_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "people_computed_data" */
+  people_computed_data: Array<People_Computed_Data>;
+  /** fetch aggregated fields from the table: "people_computed_data" */
+  people_computed_data_aggregate: People_Computed_Data_Aggregate;
+  /** fetch data from the table: "people_computed_data" using primary key columns */
+  people_computed_data_by_pk: Maybe<People_Computed_Data>;
+  /** fetch data from the table in a streaming manner: "people_computed_data" */
+  people_computed_data_stream: Array<People_Computed_Data>;
   /** fetch data from the table in a streaming manner: "people" */
   people_stream: Array<People>;
   /** fetch data from the table: "reset_passwords" */
@@ -24019,6 +24442,36 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 export type Subscription_RootPeople_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootPeople_Computed_DataArgs = {
+  distinct_on: InputMaybe<Array<People_Computed_Data_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<People_Computed_Data_Order_By>>;
+  where: InputMaybe<People_Computed_Data_Bool_Exp>;
+};
+
+
+export type Subscription_RootPeople_Computed_Data_AggregateArgs = {
+  distinct_on: InputMaybe<Array<People_Computed_Data_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<People_Computed_Data_Order_By>>;
+  where: InputMaybe<People_Computed_Data_Bool_Exp>;
+};
+
+
+export type Subscription_RootPeople_Computed_Data_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootPeople_Computed_Data_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<People_Computed_Data_Stream_Cursor_Input>>;
+  where: InputMaybe<People_Computed_Data_Bool_Exp>;
 };
 
 
@@ -29253,14 +29706,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -29268,7 +29721,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -29290,14 +29743,14 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string | null, status: string } | null }> };
 
 export type GetEventInsightByLocationQueryVariables = Exact<{
   where: Events_Bool_Exp;
@@ -29903,7 +30356,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }> };
 
 export type GetPeopleQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -29913,7 +30366,7 @@ export type GetPeopleQueryVariables = Exact<{
 }>;
 
 
-export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
+export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
 
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -30018,7 +30471,7 @@ export type GetEventsPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, updated_at: any }> };
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, updated_at: any }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -30136,21 +30589,21 @@ export type GetUserByIdQueryVariables = Exact<{
 
 export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, use_credits_system: boolean, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
-export type UserForTokenFragment = { __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null };
+export type UserForTokenFragment = { __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null };
 
 export type GetUserByIdForTokenQueryVariables = Exact<{
   id: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetUserByIdForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByIdForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
 export type GetUserByEmailForTokenQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -30400,6 +30853,8 @@ export const UserForTokenFragmentDoc = `
   auth0_user_pass_id
   reference_id
   credits
+  use_credits_system
+  last_transaction_expiration
   billing_org_id
   billing_org {
     customer_id
@@ -34523,6 +34978,14 @@ export const GetPersonDocument = `
       id
       list_id
     }
+    people_computed_data {
+      title
+      tags
+      person_id
+      location_json
+      geopoint
+      id
+    }
   }
 }
     `;
@@ -34601,6 +35064,14 @@ export const GetPeopleDocument = `
     follows {
       id
       list_id
+    }
+    people_computed_data {
+      title
+      tags
+      person_id
+      location_json
+      geopoint
+      id
     }
   }
   people_aggregate(where: $where) {

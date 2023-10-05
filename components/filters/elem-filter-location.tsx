@@ -4,8 +4,8 @@ import iso from 'iso-3166-1';
 import { FilterOptionKeys } from '@/models/Filter';
 import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
 import { ElemFilterPopup } from './elem-filter-popup';
-import { InputRadio } from './input-radio';
-import { IconX } from './icons';
+import { InputRadio } from '../input-radio';
+import { IconX } from '../icons';
 import { Place, SearchForSuggestionsResult } from '@aws-sdk/client-location';
 
 type Props = {

@@ -6,13 +6,14 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
-import Link from 'next/link';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { flatten, union, orderBy } from 'lodash';
 import { IconLinkedIn, IconEmail, IconLocation } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getFullAddress } from '@/utils/helpers';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   person: People;
@@ -33,6 +34,8 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
     setIsOpenUpgradeDialog(false);
   };
 
+  // TODO: Use precalculate fields (location_json, tags, etc.)
+  // Remove old logic
   const {
     id,
     name,
@@ -66,42 +69,34 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
     })),
   ];
 
-  const jobsByDateDesc = orderBy(mergedJobs, [item => item.end_date], ['desc']);
+  const currentJob = orderBy(mergedJobs, [item => item.end_date], ['desc'])[0];
 
-  const currentJob = jobsByDateDesc[jobsByDateDesc.length - 1];
-
+  //TODO: Remove this logic and replace with precalculate fields
   const vcFirmTags = flatten(investors.map(item => item?.vc_firm?.tags));
   const companyTags = flatten(team_members.map(item => item?.company?.tags));
   const personTags = union(vcFirmTags, companyTags).filter(item => item);
-
-  const onClickPremiumFeature = () => {
-    if (!user) {
-      router.push('/sign-in');
-    } else {
-      setIsOpenUpgradeDialog(true);
-    }
-  };
 
   return (
     <div className="flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       {' '}
       <div className="flex flex-col justify-between h-full">
         <div className="w-full">
-          <Link href={`/people/${slug}`}>
-            <a className="flex items-center gap-x-4 mb-4">
-              <ElemPhoto
-                photo={picture}
-                wrapClass="flex items-center justify-center shrink-0 w-12  aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
-                imgClass="object-fit max-w-full max-h-full"
-                imgAlt={name}
-                placeholderClass="text-gray-500"
-                placeholder="user"
-              />
-              <h3 className="font-medium truncate" title={name ? name : ''}>
-                {name}
-              </h3>
-            </a>
-          </Link>
+          <ElemLink
+            href={`${ROUTES.PEOPLE}/${slug}`}
+            className="flex items-center gap-x-4 mb-4"
+          >
+            <ElemPhoto
+              photo={picture}
+              wrapClass="flex items-center justify-center shrink-0 w-12  aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
+              imgClass="object-fit max-w-full max-h-full"
+              imgAlt={name}
+              placeholderClass="text-gray-500"
+              placeholder="user"
+            />
+            <h3 className="font-medium truncate" title={name ? name : ''}>
+              {name}
+            </h3>
+          </ElemLink>
           <div>
             {currentJob && (
               <div className="text-gray-500 text-sm">
@@ -110,13 +105,12 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   {currentJob.organization?.slug ? (
                     <>
                       {' at '}
-                      <Link
+                      <ElemLink
                         href={`/${currentJob.type}/${currentJob.organization.slug}`}
+                        className="text-gray-700 underline hover:no-underline"
                       >
-                        <a className="text-gray-700 underline hover:no-underline">
-                          {currentJob.organization.name}
-                        </a>
-                      </Link>
+                        {currentJob.organization.name}
+                      </ElemLink>
                     </>
                   ) : currentJob.organization?.name ? (
                     <> at {currentJob.organization?.name}</>
@@ -174,7 +168,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             ) : personEmails.length > 0 ? (
               <ElemTooltip size="md" content="Premium feature">
                 <div>
-                  <button onClick={onClickPremiumFeature} className="block">
+                  <button onClick={onOpenUpgradeDialog} className="block">
                     <IconEmail
                       title="Email"
                       className="h-5 w-5 shrink-0 text-gray-400"
@@ -187,20 +181,23 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             {user?.entitlements?.viewEmails && linkedin ? (
               <ElemTooltip size="md" content="View LinkedIn Profile">
                 <div>
-                  <Link href={linkedin} passHref>
-                    <a className="block" target="_blank" rel="noreferrer">
-                      <IconLinkedIn
-                        title="LinkedIn"
-                        className="h-5 w-5 shrink-0 text-gray-600"
-                      />
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={linkedin}
+                    className="block"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconLinkedIn
+                      title="LinkedIn"
+                      className="h-5 w-5 shrink-0 text-gray-600"
+                    />
+                  </ElemLink>
                 </div>
               </ElemTooltip>
             ) : linkedin ? (
               <ElemTooltip size="md" content="Premium feature">
                 <div>
-                  <button className="block" onClick={onClickPremiumFeature}>
+                  <button className="block" onClick={onOpenUpgradeDialog}>
                     <IconLinkedIn
                       title="LinkedIn"
                       className="h-5 w-5 shrink-0 text-gray-400"

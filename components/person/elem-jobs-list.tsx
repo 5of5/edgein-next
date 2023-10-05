@@ -2,11 +2,12 @@ import { FC } from 'react';
 import { Team_Members, Investors } from '@/graphql/types';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import { ElemPhoto } from '@/components/elem-photo';
-import Link from 'next/link';
 import { getFullAddress } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
 import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '../elem-button';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -61,9 +62,9 @@ export const ElemJobsList: FC<Props> = ({
             }
 
             const slug = job.company
-              ? `/companies/${organization.slug}`
+              ? `${ROUTES.COMPANIES}/${organization.slug}`
               : job.vc_firm
-              ? `/investors/${organization.slug}`
+              ? `${ROUTES.INVESTORS}/${organization.slug}`
               : null;
 
             const logo = (
@@ -79,23 +80,18 @@ export const ElemJobsList: FC<Props> = ({
 
             return (
               <div className="flex space-x-4 py-4" key={index}>
-                {slug ? (
-                  <Link href={slug}>
-                    <a>{logo}</a>
-                  </Link>
-                ) : (
-                  logo
-                )}
+                {slug ? <ElemLink href={slug}>{logo}</ElemLink> : logo}
 
                 <div>
                   <h3 className="font-medium">{job.title}</h3>
                   <div className="text-gray-500 text-sm">
                     {slug ? (
-                      <Link href={slug}>
-                        <a className="block underline hover:no-underline">
-                          {organization.name}
-                        </a>
-                      </Link>
+                      <ElemLink
+                        href={slug}
+                        className="block underline hover:no-underline"
+                      >
+                        {organization.name}
+                      </ElemLink>
                     ) : organization?.name ? (
                       <>{organization?.name}</>
                     ) : (

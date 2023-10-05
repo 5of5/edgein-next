@@ -1,16 +1,16 @@
 table:
-  schema: public
   name: notes
+  schema: public
 object_relationships:
   - name: created_by_user
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: users_public
-        insertion_order: null
         column_mapping:
           created_by: id
+        insertion_order: null
+        remote_table:
+          name: users_public
+          schema: public
   - name: user_group
     using:
       foreign_key_constraint_on: user_group_id
@@ -18,21 +18,21 @@ array_relationships:
   - name: comments
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: comments
-        insertion_order: null
         column_mapping:
           id: note_id
+        insertion_order: null
+        remote_table:
+          name: comments
+          schema: public
   - name: likes
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: likes
-        insertion_order: null
         column_mapping:
           id: note_id
+        insertion_order: null
+        remote_table:
+          name: likes
+          schema: public
 select_permissions:
   - role: viewer
     permission:

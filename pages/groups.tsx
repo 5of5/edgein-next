@@ -19,7 +19,7 @@ import { useIntercom } from 'react-use-intercom';
 import { GroupsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { GROUPS_TABS } from '@/utils/constants';
-import { getGroupsFilters } from '@/utils/filter';
+import { getGroupsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';

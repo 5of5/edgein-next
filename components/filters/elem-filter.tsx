@@ -6,7 +6,7 @@ import {
   convertToInternationalCurrencySystem,
 } from '@/utils';
 import { Place } from '@aws-sdk/client-location';
-import { getFilterOptionMetadata } from '@/utils/filter';
+import { getFilterOptionMetadata } from '@/components/filters/processor';
 import {
   Filters,
   FilterOptionKeys,
@@ -14,13 +14,13 @@ import {
   DateCondition,
   FilterOptionMetadata,
 } from '@/models/Filter';
-import { InputRadio } from './input-radio';
-import { ElemMultiRangeSlider } from './elem-multi-range-slider';
-import { InputDate } from './input-date';
+import { InputRadio } from '../input-radio';
+import { ElemMultiRangeSlider } from '../elem-multi-range-slider';
+import { InputDate } from '../input-date';
 import { ElemFilterPopup } from './elem-filter-popup';
-import ElemAddressFilter from './elem-address-filter';
-import { InputText } from './input-text';
-import { InputSelect } from './input-select';
+import ElemAddressFilter from '../elem-address-filter';
+import { InputText } from '../input-text';
+import { InputSelect } from '../input-select';
 import { eventSizeChoices, ISO_DATE_FORMAT } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import ElemFilterTagsInput from './elem-filter-tags-input';
@@ -28,14 +28,15 @@ import { ElemFilterLocation } from './elem-filter-location';
 import { ElemAddFilter } from './elem-add-filter';
 import { getGeometryPlace } from '@/utils/helpers';
 import ElemFilterCheckboxTags from './elem-filter-checkbox-tags';
+import { ResourceTypes } from './types';
 
 type Props = {
   className?: string;
-  resourceType: 'companies' | 'vc_firms' | 'events';
+  resourceType: ResourceTypes;
   excludeFilters?: string[];
   filterValues: Filters | null;
-  onChangeFilterValues: (values: Filters | null) => void;
   dateCondition?: DateCondition;
+  onChangeFilterValues: (values: Filters | null) => void;
   onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
   onClearOption: (name: FilterOptionKeys) => void;
@@ -382,6 +383,8 @@ export const ElemFilter: FC<Props> = ({
         'fundingInvestors',
         'fundedCompanies',
         'keywords',
+        'role',
+        'name',
       ].includes(name)
     ) {
       const filterParams = cloneDeep(filters?.[name]);
@@ -393,13 +396,15 @@ export const ElemFilter: FC<Props> = ({
     }
   };
 
-  const extractTagsArrayToText = (tags: string[]) => {
+  const extractTagsArrayToText = (tags: string[], useDisjunction = false) => {
     const numOfTags = tags.length;
     return tags.map((tagItem, tagIndex) => (
       <Fragment key={tagItem}>
         <span className="font-medium">{tagItem}</span>
         {tagIndex < numOfTags - 1 &&
-          (tagIndex < numOfTags - 2 ? ', ' : ' and ')}
+          (tagIndex < numOfTags - 2
+            ? ', '
+            : ` ${useDisjunction ? 'or' : 'and'} `)}
       </Fragment>
     ));
   };
@@ -526,8 +531,14 @@ export const ElemFilter: FC<Props> = ({
               );
             }
 
-            if (option === 'keywords') {
-              const numOfTags = filters?.[option]?.tags?.length || 0;
+            if (
+              option === 'keywords' ||
+              option === 'role' ||
+              option === 'name'
+            ) {
+              const shouldUseDisjunction = ['role', 'name'].includes(option);
+              const tags = filters?.[option]?.tags || [];
+              const numOfTags = tags.length;
               return (
                 <ElemFilterTagsInput
                   key={option}
@@ -536,14 +547,18 @@ export const ElemFilter: FC<Props> = ({
                   title={
                     numOfTags > 0 && (
                       <div>
-                        {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
-                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                        {optionMetadata.title}{' '}
+                        {/*With disjunction we want to keep is instead of are*/}
+                        {numOfTags > 1 && !shouldUseDisjunction
+                          ? 'are'
+                          : 'is'}{' '}
+                        {extractTagsArrayToText(tags, shouldUseDisjunction)}
                       </div>
                     )
                   }
                   heading={optionMetadata.heading}
                   subtext={optionMetadata.subtext}
-                  tags={filters?.[option]?.tags || []}
+                  tags={tags}
                   placeholder={optionMetadata.placeholder}
                   onOpenFilterPopup={onOpenFilterPopup}
                   onCloseFilterPopup={onCloseFilterPopup}

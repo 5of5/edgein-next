@@ -12,6 +12,7 @@ import {
 } from '@/graphql/types';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -63,7 +64,7 @@ export const ElemCohort: FC<Props> = ({
     event.preventDefault();
 
     router.push(
-      `/companies/?filters=${encodeURIComponent(
+      `${ROUTES.COMPANIES}/?filters=${encodeURIComponent(
         `{"industry":{"tags":["${type}"]}}`,
       )}`,
     );
