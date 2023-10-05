@@ -43,12 +43,9 @@ export function useAuth() {
   const { mutate } = useSWRConfig();
   const loading = isValidating;
 
-  const refreshUser = useCallback(
-    () => () => {
-      mutate('/api/user/');
-    },
-    [mutate],
-  );
+  const refreshUser = useCallback(() => {
+    mutate('/api/user/');
+  }, [mutate]);
 
   if (user && !user?.entitlements) {
     user.entitlements = {
