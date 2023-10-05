@@ -18,6 +18,10 @@ query GetPerson($slug: String!) {
     website_url
     about
     email
+    location_json
+    geopoint
+    tags
+    title
     investors {
       id
       end_date
@@ -131,6 +135,10 @@ query GetPeople(
     facebook_url
     twitter_url
     website_url
+    location_json
+    geopoint
+    tags
+    title
     investors {
       id
       end_date

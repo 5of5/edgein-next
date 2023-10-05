@@ -19104,6 +19104,7 @@ export type People = {
   follows: Array<Follows_People>;
   /** An aggregate relationship */
   follows_aggregate: Follows_People_Aggregate;
+  geopoint: Maybe<Scalars['geography']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   /** An array relationship */
@@ -19116,6 +19117,7 @@ export type People = {
   investors_aggregate: Investors_Aggregate;
   library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
+  location_json: Maybe<Scalars['jsonb']>;
   name: Maybe<Scalars['String']>;
   /** An array relationship */
   news_links: Array<News_Person>;
@@ -19125,10 +19127,12 @@ export type People = {
   picture: Maybe<Scalars['jsonb']>;
   slug: Scalars['String'];
   status: Scalars['String'];
+  tags: Maybe<Scalars['jsonb']>;
   /** An array relationship */
   team_members: Array<Team_Members>;
   /** An aggregate relationship */
   team_members_aggregate: Team_Members_Aggregate;
+  title: Maybe<Scalars['String']>;
   twitter_url: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -19212,6 +19216,12 @@ export type PeopleLibraryArgs = {
 
 
 /** columns and relationships of "people" */
+export type PeopleLocation_JsonArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "people" */
 export type PeopleNews_LinksArgs = {
   distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -19233,6 +19243,12 @@ export type PeopleNews_Links_AggregateArgs = {
 
 /** columns and relationships of "people" */
 export type PeoplePictureArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "people" */
+export type PeopleTagsArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
@@ -19291,7 +19307,9 @@ export type People_Append_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
   library: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -19319,6 +19337,7 @@ export type People_Bool_Exp = {
   facebook_url: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_People_Bool_Exp>;
   follows_aggregate: InputMaybe<Follows_People_Aggregate_Bool_Exp>;
+  geopoint: InputMaybe<Geography_Comparison_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
@@ -19327,6 +19346,7 @@ export type People_Bool_Exp = {
   investors_aggregate: InputMaybe<Investors_Aggregate_Bool_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
+  location_json: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Person_Bool_Exp>;
   news_links_aggregate: InputMaybe<News_Person_Aggregate_Bool_Exp>;
@@ -19334,8 +19354,10 @@ export type People_Bool_Exp = {
   picture: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
+  tags: InputMaybe<Jsonb_Comparison_Exp>;
   team_members: InputMaybe<Team_Members_Bool_Exp>;
   team_members_aggregate: InputMaybe<Team_Members_Aggregate_Bool_Exp>;
+  title: InputMaybe<String_Comparison_Exp>;
   twitter_url: InputMaybe<String_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -19359,7 +19381,9 @@ export type People_Delete_At_Path_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Array<Scalars['String']>>;
   library: InputMaybe<Array<Scalars['String']>>;
+  location_json: InputMaybe<Array<Scalars['String']>>;
   picture: InputMaybe<Array<Scalars['String']>>;
+  tags: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
@@ -19367,7 +19391,9 @@ export type People_Delete_Elem_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['Int']>;
   library: InputMaybe<Scalars['Int']>;
+  location_json: InputMaybe<Scalars['Int']>;
   picture: InputMaybe<Scalars['Int']>;
+  tags: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
@@ -19375,7 +19401,9 @@ export type People_Delete_Key_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "people" */
@@ -19399,19 +19427,23 @@ export type People_Insert_Input = {
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_People_Arr_Rel_Insert_Input>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['jsonb']>;
   team_members: InputMaybe<Team_Members_Arr_Rel_Insert_Input>;
+  title: InputMaybe<Scalars['String']>;
   twitter_url: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -19439,6 +19471,7 @@ export type People_Max_Fields = {
   personal_email: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  title: Maybe<Scalars['String']>;
   twitter_url: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -19465,6 +19498,7 @@ export type People_Min_Fields = {
   personal_email: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  title: Maybe<Scalars['String']>;
   twitter_url: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -19508,19 +19542,23 @@ export type People_Order_By = {
   external_id: InputMaybe<Order_By>;
   facebook_url: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_People_Aggregate_Order_By>;
+  geopoint: InputMaybe<Order_By>;
   github: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
   library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
+  location_json: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
   personal_email: InputMaybe<Order_By>;
   picture: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
+  tags: InputMaybe<Order_By>;
   team_members_aggregate: InputMaybe<Team_Members_Aggregate_Order_By>;
+  title: InputMaybe<Order_By>;
   twitter_url: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
@@ -19539,7 +19577,9 @@ export type People_Prepend_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
   library: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "people" */
@@ -19565,6 +19605,8 @@ export enum People_Select_Column {
   /** column name */
   FacebookUrl = 'facebook_url',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Github = 'github',
   /** column name */
   Id = 'id',
@@ -19572,6 +19614,8 @@ export enum People_Select_Column {
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
+  /** column name */
+  LocationJson = 'location_json',
   /** column name */
   Name = 'name',
   /** column name */
@@ -19582,6 +19626,10 @@ export enum People_Select_Column {
   Slug = 'slug',
   /** column name */
   Status = 'status',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
+  Title = 'title',
   /** column name */
   TwitterUrl = 'twitter_url',
   /** column name */
@@ -19607,15 +19655,19 @@ export type People_Set_Input = {
   enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+  title: InputMaybe<Scalars['String']>;
   twitter_url: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -19668,15 +19720,19 @@ export type People_Stream_Cursor_Value_Input = {
   enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['jsonb']>;
+  title: InputMaybe<Scalars['String']>;
   twitter_url: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -19715,6 +19771,8 @@ export enum People_Update_Column {
   /** column name */
   FacebookUrl = 'facebook_url',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Github = 'github',
   /** column name */
   Id = 'id',
@@ -19722,6 +19780,8 @@ export enum People_Update_Column {
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
+  /** column name */
+  LocationJson = 'location_json',
   /** column name */
   Name = 'name',
   /** column name */
@@ -19732,6 +19792,10 @@ export enum People_Update_Column {
   Slug = 'slug',
   /** column name */
   Status = 'status',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
+  Title = 'title',
   /** column name */
   TwitterUrl = 'twitter_url',
   /** column name */
@@ -29903,7 +29967,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, location_json: any | null, geopoint: any | null, tags: any | null, title: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }> };
 
 export type GetPeopleQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -29913,7 +29977,7 @@ export type GetPeopleQueryVariables = Exact<{
 }>;
 
 
-export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
+export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, location_json: any | null, geopoint: any | null, tags: any | null, title: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }> }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
 
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -34436,6 +34500,10 @@ export const GetPersonDocument = `
     website_url
     about
     email
+    location_json
+    geopoint
+    tags
+    title
     investors {
       id
       end_date
@@ -34564,6 +34632,10 @@ export const GetPeopleDocument = `
     facebook_url
     twitter_url
     website_url
+    location_json
+    geopoint
+    tags
+    title
     investors {
       id
       end_date

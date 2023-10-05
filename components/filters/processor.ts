@@ -1011,30 +1011,11 @@ const createFilterForPeopleLocation = (
   }
 
   const filterObject = tags.map((item: string) => ({
-    _or: [
-      {
-        investors: {
-          vc_firm: {
-            location_json: {
-              _cast: {
-                String: { _ilike: `%"${type}": "${item}"%` },
-              },
-            },
-          },
-        },
+    location_json: {
+      _cast: {
+        String: { _ilike: `%"${type}": "${item}"%` },
       },
-      {
-        team_members: {
-          company: {
-            location_json: {
-              _cast: {
-                String: { _ilike: `%"${type}": "${item}"%` },
-              },
-            },
-          },
-        },
-      },
-    ],
+    },
   }));
 
   if (condition === 'any') {
@@ -1051,7 +1032,7 @@ const createFilterForPeopleLocation = (
           },
         },
         {
-          [type]: { _is_null: true },
+          location_json: { _is_null: true },
         },
       ],
     };
@@ -1078,53 +1059,18 @@ export const processPeopleFilter = (
 
   if (selectedFilters?.address?.value) {
     filters._and?.push({
-      _or: [
-        {
-          team_members: {
-            company: {
-              geopoint: {
-                _st_d_within: {
-                  distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
-                  from: selectedFilters.address.value?.geometry,
-                },
-              },
-            },
-          },
+      geopoint: {
+        _st_d_within: {
+          distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+          from: selectedFilters.address.value?.geometry,
         },
-        {
-          investors: {
-            vc_firm: {
-              geopoint: {
-                _st_d_within: {
-                  distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
-                  from: selectedFilters.address.value?.geometry,
-                },
-              },
-            },
-          },
-        },
-      ],
+      },
     });
   }
   if (selectedFilters?.industry?.tags?.length) {
     filters._and?.push({
       _and: selectedFilters.industry.tags.map(item => ({
-        _or: [
-          {
-            team_members: {
-              company: {
-                tags: { _contains: item },
-              },
-            },
-          },
-          {
-            investors: {
-              vc_firm: {
-                tags: { _contains: item },
-              },
-            },
-          },
-        ],
+        tags: { _contains: item },
       })),
     });
   }
@@ -1133,18 +1079,7 @@ export const processPeopleFilter = (
     filters._and?.push({
       // There is role if user selects multiple roles
       _or: selectedFilters.role.tags.map(item => ({
-        _or: [
-          {
-            team_members: {
-              title: { _ilike: `%${item}%` },
-            },
-          },
-          {
-            investors: {
-              title: { _ilike: `%${item}%` },
-            },
-          },
-        ],
+        title: { _ilike: `%${item}%` },
       })),
     });
   }
