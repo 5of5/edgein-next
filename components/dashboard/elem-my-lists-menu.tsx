@@ -1,5 +1,5 @@
 import { getNameFromListName } from '@/utils/reaction';
-import { kebabCase, partition } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { IconSidebarList } from '@/components/icons';
@@ -32,23 +32,6 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   );
   //.sort((a, b) => (a.name < b.name ? -1 : 1));
 
-  const displayedCustomLists = getCustomLists.slice(
-    0,
-    user?.entitlements.listsCount
-      ? user?.entitlements.listsCount
-      : getCustomLists.length,
-  );
-
-  const partLists = partition(
-    displayedCustomLists,
-    o => o.created_by_id === user?.id,
-  );
-
-  const createdLists = [...partLists[0]];
-  const followedLists = [...partLists[1]];
-
-  const totalListCount = createdLists?.length + followedLists?.length;
-
   const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -75,7 +58,10 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       return onRedirectToSignIn();
     }
 
-    if (getCustomLists.length > totalListCount) {
+    if (
+      user?.entitlements?.listsCount &&
+      getCustomLists.length > user.entitlements.listsCount
+    ) {
       return onOpenUpgradeDialog();
     }
 

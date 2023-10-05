@@ -128,3 +128,7 @@ export const IngestPeopleReqSchema = z.object({
   people: z.array(z.string()).min(1),
   enrichmentPriority: z.number().int().min(0),
 });
+
+export const BatchJobReqSchema = z.object({
+  apiKey: z.string().optional(),
+});
