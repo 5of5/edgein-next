@@ -6,6 +6,7 @@ import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
 import { numberWithCommas, formatDate } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
+import { INVESTORS, PEOPLE } from '@/routes';
 
 type Props = {
   className?: string;
@@ -80,7 +81,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
                       <Link
-                        href={`/investors/${investment.vc_firm.slug}`}
+                        href={`${INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
                       >
                         <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
@@ -93,7 +94,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 
                     {investment.person && (
                       <Link
-                        href={`/people/${investment.person.slug}`}
+                        href={`${PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
                       >
                         <a className="investor flex items-center space-x-3 hover:opacity-70">
@@ -114,7 +115,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
                       <Link
-                        href={`/investors/${investment.vc_firm.slug}`}
+                        href={`${INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
                       >
                         <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
@@ -135,7 +136,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.person && (
                       <Link
-                        href={`/people/${investment.person.slug}`}
+                        href={`${PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
                       >
                         <a className="investor flex items-center space-x-3 hover:opacity-70">

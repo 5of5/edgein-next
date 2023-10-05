@@ -14,6 +14,7 @@ import ElemNoteCard from '@/components/group/elem-note-card';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
 import { useRouter } from 'next/router';
+import { SIGN_IN } from '@/routes';
 
 type Props = {
   resourceId: number;
@@ -34,7 +35,7 @@ const ElemOrganizationNotes: FC<Props> = ({
 
   const onOpenNoteForm = () => {
     if (!user) {
-      router.push('/sign-in');
+      router.push(SIGN_IN);
     } else {
       setIsOpenNoteForm(true);
     }

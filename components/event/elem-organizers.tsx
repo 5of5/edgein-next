@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ElemPhoto } from '@/components/elem-photo';
 import { GetEventQuery } from '@/graphql/types';
+import { COMPANIES, INVESTORS } from '@/routes';
 
 type Props = {
   organizations: GetEventQuery['events'][0]['event_organization'];
@@ -16,9 +17,9 @@ export const ElemOrganizers: React.FC<Props> = ({ organizations }) => {
       <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {organizations?.map(organizer => {
           const slug = organizer.company
-            ? `/companies/${organizer.company?.slug}`
+            ? `${COMPANIES}/${organizer.company?.slug}`
             : organizer.vc_firm
-            ? `/investors/${organizer.vc_firm?.slug}`
+            ? `${INVESTORS}/${organizer.vc_firm?.slug}`
             : '';
 
           const organization = organizer.company

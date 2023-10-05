@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { Popups } from '@/components/the-navbar';
 import { useRouter } from 'next/router';
+import { SIGN_IN } from '@/routes';
 
 type PopupValue = {
   showPopup: Popups;
@@ -32,7 +33,7 @@ const PopupProvider: FC<Props> = props => {
   const router = useRouter();
 
   const [showPopup, setShowPopup] = useState<Popups>(
-    router.asPath.includes('/sign-in/') && router.asPath.includes('?usage=true')
+    router.asPath.includes(SIGN_IN) && router.asPath.includes('?usage=true')
       ? 'usage'
       : false,
   );

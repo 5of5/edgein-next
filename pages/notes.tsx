@@ -10,6 +10,7 @@ import { orderBy } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { useRouter } from 'next/router';
+import { COMPANIES, INVESTORS, SIGN_IN } from '@/routes';
 
 type Props = {};
 
@@ -26,7 +27,7 @@ const Notes: FC<Props> = () => {
   }, [user]);
 
   const redirectToSignIn = () => {
-    router.push('/sign-in');
+    router.push(SIGN_IN);
   };
   const {
     data: noteList,
@@ -96,10 +97,10 @@ const Notes: FC<Props> = () => {
                 Get started by creating a note in a company or investor profile.
               </p>
               <div className="mt-2 flex justify-center space-x-2">
-                <ElemButton href="/companies" btn="white" arrow>
+                <ElemButton href={COMPANIES} btn="white" arrow>
                   Companies
                 </ElemButton>
-                <ElemButton href="/investors" btn="white" arrow>
+                <ElemButton href={INVESTORS} btn="white" arrow>
                   Investors
                 </ElemButton>
               </div>

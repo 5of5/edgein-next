@@ -3,6 +3,7 @@ import { useIntercom } from 'react-use-intercom';
 import { formatDate } from '@/utils';
 import { ElemButton } from '../elem-button';
 import Link from 'next/link';
+import { COMPANIES, INVESTORS, PEOPLE } from '@/routes';
 
 type Props = {
   activities: Array<any>;
@@ -74,7 +75,9 @@ export const ElemEventActivity: React.FC<Props> = ({
                           <br /> */}
                           {activity?.type === 'attendee' ? (
                             <>
-                              <Link href={`/people/${activity?.person?.slug}`}>
+                              <Link
+                                href={`${PEOPLE}/${activity?.person?.slug}`}
+                              >
                                 <a className="font-medium underline hover:no-underline">
                                   {activity?.person?.name}
                                 </a>
@@ -86,7 +89,9 @@ export const ElemEventActivity: React.FC<Props> = ({
                             </>
                           ) : activity?.type === 'speaker' ? (
                             <>
-                              <Link href={`/people/${activity?.person?.slug}`}>
+                              <Link
+                                href={`${PEOPLE}/${activity?.person?.slug}`}
+                              >
                                 <a className="font-medium underline hover:no-underline">
                                   {activity?.person?.name}
                                 </a>
@@ -101,10 +106,10 @@ export const ElemEventActivity: React.FC<Props> = ({
                               <Link
                                 href={
                                   activity?.company
-                                    ? `/companies/${activity?.company?.slug}`
+                                    ? `${COMPANIES}/${activity?.company?.slug}`
                                     : activity?.vc_firm
-                                    ? `/investors/${activity?.vc_firm?.slug}`
-                                    : `/people/${activity?.person?.slug}`
+                                    ? `${INVESTORS}/${activity?.vc_firm?.slug}`
+                                    : `${PEOPLE}/${activity?.person?.slug}`
                                 }
                               >
                                 <a className="font-medium underline hover:no-underline">
@@ -123,10 +128,10 @@ export const ElemEventActivity: React.FC<Props> = ({
                               <Link
                                 href={
                                   activity?.company
-                                    ? `/companies/${activity?.company?.slug}`
+                                    ? `${COMPANIES}/${activity?.company?.slug}`
                                     : activity?.vc_firm
-                                    ? `/investors/${activity?.vc_firm?.slug}`
-                                    : `/people/${activity?.person?.slug}`
+                                    ? `${INVESTORS}/${activity?.vc_firm?.slug}`
+                                    : `${PEOPLE}/${activity?.person?.slug}`
                                 }
                               >
                                 <a className="font-medium underline hover:no-underline">

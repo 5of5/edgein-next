@@ -4,6 +4,7 @@ import { SHOW_INVITE_BANNER } from '@/utils/constants';
 import { IconX, IconArrowRight } from '../icons';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
+import { INVITE_A_FRIEND, SIGN_IN } from '@/routes';
 
 type Props = {
   className?: string;
@@ -37,7 +38,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   const handleClickBanner = (event: MouseEvent<HTMLAnchorElement>) => {
     if (!user) {
       event.preventDefault();
-      router.push('/sign-in');
+      router.push(SIGN_IN);
     }
   };
 
@@ -46,7 +47,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   }
 
   return (
-    <Link href={'/invite-a-friend'} passHref>
+    <Link href={INVITE_A_FRIEND} passHref>
       <div
         className={`cursor-pointer flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
       >

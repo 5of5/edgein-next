@@ -11,6 +11,7 @@ import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getListDisplayName } from '@/utils/lists';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
+import { LISTS, SIGN_IN } from '@/routes';
 
 type Props = {
   className?: string;
@@ -21,7 +22,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const { listAndFollows: lists, user } = useUser();
 
   const getActiveClass = (id: number, name: string) => {
-    return `/lists/${id}/${name}/` === router.asPath
+    return `${LISTS}/${id}/${name}/` === router.asPath
       ? 'bg-gray-100 text-gray-900'
       : 'text-gray-500';
   };
@@ -66,7 +67,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   const onRedirectToSignIn = () => {
-    router.push('/sign-in');
+    router.push(SIGN_IN);
   };
 
   const onClickCreate = () => {
@@ -86,7 +87,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       <div className="w-full flex items-center justify-between">
         {user ? (
           <ElemSidebarItem
-            url="/lists"
+            url={LISTS}
             text="Lists"
             IconComponent={IconSidebarList}
           />
@@ -122,7 +123,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             return (
               <li key={listItemId} role="button">
                 <Link
-                  href={`/lists/${listItemId}/${
+                  href={`${LISTS}/${listItemId}/${
                     listItemName === 'crap' ? 'sh**' : kebabCase(listItemName)
                   }`}
                 >

@@ -20,6 +20,7 @@ import { getFullAddress } from '@/utils/helpers';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { CardType } from '../companies/elem-company-card';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
+import { INVESTORS, SIGN_IN } from '@/routes';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -58,7 +59,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
 
   const onClickInvestorLinkedin = () => {
     if (!user) {
-      router.push('/sign-in');
+      router.push(SIGN_IN);
     } else {
       setIsOpenUpgradeDialog(true);
     }
@@ -68,7 +69,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
-          <Link href={`/investors/${slug}`}>
+          <Link href={`${INVESTORS}/${slug}`}>
             <a>
               <div className="flex shrink-0 w-full items-center gap-4">
                 <ElemPhoto

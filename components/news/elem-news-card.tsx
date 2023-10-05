@@ -10,6 +10,7 @@ import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemTags } from '@/components/elem-tags';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
+import { COMPANIES, INVESTORS } from '@/routes';
 
 type Props = {
   className?: string;
@@ -140,9 +141,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 <>
                   {otherOrganizations.map((organizer: any, index: number) => {
                     const slug = organizer.company
-                      ? `/companies/${organizer.company?.slug}`
+                      ? `${COMPANIES}/${organizer.company?.slug}`
                       : organizer.vc_firm
-                      ? `/investors/${organizer.vc_firm?.slug}`
+                      ? `${INVESTORS}/${organizer.vc_firm?.slug}`
                       : '';
 
                     const organization = organizer.company
@@ -191,9 +192,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   <Link
                     href={
                       publisher.company
-                        ? `/companies/${publisher.company?.slug}`
+                        ? `${COMPANIES}/${publisher.company?.slug}`
                         : publisher.vc_firm
-                        ? `/investors/${publisher.vc_firm?.slug}`
+                        ? `${INVESTORS}/${publisher.vc_firm?.slug}`
                         : ''
                     }
                   >
@@ -211,7 +212,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 {' • '}
                 Powered by{' '}
                 <Link
-                  href={`/companies/${
+                  href={`${COMPANIES}/${
                     source?.poweredby?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'

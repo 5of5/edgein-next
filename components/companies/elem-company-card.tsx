@@ -26,6 +26,7 @@ import {
   numberWithCommas,
 } from '@/utils';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
+import { COMPANIES } from '@/routes';
 
 export type CardType = 'full' | 'compact';
 
@@ -80,7 +81,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
-          <Link href={`/companies/${slug}`}>
+          <Link href={`${COMPANIES}/${slug}`}>
             <a>
               <div className="flex shrink-0 w-full items-center gap-4">
                 <ElemPhoto

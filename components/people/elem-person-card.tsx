@@ -13,6 +13,7 @@ import { IconLinkedIn, IconEmail, IconLocation } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getFullAddress } from '@/utils/helpers';
+import { PEOPLE } from '@/routes';
 
 type Props = {
   person: People;
@@ -79,7 +80,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
       {' '}
       <div className="flex flex-col justify-between h-full">
         <div className="w-full">
-          <Link href={`/people/${slug}`}>
+          <Link href={`${PEOPLE}/${slug}`}>
             <a className="flex items-center gap-x-4 mb-4">
               <ElemPhoto
                 photo={picture}

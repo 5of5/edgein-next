@@ -29,6 +29,7 @@ import { InputTextarea } from '../input-textarea';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import ElemNoteForm from '@/components/elem-note-form';
 import { usePopup } from '@/context/popup-context';
+import { GROUPS, PEOPLE } from '@/routes';
 
 type Props = {
   data: GetNotesQuery['notes'][0];
@@ -345,7 +346,7 @@ const ElemNoteCard: React.FC<Props> = ({
                 </a>
               </Link>
             ) : layout === 'groupAndAuthor' ? (
-              <Link href={`/groups/${data?.user_group?.id}`}>
+              <Link href={`${GROUPS}/${data?.user_group?.id}`}>
                 <a>
                   <div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-gray-100 rounded-lg border border-gray-100">
                     <IconGroup
@@ -357,7 +358,7 @@ const ElemNoteCard: React.FC<Props> = ({
               </Link>
             ) : (
               // layout === "author"
-              <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
+              <Link href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}>
                 <a>
                   <ElemPhoto
                     photo={data?.created_by_user?.person?.picture}
@@ -377,7 +378,7 @@ const ElemNoteCard: React.FC<Props> = ({
 
             {(layout === 'organizationAndAuthor' ||
               layout === 'groupAndAuthor') && (
-              <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
+              <Link href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}>
                 <a className="absolute -right-1 -bottom-1">
                   <ElemPhoto
                     photo={data?.created_by_user?.person?.picture}
@@ -403,12 +404,14 @@ const ElemNoteCard: React.FC<Props> = ({
                     <a>{resource?.name}</a>
                   </Link>
                 ) : layout === 'groupAndAuthor' ? (
-                  <Link href={`/groups/${data?.user_group?.id}`}>
+                  <Link href={`${GROUPS}/${data?.user_group?.id}`}>
                     <a>{data?.user_group?.name}</a>
                   </Link>
                 ) : (
                   // layout === "author"
-                  <Link href={`/people/${data?.created_by_user?.person?.slug}`}>
+                  <Link
+                    href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                  >
                     <a>{data?.created_by_user?.person?.name}</a>
                   </Link>
                 )}
@@ -418,7 +421,7 @@ const ElemNoteCard: React.FC<Props> = ({
                   layout === 'groupAndAuthor') && (
                   <>
                     <Link
-                      href={`/people/${data?.created_by_user?.person?.slug}`}
+                      href={`${PEOPLE}/${data?.created_by_user?.person?.slug}`}
                     >
                       <a className="underline-offset-1 hover:underline">
                         {data?.created_by_user?.person?.name}
@@ -519,7 +522,7 @@ const ElemNoteCard: React.FC<Props> = ({
               <div key={comment.id} className="flex items-center gap-2">
                 <div className="flex items-start gap-2">
                   <Link
-                    href={`/people/${comment.created_by_user?.person?.slug}`}
+                    href={`${PEOPLE}/${comment.created_by_user?.person?.slug}`}
                   >
                     <a>
                       <ElemPhoto
@@ -540,7 +543,7 @@ const ElemNoteCard: React.FC<Props> = ({
                       <div>
                         <p className="">
                           <Link
-                            href={`/people/${comment.created_by_user?.person?.slug}`}
+                            href={`${PEOPLE}/${comment.created_by_user?.person?.slug}`}
                           >
                             <a className="font-medium hover:underline">
                               {comment.created_by_user?.person?.name ||

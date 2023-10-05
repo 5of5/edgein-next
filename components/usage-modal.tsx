@@ -4,6 +4,7 @@ import { ElemButton } from '@/components/elem-button';
 import { ElemLogo } from '@/components/elem-logo';
 import { IconBadgeCheck, IconContributor } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
+import { SIGN_IN } from '@/routes';
 
 type Props = {
   show: boolean;
@@ -18,7 +19,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 
   const onSignUp = () => {
     props.onClose();
-    router.push('/sign-in');
+    router.push(SIGN_IN);
   };
 
   const onClose = () => {

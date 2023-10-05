@@ -17,6 +17,7 @@ import { FilterInSectionType } from '../companies/elem-companies-by-filter-insec
 import { ElemButton } from '../elem-button';
 import { useRouter } from 'next/router';
 import { getHomepageEncodedURI } from '@/components/filters/processor';
+import { EVENTS } from '@/routes';
 
 type Props = {
   headingText: string;
@@ -127,7 +128,7 @@ export const EventsByFilterInSection: FC<Props> = ({
                     return;
                   }
                   router.push(
-                    `/events/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
+                    `${EVENTS}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
                   );
                 }}
                 btn="primary"

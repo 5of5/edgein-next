@@ -34,6 +34,7 @@ import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { INVESTORS } from '@/routes';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -71,7 +72,7 @@ const VCFirm: NextPage<Props> = props => {
 
   useEffect(() => {
     if (selectedLibrary && !vcfirm.library?.includes(selectedLibrary)) {
-      router.push('/investors');
+      router.push(INVESTORS);
     }
   }, [vcfirm, selectedLibrary, router]);
 

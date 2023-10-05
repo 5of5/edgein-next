@@ -5,6 +5,7 @@ import { IconX } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { loadStripe } from '@/utils/stripe';
 import { useUser } from '@/context/user-context';
+import { SIGN_IN } from '@/routes';
 
 type Props = {
   isOpen: boolean;
@@ -82,7 +83,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
                       Start free trial
                     </ElemButton>
                   ) : (
-                    <Link href="/sign-in" passHref>
+                    <Link href={SIGN_IN} passHref>
                       <ElemButton btn="purple">Sign in to start</ElemButton>
                     </Link>
                   )}

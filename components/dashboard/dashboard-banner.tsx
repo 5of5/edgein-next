@@ -7,6 +7,7 @@ import { IconCurrencyDollar, IconGift, IconX } from '../icons';
 import { numberWithCommas } from '@/utils';
 import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { LOCAL_STORAGE_SIDEBAR_BANNER_KEY } from '@/utils/constants';
+import { INVITE_A_FRIEND, SIGN_IN } from '@/routes';
 
 type Props = {
   className?: string;
@@ -64,7 +65,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
           </div>
         )}
 
-        <Link href={user ? '/invite-a-friend' : '/sign-in'} passHref>
+        <Link href={user ? INVITE_A_FRIEND : SIGN_IN} passHref>
           <a
             className={`flex p-3 border border-primary-500 bg-white rounded-xl ${
               isVisitor ? '' : 'gap-2'

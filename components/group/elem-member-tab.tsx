@@ -8,6 +8,7 @@ import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useUser } from '@/context/user-context';
 import Link from 'next/link';
+import { PEOPLE } from '@/routes';
 
 type Props = {
   group: User_Groups;
@@ -79,7 +80,7 @@ const ElemMemberTab: React.FC<Props> = ({
 
   const handleViewProfile = (slug: string | undefined) => {
     if (slug) {
-      router.push(`/people/${slug}`);
+      router.push(`${PEOPLE}/${slug}`);
     }
   };
 
@@ -217,7 +218,10 @@ const ElemMemberTab: React.FC<Props> = ({
 
         if (member.user?.person?.slug) {
           return (
-            <Link href={`/people/${member.user.person?.slug}`} key={member.id}>
+            <Link
+              href={`${PEOPLE}/${member.user.person?.slug}`}
+              key={member.id}
+            >
               <a className="block cursor-pointer hover:bg-slate-100">
                 {theMember}
               </a>

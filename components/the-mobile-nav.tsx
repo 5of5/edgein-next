@@ -31,6 +31,19 @@ import { useRouter } from 'next/router';
 import { Popups } from '@/components/the-navbar';
 import UserService from '@/utils/users';
 import { ExploreMenuItem } from '@/types/common';
+import {
+  ACCOUNT,
+  COMPANIES,
+  EVENTS,
+  GROUPS,
+  HOME,
+  INVESTORS,
+  LISTS,
+  NEWS,
+  NOTES,
+  NOTIFICATIONS,
+  PEOPLE,
+} from '@/routes';
 
 type Props = {
   className?: string;
@@ -64,17 +77,17 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconCompanies,
       title: 'Companies',
-      href: '/companies',
+      href: COMPANIES,
     },
     {
       icon: IconCash,
       title: 'Investors',
-      href: '/investors',
+      href: INVESTORS,
     },
     {
       icon: IconUserGroup,
       title: 'People',
-      href: '/people',
+      href: PEOPLE,
     },
   ];
 
@@ -82,7 +95,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     ...(user
       ? [
           {
-            href: '/home',
+            href: HOME,
             icon: IconHome,
             title: 'Home',
           },
@@ -92,7 +105,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconBell,
       title: 'Notifications',
-      href: '/notifications',
+      href: NOTIFICATIONS,
     },
   ];
 
@@ -102,17 +115,17 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
           {
             icon: IconCustomList,
             title: 'Lists',
-            href: '/lists',
+            href: LISTS,
           },
           {
             icon: IconGroup,
             title: 'Groups',
-            href: '/groups',
+            href: GROUPS,
           },
           {
             icon: IconDocumentDownload,
             title: 'Notes',
-            href: '/notes',
+            href: NOTES,
           },
         ]
       : []),
@@ -120,19 +133,19 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconCalendar,
       title: 'Events',
-      href: '/events',
+      href: EVENTS,
     },
     {
       icon: IconNewspaper,
       title: 'News',
-      href: '/news',
+      href: NEWS,
     },
     ...(user
       ? [
           {
             icon: IconSettings,
             title: 'Account Settings',
-            href: '/account',
+            href: ACCOUNT,
           },
         ]
       : []),
@@ -277,7 +290,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 </ElemButton>
               ) : (
                 <ElemButton
-                  onClick={() => router.push('/companies')}
+                  onClick={() => router.push(COMPANIES)}
                   btn="primary"
                   className="w-full"
                 >

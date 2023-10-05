@@ -10,6 +10,7 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 import useDisclosureState from '@/hooks/use-disclosure-state';
 import { MY_EDGEIN_MENU_OPEN_KEY } from '@/utils/constants';
+import { ACCOUNT, PROFILE } from '@/routes';
 
 const ElemMyEdgeInMenu = () => {
   const { user } = useAuth();
@@ -45,10 +46,10 @@ const ElemMyEdgeInMenu = () => {
 
           <Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
             <li>
-              <Link href={`/profile`} passHref>
+              <Link href={PROFILE} passHref>
                 <a
                   className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-                    '/profile/',
+                    `${PROFILE}/`,
                   )}`}
                 >
                   {user?.person?.picture ? (
@@ -71,10 +72,10 @@ const ElemMyEdgeInMenu = () => {
             </li>
 
             <li>
-              <Link href="/account/" passHref>
+              <Link href={ACCOUNT} passHref>
                 <a
                   className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-                    '/account/',
+                    `${ACCOUNT}/`,
                   )}`}
                 >
                   <IconSettings className="h-6 w-6" />

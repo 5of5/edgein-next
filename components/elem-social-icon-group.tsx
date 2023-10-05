@@ -17,7 +17,6 @@ type Props = {
 
 export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-
   const { user } = useUser();
 
   const userCanViewPremiumInfo = user?.entitlements.viewEmails
@@ -25,7 +24,6 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
     : false;
 
   const onOpenUpgradeDialog = () => setIsOpenUpgradeDialog(true);
-
   const onCloseUpgradeDialog = () => setIsOpenUpgradeDialog(false);
 
   return (

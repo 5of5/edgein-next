@@ -2,6 +2,7 @@ import { FC, Fragment, ReactElement, useState } from 'react';
 import { usePopper } from 'react-popper';
 import { Popover, Transition } from '@headlessui/react';
 import { ElemButton } from './elem-button';
+import { SIGN_IN } from '@/routes';
 
 type Props = {
   wrapperClass?: string;
@@ -60,7 +61,7 @@ export const ElemWithSignInModal: FC<Props> = ({
               >
                 <div className="p-4 bg-white rounded-lg shadow-lg border border-gray-200">
                   <p className="text-gray-500 text-sm">{text}</p>
-                  <ElemButton btn="primary" href="/sign-in" className="mt-3">
+                  <ElemButton btn="primary" href={SIGN_IN} className="mt-3">
                     Sign in
                   </ElemButton>
                 </div>

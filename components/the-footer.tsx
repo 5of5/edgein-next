@@ -1,6 +1,15 @@
 import { ElemLogo } from './elem-logo';
 import Link from 'next/link';
 import { IconLinkedIn, IconTwitter, IconTelegram, IconDiscord } from './icons';
+import {
+  BRAND_ASSETS,
+  CONTACT,
+  PRICING,
+  PRIVACY,
+  SUPPORT,
+  TEAM,
+  TERMS,
+} from '@/routes';
 
 export const TheFooter = () => {
   const currentYear = new Date().getFullYear();
@@ -12,18 +21,18 @@ export const TheFooter = () => {
     ],
     company: [
       // { name: "About", href: "https://www.5of5.vc/about" },
-      { name: 'Team', href: '/team' },
-      { name: 'Pricing', href: '/pricing' },
-      { name: 'Brand Assets', href: '/brand-assets' },
+      { name: 'Team', href: TEAM },
+      { name: 'Pricing', href: PRICING },
+      { name: 'Brand Assets', href: BRAND_ASSETS },
     ],
     resources: [
-      { name: 'Contact', href: '/contact' },
-      { name: 'Support', href: '/support' },
+      { name: 'Contact', href: CONTACT },
+      { name: 'Support', href: SUPPORT },
       { name: 'Press', href: 'mailto:press@edgein.io' },
     ],
     legal: [
-      { name: 'Privacy', href: '/privacy' },
-      { name: 'Terms', href: '/terms' },
+      { name: 'Privacy', href: PRIVACY },
+      { name: 'Terms', href: TERMS },
     ],
     social: [
       {

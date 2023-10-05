@@ -22,6 +22,15 @@ import { Popover, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
+import {
+  COMPANIES,
+  CONTACT,
+  NOTIFICATIONS,
+  PRICING,
+  ROOT,
+  SIGN_IN,
+  SUPPORT,
+} from '@/routes';
 
 export type Popups = 'search' | 'usage' | false;
 
@@ -39,7 +48,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
-    if (!showPopup && router.asPath.includes('/sign-in/')) {
+    if (!showPopup && router.asPath.includes(SIGN_IN)) {
       setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
 
@@ -71,7 +80,7 @@ export const TheNavbar: FC<Props> = ({}) => {
       if (response.status !== 200) {
         const responseText = await response.clone().json();
         if (responseText.message) {
-          router.push('/sign-in');
+          router.push(SIGN_IN);
         }
       } else {
         window.location.href = '/';
@@ -107,17 +116,17 @@ export const TheNavbar: FC<Props> = ({}) => {
   }, [setShowPopup]);
 
   const redirectToSignIn = () => {
-    router.push('/sign-in');
+    router.push(SIGN_IN);
   };
 
   const ellipsisDropdownItems = [
     {
       label: 'Support',
-      href: '/support',
+      href: SUPPORT,
     },
     {
       label: 'Pricing',
-      href: '/pricing',
+      href: PRICING,
     },
     {
       label: 'Press',
@@ -125,7 +134,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     },
     {
       label: 'Contact',
-      href: '/contact',
+      href: CONTACT,
     },
   ];
 
@@ -145,7 +154,7 @@ export const TheNavbar: FC<Props> = ({}) => {
               <IconBars3 className="h-6 w-6" />
             </ElemButton>
 
-            <Link href={user ? '/companies' : '/'} passHref>
+            <Link href={user ? COMPANIES : ROOT} passHref>
               <a className="w-auto lg:w-64">
                 <ElemLogo
                   mode="logo"
@@ -207,7 +216,7 @@ export const TheNavbar: FC<Props> = ({}) => {
 
             {user ? (
               <>
-                <Link href="/notifications" passHref>
+                <Link href={NOTIFICATIONS} passHref>
                   <a className="relative flex items-center justify-center w-9 h-9">
                     {unreadNotificationsCount > 0 && (
                       <div className="absolute flex items-center justify-center -top-[2px] -right-[4px] h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
@@ -229,7 +238,7 @@ export const TheNavbar: FC<Props> = ({}) => {
               </>
             ) : (
               <>
-                <Link href="/sign-in" passHref>
+                <Link href={SIGN_IN} passHref>
                   <a className="w-auto">
                     <ElemButton btn="purple" className="whitespace-nowrap">
                       Sign in

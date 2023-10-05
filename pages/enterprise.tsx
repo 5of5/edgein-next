@@ -13,6 +13,7 @@ import { useUser } from '@/context/user-context';
 import Builders from '@/public/images/builders.svg';
 import People from '@/public/images/people.svg';
 import { IconCheck } from '@/components/icons';
+import { COMPANIES, INVESTORS } from '@/routes';
 
 const Enterprise = () => {
   const { user } = useUser();
@@ -21,27 +22,27 @@ const Enterprise = () => {
     {
       title: 'Akkadian',
       image: '/images/akkadian.svg',
-      link: '/investors/akkadian-ventures/',
+      link: `${INVESTORS}/akkadian-ventures/`,
     },
     {
       title: 'Shima',
       image: '/images/shima-capital.png',
-      link: '/investors/shima-capital/',
+      link: `${INVESTORS}/shima-capital/`,
     },
     {
       title: 'Fireblocks',
       image: '/images/fireblocks.svg',
-      link: '/companies/fireblocks/',
+      link: `${COMPANIES}/fireblocks/`,
     },
     {
       title: 'Tokentag',
       image: '/images/tokentag.svg',
-      link: '/companies/tokentag/',
+      link: `${COMPANIES}/tokentag/`,
     },
     {
       title: '4k',
       image: '/images/4k.svg',
-      link: '/companies/4k/',
+      link: `${COMPANIES}/4k/`,
     },
   ];
 

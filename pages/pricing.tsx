@@ -7,6 +7,7 @@ import { loadStripe } from '@/utils/stripe';
 import { useUser } from '@/context/user-context';
 import { usePopup } from '@/context/popup-context';
 import { useRouter } from 'next/router';
+import { SIGN_IN } from '@/routes';
 
 const Pricing = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const Pricing = () => {
         //predescription: "No Cost - No Risk",
         click: () => {
           if (!user) {
-            router.push('/sign-in');
+            router.push(SIGN_IN);
           }
         },
         description:
@@ -57,7 +58,7 @@ const Pricing = () => {
         //predescription: "Serious Business Player",
         click: () => {
           if (!user) {
-            router.push('/sign-in');
+            router.push(SIGN_IN);
           } else {
             loadStripe();
           }

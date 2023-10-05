@@ -4,6 +4,7 @@ import { ElemButton } from './elem-button';
 import { formatDate, convertToIntNum } from '@/utils';
 import { useIntercom } from 'react-use-intercom';
 import { Investment_Rounds } from '@/graphql/types';
+import { COMPANIES, INVESTORS, PEOPLE } from '@/routes';
 
 type Props = {
   heading?: string;
@@ -133,7 +134,7 @@ const renderActivity = (
                       ? ', and '
                       : ', ')}
                   {item.vc_firm && (
-                    <Link href={`/investors/${item.vc_firm?.slug}`}>
+                    <Link href={`${INVESTORS}/${item.vc_firm?.slug}`}>
                       <a className="underline hover:no-underline">
                         {item.vc_firm['name']}
                       </a>
@@ -141,7 +142,7 @@ const renderActivity = (
                   )}
                   {item.vc_firm && item.person && <>/</>}
                   {item.person && (
-                    <Link href={`/people/${item.person['slug']}`}>
+                    <Link href={`${PEOPLE}/${item.person['slug']}`}>
                       <a className="underline hover:no-underline">
                         {item.person['name']}
                       </a>
@@ -169,7 +170,7 @@ const renderActivity = (
     <div className="mb-4">
       <div className="inline leading-7 text-gray-600 text-sm">
         {activity.company && (
-          <Link href={`/companies/${activity.company['slug']}`}>
+          <Link href={`${COMPANIES}/${activity.company['slug']}`}>
             <a className="underline font-medium hover:no-underline">
               {activity.company['name']}
             </a>
@@ -209,7 +210,7 @@ const renderActivity = (
                 (index === activity.investments.length - 1 ? ', and ' : ', ')}
 
               {item.vc_firm && (
-                <Link href={`/investors/${item.vc_firm?.slug}`}>
+                <Link href={`${INVESTORS}/${item.vc_firm?.slug}`}>
                   <a className="underline hover:no-underline">
                     {item.vc_firm['name']}
                   </a>
@@ -218,7 +219,7 @@ const renderActivity = (
               {item.vc_firm && item.person && <>/</>}
 
               {item.person && (
-                <Link href={`/people/${item.person['slug']}`}>
+                <Link href={`${PEOPLE}/${item.person['slug']}`}>
                   <a className="underline hover:no-underline">
                     {item.person['name']}
                   </a>

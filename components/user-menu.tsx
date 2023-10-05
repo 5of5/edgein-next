@@ -6,6 +6,7 @@ import { IconUserCircle } from './icons';
 import { useUser } from '@/context/user-context';
 import Link from 'next/link';
 import UserService from '@/utils/users';
+import { ACCOUNT, INVITE_A_FRIEND, PROFILE } from '@/routes';
 
 type Props = {
   className?: string;
@@ -17,16 +18,16 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
   const userMenuItems = [
     {
       label: 'Invite a friend',
-      href: '/invite-a-friend',
+      href: INVITE_A_FRIEND,
       className: 'text-primary-500',
     },
     {
       label: 'Profile settings',
-      href: '/profile',
+      href: PROFILE,
     },
     {
       label: 'Account settings',
-      href: '/account',
+      href: ACCOUNT,
     },
     {
       label: 'Sign out',

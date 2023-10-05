@@ -25,6 +25,7 @@ import { getEventBanner, randomImageOfCity } from '@/utils/helpers';
 import { formatDate } from '@/utils/numbers';
 import useLibrary from '@/hooks/use-library';
 import { parseIndexName } from '@/utils/algolia';
+import { COMPANIES, CONTACT, EVENTS, INVESTORS, PEOPLE } from '@/routes';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -102,7 +103,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/companies/${hit.objectID}`
-            : `/companies/${hit.slug}`
+            : `${COMPANIES}/${hit.slug}`
         }
         passHref
       >
@@ -110,7 +111,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           onClick={() => {
             onClose();
             if (isAdmin && redirect) {
-              redirect(`/companies/${hit.objectID}`);
+              redirect(`${COMPANIES}/${hit.objectID}`);
             }
           }}
           className="flex items-center px-6 py-1 group hover:bg-gray-100"
@@ -172,7 +173,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/vc_firms/${hit.objectID}`
-            : `/investors/${hit.slug}`
+            : `${INVESTORS}/${hit.slug}`
         }
         passHref
       >
@@ -219,7 +220,7 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/people/${hit.objectID}`
-            : `/people/${hit.slug}`
+            : `${PEOPLE}/${hit.slug}`
         }
         passHref
       >
@@ -266,7 +267,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/events/${hit.objectID}`
-            : `/events/${hit.slug}`
+            : `${EVENTS}/${hit.slug}`
         }
         passHref
       >
@@ -433,7 +434,7 @@ export default function SearchModal(props: any) {
         <div className="w-full mt-5 px-6 py-1">
           <h3 className="font-medium">No results for “{results.query}“</h3>
           <p>
-            <Link href={`/contact/`} passHref>
+            <Link href={CONTACT} passHref>
               <a onClick={onClose} className="text-primary-500">
                 Tell us about missing data.
               </a>
@@ -459,7 +460,7 @@ export default function SearchModal(props: any) {
         <div className="w-full px-6 py-1">
           <p>
             No results for “{results.query}“.{' '}
-            <Link href={`/contact/`} passHref>
+            <Link href={CONTACT} passHref>
               <a onClick={onClose} className="text-primary-500">
                 {`Tell us about missing ${parseIndexName(
                   results._state.index,

@@ -4,6 +4,7 @@ import { ElemButton } from '@/components/elem-button';
 import { IconEmail, IconChatBubble } from '@/components/icons';
 
 import { useIntercom } from 'react-use-intercom';
+import { CONTACT } from '@/routes';
 
 const Support: NextPage = () => {
   const { show } = useIntercom();
@@ -22,7 +23,7 @@ const Support: NextPage = () => {
                 feedback.
               </p>
               <div className="mt-8 flex gap-x-4 sm:justify-center">
-                <ElemButton btn="primary" href="/contact" className="space-x-1">
+                <ElemButton btn="primary" href={CONTACT} className="space-x-1">
                   <IconEmail className="h-6 w-6" />
                   <span>Contact us</span>
                 </ElemButton>

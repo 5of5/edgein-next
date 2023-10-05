@@ -27,6 +27,7 @@ import {
 } from 'react-table';
 import { useRouter } from 'next/router';
 import { Investment_Rounds } from '@/graphql/types';
+import { INVESTORS, SIGN_IN } from '@/routes';
 
 type Props = {
   className?: string;
@@ -66,7 +67,7 @@ export const InvestorsTable: FC<Props> = ({
 
   const onBillingClick = async () => {
     if (!user) {
-      router.push('/sign-in');
+      router.push(SIGN_IN);
     } else {
       loadStripe();
     }
@@ -126,7 +127,7 @@ export const InvestorsTable: FC<Props> = ({
         accessor: 'name' as const,
         Cell: (props: any) => (
           <a
-            href={`/investors/` + props.row.original?.slug}
+            href={`${INVESTORS}/` + props.row.original?.slug}
             className="flex items-center space-x-3 shrink-0 group transition-all"
           >
             <ElemPhoto

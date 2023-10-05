@@ -10,6 +10,7 @@ import { Table } from './table';
 import { PlaceholderTable } from '../placeholders';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '../elem-tooltip';
+import { COMPANIES } from '@/routes';
 
 type Props = {
   listId: number;
@@ -64,7 +65,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <div className="flex items-center space-x-3">
             <a
-              href={`/companies/` + props.row.original?.company?.slug}
+              href={`${COMPANIES}/` + props.row.original?.company?.slug}
               className="shrink-0 transition-all"
             >
               <ElemPhoto
@@ -78,7 +79,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
             <div>
               <a
-                href={`/companies/` + props.row.original?.company?.slug}
+                href={`${COMPANIES}/` + props.row.original?.company?.slug}
                 className="font-medium line-clamp-2 break-words hover:underline"
               >
                 {props.value}
@@ -331,7 +332,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       totalItems={totalItems}
       fundingTotal={fundingTotal}
       noDataText="There are no companies in this list."
-      exploreBtnHref="/companies"
+      exploreBtnHref={COMPANIES}
       exploreBtnText="Explore Companies"
       searchQuery={query}
       onChangeSearchQuery={onChangeSearchQuery}

@@ -29,6 +29,7 @@ import { usePopup } from '@/context/popup-context';
 // import { InputDate } from "@/components/InputDate";
 // import { GetStaticProps } from "next";
 import { EditSection } from '@/components/dashboard/edit-section';
+import { PEOPLE } from '@/routes';
 // import { functionChoicesTM } from "@/utils/constants";
 // import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 
@@ -523,7 +524,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
           <h2 className="font-medium text-xl">Profile Settings</h2>
           {users?.users_by_pk?.person && (
             <ElemButton
-              href={`/people/${users?.users_by_pk?.person?.slug}/`}
+              href={`${PEOPLE}/${users?.users_by_pk?.person?.slug}/`}
               btn="purple"
               arrow
               className="mt-2 sm:mt-0"

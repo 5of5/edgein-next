@@ -29,6 +29,7 @@ import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import { usePopup } from '@/context/popup-context';
 import { CardType } from '../companies/elem-company-card';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
+import { EVENTS } from '@/routes';
 
 type Props = {
   event: GetEventsQuery['events'][0];
@@ -158,7 +159,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
-          <Link href={`/events/${slug}`}>
+          <Link href={`${EVENTS}/${slug}`}>
             <a className="flex shrink-0 w-full">
               <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
                 <div
@@ -182,7 +183,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
             </a>
           </Link>
 
-          <Link href={`/events/${slug}`}>
+          <Link href={`${EVENTS}/${slug}`}>
             <a className="flex items-center mt-3">
               <ElemTooltip content={name} mode="light">
                 <h3 className="text-lg font-medium truncate pb-1.5">{name}</h3>

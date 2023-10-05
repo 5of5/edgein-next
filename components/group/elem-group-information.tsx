@@ -10,6 +10,7 @@ import { User_Groups } from '@/graphql/types';
 import { SettingTabProps } from './elem-setting-dialog';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 import { useUser } from '@/context/user-context';
+import { GROUPS } from '@/routes';
 
 type Props = {
   className?: string;
@@ -52,14 +53,14 @@ export const ElemGroupInformation: React.FC<Props> = ({
                     ? [
                         {
                           name: 'my-groups',
-                          to: '/groups',
+                          to: GROUPS,
                           component: 'Groups',
                         },
                       ]
                     : [
                         {
                           name: 'joined-groups',
-                          to: '/groups?tab=joined',
+                          to: `${GROUPS}/?tab=joined`,
                           component: 'Joined Groups',
                         },
                       ]),
@@ -116,7 +117,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 breadcrumbs={[
                   {
                     name: 'my-groups',
-                    to: '/groups?tab=discover',
+                    to: `${GROUPS}/?tab=discover`,
                     component: 'Discover Groups',
                   },
                   {

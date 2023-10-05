@@ -5,6 +5,7 @@ import { IconSidebarGroups } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
+import { GROUPS, SIGN_IN } from '@/routes';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
@@ -26,7 +27,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
   const getActiveClass = (id: number) => {
-    return `/groups/${id}/` === router.asPath
+    return `${GROUPS}/${id}/` === router.asPath
       ? 'bg-gray-100 text-gray-900'
       : '';
   };
@@ -49,7 +50,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   const onRedirectToSignIn = () => {
-    router.push('/sign-in');
+    router.push(SIGN_IN);
   };
 
   const onClickCreate = () => {
@@ -69,7 +70,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
       <div className="w-full flex items-center justify-between group">
         {user ? (
           <ElemSidebarItem
-            url="/groups"
+            url={GROUPS}
             text="Groups"
             IconComponent={IconSidebarGroups}
           />
@@ -102,7 +103,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             ?.map(group => {
               return (
                 <li key={group.id} role="button">
-                  <Link href={`/groups/${group.id}/`}>
+                  <Link href={`${GROUPS}/${group.id}/`}>
                     <a
                       className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
                         group.id,

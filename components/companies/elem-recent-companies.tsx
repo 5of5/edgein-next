@@ -13,6 +13,7 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
 import { ElemTags } from '@/components/elem-tags';
+import { COMPANIES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -87,7 +88,7 @@ export const ElemRecentCompanies: FC<Props> = ({
                   className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <a
-                    href={`/companies/${company.slug}`}
+                    href={`${COMPANIES}/${company.slug}`}
                     target="_blank"
                     rel="noreferrer"
                     className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"

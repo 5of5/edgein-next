@@ -9,6 +9,7 @@ import { formatDateShown, truncateWords } from '@/utils';
 import { getListDisplayName } from '@/utils/lists';
 import { GetGroupsQuery, GetListsQuery } from '@/graphql/types';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
+import { GROUPS, LISTS } from '@/routes';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
@@ -47,8 +48,8 @@ export const ElemListCard: FC<Props> = ({
   const description = isResourceList ? name : resource.description;
 
   const resourceUrl = isResourceList
-    ? `/lists/${resource.id}/${kebabCase(getNameFromListName(resource))}`
-    : `/groups/${resource.id}`;
+    ? `${LISTS}/${resource.id}/${kebabCase(getNameFromListName(resource))}`
+    : `${GROUPS}/${resource.id}`;
 
   const numOfLists = isResourceList ? 0 : resource.list_user_groups.length;
 

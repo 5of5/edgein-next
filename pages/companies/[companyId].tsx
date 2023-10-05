@@ -49,6 +49,7 @@ import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemReactions } from '@/components/elem-reactions';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { COMPANIES } from '@/routes';
 
 type Props = {
   company: Companies;
@@ -187,7 +188,7 @@ const Company: NextPage<Props> = (props: Props) => {
     event.preventDefault();
 
     router.push(
-      `/companies/?filters=${encodeURIComponent(
+      `${COMPANIES}/?filters=${encodeURIComponent(
         `{"industry":{"tags":["${tag}"]}}`,
       )}`,
     );

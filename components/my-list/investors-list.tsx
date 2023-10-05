@@ -10,6 +10,7 @@ import { TableEmptyCell } from './table-empty-cell';
 import { ElemTags } from '@/components/elem-tags';
 import Link from 'next/link';
 import { ElemTooltip } from '../elem-tooltip';
+import { INVESTORS } from '@/routes';
 
 type Props = {
   listId: number;
@@ -87,7 +88,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <div className="flex items-center space-x-3">
             <a
-              href={`/investors/` + props.row.original?.vc_firm?.slug}
+              href={`${INVESTORS}/` + props.row.original?.vc_firm?.slug}
               className="shrink-0 transition-all"
             >
               <ElemPhoto
@@ -101,7 +102,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
 
             <div>
               <a
-                href={`/investors/` + props.row.original?.vc_firm?.slug}
+                href={`${INVESTORS}/` + props.row.original?.vc_firm?.slug}
                 className="font-medium line-clamp-2 break-words hover:underline"
               >
                 {props.value}
@@ -373,7 +374,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       totalItems={totalItems}
       fundingTotal={fundingTotal}
       noDataText="There are no investors in this list."
-      exploreBtnHref="/investors"
+      exploreBtnHref={INVESTORS}
       exploreBtnText="Explore Investors"
       searchQuery={query}
       onChangeSearchQuery={onChangeSearchQuery}

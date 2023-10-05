@@ -15,6 +15,7 @@ import { numberWithCommas, formatDate, convertToIntNum } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
 import { useIntercom } from 'react-use-intercom';
+import { INVESTORS, PEOPLE } from '@/routes';
 
 type Props = {
   className?: string;
@@ -105,7 +106,7 @@ export const ElemInvestments: React.FC<Props> = ({
                   >
                     {investment.vc_firm && (
                       <Link
-                        href={`/investors/${investment.vc_firm.slug}`}
+                        href={`${INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
                       >
                         <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
@@ -125,7 +126,7 @@ export const ElemInvestments: React.FC<Props> = ({
 
                     {investment.person && (
                       <Link
-                        href={`/people/${investment.person.slug}`}
+                        href={`${PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
                       >
                         <a className="investor flex items-center space-x-3">
@@ -155,7 +156,7 @@ export const ElemInvestments: React.FC<Props> = ({
                   >
                     {investment.vc_firm && (
                       <Link
-                        href={`/investors/${investment.vc_firm.slug}`}
+                        href={`${INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
                       >
                         <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
@@ -184,7 +185,7 @@ export const ElemInvestments: React.FC<Props> = ({
                   >
                     {investment.person && (
                       <Link
-                        href={`/people/${investment.person.slug}`}
+                        href={`${PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
                       >
                         <a className="investor flex items-center space-x-3 hover:opacity-70">
