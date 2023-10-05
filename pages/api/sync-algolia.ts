@@ -8,7 +8,7 @@ import {
   syncPeople,
   syncVcFirms,
 } from '@/utils/algolia';
-import CookieService from '@/utils/cookie';
+import UserService from '@/utils/users';
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -16,21 +16,12 @@ const client = algoliasearch(
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const token = CookieService.getAuthToken(req.cookies);
-  const user = await CookieService.getUser(token);
-
-  if (!user) {
+  const { role } = (await UserService.getUserByCookies(req.cookies)) ?? {};
+  if (role !== 'admin') {
     return res.status(401).json({
-      message: 'Missing token !',
+      message: 'You are unauthorized for this operation!',
     });
   }
-
-  if (user.role !== 'admin') {
-    return res.status(401).json({
-      message: 'You are not an admin !',
-    });
-  }
-
   // get the last sync datetime from db
   const lastSyncArray = await queryForLastSync();
   if (!lastSyncArray.length) return res.status(405).end();

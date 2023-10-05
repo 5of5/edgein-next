@@ -1,6 +1,6 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
-import CookieService from '@/utils/cookie';
+import UserService from '@/utils/users';
 
 //AWS config set
 AWS.config.update({
@@ -13,18 +13,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const token = CookieService.getAuthToken(req.cookies);
-  const user = await CookieService.getUser(token);
-
-  if (!user) {
+  const { role } = (await UserService.getUserByCookies(req.cookies)) ?? {};
+  if (role !== 'admin') {
     return res.status(401).json({
-      message: 'Missing token',
-    });
-  }
-
-  if (user.role !== 'admin') {
-    return res.status(401).json({
-      message: 'You are not an admin !',
+      message: 'You are unauthorized for this operation!',
     });
   }
 
