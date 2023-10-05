@@ -1,6 +1,6 @@
 import { getClient } from '@/scripts/postgres-helpers';
 import { Client } from 'pg';
-import CookieService from '@/utils/cookie';
+
 
 import { NextApiResponse, NextApiRequest } from 'next';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@/utils/userTransactions';
 import { BatchJobReqSchema } from '@/utils/schema';
 import { partnerLookUp } from '@/utils/submit-data';
+import UserService from '@/utils/users';
 
 const handleUserTransactions = async (client: Client) => {
   const userExpiredTransactions = await client.query(`
@@ -106,7 +107,6 @@ const handleUserTransactions = async (client: Client) => {
   }
 };
 
-//TODO(David): add authentication !
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     res.status(405).json({ message: 'Method not allowed' });
@@ -122,18 +122,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { apiKey } = parseResponse.data;
   if (!apiKey) {
-    const token = CookieService.getAuthToken(req.cookies);
-    const user = await CookieService.getUser(token);
-
-    if (!user) {
+    const { role } = (await UserService.getUserByCookies(req.cookies)) ?? {};
+    if (role !== 'admin') {
       return res.status(401).json({
-        message: 'Missing token and apiKey',
-      });
-    }
-
-    if (user.role !== 'admin') {
-      return res.status(401).json({
-        message: 'You are not an admin !',
+        message: 'You are unauthorized for this operation!',
       });
     }
   } else {
