@@ -54,7 +54,8 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
     <div className={`relative ${className}`}>
       <div
         className={`cursor-pointer flex items-center justify-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5`}
-        onClick={handleClickBanner}>
+        onClick={handleClickBanner}
+      >
         <div className=" text-white">
           Invite a friend and get{' '}
           <strong className="font-bold">1,500 credits</strong> for 1 month of
@@ -65,7 +66,8 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
       <button
         type="button"
         onClick={handleCloseBanner}
-        className="absolute top-0 right-2 bottom-0 focus-visible:outline-offset-[-4px]">
+        className="absolute top-0 right-2 bottom-0 focus-visible:outline-offset-[-4px]"
+      >
         <span className="sr-only">Dismiss</span>
         <IconX className="h-5 w-5 text-white" aria-hidden="true" />
       </button>
