@@ -28,14 +28,14 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
 
   return (
     <div className="flex items-center space-x-1.5">
-      {resources.map(resourceItem => {
+      {resources.map((resourceItem, index) => {
         if (!resourceItem.value) {
           return null;
         }
 
         if (resourceItem.isPremium && !userCanViewPremiumInfo) {
           return (
-            <button onClick={onOpenUpgradeDialog}>
+            <button key={index} onClick={onOpenUpgradeDialog}>
               <resourceItem.icon
                 title={resourceItem.title}
                 className="h-5 w-5 text-gray-400"
@@ -48,8 +48,7 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
           <ElemLink
             key={resourceItem.value}
             href={resourceItem.value}
-            target="_blank"
-          >
+            target="_blank">
             <resourceItem.icon
               title={resourceItem.title}
               className="h-5 w-5 text-gray-600"
