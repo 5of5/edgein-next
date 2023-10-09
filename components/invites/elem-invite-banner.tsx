@@ -41,17 +41,16 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
 
   return (
     <div className={`relative ${className}`}>
-      <ElemLink href={user ? ROUTES.INVITE_A_FRIEND : ROUTES.SIGN_IN}>
-        <a
-          className={`flex items-center justify-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5`}
-        >
-          <div className=" text-white">
-            Invite a friend and get{' '}
-            <strong className="font-bold">1,500 credits</strong> for 1 month of
-            EdgeIn for free{' '}
-            <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
-          </div>
-        </a>
+      <ElemLink
+        href={user ? ROUTES.INVITE_A_FRIEND : ROUTES.SIGN_IN}
+        className="flex items-center justify-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5"
+      >
+        <div className=" text-white">
+          Invite a friend and get{' '}
+          <strong className="font-bold">1,500 credits</strong> for 1 month of
+          EdgeIn for free{' '}
+          <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
+        </div>
       </ElemLink>
       <button
         type="button"
