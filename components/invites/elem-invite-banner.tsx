@@ -4,6 +4,7 @@ import { IconX, IconArrowRight } from '../icons';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -34,35 +35,24 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
     event.stopPropagation();
   };
 
-  const handleClickBanner = (event: MouseEvent<HTMLDivElement>) => {
-    if (user) {
-      event.preventDefault();
-      router.push(ROUTES.INVITE_A_FRIEND);
-    }
-
-    if (!user) {
-      event.preventDefault();
-      router.push(ROUTES.SIGN_IN);
-    }
-  };
-
   if (!showBanner) {
     return null;
   }
 
   return (
     <div className={`relative ${className}`}>
-      <div
-        className={`cursor-pointer flex items-center justify-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5`}
-        onClick={handleClickBanner}
-      >
-        <div className=" text-white">
-          Invite a friend and get{' '}
-          <strong className="font-bold">1,500 credits</strong> for 1 month of
-          EdgeIn for free{' '}
-          <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
-        </div>
-      </div>
+      <ElemLink href={user ? ROUTES.INVITE_A_FRIEND : ROUTES.SIGN_IN}>
+        <a
+          className={`flex items-center justify-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5`}
+        >
+          <div className=" text-white">
+            Invite a friend and get{' '}
+            <strong className="font-bold">1,500 credits</strong> for 1 month of
+            EdgeIn for free{' '}
+            <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
+          </div>
+        </a>
+      </ElemLink>
       <button
         type="button"
         onClick={handleCloseBanner}

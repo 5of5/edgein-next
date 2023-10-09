@@ -28,14 +28,14 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
 
   return (
     <div className="flex items-center space-x-1.5">
-      {resources.map((resourceItem, index) => {
+      {resources.map(resourceItem => {
         if (!resourceItem.value) {
           return null;
         }
 
         if (resourceItem.isPremium && !userCanViewPremiumInfo) {
           return (
-            <button key={index} onClick={onOpenUpgradeDialog}>
+            <button key={resourceItem.value} onClick={onOpenUpgradeDialog}>
               <resourceItem.icon
                 title={resourceItem.title}
                 className="h-5 w-5 text-gray-400"
