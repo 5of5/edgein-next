@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { FC, PropsWithChildren } from 'react';
 import { IconSpinner } from '@/components/icons';
+import { ElemLink } from './elem-link';
 
 type Props = {
   className?: string;
@@ -125,9 +125,9 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 
   if (href.length) {
     return (
-      <Link href={href} passHref>
-        <a target={target}>{component}</a>
-      </Link>
+      <ElemLink href={href} target={target}>
+        {component}
+      </ElemLink>
     );
   }
 

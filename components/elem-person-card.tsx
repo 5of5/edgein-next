@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ElemPhoto } from './elem-photo';
 import { IconEmail, IconLinkedIn, IconCopy } from './icons';
 import moment from 'moment-timezone';
@@ -8,6 +7,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { useState, Fragment } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { ElemLink } from './elem-link';
 
 type Props = {
   href?: string;
@@ -80,60 +80,59 @@ export const ElemPersonCard: React.FC<Props> = ({
           end_date ? 'opacity-60 hover:opacity-100' : ''
         }`}
       >
-        <Link href={href}>
-          <a className="hover:opacity-75">
-            <ElemPhoto
-              photo={photo}
-              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-              imgClass="object-cover w-full h-full"
-              imgAlt={heading}
-              placeholder="user"
-              placeholderClass="text-gray-300"
-            />
-          </a>
-        </Link>
+        <ElemLink href={href} className="hover:opacity-75">
+          <ElemPhoto
+            photo={photo}
+            wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
+            imgClass="object-cover w-full h-full"
+            imgAlt={heading}
+            placeholder="user"
+            placeholderClass="text-gray-300"
+          />
+        </ElemLink>
         <div className="grow min-w-0 truncate">
-          <Link href={href}>
-            <a className="block">
-              {heading && (
-                <h3 className="font-medium truncate" title={heading}>
-                  {heading}
-                </h3>
-              )}
+          <ElemLink href={href} className="block">
+            {heading && (
+              <h3 className="font-medium truncate" title={heading}>
+                {heading}
+              </h3>
+            )}
 
-              {(founder || text || organizationName) && (
-                <p className="text-sm text-gray-500 line-clamp-2">
-                  {founder && <span>Founder</span>}
-                  {founder && text && `, `}
-                  {text && <span>{text}</span>}
-                  {(founder || text) && organizationName && (
-                    <span aria-hidden="true"> · </span>
-                  )}
+            {(founder || text || organizationName) && (
+              <p className="text-sm text-gray-500 line-clamp-2">
+                {founder && <span>Founder</span>}
+                {founder && text && `, `}
+                {text && <span>{text}</span>}
+                {(founder || text) && organizationName && (
+                  <span aria-hidden="true"> · </span>
+                )}
 
-                  {organizationName && <span>{organizationName}</span>}
-                </p>
-              )}
+                {organizationName && <span>{organizationName}</span>}
+              </p>
+            )}
 
-              {end_date && (
-                <div className="text-xs text-gray-500">
-                  Ended {moment(end_date).format('MMM Do, YYYY')}
-                </div>
-              )}
-            </a>
-          </Link>
+            {end_date && (
+              <div className="text-xs text-gray-500">
+                Ended {moment(end_date).format('MMM Do, YYYY')}
+              </div>
+            )}
+          </ElemLink>
 
           <div className="flex space-x-2 pt-1">
             {user?.entitlements?.viewEmails && linkedin ? (
               <ElemTooltip size="md" content="View LinkedIn Profile">
                 <div>
-                  <Link href={linkedin} passHref>
-                    <a className="block" target="_blank" rel="noreferrer">
-                      <IconLinkedIn
-                        title="LinkedIn"
-                        className="h-6 w-6 shrink-0 text-[#0077B5]"
-                      />
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={linkedin}
+                    className="block"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconLinkedIn
+                      title="LinkedIn"
+                      className="h-6 w-6 shrink-0 text-[#0077B5]"
+                    />
+                  </ElemLink>
                 </div>
               </ElemTooltip>
             ) : linkedin ? (

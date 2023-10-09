@@ -2,6 +2,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/user-context';
+import { ROUTES } from '@/routes';
 
 const VerifyAdditionalEmail = () => {
   const { user, refreshUser } = useUser();
@@ -33,7 +34,7 @@ const VerifyAdditionalEmail = () => {
 
           if (response.ok) {
             refreshUser();
-            router.push('/profile');
+            router.push(ROUTES.PROFILE);
             return;
           }
 

@@ -105,6 +105,14 @@ query GetPerson($slug: String!) {
       id
       list_id
     }
+    people_computed_data {
+      title
+      tags
+      person_id
+      location_json
+      geopoint
+      id
+    }
   }
 }
 
@@ -168,6 +176,14 @@ query GetPeople(
     follows {
       id
       list_id
+    }
+    people_computed_data {
+      title
+      tags
+      person_id
+      location_json
+      geopoint
+      id
     }
   }
   people_aggregate(where: $where) {

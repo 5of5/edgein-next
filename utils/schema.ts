@@ -134,3 +134,7 @@ export const MergeCompaniesReqSchema = z.object({
   targetCompanyId: z.string(),
   mergedCompanyId: z.string()
 })
+
+export const BatchJobReqSchema = z.object({
+  apiKey: z.string().optional(),
+});

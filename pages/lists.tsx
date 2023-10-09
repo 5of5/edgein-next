@@ -17,7 +17,7 @@ import { useIntercom } from 'react-use-intercom';
 import { ListsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { LISTS_TABS } from '@/utils/constants';
-import { getListsFilters } from '@/utils/filter';
+import { getListsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { ElemListCard } from '@/components/elem-list-card';

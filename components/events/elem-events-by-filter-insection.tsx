@@ -16,7 +16,8 @@ import { CardType } from '../companies/elem-company-card';
 import { FilterInSectionType } from '../companies/elem-companies-by-filter-insection';
 import { ElemButton } from '../elem-button';
 import { useRouter } from 'next/router';
-import { getHomepageEncodedURI } from '@/utils/filter';
+import { getHomepageEncodedURI } from '@/components/filters/processor';
+import { ROUTES } from '@/routes';
 
 type Props = {
   headingText: string;
@@ -127,7 +128,7 @@ export const EventsByFilterInSection: FC<Props> = ({
                     return;
                   }
                   router.push(
-                    `/events/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
+                    `${ROUTES.EVENTS}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
                   );
                 }}
                 btn="primary"

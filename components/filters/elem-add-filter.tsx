@@ -4,7 +4,8 @@ import {
   companiesFilterOptions,
   investorsFilterOptions,
   eventsFilterOptions,
-} from '@/utils/constants';
+  peopleFilterOptions,
+} from './constants';
 import { useUser } from '@/context/user-context';
 import {
   IconChevronDownMini,
@@ -12,8 +13,10 @@ import {
   IconLockClosed,
   IconPlus,
 } from '@/components/icons';
-import { ElemUpgradeDialog } from './elem-upgrade-dialog';
-import { ElemButton } from './elem-button';
+import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
+import { ElemButton } from '../elem-button';
+import { get } from 'lodash';
+import { ResourceTypes } from './types';
 
 type CategoryFilterOptionProps = {
   options: Array<{
@@ -26,11 +29,18 @@ type CategoryFilterOptionProps = {
 };
 
 type Props = {
-  resourceType: 'companies' | 'vc_firms' | 'events';
+  resourceType: ResourceTypes;
   excludeFilters?: string[];
   type?: 'icon' | 'button';
   onSelectFilterOption: (event: MouseEvent<HTMLButtonElement>) => void;
 };
+
+const FILTER_OPTIONS: Record<ResourceTypes, any> = {
+  companies: companiesFilterOptions,
+  vc_firms: investorsFilterOptions,
+  events: eventsFilterOptions,
+  people: peopleFilterOptions,
+} as const;
 
 export const ElemAddFilter: FC<Props> = ({
   resourceType,
@@ -38,12 +48,7 @@ export const ElemAddFilter: FC<Props> = ({
   type = 'button',
   onSelectFilterOption,
 }) => {
-  const filterOptions = {
-    companies: companiesFilterOptions,
-    vc_firms: investorsFilterOptions,
-    events: eventsFilterOptions,
-  }[resourceType];
-
+  const filterOptions = get(FILTER_OPTIONS, resourceType, []);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] =
     useState<boolean>(false);
 

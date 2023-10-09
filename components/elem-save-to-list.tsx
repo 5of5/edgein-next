@@ -16,9 +16,9 @@ import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
-import { FREE_USER_MAXIMUM_LISTS } from '@/utils/constants';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
+import { ROUTES } from '@/routes';
 
 type Props = {
   resourceName: string | null;
@@ -179,7 +179,7 @@ export const ElemSaveToList: FC<Props> = ({
         resourceId,
         resourceType,
         listName,
-        pathname: `/companies/${slug}`,
+        pathname: `${ROUTES.COMPANIES}/${slug}`,
       });
       if (newSentiment?.id) {
         setFollowsByResource(prev => {
@@ -257,10 +257,10 @@ export const ElemSaveToList: FC<Props> = ({
   };
 
   const onClickShowCreateNew = () => {
-    const userListsLimit =
-      user?.entitlements.listsCount ?? FREE_USER_MAXIMUM_LISTS;
-
-    if (listsData.length > userListsLimit) {
+    if (
+      user?.entitlements?.listsCount &&
+      listsData.length > user.entitlements.listsCount
+    ) {
       onOpenUpgradeDialog();
     } else {
       setShowNew(true);

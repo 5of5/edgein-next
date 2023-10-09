@@ -11,8 +11,10 @@ import {
 import { Resource_Edit_Access, useGetUserProfileQuery } from '@/graphql/types';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { ExploreMenuItem } from '@/types/common';
+import { ElemSidebarItem } from './elem-sidebar-item';
+import { DashboardBanner } from './dashboard-banner';
+import { ROUTES } from '@/routes';
 
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,
@@ -66,27 +68,27 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   let exploreMenu: ExploreMenuItem[] = [
     {
-      href: '/companies/',
+      href: ROUTES.COMPANIES,
       icon: IconCompanies,
       title: 'Companies',
     },
     {
-      href: '/investors/',
+      href: ROUTES.INVESTORS,
       icon: IconCash,
       title: 'Investors',
     },
     {
-      href: '/events/',
+      href: ROUTES.EVENTS,
       icon: IconCalendarDays,
       title: 'Events',
     },
     {
-      href: '/news/',
+      href: ROUTES.NEWS,
       icon: IconNewspaper,
       title: 'News',
     },
     {
-      href: '/people/',
+      href: ROUTES.PEOPLE,
       icon: IconUserGroup,
       title: 'People',
     },
@@ -95,7 +97,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   if (user) {
     exploreMenu = [
       {
-        href: '/home/',
+        href: ROUTES.HOME,
         icon: IconHome,
         title: 'Home',
       },
@@ -104,27 +106,16 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   }
 
   return (
-    <div className={`p-4 text-gray-600 ${className}`}>
-      <nav className="pb-52">
+    <div className={`overflow-y-auto h-full scrollbar-hide ${className}`}>
+      <nav className="px-4 pt-4 pb-52 text-gray-600">
         <ul className="border-b border-gray-200 pb-8 space-y-1">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>
-              <Link href={item.href}>
-                <a
-                  className={`${
-                    router.asPath.includes(item.href) ? 'bg-gray-100' : ''
-                  } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-                >
-                  <item.icon
-                    className={`w-5 h-5 ${
-                      router.asPath.includes(item.href)
-                        ? 'text-primary-500'
-                        : 'text-gray-900'
-                    }`}
-                  />
-                  <span className="text-sm">{item.title}</span>
-                </a>
-              </Link>
+              <ElemSidebarItem
+                url={item.href}
+                text={item.title}
+                IconComponent={item.icon}
+              />
             </li>
           ))}
         </ul>
@@ -135,6 +126,8 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
           <ElemMyNotesMenu />
         </div>
       </nav>
+
+      <DashboardBanner className="fixed bottom-0 w-64 p-3" />
     </div>
   );
 };

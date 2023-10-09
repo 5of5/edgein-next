@@ -27,7 +27,6 @@ import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import {
-  companyChoices,
   companyStatusTags,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
@@ -36,14 +35,14 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
-import { processCompaniesFilters } from '@/utils/filter';
-import { ElemFilter } from '@/components/elem-filter';
+import { processCompaniesFilters } from '@/components/filters/processor';
+import { ElemFilter } from '@/components/filters/elem-filter';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
@@ -52,12 +51,9 @@ import {
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   companiesCount: number;
@@ -70,13 +66,13 @@ const Companies: NextPage<Props> = ({
   initialCompanies,
   companyStatusTags,
 }) => {
-  const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const { user } = useUser();
   const router = useRouter();
+  const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -84,8 +80,6 @@ const Companies: NextPage<Props> = ({
       SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
         user.email.endsWith(domain),
       ));
-
-  const { selectedLibrary } = useLibrary();
 
   // Company status-tag filter
   const [selectedStatusTag, setSelectedStatusTag] =

@@ -23,8 +23,8 @@ import {
 } from '@/graphql/types';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
-import { ElemFilter } from '@/components/elem-filter';
-import { processEventsFilters } from '@/utils/filter';
+import { ElemFilter } from '@/components/filters/elem-filter';
+import { processEventsFilters } from '@/components/filters/processor';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
@@ -39,14 +39,11 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemDropdown } from '@/components/elem-dropdown';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   eventTabs: DashboardCategory[];
@@ -57,11 +54,10 @@ type Props = {
 const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
