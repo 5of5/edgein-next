@@ -32,7 +32,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(SHOW_INVITE_BANNER, 'false');
     }
-    event.stopPropagation();
+    event.preventDefault();
   };
 
   const handleClickBanner = (event: MouseEvent<HTMLAnchorElement>) => {
