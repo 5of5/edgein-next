@@ -842,8 +842,6 @@ export const isResourceType = (
     'news_person',
     'news_related_person',
     'news_related_organizations',
-    'leads',
-    'leads_segmentation',
   ].includes(resourceType);
 };
 
