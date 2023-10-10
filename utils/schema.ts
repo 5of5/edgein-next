@@ -132,8 +132,8 @@ export const IngestPeopleReqSchema = z.object({
 export const MergeCompaniesReqSchema = z.object({
   apiKey: z.string().optional(),
   targetCompanyId: z.string(),
-  mergedCompanyId: z.string()
-})
+  mergedCompanyId: z.string(),
+});
 
 export const BatchJobReqSchema = z.object({
   apiKey: z.string().optional(),

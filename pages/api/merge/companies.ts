@@ -57,7 +57,7 @@ const ADVANCED_UPDATE_ID_MUTATION = (
   oldId: string,
   newId: string,
   resourceTypeFieldName = 'resource',
-  resourceIdFieldName = 'resource_id'
+  resourceIdFieldName = 'resource_id',
 ) =>
   mutate<UpdateMutationReturnType<typeof entityName>>({
     mutation: `
@@ -148,11 +148,47 @@ const SIMPLE_RELATIONS = {
   // notification_resource_type == companies
   // company_id == company_id
   notifications: (oldId: string, newId: string) =>
-    ADVANCED_UPDATE_ID_MUTATION('notifications', oldId, newId, 'notification_resource_type', 'company_id'),
+    ADVANCED_UPDATE_ID_MUTATION(
+      'notifications',
+      oldId,
+      newId,
+      'notification_resource_type',
+      'company_id',
+    ),
   // resource == companies
   // rescource_id == company_id
-  resource_edit_access: (oldId: string, newId: string) =>
-    ADVANCED_UPDATE_ID_MUTATION('resource_edit_access', oldId, newId, 'resource_type'),
+  resource_edit_access: async (oldId: string, newId: string) => {
+    const result = await query({
+      query: `
+        query check_resource_edit_access($id: Int!) {
+          resource_edit_access(
+            where: {
+              _and: {
+                resource_id: { _eq: $id }
+                resource_type: { _eq: "companies" }
+              }
+            },
+          ) {
+            id
+          }
+        }
+      `,
+      variables: {
+        id: newId,
+      },
+    });
+
+    if (result.data.resource_edit_access) {
+      return undefined;
+    }
+
+    return ADVANCED_UPDATE_ID_MUTATION(
+      'resource_edit_access',
+      oldId,
+      newId,
+      'resource_type',
+    );
+  },
 } as const;
 
 const COMPLICATED_RELATIONS = {
@@ -241,51 +277,77 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   // Update mergedCompany's slug
-  await mutate<UpdateCompanyByPkMutation>({
-    mutation: UpdateCompanyByPkDocument,
-    variables: {
-      companyId: mergedCompanyId,
-      data: {
-        slug: `${mergedCompany.slug}-old`,
-        status: 'merged',
+  try {
+    await mutate<UpdateCompanyByPkMutation>({
+      mutation: UpdateCompanyByPkDocument,
+      variables: {
+        companyId: mergedCompanyId,
+        data: {
+          slug: `${mergedCompany.slug}-merged`,
+          status: 'merged',
+        },
       },
-    },
-  });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error occurred while updating mergedCompany's slug",
+      error,
+    });
+  }
 
   // Update targetCompany
-  await mutate<UpdateCompanyByPkMutation>({
-    mutation: UpdateCompanyByPkDocument,
-    variables: {
-      companyId: targetCompanyId,
-      data: resultCompany,
-    },
-  });
+  try {
+    await mutate<UpdateCompanyByPkMutation>({
+      mutation: UpdateCompanyByPkDocument,
+      variables: {
+        companyId: targetCompanyId,
+        data: resultCompany,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error occurred while updating targetCompany',
+      error,
+    });
+  }
 
   const updatedRelations = await async.reduce(
     toPairs(RELATION_MUTATIONS),
     {},
     async (acc, [key, updateFn]) => {
-      console.log(`Updating ${key}`);
-      const result = await updateFn(mergedCompanyId, targetCompanyId);
+      try {
+        const result = await updateFn(mergedCompanyId, targetCompanyId);
 
-      if(key === 'resource_links_to'){
-        return {
-          ...acc, 
-          'resource_links_to': get(result.data, 'update_resource_links')
-        }
-      }
-      
-      if(key === 'resource_links_from'){
-        return {
-          ...acc, 
-          'resource_links_from': get(result.data, 'update_resource_links')
-        }
-      }
+        if (result) {
+          // Custom relation which needs this ugly conditioning
+          if (key === 'resource_links_to') {
+            return {
+              ...acc,
+              resource_links_to: get(result.data, 'update_resource_links'),
+            };
+          }
 
-      return {
-        ...acc,
-        [key]: get(result.data, `update_${key}`),
-      };
+          // Custom relation which needs this ugly conditioning
+          if (key === 'resource_links_from') {
+            return {
+              ...acc,
+              resource_links_from: get(result.data, 'update_resource_links'),
+            };
+          }
+
+          return {
+            ...acc,
+            [key]: get(result.data, `update_${key}`),
+          };
+        }
+
+        return acc;
+      } catch (error) {
+        return {
+          ...acc,
+          errors: error,
+        };
+      }
     },
   );
 

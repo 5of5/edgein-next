@@ -192,7 +192,7 @@ query GetCompany($slug: String!) {
     }
   }
 }
-  
+
 query GetFullCompanyById($id: Int!) {
   companies(where: { id: { _eq: $id } }) {
     id
