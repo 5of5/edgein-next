@@ -2,7 +2,7 @@ mutation InsertLeads(
   $converted_userid: Int
   $campaign_id: String
   $company_name: String
-  $email: String
+  $email: String!
   $email_domain: String
   $first_name: String
   $instantly_id: String
@@ -36,7 +36,7 @@ mutation InsertLeadsSegmentation(
   $name: String
   $description: String
   $sql: String
-  $campaign_id: String
+  $campaign_id: String!
 ) {
   insert_leads_segmentation(
     objects: {

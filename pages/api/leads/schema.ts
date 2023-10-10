@@ -24,6 +24,6 @@ export const CreateLeadsSegmentationReqSchema = z.object({
   name: z.string().optional(), // Nullable field
   description: z.string().optional(), // Nullable field
   sql: z.string().optional(), // Nullable field
-  campaignId: z.string().optional(), // Nullable field
+  campaignId: z.string(),
   status: z.string().optional(), // Default: Inactive
 });
