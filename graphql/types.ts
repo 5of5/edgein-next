@@ -30074,6 +30074,34 @@ export type InsertInvitedPeopleMutationVariables = Exact<{
 
 export type InsertInvitedPeopleMutation = { __typename?: 'mutation_root', insert_invited_people_one: { __typename?: 'invited_people', id: number, person_id: number, inviter_user_id: number, created_at: any } | null };
 
+export type InsertLeadsMutationVariables = Exact<{
+  converted_userid: InputMaybe<Scalars['Int']>;
+  campaign_id: InputMaybe<Scalars['String']>;
+  company_name: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  email_domain: InputMaybe<Scalars['String']>;
+  first_name: InputMaybe<Scalars['String']>;
+  instantly_id: InputMaybe<Scalars['String']>;
+  last_name: InputMaybe<Scalars['String']>;
+  linkedin_url: InputMaybe<Scalars['String']>;
+  phone: InputMaybe<Scalars['String']>;
+  source: InputMaybe<Scalars['String']>;
+  website: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type InsertLeadsMutation = { __typename?: 'mutation_root', insert_leads: { __typename?: 'leads_mutation_response', affected_rows: number } | null };
+
+export type InsertLeadsSegmentationMutationVariables = Exact<{
+  name: InputMaybe<Scalars['String']>;
+  description: InputMaybe<Scalars['String']>;
+  sql: InputMaybe<Scalars['String']>;
+  campaign_id: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type InsertLeadsSegmentationMutation = { __typename?: 'mutation_root', insert_leads_segmentation: { __typename?: 'leads_segmentation_mutation_response', affected_rows: number } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -33743,6 +33771,44 @@ export const useInsertInvitedPeopleMutation = <
       options
     );
 useInsertInvitedPeopleMutation.fetcher = (variables: InsertInvitedPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertInvitedPeopleMutation, InsertInvitedPeopleMutationVariables>(InsertInvitedPeopleDocument, variables, options);
+export const InsertLeadsDocument = `
+    mutation InsertLeads($converted_userid: Int, $campaign_id: String, $company_name: String, $email: String, $email_domain: String, $first_name: String, $instantly_id: String, $last_name: String, $linkedin_url: String, $phone: String, $source: String, $website: String) {
+  insert_leads(
+    objects: {converted_userid: $converted_userid, campaign_id: $campaign_id, company_name: $company_name, email: $email, email_domain: $email_domain, first_name: $first_name, instantly_id: $instantly_id, last_name: $last_name, linkedin_url: $linkedin_url, phone: $phone, source: $source, website: $website}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const useInsertLeadsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLeadsMutation, TError, InsertLeadsMutationVariables, TContext>) =>
+    useMutation<InsertLeadsMutation, TError, InsertLeadsMutationVariables, TContext>(
+      ['InsertLeads'],
+      (variables?: InsertLeadsMutationVariables) => fetcher<InsertLeadsMutation, InsertLeadsMutationVariables>(InsertLeadsDocument, variables)(),
+      options
+    );
+useInsertLeadsMutation.fetcher = (variables?: InsertLeadsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLeadsMutation, InsertLeadsMutationVariables>(InsertLeadsDocument, variables, options);
+export const InsertLeadsSegmentationDocument = `
+    mutation InsertLeadsSegmentation($name: String, $description: String, $sql: String, $campaign_id: String) {
+  insert_leads_segmentation(
+    objects: {name: $name, description: $description, sql: $sql, campaign_id: $campaign_id}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const useInsertLeadsSegmentationMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLeadsSegmentationMutation, TError, InsertLeadsSegmentationMutationVariables, TContext>) =>
+    useMutation<InsertLeadsSegmentationMutation, TError, InsertLeadsSegmentationMutationVariables, TContext>(
+      ['InsertLeadsSegmentation'],
+      (variables?: InsertLeadsSegmentationMutationVariables) => fetcher<InsertLeadsSegmentationMutation, InsertLeadsSegmentationMutationVariables>(InsertLeadsSegmentationDocument, variables)(),
+      options
+    );
+useInsertLeadsSegmentationMutation.fetcher = (variables?: InsertLeadsSegmentationMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLeadsSegmentationMutation, InsertLeadsSegmentationMutationVariables>(InsertLeadsSegmentationDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
