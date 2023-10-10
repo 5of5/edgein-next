@@ -11,7 +11,7 @@ function useEmptyLibrary(
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.library !== 'tech' && (!library || library.length === 0)) {
+    if (router.query.library !== 'tech' && !library?.length) {
       router.replace(`/tech/${resourceType}/${slug}`);
     }
   }, [resourceType, library, slug, router]);

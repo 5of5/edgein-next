@@ -512,7 +512,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const company = sortBy(companies?.companies, 'status').reverse()[0];
 
   if (
-    !isValidLibraryUrl(company.library[0], context.params?.library as string)
+    !isValidLibraryUrl(context.params?.library as string, company.library[0])
   ) {
     return {
       notFound: true,

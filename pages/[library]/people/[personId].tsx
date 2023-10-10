@@ -313,7 +313,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const person = people.people[0];
 
   if (
-    !isValidLibraryUrl(person.library[0], context.params?.library as string)
+    !isValidLibraryUrl(context.params?.library as string, person.library[0])
   ) {
     return {
       notFound: true,

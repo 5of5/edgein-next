@@ -162,16 +162,8 @@ export const getGeometryPlace = (place: Place) => ({
 });
 
 export const isValidLibraryUrl = (
-  resourceLibrary: string | undefined,
   urlLibrary: string,
-) => {
-  if (
-    LIBRARY_URL_PARAMS.includes(urlLibrary) &&
-    (!resourceLibrary ||
-      (resourceLibrary && resourceLibrary.toLowerCase() === urlLibrary))
-  ) {
-    return true;
-  }
-
-  return false;
-};
+  resourceLibrary?: string,
+) =>
+  LIBRARY_URL_PARAMS.includes(urlLibrary) &&
+  (!resourceLibrary || resourceLibrary.toLowerCase() === urlLibrary);

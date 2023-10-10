@@ -16,7 +16,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {}, [props.show]);
 
-  const onRedirectToSignIn = () => {
+  const onRedirectToSignIn = () =>
     router.push(
       `${ROUTES.SIGN_IN}/${
         router.query.redirect
@@ -24,15 +24,10 @@ const UsageModal: React.FC<Props> = (props: Props) => {
           : ''
       }`,
     );
-  };
 
   const onSignUp = () => {
     props.onClose();
     onRedirectToSignIn();
-  };
-
-  const onClose = () => {
-    props.onClose();
   };
 
   const onLogin = () => {
@@ -79,7 +74,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
   return (
     <>
       <Transition.Root show={props.show} as={Fragment}>
-        <Dialog as="div" onClose={onClose} className="relative z-[60]">
+        <Dialog as="div" onClose={props.onClose} className="relative z-[60]">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

@@ -40,7 +40,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
-    if (!showPopup && router.asPath.includes(`${ROUTES.LOGIN}/`)) {
+    if (!showPopup && router.asPath.includes(ROUTES.LOGIN)) {
       setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
 

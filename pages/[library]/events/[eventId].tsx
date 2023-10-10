@@ -454,7 +454,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const event = sortBy(events?.events, 'status').reverse()[0];
 
-  if (!isValidLibraryUrl(event.library[0], context.params?.library as string)) {
+  if (!isValidLibraryUrl(context.params?.library as string, event.library[0])) {
     return {
       notFound: true,
     };
