@@ -10,6 +10,12 @@ import {
   ONBOARDING_MIN_EXPLORE_CHOICES,
 } from './constants';
 
+export const toggleCreditsSystemSchema = z.object({
+  enableCreditsSystem: z.boolean({
+    required_error: 'enableCreditsSystem is required',
+  }),
+});
+
 export const findPeopleByEmailSchema = z
   .string()
   .nonempty('Email is required.')
@@ -121,4 +127,8 @@ export const IngestPeopleReqSchema = z.object({
   apiKey: z.string().optional(),
   people: z.array(z.string()).min(1),
   enrichmentPriority: z.number().int().min(0),
+});
+
+export const BatchJobReqSchema = z.object({
+  apiKey: z.string().optional(),
 });

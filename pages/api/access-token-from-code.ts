@@ -2,6 +2,8 @@ import UserService from '@/utils/users';
 import CookieService from '@/utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { makeAuthService } from '@/services/auth.service';
+import { DeepPartial } from '@/types/common';
+import { User } from '@/models/user';
 
 const authService = makeAuthService();
 
@@ -93,7 +95,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userData = await UserService.findOneUserByEmail(loggedInUser.email);
           if (!userData.additional_emails.includes(userInfo.email)) {
             userData.additional_emails.push(userInfo.email);
-            userData = await UserService.updateAllowedEmailArray(
+            await UserService.updateAllowedEmailArray(
               userData.id,
               userData.additional_emails,
             );
@@ -109,10 +111,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ) {
         isUserPassPrimaryAccount = true;
         const auth_linkedin_id = auth0SubInfo.pop();
-        userData = await UserService.updateAuth0LinkedInId(
+        await UserService.updateAuth0LinkedInId(
           userData.email,
           auth_linkedin_id!,
         );
+        userData = { ...userData, auth_linkedin_id };
       }
       // update the auth0_verified
       if (userData && !userData.is_auth0_verified) {
@@ -126,7 +129,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         userData,
       );
 
-      const newUserToken = UserService.createToken(userData, isFirstLogin);
+      const newUserToken = await UserService.generateToken({
+        email: userData.email,
+        isFirstLogin,
+      });
 
       // Author a couple of cookies to persist a user's session
       const token = await CookieService.createUserToken(newUserToken);

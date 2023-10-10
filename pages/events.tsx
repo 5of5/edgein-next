@@ -23,8 +23,8 @@ import {
 } from '@/graphql/types';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
-import { ElemFilter } from '@/components/elem-filter';
-import { processEventsFilters } from '@/utils/filter';
+import { ElemFilter } from '@/components/filters/elem-filter';
+import { processEventsFilters } from '@/components/filters/processor';
 import { ElemEventCard } from '@/components/events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
@@ -39,14 +39,11 @@ import {
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
-import { EventsByFilter } from '@/components/events/elem-events-by-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemDropdown } from '@/components/elem-dropdown';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   eventTabs: DashboardCategory[];
@@ -57,11 +54,10 @@ type Props = {
 const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -75,9 +71,14 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const [selectedTab, setSelectedTab] =
     useStateParams<DashboardCategory | null>(
       null,
-      'tab',
-      statusTag => (statusTag ? eventTabs.indexOf(statusTag).toString() : ''),
-      index => eventTabs[Number(index)],
+      'statusTag',
+      statusTag => (statusTag ? statusTag.value : ''),
+      selectedStatusTag =>
+        eventTabs[
+          eventTabs.findIndex(
+            statusTag => statusTag.value === selectedStatusTag,
+          )
+        ],
     );
 
   const [page, setPage] = useStateParams<number>(
@@ -212,7 +213,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     });
   }
 
-  if (selectedTab?.value === 'trending') {
+  if (selectedTab?.value === 'Trending') {
     filters._and?.push({
       num_of_views: { _is_null: false },
     });
@@ -252,7 +253,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     {
       offset,
       limit:
-        selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+        selectedTab?.value === 'Trending' ? TRENDING_CATEGORY_LIMIT : limit,
 
       where: filters as Events_Bool_Exp,
       orderBy: orderByQuery,
@@ -305,6 +306,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 IconComponent={IconSortDashboard}
                 defaultItem={defaultOrderBy}
                 items={sortChoices}
+                firstItemDivided
               />
             )}
           </div>
@@ -477,7 +479,7 @@ const eventTabs: DashboardCategory[] = [
   },
   {
     title: 'Trending',
-    value: 'trending',
+    value: 'Trending',
     date: '',
     icon: '🔥',
   },

@@ -34,6 +34,8 @@ import ElemNewsList from '@/components/news/elem-news-list';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import moment from 'moment-timezone';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ROUTES } from '@/routes';
 
 type Props = {
   person: People;
@@ -200,7 +202,7 @@ const Person: NextPage<Props> = (props: Props) => {
                     )}
 
                     {profileIsLoggedInUser && (
-                      <ElemButton btn="default" href="/profile/">
+                      <ElemButton btn="default" href={ROUTES.PROFILE}>
                         Profile settings
                       </ElemButton>
                     )}
@@ -216,6 +218,9 @@ const Person: NextPage<Props> = (props: Props) => {
               )}
             </div>
           </div>
+
+          <ElemInviteBanner className="mt-7" />
+
           <ElemTabBar
             className="mt-7"
             tabs={tabBarItems}

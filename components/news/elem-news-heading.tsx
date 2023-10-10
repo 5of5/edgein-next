@@ -1,10 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
 import { IconExternalLink } from '@/components/icons';
 import { News } from '@/graphql/types';
 import moment from 'moment-timezone';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   news: News;
@@ -37,18 +38,15 @@ const ElemNewsHeading: React.FC<Props> = ({
       <div className="mb-4">
         <div className="inline leading-7 text-gray-600">
           {news?.link ? (
-            <Link href={news.link}>
-              <a
-                className="font-medium text-sm"
-                target="_blank"
-                onClick={handleLinkClick}
-              >
-                <span className="underline hover:no-underline">
-                  {news.text}
-                </span>
-                <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
-              </a>
-            </Link>
+            <ElemLink
+              href={news.link}
+              className="font-medium text-sm"
+              target="_blank"
+              onClick={handleLinkClick}
+            >
+              <span className="underline hover:no-underline">{news.text}</span>
+              <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
+            </ElemLink>
           ) : (
             <p className="font-medium text-sm">{news.text}</p>
           )}
@@ -68,17 +66,16 @@ const ElemNewsHeading: React.FC<Props> = ({
               {showPoweredBy && (
                 <>
                   <span>{` • powered by `}</span>
-                  <Link
-                    href={`/companies/${
+                  <ElemLink
+                    href={`${ROUTES.COMPANIES}/${
                       news?.source?.poweredby?.toLowerCase() === 'techcrunch'
                         ? 'techcrunch'
                         : 'cryptopanic'
                     }`}
+                    className="underline hover:no-underline"
                   >
-                    <a className="underline hover:no-underline">
-                      {news?.source?.poweredby || 'CryptoPanic'}
-                    </a>
-                  </Link>
+                    {news?.source?.poweredby || 'CryptoPanic'}
+                  </ElemLink>
                 </>
               )}
             </p>

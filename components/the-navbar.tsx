@@ -1,5 +1,4 @@
 import { useEffect, Fragment, FC, useCallback } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { ElemLogo } from '@/components/elem-logo';
@@ -16,12 +15,14 @@ import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { useUser } from '@/context/user-context';
 import { ElemSearchBox } from './elem-search-box';
-import { find, first } from 'lodash';
+import { find } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
 import { Popover, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
+import { ROUTES } from '@/routes';
+import { ElemLink } from './elem-link';
 
 export type Popups = 'search' | 'usage' | false;
 
@@ -39,7 +40,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
-    if (!showPopup && router.asPath.includes('/sign-in/')) {
+    if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
       setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
 
@@ -71,10 +72,10 @@ export const TheNavbar: FC<Props> = ({}) => {
       if (response.status !== 200) {
         const responseText = await response.clone().json();
         if (responseText.message) {
-          router.push('/sign-in');
+          router.push(ROUTES.SIGN_IN);
         }
       } else {
-        window.location.href = '/';
+        window.location.href = ROUTES.ROOT;
       }
     } catch (e) {
       console.log(e);
@@ -107,17 +108,17 @@ export const TheNavbar: FC<Props> = ({}) => {
   }, [setShowPopup]);
 
   const redirectToSignIn = () => {
-    router.push('/sign-in');
+    router.push(ROUTES.SIGN_IN);
   };
 
   const ellipsisDropdownItems = [
     {
       label: 'Support',
-      href: '/support',
+      href: ROUTES.SUPPORT,
     },
     {
       label: 'Pricing',
-      href: '/pricing',
+      href: ROUTES.PRICING,
     },
     {
       label: 'Press',
@@ -125,7 +126,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     },
     {
       label: 'Contact',
-      href: '/contact',
+      href: ROUTES.CONTACT,
     },
   ];
 
@@ -145,14 +146,15 @@ export const TheNavbar: FC<Props> = ({}) => {
               <IconBars3 className="h-6 w-6" />
             </ElemButton>
 
-            <Link href={user ? '/companies' : '/'} passHref>
-              <a className="w-auto lg:w-64">
-                <ElemLogo
-                  mode="logo"
-                  className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
-                />
-              </a>
-            </Link>
+            <ElemLink
+              href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
+              className="w-auto lg:w-64"
+            >
+              <ElemLogo
+                mode="logo"
+                className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
+              />
+            </ElemLink>
           </div>
 
           <ElemSearchBox
@@ -188,16 +190,16 @@ export const TheNavbar: FC<Props> = ({}) => {
                   {({ close }) => (
                     <>
                       {ellipsisDropdownItems.map((item, index) => (
-                        <Link href={item.href ? item.href : ''} key={index}>
-                          <a
-                            className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
-                            onClick={() => {
-                              close();
-                            }}
-                          >
-                            {item.label}
-                          </a>
-                        </Link>
+                        <ElemLink
+                          href={item.href ? item.href : ''}
+                          key={index}
+                          className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                          onClick={() => {
+                            close();
+                          }}
+                        >
+                          {item.label}
+                        </ElemLink>
                       ))}
                     </>
                   )}
@@ -207,35 +209,31 @@ export const TheNavbar: FC<Props> = ({}) => {
 
             {user ? (
               <>
-                <Link href="/notifications" passHref>
-                  <a className="relative flex items-center justify-center w-9 h-9">
-                    {unreadNotificationsCount > 0 && (
-                      <div className="absolute flex items-center justify-center -top-[2px] -right-[2px] w-5 h-5 rounded-full bg-primary-500 border border-white">
-                        <div className="text-white font-bold text-[10px] text-center">
-                          {unreadNotificationsCount > 99
-                            ? '99+'
-                            : unreadNotificationsCount}
-                        </div>
+                <ElemLink
+                  href={ROUTES.NOTIFICATIONS}
+                  className="relative flex items-center justify-center w-9 h-9"
+                >
+                  {unreadNotificationsCount > 0 && (
+                    <div className="absolute flex items-center justify-center -top-[2px] -right-[4px] h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
+                      <div className="text-white font-bold text-[10px] text-center">
+                        {unreadNotificationsCount > 99
+                          ? '99+'
+                          : unreadNotificationsCount}
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                    <IconBell
-                      className="h-6 w-6 text-gray-600"
-                      strokeWidth={2}
-                    />
-                  </a>
-                </Link>
+                  <IconBell className="h-6 w-6 text-gray-600" strokeWidth={2} />
+                </ElemLink>
                 <UserMenu />
               </>
             ) : (
               <>
-                <Link href="/sign-in" passHref>
-                  <a className="w-auto">
-                    <ElemButton btn="purple" className="whitespace-nowrap">
-                      Sign in
-                    </ElemButton>
-                  </a>
-                </Link>
+                <ElemLink href={ROUTES.SIGN_IN} className="w-auto">
+                  <ElemButton btn="purple" className="whitespace-nowrap">
+                    Sign in
+                  </ElemButton>
+                </ElemLink>
               </>
             )}
           </div>

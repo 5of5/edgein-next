@@ -6,8 +6,8 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { ElemButton } from './elem-button';
-import { IconX } from './icons';
+import { ElemButton } from '../elem-button';
+import { IconX } from '../icons';
 
 type Props = {
   open: boolean;

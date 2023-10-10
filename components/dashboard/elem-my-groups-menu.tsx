@@ -1,11 +1,14 @@
 import { FC, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IconSidebarGroups } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
+import { ROUTES } from '@/routes';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
+import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
+import { ElemSidebarItem } from './elem-sidebar-item';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -24,7 +27,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
   const getActiveClass = (id: number) => {
-    return `/groups/${id}/` === router.asPath
+    return `${ROUTES.GROUPS}/${id}/` === router.asPath
       ? 'bg-gray-100 text-gray-900'
       : '';
   };
@@ -47,7 +50,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   const onRedirectToSignIn = () => {
-    router.push('/sign-in');
+    router.push(ROUTES.SIGN_IN);
   };
 
   const onClickCreate = () => {
@@ -66,33 +69,30 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
     <div className={className}>
       <div className="w-full flex items-center justify-between group">
         {user ? (
-          <Link href="/groups">
-            <a
-              className={`${
-                router.asPath.includes('/groups') ? 'bg-gray-100' : ''
-              } flex items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-            >
-              <IconSidebarGroups
-                className={`w-5 h-5 ${
-                  router.asPath.includes('/groups')
-                    ? 'text-primary-500'
-                    : 'text-gray-900'
-                }`}
-              />
-              <span className="text-sm">Groups</span>
-            </a>
-          </Link>
+          <ElemSidebarItem
+            url={ROUTES.GROUPS}
+            text="Groups"
+            IconComponent={IconSidebarGroups}
+          />
         ) : (
-          <div className="flex items-center space-x-3 px-2.5 py-1">
-            <IconSidebarGroups
-              className={`w-5 h-5 ${
-                router.asPath.includes('/groups')
-                  ? 'text-primary-500'
-                  : 'text-gray-900'
-              }`}
-            />
-            <p className="font-medium text-sm text-gray-900">Groups</p>
-          </div>
+          <ElemWithSignInModal
+            wrapperClass="w-full"
+            text="Sign in to collaborate on notes, share insights, and track leads in one group with your team or friends."
+            buttonComponent={open => (
+              <button
+                className={`${
+                  open ? 'bg-gray-100' : ''
+                } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+              >
+                <IconSidebarGroups
+                  className={`w-5 h-5 ${
+                    open ? 'text-primary-500' : 'text-gray-900'
+                  }`}
+                />
+                <p className="font-medium text-sm text-gray-900">Groups</p>
+              </button>
+            )}
+          />
         )}
       </div>
 
@@ -103,18 +103,15 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             ?.map(group => {
               return (
                 <li key={group.id} role="button">
-                  <Link href={`/groups/${group.id}/`}>
-                    <a
-                      className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
-                        group.id,
-                      )}`}
-                      title={group.name}
-                    >
-                      <span className="line-clamp-1 break-all">
-                        {group.name}
-                      </span>
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={`${ROUTES.GROUPS}/${group.id}/`}
+                    className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                      group.id,
+                    )}`}
+                    title={group.name}
+                  >
+                    <span className="line-clamp-1 break-all">{group.name}</span>
+                  </ElemLink>
                 </li>
               );
             })}

@@ -1,6 +1,9 @@
 import { User } from '@/models/user';
+import { useCallback, useMemo } from 'react';
 import useSWR from 'swr';
 import { useSWRConfig } from 'swr';
+
+const THROTTLE_INTERVAL = 30 * 60000; //30m in ms
 
 function fetcher(route: string) {
   /* our token cookie gets sent with this request */
@@ -34,13 +37,33 @@ export function useAuth() {
     data: user,
     error,
     isValidating,
-  } = useSWR<User>('/api/user/', fetcher);
+  } = useSWR<User>('/api/user/', fetcher, {
+    focusThrottleInterval: THROTTLE_INTERVAL,
+  });
   const { mutate } = useSWRConfig();
   const loading = isValidating;
 
-  const refreshUser = () => {
+  const refreshUser = useCallback(() => {
     mutate('/api/user/');
-  };
+  }, [mutate]);
+
+  if (user && !user?.entitlements) {
+    user.entitlements = {
+      viewEmails: false,
+      listsCount: 10,
+      groupsCount: 3,
+    };
+  }
+
+  const cachedAuth = useMemo(
+    () => ({
+      user,
+      loading,
+      error,
+      refreshUser,
+    }),
+    [user, loading, error, refreshUser],
+  );
 
   if (error) {
     if (
@@ -51,26 +74,8 @@ export function useAuth() {
     ) {
       window.location.href = '/?blocked';
     }
-    return {
-      user,
-      loading,
-      error,
-      refreshUser,
-    };
+    return cachedAuth;
   }
 
-  if (user && !user?.entitlements) {
-    user.entitlements = {
-      viewEmails: false,
-      listsCount: 10,
-      groupsCount: 3,
-    };
-  }
-
-  return {
-    user,
-    loading,
-    error,
-    refreshUser,
-  };
+  return cachedAuth;
 }

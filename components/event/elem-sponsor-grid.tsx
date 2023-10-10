@@ -1,10 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { IconSortUp, IconSortDown } from '@/components/icons';
 import { ElemPhoto } from '@/components/elem-photo';
 import { Pagination } from '@/components/pagination';
 import { GetEventQuery } from '@/graphql/types';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   organizations: GetEventQuery['events'][0]['event_organization'];
@@ -26,19 +27,20 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
           if (props.row.original.company) {
             return (
               <div className="flex items-center shrink-0 w-full">
-                <Link href={`/companies/${props.row.original.company.slug}`}>
-                  <a className="company flex items-center space-x-3 hover:opacity-70">
-                    <ElemPhoto
-                      photo={props.row.original.company.logo}
-                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
-                      imgClass="object-fit max-w-full max-h-full rounded"
-                      imgAlt={props.row.original.company.name}
-                    />
-                    <p className="ml-2 line-clamp-2 break-words">
-                      {props.row.original.company.name}
-                    </p>
-                  </a>
-                </Link>
+                <ElemLink
+                  href={`${ROUTES.COMPANIES}/${props.row.original.company.slug}`}
+                  className="company flex items-center space-x-3 hover:opacity-70"
+                >
+                  <ElemPhoto
+                    photo={props.row.original.company.logo}
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
+                    imgClass="object-fit max-w-full max-h-full rounded"
+                    imgAlt={props.row.original.company.name}
+                  />
+                  <p className="ml-2 line-clamp-2 break-words">
+                    {props.row.original.company.name}
+                  </p>
+                </ElemLink>
               </div>
             );
           }
@@ -46,19 +48,20 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
           if (props.row.original.vc_firm) {
             return (
               <div className="flex items-center shrink-0 w-full">
-                <Link href={`/investors/${props.row.original.vc_firm.slug}`}>
-                  <a className="investor flex items-center space-x-3 hover:opacity-70">
-                    <ElemPhoto
-                      photo={props.row.original.vc_firm.logo}
-                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
-                      imgClass="object-fit max-w-full max-h-full rounded"
-                      imgAlt={props.row.original.vc_firm.name}
-                    />
-                    <p className="ml-2 line-clamp-2 break-words">
-                      {props.row.original.vc_firm.name}
-                    </p>
-                  </a>
-                </Link>
+                <ElemLink
+                  href={`${ROUTES.INVESTORS}/${props.row.original.vc_firm.slug}`}
+                  className="investor flex items-center space-x-3 hover:opacity-70"
+                >
+                  <ElemPhoto
+                    photo={props.row.original.vc_firm.logo}
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
+                    imgClass="object-fit max-w-full max-h-full rounded"
+                    imgAlt={props.row.original.vc_firm.name}
+                  />
+                  <p className="ml-2 line-clamp-2 break-words">
+                    {props.row.original.vc_firm.name}
+                  </p>
+                </ElemLink>
               </div>
             );
           }

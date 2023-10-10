@@ -27,7 +27,7 @@ import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import {
-  companyChoices,
+  companyStatusTags,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
   TRENDING_CATEGORY_LIMIT,
@@ -35,14 +35,14 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
-import { processCompaniesFilters } from '@/utils/filter';
-import { ElemFilter } from '@/components/elem-filter';
+import { processCompaniesFilters } from '@/components/filters/processor';
+import { ElemFilter } from '@/components/filters/elem-filter';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
@@ -51,12 +51,9 @@ import {
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   companiesCount: number;
@@ -69,13 +66,13 @@ const Companies: NextPage<Props> = ({
   initialCompanies,
   companyStatusTags,
 }) => {
-  const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const { user } = useUser();
   const router = useRouter();
+  const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -84,16 +81,18 @@ const Companies: NextPage<Props> = ({
         user.email.endsWith(domain),
       ));
 
-  const { selectedLibrary } = useLibrary();
-
   // Company status-tag filter
   const [selectedStatusTag, setSelectedStatusTag] =
     useStateParams<DashboardCategory | null>(
       null,
       'statusTag',
-      companyLayer =>
-        companyLayer ? companyStatusTags.indexOf(companyLayer).toString() : '',
-      index => companyStatusTags[Number(index)],
+      companyLayer => (companyLayer ? companyLayer.value : ''),
+      selectedStatusTag =>
+        companyStatusTags[
+          companyStatusTags.findIndex(
+            statusTag => statusTag.value === selectedStatusTag,
+          )
+        ],
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
@@ -103,7 +102,7 @@ const Companies: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const [sortBy, setSortBy] = useState('mostRelevant');
+  const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -390,6 +389,10 @@ const Companies: NextPage<Props> = ({
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 items={sortItems}
+                defaultItem={sortItems.findIndex(
+                  sortItem => sortItem.value === sortBy,
+                )}
+                firstItemDivided
               />
             )}
           </div>
@@ -587,20 +590,3 @@ export interface NumericFilter {
   rangeStart: number;
   rangeEnd: number;
 }
-
-const companyStatusTagValues = companyChoices.map(option => {
-  return {
-    title: option.name,
-    value: option.id,
-    icon: option.icon,
-  };
-});
-
-const companyStatusTags: DashboardCategory[] = [
-  {
-    title: 'New',
-    value: 'new',
-    icon: '✨',
-  },
-  ...companyStatusTagValues,
-];

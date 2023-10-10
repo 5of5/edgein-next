@@ -32,6 +32,10 @@ import {
 import useLibrary from '@/hooks/use-library';
 // import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
+import useDashboardFilter from '@/hooks/use-dashboard-filter';
+import { ElemFilter } from '@/components/filters/elem-filter';
+import { processPeopleFilter } from '@/components/filters/processor';
 
 type Props = {
   peopleTabs: DashboardCategory[];
@@ -44,11 +48,14 @@ const People: NextPage<Props> = ({
   peopleCount,
   initialPeople,
 }) => {
-  const { user } = useUser();
-
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const { user } = useUser();
   const router = useRouter();
+  const { selectedLibrary } = useLibrary();
+
+  const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
+    useDashboardFilter({ resetPage: () => setPage(0) });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -56,8 +63,6 @@ const People: NextPage<Props> = ({
       SWITCH_LIBRARY_ALLOWED_DOMAINS.some(domain =>
         user.email.endsWith(domain),
       ));
-
-  const { selectedLibrary } = useLibrary();
 
   const [selectedTab, setSelectedTab] =
     useStateParams<DashboardCategory | null>(
@@ -75,7 +80,6 @@ const People: NextPage<Props> = ({
   );
 
   const limit = 50;
-
   const offset = limit * page;
 
   const defaultFilters: DeepPartial<People_Bool_Exp>[] = [
@@ -85,6 +89,9 @@ const People: NextPage<Props> = ({
   const filters: DeepPartial<People_Bool_Exp> = {
     _and: defaultFilters,
   };
+
+  /** Handle selected filter params */
+  processPeopleFilter(filters, selectedFilters, defaultFilters);
 
   useEffect(() => {
     if (!initialLoad) {
@@ -157,9 +164,42 @@ const People: NextPage<Props> = ({
           /> */}
 
           <div className="flex flex-wrap gap-2">
-            {isDisplaySelectLibrary && <ElemLibrarySelector />}
+            <div className="flex flex-wrap gap-2">
+              {isDisplaySelectLibrary && <ElemLibrarySelector />}
+            </div>
+
+            <ElemAddFilter
+              resourceType="people"
+              onSelectFilterOption={onSelectFilterOption}
+            />
           </div>
         </div>
+
+        {selectedFilters && (
+          <div className="mx-8 my-3">
+            <ElemFilter
+              resourceType="people"
+              filterValues={selectedFilters}
+              onSelectFilterOption={onSelectFilterOption}
+              onChangeFilterValues={onChangeSelectedFilters}
+              onApply={(name, filterParams) => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: { ...filterParams, open: false },
+                });
+              }}
+              onClearOption={name => {
+                filters._and = defaultFilters;
+                onChangeSelectedFilters({
+                  ...selectedFilters,
+                  [name]: undefined,
+                });
+              }}
+              onReset={() => onChangeSelectedFilters(null)}
+            />
+          </div>
+        )}
 
         <ElemInviteBanner className="mx-8 my-3" />
 

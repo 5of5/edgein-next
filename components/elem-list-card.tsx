@@ -1,16 +1,19 @@
 import { FC } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { kebabCase, startCase } from 'lodash';
+import { kebabCase } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { getNameFromListName } from '@/utils/reaction';
 import { formatDateShown, truncateWords } from '@/utils';
-import { GetGroupsQuery, GetListsQuery, Lists } from '@/graphql/types';
-import { DeepPartial, GroupsTabItem, ListsTabItem } from '@/types/common';
+import { getListDisplayName } from '@/utils/lists';
+import { GetGroupsQuery, GetListsQuery } from '@/graphql/types';
+import { GroupsTabItem, ListsTabItem } from '@/types/common';
+import { ROUTES } from '@/routes';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
+import { IconGlobe, IconLockClosed } from './icons';
+import { ElemLink } from './elem-link';
 
 type ResourceDataType<T> = T;
 
@@ -38,24 +41,17 @@ export const ElemListCard: FC<Props> = ({
 
   const { user, refreshProfile, refetchMyGroups } = useUser();
 
-  const getListName = (listData: DeepPartial<Lists>) => {
-    const name = getNameFromListName(listData);
-    if (['hot', 'like', 'crap'].includes(name)) {
-      return startCase(name);
-    }
-
-    return name;
-  };
-
   const isResourceList = resource.resourceType === 'list';
 
-  const name = isResourceList ? getListName(resource) : resource.name;
+  const name = isResourceList ? getListDisplayName(resource) : resource.name;
 
   const description = isResourceList ? name : resource.description;
 
   const resourceUrl = isResourceList
-    ? `/lists/${resource.id}/${kebabCase(getNameFromListName(resource))}`
-    : `/groups/${resource.id}`;
+    ? `${ROUTES.LISTS}/${resource.id}/${kebabCase(
+        getNameFromListName(resource),
+      )}`
+    : `${ROUTES.GROUPS}/${resource.id}`;
 
   const numOfLists = isResourceList ? 0 : resource.list_user_groups.length;
 
@@ -120,11 +116,12 @@ export const ElemListCard: FC<Props> = ({
 
   const ListItemName = (
     <div className="inline-block">
-      <Link href={resourceUrl} passHref>
-        <a className="inline-block font-medium underline break-words line-clamp-2">
-          {name}
-        </a>
-      </Link>
+      <ElemLink
+        href={resourceUrl}
+        className="inline-block font-medium underline break-words line-clamp-2"
+      >
+        {name}
+      </ElemLink>
     </div>
   );
 
@@ -145,10 +142,31 @@ export const ElemListCard: FC<Props> = ({
       </div>
 
       <div className="grow">
-        <p className="inline text-gray-500 text-sm">
+        <div className="inline-block items-center text-gray-500 text-sm">
+          {resource.public ? (
+            <ElemTooltip content="Public" direction="top" mode="light">
+              <div className="inline">
+                <IconGlobe
+                  className="inline-block w-4 h-4 shrink-0"
+                  title="Public"
+                />
+              </div>
+            </ElemTooltip>
+          ) : (
+            <ElemTooltip content="Private" direction="top" mode="light">
+              <div className="inline">
+                <IconLockClosed
+                  className="inline-block w-4 h-4 shrink-0"
+                  title="Private"
+                />
+              </div>
+            </ElemTooltip>
+          )}
+
           {isResourceList ? (
             members.length > 0 && (
               <>
+                {' • '}
                 {members.length}
                 {members.length > 1 ? ' Followers' : ' Follower'}
               </>
@@ -157,6 +175,7 @@ export const ElemListCard: FC<Props> = ({
             <>
               {members.length > 0 && (
                 <>
+                  {' • '}
                   {members.length}
                   {members.length > 1 ? ' Members' : ' Member'}
                 </>
@@ -179,7 +198,7 @@ export const ElemListCard: FC<Props> = ({
               )}
             </>
           )}
-        </p>
+        </div>
 
         <p className="text-sm text-gray-500">
           Updated {formatDateShown(resource.updated_at)}
@@ -211,15 +230,14 @@ export const ElemListCard: FC<Props> = ({
               </li>
             ))}
           </ul>
-          <Link href={resourceUrl} passHref>
-            <a className="font-medium text-sm text-gray-500 ml-1 hover:underline">
-              {members.length > 1
-                ? `${members.length} ${
-                    isResourceList ? 'Followers' : 'Members'
-                  }`
-                : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
-            </a>
-          </Link>
+          <ElemLink
+            href={resourceUrl}
+            className="font-medium text-sm text-gray-500 ml-1 hover:underline"
+          >
+            {members.length > 1
+              ? `${members.length} ${isResourceList ? 'Followers' : 'Members'}`
+              : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
+          </ElemLink>
         </div>
       </div>
       <div className="mt-4">

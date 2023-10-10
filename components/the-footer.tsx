@@ -1,6 +1,7 @@
 import { ElemLogo } from './elem-logo';
-import Link from 'next/link';
 import { IconLinkedIn, IconTwitter, IconTelegram, IconDiscord } from './icons';
+import { ROUTES } from '@/routes';
+import { ElemLink } from './elem-link';
 
 export const TheFooter = () => {
   const currentYear = new Date().getFullYear();
@@ -12,18 +13,18 @@ export const TheFooter = () => {
     ],
     company: [
       // { name: "About", href: "https://www.5of5.vc/about" },
-      { name: 'Team', href: '/team' },
-      { name: 'Pricing', href: '/pricing' },
-      { name: 'Brand Assets', href: '/brand-assets' },
+      { name: 'Team', href: ROUTES.TEAM },
+      { name: 'Pricing', href: ROUTES.PRICING },
+      { name: 'Brand Assets', href: ROUTES.BRAND_ASSETS },
     ],
     resources: [
-      { name: 'Contact', href: '/contact' },
-      { name: 'Support', href: '/support' },
+      { name: 'Contact', href: ROUTES.CONTACT },
+      { name: 'Support', href: ROUTES.SUPPORT },
       { name: 'Press', href: 'mailto:press@edgein.io' },
     ],
     legal: [
-      { name: 'Privacy', href: '/privacy' },
-      { name: 'Terms', href: '/terms' },
+      { name: 'Privacy', href: ROUTES.PRIVACY },
+      { name: 'Terms', href: ROUTES.TERMS },
     ],
     social: [
       {
@@ -61,14 +62,12 @@ export const TheFooter = () => {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
-            <Link href="/" passHref>
-              <a>
-                <ElemLogo
-                  mode="logo"
-                  className="h-8 w-auto transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
-                />
-              </a>
-            </Link>
+            <ElemLink href="/">
+              <ElemLogo
+                mode="logo"
+                className="h-8 w-auto transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
+              />
+            </ElemLink>
           </div>
           <div className="mt-12 grid grid-cols-1 gap-8 xl:mt-0 xl:col-span-2">
             <div className="md:grid md:grid-cols-4 md:gap-8">

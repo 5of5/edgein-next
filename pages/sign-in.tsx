@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import type { GetStaticProps } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import { Dialog } from '@headlessui/react';
 import { ElemButton } from '@/components/elem-button';
-import { ElemLogo } from '@/components/elem-logo';
 import { ElemLogin } from '@/components/sign-in/elem-login';
 import { ElemSignUpForm } from '@/components/sign-in/elem-sign-up-form';
 import { ElemSignUpProfile } from '@/components/sign-in/elem-sign-up-profile';
 import { ElemSignUpConfirm } from '@/components/sign-in/elem-sign-up-confirm';
 import { GetSignUpProfileQuery } from '@/graphql/types';
 import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
+import { ElemLink } from '@/components/elem-link';
+import { ROUTES } from '@/routes';
 
 export type SignUpFormState = {
   firstName?: string;
@@ -80,11 +80,9 @@ export default function SignIn() {
           <ElemSignInHeader
             rightComponent={
               signUpStep === 0 ? (
-                <Link href="/" passHref>
-                  <a className="">
-                    <ElemButton btn="white">Back</ElemButton>
-                  </a>
-                </Link>
+                <ElemLink href={ROUTES.ROOT}>
+                  <ElemButton btn="white">Back</ElemButton>
+                </ElemLink>
               ) : signUpStep === 1 ? (
                 <ElemButton btn="white" onClick={() => setSignUpStep(0)}>
                   Back
