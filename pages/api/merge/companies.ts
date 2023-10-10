@@ -203,7 +203,6 @@ const COMPLICATED_RELATIONS = {
 const RELATION_MUTATIONS = { ...SIMPLE_RELATIONS, ...COMPLICATED_RELATIONS };
 
 // Removes all null or undefined fields
-// also removes all RELATION_FIELDS
 const cleanObject = (obj: any) => pickBy(obj, value => !isNil(value));
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
