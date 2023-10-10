@@ -1859,7 +1859,7 @@ export const ONBOARDING_MIN_TAGS = 3;
 
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
 
-export const LIBRARY_URL_PARAMS = ["web3", "ai", "tech"];
+export const LIBRARY_URL_PARAMS = ['web3', 'ai', 'tech'];
 export const AUTO_GENERATED_LIST_MAXIMUM_COMPANIES = 30;
 export const AUTO_GENERATED_LIST_MAXIMUM_INVESTORS = 10;
 export const AUTO_GENERATED_LIST_MAXIMUM_PEOPLE = 10;

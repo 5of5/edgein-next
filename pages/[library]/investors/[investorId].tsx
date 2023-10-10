@@ -318,7 +318,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const vcfirm = vc_firms.vc_firms[0];
 
-  if (!isValidLibraryUrl(vcfirm.library[0], context.params?.library as string)) {
+  if (
+    !isValidLibraryUrl(vcfirm.library[0], context.params?.library as string)
+  ) {
     return {
       notFound: true,
     };

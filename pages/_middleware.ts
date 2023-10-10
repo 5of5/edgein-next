@@ -8,7 +8,7 @@ const USAGE_LIMIT = 10;
 // This is used to generate a sitemap for the site
 export const PUBLIC_PAGES = [
   `/`,
-  `/login/`,
+  `${ROUTES.LOGIN}/`,
   `${ROUTES.SIGN_IN}/`,
   `${ROUTES.CONTACT}/`,
   `${ROUTES.PRIVACY}/`,
@@ -144,7 +144,7 @@ export async function middleware(req: NextRequest) {
         return CookieService.setUsageCookie(NextResponse.next(), newUsageToken);
       } else {
         return NextResponse.redirect(
-          new URL(`/login/?usage=true&${redirectPath}`, req.url),
+          new URL(`${ROUTES.LOGIN}/?usage=true&${redirectPath}`, req.url),
         );
       }
     } else {
