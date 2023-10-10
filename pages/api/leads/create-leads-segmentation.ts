@@ -31,12 +31,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.send({ result });
   } catch (err) {
     const errMessage = err instanceof Error ? err.message : err;
-    return res
-      .status(500)
-      .send({
-        message: 'Failed to create leads segmentation',
-        error: errMessage,
-      });
+    return res.status(500).send({
+      message: 'Failed to create leads segmentation',
+      error: errMessage,
+    });
   }
 };
 
