@@ -13,6 +13,7 @@ import {
 import { defaults, get, isNil, pickBy, toPairs } from 'lodash';
 import async from 'async';
 import { COMPLICATED_RELATIONS, SIMPLE_RELATIONS } from '@/utils/merge/companies';
+import UserService from '@/utils/users';
 
 export type MergeCompaniesReqBody = z.infer<typeof MergeCompaniesReqSchema>;
 
@@ -38,8 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { apiKey, targetCompanyId, mergedCompanyId } = parseResponse.data;
 
   if (!apiKey) {
-    const token = CookieService.getAuthToken(req.cookies);
-    const user = await CookieService.getUser(token);
+    const user = await UserService.getUserByCookies(req.cookies)
 
     if (!user) {
       return res.status(401).json({
