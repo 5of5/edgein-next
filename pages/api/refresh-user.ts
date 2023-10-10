@@ -1,6 +1,7 @@
 import UserService from '../../utils/users';
 import CookieService from '../../utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { ROUTES } from '@/routes';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies);
@@ -10,10 +11,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     // check user has done signup or not
-    const userData = await UserService.findOneUserById(user.id);
-
-    const userToken = UserService.createToken(userData, false);
-
+    const userToken = await UserService.generateToken({
+      userId: user.id,
+      isFirstLogin: false,
+    });
     const token = await CookieService.createUserToken(userToken);
     CookieService.setTokenCookie(res, token);
   } catch (ex: any) {
@@ -21,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'GET') {
-    return res.redirect(redirect_uri || '/');
+    return res.redirect(redirect_uri || ROUTES.ROOT);
   } else {
     return res.send({ success: true });
   }

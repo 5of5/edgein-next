@@ -33,7 +33,6 @@ import {
   isValidLibraryUrl,
   randomImageOfCity,
 } from '@/utils/helpers';
-import Link from 'next/link';
 import parse from 'html-react-parser';
 import { newLineToP } from '@/utils/text';
 import { useUser } from '@/context/user-context';
@@ -44,6 +43,10 @@ import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { usePopup } from '@/context/popup-context';
 import useEmptyLibrary from '@/hooks/use-empty-library';
+import { onTrackView } from '@/utils/track';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '@/components/elem-link';
 
 type Props = {
   event: GetEventQuery['events'][0];
@@ -82,7 +85,15 @@ const Event: NextPage<Props> = props => {
   useEmptyLibrary('events', event.library, event.slug);
 
   useEffect(() => {
-    if (eventData) setEvent(eventData.events[0]);
+    if (eventData) {
+      setEvent(eventData.events[0]);
+      onTrackView({
+        resourceId: eventData.events[0]?.id,
+        resourceType: 'events',
+        pathname: router.asPath,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventData]);
 
   const onOpenLinkPersonDialog = () => {
@@ -241,22 +252,22 @@ const Event: NextPage<Props> = props => {
               <ul className="flex -space-x-3">
                 {attendees?.map(attendee => (
                   <li key={attendee.id}>
-                    <Link href={`/people/${attendee.person?.slug}`}>
-                      <a>
-                        {attendee.person?.picture ? (
-                          <ElemPhoto
-                            photo={attendee.person.picture}
-                            wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
-                            imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
-                            imgAlt={attendee.person?.name}
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
-                            {attendee.person?.name?.charAt(0)}
-                          </div>
-                        )}
-                      </a>
-                    </Link>
+                    <ElemLink
+                      href={`${ROUTES.PEOPLE}/${attendee.person?.slug}`}
+                    >
+                      {attendee.person?.picture ? (
+                        <ElemPhoto
+                          photo={attendee.person.picture}
+                          wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
+                          imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
+                          imgAlt={attendee.person?.name}
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
+                          {attendee.person?.name?.charAt(0)}
+                        </div>
+                      )}
+                    </ElemLink>
                   </li>
                 ))}
               </ul>
@@ -278,15 +289,18 @@ const Event: NextPage<Props> = props => {
         {event.parent_event && (
           <div className="mt-4">
             <div className="font-bold text-sm">Sub-event of:</div>
-            <Link href={`/events/${event.parent_event.slug}`} passHref>
-              <a className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
-                <h2 className="inline group-hover:underline">
-                  {event.parent_event.name}
-                </h2>
-              </a>
-            </Link>
+            <ElemLink
+              href={`${ROUTES.EVENTS}/${event.parent_event.slug}`}
+              className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5"
+            >
+              <h2 className="inline group-hover:underline">
+                {event.parent_event.name}
+              </h2>
+            </ElemLink>
           </div>
         )}
+
+        <ElemInviteBanner className="mt-7" />
 
         <ElemTabBar
           className="mt-7 flex-wrap"
@@ -463,7 +477,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   let metaTitle = null;
   if (event.name) {
-    metaTitle = `${event.name} | EdgeIn ${event.library[0]} Event - Get more information`;
+    metaTitle = `${event.name} | EdgeIn ${event.library?.[0]} Event - Get more information`;
   }
 
   let metaDescription = null;

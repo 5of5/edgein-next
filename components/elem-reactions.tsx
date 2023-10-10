@@ -10,6 +10,8 @@ import { ElemTooltip } from '@/components/elem-tooltip';
 import { useUser } from '@/context/user-context';
 import hashSum from 'hash-sum';
 import { useRouter } from 'next/router';
+import { ElemWithSignInModal } from './elem-with-sign-in-modal';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -128,7 +130,7 @@ export const ElemReaction: FC<ReactionProps> = ({
     event.preventDefault();
 
     if (!user) {
-      router.push('/sign-in');
+      router.push(ROUTES.SIGN_IN);
     } else {
       setReactionState(prev => {
         let count = prev.count + (prev.alreadyReacted ? -1 : 1);
@@ -147,6 +149,36 @@ export const ElemReaction: FC<ReactionProps> = ({
       refreshProfile();
     }
   };
+
+  if (!user) {
+    const text = {
+      like: "Like this profile? Sign in to make it count, and we'll save it into your liked profiles for you.",
+      hot: "Is this profile trending? Sign in to make it count, and we'll save it into your hot profiles for you.",
+      crap: "Is this profile sh**? Sign in to make it count, and we'll save it into your disliked profiles for you.",
+    }[type];
+
+    return (
+      <ElemWithSignInModal
+        text={text}
+        buttonComponent={open => (
+          <div className="flex items-center font-bold ease-in-out duration-150 group cursor-pointer text-slate-400">
+            <ElemTooltip content={label}>
+              <div
+                className={`flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100 ${
+                  open ? 'bg-slate-100' : ''
+                }`}
+              >
+                {type === 'hot' && <EmojiHot className="h-6 w-6" />}
+                {type === 'like' && <EmojiLike className="h-6 w-6" />}
+                {type === 'crap' && <EmojiCrap className="h-6 w-6" />}{' '}
+              </div>
+            </ElemTooltip>
+            <div className="proportional-nums">{reactionState.count || 0}</div>
+          </div>
+        )}
+      />
+    );
+  }
 
   return (
     <div

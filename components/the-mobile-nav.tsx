@@ -6,7 +6,6 @@ import {
   useState,
   useMemo,
 } from 'react';
-import Link from 'next/link';
 import { ElemButton } from './elem-button';
 import {
   IconCash,
@@ -21,6 +20,8 @@ import {
   IconUserCircle,
   IconSearch,
   IconX,
+  IconHome,
+  IconUserGroup,
 } from '@/components/icons';
 import { Transition } from '@headlessui/react';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -29,6 +30,8 @@ import { useRouter } from 'next/router';
 import { Popups } from '@/components/the-navbar';
 import UserService from '@/utils/users';
 import { ExploreMenuItem } from '@/types/common';
+import { ROUTES } from '@/routes';
+import { ElemLink } from './elem-link';
 
 type Props = {
   className?: string;
@@ -58,85 +61,93 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     setNavOpen(false);
   };
 
-  const baseNav: ExploreMenuItem[] = useMemo(
-    () => [
-      {
-        icon: IconCompanies,
-        title: 'Companies',
-        href: '/companies',
-      },
-      {
-        icon: IconCash,
-        title: 'Investors',
-        href: '/investors',
-      },
-      {
-        icon: IconCalendar,
-        title: 'Events',
-        href: '/events',
-      },
-      {
-        icon: IconNewspaper,
-        title: 'News',
-        href: '/news',
-      },
-    ],
-    [],
-  );
+  const baseNav: ExploreMenuItem[] = [
+    {
+      icon: IconCompanies,
+      title: 'Companies',
+      href: ROUTES.COMPANIES,
+    },
+    {
+      icon: IconCash,
+      title: 'Investors',
+      href: ROUTES.INVESTORS,
+    },
+    {
+      icon: IconUserGroup,
+      title: 'People',
+      href: ROUTES.PEOPLE,
+    },
+  ];
 
-  const bottomNav: ExploreMenuItem[] = useMemo(
-    () => [
-      ...baseNav,
-      {
-        icon: IconBell,
-        title: 'Notifications',
-        href: '/notifications',
-      },
-    ],
-    [baseNav],
-  );
+  const bottomNav: ExploreMenuItem[] = [
+    ...(user
+      ? [
+          {
+            href: ROUTES.HOME,
+            icon: IconHome,
+            title: 'Home',
+          },
+        ]
+      : []),
+    ...baseNav,
+    {
+      icon: IconBell,
+      title: 'Notifications',
+      href: ROUTES.NOTIFICATIONS,
+    },
+  ];
 
-  const menuPanel: ExploreMenuItem[] = useMemo(
-    () => [
-      ...(user
-        ? [
-            {
-              icon: IconDocumentDownload,
-              title: 'Notes',
-              href: '/notes',
-            },
-            {
-              icon: IconGroup,
-              title: 'Groups',
-              href: '/groups',
-            },
-            {
-              icon: IconCustomList,
-              title: 'Lists',
-              href: '/lists',
-            },
-          ]
-        : []),
-      ...baseNav,
-      ...(user
-        ? [
-            {
-              icon: IconSettings,
-              title: 'Account Settings',
-              href: '/account',
-            },
-          ]
-        : []),
-    ],
-    [baseNav, user],
-  );
-
+  const menuPanel: ExploreMenuItem[] = [
+    ...(user
+      ? [
+          {
+            icon: IconCustomList,
+            title: 'Lists',
+            href: ROUTES.LISTS,
+          },
+          {
+            icon: IconGroup,
+            title: 'Groups',
+            href: ROUTES.GROUPS,
+          },
+          {
+            icon: IconDocumentDownload,
+            title: 'Notes',
+            href: ROUTES.NOTES,
+          },
+        ]
+      : []),
+    ...baseNav,
+    {
+      icon: IconCalendar,
+      title: 'Events',
+      href: ROUTES.EVENTS,
+    },
+    {
+      icon: IconNewspaper,
+      title: 'News',
+      href: ROUTES.NEWS,
+    },
+    ...(user
+      ? [
+          {
+            icon: IconSettings,
+            title: 'Account Settings',
+            href: ROUTES.ACCOUNT,
+          },
+        ]
+      : []),
+  ];
   return (
     <>
       <div
         className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
       >
-        <ul className="grid grid-cols-6 w-full bg-white px-0.5 pb-0.5">
+        <ul
+          className={`grid ${
+            user ? 'grid-cols-6' : 'grid-cols-5'
+          } w-full bg-white px-0.5 pb-0.5`}
+        >
           {bottomNav.map((item, index) => (
             <li
               key={index}
@@ -146,26 +157,25 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                   : 'border-t-2 border-transparent'
               }`}
             >
-              <Link href={item?.href ? item.href : ''}>
-                <a
-                  onClick={onClose}
-                  className="flex flex-col items-center h-full text-[11px]"
-                >
-                  {item?.icon && (
-                    <div className="relative flex items-center justify-center h-7 aspect-square">
-                      {unreadNotificationsCount > 0 &&
-                        item.title === 'Notifications' && (
-                          <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
-                        )}
-                      <item.icon
-                        title={item.title}
-                        className="h-6 w-6 shrink-0 text-slate-600"
-                      />
-                    </div>
-                  )}
-                  {item?.title}
-                </a>
-              </Link>
+              <ElemLink
+                href={item?.href ? item.href : ''}
+                onClick={onClose}
+                className="flex flex-col items-center h-full text-[11px]"
+              >
+                {item?.icon && (
+                  <div className="relative flex items-center justify-center h-7 aspect-square">
+                    {unreadNotificationsCount > 0 &&
+                      item.title === 'Notifications' && (
+                        <div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
+                      )}
+                    <item.icon
+                      title={item.title}
+                      className="h-6 w-6 shrink-0 text-slate-600"
+                    />
+                  </div>
+                )}
+                {item?.title}
+              </ElemLink>
             </li>
           ))}
 
@@ -235,20 +245,19 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
             <ul className="grid grid-cols-2 gap-4 px-4">
               {menuPanel.map((item, index) => (
                 <li key={index}>
-                  <Link href={item?.href ? item.href : ''}>
-                    <a
-                      onClick={onClose}
-                      className="block p-3 outline-none bg-white shadow rounded-lg"
-                    >
-                      {item?.icon && (
-                        <item.icon
-                          title={item.title}
-                          className="h-6 w-6 shrink-0"
-                        />
-                      )}
-                      <span className="leading-tight">{item?.title}</span>
-                    </a>
-                  </Link>
+                  <ElemLink
+                    href={item?.href ? item.href : ''}
+                    onClick={onClose}
+                    className="block p-3 outline-none bg-white shadow rounded-lg"
+                  >
+                    {item?.icon && (
+                      <item.icon
+                        title={item.title}
+                        className="h-6 w-6 shrink-0"
+                      />
+                    )}
+                    <span className="leading-tight">{item?.title}</span>
+                  </ElemLink>
                 </li>
               ))}
             </ul>
@@ -267,7 +276,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 </ElemButton>
               ) : (
                 <ElemButton
-                  onClick={() => router.push('/companies')}
+                  onClick={() => router.push(ROUTES.COMPANIES)}
                   btn="primary"
                   className="w-full"
                 >

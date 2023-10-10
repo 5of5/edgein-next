@@ -1,5 +1,4 @@
 import {
-  Investors_Order_By,
   Order_By,
   useGetPersonalizedVcFirmsQuery,
   Vc_Firms,
@@ -14,6 +13,7 @@ import { Pagination } from '../pagination';
 import { PlaceholderInvestorCard } from '../placeholders';
 import { ElemInvestorCard } from './elem-investor-card';
 import { InvestorsTable } from './elem-investors-table';
+import { CardType } from '../companies/elem-company-card';
 
 type Props = {
   headingText: string;
@@ -23,6 +23,7 @@ type Props = {
   itemsPerPage: number;
   tagOnClick: any;
   isTableView?: boolean;
+  cardType?: CardType;
 };
 
 export const InvestorsByFilter: FC<Props> = ({
@@ -33,6 +34,7 @@ export const InvestorsByFilter: FC<Props> = ({
   itemsPerPage,
   tagOnClick,
   isTableView = false,
+  cardType = 'full',
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
@@ -119,7 +121,11 @@ export const InvestorsByFilter: FC<Props> = ({
             className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
           >
             {vc_firms?.map(vcFirm => (
-              <ElemInvestorCard key={vcFirm.id} vcFirm={vcFirm as Vc_Firms} />
+              <ElemInvestorCard
+                key={vcFirm.id}
+                vcFirm={vcFirm as Vc_Firms}
+                type={cardType}
+              />
             ))}
           </div>
 

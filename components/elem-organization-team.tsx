@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { People, Team_Members, Investors } from '@/graphql/types';
 import { ElemPersonCard } from '@/components/elem-person-card';
-import { ElemFilterTags } from '@/components/elem-filter-tags';
+import { ElemFilterTags } from '@/components/filters/elem-filter-tags';
 import { uniq, compact, sortBy } from 'lodash';
 import { ElemBulkSavePeople } from './elem-bulk-save-people';
 import { ElemButton } from './elem-button';
 import { useIntercom } from 'react-use-intercom';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -112,7 +113,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                     {teamMember.person && (
                       <ElemPersonCard
                         key={teamMember.person.id}
-                        href={`/people/${teamMember.person.slug}`}
+                        href={`${ROUTES.PEOPLE}/${teamMember.person.slug}`}
                         photo={teamMember.person.picture}
                         heading={teamMember.person.name}
                         founder={teamMember.founder}

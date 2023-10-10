@@ -56,12 +56,13 @@ export const NewsByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-4xl font-medium my-8">{headingText}</div>
-
+      <div className="flex justify-between py-8">
+        <div className="text-4xl font-medium">{headingText}</div>
+      </div>
       <div>
         <div
           data-testid="personalizedCompanies"
-          className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-4"
+          className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
         >
           {news.map(post => (
             <ElemNewsCard key={post.id} newsPost={post} />

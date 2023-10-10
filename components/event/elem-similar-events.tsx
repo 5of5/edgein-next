@@ -13,6 +13,7 @@ import {
 import { ElemEventCard } from '../events/elem-event-card';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -62,7 +63,7 @@ export const ElemSimilarEvents: FC<Props> = ({
     event.preventDefault();
 
     router.push(
-      `/events/?filters=${encodeURIComponent(
+      `${ROUTES.EVENTS}/?filters=${encodeURIComponent(
         `{"eventType":{"tags":["${type}"]}}`,
       )}`,
     );

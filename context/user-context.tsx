@@ -9,7 +9,7 @@ import {
   GetUnreadNotificationsQuery,
   Notifications,
 } from '@/graphql/types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
@@ -89,7 +89,7 @@ const UserProvider: React.FC<Props> = props => {
   const { data: notifications, refetch: refetchUnreadNotifications } =
     useGetUnreadNotificationsQuery(
       { user_id: user?.id || 0 },
-      { enabled: Boolean(user), refetchOnWindowFocus: false },
+      { enabled: Boolean(user) },
     );
 
   React.useEffect(() => {
@@ -161,25 +161,41 @@ const UserProvider: React.FC<Props> = props => {
 
   const { selectedLibrary, onChangeLibrary } = useLibrary();
 
-  const handleSelectLibrary = (value: LibraryTag) => {
-    onChangeLibrary(value.id);
-  };
+  const handleSelectLibrary = useCallback(
+    () => (value: LibraryTag) => {
+      onChangeLibrary(value.id);
+    },
+    [onChangeLibrary],
+  );
 
+  const cachedUser = useMemo(
+    () => ({
+      user: user || null,
+      loading,
+      listAndFollows,
+      myGroups,
+      unreadNotificationsCount,
+      selectedLibrary,
+      onChangeLibrary: handleSelectLibrary,
+      refetchMyGroups,
+      refetchUnreadNotifications,
+      refreshUser,
+    }),
+    [
+      user,
+      loading,
+      listAndFollows,
+      myGroups,
+      unreadNotificationsCount,
+      selectedLibrary,
+      handleSelectLibrary,
+      refetchMyGroups,
+      refetchUnreadNotifications,
+      refreshUser,
+    ],
+  );
   return (
-    <Provider
-      value={{
-        user: user || null,
-        loading,
-        listAndFollows,
-        myGroups,
-        unreadNotificationsCount,
-        selectedLibrary,
-        onChangeLibrary: handleSelectLibrary,
-        refetchMyGroups,
-        refetchUnreadNotifications,
-        refreshUser,
-      }}
-    >
+    <Provider value={cachedUser}>
       {user && !user.email.endsWith('@edgein.io') ? (
         <FullStory org={FULLSTORY_ORG_ID} />
       ) : null}

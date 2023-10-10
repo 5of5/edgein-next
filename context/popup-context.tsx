@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { Popups } from '@/components/the-navbar';
 import { useRouter } from 'next/router';
+import { ROUTES } from '@/routes';
 
 type PopupValue = {
   showPopup: Popups;

@@ -36,6 +36,8 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import moment from 'moment-timezone';
 import useEmptyLibrary from '@/hooks/use-empty-library';
 import { isValidLibraryUrl } from '@/utils/helpers';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ROUTES } from '@/routes';
 
 type Props = {
   person: People;
@@ -204,7 +206,7 @@ const Person: NextPage<Props> = (props: Props) => {
                     )}
 
                     {profileIsLoggedInUser && (
-                      <ElemButton btn="default" href="/profile/">
+                      <ElemButton btn="default" href={ROUTES.PROFILE}>
                         Profile settings
                       </ElemButton>
                     )}
@@ -220,6 +222,9 @@ const Person: NextPage<Props> = (props: Props) => {
               )}
             </div>
           </div>
+
+          <ElemInviteBanner className="mt-7" />
+
           <ElemTabBar
             className="mt-7"
             tabs={tabBarItems}

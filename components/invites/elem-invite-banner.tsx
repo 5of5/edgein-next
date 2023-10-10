@@ -1,9 +1,10 @@
 import { FC, useState, useEffect, MouseEvent } from 'react';
-import Link from 'next/link';
 import { SHOW_INVITE_BANNER } from '@/utils/constants';
 import { IconX, IconArrowRight } from '../icons';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -31,13 +32,13 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(SHOW_INVITE_BANNER, 'false');
     }
-    event.stopPropagation();
+    event.preventDefault();
   };
 
   const handleClickBanner = (event: MouseEvent<HTMLAnchorElement>) => {
     if (!user) {
       event.preventDefault();
-      router.push('/sign-in');
+      router.push(ROUTES.SIGN_IN);
     }
   };
 
@@ -46,13 +47,14 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   }
 
   return (
-    <Link href={'/invite-a-friend'} passHref>
+    <ElemLink href={ROUTES.INVITE_A_FRIEND}>
       <div
         className={`cursor-pointer flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
       >
         <a className="text-white" onClick={handleClickBanner}>
-          Get <strong className="font-bold">1 month free</strong> for every
-          person you invite to Edgein{' '}
+          Invite a friend and get{' '}
+          <strong className="font-bold">1,500 credits</strong> for 1 month of
+          EdgeIn for free{' '}
           <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
         </a>
         <div className="flex flex-1 justify-end">
@@ -66,6 +68,6 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
           </button>
         </div>
       </div>
-    </Link>
+    </ElemLink>
   );
 };

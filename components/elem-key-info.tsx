@@ -306,9 +306,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   const [showInfo, setShowInfo] = useState<Record<string, boolean>>({});
 
   const onInfoClick = (info: string) => () => {
-    if (!user) {
-      router.push('/sign-in');
-    } else if (user?.entitlements?.viewEmails) {
+    if (user?.entitlements?.viewEmails) {
       setShowInfo({ ...showInfo, [info]: !showInfo[info] });
       // TODO add action
     } else {

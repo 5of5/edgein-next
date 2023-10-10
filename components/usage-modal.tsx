@@ -4,6 +4,7 @@ import { ElemButton } from '@/components/elem-button';
 import { ElemLogo } from '@/components/elem-logo';
 import { IconBadgeCheck, IconContributor } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
+import { ROUTES } from '@/routes';
 
 type Props = {
   show: boolean;
@@ -17,7 +18,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 
   const onRedirectToSignIn = () => {
     router.push(
-      `/sign-in/${
+      `${ROUTES.SIGN_IN}/${
         router.query.redirect
           ? `?redirect=${encodeURIComponent(router.query.redirect as string)}`
           : ''

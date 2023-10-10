@@ -14,6 +14,7 @@ type Props = {
     StartIcon?: FC<IconProps>;
     onClick: () => void;
   }>;
+  firstItemDivided?: boolean;
 };
 
 export const ElemDropdown: FC<Props> = ({
@@ -21,6 +22,7 @@ export const ElemDropdown: FC<Props> = ({
   IconComponent,
   defaultItem = 0,
   items,
+  firstItemDivided = false,
 }) => {
   const [activeItem, setActiveItem] = useState<number>(defaultItem);
 
@@ -48,14 +50,18 @@ export const ElemDropdown: FC<Props> = ({
         <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
           {({ close }) => (
             <div>
-              {items.map(item => {
+              {items.map((item, index) => {
                 const isActiveItem = item.id === activeItem;
                 return (
                   <button
                     key={item.id}
-                    className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
+                    className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-600 ${
                       isActiveItem ? 'font-medium' : 'font-normal'
-                    } px-4 py-2 m-0 transition-all hover:bg-gray-100`}
+                    } px-4 py-2 m-0 ${
+                      index === 0 && firstItemDivided
+                        ? 'border-b border-gray-100'
+                        : ''
+                    } transition-all hover:bg-gray-100`}
                     onClick={() => {
                       item.onClick();
                       setActiveItem(item.id);

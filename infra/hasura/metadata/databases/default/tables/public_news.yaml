@@ -1,25 +1,25 @@
 table:
-  schema: public
   name: news
+  schema: public
 array_relationships:
   - name: organizations
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: news_organizations
-        insertion_order: null
         column_mapping:
           id: news_id
+        insertion_order: null
+        remote_table:
+          name: news_organizations
+          schema: public
   - name: people
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: news_person
-        insertion_order: null
         column_mapping:
           id: news_id
+        insertion_order: null
+        remote_table:
+          name: news_person
+          schema: public
 select_permissions:
   - role: viewer
     permission:
@@ -31,6 +31,7 @@ select_permissions:
         - library
         - link
         - metadata
+        - num_of_views
         - source
         - status
         - text

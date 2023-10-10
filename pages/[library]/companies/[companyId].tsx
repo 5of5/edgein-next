@@ -1,6 +1,5 @@
 import React, { useEffect, useState, MutableRefObject, useRef } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemCredibility } from '@/components/company/elem-credibility';
@@ -28,7 +27,10 @@ import {
   Order_By,
 } from '@/graphql/types';
 // import { ElemReactions } from '@/components/elem-reactions';
-import { tokenInfoMetrics } from '@/utils/constants';
+import {
+  COMPANY_PROFILE_DEFAULT_TAGS_LIMIT,
+  tokenInfoMetrics,
+} from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { sortBy } from 'lodash';
 import parse from 'html-react-parser';
@@ -47,6 +49,9 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemReactions } from '@/components/elem-reactions';
 import useEmptyLibrary from '@/hooks/use-empty-library';
 import { isValidLibraryUrl } from '@/utils/helpers';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '@/components/elem-link';
 
 type Props = {
   company: Companies;
@@ -187,7 +192,7 @@ const Company: NextPage<Props> = (props: Props) => {
     event.preventDefault();
 
     router.push(
-      `/companies/?filters=${encodeURIComponent(
+      `${ROUTES.COMPANIES}/?filters=${encodeURIComponent(
         `{"industry":{"tags":["${tag}"]}}`,
       )}`,
     );
@@ -224,6 +229,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
             <ElemTags
               className="mt-4"
+              limit={COMPANY_PROFILE_DEFAULT_TAGS_LIMIT}
               resourceType={'companies'}
               tags={company.tags}
             />
@@ -231,25 +237,23 @@ const Company: NextPage<Props> = (props: Props) => {
             {parentOrganization && (
               <div className="mt-4">
                 <div className="font-medium text-sm">Sub-organization of:</div>
-                <Link
+                <ElemLink
                   href={`/${
                     parentLinks?.from_company ? 'companies' : 'investors'
                   }/${parentOrganization?.slug}`}
-                  passHref
+                  className="flex items-center gap-2 mt-1 group"
                 >
-                  <a className="flex items-center gap-2 mt-1 group">
-                    <ElemPhoto
-                      photo={parentOrganization?.logo}
-                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border border-gray-200"
-                      imgClass="object-contain w-full h-full"
-                      imgAlt={parentOrganization?.name}
-                      placeholderClass="text-slate-300"
-                    />
-                    <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
-                      {parentOrganization?.name}
-                    </h2>
-                  </a>
-                </Link>
+                  <ElemPhoto
+                    photo={parentOrganization?.logo}
+                    wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border border-gray-200"
+                    imgClass="object-contain w-full h-full"
+                    imgAlt={parentOrganization?.name}
+                    placeholderClass="text-slate-300"
+                  />
+                  <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                    {parentOrganization?.name}
+                  </h2>
+                </ElemLink>
               </div>
             )}
             {company.overview && (
@@ -354,6 +358,9 @@ const Company: NextPage<Props> = (props: Props) => {
             )}
           </div>
         </div>
+
+        <ElemInviteBanner className="mt-7" />
+
         <ElemTabBar
           className="mt-7"
           tabs={tabBarItems}

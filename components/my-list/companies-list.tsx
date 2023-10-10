@@ -9,6 +9,8 @@ import { TableEmptyCell } from './table-empty-cell';
 import { Table } from './table';
 import { PlaceholderTable } from '../placeholders';
 import { ElemTags } from '@/components/elem-tags';
+import { ElemTooltip } from '../elem-tooltip';
+import { ROUTES } from '@/routes';
 
 type Props = {
   listId: number;
@@ -61,10 +63,10 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Header: 'Name',
         accessor: 'company.name' as const,
         Cell: (props: any) => (
-          <div>
+          <div className="flex items-center space-x-3">
             <a
-              href={`/companies/` + props.row.original?.company?.slug}
-              className="flex items-center space-x-3 shrink-0 transition-all"
+              href={`${ROUTES.COMPANIES}/` + props.row.original?.company?.slug}
+              className="shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.company?.logo}
@@ -73,14 +75,32 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
                 imgAlt={props.value}
                 placeholderClass="text-gray-300"
               />
-              <p className="font-medium line-clamp-2 break-words hover:underline">
-                {props.value}
-              </p>
             </a>
+
+            <div>
+              <a
+                href={
+                  `${ROUTES.COMPANIES}/` + props.row.original?.company?.slug
+                }
+                className="font-medium line-clamp-2 break-words hover:underline"
+              >
+                {props.value}
+              </a>
+              {props.row.original?.company?.website && (
+                <a
+                  href={props.row.original.company.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="break-words hover:underline text-sm text-gray-500"
+                >
+                  {props.row.original.company.website}
+                </a>
+              )}
+            </div>
           </div>
         ),
-        width: 170,
-        minWidth: 200,
+        width: 300,
+        minWidth: 300,
         //disableDropdown: true,
         //disableResizing: true,
         disableHiding: true,
@@ -91,9 +111,23 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <div>
             {props.value ? (
-              <p className="line-clamp-3 text-sm text-gray-500">
-                {props.value}
-              </p>
+              <>
+                <ElemTooltip
+                  content={props.value}
+                  mode="light"
+                  direction="top"
+                  size="lg"
+                  delay={1200}
+                  className="max-h-72 overflow-y-scroll"
+                >
+                  <div className="text-sm line-clamp-3 text-gray-500">
+                    {props.value}
+                  </div>
+                </ElemTooltip>
+                {/* <p className="line-clamp-3 text-sm text-gray-500">
+                 {props.value}
+              </p> */}
+              </>
             ) : (
               <TableEmptyCell />
             )}
@@ -109,7 +143,11 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <>
             {props.value ? (
-              <ElemTags resourceType={'companies'} tags={props.value} />
+              <ElemTags
+                resourceType={'companies'}
+                tags={props.value}
+                limit={6}
+              />
             ) : (
               <TableEmptyCell />
             )}
@@ -296,7 +334,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       totalItems={totalItems}
       fundingTotal={fundingTotal}
       noDataText="There are no companies in this list."
-      exploreBtnHref="/companies"
+      exploreBtnHref={ROUTES.COMPANIES}
       exploreBtnText="Explore Companies"
       searchQuery={query}
       onChangeSearchQuery={onChangeSearchQuery}

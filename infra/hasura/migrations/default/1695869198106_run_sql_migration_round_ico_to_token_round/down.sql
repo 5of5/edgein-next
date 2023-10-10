@@ -1,0 +1,5 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- UPDATE public.investment_rounds
+-- SET round = 'Token Round'
+-- WHERE round = 'ICO';

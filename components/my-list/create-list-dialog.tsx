@@ -9,6 +9,7 @@ import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
+import { ROUTES } from '@/routes';
 
 type Props = {
   isOpen: boolean;
@@ -52,7 +53,7 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
     {
       onSuccess: data => {
         refreshProfile();
-        router.push(`/lists/${data.list.id}/${kebabCase(listName)}`);
+        router.push(`${ROUTES.LISTS}/${data.list.id}/${kebabCase(listName)}`);
         onClose();
         setListName('');
       },
