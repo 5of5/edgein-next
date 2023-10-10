@@ -37,7 +37,7 @@ type Props = {
 };
 
 export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
-  const { user } = useUser();
+  const { user, selectedLibrary } = useUser();
 
   const { setShowPopup } = usePopup();
 
@@ -160,7 +160,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
       <div className="flex flex-col justify-between h-full">
         <div>
           <ElemLink
-            href={`${ROUTES.EVENTS}/${slug}`}
+            href={`/${selectedLibrary?.toLowerCase}${ROUTES.EVENTS}/${slug}`}
             className="flex shrink-0 w-full"
           >
             <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">

@@ -50,7 +50,6 @@ import {
 } from '@/utils/constants';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
 

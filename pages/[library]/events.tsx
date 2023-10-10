@@ -39,7 +39,6 @@ import {
 } from '@/utils/constants';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/filters/elem-add-filter';
-import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemDropdown } from '@/components/elem-dropdown';

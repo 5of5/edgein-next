@@ -30,7 +30,6 @@ import {
   SWITCH_LIBRARY_ALLOWED_EMAILS,
   TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
-import useLibrary from '@/hooks/use-library';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';

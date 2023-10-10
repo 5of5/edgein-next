@@ -88,7 +88,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
       title: 'News',
     },
     {
-      href: ROUTES.PEOPLE,
+      href: `/${selectedLibrary.toLowerCase()}${ROUTES.PEOPLE}/`,
       icon: IconUserGroup,
       title: 'People',
     },

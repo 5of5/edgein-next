@@ -24,7 +24,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
-  const { user } = useUser();
+  const { user, selectedLibrary } = useUser();
 
   const onOpenUpgradeDialog = () => {
     setIsOpenUpgradeDialog(true);
@@ -82,7 +82,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
       <div className="flex flex-col justify-between h-full">
         <div className="w-full">
           <ElemLink
-            href={`${ROUTES.PEOPLE}/${slug}`}
+            href={`/${selectedLibrary?.toLowerCase()}${ROUTES.PEOPLE}/${slug}`}
             className="flex items-center gap-x-4 mb-4"
           >
             <ElemPhoto

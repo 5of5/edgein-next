@@ -1,5 +1,5 @@
+import { FC } from 'react';
 import { Vc_Firms } from '@/graphql/types';
-import { FC, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
@@ -9,11 +9,9 @@ import {
   IconLinkedIn,
   IconTwitter,
   IconLocation,
-  IconCash,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
-import { useRouter } from 'next/router';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
 import { convertToInternationalCurrencySystem } from '@/utils';
@@ -28,15 +26,7 @@ type Props = {
 };
 
 export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
-  const router = useRouter();
-
-  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-
-  const { user } = useUser();
-
-  const userCanViewLinkedIn = user?.entitlements.viewEmails
-    ? user?.entitlements.viewEmails
-    : false;
+  const { selectedLibrary } = useUser();
 
   const {
     id,
@@ -57,19 +47,15 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
 
   const isEmptyLocationJson = values(location_json).every(isEmpty);
 
-  const onClickInvestorLinkedin = () => {
-    if (!user) {
-      router.push(ROUTES.SIGN_IN);
-    } else {
-      setIsOpenUpgradeDialog(true);
-    }
-  };
-
   return (
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
-          <ElemLink href={`${ROUTES.INVESTORS}/${slug}`}>
+          <ElemLink
+            href={`/${selectedLibrary?.toLowerCase()}${
+              ROUTES.INVESTORS
+            }/${slug}`}
+          >
             <div className="flex shrink-0 w-full items-center gap-4">
               <ElemPhoto
                 photo={logo}

@@ -162,7 +162,7 @@ const UserProvider: React.FC<Props> = props => {
   const { selectedLibrary, onChangeLibrary } = useLibrary();
 
   const handleSelectLibrary = useCallback(
-    () => (value: LibraryTag) => {
+    (value: LibraryTag) => {
       onChangeLibrary(value.id);
     },
     [onChangeLibrary],

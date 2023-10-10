@@ -1,12 +1,9 @@
+import { FC } from 'react';
 import { Companies } from '@/graphql/types';
-import { FC, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
-import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
-import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import {
   IconGlobe,
   IconLinkedIn,
@@ -36,19 +33,7 @@ type Props = {
 };
 
 export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
-  const router = useRouter();
-
-  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-
-  const { user } = useUser();
-
-  const userCanViewLinkedIn = user?.entitlements.viewEmails
-    ? user?.entitlements.viewEmails
-    : false;
-
-  const onOpenUpgradeDialog = () => setIsOpenUpgradeDialog(true);
-
-  const onCloseUpgradeDialog = () => setIsOpenUpgradeDialog(false);
+  const { selectedLibrary } = useUser();
 
   const {
     id,
@@ -57,7 +42,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
     name,
     coin,
     tags,
-    status_tags,
     overview,
     follows,
     website,
@@ -74,14 +58,16 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
   } = company;
 
   const isEmptyLocationJson = values(location_json).every(isEmpty);
-  const isRaisingCompany =
-    status_tags && status_tags.length > 0 && status_tags.includes('Raising');
 
   return (
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
-          <ElemLink href={`${ROUTES.COMPANIES}/${slug}`}>
+          <ElemLink
+            href={`/${selectedLibrary?.toLowerCase()}${
+              ROUTES.COMPANIES
+            }/${slug}`}
+          >
             <div className="flex shrink-0 w-full items-center gap-4">
               <ElemPhoto
                 photo={logo}
@@ -224,10 +210,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
           />
         </div>
       </div>
-      <ElemUpgradeDialog
-        isOpen={isOpenUpgradeDialog}
-        onClose={onCloseUpgradeDialog}
-      />
     </div>
   );
 };

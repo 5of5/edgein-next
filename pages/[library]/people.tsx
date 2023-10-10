@@ -325,6 +325,13 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
+export async function getStaticPaths() {
+  return {
+    paths: ['/web3/people', '/ai/people'],
+    fallback: false,
+  };
+}
+
 const peopleTabs: DashboardCategory[] = [
   {
     title: 'New',

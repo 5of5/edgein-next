@@ -50,11 +50,8 @@ import {
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   vcFirmCount: number;
