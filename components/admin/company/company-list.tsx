@@ -23,7 +23,7 @@ import { Chip } from '@mui/material';
 import { companyLayerChoices } from '../../../utils/constants';
 import ElemList from '../elem-list';
 import { useAuth } from '@/hooks/use-auth';
-import { getAllTags } from '@/utils/helpers';
+import { getAllTags, getFullAddress } from '@/utils/helpers';
 import { z } from 'zod';
 import { IngestCompaniesReqBody } from '@/pages/api/ingest/companies';
 import axios, { AxiosError } from 'axios';
@@ -245,7 +245,11 @@ export const CompanyList = () => {
       <TextField source="status" />
       <TextField source="aliases" />
       <TextField source="twitter" />
-      <TextField source="location_json" />
+      <FunctionField
+        cellClassName="truncate"
+        source="location_json"
+        render={(record: any) => getFullAddress(record.location_json)}
+      />
       <TextField source="discord" />
       <TextField source="glassdoor" />
       <FunctionField
