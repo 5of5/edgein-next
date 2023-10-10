@@ -159,3 +159,24 @@ export const getGeometryPlace = (place: Place) => ({
   type: 'Point',
   coordinates: place.Geometry?.Point,
 });
+
+export const camelCaseToSnakeCaseRecursively = <
+  T extends Record<string, any> | string,
+>(
+  input: T | string,
+): T => {
+  if (typeof input === 'object' && input instanceof Object) {
+    const newObject: Record<string, any> = {};
+    Object.keys(input).forEach(key => {
+      newObject[camelCaseToSnakeCaseRecursively(key) as string] =
+        typeof input[key] === 'object'
+          ? camelCaseToSnakeCaseRecursively(input[key])
+          : input[key];
+    });
+    return newObject as T;
+  }
+  return input.replace(
+    /(?!^)([A-Z])/g,
+    letter => `_${letter.toLowerCase()}`,
+  ) as T;
+};

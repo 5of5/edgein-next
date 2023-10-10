@@ -1,11 +1,9 @@
 // in posts.js
 import * as React from 'react';
 import {
-  List,
   Datagrid,
   TextField,
   FilterButton,
-  TopToolbar,
   TextInput,
   FilterForm,
   ListBase,

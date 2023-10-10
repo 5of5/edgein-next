@@ -12,6 +12,7 @@ import { loadStripe } from '@/utils/stripe';
 import { redirect_url } from '@/utils/auth';
 import validator from 'validator';
 import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
+import { USER_ROLES } from '@/utils/users';
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
@@ -148,8 +149,7 @@ export default function Account() {
                 <ElemButton
                   onClick={() => {}}
                   btn="default"
-                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
-                >
+                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white">
                   <IconLinkedInAlt className="h-5 w-5" />
                   <span>Connected</span>
                 </ElemButton>
@@ -158,15 +158,13 @@ export default function Account() {
                   <ElemButton
                     onClick={onLinkedInClick}
                     btn="default"
-                    className="space-x-1  hover:!text-[#0077B5]"
-                  >
+                    className="space-x-1  hover:!text-[#0077B5]">
                     <IconLinkedInAlt className="h-5 w-5 text-[#0077B5]" />{' '}
                     <span>LinkedIn</span>
                   </ElemButton>
                 </>
               )
-            }
-          >
+            }>
             <div>
               <p className="text-sm text-gray-600">
                 Connect your LinkedIn account to validate your profile and
@@ -184,15 +182,13 @@ export default function Account() {
                 !isEditPassword ? (
                   <ElemButton
                     onClick={() => setEditPassword(true)}
-                    btn="default"
-                  >
+                    btn="default">
                     Edit
                   </ElemButton>
                 ) : (
                   <></>
                 )
-              }
-            >
+              }>
               {!isEditPassword ? (
                 <p className="text-gray-600 text-sm">
                   Use a strong password that you are not using elsewhere.
@@ -233,14 +229,12 @@ export default function Account() {
                     <ElemButton
                       btn="purple"
                       className="mr-2"
-                      onClick={onChangePassword}
-                    >
+                      onClick={onChangePassword}>
                       Save Changes
                     </ElemButton>
                     <ElemButton
                       onClick={() => setEditPassword(false)}
-                      btn="default"
-                    >
+                      btn="default">
                       Cancel
                     </ElemButton>
                   </div>
@@ -265,8 +259,7 @@ export default function Account() {
               ) : (
                 <></>
               )
-            }
-          >
+            }>
             {userProfile &&
             (userProfile.users_by_pk?.billing_org?.status === 'active' ||
               haveSubscriptionFromCredits) ? (
@@ -290,8 +283,7 @@ export default function Account() {
                   onClick={onBillingClick}
                   btn="primary-light"
                   arrow
-                  className="mt-4 text-primary-500"
-                >
+                  className="mt-4 text-primary-500">
                   Start your free trial
                 </ElemButton>
               </div>
@@ -304,7 +296,7 @@ export default function Account() {
         />
       </div>
 
-      {user?.role === 'admin' && (
+      {user?.role === USER_ROLES.ADMIN && (
         <div className="px-4 py-3 border-t border-gray-200">
           <div className="flex justify-between items-center mb-2">
             <h2 className="font-medium text-xl">Admin Settings</h2>
