@@ -25,7 +25,6 @@ import { NullableInputs } from '@/types/admin';
 import { nullInputTransform } from '@/utils/admin';
 import useAdminAuthProvider from '@/hooks/use-admin-auth-provider';
 import { USER_ROLES } from '@/utils/users';
-import { LeadCreate, LeadEdit, LeadList } from '../../components/admin/leads';
 
 const nullableInputs: NullableInputs = {
   users: ['person_id'],
@@ -85,8 +84,7 @@ const AdminApp = () => {
       layout={ElemLayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
-      theme={theme}
-    >
+      theme={theme}>
       <CssBaseline />
       <Resource
         name="disabled_emails"
