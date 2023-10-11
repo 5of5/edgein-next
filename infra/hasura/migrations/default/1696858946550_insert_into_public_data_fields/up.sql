@@ -1,0 +1,1 @@
+INSERT INTO "public"."data_fields"("name", "path", "resource", "weight", "regex_transform", "description", "regex_test", "is_valid_identifier", "restricted_admin", "data_type", "created_at") VALUES (E'location_json', E'vc_firm.location_json', E'vc_firm', 1, null, null, null, false, false, null, E'2023-10-09T13:42:26.511676+00:00');
