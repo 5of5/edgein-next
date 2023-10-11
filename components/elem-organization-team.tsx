@@ -113,7 +113,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                     {teamMember.person && (
                       <ElemPersonCard
                         key={teamMember.person.id}
-                        href={`${ROUTES.PEOPLE}/${teamMember.person.slug}`}
+                        href={ROUTES.PERSON({ slug: teamMember.person.slug })}
                         photo={teamMember.person.picture}
                         heading={teamMember.person.name}
                         founder={teamMember.founder}

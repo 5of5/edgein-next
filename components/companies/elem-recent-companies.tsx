@@ -88,7 +88,7 @@ export const ElemRecentCompanies: FC<Props> = ({
                   className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <a
-                    href={`${ROUTES.COMPANIES}/${company.slug}`}
+                    href={ROUTES.COMPANY({ slug: company.slug })}
                     target="_blank"
                     rel="noreferrer"
                     className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"

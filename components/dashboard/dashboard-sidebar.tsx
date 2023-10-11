@@ -68,27 +68,27 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   let exploreMenu: ExploreMenuItem[] = [
     {
-      href: `/${selectedLibrary.toLowerCase()}${ROUTES.COMPANIES}/`,
+      href: ROUTES.COMPANIES(selectedLibrary),
       icon: IconCompanies,
       title: 'Companies',
     },
     {
-      href: `/${selectedLibrary.toLowerCase()}${ROUTES.INVESTORS}/`,
+      href: ROUTES.INVESTORS(selectedLibrary),
       icon: IconCash,
       title: 'Investors',
     },
     {
-      href: `/${selectedLibrary.toLowerCase()}${ROUTES.EVENTS}/`,
+      href: ROUTES.EVENTS(selectedLibrary),
       icon: IconCalendarDays,
       title: 'Events',
     },
     {
-      href: `/${selectedLibrary.toLowerCase()}${ROUTES.NEWS}/`,
+      href: ROUTES.NEWS(selectedLibrary),
       icon: IconNewspaper,
       title: 'News',
     },
     {
-      href: `/${selectedLibrary.toLowerCase()}${ROUTES.PEOPLE}/`,
+      href: ROUTES.PEOPLE(selectedLibrary),
       icon: IconUserGroup,
       title: 'People',
     },

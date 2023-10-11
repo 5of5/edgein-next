@@ -42,7 +42,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   className = '',
   setShowPopup,
 }) => {
-  const { user, unreadNotificationsCount } = useUser();
+  const { user, selectedLibrary, unreadNotificationsCount } = useUser();
 
   const router = useRouter();
 
@@ -65,17 +65,17 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconCompanies,
       title: 'Companies',
-      href: ROUTES.COMPANIES,
+      href: ROUTES.COMPANIES(selectedLibrary),
     },
     {
       icon: IconCash,
       title: 'Investors',
-      href: ROUTES.INVESTORS,
+      href: ROUTES.INVESTORS(selectedLibrary),
     },
     {
       icon: IconUserGroup,
       title: 'People',
-      href: ROUTES.PEOPLE,
+      href: ROUTES.PEOPLE(selectedLibrary),
     },
   ];
 
@@ -121,12 +121,12 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
     {
       icon: IconCalendar,
       title: 'Events',
-      href: ROUTES.EVENTS,
+      href: ROUTES.EVENTS(selectedLibrary),
     },
     {
       icon: IconNewspaper,
       title: 'News',
-      href: ROUTES.NEWS,
+      href: ROUTES.NEWS(selectedLibrary),
     },
     ...(user
       ? [
@@ -276,7 +276,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 </ElemButton>
               ) : (
                 <ElemButton
-                  onClick={() => router.push(ROUTES.COMPANIES)}
+                  onClick={() => router.push(ROUTES.COMPANIES())}
                   btn="primary"
                   className="w-full"
                 >

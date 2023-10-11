@@ -524,7 +524,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
           <h2 className="font-medium text-xl">Profile Settings</h2>
           {users?.users_by_pk?.person && (
             <ElemButton
-              href={`${ROUTES.PEOPLE}/${users?.users_by_pk?.person?.slug}/`}
+              href={ROUTES.PERSON({ slug: users?.users_by_pk?.person?.slug })}
               btn="purple"
               arrow
               className="mt-2 sm:mt-0"

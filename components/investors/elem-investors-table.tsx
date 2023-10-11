@@ -127,7 +127,7 @@ export const InvestorsTable: FC<Props> = ({
         accessor: 'name' as const,
         Cell: (props: any) => (
           <a
-            href={`${ROUTES.INVESTORS}/` + props.row.original?.slug}
+            href={ROUTES.INVESTOR({ slug: props.row.original?.slug })}
             className="flex items-center space-x-3 shrink-0 group transition-all"
           >
             <ElemPhoto

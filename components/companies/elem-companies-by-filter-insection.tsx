@@ -145,7 +145,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
                         return;
                       }
                       router.push(
-                        `${ROUTES.COMPANIES}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                        `${ROUTES.COMPANIES()}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
                       );
                     }}
                     btn="primary"

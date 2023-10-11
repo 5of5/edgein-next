@@ -34,7 +34,7 @@ export const ElemMemberAvatarList: React.FC<Props> = ({ members }) => {
         return (
           <li key={mem.id}>
             {mem.user?.person?.slug ? (
-              <ElemLink href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}>
+              <ElemLink href={ROUTES.PERSON({ slug: mem.user?.person?.slug })}>
                 {member}
               </ElemLink>
             ) : (

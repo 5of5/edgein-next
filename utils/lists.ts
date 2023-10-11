@@ -117,7 +117,9 @@ export const updateCompaniesSentimentCount = async (
   return {
     sentiment,
     revalidatePath: shouldInc
-      ? `${ROUTES.COMPANIES}/${data.companies_by_pk?.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
+      ? `${ROUTES.COMPANY({
+          slug: data.companies_by_pk?.slug || '',
+        })}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
       : '',
   };
 };
@@ -171,7 +173,9 @@ export const updateVCFirmsSentimentCount = async (
   return {
     sentiment,
     revalidatePath: shouldInc
-      ? `${ROUTES.INVESTORS}/${data.vc_firms_by_pk?.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
+      ? `${ROUTES.INVESTOR({
+          slug: data.vc_firms_by_pk?.slug || '',
+        })}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`
       : '',
   };
 };

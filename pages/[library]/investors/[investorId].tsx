@@ -74,7 +74,7 @@ const VCFirm: NextPage<Props> = props => {
 
   useEffect(() => {
     if (selectedLibrary && !vcfirm.library?.includes(selectedLibrary)) {
-      router.push(ROUTES.INVESTORS);
+      router.push(ROUTES.INVESTORS());
     }
   }, [vcfirm, selectedLibrary, router]);
 

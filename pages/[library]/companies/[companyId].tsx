@@ -192,7 +192,7 @@ const Company: NextPage<Props> = (props: Props) => {
     event.preventDefault();
 
     router.push(
-      `${ROUTES.COMPANIES}/?filters=${encodeURIComponent(
+      `${ROUTES.COMPANIES()}/?filters=${encodeURIComponent(
         `{"industry":{"tags":["${tag}"]}}`,
       )}`,
     );

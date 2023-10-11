@@ -153,7 +153,9 @@ export const ElemListInformation: FC<Props> = ({
                       <>
                         By{' '}
                         <ElemLink
-                          href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
+                          href={ROUTES.PERSON({
+                            slug: list?.created_by?.person?.slug,
+                          })}
                           className="hover:underline"
                         >
                           {list?.created_by?.person?.name}

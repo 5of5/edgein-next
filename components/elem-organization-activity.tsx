@@ -135,7 +135,7 @@ const renderActivity = (
                       : ', ')}
                   {item.vc_firm && (
                     <ElemLink
-                      href={`${ROUTES.INVESTORS}/${item.vc_firm?.slug}`}
+                      href={ROUTES.INVESTOR({ slug: item.vc_firm?.slug })}
                       className="underline hover:no-underline"
                     >
                       {item.vc_firm['name']}
@@ -144,7 +144,7 @@ const renderActivity = (
                   {item.vc_firm && item.person && <>/</>}
                   {item.person && (
                     <ElemLink
-                      href={`${ROUTES.PEOPLE}/${item.person['slug']}`}
+                      href={ROUTES.PERSON({ slug: item.person['slug'] })}
                       className="underline hover:no-underline"
                     >
                       {item.person['name']}
@@ -173,7 +173,7 @@ const renderActivity = (
       <div className="inline leading-7 text-gray-600 text-sm">
         {activity.company && (
           <ElemLink
-            href={`${ROUTES.COMPANIES}/${activity.company['slug']}`}
+            href={ROUTES.COMPANY({ slug: activity.company['slug'] })}
             className="underline font-medium hover:no-underline"
           >
             {activity.company['name']}
@@ -214,7 +214,7 @@ const renderActivity = (
 
               {item.vc_firm && (
                 <ElemLink
-                  href={`${ROUTES.INVESTORS}/${item.vc_firm?.slug}`}
+                  href={ROUTES.INVESTOR({ slug: item.vc_firm?.slug })}
                   className="underline hover:no-underline"
                 >
                   {item.vc_firm['name']}
@@ -224,7 +224,7 @@ const renderActivity = (
 
               {item.person && (
                 <ElemLink
-                  href={`${ROUTES.PEOPLE}/${item.person['slug']}`}
+                  href={ROUTES.PERSON({ slug: item.person['slug'] })}
                   className="underline hover:no-underline"
                 >
                   {item.person['name']}

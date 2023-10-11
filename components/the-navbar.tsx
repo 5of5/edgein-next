@@ -147,7 +147,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             </ElemButton>
 
             <ElemLink
-              href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
+              href={user ? ROUTES.COMPANIES() : ROUTES.ROOT}
               className="w-auto lg:w-64"
             >
               <ElemLogo

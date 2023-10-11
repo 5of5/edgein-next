@@ -253,7 +253,9 @@ const Event: NextPage<Props> = props => {
                 {attendees?.map(attendee => (
                   <li key={attendee.id}>
                     <ElemLink
-                      href={`${ROUTES.PEOPLE}/${attendee.person?.slug}`}
+                      href={ROUTES.PERSON({
+                        slug: attendee.person?.slug || '',
+                      })}
                     >
                       {attendee.person?.picture ? (
                         <ElemPhoto
@@ -290,7 +292,7 @@ const Event: NextPage<Props> = props => {
           <div className="mt-4">
             <div className="font-bold text-sm">Sub-event of:</div>
             <ElemLink
-              href={`${ROUTES.EVENTS}/${event.parent_event.slug}`}
+              href={ROUTES.EVENT({ slug: event.parent_event.slug || '' })}
               className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5"
             >
               <h2 className="inline group-hover:underline">

@@ -67,11 +67,12 @@ const ElemNewsHeading: React.FC<Props> = ({
                 <>
                   <span>{` • powered by `}</span>
                   <ElemLink
-                    href={`${ROUTES.COMPANIES}/${
-                      news?.source?.poweredby?.toLowerCase() === 'techcrunch'
-                        ? 'techcrunch'
-                        : 'cryptopanic'
-                    }`}
+                    href={ROUTES.COMPANY({
+                      slug:
+                        news?.source?.poweredby?.toLowerCase() === 'techcrunch'
+                          ? 'techcrunch'
+                          : 'cryptopanic',
+                    })}
                     className="underline hover:no-underline"
                   >
                     {news?.source?.poweredby || 'CryptoPanic'}

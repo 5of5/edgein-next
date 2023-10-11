@@ -106,7 +106,9 @@ export const ElemInvestments: React.FC<Props> = ({
                   >
                     {investment.vc_firm && (
                       <ElemLink
-                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
+                        href={ROUTES.INVESTOR({
+                          slug: investment.vc_firm.slug,
+                        })}
                         key={investment.vc_firm.id}
                         className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
@@ -125,7 +127,7 @@ export const ElemInvestments: React.FC<Props> = ({
 
                     {investment.person && (
                       <ElemLink
-                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
+                        href={ROUTES.PERSON({ slug: investment.person.slug })}
                         key={investment.person.id}
                         className="investor flex items-center space-x-3"
                       >
@@ -154,7 +156,9 @@ export const ElemInvestments: React.FC<Props> = ({
                   >
                     {investment.vc_firm && (
                       <ElemLink
-                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
+                        href={ROUTES.INVESTOR({
+                          slug: investment.vc_firm.slug,
+                        })}
                         key={investment.vc_firm.id}
                         className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
@@ -182,7 +186,7 @@ export const ElemInvestments: React.FC<Props> = ({
                   >
                     {investment.person && (
                       <ElemLink
-                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
+                        href={ROUTES.PERSON({ slug: investment.person.slug })}
                         key={investment.person.id}
                         className="investor flex items-center space-x-3 hover:opacity-70"
                       >

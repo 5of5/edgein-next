@@ -59,7 +59,7 @@ export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
                 {item.person && (
                   <ElemPersonCard
                     key={item.person.id}
-                    href={`${ROUTES.PEOPLE}/${item.person.slug}`}
+                    href={ROUTES.PERSON({ slug: item.person.slug })}
                     photo={item.person.picture}
                     heading={item.person.name}
                     linkedin={item.person.linkedin}

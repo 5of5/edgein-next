@@ -20,7 +20,7 @@ export const ElemCompaniesGrid: React.FC<Props> = ({
           return (
             <ElemOrganizationCard
               key={company.id}
-              href={`${ROUTES.COMPANIES}/${company.slug}`}
+              href={ROUTES.COMPANY({ slug: company.slug })}
               photos={company.logo}
               heading={company.name}
               text={company.overview}

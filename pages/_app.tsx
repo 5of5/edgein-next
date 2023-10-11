@@ -88,12 +88,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
     const pagesWithoutFooter = [
       ROUTES.HOME,
-      ROUTES.COMPANIES,
-      ROUTES.INVESTORS,
-      ROUTES.EVENTS,
+      ROUTES.COMPANIES(),
+      ROUTES.INVESTORS(),
+      ROUTES.EVENTS(),
       ROUTES.NOTIFICATIONS,
-      ROUTES.NEWS,
-      ROUTES.PEOPLE,
+      ROUTES.NEWS(),
+      ROUTES.PEOPLE(),
       ROUTES.GROUPS,
       ROUTES.ACCOUNT,
       ROUTES.INVITE_A_FRIEND,

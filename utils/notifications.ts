@@ -249,7 +249,7 @@ export const getNotificationOrganizationLink = (
 ) =>
   notification.company?.slug
     ? `/${notification.follow_resource_type}/${notification.company?.slug}`
-    : `${ROUTES.INVESTORS}/${notification.vc_firm?.slug}`;
+    : ROUTES.INVESTOR({ slug: notification.vc_firm?.slug || '' });
 
 /** Remember to run test when update getMessage function */
 export const getMessage = ({
@@ -270,10 +270,14 @@ export const getMessage = ({
       } funding round`;
     }
     if (resourceType === 'team_members') {
-      return `added [${teamMember?.person?.name}](${ROUTES.PEOPLE}/${teamMember?.person?.slug}/) to the team`;
+      return `added [${teamMember?.person?.name}](${ROUTES.PERSON({
+        slug: teamMember?.person?.slug || '',
+      })}/) to the team`;
     }
     if (resourceType === 'investors') {
-      return `added [${investor?.person?.name}](${ROUTES.PEOPLE}/${investor?.person?.slug}/) to the team`;
+      return `added [${investor?.person?.name}](${ROUTES.PERSON({
+        slug: investor?.person?.slug || '',
+      })}/) to the team`;
     }
     if (resourceType === 'investments') {
       return companyId
@@ -298,10 +302,14 @@ export const getMessage = ({
       } funding round`;
     }
     if (resourceType === 'team_members') {
-      return `updated [${teamMember?.person?.name}](${ROUTES.PEOPLE}/${teamMember?.person?.slug}/)'s role on the team`;
+      return `updated [${teamMember?.person?.name}](${ROUTES.PERSON({
+        slug: teamMember?.person?.slug || '',
+      })}/)'s role on the team`;
     }
     if (resourceType === 'investors') {
-      return `updated [${investor?.person?.name}](${ROUTES.PEOPLE}/${investor?.person?.slug}/)'s role on the team`;
+      return `updated [${investor?.person?.name}](${ROUTES.PERSON({
+        slug: investor?.person?.slug || '',
+      })}/)'s role on the team`;
     }
     if (resourceType === 'investments') {
       return companyId
@@ -309,7 +317,9 @@ export const getMessage = ({
         : 'updated investment information on their portfolio';
     }
     if (resourceType === 'event_organization') {
-      return `was updated to **${organizationType}** of [${eventOrganization?.event?.name}](${ROUTES.EVENTS}/${eventOrganization?.event?.slug}/)`;
+      return `was updated to **${organizationType}** of [${
+        eventOrganization?.event?.name
+      }](${ROUTES.EVENT({ slug: eventOrganization?.event?.slug || '' })}/)`;
     }
   }
 

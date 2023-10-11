@@ -17,9 +17,9 @@ export const ElemOrganizers: React.FC<Props> = ({ organizations }) => {
       <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {organizations?.map(organizer => {
           const slug = organizer.company
-            ? `${ROUTES.COMPANIES}/${organizer.company?.slug}`
+            ? ROUTES.COMPANY({ slug: organizer.company?.slug })
             : organizer.vc_firm
-            ? `${ROUTES.INVESTORS}/${organizer.vc_firm?.slug}`
+            ? ROUTES.INVESTOR({ slug: organizer.vc_firm?.slug })
             : '';
 
           const organization = organizer.company

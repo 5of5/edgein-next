@@ -22,27 +22,27 @@ const Enterprise = () => {
     {
       title: 'Akkadian',
       image: '/images/akkadian.svg',
-      link: `${ROUTES.INVESTORS}/akkadian-ventures/`,
+      link: ROUTES.INVESTOR({ slug: 'akkadian-ventures' }),
     },
     {
       title: 'Shima',
       image: '/images/shima-capital.png',
-      link: `${ROUTES.INVESTORS}/shima-capital/`,
+      link: ROUTES.INVESTOR({ slug: 'shima-capital' }),
     },
     {
       title: 'Fireblocks',
       image: '/images/fireblocks.svg',
-      link: `${ROUTES.COMPANIES}/fireblocks/`,
+      link: ROUTES.COMPANY({ slug: 'fireblocks' }),
     },
     {
       title: 'Tokentag',
       image: '/images/tokentag.svg',
-      link: `${ROUTES.COMPANIES}/tokentag/`,
+      link: ROUTES.COMPANY({ slug: 'tokentag' }),
     },
     {
       title: '4k',
       image: '/images/4k.svg',
-      link: `${ROUTES.COMPANIES}/4k/`,
+      link: ROUTES.COMPANY({ slug: '4k' }),
     },
   ];
 

@@ -63,7 +63,7 @@ export const ElemSimilarEvents: FC<Props> = ({
     event.preventDefault();
 
     router.push(
-      `${ROUTES.EVENTS}/?filters=${encodeURIComponent(
+      `${ROUTES.EVENTS()}/?filters=${encodeURIComponent(
         `{"eventType":{"tags":["${type}"]}}`,
       )}`,
     );

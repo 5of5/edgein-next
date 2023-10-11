@@ -62,9 +62,9 @@ export const ElemJobsList: FC<Props> = ({
             }
 
             const slug = job.company
-              ? `${ROUTES.COMPANIES}/${organization.slug}`
+              ? ROUTES.COMPANY({ slug: organization.slug })
               : job.vc_firm
-              ? `${ROUTES.INVESTORS}/${organization.slug}`
+              ? ROUTES.INVESTOR({ slug: organization.slug })
               : null;
 
             const logo = (

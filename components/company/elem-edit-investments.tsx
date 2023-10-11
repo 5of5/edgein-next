@@ -81,7 +81,9 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
                       <ElemLink
-                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
+                        href={ROUTES.INVESTOR({
+                          slug: investment.vc_firm.slug,
+                        })}
                         key={investment.vc_firm.id}
                         className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
@@ -93,7 +95,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 
                     {investment.person && (
                       <ElemLink
-                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
+                        href={ROUTES.PERSON({ slug: investment.person.slug })}
                         key={investment.person.id}
                         className="investor flex items-center space-x-3 hover:opacity-70"
                       >
@@ -113,7 +115,9 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.vc_firm && (
                       <ElemLink
-                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
+                        href={ROUTES.INVESTOR({
+                          slug: investment.vc_firm.slug,
+                        })}
                         key={investment.vc_firm.id}
                         className="vcfirm flex items-center space-x-3 hover:opacity-70"
                       >
@@ -133,7 +137,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
                   <div key={investment.id} className="flex">
                     {investment.person && (
                       <ElemLink
-                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
+                        href={ROUTES.PERSON({ slug: investment.person.slug })}
                         key={investment.person.id}
                         className="investor flex items-center space-x-3 hover:opacity-70"
                       >

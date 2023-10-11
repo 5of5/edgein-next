@@ -78,7 +78,7 @@ export const ElemRecentInvestments: FC<Props> = ({
                   className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
                 >
                   <a
-                    href={`${ROUTES.INVESTORS}/${investor.slug}`}
+                    href={ROUTES.INVESTOR({ slug: investor.slug })}
                     target="_blank"
                     rel="noreferrer"
                     className="z-0 flex flex-col w-full h-full p-5 transition-all border rounded-lg border-dark-500/10 hover:scale-102 hover:shadow"

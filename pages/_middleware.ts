@@ -126,7 +126,7 @@ export async function middleware(req: NextRequest) {
 
     if (!user) {
       if (url.pathname === `${ROUTES.ONBOARDING}/`) {
-        return NextResponse.redirect(new URL(ROUTES.COMPANIES, req.url));
+        return NextResponse.redirect(new URL(ROUTES.COMPANIES(), req.url));
       }
 
       const usage = await CookieService.getUsage(

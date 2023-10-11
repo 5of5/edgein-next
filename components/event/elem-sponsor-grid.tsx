@@ -28,7 +28,9 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
             return (
               <div className="flex items-center shrink-0 w-full">
                 <ElemLink
-                  href={`${ROUTES.COMPANIES}/${props.row.original.company.slug}`}
+                  href={ROUTES.COMPANY({
+                    slug: props.row.original.company.slug,
+                  })}
                   className="company flex items-center space-x-3 hover:opacity-70"
                 >
                   <ElemPhoto
@@ -49,7 +51,9 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
             return (
               <div className="flex items-center shrink-0 w-full">
                 <ElemLink
-                  href={`${ROUTES.INVESTORS}/${props.row.original.vc_firm.slug}`}
+                  href={ROUTES.INVESTOR({
+                    slug: props.row.original.vc_firm.slug,
+                  })}
                   className="investor flex items-center space-x-3 hover:opacity-70"
                 >
                   <ElemPhoto

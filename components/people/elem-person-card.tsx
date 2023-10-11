@@ -82,7 +82,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
       <div className="flex flex-col justify-between h-full">
         <div className="w-full">
           <ElemLink
-            href={`/${selectedLibrary?.toLowerCase()}${ROUTES.PEOPLE}/${slug}`}
+            href={ROUTES.PERSON({ slug, selectedLibrary })}
             className="flex items-center gap-x-4 mb-4"
           >
             <ElemPhoto

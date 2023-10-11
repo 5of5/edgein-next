@@ -80,7 +80,7 @@ const ElemMemberTab: React.FC<Props> = ({
 
   const handleViewProfile = (slug: string | undefined) => {
     if (slug) {
-      router.push(`${ROUTES.PEOPLE}/${slug}`);
+      router.push(ROUTES.PERSON({ slug }));
     }
   };
 
@@ -219,7 +219,7 @@ const ElemMemberTab: React.FC<Props> = ({
         if (member.user?.person?.slug) {
           return (
             <ElemLink
-              href={`${ROUTES.PEOPLE}/${member.user.person?.slug}`}
+              href={ROUTES.PERSON({ slug: member.user.person?.slug })}
               key={member.id}
               className="block cursor-pointer hover:bg-slate-100"
             >

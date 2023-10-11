@@ -137,9 +137,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 <>
                   {otherOrganizations.map((organizer: any, index: number) => {
                     const slug = organizer.company
-                      ? `${ROUTES.COMPANIES}/${organizer.company?.slug}`
+                      ? ROUTES.COMPANY({ slug: organizer.company?.slug })
                       : organizer.vc_firm
-                      ? `${ROUTES.INVESTORS}/${organizer.vc_firm?.slug}`
+                      ? ROUTES.INVESTOR({ slug: organizer.vc_firm?.slug })
                       : '';
 
                     const organization = organizer.company
@@ -189,9 +189,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   <ElemLink
                     href={
                       publisher.company
-                        ? `${ROUTES.COMPANIES}/${publisher.company?.slug}`
+                        ? ROUTES.COMPANY({ slug: publisher.company?.slug })
                         : publisher.vc_firm
-                        ? `${ROUTES.INVESTORS}/${publisher.vc_firm?.slug}`
+                        ? ROUTES.INVESTOR({ slug: publisher.vc_firm?.slug })
                         : ''
                     }
                     target="_blank"
@@ -209,11 +209,12 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 {' • '}
                 Powered by{' '}
                 <ElemLink
-                  href={`${ROUTES.COMPANIES}/${
-                    source?.poweredby?.toLowerCase() === 'techcrunch'
-                      ? 'techcrunch'
-                      : 'cryptopanic'
-                  }`}
+                  href={ROUTES.COMPANY({
+                    slug:
+                      source?.poweredby?.toLowerCase() === 'techcrunch'
+                        ? 'techcrunch'
+                        : 'cryptopanic',
+                  })}
                 >
                   {source?.poweredby || 'CryptoPanic'}
                 </ElemLink>

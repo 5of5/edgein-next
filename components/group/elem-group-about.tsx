@@ -184,7 +184,9 @@ export const ElemGroupAbout: React.FC<Props> = ({
                       <li key={mem.id}>
                         {mem.user?.person?.slug ? (
                           <Link
-                            href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}
+                            href={ROUTES.PERSON({
+                              slug: mem.user?.person?.slug,
+                            })}
                           >
                             <a>{admin}</a>
                           </Link>

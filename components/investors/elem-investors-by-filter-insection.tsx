@@ -177,7 +177,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
                         return;
                       }
                       router.push(
-                        `${ROUTES.INVESTORS}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
+                        `${ROUTES.INVESTORS()}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}&sortBy=${encodedSortBy}`,
                       );
                     }}
                     btn="primary"

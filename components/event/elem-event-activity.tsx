@@ -76,7 +76,9 @@ export const ElemEventActivity: React.FC<Props> = ({
                           {activity?.type === 'attendee' ? (
                             <>
                               <ElemLink
-                                href={`${ROUTES.PEOPLE}/${activity?.person?.slug}`}
+                                href={ROUTES.PERSON({
+                                  slug: activity?.person?.slug,
+                                })}
                                 className="font-medium underline hover:no-underline"
                               >
                                 {activity?.person?.name}
@@ -89,7 +91,9 @@ export const ElemEventActivity: React.FC<Props> = ({
                           ) : activity?.type === 'speaker' ? (
                             <>
                               <ElemLink
-                                href={`${ROUTES.PEOPLE}/${activity?.person?.slug}`}
+                                href={ROUTES.PERSON({
+                                  slug: activity?.person?.slug,
+                                })}
                                 className="font-medium underline hover:no-underline"
                               >
                                 {activity?.person?.name}
@@ -104,10 +108,16 @@ export const ElemEventActivity: React.FC<Props> = ({
                               <ElemLink
                                 href={
                                   activity?.company
-                                    ? `${ROUTES.COMPANIES}/${activity?.company?.slug}`
+                                    ? ROUTES.COMPANY({
+                                        slug: activity?.company?.slug,
+                                      })
                                     : activity?.vc_firm
-                                    ? `${ROUTES.INVESTORS}/${activity?.vc_firm?.slug}`
-                                    : `${ROUTES.PEOPLE}/${activity?.person?.slug}`
+                                    ? ROUTES.INVESTOR({
+                                        slug: activity?.vc_firm?.slug,
+                                      })
+                                    : ROUTES.PERSON({
+                                        slug: activity?.person?.slug,
+                                      })
                                 }
                                 className="font-medium underline hover:no-underline"
                               >
@@ -125,10 +135,16 @@ export const ElemEventActivity: React.FC<Props> = ({
                               <ElemLink
                                 href={
                                   activity?.company
-                                    ? `${ROUTES.COMPANIES}/${activity?.company?.slug}`
+                                    ? ROUTES.COMPANY({
+                                        slug: activity?.company?.slug,
+                                      })
                                     : activity?.vc_firm
-                                    ? `${ROUTES.INVESTORS}/${activity?.vc_firm?.slug}`
-                                    : `${ROUTES.PEOPLE}/${activity?.person?.slug}`
+                                    ? ROUTES.INVESTOR({
+                                        slug: activity?.vc_firm?.slug,
+                                      })
+                                    : ROUTES.PERSON({
+                                        slug: activity?.person?.slug,
+                                      })
                                 }
                                 className="font-medium underline hover:no-underline"
                               >

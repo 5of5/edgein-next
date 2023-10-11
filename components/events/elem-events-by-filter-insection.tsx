@@ -128,7 +128,7 @@ export const EventsByFilterInSection: FC<Props> = ({
                     return;
                   }
                   router.push(
-                    `${ROUTES.EVENTS}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
+                    `${ROUTES.EVENTS()}/?filters=${encodedFilters}&statusTag=${encodedStatusTag}`,
                   );
                 }}
                 btn="primary"

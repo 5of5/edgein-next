@@ -64,7 +64,7 @@ export const ElemCohort: FC<Props> = ({
     event.preventDefault();
 
     router.push(
-      `${ROUTES.COMPANIES}/?filters=${encodeURIComponent(
+      `${ROUTES.COMPANIES()}/?filters=${encodeURIComponent(
         `{"industry":{"tags":["${type}"]}}`,
       )}`,
     );

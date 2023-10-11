@@ -88,7 +88,9 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <div className="flex items-center space-x-3">
             <a
-              href={`${ROUTES.INVESTORS}/` + props.row.original?.vc_firm?.slug}
+              href={ROUTES.INVESTOR({
+                slug: props.row.original?.vc_firm?.slug,
+              })}
               className="shrink-0 transition-all"
             >
               <ElemPhoto
@@ -102,9 +104,9 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
 
             <div>
               <a
-                href={
-                  `${ROUTES.INVESTORS}/` + props.row.original?.vc_firm?.slug
-                }
+                href={ROUTES.INVESTOR({
+                  slug: props.row.original?.vc_firm?.slug,
+                })}
                 className="font-medium line-clamp-2 break-words hover:underline"
               >
                 {props.value}
@@ -376,7 +378,7 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       totalItems={totalItems}
       fundingTotal={fundingTotal}
       noDataText="There are no investors in this list."
-      exploreBtnHref={ROUTES.INVESTORS}
+      exploreBtnHref={ROUTES.INVESTORS()}
       exploreBtnText="Explore Investors"
       searchQuery={query}
       onChangeSearchQuery={onChangeSearchQuery}

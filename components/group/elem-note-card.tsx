@@ -355,7 +355,9 @@ const ElemNoteCard: React.FC<Props> = ({
             ) : (
               // layout === "author"
               <ElemLink
-                href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                href={ROUTES.PERSON({
+                  slug: data?.created_by_user?.person?.slug || '',
+                })}
               >
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
@@ -375,7 +377,9 @@ const ElemNoteCard: React.FC<Props> = ({
             {(layout === 'organizationAndAuthor' ||
               layout === 'groupAndAuthor') && (
               <ElemLink
-                href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                href={ROUTES.PERSON({
+                  slug: data?.created_by_user?.person?.slug || '',
+                })}
                 className="absolute -right-1 -bottom-1"
               >
                 <ElemPhoto
@@ -405,7 +409,9 @@ const ElemNoteCard: React.FC<Props> = ({
                 ) : (
                   // layout === "author"
                   <ElemLink
-                    href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                    href={ROUTES.PERSON({
+                      slug: data?.created_by_user?.person?.slug || '',
+                    })}
                   >
                     {data?.created_by_user?.person?.name}
                   </ElemLink>
@@ -416,7 +422,9 @@ const ElemNoteCard: React.FC<Props> = ({
                   layout === 'groupAndAuthor') && (
                   <>
                     <ElemLink
-                      href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                      href={ROUTES.PERSON({
+                        slug: data?.created_by_user?.person?.slug || '',
+                      })}
                       className="underline-offset-1 hover:underline"
                     >
                       {data?.created_by_user?.person?.name}
@@ -516,7 +524,9 @@ const ElemNoteCard: React.FC<Props> = ({
               <div key={comment.id} className="flex items-center gap-2">
                 <div className="flex items-start gap-2">
                   <ElemLink
-                    href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
+                    href={ROUTES.PERSON({
+                      slug: comment.created_by_user?.person?.slug || '',
+                    })}
                   >
                     <ElemPhoto
                       photo={comment.created_by_user?.person?.picture}
@@ -535,7 +545,9 @@ const ElemNoteCard: React.FC<Props> = ({
                       <div>
                         <p className="">
                           <ElemLink
-                            href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
+                            href={ROUTES.PERSON({
+                              slug: comment.created_by_user?.person?.slug || '',
+                            })}
                             className="font-medium hover:underline"
                           >
                             {comment.created_by_user?.person?.name ||

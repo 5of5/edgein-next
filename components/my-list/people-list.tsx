@@ -46,7 +46,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
         Cell: (props: any) => (
           <div>
             <a
-              href={`${ROUTES.PEOPLE}/` + props.row.original?.person?.slug}
+              href={ROUTES.PERSON({ slug: props.row.original?.person?.slug })}
               className="flex items-center space-x-3 shrink-0 transition-all"
             >
               <ElemPhoto

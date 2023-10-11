@@ -103,12 +103,12 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/companies/${hit.objectID}`
-            : `${ROUTES.COMPANIES}/${hit.slug}`
+            : ROUTES.COMPANY({ slug: hit.slug })
         }
         onClick={() => {
           onClose();
           if (isAdmin && redirect) {
-            redirect(`${ROUTES.COMPANIES}/${hit.objectID}`);
+            redirect(ROUTES.COMPANY({ slug: hit.objectID }));
           }
         }}
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
@@ -169,7 +169,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/vc_firms/${hit.objectID}`
-            : `${ROUTES.INVESTORS}/${hit.slug}`
+            : ROUTES.INVESTOR({ slug: hit.slug })
         }
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
         onClick={() => {
@@ -212,7 +212,7 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/people/${hit.objectID}`
-            : `${ROUTES.PEOPLE}/${hit.slug}`
+            : ROUTES.PERSON({ slug: hit.slug })
         }
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
         onClick={() => {
@@ -255,7 +255,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         href={
           isAdmin
             ? `/admin/app/#/events/${hit.objectID}`
-            : `${ROUTES.EVENTS}/${hit.slug}`
+            : ROUTES.EVENT({ slug: hit.slug })
         }
         onClick={() => {
           onClose();

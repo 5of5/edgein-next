@@ -179,7 +179,7 @@ export const ElemSaveToList: FC<Props> = ({
         resourceId,
         resourceType,
         listName,
-        pathname: `${ROUTES.COMPANIES}/${slug}`,
+        pathname: ROUTES.COMPANY({ slug }),
       });
       if (newSentiment?.id) {
         setFollowsByResource(prev => {
