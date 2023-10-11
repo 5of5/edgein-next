@@ -17,7 +17,7 @@ services:
       test: 'pg_isready -U edgeu -d edgedb'
 
   graphql-engine:
-    image: hasura/graphql-engine:v2.7.0
+    image: hasura/graphql-engine:v2.29.1
     ports:
       - '8080:8080'
     restart: always
