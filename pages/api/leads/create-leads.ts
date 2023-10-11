@@ -15,8 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  // TODO: Is this JSON.Parse required?
-  const parseResponse = CreateLeadsReqSchema.safeParse(JSON.parse(req.body));
+  const parseResponse = CreateLeadsReqSchema.safeParse(req.body);
   if (!parseResponse.success) {
     return res.status(400).json({
       error: parseResponse.error.errors,

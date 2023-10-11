@@ -11,17 +11,21 @@ import {
 
 type InsertMutationReturnType<T extends string> = {
   [key in `insert_${T}`]: {
-    affected_rows: number;
+    id: number;
   };
 };
 
 export const createLeads = async (variables: CreateLeadsReqSchemaType) => {
+  console.log(variables);
+
   const result = await mutate<InsertMutationReturnType<'leads'>>({
     mutation: InsertLeadsDocument,
-    variables: camelCaseToSnakeCaseRecursively(variables),
+    variables: { object: camelCaseToSnakeCaseRecursively(variables) },
   });
 
-  if (result.data.insert_leads.affected_rows == 0) {
+  console.log(result, variables);
+
+  if (!result.data.insert_leads.id) {
     throw new Error('Failed to create leads');
   }
 };
@@ -31,10 +35,10 @@ export const createLeadsSegmentation = async (
 ) => {
   const result = await mutate<InsertMutationReturnType<'leads_segmentation'>>({
     mutation: InsertLeadsSegmentationDocument,
-    variables: camelCaseToSnakeCaseRecursively(variables),
+    variables: { object: camelCaseToSnakeCaseRecursively(variables) },
   });
 
-  if (result.data.insert_leads_segmentation.affected_rows == 0) {
+  if (!result.data.insert_leads_segmentation.id) {
     throw new Error('Failed to create leads segmentation');
   }
 };
