@@ -16,14 +16,10 @@ type InsertMutationReturnType<T extends string> = {
 };
 
 export const createLeads = async (variables: CreateLeadsReqSchemaType) => {
-  console.log(variables);
-
   const result = await mutate<InsertMutationReturnType<'leads'>>({
     mutation: InsertLeadsDocument,
     variables: { object: camelCaseToSnakeCaseRecursively(variables) },
   });
-
-  console.log(result, variables);
 
   if (!result.data.insert_leads.id) {
     throw new Error('Failed to create leads');
