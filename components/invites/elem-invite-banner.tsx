@@ -23,7 +23,6 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
         localStorage.getItem(SHOW_INVITE_BANNER) === null ||
           localStorage.getItem(SHOW_INVITE_BANNER) === 'true',
       );
-      setShowBanner(true);
     }
   }, []);
 
@@ -32,7 +31,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(SHOW_INVITE_BANNER, 'false');
     }
-    event.stopPropagation();
+    event.preventDefault();
   };
 
   const handleClickBanner = (event: MouseEvent<HTMLAnchorElement>) => {
