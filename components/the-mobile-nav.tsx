@@ -30,7 +30,7 @@ import { useRouter } from 'next/router';
 import { Popups } from '@/components/the-navbar';
 import UserService from '@/utils/users';
 import { ExploreMenuItem } from '@/types/common';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from './elem-link';
 
 type Props = {

@@ -12,7 +12,7 @@ import { IconLinkedIn, IconEmail, IconLocation } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getFullAddress } from '@/utils/helpers';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

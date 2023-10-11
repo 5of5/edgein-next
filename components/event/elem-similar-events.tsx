@@ -13,7 +13,7 @@ import {
 import { ElemEventCard } from '../events/elem-event-card';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

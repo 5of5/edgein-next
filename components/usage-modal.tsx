@@ -4,7 +4,7 @@ import { ElemButton } from '@/components/elem-button';
 import { ElemLogo } from '@/components/elem-logo';
 import { IconBadgeCheck, IconContributor } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   show: boolean;

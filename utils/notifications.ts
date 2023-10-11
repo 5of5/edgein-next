@@ -24,7 +24,7 @@ import {
 import { flatten, startCase, unionBy } from 'lodash';
 import { getFollowsByResource } from './lists';
 import { ActionType, ResourceTypes } from '@/utils/constants';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type NotificationParamType = {
   target_user_id: number;

@@ -6,7 +6,7 @@ import { getFullAddress } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
 import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '../elem-button';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

@@ -40,7 +40,7 @@ import {
 import { User } from '@/models/user';
 import { DeepPartial } from '@/types/common';
 import { getNameFromListName } from './reaction';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 export const updateResourceSentimentCount = async (
   resourceType: 'companies' | 'vc_firms',

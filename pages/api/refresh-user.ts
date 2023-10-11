@@ -1,7 +1,7 @@
 import UserService from '../../utils/users';
 import CookieService from '../../utils/cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies);

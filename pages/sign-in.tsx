@@ -12,7 +12,7 @@ import { ElemSignUpConfirm } from '@/components/sign-in/elem-sign-up-confirm';
 import { GetSignUpProfileQuery } from '@/graphql/types';
 import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 import { ElemLink } from '@/components/elem-link';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 export type SignUpFormState = {
   firstName?: string;

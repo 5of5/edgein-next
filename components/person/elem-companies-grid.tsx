@@ -1,4 +1,4 @@
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemOrganizationCard } from '../elem-organization-card';
 
 type Props = {

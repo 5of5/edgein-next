@@ -14,7 +14,7 @@ import {
 import { useUser } from '@/context/user-context';
 import ElemAddListDialog from './elem-add-list-dialog';
 import differenceBy from 'lodash/differenceBy';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

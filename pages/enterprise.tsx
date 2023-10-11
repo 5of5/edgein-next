@@ -12,7 +12,7 @@ import { useUser } from '@/context/user-context';
 import Builders from '@/public/images/builders.svg';
 import People from '@/public/images/people.svg';
 import { IconCheck } from '@/components/icons';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '@/components/elem-link';
 
 const Enterprise = () => {

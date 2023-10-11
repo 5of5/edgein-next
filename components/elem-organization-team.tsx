@@ -6,7 +6,7 @@ import { uniq, compact, sortBy } from 'lodash';
 import { ElemBulkSavePeople } from './elem-bulk-save-people';
 import { ElemButton } from './elem-button';
 import { useIntercom } from 'react-use-intercom';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

@@ -2,7 +2,7 @@ import { FC, Fragment, ReactElement, useState } from 'react';
 import { usePopper } from 'react-popper';
 import { Popover, Transition } from '@headlessui/react';
 import { ElemButton } from './elem-button';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   wrapperClass?: string;

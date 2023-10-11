@@ -4,7 +4,7 @@ import { ElemPersonCard } from '@/components/elem-person-card';
 import { ElemBulkSavePeople } from '../elem-bulk-save-people';
 import { ElemButton } from '../elem-button';
 import { numberWithCommas } from '@/utils';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   people: GetEventQuery['events'][0]['event_person'];

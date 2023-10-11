@@ -28,7 +28,7 @@ import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import { usePopup } from '@/context/popup-context';
 import { CardType } from '../companies/elem-company-card';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

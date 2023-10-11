@@ -3,7 +3,7 @@ import { SHOW_INVITE_BANNER } from '@/utils/constants';
 import { IconX, IconArrowRight } from '../icons';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

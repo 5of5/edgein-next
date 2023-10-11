@@ -6,7 +6,7 @@ import { IconCurrencyDollar, IconGift, IconX } from '../icons';
 import { numberWithCommas } from '@/utils';
 import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { LOCAL_STORAGE_SIDEBAR_BANNER_KEY } from '@/utils/constants';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

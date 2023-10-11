@@ -9,7 +9,7 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 import useDisclosureState from '@/hooks/use-disclosure-state';
 import { MY_EDGEIN_MENU_OPEN_KEY } from '@/utils/constants';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 const ElemMyEdgeInMenu = () => {

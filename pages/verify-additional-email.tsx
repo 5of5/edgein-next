@@ -2,7 +2,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const VerifyAdditionalEmail = () => {
   const { user, refreshUser } = useUser();

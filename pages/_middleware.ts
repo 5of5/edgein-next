@@ -1,7 +1,7 @@
 import CookieService, { TOKEN_NAME } from '@/utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
 import { verify } from '@/utils/googlebot-verify';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const USAGE_LIMIT = 10;
 

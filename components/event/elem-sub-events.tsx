@@ -7,7 +7,7 @@ import { ElemEventCard } from '../events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
 import { IconPlus } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

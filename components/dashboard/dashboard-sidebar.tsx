@@ -14,7 +14,7 @@ import { ExploreMenuItem } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemSidebarItem } from './elem-sidebar-item';
 import { DashboardBanner } from './dashboard-banner';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,

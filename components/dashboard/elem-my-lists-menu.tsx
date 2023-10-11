@@ -10,7 +10,7 @@ import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getListDisplayName } from '@/utils/lists';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

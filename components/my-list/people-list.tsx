@@ -5,7 +5,7 @@ import { removeSpecialCharacterFromString } from '@/utils';
 import { TableEmptyCell } from './table-empty-cell';
 import { PlaceholderTable } from '../placeholders';
 import { Table } from './table';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   listId: number;

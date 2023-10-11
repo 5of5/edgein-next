@@ -28,7 +28,7 @@ import {
   usePagination,
 } from 'react-table';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

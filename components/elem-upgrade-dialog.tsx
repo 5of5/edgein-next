@@ -5,7 +5,7 @@ import { IconX } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { loadStripe } from '@/utils/stripe';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   isOpen: boolean;

@@ -14,7 +14,7 @@ import ElemNoteCard from '@/components/group/elem-note-card';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   resourceId: number;

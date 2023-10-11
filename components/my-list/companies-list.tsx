@@ -10,7 +10,7 @@ import { Table } from './table';
 import { PlaceholderTable } from '../placeholders';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '../elem-tooltip';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   listId: number;

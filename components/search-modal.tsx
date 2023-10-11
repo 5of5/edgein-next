@@ -24,7 +24,7 @@ import { getEventBanner, randomImageOfCity } from '@/utils/helpers';
 import { formatDate } from '@/utils/numbers';
 import { parseIndexName } from '@/utils/algolia';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from './elem-link';
 
 const searchClient = algoliasearch(

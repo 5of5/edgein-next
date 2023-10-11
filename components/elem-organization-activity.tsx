@@ -3,7 +3,7 @@ import { ElemButton } from './elem-button';
 import { formatDate, convertToIntNum } from '@/utils';
 import { useIntercom } from 'react-use-intercom';
 import { Investment_Rounds } from '@/graphql/types';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from './elem-link';
 
 type Props = {

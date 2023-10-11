@@ -8,7 +8,7 @@ import { Tab, Transition } from '@headlessui/react';
 import { useIntercom } from 'react-use-intercom';
 import parse from 'html-react-parser';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const Home = () => {
   const { user, loading } = useUser();

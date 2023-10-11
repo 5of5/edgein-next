@@ -4,7 +4,7 @@ import { IconSidebarGroups } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';

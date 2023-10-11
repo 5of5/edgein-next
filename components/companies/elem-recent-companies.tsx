@@ -13,7 +13,7 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { DeepPartial } from '@/types/common';
 import { ElemTags } from '@/components/elem-tags';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

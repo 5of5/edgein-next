@@ -22,7 +22,7 @@ import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { PeopleList } from '@/components/my-list/people-list';
 import { useMutation } from 'react-query';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   list: GetListsQuery['lists'][0];

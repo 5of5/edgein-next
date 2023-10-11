@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useIntercom } from 'react-use-intercom';
 import { formatDate } from '@/utils';
 import { ElemButton } from '../elem-button';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

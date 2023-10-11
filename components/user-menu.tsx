@@ -5,7 +5,7 @@ import React, { Fragment, FC } from 'react';
 import { IconUserCircle } from './icons';
 import { useUser } from '@/context/user-context';
 import UserService from '@/utils/users';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from './elem-link';
 
 type Props = {

@@ -27,7 +27,7 @@ import {
 } from 'react-table';
 import { useRouter } from 'next/router';
 import { Investment_Rounds } from '@/graphql/types';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

@@ -29,7 +29,7 @@ import { usePopup } from '@/context/popup-context';
 // import { InputDate } from "@/components/InputDate";
 // import { GetStaticProps } from "next";
 import { EditSection } from '@/components/dashboard/edit-section';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 // import { functionChoicesTM } from "@/utils/constants";
 // import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 

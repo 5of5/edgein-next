@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useIntercom } from 'react-use-intercom';
 import { usePopup } from '@/context/popup-context';
 import { ElemLink } from '@/components/elem-link';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const Custom404 = () => {
   const { show } = useIntercom();

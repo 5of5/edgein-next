@@ -7,7 +7,7 @@ import { loadStripe } from '@/utils/stripe';
 import { useUser } from '@/context/user-context';
 import { usePopup } from '@/context/popup-context';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const Pricing = () => {
   const router = useRouter();

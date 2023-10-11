@@ -22,7 +22,7 @@ import {
   numberWithCommas,
 } from '@/utils';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 export type CardType = 'full' | 'compact';

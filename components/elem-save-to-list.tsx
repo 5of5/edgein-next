@@ -18,7 +18,7 @@ import { find, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   resourceName: string | null;

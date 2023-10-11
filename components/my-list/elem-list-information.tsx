@@ -17,7 +17,7 @@ import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 import { ElemSocialShare } from '../elem-social-share';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

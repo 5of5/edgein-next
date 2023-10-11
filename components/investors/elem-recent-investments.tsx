@@ -12,7 +12,7 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { formatDate } from '@/utils';
 import { DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

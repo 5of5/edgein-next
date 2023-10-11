@@ -21,7 +21,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from './elem-link';
 
 export type Popups = 'search' | 'usage' | false;

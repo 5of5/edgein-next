@@ -10,7 +10,7 @@ import { orderBy } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {};
 

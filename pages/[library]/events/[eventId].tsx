@@ -45,7 +45,7 @@ import { usePopup } from '@/context/popup-context';
 import useEmptyLibrary from '@/hooks/use-empty-library';
 import { onTrackView } from '@/utils/track';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '@/components/elem-link';
 
 type Props = {

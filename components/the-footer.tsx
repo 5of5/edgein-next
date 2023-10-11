@@ -1,6 +1,6 @@
 import { ElemLogo } from './elem-logo';
 import { IconLinkedIn, IconTwitter, IconTelegram, IconDiscord } from './icons';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from './elem-link';
 
 export const TheFooter = () => {

@@ -28,7 +28,7 @@ import { InputTextarea } from '../input-textarea';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import ElemNoteForm from '@/components/elem-note-form';
 import { usePopup } from '@/context/popup-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

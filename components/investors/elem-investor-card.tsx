@@ -17,7 +17,7 @@ import { getFullAddress } from '@/utils/helpers';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { CardType } from '../companies/elem-company-card';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

@@ -4,7 +4,7 @@ import { IconSortUp, IconSortDown } from '@/components/icons';
 import { ElemPhoto } from '@/components/elem-photo';
 import { Pagination } from '@/components/pagination';
 import { GetEventQuery } from '@/graphql/types';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

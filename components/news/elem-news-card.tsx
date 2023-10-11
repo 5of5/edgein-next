@@ -9,7 +9,7 @@ import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemTags } from '@/components/elem-tags';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

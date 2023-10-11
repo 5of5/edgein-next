@@ -8,7 +8,7 @@ import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
 import { Group, groupSchema } from '@/utils/schema';
 import { extractErrors, zodValidate } from '@/utils/validation';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   isOpen: boolean;

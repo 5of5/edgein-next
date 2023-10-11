@@ -35,7 +35,7 @@ import useEmptyLibrary from '@/hooks/use-empty-library';
 import { isValidLibraryUrl } from '@/utils/helpers';
 import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '@/components/elem-link';
 
 type Props = {

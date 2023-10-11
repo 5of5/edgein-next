@@ -18,7 +18,7 @@ import { FilterInSectionType } from '../companies/elem-companies-by-filter-insec
 import { getHomepageEncodedURI } from '@/components/filters/processor';
 import { ElemButton } from '../elem-button';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   headingText: string;

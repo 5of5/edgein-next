@@ -19,7 +19,7 @@ import { Menu } from '@headlessui/react';
 import { Pagination } from '@/components/pagination';
 import { ElemButton } from '../elem-button';
 import { useIntercom } from 'react-use-intercom';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

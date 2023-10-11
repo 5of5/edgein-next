@@ -7,7 +7,7 @@ import { User_Groups, User_Group_Members } from '@/graphql/types';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

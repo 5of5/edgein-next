@@ -1,7 +1,7 @@
 import React from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { GetEventQuery } from '@/graphql/types';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

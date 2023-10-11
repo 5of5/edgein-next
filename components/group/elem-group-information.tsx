@@ -10,7 +10,7 @@ import { User_Groups } from '@/graphql/types';
 import { SettingTabProps } from './elem-setting-dialog';
 import ElemDashboardBreadcrumb from '../dashboard/elem-dashboard-breadcrumb';
 import { useUser } from '@/context/user-context';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

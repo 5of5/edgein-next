@@ -15,7 +15,7 @@ import { UserProvider } from '@/context/user-context';
 import { PopupProvider } from '@/context/popup-context';
 import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
 

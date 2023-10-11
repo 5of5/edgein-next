@@ -9,7 +9,7 @@ import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   isOpen: boolean;

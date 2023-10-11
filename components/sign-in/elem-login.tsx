@@ -7,7 +7,7 @@ import { InputText } from '@/components/input-text';
 import { IconLinkedInAlt, IconExclamationTriangle } from '@/components/icons';
 import { redirect_url } from '@/utils/auth';
 import ForgotPasswordModal from '../forgot-password-modal';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   onNext: (email: string) => void;

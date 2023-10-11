@@ -4,7 +4,7 @@ import { News } from '@/graphql/types';
 import moment from 'moment-timezone';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

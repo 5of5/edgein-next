@@ -8,7 +8,7 @@ import { formatDateShown, truncateWords } from '@/utils';
 import { getListDisplayName } from '@/utils/lists';
 import { GetGroupsQuery, GetListsQuery } from '@/graphql/types';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemButton } from './elem-button';
 import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';

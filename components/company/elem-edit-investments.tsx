@@ -5,7 +5,7 @@ import { IconEditPencil, IconSortUp, IconSortDown } from '@/components/icons';
 import { Pagination } from '@/components/pagination';
 import { numberWithCommas, formatDate } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

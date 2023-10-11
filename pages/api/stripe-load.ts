@@ -1,4 +1,4 @@
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 import UserService from '../../utils/users';

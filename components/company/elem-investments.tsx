@@ -14,7 +14,7 @@ import { numberWithCommas, formatDate, convertToIntNum } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
 import { useIntercom } from 'react-use-intercom';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 import { ElemLink } from '../elem-link';
 
 type Props = {

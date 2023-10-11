@@ -11,7 +11,7 @@ import { useUser } from '@/context/user-context';
 import hashSum from 'hash-sum';
 import { useRouter } from 'next/router';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 type Props = {
   className?: string;

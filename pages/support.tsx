@@ -4,7 +4,7 @@ import { ElemButton } from '@/components/elem-button';
 import { IconEmail, IconChatBubble } from '@/components/icons';
 
 import { useIntercom } from 'react-use-intercom';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 const Support: NextPage = () => {
   const { show } = useIntercom();

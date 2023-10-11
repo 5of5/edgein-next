@@ -16,7 +16,7 @@ import { Pagination } from '../pagination';
 import { PlaceholderCompanyCard } from '../placeholders';
 import { CompaniesTable } from './elem-companies-table';
 import { CardType, ElemCompanyCard } from './elem-company-card';
-import { ROUTES } from '@/routes';
+import { ROUTES } from '@/utils/routes';
 
 export type FilterInSectionType = 'pagination' | 'see-all';
 

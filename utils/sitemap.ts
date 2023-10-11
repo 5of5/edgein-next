@@ -10,7 +10,7 @@ export const getRootUrl = () =>
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : 'http://localhost:3000';
 
-export async function generateXMLSiteMapPages<
+export const generateXMLSiteMapPages = async <
   T,
   Arr extends { slug: string | null; library: string[]; updated_at: string },
 >(
@@ -18,7 +18,7 @@ export async function generateXMLSiteMapPages<
   graphqlAccessor: (result?: T) => Arr[],
   folder: string,
   offset: number,
-) {
+) => {
   // We make an API call to gather the URLs for our site
   const { data } = await query<T>({
     query: graphqlQuery,
@@ -34,4 +34,4 @@ export async function generateXMLSiteMapPages<
     )}`,
     lastmod: updated_at,
   }));
-}
+};
