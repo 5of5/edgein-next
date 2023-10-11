@@ -1,4 +1,4 @@
-import { mutate, query } from "@/graphql/hasuraAdmin";
+import { mutate, query } from '@/graphql/hasuraAdmin';
 
 type EntityName = keyof typeof SIMPLE_RELATIONS | 'resource_links';
 
@@ -6,6 +6,9 @@ type UpdateMutationReturnType<T extends EntityName> = {
   data: {
     [key in `update_${T}`]: {
       affected_rows: number;
+      returning: {
+        id: number;
+      }[];
     };
   };
 };
@@ -119,6 +122,9 @@ const BASIC_UPDATE_ID_MUTATION = (
           }
         ) {
           affected_rows
+          returning {
+            id
+          }
         }
       }
     `,
@@ -150,6 +156,9 @@ const ADVANCED_UPDATE_ID_MUTATION = (
           }
         ) {
           affected_rows
+          returning {
+            id
+          }
         }
       }
     `,
@@ -176,6 +185,9 @@ const RESOURCE_LINKS_UPDATE_ID_MUTATION = (
           }
         ) {
           affected_rows
+          returning {
+            id
+          }
         }
       }
     `,

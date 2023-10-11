@@ -7,12 +7,17 @@ import { MergeCompaniesReqSchema } from '@/utils/schema';
 import {
   GetFullCompanyByIdDocument,
   GetFullCompanyByIdQuery,
+  InsertActionDocument,
+  InsertActionMutation,
   UpdateCompanyByPkDocument,
   UpdateCompanyByPkMutation,
 } from '@/graphql/types';
 import { defaults, get, isNil, pickBy, toPairs } from 'lodash';
 import async from 'async';
-import { COMPLICATED_RELATIONS, SIMPLE_RELATIONS } from '@/utils/merge/companies';
+import {
+  COMPLICATED_RELATIONS,
+  SIMPLE_RELATIONS,
+} from '@/utils/merge/companies';
 import UserService from '@/utils/users';
 
 export type MergeCompaniesReqBody = z.infer<typeof MergeCompaniesReqSchema>;
@@ -39,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { apiKey, targetCompanyId, mergedCompanyId } = parseResponse.data;
 
   if (!apiKey) {
-    const user = await UserService.getUserByCookies(req.cookies)
+    const user = await UserService.getUserByCookies(req.cookies);
 
     if (!user) {
       return res.status(401).json({
@@ -119,6 +124,59 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         data: resultCompany,
       },
     });
+
+    const updatedRelations = await async.reduce(
+      toPairs(RELATION_MUTATIONS),
+      {},
+      async (acc, [key, updateFn]) => {
+        try {
+          const result = await updateFn(mergedCompanyId, targetCompanyId);
+
+          if (result) {
+            // Custom relation which needs this ugly conditioning
+            if (key === 'resource_links_to') {
+              return {
+                ...acc,
+                resource_links_to: get(result.data, 'update_resource_links'),
+              };
+            }
+
+            // Custom relation which needs this ugly conditioning
+            if (key === 'resource_links_from') {
+              return {
+                ...acc,
+                resource_links_from: get(result.data, 'update_resource_links'),
+              };
+            }
+
+            return {
+              ...acc,
+              [key]: get(result.data, `update_${key}`),
+            };
+          }
+
+          return acc;
+        } catch (error) {
+          return {
+            ...acc,
+            errors: error,
+          };
+        }
+      },
+    );
+
+    await mutate<InsertActionMutation>({
+      mutation: InsertActionDocument,
+      variables: {
+        object: {
+          resource: 'companies',
+          resource_id: targetCompanyId,
+          page: `/companies/${targetCompany.slug}`,
+          action: 'merged',
+          properties: { ...targetCompany, updatedRelations },
+        },
+      },
+    });
   } catch (error) {
     return res.status(500).json({
       message: 'Error occurred while updating targetCompany',
@@ -126,47 +184,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  const updatedRelations = await async.reduce(
-    toPairs(RELATION_MUTATIONS),
-    {},
-    async (acc, [key, updateFn]) => {
-      try {
-        const result = await updateFn(mergedCompanyId, targetCompanyId);
-
-        if (result) {
-          // Custom relation which needs this ugly conditioning
-          if (key === 'resource_links_to') {
-            return {
-              ...acc,
-              resource_links_to: get(result.data, 'update_resource_links'),
-            };
-          }
-
-          // Custom relation which needs this ugly conditioning
-          if (key === 'resource_links_from') {
-            return {
-              ...acc,
-              resource_links_from: get(result.data, 'update_resource_links'),
-            };
-          }
-
-          return {
-            ...acc,
-            [key]: get(result.data, `update_${key}`),
-          };
-        }
-
-        return acc;
-      } catch (error) {
-        return {
-          ...acc,
-          errors: error,
-        };
-      }
-    },
-  );
-
-  return res.json({ ...resultCompany, updatedRelations });
+  return res.json(resultCompany);
 };
 
 export default handler;
