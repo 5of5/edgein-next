@@ -35,7 +35,7 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
 
         if (resourceItem.isPremium && !userCanViewPremiumInfo) {
           return (
-            <button onClick={onOpenUpgradeDialog}>
+            <button key={resourceItem.value} onClick={onOpenUpgradeDialog}>
               <resourceItem.icon
                 title={resourceItem.title}
                 className="h-5 w-5 text-gray-400"
