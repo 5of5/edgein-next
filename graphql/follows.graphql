@@ -75,8 +75,14 @@ query GetCompaniesByListId(
         ticker
         name
       }
-      teamMembers {
+      teamMembers(limit: 10, order_by: { founder: desc_nulls_last }) {
         id
+        founder
+        person {
+          id
+          slug
+          name
+        }
       }
       investment_rounds {
         amount
@@ -145,6 +151,15 @@ query GetVcFirmsByListId(
       year_founded
       overview
       tags
+      investors(limit: 10, order_by: { founder: desc_nulls_last }) {
+        id
+        founder
+        person {
+          id
+          slug
+          name
+        }
+      }
       investments {
         investment_round {
           id

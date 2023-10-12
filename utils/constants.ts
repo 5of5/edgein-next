@@ -1812,6 +1812,10 @@ export const COMPANY_PROFILE_DEFAULT_TAGS_LIMIT = 5;
 
 export const INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT = 5;
 
+export const TABLE_DEFAULT_TEAM_LIMIT = 6;
+
+export const TABLE_MAX_TEAM_LIMIT = 10;
+
 export const segmentChoices: SegmentOption[] = [
   {
     title: 'Executive',
