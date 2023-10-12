@@ -23,13 +23,9 @@ export const ElemPillsPeople: FC<Props> = ({
     setTeamLimit(TABLE_MAX_TEAM_LIMIT);
   };
 
-  const teamFoundersFirst = items?.sort(a => {
-    return a.founder ? -1 : 1;
-  });
-
   return (
     <div className={`flex flex-wrap overflow-clip gap-2 ${className}`}>
-      {teamFoundersFirst?.slice(0, teamLimit).map((item, index: number) => {
+      {items?.slice(0, teamLimit).map((item, index: number) => {
         return (
           <a key={index} href={`/people/${item.person?.slug}`}>
             <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">

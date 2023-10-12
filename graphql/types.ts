@@ -32418,7 +32418,7 @@ export const GetCompaniesByListIdDocument = `
         ticker
         name
       }
-      teamMembers {
+      teamMembers(limit: 10, order_by: {founder: desc_nulls_last}) {
         id
         founder
         person {
@@ -32485,7 +32485,7 @@ export const GetVcFirmsByListIdDocument = `
       year_founded
       overview
       tags
-      investors {
+      investors(limit: 10, order_by: {founder: desc_nulls_last}) {
         id
         founder
         person {
