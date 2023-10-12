@@ -6,22 +6,18 @@ import {
 import { camelCaseToSnakeCaseRecursively } from '@/utils/helpers';
 import {
   InsertLeadsDocument,
+  InsertLeadsMutation,
   InsertLeadsSegmentationDocument,
+  InsertLeadsSegmentationMutation,
 } from '@/graphql/types';
 
-type InsertMutationReturnType<T extends string> = {
-  [key in `insert_${T}`]: {
-    id: number;
-  };
-};
-
 export const createLeads = async (variables: CreateLeadsReqSchemaType) => {
-  const result = await mutate<InsertMutationReturnType<'leads'>>({
+  const result = await mutate<InsertLeadsMutation>({
     mutation: InsertLeadsDocument,
     variables: { object: camelCaseToSnakeCaseRecursively(variables) },
   });
 
-  if (!result.data.insert_leads.id) {
+  if (!result.data.insert_leads_one?.id) {
     throw new Error('Failed to create leads');
   }
 };
@@ -29,12 +25,12 @@ export const createLeads = async (variables: CreateLeadsReqSchemaType) => {
 export const createLeadsSegmentation = async (
   variables: CreateLeadsSegmentationReqSchemaType,
 ) => {
-  const result = await mutate<InsertMutationReturnType<'leads_segmentation'>>({
+  const result = await mutate<InsertLeadsSegmentationMutation>({
     mutation: InsertLeadsSegmentationDocument,
     variables: { object: camelCaseToSnakeCaseRecursively(variables) },
   });
 
-  if (!result.data.insert_leads_segmentation.id) {
+  if (!result.data.insert_leads_segmentation_one?.id) {
     throw new Error('Failed to create leads segmentation');
   }
 };
