@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import { processNotificationOnSubmitData } from '@/utils/notifications';
 import {
-  ActionType,
   ResourceTypes,
   isResourceType,
   NODE_NAME,
@@ -17,7 +16,6 @@ import {
   deleteMainTableRecord,
   insertActionDataChange,
   markDataRawAsInactive,
-  insertDataDiscard,
 } from '@/utils/submit-data';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '@/utils/cookie';
@@ -27,6 +25,7 @@ import {
   CommonRequest,
   CommonResponse,
 } from '@/utils/api';
+import { USER_ROLES } from '@/utils/users';
 
 const addSpecialRelationships = async (
   resourceType: ResourceTypes,
@@ -189,7 +188,7 @@ export const commonHandler = async (
     // Identify partner or admin
     const partner = await partnerLookUp(apiKey);
     if (partner?.id === undefined) {
-      if (!(user?.role === 'admin')) {
+      if (!(user?.role === USER_ROLES.ADMIN)) {
         return res.status(401).send({ message: 'Unauthorized Partner' });
       }
     } else {

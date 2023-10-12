@@ -6,6 +6,7 @@ import {
   InsertResetPasswordMutation,
 } from '@/graphql/types';
 import { makeAuthService } from '@/services/auth.service';
+import { USER_ROLES } from '@/utils/users';
 
 const authService = makeAuthService();
 
@@ -24,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   // only admin can reset the user's password
-  if (!(user?.role === 'admin')) {
+  if (!(user?.role === USER_ROLES.ADMIN)) {
     return res.status(401).send({ message: 'Unauthorized' });
   }
 

@@ -30074,6 +30074,20 @@ export type InsertInvitedPeopleMutationVariables = Exact<{
 
 export type InsertInvitedPeopleMutation = { __typename?: 'mutation_root', insert_invited_people_one: { __typename?: 'invited_people', id: number, person_id: number, inviter_user_id: number, created_at: any } | null };
 
+export type InsertLeadsMutationVariables = Exact<{
+  object: Leads_Insert_Input;
+}>;
+
+
+export type InsertLeadsMutation = { __typename?: 'mutation_root', insert_leads_one: { __typename?: 'leads', id: number } | null };
+
+export type InsertLeadsSegmentationMutationVariables = Exact<{
+  object: Leads_Segmentation_Insert_Input;
+}>;
+
+
+export type InsertLeadsSegmentationMutation = { __typename?: 'mutation_root', insert_leads_segmentation_one: { __typename?: 'leads_segmentation', id: number } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -33743,6 +33757,40 @@ export const useInsertInvitedPeopleMutation = <
       options
     );
 useInsertInvitedPeopleMutation.fetcher = (variables: InsertInvitedPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertInvitedPeopleMutation, InsertInvitedPeopleMutationVariables>(InsertInvitedPeopleDocument, variables, options);
+export const InsertLeadsDocument = `
+    mutation InsertLeads($object: leads_insert_input!) {
+  insert_leads_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertLeadsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLeadsMutation, TError, InsertLeadsMutationVariables, TContext>) =>
+    useMutation<InsertLeadsMutation, TError, InsertLeadsMutationVariables, TContext>(
+      ['InsertLeads'],
+      (variables?: InsertLeadsMutationVariables) => fetcher<InsertLeadsMutation, InsertLeadsMutationVariables>(InsertLeadsDocument, variables)(),
+      options
+    );
+useInsertLeadsMutation.fetcher = (variables: InsertLeadsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLeadsMutation, InsertLeadsMutationVariables>(InsertLeadsDocument, variables, options);
+export const InsertLeadsSegmentationDocument = `
+    mutation InsertLeadsSegmentation($object: leads_segmentation_insert_input!) {
+  insert_leads_segmentation_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertLeadsSegmentationMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLeadsSegmentationMutation, TError, InsertLeadsSegmentationMutationVariables, TContext>) =>
+    useMutation<InsertLeadsSegmentationMutation, TError, InsertLeadsSegmentationMutationVariables, TContext>(
+      ['InsertLeadsSegmentation'],
+      (variables?: InsertLeadsSegmentationMutationVariables) => fetcher<InsertLeadsSegmentationMutation, InsertLeadsSegmentationMutationVariables>(InsertLeadsSegmentationDocument, variables)(),
+      options
+    );
+useInsertLeadsSegmentationMutation.fetcher = (variables: InsertLeadsSegmentationMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLeadsSegmentationMutation, InsertLeadsSegmentationMutationVariables>(InsertLeadsSegmentationDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {

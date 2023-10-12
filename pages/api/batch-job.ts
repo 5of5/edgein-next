@@ -9,7 +9,7 @@ import {
 } from '@/utils/userTransactions';
 import { BatchJobReqSchema } from '@/utils/schema';
 import { partnerLookUp } from '@/utils/submit-data';
-import UserService from '@/utils/users';
+import UserService, { USER_ROLES } from '@/utils/users';
 
 const handleUserTransactions = async (client: Client) => {
   const userExpiredTransactions = await client.query(`
@@ -122,7 +122,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { apiKey } = parseResponse.data;
   if (!apiKey) {
     const { role } = (await UserService.getUserByCookies(req.cookies)) ?? {};
-    if (role !== 'admin') {
+    if (role !== USER_ROLES.ADMIN) {
       return res.status(401).json({
         message: 'You are unauthorized for this operation!',
       });

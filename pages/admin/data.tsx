@@ -15,11 +15,12 @@ import ElemAdminLogin from '@/components/admin/elem-admin-login';
 import ElemLayoutApp from '@/components/admin/elem-layout-app';
 import useAdminDataProvider from '@/hooks/use-admin-data-provider';
 import useAdminAuthProvider from '@/hooks/use-admin-auth-provider';
+import { USER_ROLES } from '@/utils/users';
 
 const AdminData = () => {
   const { user } = useAuth();
 
-  const authProvider = useAdminAuthProvider(['admin'], user);
+  const authProvider = useAdminAuthProvider([USER_ROLES.ADMIN], user);
 
   const onTransformData = useCallback(
     (adminDataProvider: DataProvider<string>) =>
