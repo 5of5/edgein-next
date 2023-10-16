@@ -30,10 +30,24 @@ import {
   GetPersonQuery,
   GetUserByPersonIdQuery,
   GetUserByPersonIdDocument,
+  UpdateUserUseCreditsSystemDocument,
+  UpdateUserUseCreditsSystemMutation,
+  GetUserByEmailForTokenDocument,
+  GetUserByIdForTokenQuery,
+  GetUserByIdForTokenDocument,
+  GetUserByEmailForTokenQuery,
 } from '@/graphql/types';
-import { Entitlements, UserToken } from '@/models/user';
+import { Entitlements, UserRole, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
 import { clearLocalStorage } from './helpers';
+import CookieService from '@/utils/cookie';
+
+export const USER_ROLES: Record<Uppercase<UserRole>, UserRole> = {
+  ADMIN: 'admin',
+  CMS: 'cms',
+  USER: 'user',
+  'CMS-READONLY': 'cms-readonly',
+} as const;
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
   const data = await query<GetAllowedEmailByEmailOrDomainQuery>({
@@ -62,6 +76,22 @@ async function findOneUserByEmail(email: string) {
   const data = await query<GetUserByEmailQuery>({
     query: GetUserByEmailDocument,
     variables: { email },
+  });
+  return data.data.users[0];
+}
+
+async function findOneUserByEmailForToken(email: string) {
+  const data = await query<GetUserByEmailForTokenQuery>({
+    query: GetUserByEmailForTokenDocument,
+    variables: { email },
+  });
+  return data.data.users[0];
+}
+
+async function findOneUserByIdForToken(id: number) {
+  const data = await query<GetUserByIdForTokenQuery>({
+    query: GetUserByIdForTokenDocument,
+    variables: { id },
   });
   return data.data.users[0];
 }
@@ -147,6 +177,19 @@ async function updateAuth0UserPassId(
   return data.data.update_users?.returning[0];
 }
 
+async function updateUseCreditsSystem(
+  userId: number,
+  useCreditsSystem: boolean,
+) {
+  await mutate<UpdateUserUseCreditsSystemMutation>({
+    mutation: UpdateUserUseCreditsSystemDocument,
+    variables: {
+      user_id: userId,
+      use_credits_system: useCreditsSystem,
+    },
+  });
+}
+
 async function findOneUserByReferenceId(reference_id: string) {
   const data = await query<GetUserByReferenceIdQuery>({
     query: GetUserByReferenceIdDocument,
@@ -190,12 +233,31 @@ async function findOneUserByPersonId(person_id: number) {
   return data.data.users[0];
 }
 
+const generateToken = async (
+  props:
+    | { userId: number; isFirstLogin: boolean }
+    | { email: string; isFirstLogin: boolean },
+): Promise<UserToken> => {
+  if ('email' in props) {
+    const userData = await findOneUserByEmailForToken(props.email);
+    return createToken(userData, props.isFirstLogin);
+  } else {
+    const userData = await findOneUserByIdForToken(props.userId);
+    return createToken(userData, props.isFirstLogin);
+  }
+};
+
 const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
   hmac.update(String(userData.id));
 
+  const currentDate = new Date();
+  const isCreditSystemActive =
+    userData.use_credits_system &&
+    new Date(userData.last_transaction_expiration) > currentDate;
+
   const entitlements: Entitlements =
-    userData.billing_org_id || userData.credits > 0
+    userData?.billing_org?.status === 'active' || isCreditSystemActive
       ? {
           viewEmails: true,
           groupsCount: 5000,
@@ -213,6 +275,8 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     role: userData.role,
     isFirstLogin,
     credits: userData.credits,
+    use_credits_system: userData.use_credits_system,
+    last_transaction_expiration: userData.use_credits_system,
     billing_org_id: userData.billing_org_id,
     billing_org: userData.billing_org,
     display_name: userData.display_name,
@@ -265,12 +329,19 @@ const logout = async () => {
   }
 };
 
+const getUserByCookies = async (cookies: Record<string, string>) => {
+  const token = CookieService.getAuthToken(cookies);
+  return await CookieService.getUser(token);
+};
+
 const UserService = {
   queryForDisabledEmailCheck,
   queryForAllowedEmailCheck,
   mutateForWaitlistEmail,
   findOneUserByEmail,
   findOneUserById,
+  getUserByCookies,
+  updateUseCreditsSystem,
   updateBillingOrg,
   upsertUser,
   updateEmailVerifiedStatus,
@@ -282,6 +353,9 @@ const UserService = {
   findOnePeopleBySlug,
   findOneUserByPersonId,
   createToken,
+  generateToken,
+  findOneUserByEmailForToken,
+  findOneUserByIdForToken,
   findUserByPk,
   logout,
 };

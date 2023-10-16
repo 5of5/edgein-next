@@ -24,6 +24,7 @@ import useAdminDataProvider from '@/hooks/use-admin-data-provider';
 import { NullableInputs } from '@/types/admin';
 import { nullInputTransform } from '@/utils/admin';
 import useAdminAuthProvider from '@/hooks/use-admin-auth-provider';
+import { USER_ROLES } from '@/utils/users';
 
 const nullableInputs: NullableInputs = {
   users: ['person_id'],
@@ -32,7 +33,7 @@ const nullableInputs: NullableInputs = {
 const AdminApp = () => {
   const { user } = useAuth();
 
-  const authProvider = useAdminAuthProvider(['admin'], user);
+  const authProvider = useAdminAuthProvider([USER_ROLES.ADMIN], user);
 
   const onTransformData = useCallback(
     (adminDataProvider: DataProvider<string>) =>

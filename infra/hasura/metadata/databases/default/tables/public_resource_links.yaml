@@ -1,43 +1,43 @@
 table:
-  schema: public
   name: resource_links
+  schema: public
 object_relationships:
   - name: from_company
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: companies
-        insertion_order: null
         column_mapping:
           from_company_id: id
+        insertion_order: null
+        remote_table:
+          name: companies
+          schema: public
   - name: from_vc_firm
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: vc_firms
-        insertion_order: null
         column_mapping:
           from_vc_firm_id: id
+        insertion_order: null
+        remote_table:
+          name: vc_firms
+          schema: public
   - name: to_company
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: companies
-        insertion_order: null
         column_mapping:
           to_company_id: id
+        insertion_order: null
+        remote_table:
+          name: companies
+          schema: public
   - name: to_vc_firm
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: vc_firms
-        insertion_order: null
         column_mapping:
           to_vc_firm_id: id
+        insertion_order: null
+        remote_table:
+          name: vc_firms
+          schema: public
 select_permissions:
   - role: viewer
     permission:

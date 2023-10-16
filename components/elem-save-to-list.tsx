@@ -16,6 +16,9 @@ import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
 import { useRouter } from 'next/router';
+import { ElemUpgradeDialog } from './elem-upgrade-dialog';
+import { ElemWithSignInModal } from './elem-with-sign-in-modal';
+import { ROUTES } from '@/routes';
 
 type Props = {
   resourceName: string | null;
@@ -52,6 +55,7 @@ export const ElemSaveToList: FC<Props> = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [listsData, setListsData] = useState([] as List[]);
   const { user, listAndFollows, refreshProfile } = useUser();
   const [listName, setListName] = useState<string>('');
@@ -175,7 +179,7 @@ export const ElemSaveToList: FC<Props> = ({
         resourceId,
         resourceType,
         listName,
-        pathname: `/companies/${slug}`,
+        pathname: `${ROUTES.COMPANIES}/${slug}`,
       });
       if (newSentiment?.id) {
         setFollowsByResource(prev => {
@@ -212,6 +216,14 @@ export const ElemSaveToList: FC<Props> = ({
     }
   };
 
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+  const onCloseUpgradeDialog = () => {
+    setIsOpen(true);
+    setIsOpenUpgradeDialog(false);
+  };
+
   const handleCreate = async () => {
     if (error || !listName || !user) {
       return;
@@ -241,23 +253,45 @@ export const ElemSaveToList: FC<Props> = ({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!user) {
-      router.push('/sign-in');
+    setIsOpen(true);
+  };
+
+  const onClickShowCreateNew = () => {
+    if (
+      user?.entitlements?.listsCount &&
+      listsData.length > user.entitlements.listsCount
+    ) {
+      onOpenUpgradeDialog();
     } else {
-      setIsOpen(true);
+      setShowNew(true);
     }
   };
 
   return (
     <>
-      <ElemButton
-        onClick={onSaveButton}
-        btn={buttonStyle}
-        roundedFull={true}
-        className={`px-2.5 ${isSaved ? savedButtonStyle : ''}`}
-      >
-        {isSaved ? 'Saved' : 'Save to list'}
-      </ElemButton>
+      {user ? (
+        <ElemButton
+          onClick={onSaveButton}
+          roundedFull={true}
+          btn={buttonStyle}
+          className={`px-2.5 ${isSaved ? savedButtonStyle : ''}`}
+        >
+          {isSaved ? 'Saved' : 'Save to list'}
+        </ElemButton>
+      ) : (
+        <ElemWithSignInModal
+          text="Sign in to save this profile into a list. We'll even let you know of all the updates."
+          buttonComponent={open => (
+            <ElemButton
+              roundedFull={true}
+              btn={buttonStyle}
+              className={`px-2.5 ${open ? 'border border-primary-500' : ''}`}
+            >
+              Save to list
+            </ElemButton>
+          )}
+        />
+      )}
 
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
@@ -265,7 +299,7 @@ export const ElemSaveToList: FC<Props> = ({
           onClose={() => {
             setIsOpen(false), setShowNew(false);
           }}
-          className="relative z-[60]"
+          className="relative z-[40]"
         >
           <Transition.Child
             as={Fragment}
@@ -279,7 +313,7 @@ export const ElemSaveToList: FC<Props> = ({
             <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed inset-0 z-[50] my-0 min-h-0 flex flex-col items-center justify-center">
+          <div className="fixed inset-0 z-10 my-0 min-h-0 flex flex-col items-center justify-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -333,7 +367,7 @@ export const ElemSaveToList: FC<Props> = ({
                 {!showNew && listsData.length > 0 && (
                   <div className="pt-3">
                     <ElemButton
-                      onClick={() => setShowNew(true)}
+                      onClick={onClickShowCreateNew}
                       className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100"
                     >
                       <IconPlus className="w-4 h-4 " />
@@ -386,6 +420,11 @@ export const ElemSaveToList: FC<Props> = ({
           <Toaster />
         </Dialog>
       </Transition.Root>
+
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
     </>
   );
 };

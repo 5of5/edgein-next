@@ -62,6 +62,7 @@ query GetCompaniesByListId(
     company {
       id
       name
+      website
       logo
       sentiment
       location
@@ -74,8 +75,14 @@ query GetCompaniesByListId(
         ticker
         name
       }
-      teamMembers {
+      teamMembers(limit: 10, order_by: { founder: desc_nulls_last }) {
         id
+        founder
+        person {
+          id
+          slug
+          name
+        }
       }
       investment_rounds {
         amount
@@ -134,15 +141,25 @@ query GetVcFirmsByListId(
     vc_firm {
       id
       name
+      website
       num_of_investments
       latest_investment
       sentiment
       logo
       slug
-      location
+      location_json
       year_founded
       overview
       tags
+      investors(limit: 10, order_by: { founder: desc_nulls_last }) {
+        id
+        founder
+        person {
+          id
+          slug
+          name
+        }
+      }
       investments {
         investment_round {
           id

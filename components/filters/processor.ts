@@ -8,10 +8,16 @@ import {
 } from '@/models/Filter';
 import {
   Companies_Bool_Exp,
+  Companies_Order_By,
   Events_Bool_Exp,
+  Events_Order_By,
   Lists_Bool_Exp,
+  Order_By,
+  People_Bool_Exp,
+  People_Order_By,
   User_Groups_Bool_Exp,
   Vc_Firms_Bool_Exp,
+  Vc_Firms_Order_By,
 } from '@/graphql/types';
 import {
   DeepPartial,
@@ -19,9 +25,14 @@ import {
   Library,
   ListsTabType,
 } from '@/types/common';
-import { aiTags, eventTypeChoices, roundChoices } from '@/utils/constants';
+import {
+  aiTags,
+  eventTypeChoices,
+  ISO_DATE_FORMAT,
+  roundChoices,
+} from '@/utils/constants';
 import { convertToInternationalCurrencySystem } from '@/utils';
-import { getSelectableWeb3Tags } from './helpers';
+import { getSelectableWeb3Tags } from '@/utils/helpers';
 
 export const getDefaultFilter = (
   name: FilterOptionKeys,
@@ -98,6 +109,15 @@ export const getDefaultFilter = (
         formattedMinVal: convertToInternationalCurrencySystem(0),
         formattedMaxVal: convertToInternationalCurrencySystem(100),
       };
+    case 'role':
+      return {
+        tags: [],
+      };
+    case 'name':
+      return {
+        tags: [],
+      };
+
     default:
       return null;
   }
@@ -142,6 +162,21 @@ export const getFilterOptionMetadata = (
         heading: 'Keywords',
         placeholder: 'Add a keyword, press enter ⏎',
         subtext: 'E.g., AI, platform, blockchain, wallet, nft…',
+      };
+    case 'role':
+      return {
+        title: 'Role',
+        heading: 'Role',
+        placeholder: 'Add a role, press enter ⏎',
+        subtext: 'E.g., Co-founder, Software Engineer…',
+      };
+
+    case 'name':
+      return {
+        title: 'Name',
+        heading: 'Name',
+        placeholder: 'Add a name, press enter ⏎',
+        subtext: 'E.g., Smith, Erik…',
       };
 
     case 'industry':
@@ -966,6 +1001,109 @@ export const processEventsFilters = (
   }
 };
 
+const createFilterForPeopleLocation = (
+  selectedFilters: Filters,
+  type: 'country' | 'state' | 'city',
+) => {
+  const { condition, tags } = selectedFilters?.[type] || {};
+  if (!tags?.length) {
+    return;
+  }
+
+  const filterObject = tags.map((item: string) => ({
+    people_computed_data: {
+      location_json: {
+        _cast: {
+          String: { _ilike: `%"${type}": "${item}"%` },
+        },
+      },
+    },
+  }));
+
+  if (condition === 'any') {
+    return {
+      _or: filterObject,
+    };
+  }
+  if (condition === 'none') {
+    return {
+      _or: [
+        {
+          _not: {
+            _or: filterObject,
+          },
+        },
+        {
+          people_computed_data: {
+            location_json: { _is_null: true },
+          },
+        },
+      ],
+    };
+  }
+};
+
+export const processPeopleFilter = (
+  filters: DeepPartial<People_Bool_Exp>,
+  selectedFilters: Filters | null,
+  defaultFilters: DeepPartial<People_Bool_Exp[]>,
+) => {
+  if (!selectedFilters || isEmpty(selectedFilters)) {
+    filters._and = defaultFilters;
+    return;
+  }
+
+  const locationFilters = ['country', 'state', 'city'] as const;
+  locationFilters.forEach(value => {
+    const filter = createFilterForPeopleLocation(selectedFilters, value);
+    if (filter) {
+      filters._and?.push(filter);
+    }
+  });
+
+  if (selectedFilters?.address?.value) {
+    filters._and?.push({
+      people_computed_data: {
+        geopoint: {
+          _st_d_within: {
+            distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+            from: selectedFilters.address.value?.geometry,
+          },
+        },
+      },
+    });
+  }
+  if (selectedFilters?.industry?.tags?.length) {
+    filters._and?.push({
+      _and: selectedFilters.industry.tags.map(item => ({
+        people_computed_data: {
+          tags: { _contains: item },
+        },
+      })),
+    });
+  }
+
+  if (selectedFilters?.role?.tags?.length) {
+    filters._and?.push({
+      // There is role if user selects multiple roles
+      _or: selectedFilters.role.tags.map(item => ({
+        people_computed_data: {
+          title: { _ilike: `%${item}%` },
+        },
+      })),
+    });
+  }
+
+  if (selectedFilters?.name?.tags?.length) {
+    filters._and?.push({
+      // There is role if user selects multiple roles
+      _or: selectedFilters.name.tags.map(item => ({
+        name: { _ilike: `%${item}%` },
+      })),
+    });
+  }
+};
+
 export const getGroupsFilters = (
   selectedTab: GroupsTabType,
   userId: number,
@@ -999,6 +1137,7 @@ export const getGroupsFilters = (
           id: { _eq: userId },
         },
       },
+      created_by_user_id: { _neq: userId },
     };
     return filters;
   }
@@ -1032,9 +1171,91 @@ export const getListsFilters = (selectedTab: ListsTabType, userId: number) => {
       list_members: {
         user_id: { _eq: userId },
       },
+      created_by_id: { _neq: userId },
     };
     return filters;
   }
 
   return filters;
+};
+
+export const getHomepageEncodedURI = (
+  filters:
+    | DeepPartial<Vc_Firms_Bool_Exp>
+    | DeepPartial<Companies_Bool_Exp>
+    | DeepPartial<Events_Bool_Exp>
+    | DeepPartial<People_Bool_Exp>,
+  orderBy?:
+    | DeepPartial<Vc_Firms_Order_By>
+    | DeepPartial<Companies_Order_By>
+    | DeepPartial<Events_Order_By>
+    | DeepPartial<People_Order_By>,
+) => {
+  let encodedFilters = '';
+  let encodedStatusTag = '';
+  let encodedSortBy = '';
+  let isPremiumFilter = false;
+
+  filters._and?.forEach(filterObj => {
+    if (filterObj) {
+      if ('tags' in filterObj && filterObj?.tags?._contains) {
+        encodedFilters += `{"industry":{"tags":["${filterObj?.tags._contains}"]}}`;
+      }
+
+      if (
+        'location_json' in filterObj &&
+        filterObj?.location_json?._contains.city
+      ) {
+        encodedFilters += `{"city":{"condition":"any","tags":["${filterObj?.location_json?._contains.city}"]}}`;
+      }
+
+      // Recently funded, premium feature
+      if (
+        'investment_rounds' in filterObj &&
+        filterObj?.investment_rounds?.round_date?._gte
+      ) {
+        encodedFilters += `{"lastFundingDate":{"condition":"custom","fromDate": "${
+          filterObj?.investment_rounds?.round_date?._gte
+        }" ,"toDate": "${moment().format(ISO_DATE_FORMAT)}"}}`;
+
+        isPremiumFilter = true;
+      }
+
+      // Recently active investors, premium feature
+      if (
+        'investments' in filterObj &&
+        filterObj?.investments?.investment_round?.round_date?._gte
+      ) {
+        encodedFilters += `{"lastInvestmentDate":{"condition":"custom","fromDate": "${
+          filterObj?.investments?.investment_round?.round_date?._gte
+        }" ,"toDate": "${moment().format(ISO_DATE_FORMAT)}"}}`;
+
+        isPremiumFilter = true;
+      }
+    }
+  });
+
+  if (
+    orderBy &&
+    'num_of_views' in orderBy &&
+    orderBy?.num_of_views &&
+    orderBy?.num_of_views === Order_By.Desc
+  ) {
+    encodedStatusTag += 'Trending';
+  }
+
+  if (orderBy?.updated_at && orderBy?.updated_at === Order_By.Desc) {
+    encodedSortBy += 'lastUpdate';
+  }
+
+  encodedFilters = encodeURIComponent(encodedFilters);
+  encodedStatusTag = encodeURIComponent(encodedStatusTag);
+  encodedSortBy = encodeURIComponent(encodedSortBy);
+
+  return {
+    encodedFilters,
+    encodedStatusTag,
+    encodedSortBy,
+    isPremiumFilter,
+  };
 };

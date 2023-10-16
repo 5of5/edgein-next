@@ -26,6 +26,8 @@ import {
   usePagination,
 } from 'react-table';
 import { useRouter } from 'next/router';
+import { Investment_Rounds } from '@/graphql/types';
+import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -65,7 +67,7 @@ export const InvestorsTable: FC<Props> = ({
 
   const onBillingClick = async () => {
     if (!user) {
-      router.push('/sign-in');
+      router.push(ROUTES.SIGN_IN);
     } else {
       loadStripe();
     }
@@ -125,7 +127,7 @@ export const InvestorsTable: FC<Props> = ({
         accessor: 'name' as const,
         Cell: (props: any) => (
           <a
-            href={`/investors/` + props.row.original?.slug}
+            href={`${ROUTES.INVESTORS}/` + props.row.original?.slug}
             className="flex items-center space-x-3 shrink-0 group transition-all"
           >
             <ElemPhoto
@@ -308,23 +310,15 @@ export const InvestorsTable: FC<Props> = ({
         Header: 'Last Investment Date',
         accessor: (data: {
           investments: {
-            [x: string]: any;
-            investment_round: Object;
-          };
+            investment_round: Pick<
+              Investment_Rounds,
+              'amount' | 'round' | 'round_date' | 'id'
+            >;
+          }[];
         }) => {
-          const investmentRounds = data?.investments?.flatMap(
-            (item: any) => item.investment_round,
-          );
-
-          if (!investmentRounds) {
-            return 0;
-          } else {
-            const latestRound = getLatestRound(investmentRounds);
-
-            const out = latestRound?.round_date ? latestRound?.round_date : 0;
-
-            return out;
-          }
+          const latestRound = data?.investments?.[0]?.investment_round;
+          const out = latestRound?.round_date ? latestRound?.round_date : 0;
+          return out;
         },
         Cell: (props: any) => {
           return (
@@ -339,23 +333,15 @@ export const InvestorsTable: FC<Props> = ({
         Header: 'Last Investment Type',
         accessor: (data: {
           investments: {
-            [x: string]: any;
-            investment_round: Object;
-          };
+            investment_round: Pick<
+              Investment_Rounds,
+              'amount' | 'round' | 'round_date' | 'id'
+            >;
+          }[];
         }) => {
-          const investmentRounds = data?.investments?.flatMap(
-            (item: any) => item.investment_round,
-          );
-
-          if (!investmentRounds) {
-            return 0;
-          } else {
-            const latestRound = getLatestRound(investmentRounds);
-
-            const out = latestRound?.round ? latestRound?.round : 0;
-
-            return out;
-          }
+          const latestRound = data?.investments?.[0]?.investment_round;
+          const out = latestRound?.round ? latestRound?.round : 0;
+          return out;
         },
         Cell: (props: any) => {
           return <div>{props.value ? props.value : emptyCell}</div>;
@@ -365,23 +351,15 @@ export const InvestorsTable: FC<Props> = ({
         Header: 'Last Investment Amount',
         accessor: (data: {
           investments: {
-            [x: string]: any;
-            investment_round: Object;
-          };
+            investment_round: Pick<
+              Investment_Rounds,
+              'amount' | 'round' | 'round_date' | 'id'
+            >;
+          }[];
         }) => {
-          const investmentRounds = data?.investments?.flatMap(
-            (item: any) => item.investment_round,
-          );
-
-          if (!investmentRounds) {
-            return 0;
-          } else {
-            const latestRound = getLatestRound(investmentRounds);
-
-            const out = latestRound?.amount ? latestRound?.amount : 0;
-
-            return out;
-          }
+          const latestRound = data?.investments?.[0]?.investment_round;
+          const out = latestRound?.amount ? latestRound?.amount : 0;
+          return out;
         },
         Cell: (props: any) => {
           return (

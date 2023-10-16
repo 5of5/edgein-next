@@ -1,21 +1,22 @@
 import CookieService, { TOKEN_NAME } from '@/utils/cookie';
 import { NextResponse, NextRequest } from 'next/server';
 import { verify } from '@/utils/googlebot-verify';
+import { ROUTES } from '@/routes';
 
 const USAGE_LIMIT = 10;
 
 // This is used to generate a sitemap for the site
 export const PUBLIC_PAGES = [
   `/`,
-  `/sign-in/`,
-  `/contact/`,
-  `/privacy/`,
-  `/terms/`,
-  `/support/`,
-  `/pricing/`,
-  `/brand-assets/`,
-  `/team/`,
-  `/404/`,
+  `${ROUTES.SIGN_IN}/`,
+  `${ROUTES.CONTACT}/`,
+  `${ROUTES.PRIVACY}/`,
+  `${ROUTES.TERMS}/`,
+  `${ROUTES.SUPPORT}/`,
+  `${ROUTES.PRICING}/`,
+  `${ROUTES.BRAND_ASSETS}/`,
+  `${ROUTES.TEAM}/`,
+  `${ROUTES.NOT_FOUND}/`,
 ];
 
 const PUBLIC_API = [
@@ -55,11 +56,11 @@ export async function middleware(req: NextRequest) {
     );
 
     // we want users to fill onboarding again
-    if (userExists && url.pathname === '/') {
+    if (userExists && url.pathname === ROUTES.ROOT) {
       if (!userExists.onboarding_information?.locationDetails) {
-        return NextResponse.redirect(new URL('/onboarding', req.url));
+        return NextResponse.redirect(new URL(ROUTES.ONBOARDING, req.url));
       }
-      return NextResponse.rewrite(new URL('/companies', req.url));
+      return NextResponse.rewrite(new URL(ROUTES.HOME, req.url));
     }
 
     // Prevent security issues – users should not be able to canonically access
@@ -103,8 +104,8 @@ export async function middleware(req: NextRequest) {
     );
 
     if (!user) {
-      if (url.pathname === '/onboarding/') {
-        return NextResponse.redirect(new URL('/companies', req.url));
+      if (url.pathname === `${ROUTES.ONBOARDING}/`) {
+        return NextResponse.redirect(new URL(ROUTES.COMPANIES, req.url));
       }
 
       const usage = await CookieService.getUsage(
@@ -122,24 +123,24 @@ export async function middleware(req: NextRequest) {
         return CookieService.setUsageCookie(NextResponse.next(), newUsageToken);
       } else {
         return NextResponse.redirect(
-          new URL(`/sign-in/?usage=true&${redirectPath}`, req.url),
+          new URL(`${ROUTES.SIGN_IN}/?usage=true&${redirectPath}`, req.url),
         );
       }
     } else {
       if (
-        url.pathname === '/sign-in/' ||
-        (url.pathname === '/onboarding/' &&
+        url.pathname === `${ROUTES.SIGN_IN}/` ||
+        (url.pathname === `${ROUTES.ONBOARDING}/` &&
           user.onboarding_information?.locationDetails)
       ) {
-        return NextResponse.redirect(new URL('/companies', req.url));
+        return NextResponse.redirect(new URL('/home', req.url));
       }
 
       if (
         !url.pathname.startsWith('/api/') &&
-        url.pathname !== '/onboarding/' &&
+        url.pathname !== `${ROUTES.ONBOARDING}/` &&
         !user.onboarding_information?.locationDetails
       ) {
-        return NextResponse.redirect(new URL('/onboarding', req.url));
+        return NextResponse.redirect(new URL(ROUTES.ONBOARDING, req.url));
       }
     }
     // if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
@@ -155,7 +156,7 @@ export async function middleware(req: NextRequest) {
         ? ''
         : `redirect=${encodeURIComponent(url.pathname)}`;
       const resp = NextResponse.redirect(
-        new URL(`/sign-in/?${redirectPath}`, req.url),
+        new URL(`${ROUTES.SIGN_IN}/?${redirectPath}`, req.url),
       );
       resp.cookies[TOKEN_NAME] =
         'deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
@@ -164,7 +165,7 @@ export async function middleware(req: NextRequest) {
       return resp;
     } catch (err) {
       console.log(error);
-      return NextResponse.redirect(new URL('/sign-in', req.url));
+      return NextResponse.redirect(new URL(ROUTES.SIGN_IN, req.url));
     }
   }
 

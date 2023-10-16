@@ -24,6 +24,7 @@ import {
   CommonRequest,
   CommonResponse,
 } from '@/utils/api';
+import { USER_ROLES } from '@/utils/users';
 
 const handleResource = async (
   partnerId: number,
@@ -130,6 +131,15 @@ export const commonHandler = async (
       resourceType === undefined
     ) {
       return res.status(400).send({ message: 'Bad Request' });
+
+    // Identify partner or admin
+    const partner = await partnerLookUp(apiKey);
+    if (partner?.id === undefined) {
+      if (!(user?.role === USER_ROLES.ADMIN)) {
+        return res.status(401).send({ message: 'Unauthorized Partner' });
+      }
+    } else {
+      partnerId = partner.id;
     }
 
     // Resource object can be an array (for one record) or an array of array (for list of records)

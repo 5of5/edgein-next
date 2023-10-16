@@ -48,9 +48,9 @@ export const ElemTagsInput: FC<Props> = ({
 
   return (
     <div>
-      <div className="px-3 py-2 text-sm border rounded-2lg">
+      <div className="flex items-end flex-wrap px-3 py-1.5 text-sm border rounded-3xl ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
         {tags.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 mb-2">
+          <div className="flex flex-wrap items-center gap-2">
             {tags.map(tag => (
               <div
                 className="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full text-sm bg-slate-200"
@@ -71,14 +71,14 @@ export const ElemTagsInput: FC<Props> = ({
         )}
         <input
           type="text"
-          className="appearance-none p-0 border-none w-full text-sm placeholder:text-slate-400 focus:outline-none focus:ring-0"
+          className="flex-1 py-1 text-dark-500 text-sm relative bg-white rounded-full border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
           placeholder={placeholder}
           value={inputValue}
           onChange={onChangeInput}
           onKeyDown={handleKeyDown}
         />
       </div>
-      {subtext && <p className="mt-0.5 text-xs text-slate-600">{subtext}</p>}
+      {subtext && <p className="mt-1 text-xs text-slate-600">{subtext}</p>}
     </div>
   );
 };

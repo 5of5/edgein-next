@@ -1,0 +1,11 @@
+mutation InsertLeads($object: leads_insert_input!) {
+  insert_leads_one(object: $object) {
+    id
+  }
+}
+
+mutation InsertLeadsSegmentation($object: leads_segmentation_insert_input!) {
+  insert_leads_segmentation_one(object: $object) {
+    id
+  }
+}

@@ -4,7 +4,6 @@ import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemButton } from '@/components/elem-button';
 import { PlaceholderNotification } from '@/components/placeholders';
-import Link from 'next/link';
 import { IconCheck, IconBell } from '@/components/icons';
 import { Disclosure } from '@headlessui/react';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
@@ -21,6 +20,7 @@ import {
 import ElemNotificationItem from '@/components/notifications/elem-notification-item';
 import ElemNotificationPopover from '@/components/notifications/elem-notification-popover';
 import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
+import { ElemLink } from '@/components/elem-link';
 
 const DEFAULT_LIMIT = 10;
 
@@ -186,16 +186,17 @@ const Notifications: NextPage = () => {
                       {enableExpand && (
                         <Disclosure.Panel className="pl-16 lg:pl-18 pr-6 pt-2 pb-6">
                           <ul className="pl-1 list-disc list-inside space-y-2">
-                            {extensions.map((item: any) => (
-                              <li key={item.field} className="text-sm">
-                                {`Updated `}
-                                <Link
-                                  href={getNotificationOrganizationLink(
-                                    notification,
-                                  )}
-                                  passHref
-                                >
-                                  <a className="font-medium hover:text-primary-500">
+                            {extensions
+                              .filter(extensionItem => extensionItem.field)
+                              .map(item => (
+                                <li key={item.field} className="text-sm">
+                                  {`Updated `}
+                                  <ElemLink
+                                    href={getNotificationOrganizationLink(
+                                      notification,
+                                    )}
+                                    className="font-medium hover:text-primary-500"
+                                  >
                                     {item.field === 'velocity_linkedin' ? (
                                       <>velocity</>
                                     ) : item.field === 'location_json' ? (
@@ -203,10 +204,9 @@ const Notifications: NextPage = () => {
                                     ) : (
                                       <>{item.field.replace('_', ' ')}</>
                                     )}
-                                  </a>
-                                </Link>
-                              </li>
-                            ))}
+                                  </ElemLink>
+                                </li>
+                              ))}
                           </ul>
                         </Disclosure.Panel>
                       )}

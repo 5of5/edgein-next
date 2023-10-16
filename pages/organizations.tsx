@@ -14,7 +14,7 @@ import {
 import { runGraphQl } from '@/utils';
 import { GetStaticProps } from 'next';
 import { FC, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { ElemLink } from '@/components/elem-link';
 
 type Props = {
   dropdown: any[];
@@ -115,15 +115,14 @@ const Organizations: FC<Props> = ({ dropdown }) => {
                     </span>
                   </div>
                 </div>
-                <Link
+                <ElemLink
                   href={`/organizations/${
                     type === 'Company' ? 'companies' : 'investors'
                   }/${data?.slug}`}
+                  className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500"
                 >
-                  <a className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500">
-                    Edit
-                  </a>
-                </Link>
+                  Edit
+                </ElemLink>
               </div>
             </div>
           );

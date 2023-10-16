@@ -36,9 +36,7 @@ export default function Onboarding() {
   const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
-    if (currentStep !== 1) {
-      setCurrentStep(1);
-    }
+    setCurrentStep(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -70,6 +68,28 @@ export default function Onboarding() {
       {
         onSuccess: async response => {
           if (response.status === 200) {
+            generateFirstList();
+          } else {
+            const error = await response.json();
+            toast(error.error || GENERAL_ERROR_MESSAGE, 'error');
+          }
+        },
+      },
+    );
+
+  const { mutate: generateFirstList, isLoading: isGenerateFirstListLoading } =
+    useMutation(
+      () =>
+        fetch('/api/generate-first-list/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }),
+      {
+        onSuccess: async response => {
+          if (response.status === 200) {
             router.reload();
           } else {
             const error = await response.json();
@@ -82,10 +102,10 @@ export default function Onboarding() {
   return (
     <Dialog as="div" open onClose={() => null} className="relative z-[60]">
       <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
-        <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-20 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+        <Dialog.Panel className="w-full h-full flex flex-col items-center mx-auto py-20 bg-white overflow-x-hidden overflow-y-auto scrollbar-hide">
           <ElemSignInHeader />
 
-          <h3 className="text-lg font-medium text-gray-900">
+          <h3 className="text-lg font-medium text-gray-900 px-4 lg:px-0">
             Let&apos;s personalize your EdgeIn
           </h3>
 
@@ -109,7 +129,7 @@ export default function Onboarding() {
             </ul>
           </div>
 
-          <div className="mt-16 flex flex-col items-center">
+          <div className="mt-8 md:mt-16 flex flex-col items-center px-4 md:px-0">
             {currentStep === 1 && (
               <ElemOnboardingSegmenting
                 selectedSegment={segment}
@@ -133,7 +153,9 @@ export default function Onboarding() {
             )}
             {currentStep === 3 && (
               <ElemOnboardingTags
-                isSubmittingOnboarding={isSubmittingOnboarding}
+                isSubmittingOnboarding={
+                  isSubmittingOnboarding || isGenerateFirstListLoading
+                }
                 tags={tags}
                 onChangeTags={setTags}
                 onNext={() => {

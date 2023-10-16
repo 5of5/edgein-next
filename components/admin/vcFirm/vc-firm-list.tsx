@@ -12,6 +12,7 @@ import {
   ChipField,
 } from 'react-admin';
 import ElemList from '../elem-list';
+import { getFullAddress } from '@/utils/helpers';
 
 const filters = [
   <TextInput
@@ -81,7 +82,11 @@ export const VcFirmList = () => {
       />
       <TextField source="year_founded" />
       <TextField source="twitter" />
-      <TextField source="location_json" />
+      <FunctionField
+        cellClassName="truncate"
+        source="location_json"
+        render={(record: any) => getFullAddress(record.location_json)}
+      />
       <FunctionField
         source="library"
         render={(record: any) =>

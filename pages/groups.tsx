@@ -19,7 +19,7 @@ import { useIntercom } from 'react-use-intercom';
 import { GroupsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { GROUPS_TABS } from '@/utils/constants';
-import { getGroupsFilters } from '@/utils/filter';
+import { getGroupsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
@@ -128,7 +128,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
 
   return (
     <DashboardLayout>
-      <div className="mb-4 px-4 py-3 lg:flex items-center justify-between border-b border-gray-200">
+      <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
         <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
           {GROUPS_TABS &&
             GROUPS_TABS.map((tab: any, index: number) =>
@@ -140,7 +140,11 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                   onClick={() => setSelectedGroupTab(tab)}
                   btn="gray"
                   roundedFull={false}
-                  className="rounded-lg"
+                  className={`py-2 rounded-lg ${
+                    selectedGroupTab?.id === tab.id
+                      ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                      : ''
+                  }`}
                 >
                   {tab.name}
                 </ElemButton>
@@ -196,14 +200,12 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
           </div>
         </div>
       ) : (
-        <div className="px-4 pb-2">
-          <h1 className="font-medium text-xl capitalize">
-            {selectedGroupTab.name}
-          </h1>
+        <div className="px-8 pb-2">
+          <h1 className="text-4xl font-medium">{selectedGroupTab.name}</h1>
         </div>
       )}
 
-      <div className="px-4 py-3">
+      <div className="px-8 py-3">
         <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">

@@ -27,7 +27,7 @@ import type { Companies } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
 import {
-  companyChoices,
+  companyStatusTags,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
   TRENDING_CATEGORY_LIMIT,
@@ -35,14 +35,14 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
-import { processCompaniesFilters } from '@/utils/filter';
-import { ElemFilter } from '@/components/elem-filter';
+import { processCompaniesFilters } from '@/components/filters/processor';
+import { ElemFilter } from '@/components/filters/elem-filter';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ElemAddFilter } from '@/components/elem-add-filter';
+import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
@@ -51,12 +51,9 @@ import {
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { CompaniesByFilter } from '@/components/companies/elem-companies-by-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   companiesCount: number;
@@ -69,13 +66,13 @@ const Companies: NextPage<Props> = ({
   initialCompanies,
   companyStatusTags,
 }) => {
-  const { user } = useUser();
-
-  const personalizedTags = getPersonalizedData({ user });
-
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const { user } = useUser();
   const router = useRouter();
+  const { selectedLibrary } = useLibrary();
+
+  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -84,25 +81,28 @@ const Companies: NextPage<Props> = ({
         user.email.endsWith(domain),
       ));
 
-  const { selectedLibrary } = useLibrary();
-
   // Company status-tag filter
   const [selectedStatusTag, setSelectedStatusTag] =
     useStateParams<DashboardCategory | null>(
       null,
       'statusTag',
-      companyLayer =>
-        companyLayer ? companyStatusTags.indexOf(companyLayer).toString() : '',
-      index => companyStatusTags[Number(index)],
+      companyLayer => (companyLayer ? companyLayer.value : ''),
+      selectedStatusTag =>
+        companyStatusTags[
+          companyStatusTags.findIndex(
+            statusTag => statusTag.value === selectedStatusTag,
+          )
+        ],
     );
 
   const isNewTabSelected = selectedStatusTag?.value === 'new';
-  const isSortDropdownVisible = ['Dead', 'Raising'].includes(
-    selectedStatusTag?.value || '',
-  );
+  const isSortDropdownVisible =
+    ['Dead', 'Raising'].includes(selectedStatusTag?.value || '') ||
+    !selectedStatusTag;
+
   const [tableLayout, setTableLayout] = useState(false);
 
-  const [sortBy, setSortBy] = useState('mostRelevant');
+  const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -190,7 +190,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Removed &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -204,7 +205,8 @@ const Companies: NextPage<Props> = ({
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
+              }`}
+            >
               Added &ldquo;{tag}&rdquo; Filter
             </div>
           ),
@@ -345,24 +347,25 @@ const Companies: NextPage<Props> = ({
       value: 'totalFundingHighToLow',
       onClick: () => setSortBy('totalFundingHighToLow'),
     },
-    {
-      id: 4,
-      label: 'Last funding date (new to old)',
-      value: 'lastFundingDate',
-      onClick: () => setSortBy('lastFundingDate'),
-    },
+    // {
+    //   id: 4,
+    //   label: 'Last funding date (new to old)',
+    //   value: 'lastFundingDate',
+    //   onClick: () => setSortBy('lastFundingDate'),
+    // },
   ];
 
-  const showPersonalized = user && !selectedFilters && !selectedStatusTag;
-
-  const pageTitle = `All ${user ? selectedLibrary : ''} companies`;
+  const pageTitle = `${selectedStatusTag?.title || 'All'} ${
+    user ? selectedLibrary : ''
+  } companies`;
 
   return (
     <DashboardLayout>
       <div className="relative">
         <div
           className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist">
+          role="tablist"
+        >
           <ElemCategories
             categories={companyStatusTags}
             selectedCategory={selectedStatusTag}
@@ -386,6 +389,10 @@ const Companies: NextPage<Props> = ({
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 items={sortItems}
+                defaultItem={sortItems.findIndex(
+                  sortItem => sortItem.value === sortBy,
+                )}
+                firstItemDivided
               />
             )}
           </div>
@@ -420,180 +427,6 @@ const Companies: NextPage<Props> = ({
         <ElemInviteBanner className="mx-8 my-3" />
 
         <div className="mx-8">
-          {showPersonalized && (
-            <div className="flex flex-col gap-4 gap-x-8">
-              {personalizedTags.locationTags.map((location, index) => (
-                <CompaniesByFilter
-                  key={`${location}-${index}`}
-                  headingText={`Trending in ${location}`}
-                  tagOnClick={filterByTag}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={tableLayout}
-                  orderBy={{
-                    num_of_views: Order_By.Desc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      { num_of_views: { _is_null: false } },
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-
-              {personalizedTags.locationTags.map((location, index) => (
-                <CompaniesByFilter
-                  key={`${location}-${index}`}
-                  headingText={`Recently updated in ${location}`}
-                  tagOnClick={filterByTag}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={tableLayout}
-                  orderBy={{
-                    updated_at: Order_By.Desc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        created_at: {
-                          _gte: moment()
-                            .subtract(28, 'days')
-                            .format(ISO_DATE_FORMAT),
-                        },
-                      },
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-
-              {personalizedTags.locationTags.map((location, index) => (
-                <CompaniesByFilter
-                  key={`${location}-${index}`}
-                  headingText={`New in ${location}`}
-                  tagOnClick={filterByTag}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={tableLayout}
-                  orderBy={{
-                    created_at: Order_By.Desc,
-                  }}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        updated_at: {
-                          _gte: moment()
-                            .subtract(28, 'days')
-                            .format(ISO_DATE_FORMAT),
-                        },
-                      },
-                      {
-                        year_founded: {
-                          _gte: moment()
-                            .subtract(1, 'years')
-                            .format(ISO_DATE_FORMAT),
-                        },
-                      },
-                      {
-                        location_json: {
-                          _contains: {
-                            city: `${location}`,
-                          },
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-
-              {personalizedTags.industryTags.map(industry => (
-                <CompaniesByFilter
-                  key={industry}
-                  headingText={`Trending in ${industry}`}
-                  tagOnClick={filterByTag}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  isTableView={tableLayout}
-                  filters={{
-                    _and: [
-                      ...defaultFilters,
-                      {
-                        status_tags: {
-                          _contains: 'Trending',
-                        },
-                      },
-                      {
-                        tags: {
-                          _contains: industry,
-                        },
-                      },
-                    ],
-                  }}
-                />
-              ))}
-
-              <CompaniesByFilter
-                headingText="Recently funded"
-                tagOnClick={filterByTag}
-                itemsPerPage={ITEMS_PER_PAGE}
-                isTableView={tableLayout}
-                orderBy={{
-                  investment_rounds_aggregate: {
-                    sum: {
-                      amount: Order_By.Desc,
-                    },
-                  },
-                }}
-                filters={{
-                  _and: [
-                    ...defaultFilters,
-                    {
-                      investment_rounds: {
-                        round_date: {
-                          _gte: moment()
-                            .subtract(28, 'days')
-                            .format(ISO_DATE_FORMAT),
-                        },
-                      },
-                    },
-                  ],
-                }}
-              />
-
-              <CompaniesByFilter
-                headingText="Recently founded"
-                tagOnClick={filterByTag}
-                itemsPerPage={ITEMS_PER_PAGE}
-                isTableView={tableLayout}
-                orderBy={{
-                  year_founded: Order_By.Desc,
-                }}
-                filters={{
-                  _and: [
-                    ...defaultFilters,
-                    {
-                      year_founded: {
-                        _gte: moment().subtract(1, 'year').year().toString(),
-                      },
-                    },
-                  ],
-                }}
-              />
-            </div>
-          )}
-
           {error ? (
             <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
               <div className="max-w-xl mx-auto">
@@ -608,7 +441,8 @@ const Companies: NextPage<Props> = ({
                         `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                       )
                     }
-                    className="inline underline decoration-primary-500 hover:text-primary-500">
+                    className="inline underline decoration-primary-500 hover:text-primary-500"
+                  >
                     <span>report error</span>
                   </button>
                   .
@@ -619,12 +453,6 @@ const Companies: NextPage<Props> = ({
             <>
               <div className="flex justify-between py-8">
                 <div className="text-4xl font-medium">{pageTitle}</div>
-                {!isNewTabSelected && (
-                  <ElemDropdown
-                    IconComponent={IconSortDashboard}
-                    items={sortItems}
-                  />
-                )}
               </div>
 
               {isLoading && !initialLoad ? (
@@ -643,10 +471,6 @@ const Companies: NextPage<Props> = ({
                 </>
               ) : tableLayout && companies?.length != 0 ? (
                 <>
-                  <div className="flex justify-between py-8">
-                    <div className="text-4xl font-medium">{pageTitle}</div>
-                  </div>
-
                   <CompaniesTable
                     companies={companies}
                     pageNumber={page}
@@ -662,7 +486,8 @@ const Companies: NextPage<Props> = ({
                 <>
                   <div
                     data-testid="companies"
-                    className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  >
                     {companies?.map(company => {
                       return (
                         <ElemCompanyCard
@@ -704,7 +529,8 @@ const Companies: NextPage<Props> = ({
                   )
                 }
                 btn="white"
-                className="mt-3">
+                className="mt-3"
+              >
                 <IconAnnotation className="w-6 h-6 mr-1" />
                 Tell us about missing data
               </ElemButton>
@@ -764,20 +590,3 @@ export interface NumericFilter {
   rangeStart: number;
   rangeEnd: number;
 }
-
-const companyStatusTagValues = companyChoices.map(option => {
-  return {
-    title: option.name,
-    value: option.id,
-    icon: option.icon,
-  };
-});
-
-const companyStatusTags: DashboardCategory[] = [
-  {
-    title: 'New',
-    value: 'new',
-    icon: '✨',
-  },
-  ...companyStatusTagValues,
-];

@@ -1,14 +1,22 @@
-import { useGetCompaniesByListIdQuery } from '@/graphql/types';
+import {
+  Companies,
+  Investment_Rounds,
+  Team_Members,
+  useGetCompaniesByListIdQuery,
+} from '@/graphql/types';
 import { orderBy } from 'lodash';
 import moment from 'moment-timezone';
 import React, { FC, useMemo, useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { numberWithCommas } from '@/utils';
-import Link from 'next/link';
+import { TABLE_DEFAULT_TEAM_LIMIT } from '@/utils/constants';
 import { TableEmptyCell } from './table-empty-cell';
 import { Table } from './table';
 import { PlaceholderTable } from '../placeholders';
 import { ElemTags } from '@/components/elem-tags';
+import { ElemPillsPeople } from '@/components/elem-pills-people';
+import { ElemTooltip } from '../elem-tooltip';
+import { ROUTES } from '@/routes';
 
 type Props = {
   listId: number;
@@ -60,11 +68,18 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Name',
         accessor: 'company.name' as const,
-        Cell: (props: any) => (
-          <div>
+        Cell: (props: {
+          value: string;
+          row: {
+            original: {
+              company: Companies;
+            };
+          };
+        }) => (
+          <div className="flex items-center space-x-3">
             <a
-              href={`/companies/` + props.row.original?.company?.slug}
-              className="flex items-center space-x-3 shrink-0 transition-all"
+              href={`${ROUTES.COMPANIES}/` + props.row.original?.company?.slug}
+              className="shrink-0 transition-all"
             >
               <ElemPhoto
                 photo={props.row.original?.company?.logo}
@@ -73,27 +88,54 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
                 imgAlt={props.value}
                 placeholderClass="text-gray-300"
               />
-              <p className="font-medium line-clamp-2 break-words hover:underline">
-                {props.value}
-              </p>
             </a>
+
+            <div>
+              <a
+                href={
+                  `${ROUTES.COMPANIES}/` + props.row.original?.company?.slug
+                }
+                className="font-medium line-clamp-2 break-words hover:underline"
+              >
+                {props.value}
+              </a>
+              {props.row.original?.company?.website && (
+                <a
+                  href={props.row.original.company.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="break-words hover:underline text-sm text-gray-500"
+                >
+                  {props.row.original.company.website}
+                </a>
+              )}
+            </div>
           </div>
         ),
-        width: 170,
-        minWidth: 200,
-        //disableDropdown: true,
-        //disableResizing: true,
+        width: 300,
+        minWidth: 300,
         disableHiding: true,
       },
       {
         Header: 'Description',
         accessor: 'company.overview' as const,
-        Cell: (props: any) => (
+        Cell: (props: { value: string }) => (
           <div>
             {props.value ? (
-              <p className="line-clamp-3 text-sm text-gray-500">
-                {props.value}
-              </p>
+              <>
+                <ElemTooltip
+                  content={props.value}
+                  mode="light"
+                  direction="top"
+                  size="lg"
+                  delay={1200}
+                  className="max-h-72 overflow-y-scroll"
+                >
+                  <div className="text-sm line-clamp-3 text-gray-500">
+                    {props.value}
+                  </div>
+                </ElemTooltip>
+              </>
             ) : (
               <TableEmptyCell />
             )}
@@ -106,10 +148,14 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Tags',
         accessor: 'company.tags' as const,
-        Cell: (props: any) => (
+        Cell: (props: { value: Array<string> }) => (
           <>
             {props.value ? (
-              <ElemTags resourceType={'companies'} tags={props.value} />
+              <ElemTags
+                resourceType={'companies'}
+                tags={props.value}
+                limit={6}
+              />
             ) : (
               <TableEmptyCell />
             )}
@@ -121,47 +167,38 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       {
         Header: 'Token',
         accessor: 'company.coin.ticker' as const,
-        Cell: (props: any) => (
+        Cell: (props: { value: string }) => (
           <>{props.value ? <div>{props.value}</div> : <TableEmptyCell />}</>
         ),
         width: 100,
       },
       {
-        Header: 'City',
-        accessor: 'company.location_json.city' as const,
-        Cell: (props: any) => {
-          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        Header: 'Team',
+        accessor: 'company.teamMembers' as const,
+        Cell: (props: { value: Team_Members[] }) => {
+          return (
+            <div className="flex flex-wrap overflow-clip gap-2">
+              {props.value?.length ? (
+                <>
+                  <ElemPillsPeople
+                    items={props.value}
+                    limit={TABLE_DEFAULT_TEAM_LIMIT}
+                  />
+                </>
+              ) : (
+                <TableEmptyCell />
+              )}
+            </div>
+          );
         },
-        width: 200,
-      },
-      {
-        Header: 'State',
-        accessor: 'company.location_json.state' as const,
-        Cell: (props: any) => {
-          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
-        },
-        width: 200,
-      },
-      {
-        Header: 'Country',
-        accessor: 'company.location_json.country' as const,
-        Cell: (props: any) => {
-          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
-        },
-        width: 200,
-      },
-      {
-        Header: 'Founded',
-        accessor: 'company.year_founded' as const,
-        Cell: (props: any) => {
-          return <>{props.value ? <p>{props.value}</p> : <TableEmptyCell />}</>;
-        },
-        width: 200,
+        disableSortBy: true,
+        width: 450,
+        minWidth: 300,
       },
       {
         Header: 'Employees',
         accessor: 'company.total_employees' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: number }) => {
           return (
             <>
               {props.value ? (
@@ -175,8 +212,42 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
         width: 200,
       },
       {
+        Header: 'City',
+        accessor: 'company.location_json.city' as const,
+        Cell: (props: { value: string }) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+        width: 200,
+      },
+      {
+        Header: 'State',
+        accessor: 'company.location_json.state' as const,
+        Cell: (props: { value: string }) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+        width: 200,
+      },
+      {
+        Header: 'Country',
+        accessor: 'company.location_json.country' as const,
+        Cell: (props: { value: string }) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+        width: 200,
+      },
+      {
+        Header: 'Founded',
+        accessor: 'company.year_founded' as const,
+        Cell: (props: { value: string }) => {
+          return <>{props.value ? <p>{props.value}</p> : <TableEmptyCell />}</>;
+        },
+        width: 200,
+      },
+      {
         Header: 'Total Funding',
-        accessor: (data: { company: { investment_rounds: Array<any> } }) => {
+        accessor: (data: {
+          company: { investment_rounds: Investment_Rounds[] };
+        }) => {
           const totalFunding = data.company?.investment_rounds?.reduce(
             (total: number, currentValue: any) =>
               (total = total + currentValue.amount),
@@ -185,13 +256,20 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
           return totalFunding;
         },
-        Cell: (props: any) => {
+        Cell: (props: {
+          value: number;
+          row: {
+            original: {
+              company: Companies;
+            };
+          };
+        }) => {
           return (
             <div>
               {props.value > 0 ? (
                 <>${numberWithCommas(props.value)}</>
               ) : props.value === 0 &&
-                props.row.original?.company.investment_rounds.length > 0 ? (
+                props.row.original?.company?.investment_rounds.length > 0 ? (
                 <>Undisclosed Capital</>
               ) : (
                 <>{<TableEmptyCell />}</>
@@ -204,7 +282,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       {
         Header: '# Funding Rounds',
         accessor: 'company.investment_rounds.length' as const,
-        Cell: (props: any) => {
+        Cell: (props: { value: number }) => {
           const numberOfRounds = props.value;
           return <>{numberOfRounds ? numberOfRounds : <TableEmptyCell />}</>;
         },
@@ -212,7 +290,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       },
       {
         Header: 'Last Funding Date',
-        accessor: (data: { company: { investment_rounds: Array<any> } }) => {
+        accessor: (data: { company: Companies }) => {
           if (data.company?.investment_rounds.length > 0) {
             const roundsByLatestDate = orderBy(
               data.company?.investment_rounds,
@@ -222,10 +300,10 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
             return roundsByLatestDate[0].round_date;
           } else {
-            return 0;
+            return null;
           }
         },
-        Cell: (props: any) => {
+        Cell: (props: { value: Date }) => {
           return (
             <div>
               {props.value ? (
@@ -240,7 +318,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       },
       {
         Header: 'Last Funding Type',
-        accessor: (data: { company: { investment_rounds: Array<any> } }) => {
+        accessor: (data: { company: Companies }) => {
           if (data.company?.investment_rounds.length > 0) {
             const roundsByLatestDate = orderBy(
               data.company?.investment_rounds,
@@ -253,7 +331,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
             return 0;
           }
         },
-        Cell: (props: any) => {
+        Cell: (props: { value: string }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
       },
@@ -296,7 +374,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       totalItems={totalItems}
       fundingTotal={fundingTotal}
       noDataText="There are no companies in this list."
-      exploreBtnHref="/companies"
+      exploreBtnHref={ROUTES.COMPANIES}
       exploreBtnText="Explore Companies"
       searchQuery={query}
       onChangeSearchQuery={onChangeSearchQuery}

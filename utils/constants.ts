@@ -1,4 +1,4 @@
-import { Library, LibraryTag, Tag } from '@/types/common';
+import { DashboardCategory, Library, LibraryTag, Tag } from '@/types/common';
 import {
   email,
   required,
@@ -428,6 +428,21 @@ export const companyChoices = [
   },
 ];
 
+export const companyStatusTags: DashboardCategory[] = [
+  {
+    title: 'New',
+    value: 'new',
+    icon: '✨',
+  },
+  ...companyChoices.map(option => {
+    return {
+      title: option.name,
+      value: option.id,
+      icon: option.icon,
+    };
+  }),
+];
+
 export const companyLayerChoices = [
   {
     id: 'Layer 0',
@@ -505,8 +520,8 @@ export const roundChoices = [
     name: 'Series H',
   },
   {
-    id: 'ICO',
-    name: 'ICO',
+    id: 'Token Round',
+    name: 'Token Round',
   },
   {
     id: 'Venture Round',
@@ -782,9 +797,7 @@ export type ResourceTypes =
   | 'news_organizations'
   | 'news_person'
   | 'news_related_person'
-  | 'news_related_organizations'
-  | 'leads'
-  | 'leads_segmentation';
+  | 'news_related_organizations';
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
   companies: 'company',
@@ -805,8 +818,6 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   news_person: 'news_person',
   news_related_person: 'news_related_person',
   news_related_organizations: 'news_related_organizations',
-  leads: 'leads',
-  leads_segmentation: 'leads_segmentation',
 };
 
 export const isResourceType = (
@@ -831,224 +842,8 @@ export const isResourceType = (
     'news_person',
     'news_related_person',
     'news_related_organizations',
-    'leads',
-    'leads_segmentation',
   ].includes(resourceType);
 };
-
-export const companiesFilterOptions = [
-  {
-    category: 'Location',
-    items: [
-      {
-        label: 'Country',
-        value: 'country',
-      },
-      {
-        label: 'State',
-        value: 'state',
-      },
-      {
-        label: 'City',
-        value: 'city',
-      },
-      {
-        label: 'Address',
-        value: 'address',
-      },
-    ],
-  },
-  {
-    // category: 'Keywords',
-    items: [
-      {
-        label: 'Keywords',
-        value: 'keywords',
-      },
-    ],
-  },
-  {
-    //category: 'Tags',
-    items: [
-      {
-        label: 'Tags',
-        value: 'industry',
-      },
-    ],
-  },
-  {
-    category: 'Financials',
-    items: [
-      {
-        label: 'Funding type',
-        value: 'fundingType',
-        isPremium: true,
-      },
-      {
-        label: 'Total funding',
-        value: 'fundingAmount',
-        isPremium: true,
-      },
-      {
-        label: 'Last funding date',
-        value: 'lastFundingDate',
-        isPremium: true,
-      },
-      {
-        label: 'Investors',
-        value: 'fundingInvestors',
-        isPremium: true,
-      },
-    ],
-  },
-  {
-    // category: 'Team',
-    items: [
-      {
-        label: 'Team size',
-        value: 'teamSize',
-        isPremium: true,
-      },
-    ],
-  },
-];
-
-export const investorsFilterOptions = [
-  {
-    category: 'Location',
-    items: [
-      {
-        label: 'Country',
-        value: 'country',
-      },
-      {
-        label: 'State',
-        value: 'state',
-      },
-      {
-        label: 'City',
-        value: 'city',
-      },
-      {
-        label: 'Address',
-        value: 'address',
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'Keywords',
-        value: 'keywords',
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'Tags',
-        value: 'industry',
-      },
-    ],
-  },
-  {
-    category: 'Financials',
-    items: [
-      {
-        label: 'Investment type',
-        value: 'investmentType',
-        isPremium: true,
-      },
-      {
-        label: 'Total investment',
-        value: 'investmentAmountTotal',
-        isPremium: true,
-      },
-      {
-        label: 'Number of investments',
-        value: 'numOfInvestments',
-        isPremium: true,
-      },
-      {
-        label: 'Number of exits',
-        value: 'numOfExits',
-        isPremium: true,
-      },
-      {
-        label: 'Last investment date',
-        value: 'lastInvestmentDate',
-        isPremium: true,
-      },
-      {
-        label: 'Funded companies',
-        value: 'fundedCompanies',
-        isPremium: true,
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'Team size',
-        value: 'teamSize',
-        isPremium: true,
-      },
-    ],
-  },
-];
-
-export const eventsFilterOptions = [
-  {
-    category: 'Location',
-    items: [
-      {
-        label: 'Country',
-        value: 'country',
-      },
-      {
-        label: 'State',
-        value: 'state',
-      },
-      {
-        label: 'City',
-        value: 'city',
-      },
-      {
-        label: 'Address',
-        value: 'address',
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'Keywords',
-        value: 'keywords',
-      },
-    ],
-  },
-  {
-    category: 'Event details',
-    items: [
-      {
-        label: 'Type',
-        value: 'eventType',
-      },
-      {
-        label: 'Date',
-        value: 'eventDate',
-      },
-      {
-        label: 'Price',
-        value: 'eventPrice',
-      },
-      {
-        label: 'Size',
-        value: 'eventSize',
-      },
-    ],
-  },
-];
 
 export const MY_EDGEIN_MENU_OPEN_KEY = 'disclosure-my-edgein-menu-default-open';
 export const EXPLORE_MENU_OPEN_KEY = 'disclosure-explore-menu-default-open';
@@ -2013,6 +1808,14 @@ export const NEW_CATEGORY_LIMIT = 33;
 
 export const TRENDING_CATEGORY_LIMIT = 25;
 
+export const COMPANY_PROFILE_DEFAULT_TAGS_LIMIT = 5;
+
+export const INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT = 5;
+
+export const TABLE_DEFAULT_TEAM_LIMIT = 6;
+
+export const TABLE_MAX_TEAM_LIMIT = 10;
+
 export const segmentChoices: SegmentOption[] = [
   {
     title: 'Executive',
@@ -2055,3 +1858,9 @@ export const ONBOARDING_MIN_LOCATIONS = 1;
 export const ONBOARDING_MIN_TAGS = 3;
 
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
+
+export const AUTO_GENERATED_LIST_MAXIMUM_COMPANIES = 30;
+export const AUTO_GENERATED_LIST_MAXIMUM_INVESTORS = 10;
+export const AUTO_GENERATED_LIST_MAXIMUM_PEOPLE = 10;
+
+export const LOCAL_STORAGE_SIDEBAR_BANNER_KEY = 'sidebar_banner';

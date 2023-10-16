@@ -16,9 +16,8 @@ import {
   InsertDataDiscardDocument,
 } from '@/graphql/types';
 import { User } from '@/models/user';
-import { Library } from '@/types/common';
 import { HttpError } from 'react-admin';
-import { getTagChoicesByLibraries, getUpdatedDiff } from './helpers';
+import { getUpdatedDiff } from './helpers';
 import * as util from 'util';
 import {
   ActionType,
@@ -27,6 +26,7 @@ import {
   isResourceType,
   RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from './constants';
+import { USER_ROLES } from './users';
 import CookieService from '@/utils/cookie';
 import { CommonRequest, CommonResponse } from './api';
 
@@ -302,31 +302,6 @@ const formatValue = (data: any, dataType: string) => {
   } catch {
     return;
   }
-};
-
-const validateValue = (
-  resourceType: ResourceTypes,
-  field: string,
-  value: any,
-  library: Library[],
-) => {
-  let isValidated = true;
-  switch (resourceType) {
-    case 'companies':
-    case 'vc_firms': {
-      const tagChoices = getTagChoicesByLibraries(library);
-      if (
-        field === 'tags' &&
-        !value.every((tag: string) =>
-          tagChoices.map(item => item.id).includes(tag),
-        )
-      )
-        isValidated = false;
-      break;
-    }
-  }
-
-  return isValidated;
 };
 
 const notFoundAction = async (

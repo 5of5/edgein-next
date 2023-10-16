@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { ElemButton } from '@/components/elem-button';
 import {
   FigureBlurredCircle,
@@ -13,6 +12,8 @@ import { useUser } from '@/context/user-context';
 import Builders from '@/public/images/builders.svg';
 import People from '@/public/images/people.svg';
 import { IconCheck } from '@/components/icons';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '@/components/elem-link';
 
 const Enterprise = () => {
   const { user } = useUser();
@@ -21,27 +22,27 @@ const Enterprise = () => {
     {
       title: 'Akkadian',
       image: '/images/akkadian.svg',
-      link: '/investors/akkadian-ventures/',
+      link: `${ROUTES.INVESTORS}/akkadian-ventures/`,
     },
     {
       title: 'Shima',
       image: '/images/shima-capital.png',
-      link: '/investors/shima-capital/',
+      link: `${ROUTES.INVESTORS}/shima-capital/`,
     },
     {
       title: 'Fireblocks',
       image: '/images/fireblocks.svg',
-      link: '/companies/fireblocks/',
+      link: `${ROUTES.COMPANIES}/fireblocks/`,
     },
     {
       title: 'Tokentag',
       image: '/images/tokentag.svg',
-      link: '/companies/tokentag/',
+      link: `${ROUTES.COMPANIES}/tokentag/`,
     },
     {
       title: '4k',
       image: '/images/4k.svg',
-      link: '/companies/4k/',
+      link: `${ROUTES.COMPANIES}/4k/`,
     },
   ];
 
@@ -205,17 +206,15 @@ const Enterprise = () => {
                   key={item.title}
                   className="flex items-center justify-center"
                 >
-                  <Link href={item.link}>
-                    <a className="block">
-                      {item.image && (
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-auto"
-                        />
-                      )}
-                    </a>
-                  </Link>
+                  <ElemLink href={item.link} className="block">
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-auto"
+                      />
+                    )}
+                  </ElemLink>
                 </div>
               ))}
             </div>

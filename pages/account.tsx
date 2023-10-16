@@ -12,6 +12,7 @@ import { loadStripe } from '@/utils/stripe';
 import { redirect_url } from '@/utils/auth';
 import validator from 'validator';
 import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
+import { USER_ROLES } from '@/utils/users';
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
@@ -128,6 +129,11 @@ export default function Account() {
     refreshUser();
   };
 
+  const currentDate = new Date();
+  const haveSubscriptionFromCredits =
+    userProfile?.users_by_pk?.use_credits_system &&
+    new Date(userProfile?.users_by_pk?.last_transaction_expiration) >
+      currentDate;
   return (
     <DashboardLayout>
       <div className="px-4 py-3 border-gray-200">
@@ -252,8 +258,8 @@ export default function Account() {
             heading="Subscription"
             right={
               userProfile &&
-              (userProfile.users_by_pk?.billing_org_id ||
-                userProfile.users_by_pk?.credits > 0) ? (
+              (userProfile.users_by_pk?.billing_org?.status === 'active' ||
+                haveSubscriptionFromCredits) ? (
                 <ElemButton onClick={onBillingClick} btn="default" className="">
                   Manage subscription
                 </ElemButton>
@@ -263,8 +269,8 @@ export default function Account() {
             }
           >
             {userProfile &&
-            (userProfile.users_by_pk?.billing_org_id ||
-              userProfile.users_by_pk?.credits > 0) ? (
+            (userProfile.users_by_pk?.billing_org?.status === 'active' ||
+              haveSubscriptionFromCredits) ? (
               <div>
                 <div className="flex items-center space-x-1">
                   <IconContributor className="h-6 w-6 text-primary-500" />
@@ -299,7 +305,7 @@ export default function Account() {
         />
       </div>
 
-      {user?.role === 'admin' && (
+      {user?.role === USER_ROLES.ADMIN && (
         <div className="px-4 py-3 border-t border-gray-200">
           <div className="flex justify-between items-center mb-2">
             <h2 className="font-medium text-xl">Admin Settings</h2>

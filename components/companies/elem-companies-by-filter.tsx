@@ -12,7 +12,7 @@ import { FC } from 'react';
 import { Pagination } from '../pagination';
 import { PlaceholderCompanyCard } from '../placeholders';
 import { CompaniesTable } from './elem-companies-table';
-import { ElemCompanyCard } from './elem-company-card';
+import { CardType, ElemCompanyCard } from './elem-company-card';
 
 type Props = {
   headingText: string;
@@ -21,6 +21,7 @@ type Props = {
   itemsPerPage: number;
   tagOnClick: any;
   isTableView?: boolean;
+  cardType?: CardType;
 };
 
 export const CompaniesByFilter: FC<Props> = ({
@@ -30,6 +31,7 @@ export const CompaniesByFilter: FC<Props> = ({
   itemsPerPage,
   tagOnClick,
   isTableView = false,
+  cardType = 'full',
 }) => {
   const { page, setPage, nextPage, previousPage } = usePagination();
 
@@ -89,6 +91,7 @@ export const CompaniesByFilter: FC<Props> = ({
               <ElemCompanyCard
                 key={company.id}
                 company={company as Companies}
+                type={cardType}
               />
             ))}
           </div>

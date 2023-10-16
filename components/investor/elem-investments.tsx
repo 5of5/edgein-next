@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { ElemPhoto } from '@/components/elem-photo';
 import { Investment_Rounds } from '@/graphql/types';
 import {
@@ -20,6 +19,8 @@ import { Menu } from '@headlessui/react';
 import { Pagination } from '@/components/pagination';
 import { ElemButton } from '../elem-button';
 import { useIntercom } from 'react-use-intercom';
+import { ROUTES } from '@/routes';
+import { ElemLink } from '../elem-link';
 
 type Props = {
   className?: string;
@@ -107,19 +108,20 @@ export const ElemInvestments: React.FC<Props> = ({
             {!props.value ? (
               emptyCell
             ) : (
-              <Link href={`/companies/${props.value.slug}`}>
-                <a className="company flex items-center space-x-3 hover:opacity-70">
-                  <ElemPhoto
-                    photo={props.value.logo}
-                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
-                    imgClass="object-fit max-w-full max-h-full rounded"
-                    imgAlt={props.value.name}
-                  />
-                  <p className="ml-2 line-clamp-2 break-words">
-                    {props.value.name}
-                  </p>
-                </a>
-              </Link>
+              <ElemLink
+                href={`${ROUTES.COMPANIES}/${props.value.slug}`}
+                className="company flex items-center space-x-3 hover:opacity-70"
+              >
+                <ElemPhoto
+                  photo={props.value.logo}
+                  wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
+                  imgClass="object-fit max-w-full max-h-full rounded"
+                  imgAlt={props.value.name}
+                />
+                <p className="ml-2 line-clamp-2 break-words">
+                  {props.value.name}
+                </p>
+              </ElemLink>
             )}
           </div>
         ),
@@ -169,44 +171,42 @@ export const ElemInvestments: React.FC<Props> = ({
                         className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2"
                       >
                         {investment.vc_firm && (
-                          <Link
-                            href={`/investors/${investment.vc_firm.slug}`}
+                          <ElemLink
+                            href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                             key={investment.vc_firm.id}
+                            className="vcfirm flex items-center space-x-3 hover:opacity-70"
                           >
-                            <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-                              <ElemPhoto
-                                photo={investment.vc_firm.logo}
-                                wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
-                                imgClass="object-fit max-w-full max-h-full"
-                                imgAlt={investment.vc_firm.name}
-                                placeholderClass="text-slate-300"
-                              />
-                              <span className="line-clamp-2 font-medium">
-                                {investment.vc_firm.name}
-                              </span>
-                            </a>
-                          </Link>
+                            <ElemPhoto
+                              photo={investment.vc_firm.logo}
+                              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
+                              imgClass="object-fit max-w-full max-h-full"
+                              imgAlt={investment.vc_firm.name}
+                              placeholderClass="text-slate-300"
+                            />
+                            <span className="line-clamp-2 font-medium">
+                              {investment.vc_firm.name}
+                            </span>
+                          </ElemLink>
                         )}
 
                         {investment.person && (
-                          <Link
-                            href={`/people/${investment.person.slug}`}
+                          <ElemLink
+                            href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                             key={investment.person.id}
+                            className="investor flex items-center space-x-3 hover:opacity-70"
                           >
-                            <a className="investor flex items-center space-x-3 hover:opacity-70">
-                              <ElemPhoto
-                                photo={investment.person.picture}
-                                wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-                                imgClass="object-cover w-12 h-12"
-                                imgAlt={investment.person.name}
-                                placeholder="user"
-                                placeholderClass="text-slate-300"
-                              />
-                              <span className="line-clamp-2 font-medium">
-                                {investment.person.name}
-                              </span>
-                            </a>
-                          </Link>
+                            <ElemPhoto
+                              photo={investment.person.picture}
+                              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
+                              imgClass="object-cover w-12 h-12"
+                              imgAlt={investment.person.name}
+                              placeholder="user"
+                              placeholderClass="text-slate-300"
+                            />
+                            <span className="line-clamp-2 font-medium">
+                              {investment.person.name}
+                            </span>
+                          </ElemLink>
                         )}
                       </div>
                     );
@@ -219,23 +219,22 @@ export const ElemInvestments: React.FC<Props> = ({
                         className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2"
                       >
                         {investment.vc_firm && (
-                          <Link
-                            href={`/investors/${investment.vc_firm.slug}`}
+                          <ElemLink
+                            href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                             key={investment.vc_firm.id}
+                            className="vcfirm flex items-center space-x-3 hover:opacity-70"
                           >
-                            <a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-                              <ElemPhoto
-                                photo={investment.vc_firm.logo}
-                                wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
-                                imgClass="object-fit max-w-full max-h-full"
-                                imgAlt={investment.vc_firm.name}
-                                placeholderClass="text-slate-300"
-                              />
-                              <span className="line-clamp-2 font-medium">
-                                {investment.vc_firm.name}
-                              </span>
-                            </a>
-                          </Link>
+                            <ElemPhoto
+                              photo={investment.vc_firm.logo}
+                              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
+                              imgClass="object-fit max-w-full max-h-full"
+                              imgAlt={investment.vc_firm.name}
+                              placeholderClass="text-slate-300"
+                            />
+                            <span className="line-clamp-2 font-medium">
+                              {investment.vc_firm.name}
+                            </span>
+                          </ElemLink>
                         )}
                       </div>
                     );
@@ -248,24 +247,23 @@ export const ElemInvestments: React.FC<Props> = ({
                         className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2"
                       >
                         {investment.person && (
-                          <Link
-                            href={`/people/${investment.person.slug}`}
+                          <ElemLink
+                            href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                             key={investment.person.id}
+                            className="investor flex items-center space-x-3 hover:opacity-70"
                           >
-                            <a className="investor flex items-center space-x-3 hover:opacity-70">
-                              <ElemPhoto
-                                photo={investment.person.picture}
-                                wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-                                imgClass="object-cover w-12 h-12"
-                                imgAlt={investment.person.name}
-                                placeholder="user"
-                                placeholderClass="text-slate-300"
-                              />
-                              <span className="line-clamp-2 font-medium">
-                                {investment.person.name}
-                              </span>
-                            </a>
-                          </Link>
+                            <ElemPhoto
+                              photo={investment.person.picture}
+                              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
+                              imgClass="object-cover w-12 h-12"
+                              imgAlt={investment.person.name}
+                              placeholder="user"
+                              placeholderClass="text-slate-300"
+                            />
+                            <span className="line-clamp-2 font-medium">
+                              {investment.person.name}
+                            </span>
+                          </ElemLink>
                         )}
                       </div>
                     );
