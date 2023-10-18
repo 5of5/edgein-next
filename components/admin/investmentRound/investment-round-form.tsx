@@ -27,15 +27,13 @@ const InvestmentRoundForm = ({ toolbar }: InvestmentRoundFormProps) => {
           filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
-      <NumberInput className={inputClassName} source="amount" />
-      
       <DateInput className={inputClassName} source="round_date" />
       <SelectInput
         className={inputClassName}
         source="round"
         choices={roundChoices}
       />
-     
+      <NumberInput className={inputClassName} source="amount" />
       <SelectInput
         className={inputClassName}
         source="currency"

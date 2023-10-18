@@ -6,7 +6,10 @@ import UserTransactionForm from './user-transactions-form';
 export const UserTransactionsEdit = () => {
   return (
     <div style={{ paddingBottom: '20px' }}>
-      <ElemFormBase title={<ElemTitle category="User transaction" />} action="edit">
+      <ElemFormBase
+        title={<ElemTitle category="User transaction" />}
+        action="edit"
+      >
         <UserTransactionForm />
       </ElemFormBase>
     </div>

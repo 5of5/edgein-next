@@ -1,20 +1,9 @@
 import React from 'react';
-import {
-  TextField,
-  EditButton,
-  ReferenceField,
-  TextInput,
-} from 'react-admin';
+import { TextField, EditButton, ReferenceField, TextInput } from 'react-admin';
 import ElemList from '../elem-list';
 
 const filters = [
-  <TextInput
-    key="search"
-    source="amount"
-    label="Use"
-    resettable
-    alwaysOn
-  />
+  <TextInput key="search" source="amount" label="Use" resettable alwaysOn />,
 ];
 
 export const UserTransactionsList = () => {
