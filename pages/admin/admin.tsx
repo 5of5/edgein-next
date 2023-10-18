@@ -35,7 +35,6 @@ const nullableInputs: NullableInputs = {
 
 const AdminApp = () => {
   const { user } = useAuth();
-
   const authProvider = useAdminAuthProvider([USER_ROLES.ADMIN], user);
 
   const onTransformData = useCallback(
@@ -87,8 +86,7 @@ const AdminApp = () => {
       layout={ElemLayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
-      theme={theme}
-    >
+      theme={theme}>
       <CssBaseline />
       <Resource
         name="disabled_emails"
