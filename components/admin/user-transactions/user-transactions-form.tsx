@@ -6,6 +6,7 @@ import {
   DateInput,
   NumberInput,
   AutocompleteInput,
+  TextInput,
 } from 'react-admin';
 import { roundChoices, currencyChoices, status } from '@/utils/constants';
 
@@ -19,34 +20,17 @@ const InvestmentRoundForm = ({ toolbar }: InvestmentRoundFormProps) => {
 
   return (
     <SimpleForm toolbar={toolbar}>
-      <ReferenceInput label="Company" source="company_id" reference="companies">
+      <ReferenceInput label="User" source="user_id" reference="users">
         <AutocompleteInput
           style={{ padding: 0, border: 'none' }}
           className={inputClassName}
-          optionText="name"
-          filterToQuery={search => ({ name: search })}
+          optionText="display_name"
+          filterToQuery={search => ({ display_name: search })}
         />
       </ReferenceInput>
+
       <NumberInput className={inputClassName} source="amount" />
-      
-      <DateInput className={inputClassName} source="round_date" />
-      <SelectInput
-        className={inputClassName}
-        source="round"
-        choices={roundChoices}
-      />
-     
-      <SelectInput
-        className={inputClassName}
-        source="currency"
-        choices={currencyChoices}
-      />
-      <NumberInput className={inputClassName} source="valuation" />
-      <SelectInput
-        className={inputClassName}
-        source="status"
-        choices={status}
-      />
+      <TextInput className={inputClassName} source="note" />
     </SimpleForm>
   );
 };

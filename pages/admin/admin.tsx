@@ -25,6 +25,11 @@ import { NullableInputs } from '@/types/admin';
 import { nullInputTransform } from '@/utils/admin';
 import useAdminAuthProvider from '@/hooks/use-admin-auth-provider';
 import { USER_ROLES } from '@/utils/users';
+import { UserTransactionsList } from '@/components/admin/user-transactions/user-transactions-list';
+import { BuildFields, buildFields } from 'ra-data-hasura';
+import gql from 'graphql-tag';
+import { UserTransactionsCreate } from '@/components/admin/user-transactions/user-transactions-create';
+import { UserTransactionsEdit } from '@/components/admin/user-transactions/user-transactions-edit';
 
 const nullableInputs: NullableInputs = {
   users: ['person_id'],
@@ -84,8 +89,7 @@ const AdminApp = () => {
       layout={ElemLayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
-      theme={theme}
-    >
+      theme={theme}>
       <CssBaseline />
       <Resource
         name="disabled_emails"
@@ -99,6 +103,12 @@ const AdminApp = () => {
         list={DataPartnerList}
         edit={DataPartnerEdit}
         create={DataPartnerCreate}
+      />
+      <Resource
+        name="user_transactions"
+        list={UserTransactionsList}
+        edit={UserTransactionsEdit}
+        create={UserTransactionsCreate}
       />
     </Admin>
   );
