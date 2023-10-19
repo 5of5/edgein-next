@@ -25,9 +25,10 @@ import { NullableInputs } from '@/types/admin';
 import { nullInputTransform } from '@/utils/admin';
 import useAdminAuthProvider from '@/hooks/use-admin-auth-provider';
 import { USER_ROLES } from '@/utils/users';
-import { UserTransactionsList } from '@/components/admin/user-transactions/user-transactions-list';
-import { UserTransactionsCreate } from '@/components/admin/user-transactions/user-transactions-create';
-import { UserTransactionsEdit } from '@/components/admin/user-transactions/user-transactions-edit';
+import {
+  UserTransactionsCreate,
+  UserTransactionsList,
+} from '@/components/admin/user-transactions';
 
 const nullableInputs: NullableInputs = {
   users: ['person_id'],
@@ -86,7 +87,8 @@ const AdminApp = () => {
       layout={ElemLayoutApp}
       dataProvider={dataProvider}
       authProvider={authProvider}
-      theme={theme}>
+      theme={theme}
+    >
       <CssBaseline />
       <Resource
         name="disabled_emails"
@@ -104,7 +106,6 @@ const AdminApp = () => {
       <Resource
         name="user_transactions"
         list={UserTransactionsList}
-        edit={UserTransactionsEdit}
         create={UserTransactionsCreate}
       />
     </Admin>

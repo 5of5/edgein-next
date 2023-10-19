@@ -1,5 +1,12 @@
 import React from 'react';
-import { TextField, EditButton, ReferenceField, TextInput, NumberInput, NumberField } from 'react-admin';
+import {
+  TextField,
+  EditButton,
+  ReferenceField,
+  TextInput,
+  NumberInput,
+  NumberField,
+} from 'react-admin';
 import ElemList from '../elem-list';
 
 const filters = [
