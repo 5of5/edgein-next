@@ -1,7 +1,7 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import AWS from 'aws-sdk';
 import path from 'path';
-import UserService from '@/utils/users';
+import UserService, { USER_ROLES } from '@/utils/users';
 
 //AWS config set
 AWS.config.update({
@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { role } = (await UserService.getUserByCookies(req.cookies)) ?? {};
-  if (role !== 'admin') {
+  if (role !== USER_ROLES.ADMIN) {
     return res.status(401).json({
       message: 'You are unauthorized for this operation!',
     });

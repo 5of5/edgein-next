@@ -1,4 +1,5 @@
 import CookieService from './cookie';
+import { USER_ROLES } from './users';
 
 export const runGraphQl = async <QueryType>(
   query: string,
@@ -30,7 +31,7 @@ export const runGraphQl = async <QueryType>(
     // Allow admin to access draft records
     // Set default showDraftData is true
     if (
-      user?.role === 'admin' &&
+      user?.role === USER_ROLES.ADMIN &&
       (user?.showDraftData === undefined || user?.showDraftData)
     )
       delete headers['x-hasura-role'];

@@ -12,6 +12,7 @@ import { loadStripe } from '@/utils/stripe';
 import { redirect_url } from '@/utils/auth';
 import validator from 'validator';
 import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
+import { USER_ROLES } from '@/utils/users';
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
@@ -304,7 +305,7 @@ export default function Account() {
         />
       </div>
 
-      {user?.role === 'admin' && (
+      {user?.role === USER_ROLES.ADMIN && (
         <div className="px-4 py-3 border-t border-gray-200">
           <div className="flex justify-between items-center mb-2">
             <h2 className="font-medium text-xl">Admin Settings</h2>

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
+import { USER_ROLES } from '@/utils/users';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(
@@ -8,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Set default showDraftData is true
   const isAdminHideDraftData =
-    user?.role === 'admin' && user?.showDraftData === false;
+    user?.role === USER_ROLES.ADMIN && user?.showDraftData === false;
 
   let headers:
     | ({ 'x-hasura-role'?: string; 'x-hasura-user-id'?: string } & {
@@ -25,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
   } else if (
     user &&
-    (user.role === 'user' ||
+    (user.role === USER_ROLES.USER ||
       req.headers['is-viewer'] === 'true' ||
       isAdminHideDraftData)
   ) {

@@ -16,9 +16,8 @@ import {
   InsertDataDiscardDocument,
 } from '@/graphql/types';
 import { User } from '@/models/user';
-import { Library } from '@/types/common';
 import { HttpError } from 'react-admin';
-import { getTagChoicesByLibraries, getUpdatedDiff } from './helpers';
+import { getUpdatedDiff } from './helpers';
 import * as util from 'util';
 import {
   ActionType,
@@ -27,6 +26,7 @@ import {
   isResourceType,
   RESOURCE_TYPES_CONTAIN_LIBRARY,
 } from './constants';
+import { USER_ROLES } from './users';
 
 export const partnerLookUp = async (apiKey: string) => {
   const {
@@ -406,7 +406,7 @@ export const mutateActionAndDataRaw = async (
       const dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
       if (
         dataField === undefined ||
-        (dataField?.restricted_admin && user?.role !== 'admin')
+        (dataField?.restricted_admin && user?.role !== USER_ROLES.ADMIN)
       )
         invalidData.push({
           resource: resourceType,

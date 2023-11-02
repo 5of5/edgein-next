@@ -96,9 +96,9 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
             </h3>
             <p className="mt-1 text-sm text-gray-500">
               {isPaidUser && userHasCredits
-                ? `You can use your credits to get ${
-                    user?.credits / 1500
-                  } months of EdgeIn Contributor.`
+                ? `You can use your credits to get ${Math.floor(
+                    user?.credits / 1500,
+                  )} months of EdgeIn Contributor.`
                 : isPaidUser
                 ? 'Invite a friend and get 1,500 credits for 1 month of EdgeIn Contributor for free.'
                 : isFreeUser

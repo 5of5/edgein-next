@@ -37,10 +37,17 @@ import {
   GetUserByIdForTokenDocument,
   GetUserByEmailForTokenQuery,
 } from '@/graphql/types';
-import { Entitlements, UserToken } from '@/models/user';
+import { Entitlements, UserRole, UserToken } from '@/models/user';
 import { createHmac } from 'crypto';
 import { clearLocalStorage } from './helpers';
 import CookieService from '@/utils/cookie';
+
+export const USER_ROLES: Record<Uppercase<UserRole>, UserRole> = {
+  ADMIN: 'admin',
+  CMS: 'cms',
+  USER: 'user',
+  'CMS-READONLY': 'cms-readonly',
+} as const;
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
   const data = await query<GetAllowedEmailByEmailOrDomainQuery>({

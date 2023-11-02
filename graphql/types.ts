@@ -29774,7 +29774,7 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, website: string | null, logo: any | null, sentiment: any | null, location: string | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, website: string | null, logo: any | null, sentiment: any | null, location: string | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -29784,7 +29784,7 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, website: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location_json: any | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }>, follows_vc_firms_aggregate: { __typename?: 'follows_vc_firms_aggregate', aggregate: { __typename?: 'follows_vc_firms_aggregate_fields', count: number } | null } };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, website: string | null, num_of_investments: number | null, latest_investment: any | null, sentiment: any | null, logo: any | null, slug: string, location_json: any | null, year_founded: string | null, overview: string | null, tags: any | null, investors: Array<{ __typename?: 'investors', id: number, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: any | null, round: string | null } | null }> } | null }>, follows_vc_firms_aggregate: { __typename?: 'follows_vc_firms_aggregate', aggregate: { __typename?: 'follows_vc_firms_aggregate_fields', count: number } | null } };
 
 export type UpsertFollowsMutationVariables = Exact<{
   listId: InputMaybe<Scalars['Int']>;
@@ -30073,6 +30073,20 @@ export type InsertInvitedPeopleMutationVariables = Exact<{
 
 
 export type InsertInvitedPeopleMutation = { __typename?: 'mutation_root', insert_invited_people_one: { __typename?: 'invited_people', id: number, person_id: number, inviter_user_id: number, created_at: any } | null };
+
+export type InsertLeadsMutationVariables = Exact<{
+  object: Leads_Insert_Input;
+}>;
+
+
+export type InsertLeadsMutation = { __typename?: 'mutation_root', insert_leads_one: { __typename?: 'leads', id: number } | null };
+
+export type InsertLeadsSegmentationMutationVariables = Exact<{
+  object: Leads_Segmentation_Insert_Input;
+}>;
+
+
+export type InsertLeadsSegmentationMutation = { __typename?: 'mutation_root', insert_leads_segmentation_one: { __typename?: 'leads_segmentation', id: number } | null };
 
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
@@ -32418,8 +32432,14 @@ export const GetCompaniesByListIdDocument = `
         ticker
         name
       }
-      teamMembers {
+      teamMembers(limit: 10, order_by: {founder: desc_nulls_last}) {
         id
+        founder
+        person {
+          id
+          slug
+          name
+        }
       }
       investment_rounds {
         amount
@@ -32479,6 +32499,15 @@ export const GetVcFirmsByListIdDocument = `
       year_founded
       overview
       tags
+      investors(limit: 10, order_by: {founder: desc_nulls_last}) {
+        id
+        founder
+        person {
+          id
+          slug
+          name
+        }
+      }
       investments {
         investment_round {
           id
@@ -33743,6 +33772,40 @@ export const useInsertInvitedPeopleMutation = <
       options
     );
 useInsertInvitedPeopleMutation.fetcher = (variables: InsertInvitedPeopleMutationVariables, options?: RequestInit['headers']) => fetcher<InsertInvitedPeopleMutation, InsertInvitedPeopleMutationVariables>(InsertInvitedPeopleDocument, variables, options);
+export const InsertLeadsDocument = `
+    mutation InsertLeads($object: leads_insert_input!) {
+  insert_leads_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertLeadsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLeadsMutation, TError, InsertLeadsMutationVariables, TContext>) =>
+    useMutation<InsertLeadsMutation, TError, InsertLeadsMutationVariables, TContext>(
+      ['InsertLeads'],
+      (variables?: InsertLeadsMutationVariables) => fetcher<InsertLeadsMutation, InsertLeadsMutationVariables>(InsertLeadsDocument, variables)(),
+      options
+    );
+useInsertLeadsMutation.fetcher = (variables: InsertLeadsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLeadsMutation, InsertLeadsMutationVariables>(InsertLeadsDocument, variables, options);
+export const InsertLeadsSegmentationDocument = `
+    mutation InsertLeadsSegmentation($object: leads_segmentation_insert_input!) {
+  insert_leads_segmentation_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertLeadsSegmentationMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLeadsSegmentationMutation, TError, InsertLeadsSegmentationMutationVariables, TContext>) =>
+    useMutation<InsertLeadsSegmentationMutation, TError, InsertLeadsSegmentationMutationVariables, TContext>(
+      ['InsertLeadsSegmentation'],
+      (variables?: InsertLeadsSegmentationMutationVariables) => fetcher<InsertLeadsSegmentationMutation, InsertLeadsSegmentationMutationVariables>(InsertLeadsSegmentationDocument, variables)(),
+      options
+    );
+useInsertLeadsSegmentationMutation.fetcher = (variables: InsertLeadsSegmentationMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLeadsSegmentationMutation, InsertLeadsSegmentationMutationVariables>(InsertLeadsSegmentationDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {

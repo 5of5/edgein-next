@@ -797,9 +797,7 @@ export type ResourceTypes =
   | 'news_organizations'
   | 'news_person'
   | 'news_related_person'
-  | 'news_related_organizations'
-  | 'leads'
-  | 'leads_segmentation';
+  | 'news_related_organizations';
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
   companies: 'company',
@@ -820,8 +818,6 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   news_person: 'news_person',
   news_related_person: 'news_related_person',
   news_related_organizations: 'news_related_organizations',
-  leads: 'leads',
-  leads_segmentation: 'leads_segmentation',
 };
 
 export const isResourceType = (
@@ -846,8 +842,6 @@ export const isResourceType = (
     'news_person',
     'news_related_person',
     'news_related_organizations',
-    'leads',
-    'leads_segmentation',
   ].includes(resourceType);
 };
 
@@ -1817,6 +1811,10 @@ export const TRENDING_CATEGORY_LIMIT = 25;
 export const COMPANY_PROFILE_DEFAULT_TAGS_LIMIT = 5;
 
 export const INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT = 5;
+
+export const TABLE_DEFAULT_TEAM_LIMIT = 6;
+
+export const TABLE_MAX_TEAM_LIMIT = 10;
 
 export const segmentChoices: SegmentOption[] = [
   {
