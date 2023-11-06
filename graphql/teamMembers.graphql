@@ -73,3 +73,70 @@ query GetTeamMemberById($id: Int!) {
     }
   }
 }
+
+query GetTeamMembers(
+  $limit: Int
+  $offset: Int
+  $orderBy: [team_members_order_by!]
+  $where: team_members_bool_exp!
+) {
+  team_members(
+    where: $where
+    order_by: $orderBy
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    company_id
+    person {
+      id
+      slug
+      name
+      picture
+      linkedin
+      personal_email
+      work_email
+    }
+    function
+    start_date
+    end_date
+    founder
+    title
+  }
+  team_members_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query GetInvestors(
+  $limit: Int
+  $offset: Int
+  $orderBy: [investors_order_by!]
+  $where: investors_bool_exp!
+) {
+  investors(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
+    id
+    vc_firm_id
+    person {
+      id
+      slug
+      name
+      picture
+      linkedin
+      personal_email
+      work_email
+    }
+    function
+    start_date
+    end_date
+    founder
+    title
+  }
+  # investors_aggregate(where: $where) {
+  #   aggregate {
+  #     count
+  #   }
+  # }
+}
