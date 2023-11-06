@@ -28,7 +28,7 @@ type Props = {
   className?: string;
   heading?: string;
   resourceName?: string;
-  resourceType: 'companies' | 'investors';
+  resourceType: 'companies' | 'vc_firms';
   resourceId?: number;
   showTags?: boolean;
   allowToSaveTeam?: boolean;
@@ -123,14 +123,14 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
   const filteredMembers =
     selectedTag === 'All Members'
       ? members
-      : (members?.filter((p: any) => p.function === selectedTag) as any);
+      : members?.filter(p => p.function === selectedTag);
 
   if (resourceType === 'companies' && selectedTag !== 'All Members') {
     defaultCompanyFilters.push({
       _and: [{ function: { _eq: selectedTag } }],
     });
   }
-  if (resourceType === 'investors' && selectedTag !== 'All Members') {
+  if (resourceType === 'vc_firms' && selectedTag !== 'All Members') {
     defaultInvestorFilters.push({
       _and: [{ function: { _eq: selectedTag } }],
     });
@@ -215,7 +215,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
             </div>
 
             <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {filteredMembers?.map((teamMember: Team_Members | Investors) => {
+              {filteredMembers?.map(teamMember => {
                 return (
                   <React.Fragment key={teamMember.id}>
                     {teamMember.person && (

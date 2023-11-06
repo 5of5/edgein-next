@@ -275,7 +275,7 @@ const VCFirm: NextPage<Props> = props => {
           <ElemOrganizationTeam
             heading="Team"
             resourceName={vcfirm.name || ''}
-            resourceType="investors"
+            resourceType="vc_firms"
             resourceId={vcfirm.id}
           />
         </div>
