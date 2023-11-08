@@ -458,7 +458,8 @@ const Company: NextPage<Props> = (props: Props) => {
           <ElemOrganizationTeam
             heading="Team"
             resourceName={company.name || ''}
-            people={company.teamMembers}
+            resourceType="companies"
+            resourceId={company.id}
           />
         </div>
 
