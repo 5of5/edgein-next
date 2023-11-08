@@ -30576,7 +30576,7 @@ export type GetInvestorsQueryVariables = Exact<{
 }>;
 
 
-export type GetInvestorsQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }> };
+export type GetInvestorsQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investors_aggregate: { __typename?: 'investors_aggregate', aggregate: { __typename?: 'investors_aggregate_fields', count: number } | null } };
 
 export type InsertUserTransactionMutationVariables = Exact<{
   object: User_Transactions_Insert_Input;
@@ -35989,6 +35989,11 @@ export const GetInvestorsDocument = `
     end_date
     founder
     title
+  }
+  investors_aggregate(where: $where) {
+    aggregate {
+      count
+    }
   }
 }
     `;

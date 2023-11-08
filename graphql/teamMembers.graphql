@@ -134,9 +134,9 @@ query GetInvestors(
     founder
     title
   }
-  # investors_aggregate(where: $where) {
-  #   aggregate {
-  #     count
-  #   }
-  # }
+  investors_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
 }

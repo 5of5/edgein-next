@@ -119,9 +119,9 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
   const members_aggregate =
     resourceType === 'companies'
       ? teamData?.team_members_aggregate?.aggregate?.count || 0
-      : //: resourceType === 'vc_firms'
-        //? investorsData?.investors_aggregate?.aggregate?.count || 0
-        50;
+      : resourceType === 'vc_firms'
+      ? investorsData?.investors_aggregate?.aggregate?.count || 0
+      : 0;
 
   const filteredMembers =
     selectedTag === 'All Members' && members
@@ -141,7 +141,6 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
     });
   }
 
-  //All member function choices
   const allMemberTags = [
     'All Members',
     ...functionChoicesTM.map(option => {
