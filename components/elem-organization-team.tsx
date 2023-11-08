@@ -109,21 +109,26 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
     { refetchOnWindowFocus: false },
   );
 
-  // console.log(investorsData?.investors_aggregate);
-
-  const members =
+  const members: (Team_Members | Investors)[] =
     resourceType === 'companies'
-      ? teamData?.team_members
-      : investorsData?.investors;
+      ? (teamData?.team_members as Team_Members[]) || []
+      : resourceType === 'vc_firms'
+      ? (investorsData?.investors as Investors[]) || []
+      : [];
+
   const members_aggregate =
     resourceType === 'companies'
       ? teamData?.team_members_aggregate?.aggregate?.count || 0
-      : 100; //investorsData?.investors_aggregate?.aggregate?.count || 0;
+      : //: resourceType === 'vc_firms'
+        //? investorsData?.investors_aggregate?.aggregate?.count || 0
+        50;
 
   const filteredMembers =
-    selectedTag === 'All Members'
+    selectedTag === 'All Members' && members
       ? members
-      : members?.filter(p => p.function === selectedTag);
+      : members
+      ? members.filter(p => p.function === selectedTag)
+      : [];
 
   if (resourceType === 'companies' && selectedTag !== 'All Members') {
     defaultCompanyFilters.push({
@@ -213,7 +218,6 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                 </div>
               )}
             </div>
-
             <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
               {filteredMembers?.map(teamMember => {
                 return (
