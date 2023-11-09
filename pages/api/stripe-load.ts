@@ -14,7 +14,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const dbuser = await UserService.findOneUserById(user.id);
 
-      if (dbuser.billing_org?.customer_id) {
+      if (
+        dbuser.billing_org?.customer_id &&
+        dbuser.billing_org?.status !== 'canceled'
+      ) {
         // check if user already has a subscription
         // Authenticate your user.
         const session = await stripe.billingPortal.sessions.create({
