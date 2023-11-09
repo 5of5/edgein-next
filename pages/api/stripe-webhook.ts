@@ -86,7 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             // create billing org
             const billingOrg = await BillingService.insertBillingOrg(
               customerId,
-              subscription.status === 'active' ? 'active' : 'inactive',
+              subscription.status === 'active' ? 'active' : subscription.status === 'canceled' ? 'canceled' : 'inactive',
               'basic',
             );
             // update user

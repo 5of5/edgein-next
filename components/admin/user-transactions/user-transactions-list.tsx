@@ -16,7 +16,6 @@ const filters = [
 export const UserTransactionsList = () => {
   return (
     <ElemList filters={filters}>
-      <EditButton />
       <TextField source="id" />
       <ReferenceField label="User" source="user_id" reference="users">
         <TextField source="display_name" />
