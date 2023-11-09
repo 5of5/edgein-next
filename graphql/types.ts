@@ -1,4 +1,4 @@
-import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 import { fetcher } from './fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
