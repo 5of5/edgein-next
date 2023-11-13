@@ -1,5 +1,5 @@
 import { Dialog, Tab, Transition } from '@headlessui/react';
-import { FC, ReactElement, Fragment, useState, useRef } from 'react';
+import { FC, ReactElement, Fragment, useState, useRef, useEffect } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Hit as AlgoliaHit } from 'instantsearch.js';
 import { every } from 'lodash';
@@ -26,6 +26,8 @@ import useLibrary from '@/hooks/use-library';
 import { parseIndexName } from '@/utils/algolia';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
+
+import { useRouter } from 'next/router';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -386,7 +388,23 @@ const HitNews = () =>
 export default function SearchModal(props: any) {
   const emptyView = useRef(true);
 
+  const router = useRouter();
+
   const [tabSelectedIndex, setTabSelectedIndex] = useState<number>(0);
+
+  useEffect(() => {
+    if (router.pathname.startsWith('/investors')) {
+      setTabSelectedIndex(1);
+    } else if (router.pathname.startsWith('/people')) {
+      setTabSelectedIndex(2);
+    } else if (router.pathname.startsWith('/events')) {
+      setTabSelectedIndex(3);
+    } else if (router.pathname.startsWith('/news')) {
+      setTabSelectedIndex(4);
+    } else {
+      setTabSelectedIndex(0);
+    }
+  }, [router.pathname]);
 
   const { selectedLibrary } = useLibrary();
 
