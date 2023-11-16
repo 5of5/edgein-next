@@ -2,8 +2,9 @@ import { ROUTES } from '@/routes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '../../utils/cookie';
 import UserService from '../../utils/users';
+import Stripe from 'stripe';
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2022-08-01' });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
@@ -18,41 +19,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         dbuser.billing_org?.customer_id &&
         dbuser.billing_org?.status !== 'canceled'
       ) {
-        // check if user already has a subscription
-        // Authenticate your user.
-        const session = await stripe.billingPortal.sessions.create({
+        const subscriptions = await stripe.subscriptions.list({
           customer: dbuser.billing_org?.customer_id,
-          return_url: `${req.headers.origin}${ROUTES.ACCOUNT}`,
+          limit: 1,
+        }, {
         });
-        res.send({ success: true, redirect: session.url });
-      } else {
-        // Create Checkout Sessions from body params.
-        const metadata = {
-          userId: user.id,
-        };
-        const session = await stripe.checkout.sessions.create({
-          line_items: [
-            {
-              // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-              price: process.env.STRIPE_PRICING_KEY,
-              quantity: 1,
-            },
-          ],
-          metadata,
-          mode: 'subscription',
-          subscription_data: {
-            trial_period_days: 7,
-          },
-          allow_promotion_codes: true,
-          consent_collection: {
-            terms_of_service: 'required',
-          },
-          client_reference_id: user.id,
-          success_url: `${req.headers.origin}/api/refresh-user/?redirect=${ROUTES.ACCOUNT}/?success=true`,
-          cancel_url: `${req.headers.origin}${ROUTES.ACCOUNT}/?canceled=true`,
-        });
-        res.send({ success: true, redirect: session.url });
+        const latestSubscription = subscriptions.data[0];
+        if (latestSubscription) {        
+          // check if user already has a subscription
+          // Authenticate your user.
+          const session = await stripe.billingPortal.sessions.create({
+            customer: dbuser.billing_org?.customer_id,
+            return_url: `${req.headers.origin}${ROUTES.ACCOUNT}`,
+          });
+          return res.send({ success: true, redirect: session.url });
+        }
       }
+      // Create Checkout Sessions from body params.
+      const metadata = {
+        userId: user.id,
+      };
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+            price: process.env.STRIPE_PRICING_KEY,
+            quantity: 1,
+          },
+        ],
+        metadata,
+        mode: 'subscription',
+        subscription_data: {
+          trial_period_days: 7,
+        },
+        allow_promotion_codes: true,
+        consent_collection: {
+          terms_of_service: 'required',
+        },
+        client_reference_id: user.id.toString(),
+        success_url: `${req.headers.origin}/api/refresh-user/?redirect=${ROUTES.ACCOUNT}/?success=true`,
+        cancel_url: `${req.headers.origin}${ROUTES.ACCOUNT}/?canceled=true`,
+      });
+      res.send({ success: true, redirect: session.url });
     } catch (err: any) {
       res.status(err.statusCode || 500).json(err.message);
     }
