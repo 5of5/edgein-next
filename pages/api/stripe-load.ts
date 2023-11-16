@@ -4,7 +4,9 @@ import CookieService from '../../utils/cookie';
 import UserService from '../../utils/users';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2022-08-01' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2022-08-01',
+});
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
@@ -19,13 +21,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         dbuser.billing_org?.customer_id &&
         dbuser.billing_org?.status !== 'canceled'
       ) {
-        const subscriptions = await stripe.subscriptions.list({
-          customer: dbuser.billing_org?.customer_id,
-          limit: 1,
-        }, {
-        });
+        const subscriptions = await stripe.subscriptions.list(
+          {
+            customer: dbuser.billing_org?.customer_id,
+            limit: 1,
+          },
+          {},
+        );
         const latestSubscription = subscriptions.data[0];
-        if (latestSubscription) {        
+        if (latestSubscription) {
           // check if user already has a subscription
           // Authenticate your user.
           const session = await stripe.billingPortal.sessions.create({
