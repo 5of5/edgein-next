@@ -15,6 +15,7 @@ import {
   IconX,
   IconGroup,
   IconGroupPlus,
+  IconSidebarGroups,
   IconLockClosed,
   IconGlobe,
 } from '@/components/icons';
@@ -47,11 +48,11 @@ const ElemNoteForm: React.FC<Props> = ({
 
   const groupOptions = useMemo(() => {
     const options = [
-      { id: 'only_me', icon: IconLockClosed, title: 'Only me' },
       { id: 'public', icon: IconGlobe, title: 'Public' },
+      { id: 'only_me', icon: IconLockClosed, title: 'Only me' },
       ...myGroups.map(item => ({
         id: item.id,
-        icon: IconGroup,
+        icon: IconSidebarGroups,
         title: `${item.name}`,
         description: `by ${item.created_by?.display_name}`,
       })),
@@ -130,6 +131,10 @@ const ElemNoteForm: React.FC<Props> = ({
   const handleChangeNote = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setNotes(event.target.value);
   };
+
+  // const handleChangeNoteDiv = (event: ChangeEvent<HTMLDivElement>) => {
+  //   setNotes(event.target.innerText);
+  // };
 
   const handleSubmit = () => {
     mutate();
@@ -267,24 +272,40 @@ const ElemNoteForm: React.FC<Props> = ({
                             options={groupOptions}
                             value={selectedGroup}
                             onChange={setSelectedGroup}
-                            className={`mt-0.5 text-slate-600 text-base w-full ${
+                            className={`text-slate-600 text-base w-full ${
                               selectedNote ? 'cursor-not-allowed' : ''
                             }`}
-                            buttonClasses="w-full sm:w-fit"
+                            buttonClasses="w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit"
                             disabled={!!selectedNote}
                           />
                         </div>
                       ) : (
-                        <button
-                          onClick={onOpenCreateGroupDialog}
-                          className="flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all bg-slate-200 text-primary-500 hover:bg-slate-200 hover:text-primary-500"
-                        >
-                          <IconGroupPlus
-                            className="h-5 w-5 mr-1"
-                            title="Create Group"
+                        <div>
+                          {!selectedNote && (
+                            <label className="block text-sm text-slate-500 leading-tight pb-1">
+                              Select audience
+                            </label>
+                          )}
+                          <InputSelect
+                            options={groupOptions}
+                            value={selectedGroup}
+                            onChange={setSelectedGroup}
+                            className={`text-slate-600 text-base w-full ${
+                              selectedNote ? 'cursor-not-allowed' : ''
+                            }`}
+                            buttonClasses="w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit"
+                            disabled={!!selectedNote}
                           />
-                          <span>Create Group</span>
-                        </button>
+                          {/* <button
+                            onClick={onOpenCreateGroupDialog}
+                            className="flex items-center space-x-2 w-full font-bold sm:w-fit">
+                            <IconGroupPlus
+                              className="h-5 w-5 mr-1"
+                              title="Create Group"
+                            />
+                            <span>Create Group</span>
+                          </button> */}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -298,6 +319,20 @@ const ElemNoteForm: React.FC<Props> = ({
                       placeholder="Write your note..."
                       className="ring-1 ring-slate-200"
                     />
+                    {/* <div
+                      aria-label="Write your note..."
+                      className="select-text whitespace-pre-wrap break-words w-full mt-1 px-3 py-2 text-sm relative bg-white rounded-lg ring-1 ring-slate-200 focus:outline-none focus:outline-2 focus:outline-primary-500 focus:outline-offset-0"
+                      contentEditable={true}
+                      suppressContentEditableWarning={true}
+                      role="textbox"
+                      spellCheck="true"
+                      tabIndex={0}
+                      data-lexical-editor="true"
+                      //onInput={handleChangeNoteDiv}
+                      placeholder="Write your note..."
+                      onBlur={handleChangeNoteDiv}>
+                      {notes}
+                    </div> */}
                   </label>
 
                   <div className="mt-6 flex items-center justify-between">
