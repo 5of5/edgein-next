@@ -195,7 +195,8 @@ const Person: NextPage<Props> = (props: Props) => {
                           showNewMessages(
                             `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
                           )
-                        }>
+                        }
+                      >
                         Claim profile
                       </ElemButton>
                     )}
@@ -231,7 +232,8 @@ const Person: NextPage<Props> = (props: Props) => {
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
-            id="overview">
+            id="overview"
+          >
             <div className="col-span-3">
               <ElemKeyInfo
                 className="sticky top-16 mb-7 lg:mb-0"
