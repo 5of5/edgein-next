@@ -157,8 +157,7 @@ const VCFirm: NextPage<Props> = props => {
                   href={`/${
                     parentLinks?.from_company ? 'companies' : 'investors'
                   }/${parentOrganization?.slug}`}
-                  className="flex items-center gap-2 mt-1 group"
-                >
+                  className="flex items-center gap-2 mt-1 group">
                   <ElemPhoto
                     photo={parentOrganization?.logo}
                     wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
@@ -179,16 +178,14 @@ const VCFirm: NextPage<Props> = props => {
                   ref={overviewDiv}
                   className={`mt-4 text-sm text-gray-500 prose ${
                     overviewMore ? '' : 'line-clamp-5'
-                  }`}
-                >
+                  }`}>
                   {parse(stripHtmlTags(vcfirm.overview))}
                 </div>
                 {overviewDivScrollHeight > overviewDivHeight && (
                   <ElemButton
                     onClick={() => setOverviewMore(!overviewMore)}
                     btn="transparent"
-                    className="!px-0 !py-0 inline font-normal"
-                  >
+                    className="!px-0 !py-0 inline font-normal">
                     show {overviewMore ? 'less' : 'more'}
                   </ElemButton>
                 )}
@@ -216,20 +213,19 @@ const VCFirm: NextPage<Props> = props => {
         </div>
 
         <ElemInviteBanner className="mt-7" />
-
-        <ElemTabBar
-          className="mt-7"
-          tabs={tabBarItems}
-          resourceName={vcfirm.name}
-        />
       </div>
 
-      <div className="px-8">
+      <ElemTabBar
+        className="px-8 py-2"
+        tabs={tabBarItems}
+        resourceName={vcfirm.name}
+      />
+
+      <div className="mt-4 px-8">
         <div
           className="lg:grid lg:grid-cols-11 lg:gap-7"
           ref={overviewRef}
-          id="overview"
-        >
+          id="overview">
           <div className="col-span-3">
             <ElemKeyInfo
               className="sticky top-16"
