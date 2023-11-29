@@ -297,45 +297,45 @@ const Event: NextPage<Props> = props => {
         )}
 
         <ElemInviteBanner className="mt-7" />
-
-        <ElemTabBar
-          className="mt-7 flex-wrap"
-          tabs={tabBarItems}
-          resourceName={event.name}
-          showDropdown={false}
-        >
-          <div className="flex flex-wrap gap-2 lg:justify-end">
-            <ElemAddToCalendarButton
-              event={{
-                name: event.name,
-                startDate: event.start_date,
-                endDate: event.end_date,
-                startTime: event.start_time,
-                endTime: event.end_time,
-                location: getFullAddress(event.location_json),
-                description: event.overview || '',
-              }}
-            />
-            <ElemSocialShare
-              resourceName={event.name}
-              resourceTwitterUrl={event.twitter}
-            />
-            {attendees?.some(item => item.person?.id === user?.person?.id) ? (
-              <ElemButton btn="purple">Joined</ElemButton>
-            ) : (
-              <ElemButton
-                btn="primary"
-                onClick={handleClickGoingEvent}
-                loading={isLoadingGoingEvent}
-              >
-                Going
-              </ElemButton>
-            )}
-          </div>
-        </ElemTabBar>
       </div>
 
-      <div className="px-8">
+      <ElemTabBar
+        className="px-8 py-2"
+        tabs={tabBarItems}
+        resourceName={event.name}
+        showDropdown={false}
+      >
+        <div className="flex flex-wrap gap-2 lg:justify-end">
+          <ElemAddToCalendarButton
+            event={{
+              name: event.name,
+              startDate: event.start_date,
+              endDate: event.end_date,
+              startTime: event.start_time,
+              endTime: event.end_time,
+              location: getFullAddress(event.location_json),
+              description: event.overview || '',
+            }}
+          />
+          <ElemSocialShare
+            resourceName={event.name}
+            resourceTwitterUrl={event.twitter}
+          />
+          {attendees?.some(item => item.person?.id === user?.person?.id) ? (
+            <ElemButton btn="purple">Joined</ElemButton>
+          ) : (
+            <ElemButton
+              btn="primary"
+              onClick={handleClickGoingEvent}
+              loading={isLoadingGoingEvent}
+            >
+              Going
+            </ElemButton>
+          )}
+        </div>
+      </ElemTabBar>
+
+      <div className="mt-4 px-8">
         <div
           className="lg:grid lg:grid-cols-11 lg:gap-7"
           ref={overviewRef}

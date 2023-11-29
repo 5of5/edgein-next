@@ -220,15 +220,15 @@ const Person: NextPage<Props> = (props: Props) => {
           </div>
 
           <ElemInviteBanner className="mt-7" />
-
-          <ElemTabBar
-            className="mt-7"
-            tabs={tabBarItems}
-            resourceName={person.name}
-          />
         </div>
 
-        <div className="px-8">
+        <ElemTabBar
+          className="px-8 py-2"
+          tabs={tabBarItems}
+          resourceName={person.name}
+        />
+
+        <div className="mt-4 px-8">
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
