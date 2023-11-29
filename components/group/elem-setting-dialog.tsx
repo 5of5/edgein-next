@@ -60,7 +60,7 @@ const ElemSettingDialog: React.FC<Props> = ({
               <Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title className="flex items-center justify-between px-6 pt-6 pb-2 rounded-t-2xl bg-white">
                   <div className="flex items-center justify-between gap-x-1">
-                    <IconGroup className="w-6 h-6" />
+                    <IconGroup className="w-6 h-6 shrink-0" />
                     <div className="text-xl font-bold capitalize">
                       {group.name}
                     </div>

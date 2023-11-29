@@ -16,6 +16,7 @@ import ElemAddListDialog from './elem-add-list-dialog';
 import differenceBy from 'lodash/differenceBy';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { ElemTooltip } from '../elem-tooltip';
 
 type Props = {
   className?: string;
@@ -186,7 +187,8 @@ export const ElemGroupLists: React.FC<Props> = ({
               const isFollowing = listMembers.some(
                 mem => mem.list_id === item.id,
               );
-              const listItem = (
+
+              return (
                 <li
                   key={item.id}
                   className="flex space-x-4 justify-between items-start"
@@ -205,13 +207,38 @@ export const ElemGroupLists: React.FC<Props> = ({
                         {getNameFromListName(item)}
                       </h3>
 
-                      <p className="text-gray-500">
-                        <span className="capitalize">
-                          By {item.created_by?.display_name}
-                        </span>
-                        <span aria-hidden="true"> · </span>
-                        {formatDateShown(item?.created_at)}
-                      </p>
+                      {item?.updated_at ? (
+                        <ElemTooltip
+                          content={`Edited ${moment
+                            .utc(item?.updated_at)
+                            .local()
+                            .format('ll HH:mma')} Created by ${
+                            item.created_by?.display_name
+                          } ${moment
+                            .utc(item?.created_at)
+                            .local()
+                            .format('ll HH:mma')}`}
+                          direction="top-start"
+                          mode="dark"
+                        >
+                          <p className="text-gray-500">
+                            By {item.created_by?.display_name}
+                          </p>
+                        </ElemTooltip>
+                      ) : (
+                        <ElemTooltip
+                          content={moment
+                            .utc(item?.created_at)
+                            .local()
+                            .format('ll HH:mma')}
+                          direction="top-start"
+                          mode="dark"
+                        >
+                          <p className="text-gray-500">
+                            Created By {item.created_by?.display_name}
+                          </p>
+                        </ElemTooltip>
+                      )}
                     </div>
                   </ElemLink>
 
@@ -231,7 +258,6 @@ export const ElemGroupLists: React.FC<Props> = ({
                   </ElemButton>
                 </li>
               );
-              return listItem;
             })}
           </ul>
         )}

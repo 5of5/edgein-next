@@ -1,13 +1,6 @@
 import { Listbox, Transition } from '@headlessui/react';
 import React, { PropsWithChildren, Fragment } from 'react';
-import {
-  IconSelector,
-  IconCheck,
-  IconFollowing,
-  IconDead,
-  IconAcquired,
-  IconTrending,
-} from './icons';
+import { IconSelector, IconCheck, IconPolygonDown } from './icons';
 
 type Props = {
   className?: string;
@@ -34,22 +27,6 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
   by,
   onChange,
 }) => {
-  // const displayIcon = (val: string | number, className: string) => {
-  // 	const basicInfo = "h-5 w-5 mr-1 shrink-0";
-  // 	switch (val) {
-  // 		case "Following":
-  // 			return <IconFollowing className={`${basicInfo} ${className}`} />;
-  // 		case "Dead":
-  // 			return <IconDead className={`${basicInfo} ${className}`} />;
-  // 		case "Acquired":
-  // 			return <IconAcquired className={`${basicInfo} ${className}`} />;
-  // 		case "Trending":
-  // 			return <IconTrending className={`${basicInfo} ${className}`} />;
-  // 		default:
-  // 			return "";
-  // 	}
-  // };
-
   return (
     <div className={className}>
       <Listbox
@@ -103,17 +80,11 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                       )}
                       <span>{value?.title ? value.title : placeholder}</span>
                     </div>
-
-                    {/* {value?.description && (
-											<span className="text-gray-400 text-sm ml-2">
-												value.description
-											</span>
-										)} */}
                   </div>
                 )}
 
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                  <IconSelector className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  <IconPolygonDown className="h-5 w-5 text-gray-400" />
                 </div>
               </Listbox.Button>
 
@@ -166,12 +137,6 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                                 }`}
                               />
                             )}
-                            {/* {option.icon
-															? displayIcon(
-																	option.icon,
-																	`${selected ? "font-bold" : "font-normal"}`
-															  )
-															: ""} */}
                             <div>
                               <div
                                 className={`truncate ${

@@ -112,7 +112,7 @@ const ElemOrganizationNotes: FC<Props> = ({
               placeholderClass="text-slate-300"
             />
             <div
-              className="w-full cursor-pointer px-4 py-2 border border-gray-300 text-gray-500 text-sm rounded-lg"
+              className="w-full cursor-pointer px-4 py-2 border border-gray-300 rounded-full text-gray-500 text-sm hover:bg-gray-50"
               onClick={onOpenNoteForm}
             >
               Write a few sentences about {resourceName}...
