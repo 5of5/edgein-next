@@ -26,7 +26,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             customer: dbuser.billing_org?.customer_id,
             limit: 1,
           },
-          {},
         );
         const latestSubscription = subscriptions.data[0];
         if (latestSubscription) {
@@ -66,6 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       res.send({ success: true, redirect: session.url });
     } catch (err: any) {
+      console.log(err);
       res.status(err.statusCode || 500).json(err.message);
     }
   } else {
