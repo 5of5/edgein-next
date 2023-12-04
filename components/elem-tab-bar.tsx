@@ -45,7 +45,9 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
         const tabsDivPosition = tabsWrapRef.current.getBoundingClientRect().top;
         // "top-14" class = 56
         if (tabsDivPosition <= 56) {
-          setTabsWrapClass('top-14 bg-white/80 shadow-sm backdrop-blur z-40');
+          setTabsWrapClass(
+            'top-12 sm:top-14 bg-white/80 shadow-sm backdrop-blur z-30',
+          );
         } else {
           setTabsWrapClass('');
         }
@@ -85,13 +87,11 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 
   return (
     <div
-      className={`sticky flex gap-3 justify-between lg:items-center ${className} ${tabsWrapClass}`}
+      className={`sticky flex flex-nowrap grow overflow-scroll scrollbar-hide shrink-0 gap-3 justify-between items-center lg:flex-wrap ${className} ${tabsWrapClass}`}
       role="tablist"
       ref={tabsWrapRef}
     >
-      <nav
-        className={`flex flex-wrap gap-2 overflow-x-scroll scrollbar-hide ${tabsClassName}`}
-      >
+      <nav className={`flex flex-nowrap gap-2 lg:flex-wrap ${tabsClassName}`}>
         {tabs &&
           tabs.map((tab: any, index: number) => (
             <ElemButton
