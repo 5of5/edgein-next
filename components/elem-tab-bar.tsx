@@ -89,7 +89,8 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
     <div
       className={`sticky flex flex-nowrap grow overflow-scroll scrollbar-hide shrink-0 gap-3 justify-between items-center lg:flex-wrap ${className} ${tabsWrapClass}`}
       role="tablist"
-      ref={tabsWrapRef}>
+      ref={tabsWrapRef}
+    >
       <nav className={`flex flex-nowrap gap-2 lg:flex-wrap ${tabsClassName}`}>
         {tabs &&
           tabs.map((tab: any, index: number) => (
@@ -102,7 +103,8 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
                 isActive === index
                   ? 'border-primary-500 hover:border-primary-500'
                   : ''
-              }`}>
+              }`}
+            >
               {tab.name}
             </ElemButton>
           ))}
@@ -123,7 +125,8 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
             enterTo="transform scale-100 opacity-100"
             leave="transition duration-75 ease-out"
             leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0">
+            leaveTo="transform scale-95 opacity-0"
+          >
             <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
               {({ close }) => (
                 <>
@@ -134,7 +137,8 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
                       );
                       close();
                     }}
-                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100">
+                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                  >
                     <span>Request more data</span>
                   </button>
                   <button
@@ -144,7 +148,8 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
                       );
                       close();
                     }}
-                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100">
+                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                  >
                     <span>Report an error</span>
                   </button>
                 </>

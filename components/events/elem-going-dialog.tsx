@@ -29,7 +29,8 @@ export const ElemGoingDialog: React.FC<Props> = ({
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0">
+          leaveTo="opacity-0"
+        >
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
@@ -42,7 +43,8 @@ export const ElemGoingDialog: React.FC<Props> = ({
               enterTo="opacity-100 scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95">
+              leaveTo="opacity-0 scale-95"
+            >
               <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg px-4 py-3 bg-white shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
                 <div className="relative pb-3 mb-3 border-b border-gray-200">
                   <Dialog.Title className="text-xl font-medium flex items-center justify-between">
@@ -50,7 +52,8 @@ export const ElemGoingDialog: React.FC<Props> = ({
                     <button
                       type="button"
                       onClick={onClose}
-                      className="absolute top-1 right-0 focus-visible:outline-none">
+                      className="absolute top-1 right-0 focus-visible:outline-none"
+                    >
                       <IconX className="w-5 h-5" />
                     </button>
                   </Dialog.Title>
@@ -64,10 +67,12 @@ export const ElemGoingDialog: React.FC<Props> = ({
                         <ElemLink
                           key={attendee.id}
                           href={`${ROUTES.PEOPLE}/${attendee.person?.slug}`}
-                          className="block cursor-pointer py-1.5 px-2 rounded-lg hover:bg-slate-100">
+                          className="block cursor-pointer py-1.5 px-2 rounded-lg hover:bg-slate-100"
+                        >
                           <div
                             className="flex items-center justify-start gap-x-2"
-                            key={attendee.id}>
+                            key={attendee.id}
+                          >
                             {attendee.person?.picture ? (
                               <ElemPhoto
                                 wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-white rounded-lg"
