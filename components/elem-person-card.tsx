@@ -90,7 +90,7 @@ export const ElemPersonCard: React.FC<Props> = ({
             placeholderClass="text-gray-300"
           />
         </ElemLink>
-        <div className="grow min-w-0 truncate">
+        <div className="grow min-w-0">
           <ElemLink href={href} className="block">
             {heading && (
               <h3 className="font-medium truncate" title={heading}>

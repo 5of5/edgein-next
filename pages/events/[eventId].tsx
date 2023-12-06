@@ -45,6 +45,7 @@ import { onTrackView } from '@/utils/track';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
+import { ElemGoingDialog } from '@/components/events/elem-going-dialog';
 
 type Props = {
   event: GetEventQuery['events'][0];
@@ -59,6 +60,8 @@ const Event: NextPage<Props> = props => {
   const { setShowPopup } = usePopup();
 
   const [event, setEvent] = useState<GetEventQuery['events'][0]>(props.event);
+
+  const [isOpenGoingDialog, setIsOpenGoingDialog] = useState(false);
 
   const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
     useState<boolean>(false);
@@ -103,6 +106,13 @@ const Event: NextPage<Props> = props => {
   const onClickSearchName = () => {
     onCloseLinkPersonDialog();
     setShowPopup('search');
+  };
+
+  const onOpenGoingDialog = () => {
+    setIsOpenGoingDialog(true);
+  };
+  const onCloseGoingDialog = () => {
+    setIsOpenGoingDialog(false);
   };
 
   const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
@@ -244,31 +254,32 @@ const Event: NextPage<Props> = props => {
         <div className="items-start justify-between lg:flex lg:gap-20">
           <h1 className="text-4xl font-medium">{event.name}</h1>
           {attendees?.length > 0 && (
-            <div className="self-center flex items-center gap-x-2 shrink-0">
-              <ul className="flex -space-x-3">
-                {attendees?.map(attendee => (
-                  <li key={attendee.id}>
-                    <ElemLink
-                      href={`${ROUTES.PEOPLE}/${attendee.person?.slug}`}
-                    >
-                      {attendee.person?.picture ? (
-                        <ElemPhoto
-                          photo={attendee.person.picture}
-                          wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
-                          imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
-                          imgAlt={attendee.person?.name}
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
-                          {attendee.person?.name?.charAt(0)}
-                        </div>
-                      )}
-                    </ElemLink>
-                  </li>
+            <button
+              className="self-center flex items-center gap-x-1 shrink-0 rounded-lg px-2 py-1.5 hover:bg-gray-100"
+              onClick={() => onOpenGoingDialog()}
+            >
+              <div className="flex -space-x-3">
+                {attendees?.slice(0, 6)?.map(attendee => (
+                  <div key={attendee.id}>
+                    {attendee.person?.picture ? (
+                      <ElemPhoto
+                        photo={attendee.person.picture}
+                        wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
+                        imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
+                        imgAlt={attendee.person?.name}
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
+                        {attendee.person?.name?.charAt(0)}
+                      </div>
+                    )}
+                  </div>
                 ))}
-              </ul>
-              <span className="font-medium">{attendees?.length}</span>
-            </div>
+              </div>
+              <div className="text-sm">
+                <span className="font-medium">{attendees?.length}</span> Going
+              </div>
+            </button>
           )}
         </div>
         <div>
@@ -297,45 +308,45 @@ const Event: NextPage<Props> = props => {
         )}
 
         <ElemInviteBanner className="mt-7" />
-
-        <ElemTabBar
-          className="mt-7 flex-wrap"
-          tabs={tabBarItems}
-          resourceName={event.name}
-          showDropdown={false}
-        >
-          <div className="flex flex-wrap gap-2 lg:justify-end">
-            <ElemAddToCalendarButton
-              event={{
-                name: event.name,
-                startDate: event.start_date,
-                endDate: event.end_date,
-                startTime: event.start_time,
-                endTime: event.end_time,
-                location: getFullAddress(event.location_json),
-                description: event.overview || '',
-              }}
-            />
-            <ElemSocialShare
-              resourceName={event.name}
-              resourceTwitterUrl={event.twitter}
-            />
-            {attendees?.some(item => item.person?.id === user?.person?.id) ? (
-              <ElemButton btn="purple">Joined</ElemButton>
-            ) : (
-              <ElemButton
-                btn="primary"
-                onClick={handleClickGoingEvent}
-                loading={isLoadingGoingEvent}
-              >
-                Going
-              </ElemButton>
-            )}
-          </div>
-        </ElemTabBar>
       </div>
 
-      <div className="px-8">
+      <ElemTabBar
+        className="!flex-wrap px-8 py-2"
+        tabs={tabBarItems}
+        resourceName={event.name}
+        showDropdown={false}
+      >
+        <div className="flex gap-2 lg:justify-end">
+          <ElemAddToCalendarButton
+            event={{
+              name: event.name,
+              startDate: event.start_date,
+              endDate: event.end_date,
+              startTime: event.start_time,
+              endTime: event.end_time,
+              location: getFullAddress(event.location_json),
+              description: event.overview || '',
+            }}
+          />
+          <ElemSocialShare
+            resourceName={event.name}
+            resourceTwitterUrl={event.twitter}
+          />
+          {attendees?.some(item => item.person?.id === user?.person?.id) ? (
+            <ElemButton btn="purple">Joined</ElemButton>
+          ) : (
+            <ElemButton
+              btn="primary"
+              onClick={handleClickGoingEvent}
+              loading={isLoadingGoingEvent}
+            >
+              Going
+            </ElemButton>
+          )}
+        </div>
+      </ElemTabBar>
+
+      <div className="mt-4 px-8">
         <div
           className="lg:grid lg:grid-cols-11 lg:gap-7"
           ref={overviewRef}
@@ -429,6 +440,15 @@ const Event: NextPage<Props> = props => {
         onClose={onCloseLinkPersonDialog}
         onClickSearch={onClickSearchName}
       />
+
+      {attendees?.length > 0 && (
+        <ElemGoingDialog
+          isOpen={isOpenGoingDialog}
+          title={`Going`}
+          onClose={onCloseGoingDialog}
+          attendees={attendees}
+        />
+      )}
 
       <Toaster />
     </DashboardLayout>

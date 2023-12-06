@@ -11,10 +11,10 @@ type Props = {
 export const ElemOrganizers: React.FC<Props> = ({ organizations }) => {
   return (
     <section>
-      <h2 className="text-xl font-bold w-full mb-2">
+      <h2 className="text-lg font-medium px-4 pt-2">
         Organizer{organizations.length > 1 && 's'}
       </h2>
-      <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 grid-cols-1 px-4 py-4 md:grid-cols-2 lg:grid-cols-3">
         {organizations?.map(organizer => {
           const slug = organizer.company
             ? `${ROUTES.COMPANIES}/${organizer.company?.slug}`

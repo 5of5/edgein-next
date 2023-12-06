@@ -3,13 +3,9 @@ import React, {
   useState,
   PropsWithChildren,
   useEffect,
+  useRef,
 } from 'react';
-import {
-  IconEllipsisVertical,
-  IconEllipsisHorizontal,
-  IconExclamationTriangle,
-  IconPencilSquare,
-} from '@/components/icons';
+import { IconEllipsisVertical } from '@/components/icons';
 import { Popover, Transition } from '@headlessui/react';
 import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '@/components/elem-button';
@@ -37,45 +33,65 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
   resourceName = '',
   children,
 }) => {
+  const tabsWrapRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const [tabsWrapClass, setTabsWrapClass] = useState<string>('');
+
   const [isActive, setActive] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
+    if (tabsWrapRef.current !== null) {
+      setTimeout(() => {
+        const tabsDivPosition = tabsWrapRef.current.getBoundingClientRect().top;
+        // "top-14" class = 56
+        if (tabsDivPosition <= 56) {
+          setTabsWrapClass(
+            'top-12 sm:top-14 bg-white/80 shadow-sm backdrop-blur z-30',
+          );
+        } else {
+          setTabsWrapClass('');
+        }
+      }, 300);
+    }
+
     if (tabs) {
       const handleScroll = () => {
-        const scrollPosition = window ? window.scrollY : 0;
+        setScrollPosition(window ? window.scrollY : 0);
 
         tabs.forEach((tab, tabIndex) => {
           if (
+            tab.ref &&
+            tab.ref.current &&
             scrollPosition >=
-            tab.ref.current.offsetTop - SECTION_OFFSET_TOP_SPACING
+              tab.ref.current.offsetTop - SECTION_OFFSET_TOP_SPACING
           ) {
             setActive(tabIndex);
           }
         });
       };
 
+      handleScroll();
       window.addEventListener('scroll', handleScroll);
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [tabs]);
+  }, [tabs, scrollPosition, tabsWrapRef]);
 
   const onClick = (index: number, ref: any) => {
     setActive(index);
-    window.scrollTo(0, ref.current.offsetTop - 30);
+    window.scrollTo(0, ref.current.offsetTop - 50);
   };
 
   const { showNewMessages } = useIntercom();
 
   return (
     <div
-      className={`flex gap-3 justify-between lg:items-center ${className}`}
+      className={`sticky flex flex-nowrap grow overflow-scroll scrollbar-hide shrink-0 gap-3 justify-between items-center lg:flex-wrap ${className} ${tabsWrapClass}`}
       role="tablist"
+      ref={tabsWrapRef}
     >
-      <nav
-        className={`flex flex-wrap gap-2 overflow-x-scroll scrollbar-hide ${tabsClassName}`}
-      >
+      <nav className={`flex flex-nowrap gap-2 lg:flex-wrap ${tabsClassName}`}>
         {tabs &&
           tabs.map((tab: any, index: number) => (
             <ElemButton
@@ -83,7 +99,11 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
               onClick={() => onClick(index, tab.ref)}
               btn="gray"
               roundedFull={false}
-              className="rounded-lg"
+              className={`rounded-lg shrink-0 ${
+                isActive === index
+                  ? 'border-primary-500 hover:border-primary-500'
+                  : ''
+              }`}
             >
               {tab.name}
             </ElemButton>
