@@ -99,7 +99,7 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
               onClick={() => onClick(index, tab.ref)}
               btn="gray"
               roundedFull={false}
-              className={`rounded-lg ${
+              className={`rounded-lg shrink-0 ${
                 isActive === index
                   ? 'border-primary-500 hover:border-primary-500'
                   : ''
