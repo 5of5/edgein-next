@@ -202,6 +202,23 @@ const Event: NextPage<Props> = props => {
     ['desc'],
   );
 
+  const eventImage = (
+    <img
+      className="object-fit h-full w-full"
+      src={
+        event.banner?.url ||
+        getEventBanner(event.location_json?.city, '1220x400')
+      }
+      alt={event.name}
+      onError={e => {
+        (e.target as HTMLImageElement).src = randomImageOfCity(
+          event.location_json?.city,
+        );
+        (e.target as HTMLImageElement).onerror = null; // prevents looping
+      }}
+    />
+  );
+
   return (
     <DashboardLayout>
       <div className="p-8">
@@ -215,20 +232,14 @@ const Event: NextPage<Props> = props => {
                 }), url(${randomImageOfCity(event.location_json?.city)})`,
               }}
             ></div>
-            <img
-              className="object-fit h-full w-full"
-              src={
-                event.banner?.url ||
-                getEventBanner(event.location_json?.city, '1220x400')
-              }
-              alt={event.name}
-              onError={e => {
-                (e.target as HTMLImageElement).src = randomImageOfCity(
-                  event.location_json?.city,
-                );
-                (e.target as HTMLImageElement).onerror = null; // prevents looping
-              }}
-            />
+
+            {event.link ? (
+              <a href={event.link} target="_blank" rel="noreferrer">
+                {eventImage}
+              </a>
+            ) : (
+              eventImage
+            )}
           </div>
         </div>
 
