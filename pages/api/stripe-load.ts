@@ -52,6 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ],
         metadata,
         mode: 'subscription',
+        customer: dbuser.billing_org?.customer_id,
         subscription_data: {
           trial_period_days: 7,
         },
