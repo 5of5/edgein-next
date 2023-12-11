@@ -112,7 +112,7 @@ export const ElemListInformation: FC<Props> = ({
         />
 
         <div className="flex items-center justify-between flex-wrap space-y-2 lg:space-y-0">
-          <div className="max-w-2xl">
+          <div>
             <div className="flex items-center space-x-2">
               {isListCreator && isCustomList ? (
                 <>
@@ -144,14 +144,29 @@ export const ElemListInformation: FC<Props> = ({
 
             <div className="flex items-center">
               <div className="text-sm text-gray-500">
-                {isPublicList === true ? 'Public list' : 'Private list'}
+                <div className="lg:inline">
+                  {isPublicList === true ? 'Public list' : 'Private list'}
+                </div>
+                {list?.updated_at && (
+                  <div className="lg:inline">
+                    <span aria-hidden="true" className="hidden lg:inline">
+                      {' · '}
+                    </span>
+                    <span>
+                      Last edited{' '}
+                      {moment.utc(list?.updated_at).local().format('ll HH:mma')}
+                    </span>
+                  </div>
+                )}
 
                 {list?.created_by && (
-                  <>
-                    <span aria-hidden="true"> · </span>
+                  <div className="lg:inline">
+                    <span aria-hidden="true" className="hidden lg:inline">
+                      {' · '}
+                    </span>
                     {list?.created_by?.person ? (
                       <>
-                        By{' '}
+                        Created by{' '}
                         <ElemLink
                           href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
                           className="hover:underline"
@@ -160,11 +175,10 @@ export const ElemListInformation: FC<Props> = ({
                         </ElemLink>
                       </>
                     ) : (
-                      <span>By {list?.created_by?.display_name}</span>
-                    )}
-                    <span aria-hidden="true"> · </span>
-                    {moment(list?.created_at).format('LL')}
-                  </>
+                      <span>Created by {list?.created_by?.display_name}</span>
+                    )}{' '}
+                    {moment(list?.created_at).format('ll HH:mma')}
+                  </div>
                 )}
               </div>
             </div>

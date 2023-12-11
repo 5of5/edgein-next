@@ -30,6 +30,7 @@ import ElemNoteForm from '@/components/elem-note-form';
 import { usePopup } from '@/context/popup-context';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import sanitizeHtml from 'sanitize-html';
 
 type Props = {
   data: GetNotesQuery['notes'][0];
@@ -329,6 +330,30 @@ const ElemNoteCard: React.FC<Props> = ({
     data.resource_type === 'vc_firms' ? 'investors' : data.resource_type;
   const resourceLink = `/${resourceType}/${resource?.slug}`;
 
+  const renderMarkdownToHTML = (markdown: string) => {
+    if (markdown)
+      return {
+        __html: sanitizeHtml(markdown, {
+          allowedAttributes: {
+            a: ['href', 'target', 'class', 'title'],
+          },
+        }),
+      };
+  };
+
+  const wrapHyperlinks = (text: string) => {
+    const regex = /https?:\/\/\S*/gi;
+    const decodeURL = decodeURIComponent(decodeURIComponent(text));
+
+    const modifiedText = decodeURL.replace(regex, url => {
+      return `<a class="text-primary-500 hover:underline" href="${url}" title="${url}" target="_blank">${
+        url.length > 40 ? url.substring(0, 40) + '...' : url
+      }</a>`;
+    });
+
+    return modifiedText;
+  };
+
   return (
     <>
       <div className="flex flex-col border border-gray-300 rounded-lg">
@@ -456,14 +481,15 @@ const ElemNoteCard: React.FC<Props> = ({
 
         <div className="grow min-h-fit px-4 py-2">
           <p
-            className={`break-words whitespace-pre-line text-sm text-gray-900 ${
+            className={`break-all whitespace-pre-line text-sm text-gray-900 ${
               !contentShowAll && 'line-clamp-5'
             }`}
             ref={contentDiv}
-          >
-            {data.notes}
-          </p>
-          {contentDivHeight > 120 && !contentShowAll && (
+            dangerouslySetInnerHTML={renderMarkdownToHTML(
+              wrapHyperlinks(data.notes),
+            )}
+          ></p>
+          {contentDivHeight > 100 && !contentShowAll && (
             <button
               type="button"
               onClick={() => setContentShowAll(!contentShowAll)}
@@ -517,6 +543,7 @@ const ElemNoteCard: React.FC<Props> = ({
                 <div className="flex items-start gap-2">
                   <ElemLink
                     href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
+                    className="shrink-0"
                   >
                     <ElemPhoto
                       photo={comment.created_by_user?.person?.picture}
@@ -530,57 +557,62 @@ const ElemNoteCard: React.FC<Props> = ({
                       placeholderClass="text-slate-300"
                     />
                   </ElemLink>
-                  <div className="">
-                    <div className="inline-flex py-2 px-3 text-sm bg-gray-100 rounded-lg">
-                      <div>
-                        <p className="">
-                          <ElemLink
-                            href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
-                            className="font-medium hover:underline"
-                          >
-                            {comment.created_by_user?.person?.name ||
-                              comment.created_by_user?.display_name}
-                          </ElemLink>
-                          <span aria-hidden="true"> · </span>
-                          <span className="text-slate-600">
-                            {formatDateShown(comment?.created_at)}
-                          </span>
-                        </p>
-                        <p>{comment.content}</p>
-                      </div>
+                  <div className="flex items-center gap-2">
+                    <div className="grow py-2 px-3 text-sm bg-gray-100 rounded-lg">
+                      <p>
+                        <ElemLink
+                          href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
+                          className="font-medium hover:underline"
+                        >
+                          {comment.created_by_user?.person?.name ||
+                            comment.created_by_user?.display_name}
+                        </ElemLink>
+                        <span aria-hidden="true"> · </span>
+                        <span className="text-slate-600">
+                          {formatDateShown(comment?.created_at)}
+                        </span>
+                      </p>
+                      <p
+                        className="break-all"
+                        dangerouslySetInnerHTML={renderMarkdownToHTML(
+                          wrapHyperlinks(comment.content),
+                        )}
+                      ></p>
                     </div>
+                    {comment.created_by_user_id === user?.id && (
+                      <Popover className="relative">
+                        <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full focus:outline-none hover:bg-gray-100">
+                          <IconEllipsisVertical
+                            className="h-6 w-6 text-gray-600"
+                            title="Options"
+                          />
+                        </Popover.Button>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-200"
+                          enterFrom="opacity-0 translate-y-1"
+                          enterTo="opacity-100 translate-y-0"
+                          leave="transition ease-in duration-150"
+                          leaveFrom="opacity-100 translate-y-0"
+                          leaveTo="opacity-0 translate-y-1"
+                        >
+                          <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+                            <button
+                              onClick={() => {
+                                onDeleteComment(comment.id);
+                              }}
+                              className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                            >
+                              <span className="text-sm font-medium">
+                                Delete
+                              </span>
+                            </button>
+                          </Popover.Panel>
+                        </Transition>
+                      </Popover>
+                    )}
                   </div>
                 </div>
-                {comment.created_by_user_id === user?.id && (
-                  <Popover className="relative">
-                    <Popover.Button className="flex items-center focus:outline-none">
-                      <IconEllipsisVertical
-                        className="h-6 w-6 text-gray-600"
-                        title="Options"
-                      />
-                    </Popover.Button>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="opacity-0 translate-y-1"
-                      enterTo="opacity-100 translate-y-0"
-                      leave="transition ease-in duration-150"
-                      leaveFrom="opacity-100 translate-y-0"
-                      leaveTo="opacity-0 translate-y-1"
-                    >
-                      <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
-                        <button
-                          onClick={() => {
-                            onDeleteComment(comment.id);
-                          }}
-                          className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
-                        >
-                          <span className="text-sm font-medium">Delete</span>
-                        </button>
-                      </Popover.Panel>
-                    </Transition>
-                  </Popover>
-                )}
               </div>
             ))}
           </div>
