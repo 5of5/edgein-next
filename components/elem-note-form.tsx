@@ -13,13 +13,12 @@ import { GetNotesQuery } from '@/graphql/types';
 import { ElemDeleteConfirmModal } from './elem-delete-confirm-modal';
 import {
   IconX,
-  IconGroup,
-  IconGroupPlus,
   IconSidebarGroups,
   IconLockClosed,
   IconGlobe,
 } from '@/components/icons';
 import ElemCreateGroupDialog from './group/elem-create-group-dialog';
+import { Autocomplete } from '@/components/autocomplete';
 
 type Props = {
   isOpen: boolean;
@@ -48,7 +47,7 @@ const ElemNoteForm: React.FC<Props> = ({
 
   const groupOptions = useMemo(() => {
     const options = [
-      { id: 'public', icon: IconGlobe, title: 'Public' },
+      { id: 'public', icon: IconGlobe, title: 'Everyone can see' },
       { id: 'only_me', icon: IconLockClosed, title: 'Only me' },
       ...myGroups.map(item => ({
         id: item.id,
@@ -132,9 +131,9 @@ const ElemNoteForm: React.FC<Props> = ({
     setNotes(event.target.value);
   };
 
-  // const handleChangeNoteDiv = (event: ChangeEvent<HTMLDivElement>) => {
-  //   setNotes(event.target.innerText);
-  // };
+  const handleChangeNoteDiv = (event: ChangeEvent<HTMLInputElement>) => {
+    setNotes(event.target.innerText);
+  };
 
   const handleSubmit = () => {
     mutate();
@@ -164,8 +163,7 @@ const ElemNoteForm: React.FC<Props> = ({
               <div
                 className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                   t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
+                }`}>
                 {err?.message}
               </div>
             ),
@@ -193,8 +191,7 @@ const ElemNoteForm: React.FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -207,8 +204,7 @@ const ElemNoteForm: React.FC<Props> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
+                leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-5 text-left align-middle shadow-xl transition-all">
                   <div className="relative flex items-center justify-between pb-2 border-b border-slate-200">
                     <Dialog.Title className="flex-1 text-xl text-center font-bold">
@@ -217,8 +213,7 @@ const ElemNoteForm: React.FC<Props> = ({
                     <button
                       type="button"
                       onClick={onClose}
-                      className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10"
-                    >
+                      className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10">
                       <IconX className="h-6 w-6" />
                     </button>
                   </div>
@@ -231,8 +226,7 @@ const ElemNoteForm: React.FC<Props> = ({
                         } on ${moment(selectedNote?.updated_at).format(
                           'LL h:mma',
                         )}`}
-                        direction="top-start"
-                      >
+                        direction="top-start">
                         <div className="cursor-pointer">
                           <ElemPhoto
                             photo={
@@ -257,60 +251,38 @@ const ElemNoteForm: React.FC<Props> = ({
                       />
                     )}
 
-                    <div className="grow">
+                    {/* <div className="ml-2 grow">
                       <p className="font-bold capitalize text-sm">
                         {user?.display_name}
                       </p>
-                      {groupOptions.length > 0 ? (
-                        <div>
-                          {!selectedNote && (
-                            <label className="block text-sm text-slate-500 leading-tight pb-1">
-                              Select audience
-                            </label>
-                          )}
-                          <InputSelect
-                            options={groupOptions}
-                            value={selectedGroup}
-                            onChange={setSelectedGroup}
-                            className={`text-slate-600 text-base w-full ${
-                              selectedNote ? 'cursor-not-allowed' : ''
-                            }`}
-                            buttonClasses="w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit"
-                            disabled={!!selectedNote}
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          {!selectedNote && (
-                            <label className="block text-sm text-slate-500 leading-tight pb-1">
-                              Select audience
-                            </label>
-                          )}
-                          <InputSelect
-                            options={groupOptions}
-                            value={selectedGroup}
-                            onChange={setSelectedGroup}
-                            className={`text-slate-600 text-base w-full ${
-                              selectedNote ? 'cursor-not-allowed' : ''
-                            }`}
-                            buttonClasses="w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit"
-                            disabled={!!selectedNote}
-                          />
-                          {/* <button
-                            onClick={onOpenCreateGroupDialog}
-                            className="flex items-center space-x-2 w-full font-bold sm:w-fit">
-                            <IconGroupPlus
-                              className="h-5 w-5 mr-1"
-                              title="Create Group"
-                            />
-                            <span>Create Group</span>
-                          </button> */}
-                        </div>
-                      )}
+                    </div> */}
+                    <div className="ml-2 grow">
+                      <Autocomplete
+                        value={notes}
+                        onChange={handleChangeNote}
+                        handleSubmit={handleSubmit}
+                        placeholder="Write your note..."
+                      />
+
+                      {/* {!selectedNote && (
+                      <label className="block text-sm text-slate-500 leading-tight pb-1">
+                        Select audience
+                      </label>
+                    )} */}
+                      <InputSelect
+                        options={groupOptions}
+                        value={selectedGroup}
+                        onChange={setSelectedGroup}
+                        className={`text-primary-500 text-base w-full ${
+                          selectedNote ? 'cursor-not-allowed' : ''
+                        }`}
+                        buttonClasses="mt-2 w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit focus:!ring-1"
+                        disabled={!!selectedNote}
+                      />
                     </div>
                   </div>
 
-                  <label>
+                  {/* <label>
                     <InputTextarea
                       name="notes"
                       rows={8}
@@ -319,31 +291,16 @@ const ElemNoteForm: React.FC<Props> = ({
                       placeholder="Write your note..."
                       className="ring-1 ring-slate-200"
                     />
-                    {/* <div
-                      aria-label="Write your note..."
-                      className="select-text whitespace-pre-wrap break-words w-full mt-1 px-3 py-2 text-sm relative bg-white rounded-lg ring-1 ring-slate-200 focus:outline-none focus:outline-2 focus:outline-primary-500 focus:outline-offset-0"
-                      contentEditable={true}
-                      suppressContentEditableWarning={true}
-                      role="textbox"
-                      spellCheck="true"
-                      tabIndex={0}
-                      data-lexical-editor="true"
-                      //onInput={handleChangeNoteDiv}
-                      placeholder="Write your note..."
-                      onBlur={handleChangeNoteDiv}>
-                      {notes}
-                    </div> */}
-                  </label>
+                  </label> */}
 
-                  <div className="mt-6 flex items-center justify-between">
+                  <div className="mt-3 pt-3 flex items-center justify-between border-t border-gray-300">
                     <ElemButton
                       btn="primary"
                       disabled={!notes || !selectedGroup}
                       loading={isLoading}
                       onClick={handleSubmit}
-                      className="w-full"
-                    >
-                      {type === 'edit' ? 'Save' : 'Create Note'}
+                      className="ml-auto">
+                      {type === 'edit' ? 'Save Note' : 'Create Note'}
                     </ElemButton>
                   </div>
                 </Dialog.Panel>
