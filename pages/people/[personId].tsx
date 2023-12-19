@@ -36,6 +36,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import moment from 'moment-timezone';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 
 type Props = {
   person: People;
@@ -219,7 +220,8 @@ const Person: NextPage<Props> = (props: Props) => {
             </div>
           </div>
 
-          <ElemInviteBanner className="mt-7" />
+          <ElemDemocratizeBanner className="mt-7" />
+          {/* <ElemInviteBanner className="mt-7" /> */}
         </div>
 
         <ElemTabBar

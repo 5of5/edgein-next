@@ -109,11 +109,11 @@ export default function Account() {
 
             <div className="my-6">
               <h3 className="font-medium pl-0.5 font-sans">Current credits</h3>
-              <div className="flex mt-3">
+              <div className="flex flex-col mt-3 lg:flex-row">
                 <span className="bg-primary-500 border rounded-lg py-3 px-6 text-white text-3xl font-semibold">
                   {numberOfCredits.toLocaleString()}
                 </span>
-                <div className="block ml-6">
+                <div className="block mt-2 ml-0 lg:mt-0 lg:ml-6">
                   <ElemButton
                     btn="default"
                     disabled={!edgeInContributorButtonEnabled}

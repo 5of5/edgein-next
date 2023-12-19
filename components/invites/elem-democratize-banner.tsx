@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, MouseEvent } from 'react';
-import { SHOW_INVITE_BANNER } from '@/utils/constants';
+import { SHOW_DEMOCRATIZE_BANNER } from '@/utils/constants';
 import { IconX, IconArrowRight } from '../icons';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
@@ -10,7 +10,7 @@ type Props = {
   className?: string;
 };
 
-export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
+export const ElemDemocratizeBanner: FC<Props> = ({ className = '' }) => {
   const { user } = useUser();
 
   const router = useRouter();
@@ -20,8 +20,8 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setShowBanner(
-        localStorage.getItem(SHOW_INVITE_BANNER) === null ||
-          localStorage.getItem(SHOW_INVITE_BANNER) === 'true',
+        localStorage.getItem(SHOW_DEMOCRATIZE_BANNER) === null ||
+          localStorage.getItem(SHOW_DEMOCRATIZE_BANNER) === 'true',
       );
     }
   }, []);
@@ -29,7 +29,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   const handleCloseBanner = (event: MouseEvent) => {
     setShowBanner(false);
     if (typeof window !== 'undefined') {
-      localStorage.setItem(SHOW_INVITE_BANNER, 'false');
+      localStorage.setItem(SHOW_DEMOCRATIZE_BANNER, 'false');
     }
     event.preventDefault();
   };
@@ -46,15 +46,20 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
   }
 
   return (
-    <ElemLink href={ROUTES.INVITE_A_FRIEND}>
+    <ElemLink href={ROUTES.DEMOCRATIZE24}>
       <div
         className={`cursor-pointer flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
       >
         <div className="text-white" onClick={handleClickBanner}>
-          Invite a friend and get{' '}
-          <strong className="font-bold">1,500 credits</strong> for 1 month of
-          EdgeIn for free{' '}
-          <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
+          <strong className="font-bold">
+            Democratize24 - March 20-21, 2024
+          </strong>{' '}
+          - The ultimate 2-day deal making summit giving you an Edge In AI and
+          Web3.{' '}
+          <IconArrowRight
+            className="inline-block h-5 w-5"
+            title="Register Now"
+          />
         </div>
         <div className="flex flex-1 justify-end">
           <button

@@ -35,6 +35,7 @@ import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -215,7 +216,8 @@ const VCFirm: NextPage<Props> = props => {
           </div>
         </div>
 
-        <ElemInviteBanner className="mt-7" />
+        <ElemDemocratizeBanner className="mt-7" />
+        {/* <ElemInviteBanner className="mt-7" /> */}
       </div>
 
       <ElemTabBar

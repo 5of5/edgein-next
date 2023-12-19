@@ -46,6 +46,7 @@ import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
 import { ElemGoingDialog } from '@/components/events/elem-going-dialog';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 
 type Props = {
   event: GetEventQuery['events'][0];
@@ -318,7 +319,8 @@ const Event: NextPage<Props> = props => {
           </div>
         )}
 
-        <ElemInviteBanner className="mt-7" />
+        <ElemDemocratizeBanner className="mt-7" />
+        {/* <ElemInviteBanner className="mt-7" /> */}
       </div>
 
       <ElemTabBar

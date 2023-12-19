@@ -36,6 +36,7 @@ import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemFilter } from '@/components/filters/elem-filter';
 import { processPeopleFilter } from '@/components/filters/processor';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 
 type Props = {
   peopleTabs: DashboardCategory[];
@@ -201,7 +202,8 @@ const People: NextPage<Props> = ({
           </div>
         )}
 
-        <ElemInviteBanner className="mx-8 my-3" />
+        <ElemDemocratizeBanner className="mx-8 my-3" />
+        {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
         <div className="mx-8">
           {error ? (

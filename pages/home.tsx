@@ -28,6 +28,7 @@ import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -114,7 +115,8 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <ElemInviteBanner className="mx-8 mt-3" />
+        <ElemDemocratizeBanner className="mx-8 my-3" />
+        {/* <ElemInviteBanner className="mx-8 mt-3" /> */}
 
         <div
           className="mt-8 px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"

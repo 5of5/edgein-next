@@ -54,6 +54,7 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -430,7 +431,8 @@ const Investors: NextPage<Props> = ({
             </div>
           )}
 
-          <ElemInviteBanner className="mx-8 my-3" />
+          <ElemDemocratizeBanner className="mx-8 my-3" />
+          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
           <div className="mx-8">
             {error ? (

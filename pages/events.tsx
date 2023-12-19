@@ -44,6 +44,7 @@ import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemDropdown } from '@/components/elem-dropdown';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 
 type Props = {
   eventTabs: DashboardCategory[];
@@ -344,7 +345,8 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </div>
         )}
 
-        <ElemInviteBanner className="mx-8 my-3" />
+        <ElemDemocratizeBanner className="mx-8 my-3" />
+        {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
         <div className="mx-8">
           {error ? (
