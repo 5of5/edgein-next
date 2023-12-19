@@ -335,7 +335,7 @@ const ElemNoteCard: React.FC<Props> = ({
       return {
         __html: sanitizeHtml(markdown, {
           allowedAttributes: {
-            a: ['href', 'target', 'class', 'title', 'className', '*'],
+            a: ['href', 'target', 'class', 'title', 'className'],
           },
         }),
       };
