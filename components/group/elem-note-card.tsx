@@ -349,7 +349,7 @@ const ElemNoteCard: React.FC<Props> = ({
         .replace(/[A-Z]/g, m => '-' + m)
         .replace(/@-/g, '')
         .toLowerCase();
-      return `<a href="https://edgein.io/people/${createSlug}" class="text-primary-500">${match}</a>`;
+      return `<a class="text-primary-500 hover:underline" href="https://edgein.io/people/${createSlug}">${match}</a>`;
     });
 
     return output;
@@ -357,7 +357,7 @@ const ElemNoteCard: React.FC<Props> = ({
 
   const wrapHyperlinks = (text: string) => {
     const regex = /https?:\/\/\S*/gi;
-    const decodeURL = decodeURIComponent(decodeURIComponent(text));
+    const decodeURL = decodeURIComponent(text);
 
     const modifiedText = decodeURL.replace(regex, url => {
       return `<a class="text-primary-500 hover:underline" href="${url}" title="${url}" target="_blank">${
