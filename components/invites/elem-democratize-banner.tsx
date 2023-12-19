@@ -34,13 +34,6 @@ export const ElemDemocratizeBanner: FC<Props> = ({ className = '' }) => {
     event.preventDefault();
   };
 
-  const handleClickBanner = (event: MouseEvent<HTMLDivElement>) => {
-    if (!user) {
-      event.preventDefault();
-      router.push(ROUTES.SIGN_IN);
-    }
-  };
-
   if (!showBanner) {
     return null;
   }
@@ -50,7 +43,7 @@ export const ElemDemocratizeBanner: FC<Props> = ({ className = '' }) => {
       <div
         className={`cursor-pointer flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
       >
-        <div className="text-white" onClick={handleClickBanner}>
+        <div className="text-white">
           <strong className="font-bold">
             Democratize24 - March 20-21, 2024
           </strong>{' '}
