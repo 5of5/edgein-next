@@ -48,7 +48,8 @@ export const useAutocomplete = (
           setState(params.state);
         },
       }),
-    [props],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   return { autocomplete, state };
