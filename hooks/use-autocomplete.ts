@@ -48,7 +48,7 @@ export const useAutocomplete = (
           setState(params.state);
         },
       }),
-    [],
+    [props],
   );
 
   return { autocomplete, state };
