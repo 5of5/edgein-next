@@ -45,7 +45,7 @@ export const ElemDemocratizeBanner: FC<Props> = ({ className = '' }) => {
       >
         <div className="text-white">
           <strong className="font-bold">
-            Democratize24 - March 20-21, 2024
+            Democratize24: March 20-21, 2024
           </strong>{' '}
           - The ultimate 2-day deal making summit giving you an Edge In AI and
           Web3.{' '}
