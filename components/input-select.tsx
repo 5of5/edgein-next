@@ -62,7 +62,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                         {item.icon && (
                           <item.icon
                             title={item.title}
-                            className="h-5 w-5 mr-1 shrink-0 text-dark-500"
+                            className="h-5 w-5 mr-1 shrink-0"
                           />
                         )}
                         {item.title}
@@ -75,7 +75,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                       {value?.icon && (
                         <value.icon
                           title={value.title ? value.title : placeholder}
-                          className="h-5 w-5 mr-1 shrink-0 text-dark-500"
+                          className="h-5 w-5 mr-1 shrink-0"
                         />
                       )}
                       <span>{value?.title ? value.title : placeholder}</span>

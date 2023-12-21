@@ -129,7 +129,7 @@ const ElemNoteCard: React.FC<Props> = ({
     if (data.notes && contentDiv?.current) {
       setContentDivHeight(contentDiv.current.scrollHeight);
     }
-  }, [data.notes]);
+  }, [data?.notes]);
 
   const formatDateShown = (date: Date) => {
     moment.updateLocale('en', {
@@ -335,15 +335,29 @@ const ElemNoteCard: React.FC<Props> = ({
       return {
         __html: sanitizeHtml(markdown, {
           allowedAttributes: {
-            a: ['href', 'target', 'class', 'title'],
+            a: ['href', 'target', 'class', 'title', 'className'],
           },
         }),
       };
   };
 
+  const replaceAtMentionsWithLinks = (text: string) => {
+    const regex = /(^|(?<=\s))@[a-zA-Z0-9+-]+(?=(\s|$)|[!?:;-=+,\.])/g;
+
+    const output = text.replace(regex, (match: string) => {
+      const createSlug = match
+        .replace(/[A-Z]/g, m => '-' + m)
+        .replace(/@-/g, '')
+        .toLowerCase();
+      return `<a class="text-primary-500 hover:underline" href="https://edgein.io/people/${createSlug}">${match}</a>`;
+    });
+
+    return output;
+  };
+
   const wrapHyperlinks = (text: string) => {
     const regex = /https?:\/\/\S*/gi;
-    const decodeURL = decodeURIComponent(decodeURIComponent(text));
+    const decodeURL = decodeURIComponent(text);
 
     const modifiedText = decodeURL.replace(regex, url => {
       return `<a class="text-primary-500 hover:underline" href="${url}" title="${url}" target="_blank">${
@@ -486,7 +500,7 @@ const ElemNoteCard: React.FC<Props> = ({
             }`}
             ref={contentDiv}
             dangerouslySetInnerHTML={renderMarkdownToHTML(
-              wrapHyperlinks(data.notes),
+              replaceAtMentionsWithLinks(wrapHyperlinks(data.notes)),
             )}
           ></p>
           {contentDivHeight > 100 && !contentShowAll && (
