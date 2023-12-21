@@ -340,6 +340,38 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
       },
+      {
+        Header: 'Last Investment Amount',
+        accessor: (data: {
+          vc_firm: {
+            investments: Investments[];
+          };
+        }) => {
+          const investmentRounds = data.vc_firm?.investments?.flatMap(
+            (item: any) => item.investment_round,
+          );
+          if (investmentRounds.length > 0) {
+            const latestRound = getLatestRound(investmentRounds);
+
+            return <>${numberWithCommas(latestRound?.amount)}</>;
+          } else {
+            return 0;
+          }
+
+          // if (!investmentRounds) {
+          //   return null;
+          // } else {
+          //   const latestRound = getLatestRound(investmentRounds);
+
+          //   const out = latestRound?.amount ? latestRound?.amount : null;
+
+          //   return out;
+          // }
+        },
+        Cell: (props: { value: string }) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+      },
     ],
     [],
   );
