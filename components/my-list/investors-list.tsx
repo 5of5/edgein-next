@@ -1,5 +1,5 @@
 import { FC, useState, useMemo } from 'react';
-import { first } from 'lodash';
+import { first, orderBy } from 'lodash';
 import moment from 'moment-timezone';
 import {
   useGetVcFirmsByListIdQuery,
@@ -342,31 +342,30 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
       },
       {
         Header: 'Last Investment Amount',
-        accessor: (data: {
-          vc_firm: {
-            investments: Investments[];
-          };
-        }) => {
-          const investmentRounds = data.vc_firm?.investments?.flatMap(
-            (item: any) => item.investment_round,
-          );
-          if (investmentRounds.length > 0) {
-            const latestRound = getLatestRound(investmentRounds);
+        accessor: (data: { vc_firm: Vc_Firms }) => {
+          if (data.vc_firm?.investments.length > 0) {
+            const roundsByLatestDate = orderBy(
+              data.vc_firm?.investments,
+              a => new Date(a.investment_round?.round_date),
+              ['desc'],
+            );
 
-            return <>${numberWithCommas(latestRound?.amount)}</>;
+            const fundingAmount = roundsByLatestDate[0].investment_round
+              ?.amount ? (
+              <>
+                $
+                {numberWithCommas(
+                  roundsByLatestDate[0].investment_round?.amount,
+                )}
+              </>
+            ) : (
+              'Undisclosed Capital'
+            );
+
+            return fundingAmount;
           } else {
             return 0;
           }
-
-          // if (!investmentRounds) {
-          //   return null;
-          // } else {
-          //   const latestRound = getLatestRound(investmentRounds);
-
-          //   const out = latestRound?.amount ? latestRound?.amount : null;
-
-          //   return out;
-          // }
         },
         Cell: (props: { value: string }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
