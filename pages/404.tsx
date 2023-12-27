@@ -5,14 +5,22 @@ import { useIntercom } from 'react-use-intercom';
 import { usePopup } from '@/context/popup-context';
 import { ElemLink } from '@/components/elem-link';
 import { ROUTES } from '@/routes';
+import { NextPage } from 'next';
+import { NextSeo } from 'next-seo';
 
-const Custom404 = () => {
+type Props = {};
+
+const Custom404: NextPage<Props> = () => {
   const { show } = useIntercom();
 
   const { setShowPopup } = usePopup();
 
   return (
     <>
+      <NextSeo
+        title="404 Page not found"
+        description="Sorry, but the page you were looking for could not be found. You can use the search bar, return to our front page, or drop us a line to find what you’re looking for."
+      />
       <div className="relative -mb-24 overflow-hidden">
         <figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">
           <Image

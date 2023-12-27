@@ -41,7 +41,6 @@ import { useIntercom } from 'react-use-intercom';
 import useLibrary from '@/hooks/use-library';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
-import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
@@ -54,7 +53,9 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
+//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
+import { NextSeo } from 'next-seo';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -367,185 +368,191 @@ const Investors: NextPage<Props> = ({
   } investors`;
 
   return (
-    <DashboardLayout>
-      <div className="relative">
-        <div>
-          <div
-            className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-            role="tablist"
-          >
-            <ElemCategories
-              categories={investorsStatusTags}
-              selectedCategory={selectedStatusTag}
-              onChangeCategory={setSelectedStatusTag}
-            />
-
-            <div className="flex flex-wrap gap-2">
-              {isDisplaySelectLibrary && <ElemLibrarySelector />}
-              <ElemDropdown
-                IconComponent={tableLayout ? IconTable : IconGroup}
-                items={layoutItems}
+    <>
+      <NextSeo
+        title={`${selectedLibrary} Investors`}
+        description={`We're tracking investments made in ${selectedLibrary} companies and projects to provide you with an index of the most active and influential capital in the industry.`}
+      />
+      <DashboardLayout>
+        <div className="relative">
+          <div>
+            <div
+              className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+              role="tablist"
+            >
+              <ElemCategories
+                categories={investorsStatusTags}
+                selectedCategory={selectedStatusTag}
+                onChangeCategory={setSelectedStatusTag}
               />
 
-              <ElemAddFilter
-                resourceType="vc_firms"
-                onSelectFilterOption={onSelectFilterOption}
-              />
-
-              {isSortDropdownVisible && (
+              <div className="flex flex-wrap gap-2">
+                {isDisplaySelectLibrary && <ElemLibrarySelector />}
                 <ElemDropdown
-                  IconComponent={IconSortDashboard}
-                  items={sortItems}
-                  defaultItem={sortItems.findIndex(
-                    sortItem => sortItem.value === sortBy,
-                  )}
-                  firstItemDivided
+                  IconComponent={tableLayout ? IconTable : IconGroup}
+                  items={layoutItems}
                 />
-              )}
+
+                <ElemAddFilter
+                  resourceType="vc_firms"
+                  onSelectFilterOption={onSelectFilterOption}
+                />
+
+                {isSortDropdownVisible && (
+                  <ElemDropdown
+                    IconComponent={IconSortDashboard}
+                    items={sortItems}
+                    defaultItem={sortItems.findIndex(
+                      sortItem => sortItem.value === sortBy,
+                    )}
+                    firstItemDivided
+                  />
+                )}
+              </div>
             </div>
-          </div>
 
-          {selectedFilters && (
-            <div className="mx-8 my-3">
-              <ElemFilter
-                resourceType="vc_firms"
-                filterValues={selectedFilters}
-                onSelectFilterOption={onSelectFilterOption}
-                onChangeFilterValues={onChangeSelectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: { ...filterParams, open: false },
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => onChangeSelectedFilters(null)}
-              />
-            </div>
-          )}
+            {selectedFilters && (
+              <div className="mx-8 my-3">
+                <ElemFilter
+                  resourceType="vc_firms"
+                  filterValues={selectedFilters}
+                  onSelectFilterOption={onSelectFilterOption}
+                  onChangeFilterValues={onChangeSelectedFilters}
+                  onApply={(name, filterParams) => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: { ...filterParams, open: false },
+                    });
+                  }}
+                  onClearOption={name => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: undefined,
+                    });
+                  }}
+                  onReset={() => onChangeSelectedFilters(null)}
+                />
+              </div>
+            )}
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
-          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
+            <ElemDemocratizeBanner className="mx-8 my-3" />
+            {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
-          <div className="mx-8">
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading investors
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report an error on investors page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
+            <div className="mx-8">
+              {error ? (
+                <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+                  <div className="max-w-xl mx-auto">
+                    <h4 className="mt-5 text-3xl font-bold">
+                      Error loading investors
+                    </h4>
+                    <div className="mt-1 text-lg text-slate-600">
+                      Please check spelling, reset filters, or{' '}
+                      <button
+                        onClick={() =>
+                          showNewMessages(
+                            `Hi EdgeIn, I'd like to report an error on investors page`,
+                          )
+                        }
+                        className="inline underline decoration-primary-500 hover:text-primary-500"
+                      >
+                        <span>report error</span>
+                      </button>
+                      .
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
-                </div>
+              ) : (
+                <>
+                  <div className="flex justify-between py-8">
+                    <div className="text-4xl font-medium">{pageTitle}</div>
+                  </div>
 
-                {isLoading && !initialLoad ? (
-                  <>
-                    {tableLayout ? (
-                      <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                        <PlaceholderTable />
-                      </div>
-                    ) : (
-                      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {Array.from({ length: 9 }, (_, i) => (
-                          <PlaceholderInvestorCard key={i} />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : tableLayout && vcFirms?.length != 0 ? (
-                  <InvestorsTable
-                    investors={vcFirms}
-                    pageNumber={page}
-                    itemsPerPage={limit}
-                    shownItems={vcFirms?.length}
-                    totalItems={vcfirms_aggregate}
-                    onClickPrev={() => setPage(page - 1)}
-                    onClickNext={() => setPage(page + 1)}
-                    filterByTag={filterByTag}
-                  />
-                ) : (
-                  <>
-                    <div
-                      data-testid="investors"
-                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                    >
-                      {vcFirms?.map(vcfirm => (
-                        <ElemInvestorCard
-                          key={vcfirm.id}
-                          vcFirm={vcfirm as Vc_Firms}
-                        />
-                      ))}
-                    </div>
-
-                    <Pagination
+                  {isLoading && !initialLoad ? (
+                    <>
+                      {tableLayout ? (
+                        <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                          <PlaceholderTable />
+                        </div>
+                      ) : (
+                        <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                          {Array.from({ length: 9 }, (_, i) => (
+                            <PlaceholderInvestorCard key={i} />
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : tableLayout && vcFirms?.length != 0 ? (
+                    <InvestorsTable
+                      investors={vcFirms}
+                      pageNumber={page}
+                      itemsPerPage={limit}
                       shownItems={vcFirms?.length}
                       totalItems={vcfirms_aggregate}
-                      page={page}
-                      itemsPerPage={limit}
                       onClickPrev={() => setPage(page - 1)}
                       onClickNext={() => setPage(page + 1)}
-                      onClickToPage={selectedPage => setPage(selectedPage)}
+                      filterByTag={filterByTag}
                     />
-                  </>
-                )}
-              </>
+                  ) : (
+                    <>
+                      <div
+                        data-testid="investors"
+                        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                      >
+                        {vcFirms?.map(vcfirm => (
+                          <ElemInvestorCard
+                            key={vcfirm.id}
+                            vcFirm={vcfirm as Vc_Firms}
+                          />
+                        ))}
+                      </div>
+
+                      <Pagination
+                        shownItems={vcFirms?.length}
+                        totalItems={vcfirms_aggregate}
+                        page={page}
+                        itemsPerPage={limit}
+                        onClickPrev={() => setPage(page - 1)}
+                        onClickNext={() => setPage(page + 1)}
+                        onClickToPage={selectedPage => setPage(selectedPage)}
+                      />
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+
+            {vcFirms?.length === 0 && (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+                <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                  <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                  <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                  <div className="mt-1 text-lg text-slate-600">
+                    Please check spelling, try different filters, or tell us
+                    about missing data.
+                  </div>
+                  <ElemButton
+                    onClick={() =>
+                      showNewMessages(
+                        `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                      )
+                    }
+                    btn="white"
+                    className="mt-3"
+                  >
+                    <IconAnnotation className="w-6 h-6 mr-1" />
+                    Tell us about missing data
+                  </ElemButton>
+                </div>
+              </div>
             )}
           </div>
 
-          {vcFirms?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
+          <Toaster />
         </div>
-
-        <Toaster />
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -576,9 +583,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      metaTitle: 'Web3 Investors - EdgeIn.io',
-      metaDescription:
-        "We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
       vcFirmCount: vcFirms?.vc_firms_aggregate?.aggregate?.count || 0,
       initialVCFirms: vcFirms?.vc_firms || [],
       investorsStatusTags,

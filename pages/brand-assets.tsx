@@ -5,6 +5,7 @@ import { ElemLogo } from '@/components/elem-logo';
 import { FigureBlurredCircle } from '@/components/figures';
 import { IconCheck } from '@/components/icons';
 import Image from 'next/image';
+import { NextSeo } from 'next-seo';
 
 type Props = {};
 
@@ -38,6 +39,10 @@ const BrandAssets: NextPage<Props> = () => {
 
   return (
     <>
+      <NextSeo
+        title="Brand assets & guidelines"
+        description="We have a few guidelines for using our brand resources. Please take a moment to familiarize yourself with them."
+      />
       <div className="relative overflow-hidden">
         <figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">
           <Image
@@ -55,7 +60,7 @@ const BrandAssets: NextPage<Props> = () => {
             <h1 className="font-display text-4xl font-bold tracking-tight sm:px-12 sm:text-6xl">
               EdgeIn brand assets &amp; guidelines
             </h1>
-            <p className="mt-6 font-display text-xl leading-relaxed text-slate-600">
+            <p className="mt-6 font-display text-xl leading-relaxed">
               Thanks for your interest in EdgeIn! We have a few guidelines for
               using our brand resources. Please take a moment to familiarize
               yourself with them.
@@ -74,7 +79,7 @@ const BrandAssets: NextPage<Props> = () => {
               <p className="inline text-transparent text-5xl font-bold bg-clip-text bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400">
                 01
               </p>
-              <h2 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
+              <h2 className="text-3xl font-bold mb-4 lg:text-4xl">
                 Brand Name
               </h2>
               <p className="font-display text-xl leading-relaxed text-slate-600">
@@ -88,11 +93,11 @@ const BrandAssets: NextPage<Props> = () => {
             <p className="inline text-transparent text-5xl font-bold bg-clip-text bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400">
               02
             </p>
-            <h2 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
+            <h2 className="text-3xl font-bold mb-4 lg:text-4xl">
               Logos &amp; Usage
             </h2>
 
-            <h3 className="mt-8 text-xl font-bold text-dark-500 mb-4 lg:text-2xl">
+            <h3 className="mt-8 text-xl font-bold mb-4 lg:text-2xl">
               Primary Logo
             </h3>
             <p className="font-display text-xl leading-relaxed text-slate-600">
@@ -130,7 +135,7 @@ const BrandAssets: NextPage<Props> = () => {
             </ElemButton>
           </div>
           <div className="max-w-prose mx-auto">
-            <h3 className="mt-8 text-xl font-bold text-dark-500 mb-4 lg:text-2xl">
+            <h3 className="mt-8 text-xl font-bold mb-4 lg:text-2xl">
               Monotone Logos
             </h3>
             <p className="font-display text-xl leading-relaxed text-slate-600">
@@ -175,7 +180,7 @@ const BrandAssets: NextPage<Props> = () => {
           <div className="mt-8 block md:w-full md:grid md:grid-cols-2 gap-8">
             <div className="mt-8 bg-white shadow rounded-lg p-7 lg:mt-0">
               <div className="rounded-lg flex items-center justify-center py-16 bg-gray-50">
-                <LogoMonotone className="h-10 w-auto text-dark-500" />
+                <LogoMonotone className="h-10 w-auto" />
               </div>
               <p className="mt-4 font-bold">Monotone Dark</p>
             </div>
@@ -192,7 +197,7 @@ const BrandAssets: NextPage<Props> = () => {
             </ElemButton>
           </div>
           <div className="max-w-prose mx-auto">
-            <h3 className="mt-8 text-xl font-bold text-dark-500 mb-4 lg:text-2xl">
+            <h3 className="mt-8 text-xl font-bold mb-4 lg:text-2xl">
               The Logomark
             </h3>
             <p className="font-display text-xl leading-relaxed text-slate-600">
@@ -261,10 +266,7 @@ const BrandAssets: NextPage<Props> = () => {
             </div>
             <div className="mt-8 bg-white shadow rounded-lg p-7 lg:mt-0">
               <div className="rounded-lg flex items-center justify-center py-16 bg-gray-50">
-                <LogoMonotone
-                  mode="icon"
-                  className="h-10 w-auto text-dark-500"
-                />
+                <LogoMonotone mode="icon" className="h-10 w-auto" />
               </div>
               <p className="mt-4 font-bold">Monotone Dark</p>
             </div>
@@ -287,10 +289,10 @@ const BrandAssets: NextPage<Props> = () => {
             <p className="inline text-transparent text-5xl font-bold bg-clip-text bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400">
               03
             </p>
-            <h2 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
+            <h2 className="text-3xl font-bold mb-4 lg:text-4xl">
               Brand Palette
             </h2>
-            <p className="font-display text-xl text-slate-600">
+            <p className="font-display text-xl text-gray-500">
               While we use a lot of delightful colors, Indigo (#5E41FE) is
               EdgeIn&rsquo;s hero color. The hex codes of our official brand
               palette that we use as solids and gradients:
@@ -300,29 +302,17 @@ const BrandAssets: NextPage<Props> = () => {
             <div className="col-span-3 flex items-end bg-primary-500 rounded-lg shadow overflow-hidden text-center h-44 lg:col-span-4">
               <div className="w-full p-1 font-bold bg-white">#5E41FE</div>
             </div>
-            <div className="col-span-1 flex items-end bg-primary-400 rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#A05FFE</div>
+            <div className="flex items-end bg-gray-900 rounded-lg shadow overflow-hidden text-center h-44">
+              <div className="w-full p-1 font-bold bg-white">#111827</div>
             </div>
-            <div className="flex items-end bg-blue-800 rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#1B01FE</div>
+            <div className="flex items-end bg-gray-500 rounded-lg shadow overflow-hidden text-center h-44">
+              <div className="w-full p-1 font-bold bg-white">#6b7280</div>
             </div>
-            <div className="flex items-end bg-dark-500 rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#0E0067</div>
-            </div>
-            <div className="flex items-end bg-primary-900 rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#20123A</div>
+            <div className="col-span-1 flex items-end bg-gray-100 rounded-lg shadow overflow-hidden text-center h-44">
+              <div className="w-full p-1 font-bold bg-white">#f3f4f6</div>
             </div>
             <div className="flex items-end bg-[#FE33D0] rounded-lg shadow overflow-hidden text-center h-44">
               <div className="w-full p-1 font-bold bg-white">#FE33D0</div>
-            </div>
-            <div className="flex items-end bg-[#F8DA4B] rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#F8DA4B</div>
-            </div>
-            <div className="flex items-end bg-[#1BE6FF] rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#1BE6FF</div>
-            </div>
-            <div className="flex items-end bg-[#475569] rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#475569</div>
             </div>
           </div>
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 md:w-full ">
@@ -343,15 +333,13 @@ const BrandAssets: NextPage<Props> = () => {
             <p className="inline text-transparent text-5xl font-bold bg-clip-text bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400">
               04
             </p>
-            <h2 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
-              Typography
-            </h2>
-            <p className="font-display text-xl text-slate-600">
-              Metropolis is the font used on EdgeIn marketing and product web
+            <h2 className="text-3xl font-bold mb-4 lg:text-4xl">Typography</h2>
+            <p className="font-display text-xl text-gray-500">
+              Inter is the font used on EdgeIn marketing and product web
               experiences. It’s available for most world alphabets. You can find
               it{' '}
               <a
-                href="https://fontsarena.com/metropolis-by-chris-simpson/"
+                href="https://fonts.google.com/specimen/Inter"
                 target="_blank"
                 rel="noreferrer"
                 className="text-primary-500"
@@ -360,15 +348,15 @@ const BrandAssets: NextPage<Props> = () => {
               </a>
               .
             </p>
-            <p className="mt-4 font-display text-xl text-slate-600">
+            <p className="mt-4 font-display text-xl text-gray-500">
               Please refer to the{' '}
               <a
-                href="https://choosealicense.com/licenses/ofl-1.1/"
+                href="https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
                 target="_blank"
                 rel="noreferrer"
                 className="text-primary-500"
               >
-                SIL Open Font License 1.1
+                SIL Open Font License
               </a>{' '}
               for exact details on what the conditions and restrictions are.
             </p>
@@ -376,19 +364,19 @@ const BrandAssets: NextPage<Props> = () => {
           <div className="mt-8 block md:w-full md:grid md:grid-cols-2 gap-8">
             <div className="mt-8 bg-white shadow rounded-lg p-7 lg:mt-0">
               <div className="font-bold text-4xl text-center py-16 rounded-lg bg-gray-50">
-                <div className="py-2 px-4 sm:px-0">Metropolis Bold</div>
+                <div className="py-2 px-4 sm:px-0">Inter SemiBold</div>
               </div>
-              <p className="mt-4 text-slate-600">
-                Metropolis Bold is the font used for titles & subtitles.
+              <p className="mt-4 text-gray-500">
+                Inter SemiBold is the font used for titles & subtitles.
               </p>
             </div>
             <div className="mt-8 bg-white shadow rounded-lg p-7 lg:mt-0">
               <div className="text-4xl text-center py-16 rounded-lg bg-gray-50">
-                <div className="py-2 px-4 sm:px-0">Metropolis Regular</div>
+                <div className="py-2 px-4 sm:px-0">Inter Regular</div>
               </div>
-              <p className="mt-4 text-slate-600">
-                Metropolis Regular is the font used in paragraph text and small
-                UI elements.
+              <p className="mt-4 text-gray-500">
+                Inter Regular is the font used in paragraph text and small UI
+                elements.
               </p>
             </div>
           </div>

@@ -13,6 +13,7 @@ import { GetSignUpProfileQuery } from '@/graphql/types';
 import { ElemSignInHeader } from '@/components/sign-in/elem-sign-in-header';
 import { ElemLink } from '@/components/elem-link';
 import { ROUTES } from '@/routes';
+import { NextSeo } from 'next-seo';
 
 export type SignUpFormState = {
   firstName?: string;
@@ -74,81 +75,82 @@ export default function SignIn() {
   };
 
   return (
-    <Dialog as="div" open onClose={() => null} className="relative z-[60]">
-      <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
-        <Dialog.Panel className="w-full h-full flex flex-col justify-center mx-auto bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-          <ElemSignInHeader
-            rightComponent={
-              signUpStep === 0 ? (
-                <ElemLink href={ROUTES.ROOT}>
-                  <ElemButton btn="white">Back</ElemButton>
-                </ElemLink>
-              ) : signUpStep === 1 ? (
-                <ElemButton btn="white" onClick={() => setSignUpStep(0)}>
-                  Back
-                </ElemButton>
-              ) : null
-            }
-          />
-
-          {signUpStep === 0 && (
-            <ElemLogin
-              onNext={email => {
-                setSignUpStep(1);
-                setSignUpEmail(email);
-              }}
+    <>
+      <NextSeo title="Sign in" />
+      <Dialog as="div" open onClose={() => null} className="relative z-[60]">
+        <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
+          <Dialog.Panel className="w-full h-full flex flex-col justify-center mx-auto bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+            <ElemSignInHeader
+              rightComponent={
+                signUpStep === 0 ? (
+                  <ElemLink href={ROUTES.ROOT}>
+                    <ElemButton btn="white">Back</ElemButton>
+                  </ElemLink>
+                ) : signUpStep === 1 ? (
+                  <ElemButton btn="white" onClick={() => setSignUpStep(0)}>
+                    Back
+                  </ElemButton>
+                ) : null
+              }
             />
-          )}
 
-          {signUpStep === 1 && (
-            <ElemSignUpForm
-              isSubmittingSignUp={isSubmittingSignUp}
-              signUpEmail={signUpEmail}
-              onNext={(formValues, person) => {
-                setSignUpStep(2);
-                setSignUpFormValues(formValues);
-                setProfile(person);
-              }}
-              onSignUp={(formValues, payload) => {
-                setSignUpFormValues(formValues);
-                handleSignUp(payload);
-              }}
-            />
-          )}
+            {signUpStep === 0 && (
+              <ElemLogin
+                onNext={email => {
+                  setSignUpStep(1);
+                  setSignUpEmail(email);
+                }}
+              />
+            )}
 
-          {signUpStep === 2 && (
-            <ElemSignUpProfile
-              isSubmittingSignUp={isSubmittingSignUp}
-              person={profile}
-              onNext={personId => {
-                handleSignUp({
-                  email: signUpEmail,
-                  password: signUpFormValues.password || '',
-                  name: `${signUpFormValues.firstName} ${signUpFormValues.lastName}`,
-                  linkedinUrl: signUpFormValues.linkedinUrl || '',
-                  personId,
-                });
-              }}
-            />
-          )}
+            {signUpStep === 1 && (
+              <ElemSignUpForm
+                isSubmittingSignUp={isSubmittingSignUp}
+                signUpEmail={signUpEmail}
+                onNext={(formValues, person) => {
+                  setSignUpStep(2);
+                  setSignUpFormValues(formValues);
+                  setProfile(person);
+                }}
+                onSignUp={(formValues, payload) => {
+                  setSignUpFormValues(formValues);
+                  handleSignUp(payload);
+                }}
+              />
+            )}
 
-          {signUpStep === 3 && (
-            <ElemSignUpConfirm
-              firstName={signUpFormValues.firstName || ''}
-              signUpEmail={signUpEmail}
-            />
-          )}
-        </Dialog.Panel>
-        <Toaster />
-      </div>
-    </Dialog>
+            {signUpStep === 2 && (
+              <ElemSignUpProfile
+                isSubmittingSignUp={isSubmittingSignUp}
+                person={profile}
+                onNext={personId => {
+                  handleSignUp({
+                    email: signUpEmail,
+                    password: signUpFormValues.password || '',
+                    name: `${signUpFormValues.firstName} ${signUpFormValues.lastName}`,
+                    linkedinUrl: signUpFormValues.linkedinUrl || '',
+                    personId,
+                  });
+                }}
+              />
+            )}
+
+            {signUpStep === 3 && (
+              <ElemSignUpConfirm
+                firstName={signUpFormValues.firstName || ''}
+                signUpEmail={signUpEmail}
+              />
+            )}
+          </Dialog.Panel>
+          <Toaster />
+        </div>
+      </Dialog>
+    </>
   );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
-    props: {
-      metaTitle: 'Sign in - EdgeIn.io',
-    },
+    props: {},
   };
 };

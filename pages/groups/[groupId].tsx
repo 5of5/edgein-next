@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  useRef,
-  MutableRefObject,
-  useEffect,
-} from 'react';
+import React, { useState, useRef, MutableRefObject, useEffect } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import { useMutation } from 'react-query';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -32,6 +26,7 @@ import {
 import { IconUsers, IconLockClosed } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { useUser } from '@/context/user-context';
+import { NextSeo } from 'next-seo';
 
 type Props = {
   group: User_Groups;
@@ -76,6 +71,10 @@ const Group: NextPage<Props> = (props: Props) => {
   );
   const isPublicGroup = groupData.public;
   const isPrivateGroup = !groupData.public && !isUserBelongToGroup;
+
+  const groupAuthor = groupData.created_by?.person?.name
+    ? groupData.created_by?.person?.name
+    : groupData.created_by?.display_name;
 
   const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
   const aboutRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -142,106 +141,118 @@ const Group: NextPage<Props> = (props: Props) => {
   }
 
   return (
-    <DashboardLayout>
-      <ElemGroupInformation
-        isUserBelongToGroup={isUserBelongToGroup}
-        group={groupData}
-        onInvite={onOpenInviteDialog}
-        onOpenSettingDialog={onOpenSettingDialog}
-        isAddingGroupMember={isAddingGroupMember}
-        onAddGroupMember={() => addGroupMember()}
+    <>
+      <NextSeo
+        title={
+          groupData.name ? `Group: ${groupData.name} by ${groupAuthor}` : ''
+        }
+        description={
+          groupData.description
+            ? groupData.description
+            : 'EdgeIn groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections.'
+        }
       />
+      <DashboardLayout>
+        <ElemGroupInformation
+          isUserBelongToGroup={isUserBelongToGroup}
+          group={groupData}
+          onInvite={onOpenInviteDialog}
+          onOpenSettingDialog={onOpenSettingDialog}
+          isAddingGroupMember={isAddingGroupMember}
+          onAddGroupMember={() => addGroupMember()}
+        />
 
-      <div className="mt-4 px-4 grid lg:grid-cols-11 lg:gap-7">
-        <div className="mt-4 lg:mt-0 lg:col-span-7">
-          <div ref={notesRef}>
-            {isUserBelongToGroup && (
-              <ElemNotes
-                className="flex flex-col"
-                notes={notes?.notes || []}
-                refetchNotes={refetchNotes}
-              />
-            )}
-          </div>
-          {isPublicGroup && !isUserBelongToGroup && (
-            <div className="bg-white shadow rounded-lg px-5 py-4">
-              <div className="p-12 text-center">
-                <IconUsers
-                  className="mx-auto h-12 w-12 text-gray-300"
-                  title="Join Group"
-                />
-                <h3 className="mt-2 text-lg font-medium">
-                  Join this group to view and participate.
-                </h3>
-                <ElemButton
-                  btn="purple"
-                  loading={isAddingGroupMember}
-                  onClick={() => addGroupMember()}
-                  className="mt-2"
-                >
-                  Join group
-                </ElemButton>
-              </div>
-            </div>
-          )}
-          {isPrivateGroup && !isUserBelongToGroup && (
-            <div className="bg-white shadow rounded-lg px-5 py-4">
-              <div className="p-12 text-center">
-                <IconLockClosed
-                  className="mx-auto h-12 w-12 text-slate-300"
-                  title="Join Group"
-                />
-                <h3 className="mt-2 text-lg font-bold">Private Group</h3>
-                <p>
-                  Only members can see who’s in the group and what they post.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="order-first lg:order-none lg:col-span-4">
-          <div className="flex flex-col space-y-4">
-            <div ref={aboutRef}>
-              <ElemGroupAbout
-                isUserBelongToGroup={isUserBelongToGroup}
-                onOpenSettingDialog={onOpenSettingDialog}
-                group={groupData}
-              />
-            </div>
-
-            <div ref={listsRef}>
+        <div className="mt-4 px-4 grid lg:grid-cols-11 lg:gap-7">
+          <div className="mt-4 lg:mt-0 lg:col-span-7">
+            <div ref={notesRef}>
               {isUserBelongToGroup && (
-                <ElemGroupLists
-                  group={groupData}
-                  lists={
-                    (lists?.list_user_groups?.map(
-                      item => item.list,
-                    ) as Array<Lists>) || []
-                  }
-                  refetchLists={refetchLists}
+                <ElemNotes
+                  className="flex flex-col"
+                  notes={notes?.notes || []}
+                  refetchNotes={refetchNotes}
                 />
               )}
             </div>
+            {isPublicGroup && !isUserBelongToGroup && (
+              <div className="bg-white shadow rounded-lg px-5 py-4">
+                <div className="p-12 text-center">
+                  <IconUsers
+                    className="mx-auto h-12 w-12 text-gray-300"
+                    title="Join Group"
+                  />
+                  <h3 className="mt-2 text-lg font-medium">
+                    Join this group to view and participate.
+                  </h3>
+                  <ElemButton
+                    btn="purple"
+                    loading={isAddingGroupMember}
+                    onClick={() => addGroupMember()}
+                    className="mt-2"
+                  >
+                    Join group
+                  </ElemButton>
+                </div>
+              </div>
+            )}
+            {isPrivateGroup && !isUserBelongToGroup && (
+              <div className="bg-white shadow rounded-lg px-5 py-4">
+                <div className="p-12 text-center">
+                  <IconLockClosed
+                    className="mx-auto h-12 w-12 text-slate-300"
+                    title="Join Group"
+                  />
+                  <h3 className="mt-2 text-lg font-bold">Private Group</h3>
+                  <p>
+                    Only members can see who’s in the group and what they post.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="order-first lg:order-none lg:col-span-4">
+            <div className="flex flex-col space-y-4">
+              <div ref={aboutRef}>
+                <ElemGroupAbout
+                  isUserBelongToGroup={isUserBelongToGroup}
+                  onOpenSettingDialog={onOpenSettingDialog}
+                  group={groupData}
+                />
+              </div>
+
+              <div ref={listsRef}>
+                {isUserBelongToGroup && (
+                  <ElemGroupLists
+                    group={groupData}
+                    lists={
+                      (lists?.list_user_groups?.map(
+                        item => item.list,
+                      ) as Array<Lists>) || []
+                    }
+                    refetchLists={refetchLists}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <ElemInviteDialog
-        isOpen={isOpenInviteDialog}
-        group={groupData}
-        onUpdateGroupData={setGroupData}
-        onClose={onCloseInviteDialog}
-      />
-      {(isUserBelongToGroup || isPublicGroup) && (
-        <ElemSettingDialog
-          isOpen={isOpenSettingDialog}
-          selectedTab={selectedSettingTab}
+        <ElemInviteDialog
+          isOpen={isOpenInviteDialog}
           group={groupData}
-          onClose={onCloseSettingDialog}
           onUpdateGroupData={setGroupData}
-          onInvite={onOpenInviteDialog}
+          onClose={onCloseInviteDialog}
         />
-      )}
-    </DashboardLayout>
+        {(isUserBelongToGroup || isPublicGroup) && (
+          <ElemSettingDialog
+            isOpen={isOpenSettingDialog}
+            selectedTab={selectedSettingTab}
+            group={groupData}
+            onClose={onCloseSettingDialog}
+            onUpdateGroupData={setGroupData}
+            onInvite={onOpenInviteDialog}
+          />
+        )}
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -265,19 +276,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const group = data.user_groups[0];
 
-  let metaTitle = null;
-  if (group.name) {
-    metaTitle = group.name;
-  }
-  let metaDescription = null;
-  if (group.description) {
-    metaDescription = group.description;
-  }
-
   return {
     props: {
-      metaTitle,
-      metaDescription,
       group,
     },
   };

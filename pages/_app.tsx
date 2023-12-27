@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import TagManager from 'react-gtm-module';
 import { hotjar } from 'react-hotjar';
 import type { AppProps } from 'next/app';
-import Script from 'next/script';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { LoaderPlasma } from '@/components/loader-plasma';
@@ -18,6 +17,9 @@ import { IntercomProvider } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
+
+import { DefaultSeo } from 'next-seo';
+import SEO from '../next-seo.config';
 
 declare global {
   interface Window {
@@ -73,16 +75,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     `https://edgein.io` + (router.asPath === ROUTES.ROOT ? '' : router.asPath)
   ).split('?')[0];
 
-  const metaTitle = pageProps.metaTitle
-    ? pageProps.metaTitle
-    : 'Web3-focused data intelligence for success - EdgeIn.io';
-  const metaDescription = pageProps.metaDescription
-    ? pageProps.metaDescription
-    : 'Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.';
-  const metaImage = pageProps.metaImage
-    ? pageProps.metaImage
-    : `https://edgein.io/social.jpg`;
-
   const [showFooter, setShowFooter] = useState(true);
 
   React.useEffect(() => {
@@ -111,40 +103,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <DefaultSeo {...SEO} />
       <Head>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} key="description" />
         <link rel="canonical" href={canonicalUrl} />
-        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-          name="robots"
-          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-        />
-        <meta name="twitter:card" content="summary_large_image" key="tw-card" />
-        <meta name="twitter:site" content="@edgeinio" key="tw-site" />
-        <meta name="twitter:title" content={metaTitle} key="tw-title" />
-        <meta
-          name="twitter:description"
-          content={metaDescription}
-          key="tw-description"
-        />
-        <meta name="twitter:image" content={`${metaImage}`} key="tw-social" />
-        <meta property="og:title" content={metaTitle} key="og-title" />
-        <meta
-          property="og:description"
-          content={metaDescription}
-          key="og-description"
-        />
-        <meta property="og:url" content={canonicalUrl} key="og-url" />
-        <meta property="og:type" content="website" key="og-type" />
-        <meta property="og:image" content={`${metaImage}`} key="og-image" />
       </Head>
-      <Script
+      {/* <Script
         src="https://aggle.net/js?pid=J9GEZNSN8"
         strategy="afterInteractive"
-        type="js"
-      ></Script>
+        type="js"></Script> */}
       <div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
         <QueryClientProvider client={queryClient}>
           {pageProps.noLayout ? (

@@ -24,6 +24,7 @@ import { ElemListCard } from '@/components/elem-list-card';
 import { CreateListDialog } from '@/components/my-list/create-list-dialog';
 import { ElemButton } from '@/components/elem-button';
 import { ElemEmptyState } from '@/components/lists/elem-empty-state';
+import { NextSeo } from 'next-seo';
 
 type Props = {
   initialListsCount: number;
@@ -127,107 +128,115 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   };
 
   return (
-    <DashboardLayout>
-      <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
-        <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
-          {LISTS_TABS &&
-            LISTS_TABS.map((tab: any, index: number) =>
-              tab.disabled === true ? (
-                <Fragment key={index}></Fragment>
-              ) : (
-                <ElemButton
-                  key={index}
-                  onClick={() => setSelectedListTab(tab)}
-                  btn="gray"
-                  roundedFull={false}
-                  className={`py-2 rounded-lg ${
-                    selectedListTab?.id === tab.id
-                      ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                      : ''
-                  }`}
-                >
-                  {tab.name}
-                </ElemButton>
-              ),
-            )}
-        </nav>
-      </div>
-
-      {lists?.length === 0 ? (
-        <ElemEmptyState
-          selectedTab={selectedListTab}
-          onChangeTab={setSelectedListTab}
-          onClickCreateList={onClickCreateList}
-        />
-      ) : (
-        <div className="px-8 pb-2">
-          <h1 className="text-4xl font-medium">{selectedListTab.name}</h1>
-        </div>
-      )}
-
-      <div className="px-8 py-3">
-        <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {error ? (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-              <div className="max-w-xl mx-auto">
-                <h4 className="mt-5 text-3xl font-bold">Error loading lists</h4>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, reset filters, or{' '}
-                  <button
-                    onClick={() =>
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to report an error on lists page`,
-                      )
-                    }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
+    <>
+      <NextSeo
+        title="Lists"
+        description="Level up your research, due diligence, or portfolio management. Start with lists to monitor organizations and people of your interests."
+      />
+      <DashboardLayout>
+        <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
+          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+            {LISTS_TABS &&
+              LISTS_TABS.map((tab: any, index: number) =>
+                tab.disabled === true ? (
+                  <Fragment key={index}></Fragment>
+                ) : (
+                  <ElemButton
+                    key={index}
+                    onClick={() => setSelectedListTab(tab)}
+                    btn="gray"
+                    roundedFull={false}
+                    className={`py-2 rounded-lg ${
+                      selectedListTab?.id === tab.id
+                        ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                        : ''
+                    }`}
                   >
-                    <span>report error</span>
-                  </button>
-                  .
+                    {tab.name}
+                  </ElemButton>
+                ),
+              )}
+          </nav>
+        </div>
+
+        {lists?.length === 0 ? (
+          <ElemEmptyState
+            selectedTab={selectedListTab}
+            onChangeTab={setSelectedListTab}
+            onClickCreateList={onClickCreateList}
+          />
+        ) : (
+          <div className="px-8 pb-2">
+            <h1 className="text-4xl font-medium">{selectedListTab.name}</h1>
+          </div>
+        )}
+
+        <div className="px-8 py-3">
+          <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {error ? (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+                <div className="max-w-xl mx-auto">
+                  <h4 className="mt-5 text-3xl font-bold">
+                    Error loading lists
+                  </h4>
+                  <div className="mt-1 text-lg text-slate-600">
+                    Please check spelling, reset filters, or{' '}
+                    <button
+                      onClick={() =>
+                        showNewMessages(
+                          `Hi EdgeIn, I'd like to report an error on lists page`,
+                        )
+                      }
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
+                      <span>report error</span>
+                    </button>
+                    .
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : isLoading && !initialLoad ? (
-            <>
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderCompanyCard key={i} />
-              ))}
-            </>
-          ) : (
-            lists?.map(listItem => {
-              return (
-                <ElemListCard
-                  key={listItem.id}
-                  selectedTab={selectedListTab}
-                  resource={{ ...listItem, resourceType: 'list' }}
-                  refetchList={refetch}
-                />
-              );
-            })
-          )}
+            ) : isLoading && !initialLoad ? (
+              <>
+                {Array.from({ length: 9 }, (_, i) => (
+                  <PlaceholderCompanyCard key={i} />
+                ))}
+              </>
+            ) : (
+              lists?.map(listItem => {
+                return (
+                  <ElemListCard
+                    key={listItem.id}
+                    selectedTab={selectedListTab}
+                    resource={{ ...listItem, resourceType: 'list' }}
+                    refetchList={refetch}
+                  />
+                );
+              })
+            )}
+          </div>
+
+          <Pagination
+            shownItems={lists?.length}
+            totalItems={listsAggregate}
+            page={page}
+            itemsPerPage={LIMIT}
+            onClickPrev={() => setPage(page - 1)}
+            onClickNext={() => setPage(page + 1)}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
         </div>
 
-        <Pagination
-          shownItems={lists?.length}
-          totalItems={listsAggregate}
-          page={page}
-          itemsPerPage={LIMIT}
-          onClickPrev={() => setPage(page - 1)}
-          onClickNext={() => setPage(page + 1)}
-          onClickToPage={selectedPage => setPage(selectedPage)}
+        <ElemUpgradeDialog
+          isOpen={isOpenUpgradeDialog}
+          onClose={onCloseUpgradeDialog}
         />
-      </div>
 
-      <ElemUpgradeDialog
-        isOpen={isOpenUpgradeDialog}
-        onClose={onCloseUpgradeDialog}
-      />
-
-      <CreateListDialog
-        isOpen={isOpenCreateListDialog}
-        onClose={onCloseCreateListDialog}
-      />
-    </DashboardLayout>
+        <CreateListDialog
+          isOpen={isOpenCreateListDialog}
+          onClose={onCloseCreateListDialog}
+        />
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -253,9 +262,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
-      metaTitle: 'Lists - EdgeIn.io',
-      metaDescription:
-        'Level up your research, due diligence, or portfolio management. Start with lists to monitor organizations and people of your interests.',
       initialListsCount: listsData?.lists_aggregate?.aggregate?.count || 0,
       initialLists: listsData?.lists || [],
     },
