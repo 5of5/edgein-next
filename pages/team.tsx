@@ -119,6 +119,7 @@ const Team: NextPage<Props> = () => {
         title="Meet the EdgeIn Team"
         description="Get to know the people leading data insights for the AI and Web3 community"
         openGraph={{
+          url: 'https://edgein.io/team',
           images: [
             {
               url: 'https://edgein.io/images/og/team.jpg',
