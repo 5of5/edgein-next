@@ -19,7 +19,6 @@ import { ROUTES } from '@/routes';
 const INTERCOM_APP_ID = 'jm3hf6lp';
 
 import { DefaultSeo } from 'next-seo';
-import SEO from '../next-seo.config';
 
 declare global {
   interface Window {
@@ -103,10 +102,64 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <DefaultSeo {...SEO} />
-      <Head>
+      <DefaultSeo
+        title="Discover AI and Web3-focused data intelligence for success"
+        titleTemplate="%s – EdgeIn.io"
+        defaultTitle="EdgeIn.io"
+        description="EdgeIn is the AI & Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success. Get company funding data, find new prospects, and explore competitor insights."
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: canonicalUrl,
+          siteName: 'EdgeIn',
+          images: [
+            {
+              url: 'https://edgein.io/social.jpg',
+              width: 800,
+              height: 600,
+              alt: 'EdgeIn.io',
+            },
+          ],
+        }}
+        twitter={{
+          handle: '@edgeinio',
+          site: '@edgeinio',
+          cardType: 'summary_large_image',
+        }}
+        robotsProps={{
+          nosnippet: true,
+          notranslate: true,
+          noimageindex: true,
+          noarchive: true,
+          maxSnippet: -1,
+          maxImagePreview: 'none',
+          maxVideoPreview: -1,
+        }}
+        additionalMetaTags={[
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1.0',
+          },
+        ]}
+        additionalLinkTags={[
+          { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+          { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
+          {
+            rel: 'icon',
+            type: 'image/x-icon',
+            href: '/favicon.ico',
+          },
+          {
+            rel: 'apple-touch-icon',
+            href: '/apple-touch-icon.png',
+            sizes: '76x76',
+          },
+        ]}
+        canonical={canonicalUrl}
+      />
+      {/* <Head>
         <link rel="canonical" href={canonicalUrl} />
-      </Head>
+      </Head> */}
       {/* <Script
         src="https://aggle.net/js?pid=J9GEZNSN8"
         strategy="afterInteractive"
