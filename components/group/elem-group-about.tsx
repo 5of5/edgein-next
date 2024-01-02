@@ -8,7 +8,7 @@ import {
   IconLockClosed,
 } from '@/components/icons';
 import { User_Groups } from '@/graphql/types';
-import Link from 'next/link';
+import { ElemLink } from '../elem-link';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemMemberAvatarList } from '@/components/group/elem-member-avatar-list';
 import { SettingTabProps } from './elem-setting-dialog';
@@ -183,11 +183,11 @@ export const ElemGroupAbout: React.FC<Props> = ({
                     return (
                       <li key={mem.id}>
                         {mem.user?.person?.slug ? (
-                          <Link
+                          <ElemLink
                             href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}
                           >
-                            <a>{admin}</a>
-                          </Link>
+                            {admin}
+                          </ElemLink>
                         ) : (
                           admin
                         )}

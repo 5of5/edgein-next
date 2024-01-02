@@ -4,7 +4,6 @@ import {
   Dispatch,
   SetStateAction,
   useState,
-  useMemo,
 } from 'react';
 import { ElemButton } from './elem-button';
 import {
@@ -32,6 +31,7 @@ import UserService from '@/utils/users';
 import { ExploreMenuItem } from '@/types/common';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
+import { navigation } from './the-footer';
 
 type Props = {
   className?: string;
@@ -141,7 +141,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
   return (
     <>
       <div
-        className={`fixed z-50 w-full b items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
+        className={`fixed z-50 w-full items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
       >
         <ul
           className={`grid ${
@@ -222,7 +222,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
         leaveTo="translate-x-full"
       >
         <div className="fixed -top-12 left-0 right-0 bottom-0 z-40">
-          <div className="bg-gray-50 h-screen">
+          <div className="bg-gray-50 h-screen pb-20 overflow-auto">
             <div className="flex justify-between items-center px-4 py-3">
               <p className="font-bold">Menu</p>
               <div className="flex space-x-2">
@@ -242,27 +242,54 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                 </ElemButton>
               </div>
             </div>
-            <ul className="grid grid-cols-2 gap-4 px-4">
+            <div className="grid grid-cols-2 gap-4 px-4">
               {menuPanel.map((item, index) => (
-                <li key={index}>
-                  <ElemLink
-                    href={item?.href ? item.href : ''}
-                    onClick={onClose}
-                    className="block p-3 outline-none bg-white shadow rounded-lg"
-                  >
-                    {item?.icon && (
-                      <item.icon
-                        title={item.title}
-                        className="h-6 w-6 shrink-0"
-                      />
-                    )}
-                    <span className="leading-tight">{item?.title}</span>
-                  </ElemLink>
-                </li>
+                <ElemLink
+                  key={index}
+                  href={item?.href ? item.href : ''}
+                  onClick={onClose}
+                  className="block p-3 outline-none bg-white shadow rounded-lg"
+                >
+                  {item?.icon && (
+                    <item.icon
+                      title={item.title}
+                      className="h-6 w-6 shrink-0"
+                    />
+                  )}
+                  <span className="leading-tight">{item?.title}</span>
+                </ElemLink>
               ))}
-            </ul>
-            <div className="p-4">
-              {user ? (
+              {!user && (
+                <ElemButton
+                  onClick={() => router.push(ROUTES.COMPANIES)}
+                  btn="primary"
+                  className="col-span-2 w-full !p-3 !rounded-lg"
+                >
+                  Start for free
+                </ElemButton>
+              )}
+              {navigation.resources.map(item => (
+                <ElemLink
+                  key={item.name}
+                  href={item?.href ? item.href : ''}
+                  onClick={onClose}
+                  className="col-span-2 p-3 outline-none text-sm bg-white shadow rounded-lg"
+                >
+                  {item.name}
+                </ElemLink>
+              ))}
+              {navigation.company.map(item => (
+                <ElemLink
+                  key={item.name}
+                  href={item?.href ? item.href : ''}
+                  onClick={onClose}
+                  className="col-span-2 p-3 outline-none text-sm bg-white shadow rounded-lg"
+                >
+                  {item.name}
+                </ElemLink>
+              ))}
+
+              {user && (
                 <ElemButton
                   btn="gray"
                   roundedFull={false}
@@ -270,17 +297,9 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
                     UserService.logout();
                     setNavOpen(false);
                   }}
-                  className="w-full"
+                  className="col-span-2 w-full !p-3 !rounded-lg"
                 >
                   Sign out
-                </ElemButton>
-              ) : (
-                <ElemButton
-                  onClick={() => router.push(ROUTES.COMPANIES)}
-                  btn="primary"
-                  className="w-full"
-                >
-                  Start for free
                 </ElemButton>
               )}
             </div>
