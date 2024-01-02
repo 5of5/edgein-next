@@ -170,10 +170,9 @@ export default function Account() {
           >
             <div>
               <p className="text-sm text-gray-600">
-                Connect your LinkedIn account to validate your profile and
-                contribute to EdgeIn. Our team will then review your account and
-                enable it for contribution (this may take up to one business
-                day).
+                {user && user.auth0_linkedin_id
+                  ? 'Your LinkedIn account is connected.'
+                  : 'Connect your LinkedIn account to validate your profile and contribute to EdgeIn. Our team will then review your account and enable it for contribution (this may take up to one business day).'}
               </p>
             </div>
           </EditSection>
