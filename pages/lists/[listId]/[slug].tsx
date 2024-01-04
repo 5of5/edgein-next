@@ -355,22 +355,47 @@ const MyList: NextPage<Props> = (props: Props) => {
           isFollowButtonLoading={isFollowButtonLoading}
           onFollowList={handleFollowList}
         />
-        {(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
-          <>
-            <CompaniesList listId={theListId} listName={listName} />
 
-            <InvestorsList listId={theListId} listName={listName} />
-
-            <PeopleList listId={theListId} listName={listName} />
-          </>
+        {!user && (
+          <div className="mx-4">
+            <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
+              <div className="max-w-md mx-auto">
+                <IconCustomList
+                  className="mx-auto h-12 w-12 text-gray-300"
+                  title="Join Group"
+                />
+                <h3 className="mt-2 text-lg font-medium">
+                  Sign in to access list and view updates.
+                </h3>
+                <p className="mt-1 text-gray-500">
+                  Access list, get unlimited browsing, personalized results,
+                  custom tools, and much more.
+                </p>
+                <ElemButton btn="purple" href={ROUTES.SIGN_IN} className="mt-2">
+                  Sign in for free
+                </ElemButton>
+              </div>
+            </div>
+          </div>
         )}
 
-        {theListCreatorId != user?.id && !isFollowing && (
+        {user &&
+          (!isCustomList || isFollowing || theListCreatorId === user?.id) && (
+            <>
+              <CompaniesList listId={theListId} listName={listName} />
+
+              <InvestorsList listId={theListId} listName={listName} />
+
+              <PeopleList listId={theListId} listName={listName} />
+            </>
+          )}
+
+        {user && theListCreatorId != user?.id && !isFollowing && (
           <div className="mx-4">
             <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
               <IconCustomList
                 className="mx-auto h-12 w-12 text-gray-300"
-                title="Join Group"
+                title="Follow List"
               />
               <h3 className="mt-2 text-lg font-medium">
                 Follow list to access and view updates.

@@ -201,7 +201,7 @@ export const ElemListInformation: FC<Props> = ({
                 </ElemButton>
               )}
 
-              {!isFollowing && (
+              {user && !isFollowing && (
                 <ElemButton
                   btn="purple"
                   loading={isFollowButtonLoading}

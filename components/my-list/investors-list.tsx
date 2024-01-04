@@ -393,8 +393,11 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg px-4 border border-gray-200">
-        <PlaceholderTable />
+      <div className="mt-4 px-4">
+        <h2 className="font-medium mb-2">Investors</h2>
+        <div className="rounded-lg border border-gray-200">
+          <PlaceholderTable />
+        </div>
       </div>
     );
   }
