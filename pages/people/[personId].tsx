@@ -34,11 +34,9 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import moment from 'moment-timezone';
 import { ROUTES } from '@/routes';
 //import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
-import { useUser } from '@/context/user-context';
 import { NextSeo } from 'next-seo';
 
 type Props = {
@@ -49,7 +47,6 @@ type Props = {
 
 const Person: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  const { selectedLibrary } = useUser();
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
   const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -127,12 +124,15 @@ const Person: NextPage<Props> = (props: Props) => {
   const profileIsLoggedInUser =
     user && person.user?.id === user?.id ? true : false;
 
+  const personLibraries =
+    person.library.length > 0 ? person.library.join(', ') : '';
+
   return (
     <>
       <NextSeo
         title={
           person.name
-            ? `${person.name} ${selectedLibrary} professional profile, contact information, work experience, and skills`
+            ? `${person.name} ${personLibraries} professional profile, contact information, work experience, and skills`
             : ''
         }
         description={

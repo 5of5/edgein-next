@@ -127,6 +127,8 @@ const VCFirm: NextPage<Props> = props => {
   );
 
   const metaWebsiteUrl = vcfirm.website ? vcfirm.website : '';
+  const organizationLibraries =
+    vcfirm.library.length > 0 ? vcfirm.library.join(', ') : '';
   // const metaFounded = vcfirm.year_founded
   //   ? `Founded in ${vcfirm.year_founded} `
   //   : '';
@@ -147,7 +149,7 @@ const VCFirm: NextPage<Props> = props => {
       <NextSeo
         title={
           vcfirm.name
-            ? `${vcfirm.name} Investor Profile: ${selectedLibrary}, Investments, Contact Information, News, Activity, and Team`
+            ? `${vcfirm.name} Investor Profile: ${organizationLibraries}, Investments, Contact Information, News, Activity, and Team`
             : ''
         }
         description={

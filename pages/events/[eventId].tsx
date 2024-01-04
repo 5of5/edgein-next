@@ -57,7 +57,7 @@ const Event: NextPage<Props> = props => {
   const router = useRouter();
   const { eventId } = router.query;
 
-  const { user, selectedLibrary } = useUser();
+  const { user } = useUser();
 
   const { setShowPopup } = usePopup();
 
@@ -236,13 +236,15 @@ const Event: NextPage<Props> = props => {
   const metaStartDate = event.start_date
     ? `– ${moment(event.start_date).format('MMM D, YYYY')}`
     : '';
+  const eventLibraries =
+    event.library.length > 0 ? event.library.join(', ') : '';
 
   return (
     <>
       <NextSeo
         title={
           event.name
-            ? `${event.name} ${selectedLibrary} Event ${metaStartDate} ${metaLocation}`
+            ? `${event.name} ${eventLibraries} Event ${metaStartDate} ${metaLocation}`
             : ''
         }
         description={

@@ -179,7 +179,7 @@ const Company: NextPage<Props> = (props: Props) => {
   const parentOrganization =
     parentLinks?.from_company || parentLinks?.from_vc_firm;
   const subOrganizations = company?.from_links?.filter(
-    item => item.link_type === 'child',
+    item => item.link_type === 'child' && (item.to_company || item.to_vc_firm),
   );
 
   const handleTagClick = (
@@ -197,6 +197,8 @@ const Company: NextPage<Props> = (props: Props) => {
   };
 
   const metaWebsiteUrl = company.website ? `${company.website} ` : '';
+  const organizationLibraries =
+    company.library.length > 0 ? company.library.join(', ') : '';
   // const metaFounded = company.year_founded
   //   ? `Founded in ${company.year_founded} `
   //   : '';
@@ -216,7 +218,7 @@ const Company: NextPage<Props> = (props: Props) => {
       <NextSeo
         title={
           company.name
-            ? `${company.name} Company Profile: ${selectedLibrary}, Investments, Contact Information, News, Activity, and Team`
+            ? `${company.name} Company Profile: ${organizationLibraries}, Investments, Contact Information, News, Activity, and Team`
             : ''
         }
         description={
