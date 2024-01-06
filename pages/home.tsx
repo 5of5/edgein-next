@@ -50,20 +50,10 @@ const Home: NextPage = () => {
   const { selectedLibrary } = useLibrary();
   const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
-    {
-      _not: {
-        status_tags: { _contains: 'Dead' },
-      },
-    },
   ];
 
   const vcFirmsDefaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
-    {
-      _not: {
-        status_tags: { _contains: 'Dead' },
-      },
-    },
   ];
 
   const getFirstOrDefaultCategory = () => {
@@ -174,6 +164,11 @@ const Home: NextPage = () => {
                         _and: [
                           ...defaultFilters,
                           { num_of_views: { _is_null: false } },
+                          {
+                            _not: {
+                              status_tags: { _contains: 'Dead' },
+                            },
+                          },
                           isSelectedTagLocation
                             ? {
                                 location_json: {
@@ -206,6 +201,11 @@ const Home: NextPage = () => {
                         _and: [
                           ...vcFirmsDefaultFilters,
                           { num_of_views: { _is_null: false } },
+                          {
+                            _not: {
+                              status_tags: { _contains: 'Dead' },
+                            },
+                          },
                           isSelectedTagLocation
                             ? {
                                 location_json: {
