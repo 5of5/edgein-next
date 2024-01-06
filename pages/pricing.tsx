@@ -42,7 +42,7 @@ const Pricing = () => {
           'Create and manage up to 5 personal lists.',
           'Create and manage 3 personal or public groups to hunt and discuss your interests.',
           'Access the EdgeIn community telegram to request datasets and features.',
-          'See referral credits for contributing data and inviting members to the community. Upgrade to access your credits and help us make EdgeIn work for everyone!',
+          'See referral points for contributing data and inviting members to the community. Upgrade to access your points and help us make EdgeIn work for everyone!',
         ],
         cta: user
           ? user.billing_org?.status === 'active' || haveSubscriptionFromCredits

@@ -52,7 +52,7 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
       >
         <div className="text-white" onClick={handleClickBanner}>
           Invite a friend and get{' '}
-          <strong className="font-bold">1,500 credits</strong> for 1 month of
+          <strong className="font-bold">1,500 points</strong> for 1 month of
           EdgeIn for free{' '}
           <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
         </div>
