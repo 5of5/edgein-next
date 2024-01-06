@@ -50,10 +50,20 @@ const Home: NextPage = () => {
   const { selectedLibrary } = useLibrary();
   const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
+    {
+      _not: {
+        status_tags: { _contains: 'Dead' },
+      },
+    },
   ];
 
   const vcFirmsDefaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
+    {
+      _not: {
+        status_tags: { _contains: 'Dead' },
+      },
+    },
   ];
 
   const getFirstOrDefaultCategory = () => {
