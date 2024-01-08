@@ -6,7 +6,7 @@ import { ElemCredibility } from '@/components/company/elem-credibility';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/company/elem-investments';
 import { ElemOrganizationTeam } from '@/components/elem-organization-team';
-import { runGraphQl, getCityAndCountry, toSentence } from '@/utils';
+import { runGraphQl } from '@/utils';
 import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
 import { ElemCohort } from '@/components/company/elem-cohort';
 import { ElemTabBar } from '@/components/elem-tab-bar';
@@ -26,7 +26,6 @@ import {
   GetNewsArticlesDocument,
   Order_By,
 } from '@/graphql/types';
-// import { ElemReactions } from '@/components/elem-reactions';
 import {
   COMPANY_PROFILE_DEFAULT_TAGS_LIMIT,
   tokenInfoMetrics,
@@ -37,7 +36,6 @@ import parse from 'html-react-parser';
 import { stripHtmlTags } from '@/utils/text';
 import { onTrackView } from '@/utils/track';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
-import { Popups } from '@/components/the-navbar';
 import ElemNewsArticles, {
   DEFAULT_LIMIT,
 } from '@/components/news/elem-news-articles';
@@ -52,6 +50,7 @@ import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { USER_ROLES } from '@/utils/users';
 
 type Props = {
   company: Companies;
@@ -63,6 +62,7 @@ type Props = {
 
 const Company: NextPage<Props> = (props: Props) => {
   const router = useRouter();
+  const { user } = useUser();
   const { companyId } = router.query;
   const [company, setCompany] = useState<Companies>(props.company);
 
@@ -85,8 +85,6 @@ const Company: NextPage<Props> = (props: Props) => {
   const activityRef = useRef() as MutableRefObject<HTMLDivElement>;
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
-
-  const { selectedLibrary } = useUser();
 
   const {
     data: companyData,
@@ -138,7 +136,7 @@ const Company: NextPage<Props> = (props: Props) => {
   }, [company]);
 
   useEffect(() => {
-    if (companyData) setCompany(companyData?.companies[0] as any);
+    if (companyData) setCompany(companyData?.companies[0] as Companies);
   }, [companyData]);
 
   if (!company) {
@@ -182,36 +180,9 @@ const Company: NextPage<Props> = (props: Props) => {
     item => item.link_type === 'child' && (item.to_company || item.to_vc_firm),
   );
 
-  const handleTagClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    tag: string,
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    router.push(
-      `${ROUTES.COMPANIES}/?filters=${encodeURIComponent(
-        `{"industry":{"tags":["${tag}"]}}`,
-      )}`,
-    );
-  };
-
   const metaWebsiteUrl = company.website ? `${company.website} ` : '';
   const organizationLibraries =
     company.library.length > 0 ? company.library.join(', ') : '';
-  // const metaFounded = company.year_founded
-  //   ? `Founded in ${company.year_founded} `
-  //   : '';
-  // const metaLocation = getCityAndCountry(
-  //   company.location_json?.city,
-  //   company.location_json?.country,
-  // );
-  // const metaEmployees = company.total_employees
-  //   ? `${company.total_employees} Employees | `
-  //   : '';
-  // const metaTags =
-  //   company.tags?.length > 0 ? `Category ${toSentence(company.tags)} | ` : '';
-  // const metaDescriptionAlt = `${metaWebsiteUrl}${metaFounded}${metaLocation}${metaEmployees}${metaTags}${company.overview}`;
 
   return (
     <>
@@ -241,7 +212,7 @@ const Company: NextPage<Props> = (props: Props) => {
       />
 
       <DashboardLayout>
-        <div className="p-8">
+        <div className={`p-8 company-${company.id}`}>
           <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
             <div className="col-span-3">
               <ElemPhoto
@@ -338,6 +309,15 @@ const Company: NextPage<Props> = (props: Props) => {
                   resourceName={company.name}
                   resourceTwitterUrl={company.twitter}
                 />
+                {user?.role === USER_ROLES.ADMIN && (
+                  <ElemButton
+                    href={`${ROUTES.ADMIN_COMPANIES}/${company.id}`}
+                    target="_blank"
+                    btn="default"
+                  >
+                    Edit (admin)
+                  </ElemButton>
+                )}
               </div>
             </div>
             <div className="col-span-3 mt-7 lg:mt-0">
@@ -407,13 +387,11 @@ const Company: NextPage<Props> = (props: Props) => {
           <ElemDemocratizeBanner className="mt-7" />
           {/* <ElemInviteBanner className="mt-7" /> */}
         </div>
-
         <ElemTabBar
           className="px-8 py-2"
           tabs={tabBarItems}
           resourceName={company.name}
         />
-
         <div className="mt-4 px-8">
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"

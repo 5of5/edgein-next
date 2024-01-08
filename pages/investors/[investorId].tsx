@@ -14,7 +14,7 @@ import { ElemOrganizationActivity } from '@/components/elem-organization-activit
 import parse from 'html-react-parser';
 import { stripHtmlTags } from '@/utils/text';
 
-import { runGraphQl, getCityAndCountry, toSentence } from '@/utils';
+import { runGraphQl } from '@/utils';
 import {
   GetVcFirmDocument,
   GetVcFirmQuery,
@@ -37,6 +37,7 @@ import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { USER_ROLES } from '@/utils/users';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -46,6 +47,7 @@ type Props = {
 
 const VCFirm: NextPage<Props> = props => {
   const router = useRouter();
+  const { selectedLibrary, user } = useUser();
   const { investorId } = router.query;
 
   const [vcfirm, setVcfirm] = useState(props.vcfirm);
@@ -60,8 +62,6 @@ const VCFirm: NextPage<Props> = props => {
   const activityRef = useRef() as MutableRefObject<HTMLDivElement>;
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
-
-  const { selectedLibrary } = useUser();
 
   const {
     data: vcFirmData,
@@ -129,20 +129,6 @@ const VCFirm: NextPage<Props> = props => {
   const metaWebsiteUrl = vcfirm.website ? vcfirm.website : '';
   const organizationLibraries =
     vcfirm.library.length > 0 ? vcfirm.library.join(', ') : '';
-  // const metaFounded = vcfirm.year_founded
-  //   ? `Founded in ${vcfirm.year_founded} `
-  //   : '';
-  // const metaLocation = getCityAndCountry(
-  //   vcfirm.location_json?.city,
-  //   vcfirm.location_json?.country,
-  // );
-  // const metaInvestments =
-  //   vcfirm.investments.length > 0
-  //     ? ` | ${vcfirm.investments.length} confirmed investments`
-  //     : '';
-  // const metaTags =
-  //   vcfirm.tags?.length > 0 ? ` | Invests in ${toSentence(vcfirm.tags)}` : '';
-  // const metaDescriptionAlt = `${metaWebsiteUrl} ${metaFounded}${metaLocation}${metaInvestments}${metaTags}`;
 
   return (
     <>
@@ -171,7 +157,7 @@ const VCFirm: NextPage<Props> = props => {
         }}
       />
       <DashboardLayout>
-        <div className="p-8">
+        <div className={`p-8 vcfirm-${vcfirm.id}`}>
           <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
             <div className="col-span-3">
               <ElemPhoto
@@ -255,6 +241,15 @@ const VCFirm: NextPage<Props> = props => {
                   resourceName={vcfirm.name}
                   resourceTwitterUrl={vcfirm.twitter}
                 />
+                {user?.role === USER_ROLES.ADMIN && (
+                  <ElemButton
+                    href={`${ROUTES.ADMIN_INVESTORS}/${vcfirm.id}`}
+                    target="_blank"
+                    btn="default"
+                  >
+                    Edit (admin)
+                  </ElemButton>
+                )}
               </div>
             </div>
           </div>

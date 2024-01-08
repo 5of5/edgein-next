@@ -24,4 +24,8 @@ export const ROUTES = {
   PRIVACY: '/privacy',
   TERMS: '/terms',
   NOT_FOUND: '/404',
+  ADMIN_COMPANIES: '/admin/app/#/companies',
+  ADMIN_INVESTORS: '/admin/app/#/vc_firms',
+  ADMIN_EVENTS: '/admin/app/#/events',
+  ADMIN_PEOPLE: '/admin/app/#/people',
 };

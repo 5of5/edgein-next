@@ -7,11 +7,8 @@ import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
-import {
-  runGraphQl,
-  removeSpecialCharacterFromString,
-  toSentence,
-} from '@/utils';
+import { runGraphQl, removeSpecialCharacterFromString } from '@/utils';
+import { USER_ROLES } from '@/utils/users';
 import {
   GetPersonDocument,
   GetPersonQuery,
@@ -157,7 +154,7 @@ const Person: NextPage<Props> = (props: Props) => {
       />
       <DashboardLayout>
         <div className="relative">
-          <div className="p-8">
+          <div className={`p-8 event-${person.id}`}>
             <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
               <div className="col-span-2 flex justify-center">
                 <ElemPhoto
@@ -238,6 +235,16 @@ const Person: NextPage<Props> = (props: Props) => {
                       {profileIsLoggedInUser && (
                         <ElemButton btn="default" href={ROUTES.PROFILE}>
                           Profile settings
+                        </ElemButton>
+                      )}
+
+                      {user?.role === USER_ROLES.ADMIN && (
+                        <ElemButton
+                          href={`${ROUTES.ADMIN_PEOPLE}/${person.id}`}
+                          target="_blank"
+                          btn="default"
+                        >
+                          Edit (admin)
                         </ElemButton>
                       )}
                     </div>

@@ -5,12 +5,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemTags } from '@/components/elem-tags';
-import {
-  formatDateShown,
-  runGraphQl,
-  getCityAndCountry,
-  toSentence,
-} from '@/utils';
+import { formatDateShown, runGraphQl } from '@/utils';
+import { USER_ROLES } from '@/utils/users';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -266,7 +262,7 @@ const Event: NextPage<Props> = props => {
         }}
       />
       <DashboardLayout>
-        <div className="p-8">
+        <div className={`p-8 event-${event.id}`}>
           <div className="mb-4">
             <div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">
               <div
@@ -390,6 +386,15 @@ const Event: NextPage<Props> = props => {
               resourceName={event.name}
               resourceTwitterUrl={event.twitter}
             />
+            {user?.role === USER_ROLES.ADMIN && (
+              <ElemButton
+                href={`${ROUTES.ADMIN_EVENTS}/${event.id}`}
+                target="_blank"
+                btn="default"
+              >
+                Edit (admin)
+              </ElemButton>
+            )}
             {attendees?.some(item => item.person?.id === user?.person?.id) ? (
               <ElemButton btn="purple">Joined</ElemButton>
             ) : (
