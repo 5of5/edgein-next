@@ -686,6 +686,7 @@ export const web3Tags: Tag[] = [
   'NEAR',
   'Stellar',
   'Cosmos',
+  'Tezos',
   'Cardano',
   'OWC',
   'DAO',
