@@ -40,7 +40,6 @@ import { ElemFilter } from '@/components/filters/elem-filter';
 import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
-import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import ElemLibrarySelector from '@/components/elem-library-selector';
@@ -54,6 +53,9 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
+import { NextSeo } from 'next-seo';
 
 type Props = {
   companiesCount: number;
@@ -360,187 +362,194 @@ const Companies: NextPage<Props> = ({
   } companies`;
 
   return (
-    <DashboardLayout>
-      <div className="relative">
-        <div
-          className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist"
-        >
-          <ElemCategories
-            categories={companyStatusTags}
-            selectedCategory={selectedStatusTag}
-            onChangeCategory={setSelectedStatusTag}
-          />
-
-          <div className="flex flex-wrap gap-2">
-            {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
-            <ElemDropdown
-              IconComponent={tableLayout ? IconTable : IconGroup}
-              items={layoutItems}
+    <>
+      <NextSeo
+        title={`${selectedLibrary} Companies`}
+        description="Early-stage companies in the AI and Web3 markets require actionable intelligence and hyper-speed. Consider this your greatest asset."
+      />
+      <DashboardLayout>
+        <div className="relative">
+          <div
+            className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+            role="tablist"
+          >
+            <ElemCategories
+              categories={companyStatusTags}
+              selectedCategory={selectedStatusTag}
+              onChangeCategory={setSelectedStatusTag}
             />
 
-            <ElemAddFilter
-              resourceType="companies"
-              onSelectFilterOption={onSelectFilterOption}
-            />
+            <div className="flex flex-wrap gap-2">
+              {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
-            {isSortDropdownVisible && (
               <ElemDropdown
-                IconComponent={IconSortDashboard}
-                items={sortItems}
-                defaultItem={sortItems.findIndex(
-                  sortItem => sortItem.value === sortBy,
-                )}
-                firstItemDivided
+                IconComponent={tableLayout ? IconTable : IconGroup}
+                items={layoutItems}
               />
-            )}
+
+              <ElemAddFilter
+                resourceType="companies"
+                onSelectFilterOption={onSelectFilterOption}
+              />
+
+              {isSortDropdownVisible && (
+                <ElemDropdown
+                  IconComponent={IconSortDashboard}
+                  items={sortItems}
+                  defaultItem={sortItems.findIndex(
+                    sortItem => sortItem.value === sortBy,
+                  )}
+                  firstItemDivided
+                />
+              )}
+            </div>
           </div>
-        </div>
 
-        {selectedFilters && (
-          <div className="mx-8 my-3">
-            <ElemFilter
-              resourceType="companies"
-              filterValues={selectedFilters}
-              onSelectFilterOption={onSelectFilterOption}
-              onChangeFilterValues={onChangeSelectedFilters}
-              onApply={(name, filterParams) => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: { ...filterParams, open: false },
-                });
-              }}
-              onClearOption={name => {
-                filters._and = defaultFilters;
-                onChangeSelectedFilters({
-                  ...selectedFilters,
-                  [name]: undefined,
-                });
-              }}
-              onReset={() => onChangeSelectedFilters(null)}
-            />
-          </div>
-        )}
+          {selectedFilters && (
+            <div className="mx-8 my-3">
+              <ElemFilter
+                resourceType="companies"
+                filterValues={selectedFilters}
+                onSelectFilterOption={onSelectFilterOption}
+                onChangeFilterValues={onChangeSelectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: { ...filterParams, open: false },
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: undefined,
+                  });
+                }}
+                onReset={() => onChangeSelectedFilters(null)}
+              />
+            </div>
+          )}
 
-        <ElemInviteBanner className="mx-8 my-3" />
+          <ElemDemocratizeBanner className="mx-8 my-3" />
+          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
-        <div className="mx-8">
-          {error ? (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-              <div className="max-w-xl mx-auto">
-                <h4 className="mt-5 text-3xl font-bold">
-                  Error loading companies
-                </h4>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, reset filters, or{' '}
-                  <button
-                    onClick={() =>
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                      )
-                    }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
-                  >
-                    <span>report error</span>
-                  </button>
-                  .
+          <div className="mx-8">
+            {error ? (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+                <div className="max-w-xl mx-auto">
+                  <h4 className="mt-5 text-3xl font-bold">
+                    Error loading companies
+                  </h4>
+                  <div className="mt-1 text-lg text-slate-600">
+                    Please check spelling, reset filters, or{' '}
+                    <button
+                      onClick={() =>
+                        showNewMessages(
+                          `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                        )
+                      }
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
+                      <span>report error</span>
+                    </button>
+                    .
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <>
-              <div className="flex justify-between py-8">
-                <div className="text-4xl font-medium">{pageTitle}</div>
-              </div>
+            ) : (
+              <>
+                <div className="flex justify-between py-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                </div>
 
-              {isLoading && !initialLoad ? (
-                <>
-                  {tableLayout ? (
-                    <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                      <PlaceholderTable />
+                {isLoading && !initialLoad ? (
+                  <>
+                    {tableLayout ? (
+                      <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                        <PlaceholderTable />
+                      </div>
+                    ) : (
+                      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                        {Array.from({ length: 9 }, (_, i) => (
+                          <PlaceholderCompanyCard key={i} />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : tableLayout && companies?.length != 0 ? (
+                  <>
+                    <CompaniesTable
+                      companies={companies}
+                      pageNumber={page}
+                      itemsPerPage={limit}
+                      shownItems={companies?.length}
+                      totalItems={companies_aggregate}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      filterByTag={filterByTag}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div
+                      data-testid="companies"
+                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    >
+                      {companies?.map(company => {
+                        return (
+                          <ElemCompanyCard
+                            key={company.id}
+                            company={company as Companies}
+                          />
+                        );
+                      })}
                     </div>
-                  ) : (
-                    <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                      {Array.from({ length: 9 }, (_, i) => (
-                        <PlaceholderCompanyCard key={i} />
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : tableLayout && companies?.length != 0 ? (
-                <>
-                  <CompaniesTable
-                    companies={companies}
-                    pageNumber={page}
-                    itemsPerPage={limit}
-                    shownItems={companies?.length}
-                    totalItems={companies_aggregate}
-                    onClickPrev={() => setPage(page - 1)}
-                    onClickNext={() => setPage(page + 1)}
-                    filterByTag={filterByTag}
-                  />
-                </>
-              ) : (
-                <>
-                  <div
-                    data-testid="companies"
-                    className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                  >
-                    {companies?.map(company => {
-                      return (
-                        <ElemCompanyCard
-                          key={company.id}
-                          company={company as Companies}
-                        />
-                      );
-                    })}
-                  </div>
 
-                  <Pagination
-                    shownItems={companies?.length}
-                    totalItems={companies_aggregate}
-                    page={page}
-                    itemsPerPage={limit}
-                    onClickPrev={() => setPage(page - 1)}
-                    onClickNext={() => setPage(page + 1)}
-                    onClickToPage={selectedPage => setPage(selectedPage)}
-                  />
-                </>
-              )}
-            </>
-          )}
-        </div>
-
-        {companies?.length === 0 && (
-          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-              <div className="mt-1 text-lg text-slate-600">
-                Please check spelling, try different filters, or tell us about
-                missing data.
-              </div>
-              <ElemButton
-                onClick={() =>
-                  showNewMessages(
-                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                  )
-                }
-                btn="white"
-                className="mt-3"
-              >
-                <IconAnnotation className="w-6 h-6 mr-1" />
-                Tell us about missing data
-              </ElemButton>
-            </div>
+                    <Pagination
+                      shownItems={companies?.length}
+                      totalItems={companies_aggregate}
+                      page={page}
+                      itemsPerPage={limit}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      onClickToPage={selectedPage => setPage(selectedPage)}
+                    />
+                  </>
+                )}
+              </>
+            )}
           </div>
-        )}
 
-        <Toaster />
-      </div>
-    </DashboardLayout>
+          {companies?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
+
+          <Toaster />
+        </div>
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -571,9 +580,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      metaTitle: 'Web3 Companies - EdgeIn.io',
-      metaDescription:
-        'Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.',
       companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
       initialCompanies: companies?.companies || [],
       companyStatusTags,

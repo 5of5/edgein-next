@@ -2,6 +2,7 @@ import { Fragment, FC, ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DashboardSidebar } from './dashboard-sidebar';
 import { useSidebar } from '@/context/sidebar-context';
+import { DashboardFooter } from './dashboard-footer';
 
 type Props = {
   children: ReactNode;
@@ -17,8 +18,9 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
           <DashboardSidebar />
         </div>
 
-        <div className="min-h-[calc(100vh_-_3rem)] mb-20 lg:pl-64">
+        <div className="min-h-[calc(100vh_-_3rem)] mb-20 lg:mb-10 lg:pl-64">
           {children}
+          <DashboardFooter />
         </div>
       </div>
 

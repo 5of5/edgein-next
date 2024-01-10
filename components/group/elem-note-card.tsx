@@ -129,7 +129,7 @@ const ElemNoteCard: React.FC<Props> = ({
     if (data.notes && contentDiv?.current) {
       setContentDivHeight(contentDiv.current.scrollHeight);
     }
-  }, [data.notes]);
+  }, [data?.notes]);
 
   const formatDateShown = (date: Date) => {
     moment.updateLocale('en', {
@@ -268,9 +268,12 @@ const ElemNoteCard: React.FC<Props> = ({
   };
 
   const onCommentSend = () => {
-    if (commentContent) {
+    const userHasLinkedProfile = user?.person;
+    if (commentContent && userHasLinkedProfile) {
       onAddComment();
       setCommentContent('');
+    } else {
+      onOpenLinkPersonDialog();
     }
   };
 
@@ -335,15 +338,29 @@ const ElemNoteCard: React.FC<Props> = ({
       return {
         __html: sanitizeHtml(markdown, {
           allowedAttributes: {
-            a: ['href', 'target', 'class', 'title'],
+            a: ['href', 'target', 'class', 'title', 'className'],
           },
         }),
       };
   };
 
+  const replaceAtMentionsWithLinks = (text: string) => {
+    const regex = /(^|(?<=\s))@[a-zA-Z0-9+-]+(?=(\s|$)|[!?:;-=+,\.])/g;
+
+    const output = text.replace(regex, (match: string) => {
+      const createSlug = match
+        .replace(/[A-Z]/g, m => '-' + m)
+        .replace(/@-/g, '')
+        .toLowerCase();
+      return `<a class="text-primary-500 hover:underline" href="https://edgein.io/people/${createSlug}">${match}</a>`;
+    });
+
+    return output;
+  };
+
   const wrapHyperlinks = (text: string) => {
     const regex = /https?:\/\/\S*/gi;
-    const decodeURL = decodeURIComponent(decodeURIComponent(text));
+    const decodeURL = decodeURIComponent(text);
 
     const modifiedText = decodeURL.replace(regex, url => {
       return `<a class="text-primary-500 hover:underline" href="${url}" title="${url}" target="_blank">${
@@ -392,6 +409,11 @@ const ElemNoteCard: React.FC<Props> = ({
                     `User: ${data?.created_by}`
                   }
                   placeholder="user"
+                  placeholderAlt={
+                    data?.created_by_user?.person?.name ||
+                    data?.created_by_user?.display_name ||
+                    `User: ${data?.created_by}`
+                  }
                   placeholderClass="text-gray-300 bg-white p-0"
                 />
               </ElemLink>
@@ -471,7 +493,6 @@ const ElemNoteCard: React.FC<Props> = ({
                     )}
                   </>
                 )}
-
                 {/* {layout === "author" && } */}
               </div>
             </div>
@@ -486,7 +507,7 @@ const ElemNoteCard: React.FC<Props> = ({
             }`}
             ref={contentDiv}
             dangerouslySetInnerHTML={renderMarkdownToHTML(
-              wrapHyperlinks(data.notes),
+              replaceAtMentionsWithLinks(wrapHyperlinks(data.notes)),
             )}
           ></p>
           {contentDivHeight > 100 && !contentShowAll && (
@@ -538,9 +559,9 @@ const ElemNoteCard: React.FC<Props> = ({
         </div>
         {data.comments.length > 0 && (
           <div className="flex flex-col space-y-2 px-4 py-2">
-            {data.comments.map(comment => (
-              <div key={comment.id} className="flex items-center gap-2">
-                <div className="flex items-start gap-2">
+            {data.comments.map(comment => {
+              return (
+                <div key={comment.id} className="flex items-start gap-2">
                   <ElemLink
                     href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
                     className="shrink-0"
@@ -554,6 +575,10 @@ const ElemNoteCard: React.FC<Props> = ({
                         data?.created_by_user?.display_name
                       }
                       placeholder="user"
+                      placeholderAlt={
+                        comment.created_by_user?.person?.name ||
+                        data.created_by_user?.display_name
+                      }
                       placeholderClass="text-slate-300"
                     />
                   </ElemLink>
@@ -613,8 +638,8 @@ const ElemNoteCard: React.FC<Props> = ({
                     )}
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -625,9 +650,9 @@ const ElemNoteCard: React.FC<Props> = ({
             imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
             imgAlt={user?.person?.name || user?.display_name}
             placeholder="user"
+            placeholderAlt={user?.person?.name || user?.display_name}
             placeholderClass="text-slate-300"
           />
-
           <div className="relative flex w-full">
             <InputTextarea
               rows={1}
@@ -640,7 +665,6 @@ const ElemNoteCard: React.FC<Props> = ({
               onClick={onCommentInputClick}
               className="!mt-0"
             />
-
             <button
               onClick={onCommentSend}
               className={`absolute z-10 right-3 bottom-0 flex items-center justify-center w-8 h-8 rounded-full  ${

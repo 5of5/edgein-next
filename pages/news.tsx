@@ -8,9 +8,8 @@ import { useIntercom } from 'react-use-intercom';
 import { PlaceholderNewsCard } from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '../utils';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { IconAnnotation, IconSearch } from '@/components/icons';
-import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
   News,
@@ -36,6 +35,9 @@ import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { NewsByFilter } from '@/components/news/elem-news-by-filter';
+//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
+import { NextSeo } from 'next-seo';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -49,7 +51,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const router = useRouter();
   const { showNewMessages } = useIntercom();
-  const { user, listAndFollows, myGroups } = useUser();
+  const { user } = useUser();
   const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
@@ -162,142 +164,149 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} news`;
 
   return (
-    <DashboardLayout>
-      <div className="relative">
-        <div
-          className="px-8 pt-0.5 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-          role="tablist"
-        >
-          <ElemCategories
-            categories={newsTab}
-            selectedCategory={selectedTab}
-            onChangeCategory={setSelectedTab}
-          />
+    <>
+      <NextSeo
+        title={`${selectedLibrary} News`}
+        description={`EdgeIn provides the latest ${selectedLibrary} news and trends. Explore industry research and reports from the frontline of ${selectedLibrary} technology news. Discover an index of the most active and influential capital in the industry.`}
+      />
+      <DashboardLayout>
+        <div className="relative">
+          <div
+            className="px-8 pt-0.5 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
+            role="tablist"
+          >
+            <ElemCategories
+              categories={newsTab}
+              selectedCategory={selectedTab}
+              onChangeCategory={setSelectedTab}
+            />
 
-          <div className="flex flex-wrap gap-2">
-            {isDisplaySelectLibrary && <ElemLibrarySelector />}
-            {/* removed in qol-ui-fixes */}
-            {/* {!selectedTab?.value && (
+            <div className="flex flex-wrap gap-2">
+              {isDisplaySelectLibrary && <ElemLibrarySelector />}
+              {/* removed in qol-ui-fixes */}
+              {/* {!selectedTab?.value && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 defaultItem={defaultOrderBy}
                 items={sortChoices}
               />
             )} */}
+            </div>
           </div>
-        </div>
 
-        <ElemInviteBanner className="mx-8 my-3" />
+          <ElemDemocratizeBanner className="mx-8 my-3" />
+          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
-        <div className="mx-8">
-          <div className="flex flex-col gap-8 mt-6">
-            {showPersonalized && (
-              <>
-                {personalizedTags.locationTags.map((location, index) => (
-                  <NewsByFilter
-                    key={`${location}-${index}`}
-                    headingText={`Trending in ${location}`}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    orderBy={{
-                      updated_at: Order_By.Desc,
-                    }}
-                    filters={{
-                      _or: [
-                        {
-                          organizations: {
-                            company: {
-                              location_json: {
-                                _contains: {
-                                  city: `${location}`,
+          <div className="mx-8">
+            <div className="flex flex-col gap-8 mt-6">
+              {showPersonalized && (
+                <>
+                  {personalizedTags.locationTags.map((location, index) => (
+                    <NewsByFilter
+                      key={`${location}-${index}`}
+                      headingText={`Trending in ${location}`}
+                      itemsPerPage={ITEMS_PER_PAGE}
+                      orderBy={{
+                        updated_at: Order_By.Desc,
+                      }}
+                      filters={{
+                        _or: [
+                          {
+                            organizations: {
+                              company: {
+                                location_json: {
+                                  _contains: {
+                                    city: `${location}`,
+                                  },
                                 },
                               },
                             },
                           },
-                        },
-                        {
-                          organizations: {
-                            vc_firm: {
-                              location_json: {
-                                _contains: {
-                                  city: `${location}`,
+                          {
+                            organizations: {
+                              vc_firm: {
+                                location_json: {
+                                  _contains: {
+                                    city: `${location}`,
+                                  },
                                 },
                               },
                             },
                           },
-                        },
-                      ],
-                    }}
-                  />
-                ))}
-              </>
-            )}
+                        ],
+                      }}
+                    />
+                  ))}
+                </>
+              )}
 
-            <div>
-              <div className="flex justify-between py-8">
-                <div className="text-4xl font-medium">{pageTitle}</div>
+              <div>
+                <div className="flex justify-between py-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                </div>
+
+                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {error ? (
+                    <h4>Error loading news</h4>
+                  ) : isLoading && !initialLoad ? (
+                    <>
+                      {Array.from({ length: 6 }, (_, i) => (
+                        <PlaceholderNewsCard key={i} />
+                      ))}
+                    </>
+                  ) : (
+                    news?.map(item => (
+                      <ElemNewsCard key={item.id} newsPost={item} />
+                    ))
+                  )}
+                </div>
+
+                <Pagination
+                  shownItems={news?.length}
+                  totalItems={news_aggregate}
+                  page={page}
+                  itemsPerPage={limit}
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
               </div>
-
-              <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                {error ? (
-                  <h4>Error loading news</h4>
-                ) : isLoading && !initialLoad ? (
-                  <>
-                    {Array.from({ length: 6 }, (_, i) => (
-                      <PlaceholderNewsCard key={i} />
-                    ))}
-                  </>
-                ) : (
-                  news?.map(item => (
-                    <ElemNewsCard key={item.id} newsPost={item} />
-                  ))
-                )}
-              </div>
-
-              <Pagination
-                shownItems={news?.length}
-                totalItems={news_aggregate}
-                page={page}
-                itemsPerPage={limit}
-                onClickPrev={() => setPage(page - 1)}
-                onClickNext={() => setPage(page + 1)}
-                onClickToPage={selectedPage => setPage(selectedPage)}
-              />
             </div>
           </div>
+
+          {news?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
+
+          <Toaster />
         </div>
-
-        {news?.length === 0 && (
-          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-              <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-              <div className="mt-1 text-lg text-slate-600">
-                Please check spelling, try different filters, or tell us about
-                missing data.
-              </div>
-              <ElemButton
-                onClick={() =>
-                  showNewMessages(
-                    `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                  )
-                }
-                btn="white"
-                className="mt-3"
-              >
-                <IconAnnotation className="w-6 h-6 mr-1" />
-                Tell us about missing data
-              </ElemButton>
-            </div>
-          </div>
-        )}
-
-        <Toaster />
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
 };
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data: news } = await runGraphQl<GetNewsQuery>(GetNewsDocument, {
     offset: 0,
     limit: 50,
@@ -312,9 +321,6 @@ export const getStaticProps: GetStaticProps = async context => {
 
   return {
     props: {
-      metaTitle: 'Web3 News - EdgeIn.io',
-      metaDescription:
-        'Get the latest news, guides, price and analysis on Web3',
       newsCount: news?.news_aggregate?.aggregate?.count || 0,
       initialNews: news?.news || [],
       newsTab,

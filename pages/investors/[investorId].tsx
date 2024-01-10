@@ -14,7 +14,7 @@ import { ElemOrganizationActivity } from '@/components/elem-organization-activit
 import parse from 'html-react-parser';
 import { stripHtmlTags } from '@/utils/text';
 
-import { runGraphQl, getCityAndCountry, toSentence } from '@/utils';
+import { runGraphQl } from '@/utils';
 import {
   GetVcFirmDocument,
   GetVcFirmQuery,
@@ -35,16 +35,19 @@ import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
+import { NextSeo } from 'next-seo';
+import { USER_ROLES } from '@/utils/users';
 
 type Props = {
   vcfirm: Vc_Firms;
   sortByDateAscInvestments: Array<Investment_Rounds>;
   sortNews: Array<News>;
-  getInvestments: Array<Investment_Rounds>;
 };
 
 const VCFirm: NextPage<Props> = props => {
   const router = useRouter();
+  const { selectedLibrary, user } = useUser();
   const { investorId } = router.query;
 
   const [vcfirm, setVcfirm] = useState(props.vcfirm);
@@ -59,8 +62,6 @@ const VCFirm: NextPage<Props> = props => {
   const activityRef = useRef() as MutableRefObject<HTMLDivElement>;
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
-
-  const { selectedLibrary } = useUser();
 
   const {
     data: vcFirmData,
@@ -125,178 +126,218 @@ const VCFirm: NextPage<Props> = props => {
     item => item.link_type === 'child',
   );
 
+  const metaWebsiteUrl = vcfirm.website ? vcfirm.website : '';
+  const organizationLibraries =
+    vcfirm.library.length > 0 ? vcfirm.library.join(', ') : '';
+
   return (
-    <DashboardLayout>
-      <div className="p-8">
-        <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
-          <div className="col-span-3">
-            <ElemPhoto
-              photo={vcfirm.logo}
-              wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
-              imgClass="object-contain w-full h-full"
-              imgAlt={vcfirm.name}
-              placeholderClass="text-slate-300"
-            />
-          </div>
-
-          <div className="w-full col-span-5 mt-7 lg:mt-4">
-            <h1 className="text-4xl font-medium">{vcfirm.name}</h1>
-            {vcfirm.tags?.length > 0 && (
-              <ElemTags
-                className="mt-4"
-                limit={INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT}
-                resourceType={'investors'}
-                tags={vcfirm.tags}
+    <>
+      <NextSeo
+        title={
+          vcfirm.name
+            ? `${vcfirm.name} Investor Profile: ${organizationLibraries}, Investments, Contact Information, News, Activity, and Team`
+            : ''
+        }
+        description={
+          vcfirm.overview ? `${vcfirm.overview} ${metaWebsiteUrl}` : ''
+        }
+        openGraph={{
+          images: [
+            {
+              url: 'https://edgein.io/social.jpg',
+              width: 800,
+              height: 600,
+              alt: 'Investor profile',
+            },
+            {
+              url: vcfirm.logo?.url,
+              alt: vcfirm.name ? vcfirm.name : 'Investor profile',
+            },
+          ],
+        }}
+      />
+      <DashboardLayout>
+        <div className={`p-8 vcfirm-${vcfirm.id}`}>
+          <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+            <div className="col-span-3">
+              <ElemPhoto
+                photo={vcfirm.logo}
+                wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
+                imgClass="object-contain w-full h-full"
+                imgAlt={vcfirm.name}
+                placeholderClass="text-slate-300"
               />
-            )}
+            </div>
 
-            {parentOrganization && (
-              <div className="mt-4">
-                <div className="font-bold text-sm">Sub-organization of:</div>
-                <ElemLink
-                  href={`/${
-                    parentLinks?.from_company ? 'companies' : 'investors'
-                  }/${parentOrganization?.slug}`}
-                  className="flex items-center gap-2 mt-1 group"
-                >
-                  <ElemPhoto
-                    photo={parentOrganization?.logo}
-                    wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
-                    imgClass="object-contain w-full h-full"
-                    imgAlt={parentOrganization?.name}
-                    placeholderClass="text-slate-300"
-                  />
-                  <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
-                    {parentOrganization?.name}
-                  </h2>
-                </ElemLink>
-              </div>
-            )}
+            <div className="w-full col-span-5 mt-7 lg:mt-4">
+              <h1 className="text-4xl font-medium">{vcfirm.name}</h1>
+              {vcfirm.tags?.length > 0 && (
+                <ElemTags
+                  className="mt-4"
+                  limit={INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT}
+                  resourceType={'investors'}
+                  tags={vcfirm.tags}
+                />
+              )}
 
-            {vcfirm.overview && (
-              <>
-                <div
-                  ref={overviewDiv}
-                  className={`mt-4 text-sm text-gray-500 prose ${
-                    overviewMore ? '' : 'line-clamp-5'
-                  }`}
-                >
-                  {parse(stripHtmlTags(vcfirm.overview))}
-                </div>
-                {overviewDivScrollHeight > overviewDivHeight && (
-                  <ElemButton
-                    onClick={() => setOverviewMore(!overviewMore)}
-                    btn="transparent"
-                    className="!px-0 !py-0 inline font-normal"
+              {parentOrganization && (
+                <div className="mt-4">
+                  <div className="font-bold text-sm">Sub-organization of:</div>
+                  <ElemLink
+                    href={`/${
+                      parentLinks?.from_company ? 'companies' : 'investors'
+                    }/${parentOrganization?.slug}`}
+                    className="flex items-center gap-2 mt-1 group"
                   >
-                    show {overviewMore ? 'less' : 'more'}
+                    <ElemPhoto
+                      photo={parentOrganization?.logo}
+                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
+                      imgClass="object-contain w-full h-full"
+                      imgAlt={parentOrganization?.name}
+                      placeholderClass="text-slate-300"
+                    />
+                    <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                      {parentOrganization?.name}
+                    </h2>
+                  </ElemLink>
+                </div>
+              )}
+
+              {vcfirm.overview && (
+                <>
+                  <div
+                    ref={overviewDiv}
+                    className={`mt-4 text-sm text-gray-500 prose ${
+                      overviewMore ? '' : 'line-clamp-5'
+                    }`}
+                  >
+                    {parse(stripHtmlTags(vcfirm.overview))}
+                  </div>
+                  {overviewDivScrollHeight > overviewDivHeight && (
+                    <ElemButton
+                      onClick={() => setOverviewMore(!overviewMore)}
+                      btn="transparent"
+                      className="!px-0 !py-0 inline font-normal"
+                    >
+                      show {overviewMore ? 'less' : 'more'}
+                    </ElemButton>
+                  )}
+                </>
+              )}
+              <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+                <ElemReactions
+                  resource={vcfirm}
+                  resourceType={'vc_firms'}
+                  className="w-full sm:w-auto"
+                />
+                <ElemSaveToList
+                  resourceName={vcfirm.name}
+                  resourceId={vcfirm.id}
+                  resourceType={'vc_firms'}
+                  slug={vcfirm.slug!}
+                  follows={vcfirm.follows}
+                />
+                <ElemSocialShare
+                  resourceName={vcfirm.name}
+                  resourceTwitterUrl={vcfirm.twitter}
+                />
+                {user?.role === USER_ROLES.ADMIN && (
+                  <ElemButton
+                    href={`${ROUTES.ADMIN_INVESTORS}/${vcfirm.id}`}
+                    target="_blank"
+                    btn="default"
+                  >
+                    Edit (admin)
                   </ElemButton>
                 )}
-              </>
-            )}
-            <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
-              <ElemReactions
-                resource={vcfirm}
-                resourceType={'vc_firms'}
-                className="w-full sm:w-auto"
-              />
-              <ElemSaveToList
-                resourceName={vcfirm.name}
-                resourceId={vcfirm.id}
-                resourceType={'vc_firms'}
-                slug={vcfirm.slug!}
-                follows={vcfirm.follows}
-              />
-              <ElemSocialShare
-                resourceName={vcfirm.name}
-                resourceTwitterUrl={vcfirm.twitter}
-              />
+              </div>
             </div>
           </div>
+
+          <ElemDemocratizeBanner className="mt-7" />
+          {/* <ElemInviteBanner className="mt-7" /> */}
         </div>
 
-        <ElemInviteBanner className="mt-7" />
-      </div>
+        <ElemTabBar
+          className="px-8 py-2"
+          tabs={tabBarItems}
+          resourceName={vcfirm.name}
+        />
 
-      <ElemTabBar
-        className="px-8 py-2"
-        tabs={tabBarItems}
-        resourceName={vcfirm.name}
-      />
+        <div className="mt-4 px-8">
+          <div
+            className="lg:grid lg:grid-cols-11 lg:gap-7"
+            ref={overviewRef}
+            id="overview"
+          >
+            <div className="col-span-3">
+              <ElemKeyInfo
+                className="sticky top-16"
+                heading="Key Info"
+                website={vcfirm.website}
+                investmentsLength={sortedInvestmentRounds.length}
+                yearFounded={vcfirm.year_founded}
+                linkedIn={vcfirm.linkedin}
+                location={vcfirm.location}
+                locationJson={vcfirm.location_json}
+                twitter={vcfirm.twitter}
+              />
+            </div>
+            <div className="col-span-8">
+              <div className="w-full mt-7 lg:mt-0">
+                <ElemOrganizationNotes
+                  resourceId={vcfirm.id}
+                  resourceType="vc_firms"
+                  resourceName={vcfirm.name || ''}
+                />
+              </div>
+              <div ref={newsRef} className="mt-7">
+                <ElemNewsList
+                  heading="News"
+                  resourceName={vcfirm.name || ''}
+                  resourceType="vc_firms"
+                  resourceId={vcfirm.id}
+                  news={props.sortNews}
+                />
+              </div>
 
-      <div className="mt-4 px-8">
-        <div
-          className="lg:grid lg:grid-cols-11 lg:gap-7"
-          ref={overviewRef}
-          id="overview"
-        >
-          <div className="col-span-3">
-            <ElemKeyInfo
-              className="sticky top-16"
-              heading="Key Info"
-              website={vcfirm.website}
-              investmentsLength={sortedInvestmentRounds.length}
-              yearFounded={vcfirm.year_founded}
-              linkedIn={vcfirm.linkedin}
-              location={vcfirm.location}
-              locationJson={vcfirm.location_json}
-              twitter={vcfirm.twitter}
+              <div ref={activityRef} className="w-full mt-7">
+                <ElemOrganizationActivity
+                  resourceName={vcfirm.name || ''}
+                  resourceType="vc_firms"
+                  resourceInvestments={sortedInvestmentRounds}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div ref={teamRef} className="mt-7">
+            <ElemOrganizationTeam
+              heading="Team"
+              resourceName={vcfirm.name || ''}
+              resourceType="vc_firms"
+              resourceId={vcfirm.id}
             />
           </div>
-          <div className="col-span-8">
-            <div className="w-full mt-7 lg:mt-0">
-              <ElemOrganizationNotes
-                resourceId={vcfirm.id}
-                resourceType="vc_firms"
-                resourceName={vcfirm.name || ''}
-              />
-            </div>
-            <div ref={newsRef} className="mt-7">
-              <ElemNewsList
-                heading="News"
-                resourceName={vcfirm.name || ''}
-                resourceType="vc_firms"
-                resourceId={vcfirm.id}
-                news={props.sortNews}
-              />
-            </div>
 
-            <div ref={activityRef} className="w-full mt-7">
-              <ElemOrganizationActivity
-                resourceName={vcfirm.name || ''}
-                resourceType="vc_firms"
-                resourceInvestments={sortedInvestmentRounds}
-              />
-            </div>
+          <div ref={investmentRef} className="mt-7" id="investments">
+            <ElemInvestments
+              heading="Investments"
+              resourceName={vcfirm.name || ''}
+              investments={sortedInvestmentRounds.filter(n => n)}
+            />
           </div>
-        </div>
 
-        <div ref={teamRef} className="mt-7">
-          <ElemOrganizationTeam
-            heading="Team"
-            resourceName={vcfirm.name || ''}
-            resourceType="vc_firms"
-            resourceId={vcfirm.id}
-          />
+          {subOrganizations?.length > 0 && (
+            <ElemSubOrganizations
+              className="mt-7"
+              heading={`${vcfirm?.name} Sub-Organizations (${subOrganizations.length})`}
+              subOrganizations={subOrganizations}
+            />
+          )}
         </div>
-
-        <div ref={investmentRef} className="mt-7" id="investments">
-          <ElemInvestments
-            heading="Investments"
-            resourceName={vcfirm.name || ''}
-            investments={sortedInvestmentRounds.filter(n => n)}
-          />
-        </div>
-
-        {subOrganizations?.length > 0 && (
-          <ElemSubOrganizations
-            className="mt-7"
-            heading={`${vcfirm?.name} Sub-Organizations (${subOrganizations.length})`}
-            subOrganizations={subOrganizations}
-          />
-        )}
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -345,47 +386,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
       })
       .reverse() || [];
 
-  // Meta
-  const metaWebsiteUrl = vcfirm.website ? vcfirm.website : '';
-  const metaFounded = vcfirm.year_founded
-    ? `Founded in ${vcfirm.year_founded} `
-    : '';
-
-  const metaLocation = getCityAndCountry(
-    vcfirm.location_json?.city,
-    vcfirm.location_json?.country,
-  );
-
-  const metaInvestments =
-    vcfirm.investments.length > 0
-      ? ` | ${vcfirm.investments.length} confirmed investments`
-      : '';
-
-  const metaTags =
-    vcfirm.tags?.length > 0 ? ` | Invests in ${toSentence(vcfirm.tags)}` : '';
-
-  let metaTitle = null;
-  if (vcfirm.name) {
-    metaTitle = `${vcfirm.name} | EdgeIn ${vcfirm.library[0]} Investor Profile - Contact Information`;
-  }
-
-  let metaDescription = null;
-  if (
-    metaWebsiteUrl ||
-    metaFounded ||
-    metaLocation ||
-    metaInvestments ||
-    metaTags
-  ) {
-    metaDescription = `${metaWebsiteUrl} ${metaFounded}${metaLocation}${metaInvestments}${metaTags}`;
-  }
-
   return {
     props: {
-      metaTitle,
-      metaDescription,
       vcfirm,
-      getInvestments,
       sortByDateAscInvestments,
       sortNews,
     },

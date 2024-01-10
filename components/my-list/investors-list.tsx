@@ -1,5 +1,5 @@
 import { FC, useState, useMemo } from 'react';
-import { first } from 'lodash';
+import { first, orderBy } from 'lodash';
 import moment from 'moment-timezone';
 import {
   useGetVcFirmsByListIdQuery,
@@ -340,6 +340,37 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
       },
+      {
+        Header: 'Last Investment Amount',
+        accessor: (data: { vc_firm: Vc_Firms }) => {
+          if (data.vc_firm?.investments.length > 0) {
+            const roundsByLatestDate = orderBy(
+              data.vc_firm?.investments,
+              a => new Date(a.investment_round?.round_date),
+              ['desc'],
+            );
+
+            const fundingAmount = roundsByLatestDate[0].investment_round
+              ?.amount ? (
+              <>
+                $
+                {numberWithCommas(
+                  roundsByLatestDate[0].investment_round?.amount,
+                )}
+              </>
+            ) : (
+              'Undisclosed Capital'
+            );
+
+            return fundingAmount;
+          } else {
+            return 0;
+          }
+        },
+        Cell: (props: { value: string }) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+      },
     ],
     [],
   );
@@ -362,8 +393,11 @@ export const InvestorsList: FC<Props> = ({ listId, listName }) => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg px-4 border border-gray-200">
-        <PlaceholderTable />
+      <div className="mt-4 px-4">
+        <h2 className="font-medium mb-2">Investors</h2>
+        <div className="rounded-lg border border-gray-200">
+          <PlaceholderTable />
+        </div>
       </div>
     );
   }

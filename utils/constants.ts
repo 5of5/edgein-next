@@ -848,6 +848,7 @@ export const isResourceType = (
 export const MY_EDGEIN_MENU_OPEN_KEY = 'disclosure-my-edgein-menu-default-open';
 export const EXPLORE_MENU_OPEN_KEY = 'disclosure-explore-menu-default-open';
 export const SHOW_INVITE_BANNER = 'show-invite-banner';
+export const SHOW_DEMOCRATIZE_BANNER = 'show-democratize-banner';
 
 export const eventTypeChoices = [
   'Hackathon',

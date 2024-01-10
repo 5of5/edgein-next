@@ -21,12 +21,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         dbuser.billing_org?.customer_id &&
         dbuser.billing_org?.status !== 'canceled'
       ) {
-        const subscriptions = await stripe.subscriptions.list(
-          {
-            customer: dbuser.billing_org?.customer_id,
-            limit: 1,
-          },
-        );
+        const subscriptions = await stripe.subscriptions.list({
+          customer: dbuser.billing_org?.customer_id,
+          limit: 1,
+        });
         const latestSubscription = subscriptions.data[0];
         if (latestSubscription) {
           // check if user already has a subscription

@@ -7,11 +7,8 @@ import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
-import {
-  runGraphQl,
-  removeSpecialCharacterFromString,
-  toSentence,
-} from '@/utils';
+import { runGraphQl, removeSpecialCharacterFromString } from '@/utils';
+import { USER_ROLES } from '@/utils/users';
 import {
   GetPersonDocument,
   GetPersonQuery,
@@ -21,6 +18,7 @@ import {
   useGetPersonQuery,
   Team_Members,
   Investors,
+  Companies,
 } from '@/graphql/types';
 import { ElemJobsList } from '@/components/person/elem-jobs-list';
 import { onTrackView } from '@/utils/track';
@@ -33,9 +31,10 @@ import { ElemSaveToList } from '@/components/elem-save-to-list';
 import ElemNewsList from '@/components/news/elem-news-list';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import moment from 'moment-timezone';
-import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
+//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
+import { NextSeo } from 'next-seo';
 
 type Props = {
   person: People;
@@ -122,172 +121,218 @@ const Person: NextPage<Props> = (props: Props) => {
   const profileIsLoggedInUser =
     user && person.user?.id === user?.id ? true : false;
 
+  const personLibraries =
+    person.library.length > 0 ? person.library.join(', ') : '';
+
   return (
-    <DashboardLayout>
-      <div className="relative">
-        <div className="p-8">
-          <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
-            <div className="col-span-2 flex justify-center">
-              <ElemPhoto
-                photo={person.picture}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full border border-gray-200 w-40 lg:w-full"
-                imgClass="object-cover w-full h-full rounded-full overflow-hidden"
-                imgAlt={person.name}
-                placeholder="user"
-                placeholderClass="text-gray-300"
-              />
-            </div>
-            <div className="w-full col-span-5">
-              <div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:shrink-0">
-                <div>
-                  {person.type && (
-                    <div className="whitespace-nowrap text-sm text-gray-500">
-                      {removeSpecialCharacterFromString(person.type as string)}
-                    </div>
-                  )}
-                  <div className="flex items-center justify-center space-x-2 lg:justify-start">
-                    <h1 className="self-end inline-block text-4xl font-medium">
-                      {person.name}
-                    </h1>
-
-                    {profileIsClaimed && (
-                      <ElemTooltip content="Claimed profile">
-                        <div className="cursor-pointer">
-                          <IconCheckBadgeSolid
-                            className="h-8 w-8 text-primary-500"
-                            title="Claimed profile"
-                          />
-                        </div>
-                      </ElemTooltip>
-                    )}
-                  </div>
-
-                  {personTags?.length > 0 && (
-                    <ElemTags
-                      className="my-4"
-                      resourceType={
-                        person.team_members.length > 0
-                          ? 'companies'
-                          : 'investors'
-                      }
-                      tags={personTags}
-                    />
-                  )}
-
-                  <div className="flex flex-wrap items-center mt-4 gap-3">
-                    <ElemSaveToList
-                      resourceName={person.name}
-                      resourceId={person.id}
-                      resourceType="people"
-                      slug={person.slug!}
-                      follows={person.follows}
-                    />
-
-                    <ElemSocialShare
-                      resourceName={person.name}
-                      resourceTwitterUrl={null}
-                    />
-
-                    {!profileIsClaimed && (
-                      <ElemButton
-                        btn="default"
-                        onClick={() =>
-                          showNewMessages(
-                            `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
-                          )
-                        }
-                      >
-                        Claim profile
-                      </ElemButton>
-                    )}
-
-                    {profileIsLoggedInUser && (
-                      <ElemButton btn="default" href={ROUTES.PROFILE}>
-                        Profile settings
-                      </ElemButton>
-                    )}
-                  </div>
-                </div>
-                <div className="mt-6 lg:mt-0"></div>
+    <>
+      <NextSeo
+        title={
+          person.name
+            ? `${person.name} ${personLibraries} professional profile, contact information, work experience, and skills`
+            : ''
+        }
+        description={
+          person.name
+            ? `View ${person.name}’s profile on EdgeIn, the world’s leading AI & Web3 data intelligence platform. ${person.name} has ${personJobs.length} jobs listed on their profile. See the complete profile on EdgeIn and discover ${person.name}’s connections and jobs at similar companies.`
+            : 'View profile on EdgeIn, the world’s leading AI & Web3 data intelligence platform. See the complete profile on EdgeIn and discover connections and jobs at similar companies.'
+        }
+        openGraph={{
+          images: [
+            {
+              url: person.picture?.url,
+              alt: person.name ? person.name : 'Person',
+            },
+            {
+              url: 'https://edgein.io/social.jpg',
+              width: 800,
+              height: 600,
+              alt: 'person',
+            },
+          ],
+        }}
+      />
+      <DashboardLayout>
+        <div className="relative">
+          <div className={`p-8 event-${person.id}`}>
+            <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+              <div className="col-span-2 flex justify-center">
+                <ElemPhoto
+                  photo={person.picture}
+                  wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full border border-gray-200 w-40 lg:w-full"
+                  imgClass="object-cover w-full h-full rounded-full overflow-hidden"
+                  imgAlt={person.name}
+                  placeholder="user"
+                  placeholderClass="text-gray-300"
+                />
               </div>
+              <div className="w-full col-span-5">
+                <div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:shrink-0">
+                  <div>
+                    {person.type && (
+                      <div className="whitespace-nowrap text-sm text-gray-500">
+                        {removeSpecialCharacterFromString(
+                          person.type as string,
+                        )}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-center space-x-2 lg:justify-start">
+                      <h1 className="self-end inline-block text-4xl font-medium">
+                        {person.name}
+                      </h1>
 
-              {person.about && (
-                <p className="mt-4 line-clamp-3 text-base text-slate-600">
-                  {person.about}
-                </p>
-              )}
-            </div>
-          </div>
+                      {profileIsClaimed && (
+                        <ElemTooltip content="Claimed profile">
+                          <div className="cursor-pointer">
+                            <IconCheckBadgeSolid
+                              className="h-8 w-8 text-primary-500"
+                              title="Claimed profile"
+                            />
+                          </div>
+                        </ElemTooltip>
+                      )}
+                    </div>
 
-          <ElemInviteBanner className="mt-7" />
-        </div>
+                    {personTags?.length > 0 && (
+                      <ElemTags
+                        className="my-4"
+                        resourceType={
+                          person.team_members.length > 0
+                            ? 'companies'
+                            : 'investors'
+                        }
+                        tags={personTags}
+                      />
+                    )}
 
-        <ElemTabBar
-          className="px-8 py-2"
-          tabs={tabBarItems}
-          resourceName={person.name}
-        />
+                    <div className="flex flex-wrap items-center mt-4 gap-3">
+                      <ElemSaveToList
+                        resourceName={person.name}
+                        resourceId={person.id}
+                        resourceType="people"
+                        slug={person.slug!}
+                        follows={person.follows}
+                      />
 
-        <div className="mt-4 px-8">
-          <div
-            className="lg:grid lg:grid-cols-11 lg:gap-7"
-            ref={overviewRef}
-            id="overview"
-          >
-            <div className="col-span-3">
-              <ElemKeyInfo
-                className="sticky top-16 mb-7 lg:mb-0"
-                heading="Key Info"
-                roles={removeSpecialCharacterFromString(person.type as string)}
-                linkedIn={person.linkedin}
-                investmentsLength={person.investments?.length}
-                emails={personEmails}
-                github={person.github}
-                twitter={person.twitter_url}
-                location={person.city}
-                website={person.website_url}
-              />
-            </div>
-            <div className="col-span-8 grid gap-y-7">
-              {person.about && (
-                <section className="border border-gray-300 rounded-lg">
-                  <h2 className="text-lg font-medium px-4 pt-2">About</h2>
-                  <p className="text-sm text-gray-500 px-4 pb-4">
+                      <ElemSocialShare
+                        resourceName={person.name}
+                        resourceTwitterUrl={null}
+                      />
+
+                      {!profileIsClaimed && (
+                        <ElemButton
+                          btn="default"
+                          onClick={() =>
+                            showNewMessages(
+                              `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
+                            )
+                          }
+                        >
+                          Claim profile
+                        </ElemButton>
+                      )}
+
+                      {profileIsLoggedInUser && (
+                        <ElemButton btn="default" href={ROUTES.PROFILE}>
+                          Profile settings
+                        </ElemButton>
+                      )}
+
+                      {user?.role === USER_ROLES.ADMIN && (
+                        <ElemButton
+                          href={`${ROUTES.ADMIN_PEOPLE}/${person.id}`}
+                          target="_blank"
+                          btn="default"
+                        >
+                          Edit (admin)
+                        </ElemButton>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mt-6 lg:mt-0"></div>
+                </div>
+
+                {person.about && (
+                  <p className="mt-4 line-clamp-3 text-base text-slate-600">
                     {person.about}
                   </p>
-                </section>
-              )}
-
-              <ElemJobsList
-                heading="Experience"
-                jobs={personJobs}
-                resourceUrl={profileUrl}
-              />
-
-              {props.sortNews.length > 0 && (
-                <div ref={newsRef}>
-                  <ElemNewsList
-                    resourceId={person.id}
-                    resourceType="people"
-                    news={props.sortNews}
-                  />
-                </div>
-              )}
+                )}
+              </div>
             </div>
+
+            <ElemDemocratizeBanner className="mt-7" />
+            {/* <ElemInviteBanner className="mt-7" /> */}
           </div>
 
-          {sortedInvestmentRounds.length > 0 && (
-            <div ref={investmentRef} id="investments">
-              <ElemInvestments
-                heading="Investments"
-                investments={sortedInvestmentRounds}
-                className="mt-7"
-              />
+          <ElemTabBar
+            className="px-8 py-2"
+            tabs={tabBarItems}
+            resourceName={person.name}
+          />
+
+          <div className="mt-4 px-8">
+            <div
+              className="lg:grid lg:grid-cols-11 lg:gap-7"
+              ref={overviewRef}
+              id="overview"
+            >
+              <div className="col-span-3">
+                <ElemKeyInfo
+                  className="sticky top-16 mb-7 lg:mb-0"
+                  heading="Key Info"
+                  roles={removeSpecialCharacterFromString(
+                    person.type as string,
+                  )}
+                  linkedIn={person.linkedin}
+                  investmentsLength={person.investments?.length}
+                  emails={personEmails}
+                  github={person.github}
+                  twitter={person.twitter_url}
+                  location={person.city}
+                  website={person.website_url}
+                />
+              </div>
+              <div className="col-span-8 grid gap-y-7">
+                {person.about && (
+                  <section className="border border-gray-300 rounded-lg">
+                    <h2 className="text-lg font-medium px-4 pt-2">About</h2>
+                    <p className="text-sm text-gray-500 px-4 pb-4">
+                      {person.about}
+                    </p>
+                  </section>
+                )}
+
+                <ElemJobsList
+                  heading="Experience"
+                  jobs={personJobs}
+                  resourceUrl={profileUrl}
+                />
+
+                {props.sortNews.length > 0 && (
+                  <div ref={newsRef}>
+                    <ElemNewsList
+                      resourceId={person.id}
+                      resourceType="people"
+                      news={props.sortNews}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          )}
+
+            {sortedInvestmentRounds.length > 0 && (
+              <div ref={investmentRef} id="investments">
+                <ElemInvestments
+                  heading="Investments"
+                  investments={sortedInvestmentRounds}
+                  className="mt-7"
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -339,64 +384,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
       })
       .reverse() || [];
 
-  // Person organizations tags
-  const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
-  const companyTags = flatten(
-    person.team_members.map(item => item?.company?.tags),
-  );
-  const organizationsTags = union(vcFirmTags, companyTags).filter(item => item);
-
-  // Person jobs
-  const vcFirmWorkExperience = flatten(person.investors as Investors[]);
-  const companyWorkExperience = flatten(person.team_members as Team_Members[]);
-  const allJobs: (Investors | Team_Members)[] = [
-    ...vcFirmWorkExperience,
-    ...companyWorkExperience,
-  ];
-
-  const allJobsOrderByStartDateDesc = orderBy(
-    allJobs,
-    [item => item.start_date],
-    ['desc'],
-  );
-  const latestJob: any = allJobsOrderByStartDateDesc[0];
-
-  // Meta fields
-  const metaPersonCountry = person.country ? `${person.country} - ` : '';
-  const metaRole = latestJob?.title ? `${latestJob?.title} at ` : '';
-  const metaOrganizationName = latestJob?.vc_firm
-    ? `${latestJob.vc_firm.name}`
-    : latestJob?.company
-    ? `${latestJob.company.name}`
-    : 'undisclosed organization';
-  const metaStartingDate = latestJob?.start_date
-    ? ` from ${moment(latestJob.start_date).format('MMM YYYY')}`
-    : '';
-  const metaPersonTags =
-    organizationsTags.length > 0
-      ? ` Interested in ${toSentence(organizationsTags)}.`
-      : '';
-
-  let metaTitle = null;
-  if (person.name) {
-    metaTitle = `${person.name} | EdgeIn ${person.library[0]} Professionals Profile - Contact Information`;
-  }
-
-  let metaDescription = null;
-  if (
-    metaPersonCountry ||
-    metaRole ||
-    metaOrganizationName ||
-    metaStartingDate ||
-    metaPersonTags
-  ) {
-    metaDescription = `${metaPersonCountry}${metaRole}${metaOrganizationName}${metaStartingDate}.${metaPersonTags}`;
-  }
-
   return {
     props: {
-      metaTitle,
-      metaDescription,
       person,
       sortByDateAscInvestments,
       sortNews,

@@ -248,10 +248,7 @@ export const TheNavbar: FC<Props> = ({}) => {
         </nav>
       </div>
 
-      <TheMobileNav
-        className="flex lg:hidden items-center"
-        setShowPopup={setShowPopup}
-      />
+      <TheMobileNav className="flex items-center" setShowPopup={setShowPopup} />
     </header>
   );
 };

@@ -24,6 +24,7 @@ import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
 import { ElemListCard } from '@/components/elem-list-card';
+import { NextSeo } from 'next-seo';
 
 type Props = {
   initialGroupsCount: number;
@@ -127,149 +128,155 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
   };
 
   return (
-    <DashboardLayout>
-      <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
-        <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
-          {GROUPS_TABS &&
-            GROUPS_TABS.map((tab: any, index: number) =>
-              tab.disabled === true ? (
-                <Fragment key={index}></Fragment>
-              ) : (
-                <ElemButton
-                  key={index}
-                  onClick={() => setSelectedGroupTab(tab)}
-                  btn="gray"
-                  roundedFull={false}
-                  className={`py-2 rounded-lg ${
-                    selectedGroupTab?.id === tab.id
-                      ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                      : ''
-                  }`}
-                >
-                  {tab.name}
-                </ElemButton>
-              ),
-            )}
-        </nav>
-      </div>
-
-      {groups?.length === 0 ? (
-        <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-          <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-            <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
-            <h1 className="mt-5 text-3xl font-bold">
-              {selectedGroupTab.id === 'my-groups'
-                ? 'Create a group'
-                : selectedGroupTab.id === 'joined'
-                ? 'Join a group'
-                : selectedGroupTab.id === 'discover'
-                ? 'Discover'
-                : ''}
-            </h1>
-            <div className="mt-1 text-lg text-slate-600">
-              {selectedGroupTab.id === 'discover'
-                ? 'There are no groups that are visible to the public yet, if you make your group public it will appear here.'
-                : 'Groups allow you to collaborate on notes, share insights, and track leads with other people.'}
-            </div>
-            {selectedGroupTab.id === 'my-groups' ? (
-              <ElemButton
-                onClick={onClickCreateGroup}
-                btn="primary"
-                className="mt-3"
-              >
-                <IconGroupPlus className="w-6 h-6 mr-1" />
-                Create New Group
-              </ElemButton>
-            ) : selectedGroupTab.id === 'joined' ? (
-              <ElemButton
-                onClick={() =>
-                  setSelectedGroupTab({
-                    id: 'discover',
-                    name: 'Discover',
-                  })
-                }
-                btn="primary"
-                className="mt-3"
-              >
-                <IconGroupPlus className="w-6 h-6 mr-1" />
-                Discover groups
-              </ElemButton>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="px-8 pb-2">
-          <h1 className="text-4xl font-medium">{selectedGroupTab.name}</h1>
-        </div>
-      )}
-
-      <div className="px-8 py-3">
-        <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {error ? (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-              <div className="max-w-xl mx-auto">
-                <h4 className="mt-5 text-3xl font-bold">
-                  Error loading groups
-                </h4>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, reset filters, or{' '}
-                  <button
-                    onClick={() =>
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to report an error on groups page`,
-                      )
-                    }
-                    className="inline underline decoration-primary-500 hover:text-primary-500"
+    <>
+      <NextSeo
+        title="Groups: Discover, Join, Create or Manage Them"
+        description="EdgeIn groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections."
+      />
+      <DashboardLayout>
+        <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
+          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+            {GROUPS_TABS &&
+              GROUPS_TABS.map((tab: any, index: number) =>
+                tab.disabled === true ? (
+                  <Fragment key={index}></Fragment>
+                ) : (
+                  <ElemButton
+                    key={index}
+                    onClick={() => setSelectedGroupTab(tab)}
+                    btn="gray"
+                    roundedFull={false}
+                    className={`py-2 rounded-lg ${
+                      selectedGroupTab?.id === tab.id
+                        ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                        : ''
+                    }`}
                   >
-                    <span>report error</span>
-                  </button>
-                  .
+                    {tab.name}
+                  </ElemButton>
+                ),
+              )}
+          </nav>
+        </div>
+
+        {groups?.length === 0 ? (
+          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
+              <h1 className="mt-5 text-3xl font-bold">
+                {selectedGroupTab.id === 'my-groups'
+                  ? 'Create a group'
+                  : selectedGroupTab.id === 'joined'
+                  ? 'Join a group'
+                  : selectedGroupTab.id === 'discover'
+                  ? 'Discover'
+                  : ''}
+              </h1>
+              <div className="mt-1 text-lg text-slate-600">
+                {selectedGroupTab.id === 'discover'
+                  ? 'There are no groups that are visible to the public yet, if you make your group public it will appear here.'
+                  : 'Groups allow you to collaborate on notes, share insights, and track leads with other people.'}
+              </div>
+              {selectedGroupTab.id === 'my-groups' ? (
+                <ElemButton
+                  onClick={onClickCreateGroup}
+                  btn="primary"
+                  className="mt-3"
+                >
+                  <IconGroupPlus className="w-6 h-6 mr-1" />
+                  Create New Group
+                </ElemButton>
+              ) : selectedGroupTab.id === 'joined' ? (
+                <ElemButton
+                  onClick={() =>
+                    setSelectedGroupTab({
+                      id: 'discover',
+                      name: 'Discover',
+                    })
+                  }
+                  btn="primary"
+                  className="mt-3"
+                >
+                  <IconGroupPlus className="w-6 h-6 mr-1" />
+                  Discover groups
+                </ElemButton>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="px-8 pb-2">
+            <h1 className="text-4xl font-medium">{selectedGroupTab.name}</h1>
+          </div>
+        )}
+
+        <div className="px-8 py-3">
+          <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {error ? (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+                <div className="max-w-xl mx-auto">
+                  <h4 className="mt-5 text-3xl font-bold">
+                    Error loading groups
+                  </h4>
+                  <div className="mt-1 text-lg text-slate-600">
+                    Please check spelling, reset filters, or{' '}
+                    <button
+                      onClick={() =>
+                        showNewMessages(
+                          `Hi EdgeIn, I'd like to report an error on groups page`,
+                        )
+                      }
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
+                      <span>report error</span>
+                    </button>
+                    .
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : isLoading && !initialLoad ? (
-            <>
-              {Array.from({ length: 9 }, (_, i) => (
-                <PlaceholderCompanyCard key={i} />
-              ))}
-            </>
-          ) : (
-            groups?.map(group => {
-              return (
-                <ElemListCard
-                  key={group.id}
-                  selectedTab={selectedGroupTab}
-                  resource={{ ...group, resourceType: 'group' }}
-                  refetchList={refetch}
-                />
-              );
-            })
-          )}
+            ) : isLoading && !initialLoad ? (
+              <>
+                {Array.from({ length: 9 }, (_, i) => (
+                  <PlaceholderCompanyCard key={i} />
+                ))}
+              </>
+            ) : (
+              groups?.map(group => {
+                return (
+                  <ElemListCard
+                    key={group.id}
+                    selectedTab={selectedGroupTab}
+                    resource={{ ...group, resourceType: 'group' }}
+                    refetchList={refetch}
+                  />
+                );
+              })
+            )}
+          </div>
+
+          <Pagination
+            shownItems={groups?.length}
+            totalItems={groups_aggregate}
+            page={page}
+            itemsPerPage={LIMIT}
+            onClickPrev={() => setPage(page - 1)}
+            onClickNext={() => setPage(page + 1)}
+            onClickToPage={selectedPage => setPage(selectedPage)}
+          />
         </div>
 
-        <Pagination
-          shownItems={groups?.length}
-          totalItems={groups_aggregate}
-          page={page}
-          itemsPerPage={LIMIT}
-          onClickPrev={() => setPage(page - 1)}
-          onClickNext={() => setPage(page + 1)}
-          onClickToPage={selectedPage => setPage(selectedPage)}
+        <ElemUpgradeDialog
+          isOpen={isOpenUpgradeDialog}
+          onClose={onCloseUpgradeDialog}
         />
-      </div>
 
-      <ElemUpgradeDialog
-        isOpen={isOpenUpgradeDialog}
-        onClose={onCloseUpgradeDialog}
-      />
-
-      <ElemCreateGroupDialog
-        isOpen={isOpenCreateGroupDialog}
-        onClose={onCloseCreateGroupDialog}
-      />
-    </DashboardLayout>
+        <ElemCreateGroupDialog
+          isOpen={isOpenCreateGroupDialog}
+          onClose={onCloseCreateGroupDialog}
+        />
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -295,9 +302,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
-      metaTitle: 'Groups - EdgeIn.io',
-      metaDescription:
-        'Connect with people who share your interests. Meet new people, share knowledge or get support. Find the group for you.',
       initialGroupsCount: group?.user_groups_aggregate?.aggregate?.count || 0,
       initialGroups: group?.user_groups || [],
     },

@@ -38,7 +38,7 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
             <button key={resourceItem.value} onClick={onOpenUpgradeDialog}>
               <resourceItem.icon
                 title={resourceItem.title}
-                className="h-5 w-5 text-gray-400"
+                className="h-5 w-5 text-gray-600"
               />
             </button>
           );

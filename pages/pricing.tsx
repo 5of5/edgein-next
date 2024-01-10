@@ -8,6 +8,7 @@ import { useUser } from '@/context/user-context';
 import { usePopup } from '@/context/popup-context';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
+import { NextSeo } from 'next-seo';
 
 const Pricing = () => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const Pricing = () => {
           }
         },
         description:
-          'Instant access to browse the largest community dataset in Web3, exclusively on the EdgeIn platform.',
+          'Instant access to browse the largest community dataset in AI and Web3, exclusively on the EdgeIn platform.',
         features: [
           'Unlimited search',
           'Access to view organization profiles and updates on investors, events, and news.',
@@ -41,7 +42,7 @@ const Pricing = () => {
           'Create and manage up to 5 personal lists.',
           'Create and manage 3 personal or public groups to hunt and discuss your interests.',
           'Access the EdgeIn community telegram to request datasets and features.',
-          'See referral credits for contributing data and inviting members to the community. Upgrade to access your credits and help us make EdgeIn work for everyone!',
+          'See referral points for contributing data and inviting members to the community. Upgrade to access your points and help us make EdgeIn work for everyone!',
         ],
         cta: user
           ? user.billing_org?.status === 'active' || haveSubscriptionFromCredits
@@ -97,6 +98,10 @@ const Pricing = () => {
 
   return (
     <>
+      <NextSeo
+        title="Pricing"
+        description="Instant access to browse the largest community dataset in AI and Web3, exclusively on the EdgeIn platform. Accessible, reliable data for the community, by the community. Choose the best plan for your data needs."
+      />
       <div className="relative overflow-hidden">
         <figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">
           <Image

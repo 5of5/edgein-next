@@ -1,54 +1,15 @@
 import React from 'react';
-import type { NextPage, GetStaticProps } from 'next';
+import type { NextPage } from 'next';
 import Image from 'next/image';
-
 import { ElemHeading } from '@/components/elem-heading';
+import { NextSeo } from 'next-seo';
 
-type Props = {
-  team: Record<string, any>[];
-};
+type Props = {};
 
-const Team: NextPage<Props> = ({ team }) => {
-  return (
-    <div className="relative overflow-hidden">
-      <ElemHeading
-        title="Meet the EdgeIn Team"
-        subtitle="Get to know the people leading data insights for the web3 community"
-      ></ElemHeading>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="space-y-12 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
-          {team.map((person, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow overflow-hidden flex flex-col mx-auto w-full max-w-md transition duration-300 ease-in-out md:h-full"
-            >
-              <div className="relative aspect-square">
-                <Image
-                  src={person.image}
-                  alt={person.image}
-                  layout="fill"
-                  objectFit="contain"
-                />
-              </div>
-              <div className="leading-6 font-medium px-4 py-4">
-                <h3 className="flex items-center font-bold text-lg text-primary-500">
-                  {person.name}
-                </h3>
-                {person.role && <p className="text-gray-400">{person.role}</p>}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
+const Team: NextPage<Props> = () => {
   const team = [
     {
-      image: '/images/redg-snodgrass.jpg',
+      image: '/images/people/redg-snodgrass.jpg',
       name: 'Redg Snodgrass',
       role: 'Founder & CEO',
       description:
@@ -56,7 +17,7 @@ export const getStaticProps: GetStaticProps = async () => {
       linkedin: 'https://www.linkedin.com/in/redgiesnodgrass/',
     },
     {
-      image: '/images/ashley-brown.jpg',
+      image: '/images/people/ashley-brown.jpg',
       name: 'Ashley Brown',
       role: 'Co-Founder & COO',
       description:
@@ -64,7 +25,7 @@ export const getStaticProps: GetStaticProps = async () => {
       linkedin: 'https://www.linkedin.com/in/brownashleyk/',
     },
     {
-      image: '/images/raymond-l-aleman.jpg',
+      image: '/images/people/raymond-l-aleman.jpg',
       name: 'Raymond L. Aleman',
       role: 'Co-Founder & Chief Design',
       description:
@@ -72,35 +33,35 @@ export const getStaticProps: GetStaticProps = async () => {
       linkedin: 'https://www.linkedin.com/in/raylopezaleman/',
     },
     {
-      image: '/images/ed-parsons.jpg',
+      image: '/images/people/ed-parsons.jpg',
       name: 'Ed Parsons',
       role: 'Chief Technology Advisor',
       //description: "",
       linkedin: 'https://www.linkedin.com/in/efparsons/',
     },
     {
-      image: '/images/dahn-tamir.jpg',
+      image: '/images/people/dahn-tamir.jpg',
       name: 'Dahn Tamir',
       role: 'Head of Data',
       //description: "",
       linkedin: 'https://www.linkedin.com/in/dahntamir/',
     },
     {
-      image: '/images/jhen-de-leon.jpg',
+      image: '/images/people/jhen-de-leon.jpg',
       name: 'Jhen de Leon',
       role: 'Chief of Staff',
       //description: "",
       //linkedin: "",
     },
     {
-      image: '/images/rocky-rimando.png',
+      image: '/images/people/rocky-rimando.png',
       name: 'Rocky Rimando',
       role: 'Virtual Strategic Analyst Lead',
       //description: "",
       linkedin: 'https://www.linkedin.com/in/rocky-rimando/',
     },
     {
-      image: '/images/osman-pulgar.jpg',
+      image: '/images/people/osman-pulgar.jpg',
       name: 'Osman Pulgar',
       role: 'Virtual Strategic Analyst',
       //description: "",
@@ -108,14 +69,14 @@ export const getStaticProps: GetStaticProps = async () => {
         'https://www.linkedin.com/in/osman-eduardo-pulgar-zada-6a20b122a/',
     },
     {
-      image: '/images/jonnelle-gueco.jpg',
+      image: '/images/people/jonnelle-gueco.jpg',
       name: 'Jonnelle Gueco',
       role: 'Virtual Strategic Analyst',
       //description: "",
       linkedin: 'https://www.linkedin.com/in/jonnelle-gueco-826343200/',
     },
     {
-      image: '/images/patricia-pulgar.jpg',
+      image: '/images/people/patricia-pulgar.jpg',
       name: 'Patricia Pulgar',
       role: 'Virtual Strategic Analyst',
       //description: "",
@@ -123,28 +84,28 @@ export const getStaticProps: GetStaticProps = async () => {
         'https://www.linkedin.com/in/ana-patricia-pulgar-zada-796301173/',
     },
     {
-      image: '/images/juan-panno.jpg',
+      image: '/images/people/juan-panno.jpg',
       name: 'Juan Panno',
       role: 'Virtual Strategic Analyst',
       //description: "",
       linkedin: 'https://www.linkedin.com/in/juan-manuel-panno-942a89248/',
     },
     {
-      image: '/images/carlos-mendoza.jpg',
+      image: '/images/people/carlos-mendoza.jpg',
       name: 'Carlos Mendoza',
       role: 'Virtual Strategic Analyst',
       //description: "",
       linkedin: 'https://www.linkedin.com/in/carlos-hubert-mendoza-12448b249/',
     },
     // {
-    // 	//image: "/images/juan-panno.jpg",
+    // 	//image: "/images/people/juan-panno.jpg",
     // 	name: "Colet Mendoza",
     // 	role: "Virtual Strategic Analyst",
     // 	//description: "",
     // 	//linkedin: "",
     // },
     // {
-    // 	//image: "/images/juan-panno.jpg",
+    // 	//image: "/images/people/juan-panno.jpg",
     // 	name: "Ricardo Riverdo",
     // 	role: "Virtual Strategic Analyst",
     // 	//description: "",
@@ -152,14 +113,60 @@ export const getStaticProps: GetStaticProps = async () => {
     // },
   ];
 
-  return {
-    props: {
-      metaTitle: 'Meet the EdgeIn Team - EdgeIn.io',
-      metaDescription:
-        'Get to know the people leading data insights for the web3 community',
-      team,
-    },
-  };
+  return (
+    <>
+      <NextSeo
+        title="Meet the EdgeIn Team"
+        description="Get to know the people leading data insights for the AI and Web3 community"
+        openGraph={{
+          images: [
+            {
+              url: 'https://edgein.io/images/og/team.jpg',
+              width: 800,
+              height: 600,
+              alt: 'EdgeIn Team',
+              type: 'image/jpeg',
+            },
+          ],
+        }}
+      />
+
+      <div className="relative overflow-hidden mb-10">
+        <ElemHeading
+          title="Meet the EdgeIn Team"
+          subtitle="Get to know the people leading data insights for the AI and Web3 community"
+        ></ElemHeading>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="space-y-12 pb-4 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+            {team.map((person, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow overflow-hidden flex flex-col mx-auto w-full max-w-md transition duration-300 ease-in-out md:h-full"
+              >
+                <div className="relative aspect-square">
+                  <Image
+                    src={person.image}
+                    alt={person.image}
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+                <div className="leading-6 font-medium px-4 py-4">
+                  <h3 className="flex items-center font-bold text-lg">
+                    {person.name}
+                  </h3>
+                  {person.role && (
+                    <p className="text-gray-500">{person.role}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Team;

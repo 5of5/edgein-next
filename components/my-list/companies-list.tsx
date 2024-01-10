@@ -335,6 +335,31 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
           return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
         },
       },
+      {
+        Header: 'Last Funding Amount',
+        accessor: (data: { company: Companies }) => {
+          if (data.company?.investment_rounds.length > 0) {
+            const roundsByLatestDate = orderBy(
+              data.company?.investment_rounds,
+              a => new Date(a.round_date),
+              ['desc'],
+            );
+
+            const fundingAmount = roundsByLatestDate[0].amount ? (
+              <>${numberWithCommas(roundsByLatestDate[0].amount)}</>
+            ) : (
+              'Undisclosed Capital'
+            );
+
+            return fundingAmount;
+          } else {
+            return 0;
+          }
+        },
+        Cell: (props: { value: string }) => {
+          return <div>{props.value ? props.value : <TableEmptyCell />}</div>;
+        },
+      },
     ],
     [],
   );
@@ -357,8 +382,11 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
   if (isLoading) {
     return (
-      <div className="rounded-lg px-4 border border-gray-200">
-        <PlaceholderTable />
+      <div className="mt-4 px-4">
+        <h2 className="font-medium mb-2">Companies</h2>
+        <div className="rounded-lg border border-gray-200">
+          <PlaceholderTable />
+        </div>
       </div>
     );
   }

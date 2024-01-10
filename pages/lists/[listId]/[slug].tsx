@@ -23,6 +23,8 @@ import { ElemButton } from '@/components/elem-button';
 import { PeopleList } from '@/components/my-list/people-list';
 import { useMutation } from 'react-query';
 import { ROUTES } from '@/routes';
+import { NextSeo } from 'next-seo';
+import { toLabel } from 'utils';
 
 type Props = {
   list: GetListsQuery['lists'][0];
@@ -318,52 +320,100 @@ const MyList: NextPage<Props> = (props: Props) => {
   const isFollowButtonLoading = isFollowListLoading || isListMembersReFetching;
 
   return (
-    <DashboardLayout>
-      <ElemListInformation
-        list={theList}
-        groups={groups?.list_user_groups?.map(group => group.user_group) || []}
-        onSaveListName={onSaveListName}
-        onSaveListDescription={onSaveListDescription}
-        onDeleteList={onDeleteList}
-        onAddGroups={onAddGroups}
-        onChangePublic={onChangePublic}
-        isFollowing={isFollowing}
-        isFollowButtonLoading={isFollowButtonLoading}
-        onFollowList={handleFollowList}
+    <>
+      <NextSeo
+        title={`List: ${toLabel(listName ? listName : '')}`}
+        description={`${
+          listDescription
+            ? `By ${theList?.created_by?.person?.name} - ${listDescription}`
+            : ''
+        }`}
+        openGraph={{
+          images: [
+            {
+              url: 'https://edgein.io/images/og/list-sharing.jpg',
+              width: 800,
+              height: 600,
+              alt: 'List',
+              type: 'image/jpeg',
+            },
+          ],
+        }}
       />
-      {(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
-        <>
-          <CompaniesList listId={theListId} listName={listName} />
+      <DashboardLayout>
+        <ElemListInformation
+          list={theList}
+          groups={
+            groups?.list_user_groups?.map(group => group.user_group) || []
+          }
+          onSaveListName={onSaveListName}
+          onSaveListDescription={onSaveListDescription}
+          onDeleteList={onDeleteList}
+          onAddGroups={onAddGroups}
+          onChangePublic={onChangePublic}
+          isFollowing={isFollowing}
+          isFollowButtonLoading={isFollowButtonLoading}
+          onFollowList={handleFollowList}
+        />
 
-          <InvestorsList listId={theListId} listName={listName} />
-
-          <PeopleList listId={theListId} listName={listName} />
-        </>
-      )}
-
-      {theListCreatorId != user?.id && !isFollowing && (
-        <div className="mx-4">
-          <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
-            <IconCustomList
-              className="mx-auto h-12 w-12 text-gray-300"
-              title="Join Group"
-            />
-            <h3 className="mt-2 text-lg font-medium">
-              Follow list to access and view updates.
-            </h3>
-            <ElemButton
-              btn="purple"
-              loading={isFollowButtonLoading}
-              onClick={handleFollowList}
-              className="mt-2"
-            >
-              Follow
-            </ElemButton>
+        {!user && (
+          <div className="mx-4">
+            <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
+              <div className="max-w-md mx-auto">
+                <IconCustomList
+                  className="mx-auto h-12 w-12 text-gray-300"
+                  title="Join Group"
+                />
+                <h3 className="mt-2 text-lg font-medium">
+                  Sign in to access list and view updates.
+                </h3>
+                <p className="mt-1 text-gray-500">
+                  Access list, get unlimited browsing, personalized results,
+                  custom tools, and much more.
+                </p>
+                <ElemButton btn="purple" href={ROUTES.SIGN_IN} className="mt-2">
+                  Sign in for free
+                </ElemButton>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-      <Toaster />
-    </DashboardLayout>
+        )}
+
+        {user &&
+          (!isCustomList || isFollowing || theListCreatorId === user?.id) && (
+            <>
+              <CompaniesList listId={theListId} listName={listName} />
+
+              <InvestorsList listId={theListId} listName={listName} />
+
+              <PeopleList listId={theListId} listName={listName} />
+            </>
+          )}
+
+        {user && theListCreatorId != user?.id && !isFollowing && (
+          <div className="mx-4">
+            <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
+              <IconCustomList
+                className="mx-auto h-12 w-12 text-gray-300"
+                title="Follow List"
+              />
+              <h3 className="mt-2 text-lg font-medium">
+                Follow list to access and view updates.
+              </h3>
+              <ElemButton
+                btn="purple"
+                loading={isFollowButtonLoading}
+                onClick={handleFollowList}
+                className="mt-2"
+              >
+                Follow
+              </ElemButton>
+            </div>
+          </div>
+        )}
+        <Toaster />
+      </DashboardLayout>
+    </>
   );
 };
 
@@ -387,26 +437,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   const list = lists?.lists[0];
-  const listAuthor = list?.created_by?.person?.name
-    ? `By ${list?.created_by?.person?.name} - `
-    : '';
-
-  const metaImage = `https://edgein.io/images/og/list-sharing.jpg`;
-
-  const metaTitle = list
-    ? `"${getNameFromListName(list)}" list - Edgein.io`
-    : 'List - Edgein.io';
-
-  let metaDescription = null;
-  if (list.description) {
-    metaDescription = listAuthor + list.description;
-  }
 
   return {
     props: {
-      metaImage,
-      metaTitle,
-      metaDescription,
       list,
     },
   };

@@ -387,3 +387,40 @@ export const parseIndexName = (indexName: string) => {
       return indexName;
   }
 };
+
+//Algolia autocomplete
+export function getActiveToken(input: string, cursorPosition: number) {
+  const tokenizedQuery = input.split(/[\s\n]/).reduce((acc, word, index) => {
+    const previous = acc[index - 1];
+    const start = index === 0 ? index : previous.range[1] + 1;
+    const end = start + word.length;
+
+    return acc.concat([{ word, range: [start, end] }]);
+  }, [] as Array<{ word: string; range: [number, number] }>);
+
+  if (cursorPosition === undefined) {
+    return undefined;
+  }
+
+  const activeToken = tokenizedQuery.find(
+    ({ range }) => range[0] < cursorPosition && range[1] >= cursorPosition,
+  );
+
+  return activeToken;
+}
+
+export function isValidTwitterUsername(username: string) {
+  return /^@\w{1,15}$/.test(username);
+}
+
+export function replaceAt(
+  str: string,
+  replacement: string,
+  index: number,
+  length = 0,
+) {
+  const prefix = str.substr(0, index);
+  const suffix = str.substr(index + length);
+
+  return prefix + replacement + suffix;
+}

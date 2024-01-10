@@ -78,7 +78,7 @@ export default function Account() {
     }
   } else {
     if (userProfile?.users_by_pk?.credits > 0) {
-      creditsLabelMessage = `Your credits give you ${numberOfMonthsFromCredits}${' '}
+      creditsLabelMessage = `Your points give you ${numberOfMonthsFromCredits}${' '}
       ${numberOfMonthsFromCredits > 1 ? 'months' : 'month'} for
       free.`;
     } else {
@@ -90,30 +90,28 @@ export default function Account() {
     <DashboardLayout>
       <div className="px-4 py-3">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="font-medium text-xl">Referrals and Credits</h2>
+          <h2 className="font-medium text-xl">Referrals and Points</h2>
         </div>
 
         <EditSection heading="Invite a friend">
           <div className="grid gap-y-6">
             <div>
-              <h3 className="font-medium">
-                Share EdgeIn and get 1,500 credits
-              </h3>
+              <h3 className="font-medium">Share EdgeIn and get 1,500 points</h3>
               <p className="mt-2 text-gray-600 text-sm">
                 Invite your friends to EdgeIn, and we&apos;ll give you 1,500
-                credits for every friend who signs in through your referral.
+                points for every friend who signs in through your referral.
                 That&apos;s 1 month of EdgeIn Contributor, completely free! The
-                more people who sign in, the more credits you&apos;ll get.
+                more people who sign in, the more points you&apos;ll get.
               </p>
             </div>
 
             <div className="my-6">
-              <h3 className="font-medium pl-0.5 font-sans">Current credits</h3>
-              <div className="flex mt-3">
+              <h3 className="font-medium pl-0.5 font-sans">Current points</h3>
+              <div className="flex flex-col mt-3 lg:flex-row">
                 <span className="bg-primary-500 border rounded-lg py-3 px-6 text-white text-3xl font-semibold">
                   {numberOfCredits.toLocaleString()}
                 </span>
-                <div className="block ml-6">
+                <div className="block mt-2 ml-0 lg:mt-0 lg:ml-6">
                   <ElemButton
                     btn="default"
                     disabled={!edgeInContributorButtonEnabled}

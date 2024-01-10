@@ -7,6 +7,7 @@ type Props = {
   imgClass?: string;
   imgAlt?: string | null;
   placeholder?: string;
+  placeholderAlt?: string | null;
   placeholderClass?: string;
 };
 
@@ -16,6 +17,7 @@ export const ElemPhoto: React.FC<Props> = ({
   imgAlt,
   imgClass,
   placeholder,
+  placeholderAlt,
   placeholderClass,
 }) => {
   return (
@@ -31,9 +33,15 @@ export const ElemPhoto: React.FC<Props> = ({
           />
         </Fragment>
       ) : placeholder === 'user' ? (
-        <IconUserPlaceholder className={`${placeholderClass} ${imgClass}`} />
+        <IconUserPlaceholder
+          className={`${placeholderClass} ${imgClass}`}
+          title={placeholderAlt ? placeholderAlt : 'user'}
+        />
       ) : placeholder === 'company' ? (
-        <IconCompanies className={`${placeholderClass} ${imgClass}`} />
+        <IconCompanies
+          className={`${placeholderClass} ${imgClass}`}
+          title={placeholderAlt ? placeholderAlt : 'company'}
+        />
       ) : (
         <Fragment>
           <svg

@@ -87,11 +87,13 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 
   return (
     <div
-      className={`sticky flex flex-nowrap grow overflow-scroll scrollbar-hide shrink-0 gap-3 justify-between items-center lg:flex-wrap ${className} ${tabsWrapClass}`}
+      className={`sticky z-10 flex flex-nowrap grow shrink-0 gap-3 justify-between items-center lg:flex-wrap ${className} ${tabsWrapClass}`}
       role="tablist"
       ref={tabsWrapRef}
     >
-      <nav className={`flex flex-nowrap gap-2 lg:flex-wrap ${tabsClassName}`}>
+      <nav
+        className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 lg:flex-wrap ${tabsClassName}`}
+      >
         {tabs &&
           tabs.map((tab: any, index: number) => (
             <ElemButton

@@ -1,5 +1,4 @@
 import { Fragment, PropsWithChildren } from 'react';
-import Link from 'next/link';
 import { Dialog, Transition } from '@headlessui/react';
 import { IconX } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
@@ -83,9 +82,9 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
                       Start free trial
                     </ElemButton>
                   ) : (
-                    <Link href={ROUTES.SIGN_IN} passHref>
-                      <ElemButton btn="purple">Sign in to start</ElemButton>
-                    </Link>
+                    <ElemButton btn="purple" href={ROUTES.SIGN_IN}>
+                      Sign in to start
+                    </ElemButton>
                   )}
                 </div>
               </Dialog.Panel>

@@ -13,6 +13,7 @@ export const ROUTES = {
   NOTES: '/notes',
   NOTIFICATIONS: '/notifications',
   INVITE_A_FRIEND: '/invite-a-friend',
+  DEMOCRATIZE24: '/events/democratize24/',
   ACCOUNT: '/account',
   PROFILE: '/profile',
   SUPPORT: '/support',
@@ -23,4 +24,8 @@ export const ROUTES = {
   PRIVACY: '/privacy',
   TERMS: '/terms',
   NOT_FOUND: '/404',
+  ADMIN_COMPANIES: '/admin/app/#/companies',
+  ADMIN_INVESTORS: '/admin/app/#/vc_firms',
+  ADMIN_EVENTS: '/admin/app/#/events',
+  ADMIN_PEOPLE: '/admin/app/#/people',
 };
