@@ -105,6 +105,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const userBillingOrg = await BillingService.getBillingOrgById(
               user.billing_org_id,
             );
+            let latestSubscription: Stripe.Subscription = subscription;
+            if (subscription.status === 'canceled') {
+              const subscriptions = await stripe.subscriptions.list(
+                {
+                  customer: userBillingOrg?.customer_id,
+                  limit: 1,
+                },
+              );
+              latestSubscription = subscriptions.data[0];      
+            }
             // update billing org
             await BillingService.updateBillingOrgCustomerId(
               user.billing_org_id,
