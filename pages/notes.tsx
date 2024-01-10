@@ -19,16 +19,6 @@ const Notes: FC<Props> = () => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    if (!user) {
-      redirectToSignIn();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  const redirectToSignIn = () => {
-    router.push(ROUTES.SIGN_IN);
-  };
   const {
     data: noteList,
     error,
@@ -63,6 +53,17 @@ const Notes: FC<Props> = () => {
     } as Notes_Bool_Exp,
   });
 
+  useEffect(() => {
+    if (!isLoading && !user) {
+      redirectToSignIn();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, isLoading]);
+
+  const redirectToSignIn = () => {
+    router.push(ROUTES.SIGN_IN);
+  };
+
   const notes = noteList?.notes || [];
 
   //sort by created date
@@ -77,7 +78,7 @@ const Notes: FC<Props> = () => {
 
         {error ? (
           <h4>Error loading notes</h4>
-        ) : isLoading ? (
+        ) : isLoading || !user ? (
           <div className="flex flex-col gap-y-4 mt-4">
             {Array.from({ length: 2 }, (_, i) => (
               <div key={i} className="max-w-2xl bg-white shadow rounded-lg">
