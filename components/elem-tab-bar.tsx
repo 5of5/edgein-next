@@ -40,9 +40,10 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
-    if (tabsWrapRef.current !== null) {
+    if (tabsWrapRef?.current !== null) {
       setTimeout(() => {
-        const tabsDivPosition = tabsWrapRef.current.getBoundingClientRect().top;
+        const tabsDivPosition =
+          tabsWrapRef?.current.getBoundingClientRect().top;
         // "top-14" class = 56
         if (tabsDivPosition <= 56) {
           setTabsWrapClass(
