@@ -43,7 +43,7 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
     if (tabsWrapRef?.current !== null) {
       setTimeout(() => {
         const tabsDivPosition =
-          tabsWrapRef?.current.getBoundingClientRect().top;
+          tabsWrapRef?.current?.getBoundingClientRect().top;
         // "top-14" class = 56
         if (tabsDivPosition <= 56) {
           setTabsWrapClass(
