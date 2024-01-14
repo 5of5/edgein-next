@@ -1,5 +1,5 @@
 query GetNotes($where: notes_bool_exp!) {
-  notes(where: $where, order_by: { created_at: asc }) {
+  notes(where: $where, order_by: { created_at: desc }) {
     id
     notes
     created_by
@@ -38,7 +38,7 @@ query GetNotes($where: notes_bool_exp!) {
         }
       }
     }
-    comments {
+    comments(order_by: { created_at: asc }) {
       id
       content
       created_at

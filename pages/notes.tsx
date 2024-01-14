@@ -66,9 +66,6 @@ const Notes: FC<Props> = () => {
 
   const notes = noteList?.notes || [];
 
-  //sort by created date
-  const sortedNotes = orderBy(notes, a => new Date(a.created_at), ['desc']);
-
   return (
     <DashboardLayout>
       <div className="pb-20 px-4">
@@ -109,7 +106,7 @@ const Notes: FC<Props> = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-y-4 max-w-2xl">
-            {sortedNotes.map(item => (
+            {notes.map(item => (
               <ElemNoteCard
                 key={item.id}
                 data={item}
