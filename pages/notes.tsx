@@ -5,8 +5,6 @@ import { FC, useEffect } from 'react';
 import { IconDocumentDownload } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
 import { PlaceholderNote } from '@/components/placeholders';
-import { orderBy } from 'lodash';
-//import { useAuth } from "@/hooks/useAuth";
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { useRouter } from 'next/router';

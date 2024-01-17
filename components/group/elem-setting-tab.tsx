@@ -7,7 +7,7 @@ import { useUser } from '@/context/user-context';
 import { User_Groups } from '@/graphql/types';
 import { IconSignOut, IconTrash, IconX } from '@/components/icons';
 import ElemSettingEditableField from './elem-setting-editable-field';
-import { ElemDeleteConfirmModal } from '../elem-delete-confirm-modal';
+import { ElemConfirmModal } from '../elem-confirm-modal';
 import { ROUTES } from '@/routes';
 
 type Props = {
@@ -251,7 +251,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         </div>
       )}
 
-      <ElemDeleteConfirmModal
+      <ElemConfirmModal
         isOpen={isOpenDeleteModal}
         title="Delete this group?"
         content={

@@ -4,7 +4,7 @@ import { ModalListName } from './modal-list-name';
 import { ModalListDescription } from './modal-list-description';
 import { IconX, IconSettings } from '@/components/icons';
 import { ModalListGroups } from './modal-list-groups';
-import { ElemDeleteConfirmModal } from '../elem-delete-confirm-modal';
+import { ElemConfirmModal } from '../elem-confirm-modal';
 import { ElemButton } from '@/components/elem-button';
 
 import {
@@ -403,7 +403,7 @@ export const ElemListInformation: FC<Props> = ({
                     listDescription={list?.description ?? ''}
                     onSave={onSaveListDescription}
                   />
-                  <ElemDeleteConfirmModal
+                  <ElemConfirmModal
                     isOpen={listDeleteModal}
                     title="Delete this list?"
                     content={

@@ -1,8 +1,6 @@
 import { Fragment, ChangeEvent, useState, useEffect, useMemo } from 'react';
 import { useMutation } from 'react-query';
-import toast, { Toaster } from 'react-hot-toast';
 import { Dialog, Transition } from '@headlessui/react';
-import { InputTextarea } from '@/components/input-textarea';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from './elem-button';
@@ -10,7 +8,6 @@ import { ElemPhoto } from './elem-photo';
 import { InputSelect } from './input-select';
 import moment from 'moment-timezone';
 import { GetNotesQuery } from '@/graphql/types';
-import { ElemDeleteConfirmModal } from './elem-delete-confirm-modal';
 import {
   IconX,
   IconSidebarGroups,
@@ -43,8 +40,6 @@ const ElemNoteForm: React.FC<Props> = ({
 
   const [notes, setNotes] = useState(selectedNote?.notes);
 
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
-
   const groupOptions = useMemo(() => {
     const options = [
       { id: 'public', icon: IconGlobe, title: 'Everyone can see' },
@@ -74,10 +69,6 @@ const ElemNoteForm: React.FC<Props> = ({
         groupOptions[0],
     );
   }, [selectedNote, groupOptions]);
-
-  const handleCloseDeleteModal = () => {
-    setIsOpenDeleteModal(false);
-  };
 
   //Create Group
   const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
@@ -131,60 +122,20 @@ const ElemNoteForm: React.FC<Props> = ({
     setNotes(event.target.value);
   };
 
-  const handleChangeNoteDiv = (event: ChangeEvent<HTMLInputElement>) => {
-    setNotes(event.target.innerText);
-  };
-
   const handleSubmit = () => {
     mutate();
     setNotes('');
   };
 
-  const { mutate: deleteNote, isLoading: isDeletingNote } = useMutation(
-    () => {
-      return fetch('/api/notes/', {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: selectedNote?.id,
-        }),
-      });
-    },
-    {
-      onSuccess: async response => {
-        handleCloseDeleteModal();
-        if (response.status !== 200) {
-          const err = await response.json();
-          toast.custom(
-            t => (
-              <div
-                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
-                {err?.message}
-              </div>
-            ),
-            {
-              duration: 3000,
-              position: 'top-center',
-            },
-          );
-        } else {
-          onClose();
-          onRefetchNotes();
-        }
-      },
-    },
-  );
+  const closeAndReset = () => {
+    onClose();
+    setNotes('');
+  };
 
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-40" onClose={onClose}>
+        <Dialog as="div" className="relative z-40" onClose={closeAndReset}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -209,13 +160,13 @@ const ElemNoteForm: React.FC<Props> = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-5 text-left align-middle shadow-xl transition-all">
-                  <div className="relative flex items-center justify-between pb-2 border-b border-slate-200">
+                  <div className="relative flex items-center justify-between pb-2 border-b border-gray-200">
                     <Dialog.Title className="flex-1 text-xl text-center font-bold">
                       {type === 'edit' ? 'Edit Note' : 'Create Note'}
                     </Dialog.Title>
                     <button
                       type="button"
-                      onClick={onClose}
+                      onClick={closeAndReset}
                       className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10"
                     >
                       <IconX className="h-6 w-6" />
@@ -241,7 +192,7 @@ const ElemNoteForm: React.FC<Props> = ({
                             imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                             imgAlt={user?.display_name}
                             placeholder="user"
-                            placeholderClass="text-slate-300"
+                            placeholderClass="text-gray-300"
                           />
                         </div>
                       </ElemTooltip>
@@ -252,28 +203,20 @@ const ElemNoteForm: React.FC<Props> = ({
                         imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                         imgAlt={user?.display_name}
                         placeholder="user"
-                        placeholderClass="text-slate-300"
+                        placeholderClass="text-gray-300"
                       />
                     )}
 
-                    {/* <div className="ml-2 grow">
-                      <p className="font-bold capitalize text-sm">
-                        {user?.display_name}
-                      </p>
-                    </div> */}
                     <div className="ml-2 grow">
                       <Autocomplete
                         value={notes}
                         onChange={handleChangeNote}
                         handleSubmit={handleSubmit}
                         placeholder="Write your note..."
+                        className=""
+                        textareaClass="h-24 max-h-[9rem] !px-0 !py-0 !ring-0 hover:!bg-white"
                       />
 
-                      {/* {!selectedNote && (
-                      <label className="block text-sm text-slate-500 leading-tight pb-1">
-                        Select audience
-                      </label>
-                    )} */}
                       <InputSelect
                         options={groupOptions}
                         value={selectedGroup}
@@ -313,24 +256,6 @@ const ElemNoteForm: React.FC<Props> = ({
               </Transition.Child>
             </div>
           </div>
-
-          <ElemDeleteConfirmModal
-            isOpen={isOpenDeleteModal}
-            title="Delete this note?"
-            content={
-              <div>
-                When you delete a note, it will be removed immediately.
-                <span className="font-bold inline">
-                  This can&lsquo;t be undone.
-                </span>
-              </div>
-            }
-            loading={isDeletingNote}
-            onClose={handleCloseDeleteModal}
-            onDelete={deleteNote}
-          />
-
-          <Toaster />
         </Dialog>
       </Transition>
 

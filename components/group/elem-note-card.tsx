@@ -7,13 +7,18 @@ import React, {
 } from 'react';
 import useSWR from 'swr';
 import moment from 'moment-timezone';
+import {
+  renderMarkdownToHTML,
+  replaceAtMentionsWithLinks,
+  wrapHyperlinks,
+} from '@/utils/notes';
 import { ElemPhoto } from '../elem-photo';
 import {
   IconEllipsisVertical,
-  IconEllipsisHorizontal,
   IconThumbUp,
   IconThumbUpSolid,
   IconAnnotation,
+  IconSidebarGroups,
   IconGroup,
   IconLockClosed,
   IconGlobe,
@@ -21,19 +26,27 @@ import {
   IconPaperAirplane,
   IconPaperAirplaneSolid,
 } from '@/components/icons';
-import { GetNotesQuery, People } from '@/graphql/types';
+import { GetNotesQuery } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
 import { Popover, Transition } from '@headlessui/react';
 import { InputTextarea } from '../input-textarea';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import ElemNoteForm from '@/components/elem-note-form';
 import { usePopup } from '@/context/popup-context';
-import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
-import sanitizeHtml from 'sanitize-html';
+import { ElemTooltip } from '@/components/elem-tooltip';
+import { Autocomplete } from '@/components/autocomplete';
+import { useMutation } from 'react-query';
+import toast, { Toaster } from 'react-hot-toast';
+import { ElemConfirmModal } from '@/components/elem-confirm-modal';
+import { useRouter } from 'next/router';
+import { ROUTES } from '@/routes';
+import { ElemNoteCardComments } from './elem-note-card-comments';
 
-type Props = {
-  data: GetNotesQuery['notes'][0];
+type Note = GetNotesQuery['notes'][0];
+
+type NoteProps = {
+  data: Note;
   refetch: () => void;
   layout?: 'organizationAndAuthor' | 'groupAndAuthor' | 'author';
 };
@@ -52,12 +65,17 @@ const fetcher = async (url: string, args: any) => {
   }).then(res => res.json());
 };
 
-const ElemNoteCard: React.FC<Props> = ({
+const formatContent = (text: string) => {
+  return renderMarkdownToHTML(replaceAtMentionsWithLinks(wrapHyperlinks(text)));
+};
+
+const ElemNoteCard: React.FC<NoteProps> = ({
   data,
   refetch,
   layout = 'organizationAndAuthor',
 }) => {
   const { user } = useUser();
+  const router = useRouter();
 
   const { setShowPopup } = usePopup();
 
@@ -79,11 +97,8 @@ const ElemNoteCard: React.FC<Props> = ({
 
   // Edit Notes
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
-  const [selectedNote, setSelectedNote] = useState<GetNotesQuery['notes'][0]>();
-
-  const onOpenNoteForm = () => {
-    setIsOpenNoteForm(true);
-  };
+  const [selectedNote, setSelectedNote] = useState<Note>();
+  const [showDeleteNoteConfirm, setShowDeleteNoteConfirm] = useState(false);
 
   const onCloseNoteForm = () => {
     setIsOpenNoteForm(false);
@@ -92,10 +107,59 @@ const ElemNoteCard: React.FC<Props> = ({
     }, 400);
   };
 
-  const onSelectNote = (note: GetNotesQuery['notes'][0]) => {
+  const onEditNote = (note: Note) => {
     setSelectedNote(note);
-    onOpenNoteForm();
+    setIsOpenNoteForm(true);
   };
+
+  const onConfirmDeleteNote = (note: Note) => {
+    setSelectedNote(note);
+    setShowDeleteNoteConfirm(true);
+  };
+
+  const handleCloseDeleteNoteConfirm = () => {
+    setShowDeleteNoteConfirm(false);
+  };
+
+  const { mutate: onDeleteNote, isLoading: isDeletingNote } = useMutation(
+    () => {
+      return fetch('/api/notes/', {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: selectedNote?.id,
+        }),
+      });
+    },
+    {
+      onSuccess: async response => {
+        handleCloseDeleteNoteConfirm();
+        if (response.status !== 200) {
+          const err = await response.json();
+          toast.custom(
+            t => (
+              <div
+                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                }`}
+              >
+                {err?.message}
+              </div>
+            ),
+            {
+              duration: 3000,
+              position: 'top-center',
+            },
+          );
+        } else {
+          refetch();
+        }
+      },
+    },
+  );
 
   const onOpenLinkPersonDialog = () => {
     setIsOpenLinkPersonDialog(true);
@@ -103,14 +167,6 @@ const ElemNoteCard: React.FC<Props> = ({
 
   const onCloseLinkPersonDialog = () => {
     setIsOpenLinkPersonDialog(false);
-  };
-
-  const onClickSearchName = () => {
-    onCloseLinkPersonDialog();
-
-    if (setShowPopup) {
-      setShowPopup('search');
-    }
   };
 
   // note content see more
@@ -131,44 +187,7 @@ const ElemNoteCard: React.FC<Props> = ({
     }
   }, [data?.notes]);
 
-  const formatDateShown = (date: Date) => {
-    moment.updateLocale('en', {
-      relativeTime: {
-        future: 'in %s',
-        past: '%s ago',
-        s: 'a few seconds',
-        ss: '%d seconds',
-        m: '%dm', //minute
-        mm: '%dm', //minutes
-        h: '%dh', //hour
-        hh: '%dh', //hours
-        d: '%dd', //day
-        dd: '%dd', //days
-        M: 'a month',
-        MM: '%d months',
-        y: 'a year',
-        yy: '%d years',
-      },
-    });
-
-    const utcTime = date;
-    const local_date = moment
-      .utc(utcTime)
-      .local()
-      .format('YYYY-MM-DD HH:mm:ss');
-
-    const lastMonth = moment().subtract(1, 'weeks').valueOf();
-    const noteCreated = moment(local_date).valueOf();
-
-    // if note is older than a month
-    if (lastMonth > noteCreated) {
-      return moment(local_date).format('LL');
-    } else {
-      return moment(local_date).fromNow(true);
-    }
-  };
-
-  const onToggleLike = async () => {
+  const onLikeButton = async () => {
     await fetch('/api/toggle-like-note/', {
       method: 'POST',
       headers: {
@@ -182,18 +201,21 @@ const ElemNoteCard: React.FC<Props> = ({
     refetch();
   };
 
-  const commentInput =
-    React.createRef() as MutableRefObject<HTMLTextAreaElement>;
+  const [commentTextareaHasFocus, setCommentTextareaHasFocus] = useState(false);
 
   const onCommentButton = () => {
     if (user?.person) {
-      commentInput.current.focus();
-    } else {
+      setCommentTextareaHasFocus(true);
+    } else if (user) {
       onOpenLinkPersonDialog();
+    } else {
+      router.push(ROUTES.SIGN_IN);
     }
   };
 
+  //Comment form
   const onAddComment = async () => {
+    setCommentContent(commentContent);
     await fetch('/api/add-comment/', {
       method: 'POST',
       headers: {
@@ -209,67 +231,34 @@ const ElemNoteCard: React.FC<Props> = ({
     refetch();
   };
 
-  const onDeleteComment = async (id: number) => {
-    await fetch('/api/delete-comment/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id,
-      }),
-    });
-    refetch();
-  };
-
-  const onDeleteNote = async () => {
-    await fetch('/api/notes/', {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: data.id,
-      }),
-    });
-    refetch();
-  };
-
-  useEffect(() => {
-    if (commentInput.current) {
-      setCommentContent(commentInput.current.value);
-    }
-  }, [commentInput, commentContent]);
-
-  const onChangeCommentInput = (
+  const onChangeCommentTextarea = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setCommentContent(event.target.value);
-
-    const target = event.target as HTMLTextAreaElement;
-    target.style.height = 'inherit';
-
-    if (commentContent.length > 0 && target.scrollHeight > 32) {
-      target.style.height = `${target.scrollHeight}px`;
-    } else {
-      target.style.height = '2rem';
-    }
   };
 
-  const onCommentInputKeyDown = (
+  const onCommentTextareaKeyDown = (
     event: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (event.key === 'Enter' && commentContent) {
+      event.preventDefault();
       onAddComment();
       setCommentContent('');
     }
   };
 
-  const onCommentSend = () => {
-    const userHasLinkedProfile = user?.person;
-    if (commentContent && userHasLinkedProfile) {
+  // const onCommentInputClick = (
+  //   event: React.MouseEvent<HTMLTextAreaElement>,
+  // ) => {
+  //   if (!user?.person) {
+  //     event.currentTarget.blur();
+  //   }
+  // };
+
+  const onCommentSubmit = () => {
+    if (!user) {
+      router.push(ROUTES.SIGN_IN);
+    } else if (user?.person && commentContent) {
       onAddComment();
       setCommentContent('');
     } else {
@@ -277,103 +266,16 @@ const ElemNoteCard: React.FC<Props> = ({
     }
   };
 
-  const onCommentInputClick = (
-    event: React.MouseEvent<HTMLTextAreaElement>,
-  ) => {
-    if (!user?.person) {
-      event.currentTarget.blur();
-      onOpenLinkPersonDialog();
-    }
-  };
-
-  const noteOptions = (
-    <Popover className="relative z-10 transition-all">
-      <Popover.Button className="flex items-center focus:outline-none">
-        <IconEllipsisVertical
-          className="h-6 w-6 text-gray-600"
-          title="Options"
-        />
-      </Popover.Button>
-
-      <Transition
-        enter="transition duration-100 ease-out"
-        enterFrom="transform scale-95 opacity-0"
-        enterTo="transform scale-100 opacity-100"
-        leave="transition duration-75 ease-out"
-        leaveFrom="transform scale-100 opacity-100"
-        leaveTo="transform scale-95 opacity-0"
-      >
-        <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
-          {({ close }) => (
-            <>
-              <button
-                onClick={() => {
-                  onSelectNote(data);
-                  close();
-                }}
-                className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
-              >
-                Edit note
-              </button>
-
-              <button
-                onClick={onDeleteNote}
-                className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
-              >
-                Delete note
-              </button>
-            </>
-          )}
-        </Popover.Panel>
-      </Transition>
-    </Popover>
-  );
-
+  //Resource
   const resourceType =
     data.resource_type === 'vc_firms' ? 'investors' : data.resource_type;
   const resourceLink = `/${resourceType}/${resource?.slug}`;
 
-  const renderMarkdownToHTML = (markdown: string) => {
-    if (markdown)
-      return {
-        __html: sanitizeHtml(markdown, {
-          allowedAttributes: {
-            a: ['href', 'target', 'class', 'title', 'className'],
-          },
-        }),
-      };
-  };
-
-  const replaceAtMentionsWithLinks = (text: string) => {
-    const regex = /(^|(?<=\s))@[a-zA-Z0-9+-]+(?=(\s|$)|[!?:;-=+,\.])/g;
-
-    const output = text.replace(regex, (match: string) => {
-      const createSlug = match
-        .replace(/[A-Z]/g, m => '-' + m)
-        .replace(/@-/g, '')
-        .toLowerCase();
-      return `<a class="text-primary-500 hover:underline" href="https://edgein.io/people/${createSlug}">${match}</a>`;
-    });
-
-    return output;
-  };
-
-  const wrapHyperlinks = (text: string) => {
-    const regex = /https?:\/\/\S*/gi;
-    const decodeURL = decodeURIComponent(text);
-
-    const modifiedText = decodeURL.replace(regex, url => {
-      return `<a class="text-primary-500 hover:underline" href="${url}" title="${url}" target="_blank">${
-        url.length > 40 ? url.substring(0, 40) + '...' : url
-      }</a>`;
-    });
-
-    return modifiedText;
-  };
-
   return (
     <>
-      <div className="flex flex-col border border-gray-300 rounded-lg">
+      <div
+        className={`flex flex-col border border-gray-300 rounded-lg note-${data.id}`}
+      >
         <div className="relative flex items-center space-x-3 px-4 py-2">
           <div className="flex-shrink-0 relative">
             {layout === 'organizationAndAuthor' ? (
@@ -388,7 +290,7 @@ const ElemNoteCard: React.FC<Props> = ({
             ) : layout === 'groupAndAuthor' ? (
               <ElemLink href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}>
                 <div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-gray-100 rounded-lg border border-gray-100">
-                  <IconGroup
+                  <IconSidebarGroups
                     className="w-7 h-7"
                     title={data?.user_group?.name}
                   />
@@ -439,10 +341,9 @@ const ElemNoteCard: React.FC<Props> = ({
               </ElemLink>
             )}
           </div>
-
           <div className="min-w-0 flex-1">
             <div>
-              <h2 className="text-lg leading-tight font-medium underline-offset-1 hover:underline">
+              <h3 className="leading-tight font-medium underline-offset-1 hover:underline">
                 {layout === 'organizationAndAuthor' ? (
                   <ElemLink href={resourceLink}>{resource?.name}</ElemLink>
                 ) : layout === 'groupAndAuthor' ? (
@@ -457,7 +358,7 @@ const ElemNoteCard: React.FC<Props> = ({
                     {data?.created_by_user?.person?.name}
                   </ElemLink>
                 )}
-              </h2>
+              </h3>
               <div className="text-sm text-slate-600">
                 {(layout === 'organizationAndAuthor' ||
                   layout === 'groupAndAuthor') && (
@@ -472,24 +373,69 @@ const ElemNoteCard: React.FC<Props> = ({
                   </>
                 )}
 
-                {layout === 'organizationAndAuthor' ||
-                layout === 'groupAndAuthor' ? (
-                  <IconUsers
-                    className="inline-flex w-4 h-4"
-                    title={`Members of ${data?.user_group?.name}`}
-                  />
+                {data?.created_at && (
+                  <>
+                    <ElemTooltip
+                      content={moment
+                        .utc(data?.created_at)
+                        .local()
+                        .format('dddd, ll [at] hh:mma')}
+                      direction="bottom"
+                      mode="dark"
+                    >
+                      <div className="inline-block">
+                        {moment.utc(data?.created_at).local().valueOf() >=
+                        moment.utc().local().subtract(5, 'days').valueOf()
+                          ? moment.utc(data?.created_at).local().fromNow()
+                          : moment.utc(data?.created_at).local().format('ll')}
+                      </div>
+                    </ElemTooltip>
+                    <span aria-hidden="true"> · </span>
+                  </>
+                )}
+
+                {layout === 'groupAndAuthor' ? (
+                  <ElemTooltip
+                    content={`Shared with group: "${data?.user_group?.name}"`}
+                    direction="bottom"
+                    mode="dark"
+                  >
+                    <div className="inline-block">
+                      <IconUsers
+                        className="inline-flex w-4 h-4"
+                        title=" "
+                        // {`Shared with group: "${data?.user_group?.name}"`}
+                      />
+                    </div>
+                  </ElemTooltip>
                 ) : (
                   <>
                     {data.audience === 'only_me' ? (
-                      <IconLockClosed
-                        className="inline-flex w-4 h-4"
-                        title="Only me"
-                      />
+                      <ElemTooltip
+                        content="Only me"
+                        direction="bottom"
+                        mode="dark"
+                      >
+                        <div className="inline-block">
+                          <IconLockClosed
+                            className="inline-flex w-4 h-4"
+                            title=" "
+                          />
+                        </div>
+                      </ElemTooltip>
                     ) : (
-                      <IconGlobe
-                        className="inline-flex w-4 h-4"
-                        title="Public"
-                      />
+                      <ElemTooltip
+                        content="Public"
+                        direction="bottom"
+                        mode="dark"
+                      >
+                        <div className="inline-block">
+                          <IconGlobe
+                            className="inline-flex w-4 h-4"
+                            title=" "
+                          />
+                        </div>
+                      </ElemTooltip>
                     )}
                   </>
                 )}
@@ -497,19 +443,61 @@ const ElemNoteCard: React.FC<Props> = ({
               </div>
             </div>
           </div>
-          <div>{data?.created_by_user?.id === user?.id && noteOptions}</div>
-        </div>
+          <div>
+            {data?.created_by_user?.id === user?.id && (
+              <Popover className="relative z-10 transition-all">
+                <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 focus:outline-none">
+                  <IconEllipsisVertical
+                    className="h-6 w-6 text-gray-600"
+                    title="Options"
+                  />
+                </Popover.Button>
 
+                <Transition
+                  enter="transition duration-100 ease-out"
+                  enterFrom="transform scale-95 opacity-0"
+                  enterTo="transform scale-100 opacity-100"
+                  leave="transition duration-75 ease-out"
+                  leaveFrom="transform scale-100 opacity-100"
+                  leaveTo="transform scale-95 opacity-0"
+                >
+                  <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+                    {({ close }) => (
+                      <>
+                        <button
+                          onClick={() => {
+                            onEditNote(data);
+                            close();
+                          }}
+                          className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                        >
+                          Edit note
+                        </button>
+                        <button
+                          onClick={() => {
+                            onConfirmDeleteNote(data);
+                          }}
+                          className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </Popover.Panel>
+                </Transition>
+              </Popover>
+            )}
+          </div>
+        </div>
         <div className="grow min-h-fit px-4 py-2">
           <p
             className={`break-all whitespace-pre-line text-sm text-gray-900 ${
               !contentShowAll && 'line-clamp-5'
             }`}
             ref={contentDiv}
-            dangerouslySetInnerHTML={renderMarkdownToHTML(
-              replaceAtMentionsWithLinks(wrapHyperlinks(data.notes)),
-            )}
+            dangerouslySetInnerHTML={formatContent(data.notes)}
           ></p>
+
           {contentDivHeight > 100 && !contentShowAll && (
             <button
               type="button"
@@ -520,25 +508,26 @@ const ElemNoteCard: React.FC<Props> = ({
             </button>
           )}
         </div>
-
-        <div className="flex items-center justify-between px-4 py-2">
-          <span className="text-sm text-gray-500">
-            {likesCount > 0
-              ? `${likesCount} like${likesCount > 1 ? 's' : ''}`
-              : null}
-          </span>
-          <span className="text-sm text-gray-500">
-            {commentsCount > 0
-              ? `${commentsCount} comment${commentsCount > 1 ? 's' : ''}`
-              : null}
-          </span>
-        </div>
+        {(likesCount > 0 || commentsCount > 0) && (
+          <div className="flex items-center justify-between px-4 py-2">
+            <span className="text-sm text-gray-500">
+              {likesCount > 0
+                ? `${likesCount} like${likesCount > 1 ? 's' : ''}`
+                : null}
+            </span>
+            <span className="text-sm text-gray-500">
+              {commentsCount > 0
+                ? `${commentsCount} comment${commentsCount > 1 ? 's' : ''}`
+                : null}
+            </span>
+          </div>
+        )}
         <div className="flex space-x-1 border-y border-gray-300">
           <button
             className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-gray-100 ${
-              isLikedByCurrentUser ? 'text-gray-900' : 'text-gray-500'
+              isLikedByCurrentUser ? 'text-primary-500' : 'text-gray-500'
             }`}
-            onClick={onToggleLike}
+            onClick={onLikeButton}
           >
             {isLikedByCurrentUser ? (
               <>
@@ -557,91 +546,12 @@ const ElemNoteCard: React.FC<Props> = ({
             <IconAnnotation className="h-5 w-5 mr-1" /> Comment
           </button>
         </div>
-        {data.comments.length > 0 && (
-          <div className="flex flex-col space-y-2 px-4 py-2">
-            {data.comments.map(comment => {
-              return (
-                <div key={comment.id} className="flex items-start gap-2">
-                  <ElemLink
-                    href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
-                    className="shrink-0"
-                  >
-                    <ElemPhoto
-                      photo={comment.created_by_user?.person?.picture}
-                      wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                      imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                      imgAlt={
-                        comment.created_by_user?.person?.name ||
-                        data?.created_by_user?.display_name
-                      }
-                      placeholder="user"
-                      placeholderAlt={
-                        comment.created_by_user?.person?.name ||
-                        data.created_by_user?.display_name
-                      }
-                      placeholderClass="text-slate-300"
-                    />
-                  </ElemLink>
-                  <div className="flex items-center gap-2">
-                    <div className="grow py-2 px-3 text-sm bg-gray-100 rounded-lg">
-                      <p>
-                        <ElemLink
-                          href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
-                          className="font-medium hover:underline"
-                        >
-                          {comment.created_by_user?.person?.name ||
-                            comment.created_by_user?.display_name}
-                        </ElemLink>
-                        <span aria-hidden="true"> · </span>
-                        <span className="text-slate-600">
-                          {formatDateShown(comment?.created_at)}
-                        </span>
-                      </p>
-                      <p
-                        className="break-all"
-                        dangerouslySetInnerHTML={renderMarkdownToHTML(
-                          wrapHyperlinks(comment.content),
-                        )}
-                      ></p>
-                    </div>
-                    {comment.created_by_user_id === user?.id && (
-                      <Popover className="relative">
-                        <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full focus:outline-none hover:bg-gray-100">
-                          <IconEllipsisVertical
-                            className="h-6 w-6 text-gray-600"
-                            title="Options"
-                          />
-                        </Popover.Button>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-200"
-                          enterFrom="opacity-0 translate-y-1"
-                          enterTo="opacity-100 translate-y-0"
-                          leave="transition ease-in duration-150"
-                          leaveFrom="opacity-100 translate-y-0"
-                          leaveTo="opacity-0 translate-y-1"
-                        >
-                          <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
-                            <button
-                              onClick={() => {
-                                onDeleteComment(comment.id);
-                              }}
-                              className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
-                            >
-                              <span className="text-sm font-medium">
-                                Delete
-                              </span>
-                            </button>
-                          </Popover.Panel>
-                        </Transition>
-                      </Popover>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+
+        <ElemNoteCardComments
+          note={data}
+          comments={data.comments}
+          refetch={refetch}
+        />
 
         <div className="flex items-start space-x-2 px-4 py-2">
           <ElemPhoto
@@ -653,21 +563,20 @@ const ElemNoteCard: React.FC<Props> = ({
             placeholderAlt={user?.person?.name || user?.display_name}
             placeholderClass="text-slate-300"
           />
-          <div className="relative flex w-full">
-            <InputTextarea
-              rows={1}
-              ref={commentInput}
-              name="comment"
-              placeholder="Write a comment..."
+          <div className="relative flex w-full group">
+            <Autocomplete
               value={commentContent}
-              onChange={onChangeCommentInput}
-              onKeyDown={onCommentInputKeyDown}
-              onClick={onCommentInputClick}
-              className="!mt-0"
+              onChange={onChangeCommentTextarea}
+              hasFocus={commentTextareaHasFocus}
+              onKeyDown={onCommentTextareaKeyDown}
+              handleSubmit={onCommentSubmit}
+              placeholder="Write a comment..."
+              textareaClass="h-9 group-focus-within:h-16 max-h-fit !text-sm transition-all focus:bg-gray-50"
             />
+
             <button
-              onClick={onCommentSend}
-              className={`absolute z-10 right-3 bottom-0 flex items-center justify-center w-8 h-8 rounded-full  ${
+              onClick={onCommentSubmit}
+              className={`absolute z-10 right-2 bottom-[0.3rem] flex items-center justify-center w-8 h-8 rounded-full  ${
                 commentContent.length > 0
                   ? 'cursor-pointer hover:bg-gray-100'
                   : 'cursor-not-allowed'
@@ -685,13 +594,6 @@ const ElemNoteCard: React.FC<Props> = ({
           </div>
         </div>
       </div>
-      <ElemRequiredProfileDialog
-        isOpen={isOpenLinkPersonDialog}
-        title="You have not linked your account to a profile on EdgeIn"
-        content="Search your name and claim profile to be able to comment."
-        onClose={onCloseLinkPersonDialog}
-        onClickSearch={onClickSearchName}
-      />
 
       <ElemNoteForm
         isOpen={isOpenNoteForm}
@@ -702,6 +604,24 @@ const ElemNoteCard: React.FC<Props> = ({
         onClose={onCloseNoteForm}
         onRefetchNotes={refetch}
       />
+
+      <ElemConfirmModal
+        isOpen={showDeleteNoteConfirm}
+        title="Delete Note?"
+        content="Are you sure you want to delete this note?"
+        loading={isDeletingNote}
+        onClose={handleCloseDeleteNoteConfirm}
+        onDelete={onDeleteNote}
+      />
+
+      <ElemRequiredProfileDialog
+        isOpen={isOpenLinkPersonDialog}
+        title="To add a comment, please claim a profile."
+        content="Search your name and claim profile."
+        onClose={onCloseLinkPersonDialog}
+      />
+
+      <Toaster />
     </>
   );
 };
