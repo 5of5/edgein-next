@@ -1,10 +1,4 @@
-import React, {
-  MutableRefObject,
-  useRef,
-  useEffect,
-  useState,
-  Fragment,
-} from 'react';
+import React, { MutableRefObject, useRef, useEffect, useState } from 'react';
 import useSWR from 'swr';
 import moment from 'moment-timezone';
 import {
@@ -19,7 +13,6 @@ import {
   IconThumbUpSolid,
   IconAnnotation,
   IconSidebarGroups,
-  IconGroup,
   IconLockClosed,
   IconGlobe,
   IconUsers,
@@ -29,7 +22,7 @@ import {
 import { GetNotesQuery } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
 import { Popover, Transition } from '@headlessui/react';
-import { InputTextarea } from '../input-textarea';
+// import { InputTextarea } from '../input-textarea';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import ElemNoteForm from '@/components/elem-note-form';
 import { usePopup } from '@/context/popup-context';
@@ -76,8 +69,6 @@ const ElemNoteCard: React.FC<NoteProps> = ({
 }) => {
   const { user } = useUser();
   const router = useRouter();
-
-  const { setShowPopup } = usePopup();
 
   const { data: resource } = useSWR(
     [
@@ -242,25 +233,15 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   ) => {
     if (event.key === 'Enter' && commentContent) {
       event.preventDefault();
-      onAddComment();
-      setCommentContent('');
+      onCommentSubmit();
     }
   };
-
-  // const onCommentInputClick = (
-  //   event: React.MouseEvent<HTMLTextAreaElement>,
-  // ) => {
-  //   if (!user?.person) {
-  //     event.currentTarget.blur();
-  //   }
-  // };
 
   const onCommentSubmit = () => {
     if (!user) {
       router.push(ROUTES.SIGN_IN);
-    } else if (user?.person && commentContent) {
+    } else if (user.person && commentContent) {
       onAddComment();
-      setCommentContent('');
     } else {
       onOpenLinkPersonDialog();
     }
@@ -401,11 +382,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                     mode="dark"
                   >
                     <div className="inline-block">
-                      <IconUsers
-                        className="inline-flex w-4 h-4"
-                        title=" "
-                        // {`Shared with group: "${data?.user_group?.name}"`}
-                      />
+                      <IconUsers className="inline-flex w-4 h-4" title=" " />
                     </div>
                   </ElemTooltip>
                 ) : (
@@ -543,10 +520,9 @@ const ElemNoteCard: React.FC<NoteProps> = ({
             className="flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-gray-100 text-gray-500"
             onClick={onCommentButton}
           >
-            <IconAnnotation className="h-5 w-5 mr-1" /> Comment
+            <IconAnnotation className="h-5 w-5 mr-1" title="Comment" /> Comment
           </button>
         </div>
-
         <ElemNoteCardComments
           note={data}
           comments={data.comments}
@@ -569,7 +545,6 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               onChange={onChangeCommentTextarea}
               hasFocus={commentTextareaHasFocus}
               onKeyDown={onCommentTextareaKeyDown}
-              handleSubmit={onCommentSubmit}
               placeholder="Write a comment..."
               textareaClass="h-9 group-focus-within:h-16 max-h-fit !text-sm transition-all focus:bg-gray-50"
             />

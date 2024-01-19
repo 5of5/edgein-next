@@ -119,12 +119,21 @@ const ElemNoteForm: React.FC<Props> = ({
   );
 
   const handleChangeNote = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setNotes(event.target.value);
+    setNotes(event.target.value.trim());
   };
 
   const handleSubmit = () => {
     mutate();
     setNotes('');
+  };
+
+  const onNoteTextareaKeyDown = (
+    event: React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    if (event.key === 'Enter' && notes) {
+      event.preventDefault();
+      handleSubmit();
+    }
   };
 
   const closeAndReset = () => {
@@ -211,7 +220,7 @@ const ElemNoteForm: React.FC<Props> = ({
                       <Autocomplete
                         value={notes}
                         onChange={handleChangeNote}
-                        handleSubmit={handleSubmit}
+                        onKeyDown={onNoteTextareaKeyDown}
                         placeholder="Write your note..."
                         className=""
                         textareaClass="h-24 max-h-[9rem] !px-0 !py-0 !ring-0 hover:!bg-white"

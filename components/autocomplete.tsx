@@ -39,13 +39,9 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
     if (props.hasFocus && inputRef.current) inputRef.current.focus();
   }, [props.hasFocus]);
 
-  useEffect(() => {
-    if (props.onKeyDown && inputRef.current) inputRef.current.focus();
-  }, [props.onKeyDown]);
-
   const { autocomplete, state } = useAutocomplete({
     ...props,
-    id: 'notes-autocomplete',
+    //id: 'notes-autocomplete',
     defaultActiveItemId: 0,
     insights: true,
     getSources({ query }) {
@@ -112,10 +108,14 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
     : { top: 0, height: 0 };
 
   const inputProps = autocomplete.getInputProps({
-    inputElement: inputRef.current as unknown as HTMLInputElement,
-    autoFocus: true,
-    //value: ,
-    // maxLength: 280,
+    inputElement: inputRef.current as HTMLInputElement | null,
+    autoFocus: false,
+    onKeyDown: props.onKeyDown,
+    onKeyUp: (event: { key: string }) => {
+      if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        onInputNavigate();
+      }
+    },
   });
 
   return (
@@ -125,7 +125,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
     >
       <form
         {...autocomplete.getFormProps({
-          inputElement: inputRef.current as unknown as HTMLInputElement,
+          inputElement: inputRef.current as HTMLInputElement | null,
         })}
       >
         <textarea
@@ -134,12 +134,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
           } ${props.textareaClass}`}
           ref={inputRef}
           {...inputProps}
-          onKeyUp={event => {
-            if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
-              onInputNavigate();
-            }
-          }}
-          onKeyDown={props.onKeyDown}
+          value={props.value === '' ? props.value : inputProps.value}
           onChange={event => {
             inputProps.onChange(event);
             props.onChange(event);
