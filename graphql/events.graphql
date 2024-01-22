@@ -36,6 +36,7 @@ query GetEvents(
       created_at
       person_id
     }
+    parent_event_id
   }
   events_aggregate(where: $where) {
     aggregate {
