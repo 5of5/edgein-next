@@ -77,7 +77,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: note?.id,
+        noteId: note.id,
         content: commentContent,
       }),
     });
@@ -134,10 +134,12 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
             return (
               <div
                 key={comment.id}
-                className="flex items-start gap-2 px-4 group">
+                className="flex items-start gap-2 px-4 group"
+              >
                 <ElemLink
                   href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
-                  className="shrink-0">
+                  className="shrink-0"
+                >
                   <ElemPhoto
                     photo={comment.created_by_user?.person?.picture}
                     wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
@@ -174,7 +176,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                           commentContent.length > 0
                             ? 'cursor-pointer hover:bg-gray-100'
                             : 'cursor-not-allowed'
-                        }`}>
+                        }`}
+                      >
                         {commentContent.length > 0 ? (
                           <IconPaperAirplaneSolid
                             className="text-primary-500 w-5 h-5"
@@ -191,7 +194,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                     <div>
                       <button
                         onClick={onCloseCommentForm}
-                        className="inline-block text-xs text-primary-500">
+                        className="inline-block text-xs text-primary-500"
+                      >
                         Cancel
                       </button>
                     </div>
@@ -203,7 +207,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                         <div>
                           <ElemLink
                             href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
-                            className="font-medium hover:underline">
+                            className="font-medium hover:underline"
+                          >
                             {comment.created_by_user?.person?.name ||
                               comment.created_by_user?.display_name}
                           </ElemLink>
@@ -212,7 +217,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                           className="break-all"
                           dangerouslySetInnerHTML={formatContent(
                             comment.content,
-                          )}></p>
+                          )}
+                        ></p>
                       </div>
                       <div>
                         {comment.created_by_user_id === user?.id && (
@@ -230,7 +236,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                               enterTo="opacity-100 translate-y-0"
                               leave="transition ease-in duration-150"
                               leaveFrom="opacity-100 translate-y-0"
-                              leaveTo="opacity-0 translate-y-1">
+                              leaveTo="opacity-0 translate-y-1"
+                            >
                               <Popover.Panel className="absolute z-10 mt-2 p-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
                                 {({ close }) => (
                                   <>
@@ -239,7 +246,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                                         onEditComment(comment);
                                         close();
                                       }}
-                                      className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100">
+                                      className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                                    >
                                       Edit comment
                                     </button>
 
@@ -247,7 +255,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                                       onClick={() => {
                                         onConfirmDelete(comment);
                                       }}
-                                      className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100">
+                                      className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                                    >
                                       Delete
                                     </button>
                                   </>
@@ -264,7 +273,8 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                           .utc(comment?.created_at)
                           .local()
                           .format('dddd, ll [at] hh:mma')}
-                        direction="bottom">
+                        direction="bottom"
+                      >
                         <div className="inline-block text-xs">
                           {moment.utc(comment?.created_at).local().fromNow()}
                         </div>
