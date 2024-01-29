@@ -70,18 +70,19 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
   };
 
   const onUpdateComment = async () => {
-    await fetch('/api/add-comment/', {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        noteId: note.id,
-        content: commentContent,
-      }),
-    });
-    refetch();
+    // TODO: add update-comment route
+    // await fetch('/api/add-comment/', {
+    //   method: 'PUT',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     noteId: note.id,
+    //     content: commentContent,
+    //   }),
+    // });
+    // refetch();
     setIsOpenCommentForm(false);
   };
 
@@ -129,7 +130,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
   return (
     <>
       {comments.length > 0 && (
-        <div className="flex flex-col space-y-2 py-2">
+        <div className="flex flex-col py-2 space-y-2">
           {comments.map(comment => {
             return (
               <div
@@ -180,7 +181,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                       >
                         {commentContent.length > 0 ? (
                           <IconPaperAirplaneSolid
-                            className="text-primary-500 w-5 h-5"
+                            className="w-5 h-5 text-primary-500"
                             title="Comment"
                           />
                         ) : (
@@ -203,7 +204,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                 ) : (
                   <div>
                     <div className="flex items-center gap-2">
-                      <div className="grow py-2 px-3 text-sm bg-gray-100 rounded-xl">
+                      <div className="px-3 py-2 text-sm bg-gray-100 grow rounded-xl">
                         <div>
                           <ElemLink
                             href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
@@ -225,7 +226,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                           <Popover className="relative lg:opacity-0 lg:group-hover:opacity-100">
                             <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full focus:outline-none hover:bg-gray-100">
                               <IconEllipsisVertical
-                                className="h-6 w-6 text-gray-600"
+                                className="w-6 h-6 text-gray-600"
                                 title="Options"
                               />
                             </Popover.Button>
@@ -238,24 +239,24 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                               leaveFrom="opacity-100 translate-y-0"
                               leaveTo="opacity-0 translate-y-1"
                             >
-                              <Popover.Panel className="absolute z-10 mt-2 p-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+                              <Popover.Panel className="absolute right-0 z-10 block w-56 p-2 mt-2 overflow-hidden bg-white border border-gray-300 rounded-lg shadow-lg">
                                 {({ close }) => (
                                   <>
+                                    {/* 
                                     <button
                                       onClick={() => {
                                         onEditComment(comment);
                                         close();
                                       }}
-                                      className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
-                                    >
+                                      className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
                                       Edit comment
-                                    </button>
+                                    </button> */}
 
                                     <button
                                       onClick={() => {
                                         onConfirmDelete(comment);
                                       }}
-                                      className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
+                                      className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100"
                                     >
                                       Delete
                                     </button>

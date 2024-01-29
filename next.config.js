@@ -12,7 +12,7 @@ const nextConfig = {
         destination: '/sign-in',
         permanent: true,
       },
-    ]
+    ];
   },
 };
 module.exports = nextConfig;
