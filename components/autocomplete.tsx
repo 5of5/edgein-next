@@ -5,10 +5,9 @@ import {
 } from '@algolia/autocomplete-preset-algolia';
 import type { Hit } from '@algolia/client-search';
 import algoliasearch from 'algoliasearch/lite';
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import getCaretCoordinates from 'textarea-caret';
 import { IconUserPlaceholder } from '@/components/icons';
-
 import { useAutocomplete } from '@/hooks/use-autocomplete';
 import type { Person, AutocompleteItem } from '@/hooks/use-autocomplete';
 import {
@@ -18,9 +17,13 @@ import {
 } from '@/utils/algolia';
 
 export interface Props extends Partial<AutocompleteOptions<AutocompleteItem>> {
+  className?: string;
+  textareaClass?: string;
   value?: string;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
-  handleSubmit?: any;
+  handleSubmit?: () => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  hasFocus?: boolean;
   placeholder?: string;
 }
 
@@ -31,9 +34,14 @@ const searchClient = algoliasearch(
 
 export const Autocomplete: React.FC<Props> = (props: Props) => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (props.hasFocus && inputRef.current) inputRef.current.focus();
+  }, [props.hasFocus]);
+
   const { autocomplete, state } = useAutocomplete({
     ...props,
-    id: 'notes-autocomplete',
+    //id: 'notes-autocomplete',
     defaultActiveItemId: 0,
     insights: true,
     getSources({ query }) {
@@ -100,134 +108,128 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
     : { top: 0, height: 0 };
 
   const inputProps = autocomplete.getInputProps({
-    inputElement: inputRef.current as unknown as HTMLInputElement,
-    autoFocus: true,
-    // maxLength: 280,
+    inputElement: inputRef.current as HTMLInputElement | null,
+    autoFocus: false,
+    onKeyDown: props.onKeyDown,
+    onKeyUp: (event: { key: string }) => {
+      if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        onInputNavigate();
+      }
+    },
   });
 
   return (
-    <div {...autocomplete.getRootProps({})}>
-      <div className="box">
-        <div className="flex">
-          <div className="relative grow">
-            <form
-              {...autocomplete.getFormProps({
-                inputElement: inputRef.current as unknown as HTMLInputElement,
-              })}
+    <div
+      {...autocomplete.getRootProps({})}
+      className={`relative grow ${props.className ? props.className : ''}`}
+    >
+      <form
+        {...autocomplete.getFormProps({
+          inputElement: inputRef.current as HTMLInputElement | null,
+        })}
+      >
+        <textarea
+          className={`w-full bg-white px-3 py-2 resize-none rounded-lg border-none outline-none ring-1 ring-gray-300 focus:ring-gray-300 placeholder:text-gray-500 hover:bg-gray-50 ${
+            state.query.length > 280 ? 'text-base' : 'text-lg'
+          } ${props.textareaClass}`}
+          ref={inputRef}
+          {...inputProps}
+          value={props.value === '' ? props.value : inputProps.value}
+          onChange={event => {
+            inputProps.onChange(event);
+            props.onChange(event);
+          }}
+          onClick={event => {
+            inputProps.onClick(event);
+            onInputNavigate();
+          }}
+          rows={2}
+        />
+      </form>
+
+      <div
+        {...autocomplete.getPanelProps({})}
+        className="autocomplete-panel absolute left-0 z-30 w-full max-w-xs bg-white rounded-lg shadow-2xl"
+        style={{ top: `${top + height}px` }}
+      >
+        {state.status === 'stalled' && !state.isOpen && (
+          <div className="text-primary-500 py-3">
+            <svg
+              className="block w-8 h-8 mx-auto"
+              viewBox="0 0 100 100"
+              fill="currentColor"
             >
-              <textarea
-                className={`w-full h-24 max-h-[9rem] p-0 bg-white border-none outline-none resize-none focus:border-transparent focus:ring-0 placeholder:text-gray-500 ${
-                  state.query.length > 280 ? 'text-base' : 'text-lg'
-                }`}
-                ref={inputRef}
-                {...inputProps}
-                onKeyUp={event => {
-                  if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
-                    onInputNavigate();
-                  }
-                }}
-                onChange={event => {
-                  inputProps.onChange(event);
-                  props.onChange(event);
-                }}
-                onClick={event => {
-                  inputProps.onClick(event);
-                  onInputNavigate();
-                }}
-                rows={1}
-              />
-            </form>
-
-            <div
-              {...autocomplete.getPanelProps({})}
-              className="autocomplete-panel absolute left-0 z-30 w-full max-w-xs bg-white rounded-lg shadow-2xl"
-              style={{ top: `${top + height}px` }}
-            >
-              {state.status === 'stalled' && !state.isOpen && (
-                <div className="text-primary-500 py-3">
-                  <svg
-                    className="block w-8 h-8 mx-auto"
-                    viewBox="0 0 100 100"
-                    fill="currentColor"
-                  >
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="35"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeDasharray="164.93361431346415 56.97787143782138"
-                      strokeWidth="6"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        dur="1s"
-                        keyTimes="0;0.40;0.65;1"
-                        repeatCount="indefinite"
-                        type="rotate"
-                        values="0 50 50;90 50 50;180 50 50;360 50 50"
-                      ></animateTransform>
-                    </circle>
-                  </svg>
-                </div>
-              )}
-
-              {state.isOpen &&
-                state.collections.map(({ source, items }) => {
-                  return (
-                    <div
-                      key={`source-${source.sourceId}`}
-                      className={[
-                        'w-full mt-2 py-2 overflow-hidden rounded-lg',
-                        state.status === 'stalled' && 'opacity-80 grayscale',
-                      ]
-                        .filter(Boolean)
-                        .join(' ')}
-                    >
-                      {items.length > 0 && (
-                        <ul
-                          {...autocomplete.getListProps()}
-                          className="h-full overflow-y-scroll list-none m-0 p-0 max-h-96"
-                        >
-                          {items.map(item => {
-                            const itemProps = autocomplete.getItemProps({
-                              item,
-                              source,
-                            });
-
-                            return (
-                              <li key={item.name} {...itemProps}>
-                                <div
-                                  className={[
-                                    'autocomplete-item flex flex-col cursor-pointer px-6 py-2',
-                                    itemProps['aria-selected'] &&
-                                      'autocomplete-item-selected bg-gray-100',
-                                  ]
-                                    .filter(Boolean)
-                                    .join(' ')}
-                                >
-                                  <AccountItem hit={item} />
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
+              <circle
+                cx="50"
+                cy="50"
+                r="35"
+                fill="none"
+                stroke="currentColor"
+                strokeDasharray="164.93361431346415 56.97787143782138"
+                strokeWidth="6"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  dur="1s"
+                  keyTimes="0;0.40;0.65;1"
+                  repeatCount="indefinite"
+                  type="rotate"
+                  values="0 50 50;90 50 50;180 50 50;360 50 50"
+                ></animateTransform>
+              </circle>
+            </svg>
           </div>
-        </div>
-        {/* <div className="box-footer">
-          <button
-            type="submit"
-            className="tweet-button"
-            onClick={props.handleSubmit}>
-            Tweet
-          </button> */}
-        {/* </div> */}
+        )}
+
+        {state.isOpen &&
+          state.collections.map(({ source, items }) => {
+            return (
+              <div
+                key={`source-${source.sourceId}`}
+                className={[
+                  'w-full mt-2 py-2 overflow-hidden rounded-lg',
+                  state.status === 'stalled' && 'opacity-80 grayscale',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                {items.length > 0 && (
+                  <ul
+                    {...autocomplete.getListProps()}
+                    className="h-full overflow-y-scroll list-none m-0 p-0 max-h-96"
+                  >
+                    {items.map(item => {
+                      const itemProps = autocomplete.getItemProps({
+                        item,
+                        source,
+                      });
+
+                      return (
+                        <li key={item.name} {...itemProps}>
+                          <div
+                            className={[
+                              'autocomplete-item flex flex-col cursor-pointer px-6 py-2',
+                              itemProps['aria-selected'] &&
+                                'autocomplete-item-selected bg-gray-100',
+                            ]
+                              .filter(Boolean)
+                              .join(' ')}
+                          >
+                            <AccountItem hit={item} />
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
       </div>
+
+      {/* <button type="submit" onClick={props.handleSubmit}>
+        Submit
+      </button> */}
     </div>
   );
 };

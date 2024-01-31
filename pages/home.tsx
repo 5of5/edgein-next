@@ -296,6 +296,7 @@ const Home: NextPage = () => {
                                   },
                                 },
                               },
+                              { parent_event_id: { _is_null: true } },
                             ],
                           }}
                         />

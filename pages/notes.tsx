@@ -5,8 +5,6 @@ import { FC, useEffect } from 'react';
 import { IconDocumentDownload } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
 import { PlaceholderNote } from '@/components/placeholders';
-import { orderBy } from 'lodash';
-//import { useAuth } from "@/hooks/useAuth";
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { useRouter } from 'next/router';
@@ -19,16 +17,6 @@ const Notes: FC<Props> = () => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    if (!user) {
-      redirectToSignIn();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  const redirectToSignIn = () => {
-    router.push(ROUTES.SIGN_IN);
-  };
   const {
     data: noteList,
     error,
@@ -63,10 +51,18 @@ const Notes: FC<Props> = () => {
     } as Notes_Bool_Exp,
   });
 
-  const notes = noteList?.notes || [];
+  useEffect(() => {
+    if (!isLoading && !user) {
+      redirectToSignIn();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, isLoading]);
 
-  //sort by created date
-  const sortedNotes = orderBy(notes, a => new Date(a.created_at), ['desc']);
+  const redirectToSignIn = () => {
+    router.push(ROUTES.SIGN_IN);
+  };
+
+  const notes = noteList?.notes || [];
 
   return (
     <DashboardLayout>
@@ -77,7 +73,7 @@ const Notes: FC<Props> = () => {
 
         {error ? (
           <h4>Error loading notes</h4>
-        ) : isLoading ? (
+        ) : isLoading || !user ? (
           <div className="flex flex-col gap-y-4 mt-4">
             {Array.from({ length: 2 }, (_, i) => (
               <div key={i} className="max-w-2xl bg-white shadow rounded-lg">
@@ -86,13 +82,13 @@ const Notes: FC<Props> = () => {
             ))}
           </div>
         ) : notes.length === 0 ? (
-          <div className="max-w-2xl bg-white shadow rounded-lg px-5 py-4">
+          <div className="max-w-2xl bg-white border border-gray-300 rounded-lg px-5 py-4">
             <div className="w-full p-12 text-center">
               <IconDocumentDownload
                 className="mx-auto h-12 w-12 text-slate-300"
                 title="notes"
               />
-              <h3 className="mt-2 text-lg font-bold">No notes yet.</h3>
+              <h3 className="mt-2 text-lg font-bold">No notes to show</h3>
               <p className="mt-1 text-slate-600">
                 Get started by creating a note in a company or investor profile.
               </p>
@@ -108,7 +104,7 @@ const Notes: FC<Props> = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-y-4 max-w-2xl">
-            {sortedNotes.map(item => (
+            {notes.map(item => (
               <ElemNoteCard
                 key={item.id}
                 data={item}

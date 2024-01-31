@@ -5,16 +5,12 @@ import { ElemButton } from './elem-button';
 import ElemNoteForm from './elem-note-form';
 import { ElemPhoto } from './elem-photo';
 import { useUser } from '@/context/user-context';
-import {
-  IconPlus,
-  IconLockClosed,
-  IconInformationCircle,
-} from '@/components/icons';
+import { IconPlus } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
-import { ElemTooltip } from '@/components/elem-tooltip';
 import { orderBy } from 'lodash';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
+import { ElemRequiredProfileDialog } from './elem-required-profile-dialog';
 
 type Props = {
   resourceId: number;
@@ -27,17 +23,20 @@ const ElemOrganizationNotes: FC<Props> = ({
   resourceType,
   resourceName,
 }) => {
+  const { user, myGroups } = useUser();
   const router = useRouter();
 
-  const { user, myGroups } = useUser();
-
   const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
+  const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
+    useState<boolean>(false);
 
   const onOpenNoteForm = () => {
-    if (!user) {
-      router.push(ROUTES.SIGN_IN);
-    } else {
+    if (user?.person) {
       setIsOpenNoteForm(true);
+    } else if (user) {
+      setIsOpenLinkPersonDialog(true);
+    } else {
+      router.push(ROUTES.SIGN_IN);
     }
   };
 
@@ -76,8 +75,6 @@ const ElemOrganizationNotes: FC<Props> = ({
   });
 
   const notes = noteList?.notes || [];
-
-  const sortedNotes = orderBy(notes, a => new Date(a.created_at), ['desc']);
 
   return (
     <>
@@ -119,14 +116,14 @@ const ElemOrganizationNotes: FC<Props> = ({
             </div>
           </div>
 
-          {sortedNotes?.length != 0 && (
+          {notes?.length > 0 && (
             <div className="mt-4 grid grid-cols-1 gap-4">
-              {sortedNotes.map(item => (
+              {notes.map(note => (
                 <ElemNoteCard
-                  key={item.id}
-                  data={item}
+                  key={note.id}
+                  data={note}
                   refetch={refetch}
-                  layout={`${item.user_group_id ? 'groupAndAuthor' : 'author'}`}
+                  layout={`${note.user_group_id ? 'groupAndAuthor' : 'author'}`}
                 />
               ))}
             </div>
@@ -137,11 +134,18 @@ const ElemOrganizationNotes: FC<Props> = ({
       <ElemNoteForm
         isOpen={isOpenNoteForm}
         type={'create'}
-        //selectedNote={undefined}
         resourceId={resourceId}
         resourceType={resourceType}
         onClose={onCloseNoteForm}
         onRefetchNotes={refetch}
+      />
+      <ElemRequiredProfileDialog
+        isOpen={isOpenLinkPersonDialog}
+        title="To add a note, please claim a profile."
+        content="Search your name and claim profile."
+        onClose={() => {
+          setIsOpenLinkPersonDialog(false);
+        }}
       />
     </>
   );

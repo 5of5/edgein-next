@@ -94,11 +94,6 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
     setIsOpenLinkPersonDialog(false);
   };
 
-  const onClickSearchName = () => {
-    onCloseLinkPersonDialog();
-    setShowPopup('search');
-  };
-
   const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
     useMutation(
       () =>
@@ -292,10 +287,9 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
       </div>
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
-        title="You have not linked your account to a profile on EdgeIn"
-        content="Search your name and claim profile to be able to mark yourself as going to this event."
+        title="To mark yourself as attendee, please claim a profile."
+        content="Search your name and claim profile."
         onClose={onCloseLinkPersonDialog}
-        onClickSearch={onClickSearchName}
       />
 
       <Toaster />

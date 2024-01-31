@@ -6,7 +6,7 @@ import { NextSeo } from 'next-seo';
 
 type Props = {};
 
-const Privacy: NextPage<Props> = props => {
+const Privacy: NextPage<Props> = () => {
   const theName = 'EdgeIn.io';
 
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -19,8 +19,8 @@ const Privacy: NextPage<Props> = props => {
       />
       <div className="min-h-[80vh]">
         <div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-          <div className="mx-auto prose max-w-3xl">
-            <h1 className="relative mx-auto text-4xl lg:text-5xl font-bold">
+          <div className="max-w-3xl mx-auto prose">
+            <h1 className="relative mx-auto text-4xl font-bold lg:text-5xl">
               Privacy Policy
             </h1>
 
@@ -28,7 +28,7 @@ const Privacy: NextPage<Props> = props => {
               selectedIndex={selectedIndex}
               onChange={setSelectedIndex}
             >
-              <Tab.List className="whitespace-nowrap flex gap-x-4 font-semibold border-b border-black/10 transition-all">
+              <Tab.List className="flex font-semibold transition-all border-b whitespace-nowrap gap-x-4 border-black/10">
                 <Tab
                   className={({ selected }) =>
                     selected

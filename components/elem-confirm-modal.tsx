@@ -1,31 +1,27 @@
-import { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { IconX } from '@/components/icons';
-import { ElemLogo } from '@/components/elem-logo';
+import { FC, Fragment, ReactElement } from 'react';
 import { ElemButton } from '@/components/elem-button';
-import { usePopup } from '@/context/popup-context';
+import { IconX } from '@/components/icons';
 
 type Props = {
   isOpen: boolean;
-  title: string;
-  content?: string;
+  title: string | ReactElement;
+  description?: string;
+  content: string | ReactElement;
+  loading?: boolean;
   onClose: () => void;
+  onDelete: () => void;
 };
 
-export const ElemRequiredProfileDialog: FC<Props> = ({
-  isOpen,
+export const ElemConfirmModal: FC<Props> = ({
+  isOpen = false,
   title,
+  description,
   content,
+  loading = false,
   onClose,
+  onDelete,
 }) => {
-  const { setShowPopup } = usePopup();
-
-  const onSearchName = () => {
-    if (setShowPopup) {
-      setShowPopup('search');
-    }
-  };
-
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -51,9 +47,12 @@ export const ElemRequiredProfileDialog: FC<Props> = ({
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white shadow-xl transition-all overflow-hidden">
-              <div className="px-4 py-3">
-                <div className="flex items-start justify-end">
+            <Dialog.Panel className="w-full max-w-md transform rounded-lg bg-white shadow-xl transition-all overflow-hidden">
+              <div className="px-4 py-3 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <Dialog.Title className="text-xl font-medium">
+                    {title}
+                  </Dialog.Title>
                   <button
                     type="button"
                     onClick={onClose}
@@ -62,30 +61,22 @@ export const ElemRequiredProfileDialog: FC<Props> = ({
                     <IconX className="w-6 h-6" />
                   </button>
                 </div>
+                {description && (
+                  <p className="mt-2 text-gray-500">{description}</p>
+                )}
               </div>
-              <div className="px-4 py-3 lg:px-14">
-                <ElemLogo mode="logo" className="w-28 mx-auto mb-6" />
-                <div className="mt-3 text-center">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-xl font-medium tracking-tight"
-                  >
-                    {title}
-                  </Dialog.Title>
-                  <div className="mt-2 text-sm">{content}</div>
-                </div>
-              </div>
-
-              <div className="px-4 pt-3 pb-6 max-w-xs mx-auto lg:px-14">
+              <div className="px-4 py-3">{content}</div>
+              <div className="flex justify-end gap-x-2 px-4 py-3">
+                <ElemButton onClick={onClose} roundedFull btn="default">
+                  Cancel
+                </ElemButton>
                 <ElemButton
-                  onClick={() => {
-                    onSearchName();
-                    onClose();
-                  }}
-                  btn="primary"
-                  className="w-full"
+                  onClick={onDelete}
+                  roundedFull
+                  btn="danger"
+                  loading={loading}
                 >
-                  Search name
+                  Delete
                 </ElemButton>
               </div>
             </Dialog.Panel>

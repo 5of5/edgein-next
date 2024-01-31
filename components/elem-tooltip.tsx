@@ -39,11 +39,12 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
   let modeClasses = '';
   let modeArrowClasses = '';
   if (mode === 'dark') {
-    modeClasses = 'bg-gray-900 text-gray-100';
-    modeArrowClasses = 'text-gray-900';
+    modeClasses = '!bg-gray-900/90 !text-gray-300';
+    modeArrowClasses = 'before:!text-gray-900/90';
   } else {
-    modeClasses = 'bg-gray-50 border border-gray border-gray-200 text-gray-900';
-    modeArrowClasses = 'text-gray-50 before:border before:border-gray-200';
+    modeClasses = '!bg-gray-50/90 !text-gray-600 !border !border-gray-200';
+    modeArrowClasses =
+      'before:!text-gray-50/90 before:!border before:!border-gray-200';
   }
 
   // Sizes
@@ -63,7 +64,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
       arrow={arrow}
       enterNextDelay={delay}
       classes={{
-        tooltip: `${className} ${sizeClasses} ${modeClasses} !px-2 !py-0.5 !text-sm !font-medium !font-sans`,
+        tooltip: `${className} ${sizeClasses} ${modeClasses} !px-2 !py-1 !text-sm !font-medium !font-sans`,
         arrow: `${classNameArrow} ${modeArrowClasses}`,
         tooltipPlacementBottom: '!mt-1',
         tooltipPlacementTop: '!mb-1',
