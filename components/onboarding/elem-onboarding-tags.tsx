@@ -20,9 +20,12 @@ export const ElemOnboardingTags: FC<Props> = ({
 }) => {
   const { showNewMessages } = useIntercom();
 
-  const [limit, setLimit] = useState(ONBOARDING_DEFAULT_TAGS_LIMIT);
+  const [limit, setLimit] = useState({
+    web3: ONBOARDING_DEFAULT_TAGS_LIMIT,
+    ai: ONBOARDING_DEFAULT_TAGS_LIMIT,
+  });
 
-  const tagChoices = useMemo(() => {
+  const tagChoicesWeb3 = useMemo(() => {
     return [...getSelectableWeb3Tags()];
   }, []);
 
@@ -30,11 +33,27 @@ export const ElemOnboardingTags: FC<Props> = ({
     return [...aiTags];
   }, []);
 
-  const displayedTags = tagChoices.slice(0, limit);
-  const displayedTagsAI = tagChoicesAI.slice(0, limit);
+  const tagClouds = [
+    {
+      library: 'AI',
+      tagChoices: tagChoicesAI,
+      displayedTags: tagChoicesAI.slice(0, limit.ai),
+      tagsLimit: limit.ai,
+    },
+    {
+      library: 'Web3',
+      tagChoices: tagChoicesWeb3,
+      displayedTags: tagChoicesWeb3.slice(0, limit.web3),
+      tagsLimit: limit.web3,
+    },
+  ];
 
-  const handleLoadMore = () => {
-    setLimit(prev => prev + 10);
+  const handleLoadMore = (library: string) => {
+    setLimit(prev => ({
+      ...prev,
+      ai: library === 'AI' ? prev.ai + 10 : prev.ai,
+      web3: library === 'Web3' ? prev.web3 + 10 : prev.web3,
+    }));
   };
 
   const handleToggleTag = (tag: string) => {
@@ -57,12 +76,13 @@ export const ElemOnboardingTags: FC<Props> = ({
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 my-8">
-        <div className="p-4 text-center md:px-6">
-          <div className="text-lg font-bold text-center">AI</div>
-
+      {tagClouds.map(tagCloud => (
+        <div key={tagCloud.library} className="p-4 text-center md:px-6">
+          <div className="text-lg font-bold text-center">
+            {tagCloud.library} Market:
+          </div>
           <ul className="flex flex-wrap items-center justify-center max-w-2xl gap-3 my-4">
-            {displayedTagsAI.map(tagItem => (
+            {tagCloud.displayedTags.map(tagItem => (
               <li
                 key={tagItem.id}
                 className={`flex items-center gap-1 bg-gray-100 px-3 py-2 rounded-full text-xs font-medium cursor-pointer border ${
@@ -81,49 +101,17 @@ export const ElemOnboardingTags: FC<Props> = ({
               </li>
             ))}
           </ul>
-          {limit < tagChoicesAI.length && (
+
+          {tagCloud.tagsLimit < tagCloud.tagChoices.length && (
             <button
               className="text-xs text-gray-500 underline hover:text-gray-800"
-              onClick={handleLoadMore}
+              onClick={() => handleLoadMore(`${tagCloud.library}`)}
             >
-              Load more AI tags
+              Load more {tagCloud.library} tags
             </button>
           )}
         </div>
-
-        <div className="p-4 text-center md:px-6">
-          <div className="text-lg font-bold ">Web3</div>
-
-          <ul className="flex flex-wrap items-center justify-center max-w-2xl gap-3 my-4">
-            {displayedTags.map(tagItem => (
-              <li
-                key={tagItem.id}
-                className={`flex items-center gap-1 bg-gray-100 px-3 py-2 rounded-full text-xs font-medium cursor-pointer border ${
-                  tags.includes(tagItem.id)
-                    ? 'border-primary-500 hover:border-primary-500'
-                    : 'border-transparent hover:border-gray-300'
-                }`}
-                onClick={() => {
-                  handleToggleTag(tagItem.id);
-                }}
-              >
-                {tags.includes(tagItem.id) && (
-                  <IconCheck className="w-4 h-4 text-primary-500" />
-                )}
-                {tagItem.name}
-              </li>
-            ))}
-          </ul>
-          {limit < tagChoices.length && (
-            <button
-              className="text-xs text-gray-500 underline hover:text-gray-800"
-              onClick={handleLoadMore}
-            >
-              Load more Web3 tags
-            </button>
-          )}
-        </div>
-      </div>
+      ))}
 
       <ElemButton
         btn="primary"
