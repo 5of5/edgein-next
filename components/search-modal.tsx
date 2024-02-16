@@ -115,7 +115,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         }}
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
       >
-        <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
               className="object-contain max-w-full max-h-full"
@@ -127,7 +127,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           )}
         </div>
         <div className="flex grow">
-          <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
+          <h2 className="ml-2 font-medium text-gray-500 min-w-fit whitespace nowrap group-hover:text-primary-500">
             <Highlight
               attribute="name"
               hit={hit}
@@ -138,7 +138,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             />
           </h2>
           {hit.coinTicker && (
-            <div className="ml-2 uppercase">
+            <div className="ml-2 uppercase shrink-0">
               <Highlight
                 attribute="coinTicker"
                 hit={hit}
@@ -159,7 +159,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             />
           </p>
         </div>
-        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+        <IconChevronRight className="w-4 h-4 ml-3 shrink-0 group-hover:text-primary-500" />
       </ElemLink>
     );
   };
@@ -181,7 +181,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           }
         }}
       >
-        <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
               className="object-contain max-w-full max-h-full"
@@ -192,7 +192,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             <IconImage className="object-contain max-w-full max-h-full text-gray-200" />
           )}
         </div>
-        <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
+        <h2 className="ml-2 font-medium text-gray-500 min-w-fit grow whitespace nowrap">
           <Highlight
             attribute="name"
             hit={hit}
@@ -202,7 +202,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             }}
           />
         </h2>
-        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+        <IconChevronRight className="w-4 h-4 ml-3 shrink-0 group-hover:text-primary-500" />
       </ElemLink>
     );
   };
@@ -224,18 +224,18 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           }
         }}
       >
-        <div className="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-white overflow-hidden border border-gray-200">
+        <div className="flex items-center justify-center w-12 overflow-hidden bg-white border border-gray-200 rounded-full shrink-0 aspect-square">
           {hit.picture ? (
             <img
-              className="object-fit max-w-full max-h-full"
+              className="max-w-full max-h-full object-fit"
               src={hit.picture}
               alt={hit.name}
             />
           ) : (
-            <IconUserPlaceholder className="object-fit max-w-full max-h-full text-gray-400" />
+            <IconUserPlaceholder className="max-w-full max-h-full text-gray-400 object-fit" />
           )}
         </div>
-        <h2 className="min-w-fit grow font-medium whitespace nowrap ml-2 text-gray-500">
+        <h2 className="ml-2 font-medium text-gray-500 min-w-fit grow whitespace nowrap">
           <Highlight
             attribute="name"
             hit={hit}
@@ -245,7 +245,7 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             }}
           />
         </h2>
-        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+        <IconChevronRight className="w-4 h-4 ml-3 shrink-0 group-hover:text-primary-500" />
       </ElemLink>
     );
   };
@@ -267,7 +267,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         }}
         className="flex items-center px-6 py-1 group hover:bg-gray-100"
       >
-        <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-gray-200">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
           <img
             className="object-contain max-w-full max-h-full"
             src={hit.banner || getEventBanner(hit.location_json?.city)}
@@ -282,7 +282,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
         </div>
 
         <div className="flex grow">
-          <h2 className="min-w-fit font-medium whitespace nowrap ml-2 text-gray-500 group-hover:text-primary-500">
+          <h2 className="ml-2 font-medium text-gray-500 min-w-fit whitespace nowrap group-hover:text-primary-500">
             <Highlight
               attribute="name"
               hit={hit}
@@ -333,7 +333,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           )}
         </div>
 
-        <IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+        <IconChevronRight className="w-4 h-4 ml-3 shrink-0 group-hover:text-primary-500" />
       </ElemLink>
     );
   };
@@ -434,7 +434,7 @@ export default function SearchModal(props: any) {
       );
     } else if (allEmpty) {
       return (
-        <div className="w-full mt-5 px-6 py-1">
+        <div className="w-full px-6 py-1 mt-5">
           <h3 className="font-medium">No results for “{results.query}“</h3>
           <p>
             <ElemLink
@@ -538,7 +538,7 @@ export default function SearchModal(props: any) {
     };
 
     return (
-      <Tab.List className="whitespace-nowrap flex gap-2 my-2 px-6 py-1 font-medium bg-white transition-all overflow-x-scroll">
+      <Tab.List className="flex gap-2 px-6 py-1 my-2 overflow-x-scroll font-medium transition-all bg-white whitespace-nowrap">
         <Tab
           className={({ selected }) =>
             `${
@@ -614,7 +614,7 @@ export default function SearchModal(props: any) {
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-start justify-center p-4 text-center">
+            <div className="flex items-start justify-center min-h-full p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -624,13 +624,13 @@ export default function SearchModal(props: any) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-3xl pb-5 transform rounded-lg shadow-2xl bg-white overflow-y-auto overflow-x-hidden text-left align-middle transition-all">
+                <Dialog.Panel className="w-full max-w-3xl pb-5 overflow-x-hidden overflow-y-auto text-left align-middle transition-all transform bg-white rounded-lg shadow-2xl">
                   <InstantSearch
                     searchClient={searchClient}
                     indexName="companies"
                   >
-                    <header className="relative flex items-center z-10 p-0 px-4 border-b border-gray-100">
-                      <IconSearch className="h-6 w-6 text-gray-500" />
+                    <header className="relative z-10 flex items-center p-0 px-4 border-b border-gray-100">
+                      <IconSearch className="w-6 h-6 text-gray-500" />
                       <SearchBox
                         className="w-full"
                         placeholder="Quick Search..."
