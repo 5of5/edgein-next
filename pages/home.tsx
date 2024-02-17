@@ -30,6 +30,7 @@ import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 //import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemSticky } from '@/components/elem-sticky';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -111,7 +112,7 @@ const Home: NextPage = () => {
               <span className="text-4xl font-medium">{`Hello, ${
                 user?.display_name?.split(' ')[0] || ''
               }`}</span>
-              <span className="text-sm font-normal text-gray-500 mb-3">
+              <span className="mb-3 text-sm font-normal text-gray-500">
                 Your personalized overview of the most relevant data, updated
                 daily.&nbsp;
                 <span className="underline cursor-pointer" onClick={show}>
@@ -124,23 +125,25 @@ const Home: NextPage = () => {
           <ElemDemocratizeBanner className="mx-8 my-3" />
           {/* <ElemInviteBanner className="mx-8 mt-3" /> */}
 
-          <div
-            className="mt-8 px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-            role="tablist"
-          >
-            <ElemCategories
-              categories={categories.map(category => ({
-                title: category,
-                value: category.toLowerCase(),
-              }))}
-              selectedCategory={selectedStatusTag}
-              onChangeCategory={setSelectedStatusTag}
-            />
+          <ElemSticky activeClass="sm:top-14 bg-white/80 shadow-sm backdrop-blur">
+            <div
+              className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
+              role="tablist"
+            >
+              <ElemCategories
+                categories={categories.map(category => ({
+                  title: category,
+                  value: category.toLowerCase(),
+                }))}
+                selectedCategory={selectedStatusTag}
+                onChangeCategory={setSelectedStatusTag}
+              />
 
-            <div className="flex flex-wrap gap-2">
-              {isDisplaySelectLibrary && <ElemLibrarySelector />}
+              <div className="flex flex-wrap gap-2">
+                {isDisplaySelectLibrary && <ElemLibrarySelector />}
+              </div>
             </div>
-          </div>
+          </ElemSticky>
 
           {/* Location and Tags */}
           {selectedStatusTag && selectedStatusTag.title !== GLOBAL_TAG && (
@@ -148,7 +151,7 @@ const Home: NextPage = () => {
               <div className="flex flex-col gap-4 gap-x-8">
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Trending 🔥</h2>
-                  <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                     <CompaniesByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -229,7 +232,7 @@ const Home: NextPage = () => {
                   <>
                     <div className="mt-16">
                       <h2 className="text-2xl font-medium">New companies ✨</h2>
-                      <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                         <CompaniesByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -270,7 +273,7 @@ const Home: NextPage = () => {
                       <h2 className="text-2xl font-medium">
                         Upcoming events 🗓️
                       </h2>
-                      <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                         <EventsByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -307,7 +310,7 @@ const Home: NextPage = () => {
                       <h2 className="text-2xl font-medium">
                         Recently updated 🔄
                       </h2>
-                      <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                         <CompaniesByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -415,7 +418,7 @@ const Home: NextPage = () => {
               <div className="flex flex-col gap-4 gap-x-8">
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Companies 🏢</h2>
-                  <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                     <CompaniesByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -477,7 +480,7 @@ const Home: NextPage = () => {
 
                 <div className="mt-16">
                   <h2 className="text-2xl font-medium">Investors 💵</h2>
-                  <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                     <InvestorsByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}

@@ -56,6 +56,7 @@ import moment from 'moment-timezone';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemSticky } from '@/components/elem-sticky';
 
 type Props = {
   companiesCount: number;
@@ -369,67 +370,69 @@ const Companies: NextPage<Props> = ({
       />
       <DashboardLayout>
         <div className="relative">
-          <div
-            className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-            role="tablist"
-          >
-            <ElemCategories
-              categories={companyStatusTags}
-              selectedCategory={selectedStatusTag}
-              onChangeCategory={setSelectedStatusTag}
-            />
-
-            <div className="flex flex-wrap gap-2">
-              {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
-              <ElemDropdown
-                IconComponent={tableLayout ? IconTable : IconGroup}
-                items={layoutItems}
+          <ElemSticky activeClass="sm:top-14 bg-white/80 shadow-sm backdrop-blur">
+            <div
+              className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
+              role="tablist"
+            >
+              <ElemCategories
+                categories={companyStatusTags}
+                selectedCategory={selectedStatusTag}
+                onChangeCategory={setSelectedStatusTag}
               />
 
-              <ElemAddFilter
-                resourceType="companies"
-                onSelectFilterOption={onSelectFilterOption}
-              />
+              <div className="flex flex-wrap gap-2">
+                {isDisplaySelectLibrary && <ElemLibrarySelector />}
 
-              {isSortDropdownVisible && (
                 <ElemDropdown
-                  IconComponent={IconSortDashboard}
-                  items={sortItems}
-                  defaultItem={sortItems.findIndex(
-                    sortItem => sortItem.value === sortBy,
-                  )}
-                  firstItemDivided
+                  IconComponent={tableLayout ? IconTable : IconGroup}
+                  items={layoutItems}
                 />
-              )}
-            </div>
-          </div>
 
-          {selectedFilters && (
-            <div className="mx-8 my-3">
-              <ElemFilter
-                resourceType="companies"
-                filterValues={selectedFilters}
-                onSelectFilterOption={onSelectFilterOption}
-                onChangeFilterValues={onChangeSelectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: { ...filterParams, open: false },
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => onChangeSelectedFilters(null)}
-              />
+                <ElemAddFilter
+                  resourceType="companies"
+                  onSelectFilterOption={onSelectFilterOption}
+                />
+
+                {isSortDropdownVisible && (
+                  <ElemDropdown
+                    IconComponent={IconSortDashboard}
+                    items={sortItems}
+                    defaultItem={sortItems.findIndex(
+                      sortItem => sortItem.value === sortBy,
+                    )}
+                    firstItemDivided
+                  />
+                )}
+              </div>
             </div>
-          )}
+
+            {selectedFilters && (
+              <div className="px-8 py-3">
+                <ElemFilter
+                  resourceType="companies"
+                  filterValues={selectedFilters}
+                  onSelectFilterOption={onSelectFilterOption}
+                  onChangeFilterValues={onChangeSelectedFilters}
+                  onApply={(name, filterParams) => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: { ...filterParams, open: false },
+                    });
+                  }}
+                  onClearOption={name => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: undefined,
+                    });
+                  }}
+                  onReset={() => onChangeSelectedFilters(null)}
+                />
+              </div>
+            )}
+          </ElemSticky>
 
           <ElemDemocratizeBanner className="mx-8 my-3" />
           {/* <ElemInviteBanner className="mx-8 my-3" /> */}
@@ -466,11 +469,11 @@ const Companies: NextPage<Props> = ({
                 {isLoading && !initialLoad ? (
                   <>
                     {tableLayout ? (
-                      <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                      <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
                         <PlaceholderTable />
                       </div>
                     ) : (
-                      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                         {Array.from({ length: 9 }, (_, i) => (
                           <PlaceholderCompanyCard key={i} />
                         ))}
@@ -494,7 +497,7 @@ const Companies: NextPage<Props> = ({
                   <>
                     <div
                       data-testid="companies"
-                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                      className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                     >
                       {companies?.map(company => {
                         return (
@@ -523,7 +526,7 @@ const Companies: NextPage<Props> = ({
 
           {companies?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
                 <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
                 <h2 className="mt-5 text-3xl font-bold">No results found</h2>
                 <div className="mt-1 text-lg text-slate-600">

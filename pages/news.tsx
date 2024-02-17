@@ -38,6 +38,7 @@ import { NewsByFilter } from '@/components/news/elem-news-by-filter';
 //import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemSticky } from '@/components/elem-sticky';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -171,28 +172,30 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       />
       <DashboardLayout>
         <div className="relative">
-          <div
-            className="px-8 pt-0.5 py-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-            role="tablist"
-          >
-            <ElemCategories
-              categories={newsTab}
-              selectedCategory={selectedTab}
-              onChangeCategory={setSelectedTab}
-            />
+          <ElemSticky activeClass="sm:top-14 bg-white/80 shadow-sm backdrop-blur">
+            <div
+              className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
+              role="tablist"
+            >
+              <ElemCategories
+                categories={newsTab}
+                selectedCategory={selectedTab}
+                onChangeCategory={setSelectedTab}
+              />
 
-            <div className="flex flex-wrap gap-2">
-              {isDisplaySelectLibrary && <ElemLibrarySelector />}
-              {/* removed in qol-ui-fixes */}
-              {/* {!selectedTab?.value && (
+              <div className="flex flex-wrap gap-2">
+                {isDisplaySelectLibrary && <ElemLibrarySelector />}
+                {/* removed in qol-ui-fixes */}
+                {/* {!selectedTab?.value && (
               <ElemDropdown
                 IconComponent={IconSortDashboard}
                 defaultItem={defaultOrderBy}
                 items={sortChoices}
               />
             )} */}
+              </div>
             </div>
-          </div>
+          </ElemSticky>
 
           <ElemDemocratizeBanner className="mx-8 my-3" />
           {/* <ElemInviteBanner className="mx-8 my-3" /> */}
@@ -245,7 +248,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                   <div className="text-4xl font-medium">{pageTitle}</div>
                 </div>
 
-                <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {error ? (
                     <h4>Error loading news</h4>
                   ) : isLoading && !initialLoad ? (
@@ -276,7 +279,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
           {news?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
                 <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
                 <h2 className="mt-5 text-3xl font-bold">No results found</h2>
                 <div className="mt-1 text-lg text-slate-600">
