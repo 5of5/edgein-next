@@ -125,7 +125,7 @@ const Home: NextPage = () => {
           <ElemDemocratizeBanner className="mx-8 my-3" />
           {/* <ElemInviteBanner className="mx-8 mt-3" /> */}
 
-          <ElemSticky activeClass="sm:top-14 bg-white/80 shadow-sm backdrop-blur">
+          <ElemSticky activeClass="sm:top-14 bg-white shadow-sm">
             <div
               className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
               role="tablist"

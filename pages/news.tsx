@@ -172,7 +172,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       />
       <DashboardLayout>
         <div className="relative">
-          <ElemSticky activeClass="sm:top-14 bg-white/80 shadow-sm backdrop-blur">
+          <ElemSticky activeClass="sm:top-14 bg-white shadow-sm">
             <div
               className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
               role="tablist"

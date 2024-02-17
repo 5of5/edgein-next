@@ -376,182 +376,179 @@ const Investors: NextPage<Props> = ({
       />
       <DashboardLayout>
         <div className="relative">
-          <div>
-            <ElemSticky activeClass="sm:top-14 bg-white/80 shadow-sm backdrop-blur">
-              <div
-                className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
-                role="tablist"
-              >
-                <ElemCategories
-                  categories={investorsStatusTags}
-                  selectedCategory={selectedStatusTag}
-                  onChangeCategory={setSelectedStatusTag}
+          <ElemSticky activeClass="sm:top-14 bg-white shadow-sm">
+            <div
+              className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
+              role="tablist"
+            >
+              <ElemCategories
+                categories={investorsStatusTags}
+                selectedCategory={selectedStatusTag}
+                onChangeCategory={setSelectedStatusTag}
+              />
+
+              <div className="flex flex-wrap gap-2">
+                {isDisplaySelectLibrary && <ElemLibrarySelector />}
+                <ElemDropdown
+                  IconComponent={tableLayout ? IconTable : IconGroup}
+                  items={layoutItems}
                 />
 
-                <div className="flex flex-wrap gap-2">
-                  {isDisplaySelectLibrary && <ElemLibrarySelector />}
+                <ElemAddFilter
+                  resourceType="vc_firms"
+                  onSelectFilterOption={onSelectFilterOption}
+                />
+
+                {isSortDropdownVisible && (
                   <ElemDropdown
-                    IconComponent={tableLayout ? IconTable : IconGroup}
-                    items={layoutItems}
+                    IconComponent={IconSortDashboard}
+                    items={sortItems}
+                    defaultItem={sortItems.findIndex(
+                      sortItem => sortItem.value === sortBy,
+                    )}
+                    firstItemDivided
                   />
-
-                  <ElemAddFilter
-                    resourceType="vc_firms"
-                    onSelectFilterOption={onSelectFilterOption}
-                  />
-
-                  {isSortDropdownVisible && (
-                    <ElemDropdown
-                      IconComponent={IconSortDashboard}
-                      items={sortItems}
-                      defaultItem={sortItems.findIndex(
-                        sortItem => sortItem.value === sortBy,
-                      )}
-                      firstItemDivided
-                    />
-                  )}
-                </div>
+                )}
               </div>
-
-              {selectedFilters && (
-                <div className="mx-8 my-3">
-                  <ElemFilter
-                    resourceType="vc_firms"
-                    filterValues={selectedFilters}
-                    onSelectFilterOption={onSelectFilterOption}
-                    onChangeFilterValues={onChangeSelectedFilters}
-                    onApply={(name, filterParams) => {
-                      filters._and = defaultFilters;
-                      onChangeSelectedFilters({
-                        ...selectedFilters,
-                        [name]: { ...filterParams, open: false },
-                      });
-                    }}
-                    onClearOption={name => {
-                      filters._and = defaultFilters;
-                      onChangeSelectedFilters({
-                        ...selectedFilters,
-                        [name]: undefined,
-                      });
-                    }}
-                    onReset={() => onChangeSelectedFilters(null)}
-                  />
-                </div>
-              )}
-            </ElemSticky>
-
-            <ElemDemocratizeBanner className="mx-8 my-3" />
-            {/* <ElemInviteBanner className="mx-8 my-3" /> */}
-
-            <div className="mx-8">
-              {error ? (
-                <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                  <div className="max-w-xl mx-auto">
-                    <h4 className="mt-5 text-3xl font-bold">
-                      Error loading investors
-                    </h4>
-                    <div className="mt-1 text-lg text-slate-600">
-                      Please check spelling, reset filters, or{' '}
-                      <button
-                        onClick={() =>
-                          showNewMessages(
-                            `Hi EdgeIn, I'd like to report an error on investors page`,
-                          )
-                        }
-                        className="inline underline decoration-primary-500 hover:text-primary-500"
-                      >
-                        <span>report error</span>
-                      </button>
-                      .
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="flex justify-between py-8">
-                    <div className="text-4xl font-medium">{pageTitle}</div>
-                  </div>
-
-                  {isLoading && !initialLoad ? (
-                    <>
-                      {tableLayout ? (
-                        <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
-                          <PlaceholderTable />
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                          {Array.from({ length: 9 }, (_, i) => (
-                            <PlaceholderInvestorCard key={i} />
-                          ))}
-                        </div>
-                      )}
-                    </>
-                  ) : tableLayout && vcFirms?.length != 0 ? (
-                    <InvestorsTable
-                      investors={vcFirms}
-                      pageNumber={page}
-                      itemsPerPage={limit}
-                      shownItems={vcFirms?.length}
-                      totalItems={vcfirms_aggregate}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      filterByTag={filterByTag}
-                    />
-                  ) : (
-                    <>
-                      <div
-                        data-testid="investors"
-                        className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                      >
-                        {vcFirms?.map(vcfirm => (
-                          <ElemInvestorCard
-                            key={vcfirm.id}
-                            vcFirm={vcfirm as Vc_Firms}
-                          />
-                        ))}
-                      </div>
-
-                      <Pagination
-                        shownItems={vcFirms?.length}
-                        totalItems={vcfirms_aggregate}
-                        page={page}
-                        itemsPerPage={limit}
-                        onClickPrev={() => setPage(page - 1)}
-                        onClickNext={() => setPage(page + 1)}
-                        onClickToPage={selectedPage => setPage(selectedPage)}
-                      />
-                    </>
-                  )}
-                </>
-              )}
             </div>
 
-            {vcFirms?.length === 0 && (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-                <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                  <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                  <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+            {selectedFilters && (
+              <div className="mx-8 my-3">
+                <ElemFilter
+                  resourceType="vc_firms"
+                  filterValues={selectedFilters}
+                  onSelectFilterOption={onSelectFilterOption}
+                  onChangeFilterValues={onChangeSelectedFilters}
+                  onApply={(name, filterParams) => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: { ...filterParams, open: false },
+                    });
+                  }}
+                  onClearOption={name => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: undefined,
+                    });
+                  }}
+                  onReset={() => onChangeSelectedFilters(null)}
+                />
+              </div>
+            )}
+          </ElemSticky>
+
+          <ElemDemocratizeBanner className="mx-8 my-3" />
+          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
+
+          <div className="mx-8">
+            {error ? (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+                <div className="max-w-xl mx-auto">
+                  <h4 className="mt-5 text-3xl font-bold">
+                    Error loading investors
+                  </h4>
                   <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, try different filters, or tell us
-                    about missing data.
+                    Please check spelling, reset filters, or{' '}
+                    <button
+                      onClick={() =>
+                        showNewMessages(
+                          `Hi EdgeIn, I'd like to report an error on investors page`,
+                        )
+                      }
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
+                      <span>report error</span>
+                    </button>
+                    .
                   </div>
-                  <ElemButton
-                    onClick={() =>
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                      )
-                    }
-                    btn="white"
-                    className="mt-3"
-                  >
-                    <IconAnnotation className="w-6 h-6 mr-1" />
-                    Tell us about missing data
-                  </ElemButton>
                 </div>
               </div>
+            ) : (
+              <>
+                <div className="flex justify-between py-8">
+                  <div className="text-4xl font-medium">{pageTitle}</div>
+                </div>
+
+                {isLoading && !initialLoad ? (
+                  <>
+                    {tableLayout ? (
+                      <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                        <PlaceholderTable />
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                        {Array.from({ length: 9 }, (_, i) => (
+                          <PlaceholderInvestorCard key={i} />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : tableLayout && vcFirms?.length != 0 ? (
+                  <InvestorsTable
+                    investors={vcFirms}
+                    pageNumber={page}
+                    itemsPerPage={limit}
+                    shownItems={vcFirms?.length}
+                    totalItems={vcfirms_aggregate}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    filterByTag={filterByTag}
+                  />
+                ) : (
+                  <>
+                    <div
+                      data-testid="investors"
+                      className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    >
+                      {vcFirms?.map(vcfirm => (
+                        <ElemInvestorCard
+                          key={vcfirm.id}
+                          vcFirm={vcfirm as Vc_Firms}
+                        />
+                      ))}
+                    </div>
+
+                    <Pagination
+                      shownItems={vcFirms?.length}
+                      totalItems={vcfirms_aggregate}
+                      page={page}
+                      itemsPerPage={limit}
+                      onClickPrev={() => setPage(page - 1)}
+                      onClickNext={() => setPage(page + 1)}
+                      onClickToPage={selectedPage => setPage(selectedPage)}
+                    />
+                  </>
+                )}
+              </>
             )}
           </div>
 
+          {vcFirms?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() =>
+                    showNewMessages(
+                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+                    )
+                  }
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
           <Toaster />
         </div>
       </DashboardLayout>

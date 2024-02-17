@@ -38,6 +38,7 @@ import { processPeopleFilter } from '@/components/filters/processor';
 //import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemSticky } from '@/components/elem-sticky';
 
 type Props = {
   peopleTabs: DashboardCategory[];
@@ -159,54 +160,57 @@ const People: NextPage<Props> = ({
       />
       <DashboardLayout>
         <div className="relative">
-          <div
-            className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-end lg:items-center"
-            role="tablist"
-          >
-            {/** TO-DO: Temporary hide new category for now */}
-            {/* <ElemCategories
+          <ElemSticky activeClass="sm:top-14 bg-white shadow-sm">
+            <div
+              className="flex flex-wrap items-center justify-end gap-3 px-8 py-2 lg:items-center"
+              //className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-end lg:items-center"
+              role="tablist"
+            >
+              {/** TO-DO: Temporary hide new category for now */}
+              {/* <ElemCategories
             categories={peopleTabs}
             selectedCategory={selectedTab}
             onChangeCategory={tab => setSelectedTab(tab)}
           /> */}
 
-            <div className="flex flex-wrap gap-2">
               <div className="flex flex-wrap gap-2">
-                {isDisplaySelectLibrary && <ElemLibrarySelector />}
+                <div className="flex flex-wrap gap-2">
+                  {isDisplaySelectLibrary && <ElemLibrarySelector />}
+                </div>
+
+                <ElemAddFilter
+                  resourceType="people"
+                  onSelectFilterOption={onSelectFilterOption}
+                />
               </div>
-
-              <ElemAddFilter
-                resourceType="people"
-                onSelectFilterOption={onSelectFilterOption}
-              />
             </div>
-          </div>
 
-          {selectedFilters && (
-            <div className="mx-8 my-3">
-              <ElemFilter
-                resourceType="people"
-                filterValues={selectedFilters}
-                onSelectFilterOption={onSelectFilterOption}
-                onChangeFilterValues={onChangeSelectedFilters}
-                onApply={(name, filterParams) => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: { ...filterParams, open: false },
-                  });
-                }}
-                onClearOption={name => {
-                  filters._and = defaultFilters;
-                  onChangeSelectedFilters({
-                    ...selectedFilters,
-                    [name]: undefined,
-                  });
-                }}
-                onReset={() => onChangeSelectedFilters(null)}
-              />
-            </div>
-          )}
+            {selectedFilters && (
+              <div className="mx-8 my-3">
+                <ElemFilter
+                  resourceType="people"
+                  filterValues={selectedFilters}
+                  onSelectFilterOption={onSelectFilterOption}
+                  onChangeFilterValues={onChangeSelectedFilters}
+                  onApply={(name, filterParams) => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: { ...filterParams, open: false },
+                    });
+                  }}
+                  onClearOption={name => {
+                    filters._and = defaultFilters;
+                    onChangeSelectedFilters({
+                      ...selectedFilters,
+                      [name]: undefined,
+                    });
+                  }}
+                  onReset={() => onChangeSelectedFilters(null)}
+                />
+              </div>
+            )}
+          </ElemSticky>
 
           <ElemDemocratizeBanner className="mx-8 my-3" />
           {/* <ElemInviteBanner className="mx-8 my-3" /> */}
@@ -246,7 +250,7 @@ const People: NextPage<Props> = ({
                     /> */}
                 </div>
                 {isLoading && !initialLoad ? (
-                  <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-8 gap-x-16 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {Array.from({ length: 9 }, (_, i) => (
                       <PlaceholderPersonCard key={i} />
                     ))}
@@ -255,7 +259,7 @@ const People: NextPage<Props> = ({
                   <>
                     <div
                       data-testid="people"
-                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                      className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                     >
                       {people?.map(person => {
                         return (
@@ -284,7 +288,7 @@ const People: NextPage<Props> = ({
 
           {people?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+              <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
                 <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
                 <h2 className="mt-5 text-3xl font-bold">No results found</h2>
                 <div className="mt-1 text-lg text-slate-600">
