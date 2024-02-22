@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { DashboardSidebar } from './dashboard-sidebar';
 import { DashboardFooter } from './dashboard-footer';
+import { ElemBackToTop } from '../elem-back-to-top';
 
 type Props = {
   children: ReactNode;
@@ -19,6 +20,7 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
           <DashboardFooter />
         </div>
       </div>
+      <ElemBackToTop />
     </>
   );
 };

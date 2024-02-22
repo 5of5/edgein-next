@@ -11,8 +11,8 @@ export const DashboardFooter: FC<PropsWithChildren<Props>> = ({
 }) => {
   return (
     <footer className={`px-4 sm:px-6 md:px-8 ${className}`}>
-      <div className="justify-between mt-12 border-t border-dark-100 pt-6 sm:flex">
-        <div className="text-sm text-gray-500 mb-6 sm:mb-0 sm:flex sm:items-start">
+      <div className="justify-between py-6 my-12 border-t border-dark-100 sm:flex">
+        <div className="mb-6 text-sm text-gray-500 sm:mb-0 sm:flex sm:items-start">
           <div className="mb-2 sm:mb-0">
             <p>
               Copyright &copy; {new Date().getFullYear()} EdgeIn Inc. All Rights
@@ -45,7 +45,7 @@ export const DashboardFooter: FC<PropsWithChildren<Props>> = ({
                 className="hover:text-gray-500"
               >
                 <span className="sr-only">{item.name}</span>
-                <item.icon className="h-6 w-6" aria-hidden="true" />
+                <item.icon className="w-6 h-6" aria-hidden="true" />
               </ElemLink>
             ))}
           </ul>

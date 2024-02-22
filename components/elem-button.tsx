@@ -71,7 +71,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     btnClass =
       'text-dark-500 bg-slate-200 hover:text-primary-500 hover:bg-slate-300';
   } else if (btn === 'dark') {
-    btnClass = 'text-white bg-dark-700 hover:opacity-60';
+    btnClass = 'text-white bg-gray-900 hover:bg-gray-700';
   } else if (btn === 'danger') {
     btnClass = 'text-white bg-rose-600 hover:bg-rose-500';
   } else if (btn === 'gray') {
@@ -116,7 +116,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
       onClick={onClick}
       type="submit"
     >
-      {loading && <IconSpinner className="animate-spin -ml-1 mr-3 h-5 w-5" />}
+      {loading && <IconSpinner className="w-5 h-5 mr-3 -ml-1 animate-spin" />}
       {arrowLeft && <IconArrowLeft className={`h-3 w-4 ${arrowClass}`} />}
       {children}
       {arrow && <IconArrow className={`h-3 w-4 ml-1 ${arrowClass}`} />}
