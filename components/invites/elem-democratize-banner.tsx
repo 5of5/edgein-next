@@ -1,8 +1,6 @@
 import { FC, useState, useEffect, MouseEvent } from 'react';
 import { SHOW_DEMOCRATIZE_BANNER } from '@/utils/constants';
 import { IconX, IconArrowRight } from '../icons';
-import { useUser } from '@/context/user-context';
-import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
@@ -11,10 +9,6 @@ type Props = {
 };
 
 export const ElemDemocratizeBanner: FC<Props> = ({ className = '' }) => {
-  const { user } = useUser();
-
-  const router = useRouter();
-
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
@@ -39,9 +33,9 @@ export const ElemDemocratizeBanner: FC<Props> = ({ className = '' }) => {
   }
 
   return (
-    <ElemLink href={ROUTES.DEMOCRATIZE24}>
+    <ElemLink href={ROUTES.DEMOCRATIZE24} className={`block ${className} `}>
       <div
-        className={`cursor-pointer flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}
+        className={`cursor-pointer flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1`}
       >
         <div className="text-white">
           <strong className="font-bold">
@@ -50,18 +44,18 @@ export const ElemDemocratizeBanner: FC<Props> = ({ className = '' }) => {
           - The ultimate 2-day deal making summit giving you an Edge in AI and
           Web3.{' '}
           <IconArrowRight
-            className="inline-block h-5 w-5"
+            className="inline-block w-5 h-5"
             title="Register Now"
           />
         </div>
-        <div className="flex flex-1 justify-end">
+        <div className="flex justify-end flex-1">
           <button
             type="button"
             onClick={handleCloseBanner}
             className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
           >
             <span className="sr-only">Dismiss</span>
-            <IconX className="h-5 w-5 text-white" aria-hidden="true" />
+            <IconX className="w-5 h-5 text-white" aria-hidden="true" />
           </button>
         </div>
       </div>
