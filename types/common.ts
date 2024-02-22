@@ -42,9 +42,10 @@ export type Tag = {
 };
 
 export type ExploreMenuItem = {
-  href: string;
   icon: FC<IconProps>;
   title: string;
+  href: string;
+  onClick?: () => void;
 };
 
 export type Order_By_Option = 'ascending' | 'descending' | 'newest' | 'oldest';

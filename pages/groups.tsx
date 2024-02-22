@@ -134,7 +134,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
         description="EdgeIn groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections."
       />
       <DashboardLayout>
-        <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
+        <div className="items-center justify-between px-8 pt-4 pb-6 lg:flex">
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
             {GROUPS_TABS &&
               GROUPS_TABS.map((tab: any, index: number) =>
@@ -161,7 +161,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
 
         {groups?.length === 0 ? (
           <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+            <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
               <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
               <h1 className="mt-5 text-3xl font-bold">
                 {selectedGroupTab.id === 'my-groups'
@@ -212,7 +212,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
         )}
 
         <div className="px-8 py-3">
-          <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">

@@ -12,14 +12,16 @@ import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { useSidebar } from '@/context/sidebar-context';
 
 type Props = {
   className?: string;
 };
 
 const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
-  const router = useRouter();
+  const { showSidebar, setShowSidebar } = useSidebar();
   const { listAndFollows: lists, user } = useUser();
+  const router = useRouter();
 
   const getActiveClass = (id: number, name: string) => {
     return `${ROUTES.LISTS}/${id}/${name}/` === router.asPath
@@ -30,16 +32,15 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const getCustomLists = lists?.filter(
     list => !['hot', 'crap', 'like'].includes(getNameFromListName(list)),
   );
-  //.sort((a, b) => (a.name < b.name ? -1 : 1));
 
-  const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
+  const [openCreateList, setOpenCreateList] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const onOpenCreateListDialog = () => {
-    setIsOpenCreateGroupDialog(true);
+    setOpenCreateList(true);
   };
   const onCloseCreateListDialog = () => {
-    setIsOpenCreateGroupDialog(false);
+    setOpenCreateList(false);
   };
 
   const onOpenUpgradeDialog = () => {
@@ -49,15 +50,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
-  const onRedirectToSignIn = () => {
-    router.push(ROUTES.SIGN_IN);
-  };
-
   const onClickCreate = () => {
-    if (!user) {
-      return onRedirectToSignIn();
-    }
-
     if (
       user?.entitlements?.listsCount &&
       getCustomLists.length > user.entitlements.listsCount
@@ -69,45 +62,47 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   return (
-    <div className={className}>
-      <div className="w-full flex items-center justify-between">
-        {user ? (
-          <ElemSidebarItem
-            url={ROUTES.LISTS}
-            text="Lists"
-            IconComponent={IconSidebarList}
-          />
-        ) : (
-          <ElemWithSignInModal
-            wrapperClass="w-full"
-            text="Sign in to use lists for tracking and updates on interesting companies, investors, and people."
-            buttonComponent={open => (
-              <button
-                className={`${
-                  open ? 'bg-gray-100' : ''
-                } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-              >
-                <IconSidebarList
-                  className={`w-5 h-5 ${
-                    open ? 'text-primary-500' : 'text-gray-900'
-                  }`}
-                />
-                <p className="font-medium text-sm text-gray-900">Lists</p>
-              </button>
-            )}
-          />
-        )}
-      </div>
+    <li className={className}>
+      {user ? (
+        <ElemSidebarItem
+          IconComponent={IconSidebarList}
+          text="Lists"
+          url={ROUTES.LISTS}
+          onClick={() => setShowSidebar(false)}
+        />
+      ) : (
+        <ElemWithSignInModal
+          wrapperClass="w-full"
+          text="Sign in to use lists for tracking and updates on interesting companies, investors, and people."
+          buttonComponent={open => (
+            <button
+              className={`${
+                open ? 'bg-gray-100' : ''
+              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+            >
+              <IconSidebarList
+                className={`w-5 h-5 ${
+                  open ? 'text-primary-500' : 'text-gray-900'
+                }`}
+              />
+              <p className="text-sm font-medium text-gray-900">Lists</p>
+            </button>
+          )}
+        />
+      )}
 
       {user && (
         <ul className="mt-1 space-y-1">
           {lists.slice(0, SIDEBAR_DEFAULT_LISTS_LIMIT).map(listItem => {
             const listItemId = listItem.id;
-
             const listItemName = getNameFromListName(listItem);
 
             return (
-              <li key={listItemId} role="button">
+              <li
+                key={listItem.id}
+                role="button"
+                onClick={() => setShowSidebar(false)}
+              >
                 <ElemLink
                   href={`${ROUTES.LISTS}/${listItemId}/${
                     listItemName === 'crap' ? 'sh**' : kebabCase(listItemName)
@@ -117,7 +112,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     listItemName === 'crap' ? 'sh**' : kebabCase(listItemName),
                   )} `}
                 >
-                  <span className="line-clamp-1 break-all flex-1">
+                  <span className="flex-1 break-all line-clamp-1">
                     {getListDisplayName(listItem)}
                   </span>
                 </ElemLink>
@@ -128,7 +123,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
           <li
             role="button"
             onClick={onClickCreate}
-            className="flex items-center space-x-2 py-2 pl-4 mt-1 font-normal text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
+            className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900"
           >
             Add a new list
           </li>
@@ -136,7 +131,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       )}
 
       <CreateListDialog
-        isOpen={isOpenCreateListDialog}
+        isOpen={openCreateList}
         onClose={onCloseCreateListDialog}
       />
 
@@ -144,7 +139,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
         isOpen={isOpenUpgradeDialog}
         onClose={onCloseUpgradeDialog}
       />
-    </div>
+    </li>
   );
 };
 

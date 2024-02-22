@@ -134,7 +134,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
         description="Level up your research, due diligence, or portfolio management. Start with lists to monitor organizations and people of your interests."
       />
       <DashboardLayout>
-        <div className="px-8 pt-0.5 pb-6 lg:flex items-center justify-between">
+        <div className="items-center justify-between px-8 pt-4 pb-6 lg:flex">
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
             {LISTS_TABS &&
               LISTS_TABS.map((tab: any, index: number) =>
@@ -172,7 +172,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
         )}
 
         <div className="px-8 py-3">
-          <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">

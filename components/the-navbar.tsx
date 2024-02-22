@@ -17,12 +17,13 @@ import { useUser } from '@/context/user-context';
 import { ElemSearchBox } from './elem-search-box';
 import { find } from 'lodash';
 import { getNameFromListName } from '@/utils/reaction';
-import { Popover, Transition } from '@headlessui/react';
+import { Popover, Dialog, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
+import { DashboardSidebar } from './dashboard/dashboard-sidebar';
 
 export type Popups = 'search' | 'usage' | false;
 
@@ -51,10 +52,6 @@ export const TheNavbar: FC<Props> = ({}) => {
     event.preventDefault();
     setShowPopup('search');
   });
-
-  // if (user) {
-  // 	siteNav.push({ path: myListsUrl, name: "My Lists" });
-  // }
 
   const getAccessTokenFromCode = async (code: string) => {
     try {
@@ -131,19 +128,19 @@ export const TheNavbar: FC<Props> = ({}) => {
   ];
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-40">
-      <div className="px-1 py-1 sm:px-3 sm:py-2 border-b border-gray-200 bg-white/80 backdrop-blur">
+    <>
+      <header className="sticky top-0 left-0 right-0 z-40">
         <nav
-          className="flex items-center justify-between lg:justify-start w-full mx-auto"
+          className="flex items-center justify-between w-full px-1 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14 sm:px-3 lg:justify-start"
           aria-label="Global"
         >
           <div className="flex items-center gap-3">
             <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
               btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+              className="h-9 w-9 !px-0 !py-0 lg:hidden"
             >
-              <IconBars3 className="h-6 w-6" />
+              <IconBars3 className="w-6 h-6" />
             </ElemButton>
 
             <ElemLink
@@ -152,7 +149,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             >
               <ElemLogo
                 mode="logo"
-                className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
+                className="w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70"
               />
             </ElemLink>
           </div>
@@ -163,18 +160,18 @@ export const TheNavbar: FC<Props> = ({}) => {
             }}
           />
 
-          <div className="flex items-center group space-x-2 lg:space-x-3">
+          <div className="flex items-center space-x-2 group lg:space-x-3">
             <ElemButton
               onClick={() => setShowPopup('search')}
               btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+              className="h-9 w-9 !px-0 !py-0 lg:hidden"
             >
-              <IconSearch className="h-5 w-5" />
+              <IconSearch className="w-5 h-5" />
             </ElemButton>
 
             <Popover className="relative">
               <Popover.Button className="flex items-center focus:outline-none">
-                <IconEllipsisVertical className="h-6 w-6 text-gray-600" />
+                <IconEllipsisVertical className="w-6 h-6 text-gray-600" />
               </Popover.Button>
 
               <Transition
@@ -186,14 +183,14 @@ export const TheNavbar: FC<Props> = ({}) => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+                <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-white border border-gray-300 rounded-lg shadow-lg">
                   {({ close }) => (
                     <>
                       {ellipsisDropdownItems.map((item, index) => (
                         <ElemLink
                           href={item.href ? item.href : ''}
                           key={index}
-                          className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                          className="flex items-center w-full px-4 py-2 m-0 text-sm text-left transition-all cursor-pointer gap-x-2 hover:bg-gray-100"
                           onClick={() => {
                             close();
                           }}
@@ -223,7 +220,7 @@ export const TheNavbar: FC<Props> = ({}) => {
                     </div>
                   )}
 
-                  <IconBell className="h-6 w-6 text-gray-600" strokeWidth={2} />
+                  <IconBell className="w-6 h-6 text-gray-600" strokeWidth={2} />
                 </ElemLink>
                 <UserMenu />
               </>
@@ -246,9 +243,46 @@ export const TheNavbar: FC<Props> = ({}) => {
 
           <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
         </nav>
-      </div>
 
-      <TheMobileNav className="flex items-center" setShowPopup={setShowPopup} />
-    </header>
+        <TheMobileNav setShowPopup={setShowPopup} />
+      </header>
+      <Transition.Root show={showSidebar} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-40"
+          onClose={() => setShowSidebar(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
+          </Transition.Child>
+          <div className="fixed inset-0 z-40 flex">
+            <Transition.Child
+              as={Fragment}
+              enter="duration-500 ease-in-out"
+              enterFrom="-translate-x-full"
+              enterTo="translate-x-0"
+              leave="duration-500 ease-in-out"
+              leaveFrom="translate-x-0"
+              leaveTo="-translate-x-full"
+            >
+              <Dialog.Panel className="relative flex flex-col flex-1 w-full max-w-xs overflow-y-auto bg-white scrollbar-hide">
+                <DashboardSidebar />
+              </Dialog.Panel>
+            </Transition.Child>
+            <div className="flex-shrink-0 w-14">
+              {/* Dummy element to force sidebar to shrink to fit close icon */}
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+    </>
   );
 };
