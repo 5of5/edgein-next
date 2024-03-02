@@ -1,11 +1,13 @@
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
 type Props = {
+  className?: string;
   activeClass?: string;
   fromTop?: number;
 };
 
 export const ElemSticky: React.FC<PropsWithChildren<Props>> = ({
+  className = '',
   activeClass = '',
   fromTop,
   children,
@@ -41,7 +43,9 @@ export const ElemSticky: React.FC<PropsWithChildren<Props>> = ({
     <>
       <div
         ref={elementRef}
-        className={`sticky z-30 transition-all ${active && activeClass}`}
+        className={`sticky z-30 transition-all ${className} ${
+          active && activeClass
+        }`}
         style={active && fromTop ? { top: `${fromTop}px` } : {}}
       >
         {children}

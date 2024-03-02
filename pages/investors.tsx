@@ -57,6 +57,7 @@ import moment from 'moment-timezone';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemSticky } from '@/components/elem-sticky';
+import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -376,71 +377,85 @@ const Investors: NextPage<Props> = ({
       />
       <DashboardLayout>
         <div className="relative">
-          <ElemSticky activeClass="sm:top-14 bg-white shadow-sm">
-            <div
-              className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
-              role="tablist"
-            >
-              <ElemCategories
-                categories={investorsStatusTags}
-                selectedCategory={selectedStatusTag}
-                onChangeCategory={setSelectedStatusTag}
-              />
+          <ElemFiltersWrap resultsTotal={vcfirms_aggregate}>
+            <ElemCategories
+              categories={investorsStatusTags}
+              selectedCategory={selectedStatusTag}
+              onChangeCategory={setSelectedStatusTag}
+            />
 
-              <div className="flex flex-wrap gap-2">
-                {isDisplaySelectLibrary && <ElemLibrarySelector />}
-                <ElemDropdown
-                  IconComponent={tableLayout ? IconTable : IconGroup}
-                  items={layoutItems}
-                />
-
-                <ElemAddFilter
-                  resourceType="vc_firms"
-                  onSelectFilterOption={onSelectFilterOption}
-                />
-
-                {isSortDropdownVisible && (
-                  <ElemDropdown
-                    IconComponent={IconSortDashboard}
-                    items={sortItems}
-                    defaultItem={sortItems.findIndex(
-                      sortItem => sortItem.value === sortBy,
-                    )}
-                    firstItemDivided
-                  />
-                )}
+            <div className="hidden lg:block lg:ml-auto"></div>
+            {isDisplaySelectLibrary && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Library</h3>
+                <ElemLibrarySelector />
               </div>
+            )}
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">View</h3>
+              <ElemDropdown
+                buttonClass="w-full"
+                panelClass="w-full"
+                ButtonIcon={tableLayout ? IconTable : IconGroup}
+                items={layoutItems}
+              />
+            </div>
+
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">
+                Industry, Location, and Financials
+              </h3>
+              <ElemAddFilter
+                buttonClass="w-full"
+                panelClass="w-full"
+                resourceType="vc_firms"
+                onSelectFilterOption={onSelectFilterOption}
+              />
             </div>
 
             {selectedFilters && (
-              <div className="mx-8 my-3">
-                <ElemFilter
-                  resourceType="vc_firms"
-                  filterValues={selectedFilters}
-                  onSelectFilterOption={onSelectFilterOption}
-                  onChangeFilterValues={onChangeSelectedFilters}
-                  onApply={(name, filterParams) => {
-                    filters._and = defaultFilters;
-                    onChangeSelectedFilters({
-                      ...selectedFilters,
-                      [name]: { ...filterParams, open: false },
-                    });
-                  }}
-                  onClearOption={name => {
-                    filters._and = defaultFilters;
-                    onChangeSelectedFilters({
-                      ...selectedFilters,
-                      [name]: undefined,
-                    });
-                  }}
-                  onReset={() => onChangeSelectedFilters(null)}
+              <ElemFilter
+                className="basis-full lg:order-last"
+                resourceType="vc_firms"
+                filterValues={selectedFilters}
+                onSelectFilterOption={onSelectFilterOption}
+                onChangeFilterValues={onChangeSelectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: { ...filterParams, open: false },
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: undefined,
+                  });
+                }}
+                onReset={() => onChangeSelectedFilters(null)}
+              />
+            )}
+
+            {isSortDropdownVisible && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Sort</h3>
+                <ElemDropdown
+                  buttonClass="w-full"
+                  panelClass="w-full"
+                  ButtonIcon={IconSortDashboard}
+                  items={sortItems}
+                  defaultItem={sortItems.findIndex(
+                    sortItem => sortItem.value === sortBy,
+                  )}
+                  firstItemDivided
                 />
               </div>
             )}
-          </ElemSticky>
+          </ElemFiltersWrap>
 
           <ElemDemocratizeBanner className="mx-8 my-3" />
-          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
           <div className="mx-8">
             {error ? (

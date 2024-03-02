@@ -53,10 +53,9 @@ import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
-import { ElemSticky } from '@/components/elem-sticky';
+import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 
 type Props = {
   companiesCount: number;
@@ -70,11 +69,9 @@ const Companies: NextPage<Props> = ({
   companyStatusTags,
 }) => {
   const [initialLoad, setInitialLoad] = useState(true);
-
   const { user } = useUser();
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
-
   const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
@@ -313,14 +310,14 @@ const Companies: NextPage<Props> = ({
       id: 0,
       label: 'Grid view',
       value: 'grid',
-      StartIcon: IconGroup,
+      Icon: IconGroup,
       onClick: () => setTableLayout(false),
     },
     {
       id: 1,
       label: 'Table view',
       value: 'table',
-      StartIcon: IconTable,
+      Icon: IconTable,
       onClick: () => setTableLayout(true),
     },
   ];
@@ -368,74 +365,88 @@ const Companies: NextPage<Props> = ({
         title={`${selectedLibrary} Companies`}
         description="Early-stage companies in the AI and Web3 markets require actionable intelligence and hyper-speed. Consider this your greatest asset."
       />
+
       <DashboardLayout>
         <div className="relative">
-          <ElemSticky activeClass="sm:top-14 bg-white shadow-sm">
-            <div
-              className="flex flex-wrap items-center justify-between gap-3 px-8 py-2 lg:items-center"
-              role="tablist"
-            >
-              <ElemCategories
-                categories={companyStatusTags}
-                selectedCategory={selectedStatusTag}
-                onChangeCategory={setSelectedStatusTag}
-              />
+          <ElemFiltersWrap resultsTotal={companies_aggregate}>
+            <ElemCategories
+              categories={companyStatusTags}
+              selectedCategory={selectedStatusTag}
+              onChangeCategory={setSelectedStatusTag}
+            />
 
-              <div className="flex flex-wrap gap-2">
-                {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
-                <ElemDropdown
-                  IconComponent={tableLayout ? IconTable : IconGroup}
-                  items={layoutItems}
-                />
-
-                <ElemAddFilter
-                  resourceType="companies"
-                  onSelectFilterOption={onSelectFilterOption}
-                />
-
-                {isSortDropdownVisible && (
-                  <ElemDropdown
-                    IconComponent={IconSortDashboard}
-                    items={sortItems}
-                    defaultItem={sortItems.findIndex(
-                      sortItem => sortItem.value === sortBy,
-                    )}
-                    firstItemDivided
-                  />
-                )}
+            <div className="hidden lg:block lg:ml-auto"></div>
+            {isDisplaySelectLibrary && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Library</h3>
+                <ElemLibrarySelector />
               </div>
+            )}
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">View</h3>
+              <ElemDropdown
+                buttonClass="w-full"
+                panelClass="w-full"
+                ButtonIcon={tableLayout ? IconTable : IconGroup}
+                items={layoutItems}
+              />
+            </div>
+
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">
+                Industry, Location, and Financials
+              </h3>
+              <ElemAddFilter
+                buttonClass="w-full"
+                panelClass="w-full"
+                resourceType="companies"
+                onSelectFilterOption={onSelectFilterOption}
+              />
             </div>
 
             {selectedFilters && (
-              <div className="px-8 py-3">
-                <ElemFilter
-                  resourceType="companies"
-                  filterValues={selectedFilters}
-                  onSelectFilterOption={onSelectFilterOption}
-                  onChangeFilterValues={onChangeSelectedFilters}
-                  onApply={(name, filterParams) => {
-                    filters._and = defaultFilters;
-                    onChangeSelectedFilters({
-                      ...selectedFilters,
-                      [name]: { ...filterParams, open: false },
-                    });
-                  }}
-                  onClearOption={name => {
-                    filters._and = defaultFilters;
-                    onChangeSelectedFilters({
-                      ...selectedFilters,
-                      [name]: undefined,
-                    });
-                  }}
-                  onReset={() => onChangeSelectedFilters(null)}
+              <ElemFilter
+                className="basis-full lg:order-last"
+                resourceType="companies"
+                filterValues={selectedFilters}
+                onSelectFilterOption={onSelectFilterOption}
+                onChangeFilterValues={onChangeSelectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: { ...filterParams, open: false },
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  onChangeSelectedFilters({
+                    ...selectedFilters,
+                    [name]: undefined,
+                  });
+                }}
+                onReset={() => onChangeSelectedFilters(null)}
+              />
+            )}
+
+            {isSortDropdownVisible && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Sort</h3>
+                <ElemDropdown
+                  buttonClass="w-full"
+                  panelClass="w-full"
+                  ButtonIcon={IconSortDashboard}
+                  items={sortItems}
+                  defaultItem={sortItems.findIndex(
+                    sortItem => sortItem.value === sortBy,
+                  )}
+                  firstItemDivided
                 />
               </div>
             )}
-          </ElemSticky>
+          </ElemFiltersWrap>
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
-          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
+          <ElemDemocratizeBanner className="mx-8 mt-2" />
 
           <div className="mx-8">
             {error ? (
@@ -481,18 +492,16 @@ const Companies: NextPage<Props> = ({
                     )}
                   </>
                 ) : tableLayout && companies?.length != 0 ? (
-                  <>
-                    <CompaniesTable
-                      companies={companies}
-                      pageNumber={page}
-                      itemsPerPage={limit}
-                      shownItems={companies?.length}
-                      totalItems={companies_aggregate}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      filterByTag={filterByTag}
-                    />
-                  </>
+                  <CompaniesTable
+                    companies={companies}
+                    pageNumber={page}
+                    itemsPerPage={limit}
+                    shownItems={companies?.length}
+                    totalItems={companies_aggregate}
+                    onClickPrev={() => setPage(page - 1)}
+                    onClickNext={() => setPage(page + 1)}
+                    filterByTag={filterByTag}
+                  />
                 ) : (
                   <>
                     <div
@@ -523,7 +532,6 @@ const Companies: NextPage<Props> = ({
               </>
             )}
           </div>
-
           {companies?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
               <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -548,7 +556,6 @@ const Companies: NextPage<Props> = ({
               </div>
             </div>
           )}
-
           <Toaster />
         </div>
       </DashboardLayout>
