@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IconChevronUp } from '@/components/icons';
+import { IconArrowUp } from '@/components/icons';
 
 import React, { useState, useEffect } from 'react';
 import { ElemButton } from './elem-button';
@@ -39,10 +39,10 @@ export const ElemBackToTop: FC<Props> = () => {
         <ElemButton
           onClick={backToTop}
           btn="dark"
-          className="!fixed shadow gap-2 h-12 w-12 bottom-[64px] right-[80px] transition-all hover:scale-110 lg:bottom-[20px]"
+          size="sm"
+          className="!fixed left-1/2 lg:left-[calc(50%+8rem)] bottom-16 lg:bottom-5 -translate-x-1/2 text-sm shadow-lg transition-all hover:scale-110"
         >
-          <IconChevronUp className="w-6 h-6" />
-          {/* Back to top */}
+          <IconArrowUp className="w-4 h-4 mr-1.5" /> Back to Top
         </ElemButton>
       )}
     </>
