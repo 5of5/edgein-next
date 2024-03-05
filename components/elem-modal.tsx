@@ -115,7 +115,7 @@ export const ElemModal: FC<PropsWithChildren<Props>> = ({
       <div className={`fixed inset-0 flex flex-col ${placementClasses}`}>
         <Transition.Child as={Fragment} {...transitionClasses}>
           <Dialog.Panel
-            className={`overflow-y-auto overscroll-none scrollbar-hide border border-green-500 ${panelClass}`}
+            className={`overflow-y-auto overscroll-none scrollbar-hide ${panelClass}`}
           >
             {children}
             {showCloseIcon && (

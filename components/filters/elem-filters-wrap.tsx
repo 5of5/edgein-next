@@ -57,9 +57,9 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
         onClose={() => setShowMobileFilters(false)}
         overlay={false}
         showCloseIcon={false}
-        panelClass="w-full mt-14 bg-white"
+        panelClass="w-full my-14 bg-white"
       >
-        <div className="flex flex-col h-[calc(100vh_-_3.5rem)] gap-4 px-4">
+        <div className="flex flex-col h-[calc(100vh_-_6rem)] gap-4 px-4">
           <div className="sticky top-0 z-20 px-4 py-2 bg-white border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">Filters</h2>
