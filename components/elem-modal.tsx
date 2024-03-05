@@ -9,6 +9,16 @@ type Props = {
   onClose: () => void;
   overlay?: boolean;
   showCloseIcon?: boolean;
+  placement?:
+    | 'top'
+    | 'topLeft'
+    | 'topRight'
+    | 'left'
+    | 'center'
+    | 'right'
+    | 'bottom'
+    | 'bottomLeft'
+    | 'bottomRight';
   transition?:
     | 'fadeIn'
     | 'slideFromTop'
@@ -24,6 +34,7 @@ export const ElemModal: FC<PropsWithChildren<Props>> = ({
   onClose,
   overlay = true,
   showCloseIcon = true,
+  placement,
   transition,
   children,
 }) => {
@@ -65,6 +76,21 @@ export const ElemModal: FC<PropsWithChildren<Props>> = ({
       leaveTo: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
     };
   }
+  let placementClasses = null;
+  if (placement === 'top') {
+    placementClasses = 'items-center justify-start';
+  } else if (placement === 'topLeft') {
+    placementClasses = 'items-start justify-start';
+  } else if (placement === 'topRight') {
+    placementClasses = 'items-end justify-start';
+  } else if (placement === 'left') {
+    placementClasses = 'items-start justify-center';
+  } else if (placement === 'right') {
+    placementClasses = 'items-end justify-center';
+  } else {
+    placementClasses = 'items-center justify-center';
+  }
+
   return (
     <Transition
       appear
@@ -86,24 +112,27 @@ export const ElemModal: FC<PropsWithChildren<Props>> = ({
           <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
         </Transition.Child>
       )}
-
-      <Transition.Child as={Fragment} {...transitionClasses}>
-        <Dialog.Panel className={`fixed inset-0 overflow-y-auto ${panelClass}`}>
-          {children}
-          {showCloseIcon && (
-            <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
-              <button
-                type="button"
-                className="focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                onClick={onClose}
-              >
-                <span className="sr-only">Close</span>
-                <IconX className="w-5 h-5" aria-hidden="true" />
-              </button>
-            </div>
-          )}
-        </Dialog.Panel>
-      </Transition.Child>
+      <div className={`fixed inset-0 flex flex-col ${placementClasses}`}>
+        <Transition.Child as={Fragment} {...transitionClasses}>
+          <Dialog.Panel
+            className={`overflow-y-auto overscroll-none scrollbar-hide border border-green-500 ${panelClass}`}
+          >
+            {children}
+            {showCloseIcon && (
+              <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
+                <button
+                  type="button"
+                  className="focus:outline-none"
+                  onClick={onClose}
+                >
+                  <span className="sr-only">Close</span>
+                  <IconX className="w-5 h-5" aria-hidden="true" />
+                </button>
+              </div>
+            )}
+          </Dialog.Panel>
+        </Transition.Child>
+      </div>
     </Transition>
   );
 };

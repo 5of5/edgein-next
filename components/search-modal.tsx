@@ -1,5 +1,5 @@
-import { Dialog, Tab, Transition } from '@headlessui/react';
-import { FC, ReactElement, Fragment, useState, useRef, useEffect } from 'react';
+import { Tab } from '@headlessui/react';
+import { FC, ReactElement, useState, useRef, useEffect } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Hit as AlgoliaHit } from 'instantsearch.js';
 import { every } from 'lodash';
@@ -28,6 +28,7 @@ import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
 import { useRouter } from 'next/router';
+import { ElemModal } from './elem-modal';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -424,7 +425,7 @@ export default function SearchModal(props: any) {
 
     if (!results._state.query) {
       return (
-        <div className="px-6 py-1 mt-5 text-center">
+        <div className="px-6 py-5 mt-5 text-center">
           <FigureSearch className="mx-auto h-36 lg:h-40" />
           <div className="mt-3 text-xl font-medium">
             Search for Companies, Investors, People, Events &amp; News
@@ -600,206 +601,170 @@ export default function SearchModal(props: any) {
 
   return (
     <>
-      <Transition appear show={props.show} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={onClose}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex items-start justify-center min-h-full p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-3xl pb-5 overflow-x-hidden overflow-y-auto text-left align-middle transition-all transform bg-white rounded-lg shadow-2xl">
-                  <InstantSearch
-                    searchClient={searchClient}
-                    indexName="companies"
+      <ElemModal
+        isOpen={props.show}
+        onClose={onClose}
+        showCloseIcon={false}
+        placement="top"
+        panelClass="w-full max-w-3xl shadow-2xl bg-white rounded-lg my-4"
+      >
+        <InstantSearch searchClient={searchClient} indexName="companies">
+          <header className="relative z-10 flex items-center p-0 px-4 border-b border-gray-100">
+            <IconSearch className="w-6 h-6 text-gray-500" />
+            <SearchBox
+              className="w-full"
+              placeholder="Quick Search..."
+              autoFocus={true}
+              classNames={{
+                submitIcon: 'hidden',
+                resetIcon: 'hidden',
+                loadingIndicator: 'hidden',
+                form: 'flex',
+                input:
+                  'appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 border-none placeholder:text-gray-500 focus:bg-transparent focus:border-none focus:ring-0',
+              }}
+            />
+            <button
+              onClick={onClose}
+              type="reset"
+              arial-label="cancel"
+              className="appearance-none w-8 justify-items-end p-1 bg-white border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm"
+            >
+              ESC
+            </button>
+          </header>
+
+          <MasterEmptyQueryBoundary>
+            <Tab.Group
+              selectedIndex={tabSelectedIndex}
+              onChange={setTabSelectedIndex}
+            >
+              <ResultTabList />
+              <Tab.Panels>
+                <Tab.Panel unmount={false}>
+                  <Index
+                    indexName={
+                      selectedLibrary === 'Web3' ? 'companies' : 'ai_companies'
+                    }
                   >
-                    <header className="relative z-10 flex items-center p-0 px-4 border-b border-gray-100">
-                      <IconSearch className="w-6 h-6 text-gray-500" />
-                      <SearchBox
-                        className="w-full"
-                        placeholder="Quick Search..."
-                        autoFocus={true}
+                    <Configure hitsPerPage={10} />
+                    <EmptyQueryBoundary>
+                      <InfiniteHits
+                        hitComponent={HitCompanies(
+                          onClose,
+                          props.isAdmin,
+                          props.redirect,
+                        )}
+                        showPrevious={false}
                         classNames={{
-                          submitIcon: 'hidden',
-                          resetIcon: 'hidden',
-                          loadingIndicator: 'hidden',
-                          form: 'flex',
-                          input:
-                            'appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 border-none placeholder:text-gray-500 focus:bg-transparent focus:border-none focus:ring-0',
+                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          loadMore:
+                            'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                          disabledLoadMore: 'hidden',
                         }}
                       />
-                      <button
-                        onClick={onClose}
-                        type="reset"
-                        arial-label="cancel"
-                        className="appearance-none w-8 justify-items-end p-1 bg-white border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm"
-                      >
-                        ESC
-                      </button>
-                    </header>
-
-                    <MasterEmptyQueryBoundary>
-                      <Tab.Group
-                        selectedIndex={tabSelectedIndex}
-                        onChange={setTabSelectedIndex}
-                      >
-                        <ResultTabList />
-                        <Tab.Panels>
-                          <Tab.Panel unmount={false}>
-                            <Index
-                              indexName={
-                                selectedLibrary === 'Web3'
-                                  ? 'companies'
-                                  : 'ai_companies'
-                              }
-                            >
-                              <Configure hitsPerPage={10} />
-                              <EmptyQueryBoundary>
-                                <InfiniteHits
-                                  hitComponent={HitCompanies(
-                                    onClose,
-                                    props.isAdmin,
-                                    props.redirect,
-                                  )}
-                                  showPrevious={false}
-                                  classNames={{
-                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
-                                    loadMore:
-                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                                    disabledLoadMore: 'hidden',
-                                  }}
-                                />
-                              </EmptyQueryBoundary>
-                            </Index>
-                          </Tab.Panel>
-                          <Tab.Panel unmount={false}>
-                            <Index
-                              indexName={
-                                selectedLibrary === 'Web3'
-                                  ? 'vc_firms'
-                                  : 'ai_vc_firms'
-                              }
-                            >
-                              <Configure hitsPerPage={10} />
-                              <EmptyQueryBoundary>
-                                <InfiniteHits
-                                  hitComponent={HitInvestors(
-                                    onClose,
-                                    props.isAdmin,
-                                    props.redirect,
-                                  )}
-                                  showPrevious={false}
-                                  classNames={{
-                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
-                                    loadMore:
-                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                                    disabledLoadMore: 'hidden',
-                                  }}
-                                />
-                              </EmptyQueryBoundary>
-                            </Index>
-                          </Tab.Panel>
-                          <Tab.Panel unmount={false}>
-                            <Index
-                              indexName={
-                                selectedLibrary === 'Web3'
-                                  ? 'people'
-                                  : 'ai_people'
-                              }
-                            >
-                              <Configure hitsPerPage={10} />
-                              <EmptyQueryBoundary>
-                                <InfiniteHits
-                                  hitComponent={HitPeople(
-                                    onClose,
-                                    props.isAdmin,
-                                    props.redirect,
-                                  )}
-                                  showPrevious={false}
-                                  classNames={{
-                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
-                                    loadMore:
-                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500',
-                                    disabledLoadMore: 'hidden',
-                                  }}
-                                />
-                              </EmptyQueryBoundary>
-                            </Index>
-                          </Tab.Panel>
-                          <Tab.Panel unmount={false}>
-                            <Index
-                              indexName={
-                                selectedLibrary === 'Web3'
-                                  ? 'events'
-                                  : 'ai_events'
-                              }
-                            >
-                              <Configure hitsPerPage={10} />
-                              <EmptyQueryBoundary>
-                                <InfiniteHits
-                                  hitComponent={HitEvents(
-                                    onClose,
-                                    props.isAdmin,
-                                    props.redirect,
-                                  )}
-                                  showPrevious={false}
-                                  classNames={{
-                                    list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
-                                    loadMore:
-                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                                    disabledLoadMore: 'hidden',
-                                  }}
-                                />
-                              </EmptyQueryBoundary>
-                            </Index>
-                          </Tab.Panel>
-                          <Tab.Panel unmount={false}>
-                            <Index
-                              indexName={
-                                selectedLibrary === 'Web3' ? 'news' : 'ai_news'
-                              }
-                            >
-                              <Configure hitsPerPage={10} />
-                              <EmptyQueryBoundary>
-                                <InfiniteHits
-                                  hitComponent={HitNews()}
-                                  showPrevious={false}
-                                  classNames={{
-                                    list: 'my-2 border-y border-gray-100 divide-y divide-gray-100',
-                                    loadMore:
-                                      'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
-                                    disabledLoadMore: 'hidden',
-                                  }}
-                                />
-                              </EmptyQueryBoundary>
-                            </Index>
-                          </Tab.Panel>
-                        </Tab.Panels>
-                      </Tab.Group>
-                    </MasterEmptyQueryBoundary>
-                  </InstantSearch>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
+                    </EmptyQueryBoundary>
+                  </Index>
+                </Tab.Panel>
+                <Tab.Panel unmount={false}>
+                  <Index
+                    indexName={
+                      selectedLibrary === 'Web3' ? 'vc_firms' : 'ai_vc_firms'
+                    }
+                  >
+                    <Configure hitsPerPage={10} />
+                    <EmptyQueryBoundary>
+                      <InfiniteHits
+                        hitComponent={HitInvestors(
+                          onClose,
+                          props.isAdmin,
+                          props.redirect,
+                        )}
+                        showPrevious={false}
+                        classNames={{
+                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          loadMore:
+                            'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                          disabledLoadMore: 'hidden',
+                        }}
+                      />
+                    </EmptyQueryBoundary>
+                  </Index>
+                </Tab.Panel>
+                <Tab.Panel unmount={false}>
+                  <Index
+                    indexName={
+                      selectedLibrary === 'Web3' ? 'people' : 'ai_people'
+                    }
+                  >
+                    <Configure hitsPerPage={10} />
+                    <EmptyQueryBoundary>
+                      <InfiniteHits
+                        hitComponent={HitPeople(
+                          onClose,
+                          props.isAdmin,
+                          props.redirect,
+                        )}
+                        showPrevious={false}
+                        classNames={{
+                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          loadMore:
+                            'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500',
+                          disabledLoadMore: 'hidden',
+                        }}
+                      />
+                    </EmptyQueryBoundary>
+                  </Index>
+                </Tab.Panel>
+                <Tab.Panel unmount={false}>
+                  <Index
+                    indexName={
+                      selectedLibrary === 'Web3' ? 'events' : 'ai_events'
+                    }
+                  >
+                    <Configure hitsPerPage={10} />
+                    <EmptyQueryBoundary>
+                      <InfiniteHits
+                        hitComponent={HitEvents(
+                          onClose,
+                          props.isAdmin,
+                          props.redirect,
+                        )}
+                        showPrevious={false}
+                        classNames={{
+                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          loadMore:
+                            'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                          disabledLoadMore: 'hidden',
+                        }}
+                      />
+                    </EmptyQueryBoundary>
+                  </Index>
+                </Tab.Panel>
+                <Tab.Panel unmount={false}>
+                  <Index
+                    indexName={selectedLibrary === 'Web3' ? 'news' : 'ai_news'}
+                  >
+                    <Configure hitsPerPage={10} />
+                    <EmptyQueryBoundary>
+                      <InfiniteHits
+                        hitComponent={HitNews()}
+                        showPrevious={false}
+                        classNames={{
+                          list: 'my-2 border-y border-gray-100 divide-y divide-gray-100',
+                          loadMore:
+                            'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                          disabledLoadMore: 'hidden',
+                        }}
+                      />
+                    </EmptyQueryBoundary>
+                  </Index>
+                </Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
+          </MasterEmptyQueryBoundary>
+        </InstantSearch>
+      </ElemModal>
     </>
   );
 }

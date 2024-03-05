@@ -27,7 +27,7 @@ type Props = {
     | 'top';
   ButtonIcon?: FC<IconProps>;
   customButton?: ReactNode;
-  defaultItem?: number;
+  defaultItem?: number | null;
   items: Array<{
     id: number;
     label: string;
@@ -71,7 +71,7 @@ export const ElemDropdown: FC<Props> = ({
     ],
   });
 
-  const [activeItem, setActiveItem] = useState<number>(defaultItem);
+  const [activeItem, setActiveItem] = useState<number | null>(defaultItem);
 
   return (
     <Popover className={`relative shrink-0 ${className}`}>
@@ -89,7 +89,7 @@ export const ElemDropdown: FC<Props> = ({
                 className={`w-4 h-4 shrink-0 mr-1.5 ${buttonIconClass}`}
               />
             )}
-            {items[activeItem].label}
+            {activeItem != null && items[activeItem].label}
             <IconChevronDownMini className="w-5 h-5 shrink-0 ml-auto lg:ml-1.5" />
           </ElemButton>
         )}
@@ -111,7 +111,7 @@ export const ElemDropdown: FC<Props> = ({
           className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 ${panelClass}`}
         >
           {({ close }) => (
-            <div>
+            <>
               {items.map((item, index) => {
                 const isActiveItem = item.id === activeItem ? true : false;
                 const activeIconClass = item.selectedIconClass
@@ -154,7 +154,7 @@ export const ElemDropdown: FC<Props> = ({
                   </button>
                 );
               })}
-            </div>
+            </>
           )}
         </Popover.Panel>
       </Transition>

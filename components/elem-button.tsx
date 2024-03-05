@@ -20,6 +20,7 @@ type Props = {
     | 'gray'
     | 'slate'
     | 'ol-white'
+    | 'ol-gray'
     | 'ol-primary'
     | 'default'
     | '';
@@ -62,6 +63,9 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   } else if (btn === 'ol-white') {
     btnClass =
       'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-white hover:text-primary-500 focus:outline-none focus:ring-1';
+  } else if (btn === 'ol-gray') {
+    btnClass =
+      'ring-inset ring-1 ring-gray-300 hover:bg-gray-100 focus:outline-none focus:ring-1';
   } else if (btn === 'transparent') {
     btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
   } else if (btn === 'white') {

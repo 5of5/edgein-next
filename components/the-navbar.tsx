@@ -1,10 +1,10 @@
-import { useEffect, Fragment, FC, useCallback } from 'react';
+import { useEffect, FC, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { ElemLogo } from '@/components/elem-logo';
 import { ElemButton } from '@/components/elem-button';
 import { UserMenu } from '@/components/user-menu';
-import UsageModal from '@/components/usage-modal';
+import { UsageModal } from '@/components/usage-modal';
 import {
   IconSearch,
   IconBell,
@@ -15,15 +15,14 @@ import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { useUser } from '@/context/user-context';
 import { ElemSearchBox } from './elem-search-box';
-import { find } from 'lodash';
-import { getNameFromListName } from '@/utils/reaction';
-import { Popover, Dialog, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 import { DashboardSidebar } from './dashboard/dashboard-sidebar';
+import { ElemModal } from './elem-modal';
+import { ElemDropdown } from './elem-dropdown';
 
 export type Popups = 'search' | 'usage' | false;
 
@@ -31,14 +30,10 @@ type Props = {};
 
 export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
-  const { user, listAndFollows, myGroups, unreadNotificationsCount } =
-    useUser();
+  const { user, listAndFollows, unreadNotificationsCount } = useUser();
 
   const { showPopup, setShowPopup } = usePopup();
   const { showSidebar, setShowSidebar } = useSidebar();
-
-  const hotListId =
-    find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
     if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
@@ -108,22 +103,30 @@ export const TheNavbar: FC<Props> = ({}) => {
     router.push(ROUTES.SIGN_IN);
   };
 
-  const ellipsisDropdownItems = [
+  const quickLinks = [
     {
+      id: 0,
       label: 'Support',
-      href: ROUTES.SUPPORT,
+      value: 'support',
+      onClick: () => router.push(ROUTES.SUPPORT),
     },
     {
+      id: 1,
       label: 'Pricing',
-      href: ROUTES.PRICING,
+      value: 'pricing',
+      onClick: () => router.push(ROUTES.PRICING),
     },
     {
+      id: 2,
       label: 'Press',
-      href: 'mailto:press@edgein.io',
+      value: 'press',
+      onClick: () => (window.location.href = 'mailto:press@edgein.io'),
     },
     {
+      id: 3,
       label: 'Contact',
-      href: ROUTES.CONTACT,
+      value: 'contact',
+      onClick: () => router.push(ROUTES.CONTACT),
     },
   ];
 
@@ -131,13 +134,13 @@ export const TheNavbar: FC<Props> = ({}) => {
     <>
       <header className="sticky top-0 left-0 right-0 z-40">
         <nav
-          className="flex items-center justify-between w-full px-1 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14 sm:px-3 lg:justify-start"
+          className="flex items-center justify-between w-full px-1 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14 sm:px-3"
           aria-label="Global"
         >
           <div className="flex items-center gap-3">
             <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
-              btn="gray"
+              btn="ol-gray"
               className="h-9 w-9 !px-0 !py-0 lg:hidden"
             >
               <IconBars3 className="w-6 h-6" />
@@ -160,58 +163,34 @@ export const TheNavbar: FC<Props> = ({}) => {
             }}
           />
 
-          <div className="flex items-center space-x-2 group lg:space-x-3">
+          <div className="flex items-center space-x-2 lg:space-x-3">
             <ElemButton
               onClick={() => setShowPopup('search')}
-              btn="gray"
-              className="h-9 w-9 !px-0 !py-0 lg:hidden"
+              className="h-9 w-9 !p-0 lg:hidden"
             >
               <IconSearch className="w-5 h-5" />
             </ElemButton>
 
-            <Popover className="relative">
-              <Popover.Button className="flex items-center focus:outline-none">
-                <IconEllipsisVertical className="w-6 h-6 text-gray-600" />
-              </Popover.Button>
-
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
-                <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-white border border-gray-300 rounded-lg shadow-lg">
-                  {({ close }) => (
-                    <>
-                      {ellipsisDropdownItems.map((item, index) => (
-                        <ElemLink
-                          href={item.href ? item.href : ''}
-                          key={index}
-                          className="flex items-center w-full px-4 py-2 m-0 text-sm text-left transition-all cursor-pointer gap-x-2 hover:bg-gray-100"
-                          onClick={() => {
-                            close();
-                          }}
-                        >
-                          {item.label}
-                        </ElemLink>
-                      ))}
-                    </>
-                  )}
-                </Popover.Panel>
-              </Transition>
-            </Popover>
+            <ElemDropdown
+              customButton={
+                <ElemButton className="w-9 h-9 !p-0">
+                  <IconEllipsisVertical className="w-6 h-6" title="Options" />
+                </ElemButton>
+              }
+              defaultItem={null}
+              items={quickLinks}
+              itemsShowIcons={false}
+              className="hidden lg:block"
+            />
 
             {user ? (
               <>
-                <ElemLink
+                <ElemButton
                   href={ROUTES.NOTIFICATIONS}
-                  className="relative flex items-center justify-center w-9 h-9"
+                  className="relative w-9 h-9 !p-0"
                 >
                   {unreadNotificationsCount > 0 && (
-                    <div className="absolute flex items-center justify-center -top-[2px] -right-[4px] h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
+                    <div className="absolute flex items-center justify-center -top-[2px] right-0 h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
                       <div className="text-white font-bold text-[10px] text-center">
                         {unreadNotificationsCount > 99
                           ? '99+'
@@ -219,70 +198,44 @@ export const TheNavbar: FC<Props> = ({}) => {
                       </div>
                     </div>
                   )}
-
-                  <IconBell className="w-6 h-6 text-gray-600" strokeWidth={2} />
-                </ElemLink>
+                  <IconBell
+                    className={`w-6 h-6 shrink-0 ${
+                      unreadNotificationsCount > 0 && 'mr-1'
+                    }`}
+                    strokeWidth={1.5}
+                  />
+                </ElemButton>
                 <UserMenu />
               </>
             ) : (
-              <>
-                <ElemLink href={ROUTES.SIGN_IN} className="w-auto">
-                  <ElemButton btn="purple" className="whitespace-nowrap">
-                    Sign in
-                  </ElemButton>
-                </ElemLink>
-              </>
+              <ElemButton
+                href={ROUTES.SIGN_IN}
+                btn="purple"
+                className="whitespace-nowrap"
+              >
+                Sign in
+              </ElemButton>
             )}
           </div>
-
-          <UsageModal
-            onLogin={redirectToSignIn}
-            show={showPopup === 'usage'}
-            onClose={onModalClose}
-          />
-
-          <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
         </nav>
-
-        <TheMobileNav setShowPopup={setShowPopup} />
       </header>
-      <Transition.Root show={showSidebar} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-40"
-          onClose={() => setShowSidebar(false)}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
-          </Transition.Child>
-          <div className="fixed inset-0 z-40 flex">
-            <Transition.Child
-              as={Fragment}
-              enter="duration-500 ease-in-out"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="duration-500 ease-in-out"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
-            >
-              <Dialog.Panel className="relative flex flex-col flex-1 w-full max-w-xs overflow-y-auto bg-white scrollbar-hide">
-                <DashboardSidebar />
-              </Dialog.Panel>
-            </Transition.Child>
-            <div className="flex-shrink-0 w-14">
-              {/* Dummy element to force sidebar to shrink to fit close icon */}
-            </div>
-          </div>
-        </Dialog>
-      </Transition.Root>
+
+      <TheMobileNav />
+
+      <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
+
+      <UsageModal show={showPopup === 'usage'} onClose={onModalClose} />
+
+      <ElemModal
+        isOpen={showSidebar}
+        onClose={() => setShowSidebar(false)}
+        showCloseIcon={false}
+        placement="topLeft"
+        transition="slideFromLeft"
+        panelClass="h-full w-full max-w-xs mb-14 bg-white"
+      >
+        <DashboardSidebar />
+      </ElemModal>
     </>
   );
 };

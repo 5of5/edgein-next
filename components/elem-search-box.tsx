@@ -9,13 +9,13 @@ export const ElemSearchBox: FC<Props> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="hidden w-full max-w-xl mx-auto lg:flex items-center text-left space-x-2 px-2 h-9 bg-white rounded-2lg border border-gray-300 hover:bg-gray-50 focus:outline-none"
+      className="items-center hidden w-full max-w-xl px-2 space-x-2 text-left bg-white border border-gray-300 rounded-full lg:mx-auto lg:flex h-9 hover:bg-gray-50 focus:outline-none"
     >
-      <IconSearch className="flex-none h-4 w-4 text-gray-400" />
+      <IconSearch className="flex-none w-4 h-4 text-gray-400" />
       <span className="flex-auto text-sm text-gray-400">
         Try &quot;Coinbase&quot;
       </span>
-      {/* <kbd className="hidden lg:block text-sm font-semibold">
+      {/* <kbd className="hidden text-sm font-semibold lg:block">
         <abbr title="Command" className="no-underline text-slate-400">
           ⌘
         </abbr>{' '}
