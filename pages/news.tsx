@@ -72,14 +72,14 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       index => newsTab[Number(index)],
     );
 
-  const [page, setPage] = useStateParams<number>(
+  const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
     pageIndex => Number(pageIndex) - 1,
   );
   const limit = 50;
-  const offset = limit * page;
+  const offset = limit * pageIndex;
 
   const filters: DeepPartial<News_Bool_Exp> = {
     _and: [
@@ -90,7 +90,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
   useEffect(() => {
     if (!initialLoad) {
-      setPage(0);
+      setPageIndex(0);
     }
     if (initialLoad) {
       setInitialLoad(false);
@@ -129,6 +129,14 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     });
   }
 
+  const getLimit = () => {
+    if (selectedTab?.value === 'trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return limit;
+  };
+
   const {
     data: newsData,
     error,
@@ -136,8 +144,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   } = useGetNewsQuery(
     {
       offset,
-      limit:
-        selectedTab?.value === 'trending' ? TRENDING_CATEGORY_LIMIT : limit,
+      limit: getLimit(),
       orderBy: [
         selectedTab?.value === 'trending'
           ? ({ num_of_views: Order_By.Desc } as News_Order_By)
@@ -157,7 +164,22 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ? newsCount
     : newsData?.news_aggregate?.aggregate?.count || 0;
 
+  const getTotalItems = () => {
+    if (selectedTab?.value === 'trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return news_aggregate;
+  };
+
   const showPersonalized = user && !selectedTab;
+
+  const onPreviousPage = () => {
+    setPageIndex(pageIndex - 1);
+  };
+  const onNextPage = () => {
+    setPageIndex(pageIndex + 1);
+  };
 
   const pageTitle =
     selectedTab?.value === '7days'
@@ -265,12 +287,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
                 <Pagination
                   shownItems={news?.length}
-                  totalItems={news_aggregate}
-                  page={page}
-                  itemsPerPage={limit}
-                  onClickPrev={() => setPage(page - 1)}
-                  onClickNext={() => setPage(page + 1)}
-                  onClickToPage={selectedPage => setPage(selectedPage)}
+                  totalItems={getTotalItems()}
+                  page={pageIndex}
+                  itemsPerPage={getLimit()}
+                  onClickPrev={onPreviousPage}
+                  onClickNext={onNextPage}
+                  onClickToPage={selectedPage => setPageIndex(selectedPage)}
                 />
               </div>
             </div>

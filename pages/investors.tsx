@@ -50,16 +50,11 @@ import {
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
-import { ElemSticky } from '@/components/elem-sticky';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   vcFirmCount: number;
@@ -77,8 +72,6 @@ const Investors: NextPage<Props> = ({
   const { user } = useUser();
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
-
-  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -110,7 +103,7 @@ const Investors: NextPage<Props> = ({
 
   const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
 
-  const [page, setPage] = useStateParams<number>(
+  const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
@@ -118,7 +111,7 @@ const Investors: NextPage<Props> = ({
   );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter({ resetPage: () => setPage(0) });
+    useDashboardFilter({ resetPage: () => setPageIndex(0) });
 
   // limit shown investors on table layout for free users
   const limit =
@@ -128,7 +121,7 @@ const Investors: NextPage<Props> = ({
 
   // disable offset on table layout for free users
   const offset =
-    user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
+    user?.entitlements.listsCount && tableLayout ? 0 : limit * pageIndex;
 
   const defaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
@@ -153,7 +146,7 @@ const Investors: NextPage<Props> = ({
 
   useEffect(() => {
     if (!initialLoad) {
-      setPage(0);
+      setPageIndex(0);
     }
     if (initialLoad) {
       setInitialLoad(false);
@@ -313,6 +306,18 @@ const Investors: NextPage<Props> = ({
     ? vcFirmCount
     : vcFirmsData?.vc_firms_aggregate?.aggregate?.count || 0;
 
+  const getTotalItems = () => {
+    if (isNewTabSelected) {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return vcfirms_aggregate;
+  };
+
   const { showNewMessages } = useIntercom();
 
   const layoutItems = [
@@ -364,6 +369,13 @@ const Investors: NextPage<Props> = ({
       onClick: () => setSortBy('lastInvestmentDate'),
     },
   ];
+
+  const onPreviousPage = () => {
+    setPageIndex(pageIndex - 1);
+  };
+  const onNextPage = () => {
+    setPageIndex(pageIndex + 1);
+  };
 
   const pageTitle = `${selectedStatusTag?.title || 'All'} ${
     user ? selectedLibrary : ''
@@ -503,12 +515,12 @@ const Investors: NextPage<Props> = ({
                 ) : tableLayout && vcFirms?.length != 0 ? (
                   <InvestorsTable
                     investors={vcFirms}
-                    pageNumber={page}
-                    itemsPerPage={limit}
+                    pageNumber={pageIndex}
+                    itemsPerPage={getLimit()}
                     shownItems={vcFirms?.length}
-                    totalItems={vcfirms_aggregate}
-                    onClickPrev={() => setPage(page - 1)}
-                    onClickNext={() => setPage(page + 1)}
+                    totalItems={getTotalItems()}
+                    onClickPrev={onPreviousPage}
+                    onClickNext={onNextPage}
                     filterByTag={filterByTag}
                   />
                 ) : (
@@ -527,12 +539,12 @@ const Investors: NextPage<Props> = ({
 
                     <Pagination
                       shownItems={vcFirms?.length}
-                      totalItems={vcfirms_aggregate}
-                      page={page}
-                      itemsPerPage={limit}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      onClickToPage={selectedPage => setPage(selectedPage)}
+                      totalItems={getTotalItems()}
+                      page={pageIndex}
+                      itemsPerPage={getLimit()}
+                      onClickPrev={onPreviousPage}
+                      onClickNext={onNextPage}
+                      onClickToPage={selectedPage => setPageIndex(selectedPage)}
                     />
                   </>
                 )}
