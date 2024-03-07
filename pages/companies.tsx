@@ -104,7 +104,7 @@ const Companies: NextPage<Props> = ({
 
   const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
 
-  const [page, setPage] = useStateParams<number>(
+  const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
@@ -112,7 +112,7 @@ const Companies: NextPage<Props> = ({
   );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter({ resetPage: () => setPage(0) });
+    useDashboardFilter({ resetPage: () => setPageIndex(0) });
 
   // limit shown companies on table layout for free users
   const limit =
@@ -122,7 +122,7 @@ const Companies: NextPage<Props> = ({
 
   // disable offset on table layout for free users
   const offset =
-    user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
+    user?.entitlements.listsCount && tableLayout ? 0 : limit * pageIndex;
 
   const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
@@ -147,7 +147,7 @@ const Companies: NextPage<Props> = ({
 
   useEffect(() => {
     if (!initialLoad) {
-      setPage(0);
+      setPageIndex(0);
     }
     if (initialLoad && selectedStatusTag?.value !== '') {
       setInitialLoad(false);
@@ -303,6 +303,18 @@ const Companies: NextPage<Props> = ({
     ? companiesCount
     : companiesData?.companies_aggregate?.aggregate?.count || 0;
 
+  const getTotalItems = () => {
+    if (isNewTabSelected) {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return companies_aggregate;
+  };
+
   const { showNewMessages } = useIntercom();
 
   const layoutItems = [
@@ -354,6 +366,13 @@ const Companies: NextPage<Props> = ({
     //   onClick: () => setSortBy('lastFundingDate'),
     // },
   ];
+
+  const onPreviousPage = () => {
+    setPageIndex(pageIndex - 1);
+  };
+  const onNextPage = () => {
+    setPageIndex(pageIndex + 1);
+  };
 
   const pageTitle = `${selectedStatusTag?.title || 'All'} ${
     user ? selectedLibrary : ''
@@ -494,12 +513,12 @@ const Companies: NextPage<Props> = ({
                 ) : tableLayout && companies?.length != 0 ? (
                   <CompaniesTable
                     companies={companies}
-                    pageNumber={page}
+                    pageNumber={pageIndex}
                     itemsPerPage={limit}
                     shownItems={companies?.length}
                     totalItems={companies_aggregate}
-                    onClickPrev={() => setPage(page - 1)}
-                    onClickNext={() => setPage(page + 1)}
+                    onClickPrev={onPreviousPage}
+                    onClickNext={onNextPage}
                     filterByTag={filterByTag}
                   />
                 ) : (
@@ -517,15 +536,14 @@ const Companies: NextPage<Props> = ({
                         );
                       })}
                     </div>
-
                     <Pagination
                       shownItems={companies?.length}
-                      totalItems={companies_aggregate}
-                      page={page}
-                      itemsPerPage={limit}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      onClickToPage={selectedPage => setPage(selectedPage)}
+                      totalItems={getTotalItems()}
+                      page={pageIndex}
+                      itemsPerPage={getLimit()}
+                      onClickPrev={onPreviousPage}
+                      onClickNext={onNextPage}
+                      onClickToPage={selectedPage => setPageIndex(selectedPage)}
                     />
                   </>
                 )}
