@@ -59,20 +59,9 @@ export const ElemCohort: FC<Props> = ({
 
   const companies = companiesData?.companies;
 
-  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    router.push(
-      `${ROUTES.COMPANIES}/?filters=${encodeURIComponent(
-        `{"industry":{"tags":["${type}"]}}`,
-      )}`,
-    );
-  };
-
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
-      {heading && <h2 className="text-xl font-medium px-4 pt-2">{heading}</h2>}
+      {heading && <h2 className="px-4 pt-2 text-xl font-medium">{heading}</h2>}
 
       {error ? (
         <h4>Error loading similar companies</h4>

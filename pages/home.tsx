@@ -157,7 +157,6 @@ const Home: NextPage = () => {
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Companies"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -194,7 +193,6 @@ const Home: NextPage = () => {
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Investors"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -238,7 +236,6 @@ const Home: NextPage = () => {
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText=""
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           isTableView={false}
                           isEnabledSeeAll={false}
@@ -279,7 +276,6 @@ const Home: NextPage = () => {
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText=""
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           orderBy={{
                             start_date: Order_By.Asc,
@@ -316,7 +312,6 @@ const Home: NextPage = () => {
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText={`Companies`}
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           isTableView={false}
                           orderBy={{
@@ -347,7 +342,6 @@ const Home: NextPage = () => {
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText={`Investors`}
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           isTableView={false}
                           orderBy={{
@@ -378,7 +372,6 @@ const Home: NextPage = () => {
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText="Events"
-                          tagOnClick={null}
                           isEnabledSeeAll={false}
                           itemsPerPage={ITEMS_PER_PAGE}
                           orderBy={{
@@ -424,7 +417,6 @@ const Home: NextPage = () => {
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Recently funded"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -455,7 +447,6 @@ const Home: NextPage = () => {
                       cardType="compact"
                       headingText="Recently founded"
                       isEnabledSeeAll={false}
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -486,7 +477,6 @@ const Home: NextPage = () => {
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Recently active investors"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       filters={{
@@ -512,7 +502,6 @@ const Home: NextPage = () => {
                       cardType="compact"
                       headingText="Exits"
                       isEnabledSeeAll={false}
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       filters={{

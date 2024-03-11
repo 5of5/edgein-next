@@ -26,7 +26,6 @@ import {
   TRENDING_CATEGORY_LIMIT,
   TABLE_LAYOUT_LIMIT,
 } from '@/utils/constants';
-import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { processCompaniesFilters } from '@/components/filters/processor';
@@ -43,7 +42,6 @@ import {
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
@@ -66,7 +64,6 @@ const Companies: NextPage<Props> = ({
   const { user } = useUser();
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
-  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -149,63 +146,6 @@ const Companies: NextPage<Props> = ({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatusTag]);
-
-  const filterByTag = async (
-    event: React.MouseEvent<HTMLDivElement>,
-    tag: string,
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
-    const newFilterOption = currentFilterOption.includes(tag)
-      ? currentFilterOption.filter(t => t !== tag)
-      : [tag, ...currentFilterOption];
-
-    if (newFilterOption.length === 0) {
-      onChangeSelectedFilters({ ...selectedFilters, industry: undefined });
-    } else {
-      onChangeSelectedFilters({
-        ...selectedFilters,
-        industry: {
-          ...selectedFilters?.industry,
-          tags: newFilterOption,
-        },
-      });
-    }
-
-    currentFilterOption.includes(tag)
-      ? toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Removed &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        )
-      : toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Added &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
-  };
 
   /** Handle selected filter params */
   processCompaniesFilters(filters, selectedFilters, defaultFilters);
@@ -465,35 +405,11 @@ const Companies: NextPage<Props> = ({
           <ElemDemocratizeBanner className="mx-8 mt-2" />
 
           <div className="mx-8">
-            {/* {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading companies
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500">
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
-                </div>
-              </div> */}
-
             <div className="flex justify-between py-8">
               <div className="text-4xl font-medium">{pageTitle}</div>
             </div>
 
-            {!companies || companies?.length === 0 || error ? (
-              <NoResults />
-            ) : isLoading && !initialLoad ? (
+            {isLoading && !initialLoad ? (
               <>
                 {tableLayout ? (
                   <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
@@ -516,7 +432,6 @@ const Companies: NextPage<Props> = ({
                 totalItems={getTotalItems()}
                 onClickPrev={onPreviousPage}
                 onClickNext={onNextPage}
-                filterByTag={filterByTag}
               />
             ) : (
               <>
@@ -544,9 +459,9 @@ const Companies: NextPage<Props> = ({
                 />
               </>
             )}
-          </div>
 
-          <Toaster />
+            {(!companies || companies?.length === 0 || error) && <NoResults />}
+          </div>
         </div>
       </DashboardLayout>
     </>

@@ -20,7 +20,6 @@ type Props = {
   totalItems: number;
   onClickPrev: () => void;
   onClickNext: () => void;
-  filterByTag: Function;
 };
 
 export const InvestorsTable: FC<Props> = ({
@@ -32,7 +31,6 @@ export const InvestorsTable: FC<Props> = ({
   totalItems,
   onClickPrev,
   onClickNext,
-  filterByTag,
 }) => {
   const { user } = useUser();
 

@@ -25,7 +25,6 @@ type Props = {
   filters: DeepPartial<Companies_Bool_Exp>;
   orderBy?: DeepPartial<Companies_Order_By>;
   itemsPerPage: number;
-  tagOnClick: any;
   isTableView?: boolean;
   cardType?: CardType;
   filterInSectionType?: FilterInSectionType;
@@ -39,7 +38,6 @@ export const CompaniesByFilterInSection: FC<Props> = ({
   filters,
   orderBy,
   itemsPerPage,
-  tagOnClick,
   isTableView = false,
   cardType = 'full',
   filterInSectionType = 'see-all',
@@ -66,7 +64,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {times(itemsPerPage, index => (
           <PlaceholderCompanyCard key={index} />
         ))}
@@ -81,7 +79,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
     data.companies.length === 0
   ) {
     return (
-      <div className="text-lg text-center mx-8 my-6">
+      <div className="mx-8 my-6 text-lg text-center">
         Sorry, we couldn&apos;t find any companies today. Check back in
         tomorrow!
       </div>
@@ -92,7 +90,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
+      <div className="mt-5 mb-3 text-lg font-medium">{headingText}</div>
       {isTableView ? (
         <CompaniesTable
           companies={companies}
@@ -102,13 +100,12 @@ export const CompaniesByFilterInSection: FC<Props> = ({
           totalItems={companies_aggregate.aggregate?.count ?? 0}
           onClickPrev={previousPage}
           onClickNext={nextPage}
-          filterByTag={tagOnClick}
         />
       ) : (
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+            className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {companies.map(company => (
               <ElemCompanyCard
@@ -121,7 +118,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
 
           <div className="py-3">
             {filterInSectionType === 'pagination' && (
-              <div className=" px-4">
+              <div className="px-4 ">
                 <Pagination
                   shownItems={companies.length}
                   totalItems={companies_aggregate.aggregate?.count ?? 0}

@@ -27,7 +27,6 @@ import {
   TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
-import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
 import { ElemFilter } from '@/components/filters/elem-filter';
 import { processInvestorsFilters } from '@/components/filters/processor';
@@ -152,63 +151,6 @@ const Investors: NextPage<Props> = ({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatusTag]);
-
-  const filterByTag = async (
-    event: React.MouseEvent<HTMLDivElement>,
-    tag: string,
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
-    const newFilterOption = currentFilterOption.includes(tag)
-      ? currentFilterOption.filter(t => t !== tag)
-      : [tag, ...currentFilterOption];
-
-    if (newFilterOption.length === 0) {
-      onChangeSelectedFilters({ ...selectedFilters, industry: undefined });
-    } else {
-      onChangeSelectedFilters({
-        ...selectedFilters,
-        industry: {
-          ...selectedFilters?.industry,
-          tags: newFilterOption,
-        },
-      });
-    }
-
-    currentFilterOption.includes(tag)
-      ? toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Removed &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        )
-      : toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Added &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
-  };
 
   /** Handle selected filter params */
   processInvestorsFilters(filters, selectedFilters, defaultFilters);
@@ -490,7 +432,7 @@ const Investors: NextPage<Props> = ({
                       </div>
                     )}
                   </>
-                ) : tableLayout && vcFirms?.length != 0 ? (
+                ) : tableLayout && vcFirms.length != 0 ? (
                   <InvestorsTable
                     investors={vcFirms}
                     pageNumber={pageIndex}
@@ -499,7 +441,6 @@ const Investors: NextPage<Props> = ({
                     totalItems={getTotalItems()}
                     onClickPrev={onPreviousPage}
                     onClickNext={onNextPage}
-                    filterByTag={filterByTag}
                   />
                 ) : (
                   <>
@@ -528,9 +469,9 @@ const Investors: NextPage<Props> = ({
                 )}
               </>
             )}
-          </div>
 
-          <Toaster />
+            {(!vcFirms || vcFirms?.length === 0 || error) && <NoResults />}
+          </div>
         </div>
       </DashboardLayout>
     </>

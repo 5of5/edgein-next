@@ -26,7 +26,6 @@ type Props = {
   fallbackFilters?: DeepPartial<Vc_Firms_Bool_Exp>;
   orderBy?: DeepPartial<Vc_Firms_Order_By>;
   itemsPerPage: number;
-  tagOnClick: any;
   isTableView?: boolean;
   cardType?: CardType;
   filterInSectionType?: FilterInSectionType;
@@ -41,7 +40,6 @@ export const InvestorsByFilterInSection: FC<Props> = ({
   fallbackFilters,
   orderBy,
   itemsPerPage,
-  tagOnClick,
   isTableView = false,
   cardType = 'full',
   filterInSectionType = 'see-all',
@@ -86,7 +84,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
 
   if (isLoading || isLoadingSecondary) {
     return (
-      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-16">
+      <div className="grid grid-cols-1 gap-8 mb-16 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {times(itemsPerPage, index => (
           <PlaceholderInvestorCard key={index} />
         ))}
@@ -105,7 +103,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
         secondaryData.vc_firms.length === 0))
   ) {
     return (
-      <div className="text-lg text-center mx-8 my-6">
+      <div className="mx-8 my-6 text-lg text-center">
         Sorry, we couldn&apos;t find any investors today. Check back in
         tomorrow!
       </div>
@@ -124,7 +122,7 @@ export const InvestorsByFilterInSection: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
+      <div className="mt-5 mb-3 text-lg font-medium">{headingText}</div>
       {isTableView ? (
         <InvestorsTable
           investors={vc_firms}
@@ -134,13 +132,12 @@ export const InvestorsByFilterInSection: FC<Props> = ({
           totalItems={vc_firms_aggregate?.aggregate?.count ?? 0}
           onClickPrev={previousPage}
           onClickNext={nextPage}
-          filterByTag={tagOnClick}
         />
       ) : (
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+            className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {vc_firms?.map(vcFirm => (
               <ElemInvestorCard

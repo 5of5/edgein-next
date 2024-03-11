@@ -24,7 +24,6 @@ type Props = {
   filters: DeepPartial<Events_Bool_Exp>;
   orderBy?: DeepPartial<Events_Order_By>;
   itemsPerPage: number;
-  tagOnClick: any;
   cardType?: CardType;
   filterInSectionType?: FilterInSectionType;
   onOpenUpgradeDialog: () => void;
@@ -36,7 +35,6 @@ export const EventsByFilterInSection: FC<Props> = ({
   headingText,
   filters,
   itemsPerPage,
-  tagOnClick,
   orderBy,
   cardType = 'full',
   filterInSectionType = 'see-all',
@@ -63,7 +61,7 @@ export const EventsByFilterInSection: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {times(4, index => (
           <PlaceholderEventCard key={index} />
         ))}
@@ -78,7 +76,7 @@ export const EventsByFilterInSection: FC<Props> = ({
     data.events.length === 0
   ) {
     return (
-      <div className="text-lg text-center mx-8 my-6">
+      <div className="mx-8 my-6 text-lg text-center">
         Sorry, we couldn&apos;t find any events today. Check back in tomorrow!
       </div>
     );
@@ -88,10 +86,10 @@ export const EventsByFilterInSection: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-lg mt-5 mb-3 font-medium">{headingText}</div>
+      <div className="mt-5 mb-3 text-lg font-medium">{headingText}</div>
       <div
         data-testid="personalizedCompanies"
-        className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+        className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         {events.map(event => (
           <ElemEventCard

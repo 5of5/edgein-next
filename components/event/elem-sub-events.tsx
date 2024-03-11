@@ -1,13 +1,10 @@
-import React, { FC, MouseEvent } from 'react';
-import { useRouter } from 'next/router';
+import React, { FC } from 'react';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { GetSubEventsQuery } from '@/graphql/types';
 import { ElemEventCard } from '../events/elem-event-card';
 import { useIntercom } from 'react-use-intercom';
-import { IconPlus } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -20,20 +17,7 @@ export const ElemSubEvents: FC<Props> = ({
   eventName,
   subEvents,
 }) => {
-  const router = useRouter();
-
   const { showNewMessages } = useIntercom();
-
-  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    router.push(
-      `${ROUTES.EVENTS}/?filters=${encodeURIComponent(
-        `{"eventType":{"tags":["${type}"]}}`,
-      )}`,
-    );
-  };
 
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
@@ -70,7 +54,7 @@ export const ElemSubEvents: FC<Props> = ({
           })}
         </ElemCarouselWrap>
       ) : (
-        <div className="w-full text-center p-4">
+        <div className="w-full p-4 text-center">
           <div className="text-gray-500">There are no sub-events.</div>
           <ElemButton
             btn="default"
