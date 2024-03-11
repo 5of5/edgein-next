@@ -1,17 +1,14 @@
 import type { NextPage, GetStaticProps } from 'next';
 import React, { useState, useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { ElemButton } from '../components/elem-button';
 import { runGraphQl } from '../utils';
 import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
-import { PlaceholderEventCard } from '@/components/placeholders';
-import moment from 'moment-timezone';
 import {
-  IconSearch,
-  IconAnnotation,
-  IconSortDashboard,
-} from '@/components/icons';
+  PlaceholderEventCard,
+  PlaceholderTable,
+} from '@/components/placeholders';
+import moment from 'moment-timezone';
+import { IconSortDashboard, IconGroup, IconTable } from '@/components/icons';
 import {
   GetEventsDocument,
   GetEventsQuery,
@@ -25,7 +22,6 @@ import { useRouter } from 'next/router';
 import { ElemFilter } from '@/components/filters/elem-filter';
 import { processEventsFilters } from '@/components/filters/processor';
 import { ElemEventCard } from '@/components/events/elem-event-card';
-import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useUser } from '@/context/user-context';
@@ -34,20 +30,20 @@ import {
   ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
+  TABLE_LAYOUT_LIMIT,
   TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemAddFilter } from '@/components/filters/elem-add-filter';
-import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemDropdown } from '@/components/elem-dropdown';
-//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
-import { ElemSticky } from '@/components/elem-sticky';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
+import { NoResults } from '@/components/companies/no-results';
+import { EventsTable } from '@/components/events/elem-events-table';
 
 type Props = {
   eventTabs: DashboardCategory[];
@@ -61,8 +57,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
 
-  const personalizedTags = getPersonalizedData({ user });
-
   const isDisplaySelectLibrary =
     user?.email &&
     (SWITCH_LIBRARY_ALLOWED_EMAILS.includes(user.email) ||
@@ -70,7 +64,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         user.email.endsWith(domain),
       ));
 
-  const { showNewMessages } = useIntercom();
+  const [tableLayout, setTableLayout] = useState(false);
 
   const [selectedTab, setSelectedTab] =
     useStateParams<DashboardCategory | null>(
@@ -85,7 +79,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
         ],
     );
 
-  const [page, setPage] = useStateParams<number>(
+  const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
@@ -95,12 +89,13 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
     useDashboardFilter({
       dateCondition: selectedTab?.value === 'past' ? 'past' : 'next',
-      resetPage: () => setPage(0),
+      resetPage: () => setPageIndex(0),
     });
 
   const isSortDropdownVisible = ['past'].includes(selectedTab?.value || '');
   const limit = 50;
-  const offset = limit * page;
+  const offset =
+    !user?.entitlements.viewEmails && tableLayout ? 0 : limit * pageIndex;
 
   const defaultFilters: DeepPartial<Events_Bool_Exp>[] = [
     { slug: { _neq: '' } },
@@ -130,7 +125,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
 
   useEffect(() => {
     if (!initialLoad) {
-      setPage(0);
+      setPageIndex(0);
     }
     if (initialLoad) {
       setInitialLoad(false);
@@ -151,62 +146,22 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     onChangeSelectedFilters(null);
   };
 
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string,
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const currentFilterOption = [...(selectedFilters?.eventType?.tags || [])];
-    const newFilterOption = currentFilterOption.includes(type)
-      ? currentFilterOption.filter(t => t !== type)
-      : [type, ...currentFilterOption];
-
-    if (newFilterOption.length === 0) {
-      onChangeSelectedFilters({ ...selectedFilters, eventType: undefined });
-    } else {
-      onChangeSelectedFilters({
-        ...selectedFilters,
-        eventType: {
-          ...selectedFilters?.eventType,
-          tags: newFilterOption,
-        },
-      });
-    }
-
-    currentFilterOption.includes(type)
-      ? toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Removed &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        )
-      : toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Added &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
-  };
+  const layoutItems = [
+    {
+      id: 0,
+      label: 'Grid view',
+      value: 'grid',
+      Icon: IconGroup,
+      onClick: () => setTableLayout(false),
+    },
+    {
+      id: 1,
+      label: 'Table view',
+      value: 'table',
+      Icon: IconTable,
+      onClick: () => setTableLayout(true),
+    },
+  ];
 
   /** Handle selected filter params */
   processEventsFilters(filters, selectedFilters, defaultFilters);
@@ -238,6 +193,19 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
     });
   }
 
+  const getLimit = () => {
+    // limit shown companies on table layout for non-paid users
+    if (tableLayout && !user?.entitlements.viewEmails) {
+      return TABLE_LAYOUT_LIMIT;
+    }
+
+    if (selectedTab?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return limit;
+  };
+
   const { orderByQuery, orderByParam, sortChoices } =
     useDashboardSortBy<Events_Order_By>({
       defaultSortBy: 'oldest',
@@ -256,9 +224,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   } = useGetEventsQuery(
     {
       offset,
-      limit:
-        selectedTab?.value === 'Trending' ? TRENDING_CATEGORY_LIMIT : limit,
-
+      limit: getLimit(),
       where: filters as Events_Bool_Exp,
       orderBy: orderByQuery,
     },
@@ -273,6 +239,21 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
   const events_aggregate = initialLoad
     ? eventsCount
     : eventsData?.events_aggregate?.aggregate?.count || 0;
+
+  const getTotalItems = () => {
+    if (selectedTab?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return events_aggregate;
+  };
+
+  const onPreviousPage = () => {
+    setPageIndex(pageIndex - 1);
+  };
+  const onNextPage = () => {
+    setPageIndex(pageIndex + 1);
+  };
 
   const pageTitle =
     selectedTab?.value === 'upcoming'
@@ -301,7 +282,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 <ElemLibrarySelector />
               </div>
             )}
-            {/* <div>
+            <div>
               <h3 className="mb-1 font-medium lg:hidden">View</h3>
               <ElemDropdown
                 buttonClass="w-full"
@@ -309,7 +290,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 ButtonIcon={tableLayout ? IconTable : IconGroup}
                 items={layoutItems}
               />
-            </div> */}
+            </div>
 
             <div>
               <h3 className="mb-1 font-medium lg:hidden">
@@ -373,102 +354,67 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
           </ElemFiltersWrap>
 
           <ElemDemocratizeBanner className="mx-8 my-3" />
-          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
           <div className="mx-8">
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading events
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report an error on events page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
-                  {/* Removed in qol-ui-fixes */}
-                  {/* <ElemDropdown
+            <div className="flex justify-between py-8">
+              <div className="text-4xl font-medium">{pageTitle}</div>
+              {/* Removed in qol-ui-fixes */}
+              {/* <ElemDropdown
                       ButtonIcon={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
                     /> */}
-                </div>
-                {isLoading && !initialLoad ? (
-                  <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            </div>
+
+            {isLoading && !initialLoad ? (
+              <>
+                {tableLayout ? (
+                  <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4">
                     {Array.from({ length: 9 }, (_, i) => (
                       <PlaceholderEventCard key={i} />
                     ))}
                   </div>
-                ) : (
-                  events?.length !== 0 && (
-                    <>
-                      <div
-                        data-testid="events"
-                        className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
-                      >
-                        {events?.map(event => (
-                          <ElemEventCard key={event.id} event={event} />
-                        ))}
-                      </div>
-
-                      <Pagination
-                        shownItems={events?.length}
-                        totalItems={events_aggregate}
-                        page={page}
-                        itemsPerPage={limit}
-                        onClickPrev={() => setPage(page - 1)}
-                        onClickNext={() => setPage(page + 1)}
-                        onClickToPage={selectedPage => setPage(selectedPage)}
-                      />
-                    </>
-                  )
                 )}
+              </>
+            ) : tableLayout && events?.length != 0 ? (
+              <EventsTable
+                events={events}
+                pageNumber={pageIndex}
+                itemsPerPage={getLimit()}
+                shownItems={events?.length}
+                totalItems={getTotalItems()}
+                onClickPrev={onPreviousPage}
+                onClickNext={onNextPage}
+              />
+            ) : (
+              <>
+                <div
+                  data-testid="events"
+                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
+                >
+                  {events?.map(event => (
+                    <ElemEventCard key={event.id} event={event} />
+                  ))}
+                </div>
+
+                <Pagination
+                  shownItems={events?.length}
+                  totalItems={getTotalItems()}
+                  page={pageIndex}
+                  itemsPerPage={getLimit()}
+                  onClickPrev={onPreviousPage}
+                  onClickNext={onNextPage}
+                  onClickToPage={selectedPage => setPageIndex(selectedPage)}
+                />
               </>
             )}
 
-            {events?.length === 0 && (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-                <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                  <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                  <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, try different filters, or tell us
-                    about missing data.
-                  </div>
-                  <ElemButton
-                    onClick={() =>
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                      )
-                    }
-                    btn="white"
-                    className="mt-3"
-                  >
-                    <IconAnnotation className="w-6 h-6 mr-1" />
-                    Tell us about missing data
-                  </ElemButton>
-                </div>
-              </div>
-            )}
+            {(!events || events?.length === 0 || error) && <NoResults />}
           </div>
-
-          <Toaster />
         </div>
       </DashboardLayout>
     </>
