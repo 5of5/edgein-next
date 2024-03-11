@@ -197,7 +197,7 @@ const Home = () => {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden">
+      <section className="relative overflow-hidden isolate">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1422 800"
@@ -243,8 +243,8 @@ const Home = () => {
           </defs>
         </svg>
 
-        <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:items-center lg:px-8 lg:py-16">
-          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0">
+        <div className="px-6 pt-10 pb-24 mx-auto max-w-7xl sm:pb-32 lg:flex lg:items-center lg:px-8 lg:py-16">
+          <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl lg:flex-shrink-0">
             <h1 className="mt-10 text-4xl font-bold tracking-tight sm:text-6xl">
               Web3 business data and knowledge.
             </h1>
@@ -252,7 +252,7 @@ const Home = () => {
               Connect to builders from 100k Web3 organizations; Companies,
               Investors, Events, and Media to people, updated daily.
             </p>
-            <div className="mt-6 flex items-start gap-x-6">
+            <div className="flex items-start mt-6 gap-x-6">
               <ElemButton
                 onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="primary"
@@ -266,11 +266,11 @@ const Home = () => {
               <strong>EdgeIn is free to try</strong> for as long as you’d like
             </p>
           </div>
-          <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
-            <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
+          <div className="flex max-w-2xl mx-auto mt-16 sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
+            <div className="flex-none max-w-3xl sm:max-w-5xl lg:max-w-none">
               <div className="relative -m-2 rounded-xl">
                 <div
-                  className="absolute inset-x-0 bottom-0 -z-10 transform-gpu overflow-hidden blur-3xl opacity-10"
+                  className="absolute inset-x-0 bottom-0 overflow-hidden -z-10 transform-gpu blur-3xl opacity-10"
                   aria-hidden="true"
                 >
                   <div className="relative h-[500px] w-full bg-gradient-to-tr from-primary-500 via-[#FE33D0] to-[#F8DA4B]"></div>
@@ -287,15 +287,15 @@ const Home = () => {
       </section>
 
       <div className="bg-gray-100">
-        <section className="mx-auto max-w-7xl lg:px-6 pt-16 pb-8">
-          <div className="text-left lg:text-center px-6 lg:px-0">
-            <h2 className="text-3xl font-bold sm:text-4xl pb-8">
+        <section className="pt-16 pb-8 mx-auto max-w-7xl lg:px-6">
+          <div className="px-6 text-left lg:text-center lg:px-0">
+            <h2 className="pb-8 text-3xl font-bold sm:text-4xl">
               Why use EdgeIn
             </h2>
           </div>
 
           <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
-            <Tab.List className="scrollbar-hide overflow-x-scroll flex shrink-0 gap-4 px-6 transition-all lg:justify-center">
+            <Tab.List className="flex gap-4 px-6 overflow-x-scroll transition-all scrollbar-hide shrink-0 lg:justify-center">
               {whyEdgein.map((item: any, index: number) => {
                 const { title } = item;
                 return (
@@ -315,26 +315,26 @@ const Home = () => {
               })}
             </Tab.List>
 
-            <div className="mt-6 mx-4 p-6 border border-gray-300 rounded-xl lg:mx-0 lg:flex lg:items-center lg:gap-x-24">
+            <div className="p-6 mx-4 mt-6 border border-gray-300 rounded-xl lg:mx-0 lg:flex lg:items-center lg:gap-x-24">
               <Tab.Panels className="w-full max-w-md mx-auto lg:mx-0">
                 {whyEdgein.map((item: any, index: number) => {
                   const { title, benefits } = item;
                   return (
                     <Tab.Panel className="w-full" key={index}>
-                      <h3 className="font-medium text-xl sm:text-2xl">
+                      <h3 className="text-xl font-medium sm:text-2xl">
                         {title}
                       </h3>
-                      <ul className="mt-4 flex flex-col space-y-4">
+                      <ul className="flex flex-col mt-4 space-y-4">
                         {benefits.map((benefit: any, ii: number) => {
                           return (
                             <li className="flex items-start" key={ii}>
-                              <IconCheck className="w-6 h-6 shrink-0 mr-2 text-primary-500 " />{' '}
+                              <IconCheck className="w-6 h-6 mr-2 shrink-0 text-primary-500 " />{' '}
                               {benefit}
                             </li>
                           );
                         })}
                       </ul>
-                      <div className="mt-6 flex items-start gap-x-6">
+                      <div className="flex items-start mt-6 gap-x-6">
                         <ElemButton
                           onClick={() => router.push(ROUTES.COMPANIES)}
                           btn="primary"
@@ -349,16 +349,16 @@ const Home = () => {
                 })}
               </Tab.Panels>
 
-              <FigureConnect className="h-auto w-full mx-auto max-w-md mt-8 lg:mt-0 lg:max-w-none" />
+              <FigureConnect className="w-full h-auto max-w-md mx-auto mt-8 lg:mt-0 lg:max-w-none" />
             </div>
           </Tab.Group>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 pt-8 pb-16 lg:px-6">
-          <h2 className="mx-auto max-w-lg text-center text-lg">
+        <section className="px-6 pt-8 pb-16 mx-auto max-w-7xl lg:px-6">
+          <h2 className="max-w-lg mx-auto text-lg text-center">
             Trusted by leading companies around the world.
           </h2>
-          <div className="mt-10 grid grid-cols-4 items-center gap-x-8 gap-y-10 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-7">
+          <div className="grid items-center grid-cols-4 mt-10 gap-x-8 gap-y-10 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-7">
             {logos.map((organization: any, index: number) => {
               const { src, alt, className } = organization;
               return (
@@ -373,11 +373,11 @@ const Home = () => {
               );
             })}
           </div>
-          <h3 className="mt-8 mx-auto max-w-lg text-center text-lg lg:px-4">
+          <h3 className="max-w-lg mx-auto mt-8 text-lg text-center lg:px-4">
             As seen on:
           </h3>
 
-          <div className="mx-auto mt-3 grid max-w-lg grid-cols-3 sm:grid-cols-3 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:gap-x-10">
+          <div className="grid items-center max-w-lg grid-cols-3 mx-auto mt-3 sm:grid-cols-3 gap-x-8 gap-y-10 sm:max-w-xl sm:gap-x-10">
             {publishersLogos.map((publisher: any, index: number) => {
               const { src, alt, link, className } = publisher;
               return (
@@ -396,10 +396,10 @@ const Home = () => {
         </section>
       </div>
 
-      <section className="mx-auto max-w-7xl px-6 py-8 lg:py-16 lg:px-6">
+      <section className="px-6 py-8 mx-auto max-w-7xl lg:py-16 lg:px-6">
         <div className="md:grid md:grid-cols-12 md:gap-10">
           <div className="flex flex-col sm:space-y-4 md:col-span-5">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl pb-4">
+            <h2 className="pb-4 text-3xl font-bold tracking-tight sm:text-4xl">
               Move faster with EdgeIn tools
             </h2>
             {features.map((feature: any, index: number) => {
@@ -445,7 +445,7 @@ const Home = () => {
                 </div>
               );
             })}
-            <div className="mt-6 flex items-center">
+            <div className="flex items-center mt-6">
               <ElemButton
                 onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="primary"
@@ -458,7 +458,7 @@ const Home = () => {
           </div>
 
           <div className="mt-4 md:mt-0 md:col-span-7">
-            <div className="relative flex items-center rounded-xl bg-white border border-gray-200 overflow-hidden">
+            <div className="relative flex items-center overflow-hidden bg-white border border-gray-200 rounded-xl">
               <div className="">
                 {(selectedFeature === 1 || selectedFeature === 3) && (
                   <div className="absolute top-0 bottom-0 right-0 w-10 bg-gradient-to-r from-transparent to-white"></div>
@@ -477,54 +477,49 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:pb-16">
-        <div className="">
-          <div className="mx-auto flow-root max-w-2xl lg:mx-0 lg:max-w-none">
-            <div className="-mt-8 sm:-mx-4 sm:text-[0] lg:columns-3">
-              {testimonials.map(testimonial => (
-                <div
-                  key={testimonial.author.function}
-                  className="pt-8 sm:inline-block sm:w-full sm:px-4 lg:pt-0"
-                >
-                  <figure className="rounded-2xl bg-gray-100 p-8 leading-6">
-                    <figcaption className="mb-6 flex items-center gap-x-4">
-                      <img
-                        className="h-10 w-10 rounded-full bg-gray-50"
-                        src={testimonial.author.imageUrl}
-                        alt=""
-                      />
-                      <div className="text-sm">
-                        <div className="font-medium">
-                          {testimonial.author.name}
-                        </div>
-                        <div className="text-gray-600">{`${testimonial.author.function}`}</div>
+      <section className="px-6 pb-8 mx-auto max-w-7xl lg:px-8 lg:pb-16">
+        <div className="max-w-2xl mx-auto lg:max-w-none">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {testimonials.map(testimonial => (
+              <div key={testimonial.author.function} className="sm:w-full">
+                <figure className="p-8 leading-6 bg-gray-100 rounded-2xl">
+                  <figcaption className="flex items-center mb-6 gap-x-4">
+                    <img
+                      className="w-10 h-10 rounded-full bg-gray-50"
+                      src={testimonial.author.imageUrl}
+                      alt=""
+                    />
+                    <div className="text-sm">
+                      <div className="font-medium">
+                        {testimonial.author.name}
                       </div>
-                    </figcaption>
-                    <blockquote className="text-base text-gray-900">
-                      <p>{`“${testimonial.body}”`}</p>
-                    </blockquote>
-                  </figure>
-                </div>
-              ))}
-            </div>
+                      <div className="text-gray-600">{`${testimonial.author.function}`}</div>
+                    </div>
+                  </figcaption>
+                  <blockquote className="text-base text-gray-900">
+                    <p>{`“${testimonial.body}”`}</p>
+                  </blockquote>
+                </figure>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       <section>
         <div className="relative overflow-hidden p-8 sm:px-16 sm:py-24 bg-gradient-to-b from-[#A05FFE] via-primary-500 to-primary-500 text-center">
-          <div className=" relative z-10">
+          <div className="relative z-10 ">
             <h2 className="mx-auto text-3xl font-bold tracking-tight text-white sm:text-5xl">
               See all you can accomplish with EdgeIn
             </h2>
 
-            <div className="mt-8 flex flex-col justify-center space-y-6 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
+            <div className="flex flex-col justify-center mt-8 space-y-6 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
               <ElemButton
                 onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="default"
                 size="md"
                 arrow
-                className="whitespace-nowrap w-fit mx-auto sm:mx-0"
+                className="mx-auto whitespace-nowrap w-fit sm:mx-0"
               >
                 Access now
               </ElemButton>
@@ -532,16 +527,16 @@ const Home = () => {
                 onClick={show}
                 btn="ol-white"
                 size="md"
-                className="whitespace-nowrap w-fit mx-auto sm:mx-0"
+                className="mx-auto whitespace-nowrap w-fit sm:mx-0"
               >
                 Talk to us
               </ElemButton>
             </div>
           </div>
-          <figure className="absolute bottom-16 -left-36 w-72 h-72 bg-primary-400 rounded-full blur-3xl opacity-100"></figure>
-          <figure className="absolute -bottom-28 -left-36 w-72 h-72 bg-amber-300 rounded-full blur-3xl opacity-60"></figure>
-          <figure className="absolute left-1/2 -translate-x-1/2 -bottom-64 w-96 h-96 bg-primary-400 rounded-full blur-3xl opacity-80"></figure>
-          <figure className="absolute -bottom-64 -right-36 w-96 h-96 bg-primary-400 rounded-full blur-3xl opacity-100"></figure>
+          <figure className="absolute rounded-full opacity-100 bottom-16 -left-36 w-72 h-72 bg-primary-400 blur-3xl"></figure>
+          <figure className="absolute rounded-full -bottom-28 -left-36 w-72 h-72 bg-amber-300 blur-3xl opacity-60"></figure>
+          <figure className="absolute -translate-x-1/2 rounded-full left-1/2 -bottom-64 w-96 h-96 bg-primary-400 blur-3xl opacity-80"></figure>
+          <figure className="absolute rounded-full opacity-100 -bottom-64 -right-36 w-96 h-96 bg-primary-400 blur-3xl"></figure>
         </div>
       </section>
 
