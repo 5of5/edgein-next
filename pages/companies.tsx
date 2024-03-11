@@ -5,15 +5,8 @@ import {
   PlaceholderCompanyCard,
   PlaceholderTable,
 } from '@/components/placeholders';
-import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import {
-  IconSearch,
-  IconAnnotation,
-  IconSortDashboard,
-  IconGroup,
-  IconTable,
-} from '@/components/icons';
+import { IconSortDashboard, IconGroup, IconTable } from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
   Order_By,
@@ -31,13 +24,13 @@ import {
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
   TRENDING_CATEGORY_LIMIT,
+  TABLE_LAYOUT_LIMIT,
 } from '@/utils/constants';
 import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { processCompaniesFilters } from '@/components/filters/processor';
 import { ElemFilter } from '@/components/filters/elem-filter';
-import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -56,6 +49,7 @@ import moment from 'moment-timezone';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
+import { NoResults } from '@/components/companies/no-results';
 
 type Props = {
   companiesCount: number;
@@ -114,15 +108,11 @@ const Companies: NextPage<Props> = ({
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
     useDashboardFilter({ resetPage: () => setPageIndex(0) });
 
-  // limit shown companies on table layout for free users
-  const limit =
-    user?.entitlements.listsCount && tableLayout
-      ? user?.entitlements.listsCount
-      : 50;
+  const limit = 50;
 
   // disable offset on table layout for free users
   const offset =
-    user?.entitlements.listsCount && tableLayout ? 0 : limit * pageIndex;
+    !user?.entitlements.viewEmails && tableLayout ? 0 : limit * pageIndex;
 
   const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
@@ -257,6 +247,15 @@ const Companies: NextPage<Props> = ({
   }
 
   const getLimit = () => {
+    // limit shown companies on table layout for visitors
+    if ((tableLayout && !user) || tableLayout) {
+      return TABLE_LAYOUT_LIMIT;
+    }
+    // limit shown companies on table layout for free users
+    if (tableLayout && user?.entitlements.listsCount) {
+      return user?.entitlements.listsCount;
+    }
+
     if (isNewTabSelected) {
       return NEW_CATEGORY_LIMIT;
     }
@@ -314,8 +313,6 @@ const Companies: NextPage<Props> = ({
 
     return companies_aggregate;
   };
-
-  const { showNewMessages } = useIntercom();
 
   const layoutItems = [
     {
@@ -468,7 +465,7 @@ const Companies: NextPage<Props> = ({
           <ElemDemocratizeBanner className="mx-8 mt-2" />
 
           <div className="mx-8">
-            {error ? (
+            {/* {error ? (
               <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
                 <div className="max-w-xl mx-auto">
                   <h4 className="mt-5 text-3xl font-bold">
@@ -482,98 +479,73 @@ const Companies: NextPage<Props> = ({
                           `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
                         )
                       }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
+                      className="inline underline decoration-primary-500 hover:text-primary-500">
                       <span>report error</span>
                     </button>
                     .
                   </div>
                 </div>
-              </div>
+              </div> */}
+
+            <div className="flex justify-between py-8">
+              <div className="text-4xl font-medium">{pageTitle}</div>
+            </div>
+
+            {!companies || companies?.length === 0 || error ? (
+              <NoResults />
+            ) : isLoading && !initialLoad ? (
+              <>
+                {tableLayout ? (
+                  <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    {Array.from({ length: 9 }, (_, i) => (
+                      <PlaceholderCompanyCard key={i} />
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : tableLayout && companies?.length != 0 ? (
+              <CompaniesTable
+                companies={companies}
+                pageNumber={pageIndex}
+                itemsPerPage={getLimit()}
+                shownItems={companies?.length}
+                totalItems={getTotalItems()}
+                onClickPrev={onPreviousPage}
+                onClickNext={onNextPage}
+                filterByTag={filterByTag}
+              />
             ) : (
               <>
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
+                <div
+                  data-testid="companies"
+                  className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                >
+                  {companies?.map(company => {
+                    return (
+                      <ElemCompanyCard
+                        key={company.id}
+                        company={company as Companies}
+                      />
+                    );
+                  })}
                 </div>
-
-                {isLoading && !initialLoad ? (
-                  <>
-                    {tableLayout ? (
-                      <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
-                        <PlaceholderTable />
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {Array.from({ length: 9 }, (_, i) => (
-                          <PlaceholderCompanyCard key={i} />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : tableLayout && companies?.length != 0 ? (
-                  <CompaniesTable
-                    companies={companies}
-                    pageNumber={pageIndex}
-                    itemsPerPage={limit}
-                    shownItems={companies?.length}
-                    totalItems={companies_aggregate}
-                    onClickPrev={onPreviousPage}
-                    onClickNext={onNextPage}
-                    filterByTag={filterByTag}
-                  />
-                ) : (
-                  <>
-                    <div
-                      data-testid="companies"
-                      className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                    >
-                      {companies?.map(company => {
-                        return (
-                          <ElemCompanyCard
-                            key={company.id}
-                            company={company as Companies}
-                          />
-                        );
-                      })}
-                    </div>
-                    <Pagination
-                      shownItems={companies?.length}
-                      totalItems={getTotalItems()}
-                      page={pageIndex}
-                      itemsPerPage={getLimit()}
-                      onClickPrev={onPreviousPage}
-                      onClickNext={onNextPage}
-                      onClickToPage={selectedPage => setPageIndex(selectedPage)}
-                    />
-                  </>
-                )}
+                <Pagination
+                  shownItems={companies?.length}
+                  totalItems={getTotalItems()}
+                  page={pageIndex}
+                  itemsPerPage={getLimit()}
+                  onClickPrev={onPreviousPage}
+                  onClickNext={onNextPage}
+                  onClickToPage={selectedPage => setPageIndex(selectedPage)}
+                />
               </>
             )}
           </div>
-          {companies?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
+
           <Toaster />
         </div>
       </DashboardLayout>

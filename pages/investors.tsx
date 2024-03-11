@@ -5,16 +5,9 @@ import {
   PlaceholderInvestorCard,
   PlaceholderTable,
 } from '@/components/placeholders';
-import { ElemButton } from '@/components/elem-button';
 import { Pagination } from '@/components/pagination';
 import { ElemInvestorCard } from '@/components/investors/elem-investor-card';
-import {
-  IconSearch,
-  IconAnnotation,
-  IconSortDashboard,
-  IconTable,
-  IconGroup,
-} from '@/components/icons';
+import { IconSortDashboard, IconTable, IconGroup } from '@/components/icons';
 import { InvestorsTable } from '@/components/investors/elem-investors-table';
 import {
   GetVcFirmsDocument,
@@ -30,6 +23,7 @@ import {
   investorChoices,
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
+  TABLE_LAYOUT_LIMIT,
   TRENDING_CATEGORY_LIMIT,
 } from '@/utils/constants';
 import { useStateParams } from '@/hooks/use-state-params';
@@ -37,7 +31,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { onTrackView } from '@/utils/track';
 import { ElemFilter } from '@/components/filters/elem-filter';
 import { processInvestorsFilters } from '@/components/filters/processor';
-import { useIntercom } from 'react-use-intercom';
 import useLibrary from '@/hooks/use-library';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
@@ -55,6 +48,7 @@ import moment from 'moment-timezone';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
+import { NoResults } from '@/components/companies/no-results';
 
 type Props = {
   vcFirmCount: number;
@@ -114,14 +108,11 @@ const Investors: NextPage<Props> = ({
     useDashboardFilter({ resetPage: () => setPageIndex(0) });
 
   // limit shown investors on table layout for free users
-  const limit =
-    user?.entitlements.listsCount && tableLayout
-      ? user?.entitlements.listsCount
-      : 50;
+  const limit = 50;
 
   // disable offset on table layout for free users
   const offset =
-    user?.entitlements.listsCount && tableLayout ? 0 : limit * pageIndex;
+    !user?.entitlements.viewEmails && tableLayout ? 0 : limit * pageIndex;
 
   const defaultFilters: DeepPartial<Vc_Firms_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
@@ -242,6 +233,15 @@ const Investors: NextPage<Props> = ({
   }
 
   const getLimit = () => {
+    // limit shown companies on table layout for visitors
+    if ((tableLayout && !user) || tableLayout) {
+      return TABLE_LAYOUT_LIMIT;
+    }
+    // limit shown companies on table layout for free users
+    if (tableLayout && user?.entitlements.listsCount) {
+      return user?.entitlements.listsCount;
+    }
+
     if (isNewTabSelected) {
       return NEW_CATEGORY_LIMIT;
     }
@@ -317,8 +317,6 @@ const Investors: NextPage<Props> = ({
 
     return vcfirms_aggregate;
   };
-
-  const { showNewMessages } = useIntercom();
 
   const layoutItems = [
     {
@@ -470,28 +468,8 @@ const Investors: NextPage<Props> = ({
           <ElemDemocratizeBanner className="mx-8 my-3" />
 
           <div className="mx-8">
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading investors
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report an error on investors page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
-                </div>
-              </div>
+            {!vcFirms || vcFirms?.length === 0 || error ? (
+              <NoResults />
             ) : (
               <>
                 <div className="flex justify-between py-8">
@@ -552,30 +530,6 @@ const Investors: NextPage<Props> = ({
             )}
           </div>
 
-          {vcFirms?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
           <Toaster />
         </div>
       </DashboardLayout>
