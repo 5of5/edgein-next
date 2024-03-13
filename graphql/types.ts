@@ -30385,7 +30385,7 @@ export type GetPeopleQueryVariables = Exact<{
 }>;
 
 
-export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
+export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
 
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -34981,7 +34981,7 @@ export const GetPersonDocument = `
     website_url
     about
     email
-    investors {
+    investors(order_by: {start_date: desc_nulls_last, end_date: desc_nulls_first}) {
       id
       end_date
       start_date
@@ -34997,7 +34997,9 @@ export const GetPersonDocument = `
         tags
       }
     }
-    team_members {
+    team_members(
+      order_by: {start_date: desc_nulls_last, end_date: desc_nulls_first}
+    ) {
       id
       end_date
       start_date
@@ -35117,7 +35119,10 @@ export const GetPeopleDocument = `
     facebook_url
     twitter_url
     website_url
-    investors {
+    investors(
+      limit: 1
+      order_by: {start_date: desc_nulls_last, end_date: desc_nulls_first}
+    ) {
       id
       end_date
       start_date
@@ -35129,12 +35134,15 @@ export const GetPeopleDocument = `
         slug
         name
         logo
-        overview
         location_json
         tags
+        website
       }
     }
-    team_members {
+    team_members(
+      limit: 1
+      order_by: {start_date: desc_nulls_last, end_date: desc_nulls_first}
+    ) {
       id
       end_date
       start_date
@@ -35146,9 +35154,9 @@ export const GetPeopleDocument = `
         slug
         name
         logo
-        overview
         location_json
         tags
+        website
       }
     }
     follows {
