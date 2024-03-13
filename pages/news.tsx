@@ -6,10 +6,8 @@ import { useRouter } from 'next/router';
 import { ElemNewsCard } from '@/components/news/elem-news-card';
 import { useIntercom } from 'react-use-intercom';
 import { PlaceholderNewsCard } from '@/components/placeholders';
-import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '../utils';
 import { Toaster } from 'react-hot-toast';
-import { IconAnnotation, IconSearch } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
   News,
@@ -39,6 +37,7 @@ import { NewsByFilter } from '@/components/news/elem-news-by-filter';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
+import { NoResults } from '@/components/companies/no-results';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -269,59 +268,37 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                   <div className="text-4xl font-medium">{pageTitle}</div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                  {error ? (
-                    <h4>Error loading news</h4>
-                  ) : isLoading && !initialLoad ? (
-                    <>
-                      {Array.from({ length: 6 }, (_, i) => (
-                        <PlaceholderNewsCard key={i} />
+                {error ? (
+                  <h4>Error loading news</h4>
+                ) : isLoading && !initialLoad ? (
+                  <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    {Array.from({ length: 6 }, (_, i) => (
+                      <PlaceholderNewsCard key={i} />
+                    ))}
+                  </div>
+                ) : news?.length != 0 ? (
+                  <>
+                    <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                      {news?.map(item => (
+                        <ElemNewsCard key={item.id} newsPost={item} />
                       ))}
-                    </>
-                  ) : (
-                    news?.map(item => (
-                      <ElemNewsCard key={item.id} newsPost={item} />
-                    ))
-                  )}
-                </div>
-
-                <Pagination
-                  shownItems={news?.length}
-                  totalItems={getTotalItems()}
-                  page={pageIndex}
-                  itemsPerPage={getLimit()}
-                  onClickPrev={onPreviousPage}
-                  onClickNext={onNextPage}
-                  onClickToPage={selectedPage => setPageIndex(selectedPage)}
-                />
+                    </div>
+                    <Pagination
+                      shownItems={news?.length}
+                      totalItems={getTotalItems()}
+                      page={pageIndex}
+                      itemsPerPage={getLimit()}
+                      onClickPrev={onPreviousPage}
+                      onClickNext={onNextPage}
+                      onClickToPage={selectedPage => setPageIndex(selectedPage)}
+                    />
+                  </>
+                ) : (
+                  <NoResults />
+                )}
               </div>
             </div>
           </div>
-
-          {news?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
 
           <Toaster />
         </div>

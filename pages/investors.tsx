@@ -410,67 +410,61 @@ const Investors: NextPage<Props> = ({
           <ElemDemocratizeBanner className="mx-8 my-3" />
 
           <div className="mx-8">
-            {!vcFirms || vcFirms?.length === 0 || error ? (
-              <NoResults />
-            ) : (
+            <div className="flex justify-between py-8">
+              <div className="text-4xl font-medium">{pageTitle}</div>
+            </div>
+
+            {isLoading && !initialLoad ? (
               <>
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
-                </div>
-
-                {isLoading && !initialLoad ? (
-                  <>
-                    {tableLayout ? (
-                      <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
-                        <PlaceholderTable />
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {Array.from({ length: 9 }, (_, i) => (
-                          <PlaceholderInvestorCard key={i} />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : tableLayout && vcFirms.length != 0 ? (
-                  <InvestorsTable
-                    investors={vcFirms}
-                    pageNumber={pageIndex}
-                    itemsPerPage={getLimit()}
-                    shownItems={vcFirms?.length}
-                    totalItems={getTotalItems()}
-                    onClickPrev={onPreviousPage}
-                    onClickNext={onNextPage}
-                  />
+                {tableLayout ? (
+                  <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
                 ) : (
-                  <>
-                    <div
-                      data-testid="investors"
-                      className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                    >
-                      {vcFirms?.map(vcfirm => (
-                        <ElemInvestorCard
-                          key={vcfirm.id}
-                          vcFirm={vcfirm as Vc_Firms}
-                        />
-                      ))}
-                    </div>
-
-                    <Pagination
-                      shownItems={vcFirms?.length}
-                      totalItems={getTotalItems()}
-                      page={pageIndex}
-                      itemsPerPage={getLimit()}
-                      onClickPrev={onPreviousPage}
-                      onClickNext={onNextPage}
-                      onClickToPage={selectedPage => setPageIndex(selectedPage)}
-                    />
-                  </>
+                  <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    {Array.from({ length: 9 }, (_, i) => (
+                      <PlaceholderInvestorCard key={i} />
+                    ))}
+                  </div>
                 )}
               </>
-            )}
+            ) : tableLayout && vcFirms?.length != 0 ? (
+              <InvestorsTable
+                investors={vcFirms}
+                pageNumber={pageIndex}
+                itemsPerPage={getLimit()}
+                shownItems={vcFirms?.length}
+                totalItems={getTotalItems()}
+                onClickPrev={onPreviousPage}
+                onClickNext={onNextPage}
+              />
+            ) : vcFirms?.length != 0 ? (
+              <>
+                <div
+                  data-testid="investors"
+                  className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                >
+                  {vcFirms?.map(vcfirm => (
+                    <ElemInvestorCard
+                      key={vcfirm.id}
+                      vcFirm={vcfirm as Vc_Firms}
+                    />
+                  ))}
+                </div>
 
-            {(!vcFirms || vcFirms?.length === 0 || error) && <NoResults />}
+                <Pagination
+                  shownItems={vcFirms?.length}
+                  totalItems={getTotalItems()}
+                  page={pageIndex}
+                  itemsPerPage={getLimit()}
+                  onClickPrev={onPreviousPage}
+                  onClickNext={onNextPage}
+                  onClickToPage={selectedPage => setPageIndex(selectedPage)}
+                />
+              </>
+            ) : (
+              <NoResults />
+            )}
           </div>
         </div>
       </DashboardLayout>

@@ -187,13 +187,9 @@ const Companies: NextPage<Props> = ({
   }
 
   const getLimit = () => {
-    // limit shown companies on table layout for visitors
-    if ((tableLayout && !user) || tableLayout) {
+    // limit shown companies on table layout for non-paid users
+    if (tableLayout && !user?.entitlements.viewEmails) {
       return TABLE_LAYOUT_LIMIT;
-    }
-    // limit shown companies on table layout for free users
-    if (tableLayout && user?.entitlements.listsCount) {
-      return user?.entitlements.listsCount;
     }
 
     if (isNewTabSelected) {
@@ -433,7 +429,7 @@ const Companies: NextPage<Props> = ({
                 onClickPrev={onPreviousPage}
                 onClickNext={onNextPage}
               />
-            ) : (
+            ) : companies?.length != 0 ? (
               <>
                 <div
                   data-testid="companies"
@@ -458,9 +454,9 @@ const Companies: NextPage<Props> = ({
                   onClickToPage={selectedPage => setPageIndex(selectedPage)}
                 />
               </>
+            ) : (
+              <NoResults />
             )}
-
-            {(!companies || companies?.length === 0 || error) && <NoResults />}
           </div>
         </div>
       </DashboardLayout>

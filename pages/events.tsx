@@ -390,7 +390,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                 onClickPrev={onPreviousPage}
                 onClickNext={onNextPage}
               />
-            ) : (
+            ) : events?.length != 0 ? (
               <>
                 <div
                   data-testid="events"
@@ -411,9 +411,9 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                   onClickToPage={selectedPage => setPageIndex(selectedPage)}
                 />
               </>
+            ) : (
+              <NoResults />
             )}
-
-            {(!events || events?.length === 0 || error) && <NoResults />}
           </div>
         </div>
       </DashboardLayout>

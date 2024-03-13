@@ -129,9 +129,9 @@ const People: NextPage<Props> = ({
 
   const getLimit = () => {
     // limit shown companies on table layout for non-paid users
-    // if (tableLayout && !user?.entitlements.viewEmails) {
-    //   return TABLE_LAYOUT_LIMIT;
-    // }
+    if (tableLayout && !user?.entitlements.viewEmails) {
+      return TABLE_LAYOUT_LIMIT;
+    }
 
     if (selectedTab?.value === 'new') {
       return NEW_CATEGORY_LIMIT;
