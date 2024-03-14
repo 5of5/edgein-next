@@ -14,7 +14,7 @@ export const ElemCategories: FC<Props> = ({
   onChangeCategory,
 }) => {
   return (
-    <nav className="flex flex-wrap gap-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+    <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap">
       {categories.map((category, index) => {
         const selected = selectedCategory?.value === category.value;
 
@@ -26,19 +26,19 @@ export const ElemCategories: FC<Props> = ({
             onClick={() => onChangeCategory(selected ? null : category)}
             btn="gray"
             roundedFull={false}
-            className={`py-2 rounded-lg ${
+            className={`rounded-lg shrink-0 !justify-start lg:justify-center ${
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
             }`}
           >
             {category.icon && (
-              <div className="w-5 h-5 mr-1.5">{category.icon}</div>
+              <div className="w-4 h-4 shrink-0 mr-1.5">{category.icon}</div>
             )}
             {category.title}
           </ElemButton>
         );
       })}
-    </nav>
+    </div>
   );
 };

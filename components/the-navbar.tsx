@@ -1,10 +1,10 @@
-import { useEffect, Fragment, FC, useCallback } from 'react';
+import { useEffect, FC, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { ElemLogo } from '@/components/elem-logo';
 import { ElemButton } from '@/components/elem-button';
 import { UserMenu } from '@/components/user-menu';
-import UsageModal from '@/components/usage-modal';
+import { UsageModal } from '@/components/usage-modal';
 import {
   IconSearch,
   IconBell,
@@ -15,14 +15,14 @@ import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { useUser } from '@/context/user-context';
 import { ElemSearchBox } from './elem-search-box';
-import { find } from 'lodash';
-import { getNameFromListName } from '@/utils/reaction';
-import { Popover, Transition } from '@headlessui/react';
 import { redirect_url } from '@/utils/auth';
 import { usePopup } from '@/context/popup-context';
 import { useSidebar } from '@/context/sidebar-context';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
+import { DashboardSidebar } from './dashboard/dashboard-sidebar';
+import { ElemModal } from './elem-modal';
+import { ElemDropdown } from './elem-dropdown';
 
 export type Popups = 'search' | 'usage' | false;
 
@@ -30,14 +30,10 @@ type Props = {};
 
 export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
-  const { user, listAndFollows, myGroups, unreadNotificationsCount } =
-    useUser();
+  const { user, listAndFollows, unreadNotificationsCount } = useUser();
 
   const { showPopup, setShowPopup } = usePopup();
   const { showSidebar, setShowSidebar } = useSidebar();
-
-  const hotListId =
-    find(listAndFollows, list => 'hot' === getNameFromListName(list))?.id || 0;
 
   useEffect(() => {
     if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
@@ -51,10 +47,6 @@ export const TheNavbar: FC<Props> = ({}) => {
     event.preventDefault();
     setShowPopup('search');
   });
-
-  // if (user) {
-  // 	siteNav.push({ path: myListsUrl, name: "My Lists" });
-  // }
 
   const getAccessTokenFromCode = async (code: string) => {
     try {
@@ -111,39 +103,47 @@ export const TheNavbar: FC<Props> = ({}) => {
     router.push(ROUTES.SIGN_IN);
   };
 
-  const ellipsisDropdownItems = [
+  const quickLinks = [
     {
+      id: 0,
       label: 'Support',
-      href: ROUTES.SUPPORT,
+      value: 'support',
+      onClick: () => router.push(ROUTES.SUPPORT),
     },
     {
+      id: 1,
       label: 'Pricing',
-      href: ROUTES.PRICING,
+      value: 'pricing',
+      onClick: () => router.push(ROUTES.PRICING),
     },
     {
+      id: 2,
       label: 'Press',
-      href: 'mailto:press@edgein.io',
+      value: 'press',
+      onClick: () => (window.location.href = 'mailto:press@edgein.io'),
     },
     {
+      id: 3,
       label: 'Contact',
-      href: ROUTES.CONTACT,
+      value: 'contact',
+      onClick: () => router.push(ROUTES.CONTACT),
     },
   ];
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-40">
-      <div className="px-1 py-1 sm:px-3 sm:py-2 border-b border-gray-200 bg-white/80 backdrop-blur">
+    <>
+      <header className="sticky top-0 left-0 right-0 z-40">
         <nav
-          className="flex items-center justify-between lg:justify-start w-full mx-auto"
+          className="flex items-center justify-between w-full px-1 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14 sm:px-3"
           aria-label="Global"
         >
           <div className="flex items-center gap-3">
             <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
-              btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+              btn="ol-gray"
+              className="h-9 w-9 !px-0 !py-0 lg:hidden"
             >
-              <IconBars3 className="h-6 w-6" />
+              <IconBars3 className="w-6 h-6" />
             </ElemButton>
 
             <ElemLink
@@ -152,7 +152,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             >
               <ElemLogo
                 mode="logo"
-                className="h-6 w-auto transition-all scheme-standard sm:h-6 hover:opacity-70"
+                className="w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70"
               />
             </ElemLink>
           </div>
@@ -163,58 +163,34 @@ export const TheNavbar: FC<Props> = ({}) => {
             }}
           />
 
-          <div className="flex items-center group space-x-2 lg:space-x-3">
+          <div className="flex items-center space-x-2 lg:space-x-3">
             <ElemButton
               onClick={() => setShowPopup('search')}
-              btn="gray"
-              className="h-9 w-9 !px-0 !py-0 sm:hidden"
+              className="h-9 w-9 !p-0 lg:hidden"
             >
-              <IconSearch className="h-5 w-5" />
+              <IconSearch className="w-5 h-5" />
             </ElemButton>
 
-            <Popover className="relative">
-              <Popover.Button className="flex items-center focus:outline-none">
-                <IconEllipsisVertical className="h-6 w-6 text-gray-600" />
-              </Popover.Button>
-
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
-                <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
-                  {({ close }) => (
-                    <>
-                      {ellipsisDropdownItems.map((item, index) => (
-                        <ElemLink
-                          href={item.href ? item.href : ''}
-                          key={index}
-                          className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
-                          onClick={() => {
-                            close();
-                          }}
-                        >
-                          {item.label}
-                        </ElemLink>
-                      ))}
-                    </>
-                  )}
-                </Popover.Panel>
-              </Transition>
-            </Popover>
+            <ElemDropdown
+              customButton={
+                <ElemButton className="w-9 h-9 !p-0">
+                  <IconEllipsisVertical className="w-6 h-6" title="Options" />
+                </ElemButton>
+              }
+              defaultItem={null}
+              items={quickLinks}
+              itemsShowIcons={false}
+              className="hidden lg:block"
+            />
 
             {user ? (
               <>
-                <ElemLink
+                <ElemButton
                   href={ROUTES.NOTIFICATIONS}
-                  className="relative flex items-center justify-center w-9 h-9"
+                  className="relative w-9 h-9 !p-0"
                 >
                   {unreadNotificationsCount > 0 && (
-                    <div className="absolute flex items-center justify-center -top-[2px] -right-[4px] h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
+                    <div className="absolute flex items-center justify-center -top-[2px] right-0 h-5 min-w-[20px] px-0.5 rounded-full bg-primary-500 border-2 border-white">
                       <div className="text-white font-bold text-[10px] text-center">
                         {unreadNotificationsCount > 99
                           ? '99+'
@@ -222,33 +198,44 @@ export const TheNavbar: FC<Props> = ({}) => {
                       </div>
                     </div>
                   )}
-
-                  <IconBell className="h-6 w-6 text-gray-600" strokeWidth={2} />
-                </ElemLink>
+                  <IconBell
+                    className={`w-6 h-6 shrink-0 ${
+                      unreadNotificationsCount > 0 && 'mr-1'
+                    }`}
+                    strokeWidth={1.5}
+                  />
+                </ElemButton>
                 <UserMenu />
               </>
             ) : (
-              <>
-                <ElemLink href={ROUTES.SIGN_IN} className="w-auto">
-                  <ElemButton btn="purple" className="whitespace-nowrap">
-                    Sign in
-                  </ElemButton>
-                </ElemLink>
-              </>
+              <ElemButton
+                href={ROUTES.SIGN_IN}
+                btn="purple"
+                className="whitespace-nowrap"
+              >
+                Sign in
+              </ElemButton>
             )}
           </div>
-
-          <UsageModal
-            onLogin={redirectToSignIn}
-            show={showPopup === 'usage'}
-            onClose={onModalClose}
-          />
-
-          <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
         </nav>
-      </div>
+      </header>
 
-      <TheMobileNav className="flex items-center" setShowPopup={setShowPopup} />
-    </header>
+      <TheMobileNav />
+
+      <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
+
+      <UsageModal show={showPopup === 'usage'} onClose={onModalClose} />
+
+      <ElemModal
+        isOpen={showSidebar}
+        onClose={() => setShowSidebar(false)}
+        showCloseIcon={false}
+        placement="topLeft"
+        transition="slideFromLeft"
+        panelClass="h-full w-full max-w-xs mb-14 bg-white"
+      >
+        <DashboardSidebar />
+      </ElemModal>
+    </>
   );
 };

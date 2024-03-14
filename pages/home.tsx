@@ -30,6 +30,8 @@ import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 //import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemSticky } from '@/components/elem-sticky';
+import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -111,7 +113,7 @@ const Home: NextPage = () => {
               <span className="text-4xl font-medium">{`Hello, ${
                 user?.display_name?.split(' ')[0] || ''
               }`}</span>
-              <span className="text-sm font-normal text-gray-500 mb-3">
+              <span className="mb-3 text-sm font-normal text-gray-500">
                 Your personalized overview of the most relevant data, updated
                 daily.&nbsp;
                 <span className="underline cursor-pointer" onClick={show}>
@@ -124,10 +126,7 @@ const Home: NextPage = () => {
           <ElemDemocratizeBanner className="mx-8 my-3" />
           {/* <ElemInviteBanner className="mx-8 mt-3" /> */}
 
-          <div
-            className="mt-8 px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-            role="tablist"
-          >
+          <ElemFiltersWrap>
             <ElemCategories
               categories={categories.map(category => ({
                 title: category,
@@ -137,10 +136,14 @@ const Home: NextPage = () => {
               onChangeCategory={setSelectedStatusTag}
             />
 
-            <div className="flex flex-wrap gap-2">
-              {isDisplaySelectLibrary && <ElemLibrarySelector />}
-            </div>
-          </div>
+            <div className="hidden lg:block lg:ml-auto"></div>
+            {isDisplaySelectLibrary && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Library</h3>
+                <ElemLibrarySelector />
+              </div>
+            )}
+          </ElemFiltersWrap>
 
           {/* Location and Tags */}
           {selectedStatusTag && selectedStatusTag.title !== GLOBAL_TAG && (
@@ -148,13 +151,12 @@ const Home: NextPage = () => {
               <div className="flex flex-col gap-4 gap-x-8">
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Trending 🔥</h2>
-                  <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                     <CompaniesByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Companies"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -191,7 +193,6 @@ const Home: NextPage = () => {
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Investors"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -229,13 +230,12 @@ const Home: NextPage = () => {
                   <>
                     <div className="mt-16">
                       <h2 className="text-2xl font-medium">New companies ✨</h2>
-                      <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                         <CompaniesByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText=""
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           isTableView={false}
                           isEnabledSeeAll={false}
@@ -270,13 +270,12 @@ const Home: NextPage = () => {
                       <h2 className="text-2xl font-medium">
                         Upcoming events 🗓️
                       </h2>
-                      <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                         <EventsByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText=""
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           orderBy={{
                             start_date: Order_By.Asc,
@@ -307,13 +306,12 @@ const Home: NextPage = () => {
                       <h2 className="text-2xl font-medium">
                         Recently updated 🔄
                       </h2>
-                      <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                         <CompaniesByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText={`Companies`}
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           isTableView={false}
                           orderBy={{
@@ -344,7 +342,6 @@ const Home: NextPage = () => {
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText={`Investors`}
-                          tagOnClick={null}
                           itemsPerPage={ITEMS_PER_PAGE}
                           isTableView={false}
                           orderBy={{
@@ -375,7 +372,6 @@ const Home: NextPage = () => {
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
                           cardType="compact"
                           headingText="Events"
-                          tagOnClick={null}
                           isEnabledSeeAll={false}
                           itemsPerPage={ITEMS_PER_PAGE}
                           orderBy={{
@@ -415,13 +411,12 @@ const Home: NextPage = () => {
               <div className="flex flex-col gap-4 gap-x-8">
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Companies 🏢</h2>
-                  <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                     <CompaniesByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Recently funded"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -452,7 +447,6 @@ const Home: NextPage = () => {
                       cardType="compact"
                       headingText="Recently founded"
                       isEnabledSeeAll={false}
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       orderBy={{
@@ -477,13 +471,12 @@ const Home: NextPage = () => {
 
                 <div className="mt-16">
                   <h2 className="text-2xl font-medium">Investors 💵</h2>
-                  <div className="border rounded-2xl border-gray-200 mt-5 px-6">
+                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
                     <InvestorsByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
                       cardType="compact"
                       headingText="Recently active investors"
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       filters={{
@@ -509,7 +502,6 @@ const Home: NextPage = () => {
                       cardType="compact"
                       headingText="Exits"
                       isEnabledSeeAll={false}
-                      tagOnClick={null}
                       itemsPerPage={ITEMS_PER_PAGE}
                       isTableView={false}
                       filters={{

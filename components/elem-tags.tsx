@@ -25,12 +25,12 @@ export const ElemTags: React.FC<Props> = ({
   if (tags) {
     return (
       <div className={`flex flex-wrap overflow-clip gap-2 ${className}`}>
-        {['news', 'people'].includes(resourceType)
+        {['news'].includes(resourceType)
           ? tags.slice(0, tagsLimit).map((tag, index: number) => {
               return (
                 <div
                   key={index}
-                  className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full"
+                  className="px-3 py-1 text-xs font-medium bg-gray-100 rounded-full shrink-0"
                 >
                   {tag}
                 </div>
@@ -44,7 +44,7 @@ export const ElemTags: React.FC<Props> = ({
                     `{"${filter}":{"tags":["${tag}"]}}`,
                   )}`}
                 >
-                  <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
+                  <button className="px-3 py-1 text-xs font-medium bg-gray-100 rounded-full shrink-0 hover:bg-gray-200">
                     {tag}
                   </button>
                 </a>
@@ -54,7 +54,7 @@ export const ElemTags: React.FC<Props> = ({
         {tagsLimit < tags.length && (
           <button
             onClick={showMoreTags}
-            className="text-xs text-gray-500 font-medium py-1"
+            className="py-1 text-xs font-medium text-gray-500"
           >
             {tags.length - tagsLimit} more
           </button>

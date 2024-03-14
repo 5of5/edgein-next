@@ -48,7 +48,7 @@ export const CompaniesByFilter: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {times(itemsPerPage, index => (
           <PlaceholderCompanyCard key={index} />
         ))}
@@ -69,7 +69,7 @@ export const CompaniesByFilter: FC<Props> = ({
 
   return (
     <div>
-      <div className="text-4xl font-medium my-4">{headingText}</div>
+      <div className="my-4 text-4xl font-medium">{headingText}</div>
       {isTableView ? (
         <CompaniesTable
           companies={companies}
@@ -79,13 +79,12 @@ export const CompaniesByFilter: FC<Props> = ({
           totalItems={companies_aggregate.aggregate?.count ?? 0}
           onClickPrev={previousPage}
           onClickNext={nextPage}
-          filterByTag={tagOnClick}
         />
       ) : (
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-8"
+            className="grid grid-cols-1 gap-8 mt-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {companies.map(company => (
               <ElemCompanyCard

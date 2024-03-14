@@ -849,7 +849,7 @@ export const isResourceType = (
 export const MY_EDGEIN_MENU_OPEN_KEY = 'disclosure-my-edgein-menu-default-open';
 export const EXPLORE_MENU_OPEN_KEY = 'disclosure-explore-menu-default-open';
 export const SHOW_INVITE_BANNER = 'show-invite-banner';
-export const SHOW_DEMOCRATIZE_BANNER = 'show-democratize-banner';
+export const SHOW_DEMOCRATIZE_BANNER = 'show-banner-democratize';
 
 export const eventTypeChoices = [
   'Hackathon',
@@ -1806,6 +1806,8 @@ export const SIDEBAR_DEFAULT_LISTS_LIMIT = 3;
 export const SIDEBAR_DEFAULT_GROUPS_LIMIT = 3;
 
 export const DEFAULT_FILTER_TAGS_OFFSET = 10;
+
+export const TABLE_LAYOUT_LIMIT = 5;
 
 export const NEW_CATEGORY_LIMIT = 33;
 

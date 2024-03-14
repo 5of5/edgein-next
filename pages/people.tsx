@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { PlaceholderPersonCard } from '@/components/placeholders';
-import { ElemButton } from '@/components/elem-button';
+import {
+  PlaceholderPersonCard,
+  PlaceholderTable,
+} from '@/components/placeholders';
 import { runGraphQl } from '@/utils';
-import { IconSearch, IconAnnotation } from '@/components/icons';
 import {
   Order_By,
   useGetPeopleQuery,
@@ -18,15 +19,16 @@ import { Pagination } from '@/components/pagination';
 import { ElemPersonCard } from '@/components/people/elem-person-card';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
-import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import ElemLibrarySelector from '@/components/elem-library-selector';
 import {
   ISO_DATE_FORMAT,
+  NEW_CATEGORY_LIMIT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
   SWITCH_LIBRARY_ALLOWED_EMAILS,
+  TABLE_LAYOUT_LIMIT,
 } from '@/utils/constants';
 import useLibrary from '@/hooks/use-library';
 // import { ElemCategories } from '@/components/dashboard/elem-categories';
@@ -35,9 +37,13 @@ import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemFilter } from '@/components/filters/elem-filter';
 import { processPeopleFilter } from '@/components/filters/processor';
-//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
+import { NoResults } from '@/components/companies/no-results';
+import { IconGroup, IconTable } from '@/components/icons';
+import { ElemDropdown } from '@/components/elem-dropdown';
+import { PeopleTable } from '@/components/people/elem-people-table';
 
 type Props = {
   peopleTabs: DashboardCategory[];
@@ -56,8 +62,10 @@ const People: NextPage<Props> = ({
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
 
+  const [tableLayout, setTableLayout] = useState(false);
+
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter({ resetPage: () => setPage(0) });
+    useDashboardFilter({ resetPage: () => setPageIndex(0) });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -74,7 +82,7 @@ const People: NextPage<Props> = ({
       index => peopleTabs[Number(index)],
     );
 
-  const [page, setPage] = useStateParams<number>(
+  const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
@@ -82,7 +90,8 @@ const People: NextPage<Props> = ({
   );
 
   const limit = 50;
-  const offset = limit * page;
+  const offset =
+    !user?.entitlements.viewEmails && tableLayout ? 0 : limit * pageIndex;
 
   const defaultFilters: DeepPartial<People_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
@@ -97,7 +106,7 @@ const People: NextPage<Props> = ({
 
   useEffect(() => {
     if (!initialLoad) {
-      setPage(0);
+      setPageIndex(0);
     }
     if (initialLoad) {
       setInitialLoad(false);
@@ -118,6 +127,19 @@ const People: NextPage<Props> = ({
     });
   }
 
+  const getLimit = () => {
+    // limit shown companies on table layout for non-paid users
+    if (tableLayout && !user?.entitlements.viewEmails) {
+      return TABLE_LAYOUT_LIMIT;
+    }
+
+    if (selectedTab?.value === 'new') {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    return limit;
+  };
+
   const {
     data: peopleData,
     error,
@@ -125,7 +147,7 @@ const People: NextPage<Props> = ({
   } = useGetPeopleQuery(
     {
       offset: offset,
-      limit: limit,
+      limit: getLimit(),
       where: filters as People_Bool_Exp,
       orderBy: [
         selectedTab?.value === 'new'
@@ -145,7 +167,37 @@ const People: NextPage<Props> = ({
     ? peopleCount
     : peopleData?.people_aggregate?.aggregate?.count || 0;
 
-  const { showNewMessages } = useIntercom();
+  const getTotalItems = () => {
+    if (selectedTab?.value === 'new') {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    return people_aggregate;
+  };
+
+  const layoutItems = [
+    {
+      id: 0,
+      label: 'Grid view',
+      value: 'grid',
+      Icon: IconGroup,
+      onClick: () => setTableLayout(false),
+    },
+    {
+      id: 1,
+      label: 'Table view',
+      value: 'table',
+      Icon: IconTable,
+      onClick: () => setTableLayout(true),
+    },
+  ];
+
+  const onPreviousPage = () => {
+    setPageIndex(pageIndex - 1);
+  };
+  const onNextPage = () => {
+    setPageIndex(pageIndex + 1);
+  };
 
   const pageTitle = `${selectedTab?.title || 'All'} ${
     user ? selectedLibrary : ''
@@ -159,10 +211,7 @@ const People: NextPage<Props> = ({
       />
       <DashboardLayout>
         <div className="relative">
-          <div
-            className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-end lg:items-center"
-            role="tablist"
-          >
+          <ElemFiltersWrap resultsTotal={people_aggregate}>
             {/** TO-DO: Temporary hide new category for now */}
             {/* <ElemCategories
             categories={peopleTabs}
@@ -170,21 +219,39 @@ const People: NextPage<Props> = ({
             onChangeCategory={tab => setSelectedTab(tab)}
           /> */}
 
-            <div className="flex flex-wrap gap-2">
-              <div className="flex flex-wrap gap-2">
-                {isDisplaySelectLibrary && <ElemLibrarySelector />}
+            <div className="hidden lg:block lg:ml-auto"></div>
+            {isDisplaySelectLibrary && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Library</h3>
+                <ElemLibrarySelector />
               </div>
+            )}
 
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">View</h3>
+              <ElemDropdown
+                buttonClass="w-full"
+                panelClass="w-full"
+                ButtonIcon={tableLayout ? IconTable : IconGroup}
+                items={layoutItems}
+              />
+            </div>
+
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">
+                Location and Personal Info
+              </h3>
               <ElemAddFilter
+                buttonClass="w-full"
+                panelClass="w-full"
                 resourceType="people"
                 onSelectFilterOption={onSelectFilterOption}
               />
             </div>
-          </div>
 
-          {selectedFilters && (
-            <div className="mx-8 my-3">
+            {selectedFilters && (
               <ElemFilter
+                className="basis-full lg:order-last"
                 resourceType="people"
                 filterValues={selectedFilters}
                 onSelectFilterOption={onSelectFilterOption}
@@ -205,107 +272,76 @@ const People: NextPage<Props> = ({
                 }}
                 onReset={() => onChangeSelectedFilters(null)}
               />
-            </div>
-          )}
+            )}
+          </ElemFiltersWrap>
 
           <ElemDemocratizeBanner className="mx-8 my-3" />
           {/* <ElemInviteBanner className="mx-8 my-3" /> */}
 
           <div className="mx-8">
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading people
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
-                  {/* Removed in qol-ui-fixes */}
-                  {/* <ElemDropdown
-                      IconComponent={IconSortDashboard}
+            <div className="flex justify-between py-8">
+              <div className="text-4xl font-medium">{pageTitle}</div>
+              {/* Removed in qol-ui-fixes */}
+              {/* <ElemDropdown
+                      ButtonIcon={IconSortDashboard}
                       defaultItem={defaultOrderBy}
                       items={sortChoices}
                     /> */}
-                </div>
-                {isLoading && !initialLoad ? (
-                  <div className="grid gap-8 gap-x-16 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            </div>
+            {isLoading && !initialLoad ? (
+              <>
+                {tableLayout ? (
+                  <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {Array.from({ length: 9 }, (_, i) => (
                       <PlaceholderPersonCard key={i} />
                     ))}
                   </div>
-                ) : (
-                  <>
-                    <div
-                      data-testid="people"
-                      className="grid gap-8 gap-x-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                    >
-                      {people?.map(person => {
-                        return (
-                          <ElemPersonCard
-                            key={person.id}
-                            person={person as People}
-                          />
-                        );
-                      })}
-                    </div>
-
-                    <Pagination
-                      shownItems={people?.length}
-                      totalItems={people_aggregate}
-                      page={page}
-                      itemsPerPage={limit}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      onClickToPage={selectedPage => setPage(selectedPage)}
-                    />
-                  </>
                 )}
               </>
+            ) : tableLayout && people?.length != 0 ? (
+              <PeopleTable
+                people={people}
+                pageNumber={pageIndex}
+                itemsPerPage={getLimit()}
+                shownItems={people?.length}
+                totalItems={getTotalItems()}
+                onClickPrev={onPreviousPage}
+                onClickNext={onNextPage}
+              />
+            ) : people?.length != 0 ? (
+              <>
+                <div
+                  data-testid="people"
+                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                >
+                  {people?.map(person => {
+                    return (
+                      <ElemPersonCard
+                        key={person.id}
+                        person={person as People}
+                      />
+                    );
+                  })}
+                </div>
+
+                <Pagination
+                  shownItems={people?.length}
+                  totalItems={people_aggregate}
+                  page={pageIndex}
+                  itemsPerPage={limit}
+                  onClickPrev={onPreviousPage}
+                  onClickNext={onNextPage}
+                  onClickToPage={selectedPage => setPageIndex(selectedPage)}
+                />
+              </>
+            ) : (
+              <NoResults />
             )}
           </div>
-
-          {people?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
         </div>
       </DashboardLayout>
     </>

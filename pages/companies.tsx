@@ -5,15 +5,8 @@ import {
   PlaceholderCompanyCard,
   PlaceholderTable,
 } from '@/components/placeholders';
-import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import {
-  IconSearch,
-  IconAnnotation,
-  IconSortDashboard,
-  IconGroup,
-  IconTable,
-} from '@/components/icons';
+import { IconSortDashboard, IconGroup, IconTable } from '@/components/icons';
 import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
   Order_By,
@@ -31,13 +24,12 @@ import {
   ISO_DATE_FORMAT,
   NEW_CATEGORY_LIMIT,
   TRENDING_CATEGORY_LIMIT,
+  TABLE_LAYOUT_LIMIT,
 } from '@/utils/constants';
-import toast, { Toaster } from 'react-hot-toast';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { processCompaniesFilters } from '@/components/filters/processor';
 import { ElemFilter } from '@/components/filters/elem-filter';
-import { useIntercom } from 'react-use-intercom';
 import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -50,12 +42,12 @@ import {
 import useLibrary from '@/hooks/use-library';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
-import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
+import { NoResults } from '@/components/companies/no-results';
 
 type Props = {
   companiesCount: number;
@@ -69,12 +61,9 @@ const Companies: NextPage<Props> = ({
   companyStatusTags,
 }) => {
   const [initialLoad, setInitialLoad] = useState(true);
-
   const { user } = useUser();
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
-
-  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -106,7 +95,7 @@ const Companies: NextPage<Props> = ({
 
   const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
 
-  const [page, setPage] = useStateParams<number>(
+  const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
     'page',
     pageIndex => pageIndex + 1 + '',
@@ -114,17 +103,13 @@ const Companies: NextPage<Props> = ({
   );
 
   const { selectedFilters, onChangeSelectedFilters, onSelectFilterOption } =
-    useDashboardFilter({ resetPage: () => setPage(0) });
+    useDashboardFilter({ resetPage: () => setPageIndex(0) });
 
-  // limit shown companies on table layout for free users
-  const limit =
-    user?.entitlements.listsCount && tableLayout
-      ? user?.entitlements.listsCount
-      : 50;
+  const limit = 50;
 
   // disable offset on table layout for free users
   const offset =
-    user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
+    !user?.entitlements.viewEmails && tableLayout ? 0 : limit * pageIndex;
 
   const defaultFilters: DeepPartial<Companies_Bool_Exp>[] = [
     { library: { _contains: selectedLibrary } },
@@ -149,7 +134,7 @@ const Companies: NextPage<Props> = ({
 
   useEffect(() => {
     if (!initialLoad) {
-      setPage(0);
+      setPageIndex(0);
     }
     if (initialLoad && selectedStatusTag?.value !== '') {
       setInitialLoad(false);
@@ -161,63 +146,6 @@ const Companies: NextPage<Props> = ({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatusTag]);
-
-  const filterByTag = async (
-    event: React.MouseEvent<HTMLDivElement>,
-    tag: string,
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
-    const newFilterOption = currentFilterOption.includes(tag)
-      ? currentFilterOption.filter(t => t !== tag)
-      : [tag, ...currentFilterOption];
-
-    if (newFilterOption.length === 0) {
-      onChangeSelectedFilters({ ...selectedFilters, industry: undefined });
-    } else {
-      onChangeSelectedFilters({
-        ...selectedFilters,
-        industry: {
-          ...selectedFilters?.industry,
-          tags: newFilterOption,
-        },
-      });
-    }
-
-    currentFilterOption.includes(tag)
-      ? toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Removed &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        )
-      : toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
-              Added &ldquo;{tag}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
-  };
 
   /** Handle selected filter params */
   processCompaniesFilters(filters, selectedFilters, defaultFilters);
@@ -259,6 +187,11 @@ const Companies: NextPage<Props> = ({
   }
 
   const getLimit = () => {
+    // limit shown companies on table layout for non-paid users
+    if (tableLayout && !user?.entitlements.viewEmails) {
+      return TABLE_LAYOUT_LIMIT;
+    }
+
     if (isNewTabSelected) {
       return NEW_CATEGORY_LIMIT;
     }
@@ -305,21 +238,31 @@ const Companies: NextPage<Props> = ({
     ? companiesCount
     : companiesData?.companies_aggregate?.aggregate?.count || 0;
 
-  const { showNewMessages } = useIntercom();
+  const getTotalItems = () => {
+    if (isNewTabSelected) {
+      return NEW_CATEGORY_LIMIT;
+    }
+
+    if (selectedStatusTag?.value === 'Trending') {
+      return TRENDING_CATEGORY_LIMIT;
+    }
+
+    return companies_aggregate;
+  };
 
   const layoutItems = [
     {
       id: 0,
       label: 'Grid view',
       value: 'grid',
-      StartIcon: IconGroup,
+      Icon: IconGroup,
       onClick: () => setTableLayout(false),
     },
     {
       id: 1,
       label: 'Table view',
       value: 'table',
-      StartIcon: IconTable,
+      Icon: IconTable,
       onClick: () => setTableLayout(true),
     },
   ];
@@ -357,6 +300,13 @@ const Companies: NextPage<Props> = ({
     // },
   ];
 
+  const onPreviousPage = () => {
+    setPageIndex(pageIndex - 1);
+  };
+  const onNextPage = () => {
+    setPageIndex(pageIndex + 1);
+  };
+
   const pageTitle = `${selectedStatusTag?.title || 'All'} ${
     user ? selectedLibrary : ''
   } companies`;
@@ -367,47 +317,48 @@ const Companies: NextPage<Props> = ({
         title={`${selectedLibrary} Companies`}
         description="Early-stage companies in the AI and Web3 markets require actionable intelligence and hyper-speed. Consider this your greatest asset."
       />
+
       <DashboardLayout>
         <div className="relative">
-          <div
-            className="px-8 pt-0.5 pb-3 flex flex-wrap gap-3 items-center justify-between lg:items-center"
-            role="tablist"
-          >
+          <ElemFiltersWrap resultsTotal={companies_aggregate}>
             <ElemCategories
               categories={companyStatusTags}
               selectedCategory={selectedStatusTag}
               onChangeCategory={setSelectedStatusTag}
             />
 
-            <div className="flex flex-wrap gap-2">
-              {isDisplaySelectLibrary && <ElemLibrarySelector />}
-
+            <div className="hidden lg:block lg:ml-auto"></div>
+            {isDisplaySelectLibrary && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Library</h3>
+                <ElemLibrarySelector />
+              </div>
+            )}
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">View</h3>
               <ElemDropdown
-                IconComponent={tableLayout ? IconTable : IconGroup}
+                buttonClass="w-full"
+                panelClass="w-full"
+                ButtonIcon={tableLayout ? IconTable : IconGroup}
                 items={layoutItems}
               />
+            </div>
 
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">
+                Industry, Location, and Financials
+              </h3>
               <ElemAddFilter
+                buttonClass="w-full"
+                panelClass="w-full"
                 resourceType="companies"
                 onSelectFilterOption={onSelectFilterOption}
               />
-
-              {isSortDropdownVisible && (
-                <ElemDropdown
-                  IconComponent={IconSortDashboard}
-                  items={sortItems}
-                  defaultItem={sortItems.findIndex(
-                    sortItem => sortItem.value === sortBy,
-                  )}
-                  firstItemDivided
-                />
-              )}
             </div>
-          </div>
 
-          {selectedFilters && (
-            <div className="mx-8 my-3">
+            {selectedFilters && (
               <ElemFilter
+                className="basis-full lg:order-last"
                 resourceType="companies"
                 filterValues={selectedFilters}
                 onSelectFilterOption={onSelectFilterOption}
@@ -428,125 +379,85 @@ const Companies: NextPage<Props> = ({
                 }}
                 onReset={() => onChangeSelectedFilters(null)}
               />
-            </div>
-          )}
+            )}
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
-          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
+            {isSortDropdownVisible && (
+              <div>
+                <h3 className="mb-1 font-medium lg:hidden">Sort</h3>
+                <ElemDropdown
+                  buttonClass="w-full"
+                  panelClass="w-full"
+                  ButtonIcon={IconSortDashboard}
+                  items={sortItems}
+                  defaultItem={sortItems.findIndex(
+                    sortItem => sortItem.value === sortBy,
+                  )}
+                  firstItemDivided
+                />
+              </div>
+            )}
+          </ElemFiltersWrap>
+
+          <ElemDemocratizeBanner className="mx-8 mt-2" />
 
           <div className="mx-8">
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading companies
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
-                </div>
-              </div>
-            ) : (
+            <div className="flex justify-between py-8">
+              <div className="text-4xl font-medium">{pageTitle}</div>
+            </div>
+
+            {isLoading && !initialLoad ? (
               <>
-                <div className="flex justify-between py-8">
-                  <div className="text-4xl font-medium">{pageTitle}</div>
-                </div>
-
-                {isLoading && !initialLoad ? (
-                  <>
-                    {tableLayout ? (
-                      <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-                        <PlaceholderTable />
-                      </div>
-                    ) : (
-                      <div className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {Array.from({ length: 9 }, (_, i) => (
-                          <PlaceholderCompanyCard key={i} />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : tableLayout && companies?.length != 0 ? (
-                  <>
-                    <CompaniesTable
-                      companies={companies}
-                      pageNumber={page}
-                      itemsPerPage={limit}
-                      shownItems={companies?.length}
-                      totalItems={companies_aggregate}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      filterByTag={filterByTag}
-                    />
-                  </>
+                {tableLayout ? (
+                  <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
                 ) : (
-                  <>
-                    <div
-                      data-testid="companies"
-                      className="grid gap-8 gap-x-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                    >
-                      {companies?.map(company => {
-                        return (
-                          <ElemCompanyCard
-                            key={company.id}
-                            company={company as Companies}
-                          />
-                        );
-                      })}
-                    </div>
-
-                    <Pagination
-                      shownItems={companies?.length}
-                      totalItems={companies_aggregate}
-                      page={page}
-                      itemsPerPage={limit}
-                      onClickPrev={() => setPage(page - 1)}
-                      onClickNext={() => setPage(page + 1)}
-                      onClickToPage={selectedPage => setPage(selectedPage)}
-                    />
-                  </>
+                  <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    {Array.from({ length: 9 }, (_, i) => (
+                      <PlaceholderCompanyCard key={i} />
+                    ))}
+                  </div>
                 )}
               </>
+            ) : tableLayout && companies?.length != 0 ? (
+              <CompaniesTable
+                companies={companies}
+                pageNumber={pageIndex}
+                itemsPerPage={getLimit()}
+                shownItems={companies?.length}
+                totalItems={getTotalItems()}
+                onClickPrev={onPreviousPage}
+                onClickNext={onNextPage}
+              />
+            ) : companies?.length != 0 ? (
+              <>
+                <div
+                  data-testid="companies"
+                  className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                >
+                  {companies?.map(company => {
+                    return (
+                      <ElemCompanyCard
+                        key={company.id}
+                        company={company as Companies}
+                      />
+                    );
+                  })}
+                </div>
+                <Pagination
+                  shownItems={companies?.length}
+                  totalItems={getTotalItems()}
+                  page={pageIndex}
+                  itemsPerPage={getLimit()}
+                  onClickPrev={onPreviousPage}
+                  onClickNext={onNextPage}
+                  onClickToPage={selectedPage => setPageIndex(selectedPage)}
+                />
+              </>
+            ) : (
+              <NoResults />
             )}
           </div>
-
-          {companies?.length === 0 && (
-            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
-                <div className="mt-1 text-lg text-slate-600">
-                  Please check spelling, try different filters, or tell us about
-                  missing data.
-                </div>
-                <ElemButton
-                  onClick={() =>
-                    showNewMessages(
-                      `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
-                    )
-                  }
-                  btn="white"
-                  className="mt-3"
-                >
-                  <IconAnnotation className="w-6 h-6 mr-1" />
-                  Tell us about missing data
-                </ElemButton>
-              </div>
-            </div>
-          )}
-
-          <Toaster />
         </div>
       </DashboardLayout>
     </>

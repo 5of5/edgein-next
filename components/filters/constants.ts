@@ -1,5 +1,18 @@
 export const companiesFilterOptions = [
   {
+    category: 'Industry',
+    items: [
+      {
+        label: 'Tags',
+        value: 'industry',
+      },
+      {
+        label: 'Keywords',
+        value: 'keywords',
+      },
+    ],
+  },
+  {
     category: 'Location',
     items: [
       {
@@ -17,24 +30,6 @@ export const companiesFilterOptions = [
       {
         label: 'Address',
         value: 'address',
-      },
-    ],
-  },
-  {
-    // category: 'Keywords',
-    items: [
-      {
-        label: 'Keywords',
-        value: 'keywords',
-      },
-    ],
-  },
-  {
-    //category: 'Tags',
-    items: [
-      {
-        label: 'Tags',
-        value: 'industry',
       },
     ],
   },
@@ -77,6 +72,19 @@ export const companiesFilterOptions = [
 
 export const investorsFilterOptions = [
   {
+    category: 'Industry',
+    items: [
+      {
+        label: 'Tags',
+        value: 'industry',
+      },
+      {
+        label: 'Keywords',
+        value: 'keywords',
+      },
+    ],
+  },
+  {
     category: 'Location',
     items: [
       {
@@ -94,22 +102,6 @@ export const investorsFilterOptions = [
       {
         label: 'Address',
         value: 'address',
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'Keywords',
-        value: 'keywords',
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'Tags',
-        value: 'industry',
       },
     ],
   },

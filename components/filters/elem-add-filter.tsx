@@ -1,5 +1,6 @@
 import { MouseEvent, FC, Fragment, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
+import { usePopper } from 'react-popper';
 import {
   companiesFilterOptions,
   investorsFilterOptions,
@@ -29,6 +30,24 @@ type CategoryFilterOptionProps = {
 };
 
 type Props = {
+  buttonClass?: string;
+  panelClass?: string;
+  placement?:
+    | 'auto-end'
+    | 'auto-start'
+    | 'auto'
+    | 'bottom-end'
+    | 'bottom-start'
+    | 'bottom'
+    | 'left-end'
+    | 'left-start'
+    | 'left'
+    | 'right-end'
+    | 'right-start'
+    | 'right'
+    | 'top-end'
+    | 'top-start'
+    | 'top';
   resourceType: ResourceTypes;
   excludeFilters?: string[];
   type?: 'icon' | 'button';
@@ -43,11 +62,31 @@ const FILTER_OPTIONS: Record<ResourceTypes, any> = {
 } as const;
 
 export const ElemAddFilter: FC<Props> = ({
+  buttonClass = '',
+  panelClass = '',
+  placement = 'bottom-start',
   resourceType,
   excludeFilters = [],
   type = 'button',
   onSelectFilterOption,
 }) => {
+  const [referenceElement, setReferenceElement] =
+    useState<HTMLButtonElement | null>(null);
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+    null,
+  );
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: placement,
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 8],
+        },
+      },
+    ],
+  });
+
   const filterOptions = get(FILTER_OPTIONS, resourceType, []);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] =
     useState<boolean>(false);
@@ -63,17 +102,17 @@ export const ElemAddFilter: FC<Props> = ({
 
   return (
     <>
-      <Popover className="relative">
-        <Popover.Button as="div">
+      <Popover className="relative shrink-0">
+        <Popover.Button as="div" ref={setReferenceElement}>
           {type === 'button' ? (
             <ElemButton
               btn="default"
               roundedFull={false}
-              className="rounded-lg"
+              className={`rounded-lg ${buttonClass}`}
             >
-              <IconFilterDashboard className="w-4 h-4 mr-1.5 text-gray-400" />
+              <IconFilterDashboard className="w-4 h-4 shrink-0 mr-1.5 text-gray-400" />
               Filters
-              <IconChevronDownMini className="w-5 h-5 ml-1" />
+              <IconChevronDownMini className="w-5 h-5 shrink-0 ml-auto lg:ml-1.5" />
             </ElemButton>
           ) : (
             <IconPlus
@@ -85,42 +124,43 @@ export const ElemAddFilter: FC<Props> = ({
 
         <Transition
           as={Fragment}
-          enter="transition ease-out duration-200"
-          enterFrom="opacity-0 translate-y-1"
-          enterTo="opacity-100 translate-y-0"
-          leave="transition ease-in duration-150"
-          leaveFrom="opacity-100 translate-y-0"
-          leaveTo="opacity-0 translate-y-1"
+          enter="transition duration-100 ease-out"
+          enterFrom="transform scale-95 opacity-0"
+          enterTo="transform scale-100 opacity-100"
+          leave="transition duration-75 ease-out"
+          leaveFrom="transform scale-100 opacity-100"
+          leaveTo="transform scale-95 opacity-0"
         >
-          <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+          <Popover.Panel
+            ref={setPopperElement}
+            style={styles.popper}
+            {...attributes.popper}
+            className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 max-h ${panelClass}`}
+          >
             {({ close }) => (
-              <div>
-                <div>
-                  <CategoryFilterOption
-                    options={filterOptions.slice(
-                      0,
-                      categoryFilterOptionsEndIndex,
-                    )}
-                    excludeFilters={excludeFilters}
-                    onSelectFilterOption={event => {
-                      close();
-                      onSelectFilterOption(event);
-                    }}
-                    onOpenUpgradeDialog={onOpenUpgradeDialog}
-                  />
-                </div>
-                <div className="mt-6 lg:mt-0">
-                  <CategoryFilterOption
-                    options={filterOptions.slice(categoryFilterOptionsEndIndex)}
-                    excludeFilters={excludeFilters}
-                    onSelectFilterOption={event => {
-                      close();
-                      onSelectFilterOption(event);
-                    }}
-                    onOpenUpgradeDialog={onOpenUpgradeDialog}
-                  />
-                </div>
-              </div>
+              <>
+                <CategoryFilterOption
+                  options={filterOptions.slice(
+                    0,
+                    categoryFilterOptionsEndIndex,
+                  )}
+                  excludeFilters={excludeFilters}
+                  onSelectFilterOption={event => {
+                    close();
+                    onSelectFilterOption(event);
+                  }}
+                  onOpenUpgradeDialog={onOpenUpgradeDialog}
+                />
+                <CategoryFilterOption
+                  options={filterOptions.slice(categoryFilterOptionsEndIndex)}
+                  excludeFilters={excludeFilters}
+                  onSelectFilterOption={event => {
+                    close();
+                    onSelectFilterOption(event);
+                  }}
+                  onOpenUpgradeDialog={onOpenUpgradeDialog}
+                />
+              </>
             )}
           </Popover.Panel>
         </Transition>
@@ -146,16 +186,15 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
     : false;
 
   return (
-    <div className="">
+    <>
       {options.map((option, index) => (
-        <div key={index}>
+        <Fragment key={index}>
           {option.category && (
-            <h3 className="flex items-center gap-x-2 w-full text-left text-sm font-medium px-4 py-2">
+            <h3 className="flex items-center w-full px-4 py-2 text-sm font-medium text-left gap-x-2">
               {option.category}
             </h3>
           )}
-
-          <ul className="list-none text-gray-600 border-b border-gray-100">
+          <ul className="text-gray-600 list-none border-b border-gray-100">
             {option.items.map(item => {
               if (excludeFilters.includes(item.value)) {
                 return null;
@@ -177,7 +216,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                     >
                       {!userCanUseFilter && (
                         <IconLockClosed
-                          className="inline-block w-4 h-4 shrink-0 mr-1"
+                          className="inline-block w-4 h-4 mr-1 shrink-0"
                           strokeWidth={2}
                         />
                       )}
@@ -188,7 +227,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                     <button
                       onClick={onSelectFilterOption}
                       name={item.value}
-                      className="flex items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100"
+                      className="flex items-center w-full px-4 py-2 m-0 text-sm text-left transition-all cursor-pointer gap-x-2 hover:bg-gray-100"
                     >
                       {item.label}
                     </button>
@@ -197,8 +236,8 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
               );
             })}
           </ul>
-        </div>
+        </Fragment>
       ))}
-    </div>
+    </>
   );
 };

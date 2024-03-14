@@ -20,6 +20,7 @@ type Props = {
     | 'gray'
     | 'slate'
     | 'ol-white'
+    | 'ol-gray'
     | 'ol-primary'
     | 'default'
     | '';
@@ -62,6 +63,9 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   } else if (btn === 'ol-white') {
     btnClass =
       'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-white hover:text-primary-500 focus:outline-none focus:ring-1';
+  } else if (btn === 'ol-gray') {
+    btnClass =
+      'ring-inset ring-1 ring-gray-300 hover:bg-gray-100 focus:outline-none focus:ring-1';
   } else if (btn === 'transparent') {
     btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
   } else if (btn === 'white') {
@@ -71,7 +75,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     btnClass =
       'text-dark-500 bg-slate-200 hover:text-primary-500 hover:bg-slate-300';
   } else if (btn === 'dark') {
-    btnClass = 'text-white bg-dark-700 hover:opacity-60';
+    btnClass = 'text-white bg-gray-900 hover:bg-gray-700';
   } else if (btn === 'danger') {
     btnClass = 'text-white bg-rose-600 hover:bg-rose-500';
   } else if (btn === 'gray') {
@@ -116,7 +120,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
       onClick={onClick}
       type="submit"
     >
-      {loading && <IconSpinner className="animate-spin -ml-1 mr-3 h-5 w-5" />}
+      {loading && <IconSpinner className="w-5 h-5 mr-3 -ml-1 animate-spin" />}
       {arrowLeft && <IconArrowLeft className={`h-3 w-4 ${arrowClass}`} />}
       {children}
       {arrow && <IconArrow className={`h-3 w-4 ml-1 ${arrowClass}`} />}

@@ -1,8 +1,7 @@
-import React, { FC, MouseEvent } from 'react';
+import React, { FC } from 'react';
 import { PlaceholderEventCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
-import { useRouter } from 'next/router';
 import {
   Events_Bool_Exp,
   Events_Order_By,
@@ -13,7 +12,6 @@ import {
 import { ElemEventCard } from '../events/elem-event-card';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
-import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -30,8 +28,6 @@ export const ElemSimilarEvents: FC<Props> = ({
 }) => {
   const limit = 12;
   const offset = null;
-
-  const router = useRouter();
 
   const { selectedLibrary } = useLibrary();
 
@@ -58,26 +54,15 @@ export const ElemSimilarEvents: FC<Props> = ({
 
   const events = eventsData?.events;
 
-  const tagOnClick = (event: MouseEvent<HTMLButtonElement>, type: string) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    router.push(
-      `${ROUTES.EVENTS}/?filters=${encodeURIComponent(
-        `{"eventType":{"tags":["${type}"]}}`,
-      )}`,
-    );
-  };
-
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
-      <h2 className="text-lg font-medium px-4 pt-2">Similar Events</h2>
+      <h2 className="px-4 pt-2 text-lg font-medium">Similar Events</h2>
 
       {error ? (
         <h4>Error loading similar events</h4>
       ) : isLoading ? (
         <>
-          <div className="flex overflow-hidden -mx-3">
+          <div className="flex -mx-3 overflow-hidden">
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}

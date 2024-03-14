@@ -9,12 +9,14 @@ import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
 import { ElemLink } from '../elem-link';
+import { useSidebar } from '@/context/sidebar-context';
 
 type Props = {
   className?: string;
 };
 
 const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
+  const { showSidebar, setShowSidebar } = useSidebar();
   const router = useRouter();
   const { myGroups, user } = useUser();
   const displayedGroups = myGroups.slice(
@@ -49,15 +51,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
     setIsOpenUpgradeDialog(false);
   };
 
-  const onRedirectToSignIn = () => {
-    router.push(ROUTES.SIGN_IN);
-  };
-
   const onClickCreate = () => {
-    if (!user) {
-      return onRedirectToSignIn();
-    }
-
     if (myGroups.length > displayedGroups.length) {
       return onOpenUpgradeDialog();
     }
@@ -66,35 +60,34 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   return (
-    <div className={className}>
-      <div className="w-full flex items-center justify-between group">
-        {user ? (
-          <ElemSidebarItem
-            url={ROUTES.GROUPS}
-            text="Groups"
-            IconComponent={IconSidebarGroups}
-          />
-        ) : (
-          <ElemWithSignInModal
-            wrapperClass="w-full"
-            text="Sign in to collaborate on notes, share insights, and track leads in one group with your team or friends."
-            buttonComponent={open => (
-              <button
-                className={`${
-                  open ? 'bg-gray-100' : ''
-                } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-              >
-                <IconSidebarGroups
-                  className={`w-5 h-5 ${
-                    open ? 'text-primary-500' : 'text-gray-900'
-                  }`}
-                />
-                <p className="font-medium text-sm text-gray-900">Groups</p>
-              </button>
-            )}
-          />
-        )}
-      </div>
+    <li className={className}>
+      {user ? (
+        <ElemSidebarItem
+          IconComponent={IconSidebarGroups}
+          text="Groups"
+          url={ROUTES.GROUPS}
+          onClick={() => setShowSidebar(false)}
+        />
+      ) : (
+        <ElemWithSignInModal
+          wrapperClass="w-full"
+          text="Sign in to collaborate on notes, share insights, and track leads in one group with your team or friends."
+          buttonComponent={open => (
+            <button
+              className={`${
+                open ? 'bg-gray-100' : ''
+              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
+            >
+              <IconSidebarGroups
+                className={`w-5 h-5 ${
+                  open ? 'text-primary-500' : 'text-gray-900'
+                }`}
+              />
+              <p className="text-sm font-medium text-gray-900">Groups</p>
+            </button>
+          )}
+        />
+      )}
 
       {user && (
         <ul className="mt-1 space-y-1">
@@ -102,7 +95,11 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             .slice(0, SIDEBAR_DEFAULT_GROUPS_LIMIT)
             ?.map(group => {
               return (
-                <li key={group.id} role="button">
+                <li
+                  key={group.id}
+                  role="button"
+                  onClick={() => setShowSidebar(false)}
+                >
                   <ElemLink
                     href={`${ROUTES.GROUPS}/${group.id}/`}
                     className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
@@ -110,7 +107,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     )}`}
                     title={group.name}
                   >
-                    <span className="line-clamp-1 break-all">{group.name}</span>
+                    <span className="break-all line-clamp-1">{group.name}</span>
                   </ElemLink>
                 </li>
               );
@@ -119,7 +116,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
           <li
             role="button"
             onClick={onClickCreate}
-            className="flex items-center space-x-2 py-2 pl-4 mt-1 font-normal text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900"
+            className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900"
           >
             Add a new group
           </li>
@@ -135,7 +132,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
         isOpen={isOpenCreateGroupDialog}
         onClose={onCloseCreateGroupDialog}
       />
-    </div>
+    </li>
   );
 };
 

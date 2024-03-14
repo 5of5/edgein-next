@@ -1,14 +1,15 @@
 import React, {
+  FC,
   MutableRefObject,
   useState,
   PropsWithChildren,
   useEffect,
-  useRef,
 } from 'react';
 import { IconEllipsisVertical } from '@/components/icons';
-import { Popover, Transition } from '@headlessui/react';
 import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '@/components/elem-button';
+import { ElemSticky } from '@/components/elem-sticky';
+import { ElemDropdown } from './elem-dropdown';
 
 type Tabs = {
   name?: string;
@@ -25,36 +26,23 @@ type Props = {
 
 const SECTION_OFFSET_TOP_SPACING = 60;
 
-export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
-  className,
+export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
+  className = '',
   tabsClassName,
   tabs,
   showDropdown = true,
   resourceName = '',
   children,
 }) => {
-  const tabsWrapRef = useRef() as MutableRefObject<HTMLDivElement>;
-  const [tabsWrapClass, setTabsWrapClass] = useState<string>('');
-
-  const [isActive, setActive] = useState(0);
+  const [isActiveTab, setActiveTab] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  useEffect(() => {
-    if (tabsWrapRef?.current !== null) {
-      setTimeout(() => {
-        const tabsDivPosition =
-          tabsWrapRef?.current?.getBoundingClientRect().top;
-        // "top-14" class = 56
-        if (tabsDivPosition <= 56) {
-          setTabsWrapClass(
-            'top-12 sm:top-14 bg-white/80 shadow-sm backdrop-blur z-30',
-          );
-        } else {
-          setTabsWrapClass('');
-        }
-      }, 300);
-    }
+  const onClickTab = (index: number, ref: MutableRefObject<HTMLDivElement>) => {
+    setActiveTab(index);
+    window.scrollTo(0, ref.current.offsetTop - SECTION_OFFSET_TOP_SPACING);
+  };
 
+  useEffect(() => {
     if (tabs) {
       const handleScroll = () => {
         setScrollPosition(window ? window.scrollY : 0);
@@ -66,7 +54,7 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
             scrollPosition >=
               tab.ref.current.offsetTop - SECTION_OFFSET_TOP_SPACING
           ) {
-            setActive(tabIndex);
+            setActiveTab(tabIndex);
           }
         });
       };
@@ -77,33 +65,48 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [tabs, scrollPosition, tabsWrapRef]);
-
-  const onClick = (index: number, ref: any) => {
-    setActive(index);
-    window.scrollTo(0, ref.current.offsetTop - 50);
-  };
+  }, [tabs, scrollPosition]);
 
   const { showNewMessages } = useIntercom();
 
+  const dropdownItems = [
+    {
+      id: 0,
+      label: 'Request more data',
+      value: 'requestMoreData',
+      onClick: () =>
+        showNewMessages(
+          `Hi EdgeIn, I'd like to request some more data on ${resourceName}`,
+        ),
+    },
+    {
+      id: 1,
+      label: 'Report an error',
+      value: 'reportAnError',
+      onClick: () =>
+        showNewMessages(
+          `Hi EdgeIn, I'd like to report an error on ${resourceName}`,
+        ),
+    },
+  ];
+
   return (
-    <div
-      className={`sticky z-10 flex flex-nowrap grow shrink-0 gap-3 justify-between items-center lg:flex-wrap ${className} ${tabsWrapClass}`}
-      role="tablist"
-      ref={tabsWrapRef}
+    <ElemSticky
+      className={`flex justify-between items-center ${className}`}
+      activeClass="top-14 bg-white shadow-sm"
     >
       <nav
         className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 lg:flex-wrap ${tabsClassName}`}
       >
         {tabs &&
-          tabs.map((tab: any, index: number) => (
+          tabs.map((tab: Tabs, index: number) => (
             <ElemButton
               key={index}
-              onClick={() => onClick(index, tab.ref)}
+              onClick={() => onClickTab(index, tab.ref)}
               btn="gray"
               roundedFull={false}
               className={`rounded-lg shrink-0 ${
-                isActive === index
+                isActiveTab === index
                   ? 'border-primary-500 hover:border-primary-500'
                   : ''
               }`}
@@ -114,53 +117,19 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
       </nav>
       {children}
       {showDropdown && (
-        <Popover className="relative z-10 transition-all">
-          <Popover.Button className="flex items-center focus:outline-none">
-            <IconEllipsisVertical
-              className="h-6 w-6 text-gray-600"
-              title="Options"
-            />
-          </Popover.Button>
-
-          <Transition
-            enter="transition duration-100 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-75 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
-          >
-            <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
-              {({ close }) => (
-                <>
-                  <button
-                    onClick={() => {
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to request some more data on ${resourceName}`,
-                      );
-                      close();
-                    }}
-                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
-                  >
-                    <span>Request more data</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      showNewMessages(
-                        `Hi EdgeIn, I'd like to report an error on ${resourceName}`,
-                      );
-                      close();
-                    }}
-                    className="flex items-center gap-x-2 cursor-pointer w-full text-sm px-4 py-2 transition-all hover:bg-gray-100"
-                  >
-                    <span>Report an error</span>
-                  </button>
-                </>
-              )}
-            </Popover.Panel>
-          </Transition>
-        </Popover>
+        <ElemDropdown
+          customButton={
+            <ElemButton className="w-8 h-8 !p-0 hover:bg-gray-100">
+              <IconEllipsisVertical
+                className="w-6 h-6 text-gray-600"
+                title="Options"
+              />
+            </ElemButton>
+          }
+          items={dropdownItems}
+          itemsShowIcons={false}
+        />
       )}
-    </div>
+    </ElemSticky>
   );
 };
