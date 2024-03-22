@@ -42,7 +42,6 @@ import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
 import { ElemGoingDialog } from '@/components/events/elem-going-dialog';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 
 type Props = {
@@ -135,8 +134,7 @@ const Event: NextPage<Props> = props => {
                 <div
                   className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                     t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                  }`}
-                >
+                  }`}>
                   {err?.message}
                 </div>
               ),
@@ -202,7 +200,7 @@ const Event: NextPage<Props> = props => {
 
   const eventImage = (
     <img
-      className="object-fit h-full w-full"
+      className="w-full h-full object-fit"
       src={
         event.banner?.url ||
         getEventBanner(event.location_json?.city, '1220x400')
@@ -266,14 +264,13 @@ const Event: NextPage<Props> = props => {
           <div className="mb-4">
             <div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">
               <div
-                className="absolute top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full -z-10 bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+                className="absolute top-0 bottom-0 left-0 right-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover -z-10 blur-2xl" // blur-[50px]
                 style={{
                   backgroundImage: `url(${
                     event.banner?.url ||
                     getEventBanner(event.location_json?.city)
                   }), url(${randomImageOfCity(event.location_json?.city)})`,
-                }}
-              ></div>
+                }}></div>
 
               {event.link ? (
                 <a href={event.link} target="_blank" rel="noreferrer">
@@ -286,7 +283,7 @@ const Event: NextPage<Props> = props => {
           </div>
 
           {event.start_date && (
-            <div className="w-full inline py-1 text-gray-500">
+            <div className="inline w-full py-1 text-gray-500">
               {formatDateShown(event?.start_date)}
 
               {event?.start_time && (
@@ -309,8 +306,7 @@ const Event: NextPage<Props> = props => {
             {attendees?.length > 0 && (
               <button
                 className="self-center flex items-center gap-x-1 shrink-0 rounded-lg px-2 py-1.5 hover:bg-gray-100"
-                onClick={() => onOpenGoingDialog()}
-              >
+                onClick={() => onOpenGoingDialog()}>
                 <div className="flex -space-x-3">
                   {attendees?.slice(0, 6)?.map(attendee => (
                     <div key={attendee.id}>
@@ -322,7 +318,7 @@ const Event: NextPage<Props> = props => {
                           imgAlt={attendee.person?.name}
                         />
                       ) : (
-                        <div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
+                        <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">
                           {attendee.person?.name?.charAt(0)}
                         </div>
                       )}
@@ -348,11 +344,10 @@ const Event: NextPage<Props> = props => {
 
           {event.parent_event && (
             <div className="mt-4">
-              <div className="font-bold text-sm">Sub-event of:</div>
+              <div className="text-sm font-bold">Sub-event of:</div>
               <ElemLink
                 href={`${ROUTES.EVENTS}/${event.parent_event.slug}`}
-                className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5"
-              >
+                className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
                 <h2 className="inline group-hover:underline">
                   {event.parent_event.name}
                 </h2>
@@ -360,16 +355,14 @@ const Event: NextPage<Props> = props => {
             </div>
           )}
 
-          <ElemDemocratizeBanner className="mt-7" />
-          {/* <ElemInviteBanner className="mt-7" /> */}
+          <ElemInviteBanner className="mt-7" />
         </div>
 
         <ElemTabBar
           className="!flex-wrap px-8 py-2"
           tabs={tabBarItems}
           resourceName={event.name}
-          showDropdown={false}
-        >
+          showDropdown={false}>
           <div className="flex gap-2 lg:justify-end">
             <ElemAddToCalendarButton
               event={{
@@ -390,8 +383,7 @@ const Event: NextPage<Props> = props => {
               <ElemButton
                 href={`${ROUTES.ADMIN_EVENTS}/${event.id}`}
                 target="_blank"
-                btn="default"
-              >
+                btn="default">
                 Edit (admin)
               </ElemButton>
             )}
@@ -401,20 +393,18 @@ const Event: NextPage<Props> = props => {
               <ElemButton
                 btn="primary"
                 onClick={handleClickGoingEvent}
-                loading={isLoadingGoingEvent}
-              >
+                loading={isLoadingGoingEvent}>
                 Going
               </ElemButton>
             )}
           </div>
         </ElemTabBar>
 
-        <div className="mt-4 px-8">
+        <div className="px-8 mt-4">
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
-            id="overview"
-          >
+            id="overview">
             <div className="col-span-3">
               <ElemKeyInfo
                 className="sticky top-16"
@@ -433,11 +423,11 @@ const Event: NextPage<Props> = props => {
                 attachments={event.attachments}
               />
             </div>
-            <div className="col-span-8 mt-8 grid gap-y-8 lg:mt-0">
+            <div className="grid col-span-8 mt-8 gap-y-8 lg:mt-0">
               {event.overview && (
-                <div className="rounded-lg border border-gray-300 lg:mt-0">
-                  <h2 className="text-lg font-medium px-4 pt-2">Overview</h2>
-                  <div className="text-sm text-gray-500 px-4 py-4">
+                <div className="border border-gray-300 rounded-lg lg:mt-0">
+                  <h2 className="px-4 pt-2 text-lg font-medium">Overview</h2>
+                  <div className="px-4 py-4 text-sm text-gray-500">
                     {parse(newLineToP(event.overview))}
                   </div>
                 </div>
@@ -446,14 +436,13 @@ const Event: NextPage<Props> = props => {
               {organizers?.length > 0 && (
                 <div
                   ref={organizersRef}
-                  className="rounded-lg border border-gray-300"
-                  id="organizers"
-                >
+                  className="border border-gray-300 rounded-lg"
+                  id="organizers">
                   <ElemOrganizers organizations={organizers} />
                 </div>
               )}
 
-              <div className="rounded-lg border border-gray-300">
+              <div className="border border-gray-300 rounded-lg">
                 <ElemEventActivity
                   activities={sortedActivities}
                   eventName={event.name}
@@ -465,9 +454,8 @@ const Event: NextPage<Props> = props => {
           {speakers?.length > 0 && (
             <div
               ref={speakersRef}
-              className="mt-7 rounded-lg border border-gray-300"
-              id="speakers"
-            >
+              className="border border-gray-300 rounded-lg mt-7"
+              id="speakers">
               <ElemSpeakerGrid people={speakers} />
             </div>
           )}

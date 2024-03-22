@@ -18,7 +18,6 @@ import {
   useGetPersonQuery,
   Team_Members,
   Investors,
-  Companies,
 } from '@/graphql/types';
 import { ElemJobsList } from '@/components/person/elem-jobs-list';
 import { onTrackView } from '@/utils/track';
@@ -32,9 +31,8 @@ import ElemNewsList from '@/components/news/elem-news-list';
 import { ElemSocialShare } from '@/components/elem-social-share';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ROUTES } from '@/routes';
-//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   person: People;
@@ -156,7 +154,7 @@ const Person: NextPage<Props> = (props: Props) => {
         <div className="relative">
           <div className={`p-8 event-${person.id}`}>
             <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
-              <div className="col-span-2 flex justify-center">
+              <div className="flex justify-center col-span-2">
                 <ElemPhoto
                   photo={person.picture}
                   wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full border border-gray-200 w-40 lg:w-full"
@@ -170,7 +168,7 @@ const Person: NextPage<Props> = (props: Props) => {
                 <div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:shrink-0">
                   <div>
                     {person.type && (
-                      <div className="whitespace-nowrap text-sm text-gray-500">
+                      <div className="text-sm text-gray-500 whitespace-nowrap">
                         {removeSpecialCharacterFromString(
                           person.type as string,
                         )}
@@ -185,7 +183,7 @@ const Person: NextPage<Props> = (props: Props) => {
                         <ElemTooltip content="Claimed profile">
                           <div className="cursor-pointer">
                             <IconCheckBadgeSolid
-                              className="h-8 w-8 text-primary-500"
+                              className="w-8 h-8 text-primary-500"
                               title="Claimed profile"
                             />
                           </div>
@@ -205,7 +203,7 @@ const Person: NextPage<Props> = (props: Props) => {
                       />
                     )}
 
-                    <div className="flex flex-wrap items-center mt-4 gap-3">
+                    <div className="flex flex-wrap items-center gap-3 mt-4">
                       <ElemSaveToList
                         resourceName={person.name}
                         resourceId={person.id}
@@ -226,8 +224,7 @@ const Person: NextPage<Props> = (props: Props) => {
                             showNewMessages(
                               `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
                             )
-                          }
-                        >
+                          }>
                           Claim profile
                         </ElemButton>
                       )}
@@ -242,8 +239,7 @@ const Person: NextPage<Props> = (props: Props) => {
                         <ElemButton
                           href={`${ROUTES.ADMIN_PEOPLE}/${person.id}`}
                           target="_blank"
-                          btn="default"
-                        >
+                          btn="default">
                           Edit (admin)
                         </ElemButton>
                       )}
@@ -253,15 +249,14 @@ const Person: NextPage<Props> = (props: Props) => {
                 </div>
 
                 {person.about && (
-                  <p className="mt-4 line-clamp-3 text-base text-slate-600">
+                  <p className="mt-4 text-base line-clamp-3 text-slate-600">
                     {person.about}
                   </p>
                 )}
               </div>
             </div>
 
-            <ElemDemocratizeBanner className="mt-7" />
-            {/* <ElemInviteBanner className="mt-7" /> */}
+            <ElemInviteBanner className="mt-7" />
           </div>
 
           <ElemTabBar
@@ -270,12 +265,11 @@ const Person: NextPage<Props> = (props: Props) => {
             resourceName={person.name}
           />
 
-          <div className="mt-4 px-8">
+          <div className="px-8 mt-4">
             <div
               className="lg:grid lg:grid-cols-11 lg:gap-7"
               ref={overviewRef}
-              id="overview"
-            >
+              id="overview">
               <div className="col-span-3">
                 <ElemKeyInfo
                   className="sticky top-16 mb-7 lg:mb-0"
@@ -292,11 +286,11 @@ const Person: NextPage<Props> = (props: Props) => {
                   website={person.website_url}
                 />
               </div>
-              <div className="col-span-8 grid gap-y-7">
+              <div className="grid col-span-8 gap-y-7">
                 {person.about && (
                   <section className="border border-gray-300 rounded-lg">
-                    <h2 className="text-lg font-medium px-4 pt-2">About</h2>
-                    <p className="text-sm text-gray-500 px-4 pb-4">
+                    <h2 className="px-4 pt-2 text-lg font-medium">About</h2>
+                    <p className="px-4 pb-4 text-sm text-gray-500">
                       {person.about}
                     </p>
                   </section>

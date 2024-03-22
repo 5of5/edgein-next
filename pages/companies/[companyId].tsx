@@ -48,7 +48,6 @@ import { ElemReactions } from '@/components/elem-reactions';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { USER_ROLES } from '@/utils/users';
 
@@ -232,8 +231,7 @@ const Company: NextPage<Props> = (props: Props) => {
                   <div
                     key={company.coin.id}
                     className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap uppercase"
-                    title={`Token: ${company.coin.ticker}`}
-                  >
+                    title={`Token: ${company.coin.ticker}`}>
                     {company.coin.ticker}
                   </div>
                 )}
@@ -248,15 +246,14 @@ const Company: NextPage<Props> = (props: Props) => {
 
               {parentOrganization && (
                 <div className="mt-4">
-                  <div className="font-medium text-sm">
+                  <div className="text-sm font-medium">
                     Sub-organization of:
                   </div>
                   <ElemLink
                     href={`/${
                       parentLinks?.from_company ? 'companies' : 'investors'
                     }/${parentOrganization?.slug}`}
-                    className="flex items-center gap-2 mt-1 group"
-                  >
+                    className="flex items-center gap-2 mt-1 group">
                     <ElemPhoto
                       photo={parentOrganization?.logo}
                       wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border border-gray-200"
@@ -264,7 +261,7 @@ const Company: NextPage<Props> = (props: Props) => {
                       imgAlt={parentOrganization?.name}
                       placeholderClass="text-slate-300"
                     />
-                    <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                    <h2 className="inline leading-tight transition-all border-b border-primary-500 group-hover:border-b-2 group-hover:text-primary-500">
                       {parentOrganization?.name}
                     </h2>
                   </ElemLink>
@@ -276,8 +273,7 @@ const Company: NextPage<Props> = (props: Props) => {
                     ref={overviewDiv}
                     className={`mt-4 text-sm text-gray-500 ${
                       overviewMore ? '' : 'line-clamp-5'
-                    }`}
-                  >
+                    }`}>
                     {parse(stripHtmlTags(company.overview))}
                   </div>
 
@@ -285,14 +281,13 @@ const Company: NextPage<Props> = (props: Props) => {
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="!px-0 !py-0 inline font-normal"
-                    >
+                      className="!px-0 !py-0 inline font-normal">
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>
                   )}
                 </>
               )}
-              <div className="flex flex-wrap items-center mt-4 gap-3">
+              <div className="flex flex-wrap items-center gap-3 mt-4">
                 <ElemReactions
                   resource={company}
                   resourceType={'companies'}
@@ -313,8 +308,7 @@ const Company: NextPage<Props> = (props: Props) => {
                   <ElemButton
                     href={`${ROUTES.ADMIN_COMPANIES}/${company.id}`}
                     target="_blank"
-                    btn="default"
-                  >
+                    btn="default">
                     Edit (admin)
                   </ElemButton>
                 )}
@@ -322,9 +316,9 @@ const Company: NextPage<Props> = (props: Props) => {
             </div>
             <div className="col-span-3 mt-7 lg:mt-0">
               {Object.values(tokenInfo).some(i => i > 0) && (
-                <section className="bg-white border border-gray-300 rounded-lg p-4 md:mt-0">
+                <section className="p-4 bg-white border border-gray-300 rounded-lg md:mt-0">
                   <h2 className="font-medium">Token Info</h2>
-                  <div className="flex flex-col space-y-3 my-3">
+                  <div className="flex flex-col my-3 space-y-3">
                     {props.metrics.map(item => {
                       let metricsClass = '';
 
@@ -345,12 +339,10 @@ const Company: NextPage<Props> = (props: Props) => {
                       return (
                         <div
                           className="flex items-center justify-between space-x-2"
-                          key={item.id}
-                        >
+                          key={item.id}>
                           <div className="text-sm">{item.name}</div>
                           <div
-                            className={`text-sm font-medium ${metricsClass}`}
-                          >
+                            className={`text-sm font-medium ${metricsClass}`}>
                             {tokenInfo[item.id as keyof TokenInfo]
                               ? item.id === 'highLow24H'
                                 ? `$${convertAmountRaised(
@@ -373,8 +365,7 @@ const Company: NextPage<Props> = (props: Props) => {
                       href="https://www.amberdata.io/?ref=edgeinio"
                       target="_blank"
                       rel="noreferrer"
-                      className="hover:text-slate-600"
-                    >
+                      className="hover:text-slate-600">
                       AmberData
                     </a>{' '}
                     and Coingecko
@@ -384,20 +375,18 @@ const Company: NextPage<Props> = (props: Props) => {
             </div>
           </div>
 
-          <ElemDemocratizeBanner className="mt-7" />
-          {/* <ElemInviteBanner className="mt-7" /> */}
+          <ElemInviteBanner className="mt-7" />
         </div>
         <ElemTabBar
           className="px-8 py-2"
           tabs={tabBarItems}
           resourceName={company.name}
         />
-        <div className="mt-4 px-8">
+        <div className="px-8 mt-4">
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
-            id="overview"
-          >
+            id="overview">
             <div className="col-span-3">
               <ElemKeyInfo
                 className="sticky top-28"

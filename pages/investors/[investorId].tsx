@@ -35,7 +35,6 @@ import { INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { USER_ROLES } from '@/utils/users';
 
@@ -182,13 +181,12 @@ const VCFirm: NextPage<Props> = props => {
 
               {parentOrganization && (
                 <div className="mt-4">
-                  <div className="font-bold text-sm">Sub-organization of:</div>
+                  <div className="text-sm font-bold">Sub-organization of:</div>
                   <ElemLink
                     href={`/${
                       parentLinks?.from_company ? 'companies' : 'investors'
                     }/${parentOrganization?.slug}`}
-                    className="flex items-center gap-2 mt-1 group"
-                  >
+                    className="flex items-center gap-2 mt-1 group">
                     <ElemPhoto
                       photo={parentOrganization?.logo}
                       wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
@@ -196,7 +194,7 @@ const VCFirm: NextPage<Props> = props => {
                       imgAlt={parentOrganization?.name}
                       placeholderClass="text-slate-300"
                     />
-                    <h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+                    <h2 className="inline leading-tight transition-all border-b border-primary-500 group-hover:border-b-2 group-hover:text-primary-500">
                       {parentOrganization?.name}
                     </h2>
                   </ElemLink>
@@ -209,16 +207,14 @@ const VCFirm: NextPage<Props> = props => {
                     ref={overviewDiv}
                     className={`mt-4 text-sm text-gray-500 prose ${
                       overviewMore ? '' : 'line-clamp-5'
-                    }`}
-                  >
+                    }`}>
                     {parse(stripHtmlTags(vcfirm.overview))}
                   </div>
                   {overviewDivScrollHeight > overviewDivHeight && (
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="!px-0 !py-0 inline font-normal"
-                    >
+                      className="!px-0 !py-0 inline font-normal">
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>
                   )}
@@ -245,8 +241,7 @@ const VCFirm: NextPage<Props> = props => {
                   <ElemButton
                     href={`${ROUTES.ADMIN_INVESTORS}/${vcfirm.id}`}
                     target="_blank"
-                    btn="default"
-                  >
+                    btn="default">
                     Edit (admin)
                   </ElemButton>
                 )}
@@ -254,8 +249,7 @@ const VCFirm: NextPage<Props> = props => {
             </div>
           </div>
 
-          <ElemDemocratizeBanner className="mt-7" />
-          {/* <ElemInviteBanner className="mt-7" /> */}
+          <ElemInviteBanner className="mt-7" />
         </div>
 
         <ElemTabBar
@@ -264,12 +258,11 @@ const VCFirm: NextPage<Props> = props => {
           resourceName={vcfirm.name}
         />
 
-        <div className="mt-4 px-8">
+        <div className="px-8 mt-4">
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
-            id="overview"
-          >
+            id="overview">
             <div className="col-span-3">
               <ElemKeyInfo
                 className="sticky top-16"

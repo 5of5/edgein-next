@@ -44,10 +44,10 @@ import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import moment from 'moment-timezone';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 import { NoResults } from '@/components/companies/no-results';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   vcFirmCount: number;
@@ -407,7 +407,7 @@ const Investors: NextPage<Props> = ({
             )}
           </ElemFiltersWrap>
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
+          <ElemInviteBanner className="mx-8 mt-2" />
 
           <div className="mx-8">
             <div className="flex justify-between py-8">
@@ -442,8 +442,7 @@ const Investors: NextPage<Props> = ({
               <>
                 <div
                   data-testid="investors"
-                  className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                >
+                  className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {vcFirms?.map(vcfirm => (
                     <ElemInvestorCard
                       key={vcfirm.id}
