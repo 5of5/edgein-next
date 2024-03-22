@@ -39,11 +39,11 @@ import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import useDashboardSortBy from '@/hooks/use-dashboard-sort-by';
 import { ElemDropdown } from '@/components/elem-dropdown';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 import { NoResults } from '@/components/companies/no-results';
 import { EventsTable } from '@/components/events/elem-events-table';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   eventTabs: DashboardCategory[];
@@ -353,7 +353,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
             )}
           </ElemFiltersWrap>
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
+          <ElemInviteBanner className="mx-8 mt-2" />
 
           <div className="mx-8">
             <div className="flex justify-between py-8">
@@ -394,8 +394,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               <>
                 <div
                   data-testid="events"
-                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
-                >
+                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4">
                   {events?.map(event => (
                     <ElemEventCard key={event.id} event={event} />
                   ))}

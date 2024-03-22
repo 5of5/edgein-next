@@ -27,8 +27,7 @@ import { EventsByFilterInSection } from '@/components/events/elem-events-by-filt
 import { onTrackView } from '@/utils/track';
 import { useRouter } from 'next/router';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
-//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { NextSeo } from 'next-seo';
 import { ElemSticky } from '@/components/elem-sticky';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
@@ -123,8 +122,7 @@ const Home: NextPage = () => {
             </div>
           </div>
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
-          {/* <ElemInviteBanner className="mx-8 mt-3" /> */}
+          <ElemInviteBanner className="mx-8 mt-3" />
 
           <ElemFiltersWrap>
             <ElemCategories

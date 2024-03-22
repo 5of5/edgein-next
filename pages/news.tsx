@@ -33,11 +33,10 @@ import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { NewsByFilter } from '@/components/news/elem-news-by-filter';
-//import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 import { NoResults } from '@/components/companies/no-results';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -218,7 +217,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
             )} */}
           </ElemFiltersWrap>
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
+          <ElemInviteBanner className="mx-8 mt-3" />
 
           <div className="mx-8">
             <div className="flex flex-col gap-8 mt-6">

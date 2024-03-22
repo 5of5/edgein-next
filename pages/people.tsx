@@ -37,13 +37,13 @@ import { ElemAddFilter } from '@/components/filters/elem-add-filter';
 import useDashboardFilter from '@/hooks/use-dashboard-filter';
 import { ElemFilter } from '@/components/filters/elem-filter';
 import { processPeopleFilter } from '@/components/filters/processor';
-import { ElemDemocratizeBanner } from '@/components/invites/elem-democratize-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 import { NoResults } from '@/components/companies/no-results';
 import { IconGroup, IconTable } from '@/components/icons';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { PeopleTable } from '@/components/people/elem-people-table';
+import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 
 type Props = {
   peopleTabs: DashboardCategory[];
@@ -275,8 +275,7 @@ const People: NextPage<Props> = ({
             )}
           </ElemFiltersWrap>
 
-          <ElemDemocratizeBanner className="mx-8 my-3" />
-          {/* <ElemInviteBanner className="mx-8 my-3" /> */}
+          <ElemInviteBanner className="mx-8 my-3" />
 
           <div className="mx-8">
             <div className="flex justify-between py-8">
@@ -316,8 +315,7 @@ const People: NextPage<Props> = ({
               <>
                 <div
                   data-testid="people"
-                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                >
+                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {people?.map(person => {
                     return (
                       <ElemPersonCard
