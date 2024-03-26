@@ -23,16 +23,16 @@ export const ElemSignUpProfile: FC<Props> = ({
   onNext,
 }) => {
   return (
-    <div className="max-w-sm mx-auto w-full px-8 lg:px-0">
-      <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
+    <div className="w-full max-w-sm mx-auto">
+      <h1 className="text-2xl font-medium text-center lg:text-3xl">
         Is this you?
       </h1>
-      <p className="mt-4 text-xs text-center text-slate-500 font-normal">
+      <p className="mt-4 text-xs font-normal text-center text-slate-500">
         We&apos;ve found a person on EdgeIn that might be you. If you confirm,
         you&apos;ll claim this profile.
       </p>
 
-      <div className="flex flex-col items-center mt-6 mb-8 px-3 py-8 bg-white border border-slate-300 rounded-lg">
+      <div className="flex flex-col items-center px-3 py-8 mt-6 mb-8 bg-white border rounded-lg border-slate-300">
         <ElemPhoto
           photo={person?.picture}
           wrapClass="flex items-center justify-center shrink-0 w-48 h-48 rounded-full overflow-hidden"
@@ -41,40 +41,40 @@ export const ElemSignUpProfile: FC<Props> = ({
           placeholder="user"
           placeholderClass="text-slate-300"
         />
-        <p className="text-slate-900 text-base mt-6">{person?.name}</p>
+        <p className="mt-6 text-base text-slate-900">{person?.name}</p>
         <ul className="flex items-center gap-2 mt-3">
           {person?.website_url && (
             <ElemLink href={person.website_url} target="_blank">
-              <IconGlobe title="Website" className="h-6 w-6 text-gray-400" />
+              <IconGlobe title="Website" className="w-6 h-6 text-gray-400" />
             </ElemLink>
           )}
           {person?.linkedin && (
             <ElemLink href={person.linkedin} target="_blank">
-              <IconLinkedIn className="h-6 w-6 text-gray-400" />
+              <IconLinkedIn className="w-6 h-6 text-gray-400" />
             </ElemLink>
           )}
           {person?.twitter_url && (
             <li>
               <ElemLink href={person.twitter_url} target="_blank">
-                <IconTwitter className="h-6 w-6 text-gray-400" />
+                <IconTwitter className="w-6 h-6 text-gray-400" />
               </ElemLink>
             </li>
           )}
 
           {person?.github && (
             <ElemLink href={person.github} target="_blank">
-              <IconGithub className="h-6 w-6 text-gray-400" />
+              <IconGithub className="w-6 h-6 text-gray-400" />
             </ElemLink>
           )}
           {person?.facebook_url && (
             <ElemLink href={person.facebook_url} target="_blank">
-              <IconFacebook className="h-6 w-6 text-gray-400" />
+              <IconFacebook className="w-6 h-6 text-gray-400" />
             </ElemLink>
           )}
         </ul>
       </div>
 
-      <div className="flex flex-col gap-5 items-center">
+      <div className="flex flex-col items-center gap-5">
         <ElemButton
           className="w-full"
           size="md"

@@ -140,18 +140,18 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
 
   return (
     <>
-      <div className="max-w-xs mx-auto w-full">
-        <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
+      <div className="w-full max-w-xs mx-auto">
+        <h1 className="text-2xl font-medium text-center lg:text-3xl">
           Log in or sign up
         </h1>
-        <p className="mt-4 text-xs text-center font-normal">
+        <p className="mt-4 text-xs font-normal text-center">
           Use your work email, so we can connect you with your teammates. If you
           have an account already, you&apos;ll log in.
         </p>
 
         <div>
           <form onSubmit={handleSubmit}>
-            <div className="flex flex-col space-y-4 mt-6">
+            <div className="flex flex-col mt-6 space-y-4">
               <label>
                 <span className="text-xs font-medium">Email</span>
                 <InputText
@@ -178,7 +178,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                       <span>Password</span>
                       <span
                         onClick={() => setOpenForgotPasswordModal(true)}
-                        className="text-slate-500 cursor-pointer underline"
+                        className="underline cursor-pointer text-slate-500"
                       >
                         Forgot your password?
                       </span>
@@ -205,8 +205,8 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
               )}
 
               {unsuccessMessage && (
-                <p className="mt-1 flex items-center font-bold text-sm text-red-500">
-                  <IconExclamationTriangle className="h-5 w-5 mr-1" />
+                <p className="flex items-center mt-1 text-sm font-bold text-red-500">
+                  <IconExclamationTriangle className="w-5 h-5 mr-1" />
                   {unsuccessMessage}
                 </p>
               )}
@@ -223,17 +223,17 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
             </div>
           </form>
 
-          <div className="flex py-8 items-center">
+          <div className="flex items-center py-8">
             <div className="flex-grow border-t border-black/10"></div>
           </div>
 
-          <p className="text-xs text-center font-normal">
+          <p className="text-xs font-normal text-center">
             Or sign in using LinkedIn.
           </p>
 
           <ElemButton
             onClick={handleContinueWithLinkedin}
-            className="w-full mt-6 gap-x-2 text-center bg-white ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200"
+            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200"
           >
             <IconLinkedInAlt
               title="LinkedIn"
@@ -243,13 +243,13 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
           </ElemButton>
         </div>
       </div>
-      <p className="text-gray-500 text-xs text-center mt-16">
+      <p className="mt-16 text-xs text-center text-gray-500">
         By signing in, you agree to EdgeIn&apos;s{' '}
-        <a href="https://edgein.io/terms/" className=" underline">
+        <a href="https://edgein.io/terms/" className="underline ">
           Terms of Service
         </a>{' '}
         and{' '}
-        <a href="https://edgein.io/privacy/" className=" underline">
+        <a href="https://edgein.io/privacy/" className="underline ">
           Privacy Policy
         </a>
         .

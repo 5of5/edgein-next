@@ -148,17 +148,17 @@ export const ElemSignUpForm: FC<Props> = ({
   };
 
   return (
-    <div className="max-w-sm mx-auto w-full">
-      <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
+    <div className="w-full max-w-sm mx-auto">
+      <h1 className="text-2xl font-medium text-center lg:text-3xl">
         First things first...
       </h1>
-      <p className="mt-4 text-xs text-center text-slate-500 font-normal">
+      <p className="mt-4 text-xs font-normal text-center text-slate-500">
         You&apos;re signing up with the email{' '}
         <span className="font-semibold">{signUpEmail}</span>.
       </p>
 
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col space-y-4 mt-6">
+        <div className="flex flex-col mt-6 space-y-4">
           <label>
             <span className="text-xs font-medium">First name</span>
             <InputText
@@ -215,7 +215,7 @@ export const ElemSignUpForm: FC<Props> = ({
             )}
           </label>
 
-          <div className="flex pt-8 pb-6 items-center">
+          <div className="flex items-center pt-8 pb-6">
             <div className="flex-grow border-t border-black/10"></div>
           </div>
 
