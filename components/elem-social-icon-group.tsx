@@ -27,7 +27,7 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
   const onCloseUpgradeDialog = () => setIsOpenUpgradeDialog(false);
 
   return (
-    <div className="flex items-center space-x-1.5">
+    <div className="flex flex-wrap items-center gap-1.5">
       {resources.map(resourceItem => {
         if (!resourceItem.value) {
           return null;
@@ -38,7 +38,7 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
             <button key={resourceItem.value} onClick={onOpenUpgradeDialog}>
               <resourceItem.icon
                 title={resourceItem.title}
-                className="h-5 w-5 text-gray-600"
+                className="w-5 h-5 text-gray-600"
               />
             </button>
           );
@@ -52,7 +52,7 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
           >
             <resourceItem.icon
               title={resourceItem.title}
-              className="h-5 w-5 text-gray-600"
+              className="w-5 h-5 text-gray-600"
             />
           </ElemLink>
         );

@@ -64,7 +64,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-4">
         {times(itemsPerPage, index => (
           <PlaceholderCompanyCard key={index} />
         ))}
@@ -105,7 +105,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+            className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-4"
           >
             {companies.map(company => (
               <ElemCompanyCard
