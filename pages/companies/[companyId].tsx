@@ -231,7 +231,8 @@ const Company: NextPage<Props> = (props: Props) => {
                   <div
                     key={company.coin.id}
                     className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap uppercase"
-                    title={`Token: ${company.coin.ticker}`}>
+                    title={`Token: ${company.coin.ticker}`}
+                  >
                     {company.coin.ticker}
                   </div>
                 )}
@@ -253,7 +254,8 @@ const Company: NextPage<Props> = (props: Props) => {
                     href={`/${
                       parentLinks?.from_company ? 'companies' : 'investors'
                     }/${parentOrganization?.slug}`}
-                    className="flex items-center gap-2 mt-1 group">
+                    className="flex items-center gap-2 mt-1 group"
+                  >
                     <ElemPhoto
                       photo={parentOrganization?.logo}
                       wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border border-gray-200"
@@ -273,7 +275,8 @@ const Company: NextPage<Props> = (props: Props) => {
                     ref={overviewDiv}
                     className={`mt-4 text-sm text-gray-500 ${
                       overviewMore ? '' : 'line-clamp-5'
-                    }`}>
+                    }`}
+                  >
                     {parse(stripHtmlTags(company.overview))}
                   </div>
 
@@ -281,7 +284,8 @@ const Company: NextPage<Props> = (props: Props) => {
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="!px-0 !py-0 inline font-normal">
+                      className="!px-0 !py-0 inline font-normal"
+                    >
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>
                   )}
@@ -308,7 +312,8 @@ const Company: NextPage<Props> = (props: Props) => {
                   <ElemButton
                     href={`${ROUTES.ADMIN_COMPANIES}/${company.id}`}
                     target="_blank"
-                    btn="default">
+                    btn="default"
+                  >
                     Edit (admin)
                   </ElemButton>
                 )}
@@ -339,10 +344,12 @@ const Company: NextPage<Props> = (props: Props) => {
                       return (
                         <div
                           className="flex items-center justify-between space-x-2"
-                          key={item.id}>
+                          key={item.id}
+                        >
                           <div className="text-sm">{item.name}</div>
                           <div
-                            className={`text-sm font-medium ${metricsClass}`}>
+                            className={`text-sm font-medium ${metricsClass}`}
+                          >
                             {tokenInfo[item.id as keyof TokenInfo]
                               ? item.id === 'highLow24H'
                                 ? `$${convertAmountRaised(
@@ -365,7 +372,8 @@ const Company: NextPage<Props> = (props: Props) => {
                       href="https://www.amberdata.io/?ref=edgeinio"
                       target="_blank"
                       rel="noreferrer"
-                      className="hover:text-slate-600">
+                      className="hover:text-slate-600"
+                    >
                       AmberData
                     </a>{' '}
                     and Coingecko
@@ -386,7 +394,8 @@ const Company: NextPage<Props> = (props: Props) => {
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
-            id="overview">
+            id="overview"
+          >
             <div className="col-span-3">
               <ElemKeyInfo
                 className="sticky top-28"
