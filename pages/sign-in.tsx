@@ -94,7 +94,7 @@ export default function SignIn() {
           />
 
           <div className="flex items-center justify-center h-[calc(100%-53px)] w-full">
-            <div className="w-full max-h-full overflow-auto">
+            <div className="w-full max-h-full overflow-auto overscroll-none scrollbar-hide">
               <div className="flex flex-col items-center justify-center px-4 py-6 sm:px-6 md:px-8">
                 {signUpStep === 0 && (
                   <ElemLogin
