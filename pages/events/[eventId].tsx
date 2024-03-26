@@ -415,7 +415,7 @@ const Event: NextPage<Props> = props => {
           >
             <div className="col-span-3">
               <ElemKeyInfo
-                className="sticky top-16"
+                className="sticky top-28"
                 heading="Key Info"
                 eventLink={event.link}
                 // website={event.link}
