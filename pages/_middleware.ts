@@ -107,6 +107,12 @@ export async function middleware(req: NextRequest) {
       if (url.pathname === `${ROUTES.ONBOARDING}/`) {
         return NextResponse.redirect(new URL(ROUTES.COMPANIES, req.url));
       }
+      if (
+        url.pathname === `${ROUTES.ACCOUNT}/` ||
+        url.pathname === `${ROUTES.PROFILE}/`
+      ) {
+        return NextResponse.redirect(new URL(ROUTES.ROOT, req.url));
+      }
 
       const usage = await CookieService.getUsage(
         CookieService.getUsageToken(req.cookies),
