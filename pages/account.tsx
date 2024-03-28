@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
@@ -13,9 +13,18 @@ import { redirect_url } from '@/utils/auth';
 import validator from 'validator';
 import { ProfileEditDailyEmails } from '@/components/profile/profile-edit-daily-emails';
 import { USER_ROLES } from '@/utils/users';
+import { Toaster } from 'react-hot-toast';
+import useToast from '@/hooks/use-toast';
+import isEmpty from 'lodash/isEmpty';
+
+export type NewPasswordForm = {
+  newPassword?: string;
+  confirmPassword?: string;
+};
 
 export default function Account() {
   const { user, refreshUser } = useAuth();
+  const { toast } = useToast();
 
   const { data: userProfile } = useGetUserProfileQuery(
     {
@@ -26,45 +35,20 @@ export default function Account() {
     },
   );
 
-  const [isEditPassword, setEditPassword] = useState(false);
-
-  const [newPassword, setNewPassword] = useState('');
-  const [reEnterPassword, setReEnterPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [reEnterErrorMessage, setReEnterErrorMessage] = useState('');
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [values, setValues] = useState<NewPasswordForm>({
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [errors, setErrors] = useState<NewPasswordForm>({
+    newPassword: '',
+    confirmPassword: '',
+  });
 
   const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
 
   const onCloseSubscribedDialog = () => {
     setIsOpenSubscribedDialog(false);
-  };
-
-  const validate = (value: string) => {
-    setNewPassword(value);
-    if (
-      validator.isStrongPassword(value, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      setErrorMessage('');
-    } else {
-      setErrorMessage(
-        'Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, a special character',
-      );
-    }
-  };
-
-  const validateReEnterPassword = (value: string) => {
-    setReEnterPassword(value);
-    if (newPassword !== value) {
-      setReEnterErrorMessage('Password do not match!');
-    } else {
-      setReEnterErrorMessage('');
-    }
   };
 
   const onLinkedInClick = () => {
@@ -92,24 +76,85 @@ export default function Account() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          password: newPassword,
+          password: values.newPassword,
         }),
       });
-      setEditPassword(false);
-      setNewPassword('');
-      setReEnterPassword('');
+      setShowPasswordForm(false);
+      setValues({});
+      toast('Password updated', 'info');
     } catch (e) {
       console.log(e);
     }
   };
 
-  const onChangePassword = () => {
+  const isValidPassword = (password: string) => {
+    return validator.isStrongPassword(password, {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    });
+  };
+
+  const handleValidate = (name: string, value: string) => {
+    if (name === 'newPassword' && !isValidPassword(value)) {
+      setErrors(prev => ({
+        ...prev,
+        newPassword:
+          'Password should have at least 8 characters including a lower-case letter, an upper-case letter, a number, and a special character',
+      }));
+    } else if (name === 'confirmPassword' && value !== values.newPassword) {
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword:
+          'Passwords do not match! Confirm password has to match with new password',
+      }));
+    } else {
+      setErrors({});
+    }
+  };
+
+  const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    handleValidate(name, value);
+
+    setValues(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (values.newPassword === '' || values.confirmPassword === '') {
+      toast('Password fields cannot be empty', 'error');
+      return;
+    }
+
+    if (values.newPassword && !isValidPassword(values.newPassword)) {
+      setErrors(prev => ({
+        ...prev,
+        newPassword:
+          'Password should have at least 8 characters including a lower-case letter, an upper-case letter, a number, and a special character',
+      }));
+      return;
+    }
+
     if (
-      newPassword.length > 0 &&
-      !errorMessage &&
-      !reEnterErrorMessage &&
-      newPassword === reEnterPassword
+      values.confirmPassword &&
+      values.confirmPassword != values.newPassword
     ) {
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword:
+          'Passwords do not match! Confirm password has to match with new password',
+      }));
+      return;
+    }
+
+    console.log(isEmpty(errors));
+
+    if (isEmpty(errors)) {
       //call api
       callChangePassword();
     }
@@ -134,11 +179,12 @@ export default function Account() {
     userProfile?.users_by_pk?.use_credits_system &&
     new Date(userProfile?.users_by_pk?.last_transaction_expiration) >
       currentDate;
+
   return (
     <DashboardLayout>
       <div className="px-4 py-3 border-gray-200">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="font-medium text-xl">Account Settings</h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-xl font-medium">Account Settings</h2>
         </div>
 
         <dl className="w-full">
@@ -151,7 +197,7 @@ export default function Account() {
                   btn="default"
                   className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
                 >
-                  <IconLinkedInAlt className="h-5 w-5" />
+                  <IconLinkedInAlt className="w-5 h-5" />
                   <span>Connected</span>
                 </ElemButton>
               ) : (
@@ -181,64 +227,81 @@ export default function Account() {
             <EditSection
               heading="Password"
               right={
-                !isEditPassword ? (
+                !showPasswordForm ? (
                   <ElemButton
-                    onClick={() => setEditPassword(true)}
+                    onClick={() => setShowPasswordForm(true)}
                     btn="default"
                   >
-                    Edit
+                    Change Password
                   </ElemButton>
                 ) : (
                   <></>
                 )
               }
             >
-              {!isEditPassword ? (
-                <p className="text-gray-600 text-sm">
+              {!showPasswordForm ? (
+                <p className="text-sm text-gray-600">
                   Use a strong password that you are not using elsewhere.
                 </p>
               ) : (
-                <div className="max-w-sm text-sm">
-                  <div>
+                <div className="flex flex-col max-w-sm space-y-4 text-sm">
+                  <label>
+                    <span className="text-sm font-medium">New password</span>
                     <InputText
+                      name="newPassword"
                       type="password"
-                      label="New password"
-                      onChange={event => {
-                        validate(event.target.value);
-                      }}
-                      value={newPassword}
-                      name=""
+                      onChange={handleChangeValue}
+                      value={values.newPassword}
+                      className={`${
+                        errors.newPassword
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
+                      } !rounded-2xl`}
                     />
-                    {errorMessage === '' ? null : (
-                      <div className="mt-2 text-sm">{errorMessage}</div>
-                    )}
-                  </div>
 
-                  <div className="mt-4">
-                    <InputText
-                      type="password"
-                      label="Re-type new password"
-                      onChange={event => {
-                        validateReEnterPassword(event.target.value);
-                      }}
-                      value={reEnterPassword}
-                      name=""
-                    />
-                    {reEnterErrorMessage === '' ? null : (
-                      <div className="mt-2 text-sm">{reEnterErrorMessage}</div>
+                    {errors.newPassword && (
+                      <div className="mt-1 text-xs text-rose-600">
+                        {errors.newPassword}
+                      </div>
                     )}
-                  </div>
+                  </label>
+
+                  <label>
+                    <span className="text-sm font-medium">
+                      Confirm password
+                    </span>
+                    <InputText
+                      name="confirmPassword"
+                      type="password"
+                      onChange={handleChangeValue}
+                      value={values.confirmPassword}
+                      className={`${
+                        errors.confirmPassword
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
+                      } !rounded-2xl`}
+                    />
+                    {errors.confirmPassword && (
+                      <div className="mt-1 text-xs text-rose-600">
+                        {errors.confirmPassword}
+                      </div>
+                    )}
+                  </label>
 
                   <div className="flex mt-4 mb-2 text-base">
                     <ElemButton
                       btn="purple"
                       className="mr-2"
-                      onClick={onChangePassword}
+                      onClick={handleSubmit}
                     >
-                      Save Changes
+                      Change Password
                     </ElemButton>
                     <ElemButton
-                      onClick={() => setEditPassword(false)}
+                      onClick={() => {
+                        setShowPasswordForm(false);
+                        setValues({});
+                        setErrors({});
+                      }}
                       btn="default"
                     >
                       Cancel
@@ -246,6 +309,7 @@ export default function Account() {
                   </div>
                 </div>
               )}
+              <Toaster />
             </EditSection>
           )}
 
@@ -272,16 +336,16 @@ export default function Account() {
               haveSubscriptionFromCredits) ? (
               <div>
                 <div className="flex items-center space-x-1">
-                  <IconContributor className="h-6 w-6 text-primary-500" />
+                  <IconContributor className="w-6 h-6 text-primary-500" />
                   <p className="text-sm text-gray-600">EdgeIn Contributor</p>
                 </div>
               </div>
             ) : (
-              <div className="p-5 bg-primary-500 shadow rounded-lg">
+              <div className="p-5 rounded-lg shadow bg-primary-500">
                 <h2 className="text-xl font-medium text-white">
                   Try EdgeIn Contributor FREE for 7 days
                 </h2>
-                <p className="text-white opacity-80 text-sm">
+                <p className="text-sm text-white opacity-80">
                   Get real-time updates on the companies, people, deals and
                   events you’re most interested in, giving you an unprecedented
                   edge in Web3.
@@ -306,8 +370,8 @@ export default function Account() {
 
       {user?.role === USER_ROLES.ADMIN && (
         <div className="px-4 py-3 border-t border-gray-200">
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="font-medium text-xl">Admin Settings</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-xl font-medium">Admin Settings</h2>
           </div>
 
           <dl className="w-full">
