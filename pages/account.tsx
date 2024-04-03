@@ -152,8 +152,6 @@ export default function Account() {
       return;
     }
 
-    console.log(isEmpty(errors));
-
     if (isEmpty(errors)) {
       //call api
       callChangePassword();
