@@ -43,21 +43,21 @@ export const navigation = {
 
 export const TheFooter = () => {
   return (
-    <footer className="bg-white" aria-labelledby="footer-heading">
+    <footer className="bg-gray-100" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+      <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:py-16 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <ElemLink href="/">
               <ElemLogo
                 mode="logo"
-                className="h-8 w-auto transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
+                className="w-auto h-8 transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
               />
             </ElemLink>
           </div>
-          <div className="mt-12 grid grid-cols-1 gap-8 xl:mt-0 xl:col-span-2">
+          <div className="grid grid-cols-1 gap-8 mt-12 xl:mt-0 xl:col-span-2">
             <div className="md:grid md:grid-cols-4 md:gap-8">
               <div></div>
               <div>
@@ -105,7 +105,7 @@ export const TheFooter = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-between mt-12 border-t border-dark-100 pt-6 sm:flex-row">
+        <div className="flex flex-col justify-between pt-6 mt-12 border-t border-dark-100 sm:flex-row">
           <div className="mb-6 sm:mb-0">
             <p className="text-sm text-gray-500">
               Copyright &copy; {new Date().getFullYear()}
@@ -132,7 +132,7 @@ export const TheFooter = () => {
                   className="hover:text-gray-500"
                 >
                   <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
+                  <item.icon className="w-6 h-6" aria-hidden="true" />
                 </a>
               ))}
             </div>

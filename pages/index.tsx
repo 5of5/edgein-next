@@ -1,7 +1,11 @@
 import Script from 'next/script';
 import React, { useState } from 'react';
 import { ElemButton } from '@/components/elem-button';
-import { IconCheck, IconChevronDownMini } from '@/components/icons';
+import {
+  IconCheck,
+  IconChevronDownMini,
+  IconArrowRight,
+} from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { FigureConnect } from '@/components/figures';
 import { Tab, Transition } from '@headlessui/react';
@@ -9,6 +13,7 @@ import { useIntercom } from 'react-use-intercom';
 import parse from 'html-react-parser';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
+import { ElemLink } from '@/components/elem-link';
 
 const Home = () => {
   const { user, loading } = useUser();
@@ -506,18 +511,23 @@ const Home = () => {
         </div>
       </section>
 
-      <section>
-        <div className="relative overflow-hidden p-8 sm:px-16 sm:py-24 bg-gradient-to-b from-[#A05FFE] via-primary-500 to-primary-500 text-center">
-          <div className="relative z-10 ">
-            <h2 className="mx-auto text-3xl font-bold tracking-tight text-white sm:text-5xl">
-              See all you can accomplish with EdgeIn
+      <section className="px-6 pb-8 mx-auto max-w-7xl lg:px-8 lg:pb-16">
+        <div className="relative overflow-hidden rounded-3xl p-8 sm:px-16 sm:py-32 bg-gradient-to-b from-[#A05FFE] via-primary-500 to-primary-500 sm:rounded-[4.6rem]">
+          <div className="relative z-10">
+            <h2>
+              <ElemLink
+                href={ROUTES.COMPANIES}
+                className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+              >
+                See all you can accomplish with EdgeIn.
+              </ElemLink>
             </h2>
 
-            <div className="flex flex-col justify-center mt-8 space-y-6 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0">
+            <div className="flex items-center mt-16 space-x-2 sm:space-x-6 sm:mt-20">
               <ElemButton
                 onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="default"
-                size="md"
+                size="lg"
                 arrow
                 className="mx-auto whitespace-nowrap w-fit sm:mx-0"
               >
@@ -526,7 +536,7 @@ const Home = () => {
               <ElemButton
                 onClick={show}
                 btn="ol-white"
-                size="md"
+                size="lg"
                 className="mx-auto whitespace-nowrap w-fit sm:mx-0"
               >
                 Talk to us
