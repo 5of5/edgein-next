@@ -134,7 +134,8 @@ const Event: NextPage<Props> = props => {
                 <div
                   className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                     t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                  }`}>
+                  }`}
+                >
                   {err?.message}
                 </div>
               ),
@@ -270,7 +271,8 @@ const Event: NextPage<Props> = props => {
                     event.banner?.url ||
                     getEventBanner(event.location_json?.city)
                   }), url(${randomImageOfCity(event.location_json?.city)})`,
-                }}></div>
+                }}
+              ></div>
 
               {event.link ? (
                 <a href={event.link} target="_blank" rel="noreferrer">
@@ -306,7 +308,8 @@ const Event: NextPage<Props> = props => {
             {attendees?.length > 0 && (
               <button
                 className="self-center flex items-center gap-x-1 shrink-0 rounded-lg px-2 py-1.5 hover:bg-gray-100"
-                onClick={() => onOpenGoingDialog()}>
+                onClick={() => onOpenGoingDialog()}
+              >
                 <div className="flex -space-x-3">
                   {attendees?.slice(0, 6)?.map(attendee => (
                     <div key={attendee.id}>
@@ -347,7 +350,8 @@ const Event: NextPage<Props> = props => {
               <div className="text-sm font-bold">Sub-event of:</div>
               <ElemLink
                 href={`${ROUTES.EVENTS}/${event.parent_event.slug}`}
-                className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
+                className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5"
+              >
                 <h2 className="inline group-hover:underline">
                   {event.parent_event.name}
                 </h2>
@@ -362,7 +366,8 @@ const Event: NextPage<Props> = props => {
           className="!flex-wrap px-8 py-2"
           tabs={tabBarItems}
           resourceName={event.name}
-          showDropdown={false}>
+          showDropdown={false}
+        >
           <div className="flex gap-2 lg:justify-end">
             <ElemAddToCalendarButton
               event={{
@@ -383,7 +388,8 @@ const Event: NextPage<Props> = props => {
               <ElemButton
                 href={`${ROUTES.ADMIN_EVENTS}/${event.id}`}
                 target="_blank"
-                btn="default">
+                btn="default"
+              >
                 Edit (admin)
               </ElemButton>
             )}
@@ -393,7 +399,8 @@ const Event: NextPage<Props> = props => {
               <ElemButton
                 btn="primary"
                 onClick={handleClickGoingEvent}
-                loading={isLoadingGoingEvent}>
+                loading={isLoadingGoingEvent}
+              >
                 Going
               </ElemButton>
             )}
@@ -404,10 +411,11 @@ const Event: NextPage<Props> = props => {
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
-            id="overview">
+            id="overview"
+          >
             <div className="col-span-3">
               <ElemKeyInfo
-                className="sticky top-16"
+                className="sticky top-28"
                 heading="Key Info"
                 eventLink={event.link}
                 // website={event.link}
@@ -437,7 +445,8 @@ const Event: NextPage<Props> = props => {
                 <div
                   ref={organizersRef}
                   className="border border-gray-300 rounded-lg"
-                  id="organizers">
+                  id="organizers"
+                >
                   <ElemOrganizers organizations={organizers} />
                 </div>
               )}
@@ -455,7 +464,8 @@ const Event: NextPage<Props> = props => {
             <div
               ref={speakersRef}
               className="border border-gray-300 rounded-lg mt-7"
-              id="speakers">
+              id="speakers"
+            >
               <ElemSpeakerGrid people={speakers} />
             </div>
           )}

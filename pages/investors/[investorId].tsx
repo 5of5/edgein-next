@@ -186,7 +186,8 @@ const VCFirm: NextPage<Props> = props => {
                     href={`/${
                       parentLinks?.from_company ? 'companies' : 'investors'
                     }/${parentOrganization?.slug}`}
-                    className="flex items-center gap-2 mt-1 group">
+                    className="flex items-center gap-2 mt-1 group"
+                  >
                     <ElemPhoto
                       photo={parentOrganization?.logo}
                       wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
@@ -207,14 +208,16 @@ const VCFirm: NextPage<Props> = props => {
                     ref={overviewDiv}
                     className={`mt-4 text-sm text-gray-500 prose ${
                       overviewMore ? '' : 'line-clamp-5'
-                    }`}>
+                    }`}
+                  >
                     {parse(stripHtmlTags(vcfirm.overview))}
                   </div>
                   {overviewDivScrollHeight > overviewDivHeight && (
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="!px-0 !py-0 inline font-normal">
+                      className="!px-0 !py-0 inline font-normal"
+                    >
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>
                   )}
@@ -241,7 +244,8 @@ const VCFirm: NextPage<Props> = props => {
                   <ElemButton
                     href={`${ROUTES.ADMIN_INVESTORS}/${vcfirm.id}`}
                     target="_blank"
-                    btn="default">
+                    btn="default"
+                  >
                     Edit (admin)
                   </ElemButton>
                 )}
@@ -262,10 +266,11 @@ const VCFirm: NextPage<Props> = props => {
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
             ref={overviewRef}
-            id="overview">
+            id="overview"
+          >
             <div className="col-span-3">
               <ElemKeyInfo
-                className="sticky top-16"
+                className="sticky top-28"
                 heading="Key Info"
                 website={vcfirm.website}
                 investmentsLength={sortedInvestmentRounds.length}

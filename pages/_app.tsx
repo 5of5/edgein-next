@@ -1,12 +1,10 @@
-import '@/styles/LoaderPlasma.scss';
 import '@/styles/globals.scss';
 import React, { useState } from 'react';
 import TagManager from 'react-gtm-module';
 import { hotjar } from 'react-hotjar';
 import type { AppProps } from 'next/app';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { LoaderPlasma } from '@/components/loader-plasma';
+import { LoaderSpinner } from '@/components/loader-spinner';
 import { TheNavbar } from '@/components/the-navbar';
 import { TheFooter } from '@/components/the-footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -15,10 +13,9 @@ import { PopupProvider } from '@/context/popup-context';
 import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
+import { DefaultSeo } from 'next-seo';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
-
-import { DefaultSeo } from 'next-seo';
 
 declare global {
   interface Window {
@@ -157,13 +154,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         ]}
         canonical={canonicalUrl}
       />
-      {/* <Head>
-        <link rel="canonical" href={canonicalUrl} />
-      </Head> */}
-      {/* <Script
-        src="https://aggle.net/js?pid=J9GEZNSN8"
-        strategy="afterInteractive"
-        type="js"></Script> */}
+
       <div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
         <QueryClientProvider client={queryClient}>
           {pageProps.noLayout ? (
@@ -175,15 +166,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <SideBarProvider>
                     <>
                       <TheNavbar />
-
                       <main className="grow selection:bg-primary-200">
                         {pageLoading ? (
-                          <LoaderPlasma />
+                          <LoaderSpinner />
                         ) : (
                           <Component {...pageProps} />
                         )}
                       </main>
-
                       {showFooter === true && <TheFooter />}
                     </>
                   </SideBarProvider>

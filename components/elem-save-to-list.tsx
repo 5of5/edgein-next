@@ -274,7 +274,7 @@ export const ElemSaveToList: FC<Props> = ({
           onClick={onSaveButton}
           roundedFull={true}
           btn={buttonStyle}
-          className={`px-2.5 ${isSaved ? savedButtonStyle : ''}`}
+          className={`px-2.5 shrink-0 ${isSaved ? savedButtonStyle : ''}`}
         >
           {isSaved ? 'Saved' : 'Save to list'}
         </ElemButton>
@@ -310,10 +310,10 @@ export const ElemSaveToList: FC<Props> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
+            <div className="fixed inset-0 z-10 transition-opacity bg-black/20 backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed inset-0 z-10 my-0 min-h-0 flex flex-col items-center justify-center">
+          <div className="fixed inset-0 z-10 flex flex-col items-center justify-center min-h-0 my-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -323,9 +323,9 @@ export const ElemSaveToList: FC<Props> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg px-4 py-3 bg-white shadow-xl transition-all overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+              <Dialog.Panel className="w-full max-w-lg px-4 py-3 overflow-hidden overflow-x-hidden overflow-y-auto transition-all transform bg-white rounded-lg shadow-xl overscroll-y-none scrollbar-hide">
                 <div className="pb-3 border-b border-gray-200">
-                  <Dialog.Title className="text-xl font-medium flex items-center justify-between">
+                  <Dialog.Title className="flex items-center justify-between text-xl font-medium">
                     <span>Save to List</span>
                     <button
                       type="button"
@@ -346,7 +346,7 @@ export const ElemSaveToList: FC<Props> = ({
                   )}
                 </div>
 
-                <ul className="max-h-96 pt-3 overflow-y-auto scrollbar-hide grid gap-y-1">
+                <ul className="grid pt-3 overflow-y-auto max-h-96 scrollbar-hide gap-y-1">
                   {listsData?.map(list => {
                     const selected = isSelected(list);
 
@@ -396,7 +396,7 @@ export const ElemSaveToList: FC<Props> = ({
                         }`}
                       />
                       {error === '' ? null : (
-                        <div className="mt-2 font-medium text-sm text-rose-400">
+                        <div className="mt-2 text-sm font-medium text-rose-400">
                           {error}
                         </div>
                       )}

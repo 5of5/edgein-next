@@ -78,72 +78,73 @@ export default function SignIn() {
     <>
       <NextSeo title="Sign in" />
       <Dialog as="div" open onClose={() => null} className="relative z-[60]">
-        <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
-          <Dialog.Panel className="w-full h-full flex flex-col justify-center mx-auto bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
-            <ElemSignInHeader
-              rightComponent={
-                signUpStep === 0 ? (
-                  <ElemLink href={ROUTES.ROOT}>
-                    <ElemButton btn="white">Back</ElemButton>
-                  </ElemLink>
-                ) : signUpStep === 1 ? (
-                  <ElemButton btn="white" onClick={() => setSignUpStep(0)}>
-                    Back
-                  </ElemButton>
-                ) : null
-              }
-            />
+        <Dialog.Panel className="fixed inset-0 z-[50] w-full h-full bg-white">
+          <ElemSignInHeader
+            rightComponent={
+              signUpStep === 0 ? (
+                <ElemLink href={ROUTES.ROOT}>
+                  <ElemButton btn="white">Back</ElemButton>
+                </ElemLink>
+              ) : signUpStep === 1 ? (
+                <ElemButton btn="white" onClick={() => setSignUpStep(0)}>
+                  Back
+                </ElemButton>
+              ) : null
+            }
+          />
 
-            {signUpStep === 0 && (
-              <ElemLogin
-                onNext={email => {
-                  setSignUpStep(1);
-                  setSignUpEmail(email);
-                }}
-              />
-            )}
-
-            {signUpStep === 1 && (
-              <ElemSignUpForm
-                isSubmittingSignUp={isSubmittingSignUp}
-                signUpEmail={signUpEmail}
-                onNext={(formValues, person) => {
-                  setSignUpStep(2);
-                  setSignUpFormValues(formValues);
-                  setProfile(person);
-                }}
-                onSignUp={(formValues, payload) => {
-                  setSignUpFormValues(formValues);
-                  handleSignUp(payload);
-                }}
-              />
-            )}
-
-            {signUpStep === 2 && (
-              <ElemSignUpProfile
-                isSubmittingSignUp={isSubmittingSignUp}
-                person={profile}
-                onNext={personId => {
-                  handleSignUp({
-                    email: signUpEmail,
-                    password: signUpFormValues.password || '',
-                    name: `${signUpFormValues.firstName} ${signUpFormValues.lastName}`,
-                    linkedinUrl: signUpFormValues.linkedinUrl || '',
-                    personId,
-                  });
-                }}
-              />
-            )}
-
-            {signUpStep === 3 && (
-              <ElemSignUpConfirm
-                firstName={signUpFormValues.firstName || ''}
-                signUpEmail={signUpEmail}
-              />
-            )}
-          </Dialog.Panel>
-          <Toaster />
-        </div>
+          <div className="flex items-center justify-center h-[calc(100%-53px)] w-full">
+            <div className="w-full max-h-full overflow-auto overscroll-none scrollbar-hide">
+              <div className="flex flex-col items-center justify-center px-4 py-6 sm:px-6 md:px-8">
+                {signUpStep === 0 && (
+                  <ElemLogin
+                    onNext={email => {
+                      setSignUpStep(1);
+                      setSignUpEmail(email);
+                    }}
+                  />
+                )}
+                {signUpStep === 1 && (
+                  <ElemSignUpForm
+                    isSubmittingSignUp={isSubmittingSignUp}
+                    signUpEmail={signUpEmail}
+                    onNext={(formValues, person) => {
+                      setSignUpStep(2);
+                      setSignUpFormValues(formValues);
+                      setProfile(person);
+                    }}
+                    onSignUp={(formValues, payload) => {
+                      setSignUpFormValues(formValues);
+                      handleSignUp(payload);
+                    }}
+                  />
+                )}
+                {signUpStep === 2 && (
+                  <ElemSignUpProfile
+                    isSubmittingSignUp={isSubmittingSignUp}
+                    person={profile}
+                    onNext={personId => {
+                      handleSignUp({
+                        email: signUpEmail,
+                        password: signUpFormValues.password || '',
+                        name: `${signUpFormValues.firstName} ${signUpFormValues.lastName}`,
+                        linkedinUrl: signUpFormValues.linkedinUrl || '',
+                        personId,
+                      });
+                    }}
+                  />
+                )}
+                {signUpStep === 3 && (
+                  <ElemSignUpConfirm
+                    firstName={signUpFormValues.firstName || ''}
+                    signUpEmail={signUpEmail}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </Dialog.Panel>
+        <Toaster />
       </Dialog>
     </>
   );
