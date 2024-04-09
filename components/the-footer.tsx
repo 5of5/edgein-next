@@ -1,5 +1,11 @@
 import { ElemLogo } from './elem-logo';
-import { IconLinkedIn, IconTwitter, IconTelegram, IconDiscord } from './icons';
+import {
+  IconLinkedIn,
+  IconTwitter,
+  IconTelegram,
+  IconDiscord,
+  IconMedium,
+} from './icons';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
@@ -9,6 +15,7 @@ export const navigation = {
     { name: 'For investors', href: '#' },
   ],
   company: [
+    { name: 'Blog', href: 'https://medium.com/@edgeinio' },
     { name: 'Team', href: ROUTES.TEAM },
     { name: 'Pricing', href: ROUTES.PRICING },
     { name: 'Brand Assets', href: ROUTES.BRAND_ASSETS },
@@ -23,6 +30,11 @@ export const navigation = {
     { name: 'Terms', href: ROUTES.TERMS },
   ],
   social: [
+    {
+      name: 'Medium',
+      href: 'https://medium.com/@edgeinio',
+      icon: IconMedium,
+    },
     {
       name: 'Twitter',
       href: 'https://twitter.com/EdgeInio',

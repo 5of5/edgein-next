@@ -105,6 +105,12 @@ export const TheNavbar: FC<Props> = ({}) => {
 
   const quickLinks = [
     {
+      id: 4,
+      label: 'Blog',
+      value: 'blog',
+      onClick: () => window.open('https://medium.com/@edgeinio', '_blank'),
+    },
+    {
       id: 0,
       label: 'Support',
       value: 'support',
