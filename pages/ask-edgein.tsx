@@ -46,30 +46,30 @@ const AskEdgein: NextPage = () => {
   return (
     <>
       <NextSeo title="Ask EdgeIn" />
-      <div className="relative -mb-24 overflow-hidden">
-        <FigureBlurredBg className="top-0 -bottom-10 left-0 right-0 -mt-10 md:-mt-64 lg:-mt-32 -mb-32" />
-        <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-          <h1 className="max-w-3xl text-4xl lg:text-5xl font-bold text-center">
+      <div className="relative">
+        <FigureBlurredBg className="top-0 left-0 right-0 -mt-10 -mb-32 -bottom-10 md:-mt-64 lg:-mt-32" />
+        <div className="max-w-2xl px-4 py-12 mx-auto sm:px-6 lg:py-16 lg:px-8">
+          <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-center lg:text-5xl">
             Ask EdgeIn
           </h1>
-          <div className="mt-16 relative">
-            <FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-6 opacity-30 text-dark-500" />
-            <div className="absolute -top-8 left-0 right-0 h-52 w-10/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
-            <div className="absolute -top-4 left-0 right-0 h-52 w-11/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
+          <div className="relative mt-16">
+            <FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-6  text-gray-500" />
+            <div className="absolute left-0 right-0 w-10/12 mx-auto border-2 -top-8 h-52 rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-white/60 opacity-80 backdrop-blur-3xl"></div>
+            <div className="absolute left-0 right-0 w-11/12 mx-auto border-2 -top-4 h-52 rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-white/60 opacity-80 backdrop-blur-3xl"></div>
 
-            <div className="rounded-2xl bg-white p-6 relative z-10">
+            <div className="relative z-10 p-6 bg-white rounded-2xl">
               <form
-                className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-2 sm:gap-x-8"
+                className="relative grid grid-cols-1 mt-6 gap-y-4 sm:grid-cols-2 sm:gap-x-8"
                 onSubmit={onSubmit}
               >
-                <div className="group mb-2 sm:col-span-2">
+                <div className="mb-2 group sm:col-span-2">
                   <InputText
                     label="Question"
                     type="text"
                     name="name"
                     value={query}
                     onChange={e => setQuery(e.target.value)}
-                    placeholder="e.g. How many companies are tagged NFT"
+                    placeholder="e.g. How many companies are tagged NFT?"
                     required
                   />
                 </div>
@@ -78,9 +78,9 @@ const AskEdgein: NextPage = () => {
                     Ask
                   </ElemButton>
                 </div>
-                <div className="group mb-2 sm:col-span-2">{queryRes}</div>
+                <div className="mb-2 group sm:col-span-2">{queryRes}</div>
                 {queryRes && (
-                  <div className="group mb-2 sm:col-span-2">
+                  <div className="mb-2 group sm:col-span-2">
                     <div onClick={() => setEnableExpand(true)}>
                       <span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
                         Details

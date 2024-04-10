@@ -347,7 +347,6 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
                   ButtonIcon={IconSortDashboard}
                   defaultItem={defaultOrderBy}
                   items={sortChoices}
-                  firstItemDivided
                 />
               </div>
             )}

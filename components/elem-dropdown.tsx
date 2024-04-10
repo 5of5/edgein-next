@@ -36,9 +36,9 @@ type Props = {
     selectedIconClass?: string;
     Pill?: ReactNode;
     onClick: () => void;
+    divider?: boolean | undefined;
   }>;
   itemsShowIcons?: boolean;
-  firstItemDivided?: boolean;
 };
 
 export const ElemDropdown: FC<Props> = ({
@@ -52,7 +52,6 @@ export const ElemDropdown: FC<Props> = ({
   customButton,
   items,
   itemsShowIcons = true,
-  firstItemDivided = false,
 }) => {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
@@ -108,7 +107,7 @@ export const ElemDropdown: FC<Props> = ({
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
-          className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 ${panelClass}`}
+          className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 overflow-hidden ${panelClass}`}
         >
           {({ close }) => (
             <>
@@ -117,17 +116,16 @@ export const ElemDropdown: FC<Props> = ({
                 const activeIconClass = item.selectedIconClass
                   ? item.selectedIconClass
                   : 'text-primary-500';
+                const dividerClass = item.divider
+                  ? 'border-b border-gray-200'
+                  : '';
 
                 return (
                   <button
                     key={item.id}
                     className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-600 ${
                       isActiveItem ? 'font-medium' : 'font-normal'
-                    } px-4 py-2 m-0 ${
-                      index === 0 && firstItemDivided
-                        ? 'border-b border-gray-100'
-                        : ''
-                    } transition-all hover:bg-gray-100`}
+                    } px-4 py-2 m-0 transition-all hover:bg-gray-100 ${dividerClass}`}
                     onClick={() => {
                       item.onClick();
                       setActiveItem(item.id);

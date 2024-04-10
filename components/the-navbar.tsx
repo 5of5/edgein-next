@@ -106,24 +106,39 @@ export const TheNavbar: FC<Props> = ({}) => {
   const quickLinks = [
     {
       id: 0,
-      label: 'Support',
-      value: 'support',
-      onClick: () => router.push(ROUTES.SUPPORT),
+      label: 'Blog',
+      value: 'blog',
+      onClick: () => window.open('https://medium.com/@edgeinio', '_blank'),
+      divider: true,
     },
     {
       id: 1,
       label: 'Pricing',
       value: 'pricing',
       onClick: () => router.push(ROUTES.PRICING),
+      divider: true,
     },
     {
       id: 2,
+      label: 'FAQs',
+      value: 'faqs',
+      onClick: () => router.push(ROUTES.FAQ),
+    },
+    {
+      id: 3,
+      label: 'Support',
+      value: 'support',
+      onClick: () => router.push(ROUTES.SUPPORT),
+    },
+
+    {
+      id: 4,
       label: 'Press',
       value: 'press',
       onClick: () => (window.location.href = 'mailto:press@edgein.io'),
     },
     {
-      id: 3,
+      id: 5,
       label: 'Contact',
       value: 'contact',
       onClick: () => router.push(ROUTES.CONTACT),

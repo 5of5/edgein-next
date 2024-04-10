@@ -32,6 +32,7 @@ function useDashboardSortBy<T>(config?: DashboardSortByConfig) {
         label: 'Sort: Ascending',
         value: 'ascending',
         onClick: () => setOrderByParam('ascending'),
+        divider: true,
       },
       {
         id: 1,

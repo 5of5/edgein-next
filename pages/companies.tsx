@@ -273,6 +273,7 @@ const Companies: NextPage<Props> = ({
       label: 'Most relevant',
       value: 'mostRelevant',
       onClick: () => setSortBy('mostRelevant'),
+      divider: true,
     },
     {
       id: 1,
@@ -392,7 +393,6 @@ const Companies: NextPage<Props> = ({
                   defaultItem={sortItems.findIndex(
                     sortItem => sortItem.value === sortBy,
                   )}
-                  firstItemDivided
                 />
               </div>
             )}

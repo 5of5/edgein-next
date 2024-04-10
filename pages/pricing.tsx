@@ -115,22 +115,22 @@ const Pricing = () => {
         <FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
 
         <section
-          className="py-16 px-4 sm:px-6 lg:px-8"
+          className="px-4 py-16 sm:px-6 lg:px-8"
           aria-labelledby="pricing-heading"
         >
           <h2 id="pricing-heading" className="sr-only">
             Pricing
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className=" max-w-2xl mx-auto text-center">
-              <h1 className="text-4xl font-bold sm:text-5xl">
+            <div className="max-w-2xl mx-auto text-center ">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
                 Choose the best plan for your data needs.
               </h1>
               <p className="pt-4 text-xl">
                 Accessible, reliable data for the community, by the community.
               </p>
             </div>
-            <div className="mt-16 block md:w-full md:grid md:grid-cols-2">
+            <div className="block mt-16 md:w-full md:grid md:grid-cols-2">
               {pricing.tiers.map(tier => (
                 <div
                   className={`relative flex flex-col bg-white shadow p-7 ${
@@ -155,7 +155,7 @@ const Pricing = () => {
                         Best Value
                       </p>
                     ) : null}
-                    <p className="mt-4 flex items-baseline">
+                    <p className="flex items-baseline mt-4">
                       <span className="text-5xl font-bold tracking-tight">
                         {tier.price === 0 ? 'Free' : '$' + tier.price}
                       </span>
@@ -166,7 +166,7 @@ const Pricing = () => {
                         </span>
                       )}
                     </p>
-                    <div className="text-slate-600 text-lg">
+                    <div className="text-lg text-slate-600">
                       {/* <p className="mt-6 font-bold text-dark-500">
 												{tier.predescription}
 											</p> */}
@@ -192,7 +192,7 @@ const Pricing = () => {
                         {tier.features.map(feature => (
                           <li key={feature} className="flex">
                             <IconCheck
-                              className="h-6 w-6 flex-shrink-0 text-green-600"
+                              className="flex-shrink-0 w-6 h-6 text-green-600"
                               aria-hidden="true"
                             />
                             <span className="ml-3">{feature}</span>
@@ -226,9 +226,9 @@ const Pricing = () => {
 
         <section
           aria-labelledby="faq-heading"
-          className="py-16 px-4 sm:px-6 lg:px-8 lg:py-24"
+          className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"
         >
-          <div className="mx-auto max-w-2xl lg:max-w-4xl">
+          <div className="max-w-2xl mx-auto lg:max-w-4xl">
             <h2 id="faq-heading" className="text-4xl font-bold">
               Frequently asked questions
             </h2>
