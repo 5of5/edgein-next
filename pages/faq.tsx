@@ -1,0 +1,164 @@
+import React from 'react';
+import type { NextPage } from 'next';
+import { ElemButton } from '@/components/elem-button';
+import { ROUTES } from '@/routes';
+import { NextSeo } from 'next-seo';
+import { IconChatBubble, IconEmail } from '@/components/icons';
+import { useIntercom } from 'react-use-intercom';
+
+type Props = {};
+
+const Faq: NextPage<Props> = ({}) => {
+  const { show } = useIntercom();
+
+  const faqs = [
+    {
+      question: `What is EdgeIn's mission?`,
+      answer:
+        'Our mission is create a fair and open platform that allows you to participate as a community member and owner of your own data. EdgeIn is free from centralized interference and controls, giving you the keys to your data and your network.',
+    },
+    {
+      question: 'How much does membership cost?',
+      answer: 'Nothing! Join EdgeIn for free as long as you’d like.',
+    },
+    {
+      question: 'Why is my data listed on EdgeIn?',
+      answer:
+        'EdgeIn is a historic record of early market data. We enable individuals and companies to access these data sets and earn rewards off of their contributions. Our team works hard to notify both individuals and companies on the platform and provide them with an opportunity to view, correct, and enrich their data through our claimed profile process.',
+    },
+    {
+      question: 'Where does my data come from?',
+      answer:
+        'Data on EdgeIn comes directly from nearly 50 open, public databases, as well as a collection of partners that have sold data to EdgeIn Inc.',
+    },
+    {
+      question: `How do I edit my company's profile on EdgeIn?`,
+      answer:
+        'Currently, you cannot directly edit your company profile. However, you can suggest edits and submit new data to our team of Edgeineers who work 24/7 to validate, enrich, and correct data on EdgeIn for the community via Intercom. We will be releasing user edit functionality in the near future, so stay tuned for updates.',
+    },
+    {
+      question: 'How do I edit my personal profile?',
+      answer:
+        'As with company profiles, we do not currently support direct editing of personal profiles. However, you can suggest edits and submit new data to our team of Edgeineers who work 24/7 to validate, enrich, and correct all personal data on EdgeIn for the community via Intercom. In our upcoming interactions, we will allow you to suggest and edit your personal profile.',
+    },
+    {
+      question: 'What are points?',
+      answer:
+        'Points are our way of validating the network. You earn points for claiming a profile and/or referring friends to EdgeIn. Points are being tracked by the system and will allow for retroactive conversion into the EdgeIn Foundation token functionality. ',
+    },
+    {
+      question: 'What is the referral network?',
+      answer:
+        'The referral network is our way of rewarding YOU for inviting your network to EdgeIn. We plan on instituting a perpetual referral link, so that we can fulfill this simple promise - each time you earn points, the friends and colleagues you invited to the network, are rewarded as well.',
+    },
+    {
+      question: 'How accurate is the data on EdgeIn?',
+      answer: `Our data is mostly correct, but not perfect. We work with YOU, the community, to build out and enrich the data sets. EdgeIn's data model is unique in that we don't spend time and investor money like other platforms to ensure WE own the data; instead, our model allows for data contributors to participate in revenue and rewards as the platform grows.`,
+    },
+    {
+      question: 'What is the claim your profile button for?',
+      answer:
+        'When you claim your profile, an EdgeIneer is immediately assigned to work with you to correct bad data and enrich your profile. This is not only useful for you as an individual, but also for partners who are contributing data to the platform.',
+    },
+    {
+      question: 'How do filters work?',
+      answer:
+        'We use filters to allow you to taxonomize and build a bank of similar companies of interest. EdgeIn is working on building a personalized experience for the community based on interest. The filters are all about allowing you to connect and build a better product for the community.',
+    },
+    {
+      question: 'How much data can I export on the Contributor plan?',
+      answer:
+        'As much as you want. EdgeIn is intentionally priced for accessibility because we emphatically feel that the data belongs to the community - NOT just builders and hedge funds that can afford to pay $60,000+ per year for private analysts or subscriptions to Pitchbook, Nansen, and others.',
+    },
+    {
+      question: 'How can EdgeIn help my Web3 startup?',
+      answer: `By claiming your personal and/or company profile and working with our EdgeIneers to validate and enrich your date, you get promoted in the trending list of companies. EdgeIn has 10,000 MAU's that consist mostly of investors or other builders, which is incredible visibility for your company and brand. The platform also lists and promotes your profile directly to community members based on Tags. The more correct the Tags, the easier it is for interested investors, partners, and customers to find, validate, and contact your company.`,
+    },
+    {
+      question:
+        'What is your goal with the product overall? What do you want it to be?',
+      answer: `Our goal is to serve as an open platform for accessibility to community data sets and to reward your contributions to the network itself. EdgeIn aims to be a LinkedIn, meets Facebook, meets Pitchbook, but without shareholders. The only decision makers on our platform are data and token holders. Let's build a better future together!`,
+    },
+    {
+      question:
+        'Does the contributor plan allow users to extract company URLs?',
+      answer:
+        'The short answer is, yes, we do. However, this feature is limited for now and will continue to be built out in the upcoming months as EdgeIn plans to become the go-to source of data and information for the community in the future.',
+    },
+    {
+      question: 'How can I have my company listed?',
+      answer: 'Sign up and ask an EdgeIneer below.',
+    },
+    {
+      question: 'Can I try EdgeIn Contributor plan before I purchase?',
+      answer:
+        'Yes, of course! We offer a FREE trial so you can decide which features work best for your workflow.',
+    },
+    {
+      question: 'Will my monthly subscription be renewed automatically?',
+      answer:
+        'Yes, your subscription will automatically renew each month. You can cancel anytime in your Account Settings or by contacting our team through Intercom on the site.',
+    },
+  ];
+
+  return (
+    <>
+      <NextSeo
+        title="Frequently Asked Questions"
+        description="Have questions about our business data ecosystem? Find lots of answers about getting started and making progress on this page."
+      />
+      <div className="relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 w-full -z-10 h-96 bg-gradient-to-b from-gray-100 to-white" />
+
+        <section
+          aria-labelledby="faq-heading"
+          className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"
+        >
+          <div className="max-w-2xl mx-auto lg:max-w-4xl">
+            <h2 id="faq-heading" className="text-4xl font-bold">
+              Frequently asked questions
+            </h2>
+            <div className="mt-8">
+              <dl className="space-y-12">
+                {faqs.map((faq, index) => (
+                  <div key={index}>
+                    <dt className="text-xl font-bold leading-6">
+                      {faq.question}
+                    </dt>
+                    <dd className="mt-2 text-lg">
+                      <p className="text-gray-500">{faq.answer}</p>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </section>
+        <section className="px-4 py-16 bg-primary-100 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto lg:max-w-4xl">
+            <h2 className="text-4xl font-bold">
+              Have another question or need help? Ask us anything or share your
+              feedback.
+            </h2>
+            <div className="flex mt-8 gap-x-4">
+              <ElemButton
+                btn="primary"
+                href={ROUTES.CONTACT}
+                className="space-x-1"
+              >
+                <IconEmail className="w-6 h-6" />
+                <span>Contact us</span>
+              </ElemButton>
+              <ElemButton btn="ol-primary" onClick={show} className="space-x-1">
+                <IconChatBubble className="w-6 h-6" />
+                <span>Live Chat</span>
+              </ElemButton>
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
+  );
+};
+
+export default Faq;

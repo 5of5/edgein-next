@@ -21,6 +21,7 @@ export const navigation = {
     { name: 'Brand Assets', href: ROUTES.BRAND_ASSETS },
   ],
   resources: [
+    { name: 'FAQs', href: ROUTES.FAQ },
     { name: 'Contact', href: ROUTES.CONTACT },
     { name: 'Support', href: ROUTES.SUPPORT },
     { name: 'Press', href: 'mailto:press@edgein.io' },

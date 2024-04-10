@@ -48,17 +48,17 @@ const Enterprise = () => {
 
   return (
     <>
-      <div className="relative -mb-24 overflow-hidden">
-        <section className="relative pt-16 -mb-20 px-4 sm:px-6 lg:px-8">
+      <div className="relative overflow-hidden">
+        <section className="relative px-4 pt-16 -mb-20 sm:px-6 lg:px-8">
           <FigureBlurredCircle className="absolute -z-10 top-20 -left-72 sm:top-20 sm:-left-64" />
-          <FigureBlurredRectangle className="absolute -z-10 top-0 -right-96 rotate-45 sm:top-2/3 sm:right-0" />
-          <FigureBlurredRectangle className="absolute -z-10 top-1/3 -right-96 rotate-45 hidden sm:block" />
+          <FigureBlurredRectangle className="absolute top-0 rotate-45 -z-10 -right-96 sm:top-2/3 sm:right-0" />
+          <FigureBlurredRectangle className="absolute hidden rotate-45 -z-10 top-1/3 -right-96 sm:block" />
 
           <div className="max-w-5xl mx-auto">
             <h1 className="text-4xl font-bold text-center sm:text-5xl lg:px-12">
               The exclusive Web3 platform for market intelligence.
             </h1>
-            <div className="max-w-2xl mx-auto relative mt-8 -z-10">
+            <div className="relative max-w-2xl mx-auto mt-8 -z-10">
               <Transition
                 appear={true}
                 show={true}
@@ -67,7 +67,7 @@ const Enterprise = () => {
                 enterTo="opacity-100 translate-y-0"
               >
                 <div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-gray-50/80 to-gray-50/20 border border-slate-200 opacity-100 backdrop-blur-3xl">
-                  <FigureDash className="mx-3 my-1 aspect-video max-w-full" />
+                  <FigureDash className="max-w-full mx-3 my-1 aspect-video" />
                 </div>
               </Transition>
             </div>
@@ -75,7 +75,7 @@ const Enterprise = () => {
         </section>
 
         <section className="bg-white border-y border-slate-200">
-          <div className="max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
             <div className="block md:w-full md:grid md:grid-cols-2 md:gap-10">
               <div className="flex flex-col items-start lg:flex-row lg:space-x-4">
                 <img
@@ -84,14 +84,14 @@ const Enterprise = () => {
                   className="flex-shrink-0 w-12"
                 />
                 <div>
-                  <h3 className="text-2xl font-bold mt-2 lg:mt-0">
+                  <h3 className="mt-2 text-2xl font-bold lg:mt-0">
                     Reach 1,000s of builders in Web3 every day.
                   </h3>
 
-                  <ul className="mt-4 text-slate-600 text-lg">
+                  <ul className="mt-4 text-lg text-slate-600">
                     <li className="flex">
                       <IconCheck
-                        className="h-6 w-6 flex-shrink-0 text-primary-500"
+                        className="flex-shrink-0 w-6 h-6 text-primary-500"
                         aria-hidden="true"
                       />
                       <div className="ml-2">
@@ -101,7 +101,7 @@ const Enterprise = () => {
                     </li>
                     <li className="flex">
                       <IconCheck
-                        className="h-6 w-6 flex-shrink-0 text-primary-500"
+                        className="flex-shrink-0 w-6 h-6 text-primary-500"
                         aria-hidden="true"
                       />
                       <div className="ml-2">
@@ -110,7 +110,7 @@ const Enterprise = () => {
                     </li>
                     <li className="flex">
                       <IconCheck
-                        className="h-6 w-6 flex-shrink-0 text-primary-500"
+                        className="flex-shrink-0 w-6 h-6 text-primary-500"
                         aria-hidden="true"
                       />
                       <div className="ml-2">
@@ -121,16 +121,16 @@ const Enterprise = () => {
                 </div>
               </div>
               <div className="flex flex-col items-start mt-12 sm:mt-0 lg:flex-row lg:space-x-4">
-                <img src={People} alt="Builders" className="shrink-0 w-12" />
+                <img src={People} alt="Builders" className="w-12 shrink-0" />
                 <div>
-                  <h3 className="text-2xl font-bold mt-2 lg:mt-0">
+                  <h3 className="mt-2 text-2xl font-bold lg:mt-0">
                     Get curated leads to connect with the right people faster
                     and easier.
                   </h3>
-                  <ul className="mt-4 text-slate-600 text-lg">
+                  <ul className="mt-4 text-lg text-slate-600">
                     <li className="flex">
                       <IconCheck
-                        className="h-6 w-6 flex-shrink-0 text-primary-500"
+                        className="flex-shrink-0 w-6 h-6 text-primary-500"
                         aria-hidden="true"
                       />
                       <div className="ml-2">
@@ -139,14 +139,14 @@ const Enterprise = () => {
                     </li>
                     <li className="flex">
                       <IconCheck
-                        className="h-6 w-6 flex-shrink-0 text-primary-500"
+                        className="flex-shrink-0 w-6 h-6 text-primary-500"
                         aria-hidden="true"
                       />
                       <div className="ml-2">Social data for 30,000 people.</div>
                     </li>
                     <li className="flex">
                       <IconCheck
-                        className="h-6 w-6 flex-shrink-0 text-primary-500"
+                        className="flex-shrink-0 w-6 h-6 text-primary-500"
                         aria-hidden="true"
                       />
                       <div className="ml-2">
@@ -159,8 +159,8 @@ const Enterprise = () => {
             </div>
 
             <div className="mt-16 p-8 relative overflow-hidden rounded-5xl bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] sm:p-16">
-              <div className="max-w-2xl mx-auto relative z-10">
-                <h3 className=" text-3xl font-bold text-white">
+              <div className="relative z-10 max-w-2xl mx-auto">
+                <h3 className="text-3xl font-bold text-white ">
                   Ecosystem plan discounts available for first 15 early
                   partners, until April 1st:
                 </h3>
@@ -196,11 +196,11 @@ const Enterprise = () => {
         </section>
 
         <section className="">
-          <div className="max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-            <h3 className="text-2xl font-bold text-center mt-2 lg:mt-0">
+          <div className="max-w-5xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
+            <h3 className="mt-2 text-2xl font-bold text-center lg:mt-0">
               Current ecosystem partners
             </h3>
-            <div className="grid grid-cols-2 mt-6 md:w-full sm:grid-cols-5 gap-10">
+            <div className="grid grid-cols-2 gap-10 mt-6 md:w-full sm:grid-cols-5">
               {partners.map((item: any) => (
                 <div
                   key={item.title}

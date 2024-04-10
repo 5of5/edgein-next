@@ -21,7 +21,7 @@ const Custom404: NextPage<Props> = () => {
         title="404 Page not found"
         description="Sorry, but the page you were looking for could not be found. You can use the search bar, return to our front page, or drop us a line to find what you’re looking for."
       />
-      <div className="relative -mb-24 overflow-hidden">
+      <div className="relative overflow-hidden">
         <figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">
           <Image
             src="/images/bg-blur-shapes.png"
@@ -35,13 +35,13 @@ const Custom404: NextPage<Props> = () => {
 
         <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-52">
           <div className="max-w-2xl mx-auto lg:max-w-3xl lg:px-12">
-            <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tight font-display sm:text-5xl">
               Page not found!
             </h1>
-            <p className="mt-6 font-display text-xl leading-relaxed text-slate-600">
+            <p className="mt-6 text-xl leading-relaxed font-display text-slate-600">
               Sorry, but the page you were looking for could not be found.
             </p>
-            <p className="mt-6 font-display text-lg leading-relaxed text-slate-600">
+            <p className="mt-6 text-lg leading-relaxed font-display text-slate-600">
               You can use the{' '}
               <button
                 className="font-bold text-primary-500 focus:outline-0"
