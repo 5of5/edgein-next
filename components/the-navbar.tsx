@@ -24,7 +24,7 @@ type Props = {};
 
 export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
-  const { user, listAndFollows, unreadNotificationsCount } = useUser();
+  const { user, unreadNotificationsCount } = useUser();
 
   const { showPopup, setShowPopup } = usePopup();
   const { showSidebar, setShowSidebar } = useSidebar();
@@ -100,9 +100,8 @@ export const TheNavbar: FC<Props> = ({}) => {
   return (
     <>
       <header className="sticky top-0 left-0 right-0 z-40">
-        {/* px-4 py-16 sm:px-6 lg:px-8 lg:py-24 */}
         <nav
-          className="flex items-center justify-between w-full px-4 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14 sm:px-6 lg:px-8"
+          className="flex items-center justify-between w-full px-4 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14"
           aria-label="Global"
         >
           <div className="flex items-center gap-3">
