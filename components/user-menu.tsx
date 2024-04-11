@@ -143,9 +143,9 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
             className="flex items-center justify-center space-x-2 !px-1 !py-0"
           >
             <IconBars3 className="w-5 h-5 ml-1" />
-            <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full shrink-0">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full shrink-0">
               <IconUserCircleSolid
-                className="object-cover max-w-full max-h-full text-gray-500 rounded-full"
+                className="object-cover w-full h-full text-gray-500 rounded-full"
                 title={
                   user?.display_name
                     ? `Signed in as ${user.display_name} | ${user.email}`
