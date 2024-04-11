@@ -1926,7 +1926,7 @@ export const IconBars3: FC<IconProps> = ({ className, title, strokeWidth }) => {
       stroke="currentColor"
       strokeWidth={strokeWidth ? strokeWidth : 2}
     >
-      <title>{title ? title : 'Close'}</title>
+      <title>{title ? title : 'Menu'}</title>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

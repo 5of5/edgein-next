@@ -257,16 +257,6 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
               {item.name}
             </ElemLink>
           ))}
-          {navigation.company.map(item => (
-            <ElemLink
-              key={item.name}
-              href={item?.href ? item.href : ''}
-              onClick={onClose}
-              className="col-span-2 p-3 text-sm transition duration-150 ease-in-out bg-white border border-gray-300 rounded-lg outline-none hover:bg-gray-100"
-            >
-              {item.name}
-            </ElemLink>
-          ))}
 
           {user && (
             <ElemButton

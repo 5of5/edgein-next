@@ -5,12 +5,7 @@ import { ElemLogo } from '@/components/elem-logo';
 import { ElemButton } from '@/components/elem-button';
 import { UserMenu } from '@/components/user-menu';
 import { UsageModal } from '@/components/usage-modal';
-import {
-  IconSearch,
-  IconBell,
-  IconEllipsisVertical,
-  IconBars3,
-} from '@/components/icons';
+import { IconSearch, IconBell, IconBars3 } from '@/components/icons';
 import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { useUser } from '@/context/user-context';
@@ -22,7 +17,6 @@ import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 import { DashboardSidebar } from './dashboard/dashboard-sidebar';
 import { ElemModal } from './elem-modal';
-import { ElemDropdown } from './elem-dropdown';
 
 export type Popups = 'search' | 'usage' | false;
 
@@ -30,7 +24,7 @@ type Props = {};
 
 export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
-  const { user, listAndFollows, unreadNotificationsCount } = useUser();
+  const { user, unreadNotificationsCount } = useUser();
 
   const { showPopup, setShowPopup } = usePopup();
   const { showSidebar, setShowSidebar } = useSidebar();
@@ -103,67 +97,24 @@ export const TheNavbar: FC<Props> = ({}) => {
     router.push(ROUTES.SIGN_IN);
   };
 
-  const quickLinks = [
-    {
-      id: 0,
-      label: 'Blog',
-      value: 'blog',
-      onClick: () => window.open('https://medium.com/@edgeinio', '_blank'),
-      divider: true,
-    },
-    {
-      id: 1,
-      label: 'Pricing',
-      value: 'pricing',
-      onClick: () => router.push(ROUTES.PRICING),
-      divider: true,
-    },
-    {
-      id: 2,
-      label: 'FAQs',
-      value: 'faqs',
-      onClick: () => router.push(ROUTES.FAQ),
-    },
-    {
-      id: 3,
-      label: 'Support',
-      value: 'support',
-      onClick: () => router.push(ROUTES.SUPPORT),
-    },
-
-    {
-      id: 4,
-      label: 'Press',
-      value: 'press',
-      onClick: () => (window.location.href = 'mailto:press@edgein.io'),
-    },
-    {
-      id: 5,
-      label: 'Contact',
-      value: 'contact',
-      onClick: () => router.push(ROUTES.CONTACT),
-    },
-  ];
-
   return (
     <>
       <header className="sticky top-0 left-0 right-0 z-40">
         <nav
-          className="flex items-center justify-between w-full px-1 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14 sm:px-3"
+          className="flex items-center justify-between w-full px-4 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14"
           aria-label="Global"
         >
           <div className="flex items-center gap-3">
-            <ElemButton
+            {/* <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
               btn="ol-gray"
-              className="h-9 w-9 !px-0 !py-0 lg:hidden"
-            >
+              className="h-9 w-9 !px-0 !py-0 lg:hidden">
               <IconBars3 className="w-6 h-6" />
-            </ElemButton>
+            </ElemButton> */}
 
             <ElemLink
               href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
-              className="w-auto lg:w-64"
+              className="w-auto mr-4 lg:w-64"
             >
               <ElemLogo
                 mode="logo"
@@ -181,22 +132,10 @@ export const TheNavbar: FC<Props> = ({}) => {
           <div className="flex items-center space-x-2 lg:space-x-3">
             <ElemButton
               onClick={() => setShowPopup('search')}
-              className="h-9 w-9 !p-0 lg:hidden"
+              className="h-9 w-9 !p-0 sm:hidden"
             >
               <IconSearch className="w-5 h-5" />
             </ElemButton>
-
-            <ElemDropdown
-              customButton={
-                <ElemButton className="w-9 h-9 !p-0">
-                  <IconEllipsisVertical className="w-6 h-6" title="Options" />
-                </ElemButton>
-              }
-              defaultItem={null}
-              items={quickLinks}
-              itemsShowIcons={false}
-              className="hidden lg:block"
-            />
 
             {user ? (
               <>
@@ -220,7 +159,6 @@ export const TheNavbar: FC<Props> = ({}) => {
                     strokeWidth={1.5}
                   />
                 </ElemButton>
-                <UserMenu />
               </>
             ) : (
               <ElemButton
@@ -231,6 +169,8 @@ export const TheNavbar: FC<Props> = ({}) => {
                 Sign in
               </ElemButton>
             )}
+
+            <UserMenu />
           </div>
         </nav>
       </header>
