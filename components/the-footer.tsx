@@ -10,25 +10,24 @@ import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 
 export const navigation = {
-  solutions: [
-    { name: 'For founders', href: '#' },
-    { name: 'For investors', href: '#' },
-  ],
-  company: [
-    { name: 'Blog', href: 'https://medium.com/@edgeinio' },
-    { name: 'Team', href: ROUTES.TEAM },
+  // solutions: [
+  //   { name: 'For founders', href: '#' },
+  //   { name: 'For investors', href: '#' },
+  // ],
+  company: [],
+  resources: [
     { name: 'Pricing', href: ROUTES.PRICING },
+    { name: 'FAQs', href: ROUTES.FAQ },
+    { name: 'Support', href: ROUTES.SUPPORT },
+    { name: 'Blog', href: 'https://medium.com/@edgeinio' },
+    { name: 'Contact', href: ROUTES.CONTACT },
+    { name: 'Press', href: 'mailto:press@edgein.io' },
+    { name: 'Team', href: ROUTES.TEAM },
     { name: 'Brand Assets', href: ROUTES.BRAND_ASSETS },
   ],
-  resources: [
-    { name: 'FAQs', href: ROUTES.FAQ },
-    { name: 'Contact', href: ROUTES.CONTACT },
-    { name: 'Support', href: ROUTES.SUPPORT },
-    { name: 'Press', href: 'mailto:press@edgein.io' },
-  ],
   legal: [
-    { name: 'Privacy', href: ROUTES.PRIVACY },
-    { name: 'Terms', href: ROUTES.TERMS },
+    { name: 'Privacy Policy', href: ROUTES.PRIVACY },
+    { name: 'Terms of Service', href: ROUTES.TERMS },
   ],
   social: [
     {
@@ -56,7 +55,7 @@ export const navigation = {
 
 export const TheFooter = () => {
   return (
-    <footer className="bg-gray-100" aria-labelledby="footer-heading">
+    <footer className="bg-white mb-14 lg:mb-0" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -73,28 +72,14 @@ export const TheFooter = () => {
           <div className="grid grid-cols-1 gap-8 mt-12 xl:mt-0 xl:col-span-2">
             <div className="md:grid md:grid-cols-4 md:gap-8">
               <div></div>
-              <div>
-                <h3 className="text-sm font-medium tracking-wider uppercase">
-                  Company
-                </h3>
-                <ul role="list" className="mt-4 space-y-4">
-                  {navigation.company.map(item => (
-                    <li key={item.name}>
-                      <a href={item.href} className="text-base hover:underline">
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-12 md:mt-0">
+              <div className="col-span-2">
                 <h3 className="text-sm font-medium tracking-wider uppercase">
                   Resources
                 </h3>
-                <ul role="list" className="mt-4 space-y-4">
+                <ul role="list" className="grid grid-cols-2 gap-2 mt-4">
                   {navigation.resources.map(item => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-base hover:underline">
+                      <a href={item.href} className="text-sm hover:underline">
                         {item.name}
                       </a>
                     </li>
@@ -105,10 +90,10 @@ export const TheFooter = () => {
                 <h3 className="text-sm font-medium tracking-wider uppercase">
                   Legal
                 </h3>
-                <ul role="list" className="mt-4 space-y-4">
+                <ul role="list" className="grid gap-2 mt-4">
                   {navigation.legal.map(item => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-base hover:underline">
+                      <a href={item.href} className="text-sm hover:underline">
                         {item.name}
                       </a>
                     </li>

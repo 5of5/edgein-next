@@ -1,12 +1,12 @@
-import { ElemButton } from './elem-button';
-import { ElemPhoto } from '@/components/elem-photo';
-import { Popover, Transition } from '@headlessui/react';
-import React, { Fragment, FC } from 'react';
-import { IconUserCircle } from './icons';
+import React, { FC } from 'react';
 import { useUser } from '@/context/user-context';
+import { useRouter } from 'next/router';
 import UserService from '@/utils/users';
 import { ROUTES } from '@/routes';
-import { ElemLink } from './elem-link';
+import { IconUserCircleSolid, IconBars3 } from '@/components/icons';
+import { ElemButton } from '@/components/elem-button';
+import { ElemPhoto } from '@/components/elem-photo';
+import { ElemDropdown } from '@/components/elem-dropdown';
 
 type Props = {
   className?: string;
@@ -14,89 +14,152 @@ type Props = {
 
 export const UserMenu: FC<Props> = ({ className = '' }) => {
   const { user } = useUser();
+  const router = useRouter();
 
-  const userMenuItems = [
+  const quickLinks = [
+    ...(user
+      ? [
+          {
+            id: 10,
+            label: 'Lists',
+            value: 'lists',
+            onClick: () => router.push(ROUTES.LISTS + '?tab=my-lists'),
+          },
+          {
+            id: 11,
+            label: 'Groups',
+            value: 'groups',
+            onClick: () => router.push(ROUTES.GROUPS + '?tab=my-groups'),
+          },
+          {
+            id: 12,
+            label: 'Notes',
+            value: 'notes',
+            onClick: () => router.push(ROUTES.NOTES),
+            divider: true,
+          },
+          {
+            id: 13,
+            label: 'Invite a friend',
+            value: 'invite',
+            onClick: () => router.push(ROUTES.INVITE_A_FRIEND),
+            className: 'text-primary-500',
+          },
+          {
+            id: 14,
+            label: 'Profile settings',
+            value: 'profileSettings',
+            onClick: () => router.push(ROUTES.PROFILE),
+          },
+          {
+            id: 15,
+            label: 'Account settings',
+            value: 'accountSettings',
+            onClick: () => router.push(ROUTES.ACCOUNT),
+            divider: true,
+          },
+        ]
+      : [
+          {
+            id: 10,
+            label: 'Sign in free',
+            value: 'signup',
+            onClick: () => router.push(ROUTES.SIGN_IN),
+            className: 'text-primary-500',
+            divider: true,
+          },
+        ]),
     {
-      label: 'Invite a friend',
-      href: ROUTES.INVITE_A_FRIEND,
-      className: 'text-primary-500',
+      id: 0,
+      label: 'Pricing',
+      value: 'pricing',
+      onClick: () => router.push(ROUTES.PRICING),
     },
     {
-      label: 'Profile settings',
-      href: ROUTES.PROFILE,
+      id: 1,
+      label: 'FAQs',
+      value: 'faqs',
+      onClick: () => router.push(ROUTES.FAQ),
     },
     {
-      label: 'Account settings',
-      href: ROUTES.ACCOUNT,
+      id: 2,
+      label: 'Support',
+      value: 'support',
+      onClick: () => router.push(ROUTES.SUPPORT),
     },
     {
-      label: 'Sign out',
-      onClick: UserService.logout,
+      id: 3,
+      label: 'Blog',
+      value: 'blog',
+      onClick: () => window.open('https://medium.com/@edgeinio', '_blank'),
     },
+    {
+      id: 4,
+      label: 'Contact',
+      value: 'contact',
+      onClick: () => router.push(ROUTES.CONTACT),
+      ...(user && { divider: true }),
+    },
+    // {
+    //   id:5,
+    //   label: 'Press',
+    //   value: 'press',
+    //   onClick: () => (window.location.href = 'mailto:press@edgein.io'),
+    //   ...(user && { divider: true }),
+    // },
+    ...(user
+      ? [
+          {
+            id: 16,
+            label: 'Sign out',
+            value: 'signOut',
+            onClick: UserService.logout,
+          },
+        ]
+      : []),
   ];
 
   return (
-    <Popover className="relative">
-      {user?.person?.picture ? (
-        <Popover.Button className="focus:outline-none">
-          <ElemPhoto
-            photo={user?.person?.picture}
-            wrapClass="flex items-center justify-center shrink-0 w-9 h-9 bg-white rounded-full shadow border border-black/10"
-            imgClass="object-cover max-w-full max-h-full rounded-full"
-            imgAlt={'profile'}
-            placeholder="user"
-            placeholderClass="text-slate-400 hover:text-slate-400"
-          />
-        </Popover.Button>
-      ) : (
-        <Popover.Button as="div">
+    <ElemDropdown
+      customButton={
+        user?.person?.picture ? (
           <ElemButton
             btn="default"
-            className="h-9 aspect-square !px-1 !py-1.5 group"
+            className="flex items-center justify-center space-x-2 !px-1 !py-0.5"
           >
-            <IconUserCircle
-              className="h-6 w-6 shrink-0"
-              title={user?.display_name ? user.display_name : ''}
+            <IconBars3 className="w-5 h-5 ml-1" />
+            <ElemPhoto
+              photo={user?.person?.picture}
+              wrapClass="flex items-center justify-center w-8 h-8 bg-white rounded-full shrink-0"
+              imgClass="object-cover max-w-full max-h-full rounded-full"
+              imgAlt={`Signed in as ${user.display_name} | ${user.email}`}
+              placeholder="user"
+              placeholderClass="text-slate-400 hover:text-slate-400"
             />
           </ElemButton>
-        </Popover.Button>
-      )}
-
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-200"
-        enterFrom="opacity-0 translate-y-1"
-        enterTo="opacity-100 translate-y-0"
-        leave="transition ease-in duration-150"
-        leaveFrom="opacity-100 translate-y-0"
-        leaveTo="opacity-0 translate-y-1"
-      >
-        <Popover.Panel className="absolute z-10 mt-2 right-0 w-56 block bg-white rounded-lg border border-gray-300 shadow-lg overflow-hidden">
-          {({ close }) => (
-            <div>
-              <div className="w-full text-left text-sm px-4 py-2 border-b border-gray-200">
-                <span className="text-gray-600">Signed in as</span>
-                <div className="font-medium break-words text-gray-900">
-                  {user?.email}
-                </div>
-              </div>
-              {userMenuItems.map((item, index) => (
-                <ElemLink
-                  href={item.href ? item.href : ''}
-                  key={index}
-                  className={`flex text-gray-600 items-center gap-x-2 cursor-pointer w-full text-left text-sm px-4 py-2 m-0 transition-all hover:bg-gray-100 ${item.className}`}
-                  onClick={() => {
-                    item.onClick && item.onClick();
-                    close();
-                  }}
-                >
-                  {item.label}
-                </ElemLink>
-              ))}
+        ) : (
+          <ElemButton
+            btn="default"
+            className="flex items-center justify-center space-x-2 !px-1 !py-0"
+          >
+            <IconBars3 className="w-5 h-5 ml-1" />
+            <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full shrink-0">
+              <IconUserCircleSolid
+                className="object-cover max-w-full max-h-full text-gray-500 rounded-full"
+                title={
+                  user?.display_name
+                    ? `Signed in as ${user.display_name} | ${user.email}`
+                    : ' '
+                }
+              />
             </div>
-          )}
-        </Popover.Panel>
-      </Transition>
-    </Popover>
+          </ElemButton>
+        )
+      }
+      defaultItem={null}
+      items={quickLinks}
+      itemsShowIcons={false}
+      className={className}
+    />
   );
 };

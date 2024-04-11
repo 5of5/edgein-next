@@ -50,11 +50,11 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   let btnClass = '';
   // button styles
   if (btn === 'primary') {
-    btnClass = 'text-white bg-primary-500 hover:bg-blue-900';
+    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
   } else if (btn === 'amber') {
     btnClass = 'text-gray-900 bg-amber-400 hover:bg-amber-300';
   } else if (btn === 'purple') {
-    btnClass = 'text-white bg-primary-500 hover:bg-blue-900';
+    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
   } else if (btn === 'primary-light') {
     btnClass = 'bg-primary-50 hover:bg-primary-100 text-primary-500';
   } else if (btn === 'ol-primary') {

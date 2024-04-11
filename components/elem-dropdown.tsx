@@ -29,6 +29,7 @@ type Props = {
   customButton?: ReactNode;
   defaultItem?: number | null;
   items: Array<{
+    className?: string;
     id: number;
     label: string;
     value: string;
@@ -116,40 +117,47 @@ export const ElemDropdown: FC<Props> = ({
                 const activeIconClass = item.selectedIconClass
                   ? item.selectedIconClass
                   : 'text-primary-500';
-                const dividerClass = item.divider
-                  ? 'border-b border-gray-200'
-                  : '';
+                const dividerClass = '';
+                // item.divider
+                //   ? 'border-b border-gray-200'
+                //   : '';
 
                 return (
-                  <button
-                    key={item.id}
-                    className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-600 ${
-                      isActiveItem ? 'font-medium' : 'font-normal'
-                    } px-4 py-2 m-0 transition-all hover:bg-gray-100 ${dividerClass}`}
-                    onClick={() => {
-                      item.onClick();
-                      setActiveItem(item.id);
-                      close();
-                    }}
-                  >
-                    {itemsShowIcons && item.Icon ? (
-                      <item.Icon
-                        className={`w-4 h-4 shrink-0  ${
-                          isActiveItem ? activeIconClass : 'text-gray-400'
-                        }`}
-                      />
-                    ) : itemsShowIcons ? (
-                      <IconCheck
-                        className={`w-4 h-4 shrink-0 ${
-                          isActiveItem
-                            ? `opacity-100 ${activeIconClass}`
-                            : 'opacity-0'
-                        }`}
-                      />
-                    ) : null}
-                    {item.label}
-                    {item.Pill && item.Pill}
-                  </button>
+                  <Fragment key={item.id}>
+                    <button
+                      className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-600 ${
+                        isActiveItem ? 'font-medium' : 'font-normal'
+                      } px-4 py-2 m-0 transition-all hover:bg-gray-100 ${dividerClass} ${
+                        item.className
+                      }`}
+                      onClick={() => {
+                        item.onClick();
+                        setActiveItem(item.id);
+                        close();
+                      }}
+                    >
+                      {itemsShowIcons && item.Icon ? (
+                        <item.Icon
+                          className={`w-4 h-4 shrink-0  ${
+                            isActiveItem ? activeIconClass : 'text-gray-400'
+                          }`}
+                        />
+                      ) : itemsShowIcons ? (
+                        <IconCheck
+                          className={`w-4 h-4 shrink-0 ${
+                            isActiveItem
+                              ? `opacity-100 ${activeIconClass}`
+                              : 'opacity-0'
+                          }`}
+                        />
+                      ) : null}
+                      {item.label}
+                      {item.Pill && item.Pill}
+                    </button>
+                    {item.divider && (
+                      <div className="w-full h-px my-1 bg-gray-200"></div>
+                    )}
+                  </Fragment>
                 );
               })}
             </>
