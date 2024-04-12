@@ -1766,8 +1766,9 @@ export const leadSegmentationStatusChoices = [
 
 export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
   'edgein.io',
-  'techlist.com',
-  'sudolabs.io',
+  'wayneandreed.com',
+  // 'techlist.com',
+  // 'sudolabs.io',
 ];
 
 export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
