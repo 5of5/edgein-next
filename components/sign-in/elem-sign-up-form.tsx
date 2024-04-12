@@ -1,14 +1,12 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import validator from 'validator';
-import capitalize from 'lodash/capitalize';
-import lowerCase from 'lodash/lowerCase';
-import isEmpty from 'lodash/isEmpty';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
-import { urlPattern } from '@/utils/constants';
 import { GetSignUpProfileQuery } from '@/graphql/types';
 import { SignUpFormState, SignUpPayload } from '@/pages/sign-in';
+import { every, isUndefined, capitalize, lowerCase } from 'lodash';
+import { PASSWORD_VALIDATION, urlPattern } from '@/utils/constants';
 
 type Props = {
   isSubmittingSignUp: boolean;
@@ -37,7 +35,7 @@ export const ElemSignUpForm: FC<Props> = ({
   const [errors, setErrors] = useState<SignUpFormState>({});
 
   const isDisabledButton =
-    !isEmpty(errors) ||
+    !every(errors, isUndefined) ||
     Object.keys(values).some(
       key => key !== 'linkedinUrl' && !values[key as keyof SignUpFormState],
     );
@@ -93,41 +91,59 @@ export const ElemSignUpForm: FC<Props> = ({
     },
   );
 
+  const validatePasswords = useCallback(() => {
+    const { password, confirmPassword } = values;
+    let passwordError: string;
+    let confirmPasswordError: string;
+
+    if (
+      password &&
+      !validator.isStrongPassword(password, PASSWORD_VALIDATION)
+    ) {
+      passwordError =
+        'Password should have at least 8 characters including a lower-case letter, an upper-case letter, a number, and a special character';
+    }
+
+    if (confirmPassword && confirmPassword !== password) {
+      confirmPasswordError = 'Confirm password must match password';
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      password: passwordError,
+      confirmPassword: confirmPasswordError,
+    }));
+  }, [values.password, values.confirmPassword]);
+
+  useEffect(() => {
+    validatePasswords();
+  }, [validatePasswords]);
+
+  const validateField = (name: string, value: string) => {
+    switch (name) {
+      case 'password':
+      case 'confirmPassword':
+        validatePasswords();
+        break;
+      case 'linkedinUrl':
+        if (value && !urlPattern.test(value)) {
+          return 'Invalid URL';
+        }
+        break;
+      default:
+        if (!value.trim()) {
+          return `${capitalize(lowerCase(name))} is required`;
+        }
+        break;
+    }
+  };
+
   const handleValidate = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (!value.trim() && name !== 'linkedinUrl') {
-      setErrors(prev => ({
-        ...prev,
-        [name]: `${capitalize(lowerCase(name))} is required`,
-      }));
-    } else if (name === 'linkedinUrl' && value && !urlPattern.test(value)) {
-      setErrors(prev => ({
-        ...prev,
-        linkedinUrl: 'Invalid URL',
-      }));
-    } else if (
-      name === 'password' &&
-      !validator.isStrongPassword(value, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      setErrors(prev => ({
-        ...prev,
-        password:
-          'Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, and a special character',
-      }));
-    } else if (name === 'confirmPassword' && value !== values.password) {
-      setErrors(prev => ({
-        ...prev,
-        confirmPassword: 'Confirm password have to match with password',
-      }));
-    } else {
-      setErrors({});
-    }
+    setErrors(prev => ({
+      ...prev,
+      [name]: validateField(name, value),
+    }));
   };
 
   const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -266,8 +282,7 @@ export const ElemSignUpForm: FC<Props> = ({
               isLoadingPeople ||
               isSubmittingSignUp
             }
-            disabled={isDisabledButton}
-          >
+            disabled={isDisabledButton}>
             Continue
           </ElemButton>
         </div>

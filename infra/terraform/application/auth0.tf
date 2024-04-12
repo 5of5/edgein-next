@@ -24,6 +24,14 @@ resource "auth0_client" "edgein" {
   }
 }
 
+data "auth0_client" "edgein" {
+   client_id = auth0_client.edgein.id
+}
+
+output "client_secret" {
+  value = data.auth0_client.edgein.client_secret
+}
+
 resource "auth0_client_credentials" "edgein" {
   client_id = auth0_client.edgein.id
 

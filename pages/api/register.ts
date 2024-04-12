@@ -12,12 +12,13 @@ import GroupService from '@/utils/groups';
 import { makeAuthService, UserInfo } from '@/services/auth.service';
 import { mutate } from '@/graphql/hasuraAdmin';
 import { onFindPeopleByLinkedin } from './add-onboarding-information';
-import async from 'react-select/dist/declarations/src/async/index';
+import validator from 'validator';
 import UserTransactionsService, {
   REFERRAL_CREDITS_AMOUNT,
   REGISTRATION_CREDITS_AMOUNT,
   TRANSACTION_SYSTEM_NOTE,
 } from '@/utils/userTransactions';
+import { PASSWORD_VALIDATION } from '@/utils/constants';
 
 const authService = makeAuthService();
 
@@ -41,6 +42,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (isEmailDisabled) {
     return res.status(404).send({
       message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!`,
+    });
+  }
+
+  // Password validation
+  if (!validator.isStrongPassword(req.body.password, PASSWORD_VALIDATION)) {
+    return res.status(400).send({
+      message: `Your password is not strong enough!`,
     });
   }
 
