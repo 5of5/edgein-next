@@ -485,28 +485,27 @@ export const getStaticProps: GetStaticProps = async () => {
     orderBy: [{ name: Order_By.Asc }],
   });
 
-  if (resp.errors) {
-    console.error(resp.errors);
-    return {
-      props: {
-        companiesCount: 0,
-        initialCompanies: [],
-        companyStatusTags,
-      },
-      revalidate: 60 * 60 * 2,
-    };
-  }
-
-  const { data: companies } = resp;
-
-  return {
+  const response = {
     props: {
-      companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
-      initialCompanies: companies?.companies || [],
+      companiesCount: 0,
+      initialCompanies: [] as GetCompaniesQuery['companies'],
       companyStatusTags,
     },
     revalidate: 60 * 60 * 2,
   };
+
+  if (resp.errors) {
+    console.error(resp.errors);
+    return response;
+  }
+
+  const { data: companies } = resp;
+
+  response.props.companiesCount =
+    companies?.companies_aggregate?.aggregate?.count || 0;
+  response.props.initialCompanies = companies?.companies || [];
+
+  return response;
 };
 
 export default Companies;
