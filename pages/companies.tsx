@@ -433,8 +433,7 @@ const Companies: NextPage<Props> = ({
               <>
                 <div
                   data-testid="companies"
-                  className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                >
+                  className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {companies?.map(company => {
                     return (
                       <ElemCompanyCard
@@ -465,29 +464,40 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data: companies } = await runGraphQl<GetCompaniesQuery>(
-    GetCompaniesDocument,
-    {
-      offset: 0,
-      limit: 50,
-      where: {
-        _and: [
-          {
-            _or: [
-              {
-                _not: {
-                  status_tags: { _contains: 'Dead' },
-                },
+  const resp = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument, {
+    offset: 0,
+    limit: 50,
+    where: {
+      _and: [
+        {
+          _or: [
+            {
+              _not: {
+                status_tags: { _contains: 'Dead' },
               },
-              { status_tags: { _is_null: true } },
-            ],
-          },
-          { library: { _contains: 'Web3' } },
-        ],
-      },
-      orderBy: [{ name: Order_By.Asc }],
+            },
+            { status_tags: { _is_null: true } },
+          ],
+        },
+        { library: { _contains: 'Web3' } },
+      ],
     },
-  );
+    orderBy: [{ name: Order_By.Asc }],
+  });
+
+  if (resp.errors) {
+    console.error(resp.errors);
+    return {
+      props: {
+        companiesCount: 0,
+        initialCompanies: [],
+        companyStatusTags,
+      },
+      revalidate: 60 * 60 * 2,
+    };
+  }
+
+  const { data: companies } = resp;
 
   return {
     props: {

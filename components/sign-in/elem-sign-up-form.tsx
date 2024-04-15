@@ -113,6 +113,8 @@ export const ElemSignUpForm: FC<Props> = ({
       password: passwordError,
       confirmPassword: confirmPasswordError,
     }));
+
+   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.password, values.confirmPassword]);
 
   useEffect(() => {

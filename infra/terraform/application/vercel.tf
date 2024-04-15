@@ -7,8 +7,12 @@ data "vercel_project" "edgein" {
   name = "edgein"
 }
 
+data "auth0_client" "edgein" {
+  client_id = local.project_name
+}
+
 resource "vercel_deployment" "edgein" {
-  depends_on = [aws_ecs_service.hasura]
+  depends_on = [aws_ecs_service.hasura, data.auth0_client.edgein]
 
   project_id = data.vercel_project.edgein.id
   ref        = var.vercel_commit
