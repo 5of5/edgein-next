@@ -7,8 +7,12 @@ data "vercel_project" "edgein" {
   name = "edgein"
 }
 
+data "auth0_client" "edgein" {
+  client_id = local.project_name
+}
+
 resource "vercel_deployment" "edgein" {
-  depends_on = [aws_ecs_service.hasura]
+  depends_on = [aws_ecs_service.hasura, data.auth0_client.edgein]
 
   project_id = data.vercel_project.edgein.id
   ref        = var.vercel_commit
@@ -37,7 +41,7 @@ resource "vercel_deployment" "edgein" {
     AUTH0_MANAGEMENT_CLIENT_ID        = var.auth0_client_id
     AUTH0_MANAGEMENT_CLIENT_SECRET    = var.auth0_client_secret
     AUTH0_MANAGEMENT_DOMAIN           = var.auth0_domain
-    AUTH0_CLIENT_SECRET               = auth0_client.edgein.client_secret
+    AUTH0_CLIENT_SECRET               = data.auth0_client.edgein.client_secret
     NEXT_PUBLIC_AUTH0_CLIENT_ID       = auth0_client.edgein.client_id
     NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL = "https://${var.auth0_domain}"
     NEXT_PUBLIC_AUTH0_REDIRECT_URL    = local.vercel_url

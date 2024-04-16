@@ -22,7 +22,6 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
   const [unsuccessMessage, setUnsuccessMessage] = useState('');
 
   const { isFetching: isCheckingExistedEmail, refetch: checkExistedEmail } =
@@ -74,9 +73,10 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   );
 
   const handleCheckExistedEmail = () => {
-    validateEmail(email);
+    const emailValidationError = validateEmail(email);
 
-    if (emailError || !email) {
+    if (emailValidationError || !email) {
+      setEmailError(emailValidationError);
       return;
     }
 
@@ -84,36 +84,23 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   };
 
   const validateEmail = (value: string) => {
-    if (validator.isEmail(value)) {
-      setEmailError('');
-    } else {
-      setEmailError('Enter valid email');
+    let emailError = '';
+    if (!validator.isEmail(value)) {
+      emailError = 'Enter valid email';
     }
-  };
-
-  const validatePassword = (value: string) => {
-    if (
-      validator.isStrongPassword(value, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      setPasswordError('');
-    } else {
-      setPasswordError('Invalid password');
-    }
+    return emailError;
   };
 
   const handleLogin = () => {
-    validateEmail(email);
-    validatePassword(password);
+    const emailValidationError = validateEmail(email);
 
-    if (emailError || passwordError || !email || !password) {
+    if (emailValidationError || !email || !password) {
+      setEmailError(emailValidationError);
       return;
     }
+
+    setEmailError('');
+    setUnsuccessMessage('');
 
     login();
   };
@@ -178,8 +165,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                       <span>Password</span>
                       <span
                         onClick={() => setOpenForgotPasswordModal(true)}
-                        className="underline cursor-pointer text-slate-500"
-                      >
+                        className="underline cursor-pointer text-slate-500">
                         Forgot your password?
                       </span>
                     </div>
@@ -190,17 +176,8 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                     placeholder="********"
                     value={password}
                     onChange={event => setPassword(event?.target.value)}
-                    className={`${
-                      passwordError === ''
-                        ? 'ring-1 ring-slate-200'
-                        : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                    } !rounded-2xl`}
+                    className={`ring-1 ring-slate-200 !rounded-2xl`}
                   />
-                  {passwordError && (
-                    <div className="mt-1 text-xs text-rose-600">
-                      {passwordError}
-                    </div>
-                  )}
                 </label>
               )}
 
@@ -215,9 +192,8 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                 className="w-full !mt-8"
                 btn="primary"
                 size="md"
-                disabled={!email}
-                loading={isCheckingExistedEmail || isLoginLoading}
-              >
+                disabled={!email || (isExistedEmail && !password)}
+                loading={isCheckingExistedEmail || isLoginLoading}>
                 {isExistedEmail ? 'Log in' : 'Continue with email'}
               </ElemButton>
             </div>
@@ -233,8 +209,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
 
           <ElemButton
             onClick={handleContinueWithLinkedin}
-            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200"
-          >
+            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200">
             <IconLinkedInAlt
               title="LinkedIn"
               className="h-6 w- text-[#0A66C2]"
