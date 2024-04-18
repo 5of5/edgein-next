@@ -1,11 +1,11 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconLinkedInAlt, IconContributor } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { EditSection } from '@/components/dashboard/edit-section';
-import { useGetUserProfileQuery } from '@/graphql/types';
+import { GetUserProfileDocument, GetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
@@ -16,24 +16,33 @@ import { USER_ROLES } from '@/utils/users';
 import { Toaster } from 'react-hot-toast';
 import useToast from '@/hooks/use-toast';
 import isEmpty from 'lodash/isEmpty';
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import CookieService from '@/utils/cookie';
+import { runGraphQl } from '@/utils';
 
 export type NewPasswordForm = {
   newPassword?: string;
   confirmPassword?: string;
 };
 
-export default function Account() {
+type Props = {
+  userProfile?: GetUserProfileQuery;
+};
+
+export default function Account({ userProfile }: Props) {
   const { user, refreshUser } = useAuth();
+  const router = useRouter();
+  const { success } = router.query;
+
   const { toast } = useToast();
 
-  const { data: userProfile } = useGetUserProfileQuery(
-    {
-      id: user?.id || 0,
-    },
-    {
-      enabled: !!user,
-    },
-  );
+  useEffect(() => {
+    // refetch user data after success payment (premium feature)
+    if (success === 'true') {
+      refreshUser();
+    }
+  }, [success]);
 
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [values, setValues] = useState<NewPasswordForm>({
@@ -389,3 +398,22 @@ export default function Account() {
     </DashboardLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const token = CookieService.getAuthToken(context.req.cookies);
+  const user = await CookieService.getUser(token);
+
+  const { data: userProfile } = await runGraphQl<GetUserProfileQuery>(
+    GetUserProfileDocument,
+    {
+      id: user?.id || 0,
+    },
+    context.req.cookies,
+  );
+
+  return {
+    props: {
+      userProfile,
+    },
+  };
+};
