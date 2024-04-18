@@ -114,7 +114,7 @@ export const ElemSignUpForm: FC<Props> = ({
       confirmPassword: confirmPasswordError,
     }));
 
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.password, values.confirmPassword]);
 
   useEffect(() => {
@@ -284,7 +284,8 @@ export const ElemSignUpForm: FC<Props> = ({
               isLoadingPeople ||
               isSubmittingSignUp
             }
-            disabled={isDisabledButton}>
+            disabled={isDisabledButton}
+          >
             Continue
           </ElemButton>
         </div>
