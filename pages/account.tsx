@@ -42,7 +42,7 @@ export default function Account({ userProfile }: Props) {
     if (success === 'true') {
       refreshUser();
     }
-  }, [success]);
+  }, [refreshUser, success]);
 
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [values, setValues] = useState<NewPasswordForm>({
