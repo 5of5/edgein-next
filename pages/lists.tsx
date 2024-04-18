@@ -158,7 +158,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
         description="Level up your research, due diligence, or portfolio management. Start with lists to monitor organizations and people of your interests."
       />
       <DashboardLayout>
-        <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex md:px-8">
+        <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex lg:px-8">
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
             {LISTS_TABS &&
               LISTS_TABS.map((tab: any, index: number) =>
@@ -190,7 +190,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
           />
         </div>
 
-        <div className="px-4 py-3 sm:px-6 md:px-8">
+        <div className="px-4 py-3 sm:px-6 lg:px-8">
           {lists?.length != 0 && (
             <div className="pb-2">
               <h1 className="text-4xl font-medium">{selectedListTab.name}</h1>
