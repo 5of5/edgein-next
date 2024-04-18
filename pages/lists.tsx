@@ -2,7 +2,10 @@ import React, { useEffect, useState, Fragment } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { PlaceholderCompanyCard } from '@/components/placeholders';
+import {
+  PlaceholderCompanyCard,
+  PlaceholderTable,
+} from '@/components/placeholders';
 import { runGraphQl } from '@/utils';
 import {
   GetListsQuery,
@@ -25,6 +28,9 @@ import { CreateListDialog } from '@/components/my-list/create-list-dialog';
 import { ElemButton } from '@/components/elem-button';
 import { ElemEmptyState } from '@/components/lists/elem-empty-state';
 import { NextSeo } from 'next-seo';
+import { ListsTable } from '@/components/lists/elem-lists-table';
+import { ElemDropdown } from '@/components/elem-dropdown';
+import { IconGroup, IconTable } from '@/components/icons';
 
 type Props = {
   initialListsCount: number;
@@ -37,6 +43,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   const { user, listAndFollows } = useUser();
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const [tableLayout, setTableLayout] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [isOpenCreateListDialog, setIsOpenCreateListDialog] = useState(false);
 
@@ -127,6 +134,23 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
     }
   };
 
+  const layoutItems = [
+    {
+      id: 0,
+      label: 'Grid view',
+      value: 'grid',
+      Icon: IconGroup,
+      onClick: () => setTableLayout(false),
+    },
+    {
+      id: 1,
+      label: 'Table view',
+      value: 'table',
+      Icon: IconTable,
+      onClick: () => setTableLayout(true),
+    },
+  ];
+
   return (
     <>
       <NextSeo
@@ -157,73 +181,76 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                 ),
               )}
           </nav>
+
+          <ElemDropdown
+            //buttonClass="w-full"
+            //panelClass="w-full"
+            ButtonIcon={tableLayout ? IconTable : IconGroup}
+            items={layoutItems}
+          />
         </div>
 
-        {lists?.length === 0 ? (
-          <ElemEmptyState
-            selectedTab={selectedListTab}
-            onChangeTab={setSelectedListTab}
-            onClickCreateList={onClickCreateList}
-          />
-        ) : (
-          <div className="px-8 pb-2">
-            <h1 className="text-4xl font-medium">{selectedListTab.name}</h1>
-          </div>
-        )}
-
         <div className="px-8 py-3">
-          <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading lists
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report an error on lists page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
-                </div>
-              </div>
-            ) : isLoading && !initialLoad ? (
-              <>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <PlaceholderCompanyCard key={i} />
-                ))}
-              </>
-            ) : (
-              lists?.map(listItem => {
-                return (
-                  <ElemListCard
-                    key={listItem.id}
-                    selectedTab={selectedListTab}
-                    resource={{ ...listItem, resourceType: 'list' }}
-                    refetchList={refetch}
-                  />
-                );
-              })
-            )}
-          </div>
+          {lists?.length != 0 && (
+            <div className="pb-2">
+              <h1 className="text-4xl font-medium">{selectedListTab.name}</h1>
+            </div>
+          )}
 
-          <Pagination
-            shownItems={lists?.length}
-            totalItems={listsAggregate}
-            page={page}
-            itemsPerPage={LIMIT}
-            onClickPrev={() => setPage(page - 1)}
-            onClickNext={() => setPage(page + 1)}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
+          {isLoading && !initialLoad ? (
+            <>
+              {tableLayout ? (
+                <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                  <PlaceholderTable />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <PlaceholderCompanyCard key={i} />
+                  ))}
+                </div>
+              )}
+            </>
+          ) : tableLayout && lists?.length != 0 ? (
+            <ListsTable
+              lists={lists}
+              pageNumber={page}
+              shownItems={LIMIT}
+              totalItems={listsAggregate}
+              onClickPrev={() => setPage(page - 1)}
+              onClickNext={() => setPage(page + 1)}
+            />
+          ) : lists?.length != 0 ? (
+            <>
+              <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                {lists?.map(listItem => {
+                  return (
+                    <ElemListCard
+                      key={listItem.id}
+                      selectedTab={selectedListTab}
+                      resource={{ ...listItem, resourceType: 'list' }}
+                      refetchList={refetch}
+                    />
+                  );
+                })}
+              </div>
+              <Pagination
+                shownItems={lists?.length}
+                totalItems={listsAggregate}
+                page={page}
+                itemsPerPage={LIMIT}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                onClickToPage={selectedPage => setPage(selectedPage)}
+              />
+            </>
+          ) : (
+            <ElemEmptyState
+              selectedTab={selectedListTab}
+              onChangeTab={setSelectedListTab}
+              onClickCreateList={onClickCreateList}
+            />
+          )}
         </div>
 
         <ElemUpgradeDialog

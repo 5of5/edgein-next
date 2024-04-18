@@ -3,10 +3,15 @@ import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
 import { useUser } from '@/context/user-context';
-import { getNameFromListName } from '@/utils/reaction';
+import { getNameFromListName, getNameFromListMember } from '@/utils/lists';
 import { formatDateShown, truncateWords } from '@/utils';
 import { getListDisplayName } from '@/utils/lists';
-import { GetGroupsQuery, GetListsQuery } from '@/graphql/types';
+import {
+  GetGroupsQuery,
+  GetListsQuery,
+  List_Members,
+  User_Group_Members,
+} from '@/graphql/types';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ROUTES } from '@/routes';
 import { ElemButton } from './elem-button';
@@ -44,6 +49,8 @@ export const ElemListCard: FC<Props> = ({
   const isResourceList = resource.resourceType === 'list';
 
   const name = isResourceList ? getListDisplayName(resource) : resource.name;
+
+  const totalItems = isResourceList ? resource.total_no_of_resources : null;
 
   const description = resource.description ? resource.description : null;
 
@@ -114,35 +121,26 @@ export const ElemListCard: FC<Props> = ({
     }
   };
 
-  const ListItemName = (
-    <div className="inline-block pb-2">
-      <ElemLink
-        href={resourceUrl}
-        className="font-medium leading-snug break-words line-clamp-2 hover:underline"
-      >
-        {name}
-      </ElemLink>
-    </div>
-  );
-
   return (
     <div className="flex flex-col w-full p-4 mx-auto border border-gray-200 rounded-lg">
-      {description ? (
-        <ElemTooltip
-          content={truncateWords(description)}
-          direction="top"
-          mode="light"
-        >
-          {ListItemName}
-        </ElemTooltip>
-      ) : (
-        ListItemName
-      )}
+      <div className="flex pb-2 space-x-1">
+        <div>
+          <ElemLink
+            href={resourceUrl}
+            className="font-medium leading-snug break-words line-clamp-2 hover:underline"
+          >
+            {name}
+          </ElemLink>
+        </div>
+        {totalItems && <div className="text-gray-500">({totalItems})</div>}
+      </div>
 
       {description && (
-        <div className="pb-3 text-sm text-gray-500">
-          {truncateWords(description)}
-        </div>
+        <ElemTooltip content={description} direction="top" mode="light">
+          <div className="mb-3 text-sm text-gray-500 line-clamp-2">
+            {description}
+          </div>
+        </ElemTooltip>
       )}
 
       <div className="pt-2 border-t border-gray-200 grow">
@@ -208,41 +206,54 @@ export const ElemListCard: FC<Props> = ({
           Updated {formatDateShown(resource.updated_at)}
         </p>
 
-        <div className="flex items-center pl-1 mt-4">
-          <ul className="flex -space-x-3 overflow-hidden">
-            {members.slice(0, 6).map(member => (
-              <li key={member.id}>
-                {member?.user?.person?.picture ? (
-                  <ElemPhoto
-                    photo={member?.user.person?.picture}
-                    wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                    imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                    imgAlt={member?.user.display_name}
-                  />
-                ) : (
-                  <div
-                    className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50"
-                    title={
-                      member?.user?.display_name
-                        ? member?.user?.display_name
-                        : ''
-                    }
-                  >
-                    {member?.user?.display_name?.charAt(0)}
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-          <ElemLink
-            href={resourceUrl}
-            className="ml-1 text-sm font-medium text-gray-500 hover:underline"
-          >
-            {members.length > 1
-              ? `${members.length} ${isResourceList ? 'Followers' : 'Members'}`
-              : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
-          </ElemLink>
-        </div>
+        {members && members.length > 0 && (
+          <div className="flex items-center pl-1 mt-4">
+            <ul className="flex -space-x-3 overflow-hidden">
+              {members?.slice(0, 6).map((member: any) => {
+                return (
+                  <li key={member?.id}>
+                    <ElemTooltip
+                      content={member && getNameFromListMember(member)}
+                      mode="dark"
+                      direction="top"
+                      size="lg"
+                    >
+                      {member?.user?.person?.picture ? (
+                        <div>
+                          <ElemPhoto
+                            photo={member?.user.person?.picture}
+                            wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                            imgAlt={getNameFromListMember(member)}
+                            placeholder="user"
+                            placeholderClass="text-gray-500"
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50"
+                          title={getNameFromListMember(member)}
+                        >
+                          {getNameFromListMember(member).charAt(0)}
+                        </div>
+                      )}
+                    </ElemTooltip>
+                  </li>
+                );
+              })}
+            </ul>
+            <ElemLink
+              href={resourceUrl}
+              className="ml-1 text-sm font-medium text-gray-500 hover:underline"
+            >
+              {members.length > 1
+                ? `${members.length} ${
+                    isResourceList ? 'Followers' : 'Members'
+                  }`
+                : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
+            </ElemLink>
+          </div>
+        )}
       </div>
 
       <div className="mt-4">

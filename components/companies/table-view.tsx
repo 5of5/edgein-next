@@ -13,7 +13,7 @@ import { ElemDropdown } from '../elem-dropdown';
 import { TableUpgrade } from './table-upgrade';
 
 type Props = {
-  resourceType: 'companies' | 'investors' | 'events' | 'people';
+  resourceType: 'companies' | 'investors' | 'events' | 'people' | 'lists';
   columns: any[];
   data: any;
   pageSize: number;

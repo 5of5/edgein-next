@@ -36,10 +36,11 @@ import {
   GetVcFirmsByTagsAndLocationDocument,
   GetPeopleByTagsAndLocationQuery,
   GetPeopleByTagsAndLocationDocument,
+  List_Members,
+  User_Group_Members,
 } from '@/graphql/types';
 import { User } from '@/models/user';
 import { DeepPartial } from '@/types/common';
-import { getNameFromListName } from './reaction';
 import { ROUTES } from '@/routes';
 
 export const updateResourceSentimentCount = async (
@@ -506,5 +507,22 @@ export const getListDisplayName = (list: DeepPartial<Lists>) => {
     return `✨ ${name}`;
   }
 
+  return name;
+};
+
+export const getNameFromListName = (list: DeepPartial<Lists>) => {
+  if (!list) return '';
+  const fragments = list?.name?.split('-');
+  return fragments?.[fragments.length - 1] || '';
+};
+
+export const getNameFromListMember = (
+  member: List_Members | User_Group_Members,
+) => {
+  const name = member.user?.person?.name
+    ? startCase(member.user?.person?.name)
+    : member?.user?.display_name
+    ? startCase(member?.user?.display_name)
+    : '';
   return name;
 };

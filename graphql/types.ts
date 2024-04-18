@@ -30203,7 +30203,7 @@ export type GetListsQueryVariables = Exact<{
 }>;
 
 
-export type GetListsQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, description: string | null, public: boolean | null, created_at: any | null, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null, list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, user_id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null }> }>, lists_aggregate: { __typename?: 'lists_aggregate', aggregate: { __typename?: 'lists_aggregate_fields', count: number } | null } };
+export type GetListsQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, description: string | null, total_no_of_resources: number | null, public: boolean | null, created_at: any | null, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null, list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, user_id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null }> }>, lists_aggregate: { __typename?: 'lists_aggregate', aggregate: { __typename?: 'lists_aggregate_fields', count: number } | null } };
 
 export type GetNewsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -34210,6 +34210,7 @@ export const GetListsDocument = `
     id
     name
     description
+    total_no_of_resources
     public
     created_at
     updated_at
