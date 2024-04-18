@@ -154,10 +154,7 @@ export const ListsTable: FC<Props> = ({
                                   />
                                 </div>
                               ) : (
-                                <div
-                                  className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50"
-                                  title={getNameFromListMember(member)}
-                                >
+                                <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">
                                   {getNameFromListMember(member).charAt(0)}
                                 </div>
                               )}
@@ -268,8 +265,6 @@ export const ListsTable: FC<Props> = ({
     ],
     [],
   );
-
-  console.log(lists);
 
   return (
     <div className={`${className}`}>

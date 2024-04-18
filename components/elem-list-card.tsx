@@ -146,21 +146,15 @@ export const ElemListCard: FC<Props> = ({
       <div className="pt-2 border-t border-gray-200 grow">
         <div className="items-center inline-block text-sm text-gray-500">
           {resource.public ? (
-            <ElemTooltip content="Public" direction="top" mode="light">
+            <ElemTooltip content="Public" direction="top" mode="dark">
               <div className="inline">
-                <IconGlobe
-                  className="inline-block w-4 h-4 shrink-0"
-                  title="Public"
-                />
+                <IconGlobe className="inline-block w-4 h-4 shrink-0" />
               </div>
             </ElemTooltip>
           ) : (
-            <ElemTooltip content="Private" direction="top" mode="light">
+            <ElemTooltip content="Private" direction="top" mode="dark">
               <div className="inline">
-                <IconLockClosed
-                  className="inline-block w-4 h-4 shrink-0"
-                  title="Private"
-                />
+                <IconLockClosed className="inline-block w-4 h-4 shrink-0" />
               </div>
             </ElemTooltip>
           )}
@@ -230,10 +224,7 @@ export const ElemListCard: FC<Props> = ({
                           />
                         </div>
                       ) : (
-                        <div
-                          className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50"
-                          title={getNameFromListMember(member)}
-                        >
+                        <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">
                           {getNameFromListMember(member).charAt(0)}
                         </div>
                       )}
