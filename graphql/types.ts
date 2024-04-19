@@ -29854,7 +29854,7 @@ export type GetGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupsQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }>, list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number }> }>, user_groups_aggregate: { __typename?: 'user_groups_aggregate', aggregate: { __typename?: 'user_groups_aggregate_fields', count: number } | null } };
+export type GetGroupsQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } | null }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }>, list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number }> }>, user_groups_aggregate: { __typename?: 'user_groups_aggregate', aggregate: { __typename?: 'user_groups_aggregate_fields', count: number } | null } };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -30203,7 +30203,7 @@ export type GetListsQueryVariables = Exact<{
 }>;
 
 
-export type GetListsQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, description: string | null, public: boolean | null, created_at: any | null, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null, list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, user_id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null }> }>, lists_aggregate: { __typename?: 'lists_aggregate', aggregate: { __typename?: 'lists_aggregate_fields', count: number } | null } };
+export type GetListsQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, description: string | null, total_no_of_resources: number | null, public: boolean | null, created_at: any | null, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null, list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, user_id: number, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string, picture: any | null } | null } | null }> }>, lists_aggregate: { __typename?: 'lists_aggregate', aggregate: { __typename?: 'lists_aggregate_fields', count: number } | null } };
 
 export type GetNewsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -32827,6 +32827,12 @@ export const GetGroupsDocument = `
       id
       display_name
       email
+      person {
+        id
+        name
+        slug
+        picture
+      }
     }
     notes {
       id
@@ -34210,6 +34216,7 @@ export const GetListsDocument = `
     id
     name
     description
+    total_no_of_resources
     public
     created_at
     updated_at

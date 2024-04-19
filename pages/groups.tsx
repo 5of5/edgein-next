@@ -2,10 +2,13 @@ import React, { useEffect, useState, Fragment } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { PlaceholderCompanyCard } from '@/components/placeholders';
+import {
+  PlaceholderCompanyCard,
+  PlaceholderTable,
+} from '@/components/placeholders';
 import { ElemButton } from '@/components/elem-button';
 import { runGraphQl } from '@/utils';
-import { IconGroup, IconGroupPlus } from '@/components/icons';
+import { IconGroup, IconTable } from '@/components/icons';
 import {
   GetGroupsDocument,
   GetGroupsQuery,
@@ -25,6 +28,9 @@ import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
 import { ElemListCard } from '@/components/elem-list-card';
 import { NextSeo } from 'next-seo';
+import { GroupsNoResults } from '@/components/groups/groups-no-results';
+import { ElemDropdown } from '@/components/elem-dropdown';
+import { GroupsTable } from '@/components/groups/elem-groups-table';
 
 type Props = {
   initialGroupsCount: number;
@@ -37,6 +43,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
   const { user, myGroups } = useUser();
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const [tableLayout, setTableLayout] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
@@ -127,6 +134,23 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
     }
   };
 
+  const layoutItems = [
+    {
+      id: 0,
+      label: 'Grid view',
+      value: 'grid',
+      Icon: IconGroup,
+      onClick: () => setTableLayout(false),
+    },
+    {
+      id: 1,
+      label: 'Table view',
+      value: 'table',
+      Icon: IconTable,
+      onClick: () => setTableLayout(true),
+    },
+  ];
+
   return (
     <>
       <NextSeo
@@ -134,7 +158,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
         description="EdgeIn groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections."
       />
       <DashboardLayout>
-        <div className="items-center justify-between px-8 pt-4 pb-6 lg:flex">
+        <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex lg:px-8">
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
             {GROUPS_TABS &&
               GROUPS_TABS.map((tab: any, index: number) =>
@@ -157,120 +181,81 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                 ),
               )}
           </nav>
+          <ElemDropdown
+            buttonClass="mt-4"
+            //panelClass="w-full"
+            ButtonIcon={tableLayout ? IconTable : IconGroup}
+            items={layoutItems}
+          />
         </div>
 
-        {groups?.length === 0 ? (
-          <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-            <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border rounded-2xl border-dark-500/10">
-              <IconGroup className="w-12 h-12 mx-auto text-slate-300" />
-              <h1 className="mt-5 text-3xl font-bold">
-                {selectedGroupTab.id === 'my-groups'
-                  ? 'Create a group'
-                  : selectedGroupTab.id === 'joined'
-                  ? 'Join a group'
-                  : selectedGroupTab.id === 'discover'
-                  ? 'Discover'
-                  : ''}
-              </h1>
-              <div className="mt-1 text-lg text-slate-600">
-                {selectedGroupTab.id === 'discover'
-                  ? 'There are no groups that are visible to the public yet, if you make your group public it will appear here.'
-                  : 'Groups allow you to collaborate on notes, share insights, and track leads with other people.'}
-              </div>
-              {selectedGroupTab.id === 'my-groups' ? (
-                <ElemButton
-                  onClick={onClickCreateGroup}
-                  btn="primary"
-                  className="mt-3"
-                >
-                  <IconGroupPlus className="w-6 h-6 mr-1" />
-                  Create New Group
-                </ElemButton>
-              ) : selectedGroupTab.id === 'joined' ? (
-                <ElemButton
-                  onClick={() =>
-                    setSelectedGroupTab({
-                      id: 'discover',
-                      name: 'Discover',
-                    })
-                  }
-                  btn="primary"
-                  className="mt-3"
-                >
-                  <IconGroupPlus className="w-6 h-6 mr-1" />
-                  Discover groups
-                </ElemButton>
-              ) : (
-                <></>
-              )}
+        <div className="px-4 py-3 sm:px-6 lg:px-8">
+          {groups?.length != 0 && (
+            <div className="pb-2">
+              <h1 className="text-4xl font-medium">{selectedGroupTab.name}</h1>
             </div>
-          </div>
-        ) : (
-          <div className="px-8 pb-2">
-            <h1 className="text-4xl font-medium">{selectedGroupTab.name}</h1>
-          </div>
-        )}
+          )}
 
-        <div className="px-8 py-3">
-          <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-            {error ? (
-              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-                <div className="max-w-xl mx-auto">
-                  <h4 className="mt-5 text-3xl font-bold">
-                    Error loading groups
-                  </h4>
-                  <div className="mt-1 text-lg text-slate-600">
-                    Please check spelling, reset filters, or{' '}
-                    <button
-                      onClick={() =>
-                        showNewMessages(
-                          `Hi EdgeIn, I'd like to report an error on groups page`,
-                        )
-                      }
-                      className="inline underline decoration-primary-500 hover:text-primary-500"
-                    >
-                      <span>report error</span>
-                    </button>
-                    .
-                  </div>
+          {isLoading && !initialLoad ? (
+            <>
+              {tableLayout ? (
+                <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                  <PlaceholderTable />
                 </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <PlaceholderCompanyCard key={i} />
+                  ))}
+                </div>
+              )}
+            </>
+          ) : tableLayout && groups?.length != 0 ? (
+            <GroupsTable
+              groups={groups}
+              pageNumber={page}
+              shownItems={LIMIT}
+              totalItems={groups_aggregate}
+              onClickPrev={() => setPage(page - 1)}
+              onClickNext={() => setPage(page + 1)}
+            />
+          ) : groups?.length != 0 ? (
+            <>
+              <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                {groups?.map(group => {
+                  return (
+                    <ElemListCard
+                      key={group.id}
+                      selectedTab={selectedGroupTab}
+                      resource={{ ...group, resourceType: 'group' }}
+                      refetchList={refetch}
+                    />
+                  );
+                })}
               </div>
-            ) : isLoading && !initialLoad ? (
-              <>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <PlaceholderCompanyCard key={i} />
-                ))}
-              </>
-            ) : (
-              groups?.map(group => {
-                return (
-                  <ElemListCard
-                    key={group.id}
-                    selectedTab={selectedGroupTab}
-                    resource={{ ...group, resourceType: 'group' }}
-                    refetchList={refetch}
-                  />
-                );
-              })
-            )}
-          </div>
-
-          <Pagination
-            shownItems={groups?.length}
-            totalItems={groups_aggregate}
-            page={page}
-            itemsPerPage={LIMIT}
-            onClickPrev={() => setPage(page - 1)}
-            onClickNext={() => setPage(page + 1)}
-            onClickToPage={selectedPage => setPage(selectedPage)}
-          />
+              <Pagination
+                shownItems={groups?.length}
+                totalItems={groups_aggregate}
+                page={page}
+                itemsPerPage={LIMIT}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                onClickToPage={selectedPage => setPage(selectedPage)}
+              />
+            </>
+          ) : (
+            <GroupsNoResults
+              selectedTab={selectedGroupTab}
+              onChangeTab={setSelectedGroupTab}
+              onClickCreateGroup={onClickCreateGroup}
+            />
+          )}
         </div>
 
         <ElemUpgradeDialog
           isOpen={isOpenUpgradeDialog}
           onClose={onCloseUpgradeDialog}
         />
-
         <ElemCreateGroupDialog
           isOpen={isOpenCreateGroupDialog}
           onClose={onCloseCreateGroupDialog}
