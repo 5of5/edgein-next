@@ -1,6 +1,5 @@
 import { People } from '@/graphql/types';
 import { FC, useState } from 'react';
-import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
@@ -20,8 +19,6 @@ type Props = {
 };
 
 export const ElemPersonCard: FC<Props> = ({ person }) => {
-  const router = useRouter();
-
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const { user } = useUser();
@@ -83,15 +80,15 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
         <div className="w-full">
           <ElemLink
             href={`${ROUTES.PEOPLE}/${slug}`}
-            className="flex items-center gap-x-4 mb-4"
+            className="flex items-center mb-4 gap-x-4"
           >
             <ElemPhoto
               photo={picture}
-              wrapClass="flex items-center justify-center shrink-0 w-12  aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
+              wrapClass="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
               imgClass="object-fit max-w-full max-h-full"
               imgAlt={name}
-              placeholderClass="text-gray-500"
               placeholder="user"
+              placeholderClass="text-gray-300 w-full h-full"
             />
             <h3 className="font-medium truncate" title={name ? name : ''}>
               {name}
@@ -99,7 +96,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
           </ElemLink>
           <div>
             {currentJob && (
-              <div className="text-gray-500 text-sm">
+              <div className="text-sm text-gray-500">
                 <div>
                   {currentJob.title}
                   {currentJob.organization?.slug ? (
@@ -136,7 +133,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   </div>
                 )}
                 {currentJob.organization?.location_json && (
-                  <div className="flex gap-x-1 mt-2">
+                  <div className="flex mt-2 gap-x-1">
                     <IconLocation className="w-5 h-5" strokeWidth={1.5} />
                     <span className="leading-5">
                       {getFullAddress(currentJob.organization.location_json)}
@@ -162,7 +159,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
               <a href={`mailto:${personEmails[0]}`}>
                 <IconEmail
                   title="Email"
-                  className="h-5 w-5 shrink-0 text-gray-600"
+                  className="w-5 h-5 text-gray-600 shrink-0"
                 />
               </a>
             ) : personEmails.length > 0 ? (
@@ -171,7 +168,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   <button onClick={onOpenUpgradeDialog} className="block">
                     <IconEmail
                       title="Email"
-                      className="h-5 w-5 shrink-0 text-gray-400"
+                      className="w-5 h-5 text-gray-400 shrink-0"
                     />
                   </button>
                 </div>
@@ -189,7 +186,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   >
                     <IconLinkedIn
                       title="LinkedIn"
-                      className="h-5 w-5 shrink-0 text-gray-600"
+                      className="w-5 h-5 text-gray-600 shrink-0"
                     />
                   </ElemLink>
                 </div>
@@ -200,7 +197,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                   <button className="block" onClick={onOpenUpgradeDialog}>
                     <IconLinkedIn
                       title="LinkedIn"
-                      className="h-5 w-5 shrink-0 text-gray-400"
+                      className="w-5 h-5 text-gray-400 shrink-0"
                     />
                   </button>
                 </div>

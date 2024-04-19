@@ -39,7 +39,7 @@ export const ElemSignUpProfile: FC<Props> = ({
           imgClass="object-cover w-full h-full"
           imgAlt={person?.name}
           placeholder="user"
-          placeholderClass="text-slate-300"
+          placeholderClass="text-gray-300 w-full h-full"
         />
         <p className="mt-6 text-base text-slate-900">{person?.name}</p>
         <ul className="flex items-center gap-2 mt-3">

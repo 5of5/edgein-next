@@ -569,7 +569,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									imgClass="object-fit max-w-full max-h-full rounded-full"
 									imgAlt={person?.name}
 									placeholder="user"
-									placeholderClass="text-slate-300"
+									placeholderClass="text-gray-300"
 								/>
 								<span
 									className="w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0 bg-slate-200 hover:bg-slate-300"

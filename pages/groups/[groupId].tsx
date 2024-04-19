@@ -198,7 +198,7 @@ const Group: NextPage<Props> = (props: Props) => {
               <div className="bg-white shadow rounded-lg px-5 py-4">
                 <div className="p-12 text-center">
                   <IconLockClosed
-                    className="mx-auto h-12 w-12 text-slate-300"
+                    className="mx-auto h-12 w-12 text-gray-300"
                     title="Join Group"
                   />
                   <h3 className="mt-2 text-lg font-bold">Private Group</h3>

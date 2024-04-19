@@ -154,7 +154,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                       comment.created_by_user?.person?.name ||
                       note.created_by_user?.display_name
                     }
-                    placeholderClass="text-slate-300"
+                    placeholderClass="text-gray-300"
                   />
                 </ElemLink>
 

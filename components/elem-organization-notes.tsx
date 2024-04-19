@@ -7,7 +7,6 @@ import { ElemPhoto } from './elem-photo';
 import { useUser } from '@/context/user-context';
 import { IconPlus } from '@/components/icons';
 import ElemNoteCard from '@/components/group/elem-note-card';
-import { orderBy } from 'lodash';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemRequiredProfileDialog } from './elem-required-profile-dialog';
@@ -87,7 +86,7 @@ const ElemOrganizationNotes: FC<Props> = ({
           ))}
         </div>
       ) : (
-        <div className="border border-gray-300 rounded-lg px-5 py-4">
+        <div className="px-5 py-4 border border-gray-300 rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center space-x-1">
               <h2 className="text-lg font-medium">
@@ -99,17 +98,17 @@ const ElemOrganizationNotes: FC<Props> = ({
               <span>Create note</span>
             </ElemButton>
           </div>
-          <div className="mt-4 flex items-start gap-2 py-4">
+          <div className="flex items-start gap-2 py-4 mt-4">
             <ElemPhoto
               photo={user?.profilePicture || user?.person?.picture}
               wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
               imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
               imgAlt={user?.display_name}
               placeholder="user"
-              placeholderClass="text-slate-300"
+              placeholderClass="text-gray-300"
             />
             <div
-              className="w-full cursor-pointer px-4 py-2 border border-gray-300 rounded-full text-gray-500 text-sm hover:bg-gray-50"
+              className="w-full px-4 py-2 text-sm text-gray-500 border border-gray-300 rounded-full cursor-pointer hover:bg-gray-50"
               onClick={onOpenNoteForm}
             >
               Write a few sentences about {resourceName}...
@@ -117,7 +116,7 @@ const ElemOrganizationNotes: FC<Props> = ({
           </div>
 
           {notes?.length > 0 && (
-            <div className="mt-4 grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 mt-4">
               {notes.map(note => (
                 <ElemNoteCard
                   key={note.id}
