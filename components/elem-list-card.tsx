@@ -4,13 +4,13 @@ import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { getNameFromListName, getNameFromListMember } from '@/utils/lists';
-import { formatDateShown, truncateWords } from '@/utils';
+import { formatDateShown } from '@/utils';
 import { getListDisplayName } from '@/utils/lists';
 import {
   GetGroupsQuery,
   GetListsQuery,
-  List_Members,
-  User_Group_Members,
+  // List_Members,
+  // User_Group_Members,
 } from '@/graphql/types';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ROUTES } from '@/routes';
@@ -50,7 +50,9 @@ export const ElemListCard: FC<Props> = ({
 
   const name = isResourceList ? getListDisplayName(resource) : resource.name;
 
-  const totalItems = isResourceList ? resource.total_no_of_resources : null;
+  const totalItems = isResourceList
+    ? resource.total_no_of_resources
+    : resource.notes.length;
 
   const description = resource.description ? resource.description : null;
 
@@ -123,22 +125,30 @@ export const ElemListCard: FC<Props> = ({
 
   return (
     <div className="flex flex-col w-full p-4 mx-auto border border-gray-200 rounded-lg">
-      <div className="flex pb-2 space-x-1">
-        <div>
-          <ElemLink
-            href={resourceUrl}
-            className="font-medium leading-snug break-words line-clamp-2 hover:underline"
+      <div className="pb-2">
+        <ElemLink
+          href={resourceUrl}
+          className="font-medium leading-snug break-words line-clamp-2 hover:underline"
+        >
+          {name}{' '}
+          <ElemTooltip
+            content={`${totalItems} ${isResourceList ? 'Item' : 'Note'}${
+              totalItems && totalItems === 1 ? '' : 's'
+            }`}
+            direction="top"
+            mode="dark"
           >
-            {name}
-          </ElemLink>
-        </div>
-        {totalItems && <div className="text-gray-500">({totalItems})</div>}
+            <div className="inline text-gray-500">({totalItems})</div>
+          </ElemTooltip>
+        </ElemLink>
       </div>
 
       {description && (
         <ElemTooltip content={description} direction="top" mode="light">
-          <div className="mb-3 text-sm text-gray-500 line-clamp-2">
-            {description}
+          <div className="inline">
+            <div className="mb-3 text-sm text-gray-500 line-clamp-2">
+              {description}
+            </div>
           </div>
         </ElemTooltip>
       )}
@@ -207,7 +217,7 @@ export const ElemListCard: FC<Props> = ({
                 return (
                   <li key={member?.id}>
                     <ElemTooltip
-                      content={member && getNameFromListMember(member)}
+                      content={getNameFromListMember(member)}
                       mode="dark"
                       direction="top"
                       size="lg"

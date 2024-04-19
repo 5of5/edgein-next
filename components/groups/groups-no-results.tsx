@@ -1,42 +1,42 @@
-import { ListsTabItem } from '@/types/common';
+import { GroupsTabItem } from '@/types/common';
 import { FC } from 'react';
 import { ElemButton } from '../elem-button';
-import { IconListPlus, IconSearch, IconSidebarList } from '../icons';
+import { IconGroupPlus, IconSearch, IconSidebarGroups } from '../icons';
 
 type Props = {
-  selectedTab: ListsTabItem;
-  onChangeTab: (tab: ListsTabItem) => void;
-  onClickCreateList: () => void;
+  selectedTab: GroupsTabItem;
+  onChangeTab: (tab: GroupsTabItem) => void;
+  onClickCreateGroup: () => void;
 };
 
-export const ElemEmptyState: FC<Props> = ({
+export const GroupsNoResults: FC<Props> = ({
   selectedTab,
   onChangeTab,
-  onClickCreateList,
+  onClickCreateGroup,
 }) => {
   const heading = {
-    'my-lists': 'Create a list',
+    'my-groups': 'Create a group',
     discover: 'Discover',
-    following: 'Follow a list',
+    joined: 'Join a group',
   }[selectedTab.id];
 
   const caption = {
-    'my-lists':
-      'Lists help you track and follow companies, investors, and people of your interest. We will even keep you notified about all their updates.',
+    'my-groups':
+      'Groups allow you to collaborate on notes, share insights, and track leads with your team or other people.',
     discover:
-      'There are no public lists yet. If you create a new list and make it public, it will appear here.',
-    following: `You're not following any public lists yet. Start by browsing them and follow anything you find interesting.`,
+      'There are no public groups yet. If you create a new group and make it public, it will appear here.',
+    joined: `You have not joined any public groups yet. Start by browsing and follow anything you find interesting.`,
   }[selectedTab.id];
 
   return (
     <div className="flex items-center justify-center mx-auto min-h-[40vh]">
       <div className="w-full max-w-xl p-8 my-8 text-center bg-white border border-gray-200 rounded-2xl lg:text-left">
-        <IconSidebarList className="w-12 h-12 mx-auto text-gray-300 lg:mx-0" />
+        <IconSidebarGroups className="w-12 h-12 mx-auto text-gray-300 lg:mx-0" />
         <h1 className="mt-5 text-3xl font-medium tracking-tight font-display">
           {heading}
         </h1>
         <div className="mt-2 text-gray-500">{caption}</div>
-        {selectedTab.id === 'following' ? (
+        {selectedTab.id === 'joined' ? (
           <ElemButton
             btn="primary"
             size="sm"
@@ -49,17 +49,17 @@ export const ElemEmptyState: FC<Props> = ({
             className="mt-4"
           >
             <IconSearch className="w-5 h-5 mr-1" />
-            Discover New Lists
+            Discover New Groups
           </ElemButton>
         ) : (
           <ElemButton
             btn="primary"
             size="sm"
-            onClick={onClickCreateList}
+            onClick={onClickCreateGroup}
             className="mt-4"
           >
-            <IconListPlus className="w-5 h-5 mr-1" />
-            Create New List
+            <IconGroupPlus className="w-5 h-5 mr-1" />
+            Create New Group
           </ElemButton>
         )}
       </div>

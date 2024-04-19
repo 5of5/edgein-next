@@ -16,7 +16,6 @@ import {
 import { Pagination } from '@/components/pagination';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
-import { useIntercom } from 'react-use-intercom';
 import { ListsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { LISTS_TABS } from '@/utils/constants';
@@ -26,11 +25,11 @@ import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { ElemListCard } from '@/components/elem-list-card';
 import { CreateListDialog } from '@/components/my-list/create-list-dialog';
 import { ElemButton } from '@/components/elem-button';
-import { ElemEmptyState } from '@/components/lists/elem-empty-state';
 import { NextSeo } from 'next-seo';
 import { ListsTable } from '@/components/lists/elem-lists-table';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { IconGroup, IconTable } from '@/components/icons';
+import { ListsNoResults } from '@/components/lists/lists-no-results';
 
 type Props = {
   initialListsCount: number;
@@ -104,8 +103,6 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   const listsAggregate = initialLoad
     ? initialListsCount
     : listsData?.lists_aggregate?.aggregate?.count || 0;
-
-  const { showNewMessages } = useIntercom();
 
   const onOpenUpgradeDialog = () => {
     setIsOpenUpgradeDialog(true);
@@ -245,7 +242,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
               />
             </>
           ) : (
-            <ElemEmptyState
+            <ListsNoResults
               selectedTab={selectedListTab}
               onChangeTab={setSelectedListTab}
               onClickCreateList={onClickCreateList}
