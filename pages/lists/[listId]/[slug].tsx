@@ -384,9 +384,9 @@ const MyList: NextPage<Props> = (props: Props) => {
             <>
               <CompaniesList createdById={theList?.created_by_id} listId={theListId} listName={listName} />
 
-              <InvestorsList listId={theListId} listName={listName} />
+              <InvestorsList createdById={theList?.created_by_id} listId={theListId} listName={listName} />
 
-              <PeopleList listId={theListId} listName={listName} />
+              <PeopleList createdById={theList?.created_by_id} listId={theListId} listName={listName} />
             </>
           )}
 
