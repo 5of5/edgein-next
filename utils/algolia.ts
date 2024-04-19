@@ -243,7 +243,24 @@ export const syncPeople = async (params: SyncParams) => {
         people.objectID = people.id;
         delete people.id;
       }
+
       const peopleIndex = client.initIndex(index);
+
+      let currentIds: string[] = [];
+
+      await peopleIndex.browseObjects({
+        query: '',
+        batch: batch => {
+          const ids = batch.map((item: { objectID: string }) => item.objectID);
+          currentIds.push(...ids);
+        },
+      });
+
+      const newIds = new Set(
+        peopleList.map(({ objectID }: { objectID: string }) => objectID),
+      );
+      const idsToRemove = [...currentIds].filter(id => !newIds.has(id));
+
       await peopleIndex.saveObjects(peopleList, {
         autoGenerateObjectIDIfNotExist: true,
       });
@@ -253,13 +270,13 @@ export const syncPeople = async (params: SyncParams) => {
         'people',
         peopleLastSync?.value,
       );
-      peopleIndex.deleteObjects(
-        deletedPeople.map((item: any) => item.resource_id),
-      );
 
-      output[`peopleList_${key}`] =
-        peopleList.map((p: any) => `${p.id} ${p.name}`).length -
-        deletedPeople.length;
+      peopleIndex.deleteObjects([
+        ...deletedPeople.map((item: any) => item.resource_id),
+        ...idsToRemove,
+      ]);
+
+      output[`peopleList_${key}`] = newIds.size - deletedPeople.length;
 
       // update the last_sync date to current date
       await mutateForLastSync(key);
