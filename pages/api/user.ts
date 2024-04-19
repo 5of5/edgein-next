@@ -9,20 +9,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user = await CookieService.getUser(token);
 
     if (user?._iat && user?.email) {
-      if (new Date().getTime() > user._iat * 1000 + 1000 * 60 * 5) {
-        // is token older than 5 mins
-
-        const dbUser = await UserService.findOneUserByEmailForToken(
-          user?.email,
-        );
-        if (!dbUser || dbUser.active === false) {
-          return res.status(403).end();
-        }
-        const userToken = UserService.createToken(dbUser, false);
-        // Author a couple of cookies to persist a user's session
-        const token = await CookieService.createUserToken(userToken);
-        CookieService.setTokenCookie(res, token);
+      const dbUser = await UserService.findOneUserByEmailForToken(user?.email);
+      if (!dbUser || dbUser.active === false) {
+        return res.status(403).end();
       }
+      const userToken = UserService.createToken(dbUser, false);
+      // Author a couple of cookies to persist a user's session
+      const token = await CookieService.createUserToken(userToken);
+      CookieService.setTokenCookie(res, token);
+      user = await CookieService.getUser(token);
     }
 
     // now we have access to the data inside of user
