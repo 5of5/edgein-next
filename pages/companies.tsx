@@ -465,38 +465,48 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data: companies } = await runGraphQl<GetCompaniesQuery>(
-    GetCompaniesDocument,
-    {
-      offset: 0,
-      limit: 50,
-      where: {
-        _and: [
-          {
-            _or: [
-              {
-                _not: {
-                  status_tags: { _contains: 'Dead' },
-                },
+  const resp = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument, {
+    offset: 0,
+    limit: 50,
+    where: {
+      _and: [
+        {
+          _or: [
+            {
+              _not: {
+                status_tags: { _contains: 'Dead' },
               },
-              { status_tags: { _is_null: true } },
-            ],
-          },
-          { library: { _contains: 'Web3' } },
-        ],
-      },
-      orderBy: [{ name: Order_By.Asc }],
+            },
+            { status_tags: { _is_null: true } },
+          ],
+        },
+        { library: { _contains: 'Web3' } },
+      ],
     },
-  );
+    orderBy: [{ name: Order_By.Asc }],
+  });
 
-  return {
+  const response = {
     props: {
-      companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
-      initialCompanies: companies?.companies || [],
+      companiesCount: 0,
+      initialCompanies: [] as GetCompaniesQuery['companies'],
       companyStatusTags,
     },
     revalidate: 60 * 60 * 2,
   };
+
+  if (resp.errors) {
+    console.error(resp.errors);
+    return response;
+  }
+
+  const { data: companies } = resp;
+
+  response.props.companiesCount =
+    companies?.companies_aggregate?.aggregate?.count || 0;
+  response.props.initialCompanies = companies?.companies || [];
+
+  return response;
 };
 
 export default Companies;

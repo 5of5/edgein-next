@@ -3,10 +3,15 @@ import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
 import { useUser } from '@/context/user-context';
-import { getNameFromListName } from '@/utils/reaction';
-import { formatDateShown, truncateWords } from '@/utils';
+import { getNameFromListName, getNameFromListMember } from '@/utils/lists';
+import { formatDateShown } from '@/utils';
 import { getListDisplayName } from '@/utils/lists';
-import { GetGroupsQuery, GetListsQuery } from '@/graphql/types';
+import {
+  GetGroupsQuery,
+  GetListsQuery,
+  // List_Members,
+  // User_Group_Members,
+} from '@/graphql/types';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ROUTES } from '@/routes';
 import { ElemButton } from './elem-button';
@@ -45,7 +50,11 @@ export const ElemListCard: FC<Props> = ({
 
   const name = isResourceList ? getListDisplayName(resource) : resource.name;
 
-  const description = isResourceList ? name : resource.description;
+  const totalItems = isResourceList
+    ? resource.total_no_of_resources
+    : resource.notes.length;
+
+  const description = resource.description ? resource.description : null;
 
   const resourceUrl = isResourceList
     ? `${ROUTES.LISTS}/${resource.id}/${kebabCase(
@@ -114,51 +123,48 @@ export const ElemListCard: FC<Props> = ({
     }
   };
 
-  const ListItemName = (
-    <div className="inline-block">
-      <ElemLink
-        href={resourceUrl}
-        className="inline-block font-medium underline break-words line-clamp-2"
-      >
-        {name}
-      </ElemLink>
-    </div>
-  );
-
   return (
-    <div className="flex flex-col mx-auto w-full p-4 rounded-lg border border-gray-200 ">
-      <div>
-        {!isResourceList && description ? (
+    <div className="flex flex-col w-full p-4 mx-auto border border-gray-200 rounded-lg">
+      <div className="pb-2">
+        <ElemLink
+          href={resourceUrl}
+          className="font-medium leading-snug break-words line-clamp-2 hover:underline"
+        >
+          {name}{' '}
           <ElemTooltip
-            content={truncateWords(description)}
+            content={`${totalItems} ${isResourceList ? 'Item' : 'Note'}${
+              totalItems && totalItems === 1 ? '' : 's'
+            }`}
             direction="top"
-            mode="light"
+            mode="dark"
           >
-            {ListItemName}
+            <div className="inline text-gray-500">({totalItems})</div>
           </ElemTooltip>
-        ) : (
-          ListItemName
-        )}
+        </ElemLink>
       </div>
 
-      <div className="grow">
-        <div className="inline-block items-center text-gray-500 text-sm">
+      {description && (
+        <ElemTooltip content={description} direction="top" mode="light">
+          <div className="inline">
+            <div className="mb-3 text-sm text-gray-500 line-clamp-2">
+              {description}
+            </div>
+          </div>
+        </ElemTooltip>
+      )}
+
+      <div className="pt-2 border-t border-gray-200 grow">
+        <div className="items-center inline-block text-sm text-gray-500">
           {resource.public ? (
-            <ElemTooltip content="Public" direction="top" mode="light">
+            <ElemTooltip content="Public" direction="top" mode="dark">
               <div className="inline">
-                <IconGlobe
-                  className="inline-block w-4 h-4 shrink-0"
-                  title="Public"
-                />
+                <IconGlobe className="inline-block w-4 h-4 shrink-0" />
               </div>
             </ElemTooltip>
           ) : (
-            <ElemTooltip content="Private" direction="top" mode="light">
+            <ElemTooltip content="Private" direction="top" mode="dark">
               <div className="inline">
-                <IconLockClosed
-                  className="inline-block w-4 h-4 shrink-0"
-                  title="Private"
-                />
+                <IconLockClosed className="inline-block w-4 h-4 shrink-0" />
               </div>
             </ElemTooltip>
           )}
@@ -204,42 +210,53 @@ export const ElemListCard: FC<Props> = ({
           Updated {formatDateShown(resource.updated_at)}
         </p>
 
-        <div className="flex items-center mt-4 pl-1">
-          <ul className="flex -space-x-3 overflow-hidden">
-            {members.slice(0, 6).map(member => (
-              <li key={member.id}>
-                {member?.user?.person?.picture ? (
-                  <ElemPhoto
-                    photo={member?.user.person?.picture}
-                    wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                    imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                    imgAlt={member?.user.display_name}
-                  />
-                ) : (
-                  <div
-                    className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
-                    title={
-                      member?.user?.display_name
-                        ? member?.user?.display_name
-                        : ''
-                    }
-                  >
-                    {member?.user?.display_name?.charAt(0)}
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-          <ElemLink
-            href={resourceUrl}
-            className="font-medium text-sm text-gray-500 ml-1 hover:underline"
-          >
-            {members.length > 1
-              ? `${members.length} ${isResourceList ? 'Followers' : 'Members'}`
-              : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
-          </ElemLink>
-        </div>
+        {members && members.length > 0 && (
+          <div className="flex items-center pl-1 mt-4">
+            <ul className="flex -space-x-3 overflow-hidden">
+              {members?.slice(0, 6).map((member: any) => {
+                return (
+                  <li key={member?.id}>
+                    <ElemTooltip
+                      content={getNameFromListMember(member)}
+                      mode="dark"
+                      direction="top"
+                      size="lg"
+                    >
+                      {member?.user?.person?.picture ? (
+                        <div>
+                          <ElemPhoto
+                            photo={member?.user.person?.picture}
+                            wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                            imgAlt={getNameFromListMember(member)}
+                            placeholder="user"
+                            placeholderClass="text-gray-500"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">
+                          {getNameFromListMember(member).charAt(0)}
+                        </div>
+                      )}
+                    </ElemTooltip>
+                  </li>
+                );
+              })}
+            </ul>
+            <ElemLink
+              href={resourceUrl}
+              className="ml-1 text-sm font-medium text-gray-500 hover:underline"
+            >
+              {members.length > 1
+                ? `${members.length} ${
+                    isResourceList ? 'Followers' : 'Members'
+                  }`
+                : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}
+            </ElemLink>
+          </div>
+        )}
       </div>
+
       <div className="mt-4">
         {selectedTab.id === 'discover' ? (
           <ElemButton
@@ -247,7 +264,7 @@ export const ElemListCard: FC<Props> = ({
             btn="default"
             size="sm"
             loading={isFollowingListLoading || isJoiningGroupLoading}
-            className="w-full block rounded-md transition ease-in-out duration-150 group"
+            className="block w-full transition duration-150 ease-in-out rounded-md group"
           >
             {`${isResourceList ? 'Follow List' : 'Join Group'}`}
           </ElemButton>
@@ -256,7 +273,7 @@ export const ElemListCard: FC<Props> = ({
             href={resourceUrl}
             btn="default"
             size="sm"
-            className="w-full block rounded-md transition ease-in-out duration-150 group"
+            className="block w-full transition duration-150 ease-in-out rounded-md group"
           >
             {`View ${isResourceList ? 'List' : 'Group'}`}
           </ElemButton>

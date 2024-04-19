@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { GetFollowsByUserQuery } from '@/graphql/types';
-import { getNameFromListName } from '@/utils/reaction';
+import { getNameFromListName } from '@/utils/lists';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconX, IconListPlus, IconSpinner } from '@/components/icons';
@@ -165,7 +165,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
+            <div className="fixed inset-0 z-10 transition-opacity bg-black/20 backdrop-blur-sm" />
           </Transition.Child>
 
           <div className="fixed inset-0 z-[50] my-0 min-h-0 flex flex-col items-center justify-center">
@@ -178,15 +178,15 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+              <Dialog.Panel className="relative w-full max-w-sm mx-auto overflow-x-hidden overflow-y-auto bg-white rounded-lg shadow-2xl my-7 overscroll-y-none scrollbar-hide">
                 <div className="absolute top-1 right-1">
                   <button
                     onClick={onCloseSaveToListDialog}
                     type="button"
-                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
+                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/10 focus:bg-black/20"
                   >
                     <span className="sr-only">Close</span>
-                    <IconX className="h-6 w-6 text-white" />
+                    <IconX className="w-6 h-6 text-white" />
                   </button>
                 </div>
                 <div className="flex items-center justify-between px-3 py-1.5 from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
@@ -196,12 +196,12 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                 </div>
 
                 {listData.length === 0 && (
-                  <p className="p-3 text-gray-600 text-lg">
+                  <p className="p-3 text-lg text-gray-600">
                     Group organizations that matter to you in a list so you can
                     compare, sort, and more.
                   </p>
                 )}
-                <ul className="max-h-96 overflow-y-auto scrollbar-hide divide-y divide-slate-100">
+                <ul className="overflow-y-auto divide-y max-h-96 scrollbar-hide divide-slate-100">
                   {listData?.map(list => {
                     const selected = isSelected(list);
 
@@ -221,7 +221,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                 </ul>
 
                 {!showNew && listData.length > 0 && (
-                  <div className="flex border-t border-slate-300 p-3">
+                  <div className="flex p-3 border-t border-slate-300">
                     <div className="ml-auto">
                       <ElemButton btn="primary" onClick={onOpenNewListForm}>
                         <IconListPlus className="w-6 h-6 mr-1" />
@@ -232,7 +232,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                 )}
 
                 {(showNew || listData.length === 0) && (
-                  <div className="p-3 border-t border-slate-300 ease-in-out duration-300">
+                  <div className="p-3 duration-300 ease-in-out border-t border-slate-300">
                     <label>
                       <InputText
                         label="Name"
@@ -249,7 +249,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                         }`}
                       />
                       {error === '' ? null : (
-                        <div className="mt-2 font-bold text-sm text-rose-400">
+                        <div className="mt-2 text-sm font-bold text-rose-400">
                           {error}
                         </div>
                       )}
@@ -268,8 +268,8 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                   </div>
                 )}
                 {isLoading && (
-                  <div className="absolute top-0 left-0 w-full h-full bg-slate-200 bg-opacity-60 flex justify-center items-center">
-                    <IconSpinner className="animate-spin h-8 w-8" />
+                  <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-slate-200 bg-opacity-60">
+                    <IconSpinner className="w-8 h-8 animate-spin" />
                   </div>
                 )}
               </Dialog.Panel>

@@ -10,7 +10,7 @@ export const DashboardFooter: FC<PropsWithChildren<Props>> = ({
   className = '',
 }) => {
   return (
-    <footer className={`px-4 sm:px-6 md:px-8 ${className}`}>
+    <footer className={`px-4 sm:px-6 lg:px-8 ${className}`}>
       <div className="justify-between py-6 my-12 border-t border-dark-100 sm:flex">
         <div className="mb-6 text-sm text-gray-500 sm:mb-0 sm:flex sm:items-start">
           <div className="mb-2 sm:mb-0">

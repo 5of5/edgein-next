@@ -22,7 +22,6 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
   const [unsuccessMessage, setUnsuccessMessage] = useState('');
 
   const { isFetching: isCheckingExistedEmail, refetch: checkExistedEmail } =
@@ -74,9 +73,10 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   );
 
   const handleCheckExistedEmail = () => {
-    validateEmail(email);
+    const emailValidationError = validateEmail(email);
 
-    if (emailError || !email) {
+    if (emailValidationError || !email) {
+      setEmailError(emailValidationError);
       return;
     }
 
@@ -84,36 +84,23 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   };
 
   const validateEmail = (value: string) => {
-    if (validator.isEmail(value)) {
-      setEmailError('');
-    } else {
-      setEmailError('Enter valid email');
+    let emailError = '';
+    if (!validator.isEmail(value)) {
+      emailError = 'Enter valid email';
     }
-  };
-
-  const validatePassword = (value: string) => {
-    if (
-      validator.isStrongPassword(value, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      setPasswordError('');
-    } else {
-      setPasswordError('Invalid password');
-    }
+    return emailError;
   };
 
   const handleLogin = () => {
-    validateEmail(email);
-    validatePassword(password);
+    const emailValidationError = validateEmail(email);
 
-    if (emailError || passwordError || !email || !password) {
+    if (emailValidationError || !email || !password) {
+      setEmailError(emailValidationError);
       return;
     }
+
+    setEmailError('');
+    setUnsuccessMessage('');
 
     login();
   };
@@ -190,17 +177,8 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                     placeholder="********"
                     value={password}
                     onChange={event => setPassword(event?.target.value)}
-                    className={`${
-                      passwordError === ''
-                        ? 'ring-1 ring-slate-200'
-                        : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                    } !rounded-2xl`}
+                    className={`ring-1 ring-slate-200 !rounded-2xl`}
                   />
-                  {passwordError && (
-                    <div className="mt-1 text-xs text-rose-600">
-                      {passwordError}
-                    </div>
-                  )}
                 </label>
               )}
 
@@ -215,7 +193,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                 className="w-full !mt-8"
                 btn="primary"
                 size="md"
-                disabled={!email}
+                disabled={!email || (isExistedEmail && !password)}
                 loading={isCheckingExistedEmail || isLoginLoading}
               >
                 {isExistedEmail ? 'Log in' : 'Continue with email'}

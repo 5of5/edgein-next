@@ -1766,8 +1766,9 @@ export const leadSegmentationStatusChoices = [
 
 export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
   'edgein.io',
-  'techlist.com',
-  'sudolabs.io',
+  'wayneandreed.com',
+  // 'techlist.com',
+  // 'sudolabs.io',
 ];
 
 export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
@@ -1869,3 +1870,11 @@ export const AUTO_GENERATED_LIST_MAXIMUM_INVESTORS = 10;
 export const AUTO_GENERATED_LIST_MAXIMUM_PEOPLE = 10;
 
 export const LOCAL_STORAGE_SIDEBAR_BANNER_KEY = 'sidebar_banner';
+
+export const PASSWORD_VALIDATION = {
+  minLength: 8,
+  minLowercase: 1,
+  minUppercase: 1,
+  minNumbers: 1,
+  minSymbols: 1,
+};
