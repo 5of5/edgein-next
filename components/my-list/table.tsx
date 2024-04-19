@@ -24,6 +24,7 @@ import { ElemButton } from '@/components/elem-button';
 import { useCheckboxes } from './indeterminate-checkbox';
 import { convertToInternationalCurrencySystem } from '@/utils';
 import { useUser } from '@/context/user-context';
+import { PluginHook } from 'react-table';
 
 type Props = {
   listName: string | null;
@@ -42,6 +43,7 @@ type Props = {
   onRefetchData: () => void;
   onPreviousPage: () => void;
   onNextPage: () => void;
+  disabledCheckbox?: boolean;
 };
 
 export const Table: FC<Props> = ({
@@ -61,6 +63,7 @@ export const Table: FC<Props> = ({
   onRefetchData,
   onPreviousPage,
   onNextPage,
+  disabledCheckbox = false,
 }) => {
   const { refreshProfile } = useUser();
 
@@ -99,6 +102,21 @@ export const Table: FC<Props> = ({
     [],
   );
 
+  const hooksUseTable = useMemo(() => {
+    const hooks: PluginHook<any>[] = [
+      useGlobalFilter,
+      useSortBy,
+      useRowSelect,
+      useResizeColumns,
+    ];
+
+    if (!disabledCheckbox) {
+      hooks.push(useCheckboxes);
+    }
+
+    return hooks;
+  }, [disabledCheckbox]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -126,11 +144,7 @@ export const Table: FC<Props> = ({
       autoResetHiddenColumns: false,
       autoResetResize: false,
     },
-    useGlobalFilter,
-    useSortBy,
-    useRowSelect,
-    useResizeColumns,
-    useCheckboxes,
+    ...hooksUseTable,
   );
 
   const handleRemove = async () => {
