@@ -319,6 +319,8 @@ const Event: NextPage<Props> = props => {
                           wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
                           imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
                           imgAlt={attendee.person?.name}
+                          placeholder="user"
+                          placeholderClass="text-gray-300 w-full h-full"
                         />
                       ) : (
                         <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">

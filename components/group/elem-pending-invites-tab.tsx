@@ -70,7 +70,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
                   wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
                   imgClass="object-contain w-full h-full border border-slate-100 "
                   placeholder="user"
-                  placeholderClass="text-slate-300"
+                  placeholderClass="text-gray-300"
                   imgAlt={invite.email}
                 />
 

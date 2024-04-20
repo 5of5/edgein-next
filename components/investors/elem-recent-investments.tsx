@@ -92,7 +92,7 @@ export const ElemRecentInvestments: FC<Props> = ({
                         wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-white rounded-lg shadow"
                         imgClass="object-contain w-full h-full"
                         imgAlt={investor.name}
-                        placeholderClass="text-slate-300"
+                        placeholderClass="text-gray-300"
                       />
                       <div className="flex items-center justify-center pl-2 md:overflow-hidden">
                         <h3 className="inline min-w-0 max-w-[16rem] text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">

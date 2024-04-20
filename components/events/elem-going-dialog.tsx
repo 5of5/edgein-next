@@ -79,7 +79,7 @@ export const ElemGoingDialog: React.FC<Props> = ({
                                 imgClass="object-fit max-w-full max-h-full"
                                 photo={attendee.person?.picture}
                                 placeholder="user2"
-                                placeholderClass="text-slate-300"
+                                placeholderClass="text-gray-300"
                                 imgAlt={attendee.person?.name}
                               />
                             ) : (

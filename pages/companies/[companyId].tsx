@@ -219,7 +219,8 @@ const Company: NextPage<Props> = (props: Props) => {
                 wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden"
                 imgClass="object-contain w-full h-full"
                 imgAlt={company.name}
-                placeholderClass="text-slate-300"
+                placeholder="company"
+                placeholderClass="text-gray-300 w-full h-full m-12"
               />
             </div>
             <div className="w-full col-span-5 mt-7 lg:mt-0">
@@ -261,7 +262,7 @@ const Company: NextPage<Props> = (props: Props) => {
                       wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border border-gray-200"
                       imgClass="object-contain w-full h-full"
                       imgAlt={parentOrganization?.name}
-                      placeholderClass="text-slate-300"
+                      placeholderClass="text-gray-300"
                     />
                     <h2 className="inline leading-tight transition-all border-b border-primary-500 group-hover:border-b-2 group-hover:text-primary-500">
                       {parentOrganization?.name}

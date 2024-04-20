@@ -26,7 +26,7 @@ export const ElemJobsList: FC<Props> = ({
 
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
-      <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>
+      <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
 
       <div className="px-4 divide-y divide-gray-300">
         {!jobs || jobs.length === 0 ? (
@@ -73,18 +73,18 @@ export const ElemJobsList: FC<Props> = ({
                 wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={organization?.name}
-                placeholderClass="p-1 text-gray-300"
                 placeholder="company"
+                placeholderClass="text-gray-300 w-full h-full m-1"
               />
             );
 
             return (
-              <div className="flex space-x-4 py-4" key={index}>
+              <div className="flex py-4 space-x-4" key={index}>
                 {slug ? <ElemLink href={slug}>{logo}</ElemLink> : logo}
 
                 <div>
                   <h3 className="font-medium">{job.title}</h3>
-                  <div className="text-gray-500 text-sm">
+                  <div className="text-sm text-gray-500">
                     {slug ? (
                       <ElemLink
                         href={slug}
