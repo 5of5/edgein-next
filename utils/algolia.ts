@@ -273,7 +273,7 @@ export const syncPeople = async (params: SyncParams) => {
 
       peopleIndex.deleteObjects([
         ...deletedPeople.map((item: any) => item.resource_id),
-        ...idsToRemove,
+        /*  ...idsToRemove, */
       ]);
 
       output[`peopleList_${key}`] = newIds.size - deletedPeople.length;
