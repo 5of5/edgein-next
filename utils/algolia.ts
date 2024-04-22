@@ -57,7 +57,7 @@ const queryForVcFirmsList = async (date: any, library: Library) => {
 const queryForPeopleList = async (date: any, library: Library) => {
   const data = await query<GetPeopleByDateQuery>({
     query: GetPeopleByDateDocument,
-    variables: { date, library },
+    variables: { library },
   });
   return data.data.people;
 };
