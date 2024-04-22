@@ -152,6 +152,28 @@ export class AuthService {
     return this.management.updateUser({ id: userId }, { password });
   }
 
+  public async validateOldPassword(
+    email: string,
+    oldPassword: string,
+  ): Promise<boolean> {
+    try {
+      await this.auth.passwordGrant({
+        username: email,
+        password: oldPassword,
+        realm: this.connection,
+      });
+      return true;
+    } catch (error: any) {
+      const err = JSON.parse(error?.message || '{}');
+      throw {
+        message:
+          err.error === 'too_many_attemps'
+            ? "Your account has been blocked after multiple consecutive attempts. We've sent you an email with instructions on how to unblock it."
+            : 'Invalid old password.',
+      };
+    }
+  }
+
   public signIn({
     email,
     password,

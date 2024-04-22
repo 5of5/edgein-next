@@ -24,6 +24,7 @@ import { runGraphQl } from '@/utils';
 export type NewPasswordForm = {
   newPassword?: string;
   confirmPassword?: string;
+  oldPassword?: string;
 };
 
 type Props = {
@@ -48,10 +49,12 @@ export default function Account({ userProfile }: Props) {
   const [values, setValues] = useState<NewPasswordForm>({
     newPassword: '',
     confirmPassword: '',
+    oldPassword: '',
   });
   const [errors, setErrors] = useState<NewPasswordForm>({
     newPassword: '',
     confirmPassword: '',
+    oldPassword: '',
   });
 
   const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
@@ -85,12 +88,21 @@ export default function Account({ userProfile }: Props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          oldPassword: values.oldPassword,
           password: values.newPassword,
         }),
       });
-      setShowPasswordForm(false);
-      setValues({});
-      toast('Password updated', 'info');
+
+      const resp = await response.json();
+
+      if (response.status === 400) {
+        setErrors({ oldPassword: resp.error.message });
+        toast('Something went wrong.', 'error');
+      } else {
+        setShowPasswordForm(false);
+        setValues({});
+        toast('Password updated', 'info');
+      }
     } catch (e) {
       console.log(e);
     }
@@ -135,7 +147,11 @@ export default function Account({ userProfile }: Props) {
     event.preventDefault();
     event.stopPropagation();
 
-    if (values.newPassword === '' || values.confirmPassword === '') {
+    if (
+      values.newPassword === '' ||
+      values.confirmPassword === '' ||
+      values.oldPassword === ''
+    ) {
       toast('Password fields cannot be empty', 'error');
       return;
     }
@@ -252,6 +268,27 @@ export default function Account({ userProfile }: Props) {
                 </p>
               ) : (
                 <div className="flex flex-col max-w-sm space-y-4 text-sm">
+                  <label>
+                    <span className="text-sm font-medium">Old password</span>
+                    <InputText
+                      name="oldPassword"
+                      type="password"
+                      onChange={handleChangeValue}
+                      value={values.oldPassword}
+                      className={`${
+                        errors.oldPassword
+                          ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                          : 'ring-1 ring-slate-200'
+                      } !rounded-2xl`}
+                    />
+
+                    {errors.oldPassword && (
+                      <div className="mt-1 text-xs text-rose-600">
+                        {errors.oldPassword}
+                      </div>
+                    )}
+                  </label>
+
                   <label>
                     <span className="text-sm font-medium">New password</span>
                     <InputText

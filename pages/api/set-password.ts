@@ -8,7 +8,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
 
   const password = req.body.password;
-  if (!password) return res.status(404).send('Invalid request');
+  const oldPassword = req.body.oldPassword;
+
+  if (!password || !oldPassword) return res.status(404).send('Invalid request');
+
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
@@ -19,12 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let result;
   try {
+    await authService.validateOldPassword(user.email, oldPassword);
     result = await authService.setPassword({
       password,
       userId: AuthService.auth0UserId(user.auth0_user_pass_id),
     });
   } catch (ex: any) {
-    return res.status(404).send(ex.message);
+    return res.status(400).send({ error: { message: ex.message } });
   }
 
   res.send({ success: true, result });
