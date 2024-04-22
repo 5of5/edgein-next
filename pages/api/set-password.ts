@@ -28,7 +28,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       userId: AuthService.auth0UserId(user.auth0_user_pass_id),
     });
   } catch (ex: any) {
-    return res.status(400).send({ error: { message: ex.message } });
+    return res
+      .status(ex.status || 404)
+      .send({ error: { message: ex.message } });
   }
 
   res.send({ success: true, result });

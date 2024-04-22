@@ -166,6 +166,7 @@ export class AuthService {
     } catch (error: any) {
       const err = JSON.parse(error?.message || '{}');
       throw {
+        status: 400,
         message:
           err.error === 'too_many_attemps'
             ? "Your account has been blocked after multiple consecutive attempts. We've sent you an email with instructions on how to unblock it."
