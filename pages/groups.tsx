@@ -182,7 +182,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
               )}
           </nav>
           <ElemDropdown
-            buttonClass="mt-4"
+            buttonClass="mt-4 sm:mt-0"
             //panelClass="w-full"
             ButtonIcon={tableLayout ? IconTable : IconGroup}
             items={layoutItems}

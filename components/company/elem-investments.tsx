@@ -115,7 +115,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
                           imgClass="object-fit max-w-full max-h-full"
                           imgAlt={investment.vc_firm.name}
-                          placeholderClass="text-slate-300"
+                          placeholderClass="text-gray-300"
                         />
                         <span className="line-clamp-2 font-medium">
                           {investment.vc_firm.name}
@@ -135,7 +135,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           imgClass="object-cover w-12 h-12"
                           imgAlt={investment.person.name}
                           placeholder="user"
-                          placeholderClass="text-slate-300"
+                          placeholderClass="text-gray-300"
                         />
                         <span className="line-clamp-2 font-medium">
                           {investment.person.name}
@@ -163,7 +163,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-gray-300 rounded-lg overflow-hidden"
                           imgClass="object-fit max-w-full max-h-full"
                           imgAlt={investment.vc_firm.name}
-                          placeholderClass="text-slate-300"
+                          placeholderClass="text-gray-300"
                         />
                         <span className="line-clamp-2 font-medium">
                           {investment.vc_firm.name}
@@ -192,7 +192,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           imgClass="object-cover w-12 h-12"
                           imgAlt={investment.person.name}
                           placeholder="user"
-                          placeholderClass="text-slate-300"
+                          placeholderClass="text-gray-300"
                         />
                         <span className="line-clamp-2 font-medium">
                           {investment.person.name}

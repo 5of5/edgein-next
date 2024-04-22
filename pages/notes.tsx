@@ -85,7 +85,7 @@ const Notes: FC<Props> = () => {
           <div className="max-w-2xl bg-white border border-gray-300 rounded-lg px-5 py-4">
             <div className="w-full p-12 text-center">
               <IconDocumentDownload
-                className="mx-auto h-12 w-12 text-slate-300"
+                className="mx-auto h-12 w-12 text-gray-300"
                 title="notes"
               />
               <h3 className="mt-2 text-lg font-bold">No notes to show</h3>

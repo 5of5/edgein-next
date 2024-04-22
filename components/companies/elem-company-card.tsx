@@ -1,12 +1,9 @@
 import { Companies } from '@/graphql/types';
-import { FC, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { FC } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
-import { ElemReactions } from '@/components/elem-reactions';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemTooltip } from '@/components/elem-tooltip';
-import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import {
   IconGlobe,
   IconLinkedIn,
@@ -15,7 +12,6 @@ import {
   IconDiscord,
   IconLocation,
 } from '@/components/icons';
-import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { isEmpty, values } from 'lodash';
 import { getFullAddress } from '@/utils/helpers';
@@ -36,20 +32,6 @@ type Props = {
 };
 
 export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
-  const router = useRouter();
-
-  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-
-  const { user } = useUser();
-
-  const userCanViewLinkedIn = user?.entitlements.viewEmails
-    ? user?.entitlements.viewEmails
-    : false;
-
-  const onOpenUpgradeDialog = () => setIsOpenUpgradeDialog(true);
-
-  const onCloseUpgradeDialog = () => setIsOpenUpgradeDialog(false);
-
   const {
     id,
     slug,
@@ -82,20 +64,21 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
       <div className="flex flex-col justify-between h-full">
         <div>
           <ElemLink href={`${ROUTES.COMPANIES}/${slug}`}>
-            <div className="flex shrink-0 w-full items-center gap-4">
+            <div className="flex items-center w-full gap-4 shrink-0">
               <ElemPhoto
                 photo={logo}
                 wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={name}
-                placeholderClass="text-slate-300"
+                placeholder="company"
+                placeholderClass="text-gray-300 w-full h-full m-4"
               />
               <ElemTooltip content={name} mode="light">
                 <h3 className="text-lg font-medium truncate">{name}</h3>
               </ElemTooltip>
               {coin && (
                 <ElemTooltip content={`Token`} mode="light" className="">
-                  <span className="uppercase ml-1">{coin.ticker}</span>
+                  <span className="ml-1 uppercase">{coin.ticker}</span>
                 </ElemTooltip>
               )}
             </div>
@@ -156,7 +139,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
             </div>
 
             {type === 'full' && overview && (
-              <div className="mt-4 text-sm line-clamp-3 text-gray-500">
+              <div className="mt-4 text-sm text-gray-500 line-clamp-3">
                 {overview}
               </div>
             )}
@@ -167,9 +150,9 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
               <div className="flex pt-1.5 items-center">
                 <IconLocation
                   title={getFullAddress(location_json)}
-                  className="h-3 w-3 shrink-0 self-start mt-1"
+                  className="self-start w-3 h-3 mt-1 shrink-0"
                 />
-                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
+                <span className="ml-1 text-sm text-gray-500 break-words line-clamp-3">
                   {getFullAddress(location_json)}
                 </span>
               </div>
@@ -224,10 +207,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
           />
         </div>
       </div>
-      <ElemUpgradeDialog
-        isOpen={isOpenUpgradeDialog}
-        onClose={onCloseUpgradeDialog}
-      />
     </div>
   );
 };

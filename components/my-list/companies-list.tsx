@@ -17,15 +17,19 @@ import { ElemTags } from '@/components/elem-tags';
 import { ElemPillsPeople } from '@/components/elem-pills-people';
 import { ElemTooltip } from '../elem-tooltip';
 import { ROUTES } from '@/routes';
+import { useAuth } from '@/hooks/use-auth';
 
 type Props = {
   listId: number;
   listName: string | null;
+  createdById: number;
 };
 
-export const CompaniesList: FC<Props> = ({ listId, listName }) => {
+export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
   const [pageIndex, setPageIndex] = useState(0);
   const [query, setQuery] = useState('');
+  const { user } = useAuth();
+
   const limit = 10;
   const {
     data: companiesData,
@@ -43,6 +47,8 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
       refetchOnWindowFocus: false,
     },
   );
+
+  const isCreatedByUser = createdById === user?.id;
 
   const companies = companiesData?.follows_companies;
 
@@ -393,6 +399,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName }) => {
 
   return (
     <Table
+      disabledCheckbox={!isCreatedByUser}
       listName={listName}
       resourceType="companies"
       columns={columns}

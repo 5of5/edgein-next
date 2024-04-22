@@ -161,10 +161,11 @@ const VCFirm: NextPage<Props> = props => {
             <div className="col-span-3">
               <ElemPhoto
                 photo={vcfirm.logo}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg border border-black/10"
+                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden"
                 imgClass="object-contain w-full h-full"
                 imgAlt={vcfirm.name}
-                placeholderClass="text-slate-300"
+                placeholder="company"
+                placeholderClass="text-gray-300 w-full h-full m-12"
               />
             </div>
 
@@ -193,7 +194,7 @@ const VCFirm: NextPage<Props> = props => {
                       wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
                       imgClass="object-contain w-full h-full"
                       imgAlt={parentOrganization?.name}
-                      placeholderClass="text-slate-300"
+                      placeholderClass="text-gray-300"
                     />
                     <h2 className="inline leading-tight transition-all border-b border-primary-500 group-hover:border-b-2 group-hover:text-primary-500">
                       {parentOrganization?.name}

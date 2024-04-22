@@ -120,7 +120,7 @@ const ElemMemberTab: React.FC<Props> = ({
                   imgClass="object-contain w-full h-full border border-slate-100 "
                   photo={member.user?.person?.picture}
                   placeholder="user2"
-                  placeholderClass="text-slate-300"
+                  placeholderClass="text-gray-300"
                   imgAlt={member.user?.display_name}
                 />
               ) : (

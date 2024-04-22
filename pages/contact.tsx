@@ -63,7 +63,7 @@ const Contact: NextPage = () => {
             <div className="rounded-2xl bg-white p-6 relative z-10">
               {formSent ? (
                 <div className="flex flex-col items-center justify-center sm:h-full">
-                  <IconPaperAirplane className="mx-auto h-12 w-12 text-slate-300" />
+                  <IconPaperAirplane className="mx-auto h-12 w-12 text-gray-300" />
                   <h2 className="text-2xl font-bold text-center mt-5 lg:text-3xl ">
                     Message Sent!
                   </h2>

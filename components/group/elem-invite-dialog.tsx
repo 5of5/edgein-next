@@ -209,7 +209,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                   <>
                     <div className="w-full text-center">
                       <IconPaperAirplane
-                        className="mx-auto h-12 w-12 text-slate-300"
+                        className="mx-auto h-12 w-12 text-gray-300"
                         title="Invitation Sent"
                       />
                       <h3 className="mt-2 text-lg font-bold">
@@ -316,7 +316,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                                       imgClass="object-cover rounded-full border border-slate-100"
                                       photo={item.person.picture}
                                       placeholder="user2"
-                                      placeholderClass="text-slate-300"
+                                      placeholderClass="text-gray-300"
                                       imgAlt={item.person.name}
                                     />
                                   ) : (

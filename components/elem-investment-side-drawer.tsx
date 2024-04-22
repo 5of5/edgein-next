@@ -239,7 +239,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                             : {}
                         }
                         placeholder=""
-                        className="max-w-sm placeholder:text-slate-300"
+                        className="max-w-sm placeholder:text-gray-300"
                       />
                       {errorsRounds.round && (
                         <p className="text-red-500 text-xs italic mt-2">

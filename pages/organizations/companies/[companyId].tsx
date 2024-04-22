@@ -262,7 +262,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 <ElemButton
                   onClick={onCancelCompanyEdits}
                   btn="transparent"
-                  className="text-slate-300"
+                  className="text-gray-300"
                 >
                   Cancel
                 </ElemButton>
@@ -372,7 +372,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     value={companyEditable.name ? companyEditable.name : ''}
                     name="Name"
                     placeholder="Chia"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.name && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -400,7 +400,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                       companyEditable.overview ? companyEditable.overview : ''
                     }
                     name="Overview"
-                    className="placeholder:text-slate-300 w-100 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-100 text-slate-600 text-base"
                   />
                   {errors.overview && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -554,7 +554,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     name=""
                     placeholder="San Francisco"
                     label="City"
-                    className="placeholder:text-slate-300 mb-5 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 mb-5 text-slate-600 text-base"
                   />
                   <InputText
                     onChange={e => {
@@ -577,7 +577,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     name=""
                     placeholder="United State USA"
                     label="Country"
-                    className="placeholder:text-slate-300 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 text-slate-600 text-base"
                   />
                 </div>
               </GridTwelve>
@@ -603,7 +603,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     name=""
                     type="number"
                     placeholder="745"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                 </div>
               </GridTwelve>
@@ -627,7 +627,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.white-paper.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.white_paper && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -655,7 +655,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.website.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.website && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -685,7 +685,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://linkedin.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.company_linkedin && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -711,7 +711,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     value={companyEditable.github ? companyEditable.github : ''}
                     name=""
                     placeholder="https://github.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.github && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -739,7 +739,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.twitter.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.twitter && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -767,7 +767,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.discord.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.discord && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -795,7 +795,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.glassdoor.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.glassdoor && (
                     <p className="text-red-500 text-xs italic mt-2">
@@ -825,7 +825,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="htpps://www.careers.com"
-                    className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
+                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
                   />
                   {errors.careers_page && (
                     <p className="text-red-500 text-xs italic mt-2">

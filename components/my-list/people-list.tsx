@@ -6,14 +6,17 @@ import { TableEmptyCell } from './table-empty-cell';
 import { PlaceholderTable } from '../placeholders';
 import { Table } from './table';
 import { ROUTES } from '@/routes';
+import { useAuth } from '@/hooks/use-auth';
 
 type Props = {
   listId: number;
   listName: string | null;
+  createdById: number;
 };
 
-export const PeopleList: FC<Props> = ({ listId, listName }) => {
+export const PeopleList: FC<Props> = ({ listId, listName, createdById }) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const { user } = useAuth();
   const [query, setQuery] = useState('');
   const limit = 10;
   const {
@@ -32,6 +35,8 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
       refetchOnWindowFocus: false,
     },
   );
+
+  const isCreatedByUser = createdById === user?.id;
 
   const people = listPeople?.follows_people;
 
@@ -201,6 +206,7 @@ export const PeopleList: FC<Props> = ({ listId, listName }) => {
 
   return (
     <Table
+      disabledCheckbox={!isCreatedByUser}
       listName={listName}
       resourceType="people"
       columns={columns}
