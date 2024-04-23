@@ -275,7 +275,8 @@ export const syncPeople = async (params: SyncParams) => {
         ...draftIdsToRemove,
       ]);
 
-      output[`peopleList_${key}`] = peopleList.length - deletedPeople.length - draftIdsToRemove.length;
+      output[`peopleList_${key}`] =
+        peopleList.length - deletedPeople.length - draftIdsToRemove.length;
 
       // update the last_sync date to current date
       await mutateForLastSync(key);
