@@ -4,6 +4,8 @@ import {
   GetCompaniesByDateQuery,
   GetDeleteDataActionsDocument,
   GetDeleteDataActionsQuery,
+  GetDraftPeopleDocument,
+  GetDraftPeopleQuery,
   GetEventsByDateDocument,
   GetEventsByDateQuery,
   GetLastSyncDocument,
@@ -57,7 +59,15 @@ const queryForVcFirmsList = async (date: any, library: Library) => {
 const queryForPeopleList = async (date: any, library: Library) => {
   const data = await query<GetPeopleByDateQuery>({
     query: GetPeopleByDateDocument,
-    variables: { library },
+    variables: { date, library },
+  });
+  return data.data.people;
+};
+
+const queryForDraftPeopleList = async (date: any, library: Library) => {
+  const data = await query<GetDraftPeopleQuery>({
+    query: GetDraftPeopleDocument,
+    variables: { date, library },
   });
   return data.data.people;
 };
@@ -236,6 +246,10 @@ export const syncPeople = async (params: SyncParams) => {
         library,
       );
 
+      const draftIdsToRemove = (
+        await queryForDraftPeopleList(peopleLastSync.value, library)
+      )?.map(({ id }) => id);
+
       for (const people of peopleList) {
         if (people.picture) {
           people.picture = people.picture.url;
@@ -245,21 +259,6 @@ export const syncPeople = async (params: SyncParams) => {
       }
 
       const peopleIndex = client.initIndex(index);
-
-      let currentIds: string[] = [];
-
-      await peopleIndex.browseObjects({
-        query: '',
-        batch: batch => {
-          const ids = batch.map((item: { objectID: string }) => item.objectID);
-          currentIds.push(...ids);
-        },
-      });
-
-      const newIds = new Set(
-        peopleList.map(({ objectID }: { objectID: string }) => objectID),
-      );
-      const idsToRemove = [...currentIds].filter(id => !newIds.has(id));
 
       await peopleIndex.saveObjects(peopleList, {
         autoGenerateObjectIDIfNotExist: true,
@@ -273,10 +272,10 @@ export const syncPeople = async (params: SyncParams) => {
 
       peopleIndex.deleteObjects([
         ...deletedPeople.map((item: any) => item.resource_id),
-        /*  ...idsToRemove, */
+        ...draftIdsToRemove,
       ]);
 
-      output[`peopleList_${key}`] = newIds.size - deletedPeople.length;
+      output[`peopleList_${key}`] = peopleList.length - deletedPeople.length - draftIdsToRemove.length;
 
       // update the last_sync date to current date
       await mutateForLastSync(key);

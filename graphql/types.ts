@@ -30408,6 +30408,14 @@ export type GetPeopleByDateQueryVariables = Exact<{
 
 export type GetPeopleByDateQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, work_email: string | null, personal_email: string | null, picture: any | null, slug: string }> };
 
+export type GetDraftPeopleQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type GetDraftPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number }> };
+
 export type UpdatePeopleByPkMutationVariables = Exact<{
   set: InputMaybe<People_Set_Input>;
   id: Scalars['Int'];
@@ -35272,7 +35280,7 @@ useSearchPeopleQuery.fetcher = (variables?: SearchPeopleQueryVariables, options?
 export const GetPeopleByDateDocument = `
     query GetPeopleByDate($date: timestamptz, $library: jsonb) {
   people(
-    where: {_and: [{status: {_eq: "published"}}, {library: {_contains: $library}}]}
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
   ) {
     id
     name
@@ -35302,6 +35310,34 @@ useGetPeopleByDateQuery.getKey = (variables?: GetPeopleByDateQueryVariables) => 
 ;
 
 useGetPeopleByDateQuery.fetcher = (variables?: GetPeopleByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByDateQuery, GetPeopleByDateQueryVariables>(GetPeopleByDateDocument, variables, options);
+export const GetDraftPeopleDocument = `
+    query GetDraftPeople($date: timestamptz, $library: jsonb) {
+  people(
+    where: {_and: [{status: {_eq: "draft"}}, {library: {_contains: $library}}, {updated_at: {_gte: $date}}]}
+  ) {
+    id
+  }
+}
+    `;
+export const useGetDraftPeopleQuery = <
+      TData = GetDraftPeopleQuery,
+      TError = Error
+    >(
+      variables?: GetDraftPeopleQueryVariables,
+      options?: UseQueryOptions<GetDraftPeopleQuery, TError, TData>
+    ) =>
+    useQuery<GetDraftPeopleQuery, TError, TData>(
+      variables === undefined ? ['GetDraftPeople'] : ['GetDraftPeople', variables],
+      fetcher<GetDraftPeopleQuery, GetDraftPeopleQueryVariables>(GetDraftPeopleDocument, variables),
+      options
+    );
+useGetDraftPeopleQuery.document = GetDraftPeopleDocument;
+
+
+useGetDraftPeopleQuery.getKey = (variables?: GetDraftPeopleQueryVariables) => variables === undefined ? ['GetDraftPeople'] : ['GetDraftPeople', variables];
+;
+
+useGetDraftPeopleQuery.fetcher = (variables?: GetDraftPeopleQueryVariables, options?: RequestInit['headers']) => fetcher<GetDraftPeopleQuery, GetDraftPeopleQueryVariables>(GetDraftPeopleDocument, variables, options);
 export const UpdatePeopleByPkDocument = `
     mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
   update_people_by_pk(_set: $set, pk_columns: {id: $id}) {

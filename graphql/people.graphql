@@ -246,6 +246,7 @@ query GetPeopleByDate($date: timestamptz, $library: jsonb) {
     where: {
       _and: [
         { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
         { library: { _contains: $library } }
       ]
     }
@@ -256,6 +257,20 @@ query GetPeopleByDate($date: timestamptz, $library: jsonb) {
     personal_email
     picture
     slug
+  }
+}
+
+query GetDraftPeople($date: timestamptz, $library: jsonb) {
+  people(
+    where: {
+      _and: [
+        { status: { _eq: "draft" } }
+        { library: { _contains: $library } }
+        { updated_at: { _gte: $date } }
+      ]
+    }
+  ) {
+    id
   }
 }
 
