@@ -13,9 +13,9 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
   Investment_Rounds,
   Companies,
-  useGetCompanyQuery,
-  GetCompanyDocument,
-  GetCompanyQuery,
+  useGetCompanyBySlugQuery,
+  GetCompanyBySlugDocument,
+  GetCompanyBySlugQuery,
   useGetAllCoinsQuery,
   Coins,
   Team_Members,
@@ -81,7 +81,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     data: companyData,
     error,
     isLoading,
-  } = useGetCompanyQuery({
+  } = useGetCompanyBySlugQuery({
     slug: companyId as string,
   });
 
@@ -937,8 +937,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const { data: companies } = await runGraphQl<GetCompanyQuery>(
-    GetCompanyDocument,
+  const { data: companies } = await runGraphQl<GetCompanyBySlugQuery>(
+    GetCompanyBySlugDocument,
     { slug: context.params?.companyId },
     context.req.cookies,
   );

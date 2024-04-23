@@ -1,4 +1,4 @@
-query GetCompany($slug: String!) {
+query GetCompanyBySlug($slug: String!) {
   companies(where: { slug: { _eq: $slug } }) {
     id
     name
@@ -20,6 +20,7 @@ query GetCompany($slug: String!) {
     careers_page
     github
     velocity_linkedin
+    smart_contract
     velocity_token
     tags
     date_added
@@ -231,6 +232,7 @@ query GetCompanies(
     website
     twitter
     company_linkedin
+    smart_contract
     github
     discord
   }
@@ -392,6 +394,7 @@ query GetPersonalizedCompanies(
     website
     twitter
     company_linkedin
+    smart_contract
     github
     discord
   }

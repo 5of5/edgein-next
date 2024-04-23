@@ -34,6 +34,8 @@ import { getFullAddress } from '@/utils/helpers';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/router';
+import { useGetUserProfileQuery } from '@/graphql/types';
+import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 
 type Attachments = Array<{
   label: string;
@@ -57,6 +59,7 @@ type Props = {
   investmentsLength?: number;
   emails?: string[];
   linkedIn?: string | null;
+  smartContract?: string | null;
   github?: string | null;
   twitter?: string | null;
   instagram?: string | null;
@@ -82,6 +85,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   investmentsLength = 0,
   emails = [],
   linkedIn,
+  smartContract,
   github,
   careerPage,
   location,
@@ -101,6 +105,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   const { user } = useAuth();
 
+  const { data: userProfile } = useGetUserProfileQuery(
+    {
+      id: user?.id || 0,
+    },
+    {
+      enabled: !!user,
+    },
+  );
+
   const isEmptyLocationJson = values(locationJson).every(isEmpty);
   let locationText = '';
   if (!isEmptyLocationJson) {
@@ -108,6 +121,11 @@ export const ElemKeyInfo: React.FC<Props> = ({
   } else if (location) {
     locationText = location;
   }
+
+  const edgeInContributorButtonEnabled =
+    userProfile?.users_by_pk?.use_credits_system ||
+    (!userProfile?.users_by_pk?.use_credits_system &&
+      userProfile?.users_by_pk?.credits >= CREDITS_PER_MONTH);
 
   const infoItems: {
     icon?: React.FC<IconProps>;
@@ -244,6 +262,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconGithub,
       text: 'Github',
       link: github,
+    });
+  }
+  if (smartContract) {
+    infoItems.push({
+      icon: IconLinkedIn,
+      text: removeDomainName(smartContract),
+      showHide: !edgeInContributorButtonEnabled,
     });
   }
   if (facebook) {

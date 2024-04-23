@@ -73,6 +73,7 @@ insert_permissions:
         - careers_page
         - coin_id
         - company_linkedin
+        - smart_contract
         - external_id
         - github
         - investor_amount
@@ -100,6 +101,7 @@ select_permissions:
         - careers_page
         - coin_id
         - company_linkedin
+        - smart_contract
         - created_at
         - date_added
         - discord
@@ -153,6 +155,7 @@ select_permissions:
         - careers_page
         - coin_id
         - company_linkedin
+        - smart_contract
         - date_added
         - external_id
         - github
@@ -189,6 +192,7 @@ select_permissions:
         - careers_page
         - coin_id
         - company_linkedin
+        - smart_contract
         - created_at
         - datapoints_count
         - date_added
