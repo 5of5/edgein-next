@@ -268,7 +268,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
     infoItems.push({
       icon: IconLinkedIn,
       text: removeDomainName(smartContract),
-      showHide: !edgeInContributorButtonEnabled,
+      showHide: edgeInContributorButtonEnabled,
     });
   }
   if (facebook) {

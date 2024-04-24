@@ -232,7 +232,6 @@ query GetCompanies(
     website
     twitter
     company_linkedin
-    smart_contract
     github
     discord
   }
@@ -394,7 +393,6 @@ query GetPersonalizedCompanies(
     website
     twitter
     company_linkedin
-    smart_contract
     github
     discord
   }

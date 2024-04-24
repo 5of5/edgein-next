@@ -103,6 +103,7 @@ select_permissions:
         - personal_email
         - picture
         - slug
+        - smart_contract
         - twitter_url
         - type
         - updated_at
@@ -130,6 +131,7 @@ select_permissions:
         - personal_email
         - picture
         - slug
+        - smart_contract
         - twitter_url
         - type
         - updated_at
@@ -158,6 +160,7 @@ select_permissions:
         - personal_email
         - picture
         - slug
+        - smart_contract
         - status
         - twitter_url
         - type
