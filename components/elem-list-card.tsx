@@ -207,7 +207,7 @@ export const ElemListCard: FC<Props> = ({
         </div>
 
         <p className="text-sm text-gray-500">
-          Updated {formatDateShown(resource.updated_at)}
+          Edited {formatDateShown(resource.updated_at)}
         </p>
 
         {members && members.length > 0 && (
@@ -234,7 +234,7 @@ export const ElemListCard: FC<Props> = ({
                           />
                         </div>
                       ) : (
-                        <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">
+                        <div className="flex items-center justify-center w-8 text-lg capitalize bg-gray-300 border rounded-full aspect-square text-dark-500 border-gray-50">
                           {getNameFromListMember(member).charAt(0)}
                         </div>
                       )}
