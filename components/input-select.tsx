@@ -40,8 +40,8 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
           <>
             <div className="relative">
               <Listbox.Button
-                className={`relative w-full appearance-none border-none text-dark-500 bg-white rounded-md pl-3 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
-                  disabled ? 'bg-slate-200 cursor-not-allowed' : ''
+                className={`relative w-full appearance-none border-none bg-white rounded-md pl-1.5 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
+                  disabled ? 'bg-gray-200 cursor-not-allowed' : ''
                 }`}
               >
                 {multiple ? (
@@ -49,7 +49,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                     className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}
                   >
                     {value?.length === 0 && (
-                      <Listbox.Label className="text-gray-400">
+                      <Listbox.Label className="text-sm text-gray-400">
                         {placeholder}
                       </Listbox.Label>
                     )}
@@ -57,12 +57,12 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                     {value.map((item: any) => (
                       <span
                         key={item.id}
-                        className="bg-slate-100 rounded-md px-2 py-1"
+                        className="px-2 py-1 text-sm bg-gray-100 rounded-md"
                       >
                         {item.icon && (
                           <item.icon
                             title={item.title}
-                            className="h-5 w-5 mr-1 shrink-0"
+                            className="w-5 h-5 mr-1 shrink-0"
                           />
                         )}
                         {item.title}
@@ -75,7 +75,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                       {value?.icon && (
                         <value.icon
                           title={value.title ? value.title : placeholder}
-                          className="h-5 w-5 mr-1 shrink-0"
+                          className="w-5 h-5 mr-1 shrink-0"
                         />
                       )}
                       <span>{value?.title ? value.title : placeholder}</span>
@@ -83,8 +83,8 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                   </div>
                 )}
 
-                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                  <IconPolygonDown className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 flex items-center pointer-events-none right-2">
+                  <IconPolygonDown className="w-5 h-5 text-gray-400" />
                 </div>
               </Listbox.Button>
 
@@ -132,29 +132,29 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                                 title={
                                   option.title ? option.title : placeholder
                                 }
-                                className={`h-5 w-5 mr-1 shrink-0 text-slate-500 ${
+                                className={`h-5 w-5 mr-1 shrink-0 text-gray-500 ${
                                   selected ? 'text-primary-500' : ''
                                 }`}
                               />
                             )}
                             <div>
                               <div
-                                className={`truncate ${
+                                className={`truncate text-sm ${
                                   selected ? 'font-bold' : 'font-normal'
                                 }
 																`}
                               >
                                 {option.title ? option.title : placeholder}
                               </div>
-                              <div className="text-gray-400 text-xs">
+                              <div className="text-xs text-gray-400">
                                 {option.description ? option.description : ''}
                               </div>
                             </div>
                           </div>
 
                           {selected && (
-                            <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-4 text-primary-500">
-                              <IconCheck className="h-5 w-5" />
+                            <div className="absolute inset-y-0 right-0 z-50 flex items-center pr-4 text-primary-500">
+                              <IconCheck className="w-5 h-5" />
                             </div>
                           )}
                         </>
