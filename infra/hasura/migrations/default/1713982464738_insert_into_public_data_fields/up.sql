@@ -1,0 +1,1 @@
+INSERT INTO "public"."data_fields"("is_valid_identifier", "restricted_admin", "weight", "data_type", "description", "name", "path", "regex_test", "regex_transform", "resource", "created_at") VALUES (false, false, 1, null, null, E'blockchain_network', E'people.blockchain_network', null, null, E'people', E'2024-04-24T18:14:24.666016+00:00');

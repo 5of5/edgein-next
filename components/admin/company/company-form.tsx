@@ -316,6 +316,7 @@ const CompanyForm = ({
         <TextInput className={inputClassName} source="web_domain" />
         <TextInput className={inputClassName} source="email_domain" />
         <TextInput className={inputClassName} source="smart_contract" />
+        <TextInput className={inputClassName} source="blockchain_network" />
       </SimpleForm>
     </div>
   );
