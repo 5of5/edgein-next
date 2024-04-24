@@ -21,6 +21,7 @@ query GetCompanyBySlug($slug: String!) {
     github
     velocity_linkedin
     smart_contract
+    blockchain_network
     velocity_token
     tags
     date_added

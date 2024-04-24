@@ -2111,6 +2111,7 @@ export type Companies = {
   audit_file: Maybe<Scalars['String']>;
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
+  blockchain_network: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   /** An object relationship */
   coin: Maybe<Coins>;
@@ -2413,6 +2414,7 @@ export type Companies_Bool_Exp = {
   audit_file: InputMaybe<String_Comparison_Exp>;
   bitcointalk: InputMaybe<String_Comparison_Exp>;
   blockchain_explorer: InputMaybe<String_Comparison_Exp>;
+  blockchain_network: InputMaybe<String_Comparison_Exp>;
   careers_page: InputMaybe<String_Comparison_Exp>;
   coin: InputMaybe<Coins_Bool_Exp>;
   coin_id: InputMaybe<Int_Comparison_Exp>;
@@ -2859,6 +2861,7 @@ export type Companies_Insert_Input = {
   audit_file: InputMaybe<Scalars['String']>;
   bitcointalk: InputMaybe<Scalars['String']>;
   blockchain_explorer: InputMaybe<Scalars['String']>;
+  blockchain_network: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
   coin: InputMaybe<Coins_Obj_Rel_Insert_Input>;
   coin_id: InputMaybe<Scalars['Int']>;
@@ -2930,6 +2933,7 @@ export type Companies_Max_Fields = {
   audit_file: Maybe<Scalars['String']>;
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
+  blockchain_network: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
@@ -2987,6 +2991,7 @@ export type Companies_Min_Fields = {
   audit_file: Maybe<Scalars['String']>;
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
+  blockchain_network: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
@@ -3066,6 +3071,7 @@ export type Companies_Order_By = {
   audit_file: InputMaybe<Order_By>;
   bitcointalk: InputMaybe<Order_By>;
   blockchain_explorer: InputMaybe<Order_By>;
+  blockchain_network: InputMaybe<Order_By>;
   careers_page: InputMaybe<Order_By>;
   coin: InputMaybe<Coins_Order_By>;
   coin_id: InputMaybe<Order_By>;
@@ -3155,6 +3161,8 @@ export enum Companies_Select_Column {
   Bitcointalk = 'bitcointalk',
   /** column name */
   BlockchainExplorer = 'blockchain_explorer',
+  /** column name */
+  BlockchainNetwork = 'blockchain_network',
   /** column name */
   CareersPage = 'careers_page',
   /** column name */
@@ -3273,6 +3281,7 @@ export type Companies_Set_Input = {
   audit_file: InputMaybe<Scalars['String']>;
   bitcointalk: InputMaybe<Scalars['String']>;
   blockchain_explorer: InputMaybe<Scalars['String']>;
+  blockchain_network: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
@@ -3386,6 +3395,7 @@ export type Companies_Stream_Cursor_Value_Input = {
   audit_file: InputMaybe<Scalars['String']>;
   bitcointalk: InputMaybe<Scalars['String']>;
   blockchain_explorer: InputMaybe<Scalars['String']>;
+  blockchain_network: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
@@ -3467,6 +3477,8 @@ export enum Companies_Update_Column {
   Bitcointalk = 'bitcointalk',
   /** column name */
   BlockchainExplorer = 'blockchain_explorer',
+  /** column name */
+  BlockchainNetwork = 'blockchain_network',
   /** column name */
   CareersPage = 'careers_page',
   /** column name */
@@ -29584,7 +29596,7 @@ export type GetCompanyBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetCompanyBySlugQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, smart_contract: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, location_json: any | null, discord: string | null, glassdoor: string | null, status_tags: any | null, library: any | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }>, to_links: Array<{ __typename?: 'resource_links', id: number, link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, status_tags: any | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, from_links: Array<{ __typename?: 'resource_links', id: number, link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, status_tags: any | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, year_founded: string | null, investment_amount_total: any | null, num_of_investments: number | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, status: string | null, source: any | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }> };
+export type GetCompanyBySlugQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, smart_contract: string | null, blockchain_network: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, location_json: any | null, discord: string | null, glassdoor: string | null, status_tags: any | null, library: any | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }>, to_links: Array<{ __typename?: 'resource_links', id: number, link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, status_tags: any | null, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, from_links: Array<{ __typename?: 'resource_links', id: number, link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, status_tags: any | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, year_founded: string | null, investment_amount_total: any | null, num_of_investments: number | null, logo: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, status: string | null, source: any | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -31265,6 +31277,7 @@ export const GetCompanyBySlugDocument = `
     github
     velocity_linkedin
     smart_contract
+    blockchain_network
     velocity_token
     tags
     date_added

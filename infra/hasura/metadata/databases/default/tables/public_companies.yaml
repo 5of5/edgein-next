@@ -98,10 +98,10 @@ select_permissions:
         - audit_file
         - bitcointalk
         - blockchain_explorer
+        - blockchain_network
         - careers_page
         - coin_id
         - company_linkedin
-        - smart_contract
         - created_at
         - date_added
         - discord
@@ -129,6 +129,7 @@ select_permissions:
         - search_count
         - sentiment
         - slug
+        - smart_contract
         - status_tags
         - tags
         - telegram
@@ -152,10 +153,10 @@ select_permissions:
     permission:
       columns:
         - audit_file
+        - blockchain_network
         - careers_page
         - coin_id
         - company_linkedin
-        - smart_contract
         - date_added
         - external_id
         - github
@@ -171,6 +172,7 @@ select_permissions:
         - notes
         - overview
         - slug
+        - smart_contract
         - tags
         - total_employees
         - total_valuation
@@ -189,10 +191,10 @@ select_permissions:
         - audit_file
         - bitcointalk
         - blockchain_explorer
+        - blockchain_network
         - careers_page
         - coin_id
         - company_linkedin
-        - smart_contract
         - created_at
         - datapoints_count
         - date_added
@@ -222,6 +224,7 @@ select_permissions:
         - search_count
         - sentiment
         - slug
+        - smart_contract
         - status
         - status_tags
         - tags
