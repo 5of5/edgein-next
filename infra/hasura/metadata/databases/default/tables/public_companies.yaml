@@ -67,23 +67,22 @@ insert_permissions:
     permission:
       check: {}
       columns:
-        - id
-        - logo
-        - total_employees
         - careers_page
         - coin_id
         - company_linkedin
-        - smart_contract
         - external_id
         - github
+        - id
         - investor_amount
         - layer
         - layer_detail
+        - logo
         - market_verified
         - name
         - notes
         - overview
         - slug
+        - total_employees
         - total_valuation
         - velocity_linkedin
         - velocity_token
@@ -101,7 +100,6 @@ select_permissions:
         - careers_page
         - coin_id
         - company_linkedin
-        - smart_contract
         - created_at
         - date_added
         - discord
@@ -129,6 +127,7 @@ select_permissions:
         - search_count
         - sentiment
         - slug
+        - smart_contract
         - status_tags
         - tags
         - telegram
@@ -155,7 +154,6 @@ select_permissions:
         - careers_page
         - coin_id
         - company_linkedin
-        - smart_contract
         - date_added
         - external_id
         - github
@@ -171,6 +169,7 @@ select_permissions:
         - notes
         - overview
         - slug
+        - smart_contract
         - tags
         - total_employees
         - total_valuation
@@ -192,7 +191,6 @@ select_permissions:
         - careers_page
         - coin_id
         - company_linkedin
-        - smart_contract
         - created_at
         - datapoints_count
         - date_added
@@ -222,6 +220,7 @@ select_permissions:
         - search_count
         - sentiment
         - slug
+        - smart_contract
         - status
         - status_tags
         - tags

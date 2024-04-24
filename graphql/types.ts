@@ -19210,6 +19210,7 @@ export type People = {
   personal_email: Maybe<Scalars['String']>;
   picture: Maybe<Scalars['jsonb']>;
   slug: Scalars['String'];
+  smart_contract: Maybe<Scalars['String']>;
   status: Scalars['String'];
   /** An array relationship */
   team_members: Array<Team_Members>;
@@ -19420,6 +19421,7 @@ export type People_Bool_Exp = {
   personal_email: InputMaybe<String_Comparison_Exp>;
   picture: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
+  smart_contract: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   team_members: InputMaybe<Team_Members_Bool_Exp>;
   team_members_aggregate: InputMaybe<Team_Members_Aggregate_Bool_Exp>;
@@ -19812,6 +19814,7 @@ export type People_Insert_Input = {
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
+  smart_contract: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
   team_members: InputMaybe<Team_Members_Arr_Rel_Insert_Input>;
   twitter_url: InputMaybe<Scalars['String']>;
@@ -19840,6 +19843,7 @@ export type People_Max_Fields = {
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
+  smart_contract: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
   twitter_url: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
@@ -19866,6 +19870,7 @@ export type People_Min_Fields = {
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
+  smart_contract: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
   twitter_url: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
@@ -19922,6 +19927,7 @@ export type People_Order_By = {
   personal_email: InputMaybe<Order_By>;
   picture: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
+  smart_contract: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
   team_members_aggregate: InputMaybe<Team_Members_Aggregate_Order_By>;
   twitter_url: InputMaybe<Order_By>;
@@ -19984,6 +19990,8 @@ export enum People_Select_Column {
   /** column name */
   Slug = 'slug',
   /** column name */
+  SmartContract = 'smart_contract',
+  /** column name */
   Status = 'status',
   /** column name */
   TwitterUrl = 'twitter_url',
@@ -20018,6 +20026,7 @@ export type People_Set_Input = {
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
+  smart_contract: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
   twitter_url: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
@@ -20079,6 +20088,7 @@ export type People_Stream_Cursor_Value_Input = {
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
+  smart_contract: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
   twitter_url: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
@@ -20133,6 +20143,8 @@ export enum People_Update_Column {
   Picture = 'picture',
   /** column name */
   Slug = 'slug',
+  /** column name */
+  SmartContract = 'smart_contract',
   /** column name */
   Status = 'status',
   /** column name */
@@ -29582,7 +29594,7 @@ export type GetCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, smart_contract: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null, amount: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null, amount: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
 export type GetCompaniesRecentQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -29654,7 +29666,7 @@ export type GetPersonalizedCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, smart_contract: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
 export type InsertCompaniesMutationVariables = Exact<{
   objects: Array<Companies_Insert_Input> | Companies_Insert_Input;
@@ -30387,7 +30399,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, smart_contract: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }> };
 
 export type GetPeopleQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -31479,7 +31491,6 @@ export const GetCompaniesDocument = `
     website
     twitter
     company_linkedin
-    smart_contract
     github
     discord
   }
@@ -31788,7 +31799,6 @@ export const GetPersonalizedCompaniesDocument = `
     website
     twitter
     company_linkedin
-    smart_contract
     github
     discord
   }
@@ -35002,6 +35012,7 @@ export const GetPersonDocument = `
     status
     type
     work_email
+    smart_contract
     linkedin
     github
     city
