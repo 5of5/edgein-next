@@ -269,7 +269,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
     infoItems.push({
       icon: IconContract,
       text: removeDomainName(smartContract),
-      showHide: edgeInContributorButtonEnabled,
+      showHide: !userProfile || edgeInContributorButtonEnabled,
     });
   }
   if (facebook) {
