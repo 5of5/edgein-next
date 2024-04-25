@@ -34,7 +34,7 @@ import { useUser } from '@/context/user-context';
 import { ElemRequiredProfileDialog } from '@/components/elem-required-profile-dialog';
 import { ElemSubEvents } from '@/components/event/elem-sub-events';
 import moment from 'moment-timezone';
-import ElemAddToCalendarButton from '@/components/elem-add-to-calendar-button';
+import ElemAddToCalendarButton from '@/components/events/elem-add-to-calendar-button';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { usePopup } from '@/context/popup-context';
 import { onTrackView } from '@/utils/track';

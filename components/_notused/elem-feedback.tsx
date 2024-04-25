@@ -1,8 +1,8 @@
 import { FC, PropsWithChildren, useState, useEffect } from 'react';
-import { InputTextarea } from './input-textarea';
-import { InputText } from './input-text';
-import { ElemButton } from './elem-button';
-import { IconMinus, IconAnnotation } from './icons';
+import { InputTextarea } from '../input-textarea';
+import { InputText } from '../input-text';
+import { ElemButton } from '../elem-button';
+import { IconMinus, IconAnnotation } from '../icons';
 import { useFormspark } from '@formspark/use-formspark';
 
 type Props = {
@@ -77,26 +77,26 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
             toggleFeedbackForm && 'animate-fade-in-up'
           } absolute z-10 left-0 bottom-0 w-96 max-w-xs bg-white shadow-xl rounded-xl overflow-hidden`}
         >
-          <header className="relative py-2 text-center font-bold bg-primary-500 text-white">
+          <header className="relative py-2 font-bold text-center text-white bg-primary-500">
             {heading ? heading : 'Request Data'}
             <div
-              className="absolute top-0 right-2 bottom-0 flex items-center"
+              className="absolute top-0 bottom-0 flex items-center right-2"
               onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
             >
-              <IconMinus className="cursor-pointer rounded-md hover:bg-white/20 h-6 w-6" />
+              <IconMinus className="w-6 h-6 rounded-md cursor-pointer hover:bg-white/20" />
             </div>
           </header>
           {feedbackSent ? (
-            <div className="flex grow-1 p-4 font-bold w-auto">
+            <div className="flex w-auto p-4 font-bold grow-1">
               Request sent! Thank you!
             </div>
           ) : (
             <>
               <form
-                className="relative grid grid-cols-1 gap-y-4 m-4 overflow-y-auto sm:grid-cols-2 sm:gap-x-8"
+                className="relative grid grid-cols-1 m-4 overflow-y-auto gap-y-4 sm:grid-cols-2 sm:gap-x-8"
                 onSubmit={onSubmit}
               >
-                {/* <div className="group mb-2 sm:col-span-2">
+                {/* <div className="mb-2 group sm:col-span-2">
 									<InputText
 										label="Name (optional)"
 										name="name"
@@ -104,7 +104,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 										onChange={(e) => setName(e.target.value)}
 									/>
 								</div> */}
-                <div className="group mb-2 sm:col-span-2">
+                <div className="mb-2 group sm:col-span-2">
                   <InputTextarea
                     label="What missing data would you like to see?"
                     name="message"
@@ -131,7 +131,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 				btn="white"
 				onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 			>
-				<IconAnnotation className="h-6 w-6 mr-1" />
+				<IconAnnotation className="w-6 h-6 mr-1" />
 				Request Data
 			</ElemButton> */}
     </div>

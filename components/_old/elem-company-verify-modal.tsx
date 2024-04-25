@@ -1,9 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useCallback, useState } from 'react';
-import { ElemButton } from './elem-button';
-import { ElemPhoto } from './elem-photo';
-import { IconX } from './icons';
-import { InputText } from './input-text';
+import { ElemButton } from '../elem-button';
+import { ElemPhoto } from '../elem-photo';
+import { IconX } from '../icons';
+import { InputText } from '../input-text';
 import AsyncSelect from 'react-select/async';
 import { createFilter } from 'react-select';
 import { validateCompanyEmail } from '@/utils';
@@ -189,7 +189,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex items-center justify-center min-h-full p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -199,7 +199,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-xl transform overflow-y-auto rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-xl p-6 overflow-y-auto text-left align-middle transition-all transform bg-white rounded-lg shadow-xl">
                   {!isEmailEntered ? (
                     <>
                       <Dialog.Title as="h3" className="text-2xl font-bold">
@@ -234,7 +234,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                           cacheOptions
                           loadOptions={loadOptions}
                           onChange={(value: any) => setSelectedCompany(value)}
-                          className="basic-multi-select mt-1 border rounded-t-md rounded-b-md border-slate-300 hover:border-slate-400 transition-all placeholder:text-slate-250 focus-visible:outline-none focus:outline-none  focus-within::ring-2  focus-within::ring-primary-500"
+                          className="mt-1 transition-all border basic-multi-select rounded-t-md rounded-b-md border-slate-300 hover:border-slate-400 placeholder:text-slate-250 focus-visible:outline-none focus:outline-none focus-within::ring-2 focus-within::ring-primary-500"
                           classNamePrefix="select"
                           styles={customStyles}
                           placeholder="e.g Edgein"
@@ -262,7 +262,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                               photo={selectedCompany?.logo}
                               imgAlt="company logo"
                             />
-                            <span className="text-dark-500 ml-2">
+                            <span className="ml-2 text-dark-500">
                               {selectedCompany?.label}
                             </span>
                           </div>
@@ -273,9 +273,9 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                               setIsEmailEntered(false);
                             }}
                             type="button"
-                            className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
+                            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/10 focus:bg-black/20"
                           >
-                            <IconX className="h-6 w-6 text-dark-500 justify-self-end" />
+                            <IconX className="w-6 h-6 text-dark-500 justify-self-end" />
                           </button>
                         </div>
                       )

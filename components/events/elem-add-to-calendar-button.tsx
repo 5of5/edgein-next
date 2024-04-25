@@ -9,8 +9,8 @@ import {
   IconGoogleCalendar,
   IconMicrosoftOutlook,
   IconCalendar,
-} from './icons';
-import { ElemButton } from './elem-button';
+} from '../icons';
+import { ElemButton } from '../elem-button';
 
 type Props = {
   className?: string;
@@ -67,18 +67,18 @@ const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
       >
         <Menu.Items
           as="nav"
-          className="z-10 absolute overflow-hidden left-0 mt-1 w-full origin-top-left divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+          className="absolute left-0 z-10 w-full mt-1 overflow-hidden origin-top-left bg-white divide-y rounded-lg shadow-lg divide-slate-100 ring-1 ring-black/5 focus:outline-none"
         >
           {options.map(item => (
             <Menu.Item key={item.type}>
               {({ active }) => (
                 <button
                   onClick={() => handleClick(item)}
-                  className="flex w-full items-center px-4 py-2 hover:bg-gray-50 group"
+                  className="flex items-center w-full px-4 py-2 hover:bg-gray-50 group"
                 >
                   {item.icon && (
                     <item.icon
-                      className="mr-2 h-5 w-5 shrink-0"
+                      className="w-5 h-5 mr-2 shrink-0"
                       aria-hidden="true"
                     />
                   )}

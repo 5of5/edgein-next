@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { IconSearch } from './icons';
+import { IconSearch } from '../icons';
 
 type Props = {
   className?: string;
@@ -22,8 +22,8 @@ export const InputSearch: React.FC<PropsWithChildren<Props>> = ({
     <div className={className} role="search">
       <label className="relative block" htmlFor="search">
         <span className="sr-only">{label}</span>
-        <span className="absolute z-10 inset-y-0 left-1 flex items-center pl-2">
-          <IconSearch className="h-5 w-5" />
+        <span className="absolute inset-y-0 z-10 flex items-center pl-2 left-1">
+          <IconSearch className="w-5 h-5" />
         </span>
         <input
           type="search"

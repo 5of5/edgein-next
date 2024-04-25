@@ -5,7 +5,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemGroupInformation } from '@/components/group/elem-group-information';
 import { ElemGroupAbout } from '@/components/group/elem-group-about';
 import { ElemGroupLists } from '@/components/group/elem-group-lists';
-import { ElemNotes } from '@/components/group/elem-notes';
+import { ElemNotes } from '@/components/notes/elem-notes';
 import ElemInviteDialog from '@/components/group/elem-invite-dialog';
 import ElemSettingDialog, {
   SettingTabProps,

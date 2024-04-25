@@ -11,8 +11,8 @@ import { times } from 'lodash';
 import { FC } from 'react';
 import { Pagination } from '../pagination';
 import { PlaceholderInvestorCard } from '../placeholders';
-import { ElemInvestorCard } from './elem-investor-card';
-import { InvestorsTable } from './elem-investors-table';
+import { ElemInvestorCard } from '../investors/elem-investor-card';
+import { InvestorsTable } from '../investors/elem-investors-table';
 import { CardType } from '../companies/elem-company-card';
 
 type Props = {

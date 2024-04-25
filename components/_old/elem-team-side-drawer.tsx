@@ -1,12 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, useEffect } from 'react';
 import { InputSearch } from './input-search';
-import { InputSelect } from './input-select';
-import { InputText } from './input-text';
+import { InputSelect } from '../input-select';
+import { InputText } from '../input-text';
 import { useGetAllPersonsQuery, People, Team_Members } from '@/graphql/types';
 import { functionChoicesTM } from '@/utils/constants';
-import { ElemButton } from './elem-button';
-import { InputDate } from './input-date';
+import { ElemButton } from '../elem-button';
+import { InputDate } from '../input-date';
 
 type Props = {
   isOpen: boolean;
@@ -83,7 +83,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed right-0 top-0 w-full max-w-lg">
+          <div className="fixed top-0 right-0 w-full max-w-lg">
             <div className="text-center">
               <Transition.Child
                 as={Fragment}
@@ -94,16 +94,16 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="p-4 bg-white min-h-screen text-left content-between">
+                <Dialog.Panel className="content-between min-h-screen p-4 text-left bg-white">
                   <div>
-                    <h2 className="font-Metropolis text-dark-500 font-bold">{`${
+                    <h2 className="font-bold font-Metropolis text-dark-500">{`${
                       memberToEdit && memberToEdit.id
                         ? 'Edit Employee'
                         : 'Add Employee'
                     }`}</h2>
 
                     <div className="mt-4">
-                      <label className="font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="text-sm font-bold font-Metropolis text-slate-600">
                         Person
                       </label>
                       <InputSelect
@@ -125,17 +125,17 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                           )
                         }
                         // placeholder="Layer 1 programmable/Blockchain/Netw..."
-                        className="w-80 text-slate-600 text-base"
+                        className="text-base w-80 text-slate-600"
                       />
                       {errorsTeamMembers.person && (
-                        <p className="text-red-500 text-xs italic mt-2">
+                        <p className="mt-2 text-xs italic text-red-500">
                           {errorsTeamMembers.person}
                         </p>
                       )}
                     </div>
 
                     <div className="mt-4">
-                      <label className="font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="text-sm font-bold font-Metropolis text-slate-600">
                         Position
                       </label>
                       <InputSelect
@@ -152,7 +152,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         className="max-w-sm placeholder:text-slate-250"
                       />
                       {errorsTeamMembers.function && (
-                        <p className="text-red-500 text-xs italic mt-2">
+                        <p className="mt-2 text-xs italic text-red-500">
                           {errorsTeamMembers.function}
                         </p>
                       )}
@@ -163,12 +163,12 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         checked={employee.founder as boolean}
                         onChange={() => setValues('founder', !employee.founder)}
                       />
-                      <span className="text-sm font-Metropolis font-bold text-slate-600 ml-2">
+                      <span className="ml-2 text-sm font-bold font-Metropolis text-slate-600">
                         Founder
                       </span>
                     </div>
                     <div className="mt-4">
-                      <label className=" block  font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="block text-sm font-bold  font-Metropolis text-slate-600">
                         Title
                       </label>
                       {/* <InputSelect
@@ -184,12 +184,12 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('title', e.target.value);
                         }}
-                        className=" mt-2 block max-w-sm placeholder:text-slate-500"
+                        className="block max-w-sm mt-2  placeholder:text-slate-500"
                       />
                     </div>
 
                     <div className="mt-4">
-                      <label className=" block  font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="block text-sm font-bold  font-Metropolis text-slate-600">
                         Time Period
                       </label>
                       <input
@@ -197,7 +197,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         checked={current}
                         onChange={() => setCurrent(!current)}
                       />
-                      <span className="text-sm font-Metropolis font-normal text-slate-600 ml-2">
+                      <span className="ml-2 text-sm font-normal font-Metropolis text-slate-600">
                         Current
                       </span>
                       <InputDate
@@ -206,7 +206,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('start_date', e.target.value);
                         }}
-                        className=" mt-2 block max-w-sm placeholder:text-slate-500"
+                        className="block max-w-sm mt-2  placeholder:text-slate-500"
                       />
                       to
                       <InputDate
@@ -216,7 +216,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('end_date', e.target.value);
                         }}
-                        className=" mt-2 block max-w-sm placeholder:text-slate-500"
+                        className="block max-w-sm mt-2  placeholder:text-slate-500"
                       />
                     </div>
                   </div>

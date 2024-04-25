@@ -6,9 +6,9 @@ import { InputText } from '@/components/input-text';
 import { InputTextarea } from '@/components/input-textarea';
 import { InputSelect } from '@/components/input-select';
 import { useState, useEffect, useRef, ChangeEvent } from 'react';
-import { ElemCompanyVerifyModal } from '@/components/elem-company-verify-modal';
-import { ElemTeamSideDrawer } from '@/components/elem-team-side-drawer';
-import { ElemInvestmentSideDrawer } from '@/components/elem-investment-side-drawer';
+import { ElemCompanyVerifyModal } from '@/components/_old/elem-company-verify-modal';
+import { ElemTeamSideDrawer } from '@/components/_old/elem-team-side-drawer';
+import { ElemInvestmentSideDrawer } from '@/components/_old/elem-investment-side-drawer';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
   Investment_Rounds,
@@ -22,7 +22,7 @@ import {
 } from '@/graphql/types';
 import { useRouter } from 'next/router';
 import { runGraphQl } from '@/utils';
-import { IconProfilePictureUpload } from '@/components/profile/icon-file-upload';
+import { IconProfilePictureUpload } from '@/components/_old/icon-file-upload';
 import { uploadFile } from '@/utils/file-functions';
 import {
   companyLayerChoices,
@@ -30,9 +30,9 @@ import {
   validateTeamMember,
   validateInvestmentRounds,
 } from '@/utils/constants';
-import { TagInputText } from '@/components/tag-input-text';
-import { ElemEditInvestments } from '@/components/company/elem-edit-investments';
-import { ElemEditTeam } from '@/components/company/elem-edit-team';
+import { TagInputText } from '@/components/_old/tag-input-text';
+import { ElemEditInvestments } from '@/components/_old/elem-edit-investments';
+import { ElemEditTeam } from '@/components/_old/elem-edit-team';
 import { InputDate } from '@/components/input-date';
 import { NextSeo } from 'next-seo';
 
@@ -254,7 +254,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
       <DashboardLayout>
         <div className="max-w-6xl mx-auto">
           <div className="col-span-3">
-            <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-0 pt-3 pb-3 z-10 bg-primary-50">
+            <div className="sticky top-0 z-10 flex items-center justify-between pt-3 pb-3 pl-6 border-b-4 border-primary-500 bg-primary-50">
               <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                 {`Edit  ${company.name}`}
               </h2>
@@ -272,7 +272,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
               </div>
             </div>
 
-            {/* <div className="max-w-6xl flex justify-between items-center mt-16 bg-white rounded-lg p-5 shadow-md">
+            {/* <div className="flex items-center justify-between max-w-6xl p-5 mt-16 bg-white rounded-lg shadow-md">
                             <div>
                                 <p className="text-xl font-bold font-Metropolis text-dark-950">{`Do you work at ${company.name}?`}</p>
                                 <p className="text-sm font-normal font-Metropolis">By verifying that you work here, you will be able to edit all fields on the company profile. </p>
@@ -289,8 +289,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
               />
             )}
 
-            <div className="max-w-6xl mt-7 bg-white rounded-lg p-5 shadow-md">
-              <div className="border-b border-gray-100 pb-3">
+            <div className="max-w-6xl p-5 bg-white rounded-lg shadow-md mt-7">
+              <div className="pb-3 border-b border-gray-100">
                 <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                   Overview
                 </h2>
@@ -299,13 +299,13 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
               {/* profile image */}
               <GridTwelve wrapperClass="mt-4 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold w-40">
+                  <h2 className="w-40 font-bold text-dark-500">
                     Profile Image*
                   </h2>
                 </div>
                 <div className="col-span-8">
                   <div className="flex">
-                    <div className=" relative">
+                    <div className="relative ">
                       <ElemPhoto
                         photo={companyEditable.logo}
                         wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
@@ -313,7 +313,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                         imgAlt={companyEditable.name}
                       />
                       <span
-                        className="bg-gray-200 w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0"
+                        className="absolute bottom-0 right-0 flex items-center justify-center bg-gray-200 rounded-full w-9 h-9"
                         role="button"
                         onClick={handleLogoEditClick}
                       >
@@ -327,30 +327,30 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                         ref={fileInputRef}
                       />
                     </div>
-                    <div className="ml-8 mt-5">
+                    <div className="mt-5 ml-8">
                       <ul>
-                        <li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">
+                        <li className="text-sm font-thin text-gray-400 list-disc font-Metropolis">
                           Square images work best (at least 300 x 300 pixels){' '}
                         </li>
-                        <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+                        <li className="text-sm font-thin text-gray-400 list-disc font-metropolis">
                           Crop your image before you upload
                         </li>
-                        <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+                        <li className="text-sm font-thin text-gray-400 list-disc font-metropolis">
                           Image upoloads are limited to 2MB
                         </li>
-                        <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+                        <li className="text-sm font-thin text-gray-400 list-disc font-metropolis">
                           Accepted image types JPG SVG AND PNG
                         </li>
                       </ul>
                     </div>
                   </div>
                   {errors.file && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.file}
                     </p>
                   )}
                   {errors.logo && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.logo}
                     </p>
                   )}
@@ -360,7 +360,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
               {/* name section */}
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Name*
                   </h2>
                 </div>
@@ -372,10 +372,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     value={companyEditable.name ? companyEditable.name : ''}
                     name="Name"
                     placeholder="Chia"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.name}
                     </p>
                   )}
@@ -386,7 +386,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold text-md w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500 text-md">
                     Description*
                   </h2>
                 </div>
@@ -400,10 +400,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                       companyEditable.overview ? companyEditable.overview : ''
                     }
                     name="Overview"
-                    className="placeholder:text-gray-300 w-100 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-100 text-slate-600"
                   />
                   {errors.overview && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.overview}
                     </p>
                   )}
@@ -414,7 +414,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Company Type*
                   </h2>
                 </div>
@@ -426,10 +426,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     )}
                     onChange={(e: any) => setValues('layer', e.value)}
                     placeholder="Layer 1 programmable/Blockchain/Netw..."
-                    className="w-100 text-slate-600 text-base"
+                    className="text-base w-100 text-slate-600"
                   />
                   {errors.layer && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.layer}
                     </p>
                   )}
@@ -440,7 +440,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Industry*
                   </h2>
                 </div>
@@ -449,7 +449,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     defaultTags={
                       companyEditable.tags ? companyEditable.tags : []
                     }
-                    className="mt-0 text-slate-600 text-base"
+                    className="mt-0 text-base text-slate-600"
                     // label="Industry"
                     value=""
                     name="Industry"
@@ -459,7 +459,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }}
                   />
                   {errors.tags && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.tags}
                     </p>
                   )}
@@ -470,7 +470,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Crypto Token Ticker
                   </h2>
                 </div>
@@ -488,7 +488,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                       setValues('coin', { id: e.value, ticker: e.title })
                     }
                     // placeholder="Layer 1 programmable/Blockchain/Netw..."
-                    className="w-80 text-slate-600 text-base"
+                    className="text-base w-80 text-slate-600"
                   />
                 </div>
               </GridTwelve>
@@ -497,7 +497,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Founded Date*
                   </h2>
                 </div>
@@ -512,10 +512,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     onChange={e => {
                       setValues('year_founded', e.target.value);
                     }}
-                    className=" mt-2 block max-w-sm placeholder-slate-500"
+                    className="block max-w-sm mt-2 placeholder-slate-500"
                   />
                   {errors.year_founded && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.year_founded}
                     </p>
                   )}
@@ -526,7 +526,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Location
                   </h2>
                 </div>
@@ -554,7 +554,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     name=""
                     placeholder="San Francisco"
                     label="City"
-                    className="placeholder:text-gray-300 mb-5 text-slate-600 text-base"
+                    className="mb-5 text-base placeholder:text-gray-300 text-slate-600"
                   />
                   <InputText
                     onChange={e => {
@@ -577,7 +577,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     name=""
                     placeholder="United State USA"
                     label="Country"
-                    className="placeholder:text-gray-300 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 text-slate-600"
                   />
                 </div>
               </GridTwelve>
@@ -586,7 +586,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Number of Employees
                   </h2>
                 </div>
@@ -603,7 +603,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     name=""
                     type="number"
                     placeholder="745"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                 </div>
               </GridTwelve>
@@ -611,7 +611,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     White Paper
                   </h2>
                 </div>
@@ -627,10 +627,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.white-paper.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.white_paper && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.white_paper}
                     </p>
                   )}
@@ -641,7 +641,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Website URL*
                   </h2>
                 </div>
@@ -655,10 +655,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.website.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.website && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.website}
                     </p>
                   )}
@@ -669,7 +669,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     LinkedIn URL
                   </h2>
                 </div>
@@ -685,10 +685,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://linkedin.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.company_linkedin && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.company_linkedin}
                     </p>
                   )}
@@ -699,7 +699,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Github URL
                   </h2>
                 </div>
@@ -711,10 +711,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     value={companyEditable.github ? companyEditable.github : ''}
                     name=""
                     placeholder="https://github.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.github && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.github}
                     </p>
                   )}
@@ -725,7 +725,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Twitter URL
                   </h2>
                 </div>
@@ -739,10 +739,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.twitter.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.twitter && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.twitter}
                     </p>
                   )}
@@ -753,7 +753,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Discord URL
                   </h2>
                 </div>
@@ -767,10 +767,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.discord.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.discord && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.discord}
                     </p>
                   )}
@@ -781,7 +781,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold  w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Glassdoor URL
                   </h2>
                 </div>
@@ -795,10 +795,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="https://www.glassdoor.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.glassdoor && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.glassdoor}
                     </p>
                   )}
@@ -809,7 +809,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
               <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                 <div className="col-span-3">
-                  <h2 className="text-dark-500 font-bold w-40 text-base">
+                  <h2 className="w-40 text-base font-bold text-dark-500">
                     Careers URL
                   </h2>
                 </div>
@@ -825,10 +825,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     }
                     name=""
                     placeholder="htpps://www.careers.com"
-                    className="placeholder:text-gray-300 w-80 text-slate-600 text-base"
+                    className="text-base placeholder:text-gray-300 w-80 text-slate-600"
                   />
                   {errors.careers_page && (
-                    <p className="text-red-500 text-xs italic mt-2">
+                    <p className="mt-2 text-xs italic text-red-500">
                       {errors.careers_page}
                     </p>
                   )}
@@ -837,19 +837,19 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             </div>
 
             {/* Team section starts here.. */}
-            <div className="max-w-6xl mt-7 bg-white rounded-lg p-5 shadow-md">
-              <div className="border-b border-gray-100 pb-3">
+            <div className="max-w-6xl p-5 bg-white rounded-lg shadow-md mt-7">
+              <div className="pb-3 border-b border-gray-100">
                 <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                   Team
                 </h2>
               </div>
 
-              <div className="flex justify-between items-center mt-2 mb-5">
-                <h2 className="text-dark-500 font-bold font-Metropolis text-md">
+              <div className="flex items-center justify-between mt-2 mb-5">
+                <h2 className="font-bold text-dark-500 font-Metropolis text-md">
                   Employees
                 </h2>
                 <span
-                  className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis"
+                  className="font-normal cursor-pointer text-md text-primary-500 font-Metropolis"
                   onClick={() => {
                     setMemberToEdit({} as Team_Members);
                     setTeamDrawer(true);
@@ -885,19 +885,19 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             </div>
 
             {/* Funding Investments section */}
-            <div className="max-w-6xl mt-7 bg-white rounded-lg p-5 shadow-md">
-              <div className="border-b border-gray-100 pb-3">
+            <div className="max-w-6xl p-5 bg-white rounded-lg shadow-md mt-7">
+              <div className="pb-3 border-b border-gray-100">
                 <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                   Funding Investments
                 </h2>
               </div>
 
-              <div className="flex justify-between items-center mt-2 mb-5">
-                <h2 className="text-dark-500 font-bold font-Metropolis text-md">
+              <div className="flex items-center justify-between mt-2 mb-5">
+                <h2 className="font-bold text-dark-500 font-Metropolis text-md">
                   All Investments
                 </h2>
                 <span
-                  className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis"
+                  className="font-normal cursor-pointer text-md text-primary-500 font-Metropolis"
                   onClick={() => {
                     setRoundToEdit({} as Investment_Rounds);
                     setInvestmentDrawer(true);
