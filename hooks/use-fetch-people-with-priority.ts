@@ -1,14 +1,10 @@
-import { useState, useEffect } from 'react';
 import {
-  GetPeopleQuery,
-  List_Members_Bool_Exp,
   Order_By,
   People_Bool_Exp,
   People_Order_By,
   useGetPeopleQuery,
 } from '@/graphql/types';
 import { DashboardCategory, DeepPartial } from '@/types/common';
-import { filter } from 'lodash';
 
 type props = {
   prioritizedPersonId?: number;
@@ -16,7 +12,7 @@ type props = {
   limit: number;
   filters: DeepPartial<People_Bool_Exp>;
   selectedTab: DashboardCategory | null;
-  initialLoad: boolean;
+  enabled: boolean;
 };
 
 export const useFetchPeopleWithPriority = ({
@@ -25,11 +21,8 @@ export const useFetchPeopleWithPriority = ({
   limit,
   filters,
   selectedTab,
-  initialLoad,
+  enabled,
 }: props) => {
-  const [peopleData, setPeople] = useState<GetPeopleQuery['people']>([]);
-  const [peopleDataCount, setPeopleDataCount] = useState(0);
-
   const shouldFetchPrioritizedPerson = !!prioritizedPersonId && offset === 0;
 
   const {
@@ -51,20 +44,23 @@ export const useFetchPeopleWithPriority = ({
       } as People_Bool_Exp,
       orderBy: { created_at: Order_By.Desc } as People_Order_By,
     },
-    { enabled: shouldFetchPrioritizedPerson, refetchOnWindowFocus: false },
+    {
+      enabled: enabled && shouldFetchPrioritizedPerson,
+      refetchOnWindowFocus: false,
+    },
   );
 
-  const effectiveFilters = shouldFetchPrioritizedPerson
+  const effectiveFilters = !!prioritizedPersonData?.people[0]
     ? {
         ...filters,
         _and: [...(filters._and || []), { id: { _neq: prioritizedPersonId } }],
       }
     : filters;
 
-  const adjustedLimit = shouldFetchPrioritizedPerson ? limit - 1 : limit;
+  const adjustedLimit = !!prioritizedPersonData?.people[0] ? limit - 1 : limit;
 
   const {
-    data: priorityPerson,
+    data: people,
     isLoading: isLoadingPeople,
     error: errorPeople,
   } = useGetPeopleQuery(
@@ -80,37 +76,22 @@ export const useFetchPeopleWithPriority = ({
     },
     {
       refetchOnWindowFocus: false,
-      enabled:
-        (shouldFetchPrioritizedPerson &&
-          !initialLoad &&
-          !!prioritizedPersonData) ||
-        (!shouldFetchPrioritizedPerson && !initialLoad),
+      enabled,
     },
   );
 
-  useEffect(() => {
-    if (priorityPerson) {
-      let combinedPeople = priorityPerson.people;
-      let totalPeopleCount =
-        priorityPerson.people_aggregate.aggregate?.count || 0;
+  const peopleData = [];
+  let peopleDataCount = 0;
 
-      if (
-        shouldFetchPrioritizedPerson &&
-        prioritizedPersonData?.people?.length
-      ) {
-        combinedPeople = [...prioritizedPersonData.people, ...combinedPeople];
-        totalPeopleCount += 1;
-      }
+  if (shouldFetchPrioritizedPerson && prioritizedPersonData?.people?.length) {
+    peopleData.push(...prioritizedPersonData.people);
+    peopleDataCount += 1;
+  }
 
-      setPeople(combinedPeople);
-      setPeopleDataCount(totalPeopleCount);
-    }
-  }, [
-    prioritizedPersonData,
-    priorityPerson,
-    prioritizedPersonId,
-    shouldFetchPrioritizedPerson,
-  ]);
+  if (people?.people.length) {
+    peopleData.push(...people.people);
+    peopleDataCount += people.people_aggregate.aggregate?.count || 0;
+  }
 
   return {
     peopleData,

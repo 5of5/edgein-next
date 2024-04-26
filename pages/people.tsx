@@ -59,7 +59,7 @@ const People: NextPage<Props> = ({
 }) => {
   const [initialLoad, setInitialLoad] = useState(true);
 
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
 
@@ -75,13 +75,12 @@ const People: NextPage<Props> = ({
         user.email.endsWith(domain),
       ));
 
-  const [selectedTab, setSelectedTab] =
-    useStateParams<DashboardCategory | null>(
-      null,
-      'tab',
-      statusTag => (statusTag ? peopleTabs.indexOf(statusTag).toString() : ''),
-      index => peopleTabs[Number(index)],
-    );
+  const [selectedTab] = useStateParams<DashboardCategory | null>(
+    null,
+    'tab',
+    statusTag => (statusTag ? peopleTabs.indexOf(statusTag).toString() : ''),
+    index => peopleTabs[Number(index)],
+  );
 
   const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
@@ -148,7 +147,7 @@ const People: NextPage<Props> = ({
       offset,
       prioritizedPersonId: user?.person?.id,
       selectedTab,
-      initialLoad
+      enabled: !loading,
     },
   );
 
@@ -307,7 +306,8 @@ const People: NextPage<Props> = ({
               <>
                 <div
                   data-testid="people"
-                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                >
                   {people?.map(person => {
                     return (
                       <ElemPersonCard
