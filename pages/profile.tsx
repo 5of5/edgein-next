@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { ProfileEdit } from '@/components/profile/profile-edit';
+//import { ProfileEdit } from '@/components/profile/profile-edit';
 import { ProfileEditEmail } from '@/components/profile/profile-edit-email';
 import { ProfileEditName } from '@/components/profile/profile-edit-name';
 import { ElemButton } from '@/components/elem-button';
@@ -137,7 +137,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 				/>
   // 			)}
   // 			<div className="mb-3">
-  // 				<label className="text-slate-600 font-bold block">Position</label>
+  // 				<label className="block font-bold text-slate-600">Position</label>
   // 				<InputSelect
   // 					options={titles || []}
   // 					placeholder="Position"
@@ -161,7 +161,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 				placeholder="Founder and CEO"
   // 				className="mb-3"
   // 			/>
-  // 			<label className="text-slate-600 font-bold block">Time Period</label>
+  // 			<label className="block font-bold text-slate-600">Time Period</label>
   // 			<div className="flex items-center gap-2">
   // 				<input
   // 					type="checkbox"
@@ -170,14 +170,14 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 				/>
   // 				<span className="text-slate-600"> I currently work here</span>
   // 			</div>
-  // 			<div className="sm:flex items-center">
+  // 			<div className="items-center sm:flex">
   // 				<InputDate
   // 					name="start_date"
   // 					value={tmData.start_date}
   // 					onChange={setTMField("start_date")}
   // 					className="rounded-full"
   // 				/>
-  // 				<div className="my-1 text-center font-bold sm:my-0 sm:mx-2">to</div>
+  // 				<div className="my-1 font-bold text-center sm:my-0 sm:mx-2">to</div>
   // 				<InputDate
   // 					className="rounded-full"
   // 					value={tmData.end_date}
@@ -215,8 +215,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 		<div key={teamMember.id}>
   // 			{activeWorkspace === teamMember.id || (
   // 				<div className="grid grid-cols-12 gap-2">
-  // 					<div className="flex mt-3 mb-2 pb-3 col-start-4 col-span-8">
-  // 						<span className="text-dark-500 font-bold  col-span-3"></span>
+  // 					<div className="flex col-span-8 col-start-4 pb-3 mt-3 mb-2">
+  // 						<span className="col-span-3 font-bold text-dark-500"></span>
   // 						<div className="flex">
   // 							<ElemPhoto
   // 								wrapClass="w-12 h-12 border p-1 rounded-md"
@@ -225,7 +225,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 							/>
 
   // 							<div className="ml-5">
-  // 								<h2 className="font-bold font-Metropolis  text-slate-600">
+  // 								<h2 className="font-bold font-Metropolis text-slate-600">
   // 									{teamMember.title}
   // 								</h2>
   // 								<span className="font-thin text-slate-500 ">
@@ -245,7 +245,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 						</div>
   // 					</div>
   // 					<button
-  // 						className="text-primary-500 col-span-1"
+  // 						className="col-span-1 text-primary-500"
   // 						onClick={() => setActiveWorkspace(teamMember.id)}
   // 					>
   // 						Edit
@@ -520,8 +520,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   return (
     <DashboardLayout>
       <div className="px-4 py-3">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="font-medium text-xl">Profile Settings</h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-xl font-medium">Profile Settings</h2>
           {users?.users_by_pk?.person && (
             <ElemButton
               href={`${ROUTES.PEOPLE}/${users?.users_by_pk?.person?.slug}/`}
@@ -536,9 +536,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
         {!users?.users_by_pk?.person && (
           <EditSection heading="Claim Profile">
-            <div className="p-5 bg-primary-500 shadow rounded-lg">
-              <div className="sm:flex justify-between items-center mb-2">
-                <h2 className="font-medium text-xl text-white">
+            <div className="p-5 rounded-lg shadow bg-primary-500">
+              <div className="items-center justify-between mb-2 sm:flex">
+                <h2 className="text-xl font-medium text-white">
                   Claim your Profile to unlock some features.
                 </h2>
               </div>
@@ -561,7 +561,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
         )}
 
         {/* <EditSection heading="Profile Image">
-						<div className="sm:flex items-center">
+						<div className="items-center sm:flex">
 							<div className="relative w-32 h-32 mx-auto sm:mx-0">
 								<ElemPhoto
 									photo={person?.picture}
@@ -572,7 +572,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									placeholderClass="text-gray-300"
 								/>
 								<span
-									className="w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0 bg-slate-200 hover:bg-slate-300"
+									className="absolute bottom-0 right-0 flex items-center justify-center rounded-full w-9 h-9 bg-slate-200 hover:bg-slate-300"
 									role="button"
 									onClick={handleProfileEditClick}
 								>
@@ -588,7 +588,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							</div>
 							<ul
 								role="list"
-								className="mt-4 list-disc list-inside text-sm text-slate-600 sm:ml-8"
+								className="mt-4 text-sm list-disc list-inside text-slate-600 sm:ml-8"
 							>
 								<li>Square images work best (at least 300 x 300 pixels)</li>
 								<li>Crop your image before you upload</li>
@@ -605,9 +605,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
             <ProfileEditName />
             <ProfileEditEmail />
 
-            {users?.users_by_pk?.person && (
+            {/* {users?.users_by_pk?.person && (
               <ProfileEdit user={users?.users_by_pk} />
-            )}
+            )} */}
           </>
         )}
       </div>

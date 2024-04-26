@@ -9,7 +9,7 @@ import {
   Order_By,
   useGetEventsQuery,
 } from '@/graphql/types';
-import { ElemEventCard } from './elem-event-card';
+import { ElemEventCard } from '../events/elem-event-card';
 import moment from 'moment-timezone';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
@@ -62,7 +62,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
         <h4>Error loading featured events</h4>
       ) : isLoading ? (
         <>
-          <div className="flex overflow-hidden -mx-3">
+          <div className="flex -mx-3 overflow-hidden">
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}

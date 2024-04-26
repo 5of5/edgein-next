@@ -3,7 +3,7 @@ import { useGetNotesQuery, Notes_Bool_Exp } from '@/graphql/types';
 import { GetStaticProps } from 'next';
 import { FC, useEffect } from 'react';
 import { IconDocumentDownload } from '@/components/icons';
-import ElemNoteCard from '@/components/group/elem-note-card';
+import ElemNoteCard from '@/components/notes/elem-note-card';
 import { PlaceholderNote } from '@/components/placeholders';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
@@ -66,33 +66,33 @@ const Notes: FC<Props> = () => {
 
   return (
     <DashboardLayout>
-      <div className="pb-20 px-4">
+      <div className="px-4 pb-20">
         <div className="w-full py-3">
-          <h1 className="h-6 mr-2 font-medium text-xl">Your Notes</h1>
+          <h1 className="h-6 mr-2 text-xl font-medium">Your Notes</h1>
         </div>
 
         {error ? (
           <h4>Error loading notes</h4>
         ) : isLoading || !user ? (
-          <div className="flex flex-col gap-y-4 mt-4">
+          <div className="flex flex-col mt-4 gap-y-4">
             {Array.from({ length: 2 }, (_, i) => (
-              <div key={i} className="max-w-2xl bg-white shadow rounded-lg">
+              <div key={i} className="max-w-2xl bg-white rounded-lg shadow">
                 <PlaceholderNote />
               </div>
             ))}
           </div>
         ) : notes.length === 0 ? (
-          <div className="max-w-2xl bg-white border border-gray-300 rounded-lg px-5 py-4">
+          <div className="max-w-2xl px-5 py-4 bg-white border border-gray-300 rounded-lg">
             <div className="w-full p-12 text-center">
               <IconDocumentDownload
-                className="mx-auto h-12 w-12 text-gray-300"
+                className="w-12 h-12 mx-auto text-gray-300"
                 title="notes"
               />
               <h3 className="mt-2 text-lg font-bold">No notes to show</h3>
               <p className="mt-1 text-slate-600">
                 Get started by creating a note in a company or investor profile.
               </p>
-              <div className="mt-2 flex justify-center space-x-2">
+              <div className="flex justify-center mt-2 space-x-2">
                 <ElemButton href={ROUTES.COMPANIES} btn="white" arrow>
                   Companies
                 </ElemButton>
@@ -103,7 +103,7 @@ const Notes: FC<Props> = () => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col gap-y-4 max-w-2xl">
+          <div className="flex flex-col max-w-2xl gap-y-4">
             {notes.map(item => (
               <ElemNoteCard
                 key={item.id}

@@ -6,15 +6,14 @@ import { IconCustomList } from '@/components/icons';
 import {
   useGetListUserGroupsQuery,
   List_User_Groups_Bool_Exp,
-  List_Members_Bool_Exp,
-  useGetListMembersQuery,
-  GetListsDocument,
-  GetListsQuery,
+  useGetListQuery,
+  Lists,
+  GetListQuery,
+  GetListDocument,
 } from '@/graphql/types';
 import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { find } from 'lodash';
 import { runGraphQl } from '@/utils';
 import { getNameFromListName } from '@/utils/reaction';
 import toast, { Toaster } from 'react-hot-toast';
@@ -25,56 +24,53 @@ import { useMutation } from 'react-query';
 import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
 import { toLabel } from 'utils';
+import { ElemListBreadcrumb } from '@/components/my-list/elem-list-breadcrumb';
+import { ElemListSettings } from '@/components/my-list/elem-list-settings';
 
 type Props = {
-  list: GetListsQuery['lists'][0];
+  list: Lists;
 };
 
-const MyList: NextPage<Props> = (props: Props) => {
-  const { listAndFollows: lists, refreshProfile, user } = useUser();
+const MyList: NextPage<Props> = ({ list }) => {
+  const { user } = useUser();
   const router = useRouter();
+  const { listId } = router.query;
+
+  const [openListSettings, setOpenListSettings] = useState(false);
+  const [theList, setTheList] = useState<Lists>(list);
+
+  const listName = theList?.name === 'crap' ? 'sh**' : theList?.name;
+
+  const isListAuthor = theList?.created_by?.id === user?.id;
+  const isFollowing = theList?.list_members.some(
+    mem => mem.user?.id === user?.id,
+  );
+  const isPublicList = !!theList?.public;
+  const isCustomList = theList
+    ? !['hot', 'like', 'crap'].includes(getNameFromListName(theList))
+    : false;
 
   const {
-    data,
-    refetch,
-    isRefetching: isListMembersReFetching,
-  } = useGetListMembersQuery(
-    {
-      where: {
-        user_id: { _eq: user?.id },
-      } as List_Members_Bool_Exp,
-    },
-    {
-      enabled: Boolean(user?.id),
-      refetchOnWindowFocus: false,
-    },
-  );
-  const listMembers = data?.list_members || [];
+    data: listData,
+    refetch: refetchList,
+    isRefetching: isListDataReFetching,
+    // error,
+    // isLoading,
+  } = useGetListQuery({
+    id: parseInt(listId as string),
+  });
 
-  const [selectedListName, setSelectedListName] = useState<null | string>(
-    router.query.slug as string,
-  );
-
-  const [listDescription, setListDescription] = useState<null | string>('');
-
-  const [isCustomList, setIsCustomList] = useState(false);
-
-  const { data: groups, refetch: refetchGroups } = useGetListUserGroupsQuery(
-    {
-      where: {
-        list_id: { _eq: parseInt(router.query.listId as string) },
-      } as List_User_Groups_Bool_Exp,
-    },
-    {
-      enabled: Boolean(router.query.listId),
-    },
-  );
+  useEffect(() => {
+    if (listData) {
+      setTheList(listData?.lists[0] as Lists);
+    }
+  }, [listData]);
 
   const onSaveListName = async (name: string) => {
     const updateNameRes = await fetch(`/api/update-list/`, {
       method: 'PUT',
       body: JSON.stringify({
-        id: parseInt(router.query.listId as string),
+        id: theList?.id,
         payload: { name },
       }),
       headers: {
@@ -84,8 +80,7 @@ const MyList: NextPage<Props> = (props: Props) => {
     });
 
     if (updateNameRes.ok) {
-      setSelectedListName(name);
-      refreshProfile();
+      refetchList();
       toast.custom(
         t => (
           <div
@@ -93,7 +88,7 @@ const MyList: NextPage<Props> = (props: Props) => {
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
             }`}
           >
-            List updated
+            List name updated
           </div>
         ),
         {
@@ -108,7 +103,7 @@ const MyList: NextPage<Props> = (props: Props) => {
     const updateDescRes = await fetch(`/api/update-list/`, {
       method: 'PUT',
       body: JSON.stringify({
-        id: parseInt(router.query.listId as string),
+        id: theList?.id,
         payload: { description },
       }),
       headers: {
@@ -118,8 +113,7 @@ const MyList: NextPage<Props> = (props: Props) => {
     });
 
     if (updateDescRes.ok) {
-      setListDescription(description);
-      refreshProfile();
+      refetchList();
       toast.custom(
         t => (
           <div
@@ -138,41 +132,22 @@ const MyList: NextPage<Props> = (props: Props) => {
     }
   };
 
-  const onDeleteList = async (id: number) => {
-    const deleteRes = await fetch(`/api/delete-list/?listId=${id}`, {
-      method: 'DELETE',
-    });
+  const { data: groups, refetch: refetchGroups } = useGetListUserGroupsQuery(
+    {
+      where: {
+        list_id: { _eq: theList?.id },
+      } as List_User_Groups_Bool_Exp,
+    },
+    {
+      enabled: Boolean(theList?.id),
+    },
+  );
 
-    if (deleteRes.ok) {
-      const hotId =
-        find(lists, list => 'hot' === getNameFromListName(list))?.id || 0;
-
-      router.push(ROUTES.LISTS);
-      //router.reload();
-      refreshProfile();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
-            List Deleted
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
-    }
-  };
-
-  const onAddGroups = async (groupIds: Array<number>) => {
+  const onSaveListGroups = async (groupIds: Array<number>) => {
     const res = await fetch('/api/add-group-to-list/', {
       method: 'POST',
       body: JSON.stringify({
-        listId: parseInt(router.query.listId as string),
+        listId: theList?.id,
         groupIds,
       }),
       headers: {
@@ -183,7 +158,7 @@ const MyList: NextPage<Props> = (props: Props) => {
 
     if (res.ok) {
       refetchGroups();
-      refreshProfile();
+      refetchList();
       toast.custom(
         t => (
           <div
@@ -206,7 +181,7 @@ const MyList: NextPage<Props> = (props: Props) => {
     const res = await fetch(`/api/update-list/`, {
       method: 'PUT',
       body: JSON.stringify({
-        id: parseInt(router.query.listId as string),
+        id: theList?.id,
         payload: { public: value },
       }),
       headers: {
@@ -216,8 +191,7 @@ const MyList: NextPage<Props> = (props: Props) => {
     });
 
     if (res.ok) {
-      setTheListPublic(value);
-      refreshProfile();
+      refetchList();
       toast.custom(
         t => (
           <div
@@ -225,7 +199,7 @@ const MyList: NextPage<Props> = (props: Props) => {
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
             }`}
           >
-            List updated
+            {value ? `List set "Public"` : `List set "Private"`}
           </div>
         ),
         {
@@ -235,6 +209,33 @@ const MyList: NextPage<Props> = (props: Props) => {
       );
     }
   };
+
+  const onDeleteList = async (id: number) => {
+    const deleteRes = await fetch(`/api/delete-list/?listId=${id}`, {
+      method: 'DELETE',
+    });
+
+    if (deleteRes.ok) {
+      router.push(ROUTES.LISTS);
+      refetchList();
+      toast.custom(
+        t => (
+          <div
+            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+              t.visible ? 'animate-fade-in-up' : 'opacity-0'
+            }`}
+          >
+            List Deleted
+          </div>
+        ),
+        {
+          duration: 3000,
+          position: 'top-center',
+        },
+      );
+    }
+  };
+
   const { mutate: followList, isLoading: isFollowListLoading } = useMutation(
     () =>
       fetch('/api/toggle-follow-list', {
@@ -244,88 +245,39 @@ const MyList: NextPage<Props> = (props: Props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          listId: theListId,
+          listId: theList?.id,
           userId: user?.id,
         }),
       }),
     {
       onSuccess: () => {
-        refetch();
-        refreshProfile();
+        refetchList();
       },
     },
   );
 
-  const handleFollowList = () => {
+  const onFollowList = () => {
     followList();
+    refetchList();
   };
 
-  const [theListId, setTheListId] = useState(0);
+  const onOpenSettingsDialog = () => {
+    setOpenListSettings(true);
+  };
 
-  const [theListCreatorId, setTheListCreatorId] = useState<any>();
+  const onCloseSettingsDialog = () => {
+    setOpenListSettings(false);
+  };
 
-  const [theListPublic, setTheListPublic] = useState<boolean>(false);
-
-  const [theList, setTheList] = useState<any>();
-
-  useEffect(() => {
-    if (lists) {
-      const list = find(lists, {
-        id: parseInt((router.query.listId as string) || '0'),
-      });
-
-      if (list) {
-        setTheList(() => {
-          return list ? list : null;
-        });
-
-        setSelectedListName(() => {
-          return list ? getNameFromListName(list) : '';
-        });
-
-        setListDescription(() => {
-          return list ? list.description : '';
-        });
-
-        setTheListPublic(!!list?.public);
-
-        setTheListCreatorId(() => {
-          return list ? list.created_by_id : '';
-        });
-
-        setIsCustomList(() => {
-          return list
-            ? !['hot', 'like', 'crap'].includes(getNameFromListName(list))
-            : false;
-        });
-      } else {
-        setSelectedListName(router.query.slug as string);
-        setIsCustomList(
-          !['like', 'hot', 'sh**'].includes(router.query.slug as string),
-        );
-      }
-    }
-  }, [lists, router.query]);
-
-  const listName = selectedListName === 'crap' ? 'sh**' : selectedListName;
-
-  const isFollowing = listMembers.some(mem => mem.list_id === theList?.id);
-
-  useEffect(() => {
-    if (router.isReady) {
-      setTheListId(parseInt(router.query?.listId as string));
-    }
-  }, [router]);
-
-  const isFollowButtonLoading = isFollowListLoading || isListMembersReFetching;
+  const isFollowButtonLoading = isFollowListLoading || isListDataReFetching;
 
   return (
     <>
       <NextSeo
-        title={`List: ${toLabel(listName ? listName : '')}`}
+        title={`List: ${toLabel(theList?.name ? theList?.name : '')}`}
         description={`${
-          listDescription
-            ? `By ${theList?.created_by?.person?.name} - ${listDescription}`
+          theList?.description
+            ? `By ${theList?.created_by?.person?.name} - ${theList?.description}`
             : ''
         }`}
         openGraph={{
@@ -341,28 +293,46 @@ const MyList: NextPage<Props> = (props: Props) => {
         }}
       />
       <DashboardLayout>
+        <ElemListBreadcrumb
+          list={theList}
+          isListAuthor={isListAuthor}
+          onOpenSettingsDialog={onOpenSettingsDialog}
+        />
+
         <ElemListInformation
           list={theList}
-          groups={
-            groups?.list_user_groups?.map(group => group.user_group) || []
-          }
-          onSaveListName={onSaveListName}
-          onSaveListDescription={onSaveListDescription}
-          onDeleteList={onDeleteList}
-          onAddGroups={onAddGroups}
-          onChangePublic={onChangePublic}
+          isListAuthor={isListAuthor}
+          isPublicList={isPublicList}
           isFollowing={isFollowing}
           isFollowButtonLoading={isFollowButtonLoading}
-          onFollowList={handleFollowList}
+          onFollowList={onFollowList}
+          onOpenSettingsDialog={onOpenSettingsDialog}
+        />
+
+        <ElemListSettings
+          list={theList}
+          isPublicList={isPublicList}
+          onSaveListName={onSaveListName}
+          onSaveListDescription={onSaveListDescription}
+          onSaveListGroups={onSaveListGroups}
+          groups={
+            groups
+              ? groups?.list_user_groups?.map(group => group.user_group)
+              : []
+          }
+          onChangePublic={onChangePublic}
+          onDeleteList={onDeleteList}
+          listSettingsModal={openListSettings}
+          onCloseSettingsDialog={onCloseSettingsDialog}
         />
 
         {!user && (
           <div className="mx-4">
-            <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
+            <div className="w-full p-12 text-center border border-gray-300 rounded-lg">
               <div className="max-w-md mx-auto">
                 <IconCustomList
-                  className="mx-auto h-12 w-12 text-gray-300"
-                  title="Join Group"
+                  className="w-12 h-12 mx-auto text-gray-300"
+                  title="Join List"
                 />
                 <h3 className="mt-2 text-lg font-medium">
                   Sign in to access list and view updates.
@@ -379,47 +349,50 @@ const MyList: NextPage<Props> = (props: Props) => {
           </div>
         )}
 
-        {user &&
-          (!isCustomList || isFollowing || theListCreatorId === user?.id) && (
-            <>
-              <CompaniesList
-                createdById={theList?.created_by_id}
-                listId={theListId}
-                listName={listName}
-              />
+        {user && (!isCustomList || isFollowing || isListAuthor) && (
+          <>
+            <CompaniesList
+              createdById={theList?.created_by_id}
+              listId={theList?.id}
+              listName={listName}
+            />
 
-              <InvestorsList
-                createdById={theList?.created_by_id}
-                listId={theListId}
-                listName={listName}
-              />
+            <InvestorsList
+              createdById={theList?.created_by_id}
+              listId={theList?.id}
+              listName={listName}
+            />
 
-              <PeopleList
-                createdById={theList?.created_by_id}
-                listId={theListId}
-                listName={listName}
-              />
-            </>
-          )}
+            <PeopleList
+              createdById={theList?.created_by_id}
+              listId={theList?.id}
+              listName={listName}
+            />
+          </>
+        )}
 
-        {user && theListCreatorId != user?.id && !isFollowing && (
+        {user && !isListAuthor && !isFollowing && (
           <div className="mx-4">
-            <div className="border border-gray-300 rounded-lg w-full p-12 text-center">
+            <div className="w-full p-12 text-center border border-gray-300 rounded-lg">
               <IconCustomList
-                className="mx-auto h-12 w-12 text-gray-300"
+                className="w-12 h-12 mx-auto text-gray-300"
                 title="Follow List"
               />
               <h3 className="mt-2 text-lg font-medium">
-                Follow list to access and view updates.
+                {isPublicList
+                  ? 'Follow list to access and view updates.'
+                  : 'Private List. Only list author can view this list.'}
               </h3>
-              <ElemButton
-                btn="purple"
-                loading={isFollowButtonLoading}
-                onClick={handleFollowList}
-                className="mt-2"
-              >
-                Follow
-              </ElemButton>
+              {isPublicList && (
+                <ElemButton
+                  btn="purple"
+                  loading={isFollowButtonLoading}
+                  onClick={onFollowList}
+                  className="mt-2"
+                >
+                  Follow
+                </ElemButton>
+              )}
             </div>
           </div>
         )}
@@ -430,29 +403,23 @@ const MyList: NextPage<Props> = (props: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const { data: lists } = await runGraphQl<GetListsQuery>(
-    GetListsDocument,
-    {
-      limit: null,
-      offset: null,
-      where: {
-        id: { _eq: parseInt(context.params?.listId as string) },
-      },
-    },
+  const { data: list } = await runGraphQl<GetListQuery>(
+    GetListDocument,
+    { id: context.params?.listId },
     context.req.cookies,
   );
 
-  if (!lists?.lists[0]) {
+  const theList = list?.lists[0];
+
+  if (!theList) {
     return {
       notFound: true,
     };
   }
 
-  const list = lists?.lists[0];
-
   return {
     props: {
-      list,
+      list: theList,
     },
   };
 };
