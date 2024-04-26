@@ -127,7 +127,6 @@ select_permissions:
         - search_count
         - sentiment
         - slug
-        - smart_contract
         - status_tags
         - tags
         - telegram
@@ -169,7 +168,6 @@ select_permissions:
         - notes
         - overview
         - slug
-        - smart_contract
         - tags
         - total_employees
         - total_valuation
