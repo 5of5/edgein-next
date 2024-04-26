@@ -282,6 +282,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   )}
                   linkedIn={person.linkedin}
                   investmentsLength={person.investments?.length}
+                  smartContract={person.smart_contract}
                   emails={personEmails}
                   github={person.github}
                   twitter={person.twitter_url}

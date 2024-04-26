@@ -17,14 +17,14 @@ import { ElemVelocity } from '@/components/company/elem-velocity';
 import { ElemOrganizationActivity } from '@/components/elem-organization-activity';
 import {
   Companies,
-  GetCompanyDocument,
-  GetCompanyQuery,
+  GetCompanyBySlugDocument,
+  GetCompanyBySlugQuery,
   Investment_Rounds,
   News,
-  useGetCompanyQuery,
   GetNewsArticlesQuery,
   GetNewsArticlesDocument,
   Order_By,
+  useGetCompanyBySlugQuery,
 } from '@/graphql/types';
 import {
   COMPANY_PROFILE_DEFAULT_TAGS_LIMIT,
@@ -89,7 +89,7 @@ const Company: NextPage<Props> = (props: Props) => {
     data: companyData,
     error,
     isLoading,
-  } = useGetCompanyQuery({
+  } = useGetCompanyBySlugQuery({
     slug: companyId as string,
   });
 
@@ -408,6 +408,7 @@ const Company: NextPage<Props> = (props: Props) => {
                 careerPage={company.careers_page}
                 yearFounded={company.year_founded}
                 linkedIn={company.company_linkedin}
+                smartContract={company.smart_contract}
                 github={company.github}
                 twitter={company.twitter}
                 location={company.location}
@@ -522,8 +523,8 @@ const Company: NextPage<Props> = (props: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const { data: companies } = await runGraphQl<GetCompanyQuery>(
-    GetCompanyDocument,
+  const { data: companies } = await runGraphQl<GetCompanyBySlugQuery>(
+    GetCompanyBySlugDocument,
     { slug: context.params?.companyId },
     context.req.cookies,
   );

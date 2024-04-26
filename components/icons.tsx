@@ -2394,6 +2394,30 @@ export const IconContributor: FC<IconProps> = ({
   );
 };
 
+export const IconContract: FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      stroke="currentColor"
+      className={className}
+    >
+      <title>{title ? title : 'Contract'}</title>
+      <path
+        d="M20 14.25V11.625C20 10.7299 19.6444 9.87145 19.0115 9.23851C18.3786 8.60558 17.5201 8.25 16.625 8.25H15.125C14.8266 8.25 14.5405 8.13147 14.3295 7.9205C14.1185 7.70952 14 7.42337 14 7.125V5.625C14 4.72989 13.6444 3.87145 13.0115 3.23851C12.3785 2.60558 11.5201 2.25 10.625 2.25H8.75M10 21C17.875 14 11 26.5 19.0115 18.5M5 6.5V3.375C5 2.754 5.504 2.25 6.125 2.25H11C13.3869 2.25 15.6761 3.19821 17.364 4.88604C19.0518 6.57387 20 8.86305 20 11.25V15.9375M5 10.625C5 10.625 5 9.125 6.25 9.125C7.5 9.125 7.5 10.625 7.5 10.625V18.625L6.25 21.3656L5 18.625V10.625Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
 export const IconContributorSolid: FC<IconProps> = ({ className, title }) => {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
