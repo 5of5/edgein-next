@@ -257,6 +257,7 @@ fragment UserForToken on users {
     status
   }
   person {
+    id
     name
     picture
   }

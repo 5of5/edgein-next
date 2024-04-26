@@ -44,6 +44,7 @@ import { IconGroup, IconTable } from '@/components/icons';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { PeopleTable } from '@/components/people/elem-people-table';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { useFetchPeopleWithPriority } from '@/hooks/use-fetch-people-with-priority';
 
 type Props = {
   peopleTabs: DashboardCategory[];
@@ -140,32 +141,23 @@ const People: NextPage<Props> = ({
     return limit;
   };
 
-  const {
-    data: peopleData,
-    error,
-    isLoading,
-  } = useGetPeopleQuery(
+  const { isLoading, peopleDataCount, peopleData } = useFetchPeopleWithPriority(
     {
-      offset: offset,
-      limit: getLimit(),
-      where: filters as People_Bool_Exp,
-      orderBy: [
-        selectedTab?.value === 'new'
-          ? ({ created_at: Order_By.Desc } as People_Order_By)
-          : ({ updated_at: Order_By.DescNullsLast } as People_Order_By),
-      ],
+      filters,
+      limit,
+      offset,
+      prioritizedPersonId: user?.person?.id,
+      selectedTab,
+      initialLoad
     },
-    { refetchOnWindowFocus: false },
   );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
   }
 
-  const people = initialLoad ? initialPeople : peopleData?.people;
-  const people_aggregate = initialLoad
-    ? peopleCount
-    : peopleData?.people_aggregate?.aggregate?.count || 0;
+  const people = initialLoad ? initialPeople : peopleData;
+  const people_aggregate = initialLoad ? peopleCount : peopleDataCount;
 
   const getTotalItems = () => {
     if (selectedTab?.value === 'new') {
@@ -315,8 +307,7 @@ const People: NextPage<Props> = ({
               <>
                 <div
                   data-testid="people"
-                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                >
+                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {people?.map(person => {
                     return (
                       <ElemPersonCard

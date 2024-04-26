@@ -2116,6 +2116,8 @@ export type Companies = {
   coin: Maybe<Coins>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
+  company_size: Maybe<Scalars['Int']>;
+  country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Scalars['Int'];
@@ -2146,12 +2148,14 @@ export type Companies = {
   /** An aggregate relationship */
   investment_rounds_aggregate: Investment_Rounds_Aggregate;
   investor_amount: Maybe<Scalars['bigint']>;
+  latitude: Maybe<Scalars['float8']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   library: Maybe<Scalars['jsonb']>;
   location: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   logo: Maybe<Scalars['jsonb']>;
+  longitude: Maybe<Scalars['float8']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -2394,10 +2398,13 @@ export type Companies_Append_Input = {
 export type Companies_Avg_Fields = {
   __typename?: 'companies_avg_fields';
   coin_id: Maybe<Scalars['Float']>;
+  company_size: Maybe<Scalars['Float']>;
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -2417,6 +2424,8 @@ export type Companies_Bool_Exp = {
   coin: InputMaybe<Coins_Bool_Exp>;
   coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
+  company_size: InputMaybe<Int_Comparison_Exp>;
+  country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamp_Comparison_Exp>;
   datapoints_count: InputMaybe<Int_Comparison_Exp>;
@@ -2441,12 +2450,14 @@ export type Companies_Bool_Exp = {
   investment_rounds: InputMaybe<Investment_Rounds_Bool_Exp>;
   investment_rounds_aggregate: InputMaybe<Investment_Rounds_Aggregate_Bool_Exp>;
   investor_amount: InputMaybe<Bigint_Comparison_Exp>;
+  latitude: InputMaybe<Float8_Comparison_Exp>;
   layer: InputMaybe<String_Comparison_Exp>;
   layer_detail: InputMaybe<String_Comparison_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
+  longitude: InputMaybe<Float8_Comparison_Exp>;
   market_verified: InputMaybe<String_Comparison_Exp>;
   medium: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
@@ -2843,10 +2854,13 @@ export type Companies_Edit_Access_Variance_Order_By = {
 /** input type for incrementing numeric columns in table "companies" */
 export type Companies_Inc_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
+  company_size: InputMaybe<Scalars['Int']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
+  latitude: InputMaybe<Scalars['float8']>;
+  longitude: InputMaybe<Scalars['float8']>;
   num_of_views: InputMaybe<Scalars['Int']>;
   search_count: InputMaybe<Scalars['Int']>;
   total_employees: InputMaybe<Scalars['numeric']>;
@@ -2863,6 +2877,8 @@ export type Companies_Insert_Input = {
   coin: InputMaybe<Coins_Obj_Rel_Insert_Input>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
+  company_size: InputMaybe<Scalars['Int']>;
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -2884,12 +2900,14 @@ export type Companies_Insert_Input = {
   instagram: InputMaybe<Scalars['String']>;
   investment_rounds: InputMaybe<Investment_Rounds_Arr_Rel_Insert_Input>;
   investor_amount: InputMaybe<Scalars['bigint']>;
+  latitude: InputMaybe<Scalars['float8']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  longitude: InputMaybe<Scalars['float8']>;
   market_verified: InputMaybe<Scalars['String']>;
   medium: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
@@ -2933,6 +2951,8 @@ export type Companies_Max_Fields = {
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
+  company_size: Maybe<Scalars['Int']>;
+  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -2950,9 +2970,11 @@ export type Companies_Max_Fields = {
   id: Maybe<Scalars['Int']>;
   instagram: Maybe<Scalars['String']>;
   investor_amount: Maybe<Scalars['bigint']>;
+  latitude: Maybe<Scalars['float8']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
+  longitude: Maybe<Scalars['float8']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -2990,6 +3012,8 @@ export type Companies_Min_Fields = {
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
+  company_size: Maybe<Scalars['Int']>;
+  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3007,9 +3031,11 @@ export type Companies_Min_Fields = {
   id: Maybe<Scalars['Int']>;
   instagram: Maybe<Scalars['String']>;
   investor_amount: Maybe<Scalars['bigint']>;
+  latitude: Maybe<Scalars['float8']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
+  longitude: Maybe<Scalars['float8']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -3070,6 +3096,8 @@ export type Companies_Order_By = {
   coin: InputMaybe<Coins_Order_By>;
   coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
+  company_size: InputMaybe<Order_By>;
+  country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
   datapoints_count: InputMaybe<Order_By>;
@@ -3091,12 +3119,14 @@ export type Companies_Order_By = {
   instagram: InputMaybe<Order_By>;
   investment_rounds_aggregate: InputMaybe<Investment_Rounds_Aggregate_Order_By>;
   investor_amount: InputMaybe<Order_By>;
+  latitude: InputMaybe<Order_By>;
   layer: InputMaybe<Order_By>;
   layer_detail: InputMaybe<Order_By>;
   library: InputMaybe<Order_By>;
   location: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
+  longitude: InputMaybe<Order_By>;
   market_verified: InputMaybe<Order_By>;
   medium: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
@@ -3162,6 +3192,10 @@ export enum Companies_Select_Column {
   /** column name */
   CompanyLinkedin = 'company_linkedin',
   /** column name */
+  CompanySize = 'company_size',
+  /** column name */
+  Country = 'country',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
@@ -3198,6 +3232,8 @@ export enum Companies_Select_Column {
   /** column name */
   InvestorAmount = 'investor_amount',
   /** column name */
+  Latitude = 'latitude',
+  /** column name */
   Layer = 'layer',
   /** column name */
   LayerDetail = 'layer_detail',
@@ -3209,6 +3245,8 @@ export enum Companies_Select_Column {
   LocationJson = 'location_json',
   /** column name */
   Logo = 'logo',
+  /** column name */
+  Longitude = 'longitude',
   /** column name */
   MarketVerified = 'market_verified',
   /** column name */
@@ -3276,6 +3314,8 @@ export type Companies_Set_Input = {
   careers_page: InputMaybe<Scalars['String']>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
+  company_size: InputMaybe<Scalars['Int']>;
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3294,12 +3334,14 @@ export type Companies_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
+  latitude: InputMaybe<Scalars['float8']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  longitude: InputMaybe<Scalars['float8']>;
   market_verified: InputMaybe<Scalars['String']>;
   medium: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
@@ -3334,10 +3376,13 @@ export type Companies_Set_Input = {
 export type Companies_Stddev_Fields = {
   __typename?: 'companies_stddev_fields';
   coin_id: Maybe<Scalars['Float']>;
+  company_size: Maybe<Scalars['Float']>;
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -3348,10 +3393,13 @@ export type Companies_Stddev_Fields = {
 export type Companies_Stddev_Pop_Fields = {
   __typename?: 'companies_stddev_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
+  company_size: Maybe<Scalars['Float']>;
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -3362,10 +3410,13 @@ export type Companies_Stddev_Pop_Fields = {
 export type Companies_Stddev_Samp_Fields = {
   __typename?: 'companies_stddev_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
+  company_size: Maybe<Scalars['Float']>;
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -3389,6 +3440,8 @@ export type Companies_Stream_Cursor_Value_Input = {
   careers_page: InputMaybe<Scalars['String']>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
+  company_size: InputMaybe<Scalars['Int']>;
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3407,12 +3460,14 @@ export type Companies_Stream_Cursor_Value_Input = {
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
+  latitude: InputMaybe<Scalars['float8']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  longitude: InputMaybe<Scalars['float8']>;
   market_verified: InputMaybe<Scalars['String']>;
   medium: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
@@ -3447,10 +3502,13 @@ export type Companies_Stream_Cursor_Value_Input = {
 export type Companies_Sum_Fields = {
   __typename?: 'companies_sum_fields';
   coin_id: Maybe<Scalars['Int']>;
+  company_size: Maybe<Scalars['Int']>;
   datapoints_count: Maybe<Scalars['Int']>;
   enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
+  latitude: Maybe<Scalars['float8']>;
+  longitude: Maybe<Scalars['float8']>;
   num_of_views: Maybe<Scalars['Int']>;
   search_count: Maybe<Scalars['Int']>;
   total_employees: Maybe<Scalars['numeric']>;
@@ -3473,6 +3531,10 @@ export enum Companies_Update_Column {
   CoinId = 'coin_id',
   /** column name */
   CompanyLinkedin = 'company_linkedin',
+  /** column name */
+  CompanySize = 'company_size',
+  /** column name */
+  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3510,6 +3572,8 @@ export enum Companies_Update_Column {
   /** column name */
   InvestorAmount = 'investor_amount',
   /** column name */
+  Latitude = 'latitude',
+  /** column name */
   Layer = 'layer',
   /** column name */
   LayerDetail = 'layer_detail',
@@ -3521,6 +3585,8 @@ export enum Companies_Update_Column {
   LocationJson = 'location_json',
   /** column name */
   Logo = 'logo',
+  /** column name */
+  Longitude = 'longitude',
   /** column name */
   MarketVerified = 'market_verified',
   /** column name */
@@ -3602,10 +3668,13 @@ export type Companies_Updates = {
 export type Companies_Var_Pop_Fields = {
   __typename?: 'companies_var_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
+  company_size: Maybe<Scalars['Float']>;
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -3616,10 +3685,13 @@ export type Companies_Var_Pop_Fields = {
 export type Companies_Var_Samp_Fields = {
   __typename?: 'companies_var_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
+  company_size: Maybe<Scalars['Float']>;
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -3630,10 +3702,13 @@ export type Companies_Var_Samp_Fields = {
 export type Companies_Variance_Fields = {
   __typename?: 'companies_variance_fields';
   coin_id: Maybe<Scalars['Float']>;
+  company_size: Maybe<Scalars['Float']>;
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
   search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -19198,8 +19273,10 @@ export type People = {
   investors: Array<Investors>;
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
+  latitude: Maybe<Scalars['float8']>;
   library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
+  longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   /** An array relationship */
   news_links: Array<News_Person>;
@@ -19387,6 +19464,8 @@ export type People_Avg_Fields = {
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "people". All fields are combined with a logical 'AND'. */
@@ -19412,8 +19491,10 @@ export type People_Bool_Exp = {
   investments_aggregate: InputMaybe<Investments_Aggregate_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Bool_Exp>;
+  latitude: InputMaybe<Float8_Comparison_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
+  longitude: InputMaybe<Float8_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Person_Bool_Exp>;
   news_links_aggregate: InputMaybe<News_Person_Aggregate_Bool_Exp>;
@@ -19786,6 +19867,8 @@ export type People_Inc_Input = {
   datapoints_count: InputMaybe<Scalars['Int']>;
   enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  latitude: InputMaybe<Scalars['float8']>;
+  longitude: InputMaybe<Scalars['float8']>;
 };
 
 /** input type for inserting data into table "people" */
@@ -19806,8 +19889,10 @@ export type People_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
+  latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
   people_computed_data: InputMaybe<People_Computed_Data_Obj_Rel_Insert_Input>;
@@ -19839,7 +19924,9 @@ export type People_Max_Fields = {
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  latitude: Maybe<Scalars['float8']>;
   linkedin: Maybe<Scalars['String']>;
+  longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
@@ -19866,7 +19953,9 @@ export type People_Min_Fields = {
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  latitude: Maybe<Scalars['float8']>;
   linkedin: Maybe<Scalars['String']>;
+  longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
@@ -19919,8 +20008,10 @@ export type People_Order_By = {
   id: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
+  latitude: InputMaybe<Order_By>;
   library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
+  longitude: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
   people_computed_data: InputMaybe<People_Computed_Data_Order_By>;
@@ -19978,9 +20069,13 @@ export enum People_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Latitude = 'latitude',
+  /** column name */
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
+  /** column name */
+  Longitude = 'longitude',
   /** column name */
   Name = 'name',
   /** column name */
@@ -20020,8 +20115,10 @@ export type People_Set_Input = {
   facebook_url: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
@@ -20041,6 +20138,8 @@ export type People_Stddev_Fields = {
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -20049,6 +20148,8 @@ export type People_Stddev_Pop_Fields = {
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -20057,6 +20158,8 @@ export type People_Stddev_Samp_Fields = {
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
 };
 
 /** Streaming cursor of the table "people" */
@@ -20082,8 +20185,10 @@ export type People_Stream_Cursor_Value_Input = {
   facebook_url: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
@@ -20103,6 +20208,8 @@ export type People_Sum_Fields = {
   datapoints_count: Maybe<Scalars['Int']>;
   enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  latitude: Maybe<Scalars['float8']>;
+  longitude: Maybe<Scalars['float8']>;
 };
 
 /** update columns of table "people" */
@@ -20132,9 +20239,13 @@ export enum People_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Latitude = 'latitude',
+  /** column name */
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
+  /** column name */
+  Longitude = 'longitude',
   /** column name */
   Name = 'name',
   /** column name */
@@ -20184,6 +20295,8 @@ export type People_Var_Pop_Fields = {
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -20192,6 +20305,8 @@ export type People_Var_Samp_Fields = {
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -20200,6 +20315,8 @@ export type People_Variance_Fields = {
   datapoints_count: Maybe<Scalars['Float']>;
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
 };
 
 export type Query_Root = {
@@ -28070,6 +28187,7 @@ export type Users_Variance_Fields = {
 /** columns and relationships of "vc_firms" */
 export type Vc_Firms = {
   __typename?: 'vc_firms';
+  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
   datapoints_count: Scalars['Int'];
@@ -28097,11 +28215,13 @@ export type Vc_Firms = {
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
   latest_investment: Maybe<Scalars['date']>;
+  latitude: Maybe<Scalars['float8']>;
   library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   logo: Maybe<Scalars['jsonb']>;
+  longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   /** An array relationship */
   news_links: Array<News_Organizations>;
@@ -28331,6 +28451,8 @@ export type Vc_Firms_Avg_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
@@ -28342,6 +28464,7 @@ export type Vc_Firms_Bool_Exp = {
   _and: InputMaybe<Array<Vc_Firms_Bool_Exp>>;
   _not: InputMaybe<Vc_Firms_Bool_Exp>;
   _or: InputMaybe<Array<Vc_Firms_Bool_Exp>>;
+  country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamptz_Comparison_Exp>;
   datapoints_count: InputMaybe<Int_Comparison_Exp>;
@@ -28361,11 +28484,13 @@ export type Vc_Firms_Bool_Exp = {
   investors: InputMaybe<Investors_Bool_Exp>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Bool_Exp>;
   latest_investment: InputMaybe<Date_Comparison_Exp>;
+  latitude: InputMaybe<Float8_Comparison_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
+  longitude: InputMaybe<Float8_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Organizations_Bool_Exp>;
   news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Bool_Exp>;
@@ -28753,6 +28878,8 @@ export type Vc_Firms_Inc_Input = {
   enrichment_priority: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investment_amount_total: InputMaybe<Scalars['bigint']>;
+  latitude: InputMaybe<Scalars['float8']>;
+  longitude: InputMaybe<Scalars['float8']>;
   num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
   num_of_views: InputMaybe<Scalars['Int']>;
@@ -28761,6 +28888,7 @@ export type Vc_Firms_Inc_Input = {
 
 /** input type for inserting data into table "vc_firms" */
 export type Vc_Firms_Insert_Input = {
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamptz']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -28776,11 +28904,13 @@ export type Vc_Firms_Insert_Input = {
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
   latest_investment: InputMaybe<Scalars['date']>;
+  latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
   num_of_exits: InputMaybe<Scalars['Int']>;
@@ -28804,6 +28934,7 @@ export type Vc_Firms_Insert_Input = {
 /** aggregate max on columns */
 export type Vc_Firms_Max_Fields = {
   __typename?: 'vc_firms_max_fields';
+  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -28814,8 +28945,10 @@ export type Vc_Firms_Max_Fields = {
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
   latest_investment: Maybe<Scalars['date']>;
+  latitude: Maybe<Scalars['float8']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
+  longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
@@ -28834,6 +28967,7 @@ export type Vc_Firms_Max_Fields = {
 /** aggregate min on columns */
 export type Vc_Firms_Min_Fields = {
   __typename?: 'vc_firms_min_fields';
+  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamptz']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -28844,8 +28978,10 @@ export type Vc_Firms_Min_Fields = {
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
   latest_investment: Maybe<Scalars['date']>;
+  latitude: Maybe<Scalars['float8']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
+  longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
@@ -28886,6 +29022,7 @@ export type Vc_Firms_On_Conflict = {
 
 /** Ordering options when selecting data from "vc_firms". */
 export type Vc_Firms_Order_By = {
+  country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
   datapoints_count: InputMaybe<Order_By>;
@@ -28901,11 +29038,13 @@ export type Vc_Firms_Order_By = {
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
   latest_investment: InputMaybe<Order_By>;
+  latitude: InputMaybe<Order_By>;
   library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
   location: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
+  longitude: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
   num_of_exits: InputMaybe<Order_By>;
@@ -28944,6 +29083,8 @@ export type Vc_Firms_Prepend_Input = {
 /** select columns of table "vc_firms" */
 export enum Vc_Firms_Select_Column {
   /** column name */
+  Country = 'country',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
@@ -28966,6 +29107,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   LatestInvestment = 'latest_investment',
   /** column name */
+  Latitude = 'latitude',
+  /** column name */
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
@@ -28975,6 +29118,8 @@ export enum Vc_Firms_Select_Column {
   LocationJson = 'location_json',
   /** column name */
   Logo = 'logo',
+  /** column name */
+  Longitude = 'longitude',
   /** column name */
   Name = 'name',
   /** column name */
@@ -29011,6 +29156,7 @@ export enum Vc_Firms_Select_Column {
 
 /** input type for updating data in table "vc_firms" */
 export type Vc_Firms_Set_Input = {
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamptz']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -29022,11 +29168,13 @@ export type Vc_Firms_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   investment_amount_total: InputMaybe<Scalars['bigint']>;
   latest_investment: InputMaybe<Scalars['date']>;
+  latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
@@ -29052,6 +29200,8 @@ export type Vc_Firms_Stddev_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
@@ -29065,6 +29215,8 @@ export type Vc_Firms_Stddev_Pop_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
@@ -29078,6 +29230,8 @@ export type Vc_Firms_Stddev_Samp_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
@@ -29094,6 +29248,7 @@ export type Vc_Firms_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Vc_Firms_Stream_Cursor_Value_Input = {
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamptz']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -29105,11 +29260,13 @@ export type Vc_Firms_Stream_Cursor_Value_Input = {
   id: InputMaybe<Scalars['Int']>;
   investment_amount_total: InputMaybe<Scalars['bigint']>;
   latest_investment: InputMaybe<Scalars['date']>;
+  latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
@@ -29135,6 +29292,8 @@ export type Vc_Firms_Sum_Fields = {
   enrichment_priority: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
+  latitude: Maybe<Scalars['float8']>;
+  longitude: Maybe<Scalars['float8']>;
   num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
   num_of_views: Maybe<Scalars['Int']>;
@@ -29143,6 +29302,8 @@ export type Vc_Firms_Sum_Fields = {
 
 /** update columns of table "vc_firms" */
 export enum Vc_Firms_Update_Column {
+  /** column name */
+  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -29166,6 +29327,8 @@ export enum Vc_Firms_Update_Column {
   /** column name */
   LatestInvestment = 'latest_investment',
   /** column name */
+  Latitude = 'latitude',
+  /** column name */
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
@@ -29175,6 +29338,8 @@ export enum Vc_Firms_Update_Column {
   LocationJson = 'location_json',
   /** column name */
   Logo = 'logo',
+  /** column name */
+  Longitude = 'longitude',
   /** column name */
   Name = 'name',
   /** column name */
@@ -29235,6 +29400,8 @@ export type Vc_Firms_Var_Pop_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
@@ -29248,6 +29415,8 @@ export type Vc_Firms_Var_Samp_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
@@ -29261,6 +29430,8 @@ export type Vc_Firms_Variance_Fields = {
   enrichment_priority: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investment_amount_total: Maybe<Scalars['Float']>;
+  latitude: Maybe<Scalars['Float']>;
+  longitude: Maybe<Scalars['Float']>;
   num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
   num_of_views: Maybe<Scalars['Float']>;
@@ -30667,21 +30838,21 @@ export type GetUserByIdQueryVariables = Exact<{
 
 export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, use_credits_system: boolean, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
-export type UserForTokenFragment = { __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null };
+export type UserForTokenFragment = { __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null };
 
 export type GetUserByIdForTokenQueryVariables = Exact<{
   id: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetUserByIdForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByIdForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null }> };
 
 export type GetUserByEmailForTokenQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -30939,6 +31110,7 @@ export const UserForTokenFragmentDoc = `
     status
   }
   person {
+    id
     name
     picture
   }
