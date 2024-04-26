@@ -169,4 +169,3 @@ jobs:
           PG_CONNECTION_STRING: ${{ steps.tf-outputs.outputs.pg_connection_string }}
         shell: bash
         run: npx ts-node update_data_fields.ts
-

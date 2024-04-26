@@ -1,7 +1,7 @@
 name: apply hasura and update data_fields
 on:
   push:
-    branches: 
+    branches:
       - main
   workflow_dispatch:
     inputs:

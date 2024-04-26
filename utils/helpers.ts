@@ -140,17 +140,22 @@ export const getSelectableWeb3Tags = () => {
 };
 
 export const getTagChoicesByLibraries = (libraries: Library[]) => {
-  let tagChoices: Tag[] = [];
+  if (libraries?.includes('Web3') && libraries?.includes('AI')) {
+    return [
+      ...aiTags.filter(tag => tag.id.match(/- AI/g)),
+      ...web3Tags.filter(tag => tag.id.match(/- Web3/g)),
+    ];
+  }
 
   if (libraries?.includes('AI')) {
-    tagChoices = tagChoices.concat(aiTags);
+    return aiTags.filter(tag => !tag.id.match(/- AI/g));
   }
 
   if (libraries?.includes('Web3')) {
-    tagChoices = tagChoices.concat(web3Tags);
+    return web3Tags.filter(tag => !tag.id.match(/- Web3/g));
   }
 
-  return tagChoices;
+  return [];
 };
 
 export const getAllTags = () => [...web3Tags, ...aiTags];
