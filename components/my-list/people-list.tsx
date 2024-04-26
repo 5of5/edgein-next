@@ -6,17 +6,15 @@ import { TableEmptyCell } from './table-empty-cell';
 import { PlaceholderTable } from '../placeholders';
 import { Table } from './table';
 import { ROUTES } from '@/routes';
-import { useAuth } from '@/hooks/use-auth';
 
 type Props = {
   listId: number;
   listName: string | null;
-  createdById: number;
+  isListAuthor: boolean;
 };
 
-export const PeopleList: FC<Props> = ({ listId, listName, createdById }) => {
+export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
   const [pageIndex, setPageIndex] = useState(0);
-  const { user } = useAuth();
   const [query, setQuery] = useState('');
   const limit = 10;
   const {
@@ -36,8 +34,6 @@ export const PeopleList: FC<Props> = ({ listId, listName, createdById }) => {
     },
   );
 
-  const isCreatedByUser = createdById === user?.id;
-
   const people = listPeople?.follows_people;
 
   const totalItems =
@@ -52,7 +48,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, createdById }) => {
           <div>
             <a
               href={`${ROUTES.PEOPLE}/` + props.row.original?.person?.slug}
-              className="flex items-center space-x-3 shrink-0 transition-all"
+              className="flex items-center space-x-3 transition-all shrink-0"
             >
               <ElemPhoto
                 photo={props.row.original?.person?.picture}
@@ -61,7 +57,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, createdById }) => {
                 imgAlt={props.value}
                 placeholderClass="text-gray-300"
               />
-              <p className="font-medium line-clamp-2 break-words hover:underline">
+              <p className="font-medium break-words line-clamp-2 hover:underline">
                 {props.value}
               </p>
             </a>
@@ -195,9 +191,9 @@ export const PeopleList: FC<Props> = ({ listId, listName, createdById }) => {
 
   if (isLoading) {
     return (
-      <div className="mt-4 px-4">
-        <h2 className="font-medium mb-2">People</h2>
-        <div className="rounded-lg border border-gray-200">
+      <div className="px-4 mt-4">
+        <h2 className="mb-2 font-medium">People</h2>
+        <div className="border border-gray-200 rounded-lg">
           <PlaceholderTable />
         </div>
       </div>
@@ -206,7 +202,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, createdById }) => {
 
   return (
     <Table
-      disabledCheckbox={!isCreatedByUser}
+      disabledCheckbox={!isListAuthor}
       listName={listName}
       resourceType="people"
       columns={columns}
