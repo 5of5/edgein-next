@@ -2,6 +2,7 @@ import {
   Order_By,
   People_Bool_Exp,
   People_Order_By,
+  useGetPeopleByIdQuery,
   useGetPeopleQuery,
 } from '@/graphql/types';
 import { DashboardCategory, DeepPartial } from '@/types/common';
@@ -29,20 +30,9 @@ export const useFetchPeopleWithPriority = ({
     data: prioritizedPersonData,
     isLoading: isLoadingPrioritized,
     error: errorPrioritized,
-  } = useGetPeopleQuery(
+  } = useGetPeopleByIdQuery(
     {
-      offset: 0,
-      limit: 1,
-      where: {
-        _and: [
-          {
-            id: {
-              _eq: prioritizedPersonId,
-            },
-          },
-        ],
-      } as People_Bool_Exp,
-      orderBy: { created_at: Order_By.Desc } as People_Order_By,
+      id: prioritizedPersonId!,
     },
     {
       enabled: enabled && shouldFetchPrioritizedPerson,
@@ -50,14 +40,14 @@ export const useFetchPeopleWithPriority = ({
     },
   );
 
-  const effectiveFilters = !!prioritizedPersonData?.people[0]
+  const effectiveFilters = prioritizedPersonData?.people[0]
     ? {
         ...filters,
         _and: [...(filters._and || []), { id: { _neq: prioritizedPersonId } }],
       }
     : filters;
 
-  const adjustedLimit = !!prioritizedPersonData?.people[0] ? limit - 1 : limit;
+  const adjustedLimit = prioritizedPersonData?.people[0] ? limit - 1 : limit;
 
   const {
     data: people,
