@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { IconSearch, IconX } from './icons';
+import { IconSearch, IconX } from '../icons';
 
 type Props = {
   className?: string;
@@ -60,17 +60,17 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
           {label}
         </label>
       )}
-      {sublabel && <p className="text-sm mb-2 text-slate-600">{sublabel}</p>}
+      {sublabel && <p className="mb-2 text-sm text-slate-600">{sublabel}</p>}
       <div>
-        <div className="rounded-md w-full flex items-center mt-1 px-2 ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500">
-          <IconSearch className="flex-none h-5 w-5" />
+        <div className="flex items-center w-full px-2 mt-1 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500">
+          <IconSearch className="flex-none w-5 h-5" />
           <input
             value={inputValue}
             name={name}
             onChange={event => setInputValue(event.target.value)}
             type="text"
             onKeyDown={event => onEnterTag(event)}
-            className="w-full appearance-none border-none block px-3 h-10 focus:ring-0 placeholder:text-slate-400"
+            className="block w-full h-10 px-3 border-none appearance-none focus:ring-0 placeholder:text-slate-400"
             placeholder={placeholder}
           />
         </div>
@@ -79,9 +79,9 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
             return (
               <div
                 key={index}
-                className="bg-primary-50 inline-flex items-center gap-1 text-sm px-2 py-1 rounded-full border border-primary-500"
+                className="inline-flex items-center gap-1 px-2 py-1 text-sm border rounded-full bg-primary-50 border-primary-500"
               >
-                <span className="truncate max-w-xs text-primary-500 font-bold">
+                <span className="max-w-xs font-bold truncate text-primary-500">
                   {tag}
                 </span>
                 <button

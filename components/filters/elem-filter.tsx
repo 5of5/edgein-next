@@ -18,7 +18,7 @@ import { InputRadio } from '../input-radio';
 import { ElemMultiRangeSlider } from '../elem-multi-range-slider';
 import { InputDate } from '../input-date';
 import { ElemFilterPopup } from './elem-filter-popup';
-import ElemAddressFilter from '../elem-address-filter';
+import ElemAddressFilter from './elem-address-filter';
 import { InputText } from '../input-text';
 import { InputSelect } from '../input-select';
 import { eventSizeChoices, ISO_DATE_FORMAT } from '@/utils/constants';
@@ -411,7 +411,7 @@ export const ElemFilter: FC<Props> = ({
 
   return (
     <section className={`${className}`}>
-      <div className="flex flex-col flex-wrap w-full gap-3 items-start lg:flex-row lg:items-center">
+      <div className="flex flex-col flex-wrap items-start w-full gap-3 lg:flex-row lg:items-center">
         {filters &&
           (Object.keys(filters) as FilterOptionKeys[]).map(option => {
             const optionMetadata = getFilterOptionMetadata(
@@ -503,7 +503,7 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-medium text-sm">
+                  <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex items-center flex-wrap gap-1 mt-1.5">
@@ -518,7 +518,7 @@ export const ElemFilter: FC<Props> = ({
                       className="w-16 !rounded-2lg"
                     />
                   </div>
-                  <p className="text-sm font-normal text-gray-500 mt-3">
+                  <p className="mt-3 text-sm font-normal text-gray-500">
                     miles from this address:
                   </p>
                   <div className="flex flex-col gap-2 mt-1.5">
@@ -628,12 +628,12 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-medium text-sm mb-3">
+                  <div className="mb-3 text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex items-center space-x-4">
                     <div className="grow">
-                      <div className="text-sm text-slate-600 mb-2">Min</div>
+                      <div className="mb-2 text-sm text-slate-600">Min</div>
                       <input
                         name={`${option}.minVal`}
                         type="text"
@@ -641,12 +641,12 @@ export const ElemFilter: FC<Props> = ({
                         onChange={onChangeRangeInput}
                         onBlur={onBlurAmount}
                         onFocus={onFocusAmount}
-                        className="appearance-none border-none w-full border border-slate-200 rounded-2lg px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="w-full px-1 py-1 border border-none appearance-none border-slate-200 rounded-2lg ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
-                    <div className="pt-4 flex-none">{'–'}</div>
+                    <div className="flex-none pt-4">{'–'}</div>
                     <div className="grow">
-                      <div className="text-sm text-slate-600 mb-2">Max</div>
+                      <div className="mb-2 text-sm text-slate-600">Max</div>
                       <input
                         name={`${option}.maxVal`}
                         type="text"
@@ -654,7 +654,7 @@ export const ElemFilter: FC<Props> = ({
                         onChange={onChangeRangeInput}
                         onBlur={onBlurAmount}
                         onFocus={onFocusAmount}
-                        className="appearance-none border-none w-full border border-slate-200 rounded-2lg px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="w-full px-2 py-1 border border-none appearance-none border-slate-200 rounded-2lg ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
                   </div>
@@ -721,7 +721,7 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-medium text-sm">
+                  <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex flex-col gap-2 mt-2">
@@ -770,7 +770,7 @@ export const ElemFilter: FC<Props> = ({
                     />
                   </div>
                   {filters?.[option]?.condition === 'custom' && (
-                    <div className="flex items-center gap-x-4 mt-2">
+                    <div className="flex items-center mt-2 gap-x-4">
                       <InputDate
                         name={`${option}.fromDate`}
                         value={
@@ -828,31 +828,31 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-medium text-sm">
+                  <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="">
-                      <div className="text-sm text-slate-600 mb-2">Min</div>
+                      <div className="mb-2 text-sm text-slate-600">Min</div>
                       <input
                         type="text"
                         name={`${option}.minVal`}
                         value={filters?.[option]?.minVal}
                         onChange={onChangeRangeInput}
                         defaultValue={0}
-                        className="appearance-none border-none w-20 border border-slate-200 rounded-2lg px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="w-20 px-1 py-1 border border-none appearance-none border-slate-200 rounded-2lg ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
                     <div className="pt-4">{'–'}</div>
                     <div className="">
-                      <div className="text-sm text-slate-600 mb-2">Max</div>
+                      <div className="mb-2 text-sm text-slate-600">Max</div>
                       <input
                         type="text"
                         name={`${option}.maxVal`}
                         value={filters?.[option]?.maxVal}
                         onChange={onChangeRangeInput}
                         defaultValue="Any"
-                        className="appearance-none border-none w-20 border border-slate-200 rounded-2lg px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                        className="w-20 px-2 py-1 border border-none appearance-none border-slate-200 rounded-2lg ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                       />
                     </div>
                   </div>
@@ -893,7 +893,7 @@ export const ElemFilter: FC<Props> = ({
                   onClear={onClearFilterOption}
                   onApply={onApplyFilter}
                 >
-                  <div className="font-medium text-sm">
+                  <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
                   <div className="py-2">
@@ -904,7 +904,7 @@ export const ElemFilter: FC<Props> = ({
                       }))}
                       value={filters[option]?.value}
                       onChange={onChangeEventSize}
-                      className="text-slate-600 text-base w-full"
+                      className="w-full text-base text-slate-600"
                       buttonClasses="h-10"
                     />
                   </div>

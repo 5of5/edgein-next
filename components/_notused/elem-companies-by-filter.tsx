@@ -11,8 +11,8 @@ import { times } from 'lodash';
 import { FC } from 'react';
 import { Pagination } from '../pagination';
 import { PlaceholderCompanyCard } from '../placeholders';
-import { CompaniesTable } from './elem-companies-table';
-import { CardType, ElemCompanyCard } from './elem-company-card';
+import { CompaniesTable } from '../companies/elem-companies-table';
+import { CardType, ElemCompanyCard } from '../companies/elem-company-card';
 
 type Props = {
   headingText: string;
@@ -69,6 +69,7 @@ export const CompaniesByFilter: FC<Props> = ({
 
   return (
     <div>
+      hello
       <div className="my-4 text-4xl font-medium">{headingText}</div>
       {isTableView ? (
         <CompaniesTable

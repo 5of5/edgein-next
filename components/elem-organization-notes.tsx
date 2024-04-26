@@ -6,7 +6,7 @@ import ElemNoteForm from './elem-note-form';
 import { ElemPhoto } from './elem-photo';
 import { useUser } from '@/context/user-context';
 import { IconPlus } from '@/components/icons';
-import ElemNoteCard from '@/components/group/elem-note-card';
+import ElemNoteCard from '@/components/notes/elem-note-card';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemRequiredProfileDialog } from './elem-required-profile-dialog';

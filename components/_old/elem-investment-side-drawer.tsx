@@ -1,9 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, useEffect, useMemo } from 'react';
 import { InputSearch } from './input-search';
-import { InputSelect } from './input-select';
-import { InputText } from './input-text';
-import { InputDate } from './input-date';
+import { InputSelect } from '../input-select';
+import { InputText } from '../input-text';
+import { InputDate } from '../input-date';
 import {
   People,
   useGetAllPersonsQuery,
@@ -13,8 +13,8 @@ import {
   Investments,
 } from '@/graphql/types';
 import { roundChoices } from '@/utils/constants';
-import { ElemButton } from './elem-button';
-import { ElemConfirmModal } from './elem-confirm-modal';
+import { ElemButton } from '../elem-button';
+import { ElemConfirmModal } from '../elem-confirm-modal';
 
 type Props = {
   isOpen: boolean;
@@ -193,7 +193,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed right-0 top-0 w-full max-w-lg">
+          <div className="fixed top-0 right-0 w-full max-w-lg">
             <div className="text-center">
               <Transition.Child
                 as={Fragment}
@@ -204,10 +204,10 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="p-4 bg-white min-h-screen max-h-screen text-left">
-                  <div className="overflow-y-auto max-h-screen">
+                <Dialog.Panel className="max-h-screen min-h-screen p-4 text-left bg-white">
+                  <div className="max-h-screen overflow-y-auto">
                     <div className="mt-4">
-                      <label className="font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="text-sm font-bold font-Metropolis text-slate-600">
                         Announced Date
                       </label>
                       <InputDate
@@ -220,12 +220,12 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('round_date', e.target.value);
                         }}
-                        className=" mt-2 block max-w-sm placeholder:text-slate-500"
+                        className="block max-w-sm mt-2 placeholder:text-slate-500"
                       />
                     </div>
 
                     <div className="mt-4">
-                      <label className=" block font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="block text-sm font-bold font-Metropolis text-slate-600">
                         Round Type
                       </label>
                       <InputSelect
@@ -242,14 +242,14 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                         className="max-w-sm placeholder:text-gray-300"
                       />
                       {errorsRounds.round && (
-                        <p className="text-red-500 text-xs italic mt-2">
+                        <p className="mt-2 text-xs italic text-red-500">
                           {errorsRounds.round}
                         </p>
                       )}
                     </div>
 
                     <div className="mt-4">
-                      <label className="block font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="block text-sm font-bold font-Metropolis text-slate-600">
                         Money Raised
                       </label>
                       <InputText
@@ -261,18 +261,18 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('amount', e.target.value);
                         }}
-                        className=" max-w-sm placeholder:text-slate-500"
+                        className="max-w-sm placeholder:text-slate-500"
                         placeholder="$"
                       />
                       {errorsRounds.amount && (
-                        <p className="text-red-500 text-xs italic mt-2">
+                        <p className="mt-2 text-xs italic text-red-500">
                           {errorsRounds.amount}
                         </p>
                       )}
                     </div>
 
                     <div className="mt-4">
-                      <label className="block font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="block text-sm font-bold font-Metropolis text-slate-600">
                         Valuation
                       </label>
                       <InputText
@@ -286,12 +286,12 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('valuation', e.target.value);
                         }}
-                        className=" max-w-sm placeholder:text-slate-500"
+                        className="max-w-sm placeholder:text-slate-500"
                         placeholder="$"
                       />
                     </div>
                     <div className="mt-4">
-                      <label className="font-Metropolis text-sm font-bold text-slate-600">
+                      <label className="text-sm font-bold font-Metropolis text-slate-600">
                         Investments
                       </label>
                       {investmentRound.investments &&
@@ -386,15 +386,15 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
   }, [investment]);
 
   return (
-    <div className="border p-5 pt-0 rounded-md my-4">
-      <div className="flex w-full justify-end">
+    <div className="p-5 pt-0 my-4 border rounded-md">
+      <div className="flex justify-end w-full">
         <button onClick={onRemove}>x</button>
       </div>
       <div className="mt-0">
-        <label className="font-Metropolis text-sm font-bold text-slate-600">
+        <label className="text-sm font-bold font-Metropolis text-slate-600">
           Investor Type
         </label>
-        <div className="flex justify-start items-center">
+        <div className="flex items-center justify-start">
           <div className="flex items-center">
             <input
               type="radio"
@@ -403,11 +403,11 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
                 setInvestorType('investor');
               }}
             />
-            <label className="ml-2 text-sm font-Metropolis font-normal text-slate-600">
+            <label className="ml-2 text-sm font-normal font-Metropolis text-slate-600">
               Angel Investor
             </label>
           </div>
-          <div className="ml-4 flex items-center">
+          <div className="flex items-center ml-4">
             <input
               type="radio"
               checked={investorType === 'firm'}
@@ -415,7 +415,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
                 setInvestorType('firm');
               }}
             />
-            <label className="ml-2 text-sm font-Metropolis font-normal text-slate-600">
+            <label className="ml-2 text-sm font-normal font-Metropolis text-slate-600">
               Investment Firm
             </label>
           </div>
@@ -423,7 +423,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
       </div>
 
       <div className="mt-4">
-        <label className=" block  font-Metropolis text-sm font-bold text-slate-600">
+        <label className="block text-sm font-bold font-Metropolis text-slate-600">
           Angel Investor
         </label>
         {investorType === 'investor' ? (
@@ -445,7 +445,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
               )
             }
             placeholder="find angel investor"
-            className="w-80 text-slate-600 text-base"
+            className="text-base w-80 text-slate-600"
           />
         ) : (
           <InputSelect
@@ -466,12 +466,12 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
               )
             }
             placeholder="find investment firm"
-            className="w-80 text-slate-600 text-base"
+            className="text-base w-80 text-slate-600"
           />
         )}
       </div>
       <div className="mt-4">
-        <label className="font-Metropolis text-sm font-bold text-slate-600">
+        <label className="text-sm font-bold font-Metropolis text-slate-600">
           Amount Invested
         </label>
         <InputText
@@ -481,7 +481,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
           onChange={e => {
             setValues('amount', e.target.value);
           }}
-          className=" max-w-sm placeholder:text-slate-500"
+          className="max-w-sm placeholder:text-slate-500"
           placeholder="$"
         />
       </div>
