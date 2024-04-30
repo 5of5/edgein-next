@@ -9,7 +9,7 @@ query GetPerson($slug: String!) {
     status
     type
     work_email
-    smart_contract
+    web3_address
     linkedin
     github
     city

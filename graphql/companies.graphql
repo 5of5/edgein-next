@@ -20,7 +20,7 @@ query GetCompanyBySlug($slug: String!) {
     careers_page
     github
     velocity_linkedin
-    smart_contract
+    web3_address
     velocity_token
     tags
     date_added

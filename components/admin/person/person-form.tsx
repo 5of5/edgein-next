@@ -150,7 +150,7 @@ const PersonForm = ({
           defaultValue={['Web3']}
         />
         <TextInput className={inputClassName} source="country" />
-        <TextInput className={inputClassName} source="smart_contract" />
+        <TextInput className={inputClassName} source="web3_address" />
       </SimpleForm>
     </div>
   );
