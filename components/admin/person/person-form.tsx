@@ -149,6 +149,7 @@ const PersonForm = ({
           choices={libraryChoices}
           defaultValue={['Web3']}
         />
+        <TextInput className={inputClassName} source="country" />
         <TextInput className={inputClassName} source="smart_contract" />
       </SimpleForm>
     </div>

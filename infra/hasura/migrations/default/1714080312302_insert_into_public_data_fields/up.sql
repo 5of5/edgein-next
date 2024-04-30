@@ -1,0 +1,1 @@
+INSERT INTO "public"."data_fields"("is_valid_identifier", "restricted_admin", "weight", "data_type", "description", "name", "path", "regex_test", "regex_transform", "resource", "created_at") VALUES (false, false, 1, null, null, E'company_size', E'company.company_size', null, null, E'company', E'2024-04-25T21:25:12.232867+00:00');
