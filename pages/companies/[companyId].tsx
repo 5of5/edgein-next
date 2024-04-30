@@ -408,7 +408,7 @@ const Company: NextPage<Props> = (props: Props) => {
                 careerPage={company.careers_page}
                 yearFounded={company.year_founded}
                 linkedIn={company.company_linkedin}
-                smartContract={company.smart_contract}
+                web3Address={company.web3_address}
                 github={company.github}
                 twitter={company.twitter}
                 location={company.location}

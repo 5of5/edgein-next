@@ -137,6 +137,7 @@ select_permissions:
         - updated_at
         - velocity_linkedin
         - velocity_token
+        - web3_address
         - website
         - white_paper
         - year_founded
@@ -173,6 +174,7 @@ select_permissions:
         - total_valuation
         - velocity_linkedin
         - velocity_token
+        - web3_address
         - website
         - white_paper
         - year_founded
@@ -218,7 +220,7 @@ select_permissions:
         - search_count
         - sentiment
         - slug
-        - smart_contract
+        - web3_address
         - status
         - status_tags
         - tags
