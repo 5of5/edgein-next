@@ -22,6 +22,7 @@ import {
   IconHome,
   IconTicket,
   IconDocument,
+  IconContract,
   IconLockClosed,
 } from '@/components/icons';
 import {
@@ -34,6 +35,8 @@ import { getFullAddress } from '@/utils/helpers';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/router';
+import { useGetUserProfileQuery } from '@/graphql/types';
+import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 
 type Attachments = Array<{
   label: string;
@@ -57,6 +60,7 @@ type Props = {
   investmentsLength?: number;
   emails?: string[];
   linkedIn?: string | null;
+  smartContract?: string | null;
   github?: string | null;
   twitter?: string | null;
   instagram?: string | null;
@@ -82,6 +86,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   investmentsLength = 0,
   emails = [],
   linkedIn,
+  smartContract,
   github,
   careerPage,
   location,
@@ -101,6 +106,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   const { user } = useAuth();
 
+  const { data: userProfile } = useGetUserProfileQuery(
+    {
+      id: user?.id || 0,
+    },
+    {
+      enabled: !!user,
+    },
+  );
+
   const isEmptyLocationJson = values(locationJson).every(isEmpty);
   let locationText = '';
   if (!isEmptyLocationJson) {
@@ -108,6 +122,11 @@ export const ElemKeyInfo: React.FC<Props> = ({
   } else if (location) {
     locationText = location;
   }
+
+  const edgeInContributorButtonEnabled =
+    userProfile?.users_by_pk?.use_credits_system ||
+    (!userProfile?.users_by_pk?.use_credits_system &&
+      userProfile?.users_by_pk?.credits >= CREDITS_PER_MONTH);
 
   const infoItems: {
     icon?: React.FC<IconProps>;
@@ -246,6 +265,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
       link: github,
     });
   }
+  if (smartContract) {
+    infoItems.push({
+      icon: IconContract,
+      text: removeDomainName(smartContract),
+      showHide: !userProfile || edgeInContributorButtonEnabled,
+    });
+  }
   if (facebook) {
     infoItems.push({
       icon: IconFacebook,
@@ -319,9 +345,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
-      {heading && <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>}
+      {heading && <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>}
 
-      <ul className="flex flex-col space-y-4 text-sm p-4">
+      <ul className="flex flex-col p-4 space-y-4 text-sm">
         {infoItems.map((item, index: number) => {
           let itemInner: ReactElement = (
             <>
@@ -333,7 +359,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   } h-5 w-5 shrink-0`}
                 />
               )}
-              <span className="break-words min-w-0">{item.text}</span>
+              <span className="min-w-0 break-words">{item.text}</span>
             </>
           );
 
@@ -378,7 +404,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   )}
                   {showInfo[item.text] ? (
                     <a
-                      className="break-all transition-all underline hover:no-underline"
+                      className="underline break-all transition-all hover:no-underline"
                       href={item.link}
                       target={item.target ? item.target : '_blank'}
                       rel="noopener noreferrer"
@@ -394,7 +420,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                 </div>
                 {!showInfo[item.text] && (
                   <IconLockClosed
-                    className="h-4 w-4 shrink-0 text-gray-400"
+                    className="w-4 h-4 text-gray-400 shrink-0"
                     strokeWidth={2}
                   />
                 )}
@@ -435,7 +461,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
             <div className="flex items-center text-primary-500">
               {!showInfo['email'] && (
                 <IconLockClosed
-                  className="h-4 w-4 shrink-0 text-gray-400"
+                  className="w-4 h-4 text-gray-400 shrink-0"
                   strokeWidth={2}
                 />
               )}

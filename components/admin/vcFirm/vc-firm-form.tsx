@@ -225,6 +225,10 @@ const VcFirmForm = ({
           choices={libraryChoices}
           defaultValue={['Web3']}
         />
+        <TextInput
+          className={`w-[49%] ${textInputClassName}`}
+          source="country"
+        />
       </SimpleForm>
     </div>
   );

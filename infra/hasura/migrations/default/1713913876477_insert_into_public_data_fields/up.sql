@@ -1,0 +1,1 @@
+INSERT INTO "public"."data_fields"("is_valid_identifier", "restricted_admin", "weight", "data_type", "description", "name", "path", "regex_test", "regex_transform", "resource", "created_at") VALUES (false, false, 1, null, null, E'smart_contract', E'company.smart_contract', null, null, E'company', E'2024-04-23T23:11:16.035441+00:00');

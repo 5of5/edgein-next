@@ -44,6 +44,7 @@ import { IconGroup, IconTable } from '@/components/icons';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { PeopleTable } from '@/components/people/elem-people-table';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { useFetchPeopleWithPriority } from '@/hooks/use-fetch-people-with-priority';
 
 type Props = {
   peopleTabs: DashboardCategory[];
@@ -58,7 +59,7 @@ const People: NextPage<Props> = ({
 }) => {
   const [initialLoad, setInitialLoad] = useState(true);
 
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const router = useRouter();
   const { selectedLibrary } = useLibrary();
 
@@ -74,13 +75,12 @@ const People: NextPage<Props> = ({
         user.email.endsWith(domain),
       ));
 
-  const [selectedTab, setSelectedTab] =
-    useStateParams<DashboardCategory | null>(
-      null,
-      'tab',
-      statusTag => (statusTag ? peopleTabs.indexOf(statusTag).toString() : ''),
-      index => peopleTabs[Number(index)],
-    );
+  const [selectedTab] = useStateParams<DashboardCategory | null>(
+    null,
+    'tab',
+    statusTag => (statusTag ? peopleTabs.indexOf(statusTag).toString() : ''),
+    index => peopleTabs[Number(index)],
+  );
 
   const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
@@ -140,32 +140,23 @@ const People: NextPage<Props> = ({
     return limit;
   };
 
-  const {
-    data: peopleData,
-    error,
-    isLoading,
-  } = useGetPeopleQuery(
+  const { isLoading, peopleDataCount, peopleData } = useFetchPeopleWithPriority(
     {
-      offset: offset,
-      limit: getLimit(),
-      where: filters as People_Bool_Exp,
-      orderBy: [
-        selectedTab?.value === 'new'
-          ? ({ created_at: Order_By.Desc } as People_Order_By)
-          : ({ updated_at: Order_By.DescNullsLast } as People_Order_By),
-      ],
+      filters,
+      limit,
+      offset,
+      prioritizedPersonId: user?.person?.id,
+      selectedTab,
+      enabled: !loading,
     },
-    { refetchOnWindowFocus: false },
   );
 
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
   }
 
-  const people = initialLoad ? initialPeople : peopleData?.people;
-  const people_aggregate = initialLoad
-    ? peopleCount
-    : peopleData?.people_aggregate?.aggregate?.count || 0;
+  const people = initialLoad ? initialPeople : peopleData;
+  const people_aggregate = initialLoad ? peopleCount : peopleDataCount;
 
   const getTotalItems = () => {
     if (selectedTab?.value === 'new') {

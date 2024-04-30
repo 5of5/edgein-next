@@ -17,18 +17,20 @@ import { ElemTags } from '@/components/elem-tags';
 import { ElemPillsPeople } from '@/components/elem-pills-people';
 import { ElemTooltip } from '../elem-tooltip';
 import { ROUTES } from '@/routes';
-import { useAuth } from '@/hooks/use-auth';
 
 type Props = {
   listId: number;
   listName: string | null;
-  createdById: number;
+  isListAuthor: boolean;
 };
 
-export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
+export const CompaniesList: FC<Props> = ({
+  listId,
+  listName,
+  isListAuthor,
+}) => {
   const [pageIndex, setPageIndex] = useState(0);
   const [query, setQuery] = useState('');
-  const { user } = useAuth();
 
   const limit = 10;
   const {
@@ -47,8 +49,6 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
       refetchOnWindowFocus: false,
     },
   );
-
-  const isCreatedByUser = createdById === user?.id;
 
   const companies = companiesData?.follows_companies;
 
@@ -85,7 +85,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
           <div className="flex items-center space-x-3">
             <a
               href={`${ROUTES.COMPANIES}/` + props.row.original?.company?.slug}
-              className="shrink-0 transition-all"
+              className="transition-all shrink-0"
             >
               <ElemPhoto
                 photo={props.row.original?.company?.logo}
@@ -101,7 +101,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
                 href={
                   `${ROUTES.COMPANIES}/` + props.row.original?.company?.slug
                 }
-                className="font-medium line-clamp-2 break-words hover:underline"
+                className="font-medium break-words line-clamp-2 hover:underline"
               >
                 {props.value}
               </a>
@@ -110,7 +110,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
                   href={props.row.original.company.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="break-words hover:underline text-sm text-gray-500"
+                  className="text-sm text-gray-500 break-words hover:underline"
                 >
                   {props.row.original.company.website}
                 </a>
@@ -135,9 +135,9 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
                   direction="top"
                   size="lg"
                   delay={1200}
-                  className="max-h-72 overflow-y-scroll"
+                  className="overflow-y-scroll max-h-72"
                 >
-                  <div className="text-sm line-clamp-3 text-gray-500">
+                  <div className="text-sm text-gray-500 line-clamp-3">
                     {props.value}
                   </div>
                 </ElemTooltip>
@@ -183,7 +183,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
         accessor: 'company.teamMembers' as const,
         Cell: (props: { value: Team_Members[] }) => {
           return (
-            <div className="flex flex-wrap overflow-clip gap-2">
+            <div className="flex flex-wrap gap-2 overflow-clip">
               {props.value?.length ? (
                 <>
                   <ElemPillsPeople
@@ -388,9 +388,9 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
 
   if (isLoading) {
     return (
-      <div className="mt-4 px-4">
-        <h2 className="font-medium mb-2">Companies</h2>
-        <div className="rounded-lg border border-gray-200">
+      <div className="px-4 mt-4">
+        <h2 className="mb-2 font-medium">Companies</h2>
+        <div className="border border-gray-200 rounded-lg">
           <PlaceholderTable />
         </div>
       </div>
@@ -399,7 +399,7 @@ export const CompaniesList: FC<Props> = ({ listId, listName, createdById }) => {
 
   return (
     <Table
-      disabledCheckbox={!isCreatedByUser}
+      disabledCheckbox={!isListAuthor}
       listName={listName}
       resourceType="companies"
       columns={columns}

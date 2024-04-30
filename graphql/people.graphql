@@ -9,6 +9,7 @@ query GetPerson($slug: String!) {
     status
     type
     work_email
+    smart_contract
     linkedin
     github
     city
@@ -120,6 +121,83 @@ query GetPerson($slug: String!) {
   }
 }
 
+fragment PeopleFragment on people {
+  id
+  created_at
+  name
+  personal_email
+  picture
+  slug
+  status
+  type
+  work_email
+  linkedin
+  github
+  city
+  country
+  facebook_url
+  twitter_url
+  website_url
+  investors(
+    limit: 1
+    order_by: { start_date: desc_nulls_last, end_date: desc_nulls_first }
+  ) {
+    id
+    end_date
+    start_date
+    founder
+    function
+    title
+    vc_firm {
+      id
+      slug
+      name
+      logo
+      location_json
+      tags
+      website
+    }
+  }
+  team_members(
+    limit: 1
+    order_by: { start_date: desc_nulls_last, end_date: desc_nulls_first }
+  ) {
+    id
+    end_date
+    start_date
+    founder
+    function
+    title
+    company {
+      id
+      slug
+      name
+      logo
+      location_json
+      tags
+      website
+    }
+  }
+  follows {
+    id
+    list_id
+  }
+  people_computed_data {
+    title
+    tags
+    person_id
+    location_json
+    geopoint
+    id
+  }
+}
+
+query GetPeopleById($id: Int!) {
+  people(where: { id: { _eq: $id } }) {
+    ...PeopleFragment
+  }
+}
+
 query GetPeople(
   $limit: Int
   $offset: Int
@@ -127,74 +205,7 @@ query GetPeople(
   $where: people_bool_exp!
 ) {
   people(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
-    id
-    created_at
-    name
-    personal_email
-    picture
-    slug
-    status
-    type
-    work_email
-    linkedin
-    github
-    city
-    country
-    facebook_url
-    twitter_url
-    website_url
-    investors(
-      limit: 1
-      order_by: { start_date: desc_nulls_last, end_date: desc_nulls_first }
-    ) {
-      id
-      end_date
-      start_date
-      founder
-      function
-      title
-      vc_firm {
-        id
-        slug
-        name
-        logo
-        location_json
-        tags
-        website
-      }
-    }
-    team_members(
-      limit: 1
-      order_by: { start_date: desc_nulls_last, end_date: desc_nulls_first }
-    ) {
-      id
-      end_date
-      start_date
-      founder
-      function
-      title
-      company {
-        id
-        slug
-        name
-        logo
-        location_json
-        tags
-        website
-      }
-    }
-    follows {
-      id
-      list_id
-    }
-    people_computed_data {
-      title
-      tags
-      person_id
-      location_json
-      geopoint
-      id
-    }
+    ...PeopleFragment
   }
   people_aggregate(where: $where) {
     aggregate {

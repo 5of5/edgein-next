@@ -352,21 +352,21 @@ const MyList: NextPage<Props> = ({ list }) => {
         {user && (!isCustomList || isFollowing || isListAuthor) && (
           <>
             <CompaniesList
-              createdById={theList?.created_by_id}
               listId={theList?.id}
               listName={listName}
+              isListAuthor={isListAuthor}
             />
 
             <InvestorsList
-              createdById={theList?.created_by_id}
               listId={theList?.id}
               listName={listName}
+              isListAuthor={isListAuthor}
             />
 
             <PeopleList
-              createdById={theList?.created_by_id}
               listId={theList?.id}
               listName={listName}
+              isListAuthor={isListAuthor}
             />
           </>
         )}
