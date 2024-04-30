@@ -1,0 +1,2 @@
+DELETE FROM "public"."data_fields" WHERE "path" = 'people.smart_contract';
+INSERT INTO "public"."data_fields"("is_valid_identifier", "restricted_admin", "weight", "data_type", "description", "name", "path", "regex_test", "regex_transform", "resource", "created_at") VALUES (false, false, 1, null, null, E'web3_address', E'people.web3_address', null, null, E'people', E'2024-04-30T21:07:36.094396+00:00');

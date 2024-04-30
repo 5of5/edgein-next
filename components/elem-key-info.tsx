@@ -60,7 +60,7 @@ type Props = {
   investmentsLength?: number;
   emails?: string[];
   linkedIn?: string | null;
-  smartContract?: string | null;
+  web3Address?: string | null;
   github?: string | null;
   twitter?: string | null;
   instagram?: string | null;
@@ -86,7 +86,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   investmentsLength = 0,
   emails = [],
   linkedIn,
-  smartContract,
+  web3Address,
   github,
   careerPage,
   location,
@@ -265,10 +265,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
       link: github,
     });
   }
-  if (smartContract) {
+  if (web3Address) {
     infoItems.push({
       icon: IconContract,
-      text: removeDomainName(smartContract),
+      text: removeDomainName(web3Address),
       showHide: !userProfile || edgeInContributorButtonEnabled,
     });
   }
