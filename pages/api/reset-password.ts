@@ -16,9 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // payload
   const userId = req.body.userId;
   const password = req.body.password;
+  const auth0UserId = req.body.auth0UserId;
 
   // TODO fix code
-  if (!userId || !password) return res.status(404).send('Invalid request');
+  if (!userId || !password || !auth0UserId)
+    return res.status(404).send('Invalid request');
 
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -32,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let result;
   try {
     result = await authService.setPassword({
-      userId,
+      userId: `auth0|${auth0UserId}`,
       password,
     });
     await mutate<InsertResetPasswordMutation>({
