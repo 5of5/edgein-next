@@ -68,6 +68,7 @@ module.exports = {
         gray: {
           25: '#fcfcfc',
         },
+        'linkedin-blue': '#0A66C2',
         blue,
         pink: {
           25: '#DE177A',

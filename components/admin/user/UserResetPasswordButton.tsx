@@ -51,14 +51,15 @@ const UserResetPasswordButton = () => {
   const handleConfirm = () => {
     mutate();
   };
+  const isUserFromLinkedin = !record.auth0_user_pass_id
 
   return (
     <>
-      <Button
+      {!isUserFromLinkedin && <Button
         label="Reset password"
         sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem' }}
         onClick={handleClick}
-      />
+      />}
       <Confirm
         isOpen={open}
         loading={isLoading}
