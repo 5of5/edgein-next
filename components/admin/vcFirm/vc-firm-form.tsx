@@ -227,10 +227,6 @@ const VcFirmForm = ({
         />
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
-          source="country"
-        />
-        <TextInput
-          className={`w-[49%] ${textInputClassName}`}
           source="github"
         />
         <TextInput
