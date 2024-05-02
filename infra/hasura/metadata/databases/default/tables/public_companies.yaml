@@ -170,6 +170,7 @@ select_permissions:
         - overview
         - slug
         - tags
+        - telegram
         - total_employees
         - total_valuation
         - velocity_linkedin

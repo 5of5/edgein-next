@@ -153,6 +153,7 @@ const PersonForm = ({
         <TextInput className={inputClassName} source="web3_address" />
         <TextInput className={inputClassName} source="twitter" />
         <TextInput className={inputClassName} source="discord" />
+        <TextInput className={inputClassName} source="telegram" />
       </SimpleForm>
     </div>
   );

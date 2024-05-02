@@ -132,6 +132,7 @@ select_permissions:
         - status_tags
         - tags
         - team_size
+        - telegram
         - twitter
         - updated_at
         - website
