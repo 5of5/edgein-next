@@ -9,11 +9,13 @@ import {
   ArrayInput,
   SimpleFormIterator,
   required,
+  useRecordContext,
 } from 'react-admin';
 import ElemFormBase from '../elem-form-base';
 import ElemTitle from '../elem-title';
 import UserResetPasswordButton from './UserResetPasswordButton';
 import UserResetPasswordTable from './UserResetPasswordTable';
+import { IconEmail, IconLinkedIn } from '@/components/icons';
 
 const UserEditToolbar = () => {
   return (
@@ -24,6 +26,35 @@ const UserEditToolbar = () => {
         <DeleteButton label="Delete" sx={{ marginLeft: 1 }} />
       </div>
     </Toolbar>
+  );
+};
+
+const UserRegisteredFrom = () => {
+  const record = useRecordContext();
+  const isRegisteredViaLinkedin = !record?.auth0_user_pass_id;
+
+  const getRegistrationIcon = () => {
+    if (isRegisteredViaLinkedin)
+      return (
+        <IconLinkedIn
+          title="LinkedIn"
+          className="h-5 w-5 shrink-0 text-linkedin-blue"
+        />
+      );
+
+    return (
+      <IconEmail
+        title="Email/Password"
+        className="h-5 w-5 shrink-0 text-gray-600"
+      />
+    );
+  };
+
+  return (
+    <div>
+      <p className="text-sm text-gray-500 pb-2">Registered via:</p>
+      {getRegistrationIcon()}
+    </div>
   );
 };
 
@@ -79,6 +110,7 @@ export const UserEdit = () => {
             ]}
             validate={required()}
           />
+          <UserRegisteredFrom />
         </SimpleForm>
       </ElemFormBase>
       <UserResetPasswordTable />
