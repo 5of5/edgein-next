@@ -13,6 +13,9 @@ query GetVCFirm($slug: String!) {
     location
     location_json
     twitter
+    discord
+    github
+    telegram
     library
     investors {
       id

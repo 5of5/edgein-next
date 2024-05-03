@@ -414,6 +414,7 @@ const Company: NextPage<Props> = (props: Props) => {
                 location={company.location}
                 locationJson={company.location_json}
                 discord={company.discord}
+                telegram={company.telegram}
                 glassdoor={company.glassdoor}
               />
             </div>

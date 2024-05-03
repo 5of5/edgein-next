@@ -93,6 +93,7 @@ select_permissions:
         - city
         - country
         - created_at
+        - discord
         - email
         - facebook_url
         - github
@@ -103,6 +104,8 @@ select_permissions:
         - personal_email
         - picture
         - slug
+        - telegram
+        - twitter
         - twitter_url
         - type
         - updated_at
@@ -121,6 +124,7 @@ select_permissions:
         - city
         - country
         - created_at
+        - discord
         - email
         - external_id
         - facebook_url
@@ -131,6 +135,8 @@ select_permissions:
         - personal_email
         - picture
         - slug
+        - telegram
+        - twitter
         - twitter_url
         - type
         - updated_at
@@ -150,6 +156,7 @@ select_permissions:
         - country
         - created_at
         - datapoints_count
+        - discord
         - email
         - facebook_url
         - github
@@ -161,6 +168,8 @@ select_permissions:
         - picture
         - slug
         - status
+        - telegram
+        - twitter
         - twitter_url
         - type
         - updated_at
