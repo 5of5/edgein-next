@@ -11,7 +11,7 @@ query GetPerson($slug: String!) {
     work_email
     linkedin
     web3_address
-    twitter
+    twitter_url
     discord
     telegram
     github
