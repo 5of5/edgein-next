@@ -285,11 +285,14 @@ const Person: NextPage<Props> = (props: Props) => {
                   web3Address={person.web3_address}
                   emails={personEmails}
                   github={person.github}
-                  twitter={person.twitter_url}
+                  twitter={person.twitter}
+                  telegram={person.telegram}
+                  discord={person.discord}
                   location={person.city}
                   website={person.website_url}
                 />
               </div>
+
               <div className="grid col-span-8 gap-y-7">
                 {person.about && (
                   <section className="border border-gray-300 rounded-lg">

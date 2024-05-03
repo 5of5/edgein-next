@@ -250,6 +250,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
       target: '_self',
     });
   }
+  if (web3Address) {
+    infoItems.push({
+      icon: IconContract,
+      text: removeDomainName(web3Address),
+      showHide: !userProfile || edgeInContributorButtonEnabled,
+    });
+  }
   if (linkedIn) {
     infoItems.push({
       icon: IconLinkedIn,
@@ -263,13 +270,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconGithub,
       text: 'Github',
       link: github,
-    });
-  }
-  if (web3Address) {
-    infoItems.push({
-      icon: IconContract,
-      text: removeDomainName(web3Address),
-      showHide: !userProfile || edgeInContributorButtonEnabled,
     });
   }
   if (facebook) {

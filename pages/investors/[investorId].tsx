@@ -279,7 +279,11 @@ const VCFirm: NextPage<Props> = props => {
                 linkedIn={vcfirm.linkedin}
                 location={vcfirm.location}
                 locationJson={vcfirm.location_json}
+                github={vcfirm.github}
                 twitter={vcfirm.twitter}
+                discord={vcfirm.discord}
+                telegram={vcfirm.telegram}
+                glassdoor={vcfirm.glassdoor}
               />
             </div>
             <div className="col-span-8">

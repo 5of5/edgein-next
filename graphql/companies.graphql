@@ -18,9 +18,7 @@ query GetCompanyBySlug($slug: String!) {
     market_verified
     company_linkedin
     careers_page
-    github
     velocity_linkedin
-    web3_address
     velocity_token
     tags
     date_added
@@ -28,10 +26,13 @@ query GetCompanyBySlug($slug: String!) {
     ico_end
     audit_file
     sentiment
+    web3_address
     twitter
+    discord
+    telegram
+    github
     location
     location_json
-    discord
     glassdoor
     status_tags
     library
