@@ -9,13 +9,15 @@ query GetPerson($slug: String!) {
     status
     type
     work_email
-    web3_address
     linkedin
+    web3_address
+    twitter
+    discord
+    telegram
     github
     city
     country
     facebook_url
-    twitter_url
     website_url
     about
     email
