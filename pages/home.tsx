@@ -29,8 +29,8 @@ import { useRouter } from 'next/router';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { NextSeo } from 'next-seo';
-import { ElemSticky } from '@/components/elem-sticky';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
+import { NewsByFilter } from '@/components/news/elem-news-by-filter';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -38,7 +38,11 @@ const GLOBAL_TAG = 'Global';
 const Home: NextPage = () => {
   const router = useRouter();
   const { user } = useUser();
+
+  const showPersonalized = !!user;
+
   const { industryTags, locationTags } = getPersonalizedData({ user });
+
   const categories = [...locationTags, GLOBAL_TAG, ...industryTags];
 
   const isDisplaySelectLibrary =
@@ -147,6 +151,45 @@ const Home: NextPage = () => {
           {selectedStatusTag && selectedStatusTag.title !== GLOBAL_TAG && (
             <div className="mx-8">
               <div className="flex flex-col gap-4 gap-x-8">
+                {showPersonalized &&
+                  isSelectedTagLocation &&
+                  locationTags.map((location, index) => (
+                    <NewsByFilter
+                      key={`${location}-${index}`}
+                      headingText={`Trending in ${location}`}
+                      itemsPerPage={ITEMS_PER_PAGE}
+                      orderBy={{
+                        updated_at: Order_By.Desc,
+                      }}
+                      filters={{
+                        _or: [
+                          {
+                            organizations: {
+                              company: {
+                                location_json: {
+                                  _contains: {
+                                    city: `${location}`,
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          {
+                            organizations: {
+                              vc_firm: {
+                                location_json: {
+                                  _contains: {
+                                    city: `${location}`,
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        ],
+                      }}
+                    />
+                  ))}
+
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Trending 🔥</h2>
                   <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
