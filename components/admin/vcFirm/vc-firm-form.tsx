@@ -245,6 +245,10 @@ const VcFirmForm = ({
           className={`w-[49%] ${textInputClassName}`}
           source="telegram"
         />
+        <TextInput
+          className={`w-[49%] ${textInputClassName}`}
+          source="web3_address"
+        />
       </SimpleForm>
     </div>
   );

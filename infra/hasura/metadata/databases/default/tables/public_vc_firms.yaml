@@ -70,6 +70,8 @@ select_permissions:
       columns:
         - created_at
         - geopoint
+        - github
+        - glassdoor
         - id
         - investment_amount_total
         - latest_investment
@@ -87,8 +89,10 @@ select_permissions:
         - status_tags
         - tags
         - team_size
+        - telegram
         - twitter
         - updated_at
+        - web3_address
         - website
         - year_founded
       filter:
@@ -99,12 +103,17 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - id
-        - logo
         - external_id
+        - github
+        - glassdoor
+        - id
         - linkedin
+        - logo
         - name
         - slug
+        - telegram
+        - twitter
+        - web3_address
         - website
       filter: {}
   - role: viewer
@@ -112,7 +121,10 @@ select_permissions:
       columns:
         - created_at
         - datapoints_count
+        - discord
         - geopoint
+        - github
+        - glassdoor
         - id
         - investment_amount_total
         - latest_investment
@@ -135,6 +147,7 @@ select_permissions:
         - telegram
         - twitter
         - updated_at
+        - web3_address
         - website
         - year_founded
       filter:

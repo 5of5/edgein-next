@@ -1,0 +1,1 @@
+INSERT INTO "public"."data_fields"("is_valid_identifier", "restricted_admin", "weight", "data_type", "description", "name", "path", "regex_test", "regex_transform", "resource", "created_at") VALUES (false, false, 1, null, null, E'web3_address', E'vc_firm.web3_address', null, null, E'vc_firm', E'2024-05-03T14:13:09.671955+00:00');
