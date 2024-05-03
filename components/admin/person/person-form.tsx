@@ -134,6 +134,13 @@ const PersonForm = ({
             },
           }}
         />
+        <SelectArrayInput
+          className={inputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue={['Web3']}
+        />
+        <TextInput className={inputClassName} source="country" />
         <TextInput
           className={inputClassName}
           source="linkedin"
@@ -143,15 +150,8 @@ const PersonForm = ({
             },
           }}
         />
-        <SelectArrayInput
-          className={inputClassName}
-          source="library"
-          choices={libraryChoices}
-          defaultValue={['Web3']}
-        />
-        <TextInput className={inputClassName} source="country" />
         <TextInput className={inputClassName} source="web3_address" />
-        <TextInput className={inputClassName} source="twitter" />
+        <TextInput className={inputClassName} source="twitter_url" />
         <TextInput className={inputClassName} source="discord" />
         <TextInput className={inputClassName} source="telegram" />
       </SimpleForm>

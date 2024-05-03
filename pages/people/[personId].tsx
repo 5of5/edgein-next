@@ -285,7 +285,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   web3Address={person.web3_address}
                   emails={personEmails}
                   github={person.github}
-                  twitter={person.twitter}
+                  twitter={person.twitter_url}
                   telegram={person.telegram}
                   discord={person.discord}
                   location={person.city}
