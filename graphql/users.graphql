@@ -17,7 +17,7 @@ query GetUserProfile($id: Int!) {
         name
         logo
         overview
-        location
+        location_json
       }
     }
     organization_vc_firms {
@@ -28,7 +28,7 @@ query GetUserProfile($id: Int!) {
         name
         logo
         overview
-        location
+        location_json
       }
     }
     person {
@@ -62,7 +62,7 @@ query GetUserProfile($id: Int!) {
           name
           logo
           overview
-          location
+          location_json
         }
       }
       investments {
@@ -98,7 +98,7 @@ query GetUserByPersonId($person_id: Int!) {
         name
         logo
         overview
-        location
+        location_json
       }
     }
     organization_vc_firms {
@@ -109,7 +109,7 @@ query GetUserByPersonId($person_id: Int!) {
         name
         logo
         overview
-        location
+        location_json
       }
     }
     person {
@@ -143,7 +143,7 @@ query GetUserByPersonId($person_id: Int!) {
           name
           logo
           overview
-          location
+          location_json
         }
       }
       investments {

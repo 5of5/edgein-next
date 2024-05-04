@@ -411,7 +411,6 @@ const Company: NextPage<Props> = (props: Props) => {
                 web3Address={company.web3_address}
                 github={company.github}
                 twitter={company.twitter}
-                location={company.location}
                 locationJson={company.location_json}
                 discord={company.discord}
                 telegram={company.telegram}
