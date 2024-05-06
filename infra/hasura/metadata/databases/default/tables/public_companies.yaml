@@ -115,7 +115,6 @@ select_permissions:
         - layer
         - layer_detail
         - library
-        - location
         - location_json
         - logo
         - market_verified
@@ -208,7 +207,6 @@ select_permissions:
         - layer
         - layer_detail
         - library
-        - location
         - location_json
         - logo
         - market_verified
@@ -221,7 +219,6 @@ select_permissions:
         - search_count
         - sentiment
         - slug
-        - web3_address
         - status
         - status_tags
         - tags
@@ -233,6 +230,7 @@ select_permissions:
         - updated_at
         - velocity_linkedin
         - velocity_token
+        - web3_address
         - website
         - white_paper
         - year_founded
