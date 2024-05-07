@@ -8,22 +8,32 @@ import {
   Companies,
 } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
-import { filter, flatten, get, has, includes, reduce, uniqBy } from 'lodash';
+import {
+  filter,
+  flatten,
+  get,
+  has,
+  includes,
+  reduce,
+  uniqBy,
+  compact,
+} from 'lodash';
 import { DeepPartial } from '@/types/common';
 import { ElemPhoto } from '../elem-photo';
-import { FC, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
 
 const getInvestedInCompanies = (investors: DeepPartial<Investors>[]) => {
-  const companies = investors.map(investor => {
-    const innerCompanies = investor.vc_firm?.investments?.map(
-      inv => inv?.investment_round?.company,
-    );
+  const getCompanies = investors.map(investor => {
+    const companyfromRound = investor.vc_firm?.investments?.map(inv => {
+      return inv?.investment_round?.company;
+    });
 
-    return innerCompanies;
+    // remove undefined items from array
+    return compact(companyfromRound);
   });
 
   // Flatten the list of lists and return only unique companies (compared by company_id only)
-  return uniqBy(flatten(companies), 'id');
+  return uniqBy(flatten(getCompanies), 'id');
 };
 
 const canSendInvestorInvitation = (
@@ -129,67 +139,69 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
   );
 
   return (
-    <div className="p-5 bg-white rounded-lg border border-gray-200">
+    <div className="p-5 bg-white border border-gray-200 rounded-lg">
       <h3 className="font-medium">Invite from your portfolio</h3>
       <p className="text-sm text-gray-500">
         Select a company from your portfolio to invite their team
       </p>
 
       {companies.length > 0 && (
-        <div className="mt-2 grid grid-cols-3 gap-4">
-          {companies.map(company =>
-            canSendInvestorInvitation(userById?.users, company?.id) ? (
-              <div
-                key={company?.id}
-                className={`flex flex-row items-center py-2 px-3 rounded-lg border border-gray-200 hover:bg-gray-50 hover:cursor-pointer ${
-                  includes(selectedCompanies, company)
-                    ? 'border-primary-500 bg-gray-50'
-                    : ''
-                }`}
-                onClick={() => handleClick(company)}
-              >
-                <ElemPhoto
-                  photo={company?.logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
-                  imgClass="object-fit max-w-full max-h-full"
-                  imgAlt={company?.name}
-                  placeholderClass="p-1 text-gray-300"
-                  placeholder="company"
-                />
+        <div className="grid grid-cols-3 gap-4 mt-2">
+          {companies.map(company => {
+            return (
+              <Fragment key={company?.id}>
+                {canSendInvestorInvitation(userById?.users, company?.id) ? (
+                  <div
+                    className={`flex flex-row items-center py-2 px-3 rounded-lg border border-gray-200 hover:bg-gray-50 hover:cursor-pointer ${
+                      includes(selectedCompanies, company)
+                        ? 'border-primary-500 bg-gray-50'
+                        : ''
+                    }`}
+                    onClick={() => handleClick(company)}
+                  >
+                    <ElemPhoto
+                      photo={company?.logo}
+                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
+                      imgClass="object-fit max-w-full max-h-full"
+                      imgAlt={company?.name}
+                      placeholderClass="p-1 text-gray-300"
+                      placeholder="company"
+                    />
 
-                <div className="flex flex-col ml-2">
-                  <div className="text-sm font-medium line-clamp-2">
-                    {company?.name}
+                    <div className="flex flex-col ml-2">
+                      <div className="text-sm font-medium line-clamp-2">
+                        {company?.name}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ) : (
-              <div
-                key={company?.id}
-                className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border border-gray-200`}
-              >
-                <ElemPhoto
-                  photo={company?.logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
-                  imgClass="object-fit max-w-full max-h-full opacity-50"
-                  imgAlt={company?.name}
-                  placeholderClass="p-1 text-gray-300"
-                  placeholder="company"
-                />
+                ) : (
+                  <div
+                    className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border border-gray-200`}
+                  >
+                    <ElemPhoto
+                      photo={company?.logo}
+                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
+                      imgClass="object-fit max-w-full max-h-full opacity-50"
+                      imgAlt={company?.name}
+                      placeholderClass="p-1 text-gray-300"
+                      placeholder="company"
+                    />
 
-                <div className="flex flex-col ml-2 justify-center text-gray-500">
-                  <div className="text-sm font-medium line-clamp-2">
-                    {company?.name}
+                    <div className="flex flex-col justify-center ml-2 text-gray-500">
+                      <div className="text-sm font-medium line-clamp-2">
+                        {company?.name}
+                      </div>
+                      <div className="text-xs">Sent</div>
+                    </div>
                   </div>
-                  <div className="text-xs">Sent</div>
-                </div>
-              </div>
-            ),
-          )}
+                )}
+              </Fragment>
+            );
+          })}
         </div>
       )}
 
-      <div className="flex flex-row gap-4 mt-2 items-center text-center">
+      <div className="flex flex-row items-center gap-4 mt-2 text-center">
         <ElemButton
           btn="purple"
           onClick={handleSendEmails}
@@ -200,7 +212,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
         </ElemButton>
 
         {selectedCompanies.length !== 0 && (
-          <div className="text-sm text-gray-500 my-auto">
+          <div className="my-auto text-sm text-gray-500">
             {emails} people will be invited
           </div>
         )}
