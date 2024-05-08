@@ -46,8 +46,7 @@ const GridTwelve: React.FC<GridProps> = ({ children, wrapperClass }) => {
     <div
       className={`grid grid-cols-12 gap-2${
         wrapperClass ? ` ${wrapperClass}` : ''
-      }`}
-    >
+      }`}>
       {children}
     </div>
   );
@@ -77,11 +76,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
   const [errorsTeamMembers, setErrorsTeamMembers] = useState({} as any);
   const [errorsRounds, setErrorsRounds] = useState({} as any);
 
-  const {
-    data: companyData,
-    error,
-    isLoading,
-  } = useGetCompanyBySlugQuery({
+  const { data: companyData } = useGetCompanyBySlugQuery({
     slug: companyId as string,
   });
 
@@ -89,8 +84,12 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
   useEffect(() => {
     if (companyData) {
-      setCompany(companyData?.companies[0] as any);
-      setCompanyEditable(companyData?.companies[0] as any);
+      const companyAux = {
+        ...companyData?.companies[0],
+        ...companyData?.companies[0].urls,
+      };
+      setCompany(companyAux);
+      setCompanyEditable(companyAux);
     }
   }, [companyData]);
 
@@ -262,8 +261,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 <ElemButton
                   onClick={onCancelCompanyEdits}
                   btn="transparent"
-                  className="text-gray-300"
-                >
+                  className="text-gray-300">
                   Cancel
                 </ElemButton>
                 <ElemButton onClick={onSaveCompany} btn="primary">
@@ -315,8 +313,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                       <span
                         className="absolute bottom-0 right-0 flex items-center justify-center bg-gray-200 rounded-full w-9 h-9"
                         role="button"
-                        onClick={handleLogoEditClick}
-                      >
+                        onClick={handleLogoEditClick}>
                         <IconProfilePictureUpload />
                       </span>
                       <input
@@ -853,8 +850,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                   onClick={() => {
                     setMemberToEdit({} as Team_Members);
                     setTeamDrawer(true);
-                  }}
-                >
+                  }}>
                   Add Employee
                 </span>
               </div>
@@ -901,8 +897,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                   onClick={() => {
                     setRoundToEdit({} as Investment_Rounds);
                     setInvestmentDrawer(true);
-                  }}
-                >
+                  }}>
                   Add Investments Round
                 </span>
               </div>
@@ -943,14 +938,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
     context.req.cookies,
   );
 
-  if (!companies?.companies[0]) {
+  let company = companies?.companies[0];
+  company = { ...company, ...company?.urls };
+
+  if (!company?.id) {
     return {
       notFound: true,
     };
   }
 
   const sortRounds =
-    companies.companies[0].investment_rounds
+    company.investment_rounds
       ?.slice()
       .sort((a, b) => {
         return (
@@ -962,7 +960,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
-      company: companies.companies[0],
+      company,
       sortRounds,
     },
   };

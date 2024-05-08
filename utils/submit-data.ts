@@ -168,6 +168,49 @@ export const markDataRawAsInactive = async (
   });
 };
 
+const SINGLE_URLS_KEYS = [
+  'github',
+  'website',
+  'careers_page',
+  'company_linkedin',
+  'white_paper',
+  'audit_file',
+  'twitter',
+  'discord',
+  'glassdoor',
+  'bitcointalk',
+  'facebook',
+  'instagram',
+  'medium',
+  'reddit',
+  'telegram',
+  'youtube',
+  'blockchain_explorer',
+  'linkedin',
+];
+
+export const mapSingleUrlsToUrls = (
+  resourceObjs: Array<Record<string, any>>,
+) => {
+  return resourceObjs.map(value => {
+    const urls: Record<string, string> = {};
+    if (!value.urls) {
+      SINGLE_URLS_KEYS.forEach((key: string) => {
+        if (key in value) {
+          urls[key] = value[key];
+          delete value[key];
+        }
+      });
+
+      if (Object.keys(urls).length > 0) {
+        value.urls = urls;
+      }
+    }
+
+    return value;
+  });
+};
+
 export const insertActionDataChange = async (
   actionType: ActionType,
   resourceId: Number,

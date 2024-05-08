@@ -85,8 +85,7 @@ const CompanyForm = ({
             companies,
           )
         }
-        toolbar={toolbar}
-      >
+        toolbar={toolbar}>
         {action === 'edit' && (
           <TextInput
             className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -119,8 +118,7 @@ const CompanyForm = ({
                   rel="noreferrer"
                   href={`https://edgein.io/companies/${
                     currentData && currentData.slug
-                  }`}
-                >
+                  }`}>
                   <Button label="Preview" />
                 </a>
               </div>
@@ -141,8 +139,7 @@ const CompanyForm = ({
           source="logo"
           label="logo"
           accept="image/*"
-          placeholder={<p>Drop your file here</p>}
-        >
+          placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         {action === 'edit' && !logo && !isImageUpdated && (
@@ -179,7 +176,11 @@ const CompanyForm = ({
         <TextInput className={inputClassName} source="year_founded" />
         <NumberInput className={inputClassName} source="investor_amount" />
         <TextInput className={inputClassName} source="total_valuation" />
-        <TextInput className={inputClassName} source="white_paper" />
+        <TextInput
+          className={inputClassName}
+          source="urls.white_paper"
+          label="White Paper"
+        />
         <TextInput className={inputClassName} source="market_verified" />
         <TextInput className={inputClassName} source="velocity_linkedin" />
         <TextInput className={inputClassName} source="velocity_token" />
@@ -246,7 +247,8 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="github"
+          source="urls.github"
+          label="Github"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -255,7 +257,8 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="website"
+          source="urls.website"
+          label="Website"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -264,7 +267,8 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="careers_page"
+          source="urls.careers_page"
+          label="Careers Page"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -273,7 +277,8 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="company_linkedin"
+          source="urls.company_linkedin"
+          label="Company Linkedin"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -282,7 +287,8 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="twitter"
+          source="urls.twitter"
+          label="Twitter"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -291,7 +297,8 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="discord"
+          source="urls.discord"
+          label="Discord"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -300,7 +307,8 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="glassdoor"
+          source="urls.glassdoor"
+          label="Glassdoor"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -316,7 +324,11 @@ const CompanyForm = ({
         <TextInput className={inputClassName} source="web_domain" />
         <TextInput className={inputClassName} source="email_domain" />
         <TextInput className={inputClassName} source="web3_address" />
-        <TextInput className={inputClassName} source="telegram" />
+        <TextInput
+          className={inputClassName}
+          source="urls.telegram"
+          label="Telegram"
+        />
       </SimpleForm>
     </div>
   );

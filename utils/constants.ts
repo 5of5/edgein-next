@@ -10,6 +10,7 @@ import {
 } from 'react-admin';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { SegmentOption } from '@/types/onboarding';
+import { mapSingleUrlsToUrls } from './submit-data';
 
 export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
@@ -34,10 +35,10 @@ export const validateEmail = email();
 
 export const validateNameAndSlugAndEmailAndDomain = async (
   isEdit: boolean,
-  values: any,
+  values: Record<string, any>,
   data: any,
 ) => {
-  const errors: any = {};
+  let errors: Record<string, any> = {};
   if (!values?.name) {
     errors.name = 'The Name is required';
   }
@@ -46,6 +47,8 @@ export const validateNameAndSlugAndEmailAndDomain = async (
   } else if (values?.slug.length < 3) {
     errors.age = 'Must be over 3';
   }
+
+  values = { ...values, ...values.urls };
 
   const emailPattern =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -186,14 +189,19 @@ export const validateNameAndSlugAndEmailAndDomain = async (
     }
   }
 
+  // Mapping singles urls to url object
+  errors = mapSingleUrlsToUrls([errors])[0];
+  
   return errors;
 };
 
 export const validateFieldsForEdit = async (
   isEdit: boolean,
-  values: any,
+  values: Record<string, any>,
   data: any,
 ) => {
+  values = { ...values, ...values.url };
+
   const errors: any = {};
   if (!values?.logo) {
     errors.logo = 'The Image is required';

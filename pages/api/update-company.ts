@@ -5,6 +5,7 @@ import {
   UpdateCompanyByPkDocument,
   UpdateCompanyByPkMutation,
 } from '@/graphql/types';
+import { mapSingleUrlsToUrls } from '@/utils/submit-data';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -34,12 +35,14 @@ const updateCompany = async (
   companyId: number,
   token: string,
 ) => {
+  const data = mapSingleUrlsToUrls([payload])[0];
+  
   return await mutate<UpdateCompanyByPkMutation>(
     {
       mutation: UpdateCompanyByPkDocument,
       variables: {
         companyId,
-        data: payload,
+        data,
       },
     },
     token,

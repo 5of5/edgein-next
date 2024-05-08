@@ -177,18 +177,18 @@ export const CompanyList = () => {
         source="child_companies"
         reference="companies"
       >
-        <SingleFieldList>
+      {/*   <SingleFieldList>
           <ChipField source="name" />
-        </SingleFieldList>
+        </SingleFieldList> */}
       </ReferenceArrayField>
       <ReferenceArrayField
         label="Child vc firms"
         source="child_vc_firms"
         reference="vc_firms"
       >
-        <SingleFieldList>
+        {/* <SingleFieldList>
           <ChipField source="name" />
-        </SingleFieldList>
+        </SingleFieldList> */}
       </ReferenceArrayField>
       <ReferenceField
         label="Parent company"

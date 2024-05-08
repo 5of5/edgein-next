@@ -1,25 +1,25 @@
 {
-	"cSpell.words": [
-		"airtable",
-		"algoliasearch",
-		"codegen",
-		"dockerenv",
-		"edgein",
-		"fusionworks",
-		"glassdoor",
-		"hasura",
-		"headlessui",
-		"hotjar",
-		"instantsearch",
-		"loggedin",
-		"loggedout",
-		"Logomark",
-		"overscroll",
-		"sindresorhus",
-		"sortees",
-		"vcfirm",
-		"vcfirms",
-		"wordmark"
-	],
-	"css.lint.unknownAtRules": "ignore"
+  "cSpell.words": [
+    "airtable",
+    "algoliasearch",
+    "codegen",
+    "dockerenv",
+    "edgein",
+    "fusionworks",
+    "glassdoor",
+    "hasura",
+    "headlessui",
+    "hotjar",
+    "instantsearch",
+    "loggedin",
+    "loggedout",
+    "Logomark",
+    "overscroll",
+    "sindresorhus",
+    "sortees",
+    "vcfirm",
+    "vcfirms",
+    "wordmark"
+  ],
+  "css.lint.unknownAtRules": "ignore"
 }

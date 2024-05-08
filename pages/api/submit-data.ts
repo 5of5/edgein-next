@@ -16,6 +16,7 @@ import {
   deleteMainTableRecord,
   insertActionDataChange,
   markDataRawAsInactive,
+  mapSingleUrlsToUrls,
 } from '@/utils/submit-data';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CookieService from '@/utils/cookie';
@@ -200,6 +201,11 @@ export const commonHandler = async (
       resourceObjs.push(resourceObj);
     } else {
       resourceObjs = [...(resourceObj as Array<Record<string, any>>)];
+    }
+
+    // Mapping single URLs to url object (to keep old versions of payload endpoint)
+    if (['companies', 'vc_firms'].includes(resourceType)) {
+      resourceObjs = mapSingleUrlsToUrls(resourceObjs);
     }
 
     // Resource identifier can be an array (for one record) or an array of array (for list of records)
