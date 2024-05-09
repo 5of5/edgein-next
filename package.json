@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:normalized": "npx ts-node scripts/normalized-companies-tags-column.ts",
     "dev": "next dev",
     "dev:production": "next dev",
     "build": "NODE_OPTIONS=\"--max_old_space_size=4096\" next build",
