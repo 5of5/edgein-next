@@ -12,28 +12,18 @@ query GetCompanyBySlug($slug: String!) {
     overview
     investor_amount
     urls
-    white_paper
     total_employees
     year_founded
-    website
     market_verified
-    company_linkedin
-    careers_page
     velocity_linkedin
     velocity_token
     tags
     date_added
     ico_start
     ico_end
-    audit_file
     sentiment
     web3_address
-    twitter
-    discord
-    telegram
-    github
     location_json
-    glassdoor
     status_tags
     library
     teamMembers {
@@ -231,11 +221,6 @@ query GetCompanies(
       id
       list_id
     }
-    website
-    twitter
-    company_linkedin
-    github
-    discord
   }
   companies_aggregate(where: $where) {
     aggregate {
@@ -393,11 +378,6 @@ query GetPersonalizedCompanies(
       id
       list_id
     }
-    website
-    twitter
-    company_linkedin
-    github
-    discord
   }
   companies_aggregate(where: $where) {
     aggregate {
@@ -416,8 +396,7 @@ mutation InsertCompanies($objects: [companies_insert_input!]!) {
       status
       slug
       enrichment_priority
-      website
-      company_linkedin
+      urls
     }
   }
 }
