@@ -2,32 +2,25 @@ import * as dotenv from 'dotenv';
 import random from 'lodash/random';
 dotenv.config({ path: './.env' });
 import { getClient } from './postgres-helpers';
-import { RecordContext } from 'react-admin';
 
 (async () => {
   const client = await getClient();
 
   const queryResults = await client.query(
-    "SELECT id, name, tags, library  FROM companies WHERE tags <> '[]'",
+    `SELECT id, name, tags, library  FROM companies WHERE tags <> '[]' AND library @> '["Web3", "AI"]'::jsonb`,
   );
-
-  /*  */
-  /* Infrastructure Provide | Infrastructure */
 
   for (let i = 0; i < queryResults.rows.length; i += 1) {
     const record = queryResults.rows[i];
 
     console.log(`Update tags for company id ${record.id} name ${record.name}`);
 
-    // only we want to modify the combinated librar
-    if (record.library?.includes('Web3') && record.library?.includes('AI')) {
-      const recordTags = record.tags;
-      const normalizedTags = getTagChoicesByLibraries(record.library);
+    const recordTags = record.tags;
+    const normalizedTags = getTagChoicesByLibraries(record.library);
 
-      
+    
 
-      console.log(normalizedTags, recordTags);
-    }
+    console.log(normalizedTags, recordTags);
 
     /*   await client.query(
       `UPDATE events SET slug = '${generatedSlug}' WHERE id=${record.id};`,
@@ -46,17 +39,46 @@ export const getTagChoicesByLibraries = libraries => {
       ...web3Tags.filter(tag => tag.match(/- Web3/g)),
     ];
   }
-
-  if (libraries?.includes('AI')) {
-    return aiTags.filter(tag => !tag.match(/- AI/g));
-  }
-
-  if (libraries?.includes('Web3')) {
-    return web3Tags.filter(tag => !tag.match(/- Web3/g));
-  }
-
   return [];
 };
+
+const oldTagsWeb3AI = [
+  'Analytics',
+  'API',
+  'Crypto',
+  'Cybersecurity',
+  'DAO',
+  'DApps',
+  'Database',
+  'Dev Tools',
+  'Marketplace',
+  'Media',
+  'Messaging',
+  'Metaverse',
+  'News',
+  'Platform',
+  'SaaS',
+  'Storage',
+  'Service Partner',
+  'Service Partner Legal',
+  'Service Partner Accounting',
+  'Service Partner Marketing',
+  'Service Partner IT Tech Development',
+  'Service Partner Accelerator',
+  'Service Partner Incubator',
+  'Service Partner Finance',
+  'Service Partner Recruiting',
+  'Service Partner HR',
+  'Data',
+  'Algorithms',
+  'Infrastructure',
+  'Applications',
+  'Framework',
+  'Library',
+  'Data Storage and Management',
+  'Cloud Infrastructure',
+  'Infrastructure Provider',
+];
 
 const web3Tags = [
   'Layer 0',
