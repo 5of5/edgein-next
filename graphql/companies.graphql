@@ -31,7 +31,6 @@ query GetCompanyBySlug($slug: String!) {
     discord
     telegram
     github
-    location
     location_json
     glassdoor
     status_tags

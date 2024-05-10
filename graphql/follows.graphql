@@ -65,7 +65,6 @@ query GetCompaniesByListId(
       website
       logo
       sentiment
-      location
       location_json
       twitter
       year_founded

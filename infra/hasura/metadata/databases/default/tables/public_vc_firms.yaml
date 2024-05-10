@@ -77,7 +77,6 @@ select_permissions:
         - latest_investment
         - library
         - linkedin
-        - location
         - location_json
         - logo
         - name
@@ -130,7 +129,6 @@ select_permissions:
         - latest_investment
         - library
         - linkedin
-        - location
         - location_json
         - logo
         - name
