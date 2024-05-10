@@ -10,6 +10,8 @@ import {
   useGetList,
   AutocompleteArrayInput,
   useGetOne,
+  ArrayInput,
+  SimpleFormIterator,
 } from 'react-admin';
 import { useParams } from 'react-router-dom';
 import {
@@ -241,10 +243,14 @@ const VcFirmForm = ({
           className={`w-[49%] ${textInputClassName}`}
           source="telegram"
         />
-        <TextInput
+        <ArrayInput
           className={`w-[49%] ${textInputClassName}`}
           source="web3_address"
-        />
+        >
+          <SimpleFormIterator>
+            <TextInput source="" label="Address" />
+          </SimpleFormIterator>
+        </ArrayInput>
       </SimpleForm>
     </div>
   );

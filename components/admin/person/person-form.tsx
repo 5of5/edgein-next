@@ -9,6 +9,8 @@ import {
   SimpleForm,
   useGetList,
   required,
+  ArrayInput,
+  SimpleFormIterator,
 } from 'react-admin';
 import {
   validateNameAndSlugAndEmailAndDomain,
@@ -150,10 +152,14 @@ const PersonForm = ({
             },
           }}
         />
-        <TextInput className={inputClassName} source="web3_address" />
         <TextInput className={inputClassName} source="twitter_url" />
         <TextInput className={inputClassName} source="discord" />
         <TextInput className={inputClassName} source="telegram" />
+        <ArrayInput className={inputClassName} source="web3_address">
+          <SimpleFormIterator>
+            <TextInput source="" label="Address" />
+          </SimpleFormIterator>
+        </ArrayInput>
       </SimpleForm>
     </div>
   );

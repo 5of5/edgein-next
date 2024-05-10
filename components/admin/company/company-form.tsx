@@ -1,6 +1,7 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import {
   AutocompleteArrayInput,
+  ArrayInput,
   AutocompleteInput,
   FileInput,
   ImageField,
@@ -15,6 +16,7 @@ import {
   regex,
   required,
   useGetOne,
+  SimpleFormIterator,
 } from 'react-admin';
 import { useParams } from 'react-router-dom';
 import { Tag } from '@/types/common';
@@ -315,8 +317,12 @@ const CompanyForm = ({
         />
         <TextInput className={inputClassName} source="web_domain" />
         <TextInput className={inputClassName} source="email_domain" />
-        <TextInput className={inputClassName} source="web3_address" />
         <TextInput className={inputClassName} source="telegram" />
+        <ArrayInput className={inputClassName} source="web3_address">
+          <SimpleFormIterator>
+            <TextInput source="" label="Address" />
+          </SimpleFormIterator>
+        </ArrayInput>
       </SimpleForm>
     </div>
   );
