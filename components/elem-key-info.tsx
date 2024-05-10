@@ -60,7 +60,7 @@ type Props = {
   investmentsLength?: number;
   emails?: string[];
   linkedIn?: string | null;
-  web3Address?: string | null;
+  web3Address?: string[] | null;
   github?: string | null;
   twitter?: string | null;
   instagram?: string | null;
@@ -250,10 +250,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
       target: '_self',
     });
   }
-  if (web3Address) {
+  if (web3Address?.length) {
     infoItems.push({
       icon: IconContract,
-      text: removeDomainName(web3Address),
+      text: Array.isArray(web3Address) ? web3Address.join(' ') : web3Address,
       showHide: !userProfile || edgeInContributorButtonEnabled,
     });
   }
