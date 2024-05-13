@@ -108,7 +108,7 @@ const Faq: NextPage<Props> = ({}) => {
         description="Have questions about our business data ecosystem? Find lots of answers about getting started and making progress on this page."
       />
       <div className="relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 w-full -z-10 h-96 bg-gradient-to-b from-gray-100 to-white" />
+        <div className="absolute top-0 left-0 right-0 w-full -z-10 h-96 bg-gradient-to-b from-x-100 to-white" />
 
         <div className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]">
           <svg
@@ -138,22 +138,22 @@ const Faq: NextPage<Props> = ({}) => {
           </svg>
         </div>
 
-        <section
-          aria-labelledby="faq-heading"
-          className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"
-        >
-          <div className="max-w-2xl mx-auto lg:max-w-4xl">
-            <h2 id="faq-heading" className="text-4xl font-bold">
+        <section aria-labelledby="faq-heading" className="py-24 lg:py-36">
+          <div className="px-4 mx-auto sm:px-6max-w-2xl lg:max-w-4xl lg:px-12">
+            <h2 id="faq-heading" className="text-4xl font-medium">
               Frequently asked questions
             </h2>
-            <div className="mt-8">
+            <div className="mt-16">
               <dl className="space-y-12">
                 {faqs.map((faq, index) => (
                   <div key={index}>
                     <dt className="text-xl font-bold leading-6">
+                      {index != 0 && (
+                        <div className="h-px my-10 bg-gradient-to-r from-primary-100/0 via-primary-100 to-primary-100/0"></div>
+                      )}
                       {faq.question}
                     </dt>
-                    <dd className="mt-2 text-lg">
+                    <dd className="mt-2 text-lg leading-8">
                       <p className="text-gray-500">{faq.answer}</p>
                     </dd>
                   </div>
@@ -162,9 +162,9 @@ const Faq: NextPage<Props> = ({}) => {
             </div>
           </div>
         </section>
-        <section className="px-4 py-16 bg-primary-100 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto lg:max-w-4xl">
-            <h2 className="text-4xl font-bold text-primary-800">
+        <section className="px-4 py-16 bg-primary-100 sm:px-6 lg:px-8 sm:py-24">
+          <div className="px-4 mx-auto sm:px-6max-w-2xl lg:max-w-4xl lg:px-12">
+            <h2 className="text-4xl font-medium text-primary-800">
               Have another question or need help?
             </h2>
             <p className="mt-2 text-xl text-primary-800/70">
