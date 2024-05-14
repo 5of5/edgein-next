@@ -191,6 +191,7 @@ export const upsertList = async (
       variables: {
         name: listname,
         userId: user.id,
+        public: !(/sentiment-\d+-(hot|like|crap)/.test(listname)),
       },
     },
     token,
