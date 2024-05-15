@@ -152,7 +152,6 @@ const Home: NextPage = () => {
             <div className="mx-8">
               <div className="flex flex-col gap-4 gap-x-8">
                 {showPersonalized &&
-                  isSelectedTagLocation &&
                   locationTags.map((location, index) => (
                     <NewsByFilter
                       key={`${location}-${index}`}
@@ -166,22 +165,38 @@ const Home: NextPage = () => {
                           {
                             organizations: {
                               company: {
-                                location_json: {
-                                  _contains: {
-                                    city: `${location}`,
-                                  },
-                                },
+                                ...(isSelectedTagLocation
+                                  ? {
+                                      location_json: {
+                                        _contains: {
+                                          city: `${selectedStatusTag.title}`,
+                                        },
+                                      },
+                                    }
+                                  : {
+                                      tags: {
+                                        _contains: selectedStatusTag.title,
+                                      },
+                                    }),
                               },
                             },
                           },
                           {
                             organizations: {
                               vc_firm: {
-                                location_json: {
-                                  _contains: {
-                                    city: `${location}`,
-                                  },
-                                },
+                                ...(isSelectedTagLocation
+                                  ? {
+                                      location_json: {
+                                        _contains: {
+                                          city: `${selectedStatusTag.title}`,
+                                        },
+                                      },
+                                    }
+                                  : {
+                                      tags: {
+                                        _contains: selectedStatusTag.title,
+                                      },
+                                    }),
                               },
                             },
                           },
