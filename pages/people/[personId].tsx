@@ -288,7 +288,10 @@ const Person: NextPage<Props> = (props: Props) => {
                   twitter={person.twitter_url}
                   telegram={person.telegram}
                   discord={person.discord}
-                  location={person.city}
+                  location={
+                    person.location_json?.city ||
+                    person.people_computed_data?.location_json?.city
+                  }
                   website={person.website_url}
                 />
               </div>

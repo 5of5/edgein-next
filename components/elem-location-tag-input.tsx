@@ -3,6 +3,7 @@ import { Combobox } from '@headlessui/react';
 import { Place, SearchForSuggestionsResult } from '@aws-sdk/client-location';
 import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
 import { IconSearch, IconX } from './icons';
+import ElemLocationTag from './elem-location-tag';
 
 type Props = {
   label?: string;
@@ -73,8 +74,7 @@ const ElemLocationTagInput: FC<Props> = ({
                     }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
                   }
                   key={item.PlaceId}
-                  value={item}
-                >
+                  value={item}>
                   {item.Text}
                 </Combobox.Option>
               ))
@@ -82,33 +82,11 @@ const ElemLocationTagInput: FC<Props> = ({
           </Combobox.Options>
         )}
       </Combobox>
-      <ul className="flex items-center justify-center flex-wrap gap-3 mt-5 max-w-3xl">
-        {tags.map((tag, index) => (
-          <li
-            key={index}
-            className="flex items-center gap-2 p-2 pl-3 rounded-md bg-gray-100"
-          >
-            <span className="truncate max-w-xs text-xs font-medium">
-              {tag?.Label}
-            </span>
-            <button
-              onClick={() => {
-                handleRemoveTag(index);
-              }}
-              className="hover:opacity-70 focus:outline-none"
-            >
-              <IconX
-                className="w-3 h-3 text-gray-600"
-                strokeWidth={3}
-                title="close"
-              />
-            </button>
-          </li>
-        ))}
-        {isLoadingPlace && (
-          <li className="text-sm text-dark-400">Loading...</li>
-        )}
-      </ul>
+      <ElemLocationTag
+        tags={tags}
+        isLoadingPlace={isLoadingPlace}
+        handleRemoveTag={handleRemoveTag}
+      />
     </div>
   );
 };

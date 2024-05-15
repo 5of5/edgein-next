@@ -2117,6 +2117,7 @@ export type Companies = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
+  country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Scalars['Int'];
@@ -2431,6 +2432,7 @@ export type Companies_Bool_Exp = {
   coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   company_size: InputMaybe<Int_Comparison_Exp>;
+  country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamp_Comparison_Exp>;
   datapoints_count: InputMaybe<Int_Comparison_Exp>;
@@ -2886,6 +2888,7 @@ export type Companies_Insert_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -2959,6 +2962,7 @@ export type Companies_Max_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
+  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3018,6 +3022,7 @@ export type Companies_Min_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
+  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3100,6 +3105,7 @@ export type Companies_Order_By = {
   coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
   company_size: InputMaybe<Order_By>;
+  country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
   datapoints_count: InputMaybe<Order_By>;
@@ -3196,6 +3202,8 @@ export enum Companies_Select_Column {
   CompanyLinkedin = 'company_linkedin',
   /** column name */
   CompanySize = 'company_size',
+  /** column name */
+  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3316,6 +3324,7 @@ export type Companies_Set_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3441,6 +3450,7 @@ export type Companies_Stream_Cursor_Value_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
+  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3532,6 +3542,8 @@ export enum Companies_Update_Column {
   CompanyLinkedin = 'company_linkedin',
   /** column name */
   CompanySize = 'company_size',
+  /** column name */
+  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -19261,6 +19273,7 @@ export type People = {
   follows: Array<Follows_People>;
   /** An aggregate relationship */
   follows_aggregate: Follows_People_Aggregate;
+  geopoint: Maybe<Scalars['geography']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   /** An array relationship */
@@ -19274,6 +19287,7 @@ export type People = {
   latitude: Maybe<Scalars['float8']>;
   library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
+  location_json: Maybe<Scalars['jsonb']>;
   longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   /** An array relationship */
@@ -19375,6 +19389,12 @@ export type PeopleLibraryArgs = {
 
 
 /** columns and relationships of "people" */
+export type PeopleLocation_JsonArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "people" */
 export type PeopleNews_LinksArgs = {
   distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -19460,6 +19480,7 @@ export type People_Append_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
   library: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
   web3_address: InputMaybe<Scalars['jsonb']>;
 };
@@ -19492,6 +19513,7 @@ export type People_Bool_Exp = {
   facebook_url: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_People_Bool_Exp>;
   follows_aggregate: InputMaybe<Follows_People_Aggregate_Bool_Exp>;
+  geopoint: InputMaybe<Geography_Comparison_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
@@ -19501,6 +19523,7 @@ export type People_Bool_Exp = {
   latitude: InputMaybe<Float8_Comparison_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
+  location_json: InputMaybe<Jsonb_Comparison_Exp>;
   longitude: InputMaybe<Float8_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Person_Bool_Exp>;
@@ -19851,6 +19874,7 @@ export type People_Delete_At_Path_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Array<Scalars['String']>>;
   library: InputMaybe<Array<Scalars['String']>>;
+  location_json: InputMaybe<Array<Scalars['String']>>;
   picture: InputMaybe<Array<Scalars['String']>>;
   web3_address: InputMaybe<Array<Scalars['String']>>;
 };
@@ -19860,6 +19884,7 @@ export type People_Delete_Elem_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['Int']>;
   library: InputMaybe<Scalars['Int']>;
+  location_json: InputMaybe<Scalars['Int']>;
   picture: InputMaybe<Scalars['Int']>;
   web3_address: InputMaybe<Scalars['Int']>;
 };
@@ -19869,6 +19894,7 @@ export type People_Delete_Key_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['String']>;
   web3_address: InputMaybe<Scalars['String']>;
 };
@@ -19897,6 +19923,7 @@ export type People_Insert_Input = {
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_People_Arr_Rel_Insert_Input>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
@@ -19904,6 +19931,7 @@ export type People_Insert_Input = {
   latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
@@ -20020,6 +20048,7 @@ export type People_Order_By = {
   external_id: InputMaybe<Order_By>;
   facebook_url: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_People_Aggregate_Order_By>;
+  geopoint: InputMaybe<Order_By>;
   github: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
@@ -20027,6 +20056,7 @@ export type People_Order_By = {
   latitude: InputMaybe<Order_By>;
   library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
+  location_json: InputMaybe<Order_By>;
   longitude: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
@@ -20056,6 +20086,7 @@ export type People_Prepend_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
   library: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
   web3_address: InputMaybe<Scalars['jsonb']>;
 };
@@ -20085,6 +20116,8 @@ export enum People_Select_Column {
   /** column name */
   FacebookUrl = 'facebook_url',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Github = 'github',
   /** column name */
   Id = 'id',
@@ -20094,6 +20127,8 @@ export enum People_Select_Column {
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
+  /** column name */
+  LocationJson = 'location_json',
   /** column name */
   Longitude = 'longitude',
   /** column name */
@@ -20136,11 +20171,13 @@ export type People_Set_Input = {
   enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
@@ -20208,11 +20245,13 @@ export type People_Stream_Cursor_Value_Input = {
   enrichment_priority: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
@@ -20263,6 +20302,8 @@ export enum People_Update_Column {
   /** column name */
   FacebookUrl = 'facebook_url',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Github = 'github',
   /** column name */
   Id = 'id',
@@ -20272,6 +20313,8 @@ export enum People_Update_Column {
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
+  /** column name */
+  LocationJson = 'location_json',
   /** column name */
   Longitude = 'longitude',
   /** column name */
@@ -30664,16 +30707,16 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, web3_address: any | null, twitter_url: string | null, discord: string | null, telegram: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, library: any | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, web3_address: any | null, twitter_url: string | null, discord: string | null, telegram: string | null, github: string | null, location_json: any | null, facebook_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location_json: any | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }>, user: { __typename?: 'users_public', id: number | null } | null, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }> };
 
-export type PeopleFragmentFragment = { __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null };
+export type PeopleFragmentFragment = { __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, location_json: any | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null };
 
 export type GetPeopleByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetPeopleByIdQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }> };
+export type GetPeopleByIdQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, location_json: any | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }> };
 
 export type GetPeopleQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -30683,7 +30726,7 @@ export type GetPeopleQueryVariables = Exact<{
 }>;
 
 
-export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
+export type GetPeopleQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, created_at: any, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, location_json: any | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, location_json: any | null, tags: any | null, website: string | null } | null }>, follows: Array<{ __typename?: 'follows_people', id: number | null, list_id: number | null }>, people_computed_data: { __typename?: 'people_computed_data', title: string | null, tags: any | null, person_id: number, location_json: any | null, geopoint: any | null, id: number } | null }>, people_aggregate: { __typename?: 'people_aggregate', aggregate: { __typename?: 'people_aggregate_fields', count: number } | null } };
 
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -30720,7 +30763,7 @@ export type UpdatePeopleByPkMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePeopleByPkMutation = { __typename?: 'mutation_root', update_people_by_pk: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null };
+export type UpdatePeopleByPkMutation = { __typename?: 'mutation_root', update_people_by_pk: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, location_json: any | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null };
 
 export type FindPeopleByNameAndEmailQueryVariables = Exact<{
   name: InputMaybe<Scalars['String']>;
@@ -30773,6 +30816,13 @@ export type GetPeopleByTagsAndLocationQueryVariables = Exact<{
 
 
 export type GetPeopleByTagsAndLocationQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number }> };
+
+export type GetPeopleComputedByPersonIdQueryVariables = Exact<{
+  personId: Scalars['Int'];
+}>;
+
+
+export type GetPeopleComputedByPersonIdQuery = { __typename?: 'query_root', people_computed_data: Array<{ __typename?: 'people_computed_data', geopoint: any | null, location_json: any | null, person_id: number }> };
 
 export type InsertResetPasswordMutationVariables = Exact<{
   object: Reset_Passwords_Insert_Input;
@@ -31199,8 +31249,7 @@ export const PeopleFragmentFragmentDoc = `
   work_email
   linkedin
   github
-  city
-  country
+  location_json
   facebook_url
   twitter_url
   website_url
@@ -35423,8 +35472,7 @@ export const GetPersonDocument = `
     discord
     telegram
     github
-    city
-    country
+    location_json
     facebook_url
     website_url
     about
@@ -35743,8 +35791,7 @@ export const UpdatePeopleByPkDocument = `
     work_email
     linkedin
     github
-    city
-    country
+    location_json
     facebook_url
     twitter_url
     website_url
@@ -35995,6 +36042,34 @@ useGetPeopleByTagsAndLocationQuery.getKey = (variables: GetPeopleByTagsAndLocati
 ;
 
 useGetPeopleByTagsAndLocationQuery.fetcher = (variables: GetPeopleByTagsAndLocationQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByTagsAndLocationQuery, GetPeopleByTagsAndLocationQueryVariables>(GetPeopleByTagsAndLocationDocument, variables, options);
+export const GetPeopleComputedByPersonIdDocument = `
+    query GetPeopleComputedByPersonId($personId: Int!) {
+  people_computed_data(where: {person_id: {_eq: $personId}}) {
+    geopoint
+    location_json
+    person_id
+  }
+}
+    `;
+export const useGetPeopleComputedByPersonIdQuery = <
+      TData = GetPeopleComputedByPersonIdQuery,
+      TError = Error
+    >(
+      variables: GetPeopleComputedByPersonIdQueryVariables,
+      options?: UseQueryOptions<GetPeopleComputedByPersonIdQuery, TError, TData>
+    ) =>
+    useQuery<GetPeopleComputedByPersonIdQuery, TError, TData>(
+      ['GetPeopleComputedByPersonId', variables],
+      fetcher<GetPeopleComputedByPersonIdQuery, GetPeopleComputedByPersonIdQueryVariables>(GetPeopleComputedByPersonIdDocument, variables),
+      options
+    );
+useGetPeopleComputedByPersonIdQuery.document = GetPeopleComputedByPersonIdDocument;
+
+
+useGetPeopleComputedByPersonIdQuery.getKey = (variables: GetPeopleComputedByPersonIdQueryVariables) => ['GetPeopleComputedByPersonId', variables];
+;
+
+useGetPeopleComputedByPersonIdQuery.fetcher = (variables: GetPeopleComputedByPersonIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleComputedByPersonIdQuery, GetPeopleComputedByPersonIdQueryVariables>(GetPeopleComputedByPersonIdDocument, variables, options);
 export const InsertResetPasswordDocument = `
     mutation InsertResetPassword($object: reset_passwords_insert_input!) {
   insert_reset_passwords_one(object: $object) {

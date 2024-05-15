@@ -1,0 +1,7 @@
+query GetPeopleComputedByPersonId($personId: Int!) {
+  people_computed_data(where: { person_id: { _eq: $personId } }) {
+    geopoint
+    location_json
+    person_id
+  }
+}
