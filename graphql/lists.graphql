@@ -80,12 +80,12 @@ query GetListUserGroupsByListIdAndGroupId(
   }
 }
 
-mutation UpsertList($userId: Int, $name: String) {
+mutation UpsertList($userId: Int, $name: String, $public: Boolean = true) {
   insert_lists_one(
-    object: { created_by_id: $userId, name: $name }
+    object: { created_by_id: $userId, name: $name, public: $public}
     on_conflict: {
       constraint: lists_created_by_id_name_key
-      update_columns: created_by_id
+      update_columns: [created_by_id, public]
     }
   ) {
     id
