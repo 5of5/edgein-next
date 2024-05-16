@@ -4,13 +4,11 @@ import { useStateParams } from '@/hooks/use-state-params';
 import { Pagination } from '@/components/pagination';
 import { useRouter } from 'next/router';
 import { ElemNewsCard } from '@/components/news/elem-news-card';
-import { useIntercom } from 'react-use-intercom';
 import { PlaceholderNewsCard } from '@/components/placeholders';
 import { runGraphQl } from '../utils';
 import { Toaster } from 'react-hot-toast';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import {
-  News,
   GetNewsDocument,
   GetNewsQuery,
   useGetNewsQuery,
@@ -31,14 +29,10 @@ import useLibrary from '@/hooks/use-library';
 import { onTrackView } from '@/utils/track';
 import moment from 'moment-timezone';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
-import { getPersonalizedData } from '@/utils/personalizedTags';
-import { NewsByFilter } from '@/components/news/elem-news-by-filter';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 import { NoResults } from '@/components/companies/no-results';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-
-const ITEMS_PER_PAGE = 8;
 
 type Props = {
   newsCount: number;
@@ -49,9 +43,7 @@ type Props = {
 const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const router = useRouter();
-  const { showNewMessages } = useIntercom();
   const { user } = useUser();
-  const personalizedTags = getPersonalizedData({ user });
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -170,8 +162,6 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     return news_aggregate;
   };
 
-  const showPersonalized = user && !selectedTab;
-
   const onPreviousPage = () => {
     setPageIndex(pageIndex - 1);
   };
@@ -221,52 +211,10 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
 
           <div className="mx-8">
             <div className="flex flex-col gap-8 mt-6">
-              {showPersonalized && (
-                <>
-                  {personalizedTags.locationTags.map((location, index) => (
-                    <NewsByFilter
-                      key={`${location}-${index}`}
-                      headingText={`Trending in ${location}`}
-                      itemsPerPage={ITEMS_PER_PAGE}
-                      orderBy={{
-                        updated_at: Order_By.Desc,
-                      }}
-                      filters={{
-                        _or: [
-                          {
-                            organizations: {
-                              company: {
-                                location_json: {
-                                  _contains: {
-                                    city: `${location}`,
-                                  },
-                                },
-                              },
-                            },
-                          },
-                          {
-                            organizations: {
-                              vc_firm: {
-                                location_json: {
-                                  _contains: {
-                                    city: `${location}`,
-                                  },
-                                },
-                              },
-                            },
-                          },
-                        ],
-                      }}
-                    />
-                  ))}
-                </>
-              )}
-
               <div>
                 <div className="flex justify-between py-8">
                   <div className="text-4xl font-medium">{pageTitle}</div>
                 </div>
-
                 {error ? (
                   <h4>Error loading news</h4>
                 ) : isLoading && !initialLoad ? (
