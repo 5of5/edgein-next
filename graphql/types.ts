@@ -30414,6 +30414,7 @@ export type GetListUserGroupsByListIdAndGroupIdQuery = { __typename?: 'query_roo
 export type UpsertListMutationVariables = Exact<{
   userId: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  public?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -34384,10 +34385,10 @@ useGetListUserGroupsByListIdAndGroupIdQuery.getKey = (variables: GetListUserGrou
 
 useGetListUserGroupsByListIdAndGroupIdQuery.fetcher = (variables: GetListUserGroupsByListIdAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsByListIdAndGroupIdQuery, GetListUserGroupsByListIdAndGroupIdQueryVariables>(GetListUserGroupsByListIdAndGroupIdDocument, variables, options);
 export const UpsertListDocument = `
-    mutation UpsertList($userId: Int, $name: String) {
+    mutation UpsertList($userId: Int, $name: String, $public: Boolean = true) {
   insert_lists_one(
-    object: {created_by_id: $userId, name: $name}
-    on_conflict: {constraint: lists_created_by_id_name_key, update_columns: created_by_id}
+    object: {created_by_id: $userId, name: $name, public: $public}
+    on_conflict: {constraint: lists_created_by_id_name_key, update_columns: [created_by_id, public]}
   ) {
     id
   }
