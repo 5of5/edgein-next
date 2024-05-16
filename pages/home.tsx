@@ -151,6 +151,8 @@ const Home: NextPage = () => {
           {selectedStatusTag && selectedStatusTag.title !== GLOBAL_TAG && (
             <div className="mx-8">
               <div className="flex flex-col gap-4 gap-x-8">
+                {/* 
+                Personalized news are hidden until news data gets updated
                 {showPersonalized &&
                   locationTags.map((location, index) => (
                     <NewsByFilter
@@ -203,7 +205,7 @@ const Home: NextPage = () => {
                         ],
                       }}
                     />
-                  ))}
+                  ))} */}
 
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Trending 🔥</h2>
