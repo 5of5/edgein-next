@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   SimpleForm,
   TextInput,
@@ -17,19 +17,35 @@ import ElemTitle from '../elem-title';
 import UserResetPasswordButton from './UserResetPasswordButton';
 import UserResetPasswordTable from './UserResetPasswordTable';
 import { IconEmail, IconLinkedIn } from '@/components/icons';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import ElemAddressInput from '../elem-address-input';
 import { Place } from '@aws-sdk/client-location';
 import ElemLocationTag from '@/components/elem-location-tag';
 import { getGeometryPlace } from '@/utils/helpers';
+import { isEqual } from 'lodash';
 
 const inputClassName =
   'w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
 const UserEditToolbar = () => {
+  const firstFormValue = useRef<Record<string, any>>();
+  const { control } = useFormContext();
+  const formValues = useWatch({ control });
+
+  if (!firstFormValue.current) {
+    firstFormValue.current = formValues;
+  }
+
+  const allowButton =
+    !!firstFormValue.current &&
+    !isEqual(
+      firstFormValue.current?.onboarding_information?.locationTags,
+      formValues.onboarding_information.locationTags,
+    );
+
   return (
     <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <SaveButton alwaysEnable={true} label="Save" />
+      <SaveButton alwaysEnable={allowButton} label="Save" />
       <div>
         <UserResetPasswordButton />
         <DeleteButton label="Delete" sx={{ marginLeft: 1 }} />
