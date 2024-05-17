@@ -3,7 +3,7 @@ import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
-import { Library, Tag } from '@/types/common';
+import { Library } from '@/types/common';
 import {
   aiTags,
   eventBannerList,
@@ -141,18 +141,15 @@ export const getSelectableWeb3Tags = () => {
 
 export const getTagChoicesByLibraries = (libraries: Library[]) => {
   if (libraries?.includes('Web3') && libraries?.includes('AI')) {
-    return [
-      ...aiTags.filter(tag => tag.id.match(/- AI/g)),
-      ...web3Tags.filter(tag => tag.id.match(/- Web3/g)),
-    ];
+    return [...aiTags, ...web3Tags];
   }
 
   if (libraries?.includes('AI')) {
-    return aiTags.filter(tag => !tag.id.match(/- AI/g));
+    return aiTags;
   }
 
   if (libraries?.includes('Web3')) {
-    return web3Tags.filter(tag => !tag.id.match(/- Web3/g));
+    return web3Tags;
   }
 
   return [];
