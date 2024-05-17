@@ -2117,7 +2117,6 @@ export type Companies = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Scalars['Int'];
@@ -2432,7 +2431,6 @@ export type Companies_Bool_Exp = {
   coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   company_size: InputMaybe<Int_Comparison_Exp>;
-  country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamp_Comparison_Exp>;
   datapoints_count: InputMaybe<Int_Comparison_Exp>;
@@ -2888,7 +2886,6 @@ export type Companies_Insert_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -2962,7 +2959,6 @@ export type Companies_Max_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3022,7 +3018,6 @@ export type Companies_Min_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3105,7 +3100,6 @@ export type Companies_Order_By = {
   coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
   company_size: InputMaybe<Order_By>;
-  country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
   datapoints_count: InputMaybe<Order_By>;
@@ -3202,8 +3196,6 @@ export enum Companies_Select_Column {
   CompanyLinkedin = 'company_linkedin',
   /** column name */
   CompanySize = 'company_size',
-  /** column name */
-  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3324,7 +3316,6 @@ export type Companies_Set_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3450,7 +3441,6 @@ export type Companies_Stream_Cursor_Value_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3542,8 +3532,6 @@ export enum Companies_Update_Column {
   CompanyLinkedin = 'company_linkedin',
   /** column name */
   CompanySize = 'company_size',
-  /** column name */
-  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
