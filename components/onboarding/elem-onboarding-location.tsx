@@ -11,7 +11,7 @@ type Props = {
   segment?: Segment;
   locations: Place[];
   onChangeLocations: (locations: Place[]) => void;
-  onNext: () => void;
+  onNext?: () => void;
 };
 
 export const ElemOnboardingLocation: FC<Props> = ({

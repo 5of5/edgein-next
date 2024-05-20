@@ -96,10 +96,12 @@ select_permissions:
         - discord
         - email
         - facebook_url
+        - geopoint
         - github
         - id
         - library
         - linkedin
+        - location_json
         - name
         - personal_email
         - picture
@@ -127,9 +129,11 @@ select_permissions:
         - email
         - external_id
         - facebook_url
+        - geopoint
         - github
         - id
         - linkedin
+        - location_json
         - name
         - personal_email
         - picture
@@ -157,10 +161,12 @@ select_permissions:
         - discord
         - email
         - facebook_url
+        - geopoint
         - github
         - id
         - library
         - linkedin
+        - location_json
         - name
         - personal_email
         - picture

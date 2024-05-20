@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   FormDataConsumer,
   ImageField,
@@ -11,6 +11,8 @@ import {
   required,
   ArrayInput,
   SimpleFormIterator,
+  useGetOne,
+  useGetMany,
 } from 'react-admin';
 import {
   validateNameAndSlugAndEmailAndDomain,
@@ -20,6 +22,10 @@ import {
 import ElemSlugInput from '../elem-slug-input';
 import ElemIconGroup from '../elem-icon-group';
 import useAdminHandleSlug from '@/hooks/use-admin-handle-slug';
+import { useParams } from 'react-router-dom';
+import ElemAddressInput from '../elem-address-input';
+import { useGetPeopleComputedByPersonIdQuery } from '@/graphql/types';
+import { useFormContext } from 'react-hook-form';
 
 type PersonFormProps = {
   action: 'create' | 'edit';
@@ -38,6 +44,19 @@ const PersonForm = ({
   onSelect,
   onDropRejected,
 }: PersonFormProps) => {
+  const { id } = useParams();
+  const { data: currentData } = useGetOne('people', { id }, { enabled: !!id });
+  const { data: currentComputedData } = useGetPeopleComputedByPersonIdQuery(
+    {
+      personId: parseInt(id!),
+    },
+    {
+      enabled: !!id && !currentData?.location_json,
+    },
+  );
+
+  const computedData = currentComputedData?.people_computed_data?.[0];
+
   const [isIcon, setIsIcon] = useState(action === 'edit');
   const [keyword, setKeyword] = useState('');
   const { data: people } = useGetList('people', {});
@@ -52,9 +71,18 @@ const PersonForm = ({
     setKeyword(e.target.value);
   };
 
+  const location_json =
+    currentData?.location_json || computedData?.location_json;
+  const geopoint = currentData?.geopoint || computedData?.geopoint;
+
   return (
     <div className="customForm" style={{ position: 'relative' }}>
       <SimpleForm
+        values={{
+          ...currentData,
+          location_json,
+          geopoint,
+        }}
         validate={value =>
           validateNameAndSlugAndEmailAndDomain(
             action !== 'create',
@@ -142,7 +170,30 @@ const PersonForm = ({
           choices={libraryChoices}
           defaultValue={['Web3']}
         />
-        <TextInput className={inputClassName} source="country" />
+        <ElemAddressInput
+          defaultLocation={location_json}
+          defaultGeoPoint={geopoint}
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.address"
+          label="Address (Street)"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.city"
+          label="City"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.state"
+          label="State"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.country"
+          label="Country"
+        />
         <TextInput
           className={inputClassName}
           source="linkedin"

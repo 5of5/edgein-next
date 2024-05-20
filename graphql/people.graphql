@@ -15,8 +15,7 @@ query GetPerson($slug: String!) {
     discord
     telegram
     github
-    city
-    country
+    location_json
     facebook_url
     website_url
     about
@@ -135,8 +134,7 @@ fragment PeopleFragment on people {
   work_email
   linkedin
   github
-  city
-  country
+  location_json
   facebook_url
   twitter_url
   website_url
@@ -299,8 +297,7 @@ mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
     work_email
     linkedin
     github
-    city
-    country
+    location_json
     facebook_url
     twitter_url
     website_url
