@@ -1153,7 +1153,7 @@ export const getListsFilters = (selectedTab: ListsTabType, userId: number) => {
   if (selectedTab === 'discover') {
     filters = {
       _and: [
-        { public: { _eq: true } },
+        { public: { _eq: true }, total_no_of_resources: { _gte: 3 } },
         {
           _not: {
             list_members: {

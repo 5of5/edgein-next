@@ -9,6 +9,8 @@ import {
 import { runGraphQl } from '@/utils';
 import {
   GetListsQuery,
+  Order_By,
+  Lists_Order_By,
   GetListsDocument,
   useGetListsQuery,
   Lists_Bool_Exp,
@@ -90,6 +92,12 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
     {
       limit: LIMIT,
       offset,
+      orderBy: [
+        {
+          list_members_aggregate: { count: Order_By.Desc },
+          //total_no_of_resources: Order_By.DescNullsLast,
+        } as Lists_Order_By,
+      ],
       where: filters as Lists_Bool_Exp,
     },
     { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
@@ -279,6 +287,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
     {
       offset,
       limit: LIMIT,
+      orderBy: [
+        {
+          list_members_aggregate: { count: Order_By.Desc },
+          //total_no_of_resources: Order_By.DescNullsLast,
+        } as Lists_Order_By,
+      ],
       where: getListsFilters(selectedTab as ListsTabType, user?.id || 0),
     },
     context.req.cookies,

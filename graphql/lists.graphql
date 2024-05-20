@@ -179,13 +179,13 @@ mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
   }
 }
 
-query GetLists($limit: Int, $offset: Int, $where: lists_bool_exp!) {
-  lists(
-    where: $where
-    order_by: { created_at: desc }
-    limit: $limit
-    offset: $offset
-  ) {
+query GetLists(
+  $limit: Int
+  $offset: Int
+  $orderBy: [lists_order_by!]
+  $where: lists_bool_exp!
+) {
+  lists(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
     name
     description
