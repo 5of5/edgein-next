@@ -19,11 +19,13 @@ const ElemLocationTag: FC<Props> = ({
     <ul
       className={`flex items-center justify-center flex-wrap gap-3 max-w-3xl ${
         styles ?? 'mt-5'
-      }`}>
+      }`}
+    >
       {tags.map((tag, index) => (
         <li
           key={index}
-          className="flex items-center gap-2 p-2 pl-3 rounded-md bg-gray-100">
+          className="flex items-center gap-2 p-2 pl-3 rounded-md bg-gray-100"
+        >
           <span className="truncate max-w-xs text-xs font-medium">
             {tag?.Label || tag?.label}
           </span>
@@ -32,7 +34,8 @@ const ElemLocationTag: FC<Props> = ({
             onClick={() => {
               handleRemoveTag?.(index);
             }}
-            className="hover:opacity-70 focus:outline-none">
+            className="hover:opacity-70 focus:outline-none"
+          >
             <IconX
               className="w-3 h-3 text-gray-600"
               strokeWidth={3}

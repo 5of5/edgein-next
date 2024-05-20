@@ -70,13 +70,16 @@ const ElemAddressInput = ({
   return (
     <Autocomplete
       id="elem-address-component"
-      sx={{ width: width ?? '49%', marginBottom: marginBottom ?? 3 }}
+      sx={{
+        width: width ?? '49%',
+        marginBottom: marginBottom ?? 3,
+      }}
       filterOptions={x => x}
       getOptionLabel={option => option?.Text}
       options={options}
       autoComplete
       includeInputInList
-      style={{ margin: 0 }}
+      style={{ margin: `0 0 24px` }}
       filterSelectedOptions
       value={value}
       noOptionsText="No addresses found."
@@ -127,7 +130,11 @@ const ElemAddressInput = ({
         }
       }}
       renderInput={params => (
-        <TextField {...params} label="Enter an address" fullWidth />
+        <TextField
+          {...params}
+          label="Enter address to fill address, city, state, and country fields"
+          fullWidth
+        />
       )}
       renderOption={(props, option: SearchForSuggestionsResult) => {
         return (

@@ -74,7 +74,8 @@ const ElemLocationTagInput: FC<Props> = ({
                     }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
                   }
                   key={item.PlaceId}
-                  value={item}>
+                  value={item}
+                >
                   {item.Text}
                 </Combobox.Option>
               ))
