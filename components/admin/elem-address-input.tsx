@@ -64,6 +64,7 @@ const ElemAddressInput = ({
 
   const debouncedSearch = useMemo(
     () => debounce(query => onSearchAddress(query), DEBOUNCE_TIME),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

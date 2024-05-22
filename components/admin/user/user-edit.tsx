@@ -89,6 +89,7 @@ const UserOnboardingInformation = () => {
       locationTags,
       locationDetails,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locations?.length]);
 
   return (
@@ -125,21 +126,21 @@ const UserRegisteredFrom = () => {
       return (
         <IconLinkedIn
           title="LinkedIn"
-          className="h-5 w-5 shrink-0 text-linkedin-blue"
+          className="w-5 h-5 shrink-0 text-linkedin-blue"
         />
       );
 
     return (
       <IconEmail
         title="Email/Password"
-        className="h-5 w-5 shrink-0 text-gray-600"
+        className="w-5 h-5 text-gray-600 shrink-0"
       />
     );
   };
 
   return (
     <div>
-      <p className="text-sm text-gray-500 pb-2">Registered via:</p>
+      <p className="pb-2 text-sm text-gray-500">Registered via:</p>
       {getRegistrationIcon()}
     </div>
   );

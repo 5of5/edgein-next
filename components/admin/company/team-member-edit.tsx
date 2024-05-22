@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -29,7 +29,6 @@ import {
   Confirm,
   TopToolbar,
   List,
-  Edit,
   Datagrid,
   useGetList,
   ReferenceField,
@@ -41,9 +40,9 @@ import {
   Form,
   useRecordContext,
   useDelete,
+  useDeleteMany,
   useCreate,
   useUpdate,
-  useGetOne,
   useRefresh,
   useEditContext,
 } from 'react-admin';
@@ -74,7 +73,49 @@ const ListActions = ({ onCreate }: any) => {
         onClick={onCreate}
         startIcon={<ContentCreate />}
       />
+      <CustomDeleteAllMembersButton />
     </TopToolbar>
+  );
+};
+
+const CustomDeleteAllMembersButton = () => {
+  const { id: currentId } = useParams();
+  const { data: members } = useGetList('team_members', {
+    filter: { company_id: parseInt(currentId!) },
+  });
+  const memberIds = members?.map(member => member.id);
+  const [deleteMany] = useDeleteMany('team_members', {
+    ids: memberIds,
+  });
+
+  const [open, setOpen] = useState(false);
+
+  const handleDialogClose = () => setOpen(false);
+
+  const handleConfirm = () => {
+    deleteMany();
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      {members && (
+        <Button
+          label="Remove All Team Members"
+          variant="text"
+          sx={{ color: 'red' }}
+          onClick={() => setOpen(true)}
+          startIcon={<ContentDelete />}
+        />
+      )}
+      <Confirm
+        isOpen={open}
+        title="Remove All Team Members"
+        content={`Are you sure you want to delete all team members?`}
+        onConfirm={handleConfirm}
+        onClose={handleDialogClose}
+      />
+    </div>
   );
 };
 
@@ -230,9 +271,10 @@ export const TeamMemberEdit = () => {
         actions={<ListActions onCreate={() => setIsOpen(true)} />}
         sx={{
           '.MuiToolbar-root': {
-            justifyContent: 'start !important',
+            justifyContent: 'space-between !important',
             paddingTop: 0,
             marginBottom: '4px',
+            flex: '1',
           },
           '.RaBulkActionsToolbar-toolbar': {
             justifyContent: 'start !important',
