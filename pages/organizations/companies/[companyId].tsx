@@ -254,7 +254,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         <div className="max-w-6xl mx-auto">
           <div className="col-span-3">
             <div className="sticky top-0 z-10 flex items-center justify-between pt-3 pb-3 pl-6 border-b-4 border-primary-500 bg-primary-50">
-              <h2 className="text-xl font-bold font-Metropolis text-dark-950">
+              <h2 className="text-xl font-bold text-dark-950">
                 {`Edit  ${company.name}`}
               </h2>
               <div>
@@ -272,8 +272,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
             {/* <div className="flex items-center justify-between max-w-6xl p-5 mt-16 bg-white rounded-lg shadow-md">
                             <div>
-                                <p className="text-xl font-bold font-Metropolis text-dark-950">{`Do you work at ${company.name}?`}</p>
-                                <p className="text-sm font-normal font-Metropolis">By verifying that you work here, you will be able to edit all fields on the company profile. </p>
+                                <p className="text-xl font-bold text-dark-950">{`Do you work at ${company.name}?`}</p>
+                                <p className="text-sm font-normal ">By verifying that you work here, you will be able to edit all fields on the company profile. </p>
                             </div>
                             <div>
                                 <ElemButton btn="ol-primary" onClick={() => setModal(true)}>Verify Now <IconChevronRight className="w-4 h-4" /></ElemButton>
@@ -289,9 +289,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
             <div className="max-w-6xl p-5 bg-white rounded-lg shadow-md mt-7">
               <div className="pb-3 border-b border-gray-100">
-                <h2 className="text-xl font-bold font-Metropolis text-dark-950">
-                  Overview
-                </h2>
+                <h2 className="text-xl font-bold text-dark-950">Overview</h2>
               </div>
 
               {/* profile image */}
@@ -326,16 +324,16 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     </div>
                     <div className="mt-5 ml-8">
                       <ul>
-                        <li className="text-sm font-thin text-gray-400 list-disc font-Metropolis">
+                        <li className="text-sm font-thin text-gray-400 list-disc ">
                           Square images work best (at least 300 x 300 pixels){' '}
                         </li>
-                        <li className="text-sm font-thin text-gray-400 list-disc font-metropolis">
+                        <li className="text-sm font-thin text-gray-400 list-disc ">
                           Crop your image before you upload
                         </li>
-                        <li className="text-sm font-thin text-gray-400 list-disc font-metropolis">
+                        <li className="text-sm font-thin text-gray-400 list-disc ">
                           Image upoloads are limited to 2MB
                         </li>
-                        <li className="text-sm font-thin text-gray-400 list-disc font-metropolis">
+                        <li className="text-sm font-thin text-gray-400 list-disc ">
                           Accepted image types JPG SVG AND PNG
                         </li>
                       </ul>
@@ -836,17 +834,13 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             {/* Team section starts here.. */}
             <div className="max-w-6xl p-5 bg-white rounded-lg shadow-md mt-7">
               <div className="pb-3 border-b border-gray-100">
-                <h2 className="text-xl font-bold font-Metropolis text-dark-950">
-                  Team
-                </h2>
+                <h2 className="text-xl font-bold text-dark-950">Team</h2>
               </div>
 
               <div className="flex items-center justify-between mt-2 mb-5">
-                <h2 className="font-bold text-dark-500 font-Metropolis text-md">
-                  Employees
-                </h2>
+                <h2 className="font-bold text-dark-500 text-md">Employees</h2>
                 <span
-                  className="font-normal cursor-pointer text-md text-primary-500 font-Metropolis"
+                  className="font-normal cursor-pointer text-md text-primary-500 "
                   onClick={() => {
                     setMemberToEdit({} as Team_Members);
                     setTeamDrawer(true);
@@ -883,17 +877,17 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             {/* Funding Investments section */}
             <div className="max-w-6xl p-5 bg-white rounded-lg shadow-md mt-7">
               <div className="pb-3 border-b border-gray-100">
-                <h2 className="text-xl font-bold font-Metropolis text-dark-950">
+                <h2 className="text-xl font-bold text-dark-950">
                   Funding Investments
                 </h2>
               </div>
 
               <div className="flex items-center justify-between mt-2 mb-5">
-                <h2 className="font-bold text-dark-500 font-Metropolis text-md">
+                <h2 className="font-bold text-dark-500 text-md">
                   All Investments
                 </h2>
                 <span
-                  className="font-normal cursor-pointer text-md text-primary-500 font-Metropolis"
+                  className="font-normal cursor-pointer text-md text-primary-500 "
                   onClick={() => {
                     setRoundToEdit({} as Investment_Rounds);
                     setInvestmentDrawer(true);

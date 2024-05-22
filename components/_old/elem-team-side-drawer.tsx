@@ -94,14 +94,14 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                 leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="content-between min-h-screen p-4 text-left bg-white">
                   <div>
-                    <h2 className="font-bold font-Metropolis text-dark-500">{`${
+                    <h2 className="font-bold text-dark-500">{`${
                       memberToEdit && memberToEdit.id
                         ? 'Edit Employee'
                         : 'Add Employee'
                     }`}</h2>
 
                     <div className="mt-4">
-                      <label className="text-sm font-bold font-Metropolis text-slate-600">
+                      <label className="text-sm font-bold text-slate-600">
                         Person
                       </label>
                       <InputSelect
@@ -133,7 +133,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                     </div>
 
                     <div className="mt-4">
-                      <label className="text-sm font-bold font-Metropolis text-slate-600">
+                      <label className="text-sm font-bold text-slate-600">
                         Position
                       </label>
                       <InputSelect
@@ -161,12 +161,12 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         checked={employee.founder as boolean}
                         onChange={() => setValues('founder', !employee.founder)}
                       />
-                      <span className="ml-2 text-sm font-bold font-Metropolis text-slate-600">
+                      <span className="ml-2 text-sm font-bold text-slate-600">
                         Founder
                       </span>
                     </div>
                     <div className="mt-4">
-                      <label className="block text-sm font-bold  font-Metropolis text-slate-600">
+                      <label className="block text-sm font-bold text-slate-600">
                         Title
                       </label>
                       {/* <InputSelect
@@ -182,12 +182,12 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('title', e.target.value);
                         }}
-                        className="block max-w-sm mt-2  placeholder:text-slate-500"
+                        className="block max-w-sm mt-2 placeholder:text-slate-500"
                       />
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-sm font-bold  font-Metropolis text-slate-600">
+                      <label className="block text-sm font-bold text-slate-600">
                         Time Period
                       </label>
                       <input
@@ -195,7 +195,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         checked={current}
                         onChange={() => setCurrent(!current)}
                       />
-                      <span className="ml-2 text-sm font-normal font-Metropolis text-slate-600">
+                      <span className="ml-2 text-sm font-normal text-slate-600">
                         Current
                       </span>
                       <InputDate
@@ -204,7 +204,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('start_date', e.target.value);
                         }}
-                        className="block max-w-sm mt-2  placeholder:text-slate-500"
+                        className="block max-w-sm mt-2 placeholder:text-slate-500"
                       />
                       to
                       <InputDate
@@ -214,7 +214,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         onChange={e => {
                           setValues('end_date', e.target.value);
                         }}
-                        className="block max-w-sm mt-2  placeholder:text-slate-500"
+                        className="block max-w-sm mt-2 placeholder:text-slate-500"
                       />
                     </div>
                   </div>
