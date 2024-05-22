@@ -157,8 +157,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
                         ? 'border-primary-500 bg-gray-50'
                         : ''
                     }`}
-                    onClick={() => handleClick(company)}
-                  >
+                    onClick={() => handleClick(company)}>
                     <ElemPhoto
                       photo={company?.logo}
                       wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
@@ -176,8 +175,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
                   </div>
                 ) : (
                   <div
-                    className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border border-gray-200`}
-                  >
+                    className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border border-gray-200`}>
                     <ElemPhoto
                       photo={company?.logo}
                       wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
@@ -206,8 +204,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
           btn="purple"
           onClick={handleSendEmails}
           loading={isLoading}
-          disabled={!user || selectedCompanies.length === 0 || emails === 0}
-        >
+          disabled={!user || selectedCompanies.length === 0 || emails === 0}>
           Invite
         </ElemButton>
 
@@ -221,8 +218,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
           btn="purple"
           onClick={handleSendAllEmails}
           loading={isLoading}
-          disabled={!user}
-        >
+          disabled={!user}>
           Invite all
         </ElemButton>
       </div>

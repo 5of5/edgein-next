@@ -47,22 +47,19 @@ const Custom404: NextPage<Props> = () => {
                 className="font-bold text-primary-500 focus:outline-0"
                 onClick={() => {
                   setShowPopup('search');
-                }}
-              >
+                }}>
                 search bar
               </button>
               , return to our{' '}
               <ElemLink
                 href={ROUTES.ROOT}
-                className="font-bold text-primary-500"
-              >
+                className="font-bold text-primary-500">
                 front page
               </ElemLink>
               , or{' '}
               <button
                 className="font-bold text-primary-500 focus:outline-0"
-                onClick={show}
-              >
+                onClick={show}>
                 drop us a line
               </button>{' '}
               to find what you&rsquo;re looking for.

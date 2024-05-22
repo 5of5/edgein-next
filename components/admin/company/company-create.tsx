@@ -36,8 +36,7 @@ export const CompanyCreate = () => {
       action="create"
       title="Create a Company"
       transform={transform}
-      rootStyle={rootStyle}
-    >
+      rootStyle={rootStyle}>
       <CompanyForm
         action="create"
         formRef={formRef}

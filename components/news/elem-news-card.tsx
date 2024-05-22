@@ -69,8 +69,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
 
   return (
     <div
-      className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400 ${className}`}
-    >
+      className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400 ${className}`}>
       {link && (
         <div className="flex flex-col justify-between h-full">
           <div>
@@ -98,8 +97,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   href={link}
                   target="_blank"
                   className="block mb-2"
-                  onClick={handleLinkClick}
-                >
+                  onClick={handleLinkClick}>
                   {metadata?.image && (
                     <img
                       src={metadata?.image}
@@ -118,16 +116,14 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                 className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
                 }`}
-                onClick={handleLinkClick}
-              >
+                onClick={handleLinkClick}>
                 {parse(stripHtmlTags(metadata?.description))}
               </ElemLink>
             ) : (
               <p
                 className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
-                }`}
-              >
+                }`}>
                 {parse(stripHtmlTags(metadata?.description))}
               </p>
             )}
@@ -162,13 +158,11 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                               imgAlt={organization?.name}
                               placeholderClass="text-gray-300"
                             />
-                          }
-                        >
+                          }>
                           <div className="inline-block">
                             <ElemLink
                               href={slug}
-                              className="break-words border-b border-gray-600"
-                            >
+                              className="break-words border-b border-gray-600">
                               {organization?.name}
                             </ElemLink>
                           </div>
@@ -194,15 +188,13 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                         ? `${ROUTES.INVESTORS}/${publisher.vc_firm?.slug}`
                         : ''
                     }
-                    target="_blank"
-                  >
+                    target="_blank">
                     {publisher.company?.name || publisher.vc_firm?.name}
                   </ElemLink>
                 ) : (
                   <ElemLink
                     href={getCleanWebsiteUrl(link, true)}
-                    target="_blank"
-                  >
+                    target="_blank">
                     {getCleanWebsiteUrl(link, false)}
                   </ElemLink>
                 )}
@@ -213,8 +205,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                     source?.poweredby?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'
-                  }`}
-                >
+                  }`}>
                   {source?.poweredby || 'CryptoPanic'}
                 </ElemLink>
               </p>

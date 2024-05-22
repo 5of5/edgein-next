@@ -60,8 +60,7 @@ const AskEdgein: NextPage = () => {
             <div className="relative z-10 p-6 bg-white rounded-2xl">
               <form
                 className="relative grid grid-cols-1 mt-6 gap-y-4 sm:grid-cols-2 sm:gap-x-8"
-                onSubmit={onSubmit}
-              >
+                onSubmit={onSubmit}>
                 <div className="mb-2 group sm:col-span-2">
                   <InputText
                     label="Question"

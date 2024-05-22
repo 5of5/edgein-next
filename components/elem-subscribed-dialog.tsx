@@ -19,8 +19,7 @@ export const ElemSubscribedDialog: React.FC<Props> = ({ isOpen, onClose }) => {
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
@@ -33,15 +32,13 @@ export const ElemSubscribedDialog: React.FC<Props> = ({ isOpen, onClose }) => {
               enterTo="opacity-100 scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
+              leaveTo="opacity-0 scale-95">
               <Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-white p-6 shadow-xl transition-all">
                 <div className="flex justify-end items-center">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="focus-visible:outline-none"
-                  >
+                    className="focus-visible:outline-none">
                     <IconX className="h-6 w-6" title="close" />
                   </button>
                 </div>

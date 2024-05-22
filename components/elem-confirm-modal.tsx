@@ -32,8 +32,7 @@ export const ElemConfirmModal: FC<Props> = ({
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black/25 backdrop-blur-sm" />
         </Transition.Child>
 
@@ -45,8 +44,7 @@ export const ElemConfirmModal: FC<Props> = ({
             enterTo="opacity-100 translate-y-0 sm:scale-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          >
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <Dialog.Panel className="w-full max-w-md transform rounded-lg bg-white shadow-xl transition-all overflow-hidden">
               <div className="px-4 py-3 border-b border-gray-200">
                 <div className="flex items-center justify-between">
@@ -56,8 +54,7 @@ export const ElemConfirmModal: FC<Props> = ({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex items-center justify-center h-8 w-8 bg-transparent rounded-full hover:bg-gray-100 active:bg-transparent"
-                  >
+                    className="flex items-center justify-center h-8 w-8 bg-transparent rounded-full hover:bg-gray-100 active:bg-transparent">
                     <IconX className="w-6 h-6" />
                   </button>
                 </div>
@@ -74,8 +71,7 @@ export const ElemConfirmModal: FC<Props> = ({
                   onClick={onDelete}
                   roundedFull
                   btn="danger"
-                  loading={loading}
-                >
+                  loading={loading}>
                   Delete
                 </ElemButton>
               </div>

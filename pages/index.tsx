@@ -206,8 +206,7 @@ const Home = () => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1422 800"
-          className="absolute inset-0 -z-10 h-full w-full stroke-gray-100 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-        >
+          className="absolute inset-0 -z-10 h-full w-full stroke-gray-100 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]">
           <path fill="url(#pattern1)" d="M-711-400h2844v1600H-711z" />
           <path fill="url(#pattern2)" d="M-711-400h2844v1600H-711z" />
           <path fill="url(#pattern3)" d="M-711-400h2844v1600H-711z" />
@@ -219,8 +218,7 @@ const Home = () => {
               fill="none"
               patternTransform="rotate(30)"
               patternUnits="userSpaceOnUse"
-              strokeWidth="4"
-            >
+              strokeWidth="4">
               <path d="M32.5 0v260m65-260v260m65-260v260m65-260v260" />
             </pattern>
             <pattern
@@ -230,8 +228,7 @@ const Home = () => {
               fill="none"
               patternTransform="rotate(30)"
               patternUnits="userSpaceOnUse"
-              strokeWidth="2.2"
-            >
+              strokeWidth="2.2">
               <path d="M65 0v260M195 0v260" />
             </pattern>
             <pattern
@@ -241,8 +238,7 @@ const Home = () => {
               fill="none"
               patternTransform="rotate(115)"
               patternUnits="userSpaceOnUse"
-              strokeWidth="1.2"
-            >
+              strokeWidth="1.2">
               <path d="M32.5 0v260m65-260v260m65-260v260m65-260v260" />
             </pattern>
           </defs>
@@ -262,8 +258,7 @@ const Home = () => {
                 onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="primary"
                 arrow
-                size="md"
-              >
+                size="md">
                 Access now
               </ElemButton>
             </div>
@@ -276,8 +271,7 @@ const Home = () => {
               <div className="relative -m-2 rounded-xl">
                 <div
                   className="absolute inset-x-0 bottom-0 overflow-hidden -z-10 transform-gpu blur-3xl opacity-10"
-                  aria-hidden="true"
-                >
+                  aria-hidden="true">
                   <div className="relative h-[500px] w-full bg-gradient-to-tr from-primary-500 via-[#FE33D0] to-[#F8DA4B]"></div>
                 </div>
                 <img
@@ -312,8 +306,7 @@ const Home = () => {
                           : ' border-gray-300 hover:border-gray-900'
                       }  whitespace-nowrap flex border-box rounded-4xl border px-4 py-2.5 font-medium text-sm outline-none transition-all`
                     }
-                    key={index}
-                  >
+                    key={index}>
                     {title}
                   </Tab>
                 );
@@ -344,8 +337,7 @@ const Home = () => {
                           onClick={() => router.push(ROUTES.COMPANIES)}
                           btn="primary"
                           arrow
-                          size="md"
-                        >
+                          size="md">
                           Access now
                         </ElemButton>
                       </div>
@@ -416,16 +408,14 @@ const Home = () => {
                     selectedFeature === index
                       ? 'transform border-l-primary-500 bg-white'
                       : 'border-gray-200 bg-transparent'
-                  }`}
-                >
+                  }`}>
                   <button
                     onClick={() => setSelectedFeature(index)}
                     className={`whitespace-nowrap flex items-center w-full font-medium text-lg transition-all ${
                       selectedFeature === index
                         ? 'text-primary-500'
                         : 'hover:text-primary-500'
-                    }`}
-                  >
+                    }`}>
                     {title}
                     <IconChevronDownMini
                       className={`h-5 w-5 transition-all ease-in-out duration-100 ${
@@ -443,8 +433,7 @@ const Home = () => {
                     enterTo="transform max-h-fit"
                     leave="transition-all ease-in-out duration-100"
                     leaveFrom="transform max-h-fit"
-                    leaveTo="transform max-h-0"
-                  >
+                    leaveTo="transform max-h-0">
                     <div className="pt-1">{parse(content)}</div>
                   </Transition>
                 </div>
@@ -455,8 +444,7 @@ const Home = () => {
                 onClick={() => router.push(ROUTES.COMPANIES)}
                 btn="primary"
                 arrow
-                size="md"
-              >
+                size="md">
                 Access now
               </ElemButton>
             </div>
@@ -517,8 +505,7 @@ const Home = () => {
             <h2>
               <ElemLink
                 href={ROUTES.COMPANIES}
-                className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
-              >
+                className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
                 See all you can accomplish with EdgeIn.
               </ElemLink>
             </h2>
@@ -529,16 +516,14 @@ const Home = () => {
                 btn="default"
                 size="lg"
                 arrow
-                className="mx-auto whitespace-nowrap w-fit sm:mx-0"
-              >
+                className="mx-auto whitespace-nowrap w-fit sm:mx-0">
                 Access now
               </ElemButton>
               <ElemButton
                 onClick={show}
                 btn="ol-white"
                 size="lg"
-                className="mx-auto whitespace-nowrap w-fit sm:mx-0"
-              >
+                className="mx-auto whitespace-nowrap w-fit sm:mx-0">
                 Talk to us
               </ElemButton>
             </div>

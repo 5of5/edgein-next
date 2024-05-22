@@ -163,8 +163,7 @@ export const UserEdit = () => {
       <ElemFormBase
         title={<ElemTitle category="Users" />}
         action="edit"
-        transform={transform}
-      >
+        transform={transform}>
         <SimpleForm toolbar={<UserEditToolbar />}>
           <TextInput className={inputClassName} disabled source="id" />
           <TextInput className={inputClassName} disabled source="email" />
@@ -194,8 +193,7 @@ export const UserEdit = () => {
           <ArrayInput source="additional_emails">
             <SimpleFormIterator
               disableReordering
-              sx={{ margin: 2, paddingTop: 1 }}
-            >
+              sx={{ margin: 2, paddingTop: 1 }}>
               <TextInput className={inputClassName} source="email" />
             </SimpleFormIterator>
           </ArrayInput>

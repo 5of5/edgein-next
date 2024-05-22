@@ -135,8 +135,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               <div
                 className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                   t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
+                }`}>
                 {err?.message}
               </div>
             ),
@@ -255,8 +254,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   return (
     <>
       <div
-        className={`flex flex-col border border-gray-300 rounded-lg note-${data.id}`}
-      >
+        className={`flex flex-col border border-gray-300 rounded-lg note-${data.id}`}>
         <div className="relative flex items-center px-4 py-2 space-x-3">
           <div className="relative flex-shrink-0">
             {layout === 'organizationAndAuthor' ? (
@@ -282,8 +280,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
             ) : (
               // layout === "author"
               <ElemLink
-                href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
-              >
+                href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}>
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
                   wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
@@ -308,8 +305,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               layout === 'groupAndAuthor') && (
               <ElemLink
                 href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
-                className="absolute -right-1 -bottom-1"
-              >
+                className="absolute -right-1 -bottom-1">
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
                   wrapClass=""
@@ -336,8 +332,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 ) : (
                   // layout === "author"
                   <ElemLink
-                    href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
-                  >
+                    href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}>
                     {data?.created_by_user?.person?.name}
                   </ElemLink>
                 )}
@@ -348,8 +343,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                   <>
                     <ElemLink
                       href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
-                      className="underline-offset-1 hover:underline"
-                    >
+                      className="underline-offset-1 hover:underline">
                       {data?.created_by_user?.person?.name}
                     </ElemLink>
                     <span aria-hidden="true"> · </span>
@@ -364,8 +358,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                         .local()
                         .format('dddd, ll [at] hh:mma')}
                       direction="bottom"
-                      mode="dark"
-                    >
+                      mode="dark">
                       <div className="inline-block">
                         {moment.utc(data?.created_at).local().valueOf() >=
                         moment.utc().local().subtract(5, 'days').valueOf()
@@ -381,8 +374,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                   <ElemTooltip
                     content={`Shared with group: "${data?.user_group?.name}"`}
                     direction="bottom"
-                    mode="dark"
-                  >
+                    mode="dark">
                     <div className="inline-block">
                       <IconUsers className="inline-flex w-4 h-4" title=" " />
                     </div>
@@ -393,8 +385,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                       <ElemTooltip
                         content="Only me"
                         direction="bottom"
-                        mode="dark"
-                      >
+                        mode="dark">
                         <div className="inline-block">
                           <IconLockClosed
                             className="inline-flex w-4 h-4"
@@ -406,8 +397,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                       <ElemTooltip
                         content="Public"
                         direction="bottom"
-                        mode="dark"
-                      >
+                        mode="dark">
                         <div className="inline-block">
                           <IconGlobe
                             className="inline-flex w-4 h-4"
@@ -438,8 +428,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                   enterTo="transform scale-100 opacity-100"
                   leave="transition duration-75 ease-out"
                   leaveFrom="transform scale-100 opacity-100"
-                  leaveTo="transform scale-95 opacity-0"
-                >
+                  leaveTo="transform scale-95 opacity-0">
                   <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-white border border-gray-300 rounded-lg shadow-lg">
                     {({ close }) => (
                       <>
@@ -448,16 +437,14 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                             onEditNote(data);
                             close();
                           }}
-                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100"
-                        >
+                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
                           Edit note
                         </button>
                         <button
                           onClick={() => {
                             onConfirmDeleteNote(data);
                           }}
-                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100"
-                        >
+                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
                           Delete
                         </button>
                       </>
@@ -474,15 +461,13 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               !contentShowAll && 'line-clamp-5'
             }`}
             ref={contentDiv}
-            dangerouslySetInnerHTML={formatContent(data.notes)}
-          ></p>
+            dangerouslySetInnerHTML={formatContent(data.notes)}></p>
 
           {contentDivHeight > 100 && !contentShowAll && (
             <button
               type="button"
               onClick={() => setContentShowAll(!contentShowAll)}
-              className="inline text-sm hover:underline"
-            >
+              className="inline text-sm hover:underline">
               See more
             </button>
           )}
@@ -506,8 +491,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
             className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-gray-100 ${
               isLikedByCurrentUser ? 'text-primary-500' : 'text-gray-500'
             }`}
-            onClick={onLikeButton}
-          >
+            onClick={onLikeButton}>
             {isLikedByCurrentUser ? (
               <>
                 <IconThumbUpSolid className="w-5 h-5 mr-1" /> Liked
@@ -520,8 +504,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
           </button>
           <button
             className="flex items-center justify-center flex-1 px-2 py-1 font-medium text-gray-500 shrink grow hover:bg-gray-100"
-            onClick={onCommentButton}
-          >
+            onClick={onCommentButton}>
             <IconAnnotation className="w-5 h-5 mr-1" title="Comment" /> Comment
           </button>
         </div>
@@ -557,8 +540,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 commentContent.length > 0
                   ? 'cursor-pointer hover:bg-gray-100'
                   : 'cursor-not-allowed'
-              }`}
-            >
+              }`}>
               {commentContent.length > 0 ? (
                 <IconPaperAirplaneSolid className="w-5 h-5" title="Comment" />
               ) : (

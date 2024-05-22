@@ -52,8 +52,7 @@ export const EventList = () => {
       <ReferenceField
         label="Parent event"
         source="parent_event_id"
-        reference="events"
-      >
+        reference="events">
         <TextField source="name" />
       </ReferenceField>
       <TextField source="twitter" />

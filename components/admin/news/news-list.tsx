@@ -32,8 +32,7 @@ export const NewsList = () => {
       <ReferenceArrayField
         label="Companies"
         source="company_ids"
-        reference="companies"
-      >
+        reference="companies">
         <SingleFieldList>
           <ChipField source="name" />
         </SingleFieldList>
@@ -41,8 +40,7 @@ export const NewsList = () => {
       <ReferenceArrayField
         label="Vc firms"
         source="vc_firm_ids"
-        reference="vc_firms"
-      >
+        reference="vc_firms">
         <SingleFieldList>
           <ChipField source="name" />
         </SingleFieldList>

@@ -56,8 +56,7 @@ export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
         <p className="text-xs text-gray-500">Didn&apos;t receive the email?</p>
         <button
           className="text-xs text-gray-500 underline hover:text-gray-800"
-          onClick={handleResendEmail}
-        >
+          onClick={handleResendEmail}>
           Resend email
         </button>
       </div>

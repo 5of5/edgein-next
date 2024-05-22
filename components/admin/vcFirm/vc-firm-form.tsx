@@ -82,8 +82,7 @@ const VcFirmForm = ({
             vcFirm,
           )
         }
-        toolbar={toolbar}
-      >
+        toolbar={toolbar}>
         {action === 'edit' && (
           <TextInput
             className={`w-full ${textInputClassName}`}
@@ -125,8 +124,7 @@ const VcFirmForm = ({
           source="logo"
           label="logo"
           accept="image/*"
-          placeholder={<p>Drop your file here</p>}
-        >
+          placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         {action === 'edit' && !logo && !isImageUpdated && (
@@ -245,8 +243,7 @@ const VcFirmForm = ({
         />
         <ArrayInput
           className={`w-[49%] ${textInputClassName}`}
-          source="web3_address"
-        >
+          source="web3_address">
           <SimpleFormIterator>
             <TextInput source="" label="Address" />
           </SimpleFormIterator>

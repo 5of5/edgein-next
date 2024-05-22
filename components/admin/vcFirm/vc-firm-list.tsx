@@ -38,8 +38,7 @@ export const VcFirmList = () => {
       <ReferenceArrayField
         label="Child companies"
         source="child_companies"
-        reference="companies"
-      >
+        reference="companies">
         <SingleFieldList>
           <ChipField source="name" />
         </SingleFieldList>
@@ -47,8 +46,7 @@ export const VcFirmList = () => {
       <ReferenceArrayField
         label="Child vc firms"
         source="child_vc_firms"
-        reference="vc_firms"
-      >
+        reference="vc_firms">
         <SingleFieldList>
           <ChipField source="name" />
         </SingleFieldList>
@@ -56,15 +54,13 @@ export const VcFirmList = () => {
       <ReferenceField
         label="Parent company"
         source="parent_company"
-        reference="companies"
-      >
+        reference="companies">
         <TextField source="name" />
       </ReferenceField>
       <ReferenceField
         label="Parent vc firm"
         source="parent_vc_firm"
-        reference="vc_firms"
-      >
+        reference="vc_firms">
         <TextField source="name" />
       </ReferenceField>
       <TextField source="website" />

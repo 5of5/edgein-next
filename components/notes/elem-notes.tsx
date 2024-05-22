@@ -27,8 +27,7 @@ export const ElemNotes: React.FC<Props> = props => {
         <ElemTooltip
           size="md"
           content="Notes are added on a Company or Investor profile and shared with a selected audience."
-          mode="light"
-        >
+          mode="light">
           <div>
             <IconInformationCircle
               className="h-5 w-5 text-gray-500"

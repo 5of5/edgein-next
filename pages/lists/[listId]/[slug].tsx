@@ -86,8 +86,7 @@ const MyList: NextPage<Props> = ({ list }) => {
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             List name updated
           </div>
         ),
@@ -119,8 +118,7 @@ const MyList: NextPage<Props> = ({ list }) => {
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             List description updated
           </div>
         ),
@@ -164,8 +162,7 @@ const MyList: NextPage<Props> = ({ list }) => {
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             Groups Changed
           </div>
         ),
@@ -197,8 +194,7 @@ const MyList: NextPage<Props> = ({ list }) => {
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             {value ? `List set "Public"` : `List set "Private"`}
           </div>
         ),
@@ -223,8 +219,7 @@ const MyList: NextPage<Props> = ({ list }) => {
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             List Deleted
           </div>
         ),
@@ -388,8 +383,7 @@ const MyList: NextPage<Props> = ({ list }) => {
                   btn="purple"
                   loading={isFollowButtonLoading}
                   onClick={onFollowList}
-                  className="mt-2"
-                >
+                  className="mt-2">
                   Follow
                 </ElemButton>
               )}

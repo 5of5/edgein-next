@@ -15,16 +15,14 @@ export const EmailFooter = () => {
           <Link
             href="https://edgein.io/"
             target="_blank"
-            className="text-[#5e41fe] no-underline"
-          >
+            className="text-[#5e41fe] no-underline">
             Learn more
           </Link>
           {` or `}
           <Link
             href="https://edgein.io/support/"
             target="_blank"
-            className="text-[#5e41fe] no-underline"
-          >
+            className="text-[#5e41fe] no-underline">
             Visit support
           </Link>
           .
@@ -37,8 +35,7 @@ export const EmailFooter = () => {
             <Link
               href="https://www.edgein.io"
               className="text-[#525f7f] text-[12px] leading-[16px] underline"
-              target="_blank"
-            >
+              target="_blank">
               <Img
                 src="https://www.edgein.io/email-edgein-text.png"
                 alt="EdgeIn"
@@ -54,8 +51,7 @@ export const EmailFooter = () => {
             <Link
               href="https://www.linkedin.com/company/edgein/"
               className="inline-block no-underline"
-              target="_blank"
-            >
+              target="_blank">
               <Img
                 src="https://www.edgein.io/email-linkedin.png"
                 alt="LinkedIn"
@@ -65,8 +61,7 @@ export const EmailFooter = () => {
             <Link
               href="https://twitter.com/EdgeInio"
               className="inline-block no-underline ml-[12px]"
-              target="_blank"
-            >
+              target="_blank">
               <Img
                 src="https://www.edgein.io/email-twitter.png"
                 alt="Twitter"

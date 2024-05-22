@@ -36,8 +36,7 @@ export const ElemRequiredProfileDialog: FC<Props> = ({
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black/25 backdrop-blur-sm" />
         </Transition.Child>
 
@@ -49,16 +48,14 @@ export const ElemRequiredProfileDialog: FC<Props> = ({
             enterTo="opacity-100 translate-y-0 sm:scale-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          >
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white shadow-xl transition-all overflow-hidden">
               <div className="px-4 py-3">
                 <div className="flex items-start justify-end">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex items-center justify-center h-8 w-8 bg-transparent rounded-full hover:bg-gray-100 active:bg-transparent"
-                  >
+                    className="flex items-center justify-center h-8 w-8 bg-transparent rounded-full hover:bg-gray-100 active:bg-transparent">
                     <IconX className="w-6 h-6" />
                   </button>
                 </div>
@@ -68,8 +65,7 @@ export const ElemRequiredProfileDialog: FC<Props> = ({
                 <div className="mt-3 text-center">
                   <Dialog.Title
                     as="h3"
-                    className="text-xl font-medium tracking-tight"
-                  >
+                    className="text-xl font-medium tracking-tight">
                     {title}
                   </Dialog.Title>
                   <div className="mt-2 text-sm">{content}</div>
@@ -83,8 +79,7 @@ export const ElemRequiredProfileDialog: FC<Props> = ({
                     onClose();
                   }}
                   btn="primary"
-                  className="w-full"
-                >
+                  className="w-full">
                   Search name
                 </ElemButton>
               </div>

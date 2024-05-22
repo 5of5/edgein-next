@@ -166,8 +166,7 @@ export const ElemReaction: FC<ReactionProps> = ({
               <div
                 className={`flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100 ${
                   open ? 'bg-slate-100' : ''
-                }`}
-              >
+                }`}>
                 {type === 'hot' && <EmojiHot className="h-6 w-6" />}
                 {type === 'like' && <EmojiLike className="h-6 w-6" />}
                 {type === 'crap' && <EmojiCrap className="h-6 w-6" />}{' '}
@@ -187,12 +186,10 @@ export const ElemReaction: FC<ReactionProps> = ({
       role="button"
       className={`flex items-center font-bold ease-in-out duration-150 ${alreadyReactedClasses()} ${
         isInteractive ? 'group cursor-pointer' : 'cursor-default'
-      }`}
-    >
+      }`}>
       <ElemTooltip
         content={label}
-        className={`${isInteractive ? 'cursor-pointer' : 'cursor-default'}`}
-      >
+        className={`${isInteractive ? 'cursor-pointer' : 'cursor-default'}`}>
         <div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
           {type === 'hot' && <EmojiHot className="h-6 w-6" />}
           {type === 'like' && <EmojiLike className="h-6 w-6" />}

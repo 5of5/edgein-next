@@ -38,8 +38,7 @@ export const ElemPillsPeople: FC<Props> = ({
       {teamLimit < items.length && (
         <button
           onClick={showMoreTeam}
-          className="text-xs text-gray-500 font-medium py-1"
-        >
+          className="text-xs text-gray-500 font-medium py-1">
           {items.length - teamLimit} more
         </button>
       )}

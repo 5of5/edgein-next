@@ -10,7 +10,7 @@ import {
 import { useUser } from '@/context/user-context';
 import {
   IconChevronDownMini,
-  IconFilterDashboard,
+  IconFilter,
   IconLockClosed,
   IconPlus,
 } from '@/components/icons';
@@ -108,9 +108,8 @@ export const ElemAddFilter: FC<Props> = ({
             <ElemButton
               btn="default"
               roundedFull={false}
-              className={`rounded-lg ${buttonClass}`}
-            >
-              <IconFilterDashboard className="w-4 h-4 shrink-0 mr-1.5 text-gray-400" />
+              className={`rounded-lg ${buttonClass}`}>
+              <IconFilter className="w-4 h-4 shrink-0 mr-1.5 text-gray-400" />
               Filters
               <IconChevronDownMini className="w-5 h-5 shrink-0 ml-auto lg:ml-1.5" />
             </ElemButton>
@@ -129,14 +128,12 @@ export const ElemAddFilter: FC<Props> = ({
           enterTo="transform scale-100 opacity-100"
           leave="transition duration-75 ease-out"
           leaveFrom="transform scale-100 opacity-100"
-          leaveTo="transform scale-95 opacity-0"
-        >
+          leaveTo="transform scale-95 opacity-0">
           <Popover.Panel
             ref={setPopperElement}
             style={styles.popper}
             {...attributes.popper}
-            className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 max-h ${panelClass}`}
-          >
+            className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 max-h ${panelClass}`}>
             {({ close }) => (
               <>
                 <CategoryFilterOption
@@ -212,8 +209,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                       name={item.value}
                       className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
                         userCanUseFilter ? '' : 'text-gray-400'
-                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}
-                    >
+                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}>
                       {!userCanUseFilter && (
                         <IconLockClosed
                           className="inline-block w-4 h-4 mr-1 shrink-0"
@@ -227,8 +223,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                     <button
                       onClick={onSelectFilterOption}
                       name={item.value}
-                      className="flex items-center w-full px-4 py-2 m-0 text-sm text-left transition-all cursor-pointer gap-x-2 hover:bg-gray-100"
-                    >
+                      className="flex items-center w-full px-4 py-2 m-0 text-sm text-left transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
                       {item.label}
                     </button>
                   )}

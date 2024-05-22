@@ -284,8 +284,7 @@ export const ElemSignUpForm: FC<Props> = ({
               isLoadingPeople ||
               isSubmittingSignUp
             }
-            disabled={isDisabledButton}
-          >
+            disabled={isDisabledButton}>
             Continue
           </ElemButton>
         </div>

@@ -64,8 +64,7 @@ const Enterprise = () => {
                 show={true}
                 enter="transition ease-in-out duration-1000 delay-700"
                 enterFrom="opacity-0 translate-y-10"
-                enterTo="opacity-100 translate-y-0"
-              >
+                enterTo="opacity-100 translate-y-0">
                 <div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-gray-50/80 to-gray-50/20 border border-slate-200 opacity-100 backdrop-blur-3xl">
                   <FigureDash className="max-w-full mx-3 my-1 aspect-video" />
                 </div>
@@ -185,8 +184,7 @@ const Enterprise = () => {
                   target="_blank"
                   arrow
                   size="lg"
-                  className="mt-6 text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
-                >
+                  className="mt-6 text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white">
                   Get started now
                 </ElemButton>
               </div>
@@ -204,8 +202,7 @@ const Enterprise = () => {
               {partners.map((item: any) => (
                 <div
                   key={item.title}
-                  className="flex items-center justify-center"
-                >
+                  className="flex items-center justify-center">
                   <ElemLink href={item.link} className="block">
                     {item.image && (
                       <img

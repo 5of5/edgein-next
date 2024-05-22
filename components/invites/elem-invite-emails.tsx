@@ -87,8 +87,7 @@ const ElemInviteEmails: FC<Props> = ({
               {selectedPeople.map((person, index) => (
                 <li
                   key={index}
-                  className="flex items-center gap-1 bg-gray-100 rounded-lg px-2 py-1"
-                >
+                  className="flex items-center gap-1 bg-gray-100 rounded-lg px-2 py-1">
                   {person.name ? (
                     <div title={person.work_email}>{person?.name}</div>
                   ) : (
@@ -97,8 +96,7 @@ const ElemInviteEmails: FC<Props> = ({
                   <button
                     onClick={() => handleRemove(index)}
                     className="focus:outline-none"
-                    title="Remove"
-                  >
+                    title="Remove">
                     <IconX
                       className="w-3 h-3 ml-1 cursor-pointer hover:text-primary-500"
                       title="Remove"
@@ -142,8 +140,7 @@ const ElemInviteEmails: FC<Props> = ({
                 <Combobox.Option
                   key={item.id}
                   value={item}
-                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50"
-                >
+                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50">
                   {item?.picture ? (
                     <ElemPhoto
                       wrapClass="w-10 h-10 aspect-square shrink-0"
@@ -163,8 +160,7 @@ const ElemInviteEmails: FC<Props> = ({
                   {item?.work_email && (
                     <div
                       className="text-sm text-gray-500 truncate"
-                      title={item.work_email}
-                    >
+                      title={item.work_email}>
                       {item.work_email}
                     </div>
                   )}
@@ -181,8 +177,7 @@ const ElemInviteEmails: FC<Props> = ({
                         name: query,
                         work_email: query,
                       }}
-                      className="px-4 py-2 cursor-pointer underline hover:no-underline hover:bg-gray-50"
-                    >
+                      className="px-4 py-2 cursor-pointer underline hover:no-underline hover:bg-gray-50">
                       Add <span className="font-medium">{query}</span>
                     </Combobox.Option>
                   )}

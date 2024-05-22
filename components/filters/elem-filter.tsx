@@ -501,8 +501,7 @@ export const ElemFilter: FC<Props> = ({
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                >
+                  onApply={onApplyFilter}>
                   <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
@@ -626,8 +625,7 @@ export const ElemFilter: FC<Props> = ({
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                >
+                  onApply={onApplyFilter}>
                   <div className="mb-3 text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
@@ -719,8 +717,7 @@ export const ElemFilter: FC<Props> = ({
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                >
+                  onApply={onApplyFilter}>
                   <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
@@ -826,8 +823,7 @@ export const ElemFilter: FC<Props> = ({
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                >
+                  onApply={onApplyFilter}>
                   <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>
@@ -891,8 +887,7 @@ export const ElemFilter: FC<Props> = ({
                   onOpen={onOpenFilterPopup}
                   onClose={onCloseFilterPopup}
                   onClear={onClearFilterOption}
-                  onApply={onApplyFilter}
-                >
+                  onApply={onApplyFilter}>
                   <div className="text-sm font-medium">
                     {optionMetadata.heading}
                   </div>

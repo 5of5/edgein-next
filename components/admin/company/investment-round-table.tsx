@@ -25,8 +25,7 @@ const InvestmentRoundTable = () => {
           selectedRecord={props.selectedRecord}
           onClose={props.onClose}
         />
-      )}
-    >
+      )}>
       <ReferenceField label="Id" source="id" reference="investment_rounds">
         <TextField source="id" />
       </ReferenceField>

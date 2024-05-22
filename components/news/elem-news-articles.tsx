@@ -74,8 +74,7 @@ const ElemNewsArticles: React.FC<Props> = ({
                 <ElemButton
                   btn="default"
                   onClick={showMoreNews}
-                  className="w-full"
-                >
+                  className="w-full">
                   Show More News
                 </ElemButton>
               </div>

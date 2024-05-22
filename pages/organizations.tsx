@@ -83,8 +83,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 
           <button
             className="absolute right-0 text-md text-primary-500"
-            onClick={() => setShowVerifyModal(true)}
-          >
+            onClick={() => setShowVerifyModal(true)}>
             Manage Organization
           </button>
         </div>
@@ -95,8 +94,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
           return (
             <div
               key={teamMember.id}
-              className=" mt-3 mb-2 relative border-b border-gray-100 pb-3"
-            >
+              className=" mt-3 mb-2 relative border-b border-gray-100 pb-3">
               <div className="grid grid-cols-10 gap-3">
                 <div className="col-start-3 col-span-6 flex">
                   <ElemPhoto
@@ -119,8 +117,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
                   href={`/organizations/${
                     type === 'Company' ? 'companies' : 'investors'
                   }/${data?.slug}`}
-                  className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500"
-                >
+                  className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500">
                   Edit
                 </ElemLink>
               </div>

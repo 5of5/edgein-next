@@ -128,16 +128,14 @@ export const ElemListCard: FC<Props> = ({
       <div className="pb-2">
         <ElemLink
           href={resourceUrl}
-          className="font-medium leading-snug break-words line-clamp-2 hover:underline"
-        >
+          className="font-medium leading-snug break-words line-clamp-2 hover:underline">
           {name}{' '}
           <ElemTooltip
             content={`${totalItems} ${isResourceList ? 'Item' : 'Note'}${
               totalItems && totalItems === 1 ? '' : 's'
             }`}
             direction="top"
-            mode="dark"
-          >
+            mode="dark">
             <div className="inline text-gray-500">({totalItems})</div>
           </ElemTooltip>
         </ElemLink>
@@ -220,8 +218,7 @@ export const ElemListCard: FC<Props> = ({
                       content={getNameFromListMember(member)}
                       mode="dark"
                       direction="top"
-                      size="lg"
-                    >
+                      size="lg">
                       {member?.user?.person?.picture ? (
                         <div>
                           <ElemPhoto
@@ -245,8 +242,7 @@ export const ElemListCard: FC<Props> = ({
             </ul>
             <ElemLink
               href={resourceUrl}
-              className="ml-1 text-sm font-medium text-gray-500 hover:underline"
-            >
+              className="ml-1 text-sm font-medium text-gray-500 hover:underline">
               {members.length > 1
                 ? `${members.length} ${
                     isResourceList ? 'Followers' : 'Members'
@@ -264,8 +260,7 @@ export const ElemListCard: FC<Props> = ({
             btn="default"
             size="sm"
             loading={isFollowingListLoading || isJoiningGroupLoading}
-            className="block w-full transition duration-150 ease-in-out rounded-md group"
-          >
+            className="block w-full transition duration-150 ease-in-out rounded-md group">
             {`${isResourceList ? 'Follow List' : 'Join Group'}`}
           </ElemButton>
         ) : (
@@ -273,8 +268,7 @@ export const ElemListCard: FC<Props> = ({
             href={resourceUrl}
             btn="default"
             size="sm"
-            className="block w-full transition duration-150 ease-in-out rounded-md group"
-          >
+            className="block w-full transition duration-150 ease-in-out rounded-md group">
             {`View ${isResourceList ? 'List' : 'Group'}`}
           </ElemButton>
         )}

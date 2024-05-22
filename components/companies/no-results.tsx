@@ -32,8 +32,7 @@ export const NoResults: FC<Props> = ({
             )
           }
           btn="white"
-          className="mt-3"
-        >
+          className="mt-3">
           <IconAnnotation className="w-6 h-6 mr-1" />
           Tell us about missing data
         </ElemButton>

@@ -115,8 +115,7 @@ const Faq: NextPage<Props> = ({}) => {
             className="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
             viewBox="0 0 1155 678"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+            xmlns="http://www.w3.org/2000/svg">
             <path
               fill="url(#45de2b6b-92d5-4d68-a6a0-9b9b2abad533)"
               fillOpacity=".3"
@@ -129,8 +128,7 @@ const Faq: NextPage<Props> = ({}) => {
                 x2="-78.208"
                 y1=".177"
                 y2="474.645"
-                gradientUnits="userSpaceOnUse"
-              >
+                gradientUnits="userSpaceOnUse">
                 <stop stopColor="#9089FC" />
                 <stop offset={1} stopColor="#FF80B5" />
               </linearGradient>
@@ -174,8 +172,7 @@ const Faq: NextPage<Props> = ({}) => {
               <ElemButton
                 btn="primary"
                 href={ROUTES.CONTACT}
-                className="space-x-1"
-              >
+                className="space-x-1">
                 <IconEmail className="w-6 h-6" />
                 <span>Contact us</span>
               </ElemButton>

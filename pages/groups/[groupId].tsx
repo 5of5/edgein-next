@@ -187,8 +187,7 @@ const Group: NextPage<Props> = (props: Props) => {
                     btn="purple"
                     loading={isAddingGroupMember}
                     onClick={() => addGroupMember()}
-                    className="mt-2"
-                  >
+                    className="mt-2">
                     Join group
                   </ElemButton>
                 </div>

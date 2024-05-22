@@ -23,8 +23,7 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         label="Partner or Angel"
         source="person_id"
         reference="people"
-        resettable
-      >
+        resettable>
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
@@ -37,8 +36,7 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         source="round_id"
         reference="investment_rounds"
         resettable
-        validate={required()}
-      >
+        validate={required()}>
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
@@ -51,8 +49,7 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         label="VC Firm"
         source="vc_firm_id"
         reference="vc_firms"
-        resettable
-      >
+        resettable>
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}

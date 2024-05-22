@@ -26,8 +26,7 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
       <div className="inline">
         <ElemLink
           href={getNotificationOrganizationLink(notification)}
-          className="underline hover:no-underline font-medium"
-        >
+          className="underline hover:no-underline font-medium">
           {name}
         </ElemLink>
         <span>{` ${message}`}</span>
@@ -42,14 +41,12 @@ const ElemNotificationMessage: FC<Props> = ({ notification, message }) => {
           return (
             <ElemLink
               href={href as string}
-              className="underline hover:no-underline font-medium"
-            >
+              className="underline hover:no-underline font-medium">
               {children[0]}
             </ElemLink>
           );
         },
-      }}
-    >
+      }}>
       {`[${name}](${getNotificationOrganizationLink(notification)}) ${
         notification.message || ''
       }`}

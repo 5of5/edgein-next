@@ -79,8 +79,7 @@ export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
             <ElemButton
               btn="default"
               onClick={showAllPeople}
-              className="w-full"
-            >
+              className="w-full">
               Show All {numberWithCommas(people.length)} Speakers
             </ElemButton>
           </div>

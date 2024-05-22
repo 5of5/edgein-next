@@ -30,8 +30,7 @@ export const CompanyEdit = () => {
         action="edit"
         title={<ElemTitle category="Company" />}
         transform={transform}
-        rootStyle={rootStyle}
-      >
+        rootStyle={rootStyle}>
         <CompanyForm
           action="edit"
           formRef={formRef}

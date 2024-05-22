@@ -78,8 +78,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -92,8 +91,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
+                leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="content-between min-h-screen p-4 text-left bg-white">
                   <div>
                     <h2 className="font-bold font-Metropolis text-dark-500">{`${
@@ -230,8 +228,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                         onSaveEmployee(employee);
                       }}
                       btn="ol-primary"
-                      className=""
-                    >{`${
+                      className="">{`${
                       memberToEdit && memberToEdit.id
                         ? 'Edit Employee'
                         : 'Add Employee'

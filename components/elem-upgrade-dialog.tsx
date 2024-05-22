@@ -34,8 +34,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
@@ -48,8 +47,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
               enterTo="opacity-100 scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
+              leaveTo="opacity-0 scale-95">
               <Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 p-6 shadow-xl transition-all">
                 <Dialog.Title className="text-xl font-medium flex items-start justify-between">
                   <span className="text-center px-8">
@@ -58,8 +56,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="focus-visible:outline-none"
-                  >
+                    className="focus-visible:outline-none">
                     <IconX className="w-5 h-5" />
                   </button>
                 </Dialog.Title>

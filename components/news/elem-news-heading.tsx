@@ -42,8 +42,7 @@ const ElemNewsHeading: React.FC<Props> = ({
               href={news.link}
               className="font-medium text-sm"
               target="_blank"
-              onClick={handleLinkClick}
-            >
+              onClick={handleLinkClick}>
               <span className="underline hover:no-underline">{news.text}</span>
               <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
             </ElemLink>
@@ -72,8 +71,7 @@ const ElemNewsHeading: React.FC<Props> = ({
                         ? 'techcrunch'
                         : 'cryptopanic'
                     }`}
-                    className="underline hover:no-underline"
-                  >
+                    className="underline hover:no-underline">
                     {news?.source?.poweredby || 'CryptoPanic'}
                   </ElemLink>
                 </>

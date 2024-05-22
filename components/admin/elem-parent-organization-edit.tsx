@@ -74,8 +74,7 @@ const ElemParentOrganizationEdit: FC<Props> = ({ type }) => {
           <ReferenceArrayInput
             label="Child companies"
             source="child_companies"
-            reference="companies"
-          >
+            reference="companies">
             <AutocompleteArrayInput
               className={inputClassName}
               style={{ padding: 0, border: 'none' }}
@@ -87,8 +86,7 @@ const ElemParentOrganizationEdit: FC<Props> = ({ type }) => {
           <ReferenceArrayInput
             label="Child VC firms"
             source="child_vc_firms"
-            reference="vc_firms"
-          >
+            reference="vc_firms">
             <AutocompleteArrayInput
               className={inputClassName}
               style={{ padding: 0, border: 'none' }}
@@ -100,8 +98,7 @@ const ElemParentOrganizationEdit: FC<Props> = ({ type }) => {
           <ReferenceInput
             label="Parent company"
             source="parent_company"
-            reference="companies"
-          >
+            reference="companies">
             <AutocompleteInput
               className={inputClassName}
               style={{ padding: 0, border: 'none' }}
@@ -112,8 +109,7 @@ const ElemParentOrganizationEdit: FC<Props> = ({ type }) => {
           <ReferenceInput
             label="Parent VC firm"
             source="parent_vc_firm"
-            reference="vc_firms"
-          >
+            reference="vc_firms">
             <AutocompleteInput
               className={inputClassName}
               style={{ padding: 0, border: 'none' }}

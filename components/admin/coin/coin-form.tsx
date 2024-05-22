@@ -56,8 +56,7 @@ const CoinForm = ({ action, toolbar, currentData }: CoinFormProps) => {
       <ReferenceInput
         label="Blockchain"
         source="blockchain_id"
-        reference="blockchains"
-      >
+        reference="blockchains">
         <SelectInput className={inputClassName} optionText="name" />
       </ReferenceInput>
     </SimpleForm>

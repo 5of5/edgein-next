@@ -46,8 +46,7 @@ export const GroupsNoResults: FC<Props> = ({
                 name: 'Discover',
               })
             }
-            className="mt-4"
-          >
+            className="mt-4">
             <IconSearch className="w-5 h-5 mr-1" />
             Discover New Groups
           </ElemButton>
@@ -56,8 +55,7 @@ export const GroupsNoResults: FC<Props> = ({
             btn="primary"
             size="sm"
             onClick={onClickCreateGroup}
-            className="mt-4"
-          >
+            className="mt-4">
             <IconGroupPlus className="w-5 h-5 mr-1" />
             Create New Group
           </ElemButton>

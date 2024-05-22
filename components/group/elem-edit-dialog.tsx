@@ -69,8 +69,7 @@ const ElemEditDialog: FC<Props> = ({
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black/25" />
         </Transition.Child>
 
@@ -83,8 +82,7 @@ const ElemEditDialog: FC<Props> = ({
               enterTo="opacity-100 scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
+              leaveTo="opacity-0 scale-95">
               <Dialog.Panel className="w-full max-w-md transform rounded-lg bg-slate-100 shadow-xl transition-all overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
                   <h2 className="text-xl font-bold capitalize">
@@ -93,8 +91,7 @@ const ElemEditDialog: FC<Props> = ({
                   <button
                     onClick={onClose}
                     type="button"
-                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
-                  >
+                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100">
                     <IconX className="h-6 w-6" title="close" />
                   </button>
                 </div>
@@ -126,8 +123,7 @@ const ElemEditDialog: FC<Props> = ({
                       roundedFull
                       btn="primary"
                       loading={loading}
-                      disabled={(required && !value) || Boolean(error)}
-                    >
+                      disabled={(required && !value) || Boolean(error)}>
                       Save
                     </ElemButton>
                   </div>

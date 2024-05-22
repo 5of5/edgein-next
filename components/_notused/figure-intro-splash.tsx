@@ -24,8 +24,7 @@ export const FigureIntroSplash: FC<Props> = ({ className = '' }) => {
         show={true}
         enter="transition ease-in-out duration-500 delay-200"
         enterFrom="opacity-0 -translate-y-10"
-        enterTo="opacity-100 translate-y-0"
-      >
+        enterTo="opacity-100 translate-y-0">
         <div className="absolute -top-8 left-0 right-0 aspect-video w-10/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
       </Transition>
       <Transition
@@ -33,8 +32,7 @@ export const FigureIntroSplash: FC<Props> = ({ className = '' }) => {
         show={true}
         enter="transition ease-in-out duration-500 delay-500"
         enterFrom="opacity-0 -translate-y-10"
-        enterTo="opacity-100 translate-y-0"
-      >
+        enterTo="opacity-100 translate-y-0">
         <div className="absolute -top-4 left-0 right-0 aspect-video w-11/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
       </Transition>
       <Transition
@@ -42,8 +40,7 @@ export const FigureIntroSplash: FC<Props> = ({ className = '' }) => {
         show={true}
         enter="transition ease-in-out duration-1000 delay-700"
         enterFrom="opacity-0 -translate-y-10"
-        enterTo="opacity-100 translate-y-0"
-      >
+        enterTo="opacity-100 translate-y-0">
         <div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-gray-50/80 to-gray-50/20 border-2 border-white/60 opacity-100 backdrop-blur-3xl shadow-[10px_14px_25px_rgba(0,0,0,0.10)]">
           <FigureDash className="mx-3 my-1 aspect-video max-w-full" />
         </div>

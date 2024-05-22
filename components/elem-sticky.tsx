@@ -46,8 +46,7 @@ export const ElemSticky: React.FC<PropsWithChildren<Props>> = ({
         className={`sticky z-30 transition-all ${className} ${
           active && activeClass
         }`}
-        style={active && fromTop ? { top: `${fromTop}px` } : {}}
-      >
+        style={active && fromTop ? { top: `${fromTop}px` } : {}}>
         {children}
       </div>
     </>

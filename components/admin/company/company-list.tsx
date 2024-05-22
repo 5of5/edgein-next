@@ -162,8 +162,7 @@ export const CompanyList = () => {
           <a
             target={'_blank'}
             rel="noreferrer"
-            href={`https://edgein.io/companies/${record.slug}`}
-          >
+            href={`https://edgein.io/companies/${record.slug}`}>
             <Button label="Preview" />
           </a>
         )}
@@ -175,8 +174,7 @@ export const CompanyList = () => {
       <ReferenceArrayField
         label="Child companies"
         source="child_companies"
-        reference="companies"
-      >
+        reference="companies">
         <SingleFieldList>
           <ChipField source="name" />
         </SingleFieldList>
@@ -184,8 +182,7 @@ export const CompanyList = () => {
       <ReferenceArrayField
         label="Child vc firms"
         source="child_vc_firms"
-        reference="vc_firms"
-      >
+        reference="vc_firms">
         <SingleFieldList>
           <ChipField source="name" />
         </SingleFieldList>
@@ -193,15 +190,13 @@ export const CompanyList = () => {
       <ReferenceField
         label="Parent company"
         source="parent_company"
-        reference="companies"
-      >
+        reference="companies">
         <TextField source="name" />
       </ReferenceField>
       <ReferenceField
         label="Parent vc firm"
         source="parent_vc_firm"
-        reference="vc_firms"
-      >
+        reference="vc_firms">
         <TextField source="name" />
       </ReferenceField>
       <SelectField source="layer" choices={companyLayerChoices} />

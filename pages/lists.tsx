@@ -179,8 +179,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                       selectedListTab?.id === tab.id
                         ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                         : ''
-                    }`}
-                  >
+                    }`}>
                     {tab.name}
                   </ElemButton>
                 ),

@@ -62,8 +62,7 @@ const ElemSettingEditableField: React.FC<Props> = ({
               <div
                 className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                   t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
+                }`}>
                 {`${label} updated`}
               </div>
             ),
@@ -99,8 +98,7 @@ const ElemSettingEditableField: React.FC<Props> = ({
       className={`flex items-start justify-between p-3 ${
         isGroupManager && 'cursor-pointer hover:bg-slate-100 '
       }`}
-      onClick={isGroupManager ? handleOpenEditMode : () => null}
-    >
+      onClick={isGroupManager ? handleOpenEditMode : () => null}>
       <div className="flex-auto pr-4">
         <p className="font-bold">{label}</p>
         <p className="text-slate-500">

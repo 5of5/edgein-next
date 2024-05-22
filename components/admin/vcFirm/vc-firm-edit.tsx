@@ -41,8 +41,7 @@ export const VcFirmEdit = () => {
         title={<ElemTitle category="Vc Firm" />}
         action="edit"
         transform={transform}
-        rootStyle={rootStyle}
-      >
+        rootStyle={rootStyle}>
         <VcFirmForm
           action="edit"
           slugValidate={required()}

@@ -18,8 +18,7 @@ const InvestmentRoundDialog = ({ selectedRecord, onClose }: Props) => {
       mutateUri="investment_rounds"
       parentId="company_id"
       selectedRecord={selectedRecord}
-      onClose={onClose}
-    >
+      onClose={onClose}>
       <DateInput className={inputClassName} source="round_date" />
       <SelectInput
         className={inputClassName}

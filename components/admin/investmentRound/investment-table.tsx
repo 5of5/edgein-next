@@ -18,8 +18,7 @@ const InvestmentTable = () => {
           selectedRecord={props.selectedRecord}
           onClose={props.onClose}
         />
-      )}
-    >
+      )}>
       <TextField source="id" />
       <ReferenceField label="Partner" source="person_id" reference="people">
         <TextField source="name" />

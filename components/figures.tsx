@@ -29,16 +29,14 @@ export const FigureBlurredRectangle: React.FC<FigureProps> = ({
 }) => {
   return (
     <figure
-      className={`${className} h-44 w-[800px] bg-gradient-to-bl from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE] mix-blend-multiply opacity-30 blur-2xl`}
-    ></figure>
+      className={`${className} h-44 w-[800px] bg-gradient-to-bl from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE] mix-blend-multiply opacity-30 blur-2xl`}></figure>
   );
 };
 
 export const FigureBlurredCircle: React.FC<FigureProps> = ({ className }) => {
   return (
     <figure
-      className={`${className} from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE] w-96 h-96 rounded-full bg-gradient-to-bl filter mix-blend-multiply opacity-30 blur-2xl`}
-    ></figure>
+      className={`${className} from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE] w-96 h-96 rounded-full bg-gradient-to-bl filter mix-blend-multiply opacity-30 blur-2xl`}></figure>
   );
 };
 
@@ -50,8 +48,7 @@ export const FigureCircleDashes: React.FC<FigureProps> = ({ className }) => {
       height="504"
       viewBox="0 0 523 504"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         opacity="0.3"
         fillRule="evenodd"
@@ -69,8 +66,7 @@ export const FigurePerspectiveGrid: React.FC<FigureProps> = ({ className }) => {
       className={className}
       viewBox="0 0 2494 439"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <mask
         id="mask0_1533_162"
         style={{ maskType: 'alpha' }}
@@ -78,8 +74,7 @@ export const FigurePerspectiveGrid: React.FC<FigureProps> = ({ className }) => {
         x="-3"
         y="-3"
         width="2500"
-        height="445"
-      >
+        height="445">
         <line
           x1="2"
           y1="2"
@@ -240,8 +235,7 @@ export const FigurePerspectiveGrid: React.FC<FigureProps> = ({ className }) => {
           cy="0"
           r="1"
           gradientUnits="userSpaceOnUse"
-          gradientTransform="translate(1247 219.5) scale(1247 10266.4)"
-        >
+          gradientTransform="translate(1247 219.5) scale(1247 10266.4)">
           <stop offset="0.348958" stopColor="currentColor" />
           <stop offset="1" stopColor="currentColor" stopOpacity="0" />
         </radialGradient>
@@ -256,8 +250,7 @@ export const FigureSearch: React.FC<FigureProps> = ({ className }) => {
       viewBox="0 0 373 222"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <rect y="72.0117" width="111" height="59" rx="9" fill="#E2E8F0" />
       <rect x="45" y="101" width="26" height="5" rx="2.5" fill="#BAC5D5" />
       <rect x="15" y="101" width="25" height="5" rx="2.5" fill="#BAC5D5" />
@@ -288,8 +281,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 453 246"
-      className={className}
-    >
+      className={className}>
       <g filter="url(#filter0_d_5495_11563)">
         <rect width="340" height="238" x="109" y="2" fill="#fff" rx="4" />
       </g>
@@ -513,8 +505,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x2="7.606"
           y1="107.387"
           y2="106.417"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -524,8 +515,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x2="4.434"
           y1="107.168"
           y2="104.944"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -535,8 +525,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x2="4.3"
           y1="104.422"
           y2="102.561"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -546,8 +535,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x2="3.854"
           y1="102.392"
           y2="100.582"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -557,8 +545,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x2="4.246"
           y1="99.885"
           y2="98.65"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#804F26" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -568,8 +555,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x2="2.018"
           y1="93"
           y2="87"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#1A22FF" />
           <stop offset=".51" stopColor="#5E41FE" />
           <stop offset="1" stopColor="#A05FFE" />
@@ -580,8 +566,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x2="5.175"
           y1="68"
           y2="78.363"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#C6381B" />
           <stop offset="1" stopColor="#E04221" />
         </linearGradient>
@@ -591,8 +576,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           cy="0"
           r="1"
           gradientTransform="rotate(145.907 -10.832 45.14) scale(6.98652 7.0894)"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#FADF4B" />
           <stop offset=".49" stopColor="#F8DC4B" />
           <stop offset=".833" stopColor="#FCA237" />
@@ -604,8 +588,7 @@ export const FigureDash: React.FC<FigureProps> = ({ className }) => {
           x="105"
           y="0"
           colorInterpolationFilters="sRGB"
-          filterUnits="userSpaceOnUse"
-        >
+          filterUnits="userSpaceOnUse">
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
@@ -1003,8 +986,7 @@ export const FigureConnect: React.FC<FigureProps> = ({ className }) => {
             width="74.2507"
             height="75.7661"
             filterUnits="userSpaceOnUse"
-            colorInterpolationFilters="sRGB"
-          >
+            colorInterpolationFilters="sRGB">
             <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feColorMatrix
               in="SourceAlpha"
@@ -1053,8 +1035,7 @@ export const FigureConnect: React.FC<FigureProps> = ({ className }) => {
             y1="174.362"
             x2="295.373"
             y2="110.718"
-            gradientUnits="userSpaceOnUse"
-          >
+            gradientUnits="userSpaceOnUse">
             <stop stopColor="#EBE9FA" />
             <stop offset="1" stopColor="white" />
           </linearGradient>
@@ -1064,8 +1045,7 @@ export const FigureConnect: React.FC<FigureProps> = ({ className }) => {
             y1="128.25"
             x2="301.017"
             y2="165.079"
-            gradientUnits="userSpaceOnUse"
-          >
+            gradientUnits="userSpaceOnUse">
             <stop stopColor="#F8DA4B" />
             <stop offset="0.53125" stopColor="#FE33D0" />
             <stop offset="1" stopColor="#1B01FE" />
@@ -1076,8 +1056,7 @@ export const FigureConnect: React.FC<FigureProps> = ({ className }) => {
             y1="128.25"
             x2="301.017"
             y2="165.079"
-            gradientUnits="userSpaceOnUse"
-          >
+            gradientUnits="userSpaceOnUse">
             <stop stopColor="#F8DA4B" />
             <stop offset="0.53125" stopColor="#FE33D0" />
             <stop offset="1" stopColor="#1B01FE" />
@@ -1088,8 +1067,7 @@ export const FigureConnect: React.FC<FigureProps> = ({ className }) => {
             y1="128.25"
             x2="301.017"
             y2="165.079"
-            gradientUnits="userSpaceOnUse"
-          >
+            gradientUnits="userSpaceOnUse">
             <stop stopColor="#F8DA4B" />
             <stop offset="0.53125" stopColor="#FE33D0" />
             <stop offset="1" stopColor="#1B01FE" />

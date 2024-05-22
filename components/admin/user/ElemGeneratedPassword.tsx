@@ -38,8 +38,7 @@ const ElemGeneratedPassword: FC<Props> = ({ value }) => {
             <button
               className="bg-slate-200 p-2 rounded-md"
               onClick={onCopy}
-              onMouseOut={onMouseOut}
-            >
+              onMouseOut={onMouseOut}>
               {value}
             </button>
           </ElemTooltip>

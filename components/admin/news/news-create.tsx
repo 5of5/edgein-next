@@ -19,8 +19,7 @@ export const NewsCreate = () => {
     <ElemFormBase
       title="Create a news"
       action="create"
-      transform={transformFormData}
-    >
+      transform={transformFormData}>
       <NewsForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}

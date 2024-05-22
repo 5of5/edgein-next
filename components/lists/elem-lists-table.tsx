@@ -59,8 +59,7 @@ export const ListsTable: FC<Props> = ({
               href={`${ROUTES.LISTS}/${props.row.original?.id}/${kebabCase(
                 props.value,
               )}`}
-              className="font-medium break-words line-clamp-2 hover:underline"
-            >
+              className="font-medium break-words line-clamp-2 hover:underline">
               {getListDisplayName(props.row.original)}
             </a>
           </div>
@@ -87,14 +86,12 @@ export const ListsTable: FC<Props> = ({
                   direction="top"
                   size="lg"
                   delay={1000}
-                  className="overflow-y-scroll max-h-72"
-                >
+                  className="overflow-y-scroll max-h-72">
                   <div className="text-sm text-gray-500 line-clamp-3">
                     <a
                       href={`${ROUTES.LISTS}/${
                         props.row.original?.id
-                      }/${kebabCase(props.value)}`}
-                    >
+                      }/${kebabCase(props.value)}`}>
                       {props.value}
                     </a>
                   </div>
@@ -140,8 +137,7 @@ export const ListsTable: FC<Props> = ({
                               content={getNameFromListMember(member)}
                               mode="dark"
                               direction="top"
-                              size="lg"
-                            >
+                              size="lg">
                               {member?.user?.person?.picture ? (
                                 <div>
                                   <ElemPhoto
@@ -166,8 +162,7 @@ export const ListsTable: FC<Props> = ({
                       href={`${ROUTES.LISTS}/${
                         props.row.original?.id
                       }/${kebabCase(getNameFromListName(props.row.original))}`}
-                      className="ml-1 text-sm break-words line-clamp-2 hover:underline"
-                    >
+                      className="ml-1 text-sm break-words line-clamp-2 hover:underline">
                       {props.value} Follower{props.value > 1 && 's'}
                     </a>
                   </div>
@@ -232,8 +227,7 @@ export const ListsTable: FC<Props> = ({
               {props.value && props.row.original.created_by?.person?.slug ? (
                 <a
                   href={`${ROUTES.PEOPLE}/${props.row.original.created_by?.person?.slug}/`}
-                  className="hover:underline"
-                >
+                  className="hover:underline">
                   {author}
                 </a>
               ) : props.value ? (

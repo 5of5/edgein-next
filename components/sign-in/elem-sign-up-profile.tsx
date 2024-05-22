@@ -80,16 +80,14 @@ export const ElemSignUpProfile: FC<Props> = ({
           size="md"
           btn="primary"
           loading={isSubmittingSignUp}
-          onClick={() => onNext(person?.id)}
-        >
+          onClick={() => onNext(person?.id)}>
           Yes, it&apos; me
         </ElemButton>
         <ElemButton
           size="sm"
           btn="default"
           loading={isSubmittingSignUp}
-          onClick={() => onNext()}
-        >
+          onClick={() => onNext()}>
           It&apos; someone else
         </ElemButton>
       </div>

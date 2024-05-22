@@ -221,24 +221,21 @@ export const EventOrganizationTable = () => {
           '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
-        }}
-      >
+        }}>
         <Datagrid bulkActionButtons={false} data={eventOrganizationList}>
           <TextField source="id" />
           <ReferenceField
             label="Company"
             source="company_id"
             reference="companies"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="name" />
           </ReferenceField>
           <ReferenceField
             label="VC firm"
             source="vc_firm_id"
             reference="vc_firms"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="name" />
           </ReferenceField>
           <SelectField
@@ -258,8 +255,7 @@ export const EventOrganizationTable = () => {
           keepMounted
           fullWidth
           maxWidth="xs"
-          onClose={handleClose}
-        >
+          onClose={handleClose}>
           <DialogTitle>Event Organization</DialogTitle>
           <DialogContent>
             <Form defaultValues={currRecord}>
@@ -271,13 +267,11 @@ export const EventOrganizationTable = () => {
                     '.MuiAutocomplete-root .MuiFormHelperText-root': {
                       display: 'none',
                     },
-                  }}
-                >
+                  }}>
                   <ReferenceInput
                     label="Company"
                     source="company_id"
-                    reference="companies"
-                  >
+                    reference="companies">
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
@@ -298,13 +292,11 @@ export const EventOrganizationTable = () => {
                     '.MuiAutocomplete-root .MuiFormHelperText-root': {
                       display: 'none',
                     },
-                  }}
-                >
+                  }}>
                   <ReferenceInput
                     label="VC firm"
                     source="vc_firm_id"
-                    reference="vc_firms"
-                  >
+                    reference="vc_firms">
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
@@ -322,8 +314,7 @@ export const EventOrganizationTable = () => {
                 <Select
                   defaultValue={currRecord?.type}
                   value={eventOrganizationData?.type}
-                  onChange={e => handleChange('type', e.target.value)}
-                >
+                  onChange={e => handleChange('type', e.target.value)}>
                   {eventOrganizationTypeChoices?.map(item => (
                     <MenuItem key={item.id} value={item.id}>
                       {item.name}
@@ -351,8 +342,7 @@ export const EventOrganizationTable = () => {
                   flexDirection: 'row',
                   width: '100%',
                   marginTop: 4,
-                }}
-              >
+                }}>
                 <Button label="Cancel" variant="text" onClick={handleClose} />
                 <Button
                   label="Save"

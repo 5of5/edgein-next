@@ -23,14 +23,12 @@ const InvestmentDialog = ({ selectedRecord, onClose }: Props) => {
       mutateUri="investments"
       parentId="round_id"
       selectedRecord={selectedRecord}
-      onClose={onClose}
-    >
+      onClose={onClose}>
       <ReferenceInput
         label="Partner or Angel"
         source="person_id"
         reference="people"
-        resettable
-      >
+        resettable>
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
@@ -43,8 +41,7 @@ const InvestmentDialog = ({ selectedRecord, onClose }: Props) => {
         label="VC Firm"
         source="vc_firm_id"
         reference="vc_firms"
-        resettable
-      >
+        resettable>
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}

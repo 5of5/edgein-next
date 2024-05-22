@@ -30,8 +30,7 @@ export const ElemTags: React.FC<Props> = ({
               return (
                 <div
                   key={index}
-                  className="px-3 py-1 text-xs font-medium bg-gray-100 rounded-full shrink-0"
-                >
+                  className="px-3 py-1 text-xs font-medium bg-gray-100 rounded-full shrink-0">
                   {tag}
                 </div>
               );
@@ -42,8 +41,7 @@ export const ElemTags: React.FC<Props> = ({
                   key={index}
                   href={`/${resourceType}/?filters=${encodeURIComponent(
                     `{"${filter}":{"tags":["${tag}"]}}`,
-                  )}`}
-                >
+                  )}`}>
                   <button className="px-3 py-1 text-xs font-medium bg-gray-100 rounded-full shrink-0 hover:bg-gray-200">
                     {tag}
                   </button>
@@ -54,8 +52,7 @@ export const ElemTags: React.FC<Props> = ({
         {tagsLimit < tags.length && (
           <button
             onClick={showMoreTags}
-            className="py-1 text-xs font-medium text-gray-500"
-          >
+            className="py-1 text-xs font-medium text-gray-500">
             {tags.length - tagsLimit} more
           </button>
         )}

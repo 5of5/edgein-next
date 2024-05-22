@@ -88,8 +88,7 @@ const EventForm = ({
         source="banner"
         label="Banner"
         accept="image/*"
-        placeholder={<p>Drop your file here</p>}
-      >
+        placeholder={<p>Drop your file here</p>}>
         <ImageField source="src" title="title" />
       </FileInput>
       {action === 'edit' && !banner && !isImageUpdated && (
@@ -174,8 +173,7 @@ const EventForm = ({
       <ReferenceInput
         label="Parent event"
         source="parent_event_id"
-        reference="events"
-      >
+        reference="events">
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}
@@ -216,8 +214,7 @@ const EventForm = ({
             options={{ onDrop: onSelectAttachment }}
             source="file"
             label="File"
-            placeholder={<p>Drop your file here</p>}
-          >
+            placeholder={<p>Drop your file here</p>}>
             <FileField source="src" title="title" />
           </FileInput>
           {action === 'edit' && <FileField source="url" title="Attachment" />}

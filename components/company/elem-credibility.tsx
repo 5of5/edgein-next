@@ -49,15 +49,13 @@ export const ElemCredibility: React.FC<Props> = ({
       <div
         className={`grid gap-2 overflow-visible p-4 ${
           mini ? `grid-cols-${credibilityItems.length}` : 'grid-cols-3'
-        }`}
-      >
+        }`}>
         {credibilityItems.map((item, index: number) => {
           const credibilityItem = (
             <div
               className={`${
                 mini ? 'w-8 h-8' : 'w-12 h-12'
-              } relative flex items-center justify-center bg-white rounded-lg border border-black/10`}
-            >
+              } relative flex items-center justify-center bg-white rounded-lg border border-black/10`}>
               <IconBadgeCheckSolid
                 title="Verified"
                 className={`${
@@ -78,8 +76,7 @@ export const ElemCredibility: React.FC<Props> = ({
                 mini
                   ? ''
                   : 'pt-2 flex flex-col items-center justify-center h-full bg-white rounded-lg'
-              } text-slate-600`}
-            >
+              } text-slate-600`}>
               {mini ? (
                 <>
                   <ElemTooltip content={item.text}>

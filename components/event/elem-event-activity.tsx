@@ -56,8 +56,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                 return (
                   <li
                     key={index}
-                    className="relative pl-6 overflow-hidden group last:-mb-4"
-                  >
+                    className="relative pl-6 overflow-hidden group last:-mb-4">
                     <span className="absolute h-full top-0 bottom-0 left-0">
                       <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
                       <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-primary-200 group-hover:bg-primary-500"></span>
@@ -77,8 +76,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                             <>
                               <ElemLink
                                 href={`${ROUTES.PEOPLE}/${activity?.person?.slug}`}
-                                className="font-medium underline hover:no-underline"
-                              >
+                                className="font-medium underline hover:no-underline">
                                 {activity?.person?.name}
                               </ElemLink>
                               {` is going to `}
@@ -90,8 +88,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                             <>
                               <ElemLink
                                 href={`${ROUTES.PEOPLE}/${activity?.person?.slug}`}
-                                className="font-medium underline hover:no-underline"
-                              >
+                                className="font-medium underline hover:no-underline">
                                 {activity?.person?.name}
                               </ElemLink>
                               {` was added as a `}
@@ -109,8 +106,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                                     ? `${ROUTES.INVESTORS}/${activity?.vc_firm?.slug}`
                                     : `${ROUTES.PEOPLE}/${activity?.person?.slug}`
                                 }
-                                className="font-medium underline hover:no-underline"
-                              >
+                                className="font-medium underline hover:no-underline">
                                 {activity?.company?.name ||
                                   activity?.vc_firm?.name ||
                                   activity?.person?.name}
@@ -130,8 +126,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                                     ? `${ROUTES.INVESTORS}/${activity?.vc_firm?.slug}`
                                     : `${ROUTES.PEOPLE}/${activity?.person?.slug}`
                                 }
-                                className="font-medium underline hover:no-underline"
-                              >
+                                className="font-medium underline hover:no-underline">
                                 {activity?.company?.name ||
                                   activity?.vc_firm?.name ||
                                   activity?.person?.name}
@@ -173,8 +168,7 @@ export const ElemEventActivity: React.FC<Props> = ({
                 <ElemButton
                   btn="default"
                   onClick={showMoreActivity}
-                  className="w-full"
-                >
+                  className="w-full">
                   Show More Activity
                 </ElemButton>
               </div>

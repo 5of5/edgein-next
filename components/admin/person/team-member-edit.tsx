@@ -251,15 +251,13 @@ export const TeamMemberEdit = () => {
           '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
-        }}
-      >
+        }}>
         <Datagrid bulkActionButtons={false} data={member}>
           <ReferenceField
             label="Company"
             source="company_id"
             reference="companies"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="name" />
           </ReferenceField>
           <SelectField
@@ -287,8 +285,7 @@ export const TeamMemberEdit = () => {
           keepMounted
           fullWidth
           maxWidth="xs"
-          onClose={handleClose}
-        >
+          onClose={handleClose}>
           <DialogTitle>TeamMember</DialogTitle>
           <DialogContent>
             <Form>
@@ -299,13 +296,11 @@ export const TeamMemberEdit = () => {
                   '.MuiAutocomplete-root .MuiFormHelperText-root': {
                     display: 'none',
                   },
-                }}
-              >
+                }}>
                 <ReferenceInput
                   label="Company"
                   source="company_id"
-                  reference="companies"
-                >
+                  reference="companies">
                   <AutocompleteInput
                     defaultValue={currRecord?.company_id}
                     optionText="name"
@@ -329,8 +324,7 @@ export const TeamMemberEdit = () => {
                 <InputLabel>Function</InputLabel>
                 <Select
                   value={teamData?.function}
-                  onChange={e => handleChange(1, e.target.value)}
-                >
+                  onChange={e => handleChange(1, e.target.value)}>
                   {functionChoicesTM?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
@@ -342,8 +336,7 @@ export const TeamMemberEdit = () => {
                 <InputLabel>Seniority</InputLabel>
                 <Select
                   value={teamData?.seniority}
-                  onChange={e => handleChange(2, e.target.value)}
-                >
+                  onChange={e => handleChange(2, e.target.value)}>
                   {seniorityChoicesTM?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
@@ -395,8 +388,7 @@ export const TeamMemberEdit = () => {
                   alignItems: 'center',
                   flexDirection: 'row',
                   width: '100%',
-                }}
-              >
+                }}>
                 <Button label="Cancel" variant="text" onClick={handleClose} />
                 <Button
                   label="Save"

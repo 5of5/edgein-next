@@ -61,8 +61,7 @@ export const ElemPersonCard: React.FC<Props> = ({
         <div
           className={`bg-gray-900 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
-          }`}
-        >
+          }`}>
           Copied Email
         </div>
       ),
@@ -78,8 +77,7 @@ export const ElemPersonCard: React.FC<Props> = ({
       <div
         className={`flex gap-2 items-start ${
           end_date ? 'opacity-60 hover:opacity-100' : ''
-        }`}
-      >
+        }`}>
         <ElemLink href={href} className="hover:opacity-75">
           <ElemPhoto
             photo={photo}
@@ -126,8 +124,7 @@ export const ElemPersonCard: React.FC<Props> = ({
                     href={linkedin}
                     className="block"
                     target="_blank"
-                    rel="noreferrer"
-                  >
+                    rel="noreferrer">
                     <IconLinkedIn
                       title="LinkedIn"
                       className="h-6 w-6 shrink-0 text-[#0077B5]"
@@ -155,13 +152,11 @@ export const ElemPersonCard: React.FC<Props> = ({
                 size="md"
                 content={`${
                   personEmails.length === 1 ? 'View Email' : 'View Emails'
-                }`}
-              >
+                }`}>
                 <div>
                   <button
                     onClick={() => setShowEmails(!showEmails)}
-                    className="flex items-center space-x-1 text-sm"
-                  >
+                    className="flex items-center space-x-1 text-sm">
                     <IconEmail title="Email" className="h-6 w-6" />
                     <div>
                       {personEmails.length === 1
@@ -176,8 +171,7 @@ export const ElemPersonCard: React.FC<Props> = ({
                 <div>
                   <button
                     onClick={onOpenUpgradeDialog}
-                    className="inline-flex items-center space-x-1 text-gray-500"
-                  >
+                    className="inline-flex items-center space-x-1 text-gray-500">
                     <IconEmail title="Email" className="h-6 w-6" />
                     <span className="text-sm">
                       {personEmails.length === 1
@@ -200,8 +194,7 @@ export const ElemPersonCard: React.FC<Props> = ({
                       onClick={() => {
                         onCopyEmail(email);
                       }}
-                      className="text-gray-500 underline text-sm hover:no-underline"
-                    >
+                      className="text-gray-500 underline text-sm hover:no-underline">
                       {email}
                     </button>
                   </li>

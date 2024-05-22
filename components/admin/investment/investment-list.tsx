@@ -30,8 +30,7 @@ const filters = [
   <ReferenceInput
     key="searchRounds"
     source="round_id"
-    reference="investment_rounds"
-  >
+    reference="investment_rounds">
     <AutocompleteInput
       style={{ padding: 0, border: 'none' }}
       optionText="name"
@@ -60,8 +59,7 @@ export const InvestmentList = () => {
       <ReferenceField
         label="Round"
         source="round_id"
-        reference="investment_rounds"
-      >
+        reference="investment_rounds">
         <TextField source="round" />
       </ReferenceField>
       <ReferenceField label="VC Firm" source="vc_firm_id" reference="vc_firms">

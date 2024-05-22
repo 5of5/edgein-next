@@ -29,8 +29,7 @@ export const ElemListBreadcrumb: FC<Props> = ({
             component: isListAuthor ? (
               <button
                 onClick={onOpenSettingsDialog}
-                className="inline-flex items-center justify-start hover:underline"
-              >
+                className="inline-flex items-center justify-start hover:underline">
                 <span className="text-left capitalize">
                   {getListDisplayName(list)}
                 </span>

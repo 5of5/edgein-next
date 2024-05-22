@@ -154,8 +154,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
         <Dialog
           as="div"
           onClose={onCloseSaveToListDialog}
-          className="relative z-[60]"
-        >
+          className="relative z-[60]">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -163,8 +162,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 z-10 transition-opacity bg-black/20 backdrop-blur-sm" />
           </Transition.Child>
 
@@ -176,15 +174,13 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
               <Dialog.Panel className="relative w-full max-w-sm mx-auto overflow-x-hidden overflow-y-auto bg-white rounded-lg shadow-2xl my-7 overscroll-y-none scrollbar-hide">
                 <div className="absolute top-1 right-1">
                   <button
                     onClick={onCloseSaveToListDialog}
                     type="button"
-                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/10 focus:bg-black/20"
-                  >
+                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/10 focus:bg-black/20">
                     <span className="sr-only">Close</span>
                     <IconX className="w-6 h-6 text-white" />
                   </button>
@@ -260,8 +256,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                         className="mt-3 ml-auto"
                         disabled={listName === '' || error ? true : false}
                         roundedFull
-                        btn="primary"
-                      >
+                        btn="primary">
                         Create
                       </ElemButton>
                     </div>

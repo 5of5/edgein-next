@@ -152,8 +152,7 @@ const ElemNoteForm: React.FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -166,8 +165,7 @@ const ElemNoteForm: React.FC<Props> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
+                leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-5 text-left align-middle shadow-xl transition-all">
                   <div className="relative flex items-center justify-between pb-2 border-b border-gray-200">
                     <Dialog.Title className="flex-1 text-xl text-center font-bold">
@@ -176,8 +174,7 @@ const ElemNoteForm: React.FC<Props> = ({
                     <button
                       type="button"
                       onClick={closeAndReset}
-                      className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10"
-                    >
+                      className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10">
                       <IconX className="h-6 w-6" />
                     </button>
                   </div>
@@ -190,8 +187,7 @@ const ElemNoteForm: React.FC<Props> = ({
                         } on ${moment(selectedNote?.updated_at).format(
                           'LL h:mma',
                         )}`}
-                        direction="top-start"
-                      >
+                        direction="top-start">
                         <div className="cursor-pointer">
                           <ElemPhoto
                             photo={
@@ -256,8 +252,7 @@ const ElemNoteForm: React.FC<Props> = ({
                       disabled={!notes || !selectedGroup}
                       loading={isLoading}
                       onClick={handleSubmit}
-                      className="ml-auto"
-                    >
+                      className="ml-auto">
                       {type === 'edit' ? 'Save Note' : 'Create Note'}
                     </ElemButton>
                   </div>

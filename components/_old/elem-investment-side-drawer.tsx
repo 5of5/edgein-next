@@ -188,8 +188,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -202,8 +201,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
+                leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="max-h-screen min-h-screen p-4 text-left bg-white">
                   <div className="max-h-screen overflow-y-auto">
                     <div className="mt-4">
@@ -314,8 +312,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                       <ElemButton
                         onClick={onAddNew}
                         btn="ol-primary"
-                        className="mt-5 mb-28"
-                      >
+                        className="mt-5 mb-28">
                         Add Investment
                       </ElemButton>
                     </div>
@@ -324,8 +321,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                     <ElemButton
                       onClick={() => onSaveInvestmentRound(investmentRound)}
                       btn="white"
-                      className="bg-white"
-                    >{`${
+                      className="bg-white">{`${
                       investmentRoundToEdit && investmentRoundToEdit.id
                         ? 'Edit Investment Round'
                         : 'Add Investment Round'

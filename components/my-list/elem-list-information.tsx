@@ -56,8 +56,7 @@ export const ElemListInformation: FC<Props> = ({
                   <button
                     type="button"
                     className="inline-flex items-start justify-start mr-2 lg:items-center hover:underline"
-                    onClick={onOpenSettingsDialog}
-                  >
+                    onClick={onOpenSettingsDialog}>
                     <span className="text-xl font-medium text-left capitalize lg:text-3xl">
                       {getListDisplayName(list)}
                     </span>
@@ -105,8 +104,7 @@ export const ElemListInformation: FC<Props> = ({
                       .format('LL HH:mma')}`}
                     direction="top"
                     size="lg"
-                    mode="dark"
-                  >
+                    mode="dark">
                     <div className="inline">
                       Edited{' '}
                       {moment.utc(list?.updated_at).local().format('MMM D')}
@@ -124,16 +122,14 @@ export const ElemListInformation: FC<Props> = ({
                       .local()
                       .format('LL HH:mma')}`}
                     direction="top"
-                    mode="dark"
-                  >
+                    mode="dark">
                     <div className="inline capitalize">
                       {list?.created_by?.person ? (
                         <>
                           By{' '}
                           <ElemLink
                             href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
-                            className="hover:underline"
-                          >
+                            className="hover:underline">
                             {list?.created_by?.person.name}
                           </ElemLink>
                         </>
@@ -187,13 +183,11 @@ export const ElemListInformation: FC<Props> = ({
                             content={getNameFromListMember(member)}
                             mode="dark"
                             direction="top"
-                            size="lg"
-                          >
+                            size="lg">
                             {member?.user?.person?.slug ? (
                               <div>
                                 <a
-                                  href={`${ROUTES.PEOPLE}/${member?.user?.person?.slug}/`}
-                                >
+                                  href={`${ROUTES.PEOPLE}/${member?.user?.person?.slug}/`}>
                                   <ElemPhoto
                                     photo={member?.user.person?.picture}
                                     wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
@@ -230,8 +224,7 @@ export const ElemListInformation: FC<Props> = ({
                 <ElemButton
                   btn="default"
                   className="gap-x-1 lg:!pl-3"
-                  onClick={onOpenSettingsDialog}
-                >
+                  onClick={onOpenSettingsDialog}>
                   <IconSettings className="hidden w-5 h-5 sm:block" />
                   <span>Settings</span>
                 </ElemButton>
@@ -241,8 +234,7 @@ export const ElemListInformation: FC<Props> = ({
                 <ElemButton
                   btn="purple"
                   loading={isFollowButtonLoading}
-                  onClick={onFollowList}
-                >
+                  onClick={onFollowList}>
                   Follow
                 </ElemButton>
               )}
@@ -250,8 +242,7 @@ export const ElemListInformation: FC<Props> = ({
                 <ElemButton
                   btn="default"
                   loading={isFollowButtonLoading}
-                  onClick={onFollowList}
-                >
+                  onClick={onFollowList}>
                   Following
                 </ElemButton>
               )}

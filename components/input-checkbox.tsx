@@ -28,8 +28,7 @@ export const InputCheckbox: React.FC<Props> = ({
       <label
         className={`relative inline-flex items-center gap-2 cursor-pointer ${className} ${
           isChecked ? 'Selected' : 'Unchecked'
-        }`}
-      >
+        }`}>
         <input
           type="checkbox"
           {...props}

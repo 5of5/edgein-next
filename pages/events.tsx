@@ -393,8 +393,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               <>
                 <div
                   data-testid="events"
-                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4"
-                >
+                  className="grid grid-cols-1 gap-8 gap-x-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4">
                   {events?.map(event => (
                     <ElemEventCard key={event.id} event={event} />
                   ))}

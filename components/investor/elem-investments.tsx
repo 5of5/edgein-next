@@ -110,8 +110,7 @@ export const ElemInvestments: React.FC<Props> = ({
             ) : (
               <ElemLink
                 href={`${ROUTES.COMPANIES}/${props.value.slug}`}
-                className="company flex items-center space-x-3 hover:opacity-70"
-              >
+                className="company flex items-center space-x-3 hover:opacity-70">
                 <ElemPhoto
                   photo={props.value.logo}
                   wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
@@ -168,14 +167,12 @@ export const ElemInvestments: React.FC<Props> = ({
                     return (
                       <div
                         key={investment.id}
-                        className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2"
-                      >
+                        className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2">
                         {investment.vc_firm && (
                           <ElemLink
                             href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                             key={investment.vc_firm.id}
-                            className="vcfirm flex items-center space-x-3 hover:opacity-70"
-                          >
+                            className="vcfirm flex items-center space-x-3 hover:opacity-70">
                             <ElemPhoto
                               photo={investment.vc_firm.logo}
                               wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
@@ -193,8 +190,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           <ElemLink
                             href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                             key={investment.person.id}
-                            className="investor flex items-center space-x-3 hover:opacity-70"
-                          >
+                            className="investor flex items-center space-x-3 hover:opacity-70">
                             <ElemPhoto
                               photo={investment.person.picture}
                               wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
@@ -216,14 +212,12 @@ export const ElemInvestments: React.FC<Props> = ({
                     return (
                       <div
                         key={investment.id}
-                        className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2"
-                      >
+                        className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2">
                         {investment.vc_firm && (
                           <ElemLink
                             href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                             key={investment.vc_firm.id}
-                            className="vcfirm flex items-center space-x-3 hover:opacity-70"
-                          >
+                            className="vcfirm flex items-center space-x-3 hover:opacity-70">
                             <ElemPhoto
                               photo={investment.vc_firm.logo}
                               wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
@@ -244,14 +238,12 @@ export const ElemInvestments: React.FC<Props> = ({
                     return (
                       <div
                         key={investment.id}
-                        className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2"
-                      >
+                        className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2">
                         {investment.person && (
                           <ElemLink
                             href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                             key={investment.person.id}
-                            className="investor flex items-center space-x-3 hover:opacity-70"
-                          >
+                            className="investor flex items-center space-x-3 hover:opacity-70">
                             <ElemPhoto
                               photo={investment.person.picture}
                               wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
@@ -365,8 +357,7 @@ export const ElemInvestments: React.FC<Props> = ({
                   `Hi EdgeIn, I'd like to request investment data on ${resourceName}`,
                 )
               }
-              btn="default"
-            >
+              btn="default">
               Request data or contribute
             </ElemButton>
           </div>
@@ -375,8 +366,7 @@ export const ElemInvestments: React.FC<Props> = ({
             <div className="overflow-auto border border-gray-300 rounded-lg">
               <table
                 {...getTableProps()}
-                className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none"
-              >
+                className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none">
                 <thead>
                   {headerGroups.map(headerGroup => {
                     const { key, ...restHeaderGroupProps } =
@@ -385,8 +375,7 @@ export const ElemInvestments: React.FC<Props> = ({
                       <tr
                         key={key}
                         {...restHeaderGroupProps}
-                        className="table-row min-w-full bg-gray-25 text-gray-600"
-                      >
+                        className="table-row min-w-full bg-gray-25 text-gray-600">
                         {headerGroup.headers.map((column: any) => {
                           const { key, ...restColumnProps }: any = ({} = {
                             ...column.getHeaderProps({
@@ -401,14 +390,12 @@ export const ElemInvestments: React.FC<Props> = ({
                             <th
                               key={key}
                               {...restColumnProps}
-                              className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
-                            >
+                              className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}>
                               <div className="flex items-center min-w-content">
                                 {column.render('Header')}
                                 <Menu
                                   as="div"
-                                  className="relative inline-block text-left ml-1"
-                                >
+                                  className="relative inline-block text-left ml-1">
                                   <Menu.Button className="block align-middle text-gray-400 rounded-full hover:bg-slate-100">
                                     <IconChevronDownMini className="h-5 w-5" />
                                   </Menu.Button>
@@ -429,8 +416,7 @@ export const ElemInvestments: React.FC<Props> = ({
                                               { id: column.id, desc: false },
                                             ]),
                                           );
-                                        }}
-                                      >
+                                        }}>
                                         <IconSortUp className="mr-1 h-5 w-5 inline-block" />
                                         Sort Ascending
                                       </Menu.Item>
@@ -451,8 +437,7 @@ export const ElemInvestments: React.FC<Props> = ({
                                               { id: column.id, desc: true },
                                             ]),
                                           );
-                                        }}
-                                      >
+                                        }}>
                                         <IconSortDown className="mr-1 h-5 w-5 inline-block" />
                                         Sort Descending
                                       </Menu.Item>
@@ -466,8 +451,7 @@ export const ElemInvestments: React.FC<Props> = ({
                                           column.getHeaderProps(
                                             column.toggleHidden(),
                                           );
-                                        }}
-                                      >
+                                        }}>
                                         <IconX className="mr-1 h-5 w-5 inline-block" />
                                         Hide Column
                                       </Menu.Item>
@@ -484,8 +468,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 </thead>
                 <tbody
                   {...getTableBodyProps()}
-                  className="bg-white divide-y divide-gray-300 flex-1 md:flex-none mb-96"
-                >
+                  className="bg-white divide-y divide-gray-300 flex-1 md:flex-none mb-96">
                   {page.map(row => {
                     prepareRow(row);
                     const { key, ...restRowProps } = row.getRowProps();
@@ -505,8 +488,7 @@ export const ElemInvestments: React.FC<Props> = ({
                             <td
                               key={key}
                               {...restCellProps}
-                              className="align-top text-sm px-4 py-3"
-                            >
+                              className="align-top text-sm px-4 py-3">
                               {cell.render('Cell')}
                             </td>
                           );

@@ -87,8 +87,7 @@ const CompanyForm = ({
             companies,
           )
         }
-        toolbar={toolbar}
-      >
+        toolbar={toolbar}>
         {action === 'edit' && (
           <TextInput
             className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -121,8 +120,7 @@ const CompanyForm = ({
                   rel="noreferrer"
                   href={`https://edgein.io/companies/${
                     currentData && currentData.slug
-                  }`}
-                >
+                  }`}>
                   <Button label="Preview" />
                 </a>
               </div>
@@ -143,8 +141,7 @@ const CompanyForm = ({
           source="logo"
           label="logo"
           accept="image/*"
-          placeholder={<p>Drop your file here</p>}
-        >
+          placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         {action === 'edit' && !logo && !isImageUpdated && (

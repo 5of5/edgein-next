@@ -70,8 +70,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                       <button
                         type="button"
                         className="inline-flex items-center justify-start hover:underline"
-                        onClick={() => onOpenSettingDialog('settings')}
-                      >
+                        onClick={() => onOpenSettingDialog('settings')}>
                         <span className="text-left capitalize">
                           {group.name}
                         </span>
@@ -83,8 +82,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
               <button
                 type="button"
                 className="inline-flex items-start lg:items-center justify-start hover:underline"
-                onClick={() => onOpenSettingDialog('settings')}
-              >
+                onClick={() => onOpenSettingDialog('settings')}>
                 <span className="font-medium text-left text-lg capitalize">
                   {group.name}
                 </span>
@@ -95,16 +93,14 @@ export const ElemGroupInformation: React.FC<Props> = ({
               <ElemButton
                 btn="purple"
                 className="gap-x-1 lg:!pl-3"
-                onClick={onInvite}
-              >
+                onClick={onInvite}>
                 <IconPlus className="w-5 h-5 shrink-0" />
                 <span>Invite</span>
               </ElemButton>
               <ElemButton
                 btn="default"
                 className="gap-x-1 lg:!pl-3"
-                onClick={() => onOpenSettingDialog('settings')}
-              >
+                onClick={() => onOpenSettingDialog('settings')}>
                 <IconSettings className="w-5 h-5 shrink-0" />
                 <span>Settings</span>
               </ElemButton>
@@ -142,8 +138,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 <ElemButton
                   btn="purple"
                   loading={isAddingGroupMember}
-                  onClick={onAddGroupMember}
-                >
+                  onClick={onAddGroupMember}>
                   Join group
                 </ElemButton>
               </div>

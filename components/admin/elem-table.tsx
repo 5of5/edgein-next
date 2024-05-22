@@ -69,8 +69,7 @@ const ElemTable: FC<PropsWithChildren<Props>> = ({
             paddingTop: 0,
             marginBottom: '4px',
           },
-        }}
-      >
+        }}>
         <Datagrid bulkActionButtons={false} data={data}>
           {children}
           <ElemEditButton onClickEdit={handleClickEdit} />

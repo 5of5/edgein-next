@@ -21,8 +21,7 @@ const InputSwitch: FC<Props> = props => {
           onChange={onChange}
           className={`${
             checked ? 'bg-primary-600' : 'bg-gray-200'
-          } relative inline-flex h-6 w-11 items-center rounded-full ${className}`}
-        >
+          } relative inline-flex h-6 w-11 items-center rounded-full ${className}`}>
           <span
             className={`${
               checked ? 'translate-x-6' : 'translate-x-1'

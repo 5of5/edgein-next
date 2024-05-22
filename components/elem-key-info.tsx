@@ -371,8 +371,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                 href={item.link}
                 target={item.target ? item.target : '_blank'}
                 rel="noopener noreferrer"
-                title={item.text}
-              >
+                title={item.text}>
                 {itemInner}
               </a>
             );
@@ -389,8 +388,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
               <li
                 key={index}
                 onClick={onInfoClick(item.text)}
-                className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer`}
-              >
+                className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer`}>
                 <div className="flex items-center">
                   {item.icon && (
                     <item.icon
@@ -408,8 +406,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                       href={item.link}
                       target={item.target ? item.target : '_blank'}
                       rel="noopener noreferrer"
-                      title={item.text}
-                    >
+                      title={item.text}>
                       {item.text}
                     </a>
                   ) : (
@@ -435,8 +432,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
           <li
             key={i}
             onClick={onInfoClick('email')}
-            className={`${baseClasses} flex-1 items-center justify-between cursor-pointer`}
-          >
+            className={`${baseClasses} flex-1 items-center justify-between cursor-pointer`}>
             <div className="flex items-center">
               <IconEmail
                 className={`${
@@ -447,8 +443,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                 {showInfo['email'] ? (
                   <a
                     href={`mailto:${email}`}
-                    className="underline hover:no-underline"
-                  >
+                    className="underline hover:no-underline">
                     {email}
                   </a>
                 ) : (

@@ -9,8 +9,7 @@ export const DisabledEmailEdit = () => {
     <ElemFormBase
       title={<ElemTitle category="Allow List" />}
       action="edit"
-      transform={transform}
-    >
+      transform={transform}>
       <DisabledEmailForm action="edit" />
     </ElemFormBase>
   );

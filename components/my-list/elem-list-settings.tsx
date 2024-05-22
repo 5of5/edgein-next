@@ -144,8 +144,7 @@ export const ElemListSettings: FC<Props> = ({
       }}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10"
-    >
+      panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
       <div className="pb-3 border-b border-gray-200">
         <h2 className="text-xl font-medium">List settings</h2>
       </div>
@@ -161,20 +160,17 @@ export const ElemListSettings: FC<Props> = ({
                 <ElemButton
                   onClick={() => setListNameOpen(true)}
                   btn="transparent"
-                  className="!p-0"
-                >
+                  className="!p-0">
                   Edit
                 </ElemButton>
               ) : (
                 <></>
               )
-            }
-          >
+            }>
             {!listNameOpen ? (
               <button
                 onClick={() => setListNameOpen(true)}
-                className="text-sm text-gray-600 capitalize"
-              >
+                className="text-sm text-gray-600 capitalize">
                 {listName}
               </button>
             ) : (
@@ -205,8 +201,7 @@ export const ElemListSettings: FC<Props> = ({
                     onClick={onSaveName}
                     disabled={listName === '' || Boolean(listNameError)}
                     roundedFull
-                    btn="primary"
-                  >
+                    btn="primary">
                     Save
                   </ElemButton>
                 </div>
@@ -225,20 +220,17 @@ export const ElemListSettings: FC<Props> = ({
                 <ElemButton
                   onClick={() => setListDescriptionOpen(true)}
                   btn="transparent"
-                  className="!p-0"
-                >
+                  className="!p-0">
                   Edit
                 </ElemButton>
               ) : (
                 <></>
               )
-            }
-          >
+            }>
             {!listDescriptionOpen ? (
               <button
                 onClick={() => setListDescriptionOpen(true)}
-                className="text-sm text-left text-gray-600 capitalize"
-              >
+                className="text-sm text-left text-gray-600 capitalize">
                 {listDescription}
               </button>
             ) : (
@@ -266,8 +258,7 @@ export const ElemListSettings: FC<Props> = ({
                 <div className="flex w-full mt-2 gap-x-2">
                   <ElemButton
                     btn="gray"
-                    onClick={() => setListDescriptionOpen(false)}
-                  >
+                    onClick={() => setListDescriptionOpen(false)}>
                     Cancel
                   </ElemButton>
                   <ElemButton
@@ -276,8 +267,7 @@ export const ElemListSettings: FC<Props> = ({
                       listDescription === '' || Boolean(listDescriptionError)
                     }
                     roundedFull
-                    btn="primary"
-                  >
+                    btn="primary">
                     Save
                   </ElemButton>
                 </div>
@@ -296,20 +286,17 @@ export const ElemListSettings: FC<Props> = ({
                 <ElemButton
                   onClick={() => setListGroupsOpen(true)}
                   btn="transparent"
-                  className="!p-0"
-                >
+                  className="!p-0">
                   Edit
                 </ElemButton>
               ) : (
                 <></>
               )
-            }
-          >
+            }>
             {!listGroupsOpen ? (
               <button
                 onClick={() => setListGroupsOpen(true)}
-                className="text-sm text-gray-600 capitalize"
-              >
+                className="text-sm text-gray-600 capitalize">
                 {groups && groups?.length > 0 ? (
                   <div className="flex flex-wrap gap-2 mt-2">
                     {groups.map((item: any, index: number) => {
@@ -319,8 +306,7 @@ export const ElemListSettings: FC<Props> = ({
                       return (
                         <p
                           key={index}
-                          className="px-2 py-1 capitalize bg-gray-100 rounded-md"
-                        >
+                          className="px-2 py-1 capitalize bg-gray-100 rounded-md">
                           {item?.name}
                         </p>
                       );
@@ -353,16 +339,14 @@ export const ElemListSettings: FC<Props> = ({
                 <div className="flex w-full mt-2 gap-x-2">
                   <ElemButton
                     btn="gray"
-                    onClick={() => setListGroupsOpen(false)}
-                  >
+                    onClick={() => setListGroupsOpen(false)}>
                     Cancel
                   </ElemButton>
                   <ElemButton
                     onClick={onSaveGroups}
                     disabled={Boolean(listGroupsError)}
                     roundedFull
-                    btn="primary"
-                  >
+                    btn="primary">
                     Save
                   </ElemButton>
                 </div>
@@ -372,16 +356,14 @@ export const ElemListSettings: FC<Props> = ({
 
           <div
             className="flex items-center justify-between w-full p-3 space-x-1 cursor-pointer"
-            onClick={() => onChangePublic(!isPublicList)}
-          >
+            onClick={() => onChangePublic(!isPublicList)}>
             <p className="font-medium">Public</p>
             <Switch
               checked={isPublicList}
               onChange={onChangePublic}
               className={`${
                 isPublicList ? 'bg-primary-600' : 'bg-gray-200'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
-            >
+              } relative inline-flex h-6 w-11 items-center rounded-full`}>
               <span className="sr-only">Set list public</span>
               <span
                 className={`${
@@ -397,8 +379,7 @@ export const ElemListSettings: FC<Props> = ({
             className="w-full p-3 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={() => {
               setListDeleteModal(true);
-            }}
-          >
+            }}>
             <div className="text-left ">
               <h3 className="flex items-center font-medium">Delete List</h3>
             </div>
@@ -412,8 +393,7 @@ export const ElemListSettings: FC<Props> = ({
         }}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-sm bg-white rounded-lg px-4 py-3 z-10 my-10"
-      >
+        panelClass="relative w-full max-w-sm bg-white rounded-lg px-4 py-3 z-10 my-10">
         <div className="pb-3 border-b border-gray-200">
           <h2 className="text-xl font-medium">Delete list?</h2>
         </div>
@@ -433,8 +413,7 @@ export const ElemListSettings: FC<Props> = ({
             <ElemButton
               onClick={() => onDeleteList(list?.id)}
               roundedFull
-              btn="danger"
-            >
+              btn="danger">
               Delete list
             </ElemButton>
           </div>

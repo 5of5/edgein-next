@@ -41,8 +41,7 @@ export const GroupsTable: FC<Props> = ({
         }) => (
           <a
             href={`${ROUTES.GROUPS}/${props.row.original?.id}/`}
-            className="font-medium break-words line-clamp-2 hover:underline"
-          >
+            className="font-medium break-words line-clamp-2 hover:underline">
             {props.value}
           </a>
         ),
@@ -68,8 +67,7 @@ export const GroupsTable: FC<Props> = ({
                   direction="top"
                   size="lg"
                   delay={1000}
-                  className="overflow-y-scroll max-h-72"
-                >
+                  className="overflow-y-scroll max-h-72">
                   <div className="text-sm text-gray-500 line-clamp-3">
                     <a href={`${ROUTES.GROUPS}/${props.row.original?.id}/`}>
                       {props.value}
@@ -124,8 +122,7 @@ export const GroupsTable: FC<Props> = ({
                             content={getNameFromListMember(member)}
                             mode="dark"
                             direction="top"
-                            size="lg"
-                          >
+                            size="lg">
                             {member?.user?.person?.picture ? (
                               <div>
                                 <ElemPhoto
@@ -148,8 +145,7 @@ export const GroupsTable: FC<Props> = ({
                   </ul>
                   <a
                     href={`${ROUTES.GROUPS}/${props.row.original?.id}/`}
-                    className="ml-1 text-sm break-words line-clamp-2 hover:underline"
-                  >
+                    className="ml-1 text-sm break-words line-clamp-2 hover:underline">
                     {props.value} Follower{props.value > 1 && 's'}
                   </a>
                 </div>
@@ -213,8 +209,7 @@ export const GroupsTable: FC<Props> = ({
               {props.value && props.row.original.created_by?.person?.slug ? (
                 <a
                   href={`${ROUTES.PEOPLE}/${props.row.original.created_by?.person?.slug}/`}
-                  className="hover:underline"
-                >
+                  className="hover:underline">
                   {author}
                 </a>
               ) : props.value ? (

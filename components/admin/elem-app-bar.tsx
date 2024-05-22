@@ -40,8 +40,7 @@ const ElemAppBar = (props: any) => {
           borderRadius: 4,
           padding: '0 8px',
           margin: '0 4px',
-        }}
-      >
+        }}>
         Sync Algolia
       </a>
     </AppBar>

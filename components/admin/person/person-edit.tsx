@@ -19,8 +19,7 @@ export const PersonEdit = () => {
       <ElemFormBase
         title={<ElemTitle category="Person" />}
         action="edit"
-        transform={transform}
-      >
+        transform={transform}>
         <PersonForm
           action="edit"
           isImageUpdated={isImageUpdated}

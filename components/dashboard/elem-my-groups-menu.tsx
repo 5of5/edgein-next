@@ -76,8 +76,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             <button
               className={`${
                 open ? 'bg-gray-100' : ''
-              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-            >
+              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}>
               <IconSidebarGroups
                 className={`w-5 h-5 ${
                   open ? 'text-primary-500' : 'text-gray-900'
@@ -98,15 +97,13 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                 <li
                   key={group.id}
                   role="button"
-                  onClick={() => setShowSidebar(false)}
-                >
+                  onClick={() => setShowSidebar(false)}>
                   <ElemLink
                     href={`${ROUTES.GROUPS}/${group.id}/`}
                     className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
                       group.id,
                     )}`}
-                    title={group.name}
-                  >
+                    title={group.name}>
                     <span className="break-all line-clamp-1">{group.name}</span>
                   </ElemLink>
                 </li>
@@ -116,8 +113,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
           <li
             role="button"
             onClick={onClickCreate}
-            className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900"
-          >
+            className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900">
             Add a new group
           </li>
         </ul>

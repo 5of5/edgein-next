@@ -127,8 +127,7 @@ export const TableView: FC<Props> = ({
         <div className="w-full overflow-auto border-gray-200 overscroll-x-none border-y lg:border lg:rounded-lg">
           <table
             {...getTableProps()}
-            className="divide-y divide-gray-200 table-auto"
-          >
+            className="divide-y divide-gray-200 table-auto">
             <thead>
               {headerGroups.map(headerGroup => {
                 const { key, ...restHeaderGroupProps } =
@@ -137,8 +136,7 @@ export const TableView: FC<Props> = ({
                   <tr
                     key={key}
                     {...restHeaderGroupProps}
-                    className="table-row min-w-full"
-                  >
+                    className="table-row min-w-full">
                     {headerGroup.headers.map((column: any) => {
                       const { key, ...restColumnProps }: any = ({} = {
                         ...column.getHeaderProps({
@@ -154,8 +152,7 @@ export const TableView: FC<Props> = ({
                         <th
                           key={key}
                           {...restColumnProps}
-                          className="relative px-2 py-2 text-sm font-medium text-left text-gray-600 whitespace-nowrap min-w-content bg-gray-25"
-                        >
+                          className="relative px-2 py-2 text-sm font-medium text-left text-gray-600 whitespace-nowrap min-w-content bg-gray-25">
                           <div className="flex items-center min-w-content">
                             {column.render('Header')}
 
@@ -232,8 +229,7 @@ export const TableView: FC<Props> = ({
             </thead>
             <tbody
               {...getTableBodyProps()}
-              className="divide-y divide-gray-200"
-            >
+              className="divide-y divide-gray-200">
               {rows.map(row => {
                 prepareRow(row);
                 const { key, ...restRowProps } = row.getRowProps();
@@ -253,8 +249,7 @@ export const TableView: FC<Props> = ({
                         <td
                           key={key}
                           {...restCellProps}
-                          className="p-2 text-sm align-middle"
-                        >
+                          className="p-2 text-sm align-middle">
                           {cell.render('Cell')}
                         </td>
                       );

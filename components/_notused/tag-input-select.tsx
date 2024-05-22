@@ -109,8 +109,7 @@ export const TagInputSelect: React.FC<Props> = ({
       {label && (
         <label
           htmlFor={name}
-          className={`font-medium text-sm cursor-text ${labelClass}`}
-        >
+          className={`font-medium text-sm cursor-text ${labelClass}`}>
           {label}
         </label>
       )}
@@ -118,8 +117,7 @@ export const TagInputSelect: React.FC<Props> = ({
 
       <div
         className="relative rounded-md w-full flex items-center mt-1 px-2 ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500"
-        ref={wrapperRef}
-      >
+        ref={wrapperRef}>
         <IconSearch className="flex-none h-5 w-5" />
         <input
           className="w-full appearance-none border-none block px-3 h-10 focus:ring-0 placeholder:text-slate-400"
@@ -141,8 +139,7 @@ export const TagInputSelect: React.FC<Props> = ({
                   <div
                     key={'suggestion_' + index}
                     className="p-2 text-slate-600 cursor-pointer hover:bg-primary-500 hover:text-slate-100"
-                    onClick={e => handleClickSuggestion(e, suggestion)}
-                  >
+                    onClick={e => handleClickSuggestion(e, suggestion)}>
                     {suggestion}
                   </div>
                 ))}
@@ -150,8 +147,7 @@ export const TagInputSelect: React.FC<Props> = ({
             ) : allowCreate ? (
               <div
                 className="p-2 text-slate-600 cursor-pointer hover:bg-primary-500 hover:text-slate-100"
-                onClick={e => handleClickSuggestion(e, inputValue)}
-              >
+                onClick={e => handleClickSuggestion(e, inputValue)}>
                 Add &ldquo;{inputValue}&rdquo;
               </div>
             ) : (
@@ -167,8 +163,7 @@ export const TagInputSelect: React.FC<Props> = ({
           return (
             <div
               key={index}
-              className="bg-primary-50 inline-flex items-center gap-1 text-sm px-2 py-1 rounded-full border border-primary-500"
-            >
+              className="bg-primary-50 inline-flex items-center gap-1 text-sm px-2 py-1 rounded-full border border-primary-500">
               <span className="truncate max-w-xs text-primary-500 font-bold">
                 {tag}
               </span>
@@ -176,8 +171,7 @@ export const TagInputSelect: React.FC<Props> = ({
                 onClick={() => {
                   onRemoveTag(index);
                 }}
-                className="text-primary-500 hover:opacity-70 focus:outline-none"
-              >
+                className="text-primary-500 hover:opacity-70 focus:outline-none">
                 <IconX className="w-4 h-4" strokeWidth={3} />
               </button>
             </div>

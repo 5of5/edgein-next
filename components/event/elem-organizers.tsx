@@ -30,8 +30,7 @@ export const ElemOrganizers: React.FC<Props> = ({ organizations }) => {
             <ElemLink
               href={slug}
               key={organizer.id}
-              className="flex flex-col mx-auto w-full p-3 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
-            >
+              className="flex flex-col mx-auto w-full p-3 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow">
               <div className="flex items-center shrink-0 w-full">
                 <ElemPhoto
                   photo={organization?.logo}
@@ -44,8 +43,7 @@ export const ElemOrganizers: React.FC<Props> = ({ organizations }) => {
                 <div className="pl-2">
                   <h3
                     className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-xl"
-                    title={organization?.name ?? ''}
-                  >
+                    title={organization?.name ?? ''}>
                     {organization?.name}
                   </h3>
                 </div>

@@ -134,16 +134,14 @@ const Team: NextPage<Props> = () => {
       <div className="relative overflow-hidden mb-10">
         <ElemHeading
           title="Meet the EdgeIn Team"
-          subtitle="Get to know the people leading data insights for the AI and Web3 community"
-        ></ElemHeading>
+          subtitle="Get to know the people leading data insights for the AI and Web3 community"></ElemHeading>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-12 pb-4 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
             {team.map((person, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg shadow overflow-hidden flex flex-col mx-auto w-full max-w-md transition duration-300 ease-in-out md:h-full"
-              >
+                className="bg-white rounded-lg shadow overflow-hidden flex flex-col mx-auto w-full max-w-md transition duration-300 ease-in-out md:h-full">
                 <div className="relative aspect-square">
                   <Image
                     src={person.image}

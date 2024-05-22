@@ -223,24 +223,21 @@ export const NewsOrganizations = () => {
           '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
-        }}
-      >
+        }}>
         <Datagrid bulkActionButtons={false} data={newsOrganizationList}>
           <TextField source="id" />
           <ReferenceField
             label="Company"
             source="company_id"
             reference="companies"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="name" />
           </ReferenceField>
           <ReferenceField
             label="VC firm"
             source="vc_firm_id"
             reference="vc_firms"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="name" />
           </ReferenceField>
           <SelectField source="type" choices={newsOrganizationTypes} />
@@ -255,8 +252,7 @@ export const NewsOrganizations = () => {
           keepMounted
           fullWidth
           maxWidth="xs"
-          onClose={handleClose}
-        >
+          onClose={handleClose}>
           <DialogTitle>News Organization</DialogTitle>
           <DialogContent>
             <Form defaultValues={currRecord}>
@@ -268,13 +264,11 @@ export const NewsOrganizations = () => {
                     '.MuiAutocomplete-root .MuiFormHelperText-root': {
                       display: 'none',
                     },
-                  }}
-                >
+                  }}>
                   <ReferenceInput
                     label="Company"
                     source="company_id"
-                    reference="companies"
-                  >
+                    reference="companies">
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
@@ -295,13 +289,11 @@ export const NewsOrganizations = () => {
                     '.MuiAutocomplete-root .MuiFormHelperText-root': {
                       display: 'none',
                     },
-                  }}
-                >
+                  }}>
                   <ReferenceInput
                     label="VC firm"
                     source="vc_firm_id"
-                    reference="vc_firms"
-                  >
+                    reference="vc_firms">
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
@@ -331,8 +323,7 @@ export const NewsOrganizations = () => {
                   flexDirection: 'row',
                   width: '100%',
                   marginTop: 4,
-                }}
-              >
+                }}>
                 <Button label="Cancel" variant="text" onClick={handleClose} />
                 <Button
                   label="Save"

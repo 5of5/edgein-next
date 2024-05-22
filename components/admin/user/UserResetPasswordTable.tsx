@@ -63,8 +63,7 @@ const UserResetPasswordTable = () => {
           '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
-        }}
-      >
+        }}>
         <Datagrid bulkActionButtons={false} data={data}>
           <TextField source="id" />
           <FunctionField
@@ -77,8 +76,7 @@ const UserResetPasswordTable = () => {
             label="Created by"
             source="created_by_user_id"
             reference="users"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="display_name" />
           </ReferenceField>
           <DateField source="created_at" showTime />

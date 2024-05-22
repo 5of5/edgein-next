@@ -55,8 +55,7 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
       {label && (
         <label
           htmlFor={name}
-          className={`font-medium text-sm cursor-text ${labelClass}`}
-        >
+          className={`font-medium text-sm cursor-text ${labelClass}`}>
           {label}
         </label>
       )}
@@ -79,8 +78,7 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
             return (
               <div
                 key={index}
-                className="inline-flex items-center gap-1 px-2 py-1 text-sm border rounded-full bg-primary-50 border-primary-500"
-              >
+                className="inline-flex items-center gap-1 px-2 py-1 text-sm border rounded-full bg-primary-50 border-primary-500">
                 <span className="max-w-xs font-bold truncate text-primary-500">
                   {tag}
                 </span>
@@ -88,8 +86,7 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
                   onClick={() => {
                     onRemoveTag(index);
                   }}
-                  className="text-primary-500 hover:opacity-70 focus:outline-none"
-                >
+                  className="text-primary-500 hover:opacity-70 focus:outline-none">
                   <IconX className="w-4 h-4" strokeWidth={3} title="close" />
                 </button>
               </div>

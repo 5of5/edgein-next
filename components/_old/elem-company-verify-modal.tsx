@@ -183,8 +183,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -197,8 +196,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
+                leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-xl p-6 overflow-y-auto text-left align-middle transition-all transform bg-white rounded-lg shadow-xl">
                   {!isEmailEntered ? (
                     <>
@@ -246,8 +244,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                         <ElemButton
                           className="float-right mt-28"
                           btn="primary"
-                          onClick={gotoNext('company')}
-                        >
+                          onClick={gotoNext('company')}>
                           Next
                         </ElemButton>
                       </>
@@ -273,8 +270,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                               setIsEmailEntered(false);
                             }}
                             type="button"
-                            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/10 focus:bg-black/20"
-                          >
+                            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/10 focus:bg-black/20">
                             <IconX className="w-6 h-6 text-dark-500 justify-self-end" />
                           </button>
                         </div>
@@ -298,8 +294,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                       <ElemButton
                         className="float-right mt-5"
                         btn="primary"
-                        onClick={gotoNext('email')}
-                      >
+                        onClick={gotoNext('email')}>
                         Verify Email
                       </ElemButton>
                     </div>
@@ -317,8 +312,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                       <ElemButton
                         btn="primary"
                         className="float-right mt-5"
-                        onClick={gotoNext('finish')}
-                      >
+                        onClick={gotoNext('finish')}>
                         Finish
                       </ElemButton>
                     </div>

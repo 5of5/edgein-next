@@ -88,15 +88,13 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
         leave="transition ease-in duration-100"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
-        className="relative"
-      >
+        className="relative">
         {user && (
           <div className="absolute z-10 top-2 right-2">
             <button
               onClick={onHideBanner}
               type="button"
-              className="text-gray-400 hover:text-gray-900"
-            >
+              className="text-gray-400 hover:text-gray-900">
               <span className="sr-only">Close</span>
               <IconX className="w-4 h-4" title="close" />
             </button>
@@ -105,8 +103,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
 
         <ElemLink
           href={user ? ROUTES.INVITE_A_FRIEND : ROUTES.SIGN_IN}
-          className="block p-4 bg-white border rounded-lg shadow-lg border-primary-500"
-        >
+          className="block p-4 bg-white border rounded-lg shadow-lg border-primary-500">
           <div className="flex items-center">
             {banner.icon && (
               <div className="pr-1">

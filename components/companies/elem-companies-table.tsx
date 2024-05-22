@@ -64,8 +64,7 @@ export const CompaniesTable: FC<Props> = ({
           <div className="flex items-center space-x-3">
             <a
               href={`${ROUTES.COMPANIES}/` + props.row.original?.slug}
-              className="transition-all shrink-0"
-            >
+              className="transition-all shrink-0">
               <ElemPhoto
                 photo={props.row.original?.logo}
                 wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
@@ -78,8 +77,7 @@ export const CompaniesTable: FC<Props> = ({
             <div>
               <a
                 href={`${ROUTES.COMPANIES}/` + props.row.original?.slug}
-                className="font-medium break-words line-clamp-2 hover:underline"
-              >
+                className="font-medium break-words line-clamp-2 hover:underline">
                 {props.value}
               </a>
               {props.row.original?.website && (
@@ -87,8 +85,7 @@ export const CompaniesTable: FC<Props> = ({
                   href={props.row.original.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm text-gray-500 break-words hover:underline"
-                >
+                  className="text-sm text-gray-500 break-words hover:underline">
                   {props.row.original.website}
                 </a>
               )}
@@ -112,8 +109,7 @@ export const CompaniesTable: FC<Props> = ({
                   direction="top"
                   size="lg"
                   delay={1200}
-                  className="overflow-y-scroll max-h-72"
-                >
+                  className="overflow-y-scroll max-h-72">
                   <div className="text-sm text-gray-500 line-clamp-3">
                     {props.value}
                   </div>
