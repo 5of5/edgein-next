@@ -40,7 +40,7 @@ const UserEditToolbar = () => {
     !!firstFormValue.current &&
     !isEqual(
       firstFormValue.current?.onboarding_information?.locationTags,
-      formValues.onboarding_information.locationTags,
+      formValues.onboarding_information?.locationTags,
     );
 
   return (
@@ -61,7 +61,8 @@ const UserOnboardingInformation = () => {
   const { setValue } = useFormContext();
 
   const locationDetails = record.onboarding_information
-    ?.locationDetails as CustomPlace[];
+    ? (record.onboarding_information?.locationDetails as CustomPlace[])
+    : [];
 
   const [locations, setLocations] = useState<CustomPlace[]>(
     locationDetails.filter(value => !!value.label || !!value.Label) || [],
@@ -148,7 +149,6 @@ const UserRegisteredFrom = () => {
 
 export const UserEdit = () => {
   const transform = (data: any) => {
-    console.log(data);
     return {
       ...data,
       additional_emails:
