@@ -245,7 +245,7 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="github"
+          source="careers_page"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -255,15 +255,6 @@ const CompanyForm = ({
         <TextInput
           className={inputClassName}
           source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            },
-          }}
-        />
-        <TextInput
-          className={inputClassName}
-          source="careers_page"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -290,6 +281,15 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
+          source="github"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            },
+          }}
+        />
+        <TextInput
+          className={inputClassName}
           source="discord"
           sx={{
             '.MuiFormHelperText-root': {
@@ -306,7 +306,7 @@ const CompanyForm = ({
             },
           }}
         />
-        <ElemCompanyLibraryInput className={inputClassName} />
+        <TextInput className={inputClassName} source="telegram" />
         <SelectInput
           className={inputClassName}
           source="team_enrichment_status"
@@ -314,7 +314,7 @@ const CompanyForm = ({
         />
         <TextInput className={inputClassName} source="web_domain" />
         <TextInput className={inputClassName} source="email_domain" />
-        <TextInput className={inputClassName} source="telegram" />
+        <ElemCompanyLibraryInput className={inputClassName} />
         <ArrayInput className={inputClassName} source="web3_address">
           <SimpleFormIterator>
             <TextInput source="" label="Address" />

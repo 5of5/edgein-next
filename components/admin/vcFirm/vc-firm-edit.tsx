@@ -5,6 +5,7 @@ import useAdminTransform from '@/hooks/use-admin-transform';
 import ElemFormBase from '../elem-form-base';
 import ElemTitle from '../elem-title';
 import VcFirmForm from './vc-firm-form';
+import { TeamMemberEdit } from './team-member-edit';
 import {
   getMutationRootStyle,
   withImageTransformData,
@@ -53,6 +54,7 @@ export const VcFirmEdit = () => {
         />
       </ElemFormBase>
       <ElemParentOrganizationEdit type="vc_firms" />
+      <TeamMemberEdit />
     </div>
   );
 };

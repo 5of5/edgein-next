@@ -15,7 +15,7 @@ export const PersonEdit = () => {
     });
 
   return (
-    <>
+    <div style={{ paddingBottom: '20px' }}>
       <ElemFormBase
         title={<ElemTitle category="Person" />}
         action="edit"
@@ -30,6 +30,6 @@ export const PersonEdit = () => {
       </ElemFormBase>
       <TeamMemberEdit />
       <InvestorEdit />
-    </>
+    </div>
   );
 };
