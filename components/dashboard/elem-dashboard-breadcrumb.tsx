@@ -16,8 +16,7 @@ const ElemDashboardBreadcrumb: FC<Props> = ({ breadcrumbs }) => {
         <Fragment key={breadcrumbItem.name}>
           <ElemLink
             href={breadcrumbItem.to || ''}
-            className={`block capitalize shrink-0 hover:underline ${current?.name}`}
-          >
+            className={`block capitalize shrink-0 hover:underline ${current?.name}`}>
             {breadcrumbItem.component}
           </ElemLink>
           <IconChevronRight className="w-4 h-4 shrink-0 text-gray-500" />

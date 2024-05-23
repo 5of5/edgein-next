@@ -42,8 +42,7 @@ const LeadForm = ({ action, toolbar }: LeadFormProps) => {
       <ReferenceInput
         label="Converted User"
         source="converted_userid"
-        reference="users"
-      >
+        reference="users">
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: 'none' }}

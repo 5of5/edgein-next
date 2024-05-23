@@ -72,8 +72,7 @@ export const EventsTable: FC<Props> = ({
             <div>
               <a
                 href={`${ROUTES.EVENTS}/` + props.row.original?.slug}
-                className="font-medium break-words line-clamp-2 hover:underline"
-              >
+                className="font-medium break-words line-clamp-2 hover:underline">
                 {props.value}
               </a>
               {props.row.original?.link && (
@@ -81,8 +80,7 @@ export const EventsTable: FC<Props> = ({
                   href={props.row.original.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm text-gray-500 break-words hover:underline"
-                >
+                  className="text-sm text-gray-500 break-words hover:underline">
                   {props.row.original.link}
                 </a>
               )}
@@ -155,8 +153,7 @@ export const EventsTable: FC<Props> = ({
                   direction="top"
                   size="lg"
                   delay={1200}
-                  className="overflow-y-scroll max-h-72"
-                >
+                  className="overflow-y-scroll max-h-72">
                   <div className="text-sm text-gray-500 line-clamp-3">
                     {props.value}
                   </div>

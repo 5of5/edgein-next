@@ -202,16 +202,14 @@ export const EventPersonTable = () => {
           '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
-        }}
-      >
+        }}>
         <Datagrid bulkActionButtons={false} data={eventPersonList}>
           <TextField source="id" />
           <ReferenceField
             label="Person"
             source="person_id"
             reference="people"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="name" />
           </ReferenceField>
           <SelectField
@@ -230,8 +228,7 @@ export const EventPersonTable = () => {
           keepMounted
           fullWidth
           maxWidth="xs"
-          onClose={handleClose}
-        >
+          onClose={handleClose}>
           <DialogTitle>Event Person</DialogTitle>
           <DialogContent>
             <Form>
@@ -242,13 +239,11 @@ export const EventPersonTable = () => {
                   '.MuiAutocomplete-root .MuiFormHelperText-root': {
                     display: 'none',
                   },
-                }}
-              >
+                }}>
                 <ReferenceInput
                   label="Person"
                   source="person_id"
-                  reference="people"
-                >
+                  reference="people">
                   <AutocompleteInput
                     defaultValue={currRecord?.person_id}
                     optionText="name"
@@ -264,8 +259,7 @@ export const EventPersonTable = () => {
                 <InputLabel>Type</InputLabel>
                 <Select
                   value={eventPersonData?.type}
-                  onChange={e => handleChange(1, e.target.value)}
-                >
+                  onChange={e => handleChange(1, e.target.value)}>
                   {eventPersonTypeChoices?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
@@ -282,8 +276,7 @@ export const EventPersonTable = () => {
                   flexDirection: 'row',
                   width: '100%',
                   marginTop: 4,
-                }}
-              >
+                }}>
                 <Button label="Cancel" variant="text" onClick={handleClose} />
                 <Button
                   label="Save"

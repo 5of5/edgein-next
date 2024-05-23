@@ -86,8 +86,7 @@ export const ElemMultiRangeSlider: React.FC<Props> = ({
         <div className="absolute rounded-full w-full h-1 bg-slate-300 z-10"></div>
         <div
           ref={range}
-          className="absolute rounded h-1 bg-primary-500 z-20 max-w-full"
-        ></div>
+          className="absolute rounded h-1 bg-primary-500 z-20 max-w-full"></div>
       </div>
     </div>
   );

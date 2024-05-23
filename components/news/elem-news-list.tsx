@@ -44,8 +44,7 @@ const ElemNewsList: React.FC<Props> = ({
                   `Hi EdgeIn, I'd like to request news on ${resourceName}`,
                 )
               }
-              btn="default"
-            >
+              btn="default">
               Request data or contribute
             </ElemButton>
           </div>

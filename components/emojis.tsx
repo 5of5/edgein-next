@@ -12,8 +12,7 @@ export const EmojiHot: React.FC<EmojiProps> = ({ className, title }) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Hot'}</title>
       <path
         fill={`url(#a-${id})`}
@@ -40,8 +39,7 @@ export const EmojiHot: React.FC<EmojiProps> = ({ className, title }) => {
           x2="12.021"
           y1="0"
           y2="24"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#C6381B" />
           <stop offset="1" stopColor="#E04221" />
         </linearGradient>
@@ -51,8 +49,7 @@ export const EmojiHot: React.FC<EmojiProps> = ({ className, title }) => {
           x2="12.009"
           y1="10.639"
           y2="24.872"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#F8DC4B" />
           <stop offset="1" stopColor="#E77B36" />
         </linearGradient>
@@ -63,8 +60,7 @@ export const EmojiHot: React.FC<EmojiProps> = ({ className, title }) => {
           x="15.358"
           y="7.01"
           colorInterpolationFilters="sRGB"
-          filterUnits="userSpaceOnUse"
-        >
+          filterUnits="userSpaceOnUse">
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feGaussianBlur
@@ -84,8 +80,7 @@ export const EmojiLike: React.FC<EmojiProps> = ({ className, title }) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Like'}</title>
       <path
         d="M10.4828 0.566491L6.07422 8.71957V22.7885C10.7891 23.6667 17.1218 25.0072 19.7565 22.7885C21.7904 20.8008 23.1019 18.3972 23.5469 14.1446C23.9629 9.9844 23.4083 7.44208 20.3112 7.44208H12.9616C13.581 5.58398 15.5553 2.15924 11.3874 0.247725C11.0519 0.0938274 10.6583 0.241759 10.4828 0.566491Z"
@@ -109,8 +104,7 @@ export const EmojiLike: React.FC<EmojiProps> = ({ className, title }) => {
           width="9.93816"
           height="17.1491"
           filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
+          colorInterpolationFilters="sRGB">
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
@@ -129,8 +123,7 @@ export const EmojiLike: React.FC<EmojiProps> = ({ className, title }) => {
           cy="0"
           r="1"
           gradientUnits="userSpaceOnUse"
-          gradientTransform="translate(17.1218 11.0938) rotate(138.879) scale(15.4629 16.6974)"
-        >
+          gradientTransform="translate(17.1218 11.0938) rotate(138.879) scale(15.4629 16.6974)">
           <stop stopColor="#FADF4B" />
           <stop offset="0.489583" stopColor="#F8DC4B" />
           <stop offset="0.833333" stopColor="#FCA237" />
@@ -141,8 +134,7 @@ export const EmojiLike: React.FC<EmojiProps> = ({ className, title }) => {
           y1="23.6582"
           x2="3.75054"
           y2="8.57764"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#1A22FF" />
           <stop offset="0.510417" stopColor="#5E41FE" />
           <stop offset="1" stopColor="#A05FFE" />
@@ -159,8 +151,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+      className={className}>
       <title>{title ? title : 'Sh**'}</title>
 
       <path
@@ -218,8 +209,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
           x2="18.076"
           y1="22.444"
           y2="19.884"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -229,8 +219,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
           x2="10.541"
           y1="21.686"
           y2="16.394"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -240,8 +229,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
           x2="10.142"
           y1="15.576"
           y2="11.397"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -251,8 +239,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
           x2="9.627"
           y1="10.131"
           y2="6.397"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#7A4921" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -262,8 +249,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
           x2="9.514"
           y1="5.188"
           y2="1.985"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#804F26" />
           <stop offset="1" stopColor="#9C6531" />
         </linearGradient>
@@ -273,8 +259,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
           x2="15.041"
           y1="12.915"
           y2="16.992"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#FBD5B3" />
           <stop offset="1" stopColor="#FEFEFE" />
         </linearGradient>
@@ -284,8 +269,7 @@ export const EmojiCrap: React.FC<EmojiProps> = ({ className, title }) => {
           x2="8.594"
           y1="12.915"
           y2="16.992"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#FBD5B3" />
           <stop offset="1" stopColor="#FEFEFE" />
         </linearGradient>

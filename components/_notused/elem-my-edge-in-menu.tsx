@@ -33,8 +33,7 @@ const ElemMyEdgeInMenu = () => {
               className="flex focus:outline-none hover:opacity-75"
               data-expanded={open}
               ref={btnRef}
-              onClick={onDisclosureButtonClick}
-            >
+              onClick={onDisclosureButtonClick}>
               <IconPolygonDown
                 className={`${
                   open ? 'rotate-0' : '-rotate-90 '
@@ -50,8 +49,7 @@ const ElemMyEdgeInMenu = () => {
                 href={ROUTES.PROFILE}
                 className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
                   `${ROUTES.PROFILE}/`,
-                )}`}
-              >
+                )}`}>
                 {user?.person?.picture ? (
                   <ElemPhoto
                     photo={user?.person?.picture}
@@ -75,8 +73,7 @@ const ElemMyEdgeInMenu = () => {
                 href={ROUTES.ACCOUNT}
                 className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
                   `${ROUTES.ACCOUNT}/`,
-                )}`}
-              >
+                )}`}>
                 <IconSettings className="h-6 w-6" />
                 <span>Account Settings</span>
               </ElemLink>

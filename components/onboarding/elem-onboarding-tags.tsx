@@ -92,8 +92,7 @@ export const ElemOnboardingTags: FC<Props> = ({
                 }`}
                 onClick={() => {
                   handleToggleTag(tagItem.id);
-                }}
-              >
+                }}>
                 {tags.includes(tagItem.id) && (
                   <IconCheck className="w-4 h-4 text-primary-500" />
                 )}
@@ -105,8 +104,7 @@ export const ElemOnboardingTags: FC<Props> = ({
           {tagCloud.tagsLimit < tagCloud.tagChoices.length && (
             <button
               className="text-xs text-gray-500 underline hover:text-gray-800"
-              onClick={() => handleLoadMore(`${tagCloud.library}`)}
-            >
+              onClick={() => handleLoadMore(`${tagCloud.library}`)}>
               Load more {tagCloud.library} tags
             </button>
           )}
@@ -119,8 +117,7 @@ export const ElemOnboardingTags: FC<Props> = ({
         className="w-full max-w-sm mt-8 md:mt-16"
         loading={isSubmittingOnboarding}
         disabled={tags.length < 3}
-        onClick={onNext}
-      >
+        onClick={onNext}>
         Finish
       </ElemButton>
 
@@ -130,8 +127,7 @@ export const ElemOnboardingTags: FC<Props> = ({
         </p>
         <button
           className="text-xs text-gray-500 underline hover:text-gray-800"
-          onClick={() => showNewMessages(`Hi EdgeIn, I'd like to see `)}
-        >
+          onClick={() => showNewMessages(`Hi EdgeIn, I'd like to see `)}>
           Let us know
         </button>
       </div>

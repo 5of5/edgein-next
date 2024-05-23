@@ -169,8 +169,7 @@ export const Table: FC<Props> = ({
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             Removed from {listName}
           </div>
         ),
@@ -209,15 +208,13 @@ export const Table: FC<Props> = ({
             <>
               <button
                 onClick={handleRemove}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1"
-              >
+                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1">
                 <IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
                 <div>Remove from list</div>
               </button>
               <button
                 onClick={() => toggleAllRowsSelected(false)}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1"
-              >
+                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
                 <IconX className="h-5 w-5 mr-1" title="Clear Selection" />
                 <div>Cancel</div>
               </button>
@@ -251,8 +248,7 @@ export const Table: FC<Props> = ({
           {data.length > 0 ? (
             <table
               {...getTableProps()}
-              className="table-auto divide-y divide-gray-200 overscroll-x-none"
-            >
+              className="table-auto divide-y divide-gray-200 overscroll-x-none">
               <thead className="">
                 {headerGroups.map(headerGroup => {
                   const { key, ...restHeaderGroupProps } =
@@ -261,8 +257,7 @@ export const Table: FC<Props> = ({
                     <tr
                       key={key}
                       {...restHeaderGroupProps}
-                      className="table-row min-w-full"
-                    >
+                      className="table-row min-w-full">
                       {headerGroup.headers.map((column: any) => {
                         const { key, ...restColumnProps }: any = ({} = {
                           ...column.getHeaderProps({
@@ -278,16 +273,14 @@ export const Table: FC<Props> = ({
                           <th
                             key={key}
                             {...restColumnProps}
-                            className="relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content bg-gray-25 text-gray-600"
-                          >
+                            className="relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content bg-gray-25 text-gray-600">
                             <div className="flex items-center min-w-content">
                               {column.render('Header')}
 
                               {column.disableDropdown != true && (
                                 <Menu
                                   as="div"
-                                  className="relative inline-block text-left ml-1"
-                                >
+                                  className="relative inline-block text-left ml-1">
                                   <Menu.Button className="block align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
                                     <IconChevronDown className="h-5 w-5" />
                                   </Menu.Button>
@@ -308,8 +301,7 @@ export const Table: FC<Props> = ({
                                               { id: column.id, desc: false },
                                             ]),
                                           );
-                                        }}
-                                      >
+                                        }}>
                                         <IconSortUp className="mr-1 h-5 w-5 inline-block" />
                                         Sort Ascending
                                       </Menu.Item>
@@ -330,8 +322,7 @@ export const Table: FC<Props> = ({
                                               { id: column.id, desc: true },
                                             ]),
                                           );
-                                        }}
-                                      >
+                                        }}>
                                         <IconSortDown className="mr-1 h-5 w-5 inline-block" />
                                         Sort Descending
                                       </Menu.Item>
@@ -345,8 +336,7 @@ export const Table: FC<Props> = ({
                                           column.getHeaderProps(
                                             column.toggleHidden(),
                                           );
-                                        }}
-                                      >
+                                        }}>
                                         <IconX className="mr-1 h-5 w-5 inline-block" />
                                         Hide Column
                                       </Menu.Item>
@@ -364,8 +354,7 @@ export const Table: FC<Props> = ({
               </thead>
               <tbody
                 {...getTableBodyProps()}
-                className="divide-y divide-gray-200"
-              >
+                className="divide-y divide-gray-200">
                 {rows.map(row => {
                   prepareRow(row);
                   const { key, ...restRowProps } = row.getRowProps();
@@ -385,8 +374,7 @@ export const Table: FC<Props> = ({
                           <td
                             key={key}
                             {...restCellProps}
-                            className="align-middle text-sm p-2"
-                          >
+                            className="align-middle text-sm p-2">
                             {cell.render('Cell')}
                           </td>
                         );
@@ -404,8 +392,7 @@ export const Table: FC<Props> = ({
                   href={exploreBtnHref}
                   btn="transparent"
                   arrow
-                  className="px-0"
-                >
+                  className="px-0">
                   {exploreBtnText}
                 </ElemButton>
               )}

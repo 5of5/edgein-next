@@ -225,7 +225,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 							/>
 
   // 							<div className="ml-5">
-  // 								<h2 className="font-bold font-Metropolis text-slate-600">
+  // 								<h2 className="font-bold text-slate-600">
   // 									{teamMember.title}
   // 								</h2>
   // 								<span className="font-thin text-slate-500 ">
@@ -527,8 +527,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
               href={`${ROUTES.PEOPLE}/${users?.users_by_pk?.person?.slug}/`}
               btn="purple"
               arrow
-              className="mt-2 sm:mt-0"
-            >
+              className="mt-2 sm:mt-0">
               View Profile
             </ElemButton>
           )}
@@ -550,8 +549,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
                 <ElemButton
                   btn="primary-light"
                   onClick={() => setShowPopup('search')}
-                  className="mt-4"
-                >
+                  className="mt-4">
                   <IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
                   Search your name
                 </ElemButton>

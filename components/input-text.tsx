@@ -34,8 +34,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
       {label && (
         <label
           htmlFor={name}
-          className={`font-medium text-sm cursor-text ${labelClass}`}
-        >
+          className={`font-medium text-sm cursor-text ${labelClass}`}>
           {label}
         </label>
       )}

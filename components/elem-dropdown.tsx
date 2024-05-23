@@ -82,8 +82,7 @@ export const ElemDropdown: FC<Props> = ({
           <ElemButton
             btn="default"
             roundedFull={false}
-            className={`rounded-lg ${buttonClass}`}
-          >
+            className={`rounded-lg ${buttonClass}`}>
             {ButtonIcon && (
               <ButtonIcon
                 className={`w-4 h-4 shrink-0 mr-1.5 ${buttonIconClass}`}
@@ -102,14 +101,12 @@ export const ElemDropdown: FC<Props> = ({
         enterTo="transform opacity-100 scale-100"
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
+        leaveTo="transform opacity-0 scale-95">
         <Popover.Panel
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
-          className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 overflow-hidden ${panelClass}`}
-        >
+          className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 overflow-hidden ${panelClass}`}>
           {({ close }) => (
             <>
               {items.map((item, index) => {
@@ -134,8 +131,7 @@ export const ElemDropdown: FC<Props> = ({
                         item.onClick();
                         setActiveItem(item.id);
                         close();
-                      }}
-                    >
+                      }}>
                       {itemsShowIcons && item.Icon ? (
                         <item.Icon
                           className={`w-4 h-4 shrink-0  ${

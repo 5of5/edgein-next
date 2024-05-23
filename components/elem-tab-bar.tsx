@@ -93,11 +93,9 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
   return (
     <ElemSticky
       className={`flex justify-between items-center ${className}`}
-      activeClass="top-14 bg-white shadow-sm"
-    >
+      activeClass="top-14 bg-white shadow-sm">
       <nav
-        className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 lg:flex-wrap ${tabsClassName}`}
-      >
+        className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 lg:flex-wrap ${tabsClassName}`}>
         {tabs &&
           tabs.map((tab: Tabs, index: number) => (
             <ElemButton
@@ -109,8 +107,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
                 isActiveTab === index
                   ? 'border-primary-500 hover:border-primary-500'
                   : ''
-              }`}
-            >
+              }`}>
               {tab.name}
             </ElemButton>
           ))}

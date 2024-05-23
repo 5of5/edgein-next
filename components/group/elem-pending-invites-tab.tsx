@@ -63,8 +63,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
           const theInvite = (
             <div
               className="flex items-center justify-between px-4 py-3 group"
-              key={invite.id}
-            >
+              key={invite.id}>
               <div className="flex items-center gap-x-2">
                 <ElemPhoto
                   wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
@@ -83,8 +82,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
                       <Menu.Button
                         className={`${
                           open ? 'opacity-100' : ''
-                        } self-center justify-self-center w-6 h-6 bg-slate-200 rounded-full cursor-pointer opacity-0 hover:bg-slate-300 group-hover:opacity-100`}
-                      >
+                        } self-center justify-self-center w-6 h-6 bg-slate-200 rounded-full cursor-pointer opacity-0 hover:bg-slate-300 group-hover:opacity-100`}>
                         <IconEllipsisHorizontal className="" />
                       </Menu.Button>
 
@@ -95,8 +93,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
                         enterTo="transform opacity-100 scale-100"
                         leave="transition ease-in duration-75"
                         leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
+                        leaveTo="transform opacity-0 scale-95">
                         <Menu.Items className="absolute right-0 top-full mt-1 p-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Menu.Item>
                             {({ active }) => (
@@ -106,8 +103,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
                                     ? 'bg-red-500 text-white'
                                     : 'text-red-500'
                                 } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
-                                onClick={() => handleRemoveInvite(invite.id)}
-                              >
+                                onClick={() => handleRemoveInvite(invite.id)}>
                                 Remove
                               </button>
                             )}

@@ -34,20 +34,17 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
         onChange={onChange}
         disabled={disabled}
         multiple={multiple}
-        by={by}
-      >
+        by={by}>
         {({ open, disabled }) => (
           <>
             <div className="relative">
               <Listbox.Button
                 className={`relative w-full appearance-none border-none bg-white rounded-md pl-1.5 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
                   disabled ? 'bg-gray-200 cursor-not-allowed' : ''
-                }`}
-              >
+                }`}>
                 {multiple ? (
                   <div
-                    className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}
-                  >
+                    className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}>
                     {value?.length === 0 && (
                       <Listbox.Label className="text-sm text-gray-400">
                         {placeholder}
@@ -57,8 +54,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                     {value.map((item: any) => (
                       <span
                         key={item.id}
-                        className="px-2 py-1 text-sm bg-gray-100 rounded-md"
-                      >
+                        className="px-2 py-1 text-sm bg-gray-100 rounded-md">
                         {item.icon && (
                           <item.icon
                             title={item.title}
@@ -93,11 +89,9 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                 as={Fragment}
                 leave="transition ease-in duration-100"
                 leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
+                leaveTo="opacity-0">
                 <Listbox.Options
-                  className={`absolute z-10 mt-1 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none ${dropdownClasses}`}
-                >
+                  className={`absolute z-10 mt-1 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none ${dropdownClasses}`}>
                   {options.map((option: any, index: number) => (
                     <Listbox.Option
                       key={index}
@@ -113,8 +107,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                             : 'cursor-pointer'
                         }`
                       }
-                      disabled={option.disabled ? option.disabled : false}
-                    >
+                      disabled={option.disabled ? option.disabled : false}>
                       {({ selected }) => (
                         <>
                           <div
@@ -125,8 +118,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                                 : placeholder + option.description
                                 ? option.description
                                 : ''
-                            }
-                          >
+                            }>
                             {option.icon && (
                               <option.icon
                                 title={
@@ -142,8 +134,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                                 className={`truncate text-sm ${
                                   selected ? 'font-bold' : 'font-normal'
                                 }
-																`}
-                              >
+																`}>
                                 {option.title ? option.title : placeholder}
                               </div>
                               <div className="text-xs text-gray-400">

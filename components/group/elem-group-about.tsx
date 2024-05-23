@@ -109,8 +109,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                         href={item.link}
                         className="flex items-center"
                         target={item.target ? item.target : '_blank'}
-                        rel="noreferrer"
-                      >
+                        rel="noreferrer">
                         {item.icon && (
                           <item.icon
                             title={item.text}
@@ -135,8 +134,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                 {isUserBelongToGroup && (
                   <button
                     onClick={() => onOpenSettingDialog('members')}
-                    className="text-sm hover:underline"
-                  >
+                    className="text-sm hover:underline">
                     See all
                   </button>
                 )}
@@ -172,8 +170,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                               mem.user?.display_name
                                 ? mem.user?.display_name
                                 : ''
-                            }
-                          >
+                            }>
                             {mem.user?.display_name?.charAt(0)}
                           </div>
                         )}
@@ -184,8 +181,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                       <li key={mem.id}>
                         {mem.user?.person?.slug ? (
                           <ElemLink
-                            href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}
-                          >
+                            href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}>
                             {admin}
                           </ElemLink>
                         ) : (

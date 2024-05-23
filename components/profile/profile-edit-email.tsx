@@ -36,8 +36,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
         <div
           className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
-          }`}
-        >
+          }`}>
           {message}
         </div>
       ),
@@ -98,8 +97,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
         ) : (
           <></>
         )
-      }
-    >
+      }>
       {!editEmail ? (
         <div>
           <p className="text-gray-500">
@@ -132,8 +130,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
               <span className="block mt-1 text-sm text-gray-500">{email}</span>
               <span
                 className="mt-1 text-sm text-primary-500 cursor-pointer"
-                onClick={() => onRemoveEmail(email)}
-              >
+                onClick={() => onRemoveEmail(email)}>
                 Remove
               </span>
             </div>
@@ -161,8 +158,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
             <ElemButton
               btn="primary"
               disabled={!!emailError || !newEmail}
-              onClick={onSaveNewEmail}
-            >
+              onClick={onSaveNewEmail}>
               Add
             </ElemButton>
             <ElemButton btn="default" onClick={onCancel}>

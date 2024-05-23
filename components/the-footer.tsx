@@ -109,8 +109,7 @@ export const TheFooter = () => {
               Copyright &copy; {new Date().getFullYear()}
               <a
                 href="https://www.edgein.io/"
-                className="px-1 hover:text-primary-500"
-              >
+                className="px-1 hover:text-primary-500">
                 EdgeIn Inc.
               </a>
               All Rights Reserved.
@@ -127,8 +126,7 @@ export const TheFooter = () => {
                   href={item.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-gray-500"
-                >
+                  className="hover:text-gray-500">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="w-6 h-6" aria-hidden="true" />
                 </a>

@@ -49,8 +49,7 @@ const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
       as="div"
       className={`relative inline-block text-left ${
         className ? className : ''
-      }`}
-    >
+      }`}>
       <Menu.Button as="div">
         <ElemButton btn="default" className="flex items-center w-full">
           <div className="whitespace-nowrap">Add to Calendar</div>
@@ -63,19 +62,16 @@ const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
         enterTo="transform opacity-100 scale-100"
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
+        leaveTo="transform opacity-0 scale-95">
         <Menu.Items
           as="nav"
-          className="absolute left-0 z-10 w-full mt-1 overflow-hidden origin-top-left bg-white divide-y rounded-lg shadow-lg divide-slate-100 ring-1 ring-black/5 focus:outline-none"
-        >
+          className="absolute left-0 z-10 w-full mt-1 overflow-hidden origin-top-left bg-white divide-y rounded-lg shadow-lg divide-slate-100 ring-1 ring-black/5 focus:outline-none">
           {options.map(item => (
             <Menu.Item key={item.type}>
               {({ active }) => (
                 <button
                   onClick={() => handleClick(item)}
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-50 group"
-                >
+                  className="flex items-center w-full px-4 py-2 hover:bg-gray-50 group">
                   {item.icon && (
                     <item.icon
                       className="w-5 h-5 mr-2 shrink-0"
@@ -85,8 +81,7 @@ const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
                   <span
                     className={`${
                       active ? 'bg-gray-50 text-primary-500' : ''
-                    } group-hover:text-primary-500`}
-                  >
+                    } group-hover:text-primary-500`}>
                     {item.type}
                   </span>
                 </button>

@@ -217,8 +217,7 @@ export default function Account({ userProfile }: Props) {
                 <ElemButton
                   onClick={() => {}}
                   btn="default"
-                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
-                >
+                  className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white">
                   <IconLinkedInAlt className="w-5 h-5" />
                   <span>Connected</span>
                 </ElemButton>
@@ -227,15 +226,13 @@ export default function Account({ userProfile }: Props) {
                   <ElemButton
                     onClick={onLinkedInClick}
                     btn="default"
-                    className="space-x-1  hover:!text-[#0077B5]"
-                  >
+                    className="space-x-1  hover:!text-[#0077B5]">
                     <IconLinkedInAlt className="h-5 w-5 text-[#0077B5]" />{' '}
                     <span>LinkedIn</span>
                   </ElemButton>
                 </>
               )
-            }
-          >
+            }>
             <div>
               <p className="text-sm text-gray-600">
                 {user && user.auth0_linkedin_id
@@ -252,15 +249,13 @@ export default function Account({ userProfile }: Props) {
                 !showPasswordForm ? (
                   <ElemButton
                     onClick={() => setShowPasswordForm(true)}
-                    btn="default"
-                  >
+                    btn="default">
                     Change Password
                   </ElemButton>
                 ) : (
                   <></>
                 )
-              }
-            >
+              }>
               {!showPasswordForm ? (
                 <p className="text-sm text-gray-600">
                   Use a strong password that you are not using elsewhere.
@@ -335,8 +330,7 @@ export default function Account({ userProfile }: Props) {
                     <ElemButton
                       btn="purple"
                       className="mr-2"
-                      onClick={handleSubmit}
-                    >
+                      onClick={handleSubmit}>
                       Change Password
                     </ElemButton>
                     <ElemButton
@@ -345,8 +339,7 @@ export default function Account({ userProfile }: Props) {
                         setValues({});
                         setErrors({});
                       }}
-                      btn="default"
-                    >
+                      btn="default">
                       Cancel
                     </ElemButton>
                   </div>
@@ -372,8 +365,7 @@ export default function Account({ userProfile }: Props) {
               ) : (
                 <></>
               )
-            }
-          >
+            }>
             {userProfile &&
             (userProfile.users_by_pk?.billing_org?.status === 'active' ||
               haveSubscriptionFromCredits) ? (
@@ -397,8 +389,7 @@ export default function Account({ userProfile }: Props) {
                   onClick={onBillingClick}
                   btn="primary-light"
                   arrow
-                  className="mt-4 text-primary-500"
-                >
+                  className="mt-4 text-primary-500">
                   Start your free trial
                 </ElemButton>
               </div>

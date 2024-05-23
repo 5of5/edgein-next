@@ -61,12 +61,10 @@ export const ElemInviteTeamMember: FC<Props> = ({
               : `Invite teammate`}
           </>
         }
-        direction="top-start"
-      >
+        direction="top-start">
         <div
           className="flex grow items-center gap-x-2 cursor-pointer hover:opacity-75"
-          onClick={handleClickInvite}
-        >
+          onClick={handleClickInvite}>
           <ElemPhoto
             wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden border border-gray-200 rounded-full"
             imgClass="object-contain w-full h-full"
@@ -85,8 +83,7 @@ export const ElemInviteTeamMember: FC<Props> = ({
         onClick={handleClickInvite}
         btn="default"
         loading={isLoading}
-        className={isInvitationSent ? ' cursor-auto pointer-events-none' : ''}
-      >
+        className={isInvitationSent ? ' cursor-auto pointer-events-none' : ''}>
         {isInvitationSent ? 'Sent' : 'Invite'}
       </ElemButton>
     </div>

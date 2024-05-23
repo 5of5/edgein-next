@@ -121,13 +121,11 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
   return (
     <div
       {...autocomplete.getRootProps({})}
-      className={`relative grow ${props.className ? props.className : ''}`}
-    >
+      className={`relative grow ${props.className ? props.className : ''}`}>
       <form
         {...autocomplete.getFormProps({
           inputElement: inputRef.current as HTMLInputElement | null,
-        })}
-      >
+        })}>
         <textarea
           className={`w-full bg-white px-3 py-2 resize-none rounded-lg border-none outline-none ring-1 ring-gray-300 focus:ring-gray-300 placeholder:text-gray-500 hover:bg-gray-50 ${
             state.query.length > 280 ? 'text-base' : 'text-lg'
@@ -150,15 +148,13 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
       <div
         {...autocomplete.getPanelProps({})}
         className="autocomplete-panel absolute left-0 z-30 w-full max-w-xs bg-white rounded-lg shadow-2xl"
-        style={{ top: `${top + height}px` }}
-      >
+        style={{ top: `${top + height}px` }}>
         {state.status === 'stalled' && !state.isOpen && (
           <div className="text-primary-500 py-3">
             <svg
               className="block w-8 h-8 mx-auto"
               viewBox="0 0 100 100"
-              fill="currentColor"
-            >
+              fill="currentColor">
               <circle
                 cx="50"
                 cy="50"
@@ -166,16 +162,14 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
                 fill="none"
                 stroke="currentColor"
                 strokeDasharray="164.93361431346415 56.97787143782138"
-                strokeWidth="6"
-              >
+                strokeWidth="6">
                 <animateTransform
                   attributeName="transform"
                   dur="1s"
                   keyTimes="0;0.40;0.65;1"
                   repeatCount="indefinite"
                   type="rotate"
-                  values="0 50 50;90 50 50;180 50 50;360 50 50"
-                ></animateTransform>
+                  values="0 50 50;90 50 50;180 50 50;360 50 50"></animateTransform>
               </circle>
             </svg>
           </div>
@@ -191,13 +185,11 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
                   state.status === 'stalled' && 'opacity-80 grayscale',
                 ]
                   .filter(Boolean)
-                  .join(' ')}
-              >
+                  .join(' ')}>
                 {items.length > 0 && (
                   <ul
                     {...autocomplete.getListProps()}
-                    className="h-full overflow-y-scroll list-none m-0 p-0 max-h-96"
-                  >
+                    className="h-full overflow-y-scroll list-none m-0 p-0 max-h-96">
                     {items.map(item => {
                       const itemProps = autocomplete.getItemProps({
                         item,
@@ -213,8 +205,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
                                 'autocomplete-item-selected bg-gray-100',
                             ]
                               .filter(Boolean)
-                              .join(' ')}
-                          >
+                              .join(' ')}>
                             <AccountItem hit={item} />
                           </div>
                         </li>
@@ -279,8 +270,7 @@ function Highlight<THit extends { _highlightResult?: {} | undefined }>({
           return (
             <mark
               key={index}
-              className="account-highlighted bg-gray-200 text-inherit rounded-sm"
-            >
+              className="account-highlighted bg-gray-200 text-inherit rounded-sm">
               {value}
             </mark>
           );

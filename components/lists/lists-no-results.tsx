@@ -46,8 +46,7 @@ export const ListsNoResults: FC<Props> = ({
                 name: 'Discover',
               })
             }
-            className="mt-4"
-          >
+            className="mt-4">
             <IconSearch className="w-5 h-5 mr-1" />
             Discover New Lists
           </ElemButton>
@@ -56,8 +55,7 @@ export const ListsNoResults: FC<Props> = ({
             btn="primary"
             size="sm"
             onClick={onClickCreateList}
-            className="mt-4"
-          >
+            className="mt-4">
             <IconListPlus className="w-5 h-5 mr-1" />
             Create New List
           </ElemButton>

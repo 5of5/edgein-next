@@ -64,8 +64,7 @@ export const ElemRecentCompanies: FC<Props> = ({
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
-              >
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
                 <PlaceholderCompanyCard />
               </div>
             ))}
@@ -85,14 +84,12 @@ export const ElemRecentCompanies: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={index}
-                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
-                >
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}>
                   <a
                     href={`${ROUTES.COMPANIES}/${company.slug}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
-                  >
+                    className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow">
                     <div className="flex items-center">
                       <ElemPhoto
                         photo={company.logo}

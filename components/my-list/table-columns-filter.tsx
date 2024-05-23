@@ -22,8 +22,7 @@ export const TableColumnsFilter: FC<Props> = ({
             btn="default"
             size="sm"
             roundedFull={false}
-            className="rounded-lg"
-          >
+            className="rounded-lg">
             <div className="text-left">Edit columns</div>
           </ElemButton>
         </Popover.Button>
@@ -43,8 +42,7 @@ export const TableColumnsFilter: FC<Props> = ({
               ) : (
                 <li
                   key={column.id}
-                  className="flex items-baseline w-full text-sm text-left"
-                >
+                  className="flex items-baseline w-full text-sm text-left">
                   <label className="relative flex items-center gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:bg-gray-100">
                     <input
                       type="checkbox"

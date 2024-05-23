@@ -29,8 +29,7 @@ export const ProfileEditName: React.FC<Props> = ({}) => {
         ) : (
           <></>
         )
-      }
-    >
+      }>
       {!editName ? (
         <p className="text-slate-600">{user?.display_name}</p>
       ) : (

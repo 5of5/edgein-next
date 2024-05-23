@@ -200,8 +200,7 @@ export const ElemSaveToList: FC<Props> = ({
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             {action === 'add' ? ' Added ' : ' Removed '}
             {resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
             {action === 'add' ? ' to ' : ' from '}
@@ -274,8 +273,7 @@ export const ElemSaveToList: FC<Props> = ({
           onClick={onSaveButton}
           roundedFull={true}
           btn={buttonStyle}
-          className={`px-2.5 shrink-0 ${isSaved ? savedButtonStyle : ''}`}
-        >
+          className={`px-2.5 shrink-0 ${isSaved ? savedButtonStyle : ''}`}>
           {isSaved ? 'Saved' : 'Save to list'}
         </ElemButton>
       ) : (
@@ -285,8 +283,7 @@ export const ElemSaveToList: FC<Props> = ({
             <ElemButton
               roundedFull={true}
               btn={buttonStyle}
-              className={`px-2.5 ${open ? 'border border-primary-500' : ''}`}
-            >
+              className={`px-2.5 ${open ? 'border border-primary-500' : ''}`}>
               Save to list
             </ElemButton>
           )}
@@ -299,8 +296,7 @@ export const ElemSaveToList: FC<Props> = ({
           onClose={() => {
             setIsOpen(false), setShowNew(false);
           }}
-          className="relative z-[40]"
-        >
+          className="relative z-[40]">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -308,8 +304,7 @@ export const ElemSaveToList: FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 z-10 transition-opacity bg-black/20 backdrop-blur-sm" />
           </Transition.Child>
 
@@ -321,8 +316,7 @@ export const ElemSaveToList: FC<Props> = ({
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
               <Dialog.Panel className="w-full max-w-lg px-4 py-3 overflow-hidden overflow-x-hidden overflow-y-auto transition-all transform bg-white rounded-lg shadow-xl overscroll-y-none scrollbar-hide">
                 <div className="pb-3 border-b border-gray-200">
                   <Dialog.Title className="flex items-center justify-between text-xl font-medium">
@@ -332,8 +326,7 @@ export const ElemSaveToList: FC<Props> = ({
                       onClick={() => {
                         setIsOpen(false), setShowNew(false);
                       }}
-                      className="focus-visible:outline-none"
-                    >
+                      className="focus-visible:outline-none">
                       <IconX className="w-5 h-5" />
                     </button>
                   </Dialog.Title>
@@ -368,8 +361,7 @@ export const ElemSaveToList: FC<Props> = ({
                   <div className="pt-3">
                     <ElemButton
                       onClick={onClickShowCreateNew}
-                      className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100"
-                    >
+                      className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100">
                       <IconPlus className="w-4 h-4 " />
                       <span className="self-start text-sm">
                         Save to new list
@@ -407,8 +399,7 @@ export const ElemSaveToList: FC<Props> = ({
                         className="mt-3 ml-auto"
                         disabled={listName === '' || error ? true : false}
                         roundedFull
-                        btn="purple"
-                      >
+                        btn="purple">
                         Create list
                       </ElemButton>
                     </div>

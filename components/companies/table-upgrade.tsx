@@ -46,8 +46,7 @@ export const TableUpgrade: FC<Props> = ({
                         width: `${getColumnWidth}px`,
                         minWidth: `${getColumnWidth}px`,
                         maxWidth: `${getColumnWidth}px`,
-                      }}
-                    >
+                      }}>
                       <div className="flex items-center space-x-3 blur-sm min-h-10">
                         placeholder content
                       </div>

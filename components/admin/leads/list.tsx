@@ -22,8 +22,7 @@ export const LeadList = () => {
       <ReferenceField
         label="Converted user"
         source="converted_userid"
-        reference="users"
-      >
+        reference="users">
         <TextField source="display_name" />
       </ReferenceField>
       <DateField source="created_at" showTime />

@@ -224,8 +224,7 @@ const Person: NextPage<Props> = (props: Props) => {
                             showNewMessages(
                               `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
                             )
-                          }
-                        >
+                          }>
                           Claim profile
                         </ElemButton>
                       )}
@@ -240,8 +239,7 @@ const Person: NextPage<Props> = (props: Props) => {
                         <ElemButton
                           href={`${ROUTES.ADMIN_PEOPLE}/${person.id}`}
                           target="_blank"
-                          btn="default"
-                        >
+                          btn="default">
                           Edit (admin)
                         </ElemButton>
                       )}
@@ -271,8 +269,7 @@ const Person: NextPage<Props> = (props: Props) => {
             <div
               className="lg:grid lg:grid-cols-11 lg:gap-7"
               ref={overviewRef}
-              id="overview"
-            >
+              id="overview">
               <div className="col-span-3">
                 <ElemKeyInfo
                   className="sticky top-28 mb-7 lg:mb-0"
@@ -288,9 +285,9 @@ const Person: NextPage<Props> = (props: Props) => {
                   twitter={person.twitter_url}
                   telegram={person.telegram}
                   discord={person.discord}
-                  location={
-                    person.location_json?.city ||
-                    person.people_computed_data?.location_json?.city
+                  locationJson={
+                    person.location_json ||
+                    person.people_computed_data?.location_json
                   }
                   website={person.website_url}
                 />

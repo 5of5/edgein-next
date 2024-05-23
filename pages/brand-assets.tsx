@@ -16,8 +16,7 @@ const LogoMonotone: React.FC<any> = ({ className, mode = 'logo' }) => {
       viewBox={customView}
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className}`}
-    >
+      className={`${className}`}>
       <path d="M63.6121 24.7389V20.7459H53.0705V15.8904H63.3885V11.8973H53.0705V7.42515H63.6121V3.43213H48.5344V24.7389H63.6121Z" />
       <path d="M81.1177 24.7389V3.43213H77.0289V11.2904C75.815 9.69319 74.09 8.92653 72.2692 8.92653C68.3401 8.92653 65.4331 11.9932 65.4331 17.0084C65.4331 22.1834 68.404 25.1222 72.2692 25.1222C74.1539 25.1222 75.815 24.2917 77.0289 22.7584V24.7389H81.1177ZM73.547 21.5125C71.215 21.5125 69.6178 19.6917 69.6178 17.0084C69.6178 14.357 71.215 12.5362 73.547 12.5362C74.8886 12.5362 76.358 13.2709 77.0289 14.2931V19.7556C76.358 20.7778 74.8886 21.5125 73.547 21.5125Z" />
       <path d="M90.8268 31C94.6281 31 99.1642 29.5625 99.1642 23.7167V9.30986H95.1073V11.2904C93.8615 9.69319 92.1684 8.92653 90.3157 8.92653C86.4185 8.92653 83.5115 11.7376 83.5115 16.7848C83.5115 21.9278 86.4824 24.6111 90.3157 24.6111C92.2323 24.6111 93.8934 23.7486 95.1073 22.2153V23.7167C95.1073 26.8472 92.7754 27.6778 90.8268 27.6778C88.9101 27.6778 87.249 27.1347 86.0032 25.7931L84.1824 28.7C86.131 30.393 88.2073 31 90.8268 31ZM91.6254 21.0334C89.2934 21.0334 87.6962 19.4362 87.6962 16.7848C87.6962 14.1334 89.2934 12.5362 91.6254 12.5362C92.9351 12.5362 94.4045 13.2709 95.1073 14.2612V19.2764C94.4045 20.2667 92.9351 21.0334 91.6254 21.0334Z" />
@@ -342,8 +341,7 @@ const BrandAssets: NextPage<Props> = () => {
                 href="https://fonts.google.com/specimen/Inter"
                 target="_blank"
                 rel="noreferrer"
-                className="text-primary-500"
-              >
+                className="text-primary-500">
                 here
               </a>
               .
@@ -354,8 +352,7 @@ const BrandAssets: NextPage<Props> = () => {
                 href="https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
                 target="_blank"
                 rel="noreferrer"
-                className="text-primary-500"
-              >
+                className="text-primary-500">
                 SIL Open Font License
               </a>{' '}
               for exact details on what the conditions and restrictions are.

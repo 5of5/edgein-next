@@ -24,8 +24,7 @@ const filters = [
     key="searchVCFirm"
     source="vc_firm_id"
     reference="vc_firms"
-    validate={required()}
-  >
+    validate={required()}>
     <AutocompleteInput
       optionText={choice => `${choice.name}`}
       filterToQuery={search => ({ name: search })}
@@ -35,8 +34,7 @@ const filters = [
     key="searchPerson"
     source="person_id"
     reference="people"
-    validate={required()}
-  >
+    validate={required()}>
     <AutocompleteInput
       optionText={choice => `${choice.name}`}
       filterToQuery={search => ({ name: search })}

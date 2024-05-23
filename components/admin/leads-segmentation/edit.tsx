@@ -7,8 +7,7 @@ export const LeadSegmentationEdit = () => {
   return (
     <ElemFormBase
       title={<ElemTitle category="Lead Segmentation" />}
-      action="edit"
-    >
+      action="edit">
       <LeadSegmentationForm action="edit" />
     </ElemFormBase>
   );

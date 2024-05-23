@@ -39,8 +39,7 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = forwardRef(
         {label && (
           <label
             htmlFor={name}
-            className={`font-medium text-sm cursor-text ${labelClass}`}
-          >
+            className={`font-medium text-sm cursor-text ${labelClass}`}>
             {label}
           </label>
         )}

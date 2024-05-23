@@ -26,8 +26,7 @@ export const DashboardFooter: FC<PropsWithChildren<Props>> = ({
               <ElemLink
                 key={item.name}
                 href={item.href}
-                className="block hover:underline"
-              >
+                className="block hover:underline">
                 {item.name}
               </ElemLink>
             ))}
@@ -42,8 +41,7 @@ export const DashboardFooter: FC<PropsWithChildren<Props>> = ({
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-gray-500"
-              >
+                className="hover:text-gray-500">
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="w-6 h-6" aria-hidden="true" />
               </ElemLink>

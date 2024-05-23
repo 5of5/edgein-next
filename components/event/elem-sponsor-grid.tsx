@@ -29,8 +29,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
               <div className="flex items-center shrink-0 w-full">
                 <ElemLink
                   href={`${ROUTES.COMPANIES}/${props.row.original.company.slug}`}
-                  className="company flex items-center space-x-3 hover:opacity-70"
-                >
+                  className="company flex items-center space-x-3 hover:opacity-70">
                   <ElemPhoto
                     photo={props.row.original.company.logo}
                     wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
@@ -50,8 +49,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
               <div className="flex items-center shrink-0 w-full">
                 <ElemLink
                   href={`${ROUTES.INVESTORS}/${props.row.original.vc_firm.slug}`}
-                  className="investor flex items-center space-x-3 hover:opacity-70"
-                >
+                  className="investor flex items-center space-x-3 hover:opacity-70">
                   <ElemPhoto
                     photo={props.row.original.vc_firm.logo}
                     wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-white border border-slate-200"
@@ -132,8 +130,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
         <div className="overflow-auto border border-gray-300 rounded-lg">
           <table
             {...getTableProps()}
-            className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
-          >
+            className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none">
             <thead>
               {headerGroups.map(headerGroup => {
                 const { key, ...restHeaderGroupProps } =
@@ -143,8 +140,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
                   <tr
                     key={key}
                     {...restHeaderGroupProps}
-                    className="table-row min-w-full bg-gray-25 text-gray-600"
-                  >
+                    className="table-row min-w-full bg-gray-25 text-gray-600">
                     {headerGroup.headers.map((column: any) => {
                       const { key, ...restColumnProps }: any = ({} = {
                         ...column.getHeaderProps(
@@ -162,8 +158,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
                         <th
                           key={key}
                           {...restColumnProps}
-                          className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}
-                        >
+                          className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}>
                           {column.render('Header')}
                           {generateSortingIndicator(column)}
                         </th>
@@ -175,8 +170,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
             </thead>
             <tbody
               {...getTableBodyProps()}
-              className="bg-white divide-y divide-gray-300 flex-1 md:flex-none mb-96"
-            >
+              className="bg-white divide-y divide-gray-300 flex-1 md:flex-none mb-96">
               {page.map(row => {
                 prepareRow(row);
                 const { key, ...restRowProps } = row.getRowProps();
@@ -204,8 +198,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
                         <td
                           key={key}
                           {...restCellProps}
-                          className="align-middle text-sm px-4 py-3"
-                        >
+                          className="align-middle text-sm px-4 py-3">
                           {cell.render('Cell')}
                         </td>
                       );

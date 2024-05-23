@@ -31,8 +31,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = '' }) => {
             <button
               className={`${
                 open ? 'bg-gray-100' : ''
-              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-            >
+              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}>
               <IconSidebarNotes
                 className={`w-5 h-5 ${
                   open ? 'text-primary-500' : 'text-gray-900'

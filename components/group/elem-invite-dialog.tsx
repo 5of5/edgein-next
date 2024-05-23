@@ -162,8 +162,7 @@ const ElemInviteDialog: React.FC<Props> = ({
         as="div"
         className="relative z-40"
         initialFocus={inputRef}
-        onClose={onClose}
-      >
+        onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -171,8 +170,7 @@ const ElemInviteDialog: React.FC<Props> = ({
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
@@ -185,8 +183,7 @@ const ElemInviteDialog: React.FC<Props> = ({
               enterTo="opacity-100 scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
+              leaveTo="opacity-0 scale-95">
               <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-5 text-left align-middle shadow-xl transition-all">
                 <div className="relative flex items-center justify-between">
                   {!inviteResponse && (
@@ -199,8 +196,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10"
-                  >
+                    className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10">
                     <IconX className="h-6 w-6" />
                   </button>
                 </div>
@@ -243,8 +239,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                         reset();
                         setSelectedUsers([]);
                       }}
-                      className="mt-4 w-full"
-                    >
+                      className="mt-4 w-full">
                       Invite more people
                     </ElemButton>
                   </>
@@ -253,8 +248,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                     <Combobox
                       value={selectedUsers}
                       onChange={handleSelect}
-                      multiple
-                    >
+                      multiple>
                       <div className="relative">
                         <div className="flex flex-col gap-1 mt-6">
                           <label className="font-bold text-slate-600">
@@ -266,16 +260,14 @@ const ElemInviteDialog: React.FC<Props> = ({
                                 {selectedUsers.map(item => (
                                   <li
                                     key={item.id}
-                                    className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1"
-                                  >
+                                    className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1">
                                     <div title={item.email && item.email}>
                                       {item?.person?.name || item?.display_name}
                                     </div>
                                     <button
                                       onClick={() => handleRemove(item.id)}
                                       className="focus:outline-none"
-                                      title="Remove"
-                                    >
+                                      title="Remove">
                                       <IconX
                                         className="w-3 h-3 ml-1 cursor-pointer hover:text-primary-500"
                                         title="Remove"
@@ -308,8 +300,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                                 <Combobox.Option
                                   key={item.id}
                                   value={item}
-                                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
-                                >
+                                  className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500">
                                   {item?.person?.picture ? (
                                     <ElemPhoto
                                       wrapClass="w-10 h-10 aspect-square shrink-0"
@@ -331,8 +322,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                                   {item?.email && (
                                     <div
                                       className="text-sm text-slate-600 truncate"
-                                      title={item.email}
-                                    >
+                                      title={item.email}>
                                       {item.email}
                                     </div>
                                   )}
@@ -360,8 +350,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                                         display_name: query,
                                         email: query,
                                       }}
-                                      className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
-                                    >
+                                      className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500">
                                       Send an invitation to email address{' '}
                                       <span className="font-bold">{query}</span>
                                     </Combobox.Option>
@@ -378,8 +367,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                         btn="primary"
                         disabled={selectedUsers.length === 0}
                         loading={isSubmitting}
-                        onClick={handleInvite}
-                      >
+                        onClick={handleInvite}>
                         Invite
                       </ElemButton>
                     </div>

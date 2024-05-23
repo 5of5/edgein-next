@@ -98,8 +98,7 @@ const ElemMemberTab: React.FC<Props> = ({
         <ElemButton
           btn="transparent"
           className="flex items-center gap-x-2 w-full px-4 py-3 !justify-start"
-          onClick={onInvite}
-        >
+          onClick={onInvite}>
           <div className="p-2 bg-primary-100 rounded-md">
             <IconPlus className="w-6 h-6 text-primary-500" />
           </div>
@@ -111,8 +110,7 @@ const ElemMemberTab: React.FC<Props> = ({
         const theMember = (
           <div
             className="flex items-center justify-between px-4 py-3 group"
-            key={member.id}
-          >
+            key={member.id}>
             <div className="flex items-center gap-x-2">
               {member.user?.person?.picture ? (
                 <ElemPhoto
@@ -143,8 +141,7 @@ const ElemMemberTab: React.FC<Props> = ({
                     <Menu.Button
                       className={`${
                         open ? 'opacity-100' : ''
-                      } self-center justify-self-center w-6 h-6 bg-slate-200 rounded-full cursor-pointer opacity-0 hover:bg-slate-300 group-hover:opacity-100`}
-                    >
+                      } self-center justify-self-center w-6 h-6 bg-slate-200 rounded-full cursor-pointer opacity-0 hover:bg-slate-300 group-hover:opacity-100`}>
                       <IconEllipsisHorizontal className="" />
                     </Menu.Button>
 
@@ -155,8 +152,7 @@ const ElemMemberTab: React.FC<Props> = ({
                       enterTo="transform opacity-100 scale-100"
                       leave="transition ease-in duration-75"
                       leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
+                      leaveTo="transform opacity-0 scale-95">
                       <Menu.Items className="absolute right-0 top-full mt-1 p-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         {member.user?.person?.slug && (
                           <Menu.Item>
@@ -168,8 +164,7 @@ const ElemMemberTab: React.FC<Props> = ({
                                 onClick={e => {
                                   e.preventDefault();
                                   handleViewProfile(member.user?.person?.slug);
-                                }}
-                              >
+                                }}>
                                 View Profile
                               </button>
                             )}
@@ -184,8 +179,7 @@ const ElemMemberTab: React.FC<Props> = ({
                               onClick={e => {
                                 e.preventDefault();
                                 handleMakeGroupManager(member.user!.id!);
-                              }}
-                            >
+                              }}>
                               Make Group Admin
                             </button>
                           )}
@@ -201,8 +195,7 @@ const ElemMemberTab: React.FC<Props> = ({
                               onClick={e => {
                                 e.preventDefault();
                                 handleRemoveFromGroup(member.id);
-                              }}
-                            >
+                              }}>
                               Remove from Group
                             </button>
                           )}
@@ -221,8 +214,7 @@ const ElemMemberTab: React.FC<Props> = ({
             <ElemLink
               href={`${ROUTES.PEOPLE}/${member.user.person?.slug}`}
               key={member.id}
-              className="block cursor-pointer hover:bg-slate-100"
-            >
+              className="block cursor-pointer hover:bg-slate-100">
               {theMember}
             </ElemLink>
           );

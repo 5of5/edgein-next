@@ -66,8 +66,7 @@ export const ElemSimilarEvents: FC<Props> = ({
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
-                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
-              >
+                className="p-4 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
                 <PlaceholderEventCard />
               </div>
             ))}
@@ -80,8 +79,7 @@ export const ElemSimilarEvents: FC<Props> = ({
               return (
                 <ElemCarouselCard
                   key={event.id}
-                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
-                >
+                  className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}>
                   <div className="w-full max-w-full">
                     <ElemEventCard event={event} />
                   </div>

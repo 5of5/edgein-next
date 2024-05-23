@@ -63,15 +63,15 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 
   return (
     <DashboardLayout>
-      <div className="bg-white shadow rounded-lg p-5">
+      <div className="p-5 bg-white rounded-lg shadow">
         <div className="flex">
-          <h2 className="text-dark-500 font-Metropolis font-bold text-xl">
+          <h2 className="text-xl font-bold text-dark-500">
             My Organization(s)
           </h2>
         </div>
 
-        <div className="flex mt-6 mb-2 relative border-b border-gray-100 pb-3">
-          <h2 className="text-dark-500 font-Metropolis font-bold text-md w-40">
+        <div className="relative flex pb-3 mt-6 mb-2 border-b border-gray-100">
+          <h2 className="w-40 font-bold text-dark-500 text-md">
             Verified Organization(s)
           </h2>
           <div>
@@ -83,8 +83,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 
           <button
             className="absolute right-0 text-md text-primary-500"
-            onClick={() => setShowVerifyModal(true)}
-          >
+            onClick={() => setShowVerifyModal(true)}>
             Manage Organization
           </button>
         </div>
@@ -95,10 +94,9 @@ const Organizations: FC<Props> = ({ dropdown }) => {
           return (
             <div
               key={teamMember.id}
-              className=" mt-3 mb-2 relative border-b border-gray-100 pb-3"
-            >
+              className="relative pb-3 mt-3 mb-2 border-b border-gray-100 ">
               <div className="grid grid-cols-10 gap-3">
-                <div className="col-start-3 col-span-6 flex">
+                <div className="flex col-span-6 col-start-3">
                   <ElemPhoto
                     wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 border border-black/10 rounded-lg overflow-hidden"
                     imgClass="object-fit max-w-full max-h-full"
@@ -107,10 +105,10 @@ const Organizations: FC<Props> = ({ dropdown }) => {
                   />
 
                   <div className="ml-3">
-                    <h2 className="font-bold font-Metropolis text-sm text-slate-600">
+                    <h2 className="text-sm font-bold text-slate-600">
                       {data?.name}
                     </h2>
-                    <span className="font-thin text-slate-500 text-sm">
+                    <span className="text-sm font-thin text-slate-500">
                       {type}
                     </span>
                   </div>
@@ -119,8 +117,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
                   href={`/organizations/${
                     type === 'Company' ? 'companies' : 'investors'
                   }/${data?.slug}`}
-                  className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500"
-                >
+                  className="flex items-center justify-end col-span-1 col-end-11 text-md text-primary-500">
                   Edit
                 </ElemLink>
               </div>

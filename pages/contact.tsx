@@ -72,8 +72,7 @@ const Contact: NextPage = () => {
                 <>
                   <form
                     className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-2 sm:gap-x-8"
-                    onSubmit={onSubmit}
-                  >
+                    onSubmit={onSubmit}>
                     <div className="group mb-2 sm:col-span-2">
                       <InputText
                         label="Full Name"

@@ -30,8 +30,7 @@ export const ElemCategories: FC<Props> = ({
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
-            }`}
-          >
+            }`}>
             {category.icon && (
               <div className="w-4 h-4 shrink-0 mr-1.5">{category.icon}</div>
             )}

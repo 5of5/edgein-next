@@ -125,8 +125,7 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
         user?.person?.picture ? (
           <ElemButton
             btn="default"
-            className="flex items-center justify-center space-x-2 !px-1 !py-0.5"
-          >
+            className="flex items-center justify-center space-x-2 !px-1 !py-0.5">
             <IconBars3 className="w-5 h-5 ml-1" />
             <ElemPhoto
               photo={user?.person?.picture}
@@ -140,8 +139,7 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
         ) : (
           <ElemButton
             btn="default"
-            className="flex items-center justify-center space-x-2 !px-1 !py-0"
-          >
+            className="flex items-center justify-center space-x-2 !px-1 !py-0">
             <IconBars3 className="w-5 h-5 ml-1" />
             <div className="flex items-center justify-center w-8 h-8 rounded-full shrink-0">
               <IconUserCircleSolid

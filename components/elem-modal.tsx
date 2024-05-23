@@ -97,8 +97,7 @@ export const ElemModal: FC<PropsWithChildren<Props>> = ({
       show={isOpen}
       as={Dialog}
       onClose={onClose}
-      className={`relative z-40 ${className}`}
-    >
+      className={`relative z-40 ${className}`}>
       {overlay && (
         <Transition.Child
           as={Fragment}
@@ -107,24 +106,21 @@ export const ElemModal: FC<PropsWithChildren<Props>> = ({
           enterTo="opacity-100"
           leave="transition-opacity duration-150"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
         </Transition.Child>
       )}
       <div className={`fixed inset-0 flex flex-col ${placementClasses}`}>
         <Transition.Child as={Fragment} {...transitionClasses}>
           <Dialog.Panel
-            className={`overflow-y-auto overscroll-none scrollbar-hide ${panelClass}`}
-          >
+            className={`overflow-y-auto overscroll-none scrollbar-hide ${panelClass}`}>
             {children}
             {showCloseIcon && (
               <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
                 <button
                   type="button"
                   className="focus:outline-none"
-                  onClick={onClose}
-                >
+                  onClick={onClose}>
                   <span className="sr-only">Close</span>
                   <IconX className="w-5 h-5" aria-hidden="true" />
                 </button>

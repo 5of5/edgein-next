@@ -116,11 +116,9 @@ const ElemList: FC<PropsWithChildren<Props>> = ({
         '.MuiToolbar-root form .MuiFormControl-root': {
           margin: 0,
         },
-      }}
-    >
+      }}>
       <Datagrid
-        bulkActionButtons={<ListBulkActions enableDelete={enableDelete} />}
-      >
+        bulkActionButtons={<ListBulkActions enableDelete={enableDelete} />}>
         {children}
       </Datagrid>
     </List>

@@ -204,16 +204,14 @@ export const NewsPerson = () => {
           '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
-        }}
-      >
+        }}>
         <Datagrid bulkActionButtons={false} data={newsPersonList}>
           <TextField source="id" />
           <ReferenceField
             label="Person"
             source="person_id"
             reference="people"
-            sortable={false}
-          >
+            sortable={false}>
             <TextField source="name" />
           </ReferenceField>
           <SelectField source="type" choices={newsPersonTypes} />
@@ -228,8 +226,7 @@ export const NewsPerson = () => {
           keepMounted
           fullWidth
           maxWidth="xs"
-          onClose={handleClose}
-        >
+          onClose={handleClose}>
           <DialogTitle>News Person</DialogTitle>
           <DialogContent>
             <Form defaultValues={currRecord}>
@@ -241,13 +238,11 @@ export const NewsPerson = () => {
                     '.MuiAutocomplete-root .MuiFormHelperText-root': {
                       display: 'none',
                     },
-                  }}
-                >
+                  }}>
                   <ReferenceInput
                     label="Person"
                     source="person_id"
-                    reference="people"
-                  >
+                    reference="people">
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
@@ -277,8 +272,7 @@ export const NewsPerson = () => {
                   flexDirection: 'row',
                   width: '100%',
                   marginTop: 4,
-                }}
-              >
+                }}>
                 <Button label="Cancel" variant="text" onClick={handleClose} />
                 <Button
                   label="Save"

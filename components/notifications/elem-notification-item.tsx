@@ -29,8 +29,7 @@ const ElemNotificationItem: FC<Props> = ({
       onClick={() => onMarkAsRead(notification.id)}
       className={`flex items-center justify-between px-2 sm:px-2 py-2 shrink-0 w-full overflow-hidden sm:rounded-md group-hover:bg-gray-50 ${
         notification.read ? 'bg-transparent' : 'bg-gray-50'
-      }`}
-    >
+      }`}>
       <div className="flex items-center space-x-2 sm:pr-20">
         <ElemPhoto
           photo={organization?.logo}
@@ -61,8 +60,7 @@ const ElemNotificationItem: FC<Props> = ({
             <span
               className={`text-xs  ${
                 notification.read ? '' : 'font-medium text-primary-500'
-              }`}
-            >
+              }`}>
               {notificationFromNow}
             </span>
           </div>
@@ -73,8 +71,7 @@ const ElemNotificationItem: FC<Props> = ({
         <div
           className={`w-3 h-3 rounded-full shrink-0 ${
             notification.read ? 'bg-transparent' : 'bg-primary-500'
-          }`}
-        ></div>
+          }`}></div>
       </div>
     </div>
   );

@@ -31,16 +31,14 @@ const Support: NextPage = () => {
                   <ElemButton
                     btn="primary"
                     href={ROUTES.CONTACT}
-                    className="space-x-1"
-                  >
+                    className="space-x-1">
                     <IconEmail className="h-6 w-6" />
                     <span>Contact us</span>
                   </ElemButton>
                   <ElemButton
                     btn="ol-primary"
                     onClick={show}
-                    className="space-x-1"
-                  >
+                    className="space-x-1">
                     <IconChatBubble className="h-6 w-6" />
                     <span>Live Chat</span>
                   </ElemButton>
@@ -55,8 +53,7 @@ const Support: NextPage = () => {
             className="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
             viewBox="0 0 1155 678"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+            xmlns="http://www.w3.org/2000/svg">
             <path
               fill="url(#45de2b6b-92d5-4d68-a6a0-9b9b2abad533)"
               fillOpacity=".3"
@@ -69,8 +66,7 @@ const Support: NextPage = () => {
                 x2="-78.208"
                 y1=".177"
                 y2="474.645"
-                gradientUnits="userSpaceOnUse"
-              >
+                gradientUnits="userSpaceOnUse">
                 <stop stopColor="#9089FC" />
                 <stop offset={1} stopColor="#FF80B5" />
               </linearGradient>
@@ -83,8 +79,7 @@ const Support: NextPage = () => {
             className="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"
             viewBox="0 0 1155 678"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+            xmlns="http://www.w3.org/2000/svg">
             <path
               fill="url(#ecb5b0c9-546c-4772-8c71-4d3f06d544bc)"
               fillOpacity=".3"
@@ -97,8 +92,7 @@ const Support: NextPage = () => {
                 x2="-78.208"
                 y1=".177"
                 y2="474.645"
-                gradientUnits="userSpaceOnUse"
-              >
+                gradientUnits="userSpaceOnUse">
                 <stop stopColor="#9089FC" />
                 <stop offset={1} stopColor="#FF80B5" />
               </linearGradient>

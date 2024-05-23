@@ -48,8 +48,7 @@ export const ElemSocialIconGroup: FC<Props> = ({ resources }) => {
           <ElemLink
             key={resourceItem.value}
             href={resourceItem.value}
-            target="_blank"
-          >
+            target="_blank">
             <resourceItem.icon
               title={resourceItem.title}
               className="w-5 h-5 text-gray-600"

@@ -22,7 +22,6 @@ export const theme = {
   typography: {
     // Use the system font instead of the default Roboto font.
     fontFamily: [
-      'Metropolis',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',

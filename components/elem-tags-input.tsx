@@ -54,15 +54,13 @@ export const ElemTagsInput: FC<Props> = ({
             {tags.map(tag => (
               <div
                 className="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full text-sm bg-slate-200"
-                key={tag}
-              >
+                key={tag}>
                 <span>{tag}</span>
                 <button
                   onClick={() => {
                     removeTag(tag);
                   }}
-                  className="text-slate-500 hover:opacity-70 focus:outline-none"
-                >
+                  className="text-slate-500 hover:opacity-70 focus:outline-none">
                   <IconX className="w-3 h-3" title="close" />
                 </button>
               </div>

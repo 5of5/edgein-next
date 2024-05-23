@@ -39,8 +39,7 @@ export const ElemSubOrganizations: FC<Props> = ({
           return (
             <ElemCarouselCard
               key={index}
-              className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
-            >
+              className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}>
               {item.to_company ? (
                 <ElemCompanyCard company={item.to_company as Companies} />
               ) : (

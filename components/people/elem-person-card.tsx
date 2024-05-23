@@ -80,8 +80,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
         <div className="w-full">
           <ElemLink
             href={`${ROUTES.PEOPLE}/${slug}`}
-            className="flex items-center mb-4 gap-x-4"
-          >
+            className="flex items-center mb-4 gap-x-4">
             <ElemPhoto
               photo={picture}
               wrapClass="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-white overflow-hidden border border-gray-200"
@@ -104,8 +103,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                       {' at '}
                       <ElemLink
                         href={`/${currentJob.type}/${currentJob.organization.slug}`}
-                        className="text-gray-700 underline hover:no-underline"
-                      >
+                        className="text-gray-700 underline hover:no-underline">
                         {currentJob.organization.name}
                       </ElemLink>
                     </>
@@ -182,8 +180,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                     href={linkedin}
                     className="block"
                     target="_blank"
-                    rel="noreferrer"
-                  >
+                    rel="noreferrer">
                     <IconLinkedIn
                       title="LinkedIn"
                       className="w-5 h-5 text-gray-600 shrink-0"

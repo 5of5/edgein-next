@@ -26,7 +26,7 @@ export const ElemEditTeam: React.FC<Props> = ({
         Header: 'Name',
         accessor: 'person' as const,
         Cell: (props: any) => (
-          <div className=" inline-flex items-center">
+          <div className="inline-flex items-center ">
             <ElemPhoto
               photo={props.value.picture}
               wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-lg overflow-hidden"
@@ -34,7 +34,7 @@ export const ElemEditTeam: React.FC<Props> = ({
               imgAlt={props.value.name}
               placeholder="user"
             />
-            <span className="text-md font-Metropolis font-normal text-dark-500 ml-3">
+            <span className="ml-3 font-normal text-md text-dark-500">
               {props.value.name}
             </span>
           </div>
@@ -95,8 +95,7 @@ export const ElemEditTeam: React.FC<Props> = ({
             onClick={() => {
               onEdit(props.row.original);
             }}
-            className="px-1 py-2 text-primary-500"
-          >
+            className="px-1 py-2 text-primary-500">
             Edit
           </button>
         ),
@@ -149,11 +148,10 @@ export const ElemEditTeam: React.FC<Props> = ({
 
   return (
     <section className={className}>
-      <div className="mt-2 overflow-scroll border border-black/10 rounded-lg">
+      <div className="mt-2 overflow-scroll border rounded-lg border-black/10">
         <table
           {...getTableProps()}
-          className="table-auto min-w-full divide-y divide-black/10"
-        >
+          className="min-w-full divide-y table-auto divide-black/10">
           <thead>
             {headerGroups.map(headerGroup => {
               const { key, ...restHeaderGroupProps } =
@@ -177,8 +175,9 @@ export const ElemEditTeam: React.FC<Props> = ({
                         className={`px-4 py-2 whitespace-nowrap text-sm bg-white font-bold text-left ${
                           column.canSort ? 'group hover:text-primary-500' : ''
                         }`}
-                        title={column.canSort ? `Sort By ${column.Header}` : ''}
-                      >
+                        title={
+                          column.canSort ? `Sort By ${column.Header}` : ''
+                        }>
                         {column.render('Header')}
                         {/* {generateSortingIndicator(column)} */}
                       </th>
@@ -190,8 +189,7 @@ export const ElemEditTeam: React.FC<Props> = ({
           </thead>
           <tbody
             {...getTableBodyProps()}
-            className="bg-white divide-y divide-black/10 flex-1 md:flex-none mb-96"
-          >
+            className="flex-1 bg-white divide-y divide-black/10 md:flex-none mb-96">
             {page.map(row => {
               prepareRow(row);
               const { key, ...restRowProps } = row.getRowProps();
@@ -200,8 +198,7 @@ export const ElemEditTeam: React.FC<Props> = ({
                 <tr
                   key={key}
                   {...restRowProps}
-                  className="table-row rounded-lg bg-white even:bg-slate-50"
-                >
+                  className="table-row bg-white rounded-lg even:bg-slate-50">
                   {row.cells.map(cell => {
                     const { key, ...restCellProps } = cell.getCellProps({
                       style: {
@@ -215,8 +212,7 @@ export const ElemEditTeam: React.FC<Props> = ({
                       <td
                         key={key}
                         {...restCellProps}
-                        className="align-top text-sm px-4 py-3"
-                      >
+                        className="px-4 py-3 text-sm align-top">
                         {cell.render('Cell')}
                       </td>
                     );

@@ -188,8 +188,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
@@ -202,12 +201,11 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
+                leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="max-h-screen min-h-screen p-4 text-left bg-white">
                   <div className="max-h-screen overflow-y-auto">
                     <div className="mt-4">
-                      <label className="text-sm font-bold font-Metropolis text-slate-600">
+                      <label className="text-sm font-bold text-slate-600">
                         Announced Date
                       </label>
                       <InputDate
@@ -225,7 +223,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-sm font-bold font-Metropolis text-slate-600">
+                      <label className="block text-sm font-bold text-slate-600">
                         Round Type
                       </label>
                       <InputSelect
@@ -249,7 +247,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-sm font-bold font-Metropolis text-slate-600">
+                      <label className="block text-sm font-bold text-slate-600">
                         Money Raised
                       </label>
                       <InputText
@@ -272,7 +270,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-sm font-bold font-Metropolis text-slate-600">
+                      <label className="block text-sm font-bold text-slate-600">
                         Valuation
                       </label>
                       <InputText
@@ -291,7 +289,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                       />
                     </div>
                     <div className="mt-4">
-                      <label className="text-sm font-bold font-Metropolis text-slate-600">
+                      <label className="text-sm font-bold text-slate-600">
                         Investments
                       </label>
                       {investmentRound.investments &&
@@ -314,8 +312,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                       <ElemButton
                         onClick={onAddNew}
                         btn="ol-primary"
-                        className="mt-5 mb-28"
-                      >
+                        className="mt-5 mb-28">
                         Add Investment
                       </ElemButton>
                     </div>
@@ -324,8 +321,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                     <ElemButton
                       onClick={() => onSaveInvestmentRound(investmentRound)}
                       btn="white"
-                      className="bg-white"
-                    >{`${
+                      className="bg-white">{`${
                       investmentRoundToEdit && investmentRoundToEdit.id
                         ? 'Edit Investment Round'
                         : 'Add Investment Round'
@@ -391,7 +387,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
         <button onClick={onRemove}>x</button>
       </div>
       <div className="mt-0">
-        <label className="text-sm font-bold font-Metropolis text-slate-600">
+        <label className="text-sm font-bold text-slate-600">
           Investor Type
         </label>
         <div className="flex items-center justify-start">
@@ -403,7 +399,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
                 setInvestorType('investor');
               }}
             />
-            <label className="ml-2 text-sm font-normal font-Metropolis text-slate-600">
+            <label className="ml-2 text-sm font-normal text-slate-600">
               Angel Investor
             </label>
           </div>
@@ -415,7 +411,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
                 setInvestorType('firm');
               }}
             />
-            <label className="ml-2 text-sm font-normal font-Metropolis text-slate-600">
+            <label className="ml-2 text-sm font-normal text-slate-600">
               Investment Firm
             </label>
           </div>
@@ -423,7 +419,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
       </div>
 
       <div className="mt-4">
-        <label className="block text-sm font-bold font-Metropolis text-slate-600">
+        <label className="block text-sm font-bold text-slate-600">
           Angel Investor
         </label>
         {investorType === 'investor' ? (
@@ -471,7 +467,7 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
         )}
       </div>
       <div className="mt-4">
-        <label className="text-sm font-bold font-Metropolis text-slate-600">
+        <label className="text-sm font-bold text-slate-600">
           Amount Invested
         </label>
         <InputText

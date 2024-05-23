@@ -33,8 +33,7 @@ export const ElemSubEvents: FC<Props> = ({
                 `Hi EdgeIn, I'd like to add my sub-event to ${eventName}. Details:`,
               )
             }
-            btn="default"
-          >
+            btn="default">
             Add sub-event
           </ElemButton>
         )}
@@ -46,8 +45,7 @@ export const ElemSubEvents: FC<Props> = ({
             return (
               <ElemCarouselCard
                 key={event.id}
-                className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}
-              >
+                className={`p-4 basis-full sm:basis-1/2 lg:basis-1/3`}>
                 <ElemEventCard event={event} />
               </ElemCarouselCard>
             );
@@ -63,8 +61,7 @@ export const ElemSubEvents: FC<Props> = ({
                 `Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`,
               )
             }
-            className="mt-2"
-          >
+            className="mt-2">
             Add sub-event
           </ElemButton>
         </div>

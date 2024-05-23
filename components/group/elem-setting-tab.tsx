@@ -88,8 +88,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
               <div
                 className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                   t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
+                }`}>
                 {err.message}
               </div>
             ),
@@ -104,8 +103,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
               <div
                 className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                   t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}
-              >
+                }`}>
                 {`Set to ${value ? 'public' : 'private'}`}
               </div>
             ),
@@ -190,8 +188,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
           <div
             className={`flex items-center justify-between space-x-1 p-3 ${
               !isGroupManager ? '' : 'cursor-pointer hover:bg-slate-100'
-            }`}
-          >
+            }`}>
             <p className="font-bold">Public</p>
             <Switch
               checked={!!isPublicGroup}
@@ -199,8 +196,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
               disabled={!isGroupManager}
               className={`${isPublicGroup ? 'bg-primary-600' : 'bg-gray-200'} ${
                 !isGroupManager ? 'opacity-60' : ''
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
-            >
+              } relative inline-flex h-6 w-11 items-center rounded-full`}>
               <span className="sr-only">Set group public</span>
               <span
                 className={`${
@@ -214,8 +210,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         <div>
           <div
             className="flex items-start space-x-1 p-3 cursor-pointer hover:bg-slate-100"
-            onClick={handleLeaveGroup}
-          >
+            onClick={handleLeaveGroup}>
             <IconSignOut className="w-6 h-6 text-red-500" />
             <p className="font-bold text-red-500">Leave Group</p>
           </div>
@@ -243,8 +238,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden mt-6">
           <div
             className="flex items-center p-3 cursor-pointer space-x-1 hover:bg-slate-100"
-            onClick={handleOpenDeleteModal}
-          >
+            onClick={handleOpenDeleteModal}>
             <IconTrash className="w-6 h-6 text-red-500" />
             <p className="font-bold text-red-500">Delete Group</p>
           </div>

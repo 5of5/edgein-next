@@ -21,8 +21,7 @@ const filters = [
   <ReferenceInput
     key="searchBlockchain"
     source="blockchain_id"
-    reference="blockchains"
-  >
+    reference="blockchains">
     <AutocompleteInput optionText={choice => `${choice.name}`} />
   </ReferenceInput>,
 ];
@@ -39,8 +38,7 @@ export const CoinList = () => {
       <ReferenceField
         label="Blockchain"
         source="blockchain_id"
-        reference="blockchains"
-      >
+        reference="blockchains">
         <TextField source="name" />
       </ReferenceField>
       {/* <TextField source="counter" /> */}

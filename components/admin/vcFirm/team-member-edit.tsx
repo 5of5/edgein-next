@@ -1,9 +1,8 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-
 import ContentEdit from '@mui/icons-material/Edit';
 import ContentSave from '@mui/icons-material/Save';
 import ContentDelete from '@mui/icons-material/Delete';
@@ -80,11 +79,11 @@ const ListActions = ({ onCreate }: any) => {
 
 const CustomDeleteAllMembersButton = () => {
   const { id: currentId } = useParams();
-  const { data: members } = useGetList('team_members', {
-    filter: { company_id: parseInt(currentId!) },
+  const { data: members } = useGetList('investors', {
+    filter: { vc_firm_id: parseInt(currentId!) },
   });
   const memberIds = members?.map(member => member.id);
-  const [deleteMany] = useDeleteMany('team_members', {
+  const [deleteMany] = useDeleteMany('investors', {
     ids: memberIds,
   });
 
@@ -136,7 +135,7 @@ const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete('team_members', {
+  const [deleteOne] = useDelete('investors', {
     id: record.id,
     previousData: record,
   });
@@ -169,9 +168,11 @@ const CustomDeleteButton = () => {
 export const TeamMemberEdit = () => {
   const { record, isLoading } = useEditContext();
   const { id: currentId } = useParams();
-  const { data: member } = useGetList('team_members', {
-    filter: { company_id: parseInt(currentId!) },
+
+  const { data: member } = useGetList('investors', {
+    filter: { vc_firm_id: parseInt(currentId!) },
   });
+
   const [isOpen, setIsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currRecord, setCurrRecord] = useState<any>(null);
@@ -195,8 +196,6 @@ export const TeamMemberEdit = () => {
     end_date: null,
     title: '',
   });
-
-  const [filterData, setFilterData] = useState<any>([]);
 
   const handleEdit = (rec: any) => {
     setIsOpen(true);
@@ -242,7 +241,7 @@ export const TeamMemberEdit = () => {
     if (!teamData.person_id) setIsError(true);
     else {
       const data = {
-        company_id: parseInt(currentId!),
+        vc_firm_id: parseInt(currentId!),
         person_id: teamData.person_id,
         function: teamData.function,
         seniority: teamData.seniority,
@@ -252,9 +251,9 @@ export const TeamMemberEdit = () => {
         founder: teamData.founder,
       };
       if (!currRecord) {
-        create('team_members', { data });
+        create('investors', { data });
       } else {
-        update('team_members', {
+        update('investors', {
           id: currRecord.id,
           data,
           previousData: currRecord,

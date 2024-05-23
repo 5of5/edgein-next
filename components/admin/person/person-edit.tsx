@@ -15,12 +15,11 @@ export const PersonEdit = () => {
     });
 
   return (
-    <>
+    <div style={{ paddingBottom: '20px' }}>
       <ElemFormBase
         title={<ElemTitle category="Person" />}
         action="edit"
-        transform={transform}
-      >
+        transform={transform}>
         <PersonForm
           action="edit"
           isImageUpdated={isImageUpdated}
@@ -31,6 +30,6 @@ export const PersonEdit = () => {
       </ElemFormBase>
       <TeamMemberEdit />
       <InvestorEdit />
-    </>
+    </div>
   );
 };

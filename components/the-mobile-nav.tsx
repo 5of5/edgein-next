@@ -138,8 +138,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
       <nav
         className={`fixed z-50 bottom-0 bg-white w-full h-14 px-0.5 shadow-up grid lg:hidden ${
           user ? 'grid-cols-6' : 'grid-cols-5'
-        }`}
-      >
+        }`}>
         {tabs.map((item, index) => (
           <ElemLink
             key={index}
@@ -149,8 +148,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
               router.pathname == item?.href && navOpen === false
                 ? 'border-t-2 border-primary-500'
                 : 'border-t-2 border-transparent'
-            }`}
-          >
+            }`}>
             {item?.icon && (
               <div className="relative flex items-center justify-center h-7 aspect-square">
                 {unreadNotificationsCount > 0 &&
@@ -173,8 +171,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
             navOpen
               ? 'border-t-2 border-primary-500'
               : 'border-t-2 border-transparent'
-          }`}
-        >
+          }`}>
           {user?.person?.picture ? (
             <ElemPhoto
               photo={user?.person?.picture}
@@ -203,23 +200,20 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
         overlay={false}
         placement="topRight"
         transition="slideFromRight"
-        panelClass="w-full h-full bg-white mb-14 pb-4"
-      >
+        panelClass="w-full h-full bg-white mb-14 pb-4">
         <div className="flex items-center justify-between px-4 py-3">
           <h3 className="font-medium">Menu</h3>
           <div className="flex space-x-2">
             <ElemButton
               onClick={onOpenSearch}
               btn="ol-gray"
-              className="h-9 w-9 !px-0 !py-0"
-            >
+              className="h-9 w-9 !px-0 !py-0">
               <IconSearch className="w-5 h-5" strokeWidth={1.5} />
             </ElemButton>
             <ElemButton
               onClick={onClose}
               btn="ol-gray"
-              className="h-9 w-9 !px-0 !py-0 outline-none"
-            >
+              className="h-9 w-9 !px-0 !py-0 outline-none">
               <IconX className="w-5 h-5" />
             </ElemButton>
           </div>
@@ -230,8 +224,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
               key={index}
               href={item?.href ? item.href : ''}
               onClick={onClose}
-              className="block p-3 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-lg outline-none hover:bg-gray-100"
-            >
+              className="block p-3 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-lg outline-none hover:bg-gray-100">
               {item?.icon && (
                 <item.icon title={item.title} className="w-6 h-6 shrink-0" />
               )}
@@ -242,8 +235,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
             <ElemButton
               onClick={() => router.push(ROUTES.COMPANIES)}
               btn="primary"
-              className="col-span-2 w-full !p-3 !rounded-lg"
-            >
+              className="col-span-2 w-full !p-3 !rounded-lg">
               Start for free
             </ElemButton>
           )}
@@ -252,8 +244,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
               key={item.name}
               href={item?.href ? item.href : ''}
               onClick={onClose}
-              className="col-span-2 p-3 text-sm transition duration-150 ease-in-out bg-white border border-gray-300 rounded-lg outline-none hover:bg-gray-100"
-            >
+              className="col-span-2 p-3 text-sm transition duration-150 ease-in-out bg-white border border-gray-300 rounded-lg outline-none hover:bg-gray-100">
               {item.name}
             </ElemLink>
           ))}
@@ -266,8 +257,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
                 UserService.logout();
                 setNavOpen(false);
               }}
-              className="col-span-2 w-full !p-3 !rounded-lg"
-            >
+              className="col-span-2 w-full !p-3 !rounded-lg">
               Sign out
             </ElemButton>
           )}

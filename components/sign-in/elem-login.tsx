@@ -165,8 +165,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                       <span>Password</span>
                       <span
                         onClick={() => setOpenForgotPasswordModal(true)}
-                        className="underline cursor-pointer text-slate-500"
-                      >
+                        className="underline cursor-pointer text-slate-500">
                         Forgot your password?
                       </span>
                     </div>
@@ -194,8 +193,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                 btn="primary"
                 size="md"
                 disabled={!email || (isExistedEmail && !password)}
-                loading={isCheckingExistedEmail || isLoginLoading}
-              >
+                loading={isCheckingExistedEmail || isLoginLoading}>
                 {isExistedEmail ? 'Log in' : 'Continue with email'}
               </ElemButton>
             </div>
@@ -211,8 +209,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
 
           <ElemButton
             onClick={handleContinueWithLinkedin}
-            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200"
-          >
+            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200">
             <IconLinkedInAlt
               title="LinkedIn"
               className="h-6 w- text-[#0A66C2]"

@@ -13,8 +13,7 @@ const useToast = () => {
           <div
             className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             {message}
           </div>
         ),
@@ -29,8 +28,7 @@ const useToast = () => {
           <div
             className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             {message}
           </div>
         ),

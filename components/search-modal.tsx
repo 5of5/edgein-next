@@ -114,8 +114,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             redirect(`${ROUTES.COMPANIES}/${hit.objectID}`);
           }
         }}
-        className="flex items-center px-6 py-1 group hover:bg-gray-100"
-      >
+        className="flex items-center px-6 py-1 group hover:bg-gray-100">
         <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
@@ -180,8 +179,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           if (isAdmin && redirect) {
             redirect(`/vc_firms/${hit.objectID}`);
           }
-        }}
-      >
+        }}>
         <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
@@ -223,8 +221,7 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           if (isAdmin && redirect) {
             redirect(`/people/${hit.objectID}`);
           }
-        }}
-      >
+        }}>
         <div className="flex items-center justify-center w-12 overflow-hidden bg-white border border-gray-200 rounded-full shrink-0 aspect-square">
           {hit.picture ? (
             <img
@@ -266,8 +263,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             redirect(`/events/${hit.objectID}`);
           }
         }}
-        className="flex items-center px-6 py-1 group hover:bg-gray-100"
-      >
+        className="flex items-center px-6 py-1 group hover:bg-gray-100">
         <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
           <img
             className="object-contain max-w-full max-h-full"
@@ -349,8 +345,7 @@ const HitNews = () =>
               <ElemLink
                 href={hit.link}
                 className="underline hover:no-underline"
-                target="_blank"
-              >
+                target="_blank">
                 <Highlight
                   attribute="text"
                   hit={hit}
@@ -441,8 +436,7 @@ export default function SearchModal(props: any) {
             <ElemLink
               href={ROUTES.CONTACT}
               onClick={onClose}
-              className="text-primary-500"
-            >
+              className="text-primary-500">
               Tell us about missing data.
             </ElemLink>
           </p>
@@ -469,8 +463,7 @@ export default function SearchModal(props: any) {
             <ElemLink
               href={ROUTES.CONTACT}
               onClick={onClose}
-              className="text-primary-500"
-            >
+              className="text-primary-500">
               {`Tell us about missing ${parseIndexName(results._state.index)}.`}
             </ElemLink>
           </p>
@@ -547,8 +540,7 @@ export default function SearchModal(props: any) {
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-          }
-        >
+          }>
           {getTabTitle('companies')}
         </Tab>
         <Tab
@@ -558,8 +550,7 @@ export default function SearchModal(props: any) {
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-          }
-        >
+          }>
           {getTabTitle('vc_firms')}
         </Tab>
         <Tab
@@ -569,8 +560,7 @@ export default function SearchModal(props: any) {
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-          }
-        >
+          }>
           {getTabTitle('people')}
         </Tab>
         <Tab
@@ -580,8 +570,7 @@ export default function SearchModal(props: any) {
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-          }
-        >
+          }>
           {getTabTitle('events')}
         </Tab>
         <Tab
@@ -591,8 +580,7 @@ export default function SearchModal(props: any) {
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
-          }
-        >
+          }>
           {getTabTitle('news')}
         </Tab>
       </Tab.List>
@@ -606,8 +594,7 @@ export default function SearchModal(props: any) {
         onClose={onClose}
         showCloseIcon={false}
         placement="top"
-        panelClass="w-full max-w-3xl shadow-2xl bg-white rounded-lg my-4"
-      >
+        panelClass="w-full max-w-3xl shadow-2xl bg-white rounded-lg my-4">
         <InstantSearch searchClient={searchClient} indexName="companies">
           <header className="relative z-10 flex items-center p-0 px-4 border-b border-gray-100">
             <IconSearch className="w-6 h-6 text-gray-500" />
@@ -628,8 +615,7 @@ export default function SearchModal(props: any) {
               onClick={onClose}
               type="reset"
               arial-label="cancel"
-              className="appearance-none w-8 justify-items-end p-1 bg-white border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm"
-            >
+              className="appearance-none w-8 justify-items-end p-1 bg-white border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm">
               ESC
             </button>
           </header>
@@ -637,16 +623,14 @@ export default function SearchModal(props: any) {
           <MasterEmptyQueryBoundary>
             <Tab.Group
               selectedIndex={tabSelectedIndex}
-              onChange={setTabSelectedIndex}
-            >
+              onChange={setTabSelectedIndex}>
               <ResultTabList />
               <Tab.Panels>
                 <Tab.Panel unmount={false}>
                   <Index
                     indexName={
                       selectedLibrary === 'Web3' ? 'companies' : 'ai_companies'
-                    }
-                  >
+                    }>
                     <Configure hitsPerPage={10} />
                     <EmptyQueryBoundary>
                       <InfiniteHits
@@ -670,8 +654,7 @@ export default function SearchModal(props: any) {
                   <Index
                     indexName={
                       selectedLibrary === 'Web3' ? 'vc_firms' : 'ai_vc_firms'
-                    }
-                  >
+                    }>
                     <Configure hitsPerPage={10} />
                     <EmptyQueryBoundary>
                       <InfiniteHits
@@ -695,8 +678,7 @@ export default function SearchModal(props: any) {
                   <Index
                     indexName={
                       selectedLibrary === 'Web3' ? 'people' : 'ai_people'
-                    }
-                  >
+                    }>
                     <Configure hitsPerPage={10} />
                     <EmptyQueryBoundary>
                       <InfiniteHits
@@ -720,8 +702,7 @@ export default function SearchModal(props: any) {
                   <Index
                     indexName={
                       selectedLibrary === 'Web3' ? 'events' : 'ai_events'
-                    }
-                  >
+                    }>
                     <Configure hitsPerPage={10} />
                     <EmptyQueryBoundary>
                       <InfiniteHits
@@ -743,8 +724,7 @@ export default function SearchModal(props: any) {
                 </Tab.Panel>
                 <Tab.Panel unmount={false}>
                   <Index
-                    indexName={selectedLibrary === 'Web3' ? 'news' : 'ai_news'}
-                  >
+                    indexName={selectedLibrary === 'Web3' ? 'news' : 'ai_news'}>
                     <Configure hitsPerPage={10} />
                     <EmptyQueryBoundary>
                       <InfiniteHits

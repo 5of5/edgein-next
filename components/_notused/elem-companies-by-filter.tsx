@@ -85,8 +85,7 @@ export const CompaniesByFilter: FC<Props> = ({
         <div>
           <div
             data-testid="personalizedCompanies"
-            className="grid grid-cols-1 gap-8 mt-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-          >
+            className="grid grid-cols-1 gap-8 mt-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {companies.map(company => (
               <ElemCompanyCard
                 key={company.id}

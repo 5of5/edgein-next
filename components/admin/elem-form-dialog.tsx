@@ -83,8 +83,7 @@ const ElemFormDialog: FC<PropsWithChildren<Props>> = ({
           justifyContent: 'space-evenly',
         },
       }}
-      onClose={onClose}
-    >
+      onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <SimpleForm
@@ -95,8 +94,7 @@ const ElemFormDialog: FC<PropsWithChildren<Props>> = ({
             </Toolbar>
           }
           defaultValues={selectedRecord}
-          onSubmit={handleSave}
-        >
+          onSubmit={handleSave}>
           {children}
         </SimpleForm>
       </DialogContent>

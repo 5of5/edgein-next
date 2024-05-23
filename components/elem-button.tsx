@@ -118,8 +118,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     <button
       className={componentClassName + className}
       onClick={onClick}
-      type="submit"
-    >
+      type="submit">
       {loading && <IconSpinner className="w-5 h-5 mr-3 -ml-1 animate-spin" />}
       {arrowLeft && <IconArrowLeft className={`h-3 w-4 ${arrowClass}`} />}
       {children}
@@ -152,8 +151,7 @@ const IconArrowLeft: React.FC<IconProps> = ({
       viewBox="0 0 10 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}
-    >
+      className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}>
       <title>{title}</title>
       <path
         className="transition ease-in-out duration-150 group-hover:-translate-x-0.5"
@@ -181,8 +179,7 @@ const IconArrow: React.FC<IconProps> = ({ className, title = 'Arrow' }) => {
       viewBox="0 0 10 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}
-    >
+      className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}>
       <title>{title}</title>
       <path
         className="transition ease-in-out duration-150 group-hover:translate-x-0.5"

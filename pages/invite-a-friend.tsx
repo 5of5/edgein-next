@@ -115,8 +115,7 @@ export default function Account() {
                   <ElemButton
                     btn="default"
                     disabled={!edgeInContributorButtonEnabled}
-                    onClick={() => toggleCreditsSystem()}
-                  >
+                    onClick={() => toggleCreditsSystem()}>
                     {edgeInContributorButtonTitle}
                   </ElemButton>
 

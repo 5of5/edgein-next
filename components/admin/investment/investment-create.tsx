@@ -17,8 +17,7 @@ export const InvestmentCreate = () => {
   return (
     <ElemFormBase
       title="Add a vc or angel to an Investment Round"
-      action="create"
-    >
+      action="create">
       <InvestmentForm toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />} />
     </ElemFormBase>
   );

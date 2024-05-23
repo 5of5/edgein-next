@@ -78,8 +78,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             <button
               className={`${
                 open ? 'bg-gray-100' : ''
-              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}
-            >
+              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}>
               <IconSidebarList
                 className={`w-5 h-5 ${
                   open ? 'text-primary-500' : 'text-gray-900'
@@ -101,8 +100,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               <li
                 key={listItem.id}
                 role="button"
-                onClick={() => setShowSidebar(false)}
-              >
+                onClick={() => setShowSidebar(false)}>
                 <ElemLink
                   href={`${ROUTES.LISTS}/${listItemId}/${
                     listItemName === 'crap' ? 'sh**' : kebabCase(listItemName)
@@ -110,8 +108,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                   className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
                     listItemId,
                     listItemName === 'crap' ? 'sh**' : kebabCase(listItemName),
-                  )} `}
-                >
+                  )} `}>
                   <span className="flex-1 break-all line-clamp-1">
                     {getListDisplayName(listItem)}
                   </span>
@@ -123,8 +120,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
           <li
             role="button"
             onClick={onClickCreate}
-            className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900"
-          >
+            className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900">
             Add a new list
           </li>
         </ul>

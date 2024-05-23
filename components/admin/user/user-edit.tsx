@@ -40,7 +40,7 @@ const UserEditToolbar = () => {
     !!firstFormValue.current &&
     !isEqual(
       firstFormValue.current?.onboarding_information?.locationTags,
-      formValues.onboarding_information.locationTags,
+      formValues.onboarding_information?.locationTags,
     );
 
   return (
@@ -61,7 +61,8 @@ const UserOnboardingInformation = () => {
   const { setValue } = useFormContext();
 
   const locationDetails = record.onboarding_information
-    ?.locationDetails as CustomPlace[];
+    ? (record.onboarding_information?.locationDetails as CustomPlace[])
+    : [];
 
   const [locations, setLocations] = useState<CustomPlace[]>(
     locationDetails.filter(value => !!value.label || !!value.Label) || [],
@@ -89,6 +90,7 @@ const UserOnboardingInformation = () => {
       locationTags,
       locationDetails,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locations?.length]);
 
   return (
@@ -108,7 +110,7 @@ const UserOnboardingInformation = () => {
         filterCategories={['MunicipalityType', 'RegionType']}
       />
       <ElemLocationTag
-        styles="mt-0q"
+        styles="my-2"
         tags={locations}
         handleRemoveTag={handleRemoveTag}
       />
@@ -125,21 +127,21 @@ const UserRegisteredFrom = () => {
       return (
         <IconLinkedIn
           title="LinkedIn"
-          className="h-5 w-5 shrink-0 text-linkedin-blue"
+          className="w-5 h-5 shrink-0 text-linkedin-blue"
         />
       );
 
     return (
       <IconEmail
         title="Email/Password"
-        className="h-5 w-5 shrink-0 text-gray-600"
+        className="w-5 h-5 text-gray-600 shrink-0"
       />
     );
   };
 
   return (
     <div>
-      <p className="text-sm text-gray-500 pb-2">Registered via:</p>
+      <p className="pb-2 text-sm text-gray-500">Registered via:</p>
       {getRegistrationIcon()}
     </div>
   );
@@ -147,7 +149,6 @@ const UserRegisteredFrom = () => {
 
 export const UserEdit = () => {
   const transform = (data: any) => {
-    console.log(data);
     return {
       ...data,
       additional_emails:
@@ -162,8 +163,7 @@ export const UserEdit = () => {
       <ElemFormBase
         title={<ElemTitle category="Users" />}
         action="edit"
-        transform={transform}
-      >
+        transform={transform}>
         <SimpleForm toolbar={<UserEditToolbar />}>
           <TextInput className={inputClassName} disabled source="id" />
           <TextInput className={inputClassName} disabled source="email" />
@@ -193,8 +193,7 @@ export const UserEdit = () => {
           <ArrayInput source="additional_emails">
             <SimpleFormIterator
               disableReordering
-              sx={{ margin: 2, paddingTop: 1 }}
-            >
+              sx={{ margin: 2, paddingTop: 1 }}>
               <TextInput className={inputClassName} source="email" />
             </SimpleFormIterator>
           </ArrayInput>

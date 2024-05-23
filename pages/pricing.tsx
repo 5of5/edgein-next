@@ -116,8 +116,7 @@ const Pricing = () => {
 
         <section
           className="px-4 py-16 sm:px-6 lg:px-8"
-          aria-labelledby="pricing-heading"
-        >
+          aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" className="sr-only">
             Pricing
           </h2>
@@ -138,16 +137,14 @@ const Pricing = () => {
                       ? 'mt-8 rounded-lg lg:mt-0 border-2 border-primary-500'
                       : 'rounded-bl-lg rounded-tl-lg mt-14'
                   }`}
-                  key={tier.title}
-                >
+                  key={tier.title}>
                   <div className="flex-1">
                     <h3
                       className={`inline text-3xl font-bold ${
                         tier.mostPopular
                           ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400'
                           : ''
-                      }`}
-                    >
+                      }`}>
                       {tier.title}
                     </h3>
                     {tier.mostPopular ? (
@@ -180,8 +177,7 @@ const Pricing = () => {
                               : 'bg-primary-50 hover:bg-primary-100 text-primary-500'
                           } w-full`}
                           btn={`${tier.mostPopular ? 'primary' : ''}`}
-                          size="lg"
-                        >
+                          size="lg">
                           {tier.mostPopular && (
                             <IconContributor className="w-5 h-5 mr-1" />
                           )}
@@ -226,8 +222,7 @@ const Pricing = () => {
 
         <section
           aria-labelledby="faq-heading"
-          className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"
-        >
+          className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="max-w-2xl mx-auto lg:max-w-4xl">
             <h2 id="faq-heading" className="text-4xl font-bold">
               Frequently asked questions

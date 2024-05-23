@@ -30,8 +30,7 @@ export const EventEdit = () => {
       <ElemFormBase
         title={<ElemTitle category="Event" />}
         action="edit"
-        transform={transform}
-      >
+        transform={transform}>
         <EventForm
           action="edit"
           currentData={currentData}

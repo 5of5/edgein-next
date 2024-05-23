@@ -66,8 +66,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
         <div
           className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
-          }`}
-        >
+          }`}>
           Link copied to clipboard
         </div>
       ),
@@ -97,8 +96,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
             onClick={() => onCopy()}
             btn="default"
             size="sm"
-            className="!px-1.5 rounded-lg"
-          >
+            className="!px-1.5 rounded-lg">
             <IconCopy className="w-5 h-5" />
           </ElemButton>
         </div>
@@ -119,8 +117,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
               btn="default"
               size="sm"
               roundedFull={true}
-              className="px-2.5"
-            >
+              className="px-2.5">
               <link.icon className="mr-2 h-5 w-5" aria-hidden="true" />
               {link.text}
             </ElemButton>

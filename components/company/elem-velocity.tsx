@@ -51,15 +51,13 @@ export const ElemVelocity: React.FC<Props> = ({
 
   return (
     <section
-      className={`flex flex-col rounded-lg border border-gray-300 ${className}`}
-    >
+      className={`flex flex-col rounded-lg border border-gray-300 ${className}`}>
       {heading && (
         <div className="flex items-center space-x-1 px-4 pt-2">
           <h2 className="text-lg font-medium">{heading}</h2>
           <ElemTooltip
             size="md"
-            content="Velocity trends based on the last 3 months of LinkedIn employment data, as well as token exchange values from Binance and Coinbase."
-          >
+            content="Velocity trends based on the last 3 months of LinkedIn employment data, as well as token exchange values from Binance and Coinbase.">
             <div>
               <IconInformationCircle
                 className="h-5 w-5"
@@ -78,8 +76,7 @@ export const ElemVelocity: React.FC<Props> = ({
                 item.number > 0
                   ? 'bg-green-100 text-green-600'
                   : 'bg-red-100 text-red-600'
-              } flex items-center text-sm font-medium leading-sm uppercase px-2 py-0.5 rounded-full`}
-            >
+              } flex items-center text-sm font-medium leading-sm uppercase px-2 py-0.5 rounded-full`}>
               <div>{numberWithCommas(item.number)}</div>
               {item.number > 0 ? (
                 <IconArrowUp className="h-3 w-3" strokeWidth={4} />
@@ -92,8 +89,7 @@ export const ElemVelocity: React.FC<Props> = ({
           return (
             <div
               key={index}
-              className="flex items-center justify-between space-x-2"
-            >
+              className="flex items-center justify-between space-x-2">
               <div className="text-sm text-slate-600">{item.text}</div>
               {badge}
             </div>

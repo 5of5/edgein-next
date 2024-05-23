@@ -87,8 +87,7 @@ const CompanyForm = ({
             companies,
           )
         }
-        toolbar={toolbar}
-      >
+        toolbar={toolbar}>
         {action === 'edit' && (
           <TextInput
             className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -121,8 +120,7 @@ const CompanyForm = ({
                   rel="noreferrer"
                   href={`https://edgein.io/companies/${
                     currentData && currentData.slug
-                  }`}
-                >
+                  }`}>
                   <Button label="Preview" />
                 </a>
               </div>
@@ -143,8 +141,7 @@ const CompanyForm = ({
           source="logo"
           label="logo"
           accept="image/*"
-          placeholder={<p>Drop your file here</p>}
-        >
+          placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         {action === 'edit' && !logo && !isImageUpdated && (
@@ -248,7 +245,7 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="github"
+          source="careers_page"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -258,15 +255,6 @@ const CompanyForm = ({
         <TextInput
           className={inputClassName}
           source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            },
-          }}
-        />
-        <TextInput
-          className={inputClassName}
-          source="careers_page"
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -293,6 +281,15 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
+          source="github"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            },
+          }}
+        />
+        <TextInput
+          className={inputClassName}
           source="discord"
           sx={{
             '.MuiFormHelperText-root': {
@@ -309,7 +306,7 @@ const CompanyForm = ({
             },
           }}
         />
-        <ElemCompanyLibraryInput className={inputClassName} />
+        <TextInput className={inputClassName} source="telegram" />
         <SelectInput
           className={inputClassName}
           source="team_enrichment_status"
@@ -317,7 +314,7 @@ const CompanyForm = ({
         />
         <TextInput className={inputClassName} source="web_domain" />
         <TextInput className={inputClassName} source="email_domain" />
-        <TextInput className={inputClassName} source="telegram" />
+        <ElemCompanyLibraryInput className={inputClassName} />
         <ArrayInput className={inputClassName} source="web3_address">
           <SimpleFormIterator>
             <TextInput source="" label="Address" />

@@ -12,8 +12,7 @@ export const NewsEdit = () => {
       <ElemFormBase
         title={<ElemTitle category="News" />}
         action="edit"
-        transform={transformFormData}
-      >
+        transform={transformFormData}>
         <NewsForm action="edit" />
       </ElemFormBase>
       <NewsOrganizations />

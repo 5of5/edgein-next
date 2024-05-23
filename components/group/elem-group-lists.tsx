@@ -79,8 +79,7 @@ export const ElemGroupLists: React.FC<Props> = ({
             <div
               className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
                 t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-            >
+              }`}>
               List unfollowed
             </div>
           ),
@@ -115,8 +114,7 @@ export const ElemGroupLists: React.FC<Props> = ({
           <div
             className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
               t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}
-          >
+            }`}>
             Lists Added
           </div>
         ),
@@ -172,8 +170,7 @@ export const ElemGroupLists: React.FC<Props> = ({
             <ElemButton
               className="mt-2"
               btn="default"
-              onClick={() => setIsOpenAddList(true)}
-            >
+              onClick={() => setIsOpenAddList(true)}>
               <IconPlus className="w-5 h-5 mr-1" />
               <span>Add List</span>
             </ElemButton>
@@ -191,19 +188,16 @@ export const ElemGroupLists: React.FC<Props> = ({
               return (
                 <li
                   key={item.id}
-                  className="flex space-x-4 justify-between items-start"
-                >
+                  className="flex space-x-4 justify-between items-start">
                   <ElemLink
                     href={`${ROUTES.LISTS}/${item.id}/${kebabCase(
                       getNameFromListName(item),
                     )}`}
-                    className="flex items-start space-x-2 text-sm"
-                  >
+                    className="flex items-start space-x-2 text-sm">
                     <div>
                       <h3
                         className="line-clamp-1 break-all font-medium hover:underline"
-                        title={getNameFromListName(item)}
-                      >
+                        title={getNameFromListName(item)}>
                         {getNameFromListName(item)}
                       </h3>
 
@@ -219,8 +213,7 @@ export const ElemGroupLists: React.FC<Props> = ({
                             .local()
                             .format('ll HH:mma')}`}
                           direction="top-start"
-                          mode="dark"
-                        >
+                          mode="dark">
                           <p className="text-gray-500">
                             By {item.created_by?.display_name}
                           </p>
@@ -232,8 +225,7 @@ export const ElemGroupLists: React.FC<Props> = ({
                             .local()
                             .format('ll HH:mma')}
                           direction="top-start"
-                          mode="dark"
-                        >
+                          mode="dark">
                           <p className="text-gray-500">
                             Created By {item.created_by?.display_name}
                           </p>
@@ -245,8 +237,7 @@ export const ElemGroupLists: React.FC<Props> = ({
                   <ElemButton
                     btn="default"
                     className={`${isFollowing ? '' : ''}`}
-                    onClick={() => handleToggleFollow(item.id, isFollowing)}
-                  >
+                    onClick={() => handleToggleFollow(item.id, isFollowing)}>
                     {isFollowing ? (
                       <>
                         <IconCheck className="w-5 h-5 mr-1" />

@@ -40,8 +40,7 @@ export const ElemBackToTop: FC<Props> = () => {
           onClick={backToTop}
           btn="dark"
           size="sm"
-          className="!fixed z-10 left-1/2 lg:left-[calc(50%+8rem)] bottom-16 lg:bottom-5 -translate-x-1/2 text-sm shadow-lg transition-all hover:scale-110"
-        >
+          className="!fixed z-10 left-1/2 lg:left-[calc(50%+8rem)] bottom-16 lg:bottom-5 -translate-x-1/2 text-sm shadow-lg transition-all hover:scale-110">
           <IconArrowUp className="w-4 h-4 mr-1.5" /> Back to Top
         </ElemButton>
       )}

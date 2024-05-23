@@ -40,8 +40,7 @@ export const ElemWithSignInModal: FC<Props> = ({
             <Popover.Button
               as="div"
               ref={setReferenceElement}
-              className="w-full ring-0 outline-none"
-            >
+              className="w-full ring-0 outline-none">
               {buttonComponent(open)}
             </Popover.Button>
             <Transition
@@ -51,21 +50,18 @@ export const ElemWithSignInModal: FC<Props> = ({
               enterTo="opacity-100"
               leave="transition-opacity"
               leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
+              leaveTo="opacity-0">
               <Popover.Panel
                 ref={setPopperElement}
                 style={styles.popper}
                 {...attributes.popper}
-                className="w-72 z-30"
-              >
+                className="w-72 z-30">
                 <div className="p-4 bg-white rounded-lg shadow-lg border border-gray-200">
                   <p className="text-gray-500 text-sm">{text}</p>
                   <ElemButton
                     btn="primary"
                     href={ROUTES.SIGN_IN}
-                    className="mt-3"
-                  >
+                    className="mt-3">
                     Sign in
                   </ElemButton>
                 </div>

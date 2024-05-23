@@ -82,8 +82,7 @@ const VcFirmForm = ({
             vcFirm,
           )
         }
-        toolbar={toolbar}
-      >
+        toolbar={toolbar}>
         {action === 'edit' && (
           <TextInput
             className={`w-full ${textInputClassName}`}
@@ -125,8 +124,7 @@ const VcFirmForm = ({
           source="logo"
           label="logo"
           accept="image/*"
-          placeholder={<p>Drop your file here</p>}
-        >
+          placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         {action === 'edit' && !logo && !isImageUpdated && (
@@ -137,6 +135,10 @@ const VcFirmForm = ({
           source="overview"
           onChange={onCheckScreenHeight}
           multiline
+        />
+        <TextInput
+          className={`w-[49%] ${textInputClassName}`}
+          source="year_founded"
         />
         <SelectInput
           className={`w-[49%] ${textInputClassName}`}
@@ -150,7 +152,7 @@ const VcFirmForm = ({
         <TextInput
           className={textInputClassName}
           source="location_json.address"
-          label="Address"
+          label="Address (Street)"
         />
         <TextInput
           className={textInputClassName}
@@ -179,20 +181,17 @@ const VcFirmForm = ({
           disabled
         />
         <TextInput
+          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
           className={`w-[49%] ${textInputClassName}`}
-          source="year_founded"
+          source="tags"
+          disabled={true}
         />
+
         <AutocompleteArrayInput
           source="status_tags"
           className={`w-[49%] ${textInputClassName}`}
           choices={investorChoices}
           style={{ padding: 0, border: 'none' }}
-        />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className={`w-[49%] ${textInputClassName}`}
-          source="tags"
-          disabled={true}
         />
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
@@ -221,12 +220,7 @@ const VcFirmForm = ({
             },
           }}
         />
-        <SelectArrayInput
-          className={textInputClassName}
-          source="library"
-          choices={libraryChoices}
-          defaultValue={['Web3']}
-        />
+
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
           source="github"
@@ -243,10 +237,15 @@ const VcFirmForm = ({
           className={`w-[49%] ${textInputClassName}`}
           source="telegram"
         />
+        <SelectArrayInput
+          className={textInputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue={['Web3']}
+        />
         <ArrayInput
           className={`w-[49%] ${textInputClassName}`}
-          source="web3_address"
-        >
+          source="web3_address">
           <SimpleFormIterator>
             <TextInput source="" label="Address" />
           </SimpleFormIterator>

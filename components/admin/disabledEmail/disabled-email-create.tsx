@@ -8,8 +8,7 @@ export const DisabledEmailCreate = () => {
     <ElemFormBase
       title="Create a entry in deny list"
       action="create"
-      transform={transform}
-    >
+      transform={transform}>
       <DisabledEmailForm action="create" />
     </ElemFormBase>
   );

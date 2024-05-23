@@ -48,8 +48,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
           <div>
             <a
               href={`${ROUTES.PEOPLE}/` + props.row.original?.person?.slug}
-              className="flex items-center space-x-3 transition-all shrink-0"
-            >
+              className="flex items-center space-x-3 transition-all shrink-0">
               <ElemPhoto
                 photo={props.row.original?.person?.picture}
                 wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-lg overflow-hidden"
@@ -88,8 +87,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
                       <a
                         key={index}
                         href={`mailto:${email}`}
-                        className="block text-sm hover:underline"
-                      >
+                        className="block text-sm hover:underline">
                         {email}
                       </a>
                     );
@@ -132,8 +130,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
                   href={props.value}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-block text-sm hover:text-primary-500"
-                >
+                  className="inline-block text-sm hover:text-primary-500">
                   View LinkedIn
                 </a>
               ) : (
@@ -156,8 +153,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
                   href={props.value}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-block text-sm hover:text-primary-500"
-                >
+                  className="inline-block text-sm hover:text-primary-500">
                   View Github
                 </a>
               ) : (

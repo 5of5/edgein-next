@@ -48,8 +48,7 @@ export const VcFirmCreate = () => {
       title="Create a VC Firm"
       action="create"
       transform={transform}
-      rootStyle={rootStyle}
-    >
+      rootStyle={rootStyle}>
       <VcFirmForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}

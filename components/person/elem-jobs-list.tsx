@@ -39,8 +39,7 @@ export const ElemJobsList: FC<Props> = ({
                   `Hi EdgeIn, I'd like to request work experience info on ${resourceUrl}`,
                 )
               }
-              btn="default"
-            >
+              btn="default">
               Request data or contribute
             </ElemButton>
           </div>
@@ -88,8 +87,7 @@ export const ElemJobsList: FC<Props> = ({
                     {slug ? (
                       <ElemLink
                         href={slug}
-                        className="block underline hover:no-underline"
-                      >
+                        className="block underline hover:no-underline">
                         {organization.name}
                       </ElemLink>
                     ) : organization?.name ? (

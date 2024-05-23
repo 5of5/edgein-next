@@ -71,8 +71,7 @@ const ElemFilterTagsInput: FC<Props> = ({
       onOpen={onOpenFilterPopup}
       onClose={onCloseFilterPopup}
       onClear={onClearFilterOption}
-      onApply={handleApplyFilter}
-    >
+      onApply={handleApplyFilter}>
       <div className="font-medium text-sm">{heading}</div>
       <div className="flex flex-col gap-4 mt-2">
         <div>

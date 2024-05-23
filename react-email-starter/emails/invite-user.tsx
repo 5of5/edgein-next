@@ -34,8 +34,7 @@ const InviteUserEmail = ({
               <Link
                 href="https://edgein.io/"
                 target="_blank"
-                className="text-[#525f7f] no-underline"
-              >
+                className="text-[#525f7f] no-underline">
                 <strong>EdgeIn</strong>
               </Link>{' '}
               - the leading platform for Web3 intelligence.
@@ -52,8 +51,7 @@ const InviteUserEmail = ({
             <Link
               href="https://edgein.io/"
               target="_blank"
-              className="text-[#525f7f] no-underline"
-            >
+              className="text-[#525f7f] no-underline">
               <strong>EdgeIn</strong>
             </Link>{' '}
             - the leading platform for Web3 intelligence, including over 50

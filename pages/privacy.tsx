@@ -26,16 +26,14 @@ const Privacy: NextPage<Props> = () => {
 
             <Tab.Group
               selectedIndex={selectedIndex}
-              onChange={setSelectedIndex}
-            >
+              onChange={setSelectedIndex}>
               <Tab.List className="flex font-semibold transition-all border-b whitespace-nowrap gap-x-4 border-black/10">
                 <Tab
                   className={({ selected }) =>
                     selected
                       ? 'text-primary-500 border-b-2 border-primary-500 outline-none'
                       : 'border-b-2 border-transparent'
-                  }
-                >
+                  }>
                   Privacy Policy
                 </Tab>
                 <Tab
@@ -43,8 +41,7 @@ const Privacy: NextPage<Props> = () => {
                     selected
                       ? 'text-primary-500 border-b-2 border-primary-500 outline-none'
                       : ''
-                  }
-                >
+                  }>
                   GDPR
                 </Tab>
               </Tab.List>
@@ -78,8 +75,7 @@ const Privacy: NextPage<Props> = () => {
                     <a
                       href="https://edgein.io/terms"
                       target="_blank"
-                      rel="noreferrer"
-                    >
+                      rel="noreferrer">
                       Terms of Service
                     </a>
                     , which incorporates this Privacy Policy. Any terms we use
@@ -88,8 +84,7 @@ const Privacy: NextPage<Props> = () => {
                     <a
                       href="https://edgein.io/terms"
                       target="_blank"
-                      rel="noreferrer"
-                    >
+                      rel="noreferrer">
                       Terms of Service
                     </a>
                     . Our Privacy Policy applies to all users of the EdgeIn.io
@@ -101,8 +96,7 @@ const Privacy: NextPage<Props> = () => {
                     <a
                       href="https://edgein.io/terms"
                       target="_blank"
-                      rel="noreferrer"
-                    >
+                      rel="noreferrer">
                       Terms of Service
                     </a>
                     , EdgeIn.io’s use and transfer to any other app of
@@ -110,8 +104,7 @@ const Privacy: NextPage<Props> = () => {
                     <a
                       href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes"
                       target="_blank"
-                      rel="noreferrer"
-                    >
+                      rel="noreferrer">
                       Google API Services User Data Policy
                     </a>
                     , including the Limited Use requirements.
@@ -419,16 +412,14 @@ const Privacy: NextPage<Props> = () => {
                       <a
                         href="https://policies.google.com/technologies/ads"
                         rel="noreferrer"
-                        target="_blank"
-                      >
+                        target="_blank">
                         https://policies.google.com/technologies/ads
                       </a>{' '}
                       or the Google Analytics Opt-out Browser Add-on at 
                       <a
                         href="https://tools.google.com/dlpage/gaoptout/"
                         rel="noreferrer"
-                        target="_blank"
-                      >
+                        target="_blank">
                         https://tools.google.com/dlpage/gaoptout/
                       </a>
                       .
@@ -466,8 +457,7 @@ const Privacy: NextPage<Props> = () => {
                     <a
                       href="http://www.allaboutcookies.org/"
                       rel="noreferrer"
-                      target="_blank"
-                    >
+                      target="_blank">
                       http://www.allaboutcookies.org/
                     </a>
                     .
@@ -512,16 +502,14 @@ const Privacy: NextPage<Props> = () => {
                     <a
                       href="http://www.networkadvertising.org/choices/"
                       rel="noreferrer"
-                      target="_blank"
-                    >
+                      target="_blank">
                       http://www.networkadvertising.org/choices/
                     </a>{' '}
                     or{' '}
                     <a
                       href="http://www.aboutads.info/choices"
                       rel="noreferrer"
-                      target="_blank"
-                    >
+                      target="_blank">
                       http://www.aboutads.info/choices
                     </a>
                     . Users in the European Union should visit the European
@@ -530,8 +518,7 @@ const Privacy: NextPage<Props> = () => {
                     <a
                       href="https://www.youronlinechoices.eu/"
                       rel="noreferrer"
-                      target="_blank"
-                    >
+                      target="_blank">
                       https://www.youronlinechoices.eu/
                     </a>
                     .
@@ -1046,8 +1033,7 @@ const Privacy: NextPage<Props> = () => {
                     Policy&nbsp;
                     <button
                       className="inline font-medium underline"
-                      onClick={() => setSelectedIndex(0)}
-                    >
+                      onClick={() => setSelectedIndex(0)}>
                       HERE
                     </button>
                     &nbsp;(the &ldquo;Privacy Policy&rdquo;).  If there are any

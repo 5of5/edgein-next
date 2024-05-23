@@ -90,8 +90,7 @@ const PersonForm = ({
             people,
           )
         }
-        toolbar={toolbar}
-      >
+        toolbar={toolbar}>
         <FormDataConsumer>
           {({ formData, ...rest }) => (
             <TextInput
@@ -124,8 +123,7 @@ const PersonForm = ({
           source="picture"
           label="picture"
           accept="image/*"
-          placeholder={<p>Drop your file here</p>}
-        >
+          placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         {action === 'edit' && !logo && !isImageUpdated && (

@@ -41,8 +41,7 @@ const ElemSettingDialog: React.FC<Props> = ({
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+          leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
@@ -55,8 +54,7 @@ const ElemSettingDialog: React.FC<Props> = ({
               enterTo="opacity-100 scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
+              leaveTo="opacity-0 scale-95">
               <Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title className="flex items-center justify-between px-6 pt-6 pb-2 rounded-t-2xl bg-white">
                   <div className="flex items-center justify-between gap-x-1">
@@ -71,16 +69,14 @@ const ElemSettingDialog: React.FC<Props> = ({
                 </Dialog.Title>
                 <Tab.Group
                   selectedIndex={selectedIndex}
-                  onChange={setSelectedIndex}
-                >
+                  onChange={setSelectedIndex}>
                   <Tab.List className="whitespace-nowrap flex gap-x-4 px-6 font-semibold bg-white border-b border-black/10 transition-all">
                     <Tab
                       className={({ selected }) =>
                         selected
                           ? 'text-primary-500 border-b-2 border-primary-500 outline-none'
                           : ''
-                      }
-                    >
+                      }>
                       Settings
                     </Tab>
                     <Tab
@@ -88,8 +84,7 @@ const ElemSettingDialog: React.FC<Props> = ({
                         selected
                           ? 'text-primary-500 border-b-2 border-primary-500 outline-none'
                           : ''
-                      }
-                    >
+                      }>
                       Members
                     </Tab>
                     <Tab
@@ -97,8 +92,7 @@ const ElemSettingDialog: React.FC<Props> = ({
                         selected
                           ? 'text-primary-500 border-b-2 border-primary-500 outline-none'
                           : ''
-                      }
-                    >
+                      }>
                       Pending Invites
                     </Tab>
                   </Tab.List>

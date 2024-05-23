@@ -24,8 +24,7 @@ export const ElemMemberAvatarList: React.FC<Props> = ({ members }) => {
             ) : (
               <div
                 className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize"
-                title={mem.user?.display_name ? mem.user?.display_name : ''}
-              >
+                title={mem.user?.display_name ? mem.user?.display_name : ''}>
                 {mem.user?.display_name?.charAt(0)}
               </div>
             )}

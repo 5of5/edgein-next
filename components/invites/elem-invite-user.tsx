@@ -163,8 +163,7 @@ export const ElemInviteUser = () => {
                   setSelectedPeople([]);
                   resetInvitation();
                 }}
-                className="mt-4 w-full"
-              >
+                className="mt-4 w-full">
                 Invite more people
               </ElemButton>
             </>
@@ -185,8 +184,7 @@ export const ElemInviteUser = () => {
                   btn="primary"
                   onClick={handleClickSendInvites}
                   loading={isLoading}
-                  disabled={selectedPeople.length === 0}
-                >
+                  disabled={selectedPeople.length === 0}>
                   Invite
                 </ElemButton>
 

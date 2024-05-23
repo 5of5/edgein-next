@@ -44,8 +44,7 @@ export const ElemSocialShare: FC<Props> = ({
         <div
           className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
-          }`}
-        >
+          }`}>
           Link copied to clipboard
         </div>
       ),
@@ -116,8 +115,7 @@ export const ElemSocialShare: FC<Props> = ({
         onClick={onShareButton}
         btn="default"
         roundedFull={true}
-        className={`${btnClass ? btnClass : ''}`}
-      >
+        className={`${btnClass ? btnClass : ''}`}>
         Share
       </ElemButton>
 
@@ -130,8 +128,7 @@ export const ElemSocialShare: FC<Props> = ({
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+            leaveTo="opacity-0">
             <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
           </Transition.Child>
 
@@ -143,8 +140,7 @@ export const ElemSocialShare: FC<Props> = ({
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
                 <div className="flex items-center justify-between px-3 py-1">
                   <h2 className="text-lg font-bold">Share</h2>
@@ -152,8 +148,7 @@ export const ElemSocialShare: FC<Props> = ({
                   <button
                     onClick={onClose}
                     type="button"
-                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
-                  >
+                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100">
                     <span className="sr-only">Close</span>
                     <IconX className="h-6 w-6" title="close" />
                   </button>
@@ -167,11 +162,9 @@ export const ElemSocialShare: FC<Props> = ({
                         className="flex flex-col justify-center items-center"
                         href={item.href}
                         target="_blank"
-                        rel="noreferrer"
-                      >
+                        rel="noreferrer">
                         <div
-                          className={`w-16 h-16 p-4 flex items-center justify-center rounded-full text-white hover:opacity-75 ${item.iconClass}`}
-                        >
+                          className={`w-16 h-16 p-4 flex items-center justify-center rounded-full text-white hover:opacity-75 ${item.iconClass}`}>
                           <item.icon
                             className={`w-full ${
                               item.icon === IconTelegram && '-ml-1'
@@ -190,8 +183,7 @@ export const ElemSocialShare: FC<Props> = ({
                       btn="primary"
                       size="sm"
                       roundedFull={true}
-                      className="px-2.5"
-                    >
+                      className="px-2.5">
                       {isCopied ? 'Copied' : 'Copy'}
                     </ElemButton>
                   </div>
