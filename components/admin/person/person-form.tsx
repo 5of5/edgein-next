@@ -205,8 +205,9 @@ const PersonForm = ({
         <TextInput className={inputClassName} source="discord" />
         <TextInput className={inputClassName} source="telegram" />
         <ArrayInput className={inputClassName} source="web3_address">
-          <SimpleFormIterator>
-            <TextInput source="" label="Address" />
+          <SimpleFormIterator className="simple-iterator ">
+            <TextInput source="address" label="Address" />
+            <TextInput source="network" label="Network" />
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>

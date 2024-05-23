@@ -315,9 +315,10 @@ const CompanyForm = ({
         <TextInput className={inputClassName} source="web_domain" />
         <TextInput className={inputClassName} source="email_domain" />
         <ElemCompanyLibraryInput className={inputClassName} />
-        <ArrayInput className={inputClassName} source="web3_address">
-          <SimpleFormIterator>
-            <TextInput source="" label="Address" />
+        <ArrayInput source="web3_address">
+          <SimpleFormIterator className="simple-iterator ">
+            <TextInput source="address" label="Address" />
+            <TextInput source="network" label="Network" />
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>

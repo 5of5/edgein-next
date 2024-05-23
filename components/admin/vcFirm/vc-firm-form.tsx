@@ -246,8 +246,9 @@ const VcFirmForm = ({
         <ArrayInput
           className={`w-[49%] ${textInputClassName}`}
           source="web3_address">
-          <SimpleFormIterator>
-            <TextInput source="" label="Address" />
+          <SimpleFormIterator className="simple-iterator ">
+            <TextInput source="address" label="Address" />
+            <TextInput source="network" label="Network" />
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>
