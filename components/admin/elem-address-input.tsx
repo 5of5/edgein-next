@@ -73,14 +73,13 @@ const ElemAddressInput = ({
       id="elem-address-component"
       sx={{
         width: width ?? '49%',
-        marginBottom: marginBottom ?? 3,
+        marginBottom: marginBottom ?? '24px',
       }}
       filterOptions={x => x}
       getOptionLabel={option => option?.Text}
       options={options}
       autoComplete
       includeInputInList
-      style={{ margin: `0 0 24px` }}
       filterSelectedOptions
       value={value}
       noOptionsText="No addresses found."

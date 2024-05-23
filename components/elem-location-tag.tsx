@@ -17,14 +17,14 @@ const ElemLocationTag: FC<Props> = ({
 }) => {
   return (
     <ul
-      className={`flex items-center justify-center flex-wrap gap-3 max-w-3xl ${
+      className={`flex items-center justify-start flex-wrap gap-3 max-w-3xl ${
         styles ?? 'mt-5'
       }`}>
       {tags.map((tag, index) => (
         <li
           key={index}
-          className="flex items-center gap-2 p-2 pl-3 rounded-md bg-gray-100">
-          <span className="truncate max-w-xs text-xs font-medium">
+          className="flex items-center gap-2 p-2 pl-3 bg-gray-100 rounded-md">
+          <span className="max-w-xs text-xs font-medium truncate">
             {tag?.Label || tag?.label}
           </span>
           <button

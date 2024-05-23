@@ -110,7 +110,7 @@ const UserOnboardingInformation = () => {
         filterCategories={['MunicipalityType', 'RegionType']}
       />
       <ElemLocationTag
-        styles="mt-0q"
+        styles="my-2"
         tags={locations}
         handleRemoveTag={handleRemoveTag}
       />
