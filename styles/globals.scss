@@ -91,6 +91,15 @@
   width: 48px !important;
 }
 
+/* Admin forms */
+.simple-iterator {
+  .RaSimpleFormIterator-form {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 20px;
+  }
+}
+
 @media screen and (max-width: 1023px) {
   .intercom-lightweight-app .intercom-lightweight-app-launcher {
     bottom: 64px !important;

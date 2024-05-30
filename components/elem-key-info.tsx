@@ -63,7 +63,7 @@ type Props = {
   investmentsLength?: number;
   emails?: string[];
   linkedIn?: string | null;
-  web3Address?: string[] | null;
+  web3Address?: { address: string; network: string }[] | null;
   github?: string | null;
   twitter?: string | null;
   instagram?: string | null;
@@ -256,7 +256,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
   if (web3Address?.length) {
     infoItems.push({
       icon: IconContract,
-      text: Array.isArray(web3Address) ? web3Address.join(' ') : web3Address,
+      text: Array.isArray(web3Address)
+        ? /* to not break previous version */
+          // TODO add information about network later (web3Address[0].network and web3Address[0].address)
+          web3Address
+            ?.map((element: { address?: string } | string) =>
+              typeof element === 'string' ? element : element?.address,
+            )
+            .join(' ')
+        : web3Address,
       showHide: !userProfile || edgeInContributorButtonEnabled,
     });
   }
