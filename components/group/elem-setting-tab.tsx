@@ -7,8 +7,9 @@ import { useUser } from '@/context/user-context';
 import { User_Groups } from '@/graphql/types';
 import { IconSignOut, IconTrash, IconX } from '@/components/icons';
 import ElemSettingEditableField from './elem-setting-editable-field';
-import { ElemConfirmModal } from '../elem-confirm-modal';
 import { ROUTES } from '@/routes';
+import { ElemModal } from '../elem-modal';
+import { ElemButton } from '../elem-button';
 
 type Props = {
   group: User_Groups;
@@ -172,7 +173,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
+      <div className="overflow-hidden bg-white border divide-y rounded-lg border-black/10 divide-black/10">
         {fields.map(item => (
           <ElemSettingEditableField
             key={item.field}
@@ -209,13 +210,13 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
         <div>
           <div
-            className="flex items-start space-x-1 p-3 cursor-pointer hover:bg-slate-100"
+            className="flex items-start p-3 space-x-1 cursor-pointer hover:bg-slate-100"
             onClick={handleLeaveGroup}>
             <IconSignOut className="w-6 h-6 text-red-500" />
             <p className="font-bold text-red-500">Leave Group</p>
           </div>
           {leaveError && (
-            <div className="flex justify-between px-4 pb-3 text-red-600 text-sm">
+            <div className="flex justify-between px-4 pb-3 text-sm text-red-600">
               <div>
                 <p>
                   You cannot leave the group when you are the group&apos;s
@@ -227,7 +228,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
                 </p>
               </div>
               <span onClick={() => setLeaveError(false)}>
-                <IconX className="w-4 h-4 text-slate-700 cursor-pointer" />
+                <IconX className="w-4 h-4 cursor-pointer text-slate-700" />
               </span>
             </div>
           )}
@@ -235,9 +236,9 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
       </div>
 
       {isGroupManager && (
-        <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden mt-6">
+        <div className="mt-6 overflow-hidden bg-white border divide-y rounded-lg border-black/10 divide-black/10">
           <div
-            className="flex items-center p-3 cursor-pointer space-x-1 hover:bg-slate-100"
+            className="flex items-center p-3 space-x-1 cursor-pointer hover:bg-slate-100"
             onClick={handleOpenDeleteModal}>
             <IconTrash className="w-6 h-6 text-red-500" />
             <p className="font-bold text-red-500">Delete Group</p>
@@ -245,22 +246,36 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         </div>
       )}
 
-      <ElemConfirmModal
+      <ElemModal
         isOpen={isOpenDeleteModal}
-        title="Delete this group?"
-        content={
-          <div>
-            When you delete a group, everything in it will be removed
-            immediately.
-            <span className="font-bold inline">
-              This can&lsquo;t be undone.
-            </span>
-          </div>
-        }
-        loading={isDeleting}
         onClose={handleCloseDeleteModal}
-        onDelete={deleteGroup}
-      />
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+        <div>
+          <h2 className="text-xl font-medium">Delete this group?</h2>
+        </div>
+        <div className="py-3">
+          When you delete a group, everything in it will be removed immediately.
+          <span className="inline font-bold">This can&lsquo;t be undone.</span>
+        </div>
+
+        <div className="flex items-center justify-end pt-3 border-t gap-x-2 border-slate-200">
+          <ElemButton
+            onClick={handleCloseDeleteModal}
+            roundedFull
+            btn="default">
+            Cancel
+          </ElemButton>
+          <ElemButton
+            onClick={() => deleteGroup()}
+            roundedFull
+            btn="danger"
+            loading={isDeleting}>
+            Delete
+          </ElemButton>
+        </div>
+      </ElemModal>
     </>
   );
 };

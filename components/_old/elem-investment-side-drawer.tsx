@@ -14,7 +14,6 @@ import {
 } from '@/graphql/types';
 import { roundChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
-import { ElemConfirmModal } from '../elem-confirm-modal';
 
 type Props = {
   isOpen: boolean;
@@ -331,7 +330,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
               </Transition.Child>
             </div>
           </div>
-          <ElemConfirmModal
+          {/* <ElemConfirmModal
             isOpen={showConfirmation}
             title="Delete investment?"
             content="Are you sure you want to delete this investment?"
@@ -339,7 +338,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
               setShowConfirmation(false);
             }}
             onDelete={onConfirm}
-          />
+          /> */}
         </Dialog>
       </Transition>
     </>
