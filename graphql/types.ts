@@ -2117,7 +2117,6 @@ export type Companies = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Scalars['Int'];
@@ -2152,7 +2151,6 @@ export type Companies = {
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   library: Maybe<Scalars['jsonb']>;
-  location: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   logo: Maybe<Scalars['jsonb']>;
   longitude: Maybe<Scalars['float8']>;
@@ -2432,7 +2430,6 @@ export type Companies_Bool_Exp = {
   coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   company_size: InputMaybe<Int_Comparison_Exp>;
-  country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamp_Comparison_Exp>;
   datapoints_count: InputMaybe<Int_Comparison_Exp>;
@@ -2461,7 +2458,6 @@ export type Companies_Bool_Exp = {
   layer: InputMaybe<String_Comparison_Exp>;
   layer_detail: InputMaybe<String_Comparison_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
-  location: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   longitude: InputMaybe<Float8_Comparison_Exp>;
@@ -2888,7 +2884,6 @@ export type Companies_Insert_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -2914,7 +2909,6 @@ export type Companies_Insert_Input = {
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
@@ -2962,7 +2956,6 @@ export type Companies_Max_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -2983,7 +2976,6 @@ export type Companies_Max_Fields = {
   latitude: Maybe<Scalars['float8']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['String']>;
   longitude: Maybe<Scalars['float8']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
@@ -3022,7 +3014,6 @@ export type Companies_Min_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3043,7 +3034,6 @@ export type Companies_Min_Fields = {
   latitude: Maybe<Scalars['float8']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['String']>;
   longitude: Maybe<Scalars['float8']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
@@ -3105,7 +3095,6 @@ export type Companies_Order_By = {
   coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
   company_size: InputMaybe<Order_By>;
-  country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
   datapoints_count: InputMaybe<Order_By>;
@@ -3131,7 +3120,6 @@ export type Companies_Order_By = {
   layer: InputMaybe<Order_By>;
   layer_detail: InputMaybe<Order_By>;
   library: InputMaybe<Order_By>;
-  location: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
   longitude: InputMaybe<Order_By>;
@@ -3203,8 +3191,6 @@ export enum Companies_Select_Column {
   /** column name */
   CompanySize = 'company_size',
   /** column name */
-  Country = 'country',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
@@ -3248,8 +3234,6 @@ export enum Companies_Select_Column {
   LayerDetail = 'layer_detail',
   /** column name */
   Library = 'library',
-  /** column name */
-  Location = 'location',
   /** column name */
   LocationJson = 'location_json',
   /** column name */
@@ -3324,7 +3308,6 @@ export type Companies_Set_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3347,7 +3330,6 @@ export type Companies_Set_Input = {
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
@@ -3450,7 +3432,6 @@ export type Companies_Stream_Cursor_Value_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3473,7 +3454,6 @@ export type Companies_Stream_Cursor_Value_Input = {
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
@@ -3543,8 +3523,6 @@ export enum Companies_Update_Column {
   /** column name */
   CompanySize = 'company_size',
   /** column name */
-  Country = 'country',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DataEnrichedAt = 'data_enriched_at',
@@ -3588,8 +3566,6 @@ export enum Companies_Update_Column {
   LayerDetail = 'layer_detail',
   /** column name */
   Library = 'library',
-  /** column name */
-  Location = 'location',
   /** column name */
   LocationJson = 'location_json',
   /** column name */
@@ -6586,7 +6562,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -28293,7 +28269,6 @@ export type Vc_Firms = {
   latitude: Maybe<Scalars['float8']>;
   library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   logo: Maybe<Scalars['jsonb']>;
   longitude: Maybe<Scalars['float8']>;
@@ -28573,7 +28548,6 @@ export type Vc_Firms_Bool_Exp = {
   latitude: InputMaybe<Float8_Comparison_Exp>;
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
-  location: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   longitude: InputMaybe<Float8_Comparison_Exp>;
@@ -29000,7 +28974,6 @@ export type Vc_Firms_Insert_Input = {
   latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
@@ -29044,7 +29017,6 @@ export type Vc_Firms_Max_Fields = {
   latest_investment: Maybe<Scalars['date']>;
   latitude: Maybe<Scalars['float8']>;
   linkedin: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['String']>;
   longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   num_of_exits: Maybe<Scalars['Int']>;
@@ -29080,7 +29052,6 @@ export type Vc_Firms_Min_Fields = {
   latest_investment: Maybe<Scalars['date']>;
   latitude: Maybe<Scalars['float8']>;
   linkedin: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['String']>;
   longitude: Maybe<Scalars['float8']>;
   name: Maybe<Scalars['String']>;
   num_of_exits: Maybe<Scalars['Int']>;
@@ -29144,7 +29115,6 @@ export type Vc_Firms_Order_By = {
   latitude: InputMaybe<Order_By>;
   library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
-  location: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
   longitude: InputMaybe<Order_By>;
@@ -29223,8 +29193,6 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   Linkedin = 'linkedin',
   /** column name */
-  Location = 'location',
-  /** column name */
   LocationJson = 'location_json',
   /** column name */
   Logo = 'logo',
@@ -29287,7 +29255,6 @@ export type Vc_Firms_Set_Input = {
   latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
@@ -29383,7 +29350,6 @@ export type Vc_Firms_Stream_Cursor_Value_Input = {
   latitude: InputMaybe<Scalars['float8']>;
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   longitude: InputMaybe<Scalars['float8']>;
@@ -29458,8 +29424,6 @@ export enum Vc_Firms_Update_Column {
   Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
-  /** column name */
-  Location = 'location',
   /** column name */
   LocationJson = 'location_json',
   /** column name */
@@ -30036,14 +30000,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, library: any | null, parent_event_id: number | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, library: any | null, parent_event_id: number | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person_id: number }> }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, library: any | null, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, status: string, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, status: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, status: string } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -30051,7 +30015,7 @@ export type GetEventsByDateQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
   object: Event_Person_Insert_Input;
@@ -30073,14 +30037,14 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetEventOrganizationByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string | null, status: string } | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string, status: string } | null }> };
 
 export type GetEventInsightByLocationQueryVariables = Exact<{
   where: Events_Bool_Exp;
@@ -30848,7 +30812,7 @@ export type GetEventsPathsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, updated_at: any }> };
+export type GetEventsPathsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, updated_at: any }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
