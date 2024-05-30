@@ -188,9 +188,9 @@ const Event: NextPage<Props> = props => {
     item => item.type === 'sponsor',
   );
 
-  const organizers = event.event_organization?.filter(
-    item => item.type === 'organizer',
-  );
+  const organizers = event.event_organization
+    ?.filter(item => item.type === 'organizer')
+    .filter(item => item.company || item.vc_firm !== null);
 
   const sortedActivities = orderBy(
     [...event.event_person, ...event.event_organization]?.slice() || [],
