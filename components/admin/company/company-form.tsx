@@ -25,6 +25,7 @@ import {
   validateNameAndSlugAndEmailAndDomain,
   status,
   companyChoices,
+  networks,
 } from '../../../utils/constants';
 import ElemSlugInput from '../elem-slug-input';
 import ElemIconGroup from '../elem-icon-group';
@@ -318,7 +319,7 @@ const CompanyForm = ({
         <ArrayInput source="web3_address">
           <SimpleFormIterator className="simple-iterator ">
             <TextInput source="address" label="Address" />
-            <TextInput source="network" label="Network" />
+            <SelectInput label="Network" source="network" choices={networks} />
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>
