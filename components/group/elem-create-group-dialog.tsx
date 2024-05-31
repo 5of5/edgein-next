@@ -68,7 +68,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
       onClose={onClose}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+      panelClass="relative w-full max-w-lg bg-white rounded-lg px-6 pt-6 pb-3 z-10 my-10">
       <div>
         <h2 className="text-xl font-medium">Create Group</h2>
       </div>
@@ -78,7 +78,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
         They&apos;re best when organized around a topic.
       </p>
 
-      <div className="flex flex-col py-3 my-3 border-t border-gray-200 gap-y-6">
+      <div className="flex flex-col py-3 mb-3 gap-y-3">
         <label>
           <InputText
             name="name"
