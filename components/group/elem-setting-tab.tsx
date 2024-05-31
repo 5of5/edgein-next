@@ -255,12 +255,12 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         <div>
           <h2 className="text-xl font-medium">Delete this group?</h2>
         </div>
-        <div className="py-3">
+        <div className="pt-1 pb-3">
           When you delete a group, everything in it will be removed immediately.
           <span className="inline font-bold">This can&lsquo;t be undone.</span>
         </div>
 
-        <div className="flex items-center justify-end pt-3 border-t gap-x-2 border-slate-200">
+        <div className="flex items-center justify-end pt-3 border-t border-gray-200 gap-x-2">
           <ElemButton
             onClick={handleCloseDeleteModal}
             roundedFull
