@@ -25,7 +25,7 @@ import { NextSeo } from 'next-seo';
 
 const DEFAULT_LIMIT = 10;
 
-const Notifications: NextPage = () => {
+const NotificationsPage: NextPage = () => {
   const { user, unreadNotificationsCount, refetchUnreadNotifications } =
     useUser();
 
@@ -122,7 +122,7 @@ const Notifications: NextPage = () => {
       <DashboardLayout>
         <div className="max-w-3xl mx-auto sm:mt-7 sm:px-6 lg:px-8">
           <div className="border border-gray-200 rounded-lg ring-2 ring-white">
-            <div className="flex items-center justify-between mb-2 pt-4 px-4">
+            <div className="flex items-center justify-between px-4 pt-4 mb-2">
               <h2 className="text-xl font-medium">Notifications</h2>
               {unreadNotificationsCount > 0 && (
                 <button
@@ -134,13 +134,13 @@ const Notifications: NextPage = () => {
               )}
             </div>
 
-            <div className="relative flex flex-col border-y border-gray-200 divide-y divide-gray-200 z-10">
+            <div className="relative z-10 flex flex-col border-gray-200 divide-y divide-gray-200 border-y">
               {error && !isFetching && <h4>Error loading notifications</h4>}
 
               {!isFetching && !error && displayedNotifications.length === 0 && (
                 <div className="w-full p-12 text-center">
                   <IconBell
-                    className="mx-auto h-12 w-12 text-gray-300"
+                    className="w-12 h-12 mx-auto text-gray-300"
                     strokeWidth={2}
                   />
                   <h3 className="mt-2 text-lg font-medium">
@@ -185,8 +185,8 @@ const Notifications: NextPage = () => {
                           />
                         </div>
                         {enableExpand && (
-                          <Disclosure.Panel className="pl-16 lg:pl-18 pr-6 pt-2 pb-6">
-                            <ul className="pl-1 list-disc list-inside space-y-2">
+                          <Disclosure.Panel className="pt-2 pb-6 pl-16 pr-6 lg:pl-18">
+                            <ul className="pl-1 space-y-2 list-disc list-inside">
                               {extensions
                                 .filter(extensionItem => extensionItem.field)
                                 .map(item => (
@@ -275,4 +275,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default Notifications;
+export default NotificationsPage;
