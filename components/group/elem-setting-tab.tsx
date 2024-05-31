@@ -228,7 +228,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
                 </p>
               </div>
               <span onClick={() => setLeaveError(false)}>
-                <IconX className="w-4 h-4 cursor-pointer text-slate-700" />
+                <IconX className="w-4 h-4 text-gray-700 cursor-pointer" />
               </span>
             </div>
           )}
@@ -251,16 +251,16 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         onClose={handleCloseDeleteModal}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-6 pb-3 z-10 my-10">
         <div>
           <h2 className="text-xl font-medium">Delete this group?</h2>
         </div>
-        <div className="pt-1 pb-3">
+        <div className="pt-1">
           When you delete a group, everything in it will be removed immediately.
           <span className="inline font-bold">This can&lsquo;t be undone.</span>
         </div>
 
-        <div className="flex items-center justify-end pt-3 border-t border-gray-200 gap-x-2">
+        <div className="flex items-center justify-end pt-3 mt-3 border-t border-gray-200 gap-x-2">
           <ElemButton
             onClick={handleCloseDeleteModal}
             roundedFull
