@@ -1,18 +1,18 @@
-import { Fragment, ChangeEvent, useState, useEffect, useMemo } from 'react';
+import { ChangeEvent, useState, useEffect, useMemo } from 'react';
 import { useMutation } from 'react-query';
-import { Dialog, Transition } from '@headlessui/react';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { useUser } from '@/context/user-context';
-import { ElemButton } from './elem-button';
-import { ElemPhoto } from './elem-photo';
-import { InputSelect } from './input-select';
+import { ElemModal } from '@/components/elem-modal';
+import { ElemButton } from '@/components/elem-button';
+import { ElemPhoto } from '@/components/elem-photo';
+import { InputSelect } from '@/components/input-select';
 import moment from 'moment-timezone';
 import { GetNotesQuery } from '@/graphql/types';
 import {
-  IconX,
   IconSidebarGroups,
   IconLockClosed,
   IconGlobe,
+  IconGroupPlus,
 } from '@/components/icons';
 import ElemCreateGroupDialog from './group/elem-create-group-dialog';
 import { Autocomplete } from '@/components/autocomplete';
@@ -50,6 +50,7 @@ const ElemNoteForm: React.FC<Props> = ({
         title: `${item.name}`,
         description: `by ${item.created_by?.display_name}`,
       })),
+      // { id: 'create_group', icon: IconGroupPlus, title: 'Create group' },
     ];
 
     return options;
@@ -73,9 +74,11 @@ const ElemNoteForm: React.FC<Props> = ({
   //Create Group
   const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
-  const onOpenCreateGroupDialog = () => {
-    setIsOpenCreateGroupDialog(true);
-  };
+  // const createGroup = useMemo(() => {
+  //   if (selectedGroup.id === 'create_group') {
+  //     return setIsOpenCreateGroupDialog(true);
+  //   }
+  // }, [selectedGroup]);
 
   const onCloseCreateGroupDialog = () => {
     setIsOpenCreateGroupDialog(false);
@@ -143,125 +146,84 @@ const ElemNoteForm: React.FC<Props> = ({
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-40" onClose={closeAndReset}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0">
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
+      <ElemModal
+        isOpen={isOpen}
+        onClose={closeAndReset}
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10 !overflow-visible">
+        <div className="">
+          <h2 className="text-xl font-medium">
+            {type === 'edit' ? 'Edit Note' : 'Create Note'}
+          </h2>
+        </div>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95">
-                <Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-5 text-left align-middle shadow-xl transition-all">
-                  <div className="relative flex items-center justify-between pb-2 border-b border-gray-200">
-                    <Dialog.Title className="flex-1 text-xl text-center font-bold">
-                      {type === 'edit' ? 'Edit Note' : 'Create Note'}
-                    </Dialog.Title>
-                    <button
-                      type="button"
-                      onClick={closeAndReset}
-                      className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10">
-                      <IconX className="h-6 w-6" />
-                    </button>
-                  </div>
+        <div className="flex items-start gap-2 pt-3 my-3 border-t border-slate-200">
+          {type === 'edit' ? (
+            <ElemTooltip
+              content={`Last edited by ${user?.display_name} on ${moment(
+                selectedNote?.updated_at,
+              ).format('LL h:mma')}`}
+              direction="top-start">
+              <div className="cursor-pointer">
+                <ElemPhoto
+                  photo={user?.profilePicture || user?.person?.picture}
+                  wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+                  imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                  imgAlt={user?.display_name}
+                  placeholder="user"
+                  placeholderClass="text-gray-300"
+                />
+              </div>
+            </ElemTooltip>
+          ) : (
+            <ElemPhoto
+              photo={user?.person?.picture}
+              wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+              imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+              imgAlt={user?.display_name}
+              placeholder="user"
+              placeholderClass="text-gray-300"
+            />
+          )}
 
-                  <div className="flex items-start gap-2 mt-3 mb-2">
-                    {type === 'edit' ? (
-                      <ElemTooltip
-                        content={`Last edited by ${
-                          user?.display_name
-                        } on ${moment(selectedNote?.updated_at).format(
-                          'LL h:mma',
-                        )}`}
-                        direction="top-start">
-                        <div className="cursor-pointer">
-                          <ElemPhoto
-                            photo={
-                              user?.profilePicture || user?.person?.picture
-                            }
-                            wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
-                            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                            imgAlt={user?.display_name}
-                            placeholder="user"
-                            placeholderClass="text-gray-300"
-                          />
-                        </div>
-                      </ElemTooltip>
-                    ) : (
-                      <ElemPhoto
-                        photo={user?.person?.picture}
-                        wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
-                        imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                        imgAlt={user?.display_name}
-                        placeholder="user"
-                        placeholderClass="text-gray-300"
-                      />
-                    )}
+          <div className="ml-2 grow">
+            <Autocomplete
+              value={notes}
+              onChange={handleChangeNote}
+              onKeyDown={onNoteTextareaKeyDown}
+              placeholder="Write your note..."
+              className=""
+              textareaClass="h-24 max-h-[9rem] !px-0 !py-0 !ring-0 hover:!bg-white"
+            />
 
-                    <div className="ml-2 grow">
-                      <Autocomplete
-                        value={notes}
-                        onChange={handleChangeNote}
-                        onKeyDown={onNoteTextareaKeyDown}
-                        placeholder="Write your note..."
-                        className=""
-                        textareaClass="h-24 max-h-[9rem] !px-0 !py-0 !ring-0 hover:!bg-white"
-                      />
-
-                      <InputSelect
-                        options={groupOptions}
-                        value={selectedGroup}
-                        onChange={setSelectedGroup}
-                        className={`text-primary-500 text-base w-full ${
-                          selectedNote ? 'cursor-not-allowed' : ''
-                        }`}
-                        buttonClasses="mt-2 w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit focus:!ring-1"
-                        disabled={!!selectedNote}
-                      />
-                    </div>
-                  </div>
-
-                  {/* <label>
-                    <InputTextarea
-                      name="notes"
-                      rows={8}
-                      value={notes}
-                      onChange={handleChangeNote}
-                      placeholder="Write your note..."
-                      className="ring-1 ring-slate-200"
-                    />
-                  </label> */}
-
-                  <div className="mt-3 pt-3 flex items-center justify-between border-t border-gray-300">
-                    <ElemButton
-                      btn="primary"
-                      disabled={!notes || !selectedGroup}
-                      loading={isLoading}
-                      onClick={handleSubmit}
-                      className="ml-auto">
-                      {type === 'edit' ? 'Save Note' : 'Create Note'}
-                    </ElemButton>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
+            <InputSelect
+              options={groupOptions}
+              value={selectedGroup}
+              onChange={setSelectedGroup}
+              className={`text-primary-500 text-base w-full ${
+                selectedNote ? 'cursor-not-allowed' : ''
+              }`}
+              buttonClasses="mt-2 w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit focus:!ring-1"
+              disabled={!!selectedNote}
+            />
           </div>
-        </Dialog>
-      </Transition>
+        </div>
+
+        <div className="flex items-center justify-end pt-3 border-t gap-x-2 border-slate-200">
+          <ElemButton onClick={closeAndReset} roundedFull btn="default">
+            Cancel
+          </ElemButton>
+
+          <ElemButton
+            btn="primary"
+            disabled={!notes || !selectedGroup}
+            loading={isLoading}
+            onClick={handleSubmit}>
+            {type === 'edit' ? 'Save Note' : 'Create Note'}
+          </ElemButton>
+        </div>
+      </ElemModal>
 
       <ElemCreateGroupDialog
         isOpen={isOpenCreateGroupDialog}
