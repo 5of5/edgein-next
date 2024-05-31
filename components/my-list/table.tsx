@@ -183,19 +183,19 @@ export const Table: FC<Props> = ({
 
   return (
     <div className="px-4 mt-4">
-      <div className="sm:flex items-start justify-between mb-2">
-        <h2 className="font-medium capitalize mr-2">
+      <div className="items-start justify-between mb-2 sm:flex">
+        <h2 className="mr-2 font-medium capitalize">
           {startCase(resourceType)}
         </h2>
 
         {['companies', 'investors'].includes(resourceType) &&
           fundingTotal !== undefined &&
           fundingTotal > 0 && (
-            <div className="flex items-center sm:justify-center sm:text-right font-bold shrink-0 mr-2">
-              <div className="text-sm mr-1">{`Total ${
+            <div className="flex items-center mr-2 font-bold sm:justify-center sm:text-right shrink-0">
+              <div className="mr-1 text-sm">{`Total ${
                 resourceType === 'companies' ? 'Funding' : 'Invested'
               }`}</div>
-              <div className="text-green-600 text-lg">
+              <div className="text-lg text-green-600">
                 ${convertToInternationalCurrencySystem(fundingTotal)}
               </div>
             </div>
@@ -203,19 +203,19 @@ export const Table: FC<Props> = ({
       </div>
 
       {(data.length > 0 || searchQuery) && (
-        <div className="flex items-center space-x-2 mb-2">
+        <div className="flex items-center mb-2 space-x-2">
           {Object.keys(selectedRowIds).length > 0 ? (
             <>
               <button
                 onClick={handleRemove}
                 className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1">
-                <IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
+                <IconTrash className="w-5 h-5 mr-1" title="Remove from list" />
                 <div>Remove from list</div>
               </button>
               <button
                 onClick={() => toggleAllRowsSelected(false)}
                 className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-                <IconX className="h-5 w-5 mr-1" title="Clear Selection" />
+                <IconX className="w-5 h-5 mr-1" title="Clear Selection" />
                 <div>Cancel</div>
               </button>
 
@@ -243,12 +243,12 @@ export const Table: FC<Props> = ({
       )}
 
       <div className="relative">
-        <div className="absolute pointer-events-none w-8 bg-gradient-to-l from-white z-10 rounded-tr-lg rounded-br-lg top-px bottom-px right-0 sm:right-px"></div>
-        <div className="w-full border-y border-gray-200 overflow-auto lg:border lg:rounded-lg">
+        <div className="absolute right-0 z-10 w-8 rounded-tr-lg rounded-br-lg pointer-events-none bg-gradient-to-l from-white top-px bottom-px sm:right-px"></div>
+        <div className="w-full overflow-auto border-gray-200 border-y lg:border lg:rounded-lg">
           {data.length > 0 ? (
             <table
               {...getTableProps()}
-              className="table-auto divide-y divide-gray-200 overscroll-x-none">
+              className="divide-y divide-gray-200 table-auto overscroll-x-none">
               <thead className="">
                 {headerGroups.map(headerGroup => {
                   const { key, ...restHeaderGroupProps } =
@@ -273,19 +273,19 @@ export const Table: FC<Props> = ({
                           <th
                             key={key}
                             {...restColumnProps}
-                            className="relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content bg-gray-25 text-gray-600">
+                            className="relative px-2 py-2 text-sm font-medium text-left text-gray-600 whitespace-nowrap min-w-content bg-gray-25">
                             <div className="flex items-center min-w-content">
                               {column.render('Header')}
 
                               {column.disableDropdown != true && (
                                 <Menu
                                   as="div"
-                                  className="relative inline-block text-left ml-1">
-                                  <Menu.Button className="block align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
-                                    <IconChevronDown className="h-5 w-5" />
+                                  className="relative inline-block ml-1 text-left">
+                                  <Menu.Button className="block align-middle rounded-full text-slate-400 hover:text-primary-500 hover:bg-slate-100">
+                                    <IconChevronDown className="w-5 h-5" />
                                   </Menu.Button>
 
-                                  <Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
+                                  <Menu.Items className="absolute left-0 z-50 flex flex-col w-56 mt-2 overflow-hidden origin-top-left bg-white divide-y divide-gray-100 rounded-lg shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     {column.canSort && (
                                       <Menu.Item
                                         as="button"
@@ -302,7 +302,7 @@ export const Table: FC<Props> = ({
                                             ]),
                                           );
                                         }}>
-                                        <IconSortUp className="mr-1 h-5 w-5 inline-block" />
+                                        <IconSortUp className="inline-block w-5 h-5 mr-1" />
                                         Sort Ascending
                                       </Menu.Item>
                                     )}
@@ -323,7 +323,7 @@ export const Table: FC<Props> = ({
                                             ]),
                                           );
                                         }}>
-                                        <IconSortDown className="mr-1 h-5 w-5 inline-block" />
+                                        <IconSortDown className="inline-block w-5 h-5 mr-1" />
                                         Sort Descending
                                       </Menu.Item>
                                     )}
@@ -331,13 +331,13 @@ export const Table: FC<Props> = ({
                                     {!column.disableHiding && (
                                       <Menu.Item
                                         as="button"
-                                        className="flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
+                                        className="flex items-center w-full px-2 py-2 text-sm font-medium text-left hover:text-primary-500 hover:bg-slate-100"
                                         onClick={(e: any) => {
                                           column.getHeaderProps(
                                             column.toggleHidden(),
                                           );
                                         }}>
-                                        <IconX className="mr-1 h-5 w-5 inline-block" />
+                                        <IconX className="inline-block w-5 h-5 mr-1" />
                                         Hide Column
                                       </Menu.Item>
                                     )}
@@ -374,7 +374,7 @@ export const Table: FC<Props> = ({
                           <td
                             key={key}
                             {...restCellProps}
-                            className="align-middle text-sm p-2">
+                            className="p-2 text-sm align-middle">
                             {cell.render('Cell')}
                           </td>
                         );
@@ -385,9 +385,9 @@ export const Table: FC<Props> = ({
               </tbody>
             </table>
           ) : (
-            <div className="flex flex-col w-full items-center justify-center  p-5 text-slate-600">
+            <div className="flex flex-col items-center justify-center w-full p-5 text-slate-600">
               <div className="max-w-sm text-center">{noDataText}</div>
-              {['companies', 'investors'].includes(resourceType) && (
+              {['companies', 'investors', 'people'].includes(resourceType) && (
                 <ElemButton
                   href={exploreBtnHref}
                   btn="transparent"
