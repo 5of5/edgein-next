@@ -118,6 +118,11 @@ export const ElemListSettings: FC<Props> = ({
     setListGroupsOpen(false);
   };
 
+  const onCloseSettingsModal = () => {
+    onCloseSettingsDialog();
+    setListNameOpen(false);
+  };
+
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
   };
@@ -145,9 +150,7 @@ export const ElemListSettings: FC<Props> = ({
   return (
     <ElemModal
       isOpen={listSettingsModal}
-      onClose={() => {
-        onCloseSettingsDialog(), setListNameOpen(false);
-      }}
+      onClose={onCloseSettingsModal}
       showCloseIcon={true}
       placement="center"
       panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
@@ -194,7 +197,7 @@ export const ElemListSettings: FC<Props> = ({
                     }`}
                   />
                   {listNameError && (
-                    <div className="mt-2 text-sm font-bold text-rose-400">
+                    <div className="mt-2 text-sm font-medium text-rose-400">
                       {listNameError}
                     </div>
                   )}
@@ -256,7 +259,7 @@ export const ElemListSettings: FC<Props> = ({
                   />
 
                   {listDescriptionError && (
-                    <div className="mt-2 text-sm font-bold text-rose-400">
+                    <div className="mt-2 text-sm font-medium text-rose-400">
                       {listDescriptionError}
                     </div>
                   )}
@@ -337,7 +340,7 @@ export const ElemListSettings: FC<Props> = ({
                     placeholder="Select group(s) to share with"
                   />
                   {listGroupsError === '' ? null : (
-                    <div className="mt-2 text-sm font-bold text-rose-400">
+                    <div className="mt-2 text-sm font-medium text-rose-400">
                       {listGroupsError}
                     </div>
                   )}

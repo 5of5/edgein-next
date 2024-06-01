@@ -155,9 +155,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
       </ElemButton>
       <ElemModal
         isOpen={isOpen}
-        onClose={() => {
-          onCloseSaveToListDialog();
-        }}
+        onClose={onCloseSaveToListDialog}
         showCloseIcon={true}
         placement="center"
         panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">

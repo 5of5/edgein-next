@@ -162,7 +162,7 @@ const Group: NextPage<Props> = (props: Props) => {
           onAddGroupMember={() => addGroupMember()}
         />
 
-        <div className="mt-4 px-4 grid lg:grid-cols-11 lg:gap-7">
+        <div className="grid px-4 mt-4 lg:grid-cols-11 lg:gap-7">
           <div className="mt-4 lg:mt-0 lg:col-span-7">
             <div ref={notesRef}>
               {isUserBelongToGroup && (
@@ -174,10 +174,10 @@ const Group: NextPage<Props> = (props: Props) => {
               )}
             </div>
             {isPublicGroup && !isUserBelongToGroup && (
-              <div className="bg-white shadow rounded-lg px-5 py-4">
+              <div className="px-5 py-4 bg-white rounded-lg shadow">
                 <div className="p-12 text-center">
                   <IconUsers
-                    className="mx-auto h-12 w-12 text-gray-300"
+                    className="w-12 h-12 mx-auto text-gray-300"
                     title="Join Group"
                   />
                   <h3 className="mt-2 text-lg font-medium">
@@ -194,10 +194,10 @@ const Group: NextPage<Props> = (props: Props) => {
               </div>
             )}
             {isPrivateGroup && !isUserBelongToGroup && (
-              <div className="bg-white shadow rounded-lg px-5 py-4">
+              <div className="px-5 py-4 bg-white rounded-lg shadow">
                 <div className="p-12 text-center">
                   <IconLockClosed
-                    className="mx-auto h-12 w-12 text-gray-300"
+                    className="w-12 h-12 mx-auto text-gray-300"
                     title="Join Group"
                   />
                   <h3 className="mt-2 text-lg font-bold">Private Group</h3>
@@ -247,7 +247,6 @@ const Group: NextPage<Props> = (props: Props) => {
             group={groupData}
             onClose={onCloseSettingDialog}
             onUpdateGroupData={setGroupData}
-            onInvite={onOpenInviteDialog}
           />
         )}
       </DashboardLayout>
