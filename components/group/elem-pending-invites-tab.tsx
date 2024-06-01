@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
 import { useMutation } from 'react-query';
-import { Menu, Transition } from '@headlessui/react';
-import { IconEllipsisHorizontal } from '@/components/icons';
+import { IconEllipsisVertical } from '@/components/icons';
 import { User_Groups, User_Group_Invites } from '@/graphql/types';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useUser } from '@/context/user-context';
+import { ElemDropdown } from '../elem-dropdown';
+import toast from 'react-hot-toast';
 
 type Props = {
   group: User_Groups;
@@ -45,6 +45,20 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
             item => item.id !== inviteId,
           ),
         }));
+        toast.custom(
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}>
+              Member invite removed from group
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
       },
     },
   );
@@ -54,69 +68,61 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10">
+    <div className="bg-white border divide-y rounded-lg border-black/10 divide-black/10">
       {pendingInvites.length === 0 ? (
         <p className="px-4 py-3">No pending invites.</p>
       ) : (
         pendingInvites.map((invite: User_Group_Invites) => {
           const isInviteSender = user?.id === invite.created_by_user_id;
+          const inviteLinks = [
+            ...(isGroupManager || isInviteSender
+              ? [
+                  {
+                    id: 2,
+                    label: 'Remove Invite',
+                    value: 'remove_invite',
+                    onClick: () => {
+                      handleRemoveInvite(invite.id);
+                    },
+                  },
+                ]
+              : []),
+          ];
+
           const theInvite = (
-            <div
-              className="flex items-center justify-between px-4 py-3 group"
-              key={invite.id}>
+            <div className="flex items-center justify-between px-4 py-3 cursor-pointer group">
               <div className="flex items-center gap-x-2">
                 <ElemPhoto
-                  wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
-                  imgClass="object-contain w-full h-full border border-slate-100 "
+                  wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden rounded-full"
+                  imgClass=" w-full h-full border border-gray-200"
                   placeholder="user"
                   placeholderClass="text-gray-300"
                   imgAlt={invite.email}
                 />
 
-                <p className="font-bold">{invite.email}</p>
+                <p>{invite.email}</p>
               </div>
               {(isGroupManager || isInviteSender) && (
-                <Menu as="div" className="relative flex text-left">
-                  {({ open }) => (
-                    <>
-                      <Menu.Button
-                        className={`${
-                          open ? 'opacity-100' : ''
-                        } self-center justify-self-center w-6 h-6 bg-slate-200 rounded-full cursor-pointer opacity-0 hover:bg-slate-300 group-hover:opacity-100`}>
-                        <IconEllipsisHorizontal className="" />
-                      </Menu.Button>
-
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95">
-                        <Menu.Items className="absolute right-0 top-full mt-1 p-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`${
-                                  active
-                                    ? 'bg-red-500 text-white'
-                                    : 'text-red-500'
-                                } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
-                                onClick={() => handleRemoveInvite(invite.id)}>
-                                Remove
-                              </button>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
-                      </Transition>
-                    </>
-                  )}
-                </Menu>
+                <div className="opacity-30 group-hover:opacity-100">
+                  <IconEllipsisVertical className="w-6 h-6" />
+                </div>
               )}
             </div>
           );
-          return theInvite;
+
+          return (
+            <div key={invite.id}>
+              <ElemDropdown
+                customButton={theInvite}
+                placement="bottom-end"
+                buttonClass="w-full"
+                defaultItem={null}
+                items={inviteLinks}
+                itemsShowIcons={false}
+                className="relative flex w-full text-left hover:bg-gray-100"
+              />
+            </div>
+          );
         })
       )}
     </div>
