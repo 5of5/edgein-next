@@ -5,6 +5,7 @@ query GetListUserGroups($where: list_user_groups_bool_exp!) {
     list {
       id
       name
+      description
       public
       created_at
       created_by {
