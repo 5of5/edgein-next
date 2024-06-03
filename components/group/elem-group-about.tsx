@@ -63,8 +63,8 @@ export const ElemGroupAbout: React.FC<Props> = ({
   return (
     <>
       <div className={className}>
-        <div className="border border-gray-300 rounded-lg shrink-0">
-          <div className="px-4 py-3 border-b border-gray-300">
+        <div className="border border-gray-200 rounded-lg shrink-0">
+          <div className="px-4 py-3 border-b border-gray-200">
             <h2 className="text-lg font-medium">About Group</h2>
             {group?.description && (
               <p className="mb-3 text-sm text-gray-500">{group?.description}</p>

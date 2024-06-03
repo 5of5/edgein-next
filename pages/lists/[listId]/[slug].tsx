@@ -371,7 +371,7 @@ const MyList: NextPage<Props> = ({ list }) => {
 
         {user && !isListAuthor && !isFollowing && (
           <div className="mx-4">
-            <div className="w-full p-12 text-center border border-gray-300 rounded-lg">
+            <div className="w-full p-12 text-center border border-gray-200 rounded-lg">
               <IconCustomList
                 className="w-12 h-12 mx-auto text-gray-300"
                 title="Follow List"
