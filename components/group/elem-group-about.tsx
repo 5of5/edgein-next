@@ -8,11 +8,8 @@ import {
   IconLockClosed,
 } from '@/components/icons';
 import { User_Groups } from '@/graphql/types';
-import { ElemLink } from '../elem-link';
-import { ElemPhoto } from '@/components/elem-photo';
-import { ElemMemberAvatarList } from '@/components/group/elem-member-avatar-list';
+import { ElemAvatarList } from '../elem-avatar-list';
 import { SettingTabProps } from './elem-setting-dialog';
-import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -66,18 +63,18 @@ export const ElemGroupAbout: React.FC<Props> = ({
   return (
     <>
       <div className={className}>
-        <div className="shrink-0 border border-gray-300 rounded-lg">
+        <div className="border border-gray-300 rounded-lg shrink-0">
           <div className="px-4 py-3 border-b border-gray-300">
             <h2 className="text-lg font-medium">About Group</h2>
             {group?.description && (
-              <p className="text-gray-500 text-sm mb-3">{group?.description}</p>
+              <p className="mb-3 text-sm text-gray-500">{group?.description}</p>
             )}
 
             {isPublicGroup ? (
               <div className="flex text-sm">
                 <IconGlobe
                   title="Public"
-                  className="w-5 h-5 shrink-0 mr-2 text-gray-500"
+                  className="w-5 h-5 mr-2 text-gray-500 shrink-0"
                 />
                 <div>
                   <h4>Public</h4>
@@ -88,7 +85,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
               <div className="flex text-sm">
                 <IconLockClosed
                   title="Private"
-                  className="w-5 h-5 shrink-0 mr-2 text-gray-500"
+                  className="w-5 h-5 mr-2 text-gray-500 shrink-0"
                 />
                 <div>
                   <h4 className="font-mediun">Private</h4>
@@ -101,7 +98,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
             )}
 
             {isUserBelongToGroup && groupLinks.length > 0 && (
-              <ul className="mt-2 flex flex-col space-y-2">
+              <ul className="flex flex-col mt-2 space-y-2">
                 {groupLinks?.map((item, index) => {
                   return (
                     <li key={index}>
@@ -113,7 +110,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                         {item.icon && (
                           <item.icon
                             title={item.text}
-                            className="w-5 h-5 shrink-0 mr-2 text-gray-500"
+                            className="w-5 h-5 mr-2 text-gray-500 shrink-0"
                           />
                         )}
                         <span className="text-sm hover:underline">
@@ -129,7 +126,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
           {(isPublicGroup || isUserBelongToGroup) && (
             <div className="px-4 py-3">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <h3 className="font-medium">People</h3>
                 {isUserBelongToGroup && (
                   <button
@@ -139,9 +136,9 @@ export const ElemGroupAbout: React.FC<Props> = ({
                   </button>
                 )}
               </div>
-              <div className="pt-1 flex items-center">
-                <ElemMemberAvatarList members={group.user_group_members} />
-                <div className="text-sm text-gray-500 ml-1">
+              <div className="flex items-center pt-1">
+                <ElemAvatarList people={group.user_group_members} limit={10} />
+                <div className="ml-1 text-sm text-gray-500">
                   {group.user_group_members.length} Member
                   {group.user_group_members.length > 1 ? 's' : ''}
                 </div>
@@ -152,46 +149,9 @@ export const ElemGroupAbout: React.FC<Props> = ({
           {(groupAdmins.length > 0 || isUserBelongToGroup) && (
             <div className="px-4 pb-3">
               <div className="flex items-center">
-                <ul>
-                  {groupAdmins.map(mem => {
-                    const admin = (
-                      <div>
-                        {mem.user?.person?.picture ? (
-                          <ElemPhoto
-                            photo={mem.user?.person?.picture}
-                            wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                            imgAlt={mem.user?.display_name}
-                          />
-                        ) : (
-                          <div
-                            className="flex items-center justify-center aspect-square w-8 rounded-full bg-gray-300 border border-gray-50 text-lg capitalize"
-                            title={
-                              mem.user?.display_name
-                                ? mem.user?.display_name
-                                : ''
-                            }>
-                            {mem.user?.display_name?.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-                    );
+                <ElemAvatarList people={groupAdmins} limit={10} />
 
-                    return (
-                      <li key={mem.id}>
-                        {mem.user?.person?.slug ? (
-                          <ElemLink
-                            href={`${ROUTES.PEOPLE}/${mem.user?.person?.slug}/`}>
-                            {admin}
-                          </ElemLink>
-                        ) : (
-                          admin
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-                <div className="text-sm text-gray-500 ml-1">
+                <div className="ml-1 text-sm text-gray-500">
                   Admin
                   {groupAdmins.length > 1 ? 's' : ''}
                 </div>
