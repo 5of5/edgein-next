@@ -9,10 +9,10 @@ import { ElemSocialShare } from '../elem-social-share';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 import { ElemTooltip } from '../elem-tooltip';
-import { getListDisplayName, getNameFromListMember } from '@/utils/lists';
+import { getListDisplayName } from '@/utils/lists';
 import { startCase } from 'lodash';
-import { ElemPhoto } from '../elem-photo';
 import { Lists } from '@/graphql/types';
+import { ElemAvatarList } from '../elem-avatar-list';
 
 type Props = {
   list: Lists;
@@ -175,39 +175,7 @@ export const ElemListInformation: FC<Props> = ({
               list?.list_members &&
               list?.list_members.length > 0 && (
                 <div className="flex items-center mt-2">
-                  <ul className="flex -space-x-3 overflow-hidden">
-                    {list?.list_members?.map((member: any) => {
-                      return (
-                        <li key={member?.id}>
-                          <ElemTooltip
-                            content={getNameFromListMember(member)}
-                            mode="dark"
-                            direction="top"
-                            size="lg">
-                            {member?.user?.person?.slug ? (
-                              <div>
-                                <a
-                                  href={`${ROUTES.PEOPLE}/${member?.user?.person?.slug}/`}>
-                                  <ElemPhoto
-                                    photo={member?.user.person?.picture}
-                                    wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                                    imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                                    imgAlt={getNameFromListMember(member)}
-                                    placeholder="user"
-                                    placeholderClass="text-gray-500"
-                                  />
-                                </a>
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center w-8 text-lg capitalize bg-gray-200 border rounded-full aspect-square text-dark-500 border-gray-50">
-                                {getNameFromListMember(member).charAt(0)}
-                              </div>
-                            )}
-                          </ElemTooltip>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <ElemAvatarList people={list?.list_members} />
                 </div>
               )}
           </div>
