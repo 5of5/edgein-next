@@ -206,30 +206,32 @@ const MyList: NextPage<Props> = ({ list }) => {
     }
   };
 
-  const onDeleteList = async (id: number) => {
-    const deleteRes = await fetch(`/api/delete-list/?listId=${id}`, {
-      method: 'DELETE',
-    });
-
-    if (deleteRes.ok) {
-      router.push(ROUTES.LISTS);
-      refetchList();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            List Deleted
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
-    }
-  };
+  const { mutate: onDeleteList, isLoading: isDeleting } = useMutation(
+    (id: number) =>
+      fetch(`/api/delete-list/?listId=${id}`, {
+        method: 'DELETE',
+      }),
+    {
+      onSuccess: () => {
+        router.push(ROUTES.LISTS);
+        refetchList();
+        toast.custom(
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}>
+              List Deleted
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
+      },
+    },
+  );
 
   const { mutate: followList, isLoading: isFollowListLoading } = useMutation(
     () =>
@@ -317,6 +319,7 @@ const MyList: NextPage<Props> = ({ list }) => {
           }
           onChangePublic={onChangePublic}
           onDeleteList={onDeleteList}
+          isDeleting={isDeleting}
           listSettingsModal={openListSettings}
           onCloseSettingsDialog={onCloseSettingsDialog}
         />

@@ -1,14 +1,13 @@
-import { Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { Menu, Transition } from '@headlessui/react';
-import { IconPlus, IconEllipsisHorizontal } from '@/components/icons';
+import { IconPlus, IconEllipsisVertical } from '@/components/icons';
 import { User_Groups, User_Group_Members } from '@/graphql/types';
 import { ElemButton } from '@/components/elem-button';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useUser } from '@/context/user-context';
 import { ROUTES } from '@/routes';
-import { ElemLink } from '../elem-link';
+import { ElemDropdown } from '../elem-dropdown';
+import toast from 'react-hot-toast';
 
 type Props = {
   group: User_Groups;
@@ -44,6 +43,7 @@ const ElemMemberTab: React.FC<Props> = ({
       onSuccess: async response => {
         if (response.status === 200) {
           const data = await response.json();
+          console.log(data);
           onUpdateGroupData((prev: User_Groups) => ({
             ...prev,
             created_by_user_id: data.created_by_user_id,
@@ -74,6 +74,20 @@ const ElemMemberTab: React.FC<Props> = ({
             mem => mem.id !== memberId,
           ),
         }));
+        toast.custom(
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}>
+              Member removed from group
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
       },
     },
   );
@@ -93,136 +107,102 @@ const ElemMemberTab: React.FC<Props> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10">
-      <div className="rounded-t-lg hover:bg-slate-100">
-        <ElemButton
-          btn="transparent"
-          className="flex items-center gap-x-2 w-full px-4 py-3 !justify-start"
-          onClick={onInvite}>
-          <div className="p-2 bg-primary-100 rounded-md">
-            <IconPlus className="w-6 h-6 text-primary-500" />
-          </div>
-          <p className="font-bold text-primary-500">Add People</p>
-        </ElemButton>
-      </div>
-
-      {group.user_group_members.map((member: User_Group_Members, index) => {
-        const theMember = (
-          <div
-            className="flex items-center justify-between px-4 py-3 group"
-            key={member.id}>
-            <div className="flex items-center gap-x-2">
-              {member.user?.person?.picture ? (
-                <ElemPhoto
-                  wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-lg"
-                  imgClass="object-contain w-full h-full border border-slate-100 "
-                  photo={member.user?.person?.picture}
-                  placeholder="user2"
-                  placeholderClass="text-gray-300"
-                  imgAlt={member.user?.display_name}
-                />
-              ) : (
-                <div className="flex items-center justify-center aspect-square w-10 rounded-lg bg-slate-200 text-dark-500 text-xl capitalize">
-                  {member.user?.display_name?.charAt(0)}
-                </div>
-              )}
-
-              <p className="font-bold capitalize">
-                {member.user?.display_name}
-              </p>
-              {member.user?.id === group.created_by_user_id && (
-                <span>(Admin)</span>
-              )}
+    <>
+      <div className="bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg">
+        <div className="rounded-t-lg hover:bg-gray-100">
+          <ElemButton
+            btn="transparent"
+            className="flex items-center gap-x-2 w-full px-4 py-3 !justify-start"
+            onClick={onInvite}>
+            <div className="p-2 rounded-full bg-primary-500">
+              <IconPlus className="w-6 h-6 text-white" />
             </div>
-            {isGroupManager && member.user?.id !== group.created_by_user_id && (
-              <Menu as="div" className="relative flex text-left">
-                {({ open }) => (
-                  <>
-                    <Menu.Button
-                      className={`${
-                        open ? 'opacity-100' : ''
-                      } self-center justify-self-center w-6 h-6 bg-slate-200 rounded-full cursor-pointer opacity-0 hover:bg-slate-300 group-hover:opacity-100`}>
-                      <IconEllipsisHorizontal className="" />
-                    </Menu.Button>
+            <p className="text-base font-medium">Add People</p>
+          </ElemButton>
+        </div>
 
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95">
-                      <Menu.Items className="absolute right-0 top-full mt-1 p-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {member.user?.person?.slug && (
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`${
-                                  active && 'bg-slate-200 text-primary-500'
-                                } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
-                                onClick={e => {
-                                  e.preventDefault();
-                                  handleViewProfile(member.user?.person?.slug);
-                                }}>
-                                View Profile
-                              </button>
-                            )}
-                          </Menu.Item>
-                        )}
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`${
-                                active && 'bg-slate-200 text-primary-500'
-                              } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
-                              onClick={e => {
-                                e.preventDefault();
-                                handleMakeGroupManager(member.user!.id!);
-                              }}>
-                              Make Group Admin
-                            </button>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`${
-                                active
-                                  ? 'bg-red-500 text-white'
-                                  : 'text-red-500'
-                              } group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
-                              onClick={e => {
-                                e.preventDefault();
-                                handleRemoveFromGroup(member.id);
-                              }}>
-                              Remove from Group
-                            </button>
-                          )}
-                        </Menu.Item>
-                      </Menu.Items>
-                    </Transition>
-                  </>
+        {group.user_group_members.map((member: User_Group_Members) => {
+          const memberLinks = [
+            ...(member.user?.person?.slug
+              ? [
+                  {
+                    id: 1,
+                    label: 'View Profile',
+                    value: 'view_profile',
+                    onClick: () => {
+                      handleViewProfile(member.user?.person?.slug);
+                    },
+                  },
+                ]
+              : []),
+            ...(isGroupManager && member.user?.id !== group.created_by_user_id
+              ? [
+                  {
+                    id: 2,
+                    label: 'Make Group Admin',
+                    value: 'make_group_admin',
+                    onClick: () => {
+                      handleMakeGroupManager(member.user!.id!);
+                    },
+                  },
+                  {
+                    id: 3,
+                    label: 'Remove from Group',
+                    value: 'remove_from_group',
+                    onClick: () => {
+                      handleRemoveFromGroup(member.id);
+                    },
+                  },
+                ]
+              : []),
+          ];
+
+          const theMember = (
+            <div className="flex items-center justify-between px-4 py-3 cursor-pointer group">
+              <div className="flex items-center gap-x-2">
+                {member.user?.person?.picture ? (
+                  <ElemPhoto
+                    wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden rounded-full"
+                    imgClass="object-contain w-full h-full border border-gray-200"
+                    photo={member.user?.person?.picture}
+                    placeholder="user"
+                    placeholderClass="text-gray-300"
+                    imgAlt={member.user?.display_name}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-10 text-xl capitalize bg-white rounded-full aspect-square text-dark-500">
+                    {member.user?.display_name?.charAt(0)}
+                  </div>
                 )}
-              </Menu>
-            )}
-          </div>
-        );
 
-        if (member.user?.person?.slug) {
-          return (
-            <ElemLink
-              href={`${ROUTES.PEOPLE}/${member.user.person?.slug}`}
-              key={member.id}
-              className="block cursor-pointer hover:bg-slate-100">
-              {theMember}
-            </ElemLink>
+                <p className="capitalize">{member.user?.display_name}</p>
+                {member.user?.id === group.created_by_user_id && (
+                  <span>(Admin)</span>
+                )}
+              </div>
+
+              <div className="opacity-30 group-hover:opacity-100">
+                <IconEllipsisVertical className="w-6 h-6" />
+              </div>
+            </div>
           );
-        }
 
-        return theMember;
-      })}
-    </div>
+          return (
+            <div key={member.id}>
+              <ElemDropdown
+                customButton={theMember}
+                placement="bottom-end"
+                buttonClass="w-full"
+                defaultItem={null}
+                items={memberLinks}
+                itemsShowIcons={false}
+                className="relative flex w-full text-left hover:bg-gray-100"
+              />
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

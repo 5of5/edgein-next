@@ -22,6 +22,7 @@ import {
   Investors,
   Investors_Bool_Exp,
   Investors_Order_By,
+  People,
 } from '@/graphql/types';
 
 type Props = {
@@ -159,9 +160,9 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
     currentQueryMemberTags.includes(name),
   );
 
-  const memberIds = members
-    ? (members.map(item => item.person?.id) as number[])
-    : [];
+  const personIds = members
+    .filter(item => item.person !== null)
+    .map(item => (item.person as People).id);
 
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
@@ -196,7 +197,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
           </div>
         ) : (
           <>
-            <div className="lg:flex items-start justify-between">
+            <div className="items-start justify-between lg:flex">
               {showTags && (
                 <div>
                   <ElemFilterTags
@@ -207,11 +208,11 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                   />
                 </div>
               )}
-              {allowToSaveTeam && memberIds.length > 0 && (
+              {allowToSaveTeam && personIds.length > 0 && (
                 <div className="mt-2 lg:mt-0 shrink-0">
                   <ElemBulkSavePeople
                     text="Save team to list"
-                    personIds={memberIds}
+                    personIds={personIds}
                   />
                 </div>
               )}

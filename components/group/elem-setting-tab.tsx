@@ -5,10 +5,11 @@ import { Switch } from '@headlessui/react';
 import toast from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { User_Groups } from '@/graphql/types';
-import { IconSignOut, IconTrash, IconX } from '@/components/icons';
+import { IconSignOut, IconSpinner, IconTrash, IconX } from '@/components/icons';
 import ElemSettingEditableField from './elem-setting-editable-field';
-import { ElemConfirmModal } from '../elem-confirm-modal';
 import { ROUTES } from '@/routes';
+import { ElemModal } from '../elem-modal';
+import { ElemButton } from '../elem-button';
 
 type Props = {
   group: User_Groups;
@@ -63,7 +64,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
     setIsOpenDeleteModal(false);
   };
 
-  const { mutate: togglePublic } = useMutation(
+  const { mutate: togglePublic, isLoading: isToggling } = useMutation(
     (value: boolean) =>
       fetch('/api/groups/', {
         method: 'PUT',
@@ -172,7 +173,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
+      <div className="overflow-hidden bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg">
         {fields.map(item => (
           <ElemSettingEditableField
             key={item.field}
@@ -185,49 +186,52 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         ))}
 
         <div>
-          <div
-            className={`flex items-center justify-between space-x-1 p-3 ${
-              !isGroupManager ? '' : 'cursor-pointer hover:bg-slate-100'
-            }`}>
+          <div className="flex items-center justify-between p-3 space-x-1">
             <p className="font-bold">Public</p>
-            <Switch
-              checked={!!isPublicGroup}
-              onChange={togglePublic}
-              disabled={!isGroupManager}
-              className={`${isPublicGroup ? 'bg-primary-600' : 'bg-gray-200'} ${
-                !isGroupManager ? 'opacity-60' : ''
-              } relative inline-flex h-6 w-11 items-center rounded-full`}>
-              <span className="sr-only">Set group public</span>
-              <span
+            <div className="flex items-center">
+              {isToggling && (
+                <IconSpinner className="w-5 h-5 mr-3 -ml-1 animate-spin" />
+              )}
+              <Switch
+                checked={!!isPublicGroup}
+                onChange={togglePublic}
+                disabled={!isGroupManager}
                 className={`${
-                  isPublicGroup ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-              />
-            </Switch>
+                  isPublicGroup
+                    ? 'bg-primary-600 hover:bg-primary-800'
+                    : 'bg-gray-300 hover:bg-gray-400'
+                } ${
+                  !isGroupManager ? 'opacity-60' : ''
+                } relative inline-flex h-6 w-11 items-center rounded-full`}>
+                <span className="sr-only">Set group public</span>
+                <span
+                  className={`${
+                    isPublicGroup ? 'translate-x-6' : 'translate-x-1'
+                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                />
+              </Switch>
+            </div>
           </div>
         </div>
 
         <div>
-          <div
-            className="flex items-start space-x-1 p-3 cursor-pointer hover:bg-slate-100"
+          <button
+            className="flex items-start w-full p-3 space-x-1 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={handleLeaveGroup}>
-            <IconSignOut className="w-6 h-6 text-red-500" />
-            <p className="font-bold text-red-500">Leave Group</p>
-          </div>
+            <IconSignOut className="w-6 h-6" />
+            <p className="font-medium">Leave Group</p>
+          </button>
           {leaveError && (
-            <div className="flex justify-between px-4 pb-3 text-red-600 text-sm">
+            <div className="flex justify-between px-4 py-3 text-sm text-rose-500">
               <div>
                 <p>
-                  You cannot leave the group when you are the group&apos;s
-                  manager.
-                </p>
-                <p>
-                  Please make another member as group manager then leave group
-                  or you can delete group.
+                  Note: You cannot leave the group when you are the group
+                  manager. Please assign another member as group manager then
+                  leave group or you can delete group.
                 </p>
               </div>
               <span onClick={() => setLeaveError(false)}>
-                <IconX className="w-4 h-4 text-slate-700 cursor-pointer" />
+                <IconX className="w-4 h-4 text-gray-700 cursor-pointer" />
               </span>
             </div>
           )}
@@ -235,32 +239,46 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
       </div>
 
       {isGroupManager && (
-        <div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden mt-6">
-          <div
-            className="flex items-center p-3 cursor-pointer space-x-1 hover:bg-slate-100"
+        <div className="mt-6 overflow-hidden bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg">
+          <button
+            className="flex items-center w-full p-3 space-x-1 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={handleOpenDeleteModal}>
-            <IconTrash className="w-6 h-6 text-red-500" />
-            <p className="font-bold text-red-500">Delete Group</p>
-          </div>
+            <IconTrash className="w-6 h-6" />
+            <p className="font-medium">Delete Group</p>
+          </button>
         </div>
       )}
 
-      <ElemConfirmModal
+      <ElemModal
         isOpen={isOpenDeleteModal}
-        title="Delete this group?"
-        content={
-          <div>
-            When you delete a group, everything in it will be removed
-            immediately.
-            <span className="font-bold inline">
-              This can&lsquo;t be undone.
-            </span>
-          </div>
-        }
-        loading={isDeleting}
         onClose={handleCloseDeleteModal}
-        onDelete={deleteGroup}
-      />
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-6 pb-3 z-10 my-10">
+        <div>
+          <h2 className="text-xl font-medium">Delete this group?</h2>
+        </div>
+        <div className="pt-1">
+          When you delete a group, everything in it will be removed immediately.
+          <span className="inline font-bold">This can&lsquo;t be undone.</span>
+        </div>
+
+        <div className="flex items-center justify-end pt-3 mt-3 border-t border-gray-200 gap-x-2">
+          <ElemButton
+            onClick={handleCloseDeleteModal}
+            roundedFull
+            btn="default">
+            Cancel
+          </ElemButton>
+          <ElemButton
+            onClick={() => deleteGroup()}
+            roundedFull
+            btn="danger"
+            loading={isDeleting}>
+            Delete
+          </ElemButton>
+        </div>
+      </ElemModal>
     </>
   );
 };

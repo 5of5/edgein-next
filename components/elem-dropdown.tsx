@@ -75,7 +75,10 @@ export const ElemDropdown: FC<Props> = ({
 
   return (
     <Popover className={`relative shrink-0 ${className}`}>
-      <Popover.Button as="div" ref={setReferenceElement}>
+      <Popover.Button
+        as="div"
+        ref={setReferenceElement}
+        className={customButton ? buttonClass : ''}>
         {customButton ? (
           customButton
         ) : (

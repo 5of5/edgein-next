@@ -18,8 +18,11 @@ import { InputTextarea } from '../input-textarea';
 import { ElemLink } from '../elem-link';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { Autocomplete } from '@/components/autocomplete';
-import { ElemConfirmModal } from '@/components/elem-confirm-modal';
 import { ROUTES } from '@/routes';
+import { ElemModal } from '../elem-modal';
+import { ElemButton } from '../elem-button';
+import { useMutation } from 'react-query';
+import toast from 'react-hot-toast';
 
 type Note = GetNotesQuery['notes'][0];
 type Comments = GetNotesQuery['notes'][0]['comments'];
@@ -46,6 +49,10 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
   const [commentContent, setCommentContent] = useState<string>('');
   const [showDeleteCommentConfirm, setShowDeleteCommentConfirm] =
     useState(false);
+
+  const onHideDeleteCommentConfirm = () => {
+    setShowDeleteCommentConfirm(false);
+  };
 
   const commentInput =
     React.createRef() as MutableRefObject<HTMLTextAreaElement>;
@@ -91,20 +98,57 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
     setShowDeleteCommentConfirm(true);
   };
 
-  const onDeleteComment = async () => {
-    await fetch('/api/delete-comment/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: selectedComment?.id,
+  const { mutate: onDeleteComment, isLoading: isDeletingComment } = useMutation(
+    () =>
+      fetch('/api/delete-comment/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: selectedComment?.id,
+        }),
       }),
-    });
-    setShowDeleteCommentConfirm(false);
-    refetch();
-  };
+    {
+      onSuccess: async (response, value) => {
+        if (response.status !== 200) {
+          const err = await response.json();
+          toast.custom(
+            t => (
+              <div
+                className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                }`}>
+                {err.message}
+              </div>
+            ),
+            {
+              duration: 5000,
+              position: 'top-center',
+            },
+          );
+        } else {
+          setShowDeleteCommentConfirm(false);
+          refetch();
+          toast.custom(
+            t => (
+              <div
+                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
+                }`}>
+                Comment deleted
+              </div>
+            ),
+            {
+              duration: 3000,
+              position: 'top-center',
+            },
+          );
+        }
+      },
+    },
+  );
 
   const onChangeCommentInput = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
@@ -280,16 +324,35 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
         </div>
       )}
 
-      <ElemConfirmModal
+      <ElemModal
         isOpen={showDeleteCommentConfirm}
-        title="Delete comment?"
-        content="Are you sure you want to delete this comment?"
-        //loading={isDeletingNote}
-        onClose={() => {
-          setShowDeleteCommentConfirm(false);
-        }}
-        onDelete={onDeleteComment}
-      />
+        onClose={onHideDeleteCommentConfirm}
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+        <div>
+          <h2 className="text-xl font-medium">Delete comment?</h2>
+        </div>
+        <div className="py-3">
+          Are you sure you want to delete this comment?
+        </div>
+
+        <div className="flex items-center justify-end pt-3 border-t gap-x-2 border-slate-200">
+          <ElemButton
+            onClick={onHideDeleteCommentConfirm}
+            roundedFull
+            btn="default">
+            Cancel
+          </ElemButton>
+          <ElemButton
+            onClick={() => onDeleteComment()}
+            roundedFull
+            btn="danger"
+            loading={isDeletingComment}>
+            Delete
+          </ElemButton>
+        </div>
+      </ElemModal>
     </>
   );
 };

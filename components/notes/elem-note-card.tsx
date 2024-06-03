@@ -25,16 +25,16 @@ import { Popover, Transition } from '@headlessui/react';
 // import { InputTextarea } from '../input-textarea';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
 import ElemNoteForm from '@/components/elem-note-form';
-import { usePopup } from '@/context/popup-context';
 import { ElemLink } from '../elem-link';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { Autocomplete } from '@/components/autocomplete';
 import { useMutation } from 'react-query';
 import toast, { Toaster } from 'react-hot-toast';
-import { ElemConfirmModal } from '@/components/elem-confirm-modal';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemNoteCardComments } from './elem-note-card-comments';
+import { ElemModal } from '../elem-modal';
+import { ElemButton } from '../elem-button';
 
 type Note = GetNotesQuery['notes'][0];
 
@@ -564,14 +564,33 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         onRefetchNotes={refetch}
       />
 
-      <ElemConfirmModal
+      <ElemModal
         isOpen={showDeleteNoteConfirm}
-        title="Delete Note?"
-        content="Are you sure you want to delete this note?"
-        loading={isDeletingNote}
         onClose={handleCloseDeleteNoteConfirm}
-        onDelete={onDeleteNote}
-      />
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+        <div>
+          <h2 className="text-xl font-medium">Delete Note?</h2>
+        </div>
+        <div className="py-3">Are you sure you want to delete this note?</div>
+
+        <div className="flex items-center justify-end pt-3 border-t gap-x-2 border-slate-200">
+          <ElemButton
+            onClick={handleCloseDeleteNoteConfirm}
+            roundedFull
+            btn="default">
+            Cancel
+          </ElemButton>
+          <ElemButton
+            onClick={() => onDeleteNote()}
+            roundedFull
+            btn="danger"
+            loading={isDeletingNote}>
+            Delete
+          </ElemButton>
+        </div>
+      </ElemModal>
 
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}

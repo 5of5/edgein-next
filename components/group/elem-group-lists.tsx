@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment-timezone';
 import toast, { Toaster } from 'react-hot-toast';
 import { kebabCase } from 'lodash';
-import { IconCustomList, IconPlus, IconCheck } from '@/components/icons';
+import { IconSidebarList, IconPlus, IconCheck } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { getNameFromListName } from '@/utils/reaction';
 import {
@@ -47,16 +47,25 @@ export const ElemGroupLists: React.FC<Props> = ({
   );
   const listMembers = data?.list_members || [];
 
-  const customLists = listAndFollows
-    ?.filter(
-      list => !['hot', 'crap', 'like'].includes(getNameFromListName(list)),
-    )
-    .sort((a, b) => (a.name < b.name ? -1 : 1));
+  const userCustomLists = listAndFollows?.filter(
+    list => !['hot', 'crap', 'like'].includes(getNameFromListName(list)),
+  );
 
-  const listOptions = differenceBy(customLists, lists, 'id').map(item => ({
+  const userSortedLists = [
+    ...userCustomLists.filter(list => list?.created_by?.id === user?.id), // lists created by user
+    ...userCustomLists.filter(list => list?.created_by?.id != user?.id), // lists followed by user
+  ];
+
+  const listOptions = differenceBy(userSortedLists, lists, 'id').map(item => ({
     id: item.id,
-    title: getNameFromListName(item),
+    title: `${getNameFromListName(item)}`,
+    description: `by ${item.created_by?.display_name} | ${item.total_no_of_resources} items`,
   }));
+
+  const groupLists = [
+    ...lists.filter(list => list?.created_by?.id != user?.id), // lists shared by other group members
+    ...lists.filter(list => list?.created_by?.id === user?.id), // lists shared by user
+  ];
 
   const handleToggleFollow = async (listId: number, isFollowing: boolean) => {
     const response = await fetch('/api/toggle-follow-list/', {
@@ -126,30 +135,12 @@ export const ElemGroupLists: React.FC<Props> = ({
     }
   };
 
-  const formatDateShown = (date: Date) => {
-    const utcTime = date;
-    const local_date = moment
-      .utc(utcTime)
-      .local()
-      .format('YYYY-MM-DD HH:mm:ss');
-
-    const lastMonth = moment().subtract(1, 'months').valueOf();
-    const noteCreated = moment(local_date).valueOf();
-
-    // if note is older than a month
-    if (lastMonth > noteCreated) {
-      return moment(local_date).format('LL');
-    } else {
-      return moment(local_date).fromNow();
-    }
-  };
-
   return (
     <div className={`${className ? className : ''}`}>
-      <div className="shrink-0 border border-gray-300 rounded-lg">
+      <div className="border border-gray-300 rounded-lg shrink-0">
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-300">
           <div>
-            <h2 className="text-lg font-medium">{`Lists (${lists.length})`}</h2>
+            <h2 className="text-lg font-medium">{`Lists (${groupLists.length})`}</h2>
           </div>
           <ElemButton btn="default" onClick={() => setIsOpenAddList(true)}>
             <IconPlus className="w-5 h-5 mr-1" />
@@ -159,12 +150,12 @@ export const ElemGroupLists: React.FC<Props> = ({
 
         {lists?.length === 0 ? (
           <div className="w-full p-12 text-center">
-            <IconCustomList
-              className="mx-auto h-12 w-12 text-gray-300"
+            <IconSidebarList
+              className="w-12 h-12 mx-auto text-gray-300"
               title="Lists"
             />
             <h3 className="mt-2 text-lg font-medium">
-              No lists have been added to group yet.
+              No lists have been added to this group.
             </h3>
 
             <ElemButton
@@ -176,8 +167,8 @@ export const ElemGroupLists: React.FC<Props> = ({
             </ElemButton>
           </div>
         ) : (
-          <ul className="px-4 py-3 flex flex-col space-y-3">
-            {lists.map(item => {
+          <ul className="flex flex-col px-4 py-3 space-y-3">
+            {groupLists.map(item => {
               if (!item) {
                 return;
               }
@@ -188,18 +179,34 @@ export const ElemGroupLists: React.FC<Props> = ({
               return (
                 <li
                   key={item.id}
-                  className="flex space-x-4 justify-between items-start">
+                  className="flex items-start justify-between space-x-4">
                   <ElemLink
                     href={`${ROUTES.LISTS}/${item.id}/${kebabCase(
                       getNameFromListName(item),
                     )}`}
                     className="flex items-start space-x-2 text-sm">
                     <div>
-                      <h3
-                        className="line-clamp-1 break-all font-medium hover:underline"
-                        title={getNameFromListName(item)}>
-                        {getNameFromListName(item)}
-                      </h3>
+                      {item.description ? (
+                        <ElemTooltip
+                          content={item.description}
+                          direction="top"
+                          size="lg"
+                          mode="dark">
+                          <div className="inline">
+                            <h3
+                              className="font-medium break-all line-clamp-1 hover:underline"
+                              title={getNameFromListName(item)}>
+                              {getNameFromListName(item)}
+                            </h3>
+                          </div>
+                        </ElemTooltip>
+                      ) : (
+                        <h3
+                          className="font-medium break-all line-clamp-1 hover:underline"
+                          title={getNameFromListName(item)}>
+                          {getNameFromListName(item)}
+                        </h3>
+                      )}
 
                       {item?.updated_at ? (
                         <ElemTooltip
@@ -234,19 +241,21 @@ export const ElemGroupLists: React.FC<Props> = ({
                     </div>
                   </ElemLink>
 
-                  <ElemButton
-                    btn="default"
-                    className={`${isFollowing ? '' : ''}`}
-                    onClick={() => handleToggleFollow(item.id, isFollowing)}>
-                    {isFollowing ? (
-                      <>
-                        <IconCheck className="w-5 h-5 mr-1" />
-                        Following
-                      </>
-                    ) : (
-                      <>Follow</>
-                    )}
-                  </ElemButton>
+                  {item.created_by?.id != user?.id && (
+                    <ElemButton
+                      btn="default"
+                      className={`${isFollowing ? '' : ''}`}
+                      onClick={() => handleToggleFollow(item.id, isFollowing)}>
+                      {isFollowing ? (
+                        <>
+                          <IconCheck className="w-5 h-5 mr-1" />
+                          Following
+                        </>
+                      ) : (
+                        <>Follow</>
+                      )}
+                    </ElemButton>
+                  )}
                 </li>
               );
             })}
