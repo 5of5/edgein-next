@@ -1,7 +1,5 @@
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Dialog, Transition } from '@headlessui/react';
-import { IconX } from '@/components/icons';
 import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '../elem-button';
@@ -10,6 +8,7 @@ import { kebabCase } from 'lodash';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { ROUTES } from '@/routes';
+import { ElemModal } from '@/components/elem-modal';
 
 type Props = {
   isOpen: boolean;
@@ -69,85 +68,56 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-40" onClose={onClose}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0">
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition.Child>
+    <ElemModal
+      isOpen={isOpen}
+      onClose={onClose}
+      showCloseIcon={true}
+      placement="center"
+      panelClass="relative w-full max-w-lg bg-white rounded-lg px-6 pt-6 pb-3 z-10 my-10">
+      <div>
+        <h2 className="text-xl font-medium">Create List</h2>
+      </div>
 
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95">
-              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title className="text-xl font-bold flex items-center justify-between">
-                  <span>Create List</span>
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="focus-visible:outline-none">
-                    <IconX className="w-5 h-5" />
-                  </button>
-                </Dialog.Title>
+      <p className="pt-1 text-gray-600">
+        Lists are where you monitor and compare companies and/or investors that
+        matter to you.
+      </p>
 
-                <div className="mt-2">
-                  <p className="text-slate-500">
-                    Lists are where you monitor and compare companies and/or
-                    investors that matter to you.
-                  </p>
-                </div>
+      <div className="flex flex-col py-3 mb-3 gap-y-3">
+        <label>
+          <InputText
+            name="name"
+            type="text"
+            label="Name"
+            value={listName}
+            required={true}
+            onChange={e => setListName(e.target.value)}
+            placeholder="Enter List Name..."
+            className={`${
+              error === ''
+                ? 'ring-1 ring-slate-200'
+                : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+            }`}
+          />
+          {error && (
+            <div className="mt-2 text-sm font-bold text-rose-400">{error}</div>
+          )}
+        </label>
+      </div>
 
-                <div className="flex flex-col space-y-6 mt-6">
-                  <label>
-                    <InputText
-                      name="name"
-                      type="text"
-                      label="Name"
-                      value={listName}
-                      required={true}
-                      onChange={e => setListName(e.target.value)}
-                      placeholder="Enter List Name..."
-                      className={`${
-                        error === ''
-                          ? 'ring-1 ring-slate-200'
-                          : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                      }`}
-                    />
-                    {error && (
-                      <div className="mt-2 font-bold text-sm text-rose-400">
-                        {error}
-                      </div>
-                    )}
-                  </label>
-                </div>
+      <div className="flex items-center justify-end pt-3 border-t border-gray-200 gap-x-2">
+        <ElemButton onClick={onClose} roundedFull btn="default">
+          Cancel
+        </ElemButton>
 
-                <div className="mt-6 float-right">
-                  <ElemButton
-                    btn="primary"
-                    disabled={listName === '' || error ? true : false}
-                    loading={isLoading}
-                    onClick={handleCreate}>
-                    Create
-                  </ElemButton>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
+        <ElemButton
+          btn="primary"
+          disabled={listName === '' || error ? true : false}
+          loading={isLoading}
+          onClick={handleCreate}>
+          Create
+        </ElemButton>
+      </div>
+    </ElemModal>
   );
 };

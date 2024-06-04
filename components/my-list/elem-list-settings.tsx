@@ -21,6 +21,7 @@ type Props = {
   onSaveListGroups: (ids: Array<number>) => void;
   onChangePublic: (value: boolean) => void;
   onDeleteList: (id: number) => void;
+  isDeleting: boolean;
   listSettingsModal: boolean;
   onCloseSettingsDialog: () => void;
 };
@@ -34,6 +35,7 @@ export const ElemListSettings: FC<Props> = ({
   onSaveListGroups,
   onChangePublic,
   onDeleteList,
+  isDeleting,
   listSettingsModal,
   onCloseSettingsDialog,
 }) => {
@@ -56,7 +58,7 @@ export const ElemListSettings: FC<Props> = ({
   const [listGroups, setListGroups] = useState<Array<any>>([]);
   const [listGroupsError, setListGroupsError] = useState<string | null>(null);
 
-  const [listDeleteModal, setListDeleteModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
 
   const userGroupOptions = useMemo(() => {
     return myGroups.map(item => ({
@@ -116,6 +118,15 @@ export const ElemListSettings: FC<Props> = ({
     setListGroupsOpen(false);
   };
 
+  const onCloseSettingsModal = () => {
+    onCloseSettingsDialog();
+    setListNameOpen(false);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsOpenDeleteModal(false);
+  };
+
   useEffect(() => {
     setListName(getListDisplayName(list) ?? '');
     setListNameError('');
@@ -139,9 +150,7 @@ export const ElemListSettings: FC<Props> = ({
   return (
     <ElemModal
       isOpen={listSettingsModal}
-      onClose={() => {
-        onCloseSettingsDialog(), setListNameOpen(false);
-      }}
+      onClose={onCloseSettingsModal}
       showCloseIcon={true}
       placement="center"
       panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
@@ -183,12 +192,12 @@ export const ElemListSettings: FC<Props> = ({
                     value={listName}
                     className={`!mt-0 ${
                       listNameError === ''
-                        ? 'ring-1 ring-slate-200'
+                        ? 'ring-1 ring-gray-200'
                         : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                     }`}
                   />
                   {listNameError && (
-                    <div className="mt-2 text-sm font-bold text-rose-400">
+                    <div className="mt-2 text-sm font-medium text-rose-400">
                       {listNameError}
                     </div>
                   )}
@@ -244,13 +253,13 @@ export const ElemListSettings: FC<Props> = ({
                     placeholder="Add description"
                     className={`!mt-0 ${
                       listDescriptionError === ''
-                        ? 'ring-1 ring-slate-200'
+                        ? 'ring-1 ring-gray-200'
                         : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                     }`}
                   />
 
                   {listDescriptionError && (
-                    <div className="mt-2 text-sm font-bold text-rose-400">
+                    <div className="mt-2 text-sm font-medium text-rose-400">
                       {listDescriptionError}
                     </div>
                   )}
@@ -331,7 +340,7 @@ export const ElemListSettings: FC<Props> = ({
                     placeholder="Select group(s) to share with"
                   />
                   {listGroupsError === '' ? null : (
-                    <div className="mt-2 text-sm font-bold text-rose-400">
+                    <div className="mt-2 text-sm font-medium text-rose-400">
                       {listGroupsError}
                     </div>
                   )}
@@ -378,7 +387,7 @@ export const ElemListSettings: FC<Props> = ({
           <button
             className="w-full p-3 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={() => {
-              setListDeleteModal(true);
+              setIsOpenDeleteModal(true);
             }}>
             <div className="text-left ">
               <h3 className="flex items-center font-medium">Delete List</h3>
@@ -386,37 +395,37 @@ export const ElemListSettings: FC<Props> = ({
           </button>
         </div>
       </div>
+
       <ElemModal
-        isOpen={listDeleteModal}
-        onClose={() => {
-          setListDeleteModal(false);
-        }}
+        isOpen={isOpenDeleteModal}
+        onClose={handleCloseDeleteModal}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-sm bg-white rounded-lg px-4 py-3 z-10 my-10">
-        <div className="pb-3 border-b border-gray-200">
-          <h2 className="text-xl font-medium">Delete list?</h2>
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-6 pb-3 z-10 my-10">
+        <div>
+          <h2 className="text-xl font-medium">Delete this list?</h2>
+        </div>
+        <div className="pt-1">
+          When you delete a list, everything in it will be removed immediately.{' '}
+          <span className="font-medium text-rose-500">
+            This can&apos;t be undone.
+          </span>
         </div>
 
-        <div className="pt-4">
-          <p className="text-sm text-gray-600">
-            When you delete a list, everything in it will be removed
-            immediately.{' '}
-            <span className="font-medium text-rose-500">
-              This can&apos;t be undone.
-            </span>
-          </p>
-          <div className="flex w-full pt-4 gap-x-2">
-            <ElemButton btn="gray" onClick={() => setListDeleteModal(false)}>
-              Cancel
-            </ElemButton>
-            <ElemButton
-              onClick={() => onDeleteList(list?.id)}
-              roundedFull
-              btn="danger">
-              Delete list
-            </ElemButton>
-          </div>
+        <div className="flex items-center justify-end pt-3 mt-3 border-t border-gray-200 gap-x-2">
+          <ElemButton
+            onClick={handleCloseDeleteModal}
+            roundedFull
+            btn="default">
+            Cancel
+          </ElemButton>
+          <ElemButton
+            onClick={() => onDeleteList(list?.id)}
+            roundedFull
+            loading={isDeleting}
+            btn="danger">
+            Delete
+          </ElemButton>
         </div>
       </ElemModal>
     </ElemModal>

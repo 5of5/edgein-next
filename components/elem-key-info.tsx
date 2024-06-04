@@ -24,6 +24,7 @@ import {
   IconDocument,
   IconContract,
   IconLockClosed,
+  IconCopy,
 } from '@/components/icons';
 import {
   getTwitterHandle,
@@ -37,6 +38,8 @@ import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/router';
 import { useGetUserProfileQuery } from '@/graphql/types';
 import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
+import toast, { Toaster } from 'react-hot-toast';
+import { ElemTooltip } from './elem-tooltip';
 
 type Attachments = Array<{
   label: string;
@@ -60,7 +63,7 @@ type Props = {
   investmentsLength?: number;
   emails?: string[];
   linkedIn?: string | null;
-  web3Address?: string[] | null;
+  web3Address?: { address: string; network: string }[] | null;
   github?: string | null;
   twitter?: string | null;
   instagram?: string | null;
@@ -253,7 +256,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
   if (web3Address?.length) {
     infoItems.push({
       icon: IconContract,
-      text: Array.isArray(web3Address) ? web3Address.join(' ') : web3Address,
+      text: Array.isArray(web3Address)
+        ? /* to not break previous version */
+          // TODO add information about network later (web3Address[0].network and web3Address[0].address)
+          web3Address
+            ?.map((element: { address?: string } | string) =>
+              typeof element === 'string' ? element : element?.address,
+            )
+            .join(' ')
+        : web3Address,
       showHide: !userProfile || edgeInContributorButtonEnabled,
     });
   }
@@ -270,6 +281,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconGithub,
       text: 'Github',
       link: github,
+      showHide: true,
+    });
+  }
+  if (telegram) {
+    infoItems.push({
+      icon: IconTelegram,
+      text: 'Telegram',
+      link: telegram,
+      showHide: true,
     });
   }
   if (facebook) {
@@ -292,13 +312,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconInstagram,
       text: 'Instagram',
       link: instagram,
-    });
-  }
-  if (telegram) {
-    infoItems.push({
-      icon: IconTelegram,
-      text: 'Telegram',
-      link: telegram,
     });
   }
   if (discord) {
@@ -333,7 +346,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   const onInfoClick = (info: string) => () => {
     if (user?.entitlements?.viewEmails) {
-      setShowInfo({ ...showInfo, [info]: !showInfo[info] });
+      setShowInfo({
+        ...showInfo,
+        [info]: true, //!showInfo[info]
+      });
       // TODO add action
     } else {
       setIsOpenUpgradeDialog(true);
@@ -343,131 +359,167 @@ export const ElemKeyInfo: React.FC<Props> = ({
     setIsOpenUpgradeDialog(false);
   };
 
+  const onCopy = async (item: string) => {
+    navigator.clipboard.writeText(item);
+    toast.custom(
+      t => (
+        <div
+          className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+            t.visible ? 'animate-fade-in-up' : 'opacity-0'
+          }`}>
+          &ldquo;{item}&rdquo; copied to clipboard
+        </div>
+      ),
+      {
+        duration: 3000,
+        position: 'top-center',
+      },
+    );
+  };
+
   return (
-    <section className={`border border-gray-300 rounded-lg ${className}`}>
-      {heading && <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>}
+    <>
+      <section className={`border border-gray-300 rounded-lg ${className}`}>
+        {heading && (
+          <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
+        )}
 
-      <ul className="flex flex-col p-4 space-y-4 text-sm">
-        {infoItems.map((item, index: number) => {
-          let itemInner: ReactElement = (
-            <>
-              {item.icon && (
-                <item.icon
-                  title={item.text}
-                  className={`${
-                    item.link?.length ? 'text-primary-500' : ''
-                  } h-5 w-5 shrink-0`}
-                />
-              )}
-              <span className="min-w-0 break-words">{item.text}</span>
-            </>
-          );
-
-          if (item.link?.length) {
-            itemInner = (
-              <a
-                key={index}
-                className={`${baseClasses} flex-1 transition-all underline hover:no-underline`}
-                href={item.link}
-                target={item.target ? item.target : '_blank'}
-                rel="noopener noreferrer"
-                title={item.text}>
-                {itemInner}
-              </a>
-            );
-          }
-
-          itemInner = (
-            <li key={index} className={!item.link ? baseClasses : ''}>
-              {itemInner}
-            </li>
-          );
-
-          if (item.showHide) {
-            return (
-              <li
-                key={index}
-                onClick={onInfoClick(item.text)}
-                className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer`}>
-                <div className="flex items-center">
-                  {item.icon && (
-                    <item.icon
-                      title={showInfo[item.text] ? item.text : ''}
-                      className={`${
-                        showInfo[item.text]
-                          ? 'text-primary-500'
-                          : 'text-gray-400'
-                      } h-5 w-5 mr-2 shrink-0`}
-                    />
-                  )}
-                  {showInfo[item.text] ? (
-                    <a
-                      className="underline break-all transition-all hover:no-underline"
-                      href={item.link}
-                      target={item.target ? item.target : '_blank'}
-                      rel="noopener noreferrer"
-                      title={item.text}>
-                      {item.text}
-                    </a>
-                  ) : (
-                    <span className="text-gray-400">
-                      &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
-                    </span>
-                  )}
-                </div>
-                {!showInfo[item.text] && (
-                  <IconLockClosed
-                    className="w-4 h-4 text-gray-400 shrink-0"
-                    strokeWidth={2}
+        <ul className="flex flex-col p-4 space-y-4 text-sm">
+          {infoItems.map((item, index: number) => {
+            let itemInner: ReactElement = (
+              <>
+                {item.icon && (
+                  <item.icon
+                    title={item.text}
+                    className={`${
+                      item.link?.length ? 'text-primary-500' : ''
+                    } h-5 w-5 shrink-0`}
                   />
                 )}
+                <span className="min-w-0 break-words">{item.text}</span>
+              </>
+            );
+
+            if (item.link?.length) {
+              itemInner = (
+                <a
+                  key={index}
+                  className={`${baseClasses} flex-1 transition-all underline hover:no-underline`}
+                  href={item.link}
+                  target={item.target ? item.target : '_blank'}
+                  rel="noopener noreferrer"
+                  title={item.text}>
+                  {itemInner}
+                </a>
+              );
+            }
+
+            itemInner = (
+              <li key={index} className={!item.link ? baseClasses : ''}>
+                {itemInner}
               </li>
             );
-          } else {
-            return itemInner;
-          }
-        })}
 
-        {emails.map((email, i: number) => [
-          <li
-            key={i}
-            onClick={onInfoClick('email')}
-            className={`${baseClasses} flex-1 items-center justify-between cursor-pointer`}>
-            <div className="flex items-center">
-              <IconEmail
-                className={`${
-                  showInfo['email'] ? 'text-primary-500' : 'text-gray-400'
-                } h-5 w-5 mr-2 shrink-0`}
-              />
-              <div className="break-all">
-                {showInfo['email'] ? (
-                  <a
-                    href={`mailto:${email}`}
-                    className="underline hover:no-underline">
-                    {email}
-                  </a>
-                ) : (
-                  <span className="text-gray-400">
-                    &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center text-primary-500">
-              {!showInfo['email'] && (
-                <IconLockClosed
-                  className="w-4 h-4 text-gray-400 shrink-0"
-                  strokeWidth={2}
-                />
-              )}
-            </div>
-          </li>,
-        ])}
-      </ul>
-      <ElemUpgradeDialog
-        isOpen={isOpenUpgradeDialog}
-        onClose={onCloseUpgradeDialog}
-      />
-    </section>
+            if (item.showHide) {
+              return (
+                <li
+                  key={index}
+                  onClick={onInfoClick(item.text)}
+                  className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer`}>
+                  <div className="flex items-center">
+                    {item.icon && (
+                      <item.icon
+                        title={showInfo[item.text] ? item.text : ''}
+                        className={`${
+                          showInfo[item.text]
+                            ? 'text-primary-500'
+                            : 'text-gray-400'
+                        } h-5 w-5 mr-2 shrink-0`}
+                      />
+                    )}
+                    {showInfo[item.text] ? (
+                      <a
+                        className="underline break-all transition-all hover:no-underline"
+                        href={item.link}
+                        target={item.target ? item.target : '_blank'}
+                        rel="noopener noreferrer"
+                        title={item.text}>
+                        {item.text}
+                      </a>
+                    ) : (
+                      <span className="text-gray-400">
+                        &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
+                      </span>
+                    )}
+                  </div>
+                  {!showInfo[item.text] && (
+                    <IconLockClosed
+                      className="w-4 h-4 text-gray-400 shrink-0"
+                      strokeWidth={2}
+                    />
+                  )}
+                </li>
+              );
+            } else {
+              return itemInner;
+            }
+          })}
+
+          {emails.map((email, i: number) => [
+            <li
+              key={i}
+              className={`${baseClasses} flex-1 items-center justify-between cursor-pointer`}>
+              <ElemTooltip
+                content={`${showInfo['email'] ? 'Copy' : 'View'} email`}
+                direction="top"
+                mode="dark">
+                <button
+                  className="flex items-center w-full"
+                  onClick={
+                    showInfo['email']
+                      ? () => onCopy(email)
+                      : onInfoClick('email')
+                  }>
+                  <IconEmail
+                    className={`${
+                      showInfo['email'] ? 'text-primary-500' : 'text-gray-400'
+                    } h-5 w-5 mr-2 shrink-0`}
+                  />
+                  <div className="break-all">
+                    {showInfo['email'] ? (
+                      <span
+                        // href={`mailto:${email}`}
+                        className="underline hover:no-underline">
+                        {email}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">
+                        &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="ml-auto">
+                    {!showInfo['email'] ? (
+                      <IconLockClosed
+                        className="w-4 h-4 text-gray-400 shrink-0"
+                        strokeWidth={2}
+                      />
+                    ) : (
+                      <IconCopy className="w-4 h-4 text-gray-400 shrink-0" />
+                    )}
+                  </div>
+                </button>
+              </ElemTooltip>
+            </li>,
+          ])}
+        </ul>
+        <ElemUpgradeDialog
+          isOpen={isOpenUpgradeDialog}
+          onClose={onCloseUpgradeDialog}
+        />
+      </section>
+      <Toaster />
+    </>
   );
 };

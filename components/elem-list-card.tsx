@@ -3,22 +3,22 @@ import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { kebabCase } from 'lodash';
 import { useUser } from '@/context/user-context';
-import { getNameFromListName, getNameFromListMember } from '@/utils/lists';
+import { getNameFromListName } from '@/utils/lists';
 import { formatDateShown } from '@/utils';
 import { getListDisplayName } from '@/utils/lists';
 import {
   GetGroupsQuery,
   GetListsQuery,
-  // List_Members,
-  // User_Group_Members,
+  List_Members,
+  User_Group_Members,
 } from '@/graphql/types';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ROUTES } from '@/routes';
 import { ElemButton } from './elem-button';
-import { ElemPhoto } from './elem-photo';
 import { ElemTooltip } from './elem-tooltip';
 import { IconGlobe, IconLockClosed } from './icons';
 import { ElemLink } from './elem-link';
+import { ElemAvatarList } from './elem-avatar-list';
 
 type ResourceDataType<T> = T;
 
@@ -67,8 +67,8 @@ export const ElemListCard: FC<Props> = ({
   const numOfNotes = isResourceList ? 0 : resource.notes.length;
 
   const members = isResourceList
-    ? resource.list_members
-    : resource.user_group_members;
+    ? (resource.list_members as Array<List_Members>)
+    : (resource.user_group_members as Array<User_Group_Members>);
 
   const { mutate: followList, isLoading: isFollowingListLoading } = useMutation(
     async () => {
@@ -210,36 +210,7 @@ export const ElemListCard: FC<Props> = ({
 
         {members && members.length > 0 && (
           <div className="flex items-center pl-1 mt-4">
-            <ul className="flex -space-x-3 overflow-hidden">
-              {members?.slice(0, 6).map((member: any) => {
-                return (
-                  <li key={member?.id}>
-                    <ElemTooltip
-                      content={getNameFromListMember(member)}
-                      mode="dark"
-                      direction="top"
-                      size="lg">
-                      {member?.user?.person?.picture ? (
-                        <div>
-                          <ElemPhoto
-                            photo={member?.user.person?.picture}
-                            wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                            imgAlt={getNameFromListMember(member)}
-                            placeholder="user"
-                            placeholderClass="text-gray-500"
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center w-8 text-lg capitalize bg-gray-300 border rounded-full aspect-square text-dark-500 border-gray-50">
-                          {getNameFromListMember(member).charAt(0)}
-                        </div>
-                      )}
-                    </ElemTooltip>
-                  </li>
-                );
-              })}
-            </ul>
+            <ElemAvatarList people={members} limit={6} />
             <ElemLink
               href={resourceUrl}
               className="ml-1 text-sm font-medium text-gray-500 hover:underline">

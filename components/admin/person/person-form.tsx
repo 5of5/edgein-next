@@ -18,6 +18,7 @@ import {
   validateNameAndSlugAndEmailAndDomain,
   status,
   libraryChoices,
+  networks,
 } from '../../../utils/constants';
 import ElemSlugInput from '../elem-slug-input';
 import ElemIconGroup from '../elem-icon-group';
@@ -205,8 +206,9 @@ const PersonForm = ({
         <TextInput className={inputClassName} source="discord" />
         <TextInput className={inputClassName} source="telegram" />
         <ArrayInput className={inputClassName} source="web3_address">
-          <SimpleFormIterator>
-            <TextInput source="" label="Address" />
+          <SimpleFormIterator className="simple-iterator ">
+            <TextInput source="address" label="Address" />
+            <SelectInput label="Network" source="network" choices={networks} />
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>

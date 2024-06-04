@@ -17,6 +17,7 @@ import { useParams } from 'react-router-dom';
 import {
   investorChoices,
   libraryChoices,
+  networks,
   status,
   validateNameAndSlugAndEmailAndDomain,
 } from '@/utils/constants';
@@ -246,8 +247,9 @@ const VcFirmForm = ({
         <ArrayInput
           className={`w-[49%] ${textInputClassName}`}
           source="web3_address">
-          <SimpleFormIterator>
-            <TextInput source="" label="Address" />
+          <SimpleFormIterator className="simple-iterator ">
+            <TextInput source="address" label="Address" />
+            <SelectInput label="Network" source="network" choices={networks} />
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>

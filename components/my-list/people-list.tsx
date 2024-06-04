@@ -207,6 +207,8 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
       pageIndex={pageIndex}
       totalItems={totalItems}
       noDataText="There are no people in this list."
+      exploreBtnHref={ROUTES.PEOPLE}
+      exploreBtnText="Explore People"
       searchQuery={query}
       onChangeSearchQuery={onChangeSearchQuery}
       onRefetchData={refetch}

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  IconGroup,
-  IconChevronDownMini,
-  IconPlus,
-  IconSettings,
-} from '@/components/icons';
+import { IconPlus, IconSettings } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { User_Groups } from '@/graphql/types';
 import { SettingTabProps } from './elem-setting-dialog';
@@ -43,7 +38,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between flex-wrap space-y-2 px-4 py-3 border-b border-gray-300 lg:space-y-0">
+      <div className="flex flex-wrap items-center justify-between px-4 py-3 space-y-2 border-b border-gray-200 lg:space-y-0">
         {isUserBelongToGroup ? (
           <>
             <div>
@@ -81,15 +76,15 @@ export const ElemGroupInformation: React.FC<Props> = ({
               />
               <button
                 type="button"
-                className="inline-flex items-start lg:items-center justify-start hover:underline"
+                className="inline-flex items-start justify-start lg:items-center hover:underline"
                 onClick={() => onOpenSettingDialog('settings')}>
-                <span className="font-medium text-left text-lg capitalize">
+                <span className="text-lg font-medium text-left capitalize">
                   {group.name}
                 </span>
               </button>
             </div>
 
-            <div className="flex items-center gap-x-2 shrink-0 mt-3 sm:mt-0">
+            <div className="flex items-center mt-3 gap-x-2 shrink-0 sm:mt-0">
               <ElemButton
                 btn="purple"
                 className="gap-x-1 lg:!pl-3"
@@ -127,7 +122,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
                 ]}
               />
               <div className="flex items-center">
-                <span className="font-medium text-lg capitalize">
+                <span className="text-lg font-medium capitalize">
                   {group.name}
                 </span>
               </div>

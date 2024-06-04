@@ -1,11 +1,10 @@
 import { ElemPhoto } from './elem-photo';
-import { IconEmail, IconLinkedIn, IconCopy } from './icons';
+import { IconEmail, IconLinkedIn } from './icons';
 import moment from 'moment-timezone';
 import { useAuth } from '@/hooks/use-auth';
 import { ElemTooltip } from '@/components/elem-tooltip';
-import { Popover, Transition } from '@headlessui/react';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { ElemLink } from './elem-link';
 
@@ -88,7 +87,7 @@ export const ElemPersonCard: React.FC<Props> = ({
             placeholderClass="text-gray-300"
           />
         </ElemLink>
-        <div className="grow min-w-0">
+        <div className="min-w-0 grow">
           <ElemLink href={href} className="block">
             {heading && (
               <h3 className="font-medium truncate" title={heading}>
@@ -116,7 +115,7 @@ export const ElemPersonCard: React.FC<Props> = ({
             )}
           </ElemLink>
 
-          <div className="flex space-x-2 pt-1">
+          <div className="flex pt-1 space-x-2">
             {user?.entitlements?.viewEmails && linkedin ? (
               <ElemTooltip size="md" content="View LinkedIn Profile">
                 <div>
@@ -157,7 +156,7 @@ export const ElemPersonCard: React.FC<Props> = ({
                   <button
                     onClick={() => setShowEmails(!showEmails)}
                     className="flex items-center space-x-1 text-sm">
-                    <IconEmail title="Email" className="h-6 w-6" />
+                    <IconEmail title="Email" className="w-6 h-6" />
                     <div>
                       {personEmails.length === 1
                         ? '1 email'
@@ -172,7 +171,7 @@ export const ElemPersonCard: React.FC<Props> = ({
                   <button
                     onClick={onOpenUpgradeDialog}
                     className="inline-flex items-center space-x-1 text-gray-500">
-                    <IconEmail title="Email" className="h-6 w-6" />
+                    <IconEmail title="Email" className="w-6 h-6" />
                     <span className="text-sm">
                       {personEmails.length === 1
                         ? '1 email'
@@ -194,7 +193,7 @@ export const ElemPersonCard: React.FC<Props> = ({
                       onClick={() => {
                         onCopyEmail(email);
                       }}
-                      className="text-gray-500 underline text-sm hover:no-underline">
+                      className="text-sm text-gray-500 underline hover:no-underline">
                       {email}
                     </button>
                   </li>

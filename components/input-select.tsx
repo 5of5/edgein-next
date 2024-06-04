@@ -39,7 +39,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
           <>
             <div className="relative">
               <Listbox.Button
-                className={`relative w-full appearance-none border-none bg-white rounded-md pl-1.5 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
+                className={`relative w-full appearance-none border-none bg-white rounded-md pl-1.5 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-gray-300 hover:ring-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
                   disabled ? 'bg-gray-200 cursor-not-allowed' : ''
                 }`}>
                 {multiple ? (

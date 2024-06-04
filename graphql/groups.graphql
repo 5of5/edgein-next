@@ -30,10 +30,15 @@ query GetGroupsOfUser($user_id: Int!) {
   }
 }
 
-query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
+query GetGroups(
+  $limit: Int
+  $offset: Int
+  $where: user_groups_bool_exp!
+  $orderBy: [user_groups_order_by!]
+) {
   user_groups(
     where: $where
-    order_by: { created_at: desc }
+    order_by: $orderBy
     limit: $limit
     offset: $offset
   ) {

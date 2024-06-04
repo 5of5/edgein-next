@@ -2117,7 +2117,6 @@ export type Companies = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Scalars['Int'];
@@ -2431,7 +2430,6 @@ export type Companies_Bool_Exp = {
   coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   company_size: InputMaybe<Int_Comparison_Exp>;
-  country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_enriched_at: InputMaybe<Timestamp_Comparison_Exp>;
   datapoints_count: InputMaybe<Int_Comparison_Exp>;
@@ -2886,7 +2884,6 @@ export type Companies_Insert_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -2959,7 +2956,6 @@ export type Companies_Max_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3018,7 +3014,6 @@ export type Companies_Min_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   company_size: Maybe<Scalars['Int']>;
-  country: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_enriched_at: Maybe<Scalars['timestamp']>;
   datapoints_count: Maybe<Scalars['Int']>;
@@ -3100,7 +3095,6 @@ export type Companies_Order_By = {
   coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
   company_size: InputMaybe<Order_By>;
-  country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_enriched_at: InputMaybe<Order_By>;
   datapoints_count: InputMaybe<Order_By>;
@@ -3196,8 +3190,6 @@ export enum Companies_Select_Column {
   CompanyLinkedin = 'company_linkedin',
   /** column name */
   CompanySize = 'company_size',
-  /** column name */
-  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3316,7 +3308,6 @@ export type Companies_Set_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3441,7 +3432,6 @@ export type Companies_Stream_Cursor_Value_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   company_size: InputMaybe<Scalars['Int']>;
-  country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_enriched_at: InputMaybe<Scalars['timestamp']>;
   datapoints_count: InputMaybe<Scalars['Int']>;
@@ -3532,8 +3522,6 @@ export enum Companies_Update_Column {
   CompanyLinkedin = 'company_linkedin',
   /** column name */
   CompanySize = 'company_size',
-  /** column name */
-  Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -30152,6 +30140,7 @@ export type GetGroupsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   where: User_Groups_Bool_Exp;
+  orderBy: InputMaybe<Array<User_Groups_Order_By> | User_Groups_Order_By>;
 }>;
 
 
@@ -30399,7 +30388,7 @@ export type GetListUserGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, description: string | null, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type GetListMembersQueryVariables = Exact<{
   where: List_Members_Bool_Exp;
@@ -33214,13 +33203,8 @@ useGetGroupsOfUserQuery.getKey = (variables: GetGroupsOfUserQueryVariables) => [
 
 useGetGroupsOfUserQuery.fetcher = (variables: GetGroupsOfUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupsOfUserQuery, GetGroupsOfUserQueryVariables>(GetGroupsOfUserDocument, variables, options);
 export const GetGroupsDocument = `
-    query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
-  user_groups(
-    where: $where
-    order_by: {created_at: desc}
-    limit: $limit
-    offset: $offset
-  ) {
+    query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!, $orderBy: [user_groups_order_by!]) {
+  user_groups(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
     name
     description
@@ -34253,6 +34237,7 @@ export const GetListUserGroupsDocument = `
     list {
       id
       name
+      description
       public
       created_at
       created_by {

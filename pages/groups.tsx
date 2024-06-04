@@ -13,12 +13,13 @@ import {
   GetGroupsDocument,
   GetGroupsQuery,
   User_Groups_Bool_Exp,
+  Order_By,
+  User_Groups_Order_By,
   useGetGroupsQuery,
 } from '@/graphql/types';
 import { Pagination } from '@/components/pagination';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
-import { useIntercom } from 'react-use-intercom';
 import { GroupsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { GROUPS_TABS } from '@/utils/constants';
@@ -92,6 +93,12 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
       limit: LIMIT,
       offset,
       where: filters as User_Groups_Bool_Exp,
+      orderBy: [
+        {
+          user_group_members_aggregate: { count: Order_By.Desc },
+          // created_at: Order_By.Desc
+        } as User_Groups_Order_By,
+      ],
     },
     { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
   );
@@ -104,8 +111,6 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
   const groups_aggregate = initialLoad
     ? initialGroupsCount
     : groupsData?.user_groups_aggregate?.aggregate?.count || 0;
-
-  const { showNewMessages } = useIntercom();
 
   const onOpenUpgradeDialog = () => {
     setIsOpenUpgradeDialog(true);
