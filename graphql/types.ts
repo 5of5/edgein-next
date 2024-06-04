@@ -30140,6 +30140,7 @@ export type GetGroupsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   where: User_Groups_Bool_Exp;
+  orderBy: InputMaybe<Array<User_Groups_Order_By> | User_Groups_Order_By>;
 }>;
 
 
@@ -33202,13 +33203,8 @@ useGetGroupsOfUserQuery.getKey = (variables: GetGroupsOfUserQueryVariables) => [
 
 useGetGroupsOfUserQuery.fetcher = (variables: GetGroupsOfUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupsOfUserQuery, GetGroupsOfUserQueryVariables>(GetGroupsOfUserDocument, variables, options);
 export const GetGroupsDocument = `
-    query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
-  user_groups(
-    where: $where
-    order_by: {created_at: desc}
-    limit: $limit
-    offset: $offset
-  ) {
+    query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!, $orderBy: [user_groups_order_by!]) {
+  user_groups(where: $where, order_by: $orderBy, limit: $limit, offset: $offset) {
     id
     name
     description
