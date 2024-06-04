@@ -1120,6 +1120,7 @@ export const networks = [
   'avalanche',
   'harmony-shard-0',
   'sora',
+  'TON',
   'xdai',
   'arbitrum-one',
   'near-protocol',
