@@ -15,7 +15,7 @@ import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { runGraphQl } from '@/utils';
-import { getNameFromListName } from '@/utils/reaction';
+import { getNameFromListName } from '@/utils/lists';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';

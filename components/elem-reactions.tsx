@@ -1,8 +1,5 @@
-import {
-  getNameFromListName,
-  isOnList,
-  toggleFollowOnList,
-} from '@/utils/reaction';
+import { isOnList, toggleFollowOnList } from '@/utils/reaction';
+import { getNameFromListName } from '@/utils/lists';
 import { find } from 'lodash';
 import { FC, useEffect, useState } from 'react';
 import { EmojiHot, EmojiLike, EmojiCrap } from '@/components/emojis';
@@ -161,15 +158,15 @@ export const ElemReaction: FC<ReactionProps> = ({
       <ElemWithSignInModal
         text={text}
         buttonComponent={open => (
-          <div className="flex items-center font-bold ease-in-out duration-150 group cursor-pointer text-slate-400">
+          <div className="flex items-center font-bold duration-150 ease-in-out cursor-pointer group text-slate-400">
             <ElemTooltip content={label}>
               <div
                 className={`flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100 ${
                   open ? 'bg-slate-100' : ''
                 }`}>
-                {type === 'hot' && <EmojiHot className="h-6 w-6" />}
-                {type === 'like' && <EmojiLike className="h-6 w-6" />}
-                {type === 'crap' && <EmojiCrap className="h-6 w-6" />}{' '}
+                {type === 'hot' && <EmojiHot className="w-6 h-6" />}
+                {type === 'like' && <EmojiLike className="w-6 h-6" />}
+                {type === 'crap' && <EmojiCrap className="w-6 h-6" />}{' '}
               </div>
             </ElemTooltip>
             <div className="proportional-nums">{reactionState.count || 0}</div>
@@ -190,10 +187,10 @@ export const ElemReaction: FC<ReactionProps> = ({
       <ElemTooltip
         content={label}
         className={`${isInteractive ? 'cursor-pointer' : 'cursor-default'}`}>
-        <div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
-          {type === 'hot' && <EmojiHot className="h-6 w-6" />}
-          {type === 'like' && <EmojiLike className="h-6 w-6" />}
-          {type === 'crap' && <EmojiCrap className="h-6 w-6" />}{' '}
+        <div className="flex items-center justify-center mr-1 overflow-visible duration-150 ease-in-out rounded-full h-9 w-9 group-active:scale-75 group-active:rotate-6 group-hover:bg-slate-100">
+          {type === 'hot' && <EmojiHot className="w-6 h-6" />}
+          {type === 'like' && <EmojiLike className="w-6 h-6" />}
+          {type === 'crap' && <EmojiCrap className="w-6 h-6" />}{' '}
         </div>
       </ElemTooltip>
       <div className="proportional-nums">{reactionState.count || 0}</div>

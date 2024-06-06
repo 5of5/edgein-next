@@ -53,12 +53,6 @@ export const getNewFollows = (sentiment: string, type = 'company') => {
   return follows;
 };
 
-export const getNameFromListName = (list: DeepPartial<Lists>) => {
-  if (!list) return '';
-  const fragments = list?.name?.split('-');
-  return fragments?.[fragments.length - 1] || '';
-};
-
 export const getUserIdFromListCreator = (list: DeepPartial<Lists>) => {
   if (!list) return '';
   const listCreatorId = list?.created_by_id;
