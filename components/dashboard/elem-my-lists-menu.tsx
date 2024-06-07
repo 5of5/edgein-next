@@ -105,29 +105,29 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   return (
     <li className={className}>
       {user ? (
-        // <div className="relative">
-        //   <ElemSidebarItem
-        //     IconComponent={IconSidebarList}
-        //     text="Lists"
-        //     url={ROUTES.LISTS}
-        //     onClick={() => setShowSidebar(false)}
-        //   />
-        //   <div className="absolute right-2 top-1.5 bottom-1.5">
+        // <div className="flex items-center space-x-2">
+        //   <div className="flex-1">
+        //     <ElemSidebarItem
+        //       IconComponent={IconSidebarList}
+        //       text="Lists"
+        //       url={ROUTES.LISTS}
+        //       onClick={() => setShowSidebar(false)}
+        //     />
+        //   </div>
+        //   <div className="">
         //     <ElemButton btn="primary" size="xs" onClick={onClickCreate}>
         //       Create
         //     </ElemButton>
         //   </div>
         // </div>
-        <div className="flex items-center space-x-2">
-          <div className="flex-1">
-            <ElemSidebarItem
-              IconComponent={IconSidebarList}
-              text="Lists"
-              url={ROUTES.LISTS}
-              onClick={() => setShowSidebar(false)}
-            />
-          </div>
-          <div className="">
+        <div className="relative">
+          <ElemSidebarItem
+            IconComponent={IconSidebarList}
+            text="Lists"
+            url={ROUTES.LISTS}
+            onClick={() => setShowSidebar(false)}
+          />
+          <div className="absolute right-2 top-1.5 bottom-1.5">
             <ElemButton btn="primary" size="xs" onClick={onClickCreate}>
               Create
             </ElemButton>
@@ -178,22 +178,23 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                   <div className="flex-col p-2 group">
                     <div className="flex items-center gap-x-2">
                       {list.public ? (
-                        <IconGlobe className="inline-block w-4 h-4 shrink-0" />
+                        <IconGlobe className="block w-4 h-4 shrink-0" />
                       ) : (
-                        <IconLockClosed className="inline-block w-4 h-4 shrink-0" />
+                        <IconLockClosed className="block w-4 h-4 shrink-0" />
                       )}
 
                       <ElemLink
                         href={`${ROUTES.LISTS}/${list.id}/${
                           listName === 'crap' ? 'sh**' : kebabCase(listName)
                         }`}
-                        className="font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
+                        className="block font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
                         {listName}
                       </ElemLink>
                       <div className="px-3 py-1 text-xs border border-gray-200 rounded-full">
                         {list.public ? 'Public' : 'Private'}
                       </div>
                     </div>
+
                     {list.description && (
                       <div className="mt-3 text-sm text-gray-500 line-clamp-4">
                         {list.description}
