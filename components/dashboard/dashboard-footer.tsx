@@ -12,25 +12,20 @@ export const DashboardFooter: FC<PropsWithChildren<Props>> = ({
   return (
     <footer className={`px-4 sm:px-6 lg:px-8 ${className}`}>
       <div className="justify-between py-6 my-12 border-t border-dark-100 sm:flex">
-        <div className="mb-6 text-sm text-gray-500 sm:mb-0 sm:flex sm:items-start">
-          <div className="mb-2 sm:mb-0">
-            <p>
-              Copyright &copy; {new Date().getFullYear()} EdgeIn Inc. All Rights
-              Reserved.
-            </p>
-            <p>1319 Leavenworth San Francisco CA United States.</p>
-          </div>
-
-          <p className="flex flex-col gap-2 sm:ml-4 sm:pl-4 sm:border-l sm:border-dark-100 sm:flex-row sm:gap-4">
-            {navigation.legal.map(item => (
-              <ElemLink
-                key={item.name}
-                href={item.href}
-                className="block hover:underline">
-                {item.name}
-              </ElemLink>
-            ))}
+        <div className="flex flex-wrap mb-6 mr-0 text-sm text-gray-500 gap-x-6 gap-y-2 sm:mb-0 sm:mr-3 sm:items-start">
+          <p>
+            Copyright &copy; {new Date().getFullYear()} EdgeIn Inc. All Rights
+            Reserved. 1319 Leavenworth San Francisco CA United States.
           </p>
+
+          {navigation.legal.map(item => (
+            <ElemLink
+              key={item.name}
+              href={item.href}
+              className="block hover:underline">
+              {item.name}
+            </ElemLink>
+          ))}
         </div>
 
         <div>
