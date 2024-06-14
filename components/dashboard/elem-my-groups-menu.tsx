@@ -145,15 +145,17 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
 
       {user && (
         <>
-          <InputText
-            type="text"
-            onChange={handleSearchTextChange}
-            value={searchText}
-            name="name"
-            autoComplete="off"
-            placeholder="Find group..."
-            className="mt-2 ring-1 ring-gray-200"
-          />
+          {customGroups.length > SIDEBAR_DEFAULT_GROUPS_LIMIT && (
+            <InputText
+              type="text"
+              onChange={handleSearchTextChange}
+              value={searchText}
+              name="name"
+              autoComplete="off"
+              placeholder="Find group..."
+              className="mt-2 ring-1 ring-gray-200"
+            />
+          )}
 
           <ul className="mt-1 space-y-1">
             {filteredGroups

@@ -141,15 +141,17 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
       {user && (
         <>
-          <InputText
-            type="text"
-            onChange={handleSearchTextChange}
-            value={searchText}
-            name="name"
-            autoComplete="off"
-            placeholder="Find list..."
-            className="mt-2 ring-1 ring-gray-200"
-          />
+          {customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
+            <InputText
+              type="text"
+              onChange={handleSearchTextChange}
+              value={searchText}
+              name="name"
+              autoComplete="off"
+              placeholder="Find list..."
+              className="mt-2 ring-1 ring-gray-200"
+            />
+          )}
 
           <ul className="mt-1 space-y-1">
             {filteredLists
