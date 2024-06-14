@@ -31,6 +31,12 @@ query GetGroupsOfUser($user_id: Int!) {
       }
       created_at
       updated_at
+      notes {
+        id
+      }
+      list_user_groups {
+        id
+      }
     }
   }
 }

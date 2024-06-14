@@ -191,7 +191,6 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
 
                     <div className="grid grid-cols-2 mt-3 text-xs gap-x-6 gap-y-2">
                       <div className="capitalize">
-                        {/* {console.log(group.created_by)} */}
                         {group?.created_by?.person ? (
                           <>
                             By{' '}
@@ -213,18 +212,28 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                         )}
                       </div>
                       <div>Updated {formatDateShown(group.updated_at)}</div>
-                      {/* <div>
+                      <div>
                         {numberWithCommas(
-                          group.total_no_of_resources
-                            ? group.total_no_of_resources
+                          group.list_user_groups.length
+                            ? group.list_user_groups.length
                             : 0,
                         )}{' '}
-                        Item
-                        {group.total_no_of_resources &&
-                        group.total_no_of_resources === 1
+                        List
+                        {group.list_user_groups.length &&
+                        group.list_user_groups.length === 1
                           ? ''
                           : 's'}
-                      </div> */}
+                      </div>
+
+                      <div>
+                        {numberWithCommas(
+                          group.notes.length ? group.notes.length : 0,
+                        )}{' '}
+                        Note
+                        {group.notes.length && group.notes.length === 1
+                          ? ''
+                          : 's'}
+                      </div>
                     </div>
                   </div>
                 );
