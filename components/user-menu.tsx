@@ -21,19 +21,19 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
       ? [
           {
             id: 10,
-            label: 'Lists',
+            label: 'My lists',
             value: 'lists',
             onClick: () => router.push(ROUTES.LISTS + '?tab=my-lists'),
           },
           {
             id: 11,
-            label: 'Groups',
+            label: 'My groups',
             value: 'groups',
             onClick: () => router.push(ROUTES.GROUPS + '?tab=my-groups'),
           },
           {
             id: 12,
-            label: 'Notes',
+            label: 'My notes',
             value: 'notes',
             onClick: () => router.push(ROUTES.NOTES),
             divider: true,

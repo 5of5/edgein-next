@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { IconSettings, IconGlobe, IconLockClosed } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { toLabel } from '@/utils';
+import { numberWithCommas, toLabel } from '@/utils';
 import moment from 'moment-timezone';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
@@ -49,7 +49,7 @@ export const ElemListInformation: FC<Props> = ({
     <>
       <div className="px-4 pb-3 mb-4 border-b border-gray-200">
         <div className="flex flex-wrap items-start justify-between space-y-2 lg:space-y-0">
-          <div>
+          <div className="max-w-full">
             <div className="flex items-center space-x-2">
               {isListAuthor && isCustomList ? (
                 <>
@@ -69,53 +69,20 @@ export const ElemListInformation: FC<Props> = ({
                     : toLabel(router.query.slug as string)}
                 </h1>
               )}
+              <div className="px-2 py-0.5 text-xs font-medium text-gray-500 border border-gray-200 rounded-full">
+                {list.public ? 'Public' : 'Private'}
+              </div>
             </div>
 
             {list?.description && (
-              <div className="max-w-xl pb-2 text-sm text-gray-500">
+              <div className="max-w-xl mb-3 text-sm text-gray-500">
                 {list?.description}
               </div>
             )}
 
-            <div className="flex flex-wrap items-center text-sm text-gray-500">
-              {isPublicList ? (
-                <ElemTooltip content="Public List" direction="top" mode="dark">
-                  <div className="flex items-center">
-                    <IconGlobe className="inline-block w-4 h-4 mr-0.5 shrink-0" />
-                    Public list
-                  </div>
-                </ElemTooltip>
-              ) : (
-                <ElemTooltip content="Private List" direction="top" mode="dark">
-                  <div className="inline-block">
-                    <IconLockClosed className="inline-block w-4 h-4 mr-0.5 shrink-0" />
-                    Private list
-                  </div>
-                </ElemTooltip>
-              )}
-
-              {list?.updated_at && (
-                <>
-                  <div className="px-1">&middot;</div>
-                  <ElemTooltip
-                    content={`Last edited ${moment
-                      .utc(list?.updated_at)
-                      .local()
-                      .format('LL HH:mma')}`}
-                    direction="top"
-                    size="lg"
-                    mode="dark">
-                    <div className="inline">
-                      Edited{' '}
-                      {moment.utc(list?.updated_at).local().format('MMM D')}
-                    </div>
-                  </ElemTooltip>
-                </>
-              )}
-
+            <div className="flex flex-wrap items-center mb-3 text-sm text-gray-500 gap-x-6">
               {list?.created_by && (
                 <>
-                  <div className="px-1">&middot;</div>
                   <ElemTooltip
                     content={`Created ${moment
                       .utc(list?.created_at)
@@ -148,8 +115,25 @@ export const ElemListInformation: FC<Props> = ({
                 </>
               )}
 
-              <div className="px-1">&middot;</div>
-              <div className="text-sm text-gray-500">
+              {list?.updated_at && (
+                <>
+                  <ElemTooltip
+                    content={`Updated ${moment
+                      .utc(list?.updated_at)
+                      .local()
+                      .format('LL HH:mma')}`}
+                    direction="top"
+                    size="lg"
+                    mode="dark">
+                    <div className="inline">
+                      Updated{' '}
+                      {moment.utc(list?.updated_at).local().format('LL')}
+                    </div>
+                  </ElemTooltip>
+                </>
+              )}
+
+              <div className="text-gray-500">
                 {list?.total_no_of_resources}{' '}
                 {`Item${
                   list?.total_no_of_resources &&
@@ -158,26 +142,24 @@ export const ElemListInformation: FC<Props> = ({
                     : 's'
                 }`}
               </div>
-
-              {isPublicList && (
-                <>
-                  <div className="px-1">&middot;</div>
-                  <div className="text-sm text-gray-500">
-                    {list?.list_members.length > 1
-                      ? `${list?.list_members.length} Followers`
-                      : `${list?.list_members.length} Follower`}
-                  </div>
-                </>
-              )}
             </div>
 
-            {isPublicList &&
-              list?.list_members &&
-              list?.list_members.length > 0 && (
-                <div className="flex items-center mt-2">
+            <div className="mb-3 grow">
+              {list?.list_members && list?.list_members.length > 0 && (
+                <div className="flex items-center pl-1">
                   <ElemAvatarList people={list?.list_members} />
+                  <div className="ml-1 text-sm text-gray-500">
+                    {list?.list_members.length > 1
+                      ? `${numberWithCommas(
+                          list?.list_members.length,
+                        )} Followers`
+                      : `${numberWithCommas(
+                          list?.list_members.length,
+                        )} Follower`}
+                  </div>
                 </div>
               )}
+            </div>
           </div>
 
           {isCustomList && (

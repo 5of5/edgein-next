@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { kebabCase } from 'lodash';
 import { IconSidebarList, IconPlus, IconCheck } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
-import { getNameFromListName } from '@/utils/reaction';
+import { getNameFromListName } from '@/utils/lists';
 import {
   Lists,
   List_Members_Bool_Exp,

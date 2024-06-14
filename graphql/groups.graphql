@@ -23,9 +23,20 @@ query GetGroupsOfUser($user_id: Int!) {
         id
         display_name
         email
+        person {
+          id
+          name
+          slug
+        }
       }
       created_at
       updated_at
+      notes {
+        id
+      }
+      list_user_groups {
+        id
+      }
     }
   }
 }

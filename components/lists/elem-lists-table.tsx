@@ -241,6 +241,14 @@ export const ListsTable: FC<Props> = ({
         width: 240,
       },
       {
+        Header: 'Visibility',
+        accessor: 'public' as const,
+        Cell: (props: { value: number }) => {
+          return <div>{props.value ? 'Public' : 'Private'}</div>;
+        },
+        width: 150,
+      },
+      {
         Header: 'Created',
         accessor: 'created_at' as const,
         Cell: (props: { value: Date }) => {
