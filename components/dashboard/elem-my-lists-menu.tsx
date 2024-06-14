@@ -13,7 +13,7 @@ import { ElemLink } from '../elem-link';
 import { ElemButton } from '../elem-button';
 import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getNameFromListName, getListDisplayName } from '@/utils/lists';
-import { formatDateShown } from '@/utils/numbers';
+import { formatDateShown, numberWithCommas } from '@/utils/numbers';
 import { useSidebar } from '@/context/sidebar-context';
 import { ElemTooltip } from '../elem-tooltip';
 
@@ -60,6 +60,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const onOpenUpgradeDialog = () => {
     setIsOpenUpgradeDialog(true);
   };
+
   const onCloseUpgradeDialog = () => {
     setIsOpenUpgradeDialog(false);
   };
@@ -105,21 +106,6 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   return (
     <li className={className}>
       {user ? (
-        // <div className="flex items-center space-x-2">
-        //   <div className="flex-1">
-        //     <ElemSidebarItem
-        //       IconComponent={IconSidebarList}
-        //       text="Lists"
-        //       url={ROUTES.LISTS}
-        //       onClick={() => setShowSidebar(false)}
-        //     />
-        //   </div>
-        //   <div className="">
-        //     <ElemButton btn="primary" size="xs" onClick={onClickCreate}>
-        //       Create
-        //     </ElemButton>
-        //   </div>
-        // </div>
         <div className="relative">
           <ElemSidebarItem
             IconComponent={IconSidebarList}
@@ -161,7 +147,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             value={searchText}
             name="name"
             autoComplete="off"
-            placeholder="Find a list..."
+            placeholder="Find list..."
             className="mt-2 ring-1 ring-gray-200"
           />
 
@@ -190,18 +176,18 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                         className="block font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
                         {listName}
                       </ElemLink>
-                      <div className="px-3 py-1 text-xs border border-gray-200 rounded-full">
+                      <div className="px-2 py-0.5 text-xs border border-gray-200 rounded-full">
                         {list.public ? 'Public' : 'Private'}
                       </div>
                     </div>
 
                     {list.description && (
-                      <div className="mt-3 text-sm text-gray-500 line-clamp-4">
+                      <div className="mt-3 text-sm font-normal text-gray-500 line-clamp-4">
                         {list.description}
                       </div>
                     )}
 
-                    <div className="flex mt-3 space-x-6 text-xs">
+                    <div className="grid grid-cols-2 mt-3 text-xs gap-x-6 gap-y-2">
                       <div className="capitalize">
                         {list?.created_by?.person ? (
                           <>
@@ -224,6 +210,18 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                         )}
                       </div>
                       <div>Updated {formatDateShown(list.updated_at)}</div>
+                      <div>
+                        {numberWithCommas(
+                          list.total_no_of_resources
+                            ? list.total_no_of_resources
+                            : 0,
+                        )}{' '}
+                        Item
+                        {list.total_no_of_resources &&
+                        list.total_no_of_resources === 1
+                          ? ''
+                          : 's'}
+                      </div>
                     </div>
                   </div>
                 );
@@ -236,6 +234,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     <ElemTooltip
                       content={listTooltip}
                       direction="top-start"
+                      delay={350}
                       mode="light"
                       size="lg"
                       arrow={false}>
@@ -258,7 +257,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                 );
               })}
 
-            {limitLists && (
+            {limitLists && customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
               <li
                 role="button"
                 onClick={onShowMoreLists}

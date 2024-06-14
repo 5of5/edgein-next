@@ -4,7 +4,7 @@ import { useMutation } from 'react-query';
 import { kebabCase, startCase } from 'lodash';
 import { useUser } from '@/context/user-context';
 import { getNameFromListName, getListDisplayName } from '@/utils/lists';
-import { formatDateShown } from '@/utils';
+import { formatDateShown, numberWithCommas } from '@/utils';
 import {
   GetGroupsQuery,
   GetListsQuery,
@@ -14,8 +14,7 @@ import {
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ROUTES } from '@/routes';
 import { ElemButton } from './elem-button';
-import { ElemTooltip } from './elem-tooltip';
-import { IconGlobe, IconLockClosed, IconSidebarList } from './icons';
+import { IconGlobe, IconLockClosed } from './icons';
 import { ElemLink } from './elem-link';
 import { ElemAvatarList } from './elem-avatar-list';
 
@@ -122,32 +121,31 @@ export const ElemListCard: FC<Props> = ({
     }
   };
 
-  const resourceTooltip = (
-    <div className="flex-col p-2 group">
+  return (
+    <div className="flex flex-col w-full p-4 mx-auto border border-gray-200 rounded-lg">
       <div className="flex items-center gap-x-2">
         {resource.public ? (
           <IconGlobe className="block w-4 h-4 shrink-0" />
         ) : (
           <IconLockClosed className="block w-4 h-4 shrink-0" />
         )}
-
         <ElemLink
           href={resourceUrl}
           className="block font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
           {name}
         </ElemLink>
-        <div className="px-3 py-1 text-xs border border-gray-200 rounded-full">
+        <div className="px-2 py-0.5 text-xs border border-gray-200 rounded-full">
           {resource.public ? 'Public' : 'Private'}
         </div>
       </div>
 
       {description && (
-        <div className="mt-3 text-sm text-gray-500 line-clamp-4">
+        <div className="mt-3 text-sm text-gray-500 line-clamp-2">
           {description}
         </div>
       )}
 
-      <div className="flex flex-wrap mt-3 text-xs gap-x-6 gap-y-1">
+      <div className="grid grid-cols-2 mt-3 text-xs text-gray-500 gap-x-6 gap-y-1">
         <div className="capitalize">
           {resource?.created_by?.person ? (
             <>
@@ -170,84 +168,24 @@ export const ElemListCard: FC<Props> = ({
           )}
         </div>
         <div>Updated {formatDateShown(resource.updated_at)}</div>
-        {/* {isResourceList ? (
+        {isResourceList ? (
           <div>
-            {totalItems} Item{totalItems && totalItems === 1 ? '' : 's'}
+            {numberWithCommas(totalItems ? totalItems : 0)} Item
+            {totalItems && totalItems === 1 ? '' : 's'}
           </div>
         ) : (
           <>
             {numOfLists > 0 && (
               <div>
-                {numOfLists}
+                {numberWithCommas(numOfLists)}
                 {numOfLists > 1 ? ' Lists' : ' List'}
               </div>
             )}
 
             {numOfNotes > 0 && (
               <div>
-                {numOfNotes}
+                {numberWithCommas(numOfNotes)}
                 {numOfNotes > 1 ? ' Notes' : ' Note'}
-              </div>
-            )}
-          </>
-        )} */}
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="flex flex-col w-full p-4 mx-auto border border-gray-200 rounded-lg">
-      <ElemTooltip
-        content={resourceTooltip}
-        direction="top-start"
-        mode="light"
-        size="lg"
-        arrow={false}>
-        <div>
-          <ElemLink
-            href={resourceUrl}
-            className="font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
-            {name}
-          </ElemLink>
-        </div>
-      </ElemTooltip>
-
-      {description && (
-        <div className="mt-3 text-sm text-gray-500 line-clamp-2">
-          {description}
-        </div>
-      )}
-
-      <div className="flex flex-wrap mt-3 gap-x-6 gap-y-1">
-        {isResourceList ? (
-          <div>
-            <ElemLink
-              href={resourceUrl}
-              className="text-sm text-gray-500 hover:underline">
-              {totalItems} Item{totalItems && totalItems === 1 ? '' : 's'}
-            </ElemLink>
-          </div>
-        ) : (
-          <>
-            {numOfLists > 0 && (
-              <div>
-                <ElemLink
-                  href={resourceUrl}
-                  className="text-sm text-gray-500 hover:underline">
-                  {numOfLists}
-                  {numOfLists > 1 ? ' Lists' : ' List'}
-                </ElemLink>
-              </div>
-            )}
-
-            {numOfNotes > 0 && (
-              <div>
-                <ElemLink
-                  href={resourceUrl}
-                  className="text-sm text-gray-500 hover:underline">
-                  {numOfNotes}
-                  {numOfNotes > 1 ? ' Notes' : ' Note'}
-                </ElemLink>
               </div>
             )}
           </>
@@ -262,7 +200,7 @@ export const ElemListCard: FC<Props> = ({
               href={resourceUrl}
               className="ml-1 text-sm text-gray-500 hover:underline">
               {members.length > 1
-                ? `${members.length} ${
+                ? `${numberWithCommas(members.length)} ${
                     isResourceList ? 'Followers' : 'Members'
                   }`
                 : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}

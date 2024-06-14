@@ -1,6 +1,10 @@
-import { FC, useState } from 'react';
+import { FC, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { IconSidebarGroups } from '@/components/icons';
+import {
+  IconGlobe,
+  IconLockClosed,
+  IconSidebarGroups,
+} from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
@@ -10,6 +14,11 @@ import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
 import { ElemLink } from '../elem-link';
 import { useSidebar } from '@/context/sidebar-context';
+import { InputText } from '../input-text';
+import { ElemButton } from '../elem-button';
+import { ElemTooltip } from '../elem-tooltip';
+import { formatDateShown, numberWithCommas } from '@/utils';
+import { startCase } from 'lodash';
 
 type Props = {
   className?: string;
@@ -18,13 +27,22 @@ type Props = {
 const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   const { showSidebar, setShowSidebar } = useSidebar();
   const router = useRouter();
-  const { myGroups, user } = useUser();
-  const displayedGroups = myGroups.slice(
-    0,
-    user?.entitlements.groupsCount
-      ? user?.entitlements.groupsCount
-      : myGroups.length,
-  );
+  const { myGroups: groups, user } = useUser();
+
+  // limit groups for free users
+  // const displayedGroups = groups.slice(
+  //   0,
+  //   user?.entitlements.groupsCount
+  //     ? user?.entitlements.groupsCount
+  //     : groups.length,
+  // );
+
+  const [customGroups, setCustomGroups] = useState(groups);
+  const [limitGroups, setLimitGroups] = useState(true);
+
+  useEffect(() => {
+    setCustomGroups(groups);
+  }, [groups]);
 
   const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
@@ -52,22 +70,59 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   const onClickCreate = () => {
-    if (myGroups.length > displayedGroups.length) {
+    if (
+      user?.entitlements?.groupsCount &&
+      customGroups.length > user.entitlements.groupsCount
+    ) {
       return onOpenUpgradeDialog();
     }
 
     return onOpenCreateGroupDialog();
   };
 
+  const [searchText, setSearchText] = useState('');
+  const [filteredGroups, setFilteredGroups] = useState(customGroups);
+
+  const handleSearchTextChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setSearchText(e.target.value);
+  };
+
+  useEffect(() => {
+    if (searchText.length > 0) {
+      setFilteredGroups(
+        customGroups.filter(group => {
+          return group?.name.toLowerCase().includes(searchText);
+        }),
+      );
+      setLimitGroups(false);
+    } else {
+      setFilteredGroups(customGroups);
+      setLimitGroups(true);
+    }
+  }, [customGroups, searchText]);
+
+  const onShowMoreGroups = () => {
+    setLimitGroups(false);
+  };
+
   return (
     <li className={className}>
       {user ? (
-        <ElemSidebarItem
-          IconComponent={IconSidebarGroups}
-          text="Groups"
-          url={ROUTES.GROUPS}
-          onClick={() => setShowSidebar(false)}
-        />
+        <div className="relative">
+          <ElemSidebarItem
+            IconComponent={IconSidebarGroups}
+            text="Groups"
+            url={ROUTES.GROUPS}
+            onClick={() => setShowSidebar(false)}
+          />
+          <div className="absolute right-2 top-1.5 bottom-1.5">
+            <ElemButton btn="primary" size="xs" onClick={onClickCreate}>
+              Create
+            </ElemButton>
+          </div>
+        </div>
       ) : (
         <ElemWithSignInModal
           wrapperClass="w-full"
@@ -89,34 +144,138 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
       )}
 
       {user && (
-        <ul className="mt-1 space-y-1">
-          {displayedGroups
-            .slice(0, SIDEBAR_DEFAULT_GROUPS_LIMIT)
-            ?.map(group => {
-              return (
-                <li
-                  key={group.id}
-                  role="button"
-                  onClick={() => setShowSidebar(false)}>
-                  <ElemLink
-                    href={`${ROUTES.GROUPS}/${group.id}/`}
-                    className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
-                      group.id,
-                    )}`}
-                    title={group.name}>
-                    <span className="break-all line-clamp-1">{group.name}</span>
-                  </ElemLink>
-                </li>
-              );
-            })}
+        <>
+          <InputText
+            type="text"
+            onChange={handleSearchTextChange}
+            value={searchText}
+            name="name"
+            autoComplete="off"
+            placeholder="Find group..."
+            className="mt-2 ring-1 ring-gray-200"
+          />
 
-          <li
-            role="button"
-            onClick={onClickCreate}
-            className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900">
-            Add a new group
-          </li>
-        </ul>
+          <ul className="mt-1 space-y-1">
+            {filteredGroups
+              .slice(
+                0,
+                limitGroups
+                  ? SIDEBAR_DEFAULT_GROUPS_LIMIT
+                  : customGroups.length,
+              )
+              ?.map(group => {
+                const groupTooltip = (
+                  <div className="flex-col p-2 group">
+                    <div className="flex items-center gap-x-2">
+                      {group.public ? (
+                        <IconGlobe className="block w-4 h-4 shrink-0" />
+                      ) : (
+                        <IconLockClosed className="block w-4 h-4 shrink-0" />
+                      )}
+
+                      <ElemLink
+                        href={`${ROUTES.GROUPS}/${group.id}/`}
+                        className="block font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
+                        {group.name}
+                      </ElemLink>
+                      <div className="px-2 py-0.5 text-xs border border-gray-200 rounded-full">
+                        {group.public ? 'Public' : 'Private'}
+                      </div>
+                    </div>
+
+                    {group.description && (
+                      <div className="mt-3 text-sm font-normal text-gray-500 line-clamp-4">
+                        {group.description}
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-2 mt-3 text-xs gap-x-6 gap-y-2">
+                      <div className="capitalize">
+                        {/* {console.log(group.created_by)} */}
+                        {group?.created_by?.person ? (
+                          <>
+                            By{' '}
+                            <ElemLink
+                              href={`${ROUTES.PEOPLE}/${group?.created_by?.person?.slug}`}
+                              className="hover:underline">
+                              {group?.created_by?.person.name}
+                            </ElemLink>
+                          </>
+                        ) : (
+                          <>
+                            By{' '}
+                            {startCase(
+                              group?.created_by?.display_name
+                                ? group?.created_by.display_name
+                                : '',
+                            )}
+                          </>
+                        )}
+                      </div>
+                      <div>Updated {formatDateShown(group.updated_at)}</div>
+                      {/* <div>
+                        {numberWithCommas(
+                          group.total_no_of_resources
+                            ? group.total_no_of_resources
+                            : 0,
+                        )}{' '}
+                        Item
+                        {group.total_no_of_resources &&
+                        group.total_no_of_resources === 1
+                          ? ''
+                          : 's'}
+                      </div> */}
+                    </div>
+                  </div>
+                );
+
+                return (
+                  <li
+                    key={group.id}
+                    role="button"
+                    onClick={() => setShowSidebar(false)}>
+                    <ElemTooltip
+                      content={groupTooltip}
+                      direction="top-start"
+                      delay={350}
+                      mode="light"
+                      size="lg"
+                      arrow={false}>
+                      <div>
+                        <ElemLink
+                          href={`${ROUTES.GROUPS}/${group.id}/`}
+                          className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                            group.id,
+                          )}`}
+                          title={group.name}>
+                          <span className="break-all line-clamp-1">
+                            {group.name}
+                          </span>
+                        </ElemLink>
+                      </div>
+                    </ElemTooltip>
+                  </li>
+                );
+              })}
+
+            {limitGroups &&
+              customGroups.length > SIDEBAR_DEFAULT_GROUPS_LIMIT && (
+                <li
+                  role="button"
+                  onClick={onShowMoreGroups}
+                  className="flex items-center flex-1 py-2 pl-4 text-xs font-normal text-gray-500 transition-all hover:text-primary-500">
+                  Show more
+                </li>
+              )}
+
+            {/* <li
+              role="button"
+              onClick={onClickCreate}
+              className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900">
+              Add a new group
+            </li> */}
+          </ul>
+        </>
       )}
 
       <ElemUpgradeDialog
