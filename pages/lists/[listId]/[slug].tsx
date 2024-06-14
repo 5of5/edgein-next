@@ -32,7 +32,7 @@ type Props = {
 };
 
 const MyList: NextPage<Props> = ({ list }) => {
-  const { user } = useUser();
+  const { user, refetchMyLists } = useUser();
   const router = useRouter();
   const { listId } = router.query;
 
@@ -214,7 +214,7 @@ const MyList: NextPage<Props> = ({ list }) => {
     {
       onSuccess: () => {
         router.push(ROUTES.LISTS);
-        refetchList();
+        refetchMyLists();
         toast.custom(
           t => (
             <div
