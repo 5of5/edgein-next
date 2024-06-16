@@ -1,11 +1,10 @@
 import { FC } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { kebabCase } from 'lodash';
+import { kebabCase, startCase } from 'lodash';
 import { useUser } from '@/context/user-context';
-import { getNameFromListName } from '@/utils/lists';
-import { formatDateShown } from '@/utils';
-import { getListDisplayName } from '@/utils/lists';
+import { getNameFromListName, getListDisplayName } from '@/utils/lists';
+import { formatDateShown, numberWithCommas } from '@/utils';
 import {
   GetGroupsQuery,
   GetListsQuery,
@@ -15,7 +14,6 @@ import {
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ROUTES } from '@/routes';
 import { ElemButton } from './elem-button';
-import { ElemTooltip } from './elem-tooltip';
 import { IconGlobe, IconLockClosed } from './icons';
 import { ElemLink } from './elem-link';
 import { ElemAvatarList } from './elem-avatar-list';
@@ -125,97 +123,84 @@ export const ElemListCard: FC<Props> = ({
 
   return (
     <div className="flex flex-col w-full p-4 mx-auto border border-gray-200 rounded-lg">
-      <div className="pb-2">
+      <div className="flex items-center gap-x-2">
+        {resource.public ? (
+          <IconGlobe className="block w-4 h-4 shrink-0" />
+        ) : (
+          <IconLockClosed className="block w-4 h-4 shrink-0" />
+        )}
         <ElemLink
           href={resourceUrl}
-          className="font-medium leading-snug break-words line-clamp-2 hover:underline">
-          {name}{' '}
-          <ElemTooltip
-            content={`${totalItems} ${isResourceList ? 'Item' : 'Note'}${
-              totalItems && totalItems === 1 ? '' : 's'
-            }`}
-            direction="top"
-            mode="dark">
-            <div className="inline text-gray-500">({totalItems})</div>
-          </ElemTooltip>
+          className="block font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
+          {name}
         </ElemLink>
+        <div className="px-2 py-0.5 text-xs border border-gray-200 rounded-full">
+          {resource.public ? 'Public' : 'Private'}
+        </div>
       </div>
 
       {description && (
-        <ElemTooltip content={description} direction="top" mode="light">
-          <div className="inline">
-            <div className="mb-3 text-sm text-gray-500 line-clamp-2">
-              {description}
-            </div>
-          </div>
-        </ElemTooltip>
+        <div className="mt-3 text-sm text-gray-500 line-clamp-2">
+          {description}
+        </div>
       )}
 
-      <div className="pt-2 border-t border-gray-200 grow">
-        <div className="items-center inline-block text-sm text-gray-500">
-          {resource.public ? (
-            <ElemTooltip content="Public" direction="top" mode="dark">
-              <div className="inline">
-                <IconGlobe className="inline-block w-4 h-4 shrink-0" />
-              </div>
-            </ElemTooltip>
-          ) : (
-            <ElemTooltip content="Private" direction="top" mode="dark">
-              <div className="inline">
-                <IconLockClosed className="inline-block w-4 h-4 shrink-0" />
-              </div>
-            </ElemTooltip>
-          )}
-
-          {isResourceList ? (
-            members.length > 0 && (
-              <>
-                {' • '}
-                {members.length}
-                {members.length > 1 ? ' Followers' : ' Follower'}
-              </>
-            )
+      <div className="grid grid-cols-2 mt-3 text-xs text-gray-500 gap-x-6 gap-y-1">
+        <div className="capitalize">
+          {resource?.created_by?.person ? (
+            <>
+              By{' '}
+              <ElemLink
+                href={`${ROUTES.PEOPLE}/${resource?.created_by?.person?.slug}`}
+                className="hover:underline">
+                {resource?.created_by?.person.name}
+              </ElemLink>
+            </>
           ) : (
             <>
-              {members.length > 0 && (
-                <>
-                  {' • '}
-                  {members.length}
-                  {members.length > 1 ? ' Members' : ' Member'}
-                </>
-              )}
-
-              {numOfLists > 0 && (
-                <>
-                  {' • '}
-                  {numOfLists}
-                  {numOfLists > 1 ? ' Lists' : ' List'}
-                </>
-              )}
-
-              {numOfNotes > 0 && (
-                <>
-                  {' • '}
-                  {numOfNotes}
-                  {numOfNotes > 1 ? ' Notes' : ' Note'}
-                </>
+              By{' '}
+              {startCase(
+                resource?.created_by?.display_name
+                  ? resource?.created_by.display_name
+                  : '',
               )}
             </>
           )}
         </div>
+        <div>Updated {formatDateShown(resource.updated_at)}</div>
+        {isResourceList ? (
+          <div>
+            {numberWithCommas(totalItems ? totalItems : 0)} Item
+            {totalItems && totalItems === 1 ? '' : 's'}
+          </div>
+        ) : (
+          <>
+            {numOfLists > 0 && (
+              <div>
+                {numberWithCommas(numOfLists)}
+                {numOfLists > 1 ? ' Lists' : ' List'}
+              </div>
+            )}
 
-        <p className="text-sm text-gray-500">
-          Edited {formatDateShown(resource.updated_at)}
-        </p>
+            {numOfNotes > 0 && (
+              <div>
+                {numberWithCommas(numOfNotes)}
+                {numOfNotes > 1 ? ' Notes' : ' Note'}
+              </div>
+            )}
+          </>
+        )}
+      </div>
 
+      <div className="mt-3 grow">
         {members && members.length > 0 && (
-          <div className="flex items-center pl-1 mt-4">
+          <div className="flex items-center pl-1">
             <ElemAvatarList people={members} limit={6} />
             <ElemLink
               href={resourceUrl}
-              className="ml-1 text-sm font-medium text-gray-500 hover:underline">
+              className="ml-1 text-sm text-gray-500 hover:underline">
               {members.length > 1
-                ? `${members.length} ${
+                ? `${numberWithCommas(members.length)} ${
                     isResourceList ? 'Followers' : 'Members'
                   }`
                 : `${members.length} ${isResourceList ? 'Follower' : 'Member'}`}

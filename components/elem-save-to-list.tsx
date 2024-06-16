@@ -1,10 +1,7 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
 import { Follows, GetFollowsByUserQuery } from '@/graphql/types';
-import {
-  getNameFromListName,
-  isOnList,
-  toggleFollowOnList,
-} from '@/utils/reaction';
+import { isOnList, toggleFollowOnList } from '@/utils/reaction';
+import { getNameFromListName } from '@/utils/lists';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconX, IconPlus } from '@/components/icons';

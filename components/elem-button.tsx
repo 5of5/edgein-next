@@ -25,7 +25,7 @@ type Props = {
     | 'default'
     | '';
   roundedFull?: boolean;
-  size?: 'sm' | 'md' | 'lg' | '';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | '';
   href?: string;
   target?: string;
   disabled?: boolean;
@@ -91,7 +91,9 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   // button sizes
   let sizeClasses = '';
 
-  if (size === 'sm') {
+  if (size === 'xs') {
+    sizeClasses = 'px-2 py-1.5 text-xs';
+  } else if (size === 'sm') {
     sizeClasses = 'px-3.5 py-1.5 text-sm';
   } else if (size === 'md') {
     sizeClasses = 'px-4 py-2.5 text-sm';

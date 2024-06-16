@@ -34,6 +34,7 @@ type UserValue = {
   unreadNotificationsCount: number;
   selectedLibrary?: Library;
   onChangeLibrary: (value: LibraryTag) => void;
+  refetchMyLists: any;
   refetchMyGroups: any;
   refetchUnreadNotifications: () => void;
   refreshUser: () => void;
@@ -46,6 +47,7 @@ const userContext = React.createContext<UserValue>({
   myGroups: [],
   unreadNotificationsCount: 0,
   onChangeLibrary: () => {},
+  refetchMyLists: () => {},
   refetchMyGroups: () => {},
   refetchUnreadNotifications: () => {},
   refreshUser: () => {},
@@ -71,6 +73,7 @@ const UserProvider: React.FC<Props> = props => {
   const {
     data: listMemberships,
     error: listAndFollowsError,
+    refetch: refetchMyLists,
     isLoading,
   } = useGetFollowsByUserQuery(
     { user_id: user?.id || 0 },
@@ -185,6 +188,7 @@ const UserProvider: React.FC<Props> = props => {
       unreadNotificationsCount,
       selectedLibrary: library?.id,
       onChangeLibrary: handleSelectLibrary,
+      refetchMyLists,
       refetchMyGroups,
       refetchUnreadNotifications,
       refreshUser,
@@ -197,6 +201,7 @@ const UserProvider: React.FC<Props> = props => {
       unreadNotificationsCount,
       library,
       handleSelectLibrary,
+      refetchMyLists,
       refetchMyGroups,
       refetchUnreadNotifications,
       refreshUser,

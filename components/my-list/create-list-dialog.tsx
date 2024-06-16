@@ -75,7 +75,7 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
       placement="center"
       panelClass="relative w-full max-w-lg bg-white rounded-lg px-6 pt-6 pb-3 z-10 my-10">
       <div>
-        <h2 className="text-xl font-medium">Create List</h2>
+        <h2 className="text-xl font-medium">Create New List</h2>
       </div>
 
       <p className="pt-1 text-gray-600">

@@ -1,6 +1,7 @@
 import { Follows_Companies, Follows_Vc_Firms, Lists } from '@/graphql/types';
 import { DeepPartial } from '@/types/common';
 import { find, has } from 'lodash';
+import { getNameFromListName } from './lists';
 
 type ReactionType = SentimentReactionType | ListReactionType;
 
@@ -51,12 +52,6 @@ export const getNewFollows = (sentiment: string, type = 'company') => {
   follows.list.name = `sentiment-${sentiment}`;
 
   return follows;
-};
-
-export const getNameFromListName = (list: DeepPartial<Lists>) => {
-  if (!list) return '';
-  const fragments = list?.name?.split('-');
-  return fragments?.[fragments.length - 1] || '';
 };
 
 export const getUserIdFromListCreator = (list: DeepPartial<Lists>) => {

@@ -15,7 +15,7 @@ import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { runGraphQl } from '@/utils';
-import { getNameFromListName } from '@/utils/reaction';
+import { getNameFromListName } from '@/utils/lists';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
@@ -32,7 +32,7 @@ type Props = {
 };
 
 const MyList: NextPage<Props> = ({ list }) => {
-  const { user } = useUser();
+  const { user, refetchMyLists } = useUser();
   const router = useRouter();
   const { listId } = router.query;
 
@@ -214,7 +214,7 @@ const MyList: NextPage<Props> = ({ list }) => {
     {
       onSuccess: () => {
         router.push(ROUTES.LISTS);
-        refetchList();
+        refetchMyLists();
         toast.custom(
           t => (
             <div
