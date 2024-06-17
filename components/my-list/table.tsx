@@ -32,6 +32,7 @@ type Props = {
   columns: any[];
   data: any;
   pageSize: number;
+  onChangePageSize?: React.ChangeEventHandler<HTMLSelectElement>;
   pageIndex: number;
   totalItems: number;
   fundingTotal?: number;
@@ -52,6 +53,7 @@ export const Table: FC<Props> = ({
   columns,
   data = [],
   pageSize,
+  onChangePageSize,
   pageIndex,
   totalItems,
   fundingTotal,
@@ -406,6 +408,7 @@ export const Table: FC<Props> = ({
         totalItems={totalItems}
         page={pageIndex}
         itemsPerPage={pageSize}
+        onChangePageSize={onChangePageSize}
         onClickPrev={onPreviousPage}
         onClickNext={onNextPage}
       />
