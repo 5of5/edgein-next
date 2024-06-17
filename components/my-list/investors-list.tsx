@@ -31,8 +31,8 @@ export const InvestorsList: FC<Props> = ({
   isListAuthor,
 }) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState('');
-  const limit = 10;
 
   const {
     data: vcFirms,
@@ -42,8 +42,8 @@ export const InvestorsList: FC<Props> = ({
   } = useGetVcFirmsByListIdQuery(
     {
       list_id: listId,
-      limit,
-      offset: limit * pageIndex,
+      limit: pageSize,
+      offset: pageSize * pageIndex,
       query: `%${query.trim()}%`,
     },
     {
@@ -410,7 +410,10 @@ export const InvestorsList: FC<Props> = ({
       resourceType="investors"
       columns={columns}
       data={investors}
-      pageSize={limit}
+      pageSize={pageSize}
+      onChangePageSize={e => {
+        setPageSize(Number(e.target.value));
+      }}
       pageIndex={pageIndex}
       totalItems={totalItems}
       fundingTotal={fundingTotal}

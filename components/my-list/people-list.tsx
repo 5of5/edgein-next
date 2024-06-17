@@ -15,8 +15,9 @@ type Props = {
 
 export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState('');
-  const limit = 10;
+
   const {
     data: listPeople,
     error,
@@ -25,8 +26,8 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
   } = useGetPeopleByListIdQuery(
     {
       list_id: listId,
-      limit,
-      offset: limit * pageIndex,
+      limit: pageSize,
+      offset: pageSize * pageIndex,
       query: `%${query.trim()}%`,
     },
     {
@@ -203,7 +204,10 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
       resourceType="people"
       columns={columns}
       data={people}
-      pageSize={limit}
+      pageSize={pageSize}
+      onChangePageSize={e => {
+        setPageSize(Number(e.target.value));
+      }}
       pageIndex={pageIndex}
       totalItems={totalItems}
       noDataText="There are no people in this list."

@@ -30,9 +30,10 @@ export const CompaniesList: FC<Props> = ({
   isListAuthor,
 }) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState('');
 
-  const limit = 10;
+  //const limit = 10;
   const {
     data: companiesData,
     error,
@@ -41,8 +42,9 @@ export const CompaniesList: FC<Props> = ({
   } = useGetCompaniesByListIdQuery(
     {
       list_id: listId,
-      limit,
-      offset: limit * pageIndex,
+      limit: pageSize,
+      //limit,
+      offset: pageSize * pageIndex,
       query: `%${query.trim()}%`,
     },
     {
@@ -394,24 +396,29 @@ export const CompaniesList: FC<Props> = ({
   }
 
   return (
-    <Table
-      disabledCheckbox={!isListAuthor}
-      listName={listName}
-      resourceType="companies"
-      columns={columns}
-      data={companies}
-      pageSize={limit}
-      pageIndex={pageIndex}
-      totalItems={totalItems}
-      fundingTotal={fundingTotal}
-      noDataText="There are no companies in this list."
-      exploreBtnHref={ROUTES.COMPANIES}
-      exploreBtnText="Explore Companies"
-      searchQuery={query}
-      onChangeSearchQuery={onChangeSearchQuery}
-      onRefetchData={refetch}
-      onPreviousPage={onPreviousPage}
-      onNextPage={onNextPage}
-    />
+    <>
+      <Table
+        disabledCheckbox={!isListAuthor}
+        listName={listName}
+        resourceType="companies"
+        columns={columns}
+        data={companies}
+        pageSize={pageSize}
+        onChangePageSize={e => {
+          setPageSize(Number(e.target.value));
+        }}
+        pageIndex={pageIndex}
+        totalItems={totalItems}
+        fundingTotal={fundingTotal}
+        noDataText="There are no companies in this list."
+        exploreBtnHref={ROUTES.COMPANIES}
+        exploreBtnText="Explore Companies"
+        searchQuery={query}
+        onChangeSearchQuery={onChangeSearchQuery}
+        onRefetchData={refetch}
+        onPreviousPage={onPreviousPage}
+        onNextPage={onNextPage}
+      />
+    </>
   );
 };
