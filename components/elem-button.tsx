@@ -10,7 +10,6 @@ type Props = {
   arrowClass?: string;
   btn?:
     | 'primary'
-    | 'purple'
     | 'ol-primary'
     | 'ol-white'
     | 'danger'
@@ -45,8 +44,6 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   let btnClass = '';
   // button styles
   if (btn === 'primary') {
-    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
-  } else if (btn === 'purple') {
     btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
   } else if (btn === 'ol-primary') {
     btnClass =

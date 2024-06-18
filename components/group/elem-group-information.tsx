@@ -86,7 +86,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 
             <div className="flex items-center mt-3 gap-x-2 shrink-0 sm:mt-0">
               <ElemButton
-                btn="purple"
+                btn="primary"
                 className="gap-x-1 lg:!pl-3"
                 onClick={onInvite}>
                 <IconPlus className="w-5 h-5 shrink-0" />
@@ -131,7 +131,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
             {group.public && (
               <div className="flex items-center gap-x-2 shrink-0">
                 <ElemButton
-                  btn="purple"
+                  btn="primary"
                   loading={isAddingGroupMember}
                   onClick={onAddGroupMember}>
                   Join group

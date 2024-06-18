@@ -83,7 +83,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button as="div">
-          <ElemButton btn="purple">
+          <ElemButton btn="primary">
             <IconShare className="h-5 w-5 mr-1.5" aria-hidden="true" />
             Share
           </ElemButton>
@@ -99,7 +99,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
         leaveTo="transform opacity-0 scale-95">
         <Menu.Items
           as="nav"
-          className="z-10 absolute overflow-hidden left-0 lg:left-auto lg:right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+          className="absolute left-0 z-10 w-56 mt-2 overflow-hidden origin-top-right bg-white rounded-lg shadow-lg lg:left-auto lg:right-0 ring-1 ring-black/5 focus:outline-none">
           {list.map(link => (
             <Menu.Item key={link.text}>
               {({ active }) => (
@@ -108,7 +108,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
                   className={`${
                     active ? 'bg-gray-50 text-primary-500' : ''
                   } flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500`}>
-                  <link.icon className="mr-2 h-5 w-5" aria-hidden="true" />
+                  <link.icon className="w-5 h-5 mr-2" aria-hidden="true" />
                   {link.text}
                 </button>
               )}

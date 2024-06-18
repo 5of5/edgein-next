@@ -525,7 +525,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
           {users?.users_by_pk?.person && (
             <ElemButton
               href={`${ROUTES.PEOPLE}/${users?.users_by_pk?.person?.slug}/`}
-              btn="purple"
+              btn="primary"
               arrow
               className="mt-2 sm:mt-0">
               View Profile

@@ -159,7 +159,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             ) : (
               <ElemButton
                 href={ROUTES.SIGN_IN}
-                btn="purple"
+                btn="primary"
                 className="whitespace-nowrap">
                 Sign in
               </ElemButton>

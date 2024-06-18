@@ -23,7 +23,6 @@ type Props = {
   slug: string;
   buttonStyle?:
     | 'primary'
-    | 'purple'
     | 'ol-primary'
     | 'ol-white'
     | 'danger'
@@ -42,7 +41,7 @@ export const ElemSaveToList: FC<Props> = ({
   resourceId,
   resourceType,
   slug,
-  buttonStyle = 'purple',
+  buttonStyle = 'primary',
   follows = [],
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,10 +66,7 @@ export const ElemSaveToList: FC<Props> = ({
     listsData?.some(listItem => listItem.id === followItem.list_id),
   );
 
-  const savedButtonStyle =
-    buttonStyle === 'default'
-      ? 'text-dark-500 !bg-slate-200 hover:bg-slate-300'
-      : 'bg-primary-800';
+  const savedButtonStyle = buttonStyle === 'default' ? '' : 'bg-primary-800';
 
   useEffect(() => {
     setListName(listName);
@@ -365,7 +361,7 @@ export const ElemSaveToList: FC<Props> = ({
                   onClick={handleCreate}
                   disabled={listName === '' || error ? true : false}
                   roundedFull
-                  btn="purple">
+                  btn="primary">
                   Create list
                 </ElemButton>
               </div>

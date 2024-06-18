@@ -390,7 +390,7 @@ const Event: NextPage<Props> = props => {
               </ElemButton>
             )}
             {attendees?.some(item => item.person?.id === user?.person?.id) ? (
-              <ElemButton btn="purple">Joined</ElemButton>
+              <ElemButton btn="primary">Joined</ElemButton>
             ) : (
               <ElemButton
                 btn="primary"

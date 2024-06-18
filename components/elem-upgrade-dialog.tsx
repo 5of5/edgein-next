@@ -43,11 +43,11 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
 
       <div className="flex justify-center pt-3 mt-3 border-t border-gray-200">
         {user ? (
-          <ElemButton onClick={() => loadStripe()} btn="purple">
+          <ElemButton onClick={() => loadStripe()} btn="primary">
             Start free trial
           </ElemButton>
         ) : (
-          <ElemButton btn="purple" href={ROUTES.SIGN_IN}>
+          <ElemButton btn="primary" href={ROUTES.SIGN_IN}>
             Sign in to start
           </ElemButton>
         )}

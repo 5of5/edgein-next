@@ -339,7 +339,10 @@ const MyList: NextPage<Props> = ({ list }) => {
                   Access list, get unlimited browsing, personalized results,
                   custom tools, and much more.
                 </p>
-                <ElemButton btn="purple" href={ROUTES.SIGN_IN} className="mt-2">
+                <ElemButton
+                  btn="primary"
+                  href={ROUTES.SIGN_IN}
+                  className="mt-2">
                   Sign in for free
                 </ElemButton>
               </div>
@@ -383,7 +386,7 @@ const MyList: NextPage<Props> = ({ list }) => {
               </h3>
               {isPublicList && (
                 <ElemButton
-                  btn="purple"
+                  btn="primary"
                   loading={isFollowButtonLoading}
                   onClick={onFollowList}
                   className="mt-2">
