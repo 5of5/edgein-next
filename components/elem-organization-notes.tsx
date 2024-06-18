@@ -139,8 +139,8 @@ const ElemOrganizationNotes: FC<Props> = ({
       />
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
-        title="To add a note, please claim a profile."
-        content="Search your name and claim profile."
+        title="Claim a profile."
+        content="To add a note, search your name and claim profile."
         onClose={() => {
           setIsOpenLinkPersonDialog(false);
         }}

@@ -594,8 +594,8 @@ const ElemNoteCard: React.FC<NoteProps> = ({
 
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
-        title="To add a comment, please claim a profile."
-        content="Search your name and claim profile."
+        title="Claim a profile."
+        content="To add a comment, search your name and claim profile."
         onClose={onCloseLinkPersonDialog}
       />
 

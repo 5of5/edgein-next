@@ -488,8 +488,8 @@ const Event: NextPage<Props> = props => {
 
         <ElemRequiredProfileDialog
           isOpen={isOpenLinkPersonDialog}
-          title="To mark yourself as attendee, please claim a profile."
-          content="Search your name and claim profile."
+          title="Claim a profile."
+          content="To mark yourself as attendee, search your name and claim profile."
           onClose={onCloseLinkPersonDialog}
         />
 
