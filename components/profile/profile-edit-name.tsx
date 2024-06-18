@@ -66,7 +66,7 @@ export const ProfileEditName: React.FC<Props> = ({}) => {
       >
         Change
       </ElemButton>
-      <ElemButton btn="white" onClick={() => setEditName(false)}>
+      <ElemButton btn="default" onClick={() => setEditName(false)}>
         Cancel
       </ElemButton>
     </div> */}

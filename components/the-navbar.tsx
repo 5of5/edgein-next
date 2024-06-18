@@ -106,7 +106,7 @@ export const TheNavbar: FC<Props> = ({}) => {
           <div className="flex items-center gap-3">
             {/* <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
-              btn="ol-gray"
+              btn="default"
               className="h-9 w-9 !px-0 !py-0 lg:hidden">
               <IconBars3 className="w-6 h-6" />
             </ElemButton> */}

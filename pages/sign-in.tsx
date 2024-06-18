@@ -83,10 +83,10 @@ export default function SignIn() {
             rightComponent={
               signUpStep === 0 ? (
                 <ElemLink href={ROUTES.ROOT}>
-                  <ElemButton btn="white">Back</ElemButton>
+                  <ElemButton btn="default">Back</ElemButton>
                 </ElemLink>
               ) : signUpStep === 1 ? (
-                <ElemButton btn="white" onClick={() => setSignUpStep(0)}>
+                <ElemButton btn="default" onClick={() => setSignUpStep(0)}>
                   Back
                 </ElemButton>
               ) : null

@@ -387,7 +387,7 @@ export default function Account({ userProfile }: Props) {
                 </p>
                 <ElemButton
                   onClick={onBillingClick}
-                  btn="primary-light"
+                  btn="default"
                   arrow
                   className="mt-4 text-primary-500">
                   Start your free trial

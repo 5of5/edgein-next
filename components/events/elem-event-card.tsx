@@ -268,7 +268,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
           />
 
           <ElemButton
-            btn={isAttended ? 'primary-light' : 'default'}
+            btn="default"
             onClick={handleClickAttend}
             loading={isLoadingGoingEvent}
             className="px-2.5">

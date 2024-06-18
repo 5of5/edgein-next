@@ -11,7 +11,6 @@ import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
-import { useRouter } from 'next/router';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
 import { ROUTES } from '@/routes';
@@ -23,16 +22,14 @@ type Props = {
   resourceType: 'companies' | 'vc_firms' | 'people';
   slug: string;
   buttonStyle?:
-    | 'danger'
-    | 'dark'
     | 'primary'
     | 'purple'
-    | 'primary-light'
-    | 'transparent'
-    | 'white'
-    | 'slate'
-    | 'ol-white'
     | 'ol-primary'
+    | 'ol-white'
+    | 'danger'
+    | 'dark'
+    | 'transparent'
+    | 'gray'
     | 'default'
     | '';
   follows?: Pick<Follows, 'list_id'>[];
@@ -48,8 +45,6 @@ export const ElemSaveToList: FC<Props> = ({
   buttonStyle = 'purple',
   follows = [],
 }) => {
-  const router = useRouter();
-
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -73,7 +68,7 @@ export const ElemSaveToList: FC<Props> = ({
   );
 
   const savedButtonStyle =
-    buttonStyle === 'white'
+    buttonStyle === 'default'
       ? 'text-dark-500 !bg-slate-200 hover:bg-slate-300'
       : 'bg-primary-800';
 
@@ -363,7 +358,7 @@ export const ElemSaveToList: FC<Props> = ({
                     setShowNew(!showNew);
                   }}
                   roundedFull
-                  btn="white">
+                  btn="default">
                   Cancel
                 </ElemButton>
                 <ElemButton
