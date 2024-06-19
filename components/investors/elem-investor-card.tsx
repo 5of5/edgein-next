@@ -7,6 +7,7 @@ import { ElemTooltip } from '@/components/elem-tooltip';
 import {
   IconGlobe,
   IconLinkedIn,
+  IconGithub,
   IconTwitter,
   IconLocation,
 } from '@/components/icons';
@@ -36,6 +37,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
     website,
     linkedin,
     twitter,
+    github,
     location_json,
     year_founded,
     investment_amount_total,
@@ -137,6 +139,11 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
               {
                 value: twitter,
                 icon: IconTwitter,
+              },
+              {
+                isPremium: true,
+                value: github,
+                icon: IconGithub,
               },
             ]}
           />

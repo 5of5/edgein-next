@@ -176,7 +176,6 @@ query GetVCFirms(
     location_json
     tags
     overview
-    website
     num_of_investments
     year_founded
     sentiment
@@ -184,6 +183,11 @@ query GetVCFirms(
       id
       list_id
     }
+    website
+    twitter
+    linkedin
+    github
+    discord
   }
   vc_firms_aggregate(where: $where) {
     aggregate {
