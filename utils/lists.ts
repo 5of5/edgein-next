@@ -517,6 +517,18 @@ export const getNameFromListName = (list: DeepPartial<Lists>) => {
   return fragments?.[fragments.length - 1] || '';
 };
 
+export const getListAuthor = (list: DeepPartial<Lists>) => {
+  if (!list) return '';
+
+  const listAuthor = list?.created_by?.person?.name
+    ? startCase(list.created_by.person.name)
+    : startCase(
+        list?.created_by?.display_name ? list.created_by.display_name : '',
+      );
+
+  return listAuthor || '';
+};
+
 export const getNameFromListMember = (
   member: List_Members | User_Group_Members,
 ) => {
