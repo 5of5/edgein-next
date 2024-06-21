@@ -6,7 +6,7 @@ import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconLinkedInAlt, IconExclamationTriangle } from '@/components/icons';
 import { redirect_url } from '@/utils/auth';
-import ForgotPasswordModal from '../forgot-password-modal';
+import { ForgotPasswordModal } from './forgot-password-modal';
 import { ROUTES } from '@/routes';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 export const ElemLogin: FC<Props> = ({ onNext }) => {
   const router = useRouter();
 
-  const [openForgotPasswordModal, setOpenForgotPasswordModal] = useState(false);
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
 
   const [isExistedEmail, setIsExistedEmail] = useState(false);
   const [email, setEmail] = useState('');
@@ -149,7 +149,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                   onChange={event => setEmail(event?.target.value)}
                   className={`${
                     emailError === ''
-                      ? 'ring-1 ring-slate-200'
+                      ? 'ring-1 ring-gray-200'
                       : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                   } !rounded-2xl`}
                 />
@@ -160,23 +160,23 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
 
               {isExistedEmail && (
                 <label>
-                  <span className="text-xs font-medium">
+                  <div className="text-xs font-medium">
                     <div className="flex justify-between">
-                      <span>Password</span>
-                      <span
-                        onClick={() => setOpenForgotPasswordModal(true)}
-                        className="underline cursor-pointer text-slate-500">
+                      <div>Password</div>
+                      <div
+                        onClick={() => setOpenForgotPassword(true)}
+                        className="text-gray-500 underline cursor-pointer hover:no-underline">
                         Forgot your password?
-                      </span>
+                      </div>
                     </div>
-                  </span>
+                  </div>
                   <InputText
                     name="password"
                     type="password"
                     placeholder="********"
                     value={password}
                     onChange={event => setPassword(event?.target.value)}
-                    className={`ring-1 ring-slate-200 !rounded-2xl`}
+                    className={`ring-1 ring-gray-200 !rounded-2xl`}
                   />
                 </label>
               )}
@@ -209,7 +209,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
 
           <ElemButton
             onClick={handleContinueWithLinkedin}
-            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-slate-300 focus:ring-1 hover:bg-slate-200">
+            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-gray-300 focus:ring-1 hover:bg-gray-200">
             <IconLinkedInAlt
               title="LinkedIn"
               className="h-6 w- text-[#0A66C2]"
@@ -231,8 +231,8 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
       </p>
 
       <ForgotPasswordModal
-        show={openForgotPasswordModal}
-        onClose={() => setOpenForgotPasswordModal(false)}
+        isOpen={openForgotPassword}
+        onClose={() => setOpenForgotPassword(false)}
       />
     </>
   );

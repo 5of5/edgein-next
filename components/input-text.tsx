@@ -10,6 +10,7 @@ type Props = {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
   required?: boolean;
+  readOnly?: boolean;
   autoComplete?: string;
   disabled?: boolean;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -25,6 +26,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
   onChange,
   placeholder = '',
   required = false,
+  readOnly = false,
   autoComplete = 'on',
   disabled = false,
   onKeyDown,
@@ -47,6 +49,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
+        readOnly={readOnly}
         autoComplete={autoComplete}
         disabled={disabled}
         onKeyDown={onKeyDown}
