@@ -82,11 +82,11 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
   }
 
   return (
-    <div ref={containerRef} className="snap-start shrink-0 relative max-w-full">
+    <div ref={containerRef} className="relative max-w-full snap-start shrink-0">
       <div className="flex items-center min-h-[32px] bg-primary-500 text-white text-sm rounded-full px-3 py-1">
         <button
           onClick={onOpenFilterOption}
-          className="max-w-full inline-block truncate">
+          className="inline-block max-w-full truncate">
           {title}
         </button>
         <button onClick={onClearFilterOption}>
@@ -99,14 +99,14 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
           ref={wrapperRef}
           className={`absolute top-10 ${popupPosition} z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}>
           <div className="px-4 py-3">{children}</div>
-          <div className="flex justify-end items-center gap-x-4 px-4 py-2 border-t border-gray-100">
+          <div className="flex items-center justify-end px-4 py-2 border-t border-gray-100 gap-x-4">
             <button
               onClick={onClearFilterOption}
               name={name}
               className="text-sm underline">
               Clear
             </button>
-            <ElemButton btn="purple" size="sm" onClick={onApplyFilter}>
+            <ElemButton btn="primary" size="sm" onClick={onApplyFilter}>
               Apply
             </ElemButton>
           </div>

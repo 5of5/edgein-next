@@ -60,7 +60,7 @@ export const ElemRecentInvestments: FC<Props> = ({
         <h4>Error loading investors</h4>
       ) : isLoading ? (
         <>
-          <div className="flex -mx-3  overflow-hidden">
+          <div className="flex -mx-3 overflow-hidden">
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
@@ -100,11 +100,11 @@ export const ElemRecentInvestments: FC<Props> = ({
 
                     {(investor.num_of_investments > 0 ||
                       investor.num_of_exits > 0) && (
-                      <div className="flex flex-wrap space-x-1 text-slate-600 mt-4">
+                      <div className="flex flex-wrap mt-4 space-x-1 text-slate-600">
                         {investor.num_of_investments !== null &&
                           investor.num_of_investments > 0 && (
                             <div>
-                              <span className="font-bold mr-1">
+                              <span className="mr-1 font-bold">
                                 {investor.num_of_investments}
                               </span>
                               Investment
@@ -129,7 +129,7 @@ export const ElemRecentInvestments: FC<Props> = ({
                     )}
 
                     {investor.tags?.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2 mt-4">
                         {investor.tags?.map((tag: string, index: number) => {
                           return (
                             <div
@@ -158,7 +158,7 @@ export const ElemRecentInvestments: FC<Props> = ({
                         resourceId={investor.id}
                         resourceType={'vc_firms'}
                         slug={investor.slug!}
-                        buttonStyle="white"
+                        buttonStyle="default"
                         follows={investor.follows}
                       />
                     </div>

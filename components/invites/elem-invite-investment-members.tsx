@@ -201,7 +201,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
 
       <div className="flex flex-row items-center gap-4 mt-2 text-center">
         <ElemButton
-          btn="purple"
+          btn="primary"
           onClick={handleSendEmails}
           loading={isLoading}
           disabled={!user || selectedCompanies.length === 0 || emails === 0}>
@@ -215,7 +215,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
         )}
 
         <ElemButton
-          btn="purple"
+          btn="primary"
           onClick={handleSendAllEmails}
           loading={isLoading}
           disabled={!user}>

@@ -184,7 +184,7 @@ const Group: NextPage<Props> = (props: Props) => {
                     Join this group to view and participate.
                   </h3>
                   <ElemButton
-                    btn="purple"
+                    btn="primary"
                     loading={isAddingGroupMember}
                     onClick={() => addGroupMember()}
                     className="mt-2">

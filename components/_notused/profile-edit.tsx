@@ -65,7 +65,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 										Save
 									</ElemButton>
 									<ElemButton
-										btn="white"
+										btn="default"
 										onClick={() => setEditLocation(false)}
 									>
 										Cancel
@@ -109,7 +109,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 									>
 										Save
 									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditWebsite(false)}>
+									<ElemButton btn="default" onClick={() => setEditWebsite(false)}>
 										Cancel
 									</ElemButton>
 								</div>
@@ -152,7 +152,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 										Save
 									</ElemButton>
 									<ElemButton
-										btn="white"
+										btn="default"
 										onClick={() => setEditLinkedIn(false)}
 									>
 										Cancel
@@ -197,7 +197,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 										Save
 									</ElemButton>
 									<ElemButton
-										btn="white"
+										btn="default"
 										onClick={() => setEditFacebook(false)}
 									>
 										Cancel
@@ -241,7 +241,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 									>
 										Save
 									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditTwitter(false)}>
+									<ElemButton btn="default" onClick={() => setEditTwitter(false)}>
 										Cancel
 									</ElemButton>
 								</div>
@@ -281,7 +281,7 @@ export const ProfileEdit: React.FC<Props> = ({ user }) => {
 									>
 										Save
 									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditAbout(false)}>
+									<ElemButton btn="default" onClick={() => setEditAbout(false)}>
 										Cancel
 									</ElemButton>
 								</div>

@@ -206,13 +206,13 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
           <div className="flex space-x-2">
             <ElemButton
               onClick={onOpenSearch}
-              btn="ol-gray"
+              btn="default"
               className="h-9 w-9 !px-0 !py-0">
               <IconSearch className="w-5 h-5" strokeWidth={1.5} />
             </ElemButton>
             <ElemButton
               onClick={onClose}
-              btn="ol-gray"
+              btn="default"
               className="h-9 w-9 !px-0 !py-0 outline-none">
               <IconX className="w-5 h-5" />
             </ElemButton>

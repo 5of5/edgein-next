@@ -117,7 +117,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
           <p className="mt-1 text-sm text-gray-500">{banner.content}</p>
 
           {!user && (
-            <ElemButton btn="purple" className="mt-2 whitespace-nowrap">
+            <ElemButton btn="primary" className="mt-2 whitespace-nowrap">
               Sign in for free
             </ElemButton>
           )}

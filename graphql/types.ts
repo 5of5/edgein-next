@@ -31104,7 +31104,7 @@ export type GetVcFirmsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, location_json: any | null, tags: any | null, overview: string | null, website: string | null, num_of_investments: number | null, year_founded: string | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, location_json: any | null, tags: any | null, overview: string | null, num_of_investments: number | null, year_founded: string | null, sentiment: any | null, website: string | null, twitter: string | null, linkedin: string | null, github: string | null, discord: string | null, follows: Array<{ __typename?: 'follows_vc_firms', id: number | null, list_id: number | null }> }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
 export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -37629,7 +37629,6 @@ export const GetVcFirmsDocument = `
     location_json
     tags
     overview
-    website
     num_of_investments
     year_founded
     sentiment
@@ -37637,6 +37636,11 @@ export const GetVcFirmsDocument = `
       id
       list_id
     }
+    website
+    twitter
+    linkedin
+    github
+    discord
   }
   vc_firms_aggregate(where: $where) {
     aggregate {

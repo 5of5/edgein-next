@@ -15,7 +15,7 @@ import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { runGraphQl } from '@/utils';
-import { getNameFromListName } from '@/utils/lists';
+import { getNameFromListName, getListAuthor } from '@/utils/lists';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
@@ -23,7 +23,6 @@ import { PeopleList } from '@/components/my-list/people-list';
 import { useMutation } from 'react-query';
 import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
-import { toLabel } from 'utils';
 import { ElemListBreadcrumb } from '@/components/my-list/elem-list-breadcrumb';
 import { ElemListSettings } from '@/components/my-list/elem-list-settings';
 
@@ -271,12 +270,10 @@ const MyList: NextPage<Props> = ({ list }) => {
   return (
     <>
       <NextSeo
-        title={`List: ${toLabel(theList?.name ? theList?.name : '')}`}
-        description={`${
-          theList?.description
-            ? `By ${theList?.created_by?.person?.name} - ${theList?.description}`
-            : ''
-        }`}
+        title={`List: ${
+          theList.name ? getNameFromListName(theList) : ''
+        } by ${getListAuthor(theList)}`}
+        description={`${theList?.description ? theList.description : ''}`}
         openGraph={{
           images: [
             {
@@ -339,7 +336,10 @@ const MyList: NextPage<Props> = ({ list }) => {
                   Access list, get unlimited browsing, personalized results,
                   custom tools, and much more.
                 </p>
-                <ElemButton btn="purple" href={ROUTES.SIGN_IN} className="mt-2">
+                <ElemButton
+                  btn="primary"
+                  href={ROUTES.SIGN_IN}
+                  className="mt-2">
                   Sign in for free
                 </ElemButton>
               </div>
@@ -383,7 +383,7 @@ const MyList: NextPage<Props> = ({ list }) => {
               </h3>
               {isPublicList && (
                 <ElemButton
-                  btn="purple"
+                  btn="primary"
                   loading={isFollowButtonLoading}
                   onClick={onFollowList}
                   className="mt-2">

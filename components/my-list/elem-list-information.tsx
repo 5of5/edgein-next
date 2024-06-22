@@ -182,7 +182,7 @@ export const ElemListInformation: FC<Props> = ({
 
               {user && !isFollowing && (
                 <ElemButton
-                  btn="purple"
+                  btn="primary"
                   loading={isFollowButtonLoading}
                   onClick={onFollowList}>
                   Follow

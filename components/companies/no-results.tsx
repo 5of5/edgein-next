@@ -31,7 +31,7 @@ export const NoResults: FC<Props> = ({
               `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
             )
           }
-          btn="white"
+          btn="default"
           className="mt-3">
           <IconAnnotation className="w-6 h-6 mr-1" />
           Tell us about missing data

@@ -125,7 +125,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 
       {/* <ElemButton
 				className="absolute shadow-lg"
-				btn="white"
+				btn="default"
 				onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 			>
 				<IconAnnotation className="w-6 h-6 mr-1" />

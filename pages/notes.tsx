@@ -93,10 +93,10 @@ const Notes: FC<Props> = () => {
                 Get started by creating a note in a company or investor profile.
               </p>
               <div className="flex justify-center mt-2 space-x-2">
-                <ElemButton href={ROUTES.COMPANIES} btn="white" arrow>
+                <ElemButton href={ROUTES.COMPANIES} btn="default" arrow>
                   Companies
                 </ElemButton>
-                <ElemButton href={ROUTES.INVESTORS} btn="white" arrow>
+                <ElemButton href={ROUTES.INVESTORS} btn="default" arrow>
                   Investors
                 </ElemButton>
               </div>

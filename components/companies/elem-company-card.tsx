@@ -187,6 +187,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
                 icon: IconTwitter,
               },
               {
+                isPremium: true,
                 value: github,
                 icon: IconGithub,
               },

@@ -1,26 +1,23 @@
-import React, { FC, useState, Fragment } from 'react';
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ElemButton } from '@/components/elem-button';
 import {
-  IconX,
-  IconShare3,
   IconTwitter,
   IconTelegram,
   IconLinkedInAlt,
   IconWhatsApp,
 } from '@/components/icons';
-import { Dialog, Transition } from '@headlessui/react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { getTwitterHandle } from '@/utils';
+import { ElemModal } from './elem-modal';
+import { InputText } from './input-text';
 
 type Props = {
-  btnClass?: string;
   resourceName: string | null;
   resourceTwitterUrl: string | null;
 };
 
 export const ElemSocialShare: FC<Props> = ({
-  btnClass,
   resourceName,
   resourceTwitterUrl,
 }) => {
@@ -111,97 +108,66 @@ export const ElemSocialShare: FC<Props> = ({
 
   return (
     <>
-      <ElemButton
-        onClick={onShareButton}
-        btn="default"
-        roundedFull={true}
-        className={`${btnClass ? btnClass : ''}`}>
+      <ElemButton onClick={onShareButton} btn="default" roundedFull={true}>
         Share
       </ElemButton>
 
-      <Transition.Root show={isOpen} as={Fragment}>
-        <Dialog as="div" onClose={onClose} className="relative z-[60]">
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0">
-            <div className="fixed z-10 inset-0 bg-black/20 transition-opacity backdrop-blur-sm" />
-          </Transition.Child>
+      <ElemModal
+        isOpen={isOpen}
+        onClose={onClose}
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-md bg-white rounded-lg px-6 py-3 z-10 my-10">
+        <div>
+          <h2 className="text-xl font-medium">Share</h2>
+        </div>
 
-          <div className="fixed inset-0 z-[50] my-0 min-h-0 flex flex-col items-center justify-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
-                <div className="flex items-center justify-between px-3 py-1">
-                  <h2 className="text-lg font-bold">Share</h2>
-
-                  <button
-                    onClick={onClose}
-                    type="button"
-                    className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100">
-                    <span className="sr-only">Close</span>
-                    <IconX className="h-6 w-6" title="close" />
-                  </button>
-                </div>
-
-                <div className="relative flex justify-center space-x-4 px-5 py-3">
-                  {shareLinks?.map((item, index) => {
-                    return (
-                      <a
-                        key={index}
-                        className="flex flex-col justify-center items-center"
-                        href={item.href}
-                        target="_blank"
-                        rel="noreferrer">
-                        <div
-                          className={`w-16 h-16 p-4 flex items-center justify-center rounded-full text-white hover:opacity-75 ${item.iconClass}`}>
-                          <item.icon
-                            className={`w-full ${
-                              item.icon === IconTelegram && '-ml-1'
-                            }`}
-                          />
-                        </div>
-                        <div className="mt-2 text-xs">{item.text}</div>
-                      </a>
-                    );
-                  })}
-                </div>
-                <div className="relative p-3 ease-in-out duration-300 bg-gray-50 border-t border-slate-300">
-                  <div className="absolute right-3 top-4 z-10 pt-1 pr-1">
-                    <ElemButton
-                      onClick={() => onCopy(pageUrl)}
-                      btn="primary"
-                      size="sm"
-                      roundedFull={true}
-                      className="px-2.5">
-                      {isCopied ? 'Copied' : 'Copy'}
-                    </ElemButton>
-                  </div>
-
-                  <input
-                    className={`w-full mt-1 px-3 py-2 text-dark-500 relative bg-white rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400`}
-                    type="text"
-                    name="share"
-                    value={pageUrl}
-                    readOnly
+        <div className="flex justify-center py-3 mb-3 space-x-4 gap-y-3">
+          {shareLinks?.map((item, index) => {
+            return (
+              <a
+                key={index}
+                className="flex flex-col items-center justify-center"
+                href={item.href}
+                target="_blank"
+                rel="noreferrer">
+                <div
+                  className={`w-16 h-16 p-4 flex items-center justify-center rounded-full text-white hover:opacity-75 ${item.iconClass}`}>
+                  <item.icon
+                    className={`w-full ${
+                      item.icon === IconTelegram && '-ml-1'
+                    }`}
                   />
                 </div>
-              </Dialog.Panel>
-            </Transition.Child>
+                <div className="mt-2 text-xs">{item.text}</div>
+              </a>
+            );
+          })}
+        </div>
+
+        <div className="relative p-3 -mx-6 -mb-3 border-t border-gray-200 bg-gray-50">
+          <div className="absolute z-10 pr-1 right-2.5 top-3.5">
+            <ElemButton
+              onClick={() => onCopy(pageUrl)}
+              btn="primary"
+              size="sm"
+              roundedFull={true}
+              className="px-2.5">
+              {isCopied ? 'Copied' : 'Copy'}
+            </ElemButton>
           </div>
-          <Toaster />
-        </Dialog>
-      </Transition.Root>
+
+          <InputText
+            type="text"
+            onChange={() => {}}
+            value={pageUrl}
+            required={true}
+            name="share"
+            readOnly={true}
+            className="!mt-0 focus:ring-2 focus:ring-primary-500"
+          />
+        </div>
+      </ElemModal>
     </>
   );
 };

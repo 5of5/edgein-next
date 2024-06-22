@@ -319,8 +319,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
                   <div className="absolute bottom-5">
                     <ElemButton
                       onClick={() => onSaveInvestmentRound(investmentRound)}
-                      btn="white"
-                      className="bg-white">{`${
+                      btn="default">{`${
                       investmentRoundToEdit && investmentRoundToEdit.id
                         ? 'Edit Investment Round'
                         : 'Add Investment Round'

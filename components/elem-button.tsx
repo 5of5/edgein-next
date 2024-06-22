@@ -9,19 +9,13 @@ type Props = {
   arrowLeft?: boolean;
   arrowClass?: string;
   btn?:
+    | 'primary'
+    | 'ol-primary'
+    | 'ol-white'
     | 'danger'
     | 'dark'
-    | 'primary'
-    | 'purple'
-    | 'amber'
-    | 'primary-light'
     | 'transparent'
-    | 'white'
     | 'gray'
-    | 'slate'
-    | 'ol-white'
-    | 'ol-gray'
-    | 'ol-primary'
     | 'default'
     | '';
   roundedFull?: boolean;
@@ -51,29 +45,14 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   // button styles
   if (btn === 'primary') {
     btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
-  } else if (btn === 'amber') {
-    btnClass = 'text-gray-900 bg-amber-400 hover:bg-amber-300';
-  } else if (btn === 'purple') {
-    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
-  } else if (btn === 'primary-light') {
-    btnClass = 'bg-primary-50 hover:bg-primary-100 text-primary-500';
   } else if (btn === 'ol-primary') {
     btnClass =
       'text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:text-white hover:bg-primary-500 focus:outline-none focus:ring-1';
   } else if (btn === 'ol-white') {
     btnClass =
       'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-white hover:text-primary-500 focus:outline-none focus:ring-1';
-  } else if (btn === 'ol-gray') {
-    btnClass =
-      'ring-inset ring-1 ring-gray-300 hover:bg-gray-100 focus:outline-none focus:ring-1';
   } else if (btn === 'transparent') {
     btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
-  } else if (btn === 'white') {
-    btnClass =
-      'bg-white ring-inset ring-1 ring-slate-200 focus:ring-dark-500 focus:!ring-1 focus:!ring-slate-200 hover:text-primary-500 hover:bg-slate-200';
-  } else if (btn === 'slate') {
-    btnClass =
-      'text-dark-500 bg-slate-200 hover:text-primary-500 hover:bg-slate-300';
   } else if (btn === 'dark') {
     btnClass = 'text-white bg-gray-900 hover:bg-gray-700';
   } else if (btn === 'danger') {
@@ -83,7 +62,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
       'text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500';
   } else if (btn === 'default') {
     btnClass =
-      'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 active:border-primary-500';
+      'bg-white border border-gray-200 hover:bg-gray-100 active:border-primary-500';
   } else {
     btnClass = '';
   }

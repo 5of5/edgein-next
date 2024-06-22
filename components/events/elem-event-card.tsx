@@ -155,10 +155,10 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
         <div>
           <ElemLink
             href={`${ROUTES.EVENTS}/${slug}`}
-            className="flex shrink-0 w-full">
-            <div className="relative z-0 flex items-center justify-center shrink-0 w-full h-36 rounded-lg overflow-hidden border border-gray-200">
+            className="flex w-full shrink-0">
+            <div className="relative z-0 flex items-center justify-center w-full overflow-hidden border border-gray-200 rounded-lg shrink-0 h-36">
               <div
-                className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+                className="absolute top-0 bottom-0 left-0 right-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover -z-10 blur-2xl" // blur-[50px]
                 style={{
                   backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
                 }}></div>
@@ -202,9 +202,9 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
               <div className="flex pt-1.5 items-center">
                 <IconLocation
                   title={getFullAddress(location_json)}
-                  className="h-3 w-3 shrink-0 self-start mt-1"
+                  className="self-start w-3 h-3 mt-1 shrink-0"
                 />
-                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
+                <span className="ml-1 text-sm text-gray-500 break-words line-clamp-3">
                   {getFullAddress(location_json)}
                 </span>
               </div>
@@ -216,9 +216,9 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
                   title={
                     isEmptyLocation ? getFullAddress(location_json) : eventPrice
                   }
-                  className="h-3 w-3 shrink-0"
+                  className="w-3 h-3 shrink-0"
                 />
-                <span className="ml-1 break-words text-sm line-clamp-3 text-gray-500">
+                <span className="ml-1 text-sm text-gray-500 break-words line-clamp-3">
                   {eventPrice}
                 </span>
               </div>
@@ -268,7 +268,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
           />
 
           <ElemButton
-            btn={isAttended ? 'primary-light' : 'default'}
+            btn="default"
             onClick={handleClickAttend}
             loading={isLoadingGoingEvent}
             className="px-2.5">
@@ -282,8 +282,8 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
       </div>
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
-        title="To mark yourself as attendee, please claim a profile."
-        content="Search your name and claim profile."
+        title="Claim a profile."
+        content="To mark yourself as attendee, search your name and claim profile."
         onClose={onCloseLinkPersonDialog}
       />
 

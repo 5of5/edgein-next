@@ -60,7 +60,7 @@ export const ElemRecentCompanies: FC<Props> = ({
         <h4>Error loading companies</h4>
       ) : isLoading ? (
         <>
-          <div className="flex overflow-hidden -mx-3">
+          <div className="flex -mx-3 overflow-hidden">
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
@@ -89,7 +89,7 @@ export const ElemRecentCompanies: FC<Props> = ({
                     href={`${ROUTES.COMPANIES}/${company.slug}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow">
+                    className="box-border z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg border-black/10 hover:scale-102 hover:shadow">
                     <div className="flex items-center">
                       <ElemPhoto
                         photo={company.logo}
@@ -106,7 +106,7 @@ export const ElemRecentCompanies: FC<Props> = ({
                       </div>
                     </div>
 
-                    <div className="mt-4 flex gap-6 text-xs font-bold text-slate-600">
+                    <div className="flex gap-6 mt-4 text-xs font-bold text-slate-600">
                       <span>
                         Added{' '}
                         {formatDate(company.date_added, {
@@ -152,7 +152,7 @@ export const ElemRecentCompanies: FC<Props> = ({
                         resourceId={company.id}
                         resourceType={'companies'}
                         slug={company.slug}
-                        buttonStyle="white"
+                        buttonStyle="default"
                         follows={company.follows}
                       />
                     </div>

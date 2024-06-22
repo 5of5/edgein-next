@@ -93,7 +93,10 @@ const ElemOrganizationNotes: FC<Props> = ({
                 Notes{` ${notes.length > 0 ? '(' + notes.length + ')' : ''}`}{' '}
               </h2>
             </div>
-            <ElemButton btn="purple" onClick={onOpenNoteForm} className="!pl-3">
+            <ElemButton
+              btn="primary"
+              onClick={onOpenNoteForm}
+              className="!pl-3">
               <IconPlus className="w-5 h-5 mr-1" />
               <span>Create note</span>
             </ElemButton>
@@ -139,8 +142,8 @@ const ElemOrganizationNotes: FC<Props> = ({
       />
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
-        title="To add a note, please claim a profile."
-        content="Search your name and claim profile."
+        title="Claim a profile."
+        content="To add a note, search your name and claim profile."
         onClose={() => {
           setIsOpenLinkPersonDialog(false);
         }}

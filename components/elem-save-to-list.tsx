@@ -1,21 +1,20 @@
-import React, { FC, useEffect, useState, Fragment } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Follows, GetFollowsByUserQuery } from '@/graphql/types';
 import { isOnList, toggleFollowOnList } from '@/utils/reaction';
 import { getNameFromListName } from '@/utils/lists';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
-import { IconX, IconPlus } from '@/components/icons';
-import { Dialog, Transition } from '@headlessui/react';
+import { IconPlus } from '@/components/icons';
 import { InputCheckbox } from '@/components/input-checkbox';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
 import { find, isEqual } from 'lodash';
-import { useRouter } from 'next/router';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
 import { ROUTES } from '@/routes';
+import { ElemModal } from './elem-modal';
 
 type Props = {
   resourceName: string | null;
@@ -23,16 +22,13 @@ type Props = {
   resourceType: 'companies' | 'vc_firms' | 'people';
   slug: string;
   buttonStyle?:
+    | 'primary'
+    | 'ol-primary'
+    | 'ol-white'
     | 'danger'
     | 'dark'
-    | 'primary'
-    | 'purple'
-    | 'primary-light'
     | 'transparent'
-    | 'white'
-    | 'slate'
-    | 'ol-white'
-    | 'ol-primary'
+    | 'gray'
     | 'default'
     | '';
   follows?: Pick<Follows, 'list_id'>[];
@@ -45,11 +41,9 @@ export const ElemSaveToList: FC<Props> = ({
   resourceId,
   resourceType,
   slug,
-  buttonStyle = 'purple',
+  buttonStyle = 'primary',
   follows = [],
 }) => {
-  const router = useRouter();
-
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -72,10 +66,7 @@ export const ElemSaveToList: FC<Props> = ({
     listsData?.some(listItem => listItem.id === followItem.list_id),
   );
 
-  const savedButtonStyle =
-    buttonStyle === 'white'
-      ? 'text-dark-500 !bg-slate-200 hover:bg-slate-300'
-      : 'bg-primary-800';
+  const savedButtonStyle = buttonStyle === 'default' ? '' : 'bg-primary-800';
 
   useEffect(() => {
     setListName(listName);
@@ -287,127 +278,97 @@ export const ElemSaveToList: FC<Props> = ({
         />
       )}
 
-      <Transition.Root show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          onClose={() => {
-            setIsOpen(false), setShowNew(false);
-          }}
-          className="relative z-[40]">
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0">
-            <div className="fixed inset-0 z-10 transition-opacity bg-black/20 backdrop-blur-sm" />
-          </Transition.Child>
+      <ElemModal
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false), setShowNew(false);
+        }}
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-40 my-10">
+        <div className="pb-3 border-b border-gray-200">
+          <h2 className="text-xl font-medium">Save to List</h2>
+        </div>
 
-          <div className="fixed inset-0 z-10 flex flex-col items-center justify-center min-h-0 my-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-              <Dialog.Panel className="w-full max-w-lg px-4 py-3 overflow-hidden overflow-x-hidden overflow-y-auto transition-all transform bg-white rounded-lg shadow-xl overscroll-y-none scrollbar-hide">
-                <div className="pb-3 border-b border-gray-200">
-                  <Dialog.Title className="flex items-center justify-between text-xl font-medium">
-                    <span>Save to List</span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsOpen(false), setShowNew(false);
-                      }}
-                      className="focus-visible:outline-none">
-                      <IconX className="w-5 h-5" />
-                    </button>
-                  </Dialog.Title>
+        <div className="mt-2">
+          {listsData.length === 0 ? (
+            <p className="text-gray-500">
+              Save organizations that matter to you in a list so you can
+              compare, sort, and more.
+            </p>
+          ) : (
+            <ul className="grid overflow-y-auto max-h-96 scrollbar-hide gap-y-1">
+              {listsData?.map(list => {
+                const selected = isSelected(list);
 
-                  {listsData.length === 0 && (
-                    <p className="mt-2 text-gray-500">
-                      Save organizations that matter to you in a list so you can
-                      compare, sort, and more.
-                    </p>
-                  )}
-                </div>
+                return (
+                  <li key={list.id}>
+                    <InputCheckbox
+                      className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100"
+                      labelClass="grow text-sm"
+                      label={getNameFromListName(list)}
+                      checked={selected}
+                      onClick={e => onClickHandler(e, list, selected)}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
 
-                <ul className="grid pt-3 overflow-y-auto max-h-96 scrollbar-hide gap-y-1">
-                  {listsData?.map(list => {
-                    const selected = isSelected(list);
-
-                    return (
-                      <li key={list.id}>
-                        <InputCheckbox
-                          className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100"
-                          labelClass="grow text-sm"
-                          label={getNameFromListName(list)}
-                          checked={selected}
-                          onClick={e => onClickHandler(e, list, selected)}
-                        />
-                      </li>
-                    );
-                  })}
-                </ul>
-
-                {!showNew && listsData.length > 0 && (
-                  <div className="pt-3">
-                    <ElemButton
-                      onClick={onClickShowCreateNew}
-                      className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100">
-                      <IconPlus className="w-4 h-4 " />
-                      <span className="self-start text-sm">
-                        Save to new list
-                      </span>
-                    </ElemButton>
+        <div className="flex justify-start mt-3">
+          {!showNew && listsData.length > 0 ? (
+            <ElemButton
+              onClick={onClickShowCreateNew}
+              className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100">
+              <IconPlus className="w-4 h-4" />
+              <span className="self-start text-sm">Save to new list</span>
+            </ElemButton>
+          ) : (
+            <div className="w-full">
+              <label>
+                <InputText
+                  label="New list name"
+                  type="text"
+                  onChange={e => setListName(e.target.value)}
+                  value={listName}
+                  required={true}
+                  name="name"
+                  placeholder="Enter List Name..."
+                  className={`${
+                    error === ''
+                      ? 'ring-1 ring-slate-200'
+                      : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                  }`}
+                />
+                {error === '' ? null : (
+                  <div className="mt-2 text-sm font-medium text-rose-400">
+                    {error}
                   </div>
                 )}
-
-                {(showNew || listsData.length === 0) && (
-                  <div className="pt-3">
-                    <label>
-                      <InputText
-                        label="New list name"
-                        type="text"
-                        onChange={e => setListName(e.target.value)}
-                        value={listName}
-                        required={true}
-                        name="name"
-                        placeholder="Enter List Name..."
-                        className={`${
-                          error === ''
-                            ? 'ring-1 ring-slate-200'
-                            : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                        }`}
-                      />
-                      {error === '' ? null : (
-                        <div className="mt-2 text-sm font-medium text-rose-400">
-                          {error}
-                        </div>
-                      )}
-                    </label>
-                    <div className="flex">
-                      <ElemButton
-                        onClick={handleCreate}
-                        className="mt-3 ml-auto"
-                        disabled={listName === '' || error ? true : false}
-                        roundedFull
-                        btn="purple">
-                        Create list
-                      </ElemButton>
-                    </div>
-                  </div>
-                )}
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-          <Toaster />
-        </Dialog>
-      </Transition.Root>
+              </label>
+              <div className="flex justify-end mt-3 space-x-3">
+                <ElemButton
+                  onClick={() => {
+                    setShowNew(!showNew);
+                  }}
+                  roundedFull
+                  btn="default">
+                  Cancel
+                </ElemButton>
+                <ElemButton
+                  onClick={handleCreate}
+                  disabled={listName === '' || error ? true : false}
+                  roundedFull
+                  btn="primary">
+                  Create list
+                </ElemButton>
+              </div>
+            </div>
+          )}
+        </div>
+      </ElemModal>
 
       <ElemUpgradeDialog
         isOpen={isOpenUpgradeDialog}

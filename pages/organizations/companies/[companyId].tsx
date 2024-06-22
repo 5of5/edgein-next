@@ -270,16 +270,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
               </div>
             </div>
 
-            {/* <div className="flex items-center justify-between max-w-6xl p-5 mt-16 bg-white rounded-lg shadow-md">
-                            <div>
-                                <p className="text-xl font-bold text-dark-950">{`Do you work at ${company.name}?`}</p>
-                                <p className="text-sm font-normal ">By verifying that you work here, you will be able to edit all fields on the company profile. </p>
-                            </div>
-                            <div>
-                                <ElemButton btn="ol-primary" onClick={() => setModal(true)}>Verify Now <IconChevronRight className="w-4 h-4" /></ElemButton>
-                            </div>
-                        </div> */}
-
             {modal && (
               <ElemCompanyVerifyModal
                 isOpen={modal}

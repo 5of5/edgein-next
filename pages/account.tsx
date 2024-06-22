@@ -328,7 +328,7 @@ export default function Account({ userProfile }: Props) {
 
                   <div className="flex mt-4 mb-2 text-base">
                     <ElemButton
-                      btn="purple"
+                      btn="primary"
                       className="mr-2"
                       onClick={handleSubmit}>
                       Change Password
@@ -387,7 +387,7 @@ export default function Account({ userProfile }: Props) {
                 </p>
                 <ElemButton
                   onClick={onBillingClick}
-                  btn="primary-light"
+                  btn="default"
                   arrow
                   className="mt-4 text-primary-500">
                   Start your free trial

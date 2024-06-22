@@ -195,7 +195,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
   // 					Save
   // 				</ElemButton>
   // 				<ElemButton
-  // 					btn="white"
+  // 					btn="default"
   // 					onClick={() => {
   // 						if (teamMember?.id) setActiveWorkspace(0);
   // 						else setEditWorkspace(false);
@@ -525,7 +525,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
           {users?.users_by_pk?.person && (
             <ElemButton
               href={`${ROUTES.PEOPLE}/${users?.users_by_pk?.person?.slug}/`}
-              btn="purple"
+              btn="primary"
               arrow
               className="mt-2 sm:mt-0">
               View Profile
@@ -547,9 +547,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
                   Search your name on the site and claim profile.
                 </p>
                 <ElemButton
-                  btn="primary-light"
+                  btn="default"
                   onClick={() => setShowPopup('search')}
-                  className="mt-4">
+                  className="mt-4 text-primary-500">
                   <IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
                   Search your name
                 </ElemButton>
