@@ -140,6 +140,7 @@ const VcFirmForm = ({
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
           source="year_founded"
+          inputProps={{ maxLength: 4 }}
         />
         <SelectInput
           className={`w-[49%] ${textInputClassName}`}

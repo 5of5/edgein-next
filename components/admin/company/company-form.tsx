@@ -176,7 +176,11 @@ const CompanyForm = ({
           validate={regex('[0-9]{4}-[0-9]{2}-[0-9]{2}', '')}
         />
 
-        <TextInput className={inputClassName} source="year_founded" />
+        <TextInput
+          className={inputClassName}
+          source="year_founded"
+          inputProps={{ maxLength: 4 }}
+        />
         <NumberInput className={inputClassName} source="investor_amount" />
         <TextInput className={inputClassName} source="total_valuation" />
         <TextInput className={inputClassName} source="white_paper" />
