@@ -369,10 +369,9 @@ export const ElemListSettings: FC<Props> = ({
             <p className="font-medium">Public</p>
             <Switch
               checked={isPublicList}
-              onChange={onChangePublic}
               className={`${
                 isPublicList ? 'bg-primary-600' : 'bg-gray-200'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}>
+              } relative inline-flex h-6 w-11 items-center rounded-full hover:bg-primary-300`}>
               <span className="sr-only">Set list public</span>
               <span
                 className={`${
