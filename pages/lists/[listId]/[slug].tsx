@@ -16,7 +16,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { runGraphQl } from '@/utils';
 import { getNameFromListName, getListAuthor } from '@/utils/lists';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import useToast from '@/hooks/use-toast';
 import { useUser } from '@/context/user-context';
 import { ElemButton } from '@/components/elem-button';
 import { PeopleList } from '@/components/my-list/people-list';
@@ -33,6 +34,7 @@ type Props = {
 const MyList: NextPage<Props> = ({ list }) => {
   const { user, refetchMyLists } = useUser();
   const router = useRouter();
+  const { toast } = useToast();
   const { listId } = router.query;
 
   const [openListSettings, setOpenListSettings] = useState(false);
@@ -80,20 +82,7 @@ const MyList: NextPage<Props> = ({ list }) => {
 
     if (updateNameRes.ok) {
       refetchList();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            List name updated
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+      toast('List name updated');
     }
   };
 
@@ -112,20 +101,7 @@ const MyList: NextPage<Props> = ({ list }) => {
 
     if (updateDescRes.ok) {
       refetchList();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            List description updated
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+      toast('List description updated');
     }
   };
 
@@ -156,20 +132,7 @@ const MyList: NextPage<Props> = ({ list }) => {
     if (res.ok) {
       refetchGroups();
       refetchList();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            Groups Changed
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+      toast('Groups Changed');
     }
   };
 
@@ -188,20 +151,11 @@ const MyList: NextPage<Props> = ({ list }) => {
 
     if (res.ok) {
       refetchList();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            {value ? `List set "Public"` : `List set "Private"`}
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+      if (value) {
+        toast(`List set "Public"`);
+      } else {
+        toast(`List set "Private"`);
+      }
     }
   };
 
@@ -214,20 +168,7 @@ const MyList: NextPage<Props> = ({ list }) => {
       onSuccess: () => {
         router.push(ROUTES.LISTS);
         refetchMyLists();
-        toast.custom(
-          t => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
-              List Deleted
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+        toast('List Deleted');
       },
     },
   );
