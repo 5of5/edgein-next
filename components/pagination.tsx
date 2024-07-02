@@ -57,12 +57,13 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           ) : shownItems == totalItems ? (
             <span>
               Showing {shownItemsStart}
-              {' to '} {shownItemsEnd} of {totalItems} results
+              {'–'}
+              {shownItemsEnd} of {totalItems} results
             </span>
           ) : (
             <span>
               Showing {numberWithCommas(shownItemsStart)}
-              {' to '}
+              {'–'}
               {numberWithCommas(shownItemsEnd)} of{' '}
               {numberWithCommas(totalItems)} results
             </span>
@@ -88,11 +89,12 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
       </div>
 
       <div className="flex items-center justify-between flex-1 space-x-2 sm:justify-end">
-        {page * itemsPerPage > 0 && (
-          <ElemButton onClick={onClickPrev} btn="default">
-            Previous
-          </ElemButton>
-        )}
+        <ElemButton
+          onClick={onClickPrev}
+          btn="default"
+          disabled={page * itemsPerPage <= 0 ? true : false}>
+          Previous
+        </ElemButton>
 
         {numeric && (
           <ul className="flex mx-1 sm:mx-2">
@@ -144,14 +146,13 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           </ul>
         )}
 
-        {totalItems > shownItemsEnd && (
-          <ElemButton
-            onClick={onClickNext}
-            className={numeric ? '' : 'sm:ml-3'}
-            btn="default">
-            Next
-          </ElemButton>
-        )}
+        <ElemButton
+          onClick={onClickNext}
+          className={numeric ? '' : 'sm:ml-3'}
+          btn="default"
+          disabled={totalItems <= shownItemsEnd ? true : false}>
+          Next
+        </ElemButton>
       </div>
     </nav>
   );
