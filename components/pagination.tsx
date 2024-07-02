@@ -31,9 +31,14 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
   const shownItemsEnd =
     shownItems < itemsPerPage ? totalItems : (page + 1) * itemsPerPage;
 
-  const hide = totalItems < itemsPerPage ? true : false;
-
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const pageSizes = [10, 20, 30, 40, 50].map(item => {
+    return totalItems >= item - 9 && item;
+  });
+
+  const firstPageSize = pageSizes[0] ? pageSizes[0] : 0;
+  const showItemsPerPageSelector = totalItems < firstPageSize ? false : true;
 
   const handleClickToPage = (selectedPage: number) => {
     if (onClickToPage) {
@@ -41,13 +46,9 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
     }
   };
 
-  if (hide) {
-    return <></>;
-  }
-
   return (
     <nav
-      className={`${className} flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0`}
+      className={`flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0 ${className}`}
       aria-label="Pagination">
       <div className="flex flex-wrap items-center space-x-6">
         <div className="flex-1 text-sm text-gray-500">
@@ -68,19 +69,20 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           )}
         </div>
 
-        {onChangePageSize && (
+        {showItemsPerPageSelector && onChangePageSize && (
           <select
             value={itemsPerPage}
             onChange={onChangePageSize}
-            className="inline-flex justify-center text-sm bg-white border border-gray-300 rounded-full hover:bg-gray-50 active:border-primary-500 focus:ring-0 pl-2.5 pr-8 py-1.5">
-            {[10, 20, 30, 40, 50].map(itemsPerPage => (
-              <option
-                key={itemsPerPage}
-                value={itemsPerPage}
-                className="text-sm font-medium text-gray-700">
-                Show {itemsPerPage}
-              </option>
-            ))}
+            className="inline-flex justify-center text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 active:border-primary-500 focus:ring-0 pl-2.5 pr-8 py-1.5">
+            {pageSizes.map(itemsPerPage => {
+              if (itemsPerPage) {
+                return (
+                  <option key={itemsPerPage} value={itemsPerPage}>
+                    Show {itemsPerPage}
+                  </option>
+                );
+              }
+            })}
           </select>
         )}
       </div>
