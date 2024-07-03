@@ -14,7 +14,7 @@ import {
 import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { runGraphQl } from '@/utils';
+import { runGraphQl, toLabel } from '@/utils';
 import { getNameFromListName, getListAuthor } from '@/utils/lists';
 import { Toaster } from 'react-hot-toast';
 import useToast from '@/hooks/use-toast';
@@ -40,7 +40,10 @@ const MyList: NextPage<Props> = ({ list }) => {
   const [openListSettings, setOpenListSettings] = useState(false);
   const [theList, setTheList] = useState<Lists>(list);
 
-  const listName = theList?.name === 'crap' ? 'sh**' : theList?.name;
+  const listName =
+    getNameFromListName(theList) === 'crap'
+      ? 'sh**'
+      : getNameFromListName(theList);
 
   const isListAuthor = theList?.created_by?.id === user?.id;
   const isFollowing = theList?.list_members.some(
@@ -48,7 +51,7 @@ const MyList: NextPage<Props> = ({ list }) => {
   );
   const isPublicList = !!theList?.public;
   const isCustomList = theList
-    ? !['hot', 'like', 'crap'].includes(getNameFromListName(theList))
+    ? !['hot', 'like', 'crap'].includes(listName)
     : false;
 
   const {
@@ -211,9 +214,9 @@ const MyList: NextPage<Props> = ({ list }) => {
   return (
     <>
       <NextSeo
-        title={`List: ${
-          theList.name ? getNameFromListName(theList) : ''
-        } by ${getListAuthor(theList)}`}
+        title={`List: ${listName ? toLabel(listName) : ''} by ${getListAuthor(
+          theList,
+        )}`}
         description={`${theList?.description ? theList.description : ''}`}
         openGraph={{
           images: [
