@@ -75,7 +75,8 @@ export const listSchema = z.object({
     .max(
       LIST_DESCRIPTION_MAX_LENGTH,
       `List description should be maximum of ${LIST_DESCRIPTION_MAX_LENGTH} characters.`,
-    ),
+    )
+    .default(''),
 });
 
 export const getLocationInsightSchema = z.object({
