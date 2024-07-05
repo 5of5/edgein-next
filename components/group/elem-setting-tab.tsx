@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { Switch } from '@headlessui/react';
-import toast from 'react-hot-toast';
+import useToast from '@/hooks/use-toast';
 import { useUser } from '@/context/user-context';
 import { User_Groups } from '@/graphql/types';
 import { IconSignOut, IconSpinner, IconTrash, IconX } from '@/components/icons';
@@ -19,6 +19,8 @@ type Props = {
 const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
   const router = useRouter();
 
+  const { toast } = useToast();
+
   const { user, refetchMyGroups } = useUser();
 
   const [leaveError, setLeaveError] = useState<boolean>(false);
@@ -32,26 +34,27 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
   const fields = [
     {
       label: 'Group Name',
-      field: 'name',
+      fieldName: 'name',
     },
     {
       label: 'Description',
-      field: 'description',
+      fieldName: 'description',
+      fieldType: 'textarea',
       placeholder: 'Add a description',
     },
     {
       label: 'Twitter',
-      field: 'twitter',
+      fieldName: 'twitter',
       placeholder: 'Add Twitter link',
     },
     {
       label: 'Telegram',
-      field: 'telegram',
+      fieldName: 'telegram',
       placeholder: 'Add Telegram link',
     },
     {
       label: 'Discord',
-      field: 'discord',
+      fieldName: 'discord',
       placeholder: 'Add Discord link',
     },
   ];
@@ -84,35 +87,9 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
       onSuccess: async (response, value) => {
         if (response.status !== 200) {
           const err = await response.json();
-          toast.custom(
-            t => (
-              <div
-                className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}>
-                {err.message}
-              </div>
-            ),
-            {
-              duration: 5000,
-              position: 'top-center',
-            },
-          );
+          toast(`${err.message}`, 'error');
         } else {
-          toast.custom(
-            t => (
-              <div
-                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}>
-                {`Set to ${value ? 'public' : 'private'}`}
-              </div>
-            ),
-            {
-              duration: 3000,
-              position: 'top-center',
-            },
-          );
+          toast(<>Set to {value ? 'public' : 'private'}</>);
           onUpdateGroupData((prev: User_Groups) => ({
             ...prev,
             public: value,
@@ -176,9 +153,10 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
       <div className="overflow-hidden bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg">
         {fields.map(item => (
           <ElemSettingEditableField
-            key={item.field}
+            key={item.fieldName}
             label={item.label}
-            field={item.field as keyof User_Groups}
+            field={item.fieldName as keyof User_Groups}
+            fieldType={item.fieldType}
             placeholder={item.placeholder ? item.placeholder : ''}
             group={group}
             onUpdateGroupData={onUpdateGroupData}
