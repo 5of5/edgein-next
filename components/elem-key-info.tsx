@@ -26,18 +26,15 @@ import {
   IconLockClosed,
   IconCopy,
 } from '@/components/icons';
+
+import { getTwitterHandle, removeDomainName } from '@/utils/text';
 import {
-  getTwitterHandle,
-  removeDomainName,
   convertToInternationalCurrencySystem,
   numberWithCommas,
-} from '@/utils';
+} from '@/utils/numbers';
 import { getFullAddress } from '@/utils/helpers';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
-import { useAuth } from '@/hooks/use-auth';
-import { useRouter } from 'next/router';
-import { useGetUserProfileQuery } from '@/graphql/types';
-import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
+import { useUser } from '@/context/user-context';
 import toast, { Toaster } from 'react-hot-toast';
 import { ElemTooltip } from './elem-tooltip';
 
@@ -105,18 +102,11 @@ export const ElemKeyInfo: React.FC<Props> = ({
   venue,
   attachments,
 }) => {
-  const router = useRouter();
+  const { user } = useUser();
 
-  const { user } = useAuth();
-
-  const { data: userProfile } = useGetUserProfileQuery(
-    {
-      id: user?.id || 0,
-    },
-    {
-      enabled: !!user,
-    },
-  );
+  const isPaidUser = user?.entitlements.viewEmails
+    ? user?.entitlements.viewEmails
+    : false;
 
   const isEmptyLocationJson = values(locationJson).every(isEmpty);
   let locationText = '';
@@ -126,17 +116,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
     locationText = location;
   }
 
-  const edgeInContributorButtonEnabled =
-    userProfile?.users_by_pk?.use_credits_system ||
-    (!userProfile?.users_by_pk?.use_credits_system &&
-      userProfile?.users_by_pk?.credits >= CREDITS_PER_MONTH);
-
   const infoItems: {
     icon?: React.FC<IconProps>;
     link?: string;
     text: string;
     target?: string;
-    showHide?: boolean;
+    isPremium?: boolean;
   }[] = [];
 
   if (website) {
@@ -253,27 +238,29 @@ export const ElemKeyInfo: React.FC<Props> = ({
       target: '_self',
     });
   }
-  if (web3Address?.length) {
-    infoItems.push({
-      icon: IconContract,
-      text: Array.isArray(web3Address)
-        ? /* to not break previous version */
-          // TODO add information about network later (web3Address[0].network and web3Address[0].address)
-          web3Address
-            ?.map((element: { address?: string } | string) =>
-              typeof element === 'string' ? element : element?.address,
-            )
-            .join(' ')
-        : web3Address,
-      showHide: !userProfile || edgeInContributorButtonEnabled,
-    });
-  }
+
+  // if (web3Address?.length) {
+  //   infoItems.push({
+  //     icon: IconContract,
+  //     text: Array.isArray(web3Address)
+  //       ? /* to not break previous version */
+  //         // TODO add information about network later (web3Address[0].network and web3Address[0].address)
+  //         web3Address
+  //           ?.map((element: { address?: string } | string) =>
+  //             typeof element === 'string' ? element : element?.address,
+  //           )
+  //           .join(' ')
+  //       : web3Address,
+  //     isPremium: !userProfile || edgeInContributorButtonEnabled,
+  //   });
+  // }
+
   if (linkedIn) {
     infoItems.push({
       icon: IconLinkedIn,
       text: removeDomainName(linkedIn),
       link: linkedIn,
-      showHide: true,
+      isPremium: true,
     });
   }
   if (github) {
@@ -281,7 +268,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconGithub,
       text: 'Github',
       link: github,
-      showHide: true,
+      isPremium: true,
     });
   }
   if (telegram) {
@@ -289,7 +276,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconTelegram,
       text: 'Telegram',
       link: telegram,
-      showHide: true,
+      isPremium: true,
     });
   }
   if (facebook) {
@@ -345,10 +332,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
   const [showInfo, setShowInfo] = useState<Record<string, boolean>>({});
 
   const onInfoClick = (info: string) => () => {
-    if (user?.entitlements?.viewEmails) {
+    if (isPaidUser) {
       setShowInfo({
         ...showInfo,
-        [info]: true, //!showInfo[info]
+        [info]: true,
       });
       // TODO add action
     } else {
@@ -420,7 +407,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
               </li>
             );
 
-            if (item.showHide) {
+            if (item.isPremium) {
               return (
                 <li
                   key={index}
@@ -437,7 +424,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                         } h-5 w-5 mr-2 shrink-0`}
                       />
                     )}
-                    {showInfo[item.text] ? (
+                    {showInfo[item.text] && item.link ? (
                       <a
                         className="underline break-all transition-all hover:no-underline"
                         href={item.link}
@@ -446,6 +433,8 @@ export const ElemKeyInfo: React.FC<Props> = ({
                         title={item.text}>
                         {item.text}
                       </a>
+                    ) : showInfo[item.text] ? (
+                      <span className="min-w-0 break-all">{item.text}</span>
                     ) : (
                       <span className="text-gray-400">
                         &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
@@ -464,6 +453,72 @@ export const ElemKeyInfo: React.FC<Props> = ({
               return itemInner;
             }
           })}
+
+          {web3Address && (
+            <li
+              className={`${baseClasses} flex-1 items-start justify-between cursor-pointer`}>
+              <IconContract
+                className={`${
+                  showInfo['web3address'] ? 'text-primary-500' : 'text-gray-400'
+                } h-5 w-5 shrink-0`}
+                title="Web3 Address"
+              />
+              <ul className="flex-1 space-y-4">
+                {web3Address?.map((item, i: number) => [
+                  <li key={i}>
+                    <ElemTooltip
+                      content={`${
+                        showInfo['web3address'] ? 'Copy' : 'View'
+                      } Web3 Address`}
+                      direction="top"
+                      mode="dark">
+                      <button
+                        className="flex items-start w-full"
+                        onClick={
+                          showInfo['web3address']
+                            ? () => onCopy(item.address)
+                            : onInfoClick('web3address')
+                        }>
+                        <div className="text-left break-all">
+                          {showInfo['web3address'] ? (
+                            <div className="inline">
+                              {item.network && (
+                                <div className="inline mr-1 font-medium">
+                                  {item.network}:
+                                </div>
+                              )}
+
+                              {item.address && (
+                                <div className="inline underline line-clamp-1 hover:no-underline">
+                                  {item.address.slice(0, 7)}&#8230;
+                                  {item.address?.slice(-7)}
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">
+                              &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="ml-auto">
+                          {!showInfo['web3address'] ? (
+                            <IconLockClosed
+                              className="w-4 h-4 text-gray-400 shrink-0"
+                              strokeWidth={2}
+                            />
+                          ) : (
+                            <IconCopy className="w-4 h-4 text-gray-400 shrink-0" />
+                          )}
+                        </div>
+                      </button>
+                    </ElemTooltip>
+                  </li>,
+                ])}
+              </ul>
+            </li>
+          )}
 
           {emails.map((email, i: number) => [
             <li
