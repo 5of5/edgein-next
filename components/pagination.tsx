@@ -27,18 +27,21 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
   onClickNext,
   onClickToPage,
 }) => {
-  const shownItemsStart = page === 0 ? 1 : page * itemsPerPage;
+  // const shownItemsStart = page === 0 ? 1 : page * itemsPerPage + 1;
+  const shownItemsStart = page * itemsPerPage + 1;
   const shownItemsEnd =
     shownItems < itemsPerPage ? totalItems : (page + 1) * itemsPerPage;
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const pageSizes = [10, 20, 30, 40, 50].map(item => {
-    return totalItems >= item - 9 && item;
-  });
-
-  const firstPageSize = pageSizes[0] ? pageSizes[0] : 0;
-  const showItemsPerPageSelector = totalItems < firstPageSize ? false : true;
+  const itemsPerPageOptions = [10, 20, 30, 40, 50]
+    .map(number => {
+      if (totalItems >= 10 && totalItems >= number - 9) {
+        return number;
+      }
+      return;
+    })
+    .filter(Boolean);
 
   const handleClickToPage = (selectedPage: number) => {
     if (onClickToPage) {
@@ -70,31 +73,31 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           )}
         </div>
 
-        {showItemsPerPageSelector && onChangePageSize && (
+        {itemsPerPageOptions.length > 0 && onChangePageSize && (
           <select
             value={itemsPerPage}
             onChange={onChangePageSize}
             className="inline-flex justify-center text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 active:border-primary-500 focus:ring-0 pl-2.5 pr-8 py-1.5">
-            {pageSizes.map(itemsPerPage => {
-              if (itemsPerPage) {
-                return (
-                  <option key={itemsPerPage} value={itemsPerPage}>
-                    Show {itemsPerPage}
-                  </option>
-                );
-              }
+            {itemsPerPageOptions.map(itemsPerPage => {
+              return (
+                <option key={itemsPerPage} value={itemsPerPage}>
+                  Show {itemsPerPage}
+                </option>
+              );
             })}
           </select>
         )}
       </div>
 
       <div className="flex items-center justify-between flex-1 space-x-2 sm:justify-end">
-        <ElemButton
-          onClick={onClickPrev}
-          btn="default"
-          disabled={page * itemsPerPage <= 0 ? true : false}>
-          Previous
-        </ElemButton>
+        {page * itemsPerPage > 0 && (
+          <ElemButton
+            onClick={onClickPrev}
+            btn="default"
+            disabled={page * itemsPerPage <= 0 ? true : false}>
+            Previous
+          </ElemButton>
+        )}
 
         {numeric && (
           <ul className="flex mx-1 sm:mx-2">
@@ -146,13 +149,15 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           </ul>
         )}
 
-        <ElemButton
-          onClick={onClickNext}
-          className={numeric ? '' : 'sm:ml-3'}
-          btn="default"
-          disabled={totalItems <= shownItemsEnd ? true : false}>
-          Next
-        </ElemButton>
+        {totalItems > shownItemsEnd && (
+          <ElemButton
+            onClick={onClickNext}
+            className={numeric ? '' : 'sm:ml-3'}
+            btn="default"
+            disabled={totalItems <= shownItemsEnd ? true : false}>
+            Next
+          </ElemButton>
+        )}
       </div>
     </nav>
   );
