@@ -169,7 +169,7 @@ const MyList: NextPage<Props> = ({ list }) => {
       }),
     {
       onSuccess: () => {
-        router.push(ROUTES.LISTS);
+        router.push(`${ROUTES.LISTS}?tab=my-lists`);
         refetchMyLists();
         toast('List Deleted');
       },
