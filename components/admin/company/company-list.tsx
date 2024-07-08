@@ -274,8 +274,8 @@ export const CompanyList = () => {
               (x.address === '' || x.address === null),
           );
 
-          if (web3AddressisEmpty) {
-            return 'delete empty field';
+          if (record.web3_address?.length > 0 && web3AddressisEmpty) {
+            return 'Web3 address field is empty';
           } else {
             return record.web3_address && record.web3_address.length > 0
               ? record.web3_address.length
