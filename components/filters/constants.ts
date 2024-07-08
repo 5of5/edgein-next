@@ -233,7 +233,7 @@ export const peopleFilterOptions = [
         value: 'name',
       },
       {
-        label: 'Role',
+        label: 'Role(s)',
         value: 'role',
       },
     ],

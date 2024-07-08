@@ -166,7 +166,7 @@ export const getFilterOptionMetadata = (
     case 'role':
       return {
         title: 'Role',
-        heading: 'Role',
+        heading: 'Role(s)',
         placeholder: 'Add a role, press enter ⏎',
         subtext: 'E.g., Co-founder, Software Engineer…',
       };
