@@ -97,6 +97,25 @@ export const VcFirmList = () => {
           Array.isArray(record.tags) ? record.tags.join() : record.tags ?? ''
         }
       />
+      <FunctionField
+        cellClassName="truncate"
+        source="web3_address"
+        render={(record: any) => {
+          const web3AddressisEmpty = record.web3_address?.every(
+            (x: any) =>
+              (x.network === '' || x.network === null) &&
+              (x.address === '' || x.address === null),
+          );
+
+          if (web3AddressisEmpty) {
+            return 'delete empty field';
+          } else {
+            return record.web3_address && record.web3_address.length > 0
+              ? record.web3_address.length
+              : record.web3_address ?? '';
+          }
+        }}
+      />
       {/* <TextField source="counter" /> */}
     </ElemList>
   );
