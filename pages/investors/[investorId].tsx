@@ -271,6 +271,7 @@ const VCFirm: NextPage<Props> = props => {
                 website={vcfirm.website}
                 investmentsLength={sortedInvestmentRounds.length}
                 yearFounded={vcfirm.year_founded}
+                status_tags={vcfirm.status_tags}
                 linkedIn={vcfirm.linkedin}
                 locationJson={vcfirm.location_json}
                 github={vcfirm.github}

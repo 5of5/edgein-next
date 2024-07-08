@@ -341,6 +341,29 @@ export const IconAnnotation: FC<IconProps> = ({
   );
 };
 
+export const IconStatus: FC<IconProps> = ({
+  className,
+  title,
+  strokeWidth,
+}) => {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${className}`}
+      stroke="currentColor"
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
+      <title>{title ? title : 'Status'}</title>
+      <path
+        d="M2 12H9.55585L11 8.5L14.5 15.4442L16 12H18.5M4.68508 15.4442C5.13738 16.5361 5.80031 17.5282 6.63604 18.364C7.47177 19.1997 8.46392 19.8626 9.55585 20.3149C10.6478 20.7672 11.8181 21 13 21C14.1819 21 15.3522 20.7672 16.4442 20.3149C17.5361 19.8626 18.5282 19.1997 19.364 18.364C20.1997 17.5282 20.8626 16.5361 21.3149 15.4442C21.7672 14.3522 22 13.1819 22 12C22 9.61305 21.0518 7.32387 19.364 5.63604C17.6761 3.94821 15.3869 3 13 3C10.6131 3 8.32387 3.94821 6.63604 5.63604C4.94821 7.32387 4 9.61305 4 12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
 export const IconThumbUp: FC<IconProps> = ({
   className,
   title,

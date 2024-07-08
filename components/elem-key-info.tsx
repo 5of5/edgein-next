@@ -7,6 +7,7 @@ import {
   IconDocumentDownload,
   IconUsers,
   IconFlag,
+  IconStatus,
   IconLinkedIn,
   IconGithub,
   IconBriefcase,
@@ -49,6 +50,7 @@ type Props = {
   website?: string | null;
   eventLink?: any | null;
   totalFundingRaised?: string | null;
+  status_tags?: string[] | null;
   whitePaper?: string | null;
   totalEmployees?: number;
   yearFounded?: string | null;
@@ -79,6 +81,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   website,
   eventLink,
   totalFundingRaised,
+  status_tags,
   whitePaper,
   totalEmployees,
   yearFounded,
@@ -121,6 +124,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
     link?: string;
     text: string;
     target?: string;
+    tooltip?: string;
     isPremium?: boolean;
   }[] = [];
 
@@ -133,6 +137,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconGlobe,
       text: cleanUrl,
       link: website,
+      tooltip: 'Website',
     });
   }
 
@@ -166,14 +171,28 @@ export const ElemKeyInfo: React.FC<Props> = ({
     infoItems.push({
       icon: IconFlag,
       text: yearFounded + ' Founded',
+      tooltip: 'Date the organization was founded',
     });
   }
+
+  if (status_tags && status_tags?.length > 0) {
+    infoItems.push({
+      icon: IconStatus,
+      text: status_tags
+        ?.map((tag: string) => tag)
+        .join(', ')
+        .replace(/, ([^,]*)$/, ' and $1'),
+      tooltip: 'Status of organization', //e.g. Trending, Raising, Dead, etc.
+    });
+  }
+
   if (totalFundingRaised) {
     infoItems.push({
       icon: IconCash,
       text:
         convertToInternationalCurrencySystem(Number(totalFundingRaised)) +
         ' Total Funding Raised',
+      tooltip: 'Total amount raised across all funding rounds',
     });
   }
 
@@ -199,12 +218,14 @@ export const ElemKeyInfo: React.FC<Props> = ({
     infoItems.push({
       icon: IconLocation,
       text: locationText,
+      tooltip: 'Location',
     });
   }
   if (totalEmployees) {
     infoItems.push({
       icon: IconUsers,
       text: numberWithCommas(totalEmployees) + ' Employees',
+      tooltip: 'Number of employees',
     });
   }
   if (whitePaper) {
@@ -260,6 +281,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconLinkedIn,
       text: removeDomainName(linkedIn),
       link: linkedIn,
+      tooltip: 'View on LinkedIn',
       isPremium: true,
     });
   }
@@ -268,6 +290,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconGithub,
       text: 'Github',
       link: github,
+      tooltip: 'View on Github',
       isPremium: true,
     });
   }
@@ -276,6 +299,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconTelegram,
       text: 'Telegram',
       link: telegram,
+      tooltip: 'View on Telegram',
       isPremium: true,
     });
   }
@@ -283,6 +307,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
     infoItems.push({
       icon: IconFacebook,
       text: 'Facebook',
+      tooltip: 'View on Facebook',
       link: facebook,
     });
   }
@@ -292,6 +317,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconTwitter,
       text: getTwitterHandle(twitter),
       link: twitter,
+      tooltip: 'View on Twitter',
     });
   }
   if (instagram) {
@@ -299,6 +325,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconInstagram,
       text: 'Instagram',
       link: instagram,
+      tooltip: 'View on Instagram',
     });
   }
   if (discord) {
@@ -306,6 +333,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconDiscord,
       text: 'Discord',
       link: discord,
+      tooltip: 'View on Discord',
     });
   }
   if (glassdoor) {
@@ -313,6 +341,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconGlassdoor,
       text: 'Glassdoor',
       link: glassdoor,
+      tooltip: 'View on Glassdoor',
     });
   }
 
@@ -398,6 +427,18 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   title={item.text}>
                   {itemInner}
                 </a>
+              );
+            }
+
+            if (item.tooltip?.length) {
+              itemInner = (
+                <ElemTooltip
+                  size="md"
+                  mode="dark"
+                  direction="top-start"
+                  content={item.tooltip}>
+                  <div className={baseClasses}>{itemInner}</div>
+                </ElemTooltip>
               );
             }
 

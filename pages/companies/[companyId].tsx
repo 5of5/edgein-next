@@ -398,6 +398,7 @@ const Company: NextPage<Props> = (props: Props) => {
                 totalEmployees={company.total_employees}
                 careerPage={company.careers_page}
                 yearFounded={company.year_founded}
+                status_tags={company.status_tags}
                 linkedIn={company.company_linkedin}
                 web3Address={company.web3_address}
                 github={company.github}
