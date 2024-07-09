@@ -12,8 +12,6 @@ import {
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
-import { hotjar } from 'react-hotjar';
-import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
 import { filterExcludeNotifications } from '@/utils/notifications';
@@ -23,8 +21,14 @@ import useLibrary from '@/hooks/use-library';
 import { libraryChoices } from '@/utils/constants';
 import { Library, LibraryTag } from '@/types/common';
 
+// Disable hotjar temporarily
+//import { hotjar } from 'react-hotjar';
+
+// Disable Microsoft clarity temporarily
+// import { clarity } from 'react-microsoft-clarity';
+// const CLARITY_ID = 'epusnauses';
+
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
-const CLARITY_ID = 'epusnauses';
 
 type UserValue = {
   user: User | null;
@@ -95,23 +99,23 @@ const UserProvider: React.FC<Props> = props => {
       { enabled: Boolean(user) },
     );
 
-  React.useEffect(() => {
-    clarity.init(CLARITY_ID);
-  }, []);
+  // React.useEffect(() => {
+  //   clarity.init(CLARITY_ID);
+  // }, []);
 
   React.useEffect(() => {
     if (user) {
-      try {
-        if (hotjar.identify) {
-          hotjar.identify(String(user.id), {
-            name: startCase(user.display_name || ''),
-            email: user.email,
-            role: user.role,
-          });
-        }
-      } catch (e) {
-        // hotjar not loaded
-      }
+      // try {
+      //   if (hotjar.identify) {
+      //     hotjar.identify(String(user.id), {
+      //       name: startCase(user.display_name || ''),
+      //       email: user.email,
+      //       role: user.role,
+      //     });
+      //   }
+      // } catch (e) {
+      //   // hotjar not loaded
+      // }
       try {
         identify(String(user.id), {
           displayName: startCase(user.display_name || ''),
