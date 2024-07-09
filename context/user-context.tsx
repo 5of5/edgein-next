@@ -12,7 +12,6 @@ import {
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
-import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
 import { filterExcludeNotifications } from '@/utils/notifications';
 import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
@@ -21,14 +20,16 @@ import useLibrary from '@/hooks/use-library';
 import { libraryChoices } from '@/utils/constants';
 import { Library, LibraryTag } from '@/types/common';
 
+// Disable fullstory temporarily
+// import FullStory, { identify } from 'react-fullstory';
+// const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
+
 // Disable hotjar temporarily
-//import { hotjar } from 'react-hotjar';
+// import { hotjar } from 'react-hotjar';
 
 // Disable Microsoft clarity temporarily
 // import { clarity } from 'react-microsoft-clarity';
 // const CLARITY_ID = 'epusnauses';
-
-const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 
 type UserValue = {
   user: User | null;
@@ -116,15 +117,15 @@ const UserProvider: React.FC<Props> = props => {
       // } catch (e) {
       //   // hotjar not loaded
       // }
-      try {
-        identify(String(user.id), {
-          displayName: startCase(user.display_name || ''),
-          email: user.email,
-          role: user.role,
-        });
-      } catch (e) {
-        // fullstory not loaded
-      }
+      // try {
+      //   identify(String(user.id), {
+      //     displayName: startCase(user.display_name || ''),
+      //     email: user.email,
+      //     role: user.role,
+      //   });
+      // } catch (e) {
+      //   // fullstory not loaded
+      // }
       try {
         shutdown();
         boot({
@@ -213,9 +214,9 @@ const UserProvider: React.FC<Props> = props => {
   );
   return (
     <Provider value={cachedUser}>
-      {user && !user.email.endsWith('@edgein.io') ? (
+      {/* {user && !user.email.endsWith('@edgein.io') ? (
         <FullStory org={FULLSTORY_ORG_ID} />
-      ) : null}
+      ) : null} */}
       {props.children}
     </Provider>
   );
