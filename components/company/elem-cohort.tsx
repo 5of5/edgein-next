@@ -1,9 +1,8 @@
-import { FC, MouseEvent } from 'react';
+import { FC } from 'react';
 import { PlaceholderCompanyCard } from '@/components/placeholders';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { ElemCompanyCard } from '@/components/companies/elem-company-card';
-import { useRouter } from 'next/router';
 import {
   Companies,
   Companies_Bool_Exp,
@@ -12,7 +11,6 @@ import {
 } from '@/graphql/types';
 import useLibrary from '@/hooks/use-library';
 import { DeepPartial } from '@/types/common';
-import { ROUTES } from '@/routes';
 
 type Props = {
   className?: string;
@@ -34,16 +32,14 @@ export const ElemCohort: FC<Props> = ({
   const limit = 12;
   const offset = null;
 
-  const router = useRouter();
-
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: [
       {
         slug: { _neq: '' || currentSlug },
+        library: { _contains: selectedLibrary },
+        _and: [{ tags: { _contains: tag1 } }, { tags: { _contains: tag2 } }],
+        //_or: [{ tags: { _contains: tag1 } }, { tags: { _contains: tag2 } }],
       },
-      { library: { _contains: selectedLibrary } },
-      { tags: { _contains: tag1 } },
-      { tags: { _contains: tag2 } },
     ],
   };
 
@@ -58,6 +54,10 @@ export const ElemCohort: FC<Props> = ({
   });
 
   const companies = companiesData?.companies;
+
+  if (companies && companies.length === 0) {
+    return <></>;
+  }
 
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
