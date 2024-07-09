@@ -6,7 +6,8 @@ import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconPlus } from '@/components/icons';
 import { InputCheckbox } from '@/components/input-checkbox';
-import toast from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import useToast from '@/hooks/use-toast';
 import { useUser } from '@/context/user-context';
 import { listSchema } from '@/utils/schema';
 import { zodValidate } from '@/utils/validation';
@@ -44,11 +45,14 @@ export const ElemSaveToList: FC<Props> = ({
   buttonStyle = 'primary',
   follows = [],
 }) => {
+  const { user, listAndFollows, refreshProfile } = useUser();
+  const { toast } = useToast();
+
   const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [listsData, setListsData] = useState([] as List[]);
-  const { user, listAndFollows, refreshProfile } = useUser();
+
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [followsByResource, setFollowsByResource] = useState<
@@ -183,22 +187,13 @@ export const ElemSaveToList: FC<Props> = ({
         });
       }
       refreshProfile();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            {action === 'add' ? ' Added ' : ' Removed '}
-            {resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
-            {action === 'add' ? ' to ' : ' from '}
-            &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
+      toast(
+        <>
+          {action === 'add' ? ' Added ' : ' Removed '}
+          {resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
+          {action === 'add' ? ' to ' : ' from '}
+          &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
+        </>,
       );
     }
   };
@@ -374,6 +369,7 @@ export const ElemSaveToList: FC<Props> = ({
         isOpen={isOpenUpgradeDialog}
         onClose={onCloseUpgradeDialog}
       />
+      <Toaster />
     </>
   );
 };

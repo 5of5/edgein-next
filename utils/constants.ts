@@ -2288,7 +2288,7 @@ export const leadSegmentationStatusChoices = [
 
 export const SWITCH_LIBRARY_ALLOWED_DOMAINS = [
   'edgein.io',
-  'wayneandreed.com',
+  // 'wayneandreed.com',
   // 'techlist.com',
   // 'sudolabs.io',
 ];
@@ -2302,6 +2302,7 @@ export const SWITCH_LIBRARY_ALLOWED_EMAILS = [
 
 export const LIST_NAME_MIN_LENGTH = 3;
 export const LIST_NAME_MAX_LENGTH = 255;
+export const LIST_DESCRIPTION_MAX_LENGTH = 255;
 
 export const GROUP_NAME_MAX_LENGTH = 255;
 export const GROUP_DESCRIPTION_MAX_LENGTH = 1000;
@@ -2339,6 +2340,8 @@ export const TRENDING_CATEGORY_LIMIT = 25;
 export const COMPANY_PROFILE_DEFAULT_TAGS_LIMIT = 5;
 
 export const INVESTOR_PROFILE_DEFAULT_TAGS_LIMIT = 5;
+
+export const PERSON_PROFILE_DEFAULT_TAGS_LIMIT = 10;
 
 export const TABLE_DEFAULT_TEAM_LIMIT = 6;
 

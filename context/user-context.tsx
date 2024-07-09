@@ -12,9 +12,6 @@ import {
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
-import { hotjar } from 'react-hotjar';
-import { clarity } from 'react-microsoft-clarity';
-import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
 import { filterExcludeNotifications } from '@/utils/notifications';
 import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
@@ -23,8 +20,16 @@ import useLibrary from '@/hooks/use-library';
 import { libraryChoices } from '@/utils/constants';
 import { Library, LibraryTag } from '@/types/common';
 
-const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
-const CLARITY_ID = 'epusnauses';
+// Disable fullstory temporarily
+// import FullStory, { identify } from 'react-fullstory';
+// const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
+
+// Disable hotjar temporarily
+// import { hotjar } from 'react-hotjar';
+
+// Disable Microsoft clarity temporarily
+// import { clarity } from 'react-microsoft-clarity';
+// const CLARITY_ID = 'epusnauses';
 
 type UserValue = {
   user: User | null;
@@ -95,32 +100,32 @@ const UserProvider: React.FC<Props> = props => {
       { enabled: Boolean(user) },
     );
 
-  React.useEffect(() => {
-    clarity.init(CLARITY_ID);
-  }, []);
+  // React.useEffect(() => {
+  //   clarity.init(CLARITY_ID);
+  // }, []);
 
   React.useEffect(() => {
     if (user) {
-      try {
-        if (hotjar.identify) {
-          hotjar.identify(String(user.id), {
-            name: startCase(user.display_name || ''),
-            email: user.email,
-            role: user.role,
-          });
-        }
-      } catch (e) {
-        // hotjar not loaded
-      }
-      try {
-        identify(String(user.id), {
-          displayName: startCase(user.display_name || ''),
-          email: user.email,
-          role: user.role,
-        });
-      } catch (e) {
-        // fullstory not loaded
-      }
+      // try {
+      //   if (hotjar.identify) {
+      //     hotjar.identify(String(user.id), {
+      //       name: startCase(user.display_name || ''),
+      //       email: user.email,
+      //       role: user.role,
+      //     });
+      //   }
+      // } catch (e) {
+      //   // hotjar not loaded
+      // }
+      // try {
+      //   identify(String(user.id), {
+      //     displayName: startCase(user.display_name || ''),
+      //     email: user.email,
+      //     role: user.role,
+      //   });
+      // } catch (e) {
+      //   // fullstory not loaded
+      // }
       try {
         shutdown();
         boot({
@@ -209,9 +214,9 @@ const UserProvider: React.FC<Props> = props => {
   );
   return (
     <Provider value={cachedUser}>
-      {user && !user.email.endsWith('@edgein.io') ? (
+      {/* {user && !user.email.endsWith('@edgein.io') ? (
         <FullStory org={FULLSTORY_ORG_ID} />
-      ) : null}
+      ) : null} */}
       {props.children}
     </Provider>
   );

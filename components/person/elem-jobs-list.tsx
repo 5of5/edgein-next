@@ -95,12 +95,19 @@ export const ElemJobsList: FC<Props> = ({
                     ) : (
                       <>Undisclosed organization</>
                     )}
-                    <div className="flex space-x-2">
-                      <span>
+
+                    <div className="flex">
+                      <div>
                         {getWorkDurationFromAndTo(job.start_date, job.end_date)}
-                      </span>
-                      <span>&middot;</span>
-                      <span>{getTimeOfWork(job.start_date, job.end_date)}</span>
+                      </div>
+                      {job.start_date && job.end_date && (
+                        <>
+                          <div className="px-1">&middot;</div>
+                          <div>
+                            {getTimeOfWork(job.start_date, job.end_date)}
+                          </div>
+                        </>
+                      )}
                     </div>
                     {locationText}
                   </div>

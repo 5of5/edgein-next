@@ -7,8 +7,8 @@ import {
   useRowSelect,
   useGlobalFilter,
 } from 'react-table';
-import toast, { Toaster } from 'react-hot-toast';
-import startCase from 'lodash/startCase';
+import { Toaster } from 'react-hot-toast';
+import useToast from '@/hooks/use-toast';
 import compact from 'lodash/compact';
 import { TableColumnsFilter } from './table-columns-filter';
 import { TableGlobalFilter } from './table-global-filter';
@@ -22,7 +22,7 @@ import {
 import { Pagination } from '@/components/pagination';
 import { ElemButton } from '@/components/elem-button';
 import { useCheckboxes } from './indeterminate-checkbox';
-import { convertToInternationalCurrencySystem } from '@/utils';
+import { convertToInternationalCurrencySystem, toLabel } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { PluginHook } from 'react-table';
 
@@ -68,6 +68,7 @@ export const Table: FC<Props> = ({
   disabledCheckbox = false,
 }) => {
   const { refreshProfile } = useUser();
+  const { toast } = useToast();
 
   const defaultColumn = useMemo(
     () => ({
@@ -166,29 +167,14 @@ export const Table: FC<Props> = ({
     if (deleteFollowsResponse.ok) {
       onRefetchData();
       refreshProfile();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            Removed from {listName}
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+      toast(`Removed from "${listName}"`);
     }
   };
 
   return (
     <div className="px-4 mt-4">
       <div className="items-start justify-between mb-2 sm:flex">
-        <h2 className="mr-2 font-medium capitalize">
-          {startCase(resourceType)}
-        </h2>
+        <h2 className="mr-2 font-medium capitalize">{toLabel(resourceType)}</h2>
 
         {['companies', 'investors'].includes(resourceType) &&
           fundingTotal !== undefined &&

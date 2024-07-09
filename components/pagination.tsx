@@ -27,13 +27,21 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
   onClickNext,
   onClickToPage,
 }) => {
-  const shownItemsStart = page === 0 ? 1 : page * itemsPerPage;
+  // const shownItemsStart = page === 0 ? 1 : page * itemsPerPage + 1;
+  const shownItemsStart = page * itemsPerPage + 1;
   const shownItemsEnd =
     shownItems < itemsPerPage ? totalItems : (page + 1) * itemsPerPage;
 
-  const hide = totalItems < itemsPerPage ? true : false;
-
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const itemsPerPageOptions = [10, 20, 30, 40, 50]
+    .map(number => {
+      if (totalItems >= 10 && totalItems >= number - 9) {
+        return number;
+      }
+      return;
+    })
+    .filter(Boolean);
 
   const handleClickToPage = (selectedPage: number) => {
     if (onClickToPage) {
@@ -41,13 +49,9 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
     }
   };
 
-  if (hide) {
-    return <></>;
-  }
-
   return (
     <nav
-      className={`${className} flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0`}
+      className={`flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0 ${className}`}
       aria-label="Pagination">
       <div className="flex flex-wrap items-center space-x-6">
         <div className="flex-1 text-sm text-gray-500">
@@ -56,38 +60,41 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           ) : shownItems == totalItems ? (
             <span>
               Showing {shownItemsStart}
-              {' to '} {shownItemsEnd} of {totalItems} results
+              {'–'}
+              {shownItemsEnd} of {totalItems} results
             </span>
           ) : (
             <span>
               Showing {numberWithCommas(shownItemsStart)}
-              {' to '}
+              {'–'}
               {numberWithCommas(shownItemsEnd)} of{' '}
               {numberWithCommas(totalItems)} results
             </span>
           )}
         </div>
 
-        {onChangePageSize && (
+        {itemsPerPageOptions.length > 0 && onChangePageSize && (
           <select
             value={itemsPerPage}
             onChange={onChangePageSize}
-            className="inline-flex justify-center text-sm bg-white border border-gray-300 rounded-full hover:bg-gray-50 active:border-primary-500 focus:ring-0 pl-2.5 pr-8 py-1.5">
-            {[10, 20, 30, 40, 50].map(itemsPerPage => (
-              <option
-                key={itemsPerPage}
-                value={itemsPerPage}
-                className="text-sm font-medium text-gray-700">
-                Show {itemsPerPage}
-              </option>
-            ))}
+            className="inline-flex justify-center text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 active:border-primary-500 focus:ring-0 pl-2.5 pr-8 py-1.5">
+            {itemsPerPageOptions.map(itemsPerPage => {
+              return (
+                <option key={itemsPerPage} value={itemsPerPage}>
+                  Show {itemsPerPage}
+                </option>
+              );
+            })}
           </select>
         )}
       </div>
 
       <div className="flex items-center justify-between flex-1 space-x-2 sm:justify-end">
         {page * itemsPerPage > 0 && (
-          <ElemButton onClick={onClickPrev} btn="default">
+          <ElemButton
+            onClick={onClickPrev}
+            btn="default"
+            disabled={page * itemsPerPage <= 0 ? true : false}>
             Previous
           </ElemButton>
         )}
@@ -146,7 +153,8 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           <ElemButton
             onClick={onClickNext}
             className={numeric ? '' : 'sm:ml-3'}
-            btn="default">
+            btn="default"
+            disabled={totalItems <= shownItemsEnd ? true : false}>
             Next
           </ElemButton>
         )}

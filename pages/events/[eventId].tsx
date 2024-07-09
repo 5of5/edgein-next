@@ -468,13 +468,15 @@ const Event: NextPage<Props> = props => {
             </div>
           )}
 
-          <div ref={subEventsRef}>
-            <ElemSubEvents
-              className="mt-7"
-              eventName={event.name}
-              subEvents={subEvents?.events || []}
-            />
-          </div>
+          {!event.parent_event && (
+            <div ref={subEventsRef}>
+              <ElemSubEvents
+                className="mt-7"
+                eventName={event.name}
+                subEvents={subEvents?.events || []}
+              />
+            </div>
+          )}
 
           {event.types && (
             <ElemSimilarEvents

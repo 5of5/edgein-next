@@ -17,7 +17,7 @@ type Props = {
   isPublicList: boolean;
   groups: Array<any>;
   onSaveListName: (name: string) => void;
-  onSaveListDescription: (name: string) => void;
+  onSaveListDescription: (description: string) => void;
   onSaveListGroups: (ids: Array<number>) => void;
   onChangePublic: (value: boolean) => void;
   onDeleteList: (id: number) => void;
@@ -78,9 +78,23 @@ export const ElemListSettings: FC<Props> = ({
   };
 
   const validateDescription = (value: string) => {
+    const urlRegex =
+      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+    const emailsRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+    const emojisRegex = /[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu;
+
     setListDescription(value);
+
     const { errors } = zodValidate({ description: value }, listSchema);
-    if (errors) {
+    if (
+      value.match(urlRegex) ||
+      value.match(emailsRegex) ||
+      value.match(emojisRegex)
+    ) {
+      setListDescriptionError(
+        'URLs, emails, and special characters are not allowed in description.',
+      );
+    } else if (errors) {
       setListDescriptionError(errors['description']?.[0] || '');
     } else {
       setListDescriptionError('');
@@ -102,7 +116,11 @@ export const ElemListSettings: FC<Props> = ({
     if (listDescriptionError) {
       return;
     }
-    if (listDescription || listDescription === '') {
+
+    if (!listDescription || listDescription === '') {
+      onSaveListDescription('');
+      setListDescriptionOpen(false);
+    } else if (!listDescriptionError) {
       validateDescription(listDescription);
       onSaveListDescription(listDescription);
       setListDescriptionOpen(false);
@@ -239,8 +257,8 @@ export const ElemListSettings: FC<Props> = ({
             {!listDescriptionOpen ? (
               <button
                 onClick={() => setListDescriptionOpen(true)}
-                className="text-sm text-left text-gray-600 capitalize">
-                {listDescription}
+                className="text-sm text-left text-gray-600">
+                {listDescription ? listDescription : 'Add Description'}
               </button>
             ) : (
               <>
@@ -272,9 +290,7 @@ export const ElemListSettings: FC<Props> = ({
                   </ElemButton>
                   <ElemButton
                     onClick={onSaveDescription}
-                    disabled={
-                      listDescription === '' || Boolean(listDescriptionError)
-                    }
+                    disabled={Boolean(listDescriptionError)}
                     roundedFull
                     btn="primary">
                     Save
@@ -369,10 +385,9 @@ export const ElemListSettings: FC<Props> = ({
             <p className="font-medium">Public</p>
             <Switch
               checked={isPublicList}
-              onChange={onChangePublic}
               className={`${
                 isPublicList ? 'bg-primary-600' : 'bg-gray-200'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}>
+              } relative inline-flex h-6 w-11 items-center rounded-full hover:bg-primary-300`}>
               <span className="sr-only">Set list public</span>
               <span
                 className={`${

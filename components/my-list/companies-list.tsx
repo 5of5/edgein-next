@@ -33,7 +33,6 @@ export const CompaniesList: FC<Props> = ({
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState('');
 
-  //const limit = 10;
   const {
     data: companiesData,
     error,
@@ -43,7 +42,6 @@ export const CompaniesList: FC<Props> = ({
     {
       list_id: listId,
       limit: pageSize,
-      //limit,
       offset: pageSize * pageIndex,
       query: `%${query.trim()}%`,
     },

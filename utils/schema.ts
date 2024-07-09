@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {
   LIST_NAME_MIN_LENGTH,
   LIST_NAME_MAX_LENGTH,
+  LIST_DESCRIPTION_MAX_LENGTH,
   GROUP_NAME_MAX_LENGTH,
   GROUP_DESCRIPTION_MAX_LENGTH,
   EMAIL_MAX_LENGTH,
@@ -69,6 +70,13 @@ export const listSchema = z.object({
       LIST_NAME_MAX_LENGTH,
       `List name should be maximum of ${LIST_NAME_MAX_LENGTH} characters.`,
     ),
+  description: z
+    .string()
+    .max(
+      LIST_DESCRIPTION_MAX_LENGTH,
+      `List description should be maximum of ${LIST_DESCRIPTION_MAX_LENGTH} characters.`,
+    )
+    .default(''),
 });
 
 export const getLocationInsightSchema = z.object({

@@ -153,7 +153,7 @@ export const CompanyList = () => {
       filereader.readAsText(e.target.files[0]);
     }
   };
-
+  // console.log(handleFileChange);
   return (
     <ElemList filters={filters} enableIngest onFileChange={handleFileChange}>
       {user?.role !== 'cms-readonly' && <EditButton />}
@@ -171,6 +171,7 @@ export const CompanyList = () => {
       <TextField source="name" />
       <TextField source="slug" />
       <ImageField className="logoFile" source="logo.url" label="Logo" />
+
       <ReferenceArrayField
         label="Child companies"
         source="child_companies"
@@ -257,10 +258,51 @@ export const CompanyList = () => {
       />
       <FunctionField
         source="tags"
-        render={(record: any) =>
-          Array.isArray(record.tags) ? record.tags.join() : record.tags ?? ''
-        }
+        render={(record: any) => {
+          return Array.isArray(record.tags)
+            ? record.tags.join()
+            : record.tags ?? '';
+        }}
       />
+      <FunctionField
+        cellClassName="truncate"
+        source="web3_address"
+        render={(record: any) => {
+          const web3AddressisEmpty = record.web3_address?.every(
+            (x: any) =>
+              (x.network === '' || x.network === null) &&
+              (x.address === '' || x.address === null),
+          );
+
+          if (record.web3_address?.length > 0 && web3AddressisEmpty) {
+            return 'Web3 address field is empty';
+          } else {
+            return record.web3_address && record.web3_address.length > 0
+              ? record.web3_address.length
+              : record.web3_address ?? '';
+          }
+        }}
+      />
+      {/* <FunctionField
+        source="web3_address"
+        render={(record: any) => {
+          return Array.isArray(record.web3_address) ? (
+            <>
+              {record.web3_address.slice(0, 3).map((r: any, index: number) => (
+                <div key={r.network + r.address} style={{ display: 'inline' }}>
+                  {r.network ? `${r.network}:` : ''}
+                  {r.address},{' '}
+                </div>
+              ))}
+              <div style={{ color: '#333', marginTop: '10px' }}>
+                {record.web3_address.length} Web3 address
+              </div>
+            </>
+          ) : (
+            record.web3_address ?? ''
+          );
+        }}
+      /> */}
       {/* <TextField source="counter" /> */}
       <DateField source="data_enriched_at" />
       <DateField source="domain_enriched_at" />

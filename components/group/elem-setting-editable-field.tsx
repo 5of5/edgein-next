@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import toast from 'react-hot-toast';
+import useToast from '@/hooks/use-toast';
 import { useUser } from '@/context/user-context';
 import { User_Groups } from '@/graphql/types';
 import { InputText } from '../input-text';
 import { ElemButton } from '../elem-button';
 import { zodValidate } from '@/utils/validation';
 import { groupSchema } from '@/utils/schema';
+import { InputTextarea } from '../input-textarea';
 
 type Props = {
   label: string;
   field: keyof User_Groups;
+  fieldType?: string;
   placeholder: string;
   group: User_Groups;
   onUpdateGroupData: (data: any) => void;
@@ -19,11 +21,13 @@ type Props = {
 const ElemSettingEditableField: React.FC<Props> = ({
   label,
   field,
+  fieldType,
   placeholder,
   group,
   onUpdateGroupData,
 }) => {
   const { user } = useUser();
+  const { toast } = useToast();
 
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -32,12 +36,26 @@ const ElemSettingEditableField: React.FC<Props> = ({
   const isGroupManager = user?.id === group.created_by_user_id;
 
   const onValidate = (value: string) => {
+    const urlRegex =
+      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+    const emailsRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+    const emojisRegex = /[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu;
+
     setValue(value);
 
     const { errors } = zodValidate({ [field]: value }, groupSchema);
     if (errors) {
-      if (field === 'name' || field === 'description') {
+      if (field === 'name' && !value) {
         setError(errors[field]?.[0] || '');
+      } else if (
+        field === 'description' &&
+        (value.match(urlRegex) ||
+          value.match(emailsRegex) ||
+          value.match(emojisRegex))
+      ) {
+        setError(
+          'URLs, emails, and special characters are not allowed in description.',
+        );
       } else {
         setError('');
       }
@@ -75,20 +93,8 @@ const ElemSettingEditableField: React.FC<Props> = ({
           const err = await response.json();
           setError(err.message);
         } else {
-          toast.custom(
-            t => (
-              <div
-                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}>
-                {`${label} updated`}
-              </div>
-            ),
-            {
-              duration: 3000,
-              position: 'top-center',
-            },
-          );
+          toast(`${label} updated`);
+
           onUpdateGroupData((prev: User_Groups) => ({
             ...prev,
             [field]: value,
@@ -144,17 +150,30 @@ const ElemSettingEditableField: React.FC<Props> = ({
         ) : (
           <>
             <div className="mt-2">
-              <InputText
-                onChange={event => onValidate(event?.target.value)}
-                name={field}
-                type="text"
-                value={value}
-                className={`!mt-0 ${
-                  error === ''
-                    ? 'ring-1 ring-gray-200'
-                    : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                }`}
-              />
+              {fieldType === 'textarea' ? (
+                <InputTextarea
+                  onChange={event => onValidate(event?.target.value)}
+                  name={field}
+                  value={value}
+                  className={`!mt-0 ${
+                    error === ''
+                      ? 'ring-1 ring-gray-200'
+                      : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                  }`}
+                />
+              ) : (
+                <InputText
+                  onChange={event => onValidate(event?.target.value)}
+                  name={field}
+                  value={value}
+                  className={`!mt-0 ${
+                    error === ''
+                      ? 'ring-1 ring-gray-200'
+                      : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                  }`}
+                />
+              )}
+
               {error && (
                 <div className="mt-2 text-sm font-medium text-rose-400">
                   {error}
@@ -169,7 +188,7 @@ const ElemSettingEditableField: React.FC<Props> = ({
               <ElemButton
                 onClick={onSaveBtn}
                 loading={isLoading}
-                disabled={(field === 'name' && !value) || Boolean(error)}
+                disabled={Boolean(error)}
                 roundedFull
                 btn="primary">
                 Save

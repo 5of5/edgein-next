@@ -93,7 +93,10 @@ const Companies: NextPage<Props> = ({
 
   const [tableLayout, setTableLayout] = useState(false);
 
-  const [sortBy, setSortBy] = useStateParams<string>('mostRelevant', 'sortBy');
+  const [sortBy, setSortBy] = useStateParams<string>(
+    'lastUpdate', //'mostRelevant',
+    'sortBy',
+  );
 
   const [pageIndex, setPageIndex] = useStateParams<number>(
     0,
@@ -277,7 +280,7 @@ const Companies: NextPage<Props> = ({
     },
     {
       id: 1,
-      label: 'Last update (new to old)',
+      label: 'Last update (new to old)', //alt: Recently updated
       value: 'lastUpdate',
       onClick: () => setSortBy('lastUpdate'),
     },

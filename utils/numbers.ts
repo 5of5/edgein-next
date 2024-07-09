@@ -133,10 +133,10 @@ export const getWorkDurationFromAndTo = (
   startDate: string,
   endDate: string,
 ) => {
-  const start = startDate ? moment(startDate) : null;
+  const start = startDate ? moment(startDate).format('MMM YYYY') : null;
   const end = endDate ? moment(endDate) : null;
 
-  return `${start ? start.format('MMM YYYY') : 'from'} - ${
+  return `${start ? `${start} - ` : ''}${
     end ? end.format('MMM YYYY') : 'Present'
   }`;
 };

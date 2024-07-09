@@ -1,7 +1,7 @@
 import '@/styles/globals.scss';
 import React, { useState } from 'react';
 import TagManager from 'react-gtm-module';
-import { hotjar } from 'react-hotjar';
+//import { hotjar } from 'react-hotjar';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { LoaderSpinner } from '@/components/loader-spinner';
@@ -41,12 +41,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (process.env.NEXT_PUBLIC_GTM_ID) {
       TagManager.initialize({ gtmId: process.env.NEXT_PUBLIC_GTM_ID });
     }
-    if (
-      process.env.NEXT_PUBLIC_HOTJAR_ID &&
-      !isNaN(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID))
-    ) {
-      hotjar.initialize(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID), 7);
-    }
+    // if (
+    //   process.env.NEXT_PUBLIC_HOTJAR_ID &&
+    //   !isNaN(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID))
+    // ) {
+    //   hotjar.initialize(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID), 7);
+    // }
   }, []);
 
   React.useEffect(() => {

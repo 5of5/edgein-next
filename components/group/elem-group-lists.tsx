@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment-timezone';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import useToast from '@/hooks/use-toast';
 import { kebabCase } from 'lodash';
 import { IconSidebarList, IconPlus, IconCheck } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
@@ -32,6 +33,7 @@ export const ElemGroupLists: React.FC<Props> = ({
   className,
 }) => {
   const { user, listAndFollows, refreshProfile } = useUser();
+  const { toast } = useToast();
 
   const [isOpenAddList, setIsOpenAddList] = useState<boolean>(false);
 
@@ -83,20 +85,7 @@ export const ElemGroupLists: React.FC<Props> = ({
     if (response.status === 200) {
       refetch();
       if (isFollowing) {
-        toast.custom(
-          t => (
-            <div
-              className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}>
-              List unfollowed
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: 'top-center',
-          },
-        );
+        toast('List unfollowed');
       }
       refreshProfile();
     }
@@ -118,20 +107,7 @@ export const ElemGroupLists: React.FC<Props> = ({
     if (response.status === 200) {
       refetchLists();
       refreshProfile();
-      toast.custom(
-        t => (
-          <div
-            className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-              t.visible ? 'animate-fade-in-up' : 'opacity-0'
-            }`}>
-            Lists Added
-          </div>
-        ),
-        {
-          duration: 3000,
-          position: 'top-center',
-        },
-      );
+      toast('Lists Added');
     }
   };
 
