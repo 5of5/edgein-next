@@ -6,7 +6,7 @@ import {
   UpdateUserPreferencesMutation,
   useUpdateUserPreferencesMutation,
 } from '@/graphql/types';
-import InputSwitch from '@/components/input-switch';
+import { InputSwitch } from '@/components/input-switch';
 import { mutate } from '@/graphql/hasuraAdmin';
 
 type Props = {
@@ -37,7 +37,7 @@ export const ProfileEditDailyEmails: React.FC<Props> = ({ user }) => {
 
   return (
     <EditSection heading="Daily emails">
-      <p className="text-gray-600 text-sm">
+      <p className="text-sm text-gray-600">
         Turn on or turn off emails with the latest personalised daily digest
         about closed investments, trending companies, upcoming events in your
         area or recent news.

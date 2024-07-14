@@ -3,25 +3,29 @@ import { FC } from 'react';
 
 type Props = {
   checked: boolean;
-  label: string;
+  label?: string;
   className?: string;
   onChange: (v: boolean) => void;
+  disabled?: boolean;
 };
 
-const InputSwitch: FC<Props> = props => {
-  const { checked, label, className = '', onChange } = props;
+export const InputSwitch: FC<Props> = props => {
+  const { checked, label, className = '', onChange, disabled } = props;
   return (
     <Switch.Group>
       <div className="flex items-center">
-        <Switch.Label className="font-medium text-sm mr-2">
-          {label}
-        </Switch.Label>
+        {label && (
+          <Switch.Label className="mr-2 text-sm font-medium">
+            {label}
+          </Switch.Label>
+        )}
         <Switch
           checked={checked}
+          disabled={disabled}
           onChange={onChange}
           className={`${
-            checked ? 'bg-primary-600' : 'bg-gray-200'
-          } relative inline-flex h-6 w-11 items-center rounded-full ${className}`}>
+            checked ? 'bg-primary-500' : 'bg-gray-200'
+          } relative inline-flex h-6 w-11 items-center rounded-full transition-all ${className}`}>
           <span
             className={`${
               checked ? 'translate-x-6' : 'translate-x-1'
@@ -32,4 +36,3 @@ const InputSwitch: FC<Props> = props => {
     </Switch.Group>
   );
 };
-export default InputSwitch;

@@ -1,4 +1,3 @@
-import { Switch } from '@headlessui/react';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useUser } from '@/context/user-context';
 import { ElemModal } from '../elem-modal';
@@ -11,6 +10,7 @@ import { listSchema } from '@/utils/schema';
 import { InputText } from '../input-text';
 import { InputTextarea } from '../input-textarea';
 import { InputSelect } from '../input-select';
+import { InputSwitch } from '../input-switch';
 
 type Props = {
   list: Lists;
@@ -81,7 +81,8 @@ export const ElemListSettings: FC<Props> = ({
     const urlRegex =
       /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
     const emailsRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
-    const emojisRegex = /[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu;
+    const emojisRegex =
+      /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g; //[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu;
 
     setListDescription(value);
 
@@ -383,18 +384,11 @@ export const ElemListSettings: FC<Props> = ({
             className="flex items-center justify-between w-full p-3 space-x-1 cursor-pointer"
             onClick={() => onChangePublic(!isPublicList)}>
             <p className="font-medium">Public</p>
-            <Switch
+            <InputSwitch
+              className="cursor-pointer"
               checked={isPublicList}
-              className={`${
-                isPublicList ? 'bg-primary-600' : 'bg-gray-200'
-              } relative inline-flex h-6 w-11 items-center rounded-full hover:bg-primary-300`}>
-              <span className="sr-only">Set list public</span>
-              <span
-                className={`${
-                  isPublicList ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-              />
-            </Switch>
+              onChange={() => {}}
+            />
           </div>
         </div>
 
