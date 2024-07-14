@@ -269,7 +269,7 @@ export const Table: FC<Props> = ({
                                 <Menu
                                   as="div"
                                   className="relative inline-block ml-1 text-left">
-                                  <Menu.Button className="block align-middle rounded-full text-slate-400 hover:text-primary-500 hover:bg-slate-100">
+                                  <Menu.Button className="block text-gray-500 align-middle rounded-full hover:text-primary-500 hover:bg-gray-200">
                                     <IconChevronDown className="w-5 h-5" />
                                   </Menu.Button>
 
@@ -277,7 +277,7 @@ export const Table: FC<Props> = ({
                                     {column.canSort && (
                                       <Menu.Item
                                         as="button"
-                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
+                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-gray-100 ${
                                           column.isSorted &&
                                           column.isSortedDesc === false
                                             ? 'text-primary-500'
@@ -298,7 +298,7 @@ export const Table: FC<Props> = ({
                                     {column.canSort && (
                                       <Menu.Item
                                         as="button"
-                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
+                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-gray-100 ${
                                           column.isSorted &&
                                           column.isSortedDesc === true
                                             ? 'text-primary-500'
@@ -319,7 +319,7 @@ export const Table: FC<Props> = ({
                                     {!column.disableHiding && (
                                       <Menu.Item
                                         as="button"
-                                        className="flex items-center w-full px-2 py-2 text-sm font-medium text-left hover:text-primary-500 hover:bg-slate-100"
+                                        className="flex items-center w-full px-2 py-2 text-sm font-medium text-left hover:text-primary-500 hover:bg-gray-100"
                                         onClick={(e: any) => {
                                           column.getHeaderProps(
                                             column.toggleHidden(),
@@ -373,7 +373,7 @@ export const Table: FC<Props> = ({
               </tbody>
             </table>
           ) : (
-            <div className="flex flex-col items-center justify-center w-full p-5 text-slate-600">
+            <div className="flex flex-col items-center justify-center w-full p-5 text-gray-500">
               <div className="max-w-sm text-center">{noDataText}</div>
               {['companies', 'investors', 'people'].includes(resourceType) && (
                 <ElemButton

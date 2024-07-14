@@ -41,7 +41,7 @@ const ElemLocationTag: FC<Props> = ({
           </button>
         </li>
       ))}
-      {isLoadingPlace && <li className="text-sm text-dark-400">Loading...</li>}
+      {isLoadingPlace && <li className="text-sm">Loading...</li>}
     </ul>
   );
 };

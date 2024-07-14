@@ -103,7 +103,7 @@ export const TheFooter = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-between pt-6 mt-12 border-t border-dark-100 sm:flex-row">
+        <div className="flex flex-col justify-between pt-6 mt-12 border-t border-gray-200 sm:flex-row">
           <div className="mb-6 sm:mb-0">
             <p className="text-sm text-gray-500">
               Copyright &copy; {new Date().getFullYear()}

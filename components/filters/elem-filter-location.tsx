@@ -105,7 +105,7 @@ export const ElemFilterLocation: FC<Props> = ({
       onClose={onCloseFilterPopup}
       onClear={onClearFilterOption}
       onApply={handleApplyFilter}>
-      <div className="font-medium text-sm">{heading}</div>
+      <div className="text-sm font-medium">{heading}</div>
       <div className="flex flex-col gap-4 mt-2">
         <div>
           {onChangeCondition && (
@@ -126,7 +126,7 @@ export const ElemFilterLocation: FC<Props> = ({
                     {tags.map(item => (
                       <li
                         key={item}
-                        className="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full text-sm bg-slate-200">
+                        className="flex items-center gap-1 py-1 pl-3 pr-2 text-sm rounded-full bg-slate-200">
                         {item}
                         <button
                           onClick={() => handleRemove(item)}
@@ -138,12 +138,10 @@ export const ElemFilterLocation: FC<Props> = ({
                     ))}
                   </ul>
                 )}
-                {isLoadingPlace && (
-                  <p className="text-sm text-dark-400">Loading...</p>
-                )}
+                {isLoadingPlace && <p className="text-sm">Loading...</p>}
                 {!isLoadingPlace && (
                   <Combobox.Input
-                    className="flex-1 px-3 py-1 text-dark-500 text-sm relative bg-white rounded-full border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                    className="relative flex-1 px-3 py-1 text-sm bg-white border-none rounded-full outline-none text-dark-500 ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
                     displayValue={(value: Place) => value?.Label || ''}
                     placeholder={placeholder}
                     value={inputValue}
@@ -152,7 +150,7 @@ export const ElemFilterLocation: FC<Props> = ({
                 )}
               </div>
               {inputValue && (
-                <Combobox.Options className="absolute mt-1 z-50 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+                <Combobox.Options className="absolute z-50 w-full mt-1 overflow-auto bg-white border divide-y divide-gray-100 rounded-md shadow-xl border-dark-500/10 max-h-60 focus:outline-none">
                   <ComboboxResults
                     isLoading={isLoadingPlaceSuggestions}
                     name={option}
@@ -192,12 +190,12 @@ const ComboboxResults: FC<ComboboxResultsProps> = ({
   options,
 }) => {
   if (isLoading) {
-    return <p className="text-sm text-slate-500 p-2">Searching...</p>;
+    return <p className="p-2 text-sm text-slate-500">Searching...</p>;
   }
 
   if (options.length === 0) {
     return (
-      <p className="text-sm text-slate-500 p-2">{`We don't cover this ${name} yet`}</p>
+      <p className="p-2 text-sm text-slate-500">{`We don't cover this ${name} yet`}</p>
     );
   }
 

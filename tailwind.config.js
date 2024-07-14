@@ -20,29 +20,7 @@ const primary = {
 };
 
 const dark = {
-  50: '#f4f4f4',
-  100: '#e8e8e9',
-  200: '#c7c7c7',
-  300: '#a5a5a5',
-  400: '#616162',
   500: '#1D1D1F',
-  600: '#1a1a1c',
-  700: '#161617',
-  800: '#111113',
-  900: '#0e0e0f',
-};
-
-const blue = {
-  50: '#EFF6FF',
-  100: '#DBEAFE',
-  200: '#BFDBFE',
-  300: '#93C5FD',
-  400: '#60A5FA',
-  500: '#3B82F6',
-  600: '#2563EB',
-  700: '#1D4ED8',
-  800: '#1B01FE',
-  900: '#1C01B7',
 };
 
 const defaultTheme = require('tailwindcss/defaultTheme');
@@ -68,8 +46,7 @@ module.exports = {
         gray: {
           25: '#fcfcfc',
         },
-        'linkedin-blue': '#0A66C2',
-        blue,
+        linkedin: '#0A66C2',
         pink: {
           25: '#DE177A',
         },
