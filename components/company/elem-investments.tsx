@@ -102,12 +102,12 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2 transition-all">
+                    className="p-2 space-y-2 transition-all bg-white border border-gray-300 rounded-lg h-fit">
                     {investment.vc_firm && (
                       <ElemLink
                         href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
-                        className="vcfirm flex items-center space-x-3 hover:opacity-70">
+                        className="flex items-center space-x-3 vcfirm hover:opacity-70">
                         <ElemPhoto
                           photo={investment.vc_firm.logo}
                           wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
@@ -115,7 +115,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           imgAlt={investment.vc_firm.name}
                           placeholderClass="text-gray-300"
                         />
-                        <span className="line-clamp-2 font-medium">
+                        <span className="font-medium line-clamp-2">
                           {investment.vc_firm.name}
                         </span>
                       </ElemLink>
@@ -125,7 +125,7 @@ export const ElemInvestments: React.FC<Props> = ({
                       <ElemLink
                         href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
-                        className="investor flex items-center space-x-3">
+                        className="flex items-center space-x-3 investor">
                         <ElemPhoto
                           photo={investment.person.picture}
                           wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
@@ -134,7 +134,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           placeholder="user"
                           placeholderClass="text-gray-300"
                         />
-                        <span className="line-clamp-2 font-medium">
+                        <span className="font-medium line-clamp-2">
                           {investment.person.name}
                         </span>
                       </ElemLink>
@@ -147,12 +147,12 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2 transition-all">
+                    className="p-2 space-y-2 transition-all bg-white border border-gray-300 rounded-lg h-fit">
                     {investment.vc_firm && (
                       <ElemLink
                         href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
                         key={investment.vc_firm.id}
-                        className="vcfirm flex items-center space-x-3 hover:opacity-70">
+                        className="flex items-center space-x-3 vcfirm hover:opacity-70">
                         <ElemPhoto
                           photo={investment.vc_firm.logo}
                           wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-gray-300 rounded-lg overflow-hidden"
@@ -160,7 +160,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           imgAlt={investment.vc_firm.name}
                           placeholderClass="text-gray-300"
                         />
-                        <span className="line-clamp-2 font-medium">
+                        <span className="font-medium line-clamp-2">
                           {investment.vc_firm.name}
                         </span>
                       </ElemLink>
@@ -173,12 +173,12 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="h-fit bg-white border border-gray-300 space-y-2 rounded-lg p-2 transition-all">
+                    className="p-2 space-y-2 transition-all bg-white border border-gray-300 rounded-lg h-fit">
                     {investment.person && (
                       <ElemLink
                         href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
                         key={investment.person.id}
-                        className="investor flex items-center space-x-3 hover:opacity-70">
+                        className="flex items-center space-x-3 investor hover:opacity-70">
                         <ElemPhoto
                           photo={investment.person.picture}
                           wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
@@ -187,7 +187,7 @@ export const ElemInvestments: React.FC<Props> = ({
                           placeholder="user"
                           placeholderClass="text-gray-300"
                         />
-                        <span className="line-clamp-2 font-medium">
+                        <span className="font-medium line-clamp-2">
                           {investment.person.name}
                         </span>
                       </ElemLink>
@@ -251,12 +251,12 @@ export const ElemInvestments: React.FC<Props> = ({
   const generateSortingIndicator = (column: any) => {
     return column.isSorted ? (
       column.isSortedDesc ? (
-        <IconSortDown className="ml-1 h-5 w-5 inline-block" />
+        <IconSortDown className="inline-block w-5 h-5 ml-1" />
       ) : (
-        <IconSortUp className="ml-1 h-5 w-5 inline-block" />
+        <IconSortUp className="inline-block w-5 h-5 ml-1" />
       )
     ) : column.canSort ? (
-      <IconSortDown className="ml-1 h-5 w-5 inline-block text-slate-400 group-hover:text-primary-500" />
+      <IconSortDown className="inline-block w-5 h-5 ml-1 text-slate-400 group-hover:text-primary-500" />
     ) : (
       <></>
     );
@@ -266,7 +266,7 @@ export const ElemInvestments: React.FC<Props> = ({
     <section className={`rounded-lg border border-gray-300 ${className}`}>
       {heading && (
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>
+          <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
         </div>
       )}
 
@@ -292,7 +292,7 @@ export const ElemInvestments: React.FC<Props> = ({
             <div className="overflow-auto border border-gray-300 rounded-lg">
               <table
                 {...getTableProps()}
-                className="table-auto min-w-full divide-y divide-gray-300 overscroll-x-none">
+                className="min-w-full divide-y divide-gray-300 table-auto overscroll-x-none">
                 <thead>
                   {headerGroups.map(headerGroup => {
                     const { key, ...restHeaderGroupProps } =
@@ -301,7 +301,7 @@ export const ElemInvestments: React.FC<Props> = ({
                       <tr
                         key={key}
                         {...restHeaderGroupProps}
-                        className="table-row min-w-full bg-gray-25 text-gray-600">
+                        className="table-row min-w-full text-gray-600 bg-gray-25">
                         {headerGroup.headers.map((column: any) => {
                           const { key, ...restColumnProps }: any = ({} = {
                             ...column.getHeaderProps({
@@ -322,12 +322,12 @@ export const ElemInvestments: React.FC<Props> = ({
                                 {column.render('Header')}
                                 <Menu
                                   as="div"
-                                  className="relative inline-block text-left ml-1">
-                                  <Menu.Button className="block align-middle text-gray-400 rounded-full hover:bg-slate-100">
-                                    <IconChevronDownMini className="h-5 w-5" />
+                                  className="relative inline-block ml-1 text-left">
+                                  <Menu.Button className="block text-gray-500 align-middle rounded-full hover:bg-gray-200">
+                                    <IconChevronDownMini className="w-5 h-5" />
                                   </Menu.Button>
 
-                                  <Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
+                                  <Menu.Items className="absolute left-0 z-50 flex flex-col w-56 mt-2 overflow-hidden origin-top-left bg-white divide-y divide-gray-100 rounded-lg shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     {column.canSort && (
                                       <Menu.Item
                                         as="button"
@@ -344,7 +344,7 @@ export const ElemInvestments: React.FC<Props> = ({
                                             ]),
                                           );
                                         }}>
-                                        <IconSortUp className="mr-1 h-5 w-5 inline-block" />
+                                        <IconSortUp className="inline-block w-5 h-5 mr-1" />
                                         Sort Ascending
                                       </Menu.Item>
                                     )}
@@ -365,7 +365,7 @@ export const ElemInvestments: React.FC<Props> = ({
                                             ]),
                                           );
                                         }}>
-                                        <IconSortDown className="mr-1 h-5 w-5 inline-block" />
+                                        <IconSortDown className="inline-block w-5 h-5 mr-1" />
                                         Sort Descending
                                       </Menu.Item>
                                     )}
@@ -373,13 +373,13 @@ export const ElemInvestments: React.FC<Props> = ({
                                     {column.render('Header') != 'Name' && (
                                       <Menu.Item
                                         as="button"
-                                        className="flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
+                                        className="flex items-center w-full px-2 py-2 text-sm font-medium text-left hover:text-primary-500 hover:bg-slate-100"
                                         onClick={(e: any) => {
                                           column.getHeaderProps(
                                             column.toggleHidden(),
                                           );
                                         }}>
-                                        <IconX className="mr-1 h-5 w-5 inline-block" />
+                                        <IconX className="inline-block w-5 h-5 mr-1" />
                                         Hide Column
                                       </Menu.Item>
                                     )}
@@ -395,7 +395,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 </thead>
                 <tbody
                   {...getTableBodyProps()}
-                  className="bg-white divide-y divide-gray-300 flex-1 md:flex-none mb-96">
+                  className="flex-1 bg-white divide-y divide-gray-300 md:flex-none mb-96">
                   {page.map(row => {
                     prepareRow(row);
                     const { key, ...restRowProps } = row.getRowProps();
@@ -415,7 +415,7 @@ export const ElemInvestments: React.FC<Props> = ({
                             <td
                               key={key}
                               {...restCellProps}
-                              className="align-top text-sm px-4 py-3">
+                              className="px-4 py-3 text-sm align-top">
                               {cell.render('Cell')}
                             </td>
                           );

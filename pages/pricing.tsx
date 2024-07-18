@@ -141,9 +141,7 @@ const Pricing = () => {
                   <div className="flex-1">
                     <h3
                       className={`inline text-3xl font-bold ${
-                        tier.mostPopular
-                          ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400'
-                          : ''
+                        tier.mostPopular ? 'text-primary-500' : ''
                       }`}>
                       {tier.title}
                     </h3>

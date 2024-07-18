@@ -495,7 +495,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
             }
           })}
 
-          {web3Address && (
+          {web3Address && web3Address.length > 0 && (
             <li
               className={`${baseClasses} flex-1 items-start justify-between cursor-pointer`}>
               <IconContract

@@ -1,7 +1,7 @@
 import { FC, ChangeEvent, useState, ReactNode } from 'react';
 import { FilterOptionKeys, FilterOptionMetadata } from '@/models/Filter';
 import { ElemFilterPopup } from './elem-filter-popup';
-import InputSwitch from '../input-switch';
+import { InputSwitch } from '../input-switch';
 import { DEFAULT_FILTER_TAGS_OFFSET } from '@/utils/constants';
 
 type Props = {

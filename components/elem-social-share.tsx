@@ -94,7 +94,7 @@ export const ElemSocialShare: FC<Props> = ({
     },
     {
       icon: IconLinkedInAlt,
-      iconClass: 'bg-[#0a66c2]',
+      iconClass: 'bg-linkedin',
       text: 'LinkedIn',
       href: linkedInShareUrl,
     },

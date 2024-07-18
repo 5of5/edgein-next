@@ -10,6 +10,7 @@ import ElemSettingEditableField from './elem-setting-editable-field';
 import { ROUTES } from '@/routes';
 import { ElemModal } from '../elem-modal';
 import { ElemButton } from '../elem-button';
+import { InputSwitch } from '../input-switch';
 
 type Props = {
   group: User_Groups;
@@ -164,30 +165,25 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         ))}
 
         <div>
-          <div className="flex items-center justify-between p-3 space-x-1">
-            <p className="font-bold">Public</p>
+          <div
+            className="flex items-center justify-between p-3 space-x-1"
+            //onClick={() => togglePublic}
+          >
+            <p className="font-medium">Public</p>
             <div className="flex items-center">
               {isToggling && (
                 <IconSpinner className="w-5 h-5 mr-3 -ml-1 animate-spin" />
               )}
-              <Switch
+              <InputSwitch
+                className={
+                  isGroupManager
+                    ? 'cursor-pointer'
+                    : 'cursor-not-allowed opacity-60'
+                }
                 checked={!!isPublicGroup}
                 onChange={togglePublic}
                 disabled={!isGroupManager}
-                className={`${
-                  isPublicGroup
-                    ? 'bg-primary-600 hover:bg-primary-800'
-                    : 'bg-gray-300 hover:bg-gray-400'
-                } ${
-                  !isGroupManager ? 'opacity-60' : ''
-                } relative inline-flex h-6 w-11 items-center rounded-full`}>
-                <span className="sr-only">Set group public</span>
-                <span
-                  className={`${
-                    isPublicGroup ? 'translate-x-6' : 'translate-x-1'
-                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                />
-              </Switch>
+              />
             </div>
           </div>
         </div>

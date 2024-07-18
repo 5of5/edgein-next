@@ -7,7 +7,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { EditSection } from '@/components/dashboard/edit-section';
 import { GetUserProfileDocument, GetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
-import InputSwitch from '@/components/input-switch';
+import { InputSwitch } from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
 import { redirect_url } from '@/utils/auth';
 import validator from 'validator';

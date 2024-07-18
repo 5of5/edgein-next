@@ -16,6 +16,7 @@ export const ROUTES = {
   DEMOCRATIZE24: '/events/democratize24/',
   ACCOUNT: '/account',
   PROFILE: '/profile',
+  ORGANIZATIONS: '/organizations',
   SUPPORT: '/support',
   FAQ: '/faq',
   PRICING: '/pricing',
