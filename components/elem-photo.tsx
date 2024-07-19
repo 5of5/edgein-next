@@ -22,7 +22,7 @@ export const ElemPhoto: React.FC<Props> = ({
 }) => {
   return (
     <div className={wrapClass}>
-      {photo && photo.url ? (
+      {photo && photo?.url != 'null' ? (
         <Fragment>
           <img
             key={photo.id}
