@@ -11,7 +11,7 @@ import { ElemTooltip } from '@/components/elem-tooltip';
 import { ElemButton } from '@/components/elem-button';
 import {
   IconGlobe,
-  IconTwitter,
+  IconTwitterX,
   IconFacebook,
   IconInstagram,
   IconDiscord,
@@ -245,7 +245,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
               },
               {
                 value: twitter,
-                icon: IconTwitter,
+                icon: IconTwitterX,
               },
               {
                 value: facebook,

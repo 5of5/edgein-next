@@ -1,7 +1,7 @@
 import { ElemLogo } from './elem-logo';
 import {
   IconLinkedIn,
-  IconTwitter,
+  IconTwitterX,
   IconTelegram,
   IconDiscord,
   IconMedium,
@@ -37,8 +37,8 @@ export const navigation = {
     },
     {
       name: 'Twitter',
-      href: 'https://twitter.com/EdgeInio',
-      icon: IconTwitter,
+      href: 'https://x.com/EdgeInio',
+      icon: IconTwitterX,
     },
     {
       name: 'LinkedIn',

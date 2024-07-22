@@ -2,7 +2,7 @@ import React from 'react';
 import {
   IconProps,
   IconGlobe,
-  IconTwitter,
+  IconTwitterX,
   IconTelegram,
   IconDiscord,
   IconLockClosed,
@@ -38,7 +38,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
   if (group.twitter) {
     groupLinks.push({
-      icon: IconTwitter,
+      icon: IconTwitterX,
       text: 'Twitter',
       link: group.twitter,
     });
