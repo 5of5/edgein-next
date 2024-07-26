@@ -401,6 +401,9 @@ export const ElemFilter: FC<Props> = ({
     return tags.map((tagItem, tagIndex) => (
       <Fragment key={tagItem}>
         <span className="font-medium">{tagItem}</span>
+        {/* <span className="py-0.5 px-1 font-medium rounded-lg bg-black/50">
+          {tagItem}
+        </span> */}
         {tagIndex < numOfTags - 1 &&
           (tagIndex < numOfTags - 2
             ? ', '
@@ -435,7 +438,16 @@ export const ElemFilter: FC<Props> = ({
                       <div>
                         {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
                         {filters?.[option]?.condition === 'none' ? 'not ' : ''}
-                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                        {/*limit selected tags shown to prevent button being wider than screen */}
+                        {extractTagsArrayToText(
+                          filters?.[option]?.tags.slice(0, 3) || [],
+                        )}
+                        {numOfTags > 3 && (
+                          <div className="inline-block ml-2 font-medium">
+                            {' '}
+                            +{numOfTags - 3}
+                          </div>
+                        )}
                       </div>
                     )
                   }
@@ -587,7 +599,16 @@ export const ElemFilter: FC<Props> = ({
                     numOfTags > 0 && (
                       <>
                         {optionMetadata.title} {numOfTags > 1 ? 'are' : 'is'}{' '}
-                        {extractTagsArrayToText(filters?.[option]?.tags || [])}
+                        {/*limit selected tags shown to prevent button being wider than screen */}
+                        {extractTagsArrayToText(
+                          filters?.[option]?.tags.slice(0, 3) || [],
+                        )}
+                        {numOfTags > 3 && (
+                          <div className="inline-block ml-2 font-medium">
+                            {' '}
+                            +{numOfTags - 3}
+                          </div>
+                        )}
                       </>
                     )
                   }

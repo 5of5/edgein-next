@@ -5,7 +5,7 @@ import {
   IconTelegramAlt,
   IconEmail,
   IconChatBubble,
-  IconTwitter,
+  IconTwitterX,
   IconCopy,
 } from '@/components/icons';
 import { User } from '@/models/user';
@@ -78,20 +78,20 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
   };
 
   const list = [
-    { icon: IconTwitter, text: 'Twitter', onClick: onTwitter },
+    { icon: IconTwitterX, text: 'Twitter', onClick: onTwitter },
     { icon: IconTelegramAlt, text: 'Telegram', onClick: onTelegram },
     { icon: IconEmail, text: 'Email', onClick: onEmail },
     { icon: IconChatBubble, text: 'SMS', onClick: onSMS },
   ];
 
   return (
-    <div className="relative p-5 bg-white rounded-lg border border-gray-200">
+    <div className="relative p-5 bg-white border border-gray-200 rounded-lg">
       <h3 className="font-medium">Share your referral link</h3>
       <p className="text-sm text-gray-500">
         Copy and paste it or send it directly to your friends
       </p>
-      <div className="mt-2 relative">
-        <div className="absolute right-1 top-2 z-10">
+      <div className="relative mt-2">
+        <div className="absolute z-10 right-1 top-2">
           <ElemButton
             onClick={() => onCopy()}
             btn="default"
@@ -108,7 +108,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
           readOnly
         />
       </div>
-      <div className="mt-4 flex flex-wrap items-center gap-2 lg:space-x-2 lg:gap-0">
+      <div className="flex flex-wrap items-center gap-2 mt-4 lg:space-x-2 lg:gap-0">
         <div className="text-sm">Share on:</div>
         {list.map(link => (
           <div key={link.text}>
@@ -118,7 +118,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
               size="sm"
               roundedFull={true}
               className="px-2.5">
-              <link.icon className="mr-2 h-5 w-5" aria-hidden="true" />
+              <link.icon className="w-5 h-5 mr-2" aria-hidden="true" />
               {link.text}
             </ElemButton>
           </div>

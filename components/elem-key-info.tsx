@@ -14,7 +14,7 @@ import {
   IconRole,
   IconEmail,
   IconLocation,
-  IconTwitter,
+  IconTwitterX,
   IconInstagram,
   IconTelegram,
   IconFacebook,
@@ -314,10 +314,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   if (twitter) {
     infoItems.push({
-      icon: IconTwitter,
+      icon: IconTwitterX,
       text: getTwitterHandle(twitter),
       link: twitter,
-      tooltip: 'View on Twitter',
+      tooltip: 'View on X',
     });
   }
   if (instagram) {

@@ -49,8 +49,8 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
   if (isPaidUser && userHasCredits) {
     banner = {
       title: `${numberWithCommas(user.credits)} points available`,
-      content: `You can use your points to get ${Math.floor(
-        user.credits / 1500,
+      content: `You can use your points to get ${numberWithCommas(
+        Math.floor(user.credits / 1500),
       )} months of EdgeIn Contributor.`,
       icon: IconCurrencyDollar,
     };

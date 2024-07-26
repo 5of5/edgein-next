@@ -7,7 +7,7 @@ import { ElemTooltip } from '@/components/elem-tooltip';
 import {
   IconGlobe,
   IconLinkedIn,
-  IconTwitter,
+  IconTwitterX,
   IconGithub,
   IconDiscord,
   IconLocation,
@@ -184,7 +184,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
               },
               {
                 value: twitter,
-                icon: IconTwitter,
+                icon: IconTwitterX,
               },
               {
                 isPremium: true,

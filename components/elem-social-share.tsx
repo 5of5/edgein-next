@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ElemButton } from '@/components/elem-button';
 import {
-  IconTwitter,
+  IconTwitterX,
   IconTelegram,
   IconLinkedInAlt,
   IconWhatsApp,
@@ -81,9 +81,9 @@ export const ElemSocialShare: FC<Props> = ({
 
   const shareLinks = [
     {
-      icon: IconTwitter,
-      iconClass: 'bg-[#1DA1F2]',
-      text: 'Twitter',
+      icon: IconTwitterX,
+      iconClass: 'bg-black',
+      text: 'X',
       href: twitterShareUrl,
     },
     {

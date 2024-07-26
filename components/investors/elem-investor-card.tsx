@@ -8,7 +8,7 @@ import {
   IconGlobe,
   IconLinkedIn,
   IconGithub,
-  IconTwitter,
+  IconTwitterX,
   IconLocation,
 } from '@/components/icons';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -138,7 +138,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
               },
               {
                 value: twitter,
-                icon: IconTwitter,
+                icon: IconTwitterX,
               },
               {
                 isPremium: true,

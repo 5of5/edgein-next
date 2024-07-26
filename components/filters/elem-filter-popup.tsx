@@ -1,10 +1,11 @@
 import { FilterOptionKeys } from '@/models/Filter';
+import { usePopper } from 'react-popper';
 import React, {
   FC,
   PropsWithChildren,
   ReactNode,
   useEffect,
-  useRef,
+  useState,
 } from 'react';
 import { ElemButton } from '../elem-button';
 import { IconX } from '../icons';
@@ -31,12 +32,23 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
   children,
   popupClass,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
+  const [popperRef, setPopperRef] = useState<HTMLDivElement | null>(null);
 
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { styles, attributes } = usePopper(containerRef, popperRef, {
+    placement: 'bottom-start',
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 4],
+        },
+      },
+    ],
+  });
 
   const handleClickOutside = (e: MouseEvent) => {
-    if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+    if (popperRef && !popperRef.contains(e.target as Node)) {
       onCloseFilterOption();
     }
   };
@@ -71,18 +83,10 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
     onApply(name);
   };
 
-  let popupPosition = 'left-0';
-  if (containerRef.current && wrapperRef.current) {
-    if (
-      containerRef.current.offsetLeft + wrapperRef.current.offsetWidth >
-      window.innerWidth
-    ) {
-      popupPosition = 'right-0';
-    }
-  }
-
   return (
-    <div ref={containerRef} className="relative max-w-full snap-start shrink-0">
+    <div
+      ref={setContainerRef}
+      className="relative max-w-full snap-start shrink-0">
       <div className="flex items-center min-h-[32px] bg-primary-500 text-white text-sm rounded-full px-3 py-1">
         <button
           onClick={onOpenFilterOption}
@@ -96,8 +100,10 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
 
       {open && (
         <div
-          ref={wrapperRef}
-          className={`absolute top-10 ${popupPosition} z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}>
+          ref={setPopperRef}
+          style={styles.popper}
+          {...attributes.popper}
+          className={`z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}>
           <div className="px-4 py-3">{children}</div>
           <div className="flex items-center justify-end px-4 py-2 border-t border-gray-100 gap-x-4">
             <button

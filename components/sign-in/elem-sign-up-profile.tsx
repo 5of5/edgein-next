@@ -6,7 +6,7 @@ import {
   IconGithub,
   IconGlobe,
   IconLinkedIn,
-  IconTwitter,
+  IconTwitterX,
 } from '../icons';
 import { GetSignUpProfileQuery } from '@/graphql/types';
 import { ElemLink } from '../elem-link';
@@ -56,7 +56,7 @@ export const ElemSignUpProfile: FC<Props> = ({
           {person?.twitter_url && (
             <li>
               <ElemLink href={person.twitter_url} target="_blank">
-                <IconTwitter className="w-6 h-6 text-gray-400" />
+                <IconTwitterX className="w-6 h-6 text-gray-400" />
               </ElemLink>
             </li>
           )}
