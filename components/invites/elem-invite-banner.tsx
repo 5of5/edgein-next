@@ -50,18 +50,18 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
       <div
         className={`cursor-pointer flex items-center gap-x-6 px-6 py-2.5 bg-primary-500 rounded-lg sm:px-3.5 sm:before:flex-1 ${className}`}>
         <div className="text-white" onClick={handleClickBanner}>
-          Invite a friend and get{' '}
-          <strong className="font-bold">1,500 points</strong> for 1 month of
-          EdgeIn for free{' '}
-          <IconArrowRight className="inline-block h-5 w-5" title="Invite" />
+          Claim your profile, correct data, or refer a friend to get{' '}
+          <strong className="font-bold">1,500-4,500 points</strong> for 1-3
+          months of EdgeIn for free{' '}
+          <IconArrowRight className="inline-block w-5 h-5" title="Invite" />
         </div>
-        <div className="flex flex-1 justify-end">
+        <div className="flex justify-end flex-1">
           <button
             type="button"
             onClick={handleCloseBanner}
             className="-m-3 p-3 focus-visible:outline-offset-[-4px]">
             <span className="sr-only">Dismiss</span>
-            <IconX className="h-5 w-5 text-white" aria-hidden="true" />
+            <IconX className="w-5 h-5 text-white" aria-hidden="true" />
           </button>
         </div>
       </div>
