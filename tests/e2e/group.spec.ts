@@ -125,7 +125,7 @@ test.describe('Group', () => {
     ).toBeVisible();
 
     await page
-      .getByPlaceholder('e.g: Ashley or ashley@edgein.io')
+      .getByPlaceholder('e.g: Redg or redg@edgein.io')
       .type(userData.email, { delay: 100 });
 
     await expect(

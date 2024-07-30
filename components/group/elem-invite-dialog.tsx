@@ -231,7 +231,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                     )}
                     <Combobox.Input
                       className="relative flex-1 px-3 py-1 bg-white border-none rounded-md outline-none ring-0 placeholder:text-gray-500 focus:outline-none focus:ring-0"
-                      placeholder="e.g: Ashley or ashley@edgein.io"
+                      placeholder="e.g: Redg or redg@edgein.io"
                       autoComplete={'off'}
                       ref={inputRef}
                       onChange={event => setQuery(event.target.value)}
