@@ -98,7 +98,7 @@ const Team: NextPage<Props> = () => {
       linkedin: 'https://www.linkedin.com/in/patriciaarellano/',
     },
     {
-      image: '/images/people/chris-Caen.jpg',
+      image: '/images/people/chris-caen.jpg',
       name: 'Chrisophert Caen',
       role: 'Marketing and Revenue',
       //description: '',
