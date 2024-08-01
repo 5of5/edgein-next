@@ -138,7 +138,7 @@ const Faq: NextPage<Props> = ({}) => {
 
         <section aria-labelledby="faq-heading" className="py-24 lg:py-36">
           <div className="px-4 mx-auto sm:px-6max-w-2xl lg:max-w-4xl lg:px-12">
-            <h2 id="faq-heading" className="text-4xl font-medium">
+            <h2 id="faq-heading" className="text-4xl font-semibold">
               Frequently asked questions
             </h2>
             <div className="mt-16">

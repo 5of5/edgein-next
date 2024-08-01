@@ -1,12 +1,64 @@
-import React from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { ElemHeading } from '@/components/elem-heading';
 import { NextSeo } from 'next-seo';
+// import {
+//   Order_By,
+//   Team_Members_Bool_Exp,
+//   Team_Members_Order_By,
+//   useGetCompanyBySlugQuery,
+//   useGetTeamMembersQuery,
+// } from '@/graphql/types';
+// import { DeepPartial } from '@/types/common';
+// import { ElemPhoto } from '@/components/elem-photo';
+// import { ElemLink } from '@/components/elem-link';
+// import { ROUTES } from '@/routes';
+// import { LoaderSpinner } from '@/components/loader-spinner';
 
 type Props = {};
 
 const Team: NextPage<Props> = () => {
+  // const { data: companyData } = useGetCompanyBySlugQuery({
+  //   slug: 'edgein' as string,
+  // });
+
+  // const getCompanyid = companyData?.companies[0].id;
+
+  // const teamMembersFilters: DeepPartial<Team_Members_Bool_Exp> = {
+  //   _and: [{ company_id: { _eq: getCompanyid } }],
+  // };
+
+  // const {
+  //   data: teamData,
+  //   error,
+  //   isLoading,
+  // } = useGetTeamMembersQuery(
+  //   {
+  //     offset: 0,
+  //     limit: 50,
+  //     where: teamMembersFilters as Team_Members_Bool_Exp,
+  //     orderBy: [
+  //       {
+  //         end_date: Order_By.DescNullsFirst,
+  //       } as Team_Members_Order_By,
+  //       { founder: Order_By.DescNullsLast } as Team_Members_Order_By,
+  //     ],
+  //   },
+  //   { refetchOnWindowFocus: false },
+  // );
+
+  // const teamMembers = teamData?.team_members;
+
+  // const getMemberByName = (getName: string) => {
+  //   return teamMembers?.find(member => member.person?.name === getName);
+  // };
+
+  // const sortedTeam = [
+  //   getMemberByName('Redg Snodgrass'),
+  //   getMemberByName('Raymond Lopez Aleman'),
+  //   getMemberByName('Patricia Arellano'),
+  // ];
+
   const team = [
     {
       image: '/images/people/redg-snodgrass.jpg',
@@ -17,14 +69,6 @@ const Team: NextPage<Props> = () => {
       linkedin: 'https://www.linkedin.com/in/redgiesnodgrass/',
     },
     {
-      image: '/images/people/ashley-brown.jpg',
-      name: 'Ashley Brown',
-      role: 'Co-Founder & COO',
-      description:
-        'Ashley has over 10 years of experience working directly with founders of emerging technologies. She has a unique understanding of what communication and marketing strategies will be most effective and offer the competitive advantage you need to succeed.  At the start of her career, Ashley worked at Jones-Dilworth, a boutique consultancy in Austin, TX  where she worked with clients across various industries including Klout, Roku, Siri, Beluga (acquired by Facebook), SRI, Choicevendor (acquired by Linkedin), and more. Ashley then went on to become the first business hire at Postmates, where she worked as both Director of Communications and Marketing, as well as Director of Operations, scaling the supply-side of the business to meet demand and establishing new territories in Seattle and New York. She brings a wealth of knowledge to the table, with a decade of experience leading communication and marketing strategies such as brand messaging and positioning, product PR, strategic corportate initiatives, internal communications and more.',
-      linkedin: 'https://www.linkedin.com/in/brownashleyk/',
-    },
-    {
       image: '/images/people/raymond-l-aleman.jpg',
       name: 'Raymond L. Aleman',
       role: 'Co-Founder & Chief Design',
@@ -33,25 +77,46 @@ const Team: NextPage<Props> = () => {
       linkedin: 'https://www.linkedin.com/in/raylopezaleman/',
     },
     {
-      image: '/images/people/ed-parsons.jpg',
-      name: 'Ed Parsons',
-      role: 'Chief Technology Advisor',
-      //description: "",
-      linkedin: 'https://www.linkedin.com/in/efparsons/',
+      image: '/images/people/allon-gladstone.jpg',
+      name: 'Allon Gladstone',
+      role: 'Chief Financial Officer',
+      description: '',
+      linkedin: 'https://www.linkedin.com/in/allon-gladstone-3279631/',
     },
     {
-      image: '/images/people/dahn-tamir.jpg',
-      name: 'Dahn Tamir',
-      role: 'Head of Data',
+      image: '/images/people/andres-ramirez.jpg',
+      name: 'Andrés Ramírez',
+      role: 'Chief Technology Officer',
       //description: "",
-      linkedin: 'https://www.linkedin.com/in/dahntamir/',
+      linkedin: 'https://www.linkedin.com/in/andmirez/',
+    },
+    {
+      image: '/images/people/patricia-arellano.jpg',
+      name: 'Patricia Arellano',
+      role: 'Foundation and Operations',
+      //description: '',
+      linkedin: 'https://www.linkedin.com/in/patriciaarellano/',
+    },
+    {
+      image: '/images/people/chris-Caen.jpg',
+      name: 'Chrisophert Caen',
+      role: 'Marketing and Revenue',
+      //description: '',
+      linkedin: 'https://www.linkedin.com/in/christophercaen/',
+    },
+    {
+      image: '/images/people/habeeb-syed.jpg',
+      name: 'Habeeb Syed',
+      role: 'Legal Advisor',
+      //description: '',
+      linkedin: 'https://www.linkedin.com/in/hksyed/',
     },
     {
       image: '/images/people/jhen-de-leon.jpg',
       name: 'Jhen de Leon',
       role: 'Chief of Staff',
-      //description: "",
-      //linkedin: "",
+      //description: '',
+      //linkedin: '',
     },
     {
       image: '/images/people/rocky-rimando.png',
@@ -67,6 +132,13 @@ const Team: NextPage<Props> = () => {
       //description: "",
       linkedin:
         'https://www.linkedin.com/in/osman-eduardo-pulgar-zada-6a20b122a/',
+    },
+    {
+      image: '/images/people/facundo-furque.jpg',
+      name: 'Facundo Furque',
+      role: 'Virtual Strategic Analyst',
+      //description: "",
+      linkedin: 'https://www.linkedin.com/in/facu-furque-a762a0247/',
     },
     {
       image: '/images/people/jonnelle-gueco.jpg',
@@ -97,27 +169,13 @@ const Team: NextPage<Props> = () => {
       //description: "",
       linkedin: 'https://www.linkedin.com/in/carlos-hubert-mendoza-12448b249/',
     },
-    // {
-    // 	//image: "/images/people/juan-panno.jpg",
-    // 	name: "Colet Mendoza",
-    // 	role: "Virtual Strategic Analyst",
-    // 	//description: "",
-    // 	//linkedin: "",
-    // },
-    // {
-    // 	//image: "/images/people/juan-panno.jpg",
-    // 	name: "Ricardo Riverdo",
-    // 	role: "Virtual Strategic Analyst",
-    // 	//description: "",
-    // 	//linkedin: "",
-    // },
   ];
 
   return (
     <>
       <NextSeo
         title="Meet the EdgeIn Team"
-        description="Get to know the people leading data insights for the AI and Web3 community"
+        description="Get to know the people leading data insights for the AI and Web3 community."
         openGraph={{
           images: [
             {
@@ -131,17 +189,50 @@ const Team: NextPage<Props> = () => {
         }}
       />
 
-      <div className="relative overflow-hidden mb-10">
+      <div className="relative mb-10 overflow-hidden">
         <ElemHeading
-          title="Meet the EdgeIn Team"
-          subtitle="Get to know the people leading data insights for the AI and Web3 community"></ElemHeading>
+          title="Meet our Team"
+          subtitle="Get to know the people leading data insights for the AI and Web3 community."></ElemHeading>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-12 pb-4 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="pb-4 space-y-12 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+            {/* {isLoading ? (
+              <LoaderSpinner />
+            ) : (
+              sortedTeam?.map(member => (
+                <div
+                  key={member?.id}
+                  className="flex flex-col w-full max-w-md mx-auto overflow-hidden transition duration-300 ease-in-out bg-white border border-gray-200 rounded-lg md:h-full">
+                  <ElemLink
+                    href={`${ROUTES.PEOPLE}/${member?.person?.slug}`}
+                    className="block aspect-square">
+                    <ElemPhoto
+                      photo={member?.person?.picture}
+                      wrapClass="aspect-square shrink-0 overflow-hidden"
+                      imgClass=" min-w-full min-h-full"
+                      imgAlt={member?.person?.name}
+                      placeholder="user"
+                      placeholderClass="text-gray-300"
+                    />
+                  </ElemLink>
+
+                  <div className="px-4 py-4 leading-6">
+                    <h3 className="flex items-center text-lg font-semibold">
+                      {member?.person?.name}
+                    </h3>
+
+                    {member?.title && (
+                      <p className="text-gray-500">{member.title}</p>
+                    )}
+                  </div>
+                </div>
+              ))
+            )} */}
+
             {team.map((person, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg shadow overflow-hidden flex flex-col mx-auto w-full max-w-md transition duration-300 ease-in-out md:h-full">
+                className="flex flex-col w-full max-w-md mx-auto overflow-hidden transition duration-300 ease-in-out bg-white border border-gray-200 rounded-lg md:h-full">
                 <div className="relative aspect-square">
                   <Image
                     src={person.image}
@@ -150,8 +241,8 @@ const Team: NextPage<Props> = () => {
                     objectFit="contain"
                   />
                 </div>
-                <div className="leading-6 font-medium px-4 py-4">
-                  <h3 className="flex items-center font-bold text-lg">
+                <div className="px-4 py-4 leading-6">
+                  <h3 className="flex items-center text-lg font-semibold">
                     {person.name}
                   </h3>
                   {person.role && (
