@@ -75,7 +75,7 @@ export const ElemInviteUser = () => {
   return (
     <>
       {teamMembers.length > 0 && (
-        <div className="relative bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="relative overflow-hidden bg-white border border-gray-200 rounded-lg">
           <div className="sticky top-0 z-10 px-5 py-2 bg-white border-b border-gray-200">
             <h3 className="font-medium">Invite your team</h3>
             <p className="text-sm text-gray-500">
@@ -87,7 +87,7 @@ export const ElemInviteUser = () => {
               <Disclosure key={companyId} defaultOpen>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between items-center w-full px-5 py-1 bg-gray-50 focus:outline-none hover:opacity-75">
+                    <Disclosure.Button className="flex items-center justify-between w-full px-5 py-1 bg-gray-50 focus:outline-none hover:opacity-75">
                       <ElemInviteCompanyGroup
                         company={membersGroupByCompany[companyId][0].company}
                       />
@@ -120,24 +120,24 @@ export const ElemInviteUser = () => {
       )}
 
       <div>
-        <div className="relative p-5 bg-white rounded-lg border border-black/10">
+        <div className="relative p-5 bg-white border rounded-lg border-black/10">
           {sendInvitationEmailResponse &&
           sendInvitationEmailResponse.length > 0 ? (
             <>
               <div className="w-full text-center">
                 <IconPaperAirplane
-                  className="mx-auto h-12 w-12 text-gray-200"
+                  className="w-12 h-12 mx-auto text-gray-200"
                   title="Invitation Sent"
                 />
                 <h3 className="mt-2 text-lg font-medium">Invitation details</h3>
               </div>
 
-              <ul className="mt-4 list-disc list-outside pl-4">
+              <ul className="pl-4 mt-4 list-disc list-outside">
                 {sendInvitationEmailResponse.map(
                   (res: InviteToEdgeInResponse, index: number) => {
                     if (res.status === 200) {
                       return (
-                        <li className="text-gray-500 text-sm" key={index}>
+                        <li className="text-sm text-gray-500" key={index}>
                           {`Invitation has been sent to `}
                           <span className="font-medium">
                             {res.emails[index]}
@@ -147,7 +147,7 @@ export const ElemInviteUser = () => {
                       );
                     }
                     return (
-                      <li className="text-red-500 text-sm" key={index}>
+                      <li className="text-sm text-red-500" key={index}>
                         {`Failed to send invitation to email `}
                         <span className="font-medium">{res.emails[index]}</span>
                         . Please try again later.
@@ -163,7 +163,7 @@ export const ElemInviteUser = () => {
                   setSelectedPeople([]);
                   resetInvitation();
                 }}
-                className="mt-4 w-full">
+                className="w-full mt-4">
                 Invite more people
               </ElemButton>
             </>
@@ -188,7 +188,7 @@ export const ElemInviteUser = () => {
                   Invite
                 </ElemButton>
 
-                <ElemAddressBook setSelectedPeople={setSelectedPeople} />
+                {/* <ElemAddressBook setSelectedPeople={setSelectedPeople} /> */}
               </div>
             </>
           )}
