@@ -7,23 +7,43 @@ import { Lists } from '@/graphql/types';
 type Props = {
   list: Lists;
   isListAuthor: boolean;
+  isListFollower: boolean;
   onOpenSettingsDialog: () => void;
 };
 
 export const ElemListBreadcrumb: FC<Props> = ({
   list,
   isListAuthor,
+  isListFollower,
   onOpenSettingsDialog,
 }) => {
   return (
     <div className="px-4 py-3">
       <ElemDashboardBreadcrumb
         breadcrumbs={[
-          {
-            name: 'my-lists',
-            to: ROUTES.LISTS,
-            component: 'Lists',
-          },
+          ...(isListAuthor
+            ? [
+                {
+                  name: 'my-lists',
+                  to: `${ROUTES.LISTS}/?page=1&tab=my-lists`,
+                  component: 'My Lists',
+                },
+              ]
+            : isListFollower
+            ? [
+                {
+                  name: 'following-lists',
+                  to: `${ROUTES.LISTS}/?page=1&tab=following`,
+                  component: 'Following Lists',
+                },
+              ]
+            : [
+                {
+                  name: 'lists',
+                  to: ROUTES.LISTS,
+                  component: 'Lists',
+                },
+              ]),
           {
             name: 'current',
             component: isListAuthor ? (

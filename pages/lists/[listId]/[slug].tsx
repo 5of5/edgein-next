@@ -234,6 +234,7 @@ const MyList: NextPage<Props> = ({ list }) => {
         <ElemListBreadcrumb
           list={theList}
           isListAuthor={isListAuthor}
+          isListFollower={isFollowing}
           onOpenSettingsDialog={onOpenSettingsDialog}
         />
 
