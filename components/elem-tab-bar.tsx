@@ -116,7 +116,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       {showDropdown && (
         <ElemDropdown
           customButton={
-            <ElemButton className="w-8 h-8 !p-0 hover:bg-gray-100">
+            <ElemButton btn="gray" className="w-8 h-8 !p-0">
               <IconEllipsisVertical
                 className="w-6 h-6 text-gray-600"
                 title="Options"

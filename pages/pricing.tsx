@@ -223,7 +223,7 @@ const Pricing = () => {
           className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="max-w-2xl mx-auto lg:max-w-4xl">
             <h2 id="faq-heading" className="text-4xl font-bold">
-              Frequently asked questions
+              Pricing FAQs
             </h2>
             <div className="mt-8">
               <dl className="space-y-12">
