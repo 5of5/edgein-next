@@ -488,7 +488,7 @@ export const ElemInvestments: React.FC<Props> = ({
                             <td
                               key={key}
                               {...restCellProps}
-                              className="px-4 py-3 text-sm align-top">
+                              className="p-2 text-sm align-top">
                               {cell.render('Cell')}
                             </td>
                           );
