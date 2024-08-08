@@ -365,7 +365,7 @@ const Event: NextPage<Props> = props => {
           tabs={tabBarItems}
           resourceName={event.name}
           showDropdown={false}>
-          <div className="flex gap-2 lg:justify-end">
+          <div className="flex flex-wrap gap-2 mt-3 sm:mt-0 lg:justify-end">
             <ElemAddToCalendarButton
               event={{
                 name: event.name,
@@ -381,14 +381,7 @@ const Event: NextPage<Props> = props => {
               resourceName={event.name}
               resourceTwitterUrl={event.twitter}
             />
-            {user?.role === USER_ROLES.ADMIN && (
-              <ElemButton
-                href={`${ROUTES.ADMIN_EVENTS}/${event.id}`}
-                target="_blank"
-                btn="default">
-                Edit (admin)
-              </ElemButton>
-            )}
+
             {attendees?.some(item => item.person?.id === user?.person?.id) ? (
               <ElemButton btn="primary">Joined</ElemButton>
             ) : (
@@ -397,6 +390,15 @@ const Event: NextPage<Props> = props => {
                 onClick={handleClickGoingEvent}
                 loading={isLoadingGoingEvent}>
                 Going
+              </ElemButton>
+            )}
+
+            {user?.role === USER_ROLES.ADMIN && (
+              <ElemButton
+                href={`${ROUTES.ADMIN_EVENTS}/${event.id}`}
+                target="_blank"
+                btn="default">
+                Edit (admin)
               </ElemButton>
             )}
           </div>
