@@ -148,7 +148,7 @@ export const ElemListInformation: FC<Props> = ({
               {list?.list_members && list?.list_members.length > 0 && (
                 <div className="flex items-center pl-1">
                   <ElemAvatarList people={list?.list_members} />
-                  <div className="ml-1 text-sm text-gray-500">
+                  <div className="ml-1 text-sm text-gray-500 shrink-0">
                     {list?.list_members.length > 1
                       ? `${numberWithCommas(
                           list?.list_members.length,

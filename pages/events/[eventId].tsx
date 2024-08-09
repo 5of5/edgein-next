@@ -364,8 +364,9 @@ const Event: NextPage<Props> = props => {
           className="!flex-wrap px-8 py-2"
           tabs={tabBarItems}
           resourceName={event.name}
-          showDropdown={false}>
-          <div className="flex flex-wrap gap-2 mt-3 sm:mt-0 lg:justify-end">
+          resourceUrl={`https://edgein.io${router.asPath}`}
+          showDropdown={true}>
+          <div className="flex flex-wrap gap-2 mr-2 sm:mt-0 lg:justify-end">
             <ElemAddToCalendarButton
               event={{
                 name: event.name,

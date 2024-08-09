@@ -257,6 +257,7 @@ const VCFirm: NextPage<Props> = props => {
           className="px-8 py-2"
           tabs={tabBarItems}
           resourceName={vcfirm.name}
+          resourceUrl={`https://edgein.io${router.asPath}`}
         />
 
         <div className="px-8 mt-4">

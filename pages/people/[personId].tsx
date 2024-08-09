@@ -153,7 +153,7 @@ const Person: NextPage<Props> = (props: Props) => {
       />
       <DashboardLayout>
         <div className="relative">
-          <div className={`p-8 event-${person.id}`}>
+          <div className={`p-8 person-${person.id}`}>
             <div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-start">
               <div className="flex justify-center col-span-2">
                 <ElemPhoto
@@ -265,6 +265,7 @@ const Person: NextPage<Props> = (props: Props) => {
             className="px-8 py-2"
             tabs={tabBarItems}
             resourceName={person.name}
+            resourceUrl={`https://edgein.io${router.asPath}`}
           />
 
           <div className="px-8 mt-4">
