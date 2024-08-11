@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MutableRefObject, useRef } from 'react';
+import { useEffect, useState, MutableRefObject, useRef } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ElemPhoto } from '@/components/elem-photo';
@@ -216,7 +216,7 @@ const Company: NextPage<Props> = (props: Props) => {
             <div className="col-span-3">
               <ElemPhoto
                 photo={company.logo}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden"
+                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden p-2 max-w-40 lg:max-w-full"
                 imgClass="object-contain w-full h-full"
                 imgAlt={company.name}
                 placeholder="company"
@@ -336,7 +336,6 @@ const Company: NextPage<Props> = (props: Props) => {
                       } else {
                         metricsClass = '';
                       }
-
                       return (
                         <div
                           className="flex items-center justify-between space-x-2"
@@ -345,15 +344,15 @@ const Company: NextPage<Props> = (props: Props) => {
                           <div
                             className={`text-sm font-medium ${metricsClass}`}>
                             {tokenInfo[item.id as keyof TokenInfo]
-                              ? item.id === 'highLow24H'
-                                ? `$${convertAmountRaised(
-                                    tokenInfo.high24H,
-                                  )}/$${convertAmountRaised(tokenInfo.low24H)}`
-                                : `${
-                                    item.id === 'marketCapRank' ? '#' : '$'
-                                  }${convertAmountRaised(
-                                    tokenInfo[item.id as keyof TokenInfo],
-                                  )}`
+                              ? `${
+                                  item.id === 'marketCapRank' ? '#' : '$'
+                                }${convertAmountRaised(
+                                  tokenInfo[item.id as keyof TokenInfo],
+                                )}`
+                              : item.id === 'highLow24H'
+                              ? `$${convertAmountRaised(
+                                  tokenInfo.high24H,
+                                )}/$${convertAmountRaised(tokenInfo.low24H)}`
                               : `N/A`}
                           </div>
                         </div>
@@ -382,7 +381,9 @@ const Company: NextPage<Props> = (props: Props) => {
           className="px-8 py-2"
           tabs={tabBarItems}
           resourceName={company.name}
+          resourceUrl={`https://edgein.io${router.asPath}`}
         />
+
         <div className="px-8 mt-4">
           <div
             className="lg:grid lg:grid-cols-11 lg:gap-7"
@@ -457,6 +458,7 @@ const Company: NextPage<Props> = (props: Props) => {
                   <ElemNewsList
                     heading="News"
                     resourceName={company.name || ''}
+                    resourceUrl={`https://edgein.io${router.asPath}`}
                     news={props.sortNews}
                     resourceType="companies"
                     resourceId={company.id}

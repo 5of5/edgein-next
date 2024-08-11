@@ -364,8 +364,9 @@ const Event: NextPage<Props> = props => {
           className="!flex-wrap px-8 py-2"
           tabs={tabBarItems}
           resourceName={event.name}
-          showDropdown={false}>
-          <div className="flex gap-2 lg:justify-end">
+          resourceUrl={`https://edgein.io${router.asPath}`}
+          showDropdown={true}>
+          <div className="flex flex-wrap gap-2 mr-2 sm:mt-0 lg:justify-end">
             <ElemAddToCalendarButton
               event={{
                 name: event.name,
@@ -381,14 +382,7 @@ const Event: NextPage<Props> = props => {
               resourceName={event.name}
               resourceTwitterUrl={event.twitter}
             />
-            {user?.role === USER_ROLES.ADMIN && (
-              <ElemButton
-                href={`${ROUTES.ADMIN_EVENTS}/${event.id}`}
-                target="_blank"
-                btn="default">
-                Edit (admin)
-              </ElemButton>
-            )}
+
             {attendees?.some(item => item.person?.id === user?.person?.id) ? (
               <ElemButton btn="primary">Joined</ElemButton>
             ) : (
@@ -397,6 +391,15 @@ const Event: NextPage<Props> = props => {
                 onClick={handleClickGoingEvent}
                 loading={isLoadingGoingEvent}>
                 Going
+              </ElemButton>
+            )}
+
+            {user?.role === USER_ROLES.ADMIN && (
+              <ElemButton
+                href={`${ROUTES.ADMIN_EVENTS}/${event.id}`}
+                target="_blank"
+                btn="default">
+                Edit (admin)
               </ElemButton>
             )}
           </div>

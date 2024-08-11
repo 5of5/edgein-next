@@ -7,6 +7,7 @@ import { useIntercom } from 'react-use-intercom';
 type Props = {
   heading?: string;
   resourceName?: string;
+  resourceUrl?: string;
   resourceType: 'companies' | 'vc_firms' | 'people';
   news: News[];
   resourceId?: number;
@@ -15,6 +16,7 @@ type Props = {
 const ElemNewsList: React.FC<Props> = ({
   heading,
   resourceName,
+  resourceUrl,
   resourceType,
   news,
   resourceId,
@@ -25,6 +27,11 @@ const ElemNewsList: React.FC<Props> = ({
   const showMore = () => {
     setLimit(limit + 10);
   };
+
+  const resource = resourceUrl
+    ? `${resourceName}: ${resourceUrl}`
+    : resourceName;
+
   return (
     <section className="border border-gray-300 rounded-lg">
       <div className="flex items-center justify-between px-4 pt-2">
@@ -41,7 +48,7 @@ const ElemNewsList: React.FC<Props> = ({
               className="mt-2"
               onClick={() =>
                 showNewMessages(
-                  `Hi EdgeIn, I'd like to request news on ${resourceName}`,
+                  `Hi EdgeIn, I'd like to request news on ${resource}`,
                 )
               }
               btn="default">

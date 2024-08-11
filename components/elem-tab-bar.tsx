@@ -1,4 +1,4 @@
-import React, {
+import {
   FC,
   MutableRefObject,
   useState,
@@ -22,6 +22,7 @@ type Props = {
   tabs?: Array<Tabs>;
   showDropdown?: boolean;
   resourceName?: string | null;
+  resourceUrl?: string | null;
 };
 
 const SECTION_OFFSET_TOP_SPACING = 60;
@@ -32,6 +33,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
   tabs,
   showDropdown = true,
   resourceName = '',
+  resourceUrl = '',
   children,
 }) => {
   const [isActiveTab, setActiveTab] = useState(0);
@@ -69,6 +71,10 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
 
   const { showNewMessages } = useIntercom();
 
+  const resource = resourceUrl
+    ? `${resourceName}: ${resourceUrl}`
+    : `${resourceName}`;
+
   const dropdownItems = [
     {
       id: 0,
@@ -76,7 +82,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       value: 'requestMoreData',
       onClick: () =>
         showNewMessages(
-          `Hi EdgeIn, I'd like to request some more data on ${resourceName}`,
+          `Hi EdgeIn, I'd like to request some more data on ${resource}`,
         ),
     },
     {
@@ -85,17 +91,17 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       value: 'reportAnError',
       onClick: () =>
         showNewMessages(
-          `Hi EdgeIn, I'd like to report an error on ${resourceName}`,
+          `Hi EdgeIn, I'd like to report an error on ${resource}`,
         ),
     },
   ];
 
   return (
     <ElemSticky
-      className={`flex justify-between items-center ${className}`}
+      className={`flex gap-y-2 items-center ${className}`}
       activeClass="top-14 bg-white shadow-sm">
       <nav
-        className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 lg:flex-wrap ${tabsClassName}`}>
+        className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 mr-auto lg:flex-wrap ${tabsClassName}`}>
         {tabs &&
           tabs.map((tab: Tabs, index: number) => (
             <ElemButton

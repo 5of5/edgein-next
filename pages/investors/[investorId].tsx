@@ -161,7 +161,7 @@ const VCFirm: NextPage<Props> = props => {
             <div className="col-span-3">
               <ElemPhoto
                 photo={vcfirm.logo}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden"
+                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden p-2 max-w-40 lg:max-w-full"
                 imgClass="object-contain w-full h-full"
                 imgAlt={vcfirm.name}
                 placeholder="company"
@@ -257,6 +257,7 @@ const VCFirm: NextPage<Props> = props => {
           className="px-8 py-2"
           tabs={tabBarItems}
           resourceName={vcfirm.name}
+          resourceUrl={`https://edgein.io${router.asPath}`}
         />
 
         <div className="px-8 mt-4">

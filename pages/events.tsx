@@ -344,6 +344,7 @@ const Events: NextPage<Props> = ({ eventTabs, eventsCount, initialEvents }) => {
               <div>
                 <h3 className="mb-1 font-medium lg:hidden">Sort</h3>
                 <ElemDropdown
+                  buttonClass="w-full"
                   ButtonIcon={IconSortDashboard}
                   defaultItem={defaultOrderBy}
                   items={sortChoices}
