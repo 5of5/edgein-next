@@ -336,7 +336,6 @@ const Company: NextPage<Props> = (props: Props) => {
                       } else {
                         metricsClass = '';
                       }
-
                       return (
                         <div
                           className="flex items-center justify-between space-x-2"
@@ -345,15 +344,15 @@ const Company: NextPage<Props> = (props: Props) => {
                           <div
                             className={`text-sm font-medium ${metricsClass}`}>
                             {tokenInfo[item.id as keyof TokenInfo]
-                              ? item.id === 'highLow24H'
-                                ? `$${convertAmountRaised(
-                                    tokenInfo.high24H,
-                                  )}/$${convertAmountRaised(tokenInfo.low24H)}`
-                                : `${
-                                    item.id === 'marketCapRank' ? '#' : '$'
-                                  }${convertAmountRaised(
-                                    tokenInfo[item.id as keyof TokenInfo],
-                                  )}`
+                              ? `${
+                                  item.id === 'marketCapRank' ? '#' : '$'
+                                }${convertAmountRaised(
+                                  tokenInfo[item.id as keyof TokenInfo],
+                                )}`
+                              : item.id === 'highLow24H'
+                              ? `$${convertAmountRaised(
+                                  tokenInfo.high24H,
+                                )}/$${convertAmountRaised(tokenInfo.low24H)}`
                               : `N/A`}
                           </div>
                         </div>
