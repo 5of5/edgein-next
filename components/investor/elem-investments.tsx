@@ -178,6 +178,7 @@ export const ElemInvestments: React.FC<Props> = ({
                               wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
                               imgClass="object-fit max-w-full max-h-full"
                               imgAlt={investment.vc_firm.name}
+                              placeholder="company"
                               placeholderClass="text-gray-300"
                             />
                             <span className="font-medium line-clamp-2">

@@ -231,8 +231,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
   if (whitePaper) {
     infoItems.push({
       icon: IconDocumentDownload,
-      text: 'White Paper',
+      text: 'Whitepaper',
       link: whitePaper,
+      tooltip: 'View Whitepaper',
     });
   }
   if (careerPage) {
@@ -240,6 +241,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       icon: IconBriefcase,
       text: 'Careers',
       link: careerPage,
+      tooltip: 'View Careers',
     });
   }
   if (roles && roles.length > 0) {
@@ -288,7 +290,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   if (github) {
     infoItems.push({
       icon: IconGithub,
-      text: 'Github',
+      text: removeDomainName(github),
       link: github,
       tooltip: 'View on Github',
       isPremium: true,
@@ -443,7 +445,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
             }
 
             itemInner = (
-              <li key={index} className={!item.link ? baseClasses : ''}>
+              <li
+                key={index}
+                className={!item.link && !item.tooltip ? baseClasses : ''}>
                 {itemInner}
               </li>
             );
@@ -453,41 +457,48 @@ export const ElemKeyInfo: React.FC<Props> = ({
                 <li
                   key={index}
                   onClick={onInfoClick(item.text)}
-                  className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer`}>
-                  <div className="flex items-center">
-                    {item.icon && (
-                      <item.icon
-                        title={showInfo[item.text] ? item.text : ''}
-                        className={`${
-                          showInfo[item.text]
-                            ? 'text-primary-500'
-                            : 'text-gray-400'
-                        } h-5 w-5 mr-2 shrink-0`}
-                      />
-                    )}
-                    {showInfo[item.text] && item.link ? (
-                      <a
-                        className="underline break-all transition-all hover:no-underline"
-                        href={item.link}
-                        target={item.target ? item.target : '_blank'}
-                        rel="noopener noreferrer"
-                        title={item.text}>
-                        {item.text}
-                      </a>
-                    ) : showInfo[item.text] ? (
-                      <span className="min-w-0 break-all">{item.text}</span>
-                    ) : (
-                      <span className="text-gray-400">
-                        &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
-                      </span>
-                    )}
-                  </div>
-                  {!showInfo[item.text] && (
-                    <IconLockClosed
-                      className="w-4 h-4 text-gray-400 shrink-0"
-                      strokeWidth={2}
-                    />
-                  )}
+                  className={`${baseClasses} `}>
+                  <ElemTooltip
+                    content={showInfo[item.text] ? item.tooltip : 'Show'}
+                    direction="top"
+                    mode="dark">
+                    <div className="flex items-center justify-between flex-1 transition-all cursor-pointer">
+                      <div className="flex items-center">
+                        {item.icon && (
+                          <item.icon
+                            title={showInfo[item.text] ? item.text : ''}
+                            className={`${
+                              showInfo[item.text]
+                                ? 'text-primary-500'
+                                : 'text-gray-400'
+                            } h-5 w-5 mr-2 shrink-0`}
+                          />
+                        )}
+                        {showInfo[item.text] && item.link ? (
+                          <a
+                            className="underline break-all transition-all hover:no-underline"
+                            href={item.link}
+                            target={item.target ? item.target : '_blank'}
+                            rel="noopener noreferrer"
+                            title={item.text}>
+                            {item.text}
+                          </a>
+                        ) : showInfo[item.text] ? (
+                          <span className="min-w-0 break-all">{item.text}</span>
+                        ) : (
+                          <span className="text-gray-400">
+                            &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
+                          </span>
+                        )}
+                      </div>
+                      {!showInfo[item.text] && (
+                        <IconLockClosed
+                          className="w-4 h-4 text-gray-400 shrink-0"
+                          strokeWidth={2}
+                        />
+                      )}
+                    </div>
+                  </ElemTooltip>
                 </li>
               );
             } else {
