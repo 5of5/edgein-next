@@ -30,7 +30,7 @@ const InviteUserEmail = ({
           <Section>
             <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mt-1">
               <strong>{senderName}</strong> ({senderEmail}) from{' '}
-              {organizationName} is inviting you claim profile on{' '}
+              {organizationName} is inviting you to claim profile on{' '}
               <Link
                 href="https://edgein.io/"
                 target="_blank"
