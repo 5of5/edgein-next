@@ -1,7 +1,11 @@
 import { startCase, kebabCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { FC, SetStateAction, useEffect, useState } from 'react';
-import { IconGlobe, IconLockClosed, IconSidebarList } from '@/components/icons';
+import {
+  IconGlobeAmericas,
+  IconLockClosed,
+  IconSidebarList,
+} from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { CreateListDialog } from '../my-list/create-list-dialog';
@@ -162,69 +166,99 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               .map(list => {
                 const listName = getNameFromListName(list);
 
+                const totalItems = list.total_no_of_resources;
+
+                const listUrl = `${ROUTES.LISTS}/${list.id}/${
+                  listName === 'crap' ? 'sh**' : kebabCase(listName)
+                }`;
+
                 const listTooltip = (
                   <div className="flex-col p-2 group">
-                    <div className="flex items-center gap-x-2">
-                      {list.public ? (
-                        <IconGlobe className="block w-4 h-4 shrink-0" />
-                      ) : (
-                        <IconLockClosed className="block w-4 h-4 shrink-0" />
-                      )}
-
+                    <div>
                       <ElemLink
-                        href={`${ROUTES.LISTS}/${list.id}/${
-                          listName === 'crap' ? 'sh**' : kebabCase(listName)
-                        }`}
-                        className="block font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
+                        href={listUrl}
+                        className="text-lg font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
                         {listName}
                       </ElemLink>
-                      <div className="px-2 py-0.5 text-xs border border-gray-200 rounded-full">
-                        {list.public ? 'Public' : 'Private'}
+                    </div>
+
+                    <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 gap-x-1 gap-y-0.5">
+                      <ElemTooltip
+                        content="Author"
+                        mode="dark"
+                        direction="bottom"
+                        size="lg">
+                        <div>
+                          {list?.created_by?.person ? (
+                            <ElemLink
+                              href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
+                              className="capitalize hover:underline">
+                              {list?.created_by?.person.name}
+                            </ElemLink>
+                          ) : (
+                            <>
+                              {startCase(
+                                list?.created_by?.display_name
+                                  ? list?.created_by.display_name
+                                  : '',
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </ElemTooltip>
+                      &middot;
+                      <ElemTooltip
+                        content={
+                          <div className="p-1ext-sm">
+                            Updated{' '}
+                            {formatDateShown(list.updated_at, `LL [at] h:mmA`)}
+                          </div>
+                        }
+                        mode="dark"
+                        direction="bottom"
+                        size="lg">
+                        <div>{formatDateShown(list.updated_at, `ll`)}</div>
+                      </ElemTooltip>
+                      &middot;
+                      <div>
+                        {numberWithCommas(totalItems ? totalItems : 0)} item
+                        {totalItems && totalItems > 1 && 's'}
                       </div>
+                      &middot;
+                      <ElemTooltip
+                        content={
+                          list.public
+                            ? 'Shared with public'
+                            : 'Visible only to you'
+                        }
+                        mode="dark"
+                        direction="bottom"
+                        size="lg">
+                        <a
+                          className="flex items-center gap-x-1 hover:underline"
+                          href={listUrl}>
+                          {list.public ? (
+                            <IconGlobeAmericas
+                              title="Public"
+                              className="block w-4 h-4 shrink-0"
+                            />
+                          ) : (
+                            <IconLockClosed
+                              title="Private"
+                              className="block w-4 h-4 shrink-0"
+                            />
+                          )}
+                        </a>
+                      </ElemTooltip>
                     </div>
 
                     {list.description && (
-                      <div className="mt-3 text-sm font-normal text-gray-500 line-clamp-4">
+                      <a
+                        className="mt-3 text-sm font-normal text-gray-900 line-clamp-4"
+                        href={listUrl}>
                         {list.description}
-                      </div>
+                      </a>
                     )}
-
-                    <div className="grid grid-cols-2 mt-3 text-xs gap-x-6 gap-y-2">
-                      <div className="capitalize">
-                        {list?.created_by?.person ? (
-                          <>
-                            By{' '}
-                            <ElemLink
-                              href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
-                              className="hover:underline">
-                              {list?.created_by?.person.name}
-                            </ElemLink>
-                          </>
-                        ) : (
-                          <>
-                            By{' '}
-                            {startCase(
-                              list?.created_by?.display_name
-                                ? list?.created_by.display_name
-                                : '',
-                            )}
-                          </>
-                        )}
-                      </div>
-                      <div>Updated {formatDateShown(list.updated_at)}</div>
-                      <div>
-                        {numberWithCommas(
-                          list.total_no_of_resources
-                            ? list.total_no_of_resources
-                            : 0,
-                        )}{' '}
-                        Item
-                        {list.total_no_of_resources &&
-                        list.total_no_of_resources === 1
-                          ? ''
-                          : 's'}
-                      </div>
-                    </div>
                   </div>
                 );
 

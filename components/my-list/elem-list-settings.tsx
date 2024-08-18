@@ -198,7 +198,7 @@ export const ElemListSettings: FC<Props> = ({
             {!listNameOpen ? (
               <button
                 onClick={() => setListNameOpen(true)}
-                className="text-sm text-gray-600 capitalize">
+                className="text-sm text-left text-gray-600 capitalize">
                 {listName}
               </button>
             ) : (

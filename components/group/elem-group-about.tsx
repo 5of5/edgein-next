@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   IconProps,
-  IconGlobe,
   IconTwitterX,
   IconTelegram,
   IconDiscord,
   IconLockClosed,
+  IconGlobeAmericas,
 } from '@/components/icons';
 import { User_Groups } from '@/graphql/types';
 import { ElemAvatarList } from '../elem-avatar-list';
@@ -25,6 +25,10 @@ export const ElemGroupAbout: React.FC<Props> = ({
   group,
 }) => {
   const isPublicGroup = group.public;
+
+  const groupMembers = group.user_group_members.filter(
+    member => member?.user?.id != group?.created_by_user_id,
+  );
   const groupAdmins = group.user_group_members.filter(
     member => member?.user?.id === group?.created_by_user_id,
   );
@@ -72,7 +76,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
             {isPublicGroup ? (
               <div className="flex text-sm">
-                <IconGlobe
+                <IconGlobeAmericas
                   title="Public"
                   className="w-5 h-5 mr-2 text-gray-500 shrink-0"
                 />
@@ -137,7 +141,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
                 )}
               </div>
               <div className="flex items-center pt-1">
-                <ElemAvatarList people={group.user_group_members} limit={10} />
+                <ElemAvatarList people={groupMembers} limit={10} />
                 <div className="ml-1 text-sm text-gray-500">
                   {group.user_group_members.length} Member
                   {group.user_group_members.length > 1 ? 's' : ''}
