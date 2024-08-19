@@ -2,17 +2,14 @@ import React, { useMemo, FC } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import moment from 'moment-timezone';
 import { startCase } from 'lodash';
-import {
-  getListDisplayName,
-  getNameFromListMember,
-  getNameFromListName,
-} from '@/utils/lists';
+import { getListDisplayName, getNameFromListName } from '@/utils/lists';
 import { List_Members, Lists, Users_Public } from '@/graphql/types';
 import { ROUTES } from '@/routes';
 import { TableView } from '../companies/table-view';
 import { TableEmptyCell } from '../my-list/table-empty-cell';
 import { ElemTooltip } from '../elem-tooltip';
 import { kebabCase } from 'lodash';
+import { ElemAvatarList } from '../elem-avatar-list';
 
 type Props = {
   className?: string;
@@ -123,49 +120,22 @@ export const ListsTable: FC<Props> = ({
             original: Lists;
           };
         }) => {
+          const listFollowers = props.row.original.list_members.filter(
+            member => member.user?.id != props.row.original?.created_by?.id,
+          );
           return (
             <div>
-              {props.value ? (
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <ul className="flex -space-x-3 overflow-hidden">
-                      {props.row.original.list_members
-                        .slice(0, 6)
-                        .map((member: List_Members) => (
-                          <li key={member.id}>
-                            <ElemTooltip
-                              content={getNameFromListMember(member)}
-                              mode="dark"
-                              direction="top"
-                              size="lg">
-                              {member?.user?.person?.picture ? (
-                                <div>
-                                  <ElemPhoto
-                                    photo={member?.user.person?.picture}
-                                    wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                                    imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                                    imgAlt={member.user?.person?.name}
-                                    placeholder="user"
-                                    placeholderClass="text-gray-500"
-                                  />
-                                </div>
-                              ) : (
-                                <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">
-                                  {getNameFromListMember(member).charAt(0)}
-                                </div>
-                              )}
-                            </ElemTooltip>
-                          </li>
-                        ))}
-                    </ul>
-                    <a
-                      href={`${ROUTES.LISTS}/${
-                        props.row.original?.id
-                      }/${kebabCase(getNameFromListName(props.row.original))}`}
-                      className="ml-1 text-sm break-words line-clamp-2 hover:underline">
-                      {props.value} Follower{props.value > 1 && 's'}
-                    </a>
-                  </div>
+              {listFollowers.length > 0 ? (
+                <div className="flex flex-wrap items-center pt-1">
+                  <ElemAvatarList people={listFollowers} limit={6} />
+                  <a
+                    href={`${ROUTES.LISTS}/${
+                      props.row.original?.id
+                    }/${kebabCase(getNameFromListName(props.row.original))}`}
+                    className="ml-1 text-sm break-words line-clamp-2 hover:underline">
+                    {listFollowers.length} Follower
+                    {listFollowers.length > 1 && 's'}
+                  </a>
                 </div>
               ) : (
                 <TableEmptyCell />

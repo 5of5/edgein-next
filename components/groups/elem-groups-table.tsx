@@ -8,6 +8,7 @@ import { ROUTES } from '@/routes';
 import { TableView } from '../companies/table-view';
 import { TableEmptyCell } from '../my-list/table-empty-cell';
 import { ElemTooltip } from '../elem-tooltip';
+import { ElemAvatarList } from '../elem-avatar-list';
 
 type Props = {
   className?: string;
@@ -101,7 +102,7 @@ export const GroupsTable: FC<Props> = ({
         width: 150,
       },
       {
-        Header: 'Followers',
+        Header: 'Members',
         accessor: 'user_group_members.length' as const,
         Cell: (props: {
           value: number;
@@ -109,44 +110,19 @@ export const GroupsTable: FC<Props> = ({
             original: User_Groups;
           };
         }) => {
+          const groupFollowers = props.row.original.user_group_members.filter(
+            member => member.user?.id != props.row.original?.created_by?.id,
+          );
           return (
             <div>
-              {props.value ? (
-                <div className="flex items-center space-x-2">
-                  <ul className="flex -space-x-3 overflow-hidden">
-                    {props.row.original.user_group_members
-                      .slice(0, 6)
-                      .map((member: User_Group_Members) => (
-                        <li key={member.id}>
-                          <ElemTooltip
-                            content={getNameFromListMember(member)}
-                            mode="dark"
-                            direction="top"
-                            size="lg">
-                            {member?.user?.person?.picture ? (
-                              <div>
-                                <ElemPhoto
-                                  photo={member?.user.person?.picture}
-                                  wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-                                  imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-                                  imgAlt={member.user?.person?.name}
-                                  placeholder="user"
-                                  placeholderClass="text-gray-500"
-                                />
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center w-8 text-lg capitalize border rounded-full aspect-square bg-slate-300 text-dark-500 border-gray-50">
-                                {getNameFromListMember(member).charAt(0)}
-                              </div>
-                            )}
-                          </ElemTooltip>
-                        </li>
-                      ))}
-                  </ul>
+              {groupFollowers.length > 0 ? (
+                <div className="flex flex-wrap items-center pt-1">
+                  <ElemAvatarList people={groupFollowers} limit={6} />
                   <a
                     href={`${ROUTES.GROUPS}/${props.row.original?.id}/`}
                     className="ml-1 text-sm break-words line-clamp-2 hover:underline">
-                    {props.value} Follower{props.value > 1 && 's'}
+                    {groupFollowers.length} Member
+                    {groupFollowers.length > 1 && 's'}
                   </a>
                 </div>
               ) : (

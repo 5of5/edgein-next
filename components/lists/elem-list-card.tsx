@@ -13,11 +13,11 @@ import {
 } from '@/graphql/types';
 import { GroupsTabItem, ListsTabItem } from '@/types/common';
 import { ROUTES } from '@/routes';
-import { ElemButton } from './elem-button';
-import { IconGlobeAmericas, IconLockClosed } from './icons';
-import { ElemLink } from './elem-link';
-import { ElemAvatarList } from './elem-avatar-list';
-import { ElemTooltip } from './elem-tooltip';
+import { ElemButton } from '../elem-button';
+import { IconGlobeAmericas, IconLockClosed } from '../icons';
+import { ElemLink } from '../elem-link';
+import { ElemAvatarList } from '../elem-avatar-list';
+import { ElemTooltip } from '../elem-tooltip';
 
 type ResourceDataType<T> = T;
 
@@ -220,107 +220,6 @@ export const ElemListCard: FC<Props> = ({
         {description && (
           <div className="mt-2 text-sm line-clamp-4">{description}</div>
         )}
-
-        {/*<div className="grid grid-cols-2 mt-2 text-xs gap-x-6 gap-y-2">
-           <div>
-          <div className="text-gray-500">
-            {isResourceList ? 'Followers' : 'Members'}
-          </div>
-          <div>
-            {`${numberWithCommas(members.length)} ${
-              isResourceList ? 'Follower' : 'Member'
-            }`}
-            {members.length > 1 && 's'}
-          </div>
-        </div> 
-        
-        <div>
-          <div className="text-gray-500">Author</div>
-          <p className="line-clamp-1">
-            {resource?.created_by?.person ? (
-              <ElemLink
-                href={`${ROUTES.PEOPLE}/${resource?.created_by?.person?.slug}`}
-                className="capitalize hover:underline">
-                {resource?.created_by?.person.name}
-              </ElemLink>
-            ) : (
-              <>
-                {startCase(
-                  resource?.created_by?.display_name
-                    ? resource?.created_by.display_name
-                    : '',
-                )}
-              </>
-            )}
-          </p>
-        </div>
-  
-
-          {isResourceList ? (
-            <div>
-              <div className="text-gray-500">Total Items</div>
-              <div>
-                {numberWithCommas(totalItems ? totalItems : 0)}
-                Item {totalItems && totalItems === 1 ? '' : 's'}
-              </div>
-            </div>
-          ) : (
-            <>
-              {numOfLists > 0 && (
-                <div>
-                  {numberWithCommas(numOfLists)}
-                  {numOfLists > 1 ? ' Lists' : ' List'}
-                </div>
-              )}
-
-              {numOfNotes > 0 && (
-                <div>
-                  {numberWithCommas(numOfNotes)}
-                  {numOfNotes > 1 ? ' Notes' : ' Note'}
-                </div>
-              )}
-            </>
-          )}
-
-          <div>
-          <div className="text-gray-500">Author</div>
-          <p className="line-clamp-1">
-            {resource?.created_by?.person ? (
-              <ElemLink
-                href={`${ROUTES.PEOPLE}/${resource?.created_by?.person?.slug}`}
-                className="capitalize hover:underline">
-                {resource?.created_by?.person.name}
-              </ElemLink>
-            ) : (
-              <>
-                {startCase(
-                  resource?.created_by?.display_name
-                    ? resource?.created_by.display_name
-                    : '',
-                )}
-              </>
-            )}
-          </p>
-        </div> 
-
-          {/* <div>
-            <div className="text-gray-500">Updated</div>
-            <div className="flex">
-              <ElemTooltip
-                content={
-                  <div className="p-1 text-sm">
-                    {formatDateShown(resource.updated_at, `LL [at] h:mmA`)}
-                  </div>
-                }
-                mode="dark"
-                direction="bottom"
-                size="lg">
-                <div>{formatDateShown(resource.updated_at, 'll')}</div>
-              </ElemTooltip>
-            </div>
-          </div>
-        </div>
-        */}
       </div>
 
       <div>

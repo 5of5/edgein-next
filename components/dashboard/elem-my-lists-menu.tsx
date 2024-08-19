@@ -182,7 +182,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                       </ElemLink>
                     </div>
 
-                    <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 gap-x-1 gap-y-0.5">
+                    <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 font-normal gap-x-1 gap-y-0.5">
                       <ElemTooltip
                         content="Author"
                         mode="dark"

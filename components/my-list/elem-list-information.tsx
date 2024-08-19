@@ -48,6 +48,10 @@ export const ElemListInformation: FC<Props> = ({
   const listName =
     getListDisplayName(list) === 'crap' ? 'sh**' : getListDisplayName(list);
 
+  const listMembers = list.list_members.filter(
+    member => member.user?.id != list?.created_by?.id,
+  );
+
   return (
     <div className="px-4 pb-3 mb-4 border-b border-gray-200">
       <div className="flex flex-wrap items-start justify-between space-y-2 lg:space-y-0">
@@ -150,13 +154,13 @@ export const ElemListInformation: FC<Props> = ({
           )}
 
           <div className="mt-4 grow">
-            {list?.list_members && list?.list_members.length > 0 && (
+            {listMembers && listMembers.length > 0 && (
               <div className="flex items-center pl-1">
-                <ElemAvatarList people={list?.list_members} />
+                <ElemAvatarList people={listMembers} />
                 <div className="ml-1 text-sm shrink-0">
-                  {list?.list_members.length > 1
-                    ? `${numberWithCommas(list?.list_members.length)} Followers`
-                    : `${numberWithCommas(list?.list_members.length)} Follower`}
+                  {listMembers.length > 1
+                    ? `${numberWithCommas(listMembers.length)} Followers`
+                    : `${numberWithCommas(listMembers.length)} Follower`}
                 </div>
               </div>
             )}
