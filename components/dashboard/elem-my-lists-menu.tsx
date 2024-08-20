@@ -177,7 +177,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     <div>
                       <ElemLink
                         href={listUrl}
-                        className="text-lg font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
+                        className="text-lg font-medium leading-snug text-gray-900 line-clamp-2 first-letter:uppercase hover:underline">
                         {listName}
                       </ElemLink>
                     </div>

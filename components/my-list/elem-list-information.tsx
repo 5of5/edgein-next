@@ -55,7 +55,7 @@ export const ElemListInformation: FC<Props> = ({
   return (
     <div className="px-4 pb-3 mb-4 border-b border-gray-200">
       <div className="flex flex-wrap items-start justify-between space-y-2 lg:space-y-0">
-        <div className="max-w-full">
+        <div className="max-w-4xl">
           <div className="flex items-center space-x-2">
             {isListAuthor && isCustomList ? (
               <>
@@ -63,13 +63,13 @@ export const ElemListInformation: FC<Props> = ({
                   type="button"
                   className="inline-flex items-start justify-start mr-2 lg:items-center hover:underline"
                   onClick={onOpenSettingsDialog}>
-                  <span className="text-xl font-medium text-left capitalize lg:text-3xl">
+                  <span className="text-xl font-medium text-left lg:text-3xl first-letter:uppercase">
                     {getListDisplayName(list)}
                   </span>
                 </button>
               </>
             ) : (
-              <h1 className="mr-2 text-xl font-medium capitalize lg:text-3xl">
+              <h1 className="mr-2 text-xl font-medium first-letter:uppercase lg:text-3xl">
                 {list
                   ? getListDisplayName(list)
                   : toLabel(router.query.slug as string)}

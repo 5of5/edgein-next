@@ -123,10 +123,11 @@ export const ListsTable: FC<Props> = ({
           const listFollowers = props.row.original.list_members.filter(
             member => member.user?.id != props.row.original?.created_by?.id,
           );
+
           return (
             <div>
               {listFollowers.length > 0 ? (
-                <div className="flex flex-wrap items-center pt-1">
+                <div className="flex flex-wrap items-center">
                   <ElemAvatarList people={listFollowers} limit={6} />
                   <a
                     href={`${ROUTES.LISTS}/${

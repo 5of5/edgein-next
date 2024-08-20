@@ -515,6 +515,11 @@ export const getListDisplayName = (list: DeepPartial<Lists>) => {
 export const getNameFromListName = (list: DeepPartial<Lists>) => {
   if (!list) return '';
   const fragments = list?.name?.split('-');
+
+  if (fragments && fragments.length > 3) {
+    return fragments.slice(2).join('-').trim();
+  }
+
   return fragments?.[fragments.length - 1] || '';
 };
 

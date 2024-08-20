@@ -110,19 +110,19 @@ export const GroupsTable: FC<Props> = ({
             original: User_Groups;
           };
         }) => {
-          const groupFollowers = props.row.original.user_group_members.filter(
+          const groupMembers = props.row.original.user_group_members.filter(
             member => member.user?.id != props.row.original?.created_by?.id,
           );
           return (
             <div>
-              {groupFollowers.length > 0 ? (
-                <div className="flex flex-wrap items-center pt-1">
-                  <ElemAvatarList people={groupFollowers} limit={6} />
+              {groupMembers.length > 0 ? (
+                <div className="flex flex-wrap items-center">
+                  <ElemAvatarList people={groupMembers} limit={6} />
                   <a
                     href={`${ROUTES.GROUPS}/${props.row.original?.id}/`}
                     className="ml-1 text-sm break-words line-clamp-2 hover:underline">
-                    {groupFollowers.length} Member
-                    {groupFollowers.length > 1 && 's'}
+                    {groupMembers.length} Member
+                    {groupMembers.length > 1 && 's'}
                   </a>
                 </div>
               ) : (
