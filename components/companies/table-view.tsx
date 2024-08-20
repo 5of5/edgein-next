@@ -4,8 +4,8 @@ import { TableColumnsFilter } from '@/components/my-list/table-columns-filter';
 import {
   IconSortUp,
   IconSortDown,
-  IconX,
   IconChevronDownMini,
+  IconEyeSlash,
 } from '@/components/icons';
 import { Pagination } from '@/components/pagination';
 import { ElemButton } from '@/components/elem-button';
@@ -122,9 +122,8 @@ export const TableView: FC<Props> = ({
         </div>
       )}
 
-      <div className="relative">
-        <div className="absolute right-0 z-10 w-8 rounded-tr-lg rounded-br-lg pointer-events-none bg-gradient-to-l from-white top-px bottom-px sm:right-px"></div>
-        <div className="w-full overflow-auto border-gray-200 overscroll-x-none border-y lg:border lg:rounded-lg">
+      <div className="relative overflow-hidden">
+        <div className="w-full overflow-auto border-gray-200 overscroll-x-none border-y lg:border lg:rounded-lg [mask-image:linear-gradient(90deg,#000_0,#000_95%,transparent)]">
           <table
             {...getTableProps()}
             className="divide-y divide-gray-200 table-auto">
@@ -154,9 +153,7 @@ export const TableView: FC<Props> = ({
                           {...restColumnProps}
                           className="relative px-2 py-2 text-sm font-medium text-left text-gray-600 whitespace-nowrap min-w-content bg-gray-25">
                           <div className="flex items-center min-w-content">
-                            {column.render('Header')}
-
-                            {column.disableDropdown != true && (
+                            {column.disableDropdown != true ? (
                               <ElemDropdown
                                 items={[
                                   ...(column.canSort
@@ -201,7 +198,7 @@ export const TableView: FC<Props> = ({
                                           id: 2,
                                           label: 'Hide Column',
                                           value: 'hideColumn',
-                                          Icon: IconX,
+                                          Icon: IconEyeSlash,
                                           onClick: () => column.toggleHidden(),
                                         },
                                       ]
@@ -209,15 +206,19 @@ export const TableView: FC<Props> = ({
                                 ]}
                                 customButton={
                                   <ElemButton className="!p-0">
+                                    {column.render('Header')}
                                     <IconChevronDownMini
-                                      className="w-5 h-5"
+                                      className="w-5 h-5 ml-1"
                                       title="Options"
                                     />
                                   </ElemButton>
                                 }
                                 className="h-5"
-                                placement="bottom-end"
+                                itemsShowIcons={true}
+                                placement="bottom-start"
                               />
+                            ) : (
+                              column.render('Header')
                             )}
                           </div>
                         </th>
@@ -259,15 +260,14 @@ export const TableView: FC<Props> = ({
               })}
             </tbody>
           </table>
-
-          {showUpgrade && totalItems > 5 && (
-            <TableUpgrade
-              title={upgradeTitle}
-              columns={columns}
-              //rowsCount={6}
-            />
-          )}
         </div>
+        {showUpgrade && totalItems > 5 && (
+          <TableUpgrade
+            title={upgradeTitle}
+            columns={columns}
+            //rowsCount={6}
+          />
+        )}
       </div>
 
       <Pagination

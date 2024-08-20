@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-import { Menu } from '@headlessui/react';
 import {
   useTable,
   useResizeColumns,
@@ -17,7 +16,8 @@ import {
   IconSortDown,
   IconX,
   IconTrash,
-  IconChevronDown,
+  IconEyeSlash,
+  IconChevronDownMini,
 } from '@/components/icons';
 import { Pagination } from '@/components/pagination';
 import { ElemButton } from '@/components/elem-button';
@@ -25,6 +25,7 @@ import { useCheckboxes } from './indeterminate-checkbox';
 import { convertToInternationalCurrencySystem, toLabel } from '@/utils';
 import { useUser } from '@/context/user-context';
 import { PluginHook } from 'react-table';
+import { ElemDropdown } from '../elem-dropdown';
 
 type Props = {
   listName: string | null;
@@ -189,7 +190,6 @@ export const Table: FC<Props> = ({
             </div>
           )}
       </div>
-
       {(data.length > 0 || searchQuery) && (
         <div className="flex items-center mb-2 space-x-2">
           {Object.keys(selectedRowIds).length > 0 ? (
@@ -198,8 +198,14 @@ export const Table: FC<Props> = ({
                 onClick={handleRemove}
                 className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1">
                 <IconTrash className="w-5 h-5 mr-1" title="Remove from list" />
-                <div>Remove from list</div>
+                <div>Remove items</div>
               </button>
+              <ElemButton
+                onClick={() => toggleAllRowsSelected(false)}
+                btn="transparent">
+                <IconX className="w-5 h-5 mr-1" title="Clear Selection" />
+                Cancel
+              </ElemButton>
               <button
                 onClick={() => toggleAllRowsSelected(false)}
                 className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
@@ -208,12 +214,11 @@ export const Table: FC<Props> = ({
               </button>
 
               <div className="text-sm shrink-0">
-                {Object.keys(selectedRowIds).length} organization
-                {Object.keys(selectedRowIds).length > 1 && 's'} selected
+                {Object.keys(selectedRowIds).length} selected
               </div>
             </>
           ) : (
-            <div className="flex flex-col space-y-1 sm:flex-row sm:items-center sm:space-x-3 sm:space-y-0">
+            <div className="flex flex-col space-y-1 sm:flex-row sm:items-center sm:justify-between sm:space-x-3 sm:space-y-0">
               <TableColumnsFilter
                 columns={allColumns}
                 resetColumns={() => toggleHideAllColumns(false)}
@@ -231,8 +236,7 @@ export const Table: FC<Props> = ({
       )}
 
       <div className="relative">
-        <div className="absolute right-0 z-10 w-8 rounded-tr-lg rounded-br-lg pointer-events-none bg-gradient-to-l from-white top-px bottom-px sm:right-px"></div>
-        <div className="w-full overflow-auto border-gray-200 border-y lg:border lg:rounded-lg">
+        <div className="w-full overflow-auto border-gray-200 border-y lg:border lg:rounded-lg [mask-image:linear-gradient(90deg,#000_0,#000_95%,transparent)]">
           {data.length > 0 ? (
             <table
               {...getTableProps()}
@@ -263,74 +267,75 @@ export const Table: FC<Props> = ({
                             {...restColumnProps}
                             className="relative px-2 py-2 text-sm font-medium text-left text-gray-600 whitespace-nowrap min-w-content bg-gray-25">
                             <div className="flex items-center min-w-content">
-                              {column.render('Header')}
-
-                              {column.disableDropdown != true && (
-                                <Menu
-                                  as="div"
-                                  className="relative inline-block ml-1 text-left">
-                                  <Menu.Button className="block text-gray-500 align-middle rounded-full hover:text-primary-500 hover:bg-gray-200">
-                                    <IconChevronDown className="w-5 h-5" />
-                                  </Menu.Button>
-
-                                  <Menu.Items className="absolute left-0 z-50 flex flex-col w-56 mt-2 overflow-hidden origin-top-left bg-white divide-y divide-gray-100 rounded-lg shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                    {column.canSort && (
-                                      <Menu.Item
-                                        as="button"
-                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-gray-100 ${
-                                          column.isSorted &&
-                                          column.isSortedDesc === false
-                                            ? 'text-primary-500'
-                                            : ''
-                                        }`}
-                                        onClick={(e: any) => {
-                                          column.getHeaderProps(
-                                            setSortBy([
-                                              { id: column.id, desc: false },
-                                            ]),
-                                          );
-                                        }}>
-                                        <IconSortUp className="inline-block w-5 h-5 mr-1" />
-                                        Sort Ascending
-                                      </Menu.Item>
-                                    )}
-
-                                    {column.canSort && (
-                                      <Menu.Item
-                                        as="button"
-                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-gray-100 ${
-                                          column.isSorted &&
-                                          column.isSortedDesc === true
-                                            ? 'text-primary-500'
-                                            : ''
-                                        }`}
-                                        onClick={(e: any) => {
-                                          column.getHeaderProps(
-                                            setSortBy([
-                                              { id: column.id, desc: true },
-                                            ]),
-                                          );
-                                        }}>
-                                        <IconSortDown className="inline-block w-5 h-5 mr-1" />
-                                        Sort Descending
-                                      </Menu.Item>
-                                    )}
-
-                                    {!column.disableHiding && (
-                                      <Menu.Item
-                                        as="button"
-                                        className="flex items-center w-full px-2 py-2 text-sm font-medium text-left hover:text-primary-500 hover:bg-gray-100"
-                                        onClick={(e: any) => {
-                                          column.getHeaderProps(
-                                            column.toggleHidden(),
-                                          );
-                                        }}>
-                                        <IconX className="inline-block w-5 h-5 mr-1" />
-                                        Hide Column
-                                      </Menu.Item>
-                                    )}
-                                  </Menu.Items>
-                                </Menu>
+                              {column.disableDropdown != true &&
+                              column.canSort ? (
+                                <ElemDropdown
+                                  items={[
+                                    ...(column.canSort
+                                      ? [
+                                          {
+                                            id: 1,
+                                            label: 'Sort Ascending',
+                                            value: 'sortAscending',
+                                            Icon: IconSortUp,
+                                            selectedIconClass:
+                                              'text-primary-500',
+                                            onClick: () => {
+                                              column.getHeaderProps(
+                                                setSortBy([
+                                                  {
+                                                    id: column.id,
+                                                    desc: false,
+                                                  },
+                                                ]),
+                                              );
+                                            },
+                                          },
+                                          {
+                                            id: 2,
+                                            label: 'Sort Descending',
+                                            value: 'sortDescending',
+                                            Icon: IconSortDown,
+                                            onClick: () => {
+                                              column.getHeaderProps(
+                                                setSortBy([
+                                                  {
+                                                    id: column.id,
+                                                    desc: true,
+                                                  },
+                                                ]),
+                                              );
+                                            },
+                                          },
+                                        ]
+                                      : []),
+                                    ...(!column.disableHiding
+                                      ? [
+                                          {
+                                            id: 3,
+                                            label: 'Hide Column',
+                                            value: 'hideColumn',
+                                            Icon: IconEyeSlash,
+                                            onClick: () =>
+                                              column.toggleHidden(),
+                                          },
+                                        ]
+                                      : []),
+                                  ]}
+                                  customButton={
+                                    <ElemButton className="!p-0">
+                                      {column.render('Header')}
+                                      <IconChevronDownMini
+                                        className="w-5 h-5 ml-1"
+                                        title="Options"
+                                      />
+                                    </ElemButton>
+                                  }
+                                  itemsShowIcons={true}
+                                  placement="bottom-start"
+                                />
+                              ) : (
+                                column.render('Header')
                               )}
                             </div>
                           </th>
@@ -388,7 +393,6 @@ export const Table: FC<Props> = ({
           )}
         </div>
       </div>
-
       <Pagination
         shownItems={rows?.length}
         totalItems={totalItems}
@@ -398,7 +402,6 @@ export const Table: FC<Props> = ({
         onClickPrev={onPreviousPage}
         onClickNext={onNextPage}
       />
-
       <Toaster />
     </div>
   );
