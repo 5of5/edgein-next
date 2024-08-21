@@ -1,6 +1,7 @@
 import { ChangeEvent, useState, useCallback, useMemo } from 'react';
 import debounce from 'lodash/debounce';
 import { DEBOUNCE_TIME } from '@/utils/constants';
+import { InputText } from '../input-text';
 
 interface Props {
   className?: string;
@@ -31,8 +32,10 @@ export const TableGlobalFilter = ({
   );
 
   return (
-    <input
-      className={`relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 focus:outline-none focus:ring-1 ${className}`}
+    <InputText
+      className={className}
+      name="search"
+      type="text"
       value={value}
       onChange={handleChange}
       placeholder={placeholder}
