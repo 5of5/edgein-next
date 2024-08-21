@@ -91,21 +91,21 @@ export const isFollowsExists = (
   );
 };
 
-export const getNewTempSentiment = (
-  sentiments: any,
-  sentiment: string,
-  alreadyReacted: boolean,
-) => {
-  const newSentiment = { ...sentiments };
+// export const getNewTempSentiment = (
+//   sentiments: any,
+//   sentiment: string,
+//   alreadyReacted: boolean,
+// ) => {
+//   const newSentiment = { ...sentiments };
 
-  const hasSentiment = has(newSentiment, sentiment);
+//   const hasSentiment = has(newSentiment, sentiment);
 
-  if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1;
-  else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1;
-  else if (hasSentiment && alreadyReacted)
-    newSentiment[sentiment] > 0
-      ? (newSentiment[sentiment] -= 1)
-      : (newSentiment[sentiment] = 0);
+//   if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1;
+//   else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1;
+//   else if (hasSentiment && alreadyReacted)
+//     newSentiment[sentiment] > 0
+//       ? (newSentiment[sentiment] -= 1)
+//       : (newSentiment[sentiment] = 0);
 
-  return newSentiment;
-};
+//   return newSentiment;
+// };
