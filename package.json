@@ -43,7 +43,6 @@
     "@aws-sdk/client-ses": "^3.360.0",
     "@aws/amazon-location-utilities-auth-helper": "^1.0.1",
     "@formspark/use-formspark": "^0.1.39",
-    "@fusionworks/ra-s3-input": "^0.1.6",
     "@headlessui/react": "^1.7.3",
     "@playwright/test": "^1.35.0",
     "@react-email/components": "^0.0.7",
