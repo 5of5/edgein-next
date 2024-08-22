@@ -11,7 +11,7 @@ import {
   InfiniteHits,
   Index,
   Configure,
-} from 'react-instantsearch';
+} from 'react-instantsearch-hooks-web';
 import { FigureSearch } from '@/components/figures';
 import {
   IconSearch,
@@ -26,6 +26,7 @@ import useLibrary from '@/hooks/use-library';
 import { parseIndexName } from '@/utils/algolia';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
+
 import { useRouter } from 'next/router';
 import { ElemModal } from './elem-modal';
 
@@ -594,12 +595,7 @@ export default function SearchModal(props: any) {
         showCloseIcon={false}
         placement="top"
         panelClass="w-full max-w-3xl shadow-2xl bg-white rounded-lg my-4">
-        <InstantSearch
-          searchClient={searchClient}
-          indexName="companies"
-          future={{
-            preserveSharedStateOnUnmount: true,
-          }}>
+        <InstantSearch searchClient={searchClient} indexName="companies">
           <header className="relative z-10 flex items-center p-0 px-4 border-b border-gray-100">
             <IconSearch className="w-6 h-6 text-gray-500" />
             <SearchBox
