@@ -11,7 +11,7 @@ import {
   InfiniteHits,
   Index,
   Configure,
-} from 'react-instantsearch-hooks-web';
+} from 'react-instantsearch';
 import { FigureSearch } from '@/components/figures';
 import {
   IconSearch,

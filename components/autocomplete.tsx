@@ -147,10 +147,10 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
 
       <div
         {...autocomplete.getPanelProps({})}
-        className="autocomplete-panel absolute left-0 z-30 w-full max-w-xs bg-white rounded-lg shadow-2xl"
+        className="absolute left-0 z-30 w-full max-w-xs bg-white rounded-lg shadow-2xl autocomplete-panel"
         style={{ top: `${top + height}px` }}>
         {state.status === 'stalled' && !state.isOpen && (
-          <div className="text-primary-500 py-3">
+          <div className="py-3 text-primary-500">
             <svg
               className="block w-8 h-8 mx-auto"
               viewBox="0 0 100 100"
@@ -189,7 +189,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
                 {items.length > 0 && (
                   <ul
                     {...autocomplete.getListProps()}
-                    className="h-full overflow-y-scroll list-none m-0 p-0 max-h-96">
+                    className="h-full p-0 m-0 overflow-y-scroll list-none max-h-96">
                     {items.map(item => {
                       const itemProps = autocomplete.getItemProps({
                         item,
@@ -231,19 +231,19 @@ type PersonItemProps = {
 
 function AccountItem({ hit }: PersonItemProps) {
   return (
-    <div className="account-body flex gap-2 items-center">
-      <div className="account-avatar h-10 w-10 flex-none rounded-full overflow-hidden">
+    <div className="flex items-center gap-2 account-body">
+      <div className="flex-none w-10 h-10 overflow-hidden rounded-full account-avatar">
         {hit.picture ? (
           <img src={hit.picture} alt={hit.name} />
         ) : (
-          <IconUserPlaceholder className="object-fit max-w-full max-h-full text-gray-400" />
+          <IconUserPlaceholder className="max-w-full max-h-full text-gray-400 object-fit" />
         )}
       </div>
       <div>
-        <div className="account-name font-bold">
+        <div className="font-bold account-name">
           <Highlight hit={hit} attribute="name" />
         </div>
-        <div className="account-handle text-sm text-gray-500">
+        <div className="text-sm text-gray-500 account-handle">
           @<Highlight hit={hit} attribute="name" />
         </div>
       </div>
@@ -270,7 +270,7 @@ function Highlight<THit extends { _highlightResult?: {} | undefined }>({
           return (
             <mark
               key={index}
-              className="account-highlighted bg-gray-200 text-inherit rounded-sm">
+              className="bg-gray-200 rounded-sm account-highlighted text-inherit">
               {value}
             </mark>
           );
