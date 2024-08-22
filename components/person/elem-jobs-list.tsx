@@ -22,7 +22,7 @@ export const ElemJobsList: FC<Props> = ({
   jobs,
   resourceUrl,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
@@ -35,7 +35,7 @@ export const ElemJobsList: FC<Props> = ({
             <ElemButton
               className="mt-2"
               onClick={() =>
-                showNewMessages(
+                showNewMessage(
                   `Hi EdgeIn, I'd like to request work experience info on ${resourceUrl}`,
                 )
               }

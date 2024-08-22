@@ -19,7 +19,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
   onChangeExploreChoices,
   onNext,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const exploreChoicesRef = useRef<HTMLDivElement>(null);
 
@@ -80,7 +80,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 } shadow-sm cursor-pointer hover:bg-gray-50`}
                 onClick={() => {
                   if (item === 'Something else') {
-                    showNewMessages(`Hi EdgeIn, I'd like to explore `);
+                    showNewMessage(`Hi EdgeIn, I'd like to explore `);
                   }
                   onChangeExploreChoices(
                     exploreChoices.includes(item)

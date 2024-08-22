@@ -23,7 +23,7 @@ const ElemNotificationPopover: FC<Props> = ({
 
   const organization = company || vc_firm;
 
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   return (
     <Popover
@@ -59,7 +59,7 @@ const ElemNotificationPopover: FC<Props> = ({
               )}
               <button
                 onClick={() => {
-                  showNewMessages(
+                  showNewMessage(
                     `Hi EdgeIn, I'd like to report an error on ${organization?.name} notifications`,
                   );
                   close();

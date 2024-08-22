@@ -17,7 +17,7 @@ export const ElemSubEvents: FC<Props> = ({
   eventName,
   subEvents,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
@@ -29,7 +29,7 @@ export const ElemSubEvents: FC<Props> = ({
         {subEvents && subEvents.length > 0 && (
           <ElemButton
             onClick={() =>
-              showNewMessages(
+              showNewMessage(
                 `Hi EdgeIn, I'd like to add my sub-event to ${eventName}. Details:`,
               )
             }
@@ -57,7 +57,7 @@ export const ElemSubEvents: FC<Props> = ({
           <ElemButton
             btn="default"
             onClick={() =>
-              showNewMessages(
+              showNewMessage(
                 `Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`,
               )
             }
