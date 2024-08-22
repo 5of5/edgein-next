@@ -12,7 +12,7 @@ import { ElemButton } from '@/components/elem-button';
 import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 import { useMutation } from 'react-query';
 import axios from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { useUser } from '@/context/user-context';
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';

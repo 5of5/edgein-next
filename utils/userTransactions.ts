@@ -12,7 +12,7 @@ import {
   UpdateUserExpirationOfLastValidTransactionDocument,
   UpdateUserExpirationOfLastValidTransactionMutation,
 } from '@/graphql/types';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const onInsertTransaction = async (
   user_id: number,

@@ -20,7 +20,7 @@ import useLibrary from '@/hooks/use-library';
 import { getPersonalizedData } from '@/utils/personalizedTags';
 import { ElemCategories } from '@/components/dashboard/elem-categories';
 import CookieService from '@/utils/cookie';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { CompaniesByFilterInSection } from '@/components/companies/elem-companies-by-filter-insection';
 import { InvestorsByFilterInSection } from '@/components/investors/elem-investors-by-filter-insection';
 import { EventsByFilterInSection } from '@/components/events/elem-events-by-filter-insection';
