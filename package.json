@@ -45,7 +45,7 @@
     "@formspark/use-formspark": "^0.1.39",
     "@headlessui/react": "^1.7.3",
     "@playwright/test": "^1.35.0",
-    "@react-email/components": "^0.0.23",
+    "@react-email/components": "^0.0.7",
     "@react-email/render": "^0.0.7",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
