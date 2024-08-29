@@ -5,19 +5,19 @@ import {
   useGetCompaniesQuery,
 } from '@/graphql/types';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { ActionMeta, createFilter } from 'react-select';
-import AsyncSelect from 'react-select/async';
+// import { ActionMeta, createFilter } from 'react-select';
+// import AsyncSelect from 'react-select/async';
 
 type Props = {
   inputClassname?: string;
-  onChange: (newValue: any, actionMeta: ActionMeta<any>) => void;
+  // onChange: (newValue: any, actionMeta: ActionMeta<any>) => void;
   name: string;
   label?: string;
 };
 
 export const ElemCompaniesSearchInput: FC<Props> = ({
   inputClassname,
-  onChange,
+  // onChange,
   label,
   name,
 }) => {
@@ -80,7 +80,7 @@ export const ElemCompaniesSearchInput: FC<Props> = ({
           {label}
         </label>
       )}
-      <AsyncSelect
+      {/* <AsyncSelect
         isClearable
         defaultOptions
         cacheOptions
@@ -95,7 +95,7 @@ export const ElemCompaniesSearchInput: FC<Props> = ({
         filterOption={createFilter({
           ignoreAccents: false,
         })}
-      />
+      /> */}
     </>
   );
 };

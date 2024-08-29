@@ -4,8 +4,8 @@ import { ElemButton } from '../elem-button';
 import { ElemPhoto } from '../elem-photo';
 import { IconX } from '../icons';
 import { InputText } from '../input-text';
-import AsyncSelect from 'react-select/async';
-import { createFilter } from 'react-select';
+// import AsyncSelect from 'react-select/async';
+// import { createFilter } from 'react-select';
 import { validateCompanyEmail } from '@/utils';
 import extractDomain from 'extract-domain';
 import {
@@ -226,7 +226,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
 
                     {!isCompanySelected ? (
                       <>
-                        <AsyncSelect
+                        {/* <AsyncSelect
                           isClearable
                           defaultOptions
                           cacheOptions
@@ -239,7 +239,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                           filterOption={createFilter({
                             ignoreAccents: false,
                           })}
-                        />
+                        /> */}
                         <p className="text-red-500">{error}</p>
                         <ElemButton
                           className="float-right mt-28"
