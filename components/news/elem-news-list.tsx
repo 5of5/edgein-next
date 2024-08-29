@@ -21,7 +21,7 @@ const ElemNewsList: React.FC<Props> = ({
   news,
   resourceId,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const [limit, setLimit] = useState(10);
   const showMore = () => {
@@ -47,7 +47,7 @@ const ElemNewsList: React.FC<Props> = ({
             <ElemButton
               className="mt-2"
               onClick={() =>
-                showNewMessages(
+                showNewMessage(
                   `Hi EdgeIn, I'd like to request news on ${resource}`,
                 )
               }

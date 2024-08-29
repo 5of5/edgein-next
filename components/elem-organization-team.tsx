@@ -44,7 +44,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
   showTags = true,
   allowToSaveTeam = true,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -187,7 +187,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
             <ElemButton
               className="mt-2"
               onClick={() =>
-                showNewMessages(
+                showNewMessage(
                   `Hi EdgeIn, I'd like to request team data on ${resourceName}`,
                 )
               }

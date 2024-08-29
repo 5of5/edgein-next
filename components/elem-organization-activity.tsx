@@ -23,10 +23,10 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
   const showMoreActivity = () => {
     setActivityLimit(activityLimit + 10);
   };
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   return (
-    <div className="rounded-lg border border-gray-300">
+    <div className="border border-gray-300 rounded-lg">
       <div className="flex items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">
           {heading ? heading : 'Activity Timeline'}
@@ -44,8 +44,8 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
                     <li
                       key={index}
                       className="relative pl-6 overflow-hidden group last:-mb-4">
-                      <span className="absolute h-full top-0 bottom-0 left-0">
-                        <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+                      <span className="absolute top-0 bottom-0 left-0 h-full">
+                        <span className="absolute right-auto w-px h-auto bg-repeat-y border-white dashes top-2 left-2 -bottom-2 border-y"></span>
                         <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
                       </span>
 
@@ -73,7 +73,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
             </div>
             <ElemButton
               onClick={() =>
-                showNewMessages(
+                showNewMessage(
                   `Hi EdgeIn, I'd like to request more data on ${resourceName}`,
                 )
               }
@@ -94,7 +94,7 @@ const renderActivity = (
 ) => {
   return resourceType === 'companies' && activity ? (
     <div className="mb-4">
-      <div className="inline leading-7 text-gray-600 text-sm">
+      <div className="inline text-sm leading-7 text-gray-600">
         {activity.round === 'Acquisition' ? (
           <div className="inline font-medium">Acquired by </div>
         ) : (
@@ -165,11 +165,11 @@ const renderActivity = (
     </div>
   ) : resourceType === 'vc_firms' && activity ? (
     <div className="mb-4">
-      <div className="inline leading-7 text-gray-600 text-sm">
+      <div className="inline text-sm leading-7 text-gray-600">
         {activity.company && (
           <ElemLink
             href={`${ROUTES.COMPANIES}/${activity.company['slug']}`}
-            className="underline font-medium hover:no-underline">
+            className="font-medium underline hover:no-underline">
             {activity.company['name']}
           </ElemLink>
         )}{' '}
