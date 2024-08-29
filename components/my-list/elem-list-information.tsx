@@ -13,7 +13,6 @@ import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 import { ElemTooltip } from '../elem-tooltip';
 import { getListDisplayName } from '@/utils/lists';
-import { startCase } from 'lodash';
 import { Lists } from '@/graphql/types';
 import { ElemAvatarList } from '../elem-avatar-list';
 
@@ -52,30 +51,37 @@ export const ElemListInformation: FC<Props> = ({
     member => member.user?.id != list?.created_by?.id,
   );
 
+  const listTitle = (
+    <>
+      <h1 className="inline mr-2 text-xl font-medium leading-snug text-gray-900 capitalize align-middle group-hover:underline lg:text-2xl">
+        {listName}
+      </h1>
+
+      <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 rounded-full">
+        {list.public ? (
+          <IconGlobeAmericas
+            title="Public"
+            className="block w-4 h-4 shrink-0"
+          />
+        ) : (
+          <IconLockClosed title="Private" className="block w-4 h-4 shrink-0" />
+        )}
+        <div>{list.public ? 'Public' : 'Private'}</div>
+      </div>
+    </>
+  );
+
   return (
     <div className="px-4 pb-3 mb-4 border-b border-gray-200">
       <div className="flex flex-wrap items-start justify-between space-y-2 lg:space-y-0">
         <div className="max-w-4xl">
-          <div className="flex items-center space-x-2">
-            {isListAuthor && isCustomList ? (
-              <>
-                <button
-                  type="button"
-                  className="inline-flex items-start justify-start mr-2 lg:items-center hover:underline"
-                  onClick={onOpenSettingsDialog}>
-                  <span className="text-xl font-medium text-left lg:text-3xl first-letter:uppercase">
-                    {getListDisplayName(list)}
-                  </span>
-                </button>
-              </>
-            ) : (
-              <h1 className="mr-2 text-xl font-medium first-letter:uppercase lg:text-3xl">
-                {list
-                  ? getListDisplayName(list)
-                  : toLabel(router.query.slug as string)}
-              </h1>
-            )}
-          </div>
+          {isListAuthor && isCustomList ? (
+            <button onClick={onOpenSettingsDialog} className="text-left group">
+              {listTitle}
+            </button>
+          ) : (
+            <div>{listTitle}</div>
+          )}
 
           <div className="mt-1 flex flex-wrap items-center text-sm text-gray-500 gap-x-1 gap-y-0.5">
             {list?.created_by && (
@@ -84,7 +90,7 @@ export const ElemListInformation: FC<Props> = ({
                 mode="dark"
                 direction="bottom"
                 size="lg">
-                <div>
+                <div className="first-letter:uppercase">
                   {list?.created_by?.person ? (
                     <ElemLink
                       href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
@@ -92,13 +98,7 @@ export const ElemListInformation: FC<Props> = ({
                       {list?.created_by?.person.name}
                     </ElemLink>
                   ) : (
-                    <>
-                      {startCase(
-                        list?.created_by?.display_name
-                          ? list?.created_by.display_name
-                          : '',
-                      )}
-                    </>
+                    list?.created_by?.display_name
                   )}
                 </div>
               </ElemTooltip>
@@ -106,7 +106,7 @@ export const ElemListInformation: FC<Props> = ({
             &middot;
             <ElemTooltip
               content={
-                <div className="p-1ext-sm">
+                <div className="p-1 text-sm">
                   Updated {formatDateShown(list.updated_at, `LL [at] h:mmA`)}
                 </div>
               }
@@ -124,7 +124,7 @@ export const ElemListInformation: FC<Props> = ({
                   : 's'
               }`}
             </div>
-            &middot;
+            {/* &middot;
             <ElemTooltip
               content={
                 list.public ? 'Shared with public' : 'Visible only to you'
@@ -146,7 +146,7 @@ export const ElemListInformation: FC<Props> = ({
                 )}
                 {list.public ? 'Public' : 'Private'}
               </div>
-            </ElemTooltip>
+            </ElemTooltip> */}
           </div>
 
           {list?.description && (

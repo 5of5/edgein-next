@@ -66,7 +66,9 @@ export const ElemGroupInformation: React.FC<Props> = ({
                     type="button"
                     className="inline-flex items-center justify-start hover:underline"
                     onClick={() => onOpenSettingDialog('settings')}>
-                    <span className="text-left capitalize">{group.name}</span>
+                    <span className="max-w-xs text-left capitalize truncate">
+                      {group.name}
+                    </span>
                   </button>
                 ),
               },

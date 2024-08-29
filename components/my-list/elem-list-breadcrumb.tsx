@@ -50,7 +50,7 @@ export const ElemListBreadcrumb: FC<Props> = ({
               <button
                 onClick={onOpenSettingsDialog}
                 className="inline-flex items-center justify-start hover:underline">
-                <span className="text-left capitalize">
+                <span className="max-w-xs text-left capitalize truncate">
                   {getListDisplayName(list)}
                 </span>
               </button>

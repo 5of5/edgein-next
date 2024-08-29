@@ -11,8 +11,13 @@ query GetListUserGroups($where: list_user_groups_bool_exp!) {
       created_by {
         id
         display_name
-        email
+        person {
+          id
+          name
+          slug
+        }
       }
+      total_no_of_resources
     }
     user_group_id
     user_group {
@@ -35,7 +40,6 @@ query GetListMembers($where: list_members_bool_exp!) {
       created_by {
         id
         display_name
-        email
       }
     }
     user_id

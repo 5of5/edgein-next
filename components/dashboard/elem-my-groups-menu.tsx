@@ -18,7 +18,6 @@ import { InputText } from '../input-text';
 import { ElemButton } from '../elem-button';
 import { ElemTooltip } from '../elem-tooltip';
 import { formatDateShown, numberWithCommas } from '@/utils';
-import { startCase } from 'lodash';
 
 type Props = {
   className?: string;
@@ -176,18 +175,34 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     <div>
                       <ElemLink
                         href={groupUrl}
-                        className="text-lg font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
-                        {group.name}
+                        className="inline-block first-letter:uppercase">
+                        <div className="inline mr-2 text-lg font-medium leading-snug text-gray-900 align-middle line-clamp-2 hover:underline">
+                          {group.name}
+                        </div>
+                        <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 rounded-full">
+                          {group.public ? (
+                            <IconGlobeAmericas
+                              title="Public"
+                              className="block w-4 h-4 shrink-0"
+                            />
+                          ) : (
+                            <IconLockClosed
+                              title="Private"
+                              className="block w-4 h-4 shrink-0"
+                            />
+                          )}
+                          <div>{group.public ? 'Public' : 'Private'}</div>
+                        </div>
                       </ElemLink>
                     </div>
 
                     <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 gap-x-1 gap-y-0.5">
                       <ElemTooltip
-                        content="Author"
+                        content="Admin"
                         mode="dark"
                         direction="bottom"
                         size="lg">
-                        <div>
+                        <div className="first-letter:uppercase">
                           {group?.created_by?.person ? (
                             <ElemLink
                               href={`${ROUTES.PEOPLE}/${group?.created_by?.person?.slug}`}
@@ -195,13 +210,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                               {group?.created_by?.person.name}
                             </ElemLink>
                           ) : (
-                            <>
-                              {startCase(
-                                group?.created_by?.display_name
-                                  ? group?.created_by.display_name
-                                  : '',
-                              )}
-                            </>
+                            group?.created_by?.display_name
                           )}
                         </div>
                       </ElemTooltip>
@@ -233,32 +242,6 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                         )}{' '}
                         Note{groupTotalNotes === 1 ? '' : 's'}
                       </div>
-                      &middot;
-                      <ElemTooltip
-                        content={
-                          group.public
-                            ? 'Shared with public'
-                            : 'Visible only to you'
-                        }
-                        mode="dark"
-                        direction="bottom"
-                        size="lg">
-                        <a
-                          className="flex items-center gap-x-1 hover:underline"
-                          href={groupUrl}>
-                          {group.public ? (
-                            <IconGlobeAmericas
-                              title="Public"
-                              className="block w-4 h-4 shrink-0"
-                            />
-                          ) : (
-                            <IconLockClosed
-                              title="Private"
-                              className="block w-4 h-4 shrink-0"
-                            />
-                          )}
-                        </a>
-                      </ElemTooltip>
                     </div>
 
                     {group.description && (
@@ -288,9 +271,9 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                             group.id,
                           )}`}
                           title={group.name}>
-                          <span className="break-all line-clamp-1">
+                          <div className="break-all line-clamp-1 first-letter:uppercase">
                             {group.name}
-                          </span>
+                          </div>
                         </ElemLink>
                       </div>
                     </ElemTooltip>

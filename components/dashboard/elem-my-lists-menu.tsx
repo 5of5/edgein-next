@@ -1,11 +1,7 @@
-import { startCase, kebabCase } from 'lodash';
+import { kebabCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { FC, SetStateAction, useEffect, useState } from 'react';
-import {
-  IconGlobeAmericas,
-  IconLockClosed,
-  IconSidebarList,
-} from '@/components/icons';
+import { IconSidebarList } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { CreateListDialog } from '../my-list/create-list-dialog';
@@ -17,9 +13,8 @@ import { ElemLink } from '../elem-link';
 import { ElemButton } from '../elem-button';
 import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getNameFromListName, getListDisplayName } from '@/utils/lists';
-import { formatDateShown, numberWithCommas } from '@/utils/numbers';
 import { useSidebar } from '@/context/sidebar-context';
-import { ElemTooltip } from '../elem-tooltip';
+import { ElemListTooltip } from '../lists/elem-list-tooltip';
 
 type Props = {
   className?: string;
@@ -166,129 +161,25 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               .map(list => {
                 const listName = getNameFromListName(list);
 
-                const totalItems = list.total_no_of_resources;
-
-                const listUrl = `${ROUTES.LISTS}/${list.id}/${
-                  listName === 'crap' ? 'sh**' : kebabCase(listName)
-                }`;
-
-                const listTooltip = (
-                  <div className="flex-col p-2 group">
-                    <div>
-                      <ElemLink
-                        href={listUrl}
-                        className="text-lg font-medium leading-snug text-gray-900 line-clamp-2 first-letter:uppercase hover:underline">
-                        {listName}
-                      </ElemLink>
-                    </div>
-
-                    <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 font-normal gap-x-1 gap-y-0.5">
-                      <ElemTooltip
-                        content="Author"
-                        mode="dark"
-                        direction="bottom"
-                        size="lg">
-                        <div>
-                          {list?.created_by?.person ? (
-                            <ElemLink
-                              href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
-                              className="capitalize hover:underline">
-                              {list?.created_by?.person.name}
-                            </ElemLink>
-                          ) : (
-                            <>
-                              {startCase(
-                                list?.created_by?.display_name
-                                  ? list?.created_by.display_name
-                                  : '',
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </ElemTooltip>
-                      &middot;
-                      <ElemTooltip
-                        content={
-                          <div className="p-1ext-sm">
-                            Updated{' '}
-                            {formatDateShown(list.updated_at, `LL [at] h:mmA`)}
-                          </div>
-                        }
-                        mode="dark"
-                        direction="bottom"
-                        size="lg">
-                        <div>{formatDateShown(list.updated_at, `ll`)}</div>
-                      </ElemTooltip>
-                      &middot;
-                      <div>
-                        {numberWithCommas(totalItems ? totalItems : 0)} item
-                        {totalItems && totalItems > 1 && 's'}
-                      </div>
-                      &middot;
-                      <ElemTooltip
-                        content={
-                          list.public
-                            ? 'Shared with public'
-                            : 'Visible only to you'
-                        }
-                        mode="dark"
-                        direction="bottom"
-                        size="lg">
-                        <a
-                          className="flex items-center gap-x-1 hover:underline"
-                          href={listUrl}>
-                          {list.public ? (
-                            <IconGlobeAmericas
-                              title="Public"
-                              className="block w-4 h-4 shrink-0"
-                            />
-                          ) : (
-                            <IconLockClosed
-                              title="Private"
-                              className="block w-4 h-4 shrink-0"
-                            />
-                          )}
-                        </a>
-                      </ElemTooltip>
-                    </div>
-
-                    {list.description && (
-                      <a
-                        className="mt-3 text-sm font-normal text-gray-900 line-clamp-4"
-                        href={listUrl}>
-                        {list.description}
-                      </a>
-                    )}
-                  </div>
-                );
-
                 return (
                   <li
                     key={list.id}
                     role="button"
                     onClick={() => setShowSidebar(false)}>
-                    <ElemTooltip
-                      content={listTooltip}
-                      direction="top-start"
-                      delay={350}
-                      mode="light"
-                      size="lg"
-                      arrow={false}>
-                      <div>
-                        <ElemLink
-                          href={`${ROUTES.LISTS}/${list.id}/${
-                            listName === 'crap' ? 'sh**' : kebabCase(listName)
-                          }`}
-                          className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
-                            list.id,
-                            listName === 'crap' ? 'sh**' : kebabCase(listName),
-                          )} `}>
-                          <span className="flex-1 break-all line-clamp-1">
-                            {getListDisplayName(list)}
-                          </span>
-                        </ElemLink>
-                      </div>
-                    </ElemTooltip>
+                    <ElemListTooltip list={list}>
+                      <ElemLink
+                        href={`${ROUTES.LISTS}/${list.id}/${
+                          listName === 'crap' ? 'sh**' : kebabCase(listName)
+                        }`}
+                        className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                          list.id,
+                          listName === 'crap' ? 'sh**' : kebabCase(listName),
+                        )} `}>
+                        <div className="break-all line-clamp-1 first-letter:uppercase">
+                          {getListDisplayName(list)}
+                        </div>
+                      </ElemLink>
+                    </ElemListTooltip>
                   </li>
                 );
               })}

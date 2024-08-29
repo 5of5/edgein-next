@@ -129,15 +129,27 @@ export const ElemListCard: FC<Props> = ({
   return (
     <div className="flex flex-col justify-between w-full p-4 mx-auto border border-gray-200 rounded-lg">
       <div>
-        <ElemTooltip content={name} mode="dark" direction="top" size="lg">
-          <div>
-            <ElemLink
-              href={resourceUrl}
-              className="text-lg font-medium leading-snug text-gray-900 line-clamp-2 first-letter:uppercase hover:underline">
-              {name}
-            </ElemLink>
+        <ElemLink
+          href={resourceUrl}
+          className="inline-block first-letter:uppercase">
+          <div className="inline mr-2 text-lg font-medium leading-snug text-gray-900 align-middle line-clamp-2 hover:underline">
+            {name}
           </div>
-        </ElemTooltip>
+          <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 text-gray-600 rounded-full">
+            {resource.public ? (
+              <IconGlobeAmericas
+                title="Public"
+                className="block w-4 h-4 shrink-0"
+              />
+            ) : (
+              <IconLockClosed
+                title="Private"
+                className="block w-4 h-4 shrink-0"
+              />
+            )}
+            <div>{resource.public ? 'Public' : 'Private'}</div>
+          </div>
+        </ElemLink>
 
         <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 gap-x-1 gap-y-0.5">
           <ElemTooltip
@@ -173,58 +185,48 @@ export const ElemListCard: FC<Props> = ({
             mode="dark"
             direction="bottom"
             size="lg">
-            <div>{formatDateShown(resource.updated_at, `ll`)}</div>
+            <div>
+              <ElemLink href={resourceUrl} className="hover:underline">
+                {formatDateShown(resource.updated_at, `ll`)}
+              </ElemLink>
+            </div>
           </ElemTooltip>
           &middot;
           {isResourceList ? (
-            <div>{numberWithCommas(totalItems ? totalItems : 0)} items</div>
+            <div>
+              <ElemLink href={resourceUrl} className="hover:underline">
+                {numberWithCommas(totalItems ? totalItems : 0)} Item
+                {totalItems === 1 ? '' : 's'}
+              </ElemLink>
+            </div>
           ) : (
             <>
               <div>
-                {numberWithCommas(groupTotalLists ? groupTotalLists : 0)} List
-                {groupTotalLists === 1 ? '' : 's'}
+                <ElemLink href={resourceUrl} className="hover:underline">
+                  {numberWithCommas(groupTotalLists ? groupTotalLists : 0)} List
+                  {groupTotalLists === 1 ? '' : 's'}
+                </ElemLink>
               </div>
               &middot;
               <div>
-                {numberWithCommas(groupTotalNotes ? groupTotalNotes : 0)} Note
-                {groupTotalNotes === 1 ? '' : 's'}
+                <ElemLink href={resourceUrl} className="hover:underline">
+                  {numberWithCommas(groupTotalNotes ? groupTotalNotes : 0)} Note
+                  {groupTotalNotes === 1 ? '' : 's'}
+                </ElemLink>
               </div>
             </>
           )}
-          &middot;
-          <ElemTooltip
-            content={
-              resource.public ? 'Shared with public' : 'Visible only to you'
-            }
-            mode="dark"
-            direction="bottom"
-            size="lg">
-            <a
-              className="flex items-center gap-x-1 hover:underline"
-              href={resourceUrl}>
-              {resource.public ? (
-                <IconGlobeAmericas
-                  title="Public"
-                  className="block w-4 h-4 shrink-0"
-                />
-              ) : (
-                <IconLockClosed
-                  title="Private"
-                  className="block w-4 h-4 shrink-0"
-                />
-              )}
-            </a>
-          </ElemTooltip>
         </div>
-
         {description && (
-          <div className="mt-2 text-sm line-clamp-4">{description}</div>
+          <div className="mt-2 text-sm line-clamp-4">
+            <ElemLink href={resourceUrl}>{description}</ElemLink>
+          </div>
         )}
       </div>
 
       <div>
         {members && members.length > 0 && (
-          <div className="flex items-center mt-4">
+          <div className="flex items-center mt-2">
             <ElemAvatarList people={members} limit={10} />
             <ElemLink
               href={resourceUrl}
