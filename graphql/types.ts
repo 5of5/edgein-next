@@ -30388,14 +30388,14 @@ export type GetListUserGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, description: string | null, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, description: string | null, public: boolean | null, created_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string } | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type GetListMembersQueryVariables = Exact<{
   where: List_Members_Bool_Exp;
 }>;
 
 
-export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }> };
+export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null } | null }, user: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null } | null }> };
 
 export type GetListUserGroupsByListIdQueryVariables = Exact<{
   listId: Scalars['Int'];
@@ -34254,8 +34254,13 @@ export const GetListUserGroupsDocument = `
       created_by {
         id
         display_name
-        email
+        person {
+          id
+          name
+          slug
+        }
       }
+      total_no_of_resources
     }
     user_group_id
     user_group {
@@ -34298,7 +34303,6 @@ export const GetListMembersDocument = `
       created_by {
         id
         display_name
-        email
       }
     }
     user_id

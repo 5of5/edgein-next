@@ -40,7 +40,7 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
           },
           {
             id: 13,
-            label: 'Invite a friend',
+            label: 'Referrals and Points',
             value: 'invite',
             onClick: () => router.push(ROUTES.INVITE_A_FRIEND),
             className: 'text-primary-500',

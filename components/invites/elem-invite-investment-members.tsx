@@ -138,6 +138,10 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
     0,
   );
 
+  if (!companies || companies.length === 0) {
+    return <></>;
+  }
+
   return (
     <div className="p-5 bg-white border border-gray-200 rounded-lg">
       <h3 className="font-medium">Invite from your portfolio</h3>
@@ -145,59 +149,57 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
         Select a company from your portfolio to invite their team
       </p>
 
-      {companies.length > 0 && (
-        <div className="grid grid-cols-3 gap-4 mt-2">
-          {companies.map(company => {
-            return (
-              <Fragment key={company?.id}>
-                {canSendInvestorInvitation(userById?.users, company?.id) ? (
-                  <div
-                    className={`flex flex-row items-center py-2 px-3 rounded-lg border border-gray-200 hover:bg-gray-50 hover:cursor-pointer ${
-                      includes(selectedCompanies, company)
-                        ? 'border-primary-500 bg-gray-50'
-                        : ''
-                    }`}
-                    onClick={() => handleClick(company)}>
-                    <ElemPhoto
-                      photo={company?.logo}
-                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
-                      imgClass="object-fit max-w-full max-h-full"
-                      imgAlt={company?.name}
-                      placeholderClass="p-1 text-gray-300"
-                      placeholder="company"
-                    />
+      <div className="grid grid-cols-3 gap-4 mt-2">
+        {companies.map(company => {
+          return (
+            <Fragment key={company?.id}>
+              {canSendInvestorInvitation(userById?.users, company?.id) ? (
+                <div
+                  className={`flex flex-row items-center py-2 px-3 rounded-lg border border-gray-200 hover:bg-gray-50 hover:cursor-pointer ${
+                    includes(selectedCompanies, company)
+                      ? 'border-primary-500 bg-gray-50'
+                      : ''
+                  }`}
+                  onClick={() => handleClick(company)}>
+                  <ElemPhoto
+                    photo={company?.logo}
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
+                    imgClass="object-fit max-w-full max-h-full"
+                    imgAlt={company?.name}
+                    placeholderClass="p-1 text-gray-300"
+                    placeholder="company"
+                  />
 
-                    <div className="flex flex-col ml-2">
-                      <div className="text-sm font-medium line-clamp-2">
-                        {company?.name}
-                      </div>
+                  <div className="flex flex-col ml-2">
+                    <div className="text-sm font-medium line-clamp-2">
+                      {company?.name}
                     </div>
                   </div>
-                ) : (
-                  <div
-                    className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border border-gray-200`}>
-                    <ElemPhoto
-                      photo={company?.logo}
-                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
-                      imgClass="object-fit max-w-full max-h-full opacity-50"
-                      imgAlt={company?.name}
-                      placeholderClass="p-1 text-gray-300"
-                      placeholder="company"
-                    />
+                </div>
+              ) : (
+                <div
+                  className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border border-gray-200`}>
+                  <ElemPhoto
+                    photo={company?.logo}
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
+                    imgClass="object-fit max-w-full max-h-full opacity-50"
+                    imgAlt={company?.name}
+                    placeholderClass="p-1 text-gray-300"
+                    placeholder="company"
+                  />
 
-                    <div className="flex flex-col justify-center ml-2 text-gray-500">
-                      <div className="text-sm font-medium line-clamp-2">
-                        {company?.name}
-                      </div>
-                      <div className="text-xs">Sent</div>
+                  <div className="flex flex-col justify-center ml-2 text-gray-500">
+                    <div className="text-sm font-medium line-clamp-2">
+                      {company?.name}
                     </div>
+                    <div className="text-xs">Sent</div>
                   </div>
-                )}
-              </Fragment>
-            );
-          })}
-        </div>
-      )}
+                </div>
+              )}
+            </Fragment>
+          );
+        })}
+      </div>
 
       <div className="flex flex-row items-center gap-4 mt-2 text-center">
         <ElemButton

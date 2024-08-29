@@ -13,6 +13,10 @@ type Props = {
 export const ElemAvatarList: React.FC<Props> = ({ people, limit }) => {
   const peopleArray = limit ? people?.slice(0, limit) : people;
 
+  if (peopleArray && peopleArray.length === 0) {
+    return <></>;
+  }
+
   return (
     <ul className="flex -space-x-3 overflow-hidden">
       {peopleArray?.map(person => {
@@ -28,7 +32,7 @@ export const ElemAvatarList: React.FC<Props> = ({ people, limit }) => {
                   <a href={`${ROUTES.PEOPLE}/${person?.user?.person?.slug}/`}>
                     <ElemPhoto
                       photo={person?.user.person?.picture}
-                      wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                      wrapClass="flex items-center justify-center shrink-0 bg-white overflow-hidden rounded-full w-7 h-7"
                       imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                       imgAlt={getNameFromListMember(person)}
                       placeholder="user"
@@ -37,7 +41,7 @@ export const ElemAvatarList: React.FC<Props> = ({ people, limit }) => {
                   </a>
                 </div>
               ) : (
-                <div className="flex items-center justify-center w-8 text-lg capitalize bg-gray-200 border rounded-full aspect-square text-dark-500 border-gray-50">
+                <div className="flex items-center justify-center text-lg capitalize bg-gray-200 border rounded-full w-7 h-7 text-dark-500 border-gray-50">
                   {getNameFromListMember(person).charAt(0)}
                 </div>
               )}

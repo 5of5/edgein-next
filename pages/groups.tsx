@@ -27,7 +27,7 @@ import { getGroupsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import ElemCreateGroupDialog from '@/components/group/elem-create-group-dialog';
-import { ElemListCard } from '@/components/elem-list-card';
+import { ElemListCard } from '@/components/lists/elem-list-card';
 import { NextSeo } from 'next-seo';
 import { GroupsNoResults } from '@/components/groups/groups-no-results';
 import { ElemDropdown } from '@/components/elem-dropdown';

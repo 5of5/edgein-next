@@ -32,7 +32,7 @@ export const TableGlobalFilter = ({
 
   return (
     <input
-      className={`relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 focus:outline-none focus:ring-1 ${className}`}
+      className={`px-3 py-1.5 text-sm relative bg-white rounded-full border-none outline-none ring-1 ring-gray-300 hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-slate-400 ring-1 ring-gray-200 ${className}`}
       value={value}
       onChange={handleChange}
       placeholder={placeholder}

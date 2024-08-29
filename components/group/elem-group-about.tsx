@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   IconProps,
-  IconGlobe,
   IconTwitterX,
   IconTelegram,
   IconDiscord,
   IconLockClosed,
+  IconGlobeAmericas,
 } from '@/components/icons';
 import { User_Groups } from '@/graphql/types';
 import { ElemAvatarList } from '../elem-avatar-list';
@@ -25,6 +25,11 @@ export const ElemGroupAbout: React.FC<Props> = ({
   group,
 }) => {
   const isPublicGroup = group.public;
+
+  const groupMembers = group.user_group_members.filter(
+    member => member.user?.id != group?.created_by?.id,
+  );
+
   const groupAdmins = group.user_group_members.filter(
     member => member?.user?.id === group?.created_by_user_id,
   );
@@ -72,7 +77,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
             {isPublicGroup ? (
               <div className="flex text-sm">
-                <IconGlobe
+                <IconGlobeAmericas
                   title="Public"
                   className="w-5 h-5 mr-2 text-gray-500 shrink-0"
                 />
@@ -127,7 +132,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
           {(isPublicGroup || isUserBelongToGroup) && (
             <div className="px-4 py-3">
               <div className="flex items-center justify-between">
-                <h3 className="font-medium">People</h3>
+                <h3 className="font-medium">Members</h3>
                 {isUserBelongToGroup && (
                   <button
                     onClick={() => onOpenSettingDialog('members')}
@@ -136,11 +141,11 @@ export const ElemGroupAbout: React.FC<Props> = ({
                   </button>
                 )}
               </div>
-              <div className="flex items-center pt-1">
-                <ElemAvatarList people={group.user_group_members} limit={10} />
+              <div className="flex flex-wrap items-center pt-1">
+                <ElemAvatarList people={groupMembers} limit={12} />
                 <div className="ml-1 text-sm text-gray-500">
-                  {group.user_group_members.length} Member
-                  {group.user_group_members.length > 1 ? 's' : ''}
+                  {groupMembers.length} Member
+                  {groupMembers.length > 1 ? 's' : ''}
                 </div>
               </div>
             </div>

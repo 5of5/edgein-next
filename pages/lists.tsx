@@ -24,7 +24,7 @@ import { LISTS_TABS } from '@/utils/constants';
 import { getListsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
-import { ElemListCard } from '@/components/elem-list-card';
+import { ElemListCard } from '@/components/lists/elem-list-card';
 import { CreateListDialog } from '@/components/my-list/create-list-dialog';
 import { ElemButton } from '@/components/elem-button';
 import { NextSeo } from 'next-seo';

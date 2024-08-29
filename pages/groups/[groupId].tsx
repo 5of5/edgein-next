@@ -72,7 +72,9 @@ const Group: NextPage<Props> = (props: Props) => {
   const isPublicGroup = groupData.public;
   const isPrivateGroup = !groupData.public && !isUserBelongToGroup;
 
-  const groupAuthor = groupData.created_by?.person?.name
+  const isGroupAuthor = groupData?.created_by?.id === user?.id;
+
+  const groupAuthorName = groupData.created_by?.person?.name
     ? groupData.created_by?.person?.name
     : groupData.created_by?.display_name;
 
@@ -144,7 +146,7 @@ const Group: NextPage<Props> = (props: Props) => {
     <>
       <NextSeo
         title={
-          groupData.name ? `Group: ${groupData.name} by ${groupAuthor}` : ''
+          groupData.name ? `Group: ${groupData.name} by ${groupAuthorName}` : ''
         }
         description={
           groupData.description
@@ -154,6 +156,7 @@ const Group: NextPage<Props> = (props: Props) => {
       />
       <DashboardLayout>
         <ElemGroupInformation
+          isGroupAuthor={isGroupAuthor}
           isUserBelongToGroup={isUserBelongToGroup}
           group={groupData}
           onInvite={onOpenInviteDialog}

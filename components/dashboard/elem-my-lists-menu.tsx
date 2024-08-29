@@ -1,7 +1,7 @@
-import { startCase, kebabCase } from 'lodash';
+import { kebabCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { FC, SetStateAction, useEffect, useState } from 'react';
-import { IconGlobe, IconLockClosed, IconSidebarList } from '@/components/icons';
+import { IconSidebarList } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { CreateListDialog } from '../my-list/create-list-dialog';
@@ -13,9 +13,8 @@ import { ElemLink } from '../elem-link';
 import { ElemButton } from '../elem-button';
 import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getNameFromListName, getListDisplayName } from '@/utils/lists';
-import { formatDateShown, numberWithCommas } from '@/utils/numbers';
 import { useSidebar } from '@/context/sidebar-context';
-import { ElemTooltip } from '../elem-tooltip';
+import { ElemListTooltip } from '../lists/elem-list-tooltip';
 
 type Props = {
   className?: string;
@@ -162,99 +161,25 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               .map(list => {
                 const listName = getNameFromListName(list);
 
-                const listTooltip = (
-                  <div className="flex-col p-2 group">
-                    <div className="flex items-center gap-x-2">
-                      {list.public ? (
-                        <IconGlobe className="block w-4 h-4 shrink-0" />
-                      ) : (
-                        <IconLockClosed className="block w-4 h-4 shrink-0" />
-                      )}
-
-                      <ElemLink
-                        href={`${ROUTES.LISTS}/${list.id}/${
-                          listName === 'crap' ? 'sh**' : kebabCase(listName)
-                        }`}
-                        className="block font-medium leading-snug text-gray-900 line-clamp-2 hover:underline">
-                        {listName}
-                      </ElemLink>
-                      <div className="px-2 py-0.5 text-xs border border-gray-200 rounded-full">
-                        {list.public ? 'Public' : 'Private'}
-                      </div>
-                    </div>
-
-                    {list.description && (
-                      <div className="mt-3 text-sm font-normal text-gray-500 line-clamp-4">
-                        {list.description}
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-2 mt-3 text-xs gap-x-6 gap-y-2">
-                      <div className="capitalize">
-                        {list?.created_by?.person ? (
-                          <>
-                            By{' '}
-                            <ElemLink
-                              href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
-                              className="hover:underline">
-                              {list?.created_by?.person.name}
-                            </ElemLink>
-                          </>
-                        ) : (
-                          <>
-                            By{' '}
-                            {startCase(
-                              list?.created_by?.display_name
-                                ? list?.created_by.display_name
-                                : '',
-                            )}
-                          </>
-                        )}
-                      </div>
-                      <div>Updated {formatDateShown(list.updated_at)}</div>
-                      <div>
-                        {numberWithCommas(
-                          list.total_no_of_resources
-                            ? list.total_no_of_resources
-                            : 0,
-                        )}{' '}
-                        Item
-                        {list.total_no_of_resources &&
-                        list.total_no_of_resources === 1
-                          ? ''
-                          : 's'}
-                      </div>
-                    </div>
-                  </div>
-                );
-
                 return (
                   <li
                     key={list.id}
                     role="button"
                     onClick={() => setShowSidebar(false)}>
-                    <ElemTooltip
-                      content={listTooltip}
-                      direction="top-start"
-                      delay={350}
-                      mode="light"
-                      size="lg"
-                      arrow={false}>
-                      <div>
-                        <ElemLink
-                          href={`${ROUTES.LISTS}/${list.id}/${
-                            listName === 'crap' ? 'sh**' : kebabCase(listName)
-                          }`}
-                          className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
-                            list.id,
-                            listName === 'crap' ? 'sh**' : kebabCase(listName),
-                          )} `}>
-                          <span className="flex-1 break-all line-clamp-1">
-                            {getListDisplayName(list)}
-                          </span>
-                        </ElemLink>
-                      </div>
-                    </ElemTooltip>
+                    <ElemListTooltip list={list}>
+                      <ElemLink
+                        href={`${ROUTES.LISTS}/${list.id}/${
+                          listName === 'crap' ? 'sh**' : kebabCase(listName)
+                        }`}
+                        className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                          list.id,
+                          listName === 'crap' ? 'sh**' : kebabCase(listName),
+                        )} `}>
+                        <div className="break-all line-clamp-1 first-letter:uppercase">
+                          {getListDisplayName(list)}
+                        </div>
+                      </ElemLink>
+                    </ElemListTooltip>
                   </li>
                 );
               })}
