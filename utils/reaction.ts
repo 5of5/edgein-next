@@ -92,8 +92,8 @@ export const isFollowsExists = (
 };
 
 export const getNewTempSentiment = (
-  sentiments: any,
-  sentiment: string,
+  sentiments: Array<number>,
+  sentiment: number,
   alreadyReacted: boolean,
 ) => {
   const newSentiment = { ...sentiments };
