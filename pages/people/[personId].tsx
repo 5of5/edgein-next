@@ -48,7 +48,7 @@ const Person: NextPage<Props> = (props: Props) => {
   const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const { user } = useAuth();
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const { personId } = router.query;
   const [person, setPerson] = useState<People>(props.person);
@@ -223,7 +223,7 @@ const Person: NextPage<Props> = (props: Props) => {
                         <ElemButton
                           btn="default"
                           onClick={() =>
-                            showNewMessages(
+                            showNewMessage(
                               `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
                             )
                           }>

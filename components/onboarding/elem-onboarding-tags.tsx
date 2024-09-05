@@ -18,7 +18,7 @@ export const ElemOnboardingTags: FC<Props> = ({
   onChangeTags,
   onNext,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const [limit, setLimit] = useState({
     web3: ONBOARDING_DEFAULT_TAGS_LIMIT,
@@ -127,7 +127,7 @@ export const ElemOnboardingTags: FC<Props> = ({
         </p>
         <button
           className="text-xs text-gray-500 underline hover:text-gray-800"
-          onClick={() => showNewMessages(`Hi EdgeIn, I'd like to see `)}>
+          onClick={() => showNewMessage(`Hi EdgeIn, I'd like to see `)}>
           Let us know
         </button>
       </div>

@@ -69,7 +69,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
     }
   }, [tabs, scrollPosition]);
 
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const resource = resourceUrl
     ? `${resourceName}: ${resourceUrl}`
@@ -81,7 +81,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       label: 'Request more data',
       value: 'requestMoreData',
       onClick: () =>
-        showNewMessages(
+        showNewMessage(
           `Hi EdgeIn, I'd like to request some more data on ${resource}`,
         ),
     },
@@ -90,9 +90,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       label: 'Report an error',
       value: 'reportAnError',
       onClick: () =>
-        showNewMessages(
-          `Hi EdgeIn, I'd like to report an error on ${resource}`,
-        ),
+        showNewMessage(`Hi EdgeIn, I'd like to report an error on ${resource}`),
     },
   ];
 

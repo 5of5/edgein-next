@@ -17,7 +17,7 @@ export const NoResults: FC<Props> = ({
 }) => {
   const router = useRouter();
   const { user } = useUser();
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   return (
     <div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -27,7 +27,7 @@ export const NoResults: FC<Props> = ({
         <div className="mt-1 text-lg text-gray-600">{content}</div>
         <ElemButton
           onClick={() =>
-            showNewMessages(
+            showNewMessage(
               `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
             )
           }

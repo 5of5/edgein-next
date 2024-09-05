@@ -19,7 +19,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
   onChangeExploreChoices,
   onNext,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const exploreChoicesRef = useRef<HTMLDivElement>(null);
 
@@ -32,16 +32,16 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
   return (
     <>
       <div className="max-w-sm">
-        <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
+        <h1 className="mt-4 text-2xl font-medium text-center lg:text-3xl">
           What best describes what you do?
         </h1>
-        <p className="mt-5 text-xs text-center text-slate-500 font-normal">
+        <p className="mt-5 text-xs font-normal text-center text-slate-500">
           Learning about you and your job will help us pick the most relevant
           content for you every time you open EdgeIn.
         </p>
       </div>
 
-      <ul className="max-w-3xl mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
+      <ul className="grid max-w-3xl grid-cols-1 gap-3 mt-8 md:grid-cols-2">
         {segmentChoices.map(item => (
           <li
             key={item.title}
@@ -51,25 +51,25 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 : 'border-slate-300'
             } shadow-sm cursor-pointer hover:bg-gray-50 md:px-6`}
             onClick={() => onChangeSegment(item.title)}>
-            <p className="text-slate-900 text-sm font-medium">{item.title}</p>
-            <p className="text-slate-500 text-xs">{item.description}</p>
+            <p className="text-sm font-medium text-slate-900">{item.title}</p>
+            <p className="text-xs text-slate-500">{item.description}</p>
           </li>
         ))}
       </ul>
 
       {selectedSegment && (
         <div ref={exploreChoicesRef} className="max-w-sm">
-          <div className="flex pt-12 pb-8 items-center">
+          <div className="flex items-center pt-12 pb-8">
             <div className="flex-grow border-t border-black/10"></div>
           </div>
-          <h1 className="text-2xl text-center font-medium lg:text-3xl">
+          <h1 className="text-2xl font-medium text-center lg:text-3xl">
             What would you like to explore on EdgeIn?
           </h1>
-          <p className="mt-5 text-xs text-center text-slate-500 font-normal">
+          <p className="mt-5 text-xs font-normal text-center text-slate-500">
             Select any of the following choices.
           </p>
 
-          <ul className="mt-8 flex flex-col gap-3">
+          <ul className="flex flex-col gap-3 mt-8">
             {onboardingExploreChoices.map(item => (
               <li
                 key={item}
@@ -80,7 +80,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 } shadow-sm cursor-pointer hover:bg-gray-50`}
                 onClick={() => {
                   if (item === 'Something else') {
-                    showNewMessages(`Hi EdgeIn, I'd like to explore `);
+                    showNewMessage(`Hi EdgeIn, I'd like to explore `);
                   }
                   onChangeExploreChoices(
                     exploreChoices.includes(item)
@@ -92,14 +92,14 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                       : [...exploreChoices, item],
                   );
                 }}>
-                <p className="text-slate-900 text-sm">{item}</p>
+                <p className="text-sm text-slate-900">{item}</p>
               </li>
             ))}
           </ul>
           <ElemButton
             btn="primary"
             size="md"
-            className="max-w-sm w-full mt-8 md:mt-16"
+            className="w-full max-w-sm mt-8 md:mt-16"
             disabled={exploreChoices.length === 0}
             onClick={onNext}>
             Next

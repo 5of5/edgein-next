@@ -23,15 +23,15 @@ const ElemNotificationPopover: FC<Props> = ({
 
   const organization = company || vc_firm;
 
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   return (
     <Popover
-      className="absolute right-1 group-hover:block transition-all sm:hidden sm:right-10"
+      className="absolute transition-all right-1 group-hover:block sm:hidden sm:right-10"
       style={popoverStyle}>
-      <Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+      <Popover.Button className="inline-flex items-center p-1 text-sm transition duration-150 ease-in-out bg-white rounded-full aspect-square group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
         <IconEllipsisHorizontal
-          className="h-6 w-6 group-hover:text-primary-500"
+          className="w-6 h-6 group-hover:text-primary-500"
           title="Options"
         />
       </Popover.Button>
@@ -43,7 +43,7 @@ const ElemNotificationPopover: FC<Props> = ({
         leave="transition duration-75 ease-out"
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0">
-        <Popover.Panel className="absolute right-0 overflow-hidden w-48 p-1 divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5">
+        <Popover.Panel className="absolute right-0 w-48 p-1 overflow-hidden bg-white divide-y rounded-lg shadow-lg divide-slate-100 ring-1 ring-black/5">
           {({ close }) => (
             <>
               {!notification.read && (
@@ -52,19 +52,19 @@ const ElemNotificationPopover: FC<Props> = ({
                     onMarkAsRead(notification.id);
                     close();
                   }}
-                  className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500">
+                  className="flex items-center w-full px-2 py-2 space-x-1 rounded-lg hover:bg-gray-50 hover:text-primary-500">
                   <IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
                   <span className="text-sm">Mark as read</span>
                 </button>
               )}
               <button
                 onClick={() => {
-                  showNewMessages(
+                  showNewMessage(
                     `Hi EdgeIn, I'd like to report an error on ${organization?.name} notifications`,
                   );
                   close();
                 }}
-                className="flex items-center space-x-2 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500">
+                className="flex items-center w-full px-2 py-2 space-x-2 hover:bg-gray-50 hover:text-primary-500">
                 <IconExclamationTriangle className="h-4 aspect-square group-hover:text-primary-500" />
                 <span className="text-sm">Report an error</span>
               </button>

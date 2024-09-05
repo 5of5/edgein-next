@@ -35,7 +35,7 @@ export const ElemInvestments: React.FC<Props> = ({
   heading,
   investments,
 }) => {
-  const { showNewMessages } = useIntercom();
+  const { showNewMessage } = useIntercom();
 
   const defaultColumn = React.useMemo(
     () => ({
@@ -354,7 +354,7 @@ export const ElemInvestments: React.FC<Props> = ({
             <ElemButton
               className="mt-2"
               onClick={() =>
-                showNewMessages(
+                showNewMessage(
                   `Hi EdgeIn, I'd like to request investment data on ${resourceName}`,
                 )
               }
