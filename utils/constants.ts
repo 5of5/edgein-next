@@ -752,6 +752,7 @@ export const web3Tags: Tag[] = [
   'Tezos',
   'Theta Network Ecosystem',
   'Token',
+  'TON',
   'Trading Robot - Web3',
   'Wallet',
   'Zero Knowledge',
