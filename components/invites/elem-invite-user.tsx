@@ -93,8 +93,7 @@ export const ElemInviteUser = () => {
               </h3>
               <p className="mt-1 text-sm text-gray-600">
                 Invite your friends to EdgeIn, and we&apos;ll give you 1,500
-                points for every friend who signs in through your referral.
-                That&apos;s 1 month of EdgeIn Contributor, completely free! The
+                points for every friend who signs in through your referral. The
                 more people who sign in, the more points you&apos;ll get.
               </p>
             </div>
