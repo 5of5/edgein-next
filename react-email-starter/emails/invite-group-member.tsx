@@ -24,30 +24,31 @@ export const InviteGroupMemberEmail = ({
   return (
     <EmailLayout>
       <Section className="px-[40px] py-[12px]">
-        <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0 mt-0">
-          Join <strong>{groupName}</strong> on <strong>EdgeIn</strong>
+        <Heading className="text-[18px] leading-[24px] font-normal text-left p-0 mx-0 mt-0">
+          Join <strong>{groupName}</strong> on <strong>EdgeIn</strong>.
         </Heading>
+
         {isExistedUser ? (
           <Section>
-            <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0">
+            <Text className="text-[#111827] text-[18px] leading-[24px] text-left m-0">
               Hi {recipientName},
             </Text>
-            <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mt-1">
+            <Text className="text-[#111827] text-[18px] leading-[24px] text-left m-0 mt-1">
               <strong>{senderName}</strong> has invited you to join group{' '}
-              <strong>{groupName}</strong> on <strong>EdgeIn</strong>.
+              <strong>{groupName}</strong>.
             </Text>
-            <Section className="text-center mt-[32px] mb-[32px]">
-              <EmailButton text="View the group" url={groupUrl} />
+            <Section className="text-left mt-[32px] mb-[32px]">
+              <EmailButton text="Join group" url={groupUrl} />
             </Section>
           </Section>
         ) : (
           <Section>
-            <Text className="text-[#525f7f] text-[18px] leading-[24px] text-center m-0 mt-1">
+            <Text className="text-[#111827] text-[18px] leading-[24px] text-left m-0 mt-1">
               <strong>{senderName}</strong> has invited you to join group{' '}
-              <strong>{groupName}</strong> on <strong>EdgeIn</strong>.
+              <strong>{groupName}</strong>.
             </Text>
-            <Section className="text-center mt-[32px] mb-[32px]">
-              <EmailButton text="Join now" url={signUpUrl} />
+            <Section className="text-left mt-[32px] mb-[32px]">
+              <EmailButton text="Join group" url={signUpUrl} />
             </Section>
           </Section>
         )}
