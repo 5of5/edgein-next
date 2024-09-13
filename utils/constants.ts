@@ -2397,6 +2397,15 @@ export const AUTO_GENERATED_LIST_MAXIMUM_PEOPLE = 10;
 
 export const LOCAL_STORAGE_SIDEBAR_BANNER_KEY = 'sidebar_banner';
 
+export const CREATE_LIST_CREDITS = 1000;
+export const CREATE_LIST_CREDITS_MIN_ITEMS = 5;
+export const LOCAL_STORAGE_SHOW_CREATE_LISTS_CREDITS_KEY =
+  'show_create_lists_credits';
+export const CREATE_GROUP_CREDITS = 1000;
+export const CREATE_GROUP_CREDITS_MIN_MEMBERS = 3;
+export const LOCAL_STORAGE_SHOW_CREATE_GROUPS_CREDITS_KEY =
+  'show_create_groups_credits';
+
 export const PASSWORD_VALIDATION = {
   minLength: 8,
   minLowercase: 1,

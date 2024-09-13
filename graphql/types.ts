@@ -30134,7 +30134,7 @@ export type GetGroupsOfUserQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users_public', id: number | null, email: string | null, display_name: string | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string } | null } | null, notes: Array<{ __typename?: 'notes', id: number }>, list_user_groups: Array<{ __typename?: 'list_user_groups', id: number }> } }> };
+export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users_public', id: number | null, email: string | null, display_name: string | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string } | null } | null, notes: Array<{ __typename?: 'notes', id: number }>, list_user_groups: Array<{ __typename?: 'list_user_groups', id: number }>, user_group_members: Array<{ __typename?: 'user_group_members', id: number }> } }> };
 
 export type GetGroupsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -33188,6 +33188,9 @@ export const GetGroupsOfUserDocument = `
         id
       }
       list_user_groups {
+        id
+      }
+      user_group_members {
         id
       }
     }

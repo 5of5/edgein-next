@@ -12,7 +12,7 @@ export const ROUTES = {
   GROUPS: '/groups',
   NOTES: '/notes',
   NOTIFICATIONS: '/notifications',
-  INVITE_A_FRIEND: '/invite-a-friend',
+  REFERRALS_AND_POINTS: '/referrals-and-points',
   DEMOCRATIZE24: '/events/democratize24/',
   ACCOUNT: '/account',
   PROFILE: '/profile',

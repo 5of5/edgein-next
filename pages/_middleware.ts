@@ -108,6 +108,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL(ROUTES.COMPANIES, req.url));
       }
       if (
+        url.pathname === `${ROUTES.REFERRALS_AND_POINTS}/` ||
         url.pathname === `${ROUTES.ACCOUNT}/` ||
         url.pathname === `${ROUTES.PROFILE}/` ||
         url.pathname === `${ROUTES.ORGANIZATIONS}/`
