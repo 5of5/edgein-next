@@ -1,7 +1,7 @@
 import { mutate } from '@/graphql/hasuraAdmin';
 
 export const TRANSACTION_SYSTEM_NOTE = 'transaction-system';
-export const CREDITS_PER_MONTH = 1500;
+export const CREDITS_PER_MONTH = 2500;
 export const REFERRAL_CREDITS_AMOUNT = 1500;
 export const REGISTRATION_CREDITS_AMOUNT = 4500;
 export const CREDITS_SPENDING_INTERVAL = 30; // NOTE: in days

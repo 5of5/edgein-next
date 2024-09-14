@@ -84,7 +84,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       ROUTES.PEOPLE,
       ROUTES.GROUPS,
       ROUTES.ACCOUNT,
-      ROUTES.INVITE_A_FRIEND,
+      ROUTES.REFERRALS_AND_POINTS,
       ROUTES.PROFILE,
       ROUTES.LISTS,
       ROUTES.NOTES,

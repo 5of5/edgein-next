@@ -27,6 +27,9 @@ export const formatDate = (
 };
 
 export const formatDateShown = (date: Date, format?: string) => {
+  if (!date) {
+    return '';
+  }
   const theDate = moment(date).local(true);
   const theFormat = format ? format : 'LL'; //Default: January 16, 2024
   return moment(theDate).format(theFormat);

@@ -14,7 +14,7 @@ type Props = {
   onClose: () => void;
 };
 
-const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
+export const CreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
   const router = useRouter();
 
   const { refetchMyGroups } = useUser();
@@ -139,5 +139,3 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
     </ElemModal>
   );
 };
-
-export default ElemCreateGroupDialog;

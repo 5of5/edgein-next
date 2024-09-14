@@ -194,24 +194,26 @@ export const Table: FC<Props> = ({
         <div className="flex items-center mb-2 space-x-2">
           {Object.keys(selectedRowIds).length > 0 ? (
             <>
-              <button
+              <ElemButton
                 onClick={handleRemove}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-red-600 hover:bg-slate-200 focus:outline-none focus:ring-1">
-                <IconTrash className="w-5 h-5 mr-1" title="Remove from list" />
-                <div>Remove items</div>
-              </button>
+                roundedFull
+                btn="danger"
+                className="gap-x-1">
+                <IconTrash className="w-5 h-5" title="Remove from list" />
+                <div>
+                  Remove {Object.keys(selectedRowIds).length} item
+                  {Object.keys(selectedRowIds).length > 1 && 's'}
+                </div>
+              </ElemButton>
+
               <ElemButton
                 onClick={() => toggleAllRowsSelected(false)}
-                btn="transparent">
-                <IconX className="w-5 h-5 mr-1" title="Clear Selection" />
-                Cancel
-              </ElemButton>
-              <button
-                onClick={() => toggleAllRowsSelected(false)}
-                className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-                <IconX className="w-5 h-5 mr-1" title="Clear Selection" />
+                roundedFull
+                btn="default"
+                className="gap-x-1">
+                <IconX className="w-5 h-5" title="Clear Selection" />
                 <div>Cancel</div>
-              </button>
+              </ElemButton>
 
               <div className="text-sm shrink-0">
                 {Object.keys(selectedRowIds).length} selected
