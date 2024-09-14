@@ -34,8 +34,9 @@ export const InviteGroupMemberEmail = ({
               Hi {recipientName},
             </Text>
             <Text className="text-[#111827] text-[18px] leading-[24px] text-left m-0 mt-1">
-              <strong>{senderName}</strong> has invited you to join group{' '}
-              <strong>{groupName}</strong>.
+              <span className="inline font-bold">{senderName}</span> has invited
+              you to join group{' '}
+              <span className="inline font-bold">{groupName}</span>.
             </Text>
             <Section className="text-left mt-[32px] mb-[32px]">
               <EmailButton text="Join group" url={groupUrl} />
@@ -44,8 +45,9 @@ export const InviteGroupMemberEmail = ({
         ) : (
           <Section>
             <Text className="text-[#111827] text-[18px] leading-[24px] text-left m-0 mt-1">
-              <strong>{senderName}</strong> has invited you to join group{' '}
-              <strong>{groupName}</strong>.
+              <span className="inline font-bold">{senderName}</span> has invited
+              you to join group{' '}
+              <span className="inline font-bold">{groupName}</span>.
             </Text>
             <Section className="text-left mt-[32px] mb-[32px]">
               <EmailButton text="Join group" url={signUpUrl} />
