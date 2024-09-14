@@ -9,7 +9,7 @@ import { useUser } from '@/context/user-context';
 import { ElemUpgradeDialog } from '../elem-upgrade-dialog';
 import { SIDEBAR_DEFAULT_GROUPS_LIMIT } from '@/utils/constants';
 import { ROUTES } from '@/routes';
-import ElemCreateGroupDialog from '../group/elem-create-group-dialog';
+import { CreateGroupDialog } from '../group/create-group-dialog';
 import { ElemWithSignInModal } from '../elem-with-sign-in-modal';
 import { ElemSidebarItem } from './elem-sidebar-item';
 import { ElemLink } from '../elem-link';
@@ -306,7 +306,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
         onClose={onCloseUpgradeDialog}
       />
 
-      <ElemCreateGroupDialog
+      <CreateGroupDialog
         isOpen={isOpenCreateGroupDialog}
         onClose={onCloseCreateGroupDialog}
       />

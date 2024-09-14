@@ -32582,7 +32582,7 @@ useGetEventQuery.fetcher = (variables: GetEventQueryVariables, options?: Request
 export const GetEventsByDateDocument = `
     query GetEventsByDate($date: timestamptz, $library: jsonb) {
   events(
-    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
+    where: {_and: [{parent_event_id: {_is_null: true}}, {status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
   ) {
     id
     name

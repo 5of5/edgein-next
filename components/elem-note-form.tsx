@@ -12,9 +12,8 @@ import {
   IconSidebarGroups,
   IconLockClosed,
   IconGlobe,
-  IconGroupPlus,
 } from '@/components/icons';
-import ElemCreateGroupDialog from './group/elem-create-group-dialog';
+import { CreateGroupDialog } from './group/create-group-dialog';
 import { Autocomplete } from '@/components/autocomplete';
 
 type Props = {
@@ -225,7 +224,7 @@ const ElemNoteForm: React.FC<Props> = ({
         </div>
       </ElemModal>
 
-      <ElemCreateGroupDialog
+      <CreateGroupDialog
         isOpen={isOpenCreateGroupDialog}
         onClose={onCloseCreateGroupDialog}
       />
