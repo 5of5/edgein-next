@@ -25,11 +25,11 @@ import { ElemTags } from '@/components/elem-tags';
 import { useMutation } from 'react-query';
 import { toast, Toaster } from 'react-hot-toast';
 import { ElemRequiredProfileDialog } from '../elem-required-profile-dialog';
-import { usePopup } from '@/context/popup-context';
 import { CardType } from '../companies/elem-company-card';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { formatDateShown } from '@/utils';
 
 type Props = {
   event: GetEventsQuery['events'][0];
@@ -38,12 +38,6 @@ type Props = {
 
 export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
   const { user } = useUser();
-
-  const { setShowPopup } = usePopup();
-
-  const userCanViewLinkedIn = user?.entitlements.viewEmails
-    ? user?.entitlements.viewEmails
-    : false;
 
   const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] = useState(false);
 
@@ -142,13 +136,6 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
     }
   };
 
-  const dateIsTodayOrBefore = (date: Date) => {
-    const dateToday = moment().format('YYYY-MM-D');
-    const isBefore = moment(dateToday).isBefore(date);
-
-    return isBefore;
-  };
-
   return (
     <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
@@ -175,29 +162,31 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
               />
             </div>
           </ElemLink>
-
           <ElemLink
             href={`${ROUTES.EVENTS}/${slug}`}
             className="flex items-center mt-3">
             <ElemTooltip content={name} mode="light">
-              <h3 className="text-lg font-medium truncate pb-1.5">{name}</h3>
+              <h3 className="text-lg font-medium line-clamp-3 pb-1.5">
+                {name}
+              </h3>
             </ElemTooltip>
           </ElemLink>
 
-          <div className="text-xs">
+          <div>
             {start_date && (
-              <p className="text-sm text-gray-500">
-                {moment(start_date).format('MMM D, YYYY')}
+              <ElemLink
+                href={`${ROUTES.EVENTS}/${slug}`}
+                className="text-sm text-gray-500">
+                {formatDateShown(start_date, 'MMM D, YYYY')}
 
                 {end_date && (
                   <>
                     &nbsp;&ndash;&nbsp;
-                    {moment(end_date).format('MMM D, YYYY')}
+                    {formatDateShown(end_date, 'MMM D, YYYY')}
                   </>
                 )}
-              </p>
+              </ElemLink>
             )}
-
             {type === 'full' && !isEmptyLocation && (
               <div className="flex pt-1.5 items-center">
                 <IconLocation
@@ -209,7 +198,6 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
                 </span>
               </div>
             )}
-
             {eventPrice && (
               <div className="flex pt-1.5 items-center">
                 <IconTicket
@@ -224,7 +212,6 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
               </div>
             )}
           </div>
-
           {tags && (
             <ElemTags
               className="mt-4"
@@ -272,9 +259,9 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
             onClick={handleClickAttend}
             loading={isLoadingGoingEvent}
             className="px-2.5">
-            {isAttended && dateIsTodayOrBefore(end_date)
+            {isAttended && moment(start_date).isSameOrAfter(moment(), 'day')
               ? 'Attending'
-              : isAttended && !dateIsTodayOrBefore(end_date)
+              : isAttended
               ? 'Attended'
               : 'Attend'}
           </ElemButton>
