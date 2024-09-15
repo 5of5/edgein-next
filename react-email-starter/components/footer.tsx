@@ -2,16 +2,16 @@ import { Link, Section, Text, Img, Row, Column } from '@react-email/components';
 
 export const EmailFooter = () => {
   return (
-    <Section className="bg-[#e8ecf2] p-[40px] pb-[8px]">
+    <Section className="bg-[#f3f4f6] p-[40px] pb-[8px]">
       <Section>
-        <Text className="text-[#525f7f] text-[12px] leading-[16px] m-0">
+        <Text className="text-[#64748b] text-[12px] leading-[16px] m-0">
           Got this email by mistake? Don&apos;t worry, you can safely ignore it.
         </Text>
-        <Text className="text-[#525f7f] text-[12px] leading-[16px] m-0 mt-[2px]">
+        <Text className="text-[#64748b] text-[12px] leading-[16px] m-0 mt-[2px]">
           EdgeIn gathers, refines, and tailors the Web3 and AI data you need to
           get an edge.
         </Text>
-        <Text className="text-[#525f7f] text-[12px] leading-[16px] m-0 mt-[2px]">
+        <Text className="text-[#64748b] text-[12px] leading-[16px] m-0 mt-[2px]">
           <Link
             href="https://edgein.io/"
             target="_blank"
@@ -34,7 +34,7 @@ export const EmailFooter = () => {
           <Column align="left">
             <Link
               href="https://www.edgein.io"
-              className="text-[#525f7f] text-[12px] leading-[16px] underline"
+              className="text-[#64748b] text-[12px] leading-[16px] underline"
               target="_blank">
               <Img
                 src="https://www.edgein.io/email-edgein-text.png"

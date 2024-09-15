@@ -17,8 +17,19 @@ export const EmailLayout = ({ children }: EmailLayoutProps) => {
   return (
     <Html>
       <Head />
-      <Tailwind>
-        <Body className="bg-[#f2f5fa] my-auto mx-auto font-sans py-[40px]">
+      <Tailwind
+        config={{
+          theme: {
+            extend: {
+              colors: {
+                primary: {
+                  500: '#5E41FE',
+                },
+              },
+            },
+          },
+        }}>
+        <Body className="bg-[#f9fafb] my-auto mx-auto font-sans py-[40px]">
           <Container className="bg-[#FFFFFF] rounded-md max-w-[600px] w-[600px] shadow-sm">
             <EmailHeader />
             <Section>{children}</Section>
