@@ -12,9 +12,13 @@ import {
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
-import { startCase } from 'lodash';
+import { startCase, isEmpty } from 'lodash';
 import { filterExcludeNotifications } from '@/utils/notifications';
-import { NOTIFICATION_EXCLUDE_PROPERTIES } from '@/utils/constants';
+import {
+  CREATE_GROUP_CREDITS_MIN_MEMBERS,
+  CREATE_LIST_CREDITS_MIN_ITEMS,
+  NOTIFICATION_EXCLUDE_PROPERTIES,
+} from '@/utils/constants';
 import { redirect_url } from '@/utils/auth';
 import useLibrary from '@/hooks/use-library';
 import { libraryChoices } from '@/utils/constants';
@@ -35,7 +39,9 @@ type UserValue = {
   user: User | null;
   loading: boolean;
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][];
+  listsQualifyForCredits: boolean;
   myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][];
+  groupsQualifyForCredits: boolean;
   unreadNotificationsCount: number;
   selectedLibrary?: Library;
   onChangeLibrary: (value: LibraryTag) => void;
@@ -49,7 +55,9 @@ const userContext = React.createContext<UserValue>({
   user: null,
   loading: true,
   listAndFollows: [],
+  listsQualifyForCredits: false,
   myGroups: [],
+  groupsQualifyForCredits: false,
   unreadNotificationsCount: 0,
   onChangeLibrary: () => {},
   refetchMyLists: () => {},
@@ -92,6 +100,28 @@ const UserProvider: React.FC<Props> = props => {
   } = useGetGroupsOfUserQuery(
     { user_id: user?.id || 0 },
     { enabled: Boolean(user) },
+  );
+
+  const listsForCredits = useMemo(
+    () =>
+      listMemberships?.list_members.filter(
+        item =>
+          item.list.created_by_id === (user?.id || 0) &&
+          item.list.total_no_of_resources &&
+          item.list.total_no_of_resources >= CREATE_LIST_CREDITS_MIN_ITEMS,
+      ) || [],
+    [listMemberships, user],
+  );
+
+  const groupsForCredits = useMemo(
+    () =>
+      groups?.user_group_members.filter(
+        item =>
+          item.user_group.created_by?.id === (user?.id || 0) &&
+          item.user_group.user_group_members.length >=
+            CREATE_GROUP_CREDITS_MIN_MEMBERS,
+      ) || [],
+    [groups, user],
   );
 
   const { data: notifications, refetch: refetchUnreadNotifications } =
@@ -155,6 +185,14 @@ const UserProvider: React.FC<Props> = props => {
     setListAndFollows(listMemberships?.list_members.map(li => li.list) || []);
   }, [listMemberships]);
 
+  const [listsQualifyForCredits, setListsQualifyForCredits] = useState<boolean>(
+    !isEmpty(listsForCredits),
+  );
+
+  useEffect(() => {
+    setListsQualifyForCredits(!isEmpty(listsForCredits) ? true : false);
+  }, [listsForCredits]);
+
   const [myGroups, setMyGroups] = useState(
     groups?.user_group_members?.map(group => group.user_group) || [],
   );
@@ -163,6 +201,13 @@ const UserProvider: React.FC<Props> = props => {
       groups?.user_group_members?.map(group => group.user_group) || [],
     );
   }, [groups]);
+
+  const [groupsQualifyForCredits, setGroupsQualifyForCredits] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    setGroupsQualifyForCredits(!isEmpty(groupsForCredits) ? true : false);
+  }, [groupsForCredits]);
 
   const unreadNotificationsCount =
     notifications?.notifications_aggregate?.aggregate?.count || 0;
@@ -189,7 +234,9 @@ const UserProvider: React.FC<Props> = props => {
       user: user || null,
       loading,
       listAndFollows,
+      listsQualifyForCredits,
       myGroups,
+      groupsQualifyForCredits,
       unreadNotificationsCount,
       selectedLibrary: library?.id,
       onChangeLibrary: handleSelectLibrary,
@@ -202,7 +249,9 @@ const UserProvider: React.FC<Props> = props => {
       user,
       loading,
       listAndFollows,
+      listsQualifyForCredits,
       myGroups,
+      groupsQualifyForCredits,
       unreadNotificationsCount,
       library,
       handleSelectLibrary,
