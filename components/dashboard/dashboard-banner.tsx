@@ -51,20 +51,23 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
     banner = {
       title: `${numberWithCommas(user.credits)} points available`,
       content: `You can use your points to get ${numberWithCommas(
-        Math.floor(user.credits / 1500),
+        Math.floor(user.credits / REFERRAL_CREDITS_AMOUNT),
       )} months of EdgeIn Contributor.`,
       icon: IconCurrencyDollar,
     };
   } else if (isPaidUser) {
     banner = {
       title: 'Get EdgeIn for Free',
-      content: `Invite your friends and get ${REFERRAL_CREDITS_AMOUNT} points for every friend who signs in through your referral.`,
+      content: `Invite a friend and get ${numberWithCommas(
+        REFERRAL_CREDITS_AMOUNT,
+      )} points for 1 month of EdgeIn Contributor for free.`,
       icon: IconGift,
     };
   } else if (isFreeUser) {
     banner = {
-      title: `Get ${REFERRAL_CREDITS_AMOUNT} points`,
-      content: `Share EdgeIn with your friend for ${REFERRAL_CREDITS_AMOUNT} points.`,
+      title: `Get ${numberWithCommas(REFERRAL_CREDITS_AMOUNT)} points`,
+      content:
+        'Share EdgeIn with your friend for 1 month of EdgeIn Contributor for free.',
       icon: IconCurrencyDollar,
     };
   } else {

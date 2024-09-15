@@ -27,6 +27,7 @@ import { CreateListDialog } from '@/components/my-list/create-list-dialog';
 import { CreateGroupDialog } from '@/components/group/create-group-dialog';
 import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { useIntercom } from 'react-use-intercom';
+import { numberWithCommas } from '@/utils/numbers';
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
 
@@ -158,40 +159,49 @@ const ReferralsAndPoints: NextPage = () => {
             credits: CREATE_LIST_CREDITS,
             onClick: onOpenCreateListDialog,
             title: 'Create list',
-            content: `Create a list with at least five organizations and immediately claim +${CREATE_LIST_CREDITS} points.`,
+            content: `Create a list with at least five organizations and immediately claim +${numberWithCommas(
+              CREATE_LIST_CREDITS,
+            )} points.`,
           },
         ]
       : showClaimListCredits != 'false' && listsQualifyForCredits
       ? [
           {
             id: 1,
-            credits: CREATE_LIST_CREDITS,
+            credits: numberWithCommas(CREATE_LIST_CREDITS),
             onClick: () => onRequestCredits('list'),
             icon: IconCheckBadgeSolid,
-            title: `Claim +${CREATE_LIST_CREDITS} Points`,
-            content: `You created a list with at least five organizations, claim +${CREATE_LIST_CREDITS} points.`,
+            title: `Claim +${numberWithCommas(CREATE_LIST_CREDITS)} Points`,
+            content: `You created a list with at least five organizations, claim +${numberWithCommas(
+              CREATE_LIST_CREDITS,
+            )} points.`,
           },
         ]
-      : []),
+      : //{numberWithCommas(CREATE_LIST_CREDITS)}
+        []),
     ...(showClaimGroupCredits != 'false' && !groupsQualifyForCredits
       ? [
           {
             id: 2,
-            credits: CREATE_GROUP_CREDITS,
+            credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: onOpenCreateGroupDialog,
             title: `Create Group`,
-            content: `Create a group with at least three other EdgeIn members and you immediately get another +${CREATE_GROUP_CREDITS} points.`,
+            content: `Create a group with at least three other EdgeIn members and you immediately get another +${numberWithCommas(
+              CREATE_GROUP_CREDITS,
+            )} points.`,
           },
         ]
       : showClaimGroupCredits != 'false' && groupsQualifyForCredits
       ? [
           {
             id: 2,
-            credits: CREATE_GROUP_CREDITS,
+            credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: () => onRequestCredits('group'),
             icon: IconCheckBadgeSolid,
-            title: `Claim +${CREATE_GROUP_CREDITS} Points`,
-            content: `You created a group with at least three other EdgeIn members, claim +${CREATE_GROUP_CREDITS} points.`,
+            title: `Claim +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`,
+            content: `You created a group with at least three other EdgeIn members, claim +${numberWithCommas(
+              CREATE_GROUP_CREDITS,
+            )} points.`,
           },
         ]
       : []),
