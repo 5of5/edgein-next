@@ -81,13 +81,91 @@ const ElemInviteEmails: FC<Props> = ({
       <div className="relative">
         <label className="font-medium">{label}</label>
         {description && <p className="text-sm text-gray-500">{description}</p>}
-        <div className="flex flex-wrap gap-2 px-3 py-2 mt-2 rounded-lg ring-1 ring-gray-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
+
+        <div>
+          <Combobox.Input
+            className={`relative w-full px-3 py-2 mt-2 text-sm bg-white border-none rounded-full outline-none hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-gray-400 ${
+              query.length > 1 && (emailError || isDuplicatedEmail)
+                ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                : 'ring-1 ring-gray-300'
+            }`}
+            placeholder={placeholder}
+            autoComplete={'off'}
+            ref={inputRef}
+            onChange={handleChangeQuery}
+          />
+          {query && !isDuplicatedEmail && !emailError && (
+            <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-white border border-gray-200 rounded-md shadow-md max-h-60 scrollbar-hide">
+              {isLoading && query !== '' ? (
+                <div className="px-4 py-2">
+                  {Array.from({ length: 3 }, (_, i) => (
+                    <PlaceholderPerson key={i} />
+                  ))}
+                </div>
+              ) : searchedPeople && searchedPeople?.length > 0 ? (
+                searchedPeople.map((item: any) => (
+                  <Combobox.Option
+                    key={item.id}
+                    value={item}
+                    className="flex items-center px-4 py-2 cursor-pointer gap-x-2 hover:bg-gray-50">
+                    {item?.picture ? (
+                      <ElemPhoto
+                        wrapClass="w-10 h-10 aspect-square shrink-0"
+                        imgClass="object-cover rounded-full border border-gray-200"
+                        photo={item.picture}
+                        placeholder="user"
+                        placeholderClass="text-gray-300"
+                        imgAlt={item.name}
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center flex-shrink-0 w-10 text-xl capitalize bg-gray-100 rounded-full aspect-square">
+                        {item?.name?.charAt(0)}
+                      </div>
+                    )}
+
+                    <div className="flex-shrink-0 text-sm">{item?.name}</div>
+                    {item?.work_email && (
+                      <div
+                        className="text-sm text-gray-500 truncate"
+                        title={item.work_email}>
+                        {item.work_email}
+                      </div>
+                    )}
+                  </Combobox.Option>
+                ))
+              ) : (
+                <div className="">
+                  {validator.isEmail(query) &&
+                    !emailError &&
+                    !isDuplicatedEmail && (
+                      <Combobox.Option
+                        value={{
+                          id: Date.now(),
+                          name: query,
+                          work_email: query,
+                        }}
+                        className="px-4 py-2 cursor-pointer text-primary-500 hover:no-underline hover:bg-gray-50">
+                        Add{' '}
+                        <span className="font-medium underline">{query}</span>
+                      </Combobox.Option>
+                    )}
+                </div>
+              )}
+            </Combobox.Options>
+          )}
+
+          {query.length > 1 && (emailError || isDuplicatedEmail) && (
+            <div className="py-2 text-sm font-medium text-rose-400">
+              {emailError && emailError}
+              {isDuplicatedEmail && 'Email already added'}
+            </div>
+          )}
           {selectedPeople.length > 0 && (
-            <ul className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2 mt-2">
               {selectedPeople.map((person, index) => (
                 <li
                   key={index}
-                  className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-lg">
+                  className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full">
                   {person.name ? (
                     <div title={person.work_email}>{person?.name}</div>
                   ) : (
@@ -106,85 +184,7 @@ const ElemInviteEmails: FC<Props> = ({
               ))}
             </ul>
           )}
-          <Combobox.Input
-            className="relative flex-1 p-0 bg-white border-none rounded-md outline-none ring-0 placeholder:text-gray-300 focus:outline-none focus:ring-0"
-            placeholder={placeholder}
-            autoComplete={'off'}
-            ref={inputRef}
-            onChange={handleChangeQuery}
-          />
         </div>
-
-        {isDuplicatedEmail && (
-          <div className="py-2 mt-2 text-sm font-semibold text-center text-white bg-red-600 rounded-md">
-            Email already added
-          </div>
-        )}
-
-        {emailError && (
-          <div className="py-2 mt-2 text-sm font-semibold text-center text-white bg-red-600 rounded-md">
-            {emailError}
-          </div>
-        )}
-
-        {query && !isDuplicatedEmail && !emailError && (
-          <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-white border border-gray-200 rounded-md shadow-md max-h-60 scrollbar-hide">
-            {isLoading && query !== '' ? (
-              <div className="px-4 py-2">
-                {Array.from({ length: 3 }, (_, i) => (
-                  <PlaceholderPerson key={i} />
-                ))}
-              </div>
-            ) : searchedPeople && searchedPeople?.length > 0 ? (
-              searchedPeople.map((item: any) => (
-                <Combobox.Option
-                  key={item.id}
-                  value={item}
-                  className="flex items-center px-4 py-2 cursor-pointer gap-x-2 hover:bg-gray-50">
-                  {item?.picture ? (
-                    <ElemPhoto
-                      wrapClass="w-10 h-10 aspect-square shrink-0"
-                      imgClass="object-cover rounded-full border border-gray-200"
-                      photo={item.picture}
-                      placeholder="user"
-                      placeholderClass="text-gray-300"
-                      imgAlt={item.name}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center flex-shrink-0 w-10 text-xl capitalize bg-gray-100 rounded-full aspect-square">
-                      {item?.name?.charAt(0)}
-                    </div>
-                  )}
-
-                  <div className="flex-shrink-0 text-sm">{item?.name}</div>
-                  {item?.work_email && (
-                    <div
-                      className="text-sm text-gray-500 truncate"
-                      title={item.work_email}>
-                      {item.work_email}
-                    </div>
-                  )}
-                </Combobox.Option>
-              ))
-            ) : (
-              <div className="text-center">
-                {validator.isEmail(query) &&
-                  !emailError &&
-                  !isDuplicatedEmail && (
-                    <Combobox.Option
-                      value={{
-                        id: Date.now(),
-                        name: query,
-                        work_email: query,
-                      }}
-                      className="px-4 py-2 underline cursor-pointer hover:no-underline hover:bg-gray-50">
-                      Add <span className="font-medium">{query}</span>
-                    </Combobox.Option>
-                  )}
-              </div>
-            )}
-          </Combobox.Options>
-        )}
       </div>
     </Combobox>
   );

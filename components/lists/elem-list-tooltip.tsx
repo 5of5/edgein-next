@@ -19,7 +19,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
 }) => {
   const listUrl = `${ROUTES.LISTS}/${list.id}/${kebabCase(
     getNameFromListName(list),
-  )}}`;
+  )}`;
 
   const tooltipContent = (
     <div className="flex-col p-2 group">

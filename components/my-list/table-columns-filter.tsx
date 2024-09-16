@@ -18,11 +18,7 @@ export const TableColumnsFilter: FC<Props> = ({
     <>
       <Popover className={`${className} relative shrink-0 z-20`}>
         <Popover.Button as="div" className="relative inline-flex">
-          <ElemButton
-            btn="default"
-            size="sm"
-            roundedFull={false}
-            className="rounded-lg">
+          <ElemButton btn="default" size="sm" roundedFull>
             <div className="text-left">Edit columns</div>
           </ElemButton>
         </Popover.Button>
@@ -43,11 +39,11 @@ export const TableColumnsFilter: FC<Props> = ({
                 <li
                   key={column.id}
                   className="flex items-baseline w-full text-sm text-left">
-                  <label className="relative flex items-center gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:bg-gray-100">
+                  <label className="relative flex items-start gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:bg-gray-100">
                     <input
                       type="checkbox"
                       {...column.getToggleHiddenProps()}
-                      className="w-4 h-4 border border-gray-300 rounded appearance-none checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+                      className="mt-0.5 w-4 h-4 border border-gray-300 rounded appearance-none checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
                     />
                     <div>{column.render('Header')}</div>
                   </label>

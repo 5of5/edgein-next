@@ -8,6 +8,7 @@ import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { LOCAL_STORAGE_SIDEBAR_BANNER_KEY } from '@/utils/constants';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { REFERRAL_CREDITS_AMOUNT } from '@/utils/userTransactions';
 
 type Props = {
   className?: string;
@@ -50,20 +51,21 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
     banner = {
       title: `${numberWithCommas(user.credits)} points available`,
       content: `You can use your points to get ${numberWithCommas(
-        Math.floor(user.credits / 1500),
+        Math.floor(user.credits / REFERRAL_CREDITS_AMOUNT),
       )} months of EdgeIn Contributor.`,
       icon: IconCurrencyDollar,
     };
   } else if (isPaidUser) {
     banner = {
       title: 'Get EdgeIn for Free',
-      content:
-        'Invite a friend and get 1,500 points for 1 month of EdgeIn Contributor for free.',
+      content: `Invite a friend and get ${numberWithCommas(
+        REFERRAL_CREDITS_AMOUNT,
+      )} points for 1 month of EdgeIn Contributor for free.`,
       icon: IconGift,
     };
   } else if (isFreeUser) {
     banner = {
-      title: 'Get 1,500 points',
+      title: `Get ${numberWithCommas(REFERRAL_CREDITS_AMOUNT)} points`,
       content:
         'Share EdgeIn with your friend for 1 month of EdgeIn Contributor for free.',
       icon: IconCurrencyDollar,
@@ -102,7 +104,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
         )}
 
         <ElemLink
-          href={user ? ROUTES.INVITE_A_FRIEND : ROUTES.SIGN_IN}
+          href={user ? ROUTES.REFERRALS_AND_POINTS : ROUTES.SIGN_IN}
           className="block p-4 bg-white border rounded-lg shadow-lg border-primary-500">
           <div className="flex items-center">
             {banner.icon && (

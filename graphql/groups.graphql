@@ -37,6 +37,9 @@ query GetGroupsOfUser($user_id: Int!) {
       list_user_groups {
         id
       }
+      user_group_members {
+        id
+      }
     }
   }
 }
