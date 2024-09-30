@@ -195,9 +195,7 @@ export const Table: FC<Props> = ({
           {Object.keys(selectedRowIds).length > 0 ? (
             <>
               <ElemButton
-                onClick={() => {
-                  handleRemove();
-                }}
+                onClick={handleRemove}
                 roundedFull
                 btn="danger"
                 className="gap-x-1">
