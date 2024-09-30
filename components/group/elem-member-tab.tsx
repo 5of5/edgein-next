@@ -158,7 +158,10 @@ const ElemMemberTab: React.FC<Props> = ({
           ];
 
           const theMember = (
-            <div className="flex items-center justify-between px-4 py-3 cursor-pointer group">
+            <div
+              className={`flex items-center justify-between px-4 py-3 group ${
+                memberLinks.length > 0 && 'cursor-pointer'
+              }`}>
               <div className="flex items-center gap-x-2">
                 {member.user?.person?.picture ? (
                   <ElemPhoto
@@ -181,23 +184,29 @@ const ElemMemberTab: React.FC<Props> = ({
                 )}
               </div>
 
-              <div className="opacity-30 group-hover:opacity-100">
-                <IconEllipsisVertical className="w-6 h-6" />
-              </div>
+              {memberLinks.length > 0 && (
+                <div className="opacity-30 group-hover:opacity-100">
+                  <IconEllipsisVertical className="w-6 h-6" />
+                </div>
+              )}
             </div>
           );
 
           return (
             <div key={member.id}>
-              <ElemDropdown
-                customButton={theMember}
-                placement="bottom-end"
-                buttonClass="w-full"
-                defaultItem={null}
-                items={memberLinks}
-                itemsShowIcons={false}
-                className="relative flex w-full text-left hover:bg-gray-100"
-              />
+              {memberLinks && memberLinks.length > 0 ? (
+                <ElemDropdown
+                  customButton={theMember}
+                  placement="bottom-end"
+                  buttonClass="w-full"
+                  defaultItem={null}
+                  items={memberLinks}
+                  itemsShowIcons={false}
+                  className="relative flex w-full text-left hover:bg-gray-100"
+                />
+              ) : (
+                theMember
+              )}
             </div>
           );
         })}
