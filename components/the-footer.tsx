@@ -47,7 +47,7 @@ export const navigation = {
     },
     {
       name: 'Telegram',
-      href: 'https://t.me/+ECJseGCnu_xhZTky',
+      href: 'http://t.me/edgeinofficial',
       icon: IconTelegram,
     },
   ],
