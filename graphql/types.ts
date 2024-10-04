@@ -30388,7 +30388,7 @@ export type GetListUserGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, description: string | null, public: boolean | null, created_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string } | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, description: string | null, public: boolean | null, created_at: any | null, updated_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users_public', id: number | null, display_name: string | null, person: { __typename?: 'people', id: number, name: string | null, slug: string } | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type GetListMembersQueryVariables = Exact<{
   where: List_Members_Bool_Exp;
@@ -34254,6 +34254,7 @@ export const GetListUserGroupsDocument = `
       description
       public
       created_at
+      updated_at
       created_by {
         id
         display_name

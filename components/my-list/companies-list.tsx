@@ -91,6 +91,7 @@ export const CompaniesList: FC<Props> = ({
                 wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
+                placeholder="company"
                 placeholderClass="text-gray-300"
               />
             </a>

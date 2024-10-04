@@ -8,6 +8,7 @@ query GetListUserGroups($where: list_user_groups_bool_exp!) {
       description
       public
       created_at
+      updated_at
       created_by {
         id
         display_name

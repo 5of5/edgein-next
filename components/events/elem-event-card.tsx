@@ -137,34 +137,31 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
   };
 
   return (
-    <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[18px] transition-all duration-300 hover:border-gray-400">
-      <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col w-full overflow-hidden transition-all duration-300 border border-gray-300 rounded-xl hover:border-gray-400">
+      <ElemLink
+        href={`${ROUTES.EVENTS}/${slug}`}
+        className="flex w-full shrink-0">
+        <div className="relative z-0 flex items-center justify-center w-full overflow-hidden shrink-0 h-36">
+          <div className="absolute top-0 bottom-0 left-0 right-0 object-cover max-w-full max-h-full bg-gray-400 bg-center bg-no-repeat bg-cover -z-10 blur-2xl"></div>
+          <img
+            className="relative"
+            src={eventImageUrl}
+            alt={name}
+            onError={e => {
+              (e.target as HTMLImageElement).src = randomImageOfCity(
+                location_json?.city,
+              );
+              (e.target as HTMLImageElement).onerror = null; // prevents looping
+            }}
+          />
+        </div>
+      </ElemLink>
+
+      <div className="flex flex-col justify-between h-full p-4">
         <div>
           <ElemLink
             href={`${ROUTES.EVENTS}/${slug}`}
-            className="flex w-full shrink-0">
-            <div className="relative z-0 flex items-center justify-center w-full overflow-hidden border border-gray-200 rounded-lg shrink-0 h-36">
-              <div
-                className="absolute top-0 bottom-0 left-0 right-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover -z-10 blur-2xl" // blur-[50px]
-                style={{
-                  backgroundImage: `url(${eventImageUrl}), url(${eventImageUrl})`,
-                }}></div>
-              <img
-                className="relative"
-                src={eventImageUrl}
-                alt={name}
-                onError={e => {
-                  (e.target as HTMLImageElement).src = randomImageOfCity(
-                    location_json?.city,
-                  );
-                  (e.target as HTMLImageElement).onerror = null; // prevents looping
-                }}
-              />
-            </div>
-          </ElemLink>
-          <ElemLink
-            href={`${ROUTES.EVENTS}/${slug}`}
-            className="flex items-center mt-3">
+            className="flex items-center">
             <ElemTooltip content={name} mode="light">
               <h3 className="text-lg font-medium line-clamp-3 pb-1.5">
                 {name}
