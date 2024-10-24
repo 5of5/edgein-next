@@ -46,34 +46,34 @@ const Contact: NextPage = () => {
         description="Request a company profile, tell us about you, or simply get in touch. Our team would love to hear from you!"
       />
       <div className="relative -mb-20 overflow-hidden">
-        <FigureBlurredBg className="top-0 -bottom-10 left-0 right-0 -mt-10 md:-mt-64 lg:-mt-32 -mb-32" />
-        <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-          <h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">
+        <FigureBlurredBg className="top-0 left-0 right-0 -mt-10 -mb-32 -bottom-10 md:-mt-64 lg:-mt-32" />
+        <div className="max-w-2xl px-4 py-12 mx-auto sm:px-6 lg:py-16 lg:px-8">
+          <h1 className="relative max-w-3xl text-4xl font-bold lg:text-6xl">
             Contact
           </h1>
           <div className="mt-2 text-xl text-slate-600">
             Partner with EdgeIn, submit a profile, or simply get in touch.
             <div>Our team would love to hear from you!</div>
           </div>
-          <div className="mt-16 relative">
+          <div className="relative mt-16">
             <FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-0 opacity-30 text-dark-500" />
-            <div className="absolute -top-8 left-0 right-0 aspect-video w-10/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
-            <div className="absolute -top-4 left-0 right-0 aspect-video w-11/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
+            <div className="absolute left-0 right-0 w-10/12 mx-auto border-2 -top-8 aspect-video rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-white/60 opacity-80 backdrop-blur-3xl"></div>
+            <div className="absolute left-0 right-0 w-11/12 mx-auto border-2 -top-4 aspect-video rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-white/60 opacity-80 backdrop-blur-3xl"></div>
 
-            <div className="rounded-2xl bg-white p-6 relative z-10">
+            <div className="relative z-10 p-6 bg-white rounded-2xl">
               {formSent ? (
                 <div className="flex flex-col items-center justify-center sm:h-full">
-                  <IconPaperAirplane className="mx-auto h-12 w-12 text-gray-300" />
-                  <h2 className="text-2xl font-bold text-center mt-5 lg:text-3xl ">
+                  <IconPaperAirplane className="w-12 h-12 mx-auto text-gray-300" />
+                  <h2 className="mt-5 text-2xl font-bold text-center lg:text-3xl ">
                     Message Sent!
                   </h2>
                 </div>
               ) : (
                 <>
                   <form
-                    className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-2 sm:gap-x-8"
+                    className="relative grid grid-cols-1 mt-5 gap-y-4 sm:grid-cols-2 sm:gap-x-8"
                     onSubmit={onSubmit}>
-                    <div className="group mb-2 sm:col-span-2">
+                    <div className="mb-2 group sm:col-span-2">
                       <InputText
                         label="Full Name"
                         type="text"
@@ -84,7 +84,7 @@ const Contact: NextPage = () => {
                         required
                       />
                     </div>
-                    <div className="group mb-2 sm:col-span-2">
+                    <div className="mb-2 group sm:col-span-2">
                       <InputText
                         label="Business Email"
                         type="email"
@@ -95,7 +95,7 @@ const Contact: NextPage = () => {
                         required
                       />
                     </div>
-                    <div className="group mb-2 sm:col-span-2">
+                    <div className="mb-2 group sm:col-span-2">
                       <InputText
                         label="Company (Optional)"
                         type="text"
@@ -105,7 +105,7 @@ const Contact: NextPage = () => {
                         placeholder=""
                       />
                     </div>
-                    <div className="group mb-2 sm:col-span-2">
+                    <div className="mb-2 group sm:col-span-2">
                       <InputTextarea
                         label="Message"
                         name="message"
@@ -125,7 +125,7 @@ const Contact: NextPage = () => {
               )}
             </div>
           </div>
-          <h2 className="relative font-bold text-center pt-12 text-2xl lg:text-3xl">
+          <h2 className="relative pt-12 text-2xl font-bold text-center lg:text-3xl">
             Contact our PR team at{' '}
             <a href="mailto:press@edgein.io" className="hover:text-primary-500">
               press@edgein.io
