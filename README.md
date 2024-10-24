@@ -269,7 +269,7 @@ bash clone-db-from-production-to-staging.sh
 
 #### Trigger jenkins job
 
-Trigger job at https://jenkins.edgein.dev/job/Clone%20DB%20from%20production%20tp%20staging/
+Trigger job at https://jenkins.edgeindev.com/job/Clone%20DB%20from%20production%20tp%20staging/
 
 ### Apply hasura of working branch to staging
 

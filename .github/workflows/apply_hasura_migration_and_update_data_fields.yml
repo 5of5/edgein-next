@@ -7,7 +7,7 @@ on:
     inputs:
 
 env:
-  HASURA_ENDPOINT: https://graphql.edgein.dev
+  HASURA_ENDPOINT: https://graphql.edgeindev.com
   HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
   PG_CONNECTION_STRING: ${{ secrets.PG_CONNECTION_STRING }}
 

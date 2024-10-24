@@ -10,7 +10,7 @@ variable "project" {
 
 variable "domain_name" {
   type    = string
-  default = "edgein.dev"
+  default = "edgeindev.com"
 }
 
 # rds

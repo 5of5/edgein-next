@@ -28,7 +28,7 @@ resource "vercel_deployment" "edgein" {
     AWS_SES_ACCESS_KEY_ID             = aws_iam_access_key.ses_user_key.id
     AWS_SES_ACCESS_SECRET_KEY         = aws_iam_access_key.ses_user_key.secret
     AWS_SES_REGION                    = var.region
-    SES_SOURCE                        = "EdgeIn Support <support@edgein.dev>"
+    SES_SOURCE                        = "EdgeIn Support <support@edgeindev.com>"
     ENCRYPTION_SECRET                 = random_password.hasura_jwt_secret.result
     GRAPHQL_ENDPOINT                  = local.hasura_graphql_endpoint
     HASURA_ADMIN_SECRET               = aws_ssm_parameter.hasura_admin_secret.value
