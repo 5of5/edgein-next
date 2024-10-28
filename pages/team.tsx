@@ -55,7 +55,6 @@ const Team: NextPage<Props> = () => {
 
   // const sortedTeam = [
   //   getMemberByName('Redg Snodgrass'),
-  //   getMemberByName('Raymond Lopez Aleman'),
   //   getMemberByName('Patricia Arellano'),
   // ];
 
@@ -69,26 +68,11 @@ const Team: NextPage<Props> = () => {
       linkedin: 'https://www.linkedin.com/in/redgiesnodgrass/',
     },
     {
-      image: '/images/people/raymond-l-aleman.jpg',
-      name: 'Raymond L. Aleman',
-      role: 'Co-Founder & Chief Design',
-      description:
-        'Raymond has over a decade of experience across a broad variety of disciplines including product design, web development, and user experience. He has an exceptional ability to solve complex business problems through objective-based design and compelling interactive experiences.',
-      linkedin: 'https://www.linkedin.com/in/raylopezaleman/',
-    },
-    {
       image: '/images/people/allon-gladstone.jpg',
       name: 'Allon Gladstone',
       role: 'Chief Financial Officer',
       description: '',
       linkedin: 'https://www.linkedin.com/in/allon-gladstone-3279631/',
-    },
-    {
-      image: '/images/people/andres-ramirez.jpg',
-      name: 'Andrés Ramírez',
-      role: 'Chief Technology Officer',
-      //description: "",
-      linkedin: 'https://www.linkedin.com/in/andmirez/',
     },
     {
       image: '/images/people/patricia-arellano.jpg',
@@ -126,26 +110,11 @@ const Team: NextPage<Props> = () => {
       linkedin: 'https://www.linkedin.com/in/rocky-rimando/',
     },
     {
-      image: '/images/people/osman-pulgar.jpg',
-      name: 'Osman Pulgar',
-      role: 'Virtual Strategic Analyst',
-      //description: "",
-      linkedin:
-        'https://www.linkedin.com/in/osman-eduardo-pulgar-zada-6a20b122a/',
-    },
-    {
       image: '/images/people/facundo-furque.jpg',
       name: 'Facundo Furque',
       role: 'Virtual Strategic Analyst',
       //description: "",
       linkedin: 'https://www.linkedin.com/in/facu-furque-a762a0247/',
-    },
-    {
-      image: '/images/people/jonnelle-gueco.jpg',
-      name: 'Jonnelle Gueco',
-      role: 'Virtual Strategic Analyst',
-      //description: "",
-      linkedin: 'https://www.linkedin.com/in/jonnelle-gueco-826343200/',
     },
     {
       image: '/images/people/patricia-pulgar.jpg',
@@ -154,13 +123,6 @@ const Team: NextPage<Props> = () => {
       //description: "",
       linkedin:
         'https://www.linkedin.com/in/ana-patricia-pulgar-zada-796301173/',
-    },
-    {
-      image: '/images/people/juan-panno.jpg',
-      name: 'Juan Panno',
-      role: 'Virtual Strategic Analyst',
-      //description: "",
-      linkedin: 'https://www.linkedin.com/in/juan-manuel-panno-942a89248/',
     },
     {
       image: '/images/people/carlos-mendoza.jpg',
