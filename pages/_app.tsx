@@ -14,6 +14,7 @@ import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { DefaultSeo } from 'next-seo';
+import '../styles/fonts.css'
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
 
@@ -165,7 +166,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <PopupProvider>
                   <SideBarProvider>
                     <>
-                      <TheNavbar />
                       <main className="grow selection:bg-primary-200">
                         {pageLoading ? (
                           <LoaderSpinner />

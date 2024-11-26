@@ -26,96 +26,69 @@ type Props = {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const ElemButton: FC<PropsWithChildren<Props>> = ({
-  className = '',
-  loading = false,
-  arrow = false,
-  arrowLeft = false,
-  arrowClass = '',
-  btn = '',
-  roundedFull = true,
-  size = '',
-  href = '',
-  target = '_self',
-  disabled = false,
-  children,
-  onClick,
-}) => {
-  let btnClass = '';
-  // button styles
-  if (btn === 'primary') {
-    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
-  } else if (btn === 'ol-primary') {
-    btnClass =
-      'text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:text-white hover:bg-primary-500 focus:outline-none focus:ring-1';
-  } else if (btn === 'ol-white') {
-    btnClass =
-      'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-white hover:text-primary-500 focus:outline-none focus:ring-1';
-  } else if (btn === 'transparent') {
-    btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
-  } else if (btn === 'dark') {
-    btnClass = 'text-white bg-gray-900 hover:bg-gray-700';
-  } else if (btn === 'danger') {
-    btnClass = 'text-white bg-rose-600 hover:bg-rose-500';
-  } else if (btn === 'gray') {
-    btnClass =
-      'text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500';
-  } else if (btn === 'default') {
-    btnClass =
-      'bg-white border border-gray-200 hover:bg-gray-100 active:border-primary-500';
-  } else {
-    btnClass = '';
-  }
+interface ElemButtonProps {
+  children: React.ReactNode;
+  href: string;
+  variant?: 'filled' | 'outlined';
+}
 
-  // button sizes
-  let sizeClasses = '';
+export const ElemButton: React.FC<ElemButtonProps> = ({ children, href, variant = 'filled' }) => {
+  const baseStyles = {
+    padding: '12px 24px',
+    borderRadius: '50px',
+    textDecoration: 'none',
+    fontSize: '1rem',
+    fontWeight: 500,
+    display: 'inline-block',
+    cursor: 'pointer',
+    border: '2px solid transparent',
+    position: 'relative' as const,
+    overflow: 'hidden',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    transform: 'scale(1)',
+  };
 
-  if (size === 'xs') {
-    sizeClasses = 'px-2 py-1.5 text-xs';
-  } else if (size === 'sm') {
-    sizeClasses = 'px-3.5 py-1.5 text-sm';
-  } else if (size === 'md') {
-    sizeClasses = 'px-4 py-2.5 text-sm';
-  } else if (size === 'lg') {
-    sizeClasses = 'px-5 py-2 text-lg';
-  } else {
-    sizeClasses = 'px-2.5 py-1.5 text-sm';
-  }
+  const variants = {
+    filled: {
+      backgroundColor: 'white',
+      color: 'black',
+      ':hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      },
+    },
+    outlined: {
+      backgroundColor: 'transparent',
+      color: 'white',
+      border: '2px solid white',
+      ':hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      },
+    },
+  };
 
-  btnClass += ` ${sizeClasses}`;
-
-  // button disabled
-  if (disabled || loading) {
-    btnClass = btnClass + ' opacity-40 pointer-events-none';
-  }
-
-  const componentClassName = `relative inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group
-		${btnClass}
-		${roundedFull ? 'rounded-full' : ''}
-		${arrow || arrowLeft ? 'justify-between' : 'justify-center'}
-	`;
-
-  const component = (
-    <button
-      className={componentClassName + className}
-      onClick={onClick}
-      type="submit">
-      {loading && <IconSpinner className="w-5 h-5 mr-3 -ml-1 animate-spin" />}
-      {arrowLeft && <IconArrowLeft className={`h-3 w-4 ${arrowClass}`} />}
+  return (
+    <a 
+      href={href}
+      style={{
+        ...baseStyles,
+        ...variants[variant],
+      }}
+      onMouseEnter={(e) => {
+        const target = e.currentTarget;
+        target.style.transform = 'scale(1.05)';
+        target.style.boxShadow = variant === 'filled' 
+          ? '0 10px 20px rgba(255, 255, 255, 0.2)'
+          : '0 10px 20px rgba(255, 255, 255, 0.1)';
+      }}
+      onMouseLeave={(e) => {
+        const target = e.currentTarget;
+        target.style.transform = 'scale(1)';
+        target.style.boxShadow = 'none';
+      }}
+    >
       {children}
-      {arrow && <IconArrow className={`h-3 w-4 ml-1 ${arrowClass}`} />}
-    </button>
+    </a>
   );
-
-  if (href.length) {
-    return (
-      <ElemLink href={href} target={target}>
-        {component}
-      </ElemLink>
-    );
-  }
-
-  return component;
 };
 
 type IconProps = {

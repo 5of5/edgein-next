@@ -1,7 +1,20 @@
-// @use './cloudsponge';
+@font-face {
+  font-family: 'Goldman';
+  src: url('/fonts/Unbounded-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black;
+  }
+}
 
 @layer utilities {
   .animation-delay-2000 {
@@ -57,6 +70,11 @@
       transparent 6px,
       transparent 12px
     );
+  }
+
+  .Unbounded-Bold {
+    font-family: 'Goldman', sans-serif;
+    font-weight: bold;
   }
 }
 

@@ -55,7 +55,7 @@ export const navigation = {
 
 export const TheFooter = () => {
   return (
-    <footer className="bg-white mb-14 lg:mb-0" aria-labelledby="footer-heading">
+    <footer className="bg-black text-white mb-14 lg:mb-0" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -63,9 +63,10 @@ export const TheFooter = () => {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <ElemLink href="/">
-              <ElemLogo
-                mode="logo"
-                className="w-auto h-8 transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
+              <img
+                src="/edgein-logo.png"
+                alt="EdgeIn"
+                className="h-8"
               />
             </ElemLink>
           </div>
@@ -73,13 +74,13 @@ export const TheFooter = () => {
             <div className="md:grid md:grid-cols-4 md:gap-8">
               <div></div>
               <div className="col-span-2">
-                <h3 className="text-sm font-medium tracking-wider uppercase">
+                <h3 className="text-sm font-medium tracking-wider uppercase text-gray-300">
                   Resources
                 </h3>
                 <ul role="list" className="grid grid-cols-2 gap-2 mt-4">
                   {navigation.resources.map(item => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm hover:underline">
+                      <a href={item.href} className="text-sm text-gray-400 hover:text-white hover:underline">
                         {item.name}
                       </a>
                     </li>
@@ -87,13 +88,13 @@ export const TheFooter = () => {
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
-                <h3 className="text-sm font-medium tracking-wider uppercase">
+                <h3 className="text-sm font-medium tracking-wider uppercase text-gray-300">
                   Legal
                 </h3>
                 <ul role="list" className="grid gap-2 mt-4">
                   {navigation.legal.map(item => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm hover:underline">
+                      <a href={item.href} className="text-sm text-gray-400 hover:text-white hover:underline">
                         {item.name}
                       </a>
                     </li>
@@ -103,18 +104,18 @@ export const TheFooter = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-between pt-6 mt-12 border-t border-gray-200 sm:flex-row">
+        <div className="flex flex-col justify-between pt-6 mt-12 border-t border-gray-800 sm:flex-row">
           <div className="mb-6 sm:mb-0">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               Copyright &copy; {new Date().getFullYear()}
               <a
                 href="https://www.edgein.io/"
-                className="px-1 hover:text-primary-500">
+                className="px-1 hover:text-primary-400">
                 EdgeIn Inc.
               </a>
               All Rights Reserved.
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               1319 Leavenworth San Francisco CA United States.
             </p>
           </div>
@@ -126,7 +127,7 @@ export const TheFooter = () => {
                   href={item.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-gray-500">
+                  className="text-gray-400 hover:text-white">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="w-6 h-6" aria-hidden="true" />
                 </a>
