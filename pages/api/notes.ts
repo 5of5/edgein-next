@@ -16,7 +16,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  // params:
   const notes: string = req.body.notes;
   const groupId: string | number = req.body.groupId;
   const resource_type = req.body.resourceType;
