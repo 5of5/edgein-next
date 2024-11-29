@@ -142,7 +142,7 @@ async function upsertUser(userData: any) {
 
     return data.data.insert_users?.returning[0];
   } catch (ex) {
-    console.log(ex);
+    console.log('ex......................', ex);
     throw ex;
   }
 }
@@ -278,7 +278,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     use_credits_system: userData.use_credits_system,
     last_transaction_expiration: userData.use_credits_system,
     billing_org_id: userData.billing_org_id,
-    billing_org: userData.billing_org,
+    // billing_org: userData?.billing_org,
     display_name: userData.display_name,
     auth0_linkedin_id: userData.auth0_linkedin_id,
     auth0_user_pass_id: userData.auth0_user_pass_id,

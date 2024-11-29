@@ -86,7 +86,7 @@ npm run dev
 - Open the local app admin at
 
 ```
-http://localhost:3000/admin/app/
+https://staging.edgein.dev/admin/app/
 ```
 
 NOTE: once an email is registed with Auth0 if you delete the user from the local database and try to use it again the signup will fail. You will need to use another address.

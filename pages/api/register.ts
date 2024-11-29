@@ -68,13 +68,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     result = await authService.createUser(data);
+
     const user_id = result.identities![0].user_id;
 
     let userData: any = await UserService.findOneUserByEmail(email);
+
     if (!userData) {
       isUserPassPrimaryAccount = true;
       isLinkedInPrimaryAccount = false;
       let referenceUserId = null;
+
       // check user exist or not for the current reference
       if (reference_id) {
         // look up user by reference_id
@@ -110,7 +113,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
       // upsert user info
       userData = await UserService.upsertUser(objectData);
-
+      console.log(
+        'user data....upsertUser',
+        referenceUserId,
+        !isNaN(Number(referenceUserId)),
+        userData,
+        objectData,
+      );
       // If we have referenced user, add extra credits to him
       if (referenceUserId && !isNaN(Number(referenceUserId))) {
         await UserTransactionsService.onInsertTransaction(
@@ -147,11 +156,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
 
-    await authService.linkAccounts(
-      isUserPassPrimaryAccount,
-      isLinkedInPrimaryAccount,
-      userData,
-    );
+    // await authService.linkAccounts(
+    //   isUserPassPrimaryAccount,
+    //   isLinkedInPrimaryAccount,
+    //   userData,
+    // );
 
     // Add registration credits to new user
     await UserTransactionsService.onInsertTransaction(
@@ -164,7 +173,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       userId: userData.id,
       isFirstLogin: true,
     });
-
+    console.log('after generate token', userToken);
     // Author a couple of cookies to persist a user's session
     const token = await CookieService.createUserToken(userToken);
     CookieService.setTokenCookie(res, token);
@@ -180,7 +189,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
   } catch (ex: any) {
-    return res.status(404).send({ message: ex.message });
+    return res.status(404).send({ message: ex });
   }
 
   res.send({ success: true, result });
