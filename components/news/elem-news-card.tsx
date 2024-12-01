@@ -37,7 +37,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
     };
   }[];
 
-  const vc_tags = orgs.reduce((tmp, org) => {
+  const vc_tags = orgs?.reduce((tmp, org) => {
     const tags = org.vc_firm?.investments?.investment_round?.company.reduce(
       (tmp, company) => {
         return [...tmp, ...company.tags];
@@ -47,15 +47,17 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
     return [...tmp, ...(tags || [])];
   }, new Array<string>());
 
-  const company_tags = orgs.reduce((tmp, org) => {
+  const company_tags = orgs?.reduce((tmp, org) => {
     return [...tmp, ...(org.company?.tags || [])];
   }, new Array<string>());
 
-  const tags = Array.from(new Set([...vc_tags, ...company_tags]));
+  const tags = Array.from(
+    new Set([...(vc_tags ?? []), ...(company_tags ?? [])]),
+  );
 
-  const publisher = organizations.find(org => org.type === 'publisher');
+  const publisher = organizations?.find(org => org.type === 'publisher');
 
-  const otherOrganizations = organizations.filter(
+  const otherOrganizations = organizations?.filter(
     org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
   );
 

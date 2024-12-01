@@ -61,7 +61,9 @@ export const ElemListCard: FC<Props> = ({
       )}`
     : `${ROUTES.GROUPS}/${resource.id}`;
 
-  const groupTotalLists = isResourceList ? 0 : resource.list_user_groups.length;
+  const groupTotalLists = isResourceList
+    ? 0
+    : resource?.list_user_groups?.length;
 
   const groupTotalNotes = isResourceList ? 0 : resource.notes.length;
 

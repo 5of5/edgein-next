@@ -32386,12 +32386,6 @@ export const GetEventsDocument = `
     is_featured
     created_at
     library
-    event_person {
-      id
-      type
-      created_at
-      person_id
-    }
     parent_event_id
   }
   events_aggregate(where: $where) {
@@ -32738,28 +32732,10 @@ export const GetFollowsByUserDocument = `
       id
       public
       created_by_id
-      created_by {
-        id
-        display_name
-        email
-        person {
-          id
-          slug
-          name
-        }
-      }
+      
       created_at
       updated_at
-      total_no_of_resources
-      follows_companies {
-        resource_id
-      }
-      follows_vcfirms {
-        resource_id
-      }
-      follows_people {
-        resource_id
-      }
+      
     }
   }
 }
@@ -33120,22 +33096,10 @@ export const GetGroupsOfUserDocument = `
       twitter
       discord
       public
-      created_by {
-        id
-        display_name
-        email
-        person {
-          id
-          name
-          slug
-        }
-      }
+      
       created_at
       updated_at
       notes {
-        id
-      }
-      list_user_groups {
         id
       }
       user_group_members {
@@ -33175,17 +33139,6 @@ export const GetGroupsDocument = `
     discord
     public
     created_by_user_id
-    created_by {
-      id
-      display_name
-      email
-      person {
-        id
-        name
-        slug
-        picture
-      }
-    }
     notes {
       id
       notes
@@ -33210,10 +33163,6 @@ export const GetGroupsDocument = `
       email
       created_at
       created_by_user_id
-    }
-    list_user_groups {
-      id
-      list_id
     }
   }
   user_groups_aggregate(where: $where) {
@@ -34569,7 +34518,6 @@ export const GetListsDocument = `
     id
     name
     description
-    total_no_of_resources
     public
     created_at
     updated_at
@@ -34633,7 +34581,6 @@ export const GetListDocument = `
     id
     name
     description
-    total_no_of_resources
     public
     created_at
     updated_at
@@ -34699,29 +34646,6 @@ export const GetNewsDocument = `
     text
     metadata
     updated_at
-    organizations {
-      type
-      company {
-        id
-        name
-        slug
-        logo
-        tags
-      }
-      vc_firm {
-        id
-        name
-        slug
-        logo
-        investments {
-          investment_round {
-            company {
-              tags
-            }
-          }
-        }
-      }
-    }
   }
   news_aggregate(where: $where) {
     aggregate {
