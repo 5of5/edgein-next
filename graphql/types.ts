@@ -37210,81 +37210,8 @@ export const GetVcFirmDocument = `
         }
       }
     }
-    to_links {
-      link_type
-      from_company {
-        id
-        name
-        slug
-        tags
-        sentiment
-        overview
-        logo
-      }
-      from_vc_firm {
-        id
-        name
-        slug
-        tags
-        sentiment
-        overview
-        logo
-      }
-    }
-    from_links {
-      link_type
-      to_company {
-        id
-        name
-        slug
-        tags
-        sentiment
-        overview
-        logo
-        total_employees
-        investor_amount
-        year_founded
-        investment_rounds_aggregate {
-          aggregate {
-            count
-          }
-        }
-        investment_rounds(order_by: {round_date: desc}, limit: 1) {
-          round
-          round_date
-        }
-      }
-      to_vc_firm {
-        id
-        name
-        slug
-        tags
-        sentiment
-        year_founded
-        investment_amount_total
-        num_of_investments
-        overview
-        logo
-      }
-    }
-    news_links {
-      id
-      news {
-        id
-        date
-        text
-        link
-        kind
-        source
-        status
-        organizations {
-          id
-          type
-          company_id
-          vc_firm_id
-        }
-      }
-    }
+    
+    
   }
 }
     `;
