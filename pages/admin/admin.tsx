@@ -86,8 +86,7 @@ const AdminApp = () => {
       loginPage={ElemAdminLogin}
       layout={ElemLayoutApp}
       dataProvider={dataProvider}
-      authProvider={authProvider}
-      theme={theme}>
+      authProvider={authProvider}>
       <CssBaseline />
       <Resource
         name="disabled_emails"

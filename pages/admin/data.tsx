@@ -51,8 +51,7 @@ const AdminData = () => {
       loginPage={ElemAdminLogin}
       layout={ElemLayoutApp}
       dataProvider={dataProvider}
-      authProvider={authProvider}
-      theme={theme}>
+      authProvider={authProvider}>
       <CssBaseline />
       <Resource
         name="leads"
