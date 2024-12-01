@@ -31602,10 +31602,6 @@ export const GetCompanyBySlugDocument = `
   companies(where: {slug: {_eq: $slug}}) {
     id
     name
-    coin {
-      id
-      ticker
-    }
     slug
     logo
     layer
@@ -31635,143 +31631,8 @@ export const GetCompanyBySlugDocument = `
     glassdoor
     status_tags
     library
-    teamMembers {
-      id
-      person {
-        id
-        slug
-        name
-        picture
-        linkedin
-        personal_email
-        work_email
-      }
-      function
-      start_date
-      end_date
-      founder
-      title
+    
     }
-    investment_rounds {
-      id
-      round_date
-      round
-      amount
-      valuation
-      investments {
-        id
-        person {
-          id
-          slug
-          name
-          picture
-        }
-        vc_firm {
-          id
-          slug
-          name
-          logo
-        }
-        amount
-      }
-    }
-    to_links {
-      id
-      link_type
-      from_company {
-        id
-        name
-        slug
-        tags
-        sentiment
-        overview
-        logo
-        status_tags
-      }
-      from_vc_firm {
-        id
-        name
-        slug
-        tags
-        sentiment
-        overview
-        logo
-      }
-    }
-    from_links {
-      id
-      link_type
-      to_company {
-        id
-        name
-        slug
-        tags
-        sentiment
-        overview
-        logo
-        total_employees
-        investor_amount
-        year_founded
-        investment_rounds_aggregate {
-          aggregate {
-            count
-          }
-        }
-        investment_rounds(order_by: {round_date: desc}, limit: 1) {
-          round
-          round_date
-        }
-        status_tags
-      }
-      to_vc_firm {
-        id
-        name
-        slug
-        tags
-        sentiment
-        overview
-        year_founded
-        investment_amount_total
-        num_of_investments
-        logo
-      }
-    }
-    news_links {
-      id
-      news {
-        id
-        date
-        text
-        link
-        kind
-        status
-        organizations {
-          id
-          type
-          company_id
-          vc_firm_id
-        }
-      }
-    }
-    news_links {
-      id
-      news {
-        id
-        date
-        text
-        link
-        kind
-        source
-        status
-        organizations {
-          id
-          type
-          company_id
-          vc_firm_id
-        }
-      }
-    }
-  }
 }
     `;
 export const useGetCompanyBySlugQuery = <
