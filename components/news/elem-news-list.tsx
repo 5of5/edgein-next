@@ -68,7 +68,7 @@ const ElemNewsList: React.FC<Props> = ({
                   )?.type;
                   isAuthor = newsPersonType === 'author';
                 } else {
-                  const newsOrganizationType = item.organizations.find(
+                  const newsOrganizationType = item?.organizations.find(
                     (item: any) =>
                       item[
                         resourceType === 'companies'

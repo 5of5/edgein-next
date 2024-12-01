@@ -19,22 +19,9 @@ query GetGroupsOfUser($user_id: Int!) {
       twitter
       discord
       public
-      created_by {
-        id
-        display_name
-        email
-        person {
-          id
-          name
-          slug
-        }
-      }
       created_at
       updated_at
       notes {
-        id
-      }
-      list_user_groups {
         id
       }
       user_group_members {
