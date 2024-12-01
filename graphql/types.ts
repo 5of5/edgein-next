@@ -31260,14 +31260,6 @@ export const PeopleFragmentFragmentDoc = `
       website
     }
   }
-  people_computed_data {
-    title
-    tags
-    person_id
-    location_json
-    geopoint
-    id
-  }
 }
     `;
 export const UserForTokenFragmentDoc = `
@@ -35252,34 +35244,11 @@ export const GetPersonDocument = `
         }
       }
     }
-    news_links {
-      id
-      news {
-        id
-        date
-        text
-        link
-        kind
-        source
-        status
-        people {
-          id
-          type
-          person_id
-        }
-      }
-    }
+   
     user {
       id
     }
-    people_computed_data {
-      title
-      tags
-      person_id
-      location_json
-      geopoint
-      id
-    }
+   
   }
 }
     `;

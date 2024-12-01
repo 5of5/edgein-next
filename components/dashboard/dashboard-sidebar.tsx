@@ -53,11 +53,11 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
       icon: IconCash,
       title: 'Investors',
     },
-    {
-      href: ROUTES.EVENTS,
-      icon: IconCalendarDays,
-      title: 'Events',
-    },
+    // {
+    //   href: ROUTES.EVENTS,
+    //   icon: IconCalendarDays,
+    //   title: 'Events',
+    // },
     {
       href: ROUTES.NEWS,
       icon: IconNewspaper,
