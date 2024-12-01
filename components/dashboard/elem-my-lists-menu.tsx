@@ -27,7 +27,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
   const getActiveClass = (id: number, name: string) => {
     return `${ROUTES.LISTS}/${id}/${name}/` === router.asPath
-      ? 'bg-gray-100 text-gray-900'
+      ? 'bg-neutral-900 text-gray-300'
       : 'text-gray-500';
   };
 
@@ -125,14 +125,14 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
           buttonComponent={open => (
             <button
               className={`${
-                open ? 'bg-gray-100' : ''
-              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}>
+                open ? 'bg-neutral-900' : ''
+              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-300 rounded-md flex-1 transition-all hover:bg-neutral-900`}>
               <IconSidebarList
                 className={`w-5 h-5 ${
-                  open ? 'text-primary-500' : 'text-gray-900'
+                  open ? 'text-primary-500' : 'text-gray-300'
                 }`}
               />
-              <p className="text-sm font-medium text-gray-900">Lists</p>
+              <p className="text-sm font-medium text-gray-300">Lists</p>
             </button>
           )}
         />
@@ -171,7 +171,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                         href={`${ROUTES.LISTS}/${list.id}/${
                           listName === 'crap' ? 'sh**' : kebabCase(listName)
                         }`}
-                        className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                        className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-neutral-900 hover:text-gray-300 ${getActiveClass(
                           list.id,
                           listName === 'crap' ? 'sh**' : kebabCase(listName),
                         )} `}>

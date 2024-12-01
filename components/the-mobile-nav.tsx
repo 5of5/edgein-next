@@ -136,7 +136,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
   return (
     <>
       <nav
-        className={`fixed z-50 bottom-0 bg-white w-full h-14 px-0.5 shadow-up grid lg:hidden ${
+        className={`fixed z-50 bottom-0 bg-dark-100 w-full h-14 px-0.5 shadow-up grid lg:hidden ${
           user ? 'grid-cols-6' : 'grid-cols-5'
         }`}>
         {tabs.map((item, index) => (
@@ -175,7 +175,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
           {user?.person?.picture ? (
             <ElemPhoto
               photo={user?.person?.picture}
-              wrapClass="flex items-center justify-center shrink-0 w-7 h-7 bg-white rounded-full shadow border border-black/10"
+              wrapClass="flex items-center justify-center shrink-0 w-7 h-7 bg-dark-100 rounded-full shadow border border-black/10"
               imgClass="object-cover max-w-full max-h-full rounded-full"
               imgAlt={'profile'}
               placeholder="user"
@@ -200,7 +200,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
         overlay={false}
         placement="topRight"
         transition="slideFromRight"
-        panelClass="w-full h-full bg-white mb-14 pb-4">
+        panelClass="w-full h-full bg-dark-100 mb-14 pb-4">
         <div className="flex items-center justify-between px-4 py-3">
           <h3 className="font-medium">Menu</h3>
           <div className="flex space-x-2">
@@ -224,7 +224,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
               key={index}
               href={item?.href ? item.href : ''}
               onClick={onClose}
-              className="block p-3 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-lg outline-none hover:bg-gray-100">
+              className="block p-3 transition duration-150 ease-in-out bg-dark-100 border border-gray-300 rounded-lg outline-none hover:bg-neutral-900">
               {item?.icon && (
                 <item.icon title={item.title} className="w-6 h-6 shrink-0" />
               )}
@@ -244,7 +244,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
               key={item.name}
               href={item?.href ? item.href : ''}
               onClick={onClose}
-              className="col-span-2 p-3 text-sm transition duration-150 ease-in-out bg-white border border-gray-300 rounded-lg outline-none hover:bg-gray-100">
+              className="col-span-2 p-3 text-sm transition duration-150 ease-in-out bg-dark-100 border border-gray-300 rounded-lg outline-none hover:bg-neutral-900">
               {item.name}
             </ElemLink>
           ))}

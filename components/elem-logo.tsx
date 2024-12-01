@@ -26,50 +26,18 @@ export const ElemLogo = (
           fill="#ffffff"
         />
       )}
-      <path d="M6.258 0h37.276L40.03 7.254H2.754L6.258 0Z" fill="url(#a)" />
+      <path 
+        d="M6.258 0h37.276L40.03 7.254H2.754L6.258 0Z" 
+        fill={props.mode === 'logo-inverted' ? '#ffffff' : '#0E0067'} 
+      />
       <path
         d="M40.03 21.573H2.754l3.504 7.254h37.276l-3.504-7.254Z"
-        fill="url(#b)"
+        fill={props.mode === 'logo-inverted' ? '#ffffff' : '#0E0067'}
       />
       <path
         d="M1.752 10.765H39.03l-1.753 3.627 1.753 3.627H1.752L0 14.392l1.752-3.627Z"
-        fill="url(#c)"
+        fill={props.mode === 'logo-inverted' ? '#ffffff' : '#0E0067'}
       />
-      <defs>
-        <linearGradient
-          id="a"
-          x1="43.078"
-          y1="-1.067"
-          x2="29.021"
-          y2="37.272"
-          gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F8DA4B" />
-          <stop offset=".531" stopColor="#FE33D0" />
-          <stop offset="1" stopColor="#1B01FE" />
-        </linearGradient>
-        <linearGradient
-          id="b"
-          x1="43.078"
-          y1="-1.067"
-          x2="29.021"
-          y2="37.272"
-          gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F8DA4B" />
-          <stop offset=".531" stopColor="#FE33D0" />
-          <stop offset="1" stopColor="#1B01FE" />
-        </linearGradient>
-        <linearGradient
-          id="c"
-          x1="43.078"
-          y1="-1.067"
-          x2="29.021"
-          y2="37.272"
-          gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F8DA4B" />
-          <stop offset=".531" stopColor="#FE33D0" />
-          <stop offset="1" stopColor="#1B01FE" />
-        </linearGradient>
-      </defs>
     </svg>
   );
 };

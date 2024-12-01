@@ -52,7 +52,7 @@ export const PeopleList: FC<Props> = ({ listId, listName, isListAuthor }) => {
               className="flex items-center space-x-3 transition-all shrink-0">
               <ElemPhoto
                 photo={props.row.original?.person?.picture}
-                wrapClass={`flex items-center justify-center shrink-0 w-10 h-10 bg-white overflow-hidden ${
+                wrapClass={`flex items-center justify-center shrink-0 w-10 h-10 bg-dark-100 overflow-hidden ${
                   props.row.original?.person?.picture
                     ? 'rounded-lg border border-gray-300'
                     : 'rounded-full'

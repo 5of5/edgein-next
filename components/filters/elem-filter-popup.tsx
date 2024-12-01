@@ -103,7 +103,7 @@ export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
           ref={setPopperRef}
           style={styles.popper}
           {...attributes.popper}
-          className={`z-10 bg-white border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}>
+          className={`z-10 bg-dark-100 border border-gray-300 shadow-lg rounded-lg w-[calc(100vw-50px)] max-w-sm ${popupClass}`}>
           <div className="px-4 py-3">{children}</div>
           <div className="flex items-center justify-end px-4 py-2 border-t border-gray-100 gap-x-4">
             <button

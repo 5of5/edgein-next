@@ -50,19 +50,19 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
       'text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:text-white hover:bg-primary-500 focus:outline-none focus:ring-1';
   } else if (btn === 'ol-white') {
     btnClass =
-      'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-white hover:text-primary-500 focus:outline-none focus:ring-1';
+      'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-dark-100 hover:text-primary-500 focus:outline-none focus:ring-1';
   } else if (btn === 'transparent') {
     btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
   } else if (btn === 'dark') {
-    btnClass = 'text-white bg-gray-900 hover:bg-gray-700';
+    btnClass = 'text-white bg-gray-300 hover:bg-gray-700';
   } else if (btn === 'danger') {
     btnClass = 'text-white bg-rose-600 hover:bg-rose-500';
   } else if (btn === 'gray') {
     btnClass =
-      'text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500';
+      'text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500';
   } else if (btn === 'default') {
     btnClass =
-      'bg-white border border-gray-200 hover:bg-gray-100 active:border-primary-500';
+      'bg-dark-100 border border-gray-200 hover:bg-neutral-900 active:border-primary-500';
   } else {
     btnClass = '';
   }

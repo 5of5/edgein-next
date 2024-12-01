@@ -116,7 +116,7 @@ export const ElemAddFilter: FC<Props> = ({
           ) : (
             <IconPlus
               strokeWidth={3}
-              className="w-5 h-5 p-0.5 text-gray-500 cursor-pointer hover:bg-gray-100 hover:rounded-lg"
+              className="w-5 h-5 p-0.5 text-gray-500 cursor-pointer hover:bg-neutral-900 hover:rounded-lg"
             />
           )}
         </Popover.Button>
@@ -133,7 +133,7 @@ export const ElemAddFilter: FC<Props> = ({
             ref={setPopperElement}
             style={styles.popper}
             {...attributes.popper}
-            className={`z-30 bg-white border border-gray-300 rounded-lg shadow-lg min-w-56 max-h ${panelClass}`}>
+            className={`z-30 bg-dark-100 border border-gray-300 rounded-lg shadow-lg min-w-56 max-h ${panelClass}`}>
             {({ close }) => (
               <>
                 <CategoryFilterOption
@@ -209,7 +209,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                       name={item.value}
                       className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm ${
                         userCanUseFilter ? '' : 'text-gray-400'
-                      } px-4 py-2 m-0 transition-all hover:bg-gray-100`}>
+                      } px-4 py-2 m-0 transition-all hover:bg-neutral-900`}>
                       {!userCanUseFilter && (
                         <IconLockClosed
                           className="inline-block w-4 h-4 mr-1 shrink-0"
@@ -223,7 +223,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                     <button
                       onClick={onSelectFilterOption}
                       name={item.value}
-                      className="flex items-center w-full px-4 py-2 m-0 text-sm text-left transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
+                      className="flex items-center w-full px-4 py-2 m-0 text-sm text-left transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
                       {item.label}
                     </button>
                   )}

@@ -101,7 +101,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     <>
       <header className="sticky top-0 left-0 right-0 z-40">
         <nav
-          className="flex items-center justify-between w-full px-4 mx-auto border-b border-gray-200 bg-white/80 backdrop-blur h-14"
+          className="flex items-center justify-between w-full px-4 mx-auto border-b border-dark-200 bg-black backdrop-blur h-14"
           aria-label="Global">
           <div className="flex items-center gap-3">
             {/* <ElemButton
@@ -115,7 +115,7 @@ export const TheNavbar: FC<Props> = ({}) => {
               href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
               className="w-auto mr-4 lg:w-64">
               <ElemLogo
-                mode="logo"
+                mode="logo-inverted"
                 className="w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70"
               />
             </ElemLink>
@@ -134,7 +134,7 @@ export const TheNavbar: FC<Props> = ({}) => {
               <IconSearch className="w-5 h-5" />
             </ElemButton>
 
-            {user ? (
+            {/* {user ? (
               <>
                 <ElemButton
                   href={ROUTES.NOTIFICATIONS}
@@ -163,9 +163,9 @@ export const TheNavbar: FC<Props> = ({}) => {
                 className="whitespace-nowrap">
                 Sign in
               </ElemButton>
-            )}
+            )} */}
 
-            <UserMenu />
+            {/* <UserMenu /> */}
           </div>
         </nav>
       </header>
@@ -182,7 +182,7 @@ export const TheNavbar: FC<Props> = ({}) => {
         showCloseIcon={false}
         placement="topLeft"
         transition="slideFromLeft"
-        panelClass="h-full w-full max-w-xs mb-14 bg-white">
+        panelClass="h-full w-full max-w-xs mb-14 bg-dark-100">
         <DashboardSidebar />
       </ElemModal>
     </>

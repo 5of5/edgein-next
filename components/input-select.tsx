@@ -39,7 +39,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
           <>
             <div className="relative">
               <Listbox.Button
-                className={`relative w-full appearance-none border-none bg-white rounded-md pl-1.5 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-gray-300 hover:ring-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
+                className={`relative w-full appearance-none border-none bg-dark-100 rounded-md pl-1.5 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-gray-300 hover:ring-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
                   disabled ? 'bg-gray-200 cursor-not-allowed' : ''
                 }`}>
                 {multiple ? (
@@ -54,7 +54,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                     {value.map((item: any) => (
                       <span
                         key={item.id}
-                        className="px-2 py-1 text-sm bg-gray-100 rounded-md">
+                        className="px-2 py-1 text-sm bg-neutral-900 rounded-md">
                         {item.icon && (
                           <item.icon
                             title={item.title}
@@ -91,7 +91,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0">
                 <Listbox.Options
-                  className={`absolute z-10 mt-1 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none ${dropdownClasses}`}>
+                  className={`absolute z-10 mt-1 w-full bg-dark-100 border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none ${dropdownClasses}`}>
                   {options.map((option: any, index: number) => (
                     <Listbox.Option
                       key={index}

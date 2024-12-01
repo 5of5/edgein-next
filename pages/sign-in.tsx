@@ -84,7 +84,7 @@ export default function SignIn() {
         placement="top"
         transition="slideFromTop"
         className="relative z-[60]"
-        panelClass="fixed inset-0 z-[50] w-full h-full bg-white">
+        panelClass="fixed inset-0 z-[50] w-full h-full bg-dark-100">
         <ElemSignInHeader
           rightComponent={
             signUpStep === 0 ? (

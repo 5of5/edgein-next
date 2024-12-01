@@ -261,7 +261,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               <ElemLink href={resourceLink}>
                 <ElemPhoto
                   photo={resource?.logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-white rounded-lg border border-gray-300"
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-dark-100 rounded-lg border border-gray-300"
                   imgClass="object-fit max-w-full max-h-full"
                   imgAlt={resource?.name}
                   placeholder="user"
@@ -270,7 +270,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               </ElemLink>
             ) : layout === 'groupAndAuthor' ? (
               <ElemLink href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}>
-                <div className="flex items-center justify-center w-12 h-12 p-1 mb-2 bg-gray-100 border border-gray-100 rounded-lg">
+                <div className="flex items-center justify-center w-12 h-12 p-1 mb-2 bg-neutral-900 border border-gray-100 rounded-lg">
                   <IconSidebarGroups
                     className="w-7 h-7"
                     title={data?.user_group?.name}
@@ -283,7 +283,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}>
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
-                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-dark-100 rounded-full border border-gray-200"
                   imgClass="object-fit max-w-full max-h-full rounded-full"
                   imgAlt={
                     data?.created_by_user?.person?.name ||
@@ -296,7 +296,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                     data?.created_by_user?.display_name ||
                     `User: ${data?.created_by}`
                   }
-                  placeholderClass="text-gray-300 bg-white p-0"
+                  placeholderClass="text-gray-300 bg-dark-100 p-0"
                 />
               </ElemLink>
             )}
@@ -315,7 +315,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                     data?.created_by_user?.display_name
                   }
                   placeholder="user"
-                  placeholderClass="text-gray-300 bg-white p-0"
+                  placeholderClass="text-gray-300 bg-dark-100 p-0"
                 />
               </ElemLink>
             )}
@@ -415,7 +415,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
           <div>
             {data?.created_by_user?.id === user?.id && (
               <Popover className="relative z-10 transition-all">
-                <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 focus:outline-none">
+                <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-neutral-900 focus:outline-none">
                   <IconEllipsisVertical
                     className="w-6 h-6 text-gray-600"
                     title="Options"
@@ -429,7 +429,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                   leave="transition duration-75 ease-out"
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0">
-                  <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-white border border-gray-300 rounded-lg shadow-lg">
+                  <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-dark-100 border border-gray-300 rounded-lg shadow-lg">
                     {({ close }) => (
                       <>
                         <button
@@ -437,14 +437,14 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                             onEditNote(data);
                             close();
                           }}
-                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
+                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
                           Edit note
                         </button>
                         <button
                           onClick={() => {
                             onConfirmDeleteNote(data);
                           }}
-                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
+                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
                           Delete
                         </button>
                       </>
@@ -457,7 +457,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         </div>
         <div className="px-4 py-2 grow min-h-fit">
           <p
-            className={`break-all whitespace-pre-line text-sm text-gray-900 ${
+            className={`break-all whitespace-pre-line text-sm text-gray-300 ${
               !contentShowAll && 'line-clamp-5'
             }`}
             ref={contentDiv}
@@ -488,7 +488,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         )}
         <div className="flex space-x-1 border-gray-300 border-y">
           <button
-            className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-gray-100 ${
+            className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-neutral-900 ${
               isLikedByCurrentUser ? 'text-primary-500' : 'text-gray-500'
             }`}
             onClick={onLikeButton}>
@@ -503,7 +503,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
             )}
           </button>
           <button
-            className="flex items-center justify-center flex-1 px-2 py-1 font-medium text-gray-500 shrink grow hover:bg-gray-100"
+            className="flex items-center justify-center flex-1 px-2 py-1 font-medium text-gray-500 shrink grow hover:bg-neutral-900"
             onClick={onCommentButton}>
             <IconAnnotation className="w-5 h-5 mr-1" title="Comment" /> Comment
           </button>
@@ -517,7 +517,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         <div className="flex items-start px-4 py-2 space-x-2">
           <ElemPhoto
             photo={user?.person?.picture}
-            wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+            wrapClass="aspect-square shrink-0 bg-dark-100 overflow-hidden rounded-full w-8"
             imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
             imgAlt={user?.person?.name || user?.display_name}
             placeholder="user"
@@ -538,7 +538,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               onClick={onCommentSubmit}
               className={`absolute z-10 right-2 bottom-[0.3rem] flex items-center justify-center w-8 h-8 rounded-full  ${
                 commentContent.length > 0
-                  ? 'cursor-pointer hover:bg-gray-100'
+                  ? 'cursor-pointer hover:bg-neutral-900'
                   : 'cursor-not-allowed'
               }`}>
               {commentContent.length > 0 ? (
@@ -569,7 +569,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         onClose={handleCloseDeleteNoteConfirm}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-3 z-10 my-10">
         <div>
           <h2 className="text-xl font-medium">Delete Note?</h2>
         </div>

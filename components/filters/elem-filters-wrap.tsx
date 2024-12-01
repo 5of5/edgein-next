@@ -34,7 +34,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
   }, []);
   return (
     <>
-      <ElemSticky activeClass="top-14 bg-white shadow-sm">
+      <ElemSticky activeClass="top-14 bg-dark-100 shadow-sm">
         <div className="px-8 py-3" role="tablist">
           {isDesktop ? (
             <div className="flex flex-wrap w-full gap-3">{children}</div>
@@ -56,9 +56,9 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
         onClose={() => setShowMobileFilters(false)}
         overlay={false}
         showCloseIcon={false}
-        panelClass="w-full my-14 bg-white">
+        panelClass="w-full my-14 bg-dark-100">
         <div className="flex flex-col h-[calc(100vh_-_7rem)] gap-4">
-          <div className="sticky top-0 z-20 px-4 py-2 bg-white border-b border-gray-200">
+          <div className="sticky top-0 z-20 px-4 py-2 bg-dark-100 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">Filters</h2>
               <ElemButton
@@ -74,7 +74,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
 
           <div className="flex flex-col gap-3 px-4">{children}</div>
 
-          <div className="px-4 mt-auto bg-white h-14">
+          <div className="px-4 mt-auto bg-dark-100 h-14">
             <div className="py-2 border-t border-gray-200">
               <ElemButton
                 btn="primary"

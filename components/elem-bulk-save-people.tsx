@@ -158,7 +158,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
         onClose={onCloseSaveToListDialog}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-3 z-10 my-10">
         <div className="pb-3 border-b border-gray-200">
           <h2 className="text-xl font-medium">{text}</h2>
         </div>
@@ -170,7 +170,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
               return (
                 <li key={list.id}>
                   <InputCheckbox
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-neutral-900"
                     labelClass="grow text-sm"
                     label={getNameFromListName(list)}
                     checked={selected}
@@ -229,7 +229,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
             <div className="pt-3 border-t border-t-gray-200">
               <ElemButton
                 onClick={showCreateNewList}
-                className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100">
+                className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-neutral-900">
                 <IconPlus className="w-4 h-4" />
                 <span className="self-start text-sm">Save to new list</span>
               </ElemButton>

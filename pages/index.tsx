@@ -202,11 +202,11 @@ const Home = () => {
 
   return (
     <>
-      <section className="relative overflow-hidden isolate">
+      <section className="relative overflow-hidden isolate bg-black">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1422 800"
-          className="absolute inset-0 -z-10 h-full w-full stroke-gray-100 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]">
+          className="absolute inset-0 -z-10 h-full w-full stroke-white [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]">
           <path fill="url(#pattern1)" d="M-711-400h2844v1600H-711z" />
           <path fill="url(#pattern2)" d="M-711-400h2844v1600H-711z" />
           <path fill="url(#pattern3)" d="M-711-400h2844v1600H-711z" />
@@ -246,10 +246,10 @@ const Home = () => {
 
         <div className="px-6 pt-10 pb-24 mx-auto max-w-7xl sm:pb-32 lg:flex lg:items-center lg:px-8 lg:py-16">
           <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl lg:flex-shrink-0">
-            <h1 className="mt-10 text-4xl font-bold tracking-tight sm:text-6xl">
+            <h1 className="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">
               Web3 business data and knowledge.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-500">
+            <p className="mt-6 text-lg leading-8 text-gray-400">
               Connect to builders from 100k Web3 organizations; Companies,
               Investors, Events, and Media to people, updated daily.
             </p>
@@ -262,7 +262,7 @@ const Home = () => {
                 Access now
               </ElemButton>
             </div>
-            <p className="mt-4 text-gray-500">
+            <p className="mt-4 text-gray-400">
               <strong>EdgeIn is free to try</strong> for as long as you’d like
             </p>
           </div>
@@ -272,12 +272,12 @@ const Home = () => {
                 <div
                   className="absolute inset-x-0 bottom-0 overflow-hidden -z-10 transform-gpu blur-3xl opacity-10"
                   aria-hidden="true">
-                  <div className="relative h-[500px] w-full bg-gradient-to-tr from-primary-500 via-[#FE33D0] to-[#F8DA4B]"></div>
+                  <div className="relative h-[500px] w-full"></div>
                 </div>
                 <img
                   src="/images/features/hero2.png"
                   alt="Web3 and AI data intelligence"
-                  className="w-[60rem] rounded-lg shadow-xl shadow-primary-800/10 ring-1 ring-gray-200"
+                  className="w-[60rem] rounded-lg shadow-xl shadow-primary-800/10"
                 />
               </div>
             </div>
@@ -285,10 +285,10 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="bg-gray-100">
+      <div className="bg-black">
         <section className="pt-16 pb-8 mx-auto max-w-7xl lg:px-6">
           <div className="px-6 text-left lg:text-center lg:px-0">
-            <h2 className="pb-8 text-3xl font-bold sm:text-4xl">
+            <h2 className="pb-8 text-3xl font-bold text-white sm:text-4xl">
               Why use EdgeIn
             </h2>
           </div>
@@ -303,7 +303,7 @@ const Home = () => {
                       `${
                         selected
                           ? 'text-white bg-primary-500 border-primary-500'
-                          : ' border-gray-300 hover:border-gray-900'
+                          : ' border-gray-300 hover:border-neutral-900'
                       }  whitespace-nowrap flex border-box rounded-4xl border px-4 py-2.5 font-medium text-sm outline-none transition-all`
                     }
                     key={index}>
@@ -313,7 +313,7 @@ const Home = () => {
               })}
             </Tab.List>
 
-            <div className="p-6 mx-4 mt-6 border border-gray-300 rounded-xl lg:mx-0 lg:flex lg:items-center lg:gap-x-24">
+            <div className="p-6 mx-4 mt-6 border border-gray-700 rounded-xl bg-neutral-900 lg:mx-0 lg:flex lg:items-center lg:gap-x-24">
               <Tab.Panels className="w-full max-w-md mx-auto lg:mx-0">
                 {whyEdgein.map((item: any, index: number) => {
                   const { title, benefits } = item;
@@ -351,11 +351,11 @@ const Home = () => {
           </Tab.Group>
         </section>
 
-        <section className="px-6 pt-8 pb-16 mx-auto max-w-7xl lg:px-6">
-          <h2 className="max-w-lg mx-auto text-lg text-center">
+        <section className="px-6 pt-8 pb-16 mx-auto max-w-7xl lg:px-6 bg-black">
+          <h2 className="max-w-lg mx-auto text-lg text-center text-gray-300">
             Trusted by leading companies around the world.
           </h2>
-          <div className="grid items-center grid-cols-4 mt-10 gap-x-8 gap-y-10 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-7">
+          <div className="grid items-center grid-cols-4 mt-10 gap-x-8 gap-y-10 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-7 text-gray-500">
             {logos.map((organization: any, index: number) => {
               const { src, alt, className } = organization;
               return (
@@ -363,18 +363,18 @@ const Home = () => {
                   key={index}
                   src={src}
                   alt={alt}
-                  className={`col-span-2 max-h-12 w-full object-contain sm:col-span-1 ${
+                  className={`col-span-2 max-h-12 w-full object-contain sm:col-span-1 brightness-0 invert ${
                     className ? className : ''
                   }`}
                 />
               );
             })}
           </div>
-          <h3 className="max-w-lg mx-auto mt-8 text-lg text-center lg:px-4">
+          <h3 className="max-w-lg mx-auto mt-8 text-lg text-center lg:px-4 text-gray-500">
             As seen on:
           </h3>
 
-          <div className="grid items-center max-w-lg grid-cols-3 mx-auto mt-3 sm:grid-cols-3 gap-x-8 gap-y-10 sm:max-w-xl sm:gap-x-10">
+          <div className="grid items-center max-w-lg grid-cols-3 mx-auto mt-3 sm:grid-cols-3 gap-x-8 gap-y-10 sm:max-w-xl sm:gap-x-10 text-gray-500">
             {publishersLogos.map((publisher: any, index: number) => {
               const { src, alt, link, className } = publisher;
               return (
@@ -382,7 +382,7 @@ const Home = () => {
                   <img
                     src={src}
                     alt={alt}
-                    className={`col-span-1 max-h-12 w-full object-contain sm:col-span-1 ${
+                    className={`col-span-1 max-h-12 w-full object-contain sm:col-span-1 brightness-0 invert ${
                       className ? className : ''
                     }`}
                   />
@@ -393,7 +393,7 @@ const Home = () => {
         </section>
       </div>
 
-      <section className="px-6 py-8 mx-auto max-w-7xl lg:py-16 lg:px-6">
+      <section className="px-6 py-8 mx-auto max-w-7xl lg:py-16 lg:px-6 bg-black">
         <div className="md:grid md:grid-cols-12 md:gap-10">
           <div className="flex flex-col sm:space-y-4 md:col-span-5">
             <h2 className="pb-4 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -406,8 +406,8 @@ const Home = () => {
                   key={index}
                   className={`px-4 py-3 border-l-[3px] rounded-r-xl ${
                     selectedFeature === index
-                      ? 'transform border-l-primary-500 bg-white'
-                      : 'border-gray-200 bg-transparent'
+                      ? 'transform border-l-primary-500 bg-neutral-900'
+                      : 'border-gray-700 bg-transparent'
                   }`}>
                   <button
                     onClick={() => setSelectedFeature(index)}
@@ -451,7 +451,7 @@ const Home = () => {
           </div>
 
           <div className="mt-4 md:mt-0 md:col-span-7">
-            <div className="relative flex items-center overflow-hidden bg-white border border-gray-200 rounded-xl">
+            <div className="relative flex items-center overflow-hidden bg-neutral-900 border border-gray-200 rounded-xl">
               <div className="">
                 {(selectedFeature === 1 || selectedFeature === 3) && (
                   <div className="absolute top-0 bottom-0 right-0 w-10 bg-gradient-to-r from-transparent to-white"></div>
@@ -470,12 +470,12 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="px-6 pb-8 mx-auto max-w-7xl lg:px-8 lg:pb-16">
+      <section className="px-6 pb-8 mx-auto max-w-7xl lg:px-8 lg:pb-16 bg-black">
         <div className="max-w-2xl mx-auto lg:max-w-none">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {testimonials.map(testimonial => (
               <div key={testimonial.author.function} className="sm:w-full">
-                <figure className="p-8 leading-6 bg-gray-100 rounded-2xl">
+                <figure className="p-8 leading-6 bg-neutral-900 rounded-2xl">
                   <figcaption className="flex items-center mb-6 gap-x-4">
                     <img
                       className="w-10 h-10 rounded-full bg-gray-50"
@@ -483,14 +483,14 @@ const Home = () => {
                       alt=""
                     />
                     <div className="text-sm">
-                      <div className="font-medium">
+                      <div className="font-medium text-white">
                         {testimonial.author.name}
                       </div>
-                      <div className="text-gray-600">{`${testimonial.author.function}`}</div>
+                      <div className="text-gray-400">{`${testimonial.author.function}`}</div>
                     </div>
                   </figcaption>
-                  <blockquote className="text-base text-gray-900">
-                    <p>{`“${testimonial.body}”`}</p>
+                  <blockquote className="text-base text-white">
+                    <p>{`"${testimonial.body}"`}</p>
                   </blockquote>
                 </figure>
               </div>

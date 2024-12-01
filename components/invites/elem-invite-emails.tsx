@@ -84,7 +84,7 @@ const ElemInviteEmails: FC<Props> = ({
 
         <div>
           <Combobox.Input
-            className={`relative w-full px-3 py-2 mt-2 text-sm bg-white border-none rounded-full outline-none hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-gray-400 ${
+            className={`relative w-full px-3 py-2 mt-2 text-sm bg-dark-100 border-none rounded-full outline-none hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-gray-400 ${
               query.length > 1 && (emailError || isDuplicatedEmail)
                 ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                 : 'ring-1 ring-gray-300'
@@ -95,7 +95,7 @@ const ElemInviteEmails: FC<Props> = ({
             onChange={handleChangeQuery}
           />
           {query && !isDuplicatedEmail && !emailError && (
-            <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-white border border-gray-200 rounded-md shadow-md max-h-60 scrollbar-hide">
+            <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-dark-100 border border-gray-200 rounded-md shadow-md max-h-60 scrollbar-hide">
               {isLoading && query !== '' ? (
                 <div className="px-4 py-2">
                   {Array.from({ length: 3 }, (_, i) => (
@@ -118,7 +118,7 @@ const ElemInviteEmails: FC<Props> = ({
                         imgAlt={item.name}
                       />
                     ) : (
-                      <div className="flex items-center justify-center flex-shrink-0 w-10 text-xl capitalize bg-gray-100 rounded-full aspect-square">
+                      <div className="flex items-center justify-center flex-shrink-0 w-10 text-xl capitalize bg-neutral-900 rounded-full aspect-square">
                         {item?.name?.charAt(0)}
                       </div>
                     )}
@@ -165,7 +165,7 @@ const ElemInviteEmails: FC<Props> = ({
               {selectedPeople.map((person, index) => (
                 <li
                   key={index}
-                  className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full">
+                  className="flex items-center gap-1 px-2 py-1 bg-neutral-900 rounded-full">
                   {person.name ? (
                     <div title={person.work_email}>{person?.name}</div>
                   ) : (

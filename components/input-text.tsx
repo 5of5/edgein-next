@@ -42,7 +42,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
       )}
 
       <input
-        className={`w-full mt-1 px-3 py-2 text-sm relative bg-white rounded-full border-none outline-none ring-1 ring-gray-300 hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-slate-400 ${className}`}
+        className={`w-full mt-1 px-3 py-2 text-sm relative bg-dark-100 rounded-full border-none outline-none ring-1 ring-gray-300 hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-slate-400 ${className}`}
         type={type ? type : 'text'}
         name={name}
         value={value}

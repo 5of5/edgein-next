@@ -53,7 +53,7 @@ export const ElemListInformation: FC<Props> = ({
 
   const listTitle = (
     <>
-      <h1 className="inline mr-2 text-xl font-medium leading-snug text-gray-900 capitalize align-middle group-hover:underline lg:text-2xl">
+      <h1 className="inline mr-2 text-xl font-medium leading-snug text-gray-300 capitalize align-middle group-hover:underline lg:text-2xl">
         {listName}
       </h1>
 

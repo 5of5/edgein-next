@@ -34,7 +34,7 @@ export const ElemOrganizers: React.FC<Props> = ({ organizations }) => {
               <div className="flex items-center shrink-0 w-full">
                 <ElemPhoto
                   photo={organization?.logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow"
+                  wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-dark-100 rounded-lg shadow"
                   imgClass="object-fit max-w-full max-h-full"
                   imgAlt={organization?.name}
                   placeholderClass="text-gray-300"

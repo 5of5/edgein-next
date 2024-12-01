@@ -155,7 +155,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         canonical={canonicalUrl}
       />
 
-      <div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
+      <div className="flex flex-col min-h-[calc(100vh_-_1rem)] bg-black text-white dark">
         <QueryClientProvider client={queryClient}>
           {pageProps.noLayout ? (
             <Component {...pageProps} />

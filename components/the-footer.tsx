@@ -55,7 +55,7 @@ export const navigation = {
 
 export const TheFooter = () => {
   return (
-    <footer className="bg-white mb-14 lg:mb-0" aria-labelledby="footer-heading">
+    <footer className="bg-black mb-14 lg:mb-0" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -64,7 +64,7 @@ export const TheFooter = () => {
           <div className="space-y-8 xl:col-span-1">
             <ElemLink href="/">
               <ElemLogo
-                mode="logo"
+                mode="logo-inverted"
                 className="w-auto h-8 transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
               />
             </ElemLink>

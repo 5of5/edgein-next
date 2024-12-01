@@ -132,7 +132,7 @@ export const ElemListCard: FC<Props> = ({
         <ElemLink
           href={resourceUrl}
           className="inline-block first-letter:uppercase">
-          <div className="inline mr-2 text-lg font-medium leading-snug text-gray-900 align-middle line-clamp-2 hover:underline">
+          <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
             {name}
           </div>
           <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 text-gray-600 rounded-full">

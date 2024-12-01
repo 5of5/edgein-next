@@ -68,7 +68,7 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
             onClick={movePrev}
             className="cursor-pointer bg-gradient-to-r from-white w-10 h-full rounded-lg group z-10 p-0 m-0 disabled:opacity-0 active:bg-transparent focus:bg-transparent"
             disabled={isDisabled('prev')}>
-            <div className="flex items-center justify-center bg-white ring-inset ring-1 ring-slate-200 rounded-full w-10 h-10 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:bg-slate-200 group-hover:text-primary-500 sm:ml-1">
+            <div className="flex items-center justify-center bg-dark-100 ring-inset ring-1 ring-slate-200 rounded-full w-10 h-10 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:bg-slate-200 group-hover:text-primary-500 sm:ml-1">
               <IconChevronLeft title="Prev" className="h-6 w-6" />
             </div>
             <span className="sr-only">Prev</span>
@@ -78,7 +78,7 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
             onClick={moveNext}
             className="cursor-pointer bg-gradient-to-l from-white w-10 h-full rounded-lg group z-10 p-0 m-0 transition-all ease-in-out duration-300 disabled:opacity-0"
             disabled={isDisabled('next')}>
-            <div className="flex items-center justify-center bg-white ring-inset ring-1 ring-slate-200 rounded-full w-10 h-10 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:bg-slate-200 group-hover:text-primary-500 sm:-ml-1">
+            <div className="flex items-center justify-center bg-dark-100 ring-inset ring-1 ring-slate-200 rounded-full w-10 h-10 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:bg-slate-200 group-hover:text-primary-500 sm:-ml-1">
               <IconChevronRight title="Next" className="h-6 w-6" />
             </div>
 

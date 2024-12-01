@@ -563,7 +563,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							<div className="relative w-32 h-32 mx-auto sm:mx-0">
 								<ElemPhoto
 									photo={person?.picture}
-									wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white border border-slate-100 rounded-full"
+									wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-dark-100 border border-slate-100 rounded-full"
 									imgClass="object-fit max-w-full max-h-full rounded-full"
 									imgAlt={person?.name}
 									placeholder="user"

@@ -113,8 +113,8 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             redirect(`${ROUTES.COMPANIES}/${hit.objectID}`);
           }
         }}
-        className="flex items-center px-6 py-1 group hover:bg-gray-100">
-        <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
+        className="flex items-center px-6 py-1 group hover:bg-neutral-900">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-dark-100 border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
               className="object-contain max-w-full max-h-full"
@@ -172,14 +172,14 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             ? `/admin/app/#/vc_firms/${hit.objectID}`
             : `${ROUTES.INVESTORS}/${hit.slug}`
         }
-        className="flex items-center px-6 py-1 group hover:bg-gray-100"
+        className="flex items-center px-6 py-1 group hover:bg-neutral-900"
         onClick={() => {
           onClose();
           if (isAdmin && redirect) {
             redirect(`/vc_firms/${hit.objectID}`);
           }
         }}>
-        <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-dark-100 border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
               className="object-contain max-w-full max-h-full"
@@ -214,14 +214,14 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             ? `/admin/app/#/people/${hit.objectID}`
             : `${ROUTES.PEOPLE}/${hit.slug}`
         }
-        className="flex items-center px-6 py-1 group hover:bg-gray-100"
+        className="flex items-center px-6 py-1 group hover:bg-neutral-900"
         onClick={() => {
           onClose();
           if (isAdmin && redirect) {
             redirect(`/people/${hit.objectID}`);
           }
         }}>
-        <div className="flex items-center justify-center w-12 overflow-hidden bg-white border border-gray-200 rounded-full shrink-0 aspect-square">
+        <div className="flex items-center justify-center w-12 overflow-hidden bg-dark-100 border border-gray-200 rounded-full shrink-0 aspect-square">
           {hit.picture ? (
             <img
               className="max-w-full max-h-full object-fit"
@@ -262,8 +262,8 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             redirect(`/events/${hit.objectID}`);
           }
         }}
-        className="flex items-center px-6 py-1 group hover:bg-gray-100">
-        <div className="flex items-center justify-center w-12 h-12 p-1 bg-white border border-gray-200 rounded shrink-0">
+        className="flex items-center px-6 py-1 group hover:bg-neutral-900">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-dark-100 border border-gray-200 rounded shrink-0">
           <img
             className="object-contain max-w-full max-h-full"
             src={hit.banner || getEventBanner(hit.location_json?.city)}
@@ -337,7 +337,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 const HitNews = () =>
   function HitNews({ hit }: HitNewsProps) {
     return (
-      <div className="px-6 py-2 group hover:bg-gray-100">
+      <div className="px-6 py-2 group hover:bg-neutral-900">
         <div className="inline text-base font-medium text-gray-500">
           {hit.link ? (
             <>
@@ -531,14 +531,14 @@ export default function SearchModal(props: any) {
     };
 
     return (
-      <Tab.List className="flex gap-2 px-6 py-1 my-2 overflow-x-scroll font-medium transition-all bg-white whitespace-nowrap">
+      <Tab.List className="flex gap-2 px-6 py-1 my-2 overflow-x-scroll font-medium transition-all bg-dark-100 whitespace-nowrap">
         <Tab
           className={({ selected }) =>
             `${
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('companies')}
         </Tab>
@@ -548,7 +548,7 @@ export default function SearchModal(props: any) {
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('vc_firms')}
         </Tab>
@@ -558,7 +558,7 @@ export default function SearchModal(props: any) {
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('people')}
         </Tab>
@@ -568,7 +568,7 @@ export default function SearchModal(props: any) {
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('events')}
         </Tab>
@@ -578,7 +578,7 @@ export default function SearchModal(props: any) {
               selected
                 ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
                 : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-900 bg-gray-100 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('news')}
         </Tab>
@@ -593,7 +593,7 @@ export default function SearchModal(props: any) {
         onClose={onClose}
         showCloseIcon={false}
         placement="top"
-        panelClass="w-full max-w-3xl shadow-2xl bg-white rounded-lg my-4">
+        panelClass="w-full max-w-3xl shadow-2xl bg-dark-100 rounded-lg my-4">
         <InstantSearch
           searchClient={searchClient}
           indexName="companies"
@@ -619,7 +619,7 @@ export default function SearchModal(props: any) {
               onClick={onClose}
               type="reset"
               arial-label="cancel"
-              className="appearance-none w-8 justify-items-end p-1 bg-white border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm">
+              className="appearance-none w-8 justify-items-end p-1 bg-dark-100 border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm">
               ESC
             </button>
           </header>

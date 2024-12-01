@@ -190,7 +190,7 @@ const VCFirm: NextPage<Props> = props => {
                     className="flex items-center gap-2 mt-1 group">
                     <ElemPhoto
                       photo={parentOrganization?.logo}
-                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
+                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-dark-100 rounded-lg shadow group-hover:opacity-60"
                       imgClass="object-contain w-full h-full"
                       imgAlt={parentOrganization?.name}
                       placeholderClass="text-gray-300"

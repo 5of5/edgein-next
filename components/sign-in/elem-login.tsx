@@ -209,7 +209,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
 
           <ElemButton
             onClick={handleContinueWithLinkedin}
-            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-gray-300 focus:ring-1 hover:bg-gray-200">
+            className="w-full mt-6 text-center bg-dark-100 gap-x-2 ring-1 ring-gray-300 focus:ring-1 hover:bg-gray-200">
             <IconLinkedInAlt
               title="LinkedIn"
               className="h-6 w- text-[#0A66C2]"

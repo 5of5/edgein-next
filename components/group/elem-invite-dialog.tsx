@@ -163,7 +163,7 @@ const ElemInviteDialog: React.FC<Props> = ({
       onClose={onClose}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 mt-10 mb-20 !overflow-visible">
+      panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-3 z-10 mt-10 mb-20 !overflow-visible">
       <div className="pb-3 border-b border-gray-200">
         <h2 className="text-xl font-medium">
           {inviteResponse && inviteResponse.length > 0 ? (
@@ -230,7 +230,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                       </ul>
                     )}
                     <Combobox.Input
-                      className="relative flex-1 px-3 py-1 bg-white border-none rounded-md outline-none ring-0 placeholder:text-gray-500 focus:outline-none focus:ring-0"
+                      className="relative flex-1 px-3 py-1 bg-dark-100 border-none rounded-md outline-none ring-0 placeholder:text-gray-500 focus:outline-none focus:ring-0"
                       placeholder="e.g: Redg or redg@edgein.io"
                       autoComplete={'off'}
                       ref={inputRef}
@@ -241,7 +241,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 
                 {query && (
                   <div className="relative">
-                    <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-white border border-gray-200 rounded-md shadow-lg mb-36 top-full max-h-60 scrollbar-hide">
+                    <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-dark-100 border border-gray-200 rounded-md shadow-lg mb-36 top-full max-h-60 scrollbar-hide">
                       {isLoading && query != '' ? (
                         <div className="px-4 py-2">
                           {Array.from({ length: 3 }, (_, i) => (

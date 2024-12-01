@@ -280,7 +280,7 @@ export const ElemSaveToList: FC<Props> = ({
         }}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-40 my-10">
+        panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-3 z-40 my-10">
         <div className="pb-3 border-b border-gray-200">
           <h2 className="text-xl font-medium">Save to List</h2>
         </div>
@@ -299,7 +299,7 @@ export const ElemSaveToList: FC<Props> = ({
                 return (
                   <li key={list.id}>
                     <InputCheckbox
-                      className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-neutral-900"
                       labelClass="grow text-sm"
                       label={getNameFromListName(list)}
                       checked={selected}
@@ -316,7 +316,7 @@ export const ElemSaveToList: FC<Props> = ({
           {!showNew && listsData.length > 0 ? (
             <ElemButton
               onClick={onClickShowCreateNew}
-              className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100">
+              className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-neutral-900">
               <IconPlus className="w-4 h-4" />
               <span className="self-start text-sm">Save to new list</span>
             </ElemButton>

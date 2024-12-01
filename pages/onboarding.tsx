@@ -105,13 +105,13 @@ export default function Onboarding() {
       <NextSeo title="Onboarding" />
       <Dialog as="div" open onClose={() => null} className="relative z-[60]">
         <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
-          <Dialog.Panel className="fixed inset-0 z-[50] w-full h-full bg-white">
+          <Dialog.Panel className="fixed inset-0 z-[50] w-full h-full bg-dark-100">
             <ElemSignInHeader />
 
             <div className="flex items-center justify-center h-[calc(100%-53px)] w-full">
               <div className="w-full max-h-full overflow-auto overscroll-none scrollbar-hide">
                 <div className="flex flex-col items-center justify-center px-4 py-20 sm:px-6 md:px-8">
-                  <h3 className="text-lg font-medium text-gray-900">
+                  <h3 className="text-lg font-medium text-gray-300">
                     Let&apos;s personalize your EdgeIn
                   </h3>
 

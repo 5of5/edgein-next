@@ -305,7 +305,7 @@ const Event: NextPage<Props> = props => {
             <h1 className="text-4xl font-medium">{event.name}</h1>
             {attendees?.length > 0 && (
               <button
-                className="self-center flex items-center gap-x-1 shrink-0 rounded-lg px-2 py-1.5 hover:bg-gray-100"
+                className="self-center flex items-center gap-x-1 shrink-0 rounded-lg px-2 py-1.5 hover:bg-neutral-900"
                 onClick={() => onOpenGoingDialog()}>
                 <div className="flex -space-x-3">
                   {attendees?.slice(0, 6)?.map(attendee => (
@@ -313,7 +313,7 @@ const Event: NextPage<Props> = props => {
                       {attendee.person?.picture ? (
                         <ElemPhoto
                           photo={attendee.person.picture}
-                          wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
+                          wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-dark-100 rounded-full w-8 shadow`}
                           imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
                           imgAlt={attendee.person?.name}
                           placeholder="user"

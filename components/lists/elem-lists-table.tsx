@@ -183,7 +183,7 @@ export const ListsTable: FC<Props> = ({
             <div className="flex items-center space-x-2">
               <ElemPhoto
                 photo={props.row.original.created_by?.person?.picture}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                wrapClass="flex items-center justify-center aspect-square shrink-0 bg-dark-100 overflow-hidden rounded-full w-8"
                 imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                 imgAlt={props.value}
                 placeholder="user"

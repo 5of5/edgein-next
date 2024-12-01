@@ -29,7 +29,7 @@ const ElemNotificationPopover: FC<Props> = ({
     <Popover
       className="absolute right-1 group-hover:block transition-all sm:hidden sm:right-10"
       style={popoverStyle}>
-      <Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+      <Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group bg-dark-100 ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
         <IconEllipsisHorizontal
           className="h-6 w-6 group-hover:text-primary-500"
           title="Options"
@@ -43,7 +43,7 @@ const ElemNotificationPopover: FC<Props> = ({
         leave="transition duration-75 ease-out"
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0">
-        <Popover.Panel className="absolute right-0 overflow-hidden w-48 p-1 divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5">
+        <Popover.Panel className="absolute right-0 overflow-hidden w-48 p-1 divide-y divide-slate-100 rounded-lg bg-dark-100 shadow-lg ring-1 ring-black/5">
           {({ close }) => (
             <>
               {!notification.read && (

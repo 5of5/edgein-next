@@ -56,7 +56,7 @@ export const TableUpgrade: FC<Props> = ({
               </tr>
             );
           })}
-          <tr className="absolute top-0 bottom-0 left-0 right-0 z-10 w-full h-full p-5 shadow bg-gray-900/90">
+          <tr className="absolute top-0 bottom-0 left-0 right-0 z-10 w-full h-full p-5 shadow bg-gray-300/90">
             <td>
               <div className="max-w-2xl">
                 <h2 className="text-2xl font-medium text-white lg:text-3xl">

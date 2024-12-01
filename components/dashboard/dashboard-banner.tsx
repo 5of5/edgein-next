@@ -96,7 +96,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
             <button
               onClick={onHideBanner}
               type="button"
-              className="text-gray-400 hover:text-gray-900">
+              className="text-gray-400 hover:text-gray-300">
               <span className="sr-only">Close</span>
               <IconX className="w-4 h-4" title="close" />
             </button>
@@ -105,7 +105,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
 
         <ElemLink
           href={user ? ROUTES.REFERRALS_AND_POINTS : ROUTES.SIGN_IN}
-          className="block p-4 bg-white border rounded-lg shadow-lg border-primary-500">
+          className="block p-4 bg-dark-100 border rounded-lg shadow-lg border-primary-500">
           <div className="flex items-center">
             {banner.icon && (
               <div className="pr-1">
@@ -113,7 +113,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
               </div>
             )}
 
-            <h3 className="font-medium text-gray-900">{banner.title}</h3>
+            <h3 className="font-medium text-gray-300">{banner.title}</h3>
           </div>
 
           <p className="mt-1 text-sm text-gray-500">{banner.content}</p>

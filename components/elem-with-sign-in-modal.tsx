@@ -56,7 +56,7 @@ export const ElemWithSignInModal: FC<Props> = ({
                 style={styles.popper}
                 {...attributes.popper}
                 className="w-72 z-30">
-                <div className="p-4 bg-white rounded-lg shadow-lg border border-gray-200">
+                <div className="p-4 bg-dark-100 rounded-lg shadow-lg border border-gray-200">
                   <p className="text-gray-500 text-sm">{text}</p>
                   <ElemButton
                     btn="primary"

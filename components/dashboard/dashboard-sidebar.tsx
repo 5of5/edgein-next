@@ -72,8 +72,8 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   return (
     <div className={`overflow-y-auto h-full scrollbar-hide ${className}`}>
-      <nav className="px-4 pt-2 text-gray-600 pb-52">
-        <ul className="pb-8 space-y-1 border-b border-gray-200">
+      <nav className="px-4 pt-2 text-white pb-52">
+        <ul className="pb-8 space-y-1 border-b border-gray-200 dark:border-gray-700">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>
               <ElemSidebarItem

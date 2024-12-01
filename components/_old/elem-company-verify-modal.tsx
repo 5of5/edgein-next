@@ -197,7 +197,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95">
-                <Dialog.Panel className="w-full max-w-xl p-6 overflow-y-auto text-left align-middle transition-all transform bg-white rounded-lg shadow-xl">
+                <Dialog.Panel className="w-full max-w-xl p-6 overflow-y-auto text-left align-middle transition-all transform bg-dark-100 rounded-lg shadow-xl">
                   {!isEmailEntered ? (
                     <>
                       <Dialog.Title as="h3" className="text-2xl font-bold">

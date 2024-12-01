@@ -28,7 +28,7 @@ export const ElemPillsPeople: FC<Props> = ({
       {items?.slice(0, teamLimit).map((item, index: number) => {
         return (
           <a key={index} href={`/people/${item.person?.slug}`}>
-            <button className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
+            <button className="shrink-0 bg-neutral-900 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-200">
               {item.person?.name}
             </button>
           </a>

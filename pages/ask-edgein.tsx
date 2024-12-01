@@ -57,7 +57,7 @@ const AskEdgein: NextPage = () => {
             <div className="absolute left-0 right-0 w-10/12 mx-auto border-2 -top-8 h-52 rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-white/60 opacity-80 backdrop-blur-3xl"></div>
             <div className="absolute left-0 right-0 w-11/12 mx-auto border-2 -top-4 h-52 rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-white/60 opacity-80 backdrop-blur-3xl"></div>
 
-            <div className="relative z-10 p-6 bg-white rounded-2xl">
+            <div className="relative z-10 p-6 bg-dark-100 rounded-2xl">
               <form
                 className="relative grid grid-cols-1 mt-6 gap-y-4 sm:grid-cols-2 sm:gap-x-8"
                 onSubmit={onSubmit}>

@@ -92,7 +92,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95">
-                <Dialog.Panel className="content-between min-h-screen p-4 text-left bg-white">
+                <Dialog.Panel className="content-between min-h-screen p-4 text-left bg-dark-100">
                   <div>
                     <h2 className="font-bold text-dark-500">{`${
                       memberToEdit && memberToEdit.id

@@ -1,7 +1,26 @@
-// @use './cloudsponge';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-dark-100 border-dark-200;
+  }
+  
+  .input {
+    @apply bg-dark-100 border-dark-200 text-white;
+  }
+  
+  .button {
+    @apply bg-primary-500 hover:bg-primary-600 text-white;
+  }
+}
 
 @layer utilities {
   .animation-delay-2000 {
@@ -75,13 +94,13 @@
 /* For Chrome browsers */
 .thumb::-webkit-slider-thumb {
   pointer-events: all;
-  @apply bg-white border border-black/10 rounded-full shadow cursor-pointer w-4 h-4 relative mt-1;
+  @apply bg-dark-100 border border-black/10 rounded-full shadow cursor-pointer w-4 h-4 relative mt-1;
 }
 
 /* For Firefox browsers */
 .thumb::-moz-range-thumb {
   pointer-events: all;
-  @apply bg-white border border-black/10 rounded-full shadow-sm cursor-pointer w-4 h-4 relative mt-1;
+  @apply bg-dark-100 border border-black/10 rounded-full shadow-sm cursor-pointer w-4 h-4 relative mt-1;
 }
 
 /* Admin */
