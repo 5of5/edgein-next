@@ -44,7 +44,7 @@ your output should look something like:
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
 
-The Hasura web console should now be available at `http://localhost:8080`. Check `/infra/hasura/config.yaml` for the password.
+The Hasura web console should now be available at `http://https://unique-crow-54.hasura.app80`. Check `/infra/hasura/config.yaml` for the password.
 The redis server is running on `127.0.0.1:6379` for applying rate limit. Now can test graphql_query api locally.
 
 ### Load Schema and Initial Data

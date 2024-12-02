@@ -33055,11 +33055,7 @@ export const GetGroupDocument = `
     discord
     public
     created_by_user_id
-    created_by {
-      id
-      display_name
-      email
-    }
+    
     created_at
     updated_at
     user_group_members {
@@ -34629,48 +34625,9 @@ export const GetNotesDocument = `
       id
       name
     }
-    created_by_user {
-      id
-      display_name
-      person {
-        slug
-        name
-        picture
-      }
-    }
-    likes {
-      id
-      created_at
-      created_by_user_id
-      created_by_user {
-        id
-        display_name
-        email
-        person {
-          id
-          slug
-          name
-          picture
-        }
-      }
-    }
-    comments(order_by: {created_at: asc}) {
-      id
-      content
-      created_at
-      created_by_user_id
-      created_by_user {
-        id
-        display_name
-        email
-        person {
-          id
-          slug
-          name
-          picture
-        }
-      }
-    }
+    
+    
+    
   }
 }
     `;

@@ -121,11 +121,11 @@ export const TheNavbar: FC<Props> = ({}) => {
             </ElemLink>
           </div>
 
-          {/* <ElemSearchBox
+          <ElemSearchBox
             onClick={() => {
               setShowPopup('search');
             }}
-          /> */}
+          />
 
           <div className="flex items-center space-x-2 lg:space-x-3">
             <ElemButton
