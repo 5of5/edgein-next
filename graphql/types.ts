@@ -7418,7 +7418,7 @@ export type Follows_Companies_Bool_Exp = {
   _and: InputMaybe<Array<Follows_Companies_Bool_Exp>>;
   _not: InputMaybe<Follows_Companies_Bool_Exp>;
   _or: InputMaybe<Array<Follows_Companies_Bool_Exp>>;
-  company: InputMaybe<Companies_Bool_Exp>;
+ // company: InputMaybe<Companies_Bool_Exp>;
   created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   follow_member: InputMaybe<List_Members_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
@@ -7851,7 +7851,7 @@ export type Follows_People_Bool_Exp = {
   created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   list_id: InputMaybe<Int_Comparison_Exp>;
-  person: InputMaybe<People_Bool_Exp>;
+  //person: InputMaybe<People_Bool_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
   resource_type: InputMaybe<String_Comparison_Exp>;
 };
@@ -8342,7 +8342,7 @@ export type Follows_Vc_Firms_Bool_Exp = {
   list_id: InputMaybe<Int_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
   resource_type: InputMaybe<String_Comparison_Exp>;
-  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+  //vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
 };
 
 /** input type for incrementing numeric columns in table "follows_vc_firms" */
@@ -32620,34 +32620,6 @@ export const GetCompaniesByListIdDocument = `
     offset: $offset
   ) {
     id
-    company {
-      id
-      name
-      website
-      logo
-      sentiment
-      location_json
-      twitter
-      year_founded
-      total_employees
-      overview
-      teamMembers(limit: 10, order_by: {founder: desc_nulls_last}) {
-        id
-        founder
-        person {
-          id
-          slug
-          name
-        }
-      }
-      investment_rounds {
-        amount
-        round_date
-        round
-      }
-      tags
-      slug
-    }
   }
   follows_companies_aggregate(
     where: {_and: [{list_id: {_eq: $list_id}}, {company: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
@@ -33994,29 +33966,7 @@ export const GetListUserGroupsDocument = `
   list_user_groups(where: $where) {
     id
     list_id
-    list {
-      id
-      name
-      description
-      public
-      created_at
-      updated_at
-      created_by {
-        id
-        display_name
-        person {
-          id
-          name
-          slug
-        }
-      }
-      total_no_of_resources
-    }
     user_group_id
-    user_group {
-      id
-      name
-    }
   }
 }
     `;

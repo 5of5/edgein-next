@@ -164,12 +164,16 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const contentDiv = useRef() as MutableRefObject<HTMLDivElement>;
   const [contentDivHeight, setContentDivHeight] = useState(0);
 
-  const likesCount = data.likes.length;
-  const isLikedByCurrentUser = data.likes.some(
-    item => item.created_by_user_id === user?.id,
-  );
+  const likesCount = data?.likes?.length || 0;
+  // const isLikedByCurrentUser = data?.likes.some(
+  //   item => item.created_by_user_id === user?.id,
+  // );
+  const isLikedByCurrentUser =
+    data?.likes && user?.id
+      ? data.likes.some(item => item.created_by_user_id === user.id)
+      : false;
 
-  const commentsCount = data.comments.length;
+  const commentsCount = data?.comments?.length || 0;
 
   useEffect(() => {
     if (data.notes && contentDiv?.current) {
@@ -537,11 +541,11 @@ const ElemNoteCard: React.FC<NoteProps> = ({
             <button
               onClick={onCommentSubmit}
               className={`absolute z-10 right-2 bottom-[0.3rem] flex items-center justify-center w-8 h-8 rounded-full  ${
-                commentContent.length > 0
+                commentContent?.length > 0
                   ? 'cursor-pointer hover:bg-neutral-900'
                   : 'cursor-not-allowed'
               }`}>
-              {commentContent.length > 0 ? (
+              {commentContent?.length > 0 ? (
                 <IconPaperAirplaneSolid className="w-5 h-5" title="Comment" />
               ) : (
                 <IconPaperAirplane

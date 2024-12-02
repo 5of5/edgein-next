@@ -173,9 +173,9 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
 
   return (
     <>
-      {comments.length > 0 && (
+      {comments?.length > 0 && (
         <div className="flex flex-col py-2 space-y-2">
-          {comments.map(comment => {
+          {comments?.map(comment => {
             return (
               <div
                 key={comment.id}
