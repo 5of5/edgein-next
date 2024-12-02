@@ -134,9 +134,9 @@ export const TheNavbar: FC<Props> = ({}) => {
               <IconSearch className="w-5 h-5" />
             </ElemButton>
 
-            {/* {user ? (
+            {user ? (
               <>
-                <ElemButton
+                {/* <ElemButton
                   href={ROUTES.NOTIFICATIONS}
                   className="relative w-9 h-9 !p-0">
                   {unreadNotificationsCount > 0 && (
@@ -154,7 +154,7 @@ export const TheNavbar: FC<Props> = ({}) => {
                     }`}
                     strokeWidth={1.5}
                   />
-                </ElemButton>
+                </ElemButton> */}
               </>
             ) : (
               <ElemButton
@@ -163,9 +163,9 @@ export const TheNavbar: FC<Props> = ({}) => {
                 className="whitespace-nowrap">
                 Sign in
               </ElemButton>
-            )} */}
+            )}
 
-            {/* <UserMenu /> */}
+            <UserMenu />
           </div>
         </nav>
       </header>
