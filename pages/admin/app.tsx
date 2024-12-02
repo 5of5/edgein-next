@@ -161,17 +161,17 @@ const customBuildFields: BuildFields = (type, fetchType) => {
     defaultFields.push(...relatedEntities);
   }
 
-  if (resourceName === 'news') {
-    const relatedEntities = extractFieldsFromQuery(
-      EXTENDED_GET_NEWS_ORGANIZATIONS,
-    );
-    defaultFields.push(...relatedEntities);
-  }
+  // if (resourceName === 'news') {
+  //   const relatedEntities = extractFieldsFromQuery(
+  //     EXTENDED_GET_NEWS_ORGANIZATIONS,
+  //   );
+  //   defaultFields.push(...relatedEntities);
+  // }
 
-  if (isTypeReferenceToResourceLink(resourceName)) {
-    const relatedEntities = extractFieldsFromQuery(EXTENDED_GET_RESOURCE_LINKS);
-    defaultFields.push(...relatedEntities);
-  }
+  // if (isTypeReferenceToResourceLink(resourceName)) {
+  //   const relatedEntities = extractFieldsFromQuery(EXTENDED_GET_RESOURCE_LINKS);
+  //   defaultFields.push(...relatedEntities);
+  // }
 
   // Extend other queries for other resources/fetchTypes here...
 
