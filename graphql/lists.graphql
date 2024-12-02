@@ -2,29 +2,29 @@ query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
     id
     list_id
-    list {
-      id
-      name
-      description
-      public
-      created_at
-      updated_at
-      created_by {
-        id
-        display_name
-        person {
-          id
-          name
-          slug
-        }
-      }
-      total_no_of_resources
-    }
+    # list {
+    #   id
+    #   name
+    #   description
+    #   public
+    #   created_at
+    #   updated_at
+    #   created_by {
+    #     id
+    #     display_name
+    #     person {
+    #       id
+    #       name
+    #       slug
+    #     }
+    #   }
+    #   total_no_of_resources
+    # }
     user_group_id
-    user_group {
-      id
-      name
-    }
+    # user_group {
+    #   id
+    #   name
+    # }
   }
 }
 
