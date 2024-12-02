@@ -78,16 +78,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ],
     };
 
-    await SlackServices.sendMessage(
-      process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
-      messagePayload,
-    );
+    // await SlackServices.sendMessage(
+    //   process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
+    //   messagePayload,
+    // );
 
     return res.status(200).send(response);
   } catch (error: any) {
-    return res
-      .status(500)
-      .send({ error: 'Something went wrong. Please try again later.' });
+    return res.status(500).send({ error: error });
   }
 };
 
