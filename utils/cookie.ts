@@ -86,7 +86,7 @@ async function getUser(
   }
   const verified = await jwtVerify(
     token,
-    new TextEncoder().encode(process.env.ENCRYPTION_SECRET),
+    new TextEncoder().encode(`zfuIzxrblbNHX31YFfPNFco4xUWTqpGEWHxvbNFbfUo=`),
   );
   const payload = verified.payload;
 
@@ -111,7 +111,7 @@ async function getUsage(token: string) {
   }
   const verified = await jwtVerify(
     token,
-    new TextEncoder().encode(process.env.ENCRYPTION_SECRET),
+    new TextEncoder().encode(`zfuIzxrblbNHX31YFfPNFco4xUWTqpGEWHxvbNFbfUo=`),
   );
   const payload = verified.payload;
 
@@ -139,7 +139,9 @@ async function createUserToken(userData: UserToken) {
     .setJti(nanoid())
     .setIssuedAt()
     .setExpirationTime('90d')
-    .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET));
+    .sign(
+      new TextEncoder().encode(`zfuIzxrblbNHX31YFfPNFco4xUWTqpGEWHxvbNFbfUo=`),
+    );
 }
 
 async function createUsageToken(userData: {}) {
@@ -148,7 +150,9 @@ async function createUsageToken(userData: {}) {
     .setJti(nanoid())
     .setIssuedAt()
     .setExpirationTime('90d')
-    .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET));
+    .sign(
+      new TextEncoder().encode(`zfuIzxrblbNHX31YFfPNFco4xUWTqpGEWHxvbNFbfUo=`),
+    );
 }
 
 const exp = {
