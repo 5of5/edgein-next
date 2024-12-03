@@ -115,11 +115,11 @@ const CompanyForm = ({
         {isIcon && (
           <>
             {action === 'edit' && (
-              <div style={{ position: 'absolute', top: 135, left: 18 }}>
+              <div style={{ position: 'absolute', top: 158, left: 18 }}>
                 <a
                   target={'_blank'}
                   rel="noreferrer"
-                  href={`https://edgein.io/companies/${
+                  href={`/companies/${
                     currentData && currentData.slug
                   }`}>
                   <Button label="Preview" />
@@ -130,7 +130,7 @@ const CompanyForm = ({
               category="company"
               action={action}
               keyword={keyword}
-              topPos="135px"
+              topPos="158px"
             />
           </>
         )}

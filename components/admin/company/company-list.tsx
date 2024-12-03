@@ -162,7 +162,7 @@ export const CompanyList = () => {
           <a
             target={'_blank'}
             rel="noreferrer"
-            href={`https://edgein.io/companies/${record.slug}`}>
+            href={`/companies/${record.slug}`}>
             <Button label="Preview" />
           </a>
         )}
