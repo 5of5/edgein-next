@@ -426,21 +426,35 @@ export default function Account({ userProfile }: Props) {
   );
 }
 
+// export const getServerSideProps: GetServerSideProps = async context => {
+//   const token = CookieService.getAuthToken(context.req.cookies);
+//   const user = await CookieService.getUser(token);
+
+//   const { data: userProfile } = await runGraphQl<GetUserProfileQuery>(
+//     GetUserProfileDocument,
+//     {
+//       id: user?.id || 0,
+//     },
+//     context.req.cookies,
+//   );
+
+//   return {
+//     props: {
+//       userProfile,
+//     },
+//   };
+// };
+
 export const getServerSideProps: GetServerSideProps = async context => {
   const token = CookieService.getAuthToken(context.req.cookies);
   const user = await CookieService.getUser(token);
-
-  const { data: userProfile } = await runGraphQl<GetUserProfileQuery>(
-    GetUserProfileDocument,
-    {
-      id: user?.id || 0,
-    },
-    context.req.cookies,
-  );
+  if (!user) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
-    props: {
-      userProfile,
-    },
+    props: {},
   };
 };
