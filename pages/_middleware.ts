@@ -37,6 +37,7 @@ const PUBLIC_API = [
   `/api/batch-job/`,
   `/api/data-runs/`,
   `/api/query/completions/`,
+  `/api/check-existed-email/`,
 ];
 
 const getIp = (req: NextRequest) => {
