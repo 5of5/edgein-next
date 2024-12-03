@@ -38,6 +38,16 @@ const PUBLIC_API = [
   `/api/data-runs/`,
   `/api/query/completions/`,
   `/api/check-existed-email/`,
+  `/api/verify-workplace/`,
+  `/api/stripe-load/`,
+  `/api/revalidate/`,
+  `/api/reset-password/`,
+  `/api/send-invite-to-edgein-email/`,
+  `/api/send-invite-to-investment-members/`,
+  `/api/send-resource-verification-mail/`,
+  `/api/update-additional-emails/`,
+  `/api/graphql/`,
+  `/api/resend-verification-email/`,
 ];
 
 const getIp = (req: NextRequest) => {
