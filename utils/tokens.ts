@@ -44,7 +44,9 @@ export const generateVerifyWorkplaceToken = async (
     .setJti(nanoid())
     .setIssuedAt()
     .setExpirationTime('1d')
-    .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET));
+    .sign(
+      new TextEncoder().encode(`zfuIzxrblbNHX31YFfPNFco4xUWTqpGEWHxvbNFbfUo=`),
+    );
 };
 
 export const findToken = async (
