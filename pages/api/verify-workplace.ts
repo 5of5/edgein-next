@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const verified = await jwtVerify(
     verificationToken,
-    new TextEncoder().encode(process.env.ENCRYPTION_SECRET),
+    new TextEncoder().encode(`zfuIzxrblbNHX31YFfPNFco4xUWTqpGEWHxvbNFbfUo=`),
   );
 
   const payload: any = verified.payload;
