@@ -165,14 +165,13 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const [contentDivHeight, setContentDivHeight] = useState(0);
 
   const likesCount = data?.likes?.length || 0;
-  // const isLikedByCurrentUser = data?.likes.some(
+  // const isLikedByCurrentUser = data.likes.some(
   //   item => item.created_by_user_id === user?.id,
   // );
-  const isLikedByCurrentUser =
-    data?.likes && user?.id
-      ? data.likes.some(item => item.created_by_user_id === user.id)
-      : false;
-
+    const isLikedByCurrentUser =
+      data?.likes && user?.id
+        ? data.likes.some(item => item.created_by_user_id === user.id)
+        : false;
   const commentsCount = data?.comments?.length || 0;
 
   useEffect(() => {

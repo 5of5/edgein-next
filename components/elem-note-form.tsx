@@ -38,7 +38,7 @@ const ElemNoteForm: React.FC<Props> = ({
   const { user, myGroups } = useUser();
 
   const [notes, setNotes] = useState(selectedNote?.notes);
-
+  
   const groupOptions = useMemo(() => {
     const options = [
       { id: 'public', icon: IconGlobe, title: 'Everyone can see' },
@@ -47,7 +47,7 @@ const ElemNoteForm: React.FC<Props> = ({
         id: item.id,
         icon: IconSidebarGroups,
         title: `${item.name}`,
-        description: `by ${item.created_by?.display_name}`,
+       // description: `by ${item.created_by?.display_name}`,
       })),
       // { id: 'create_group', icon: IconGroupPlus, title: 'Create group' },
     ];

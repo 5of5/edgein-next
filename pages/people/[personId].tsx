@@ -121,7 +121,7 @@ const Person: NextPage<Props> = (props: Props) => {
     user && person.user?.id === user?.id ? true : false;
 
   const personLibraries =
-    person.library.length > 0 ? person.library.join(', ') : '';
+    person?.library?.length > 0 ? person.library.join(', ') : '';
 
   return (
     <>
