@@ -242,12 +242,12 @@ const AdminApp = () => {
             nullInputTransform(nullableInputs, type, obj),
             'POST',
           ),
-        update: (type, obj) =>
-          onSubmitData(
-            type,
-            nullInputTransform(nullableInputs, type, obj),
-            'PUT',
-          ),
+        // update: (type, obj) => 
+        //   onSubmitData(
+        //     type,
+        //     nullInputTransform(nullableInputs, type, obj),
+        //     'PUT',
+        //   ),
         deleteMany: async (type, obj: any) => {
           const response = await Promise.all(
             obj.ids.map(async (id: number) => {
