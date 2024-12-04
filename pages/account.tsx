@@ -197,10 +197,23 @@ export default function Account({ userProfile }: Props) {
   };
 
   const currentDate = new Date();
-  const haveSubscriptionFromCredits =
-    userProfile?.users_by_pk?.use_credits_system &&
-    new Date(userProfile?.users_by_pk?.last_transaction_expiration) >
-      currentDate;
+
+  // const haveSubscriptionFromCredits =
+  //   userProfile?.users_by_pk?.use_credits_system &&
+  //   new Date(userProfile?.users_by_pk?.last_transaction_expiration) >
+  //     currentDate;
+
+const haveSubscriptionFromCredits =
+  userProfile?.users_by_pk?.use_credits_system &&
+  userProfile?.users_by_pk?.last_transaction_expiration &&
+  new Date(userProfile?.users_by_pk?.last_transaction_expiration) > currentDate;
+
+const hasBillingSubscription =
+  userProfile?.users_by_pk?.billing_org_id &&
+  userProfile?.users_by_pk?.billing_org_id !== null;
+
+// Combine checks for both credit-based subscription and billing subscription
+const hasSubscription = haveSubscriptionFromCredits || hasBillingSubscription;
 
   return (
     <DashboardLayout>
@@ -358,7 +371,7 @@ export default function Account({ userProfile }: Props) {
             right={
               userProfile &&
               (userProfile.users_by_pk?.billing_org?.status === 'active' ||
-                haveSubscriptionFromCredits) ? (
+                hasSubscription) ? (
                 <ElemButton onClick={onBillingClick} btn="default" className="">
                   Manage subscription
                 </ElemButton>
@@ -368,7 +381,7 @@ export default function Account({ userProfile }: Props) {
             }>
             {userProfile &&
             (userProfile.users_by_pk?.billing_org?.status === 'active' ||
-              haveSubscriptionFromCredits) ? (
+              hasSubscription) ? (
               <div>
                 <div className="flex items-center space-x-1">
                   <IconContributor className="w-6 h-6 text-primary-500" />
@@ -454,7 +467,18 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
-  return {
-    props: {},
-  };
+    const { data: userProfile } = await runGraphQl<GetUserProfileQuery>(
+      GetUserProfileDocument,
+      {
+        id: user?.id || 0,
+      },
+      context.req.cookies,
+    );
+    console.log(userProfile)
+
+    return {
+      props: {
+        userProfile,
+      },
+    };
 };

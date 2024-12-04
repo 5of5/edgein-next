@@ -36147,28 +36147,6 @@ export const GetUserProfileDocument = `
     billing_org_id
   
     preferences
-    organization_companies {
-      id
-      company {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
-    organization_vc_firms {
-      id
-      vc_firm {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
     person {
       id
       name

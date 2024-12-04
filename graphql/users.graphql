@@ -9,28 +9,6 @@ query GetUserProfile($id: Int!) {
       status
     }
     preferences
-    organization_companies {
-      id
-      company {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
-    organization_vc_firms {
-      id
-      vc_firm {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
     person {
       id
       name
@@ -90,28 +68,6 @@ query GetUserByPersonId($person_id: Int!) {
     use_credits_system
     last_transaction_expiration
     billing_org_id
-    organization_companies {
-      id
-      company {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
-    organization_vc_firms {
-      id
-      vc_firm {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
     person {
       id
       name
