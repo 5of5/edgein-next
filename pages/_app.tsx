@@ -14,6 +14,7 @@ import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { DefaultSeo } from 'next-seo';
+import Script from 'next/script';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
 
@@ -192,6 +193,22 @@ function MyApp({ Component, pageProps }: AppProps) {
 					}}
 				/> */}
       </div>
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-GQ863QY6F2"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GQ863QY6F2');
+          `,
+        }}
+      />
     </>
   );
 }
