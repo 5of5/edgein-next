@@ -202,14 +202,14 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             ) : null}
           </div>
 
-          <ElemSaveToList
+          {/* <ElemSaveToList
             resourceName={name}
             resourceId={id}
             resourceType={'people'}
             slug={slug!}
             buttonStyle="default"
             follows={follows}
-          />
+          /> */}
         </div>
         <ElemUpgradeDialog
           isOpen={isOpenUpgradeDialog}

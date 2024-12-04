@@ -205,13 +205,13 @@ const Person: NextPage<Props> = (props: Props) => {
                     )}
 
                     <div className="flex flex-wrap items-center gap-3 mt-4">
-                      <ElemSaveToList
-                        resourceName={person.name || ''}
+                      {/* <ElemSaveToList
+                        resourceName={person.name}
                         resourceId={person.id}
                         resourceType="people"
-                        slug={person.slug || ''}
-                        follows={person.follows || []}
-                      />
+                        slug={person.slug!}
+                        follows={person.follows}
+                      /> */}
 
                       <ElemSocialShare
                         resourceName={person.name || ''}
