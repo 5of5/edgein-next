@@ -129,38 +129,42 @@ export const ElemSaveToList: FC<Props> = ({
         if (action === 'add') {
           if (resourceType === 'companies') {
             list.follows_companies = [
-              ...list.follows_companies,
+              ...(list.follows_companies || []),
               { __typename: 'follows_companies', resource_id: resourceId },
             ];
           }
           if (resourceType === 'vc_firms') {
             list.follows_vcfirms = [
-              ...list.follows_vcfirms,
+              ...(list.follows_vcfirms || []),
               { __typename: 'follows_vc_firms', resource_id: resourceId },
             ];
           }
           if (resourceType === 'people') {
             list.follows_people = [
-              ...list.follows_people,
+              ...(list.follows_people || []),
               { __typename: 'follows_people', resource_id: resourceId },
             ];
           }
         } else {
           if (resourceType === 'companies') {
             list.follows_companies = [
-              ...list.follows_companies.filter(
+              ...(list.follows_companies || []).filter(
                 i => i.resource_id !== resourceId,
               ),
             ];
           }
           if (resourceType === 'vc_firms') {
             list.follows_vcfirms = [
-              ...list.follows_vcfirms.filter(i => i.resource_id !== resourceId),
+              ...(list.follows_vcfirms || []).filter(
+                i => i.resource_id !== resourceId,
+              ),
             ];
           }
           if (resourceType === 'people') {
             list.follows_people = [
-              ...list.follows_people.filter(i => i.resource_id !== resourceId),
+              ...(list.follows_people || []).filter(
+                i => i.resource_id !== resourceId,
+              ),
             ];
           }
         }
