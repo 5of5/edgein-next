@@ -19,12 +19,12 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
   const quickLinks = [
     ...(user
       ? [
-          {
-            id: 10,
-            label: 'My lists',
-            value: 'lists',
-            onClick: () => router.push(ROUTES.LISTS + '?tab=my-lists'),
-          },
+          // {
+          //   id: 10,
+          //   label: 'My lists',
+          //   value: 'lists',
+          //   onClick: () => router.push(ROUTES.LISTS + '?tab=my-lists'),
+          // },
           {
             id: 11,
             label: 'My groups',
