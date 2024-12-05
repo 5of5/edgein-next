@@ -90,6 +90,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const [contentShowAll, setContentShowAll] = useState(false);
   const contentDiv = useRef<HTMLDivElement>(null);
   const [contentDivHeight, setContentDivHeight] = useState(0);
+  const [commentTextareaHasFocus, setCommentTextareaHasFocus] = useState(false);
 
   const likesCount = data?.likes?.length || 0;
   let isLikedByCurrentUser;
@@ -177,6 +178,17 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const resourceLink = resource?.slug
     ? `/${resourceType}/${resource.slug}`
     : '#';
+
+  const onChangeCommentTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCommentContent(e.target.value);
+  };
+
+  const onCommentTextareaKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      onCommentSubmit();
+    }
+  };
 
   return (
     <>
@@ -403,6 +415,8 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               value={commentContent}
               onChange={onChangeCommentTextarea}
               hasFocus={commentTextareaHasFocus}
+              onFocus={() => setCommentTextareaHasFocus(true)}
+              onBlur={() => setCommentTextareaHasFocus(false)}
               onKeyDown={onCommentTextareaKeyDown}
               placeholder="Write a comment..."
               textareaClass="h-9 group-focus-within:h-16 max-h-fit !text-sm transition-all focus:bg-gray-50"
