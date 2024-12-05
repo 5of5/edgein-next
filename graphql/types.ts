@@ -32872,13 +32872,7 @@ export const GetCompaniesByListIdDocument = `
       slug
     }
   }
-  follows_companies_aggregate(
-    where: {_and: [{list_id: {_eq: $list_id}}, {company: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
-  ) {
-    aggregate {
-      count
-    }
-  }
+  
 }
     `;
 export const useGetCompaniesByListIdQuery = <
@@ -34929,23 +34923,7 @@ export const GetNotesDocument = `
         }
       }
     }
-    comments(order_by: {created_at: asc}) {
-      id
-      content
-      created_at
-      created_by_user_id
-      created_by_user {
-        id
-        display_name
-        email
-        person {
-          id
-          slug
-          name
-          picture
-        }
-      }
-    }
+    
   }
 }
     `;

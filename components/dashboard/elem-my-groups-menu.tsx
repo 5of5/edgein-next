@@ -167,7 +167,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
               ?.map(group => {
                 const groupUrl = `${ROUTES.GROUPS}/${group.id}/`;
 
-                const groupTotalLists = group.list_user_groups.length;
+                const groupTotalLists = group.list_user_groups?.length;
                 const groupTotalNotes = group.notes.length;
 
                 const groupTooltip = (

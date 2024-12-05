@@ -55,20 +55,26 @@ export const ElemSaveToList: FC<Props> = ({
 
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [followsByResource, setFollowsByResource] = useState<
-    Pick<Follows, 'list_id'>[]
-  >([]);
-
+  const [followsByResource, setFollowsByResource] = useState([]);
   useEffect(() => {
-    if (!isEqual(follows, followsByResource)) {
+    if (Array.isArray(follows) && !isEqual(follows, followsByResource)) {
       setFollowsByResource(follows);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [follows]);
 
-  const isSaved = followsByResource?.some(followItem =>
-    listsData?.some(listItem => listItem.id === followItem.list_id),
-  );
+  let isSaved = false;
+
+  if (Array.isArray(followsByResource) && Array.isArray(listsData)) {
+    for (const followItem of followsByResource) {
+      for (const listItem of listsData) {
+        if (listItem.id === followItem.list_id) {
+          isSaved = true;
+          break;
+        }
+      }
+      if (isSaved) break;
+    }
+  }
 
   const savedButtonStyle = buttonStyle === 'default' ? '' : 'bg-primary-800';
 

@@ -62,10 +62,10 @@ const Person: NextPage<Props> = (props: Props) => {
   });
 
   useEffect(() => {
-    if (personData) setPerson(personData?.people[0] as People);
+    if (personData) setPerson(personData?.people?.[0] as People);
   }, [personData]);
 
-  const sortedInvestmentRounds = props.sortByDateAscInvestments;
+  const sortedInvestmentRounds = props.sortByDateAscInvestments || [];
 
   useEffect(() => {
     if (person) {
@@ -77,18 +77,18 @@ const Person: NextPage<Props> = (props: Props) => {
     }
   }, [person, router.asPath]);
 
-  const getVcFirmJobs = person.investors as Investors[];
-  const getCompanyJobs = person.team_members as Team_Members[];
-  const mergedJobs = union(getVcFirmJobs, getCompanyJobs as any).filter(
-    item => item,
-  );
-  const personJobs = orderBy(mergedJobs, [item => item.end_date], ['desc']);
+  const getVcFirmJobs = (person.investors || []) as Investors[];
+  const getCompanyJobs = (person.team_members || []) as Team_Members[];
+  const mergedJobs = union(getVcFirmJobs, getCompanyJobs).filter(Boolean);
+  const personJobs = orderBy(mergedJobs, [item => item?.end_date], ['desc']);
 
-  const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
-  const companyTags = flatten(
-    person.team_members.map(item => item?.company?.tags),
+  const vcFirmTags = flatten(
+    (person.investors || []).map(item => item?.vc_firm?.tags || []),
   );
-  const personTags = union(vcFirmTags, companyTags).filter(item => item);
+  const companyTags = flatten(
+    (person.team_members || []).map(item => item?.company?.tags || []),
+  );
+  const personTags = union(vcFirmTags, companyTags).filter(Boolean);
 
   const personEmails = [
     ...(person.work_email ? [person.work_email] : []),
@@ -97,7 +97,7 @@ const Person: NextPage<Props> = (props: Props) => {
 
   const tabBarItems = [
     { name: 'Overview', ref: overviewRef },
-    ...(props.sortNews.length > 0
+    ...(props.sortNews?.length > 0
       ? [
           {
             name: 'News',
@@ -105,7 +105,7 @@ const Person: NextPage<Props> = (props: Props) => {
           },
         ]
       : []),
-    ...(sortedInvestmentRounds.length > 0
+    ...(sortedInvestmentRounds?.length > 0
       ? [
           {
             name: 'Investments',
@@ -116,12 +116,11 @@ const Person: NextPage<Props> = (props: Props) => {
   ];
 
   const profileUrl = `https://edgein.io${router.asPath}`;
-  const profileIsClaimed = person.user?.id ? true : false;
-  const profileIsLoggedInUser =
-    user && person.user?.id === user?.id ? true : false;
+  const profileIsClaimed = !!person.user?.id;
+  const profileIsLoggedInUser = !!user && person.user?.id === user?.id;
 
   const personLibraries =
-    person.library.length > 0 ? person.library.join(', ') : '';
+    person.library?.length > 0 ? person.library.join(', ') : '';
 
   return (
     <>
@@ -140,7 +139,7 @@ const Person: NextPage<Props> = (props: Props) => {
           images: [
             {
               url: person.picture?.url,
-              alt: person.name ? person.name : 'Person',
+              alt: person.name || 'Person',
             },
             {
               url: 'https://edgein.io/social.jpg',
@@ -160,7 +159,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   photo={person.picture}
                   wrapClass="flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full border border-gray-200 w-40 lg:w-full"
                   imgClass="object-cover w-full h-full rounded-full overflow-hidden"
-                  imgAlt={person.name}
+                  imgAlt={person.name || 'Person'}
                   placeholder="user"
                   placeholderClass="text-gray-300"
                 />
@@ -177,7 +176,7 @@ const Person: NextPage<Props> = (props: Props) => {
                     )}
                     <div className="flex items-center justify-center space-x-2 lg:justify-start">
                       <h1 className="self-end inline-block text-4xl font-medium">
-                        {person.name}
+                        {person.name || ''}
                       </h1>
 
                       {profileIsClaimed && (
@@ -197,7 +196,7 @@ const Person: NextPage<Props> = (props: Props) => {
                         className="mt-4"
                         limit={PERSON_PROFILE_DEFAULT_TAGS_LIMIT}
                         resourceType={
-                          person.team_members.length > 0
+                          person.team_members?.length > 0
                             ? 'companies'
                             : 'investors'
                         }
@@ -207,15 +206,15 @@ const Person: NextPage<Props> = (props: Props) => {
 
                     <div className="flex flex-wrap items-center gap-3 mt-4">
                       <ElemSaveToList
-                        resourceName={person.name}
+                        resourceName={person.name || ''}
                         resourceId={person.id}
                         resourceType="people"
-                        slug={person.slug!}
-                        follows={person.follows}
+                        slug={person.slug || ''}
+                        follows={person.follows || []}
                       />
 
                       <ElemSocialShare
-                        resourceName={person.name}
+                        resourceName={person.name || ''}
                         resourceTwitterUrl={null}
                       />
 
@@ -264,7 +263,7 @@ const Person: NextPage<Props> = (props: Props) => {
           <ElemTabBar
             className="px-8 py-2"
             tabs={tabBarItems}
-            resourceName={person.name}
+            resourceName={person.name || ''}
             resourceUrl={`https://edgein.io${router.asPath}`}
           />
 
@@ -277,11 +276,9 @@ const Person: NextPage<Props> = (props: Props) => {
                 <ElemKeyInfo
                   className="sticky top-28 mb-7 lg:mb-0"
                   heading="Key Info"
-                  roles={removeSpecialCharacterFromString(
-                    person.type as string,
-                  )}
+                  roles={removeSpecialCharacterFromString(person.type || '')}
                   linkedIn={person.linkedin}
-                  investmentsLength={person.investments?.length}
+                  investmentsLength={person.investments?.length || 0}
                   web3Address={person.web3_address}
                   emails={personEmails}
                   github={person.github}
@@ -312,12 +309,12 @@ const Person: NextPage<Props> = (props: Props) => {
                   resourceUrl={profileUrl}
                 />
 
-                {props.sortNews.length > 0 && (
+                {props.sortNews?.length > 0 && (
                   <div ref={newsRef}>
                     <ElemNewsList
                       resourceId={person.id}
                       resourceType="people"
-                      news={props.sortNews}
+                      news={props.sortNews || []}
                     />
                   </div>
                 )}

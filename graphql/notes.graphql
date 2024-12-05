@@ -38,23 +38,6 @@ query GetNotes($where: notes_bool_exp!) {
         }
       }
     }
-    comments(order_by: { created_at: asc }) {
-      id
-      content
-      created_at
-      created_by_user_id
-      created_by_user {
-        id
-        display_name
-        email
-        person {
-          id
-          slug
-          name
-          picture
-        }
-      }
-    }
   }
 }
 

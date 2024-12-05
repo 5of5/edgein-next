@@ -36,28 +36,40 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
       investments?: { investment_round?: { company: { tags: string[] }[] } };
     };
   }[];
-
-  const vc_tags = orgs.reduce((tmp, org) => {
-    const tags = org.vc_firm?.investments?.investment_round?.company.reduce(
-      (tmp, company) => {
-        return [...tmp, ...company.tags];
-      },
-      new Array<string>(),
-    );
-    return [...tmp, ...(tags || [])];
-  }, new Array<string>());
-
-  const company_tags = orgs.reduce((tmp, org) => {
-    return [...tmp, ...(org.company?.tags || [])];
-  }, new Array<string>());
-
-  const tags = Array.from(new Set([...vc_tags, ...company_tags]));
-
-  const publisher = organizations.find(org => org.type === 'publisher');
-
-  const otherOrganizations = organizations.filter(
-    org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
+  let vc_tags: string[] = [];
+  if (orgs?.length) {
+    vc_tags = orgs?.reduce((tmp, org) => {
+      const tags = org?.vc_firm?.investments?.investment_round?.company?.reduce(
+        (tmp, company) => {
+          return [...tmp, ...company.tags];
+        },
+        new Array<string>(),
+      );
+      return [...tmp, ...(tags || [])];
+    }, new Array<string>());
+  }
+  const company_tags: string[] = [];
+  if (orgs?.length) {
+    company_tags = orgs?.reduce((tmp, org) => {
+      return [...tmp, ...(org.company?.tags || [])];
+    }, new Array<string>());
+  }
+  const tags = Array.from(
+    new Set([
+      ...(vc_tags || []), // Default to an empty array if vc_tags is undefined
+      ...(company_tags || []), // Default to an empty array if company_tags is undefined
+    ]),
   );
+  let publisher = [];
+  if (organizations?.length) {
+    publisher = organizations?.find(org => org.type === 'publisher');
+  }
+  let otherOrganizations = [];
+  if (organizations?.length) {
+    otherOrganizations = organizations?.filter(
+      org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
+    );
+  }
 
   const handleLinkClick = () => {
     onTrackView({
