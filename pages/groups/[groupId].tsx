@@ -141,7 +141,6 @@ const Group: NextPage<Props> = (props: Props) => {
   if (!user) {
     return null;
   }
-
   return (
     <>
       <NextSeo

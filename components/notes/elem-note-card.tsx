@@ -335,13 +335,13 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         </div>
 
         {/* Content */}
-        <div className="px-4 py-2">
+        {/* <div className="px-4 py-2">
           <p
             ref={contentDiv}
             className={`text-sm ${!contentShowAll ? 'line-clamp-5' : ''}`}
-            dangerouslySetInnerHTML={{
-              __html: formatContent(data?.notes || ''),
-            }}></p>
+            dangerouslySetInnerHTML={
+              formatContent(data?.notes)
+            }></p>
           {contentDivHeight > 100 && !contentShowAll && (
             <button
               type="button"
@@ -350,7 +350,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               See more
             </button>
           )}
-        </div>
+        </div> */}
 
         {/* Like/Comment counts */}
         {(likesCount > 0 || commentsCount > 0) && (

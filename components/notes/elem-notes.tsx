@@ -19,7 +19,6 @@ export const ElemNotes: React.FC<Props> = props => {
   const sortedNotes = orderBy(props.notes, a => new Date(a.created_at), [
     'desc',
   ]);
-
   return (
     <div className={`${props.className}`}>
       <div className="flex items-center mb-4 px-4 py-2 shrink-0 border border-gray-300 rounded-lg">
