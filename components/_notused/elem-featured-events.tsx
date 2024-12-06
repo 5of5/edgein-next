@@ -56,7 +56,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
   const events: GetEventsQuery['events'] = eventsData?.events || [];
 
   return (
-    <div className={`bg-dark-100 rounded-lg p-5 ${className}`}>
+    <div className={`bg-black rounded-lg p-5 ${className}`}>
       {heading && <h2 className="text-xl font-bold">{heading}</h2>}
       {error ? (
         <h4>Error loading featured events</h4>

@@ -277,7 +277,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
               />
             )}
 
-            <div className="max-w-6xl p-5 bg-dark-100 rounded-lg shadow-md mt-7">
+            <div className="max-w-6xl p-5 bg-black rounded-lg shadow-md mt-7">
               <div className="pb-3 border-b border-gray-100">
                 <h2 className="text-xl font-bold text-dark-950">Overview</h2>
               </div>
@@ -294,7 +294,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     <div className="relative ">
                       <ElemPhoto
                         photo={companyEditable.logo}
-                        wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-dark-100 rounded-lg shadow"
+                        wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-black rounded-lg shadow"
                         imgClass="object-contain w-16 h-16"
                         imgAlt={companyEditable.name}
                       />
@@ -822,7 +822,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             </div>
 
             {/* Team section starts here.. */}
-            <div className="max-w-6xl p-5 bg-dark-100 rounded-lg shadow-md mt-7">
+            <div className="max-w-6xl p-5 bg-black rounded-lg shadow-md mt-7">
               <div className="pb-3 border-b border-gray-100">
                 <h2 className="text-xl font-bold text-dark-950">Team</h2>
               </div>
@@ -865,7 +865,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             </div>
 
             {/* Funding Investments section */}
-            <div className="max-w-6xl p-5 bg-dark-100 rounded-lg shadow-md mt-7">
+            <div className="max-w-6xl p-5 bg-black rounded-lg shadow-md mt-7">
               <div className="pb-3 border-b border-gray-100">
                 <h2 className="text-xl font-bold text-dark-950">
                   Funding Investments

@@ -150,7 +150,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
   return (
     <>
-      <div className="overflow-hidden bg-dark-100 border border-gray-200 divide-y divide-gray-200 rounded-lg">
+      <div className="overflow-hidden bg-black border border-gray-200 divide-y divide-gray-200 rounded-lg">
         {fields.map(item => (
           <ElemSettingEditableField
             key={item.fieldName}
@@ -212,7 +212,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
       </div>
 
       {isGroupManager && (
-        <div className="mt-6 overflow-hidden bg-dark-100 border border-gray-200 divide-y divide-gray-200 rounded-lg">
+        <div className="mt-6 overflow-hidden bg-black border border-gray-200 divide-y divide-gray-200 rounded-lg">
           <button
             className="flex items-center w-full p-3 space-x-1 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={handleOpenDeleteModal}>
@@ -227,7 +227,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
         onClose={handleCloseDeleteModal}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-6 pb-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-6 pb-3 z-10 my-10">
         <div>
           <h2 className="text-xl font-medium">Delete this group?</h2>
         </div>

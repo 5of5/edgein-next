@@ -65,7 +65,7 @@ const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
         leaveTo="transform opacity-0 scale-95">
         <Menu.Items
           as="nav"
-          className="absolute left-0 z-10 w-full mt-1 overflow-hidden origin-top-left bg-dark-100 divide-y rounded-lg shadow-lg divide-slate-100 ring-1 ring-black/5 focus:outline-none">
+          className="absolute left-0 z-10 w-full mt-1 overflow-hidden origin-top-left bg-black divide-y rounded-lg shadow-lg divide-slate-100 ring-1 ring-black/5 focus:outline-none">
           {options.map(item => (
             <Menu.Item key={item.type}>
               {({ active }) => (

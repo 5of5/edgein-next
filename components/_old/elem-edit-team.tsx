@@ -172,7 +172,7 @@ export const ElemEditTeam: React.FC<Props> = ({
                       <th
                         key={key}
                         {...restColumnProps}
-                        className={`px-4 py-2 whitespace-nowrap text-sm bg-dark-100 font-bold text-left ${
+                        className={`px-4 py-2 whitespace-nowrap text-sm bg-black font-bold text-left ${
                           column.canSort ? 'group hover:text-primary-500' : ''
                         }`}
                         title={
@@ -189,7 +189,7 @@ export const ElemEditTeam: React.FC<Props> = ({
           </thead>
           <tbody
             {...getTableBodyProps()}
-            className="flex-1 bg-dark-100 divide-y divide-black/10 md:flex-none mb-96">
+            className="flex-1 bg-black divide-y divide-black/10 md:flex-none mb-96">
             {page.map(row => {
               prepareRow(row);
               const { key, ...restRowProps } = row.getRowProps();
@@ -198,7 +198,7 @@ export const ElemEditTeam: React.FC<Props> = ({
                 <tr
                   key={key}
                   {...restRowProps}
-                  className="table-row bg-dark-100 rounded-lg even:bg-slate-50">
+                  className="table-row bg-black rounded-lg even:bg-slate-50">
                   {row.cells.map(cell => {
                     const { key, ...restCellProps } = cell.getCellProps({
                       style: {

@@ -83,7 +83,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             className="flex items-center mb-4 gap-x-4">
             <ElemPhoto
               photo={picture}
-              wrapClass="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-dark-100 overflow-hidden border border-gray-200"
+              wrapClass="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-black overflow-hidden border border-gray-200"
               imgClass="object-fit max-w-full max-h-full"
               imgAlt={name}
               placeholder="user"

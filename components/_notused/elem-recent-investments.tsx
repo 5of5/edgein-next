@@ -54,7 +54,7 @@ export const ElemRecentInvestments: FC<Props> = ({
   const vcFirms = vcFirmsData?.vc_firms || [];
 
   return (
-    <div className={`bg-dark-100 rounded-lg p-5 shadow ${className}`}>
+    <div className={`bg-black rounded-lg p-5 shadow ${className}`}>
       {heading && <h2 className="text-xl font-bold">{heading}</h2>}
       {error ? (
         <h4>Error loading investors</h4>
@@ -86,7 +86,7 @@ export const ElemRecentInvestments: FC<Props> = ({
                     <div className="flex">
                       <ElemPhoto
                         photo={investor.logo}
-                        wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-dark-100 rounded-lg shadow"
+                        wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-black rounded-lg shadow"
                         imgClass="object-contain w-full h-full"
                         imgAlt={investor.name}
                         placeholderClass="text-gray-300"

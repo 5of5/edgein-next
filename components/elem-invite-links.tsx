@@ -99,7 +99,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
         leaveTo="transform opacity-0 scale-95">
         <Menu.Items
           as="nav"
-          className="absolute left-0 z-10 w-56 mt-2 overflow-hidden origin-top-right bg-dark-100 rounded-lg shadow-lg lg:left-auto lg:right-0 ring-1 ring-black/5 focus:outline-none">
+          className="absolute left-0 z-10 w-56 mt-2 overflow-hidden origin-top-right bg-black rounded-lg shadow-lg lg:left-auto lg:right-0 ring-1 ring-black/5 focus:outline-none">
           {list.map(link => (
             <Menu.Item key={link.text}>
               {({ active }) => (

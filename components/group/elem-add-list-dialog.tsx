@@ -38,7 +38,7 @@ const ElemAddListDialog: FC<Props> = ({
       onClose={onCloseModal}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-6 pt-6 pb-3 z-10 my-10 !overflow-visible">
+      panelClass="relative w-full max-w-lg bg-black rounded-lg px-6 pt-6 pb-3 z-10 my-10 !overflow-visible">
       <div>
         <h2 className="text-xl font-medium">Add List(s)</h2>
       </div>

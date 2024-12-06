@@ -108,7 +108,7 @@ const ElemMemberTab: React.FC<Props> = ({
 
   return (
     <>
-      <div className="bg-dark-100 border border-gray-200 divide-y divide-gray-200 rounded-lg">
+      <div className="bg-black border border-gray-200 divide-y divide-gray-200 rounded-lg">
         <div className="rounded-t-lg hover:bg-neutral-900">
           <ElemButton
             btn="transparent"
@@ -165,7 +165,7 @@ const ElemMemberTab: React.FC<Props> = ({
               <div className="flex items-center gap-x-2">
                 {member.user?.person?.picture ? (
                   <ElemPhoto
-                    wrapClass="w-10 h-10 aspect-square shrink-0 bg-dark-100 overflow-hidden rounded-full"
+                    wrapClass="w-10 h-10 aspect-square shrink-0 bg-black overflow-hidden rounded-full"
                     imgClass="object-contain w-full h-full border border-gray-200"
                     photo={member.user?.person?.picture}
                     placeholder="user"
@@ -173,7 +173,7 @@ const ElemMemberTab: React.FC<Props> = ({
                     imgAlt={member.user?.display_name}
                   />
                 ) : (
-                  <div className="flex items-center justify-center w-10 text-xl capitalize bg-dark-100 rounded-full aspect-square text-dark-500">
+                  <div className="flex items-center justify-center w-10 text-xl capitalize bg-black rounded-full aspect-square text-dark-500">
                     {member.user?.display_name?.charAt(0)}
                   </div>
                 )}

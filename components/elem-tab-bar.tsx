@@ -99,7 +99,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
   return (
     <ElemSticky
       className={`flex gap-y-2 items-center ${className}`}
-      activeClass="top-14 bg-dark-100 shadow-sm">
+      activeClass="top-14 bg-black shadow-sm">
       <nav
         className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 mr-auto lg:flex-wrap ${tabsClassName}`}>
         {tabs &&

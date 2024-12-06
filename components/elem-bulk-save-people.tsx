@@ -158,7 +158,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
         onClose={onCloseSaveToListDialog}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10">
         <div className="pb-3 border-b border-gray-200">
           <h2 className="text-xl font-medium">{text}</h2>
         </div>

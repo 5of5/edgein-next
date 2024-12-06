@@ -114,7 +114,7 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           }
         }}
         className="flex items-center px-6 py-1 group hover:bg-neutral-900">
-        <div className="flex items-center justify-center w-12 h-12 p-1 bg-dark-100 border border-gray-200 rounded shrink-0">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-black border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
               className="object-contain max-w-full max-h-full"
@@ -179,7 +179,7 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             redirect(`/vc_firms/${hit.objectID}`);
           }
         }}>
-        <div className="flex items-center justify-center w-12 h-12 p-1 bg-dark-100 border border-gray-200 rounded shrink-0">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-black border border-gray-200 rounded shrink-0">
           {hit.logo ? (
             <img
               className="object-contain max-w-full max-h-full"
@@ -221,7 +221,7 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
             redirect(`/people/${hit.objectID}`);
           }
         }}>
-        <div className="flex items-center justify-center w-12 overflow-hidden bg-dark-100 border border-gray-200 rounded-full shrink-0 aspect-square">
+        <div className="flex items-center justify-center w-12 overflow-hidden bg-black border border-gray-200 rounded-full shrink-0 aspect-square">
           {hit.picture ? (
             <img
               className="max-w-full max-h-full object-fit"
@@ -263,7 +263,7 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
           }
         }}
         className="flex items-center px-6 py-1 group hover:bg-neutral-900">
-        <div className="flex items-center justify-center w-12 h-12 p-1 bg-dark-100 border border-gray-200 rounded shrink-0">
+        <div className="flex items-center justify-center w-12 h-12 p-1 bg-black border border-gray-200 rounded shrink-0">
           <img
             className="object-contain max-w-full max-h-full"
             src={hit.banner || getEventBanner(hit.location_json?.city)}
@@ -531,7 +531,7 @@ export default function SearchModal(props: any) {
     };
 
     return (
-      <Tab.List className="flex gap-2 px-6 py-1 my-2 overflow-x-scroll font-medium transition-all bg-dark-100 whitespace-nowrap">
+      <Tab.List className="flex gap-2 px-6 py-1 my-2 overflow-x-scroll font-medium transition-all bg-black whitespace-nowrap">
         <Tab
           className={({ selected }) =>
             `${
@@ -593,7 +593,7 @@ export default function SearchModal(props: any) {
         onClose={onClose}
         showCloseIcon={false}
         placement="top"
-        panelClass="w-full max-w-3xl shadow-2xl bg-dark-100 rounded-lg my-4">
+        panelClass="w-full max-w-3xl shadow-2xl bg-black rounded-lg my-4">
         <InstantSearch
           searchClient={searchClient}
           indexName="companies"
@@ -619,7 +619,7 @@ export default function SearchModal(props: any) {
               onClick={onClose}
               type="reset"
               arial-label="cancel"
-              className="appearance-none w-8 justify-items-end p-1 bg-dark-100 border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm">
+              className="appearance-none w-8 justify-items-end p-1 bg-black border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm">
               ESC
             </button>
           </header>

@@ -76,13 +76,13 @@ const Notes: FC<Props> = () => {
         ) : isLoading || !user ? (
           <div className="flex flex-col mt-4 gap-y-4">
             {Array.from({ length: 2 }, (_, i) => (
-              <div key={i} className="max-w-2xl bg-dark-100 rounded-lg shadow">
+              <div key={i} className="max-w-2xl bg-black rounded-lg shadow">
                 <PlaceholderNote />
               </div>
             ))}
           </div>
         ) : notes.length === 0 ? (
-          <div className="max-w-2xl px-5 py-4 bg-dark-100 border border-gray-300 rounded-lg">
+          <div className="max-w-2xl px-5 py-4 bg-black border border-gray-300 rounded-lg">
             <div className="w-full p-12 text-center">
               <IconDocumentDownload
                 className="w-12 h-12 mx-auto text-gray-300"

@@ -105,7 +105,7 @@ export default function Onboarding() {
       <NextSeo title="Onboarding" />
       <Dialog as="div" open onClose={() => null} className="relative z-[60]">
         <div className="fixed inset-0 z-[50] min-h-0 flex flex-col items-center justify-center">
-          <Dialog.Panel className="fixed inset-0 z-[50] w-full h-full bg-dark-100">
+          <Dialog.Panel className="fixed inset-0 z-[50] w-full h-full bg-black">
             <ElemSignInHeader />
 
             <div className="flex items-center justify-center h-[calc(100%-53px)] w-full">

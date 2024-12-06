@@ -105,7 +105,7 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
 
         <ElemLink
           href={user ? ROUTES.REFERRALS_AND_POINTS : ROUTES.SIGN_IN}
-          className="block p-4 bg-dark-100 border rounded-lg shadow-lg border-primary-500">
+          className="block p-4 bg-black border rounded-lg shadow-lg border-primary-500">
           <div className="flex items-center">
             {banner.icon && (
               <div className="pr-1">

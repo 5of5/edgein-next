@@ -55,7 +55,7 @@ export const ElemCredibility: React.FC<Props> = ({
             <div
               className={`${
                 mini ? 'w-8 h-8' : 'w-12 h-12'
-              } relative flex items-center justify-center bg-dark-100 rounded-lg border border-black/10`}>
+              } relative flex items-center justify-center bg-black rounded-lg border border-black/10`}>
               <IconBadgeCheckSolid
                 title="Verified"
                 className={`${
@@ -75,7 +75,7 @@ export const ElemCredibility: React.FC<Props> = ({
               className={`${
                 mini
                   ? ''
-                  : 'pt-2 flex flex-col items-center justify-center h-full bg-dark-100 rounded-lg'
+                  : 'pt-2 flex flex-col items-center justify-center h-full bg-black rounded-lg'
               } text-slate-600`}>
               {mini ? (
                 <>

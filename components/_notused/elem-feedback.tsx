@@ -75,13 +75,13 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
         <div
           className={`${
             toggleFeedbackForm && 'animate-fade-in-up'
-          } absolute z-10 left-0 bottom-0 w-96 max-w-xs bg-dark-100 shadow-xl rounded-xl overflow-hidden`}>
+          } absolute z-10 left-0 bottom-0 w-96 max-w-xs bg-black shadow-xl rounded-xl overflow-hidden`}>
           <header className="relative py-2 font-bold text-center text-white bg-primary-500">
             {heading ? heading : 'Request Data'}
             <div
               className="absolute top-0 bottom-0 flex items-center right-2"
               onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}>
-              <IconMinus className="w-6 h-6 rounded-md cursor-pointer hover:bg-dark-100/20" />
+              <IconMinus className="w-6 h-6 rounded-md cursor-pointer hover:bg-black/20" />
             </div>
           </header>
           {feedbackSent ? (

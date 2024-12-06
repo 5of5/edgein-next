@@ -182,7 +182,7 @@ export const TheNavbar: FC<Props> = ({}) => {
         showCloseIcon={false}
         placement="topLeft"
         transition="slideFromLeft"
-        panelClass="h-full w-full max-w-xs mb-14 bg-dark-100">
+        panelClass="h-full w-full max-w-xs mb-14 bg-black">
         <DashboardSidebar />
       </ElemModal>
     </>

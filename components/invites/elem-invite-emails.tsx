@@ -84,7 +84,7 @@ const ElemInviteEmails: FC<Props> = ({
 
         <div>
           <Combobox.Input
-            className={`relative w-full px-3 py-2 mt-2 text-sm bg-dark-100 border-none rounded-full outline-none hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-gray-400 ${
+            className={`relative w-full px-3 py-2 mt-2 text-sm bg-black border-none rounded-full outline-none hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-gray-400 ${
               query.length > 1 && (emailError || isDuplicatedEmail)
                 ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                 : 'ring-1 ring-gray-300'
@@ -95,7 +95,7 @@ const ElemInviteEmails: FC<Props> = ({
             onChange={handleChangeQuery}
           />
           {query && !isDuplicatedEmail && !emailError && (
-            <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-dark-100 border border-gray-200 rounded-md shadow-md max-h-60 scrollbar-hide">
+            <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-black border border-gray-200 rounded-md shadow-md max-h-60 scrollbar-hide">
               {isLoading && query !== '' ? (
                 <div className="px-4 py-2">
                   {Array.from({ length: 3 }, (_, i) => (

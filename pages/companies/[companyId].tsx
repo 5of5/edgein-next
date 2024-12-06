@@ -317,7 +317,7 @@ const Company: NextPage<Props> = (props: Props) => {
             </div>
             <div className="col-span-3 mt-7 lg:mt-0">
               {Object.values(tokenInfo).some(i => i > 0) && (
-                <section className="p-4 bg-dark-100 border border-gray-300 rounded-lg md:mt-0">
+                <section className="p-4 bg-black border border-gray-300 rounded-lg md:mt-0">
                   <h2 className="font-medium">Token Info</h2>
                   <div className="flex flex-col my-3 space-y-3">
                     {props.metrics.map(item => {

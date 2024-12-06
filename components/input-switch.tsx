@@ -29,7 +29,7 @@ export const InputSwitch: FC<Props> = props => {
           <span
             className={`${
               checked ? 'translate-x-6' : 'translate-x-1'
-            } inline-block h-4 w-4 transform rounded-full bg-dark-100 transition`}
+            } inline-block h-4 w-4 transform rounded-full bg-black transition`}
           />
         </Switch>
       </div>

@@ -53,7 +53,7 @@ const ElemMyEdgeInMenu = () => {
                 {user?.person?.picture ? (
                   <ElemPhoto
                     photo={user?.person?.picture}
-                    wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-dark-100 rounded-full"
+                    wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-black rounded-full"
                     imgClass="object-fit max-w-full max-h-full rounded-full"
                     imgAlt={'profile'}
                     placeholder="user"

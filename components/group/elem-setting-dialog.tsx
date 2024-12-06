@@ -48,7 +48,7 @@ const ElemSettingDialog: React.FC<Props> = ({
         onClose={onClose}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10">
         <div>
           <h2 className="text-xl font-medium">
             Group settings {/*: &ldquo;{group.name}&rdquo; */}
@@ -56,7 +56,7 @@ const ElemSettingDialog: React.FC<Props> = ({
         </div>
 
         <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-          <Tab.List className="flex pt-4 font-medium transition-all bg-dark-100 border-b border-gray-200 whitespace-nowrap gap-x-4">
+          <Tab.List className="flex pt-4 font-medium transition-all bg-black border-b border-gray-200 whitespace-nowrap gap-x-4">
             <Tab
               className={({ selected }) =>
                 `py-1 ${

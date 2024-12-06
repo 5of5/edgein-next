@@ -313,7 +313,7 @@ const Event: NextPage<Props> = props => {
                       {attendee.person?.picture ? (
                         <ElemPhoto
                           photo={attendee.person.picture}
-                          wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-dark-100 rounded-full w-8 shadow`}
+                          wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-black rounded-full w-8 shadow`}
                           imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
                           imgAlt={attendee.person?.name}
                           placeholder="user"

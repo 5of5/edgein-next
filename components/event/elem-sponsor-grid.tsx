@@ -32,7 +32,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
                   className="company flex items-center space-x-3 hover:opacity-70">
                   <ElemPhoto
                     photo={props.row.original.company.logo}
-                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-dark-100 border border-slate-200"
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-black border border-slate-200"
                     imgClass="object-fit max-w-full max-h-full rounded"
                     imgAlt={props.row.original.company.name}
                   />
@@ -52,7 +52,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
                   className="investor flex items-center space-x-3 hover:opacity-70">
                   <ElemPhoto
                     photo={props.row.original.vc_firm.logo}
-                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-dark-100 border border-slate-200"
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden bg-black border border-slate-200"
                     imgClass="object-fit max-w-full max-h-full rounded"
                     imgAlt={props.row.original.vc_firm.name}
                   />
@@ -170,7 +170,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
             </thead>
             <tbody
               {...getTableBodyProps()}
-              className="bg-dark-100 divide-y divide-gray-300 flex-1 md:flex-none mb-96">
+              className="bg-black divide-y divide-gray-300 flex-1 md:flex-none mb-96">
               {page.map(row => {
                 prepareRow(row);
                 const { key, ...restRowProps } = row.getRowProps();

@@ -127,7 +127,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
           inputElement: inputRef.current as HTMLInputElement | null,
         })}>
         <textarea
-          className={`w-full bg-dark-100 px-3 py-2 resize-none rounded-lg border-none outline-none ring-1 ring-gray-300 focus:ring-gray-300 placeholder:text-gray-500 hover:bg-gray-50 ${
+          className={`w-full bg-black px-3 py-2 resize-none rounded-lg border-none outline-none ring-1 ring-gray-300 focus:ring-gray-300 placeholder:text-gray-500 hover:bg-gray-50 ${
             state.query.length > 280 ? 'text-base' : 'text-lg'
           } ${props.textareaClass}`}
           ref={inputRef}
@@ -147,7 +147,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
 
       <div
         {...autocomplete.getPanelProps({})}
-        className="autocomplete-panel absolute left-0 z-30 w-full max-w-xs bg-dark-100 rounded-lg shadow-2xl"
+        className="autocomplete-panel absolute left-0 z-30 w-full max-w-xs bg-black rounded-lg shadow-2xl"
         style={{ top: `${top + height}px` }}>
         {state.status === 'stalled' && !state.isOpen && (
           <div className="text-primary-500 py-3">

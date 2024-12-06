@@ -65,7 +65,7 @@ const ElemParentOrganizationEdit: FC<Props> = ({ type }) => {
   };
 
   return (
-    <div className="mt-6 bg-dark-100 shadow-md rounded-md">
+    <div className="mt-6 bg-black shadow-md rounded-md">
       <SimpleForm defaultValues={defaultValues} onSubmit={handleSubmit}>
         <h4 className="text-primary-600 uppercase text-sm font-medium">
           Parent organizations

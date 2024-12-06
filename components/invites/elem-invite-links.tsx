@@ -85,7 +85,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
   ];
 
   return (
-    <div className="relative p-5 bg-dark-100 border border-gray-200 rounded-lg">
+    <div className="relative p-5 bg-black border border-gray-200 rounded-lg">
       <h3 className="font-medium">Share your referral link</h3>
       <p className="text-sm text-gray-500">
         Copy and paste it or send it directly to your friends
@@ -101,7 +101,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
           </ElemButton>
         </div>
         <input
-          className={`w-full mt-1 px-3 py-2 text-dark-500 relative bg-dark-100 rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400`}
+          className={`w-full mt-1 px-3 py-2 text-dark-500 relative bg-black rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400`}
           type="text"
           name="share"
           value={getInviteLink()}

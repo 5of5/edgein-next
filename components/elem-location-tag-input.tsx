@@ -53,14 +53,14 @@ const ElemLocationTagInput: FC<Props> = ({
         )}
         <div className="relative max-w-sm w-full mx-auto">
           <Combobox.Input
-            className="relative w-full appearance-none border-none text-sm text-dark-500 placeholder:text-slate-400 bg-dark-100 rounded-full px-10 py-2 text-left ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="relative w-full appearance-none border-none text-sm text-dark-500 placeholder:text-slate-400 bg-black rounded-full px-10 py-2 text-left ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
             placeholder={placeholder}
             onChange={onInputChange}
           />
           <IconSearch className="w-4 h-4 absolute top-1/2 left-3 -translate-y-1/2 text-slate-400" />
         </div>
         {(isLoadingPlaceSuggestions || options.length > 0) && (
-          <Combobox.Options className="absolute z-50 top-12 w-full bg-dark-100 border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+          <Combobox.Options className="absolute z-50 top-12 w-full bg-black border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
             {isLoadingPlaceSuggestions ? (
               <p className="text-sm p-2 animate-pulse">Searching location...</p>
             ) : (

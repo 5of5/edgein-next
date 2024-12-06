@@ -62,7 +62,7 @@ export const EventsTable: FC<Props> = ({
               className="transition-all shrink-0">
               <ElemPhoto
                 photo={props.row.original?.banner}
-                wrapClass="flex items-center justify-center shrink-0 w-28 h-10 bg-dark-100 border border-gray-300 rounded-md overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-28 h-10 bg-black border border-gray-300 rounded-md overflow-hidden"
                 imgClass="object-cover min-h-full min-w-full"
                 imgAlt={props.value}
                 placeholderClass="text-gray-300"

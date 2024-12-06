@@ -5,7 +5,7 @@ type Props = {};
 export const LoaderSpinner: FC<Props> = () => {
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 z-30 flex flex-col items-center justify-center bg-neutral-900/50">
-      <div className="w-40 bg-dark-100 border border-gray-200 rounded-full">
+      <div className="w-40 bg-black border border-gray-200 rounded-full">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 300 150"

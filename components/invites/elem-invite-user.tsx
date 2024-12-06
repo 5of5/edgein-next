@@ -102,7 +102,7 @@ export const ElemInviteUser = () => {
             </div>
           </div>
         </div>
-        <div className="relative p-5 bg-dark-100 border rounded-lg border-black/10">
+        <div className="relative p-5 bg-black border rounded-lg border-black/10">
           {sendInvitationEmailResponse &&
           sendInvitationEmailResponse.length > 0 ? (
             <>
@@ -179,8 +179,8 @@ export const ElemInviteUser = () => {
       </div>
 
       {teamMembers.length > 0 && (
-        <div className="relative overflow-hidden bg-dark-100 border border-gray-200 rounded-lg">
-          <div className="sticky top-0 z-10 px-5 py-2 bg-dark-100 border-b border-gray-200">
+        <div className="relative overflow-hidden bg-black border border-gray-200 rounded-lg">
+          <div className="sticky top-0 z-10 px-5 py-2 bg-black border-b border-gray-200">
             <h3 className="font-medium">Invite your team</h3>
             <p className="text-sm text-gray-500">
               Invite people that are part of your team

@@ -23,7 +23,7 @@ export const ElemGoingDialog: React.FC<Props> = ({
       onClose={onClose}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-6 py-3 z-10 my-10">
+      panelClass="relative w-full max-w-lg bg-black rounded-lg px-6 py-3 z-10 my-10">
       <div>
         <h2 className="text-xl font-medium">{title}</h2>
       </div>
@@ -43,7 +43,7 @@ export const ElemGoingDialog: React.FC<Props> = ({
                   key={attendee.id}>
                   {attendee.person?.picture ? (
                     <ElemPhoto
-                      wrapClass="w-10 h-10 aspect-square shrink-0 bg-dark-100 overflow-hidden bg-dark-100 rounded-lg"
+                      wrapClass="w-10 h-10 aspect-square shrink-0 bg-black overflow-hidden bg-black rounded-lg"
                       imgClass="object-fit max-w-full max-h-full"
                       photo={attendee.person?.picture}
                       placeholder="user2"

@@ -28,7 +28,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
       onClose={onClose}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-dark-100 rounded-lg px-4 py-3 z-40 my-10">
+      panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-40 my-10">
       <div className="mt-6">
         <h2 className="text-xl font-medium text-center">
           {title ? title : defaultTitle}

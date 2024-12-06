@@ -67,7 +67,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
             <div className="flex items-center w-full gap-4 shrink-0">
               <ElemPhoto
                 photo={logo}
-                wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-dark-100 rounded-lg overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={name}
                 placeholder="company"

@@ -104,7 +104,7 @@ const ElemOrganizationNotes: FC<Props> = ({
           <div className="flex items-start gap-2 py-4 mt-4">
             <ElemPhoto
               photo={user?.profilePicture || user?.person?.picture}
-              wrapClass="aspect-square shrink-0 bg-dark-100 overflow-hidden rounded-full w-10"
+              wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-10"
               imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
               imgAlt={user?.display_name}
               placeholder="user"

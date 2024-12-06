@@ -109,7 +109,7 @@ export const ElemDropdown: FC<Props> = ({
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
-          className={`z-30 bg-dark-100 border border-gray-300 rounded-lg shadow-lg min-w-56 overflow-hidden ${panelClass}`}>
+          className={`z-30 bg-black border border-gray-300 rounded-lg shadow-lg min-w-56 overflow-hidden ${panelClass}`}>
           {({ close }) => (
             <>
               {items.map((item, index) => {
