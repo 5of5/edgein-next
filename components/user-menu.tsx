@@ -129,7 +129,7 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
             <IconBars3 className="w-5 h-5 ml-1" />
             <ElemPhoto
               photo={user?.person?.picture}
-              wrapClass="flex items-center justify-center w-8 h-8 bg-white rounded-full shrink-0"
+              wrapClass="flex items-center justify-center w-8 h-8 bg-black rounded-full shrink-0"
               imgClass="object-cover max-w-full max-h-full rounded-full"
               imgAlt={`Signed in as ${user.display_name} | ${user.email}`}
               placeholder="user"

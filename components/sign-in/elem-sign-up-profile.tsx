@@ -32,7 +32,7 @@ export const ElemSignUpProfile: FC<Props> = ({
         you&apos;ll claim this profile.
       </p>
 
-      <div className="flex flex-col items-center px-3 py-8 mt-6 mb-8 bg-white border rounded-lg border-slate-300">
+      <div className="flex flex-col items-center px-3 py-8 mt-6 mb-8 bg-black border rounded-lg border-slate-300">
         <ElemPhoto
           photo={person?.picture}
           wrapClass="flex items-center justify-center shrink-0 w-48 h-48 rounded-full overflow-hidden"

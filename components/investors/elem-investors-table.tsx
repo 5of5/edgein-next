@@ -62,7 +62,7 @@ export const InvestorsTable: FC<Props> = ({
               className="transition-all shrink-0">
               <ElemPhoto
                 photo={props.row.original?.logo}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-300 rounded-md overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-black border border-gray-300 rounded-md overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={props.value}
                 placeholderClass="text-gray-300"

@@ -39,8 +39,8 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
   let modeClasses = '';
   let modeArrowClasses = '';
   if (mode === 'dark') {
-    modeClasses = '!bg-gray-900/90 !text-gray-300';
-    modeArrowClasses = 'before:!text-gray-900/90';
+    modeClasses = '!bg-gray-300/90 !text-gray-300';
+    modeArrowClasses = 'before:!text-gray-300/90';
   } else {
     modeClasses = '!bg-gray-50 !text-gray-600 !border !border-gray-200';
     modeArrowClasses =

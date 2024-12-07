@@ -30,7 +30,7 @@ export const ElemRequiredProfileDialog: FC<Props> = ({
       onClose={onClose}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-40 my-10">
+      panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-40 my-10">
       <div className="pb-3 border-b border-gray-200">
         <h2 className="text-xl font-medium">{title}</h2>
       </div>

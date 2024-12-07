@@ -198,14 +198,14 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
             ]}
           />
 
-          <ElemSaveToList
+          {/* <ElemSaveToList
             resourceName={name}
             resourceId={id}
             resourceType={'companies'}
             slug={slug!}
             buttonStyle="default"
             follows={follows}
-          />
+          /> */}
         </div>
       </div>
     </div>

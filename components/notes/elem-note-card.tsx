@@ -70,32 +70,51 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const { user } = useUser();
   const router = useRouter();
 
+  // Fetch resource data
   const { data: resource } = useSWR(
-    [
-      '/api/get-note-resource/',
-      {
-        resourceId: data.resource_id,
-        resourceType: data.resource_type,
-      },
-    ],
+    data?.resource_id && data?.resource_type
+      ? [
+          '/api/get-note-resource/',
+          { resourceId: data.resource_id, resourceType: data.resource_type },
+        ]
+      : null,
     fetcher,
   );
 
-  const [commentContent, setCommentContent] = useState<string>('');
-
-  const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
-    useState<boolean>(false);
-
-  // Edit Notes
-  const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
-  const [selectedNote, setSelectedNote] = useState<Note>();
+  // States
+  const [commentContent, setCommentContent] = useState('');
+  const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] = useState(false);
+  const [isOpenNoteForm, setIsOpenNoteForm] = useState(false);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [showDeleteNoteConfirm, setShowDeleteNoteConfirm] = useState(false);
+  const [contentShowAll, setContentShowAll] = useState(false);
+  const contentDiv = useRef<HTMLDivElement>(null);
+  const [contentDivHeight, setContentDivHeight] = useState(0);
+  const [commentTextareaHasFocus, setCommentTextareaHasFocus] = useState(false);
 
+  const likesCount = data?.likes?.length || 0;
+  let isLikedByCurrentUser;
+  if (data?.likes?.length) {
+    isLikedByCurrentUser = (data?.likes || [])?.some(
+      item => item?.created_by_user_id === user?.id,
+    );
+  }
+  const commentsCount = data?.comments?.length || 0;
+
+  // Handle content height calculation
+  useEffect(() => {
+    const updateHeight = () => {
+      if (data?.notes && contentDiv.current) {
+        setContentDivHeight(contentDiv.current.scrollHeight || 0);
+      }
+    };
+    updateHeight();
+  }, [data?.notes]);
+
+  // Event Handlers
   const onCloseNoteForm = () => {
     setIsOpenNoteForm(false);
-    setTimeout(() => {
-      setSelectedNote(undefined);
-    }, 400);
+    setTimeout(() => setSelectedNote(null), 400);
   };
 
   const onEditNote = (note: Note) => {
@@ -112,156 +131,77 @@ const ElemNoteCard: React.FC<NoteProps> = ({
     setShowDeleteNoteConfirm(false);
   };
 
-  const { mutate: onDeleteNote, isLoading: isDeletingNote } = useMutation(
-    () => {
-      return fetch('/api/notes/', {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: selectedNote?.id,
-        }),
-      });
-    },
-    {
-      onSuccess: async response => {
-        handleCloseDeleteNoteConfirm();
-        if (response.status !== 200) {
-          const err = await response.json();
-          toast.custom(
-            t => (
-              <div
-                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                  t.visible ? 'animate-fade-in-up' : 'opacity-0'
-                }`}>
-                {err?.message}
-              </div>
-            ),
-            {
-              duration: 3000,
-              position: 'top-center',
-            },
-          );
-        } else {
-          refetch();
-        }
-      },
-    },
-  );
-
-  const onOpenLinkPersonDialog = () => {
-    setIsOpenLinkPersonDialog(true);
-  };
-
-  const onCloseLinkPersonDialog = () => {
-    setIsOpenLinkPersonDialog(false);
-  };
-
-  // note content see more
-  const [contentShowAll, setContentShowAll] = useState(false);
-  const contentDiv = useRef() as MutableRefObject<HTMLDivElement>;
-  const [contentDivHeight, setContentDivHeight] = useState(0);
-
-  const likesCount = data.likes.length;
-  const isLikedByCurrentUser = data.likes.some(
-    item => item.created_by_user_id === user?.id,
-  );
-
-  const commentsCount = data.comments.length;
-
-  useEffect(() => {
-    if (data.notes && contentDiv?.current) {
-      setContentDivHeight(contentDiv.current.scrollHeight);
-    }
-  }, [data?.notes]);
-
   const onLikeButton = async () => {
+    if (!data?.id) return;
     await fetch('/api/toggle-like-note/', {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        noteId: data.id,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ noteId: data.id }),
     });
     refetch();
   };
 
-  const [commentTextareaHasFocus, setCommentTextareaHasFocus] = useState(false);
-
-  const onCommentButton = () => {
-    if (user?.person) {
-      setCommentTextareaHasFocus(true);
-    } else if (user) {
-      onOpenLinkPersonDialog();
-    } else {
-      router.push(ROUTES.SIGN_IN);
-    }
-  };
-
-  //Comment form
   const onAddComment = async () => {
-    setCommentContent(commentContent);
+    if (!data?.id || !commentContent.trim()) return;
     await fetch('/api/add-comment/', {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         noteId: data.id,
-        content: commentContent,
+        content: commentContent.trim(),
       }),
     });
     setCommentContent('');
     refetch();
   };
 
-  const onChangeCommentTextarea = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setCommentContent(event.target.value);
+  const onCommentSubmit = () => {
+    if (!user) {
+      router.push(ROUTES.SIGN_IN);
+    } else if (user?.person && commentContent.trim()) {
+      onAddComment();
+    } else {
+      setIsOpenLinkPersonDialog(true);
+    }
   };
 
-  const onCommentTextareaKeyDown = (
-    event: React.KeyboardEvent<HTMLTextAreaElement>,
-  ) => {
-    if (event.key === 'Enter' && commentContent) {
-      event.preventDefault();
+  const onCommentButton = () => {
+    if (!user) {
+      router.push(ROUTES.SIGN_IN);
+    } else if (!user?.person) {
+      setIsOpenLinkPersonDialog(true);
+    }
+  };
+
+  const resourceType =
+    data?.resource_type === 'vc_firms' ? 'investors' : data?.resource_type;
+  const resourceLink = resource?.slug
+    ? `/${resourceType}/${resource.slug}`
+    : '#';
+
+  const onChangeCommentTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCommentContent(e.target.value);
+  };
+
+  const onCommentTextareaKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       onCommentSubmit();
     }
   };
 
-  const onCommentSubmit = () => {
-    if (!user) {
-      router.push(ROUTES.SIGN_IN);
-    } else if (user.person && commentContent) {
-      onAddComment();
-    } else {
-      onOpenLinkPersonDialog();
-    }
-  };
-
-  //Resource
-  const resourceType =
-    data.resource_type === 'vc_firms' ? 'investors' : data.resource_type;
-  const resourceLink = `/${resourceType}/${resource?.slug}`;
-
   return (
     <>
       <div
-        className={`flex flex-col border border-gray-300 rounded-lg note-${data.id}`}>
+        className={`flex flex-col border border-gray-300 rounded-lg note-${data?.id}`}>
+        {/* Header */}
         <div className="relative flex items-center px-4 py-2 space-x-3">
           <div className="relative flex-shrink-0">
             {layout === 'organizationAndAuthor' ? (
               <ElemLink href={resourceLink}>
                 <ElemPhoto
                   photo={resource?.logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-white rounded-lg border border-gray-300"
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-black rounded-lg border border-gray-300"
                   imgClass="object-fit max-w-full max-h-full"
                   imgAlt={resource?.name}
                   placeholder="user"
@@ -270,7 +210,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               </ElemLink>
             ) : layout === 'groupAndAuthor' ? (
               <ElemLink href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}>
-                <div className="flex items-center justify-center w-12 h-12 p-1 mb-2 bg-gray-100 border border-gray-100 rounded-lg">
+                <div className="flex items-center justify-center w-12 h-12 p-1 mb-2 bg-neutral-900 border border-gray-100 rounded-lg">
                   <IconSidebarGroups
                     className="w-7 h-7"
                     title={data?.user_group?.name}
@@ -278,12 +218,13 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 </div>
               </ElemLink>
             ) : (
-              // layout === "author"
               <ElemLink
-                href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}>
+                href={`${ROUTES.PEOPLE}/${
+                  data?.created_by_user?.person?.slug || ''
+                }`}>
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
-                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full border border-gray-200"
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-black rounded-full border border-gray-200"
                   imgClass="object-fit max-w-full max-h-full rounded-full"
                   imgAlt={
                     data?.created_by_user?.person?.name ||
@@ -296,7 +237,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                     data?.created_by_user?.display_name ||
                     `User: ${data?.created_by}`
                   }
-                  placeholderClass="text-gray-300 bg-white p-0"
+                  placeholderClass="text-gray-300 bg-black p-0"
                 />
               </ElemLink>
             )}
@@ -315,163 +256,103 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                     data?.created_by_user?.display_name
                   }
                   placeholder="user"
-                  placeholderClass="text-gray-300 bg-white p-0"
+                  placeholderClass="text-gray-300 bg-black p-0"
                 />
               </ElemLink>
             )}
           </div>
-          <div className="flex-1 min-w-0">
-            <div>
-              <h3 className="font-medium leading-tight underline-offset-1 hover:underline">
-                {layout === 'organizationAndAuthor' ? (
-                  <ElemLink href={resourceLink}>{resource?.name}</ElemLink>
-                ) : layout === 'groupAndAuthor' ? (
-                  <ElemLink href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}>
-                    {data?.user_group?.name}
-                  </ElemLink>
-                ) : (
-                  // layout === "author"
-                  <ElemLink
-                    href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}>
-                    {data?.created_by_user?.person?.name}
-                  </ElemLink>
-                )}
-              </h3>
-              <div className="text-sm text-slate-600">
-                {(layout === 'organizationAndAuthor' ||
-                  layout === 'groupAndAuthor') && (
-                  <>
-                    <ElemLink
-                      href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
-                      className="underline-offset-1 hover:underline">
-                      {data?.created_by_user?.person?.name}
-                    </ElemLink>
-                    <span aria-hidden="true"> · </span>
-                  </>
-                )}
 
-                {data?.created_at && (
-                  <>
-                    <ElemTooltip
-                      content={moment
-                        .utc(data?.created_at)
-                        .local()
-                        .format('dddd, ll [at] hh:mma')}
-                      direction="bottom"
-                      mode="dark">
-                      <div className="inline-block">
-                        {moment.utc(data?.created_at).local().valueOf() >=
-                        moment.utc().local().subtract(5, 'days').valueOf()
-                          ? moment.utc(data?.created_at).local().fromNow()
-                          : moment.utc(data?.created_at).local().format('ll')}
-                      </div>
-                    </ElemTooltip>
-                    <span aria-hidden="true"> · </span>
-                  </>
-                )}
-
-                {layout === 'groupAndAuthor' ? (
-                  <ElemTooltip
-                    content={`Shared with group: "${data?.user_group?.name}"`}
-                    direction="bottom"
-                    mode="dark">
-                    <div className="inline-block">
-                      <IconUsers className="inline-flex w-4 h-4" title=" " />
-                    </div>
-                  </ElemTooltip>
-                ) : (
-                  <>
-                    {data.audience === 'only_me' ? (
-                      <ElemTooltip
-                        content="Only me"
-                        direction="bottom"
-                        mode="dark">
-                        <div className="inline-block">
-                          <IconLockClosed
-                            className="inline-flex w-4 h-4"
-                            title=" "
-                          />
-                        </div>
-                      </ElemTooltip>
-                    ) : (
-                      <ElemTooltip
-                        content="Public"
-                        direction="bottom"
-                        mode="dark">
-                        <div className="inline-block">
-                          <IconGlobe
-                            className="inline-flex w-4 h-4"
-                            title=" "
-                          />
-                        </div>
-                      </ElemTooltip>
-                    )}
-                  </>
-                )}
-                {/* {layout === "author" && } */}
-              </div>
-            </div>
-          </div>
-          <div>
-            {data?.created_by_user?.id === user?.id && (
-              <Popover className="relative z-10 transition-all">
-                <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 focus:outline-none">
-                  <IconEllipsisVertical
-                    className="w-6 h-6 text-gray-600"
-                    title="Options"
-                  />
-                </Popover.Button>
-
-                <Transition
-                  enter="transition duration-100 ease-out"
-                  enterFrom="transform scale-95 opacity-0"
-                  enterTo="transform scale-100 opacity-100"
-                  leave="transition duration-75 ease-out"
-                  leaveFrom="transform scale-100 opacity-100"
-                  leaveTo="transform scale-95 opacity-0">
-                  <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-white border border-gray-300 rounded-lg shadow-lg">
-                    {({ close }) => (
-                      <>
-                        <button
-                          onClick={() => {
-                            onEditNote(data);
-                            close();
-                          }}
-                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
-                          Edit note
-                        </button>
-                        <button
-                          onClick={() => {
-                            onConfirmDeleteNote(data);
-                          }}
-                          className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
-                          Delete
-                        </button>
-                      </>
-                    )}
-                  </Popover.Panel>
-                </Transition>
-              </Popover>
-            )}
+          {/* Metadata */}
+          <div className="flex-1">
+            <h3 className="text-sm font-medium">
+              {layout === 'organizationAndAuthor' ? (
+                <ElemLink href={resourceLink}>{resource?.name}</ElemLink>
+              ) : layout === 'groupAndAuthor' ? (
+                <ElemLink
+                  href={`${ROUTES.GROUPS}/${data?.user_group?.id || ''}`}>
+                  {data?.user_group?.name || ''}
+                </ElemLink>
+              ) : (
+                <ElemLink
+                  href={`${ROUTES.PEOPLE}/${
+                    data?.created_by_user?.person?.slug || ''
+                  }`}>
+                  {data?.created_by_user?.person?.name || 'Author'}
+                </ElemLink>
+              )}
+            </h3>
           </div>
         </div>
         <div className="px-4 py-2 grow min-h-fit">
           <p
-            className={`break-all whitespace-pre-line text-sm text-gray-900 ${
+            className={`break-all whitespace-pre-line text-sm text-gray-300 ${
               !contentShowAll && 'line-clamp-5'
             }`}
             ref={contentDiv}
             dangerouslySetInnerHTML={formatContent(data.notes)}></p>
+        </div>
+        <div>
+          {data?.created_by_user?.id === user?.id && (
+            <Popover className="relative z-10 transition-all">
+              <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-neutral-900 focus:outline-none">
+                <IconEllipsisVertical
+                  className="w-6 h-6 text-gray-600"
+                  title="Options"
+                />
+              </Popover.Button>
 
+              <Transition
+                enter="transition duration-100 ease-out"
+                enterFrom="transform scale-95 opacity-0"
+                enterTo="transform scale-100 opacity-100"
+                leave="transition duration-75 ease-out"
+                leaveFrom="transform scale-100 opacity-100"
+                leaveTo="transform scale-95 opacity-0">
+                <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-black border border-gray-300 rounded-lg shadow-lg">
+                  {({ close }) => (
+                    <>
+                      <button
+                        onClick={() => {
+                          onEditNote(data);
+                          close();
+                        }}
+                        className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
+                        Edit note
+                      </button>
+                      <button
+                        onClick={() => {
+                          onConfirmDeleteNote(data);
+                        }}
+                        className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </Popover.Panel>
+              </Transition>
+            </Popover>
+          )}
+        </div>
+
+        {/* Content */}
+        {/* <div className="px-4 py-2">
+          <p
+            ref={contentDiv}
+            className={`text-sm ${!contentShowAll ? 'line-clamp-5' : ''}`}
+            dangerouslySetInnerHTML={
+              formatContent(data?.notes)
+            }></p>
           {contentDivHeight > 100 && !contentShowAll && (
             <button
               type="button"
-              onClick={() => setContentShowAll(!contentShowAll)}
-              className="inline text-sm hover:underline">
+              className="text-blue-500 text-sm hover:underline"
+              onClick={() => setContentShowAll(true)}>
               See more
             </button>
           )}
-        </div>
+        </div> */}
+
+        {/* Like/Comment counts */}
         {(likesCount > 0 || commentsCount > 0) && (
           <div className="flex items-center justify-between px-4 py-2">
             <span className="text-sm text-gray-500">
@@ -486,9 +367,11 @@ const ElemNoteCard: React.FC<NoteProps> = ({
             </span>
           </div>
         )}
+
+        {/* Action buttons */}
         <div className="flex space-x-1 border-gray-300 border-y">
           <button
-            className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-gray-100 ${
+            className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-neutral-900 ${
               isLikedByCurrentUser ? 'text-primary-500' : 'text-gray-500'
             }`}
             onClick={onLikeButton}>
@@ -503,21 +386,24 @@ const ElemNoteCard: React.FC<NoteProps> = ({
             )}
           </button>
           <button
-            className="flex items-center justify-center flex-1 px-2 py-1 font-medium text-gray-500 shrink grow hover:bg-gray-100"
+            className="flex items-center justify-center flex-1 px-2 py-1 font-medium text-gray-500 shrink grow hover:bg-neutral-900"
             onClick={onCommentButton}>
             <IconAnnotation className="w-5 h-5 mr-1" title="Comment" /> Comment
           </button>
         </div>
+
+        {/* Comments section */}
         <ElemNoteCardComments
           note={data}
-          comments={data.comments}
+          comments={data?.comments || []}
           refetch={refetch}
         />
 
+        {/* Comment input */}
         <div className="flex items-start px-4 py-2 space-x-2">
           <ElemPhoto
             photo={user?.person?.picture}
-            wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+            wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-8"
             imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
             imgAlt={user?.person?.name || user?.display_name}
             placeholder="user"
@@ -529,16 +415,17 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               value={commentContent}
               onChange={onChangeCommentTextarea}
               hasFocus={commentTextareaHasFocus}
+              onFocus={() => setCommentTextareaHasFocus(true)}
+              onBlur={() => setCommentTextareaHasFocus(false)}
               onKeyDown={onCommentTextareaKeyDown}
               placeholder="Write a comment..."
               textareaClass="h-9 group-focus-within:h-16 max-h-fit !text-sm transition-all focus:bg-gray-50"
             />
-
             <button
               onClick={onCommentSubmit}
               className={`absolute z-10 right-2 bottom-[0.3rem] flex items-center justify-center w-8 h-8 rounded-full  ${
                 commentContent.length > 0
-                  ? 'cursor-pointer hover:bg-gray-100'
+                  ? 'cursor-pointer hover:bg-neutral-900'
                   : 'cursor-not-allowed'
               }`}>
               {commentContent.length > 0 ? (
@@ -554,12 +441,13 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         </div>
       </div>
 
+      {/* Modals */}
       <ElemNoteForm
         isOpen={isOpenNoteForm}
         type={selectedNote ? 'edit' : 'create'}
         selectedNote={selectedNote}
-        resourceId={data.resource_id as number}
-        resourceType={data?.resource_type as string}
+        resourceId={data?.resource_id || 0}
+        resourceType={data?.resource_type || ''}
         onClose={onCloseNoteForm}
         onRefetchNotes={refetch}
       />
@@ -567,40 +455,24 @@ const ElemNoteCard: React.FC<NoteProps> = ({
       <ElemModal
         isOpen={showDeleteNoteConfirm}
         onClose={handleCloseDeleteNoteConfirm}
-        showCloseIcon={true}
-        placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
-        <div>
-          <h2 className="text-xl font-medium">Delete Note?</h2>
-        </div>
-        <div className="py-3">Are you sure you want to delete this note?</div>
-
-        <div className="flex items-center justify-end pt-3 border-t gap-x-2 border-slate-200">
-          <ElemButton
-            onClick={handleCloseDeleteNoteConfirm}
-            roundedFull
-            btn="default">
-            Cancel
-          </ElemButton>
-          <ElemButton
-            onClick={() => onDeleteNote()}
-            roundedFull
-            btn="danger"
-            loading={isDeletingNote}>
-            Delete
-          </ElemButton>
-        </div>
+        showCloseIcon>
+        <h2>Delete Note</h2>
+        <p>Are you sure you want to delete this note?</p>
+        {/* <ElemButton onClick={() => onDeleteNote()} loading={isDeletingNote}>
+          Delete
+        </ElemButton> */}
       </ElemModal>
 
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
-        title="Claim a profile."
-        content="To add a comment, search your name and claim profile."
-        onClose={onCloseLinkPersonDialog}
+        title="Claim your profile"
+        content="To comment, claim your profile."
+        onClose={() => setIsOpenLinkPersonDialog(false)}
       />
 
       <Toaster />
     </>
   );
 };
+
 export default ElemNoteCard;

@@ -24,13 +24,13 @@ export const ElemSidebarItem: FC<Props> = ({
     <button
       onClick={onClick}
       type="submit"
-      className={`flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100 ${
-        isActive ? 'bg-gray-100' : ''
+      className={`flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-300 rounded-md flex-1 transition-all hover:bg-neutral-900 ${
+        isActive ? 'bg-neutral-900' : ''
       }`}>
       {IconComponent && (
         <IconComponent
           className={`w-5 h-5 ${
-            isActive ? 'text-primary-500' : 'text-gray-900'
+            isActive ? 'text-primary-500' : 'text-gray-300'
           }`}
         />
       )}

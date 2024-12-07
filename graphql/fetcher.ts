@@ -5,11 +5,12 @@ export function fetcher<TData, TVariables>(
 ) {
   return async (): Promise<TData> => {
     try {
-      const res = await fetch('/api/graphql/', {
+      const res = await fetch('https://unique-crow-54.hasura.app/v1/graphql', {
         method: 'POST',
         body: JSON.stringify({ query, variables }),
         headers: {
           'is-viewer': 'true',
+          'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`,
         },
       });
       if (!res.ok) {

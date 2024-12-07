@@ -3,21 +3,15 @@ import { defaultTheme } from 'react-admin';
 export const theme = {
   ...defaultTheme,
   palette: {
-    primary: {
-      main: '#5E41FE',
-    },
-    secondary: {
-      main: '#5E41FE',
-      light: '#A05FFE',
-    },
-    error: {
-      main: '#ff0000',
-    },
+    mode: 'dark',
     background: {
-      default: '#F2F5FA',
+      default: '#000000',
+      paper: '#18181B'
     },
-    contrastThreshold: 3,
-    tonalOffset: 0.2,
+    text: {
+      primary: '#ffffff',
+      secondary: '#A1A1AA'
+    }
   },
   typography: {
     // Use the system font instead of the default Roboto font.

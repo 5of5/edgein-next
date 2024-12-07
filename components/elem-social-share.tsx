@@ -117,7 +117,7 @@ export const ElemSocialShare: FC<Props> = ({
         onClose={onClose}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-md bg-white rounded-lg px-6 py-3 z-10 my-10">
+        panelClass="relative w-full max-w-md bg-black rounded-lg px-6 py-3 z-10 my-10">
         <div>
           <h2 className="text-xl font-medium">Share</h2>
         </div>

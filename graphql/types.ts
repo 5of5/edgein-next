@@ -29931,7 +29931,7 @@ export type GetPersonalizedCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+export type GetPersonalizedCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, slug: string, logo: any | null, name: string | null, tags: any | null, location_json: any | null, status_tags: any | null, total_employees: any | null, investor_amount: any | null, year_founded: string | null, overview: string | null, website: string | null, twitter: string | null, company_linkedin: string | null, github: string | null, discord: string | null, investment_rounds_aggregate: { __typename?: 'investment_rounds_aggregate', aggregate: { __typename?: 'investment_rounds_aggregate_fields', count: number } | null }, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: any | null }>, follows: Array<{ __typename?: 'follows_companies', id: number | null, list_id: number | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
 export type InsertCompaniesMutationVariables = Exact<{
   objects: Array<Companies_Insert_Input> | Companies_Insert_Input;
@@ -30068,7 +30068,7 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, website: string | null, logo: any | null, sentiment: any | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, website: string | null, logo: any | null, sentiment: any | null, location_json: any | null, twitter: string | null, year_founded: string | null, total_employees: any | null, overview: string | null, tags: any | null, slug: string, teamMembers: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null, round_date: any | null, round: string | null }> } | null }>, follows_companies_aggregate: { __typename?: 'follows_companies_aggregate', aggregate: { __typename?: 'follows_companies_aggregate_fields', count: number } | null } };
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -30942,7 +30942,7 @@ export type GetUserByEmailQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, onboarding_information: any | null, feature_flags: any, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, active: boolean, onboarding_information: any | null, feature_flags: any, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: InputMaybe<Scalars['Int']>;
@@ -30965,7 +30965,7 @@ export type GetUserByEmailForTokenQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null }> };
+export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -31260,10 +31260,6 @@ export const PeopleFragmentFragmentDoc = `
       website
     }
   }
-  follows {
-    id
-    list_id
-  }
   people_computed_data {
     title
     tags
@@ -31289,10 +31285,7 @@ export const UserForTokenFragmentDoc = `
   use_credits_system
   last_transaction_expiration
   billing_org_id
-  billing_org {
-    customer_id
-    status
-  }
+  
   person {
     id
     name
@@ -31694,10 +31687,6 @@ export const GetCompanyBySlugDocument = `
         overview
         logo
         status_tags
-        follows {
-          id
-          list_id
-        }
       }
       from_vc_firm {
         id
@@ -31707,10 +31696,6 @@ export const GetCompanyBySlugDocument = `
         sentiment
         overview
         logo
-        follows {
-          id
-          list_id
-        }
       }
     }
     from_links {
@@ -31737,10 +31722,6 @@ export const GetCompanyBySlugDocument = `
           round_date
         }
         status_tags
-        follows {
-          id
-          list_id
-        }
       }
       to_vc_firm {
         id
@@ -31753,10 +31734,6 @@ export const GetCompanyBySlugDocument = `
         investment_amount_total
         num_of_investments
         logo
-        follows {
-          id
-          list_id
-        }
       }
     }
     news_links {
@@ -31794,10 +31771,6 @@ export const GetCompanyBySlugDocument = `
         }
       }
     }
-    follows {
-      id
-      list_id
-    }
   }
 }
     `;
@@ -31827,9 +31800,6 @@ export const GetCompaniesDocument = `
     slug
     logo
     name
-    coin {
-      ticker
-    }
     tags
     location_json
     status_tags
@@ -31847,10 +31817,6 @@ export const GetCompaniesDocument = `
       amount
     }
     overview
-    follows {
-      id
-      list_id
-    }
     website
     twitter
     company_linkedin
@@ -31915,10 +31881,7 @@ export const GetCompaniesRecentDocument = `
       round
       round_date
     }
-    follows {
-      id
-      list_id
-    }
+    
   }
 }
     `;
@@ -32030,10 +31993,6 @@ export const GetCompaniesByDateDocument = `
     logo
     slug
     aliases
-    coin {
-      ticker
-      name
-    }
   }
 }
     `;
@@ -32136,9 +32095,6 @@ export const GetPersonalizedCompaniesDocument = `
     slug
     logo
     name
-    coin {
-      ticker
-    }
     tags
     location_json
     status_tags
@@ -32155,10 +32111,6 @@ export const GetPersonalizedCompaniesDocument = `
       round_date
     }
     overview
-    follows {
-      id
-      list_id
-    }
     website
     twitter
     company_linkedin
@@ -32850,10 +32802,6 @@ export const GetCompaniesByListIdDocument = `
       year_founded
       total_employees
       overview
-      coin {
-        ticker
-        name
-      }
       teamMembers(limit: 10, order_by: {founder: desc_nulls_last}) {
         id
         founder
@@ -32872,13 +32820,7 @@ export const GetCompaniesByListIdDocument = `
       slug
     }
   }
-  follows_companies_aggregate(
-    where: {_and: [{list_id: {_eq: $list_id}}, {company: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
-  ) {
-    aggregate {
-      count
-    }
-  }
+  
 }
     `;
 export const useGetCompaniesByListIdQuery = <
@@ -34929,23 +34871,7 @@ export const GetNotesDocument = `
         }
       }
     }
-    comments(order_by: {created_at: asc}) {
-      id
-      content
-      created_at
-      created_by_user_id
-      created_by_user {
-        id
-        display_name
-        email
-        person {
-          id
-          slug
-          name
-          picture
-        }
-      }
-    }
+    
   }
 }
     `;
@@ -35538,10 +35464,6 @@ export const GetPersonDocument = `
     }
     user {
       id
-    }
-    follows {
-      id
-      list_id
     }
     people_computed_data {
       title
@@ -36540,32 +36462,10 @@ export const GetUserProfileDocument = `
     use_credits_system
     last_transaction_expiration
     billing_org_id
-    billing_org {
-      status
-    }
+  
     preferences
-    organization_companies {
-      id
-      company {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
-    organization_vc_firms {
-      id
-      vc_firm {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
+   
+    
     person {
       id
       name
@@ -36641,32 +36541,9 @@ export const GetUserByPersonIdDocument = `
     query GetUserByPersonId($person_id: Int!) {
   users(where: {person_id: {_eq: $person_id}}) {
     id
-    credits
     use_credits_system
     last_transaction_expiration
     billing_org_id
-    organization_companies {
-      id
-      company {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
-    organization_vc_firms {
-      id
-      vc_firm {
-        id
-        slug
-        name
-        logo
-        overview
-        location_json
-      }
-    }
     person {
       id
       name
@@ -36798,7 +36675,6 @@ export const GetUserByEmailDocument = `
     auth0_linkedin_id
     auth0_user_pass_id
     reference_id
-    credits
     use_credits_system
     last_transaction_expiration
     billing_org_id
@@ -36849,10 +36725,6 @@ export const GetUserByIdDocument = `
     use_credits_system
     credits
     billing_org_id
-    billing_org {
-      customer_id
-      status
-    }
     person {
       name
       picture
@@ -37521,10 +37393,6 @@ export const GetVcFirmDocument = `
         sentiment
         overview
         logo
-        follows {
-          id
-          list_id
-        }
       }
       from_vc_firm {
         id
@@ -37534,10 +37402,6 @@ export const GetVcFirmDocument = `
         sentiment
         overview
         logo
-        follows {
-          id
-          list_id
-        }
       }
     }
     from_links {
@@ -37562,10 +37426,6 @@ export const GetVcFirmDocument = `
           round
           round_date
         }
-        follows {
-          id
-          list_id
-        }
       }
       to_vc_firm {
         id
@@ -37578,10 +37438,6 @@ export const GetVcFirmDocument = `
         num_of_investments
         overview
         logo
-        follows {
-          id
-          list_id
-        }
       }
     }
     news_links {
@@ -37601,10 +37457,6 @@ export const GetVcFirmDocument = `
           vc_firm_id
         }
       }
-    }
-    follows {
-      id
-      list_id
     }
   }
 }
@@ -37641,10 +37493,6 @@ export const GetVcFirmsDocument = `
     num_of_investments
     year_founded
     sentiment
-    follows {
-      id
-      list_id
-    }
     website
     twitter
     linkedin
@@ -37704,10 +37552,6 @@ export const GetVcFirmsRecentInvestmentsDocument = `
         round
         amount
       }
-    }
-    follows {
-      id
-      list_id
     }
   }
 }
@@ -37991,10 +37835,6 @@ export const GetPersonalizedVcFirmsDocument = `
     website
     linkedin
     twitter
-    follows {
-      id
-      list_id
-    }
   }
   vc_firms_aggregate(where: $where) {
     aggregate {

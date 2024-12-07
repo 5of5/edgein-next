@@ -1,18 +1,24 @@
-@font-face {
-  font-family: 'Goldman';
-  src: url('/fonts/Unbounded-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-black;
+    @apply bg-black text-white;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-black border-dark-200;
+  }
+
+  .input {
+    @apply bg-black border-dark-200 text-white;
+  }
+
+  .button {
+    @apply bg-primary-500 hover:bg-primary-600 text-white;
   }
 }
 
@@ -93,13 +99,13 @@
 /* For Chrome browsers */
 .thumb::-webkit-slider-thumb {
   pointer-events: all;
-  @apply bg-white border border-black/10 rounded-full shadow cursor-pointer w-4 h-4 relative mt-1;
+  @apply bg-black border border-black/10 rounded-full shadow cursor-pointer w-4 h-4 relative mt-1;
 }
 
 /* For Firefox browsers */
 .thumb::-moz-range-thumb {
   pointer-events: all;
-  @apply bg-white border border-black/10 rounded-full shadow-sm cursor-pointer w-4 h-4 relative mt-1;
+  @apply bg-black border border-black/10 rounded-full shadow-sm cursor-pointer w-4 h-4 relative mt-1;
 }
 
 /* Admin */

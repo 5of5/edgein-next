@@ -9,21 +9,21 @@
     .cloudsponge-back-button,
     .cloudsponge-close-button,
     .cloudsponge-menu-button {
-      @apply text-gray-900 bg-gray-100 border-b border-gray-200;
+      @apply text-gray-300 bg-neutral-900 border-b border-gray-200;
       .cloudsponge-h1 {
         @apply font-medium;
       }
     }
     .cloudsponge-header {
-      @apply bg-white;
+      @apply bg-black;
     }
     .cloudsponge-widget {
-      @apply font-sans bg-white;
+      @apply font-sans bg-black;
     }
     .cloudsponge-providers-list {
       @apply my-6 mx-auto;
       li a {
-        @apply font-normal rounded-lg border-solid text-gray-900 border border-gray-200 hover:bg-gray-50;
+        @apply font-normal rounded-lg border-solid text-gray-300 border border-gray-200 hover:bg-gray-50;
       }
     }
     .cloudsponge-dictionary a {
@@ -34,7 +34,7 @@
         @apply text-primary-500;
       }
       &.cloudsponge-selected .cloudsponge-row-container {
-        @apply bg-gray-100;
+        @apply bg-neutral-900;
       }
     }
     .cloudsponge-button.cloudsponge-export-button {

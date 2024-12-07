@@ -21,7 +21,7 @@ export function getLayerClass(layer: string) {
   } else if (layer === 'Layer 5') {
     layerClass = 'bg-yellow-100 text-yellow-700';
   } else {
-    layerClass = 'bg-gray-100 text-gray-500';
+    layerClass = 'bg-neutral-900 text-gray-500';
   }
   return layerClass;
 }

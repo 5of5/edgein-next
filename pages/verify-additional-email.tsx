@@ -55,7 +55,7 @@ const VerifyAdditionalEmail = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-5 bg-white shadow-md rounded-lg text-center">
+      <div className="p-5 bg-black shadow-md rounded-lg text-center">
         {!error ? (
           <p className="text-dark-500 text-lg font-semibold">
             Please wait while we verify your additional email!

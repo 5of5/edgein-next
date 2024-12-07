@@ -21,7 +21,7 @@ export const NoResults: FC<Props> = ({
 
   return (
     <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-      <div className="w-full max-w-2xl p-8 my-8 text-center bg-white border border-gray-200 rounded-2xl">
+      <div className="w-full max-w-2xl p-8 my-8 text-center bg-black border border-gray-200 rounded-2xl">
         <IconSearch className="w-12 h-12 mx-auto text-gray-300" />
         <h2 className="mt-5 text-3xl font-medium">{title}</h2>
         <div className="mt-1 text-lg text-gray-600">{content}</div>

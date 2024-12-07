@@ -58,7 +58,7 @@ export const ElemPersonCard: React.FC<Props> = ({
     toast.custom(
       t => (
         <div
-          className={`bg-gray-900 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+          className={`bg-gray-300 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
             t.visible ? 'animate-fade-in-up' : 'opacity-0'
           }`}>
           Copied Email

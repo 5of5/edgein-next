@@ -9,7 +9,7 @@ export const ElemSearchBox: FC<Props> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="items-center hidden w-full max-w-xl px-2 space-x-2 text-left bg-white border border-gray-300 rounded-full lg:mx-auto sm:flex h-9 hover:bg-gray-50 focus:outline-none">
+      className="items-center hidden w-full max-w-xl px-2 space-x-2 text-left bg-neutral-900 rounded-full lg:mx-auto sm:flex h-9 hover:bg-black focus:bg-black focus:outline-none">
       <IconSearch className="flex-none w-4 h-4 text-gray-400" />
       <span className="flex-auto text-sm text-gray-400">
         Try &quot;Coinbase&quot;

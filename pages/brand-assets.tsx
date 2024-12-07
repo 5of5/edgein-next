@@ -107,7 +107,7 @@ const BrandAssets: NextPage<Props> = () => {
             </p>
           </div>
           <div className="block gap-8 mt-8 md:w-full md:grid md:grid-cols-2">
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="flex items-center justify-center py-16 rounded-lg bg-gray-50">
                 <ElemLogo mode="logo" className="w-auto h-10" />
               </div>
@@ -117,7 +117,7 @@ const BrandAssets: NextPage<Props> = () => {
                 whenever possible.
               </p>
             </div>
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="flex items-center justify-center py-16 rounded-lg bg-primary-900">
                 <ElemLogo mode="logo-inverted" className="w-auto h-10" />
               </div>
@@ -177,13 +177,13 @@ const BrandAssets: NextPage<Props> = () => {
             </dl>
           </div>
           <div className="block gap-8 mt-8 md:w-full md:grid md:grid-cols-2">
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="flex items-center justify-center py-16 rounded-lg bg-gray-50">
                 <LogoMonotone className="w-auto h-10" />
               </div>
               <p className="mt-4 font-bold">Monotone Dark</p>
             </div>
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="flex items-center justify-center py-16 rounded-lg bg-primary-900">
                 <LogoMonotone className="w-auto h-10 text-white" />
               </div>
@@ -257,19 +257,19 @@ const BrandAssets: NextPage<Props> = () => {
           </div>
 
           <div className="block gap-8 mt-8 md:w-full md:grid md:grid-cols-3">
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="flex items-center justify-center py-16 rounded-lg bg-gray-50">
                 <ElemLogo mode="icon" className="w-auto h-10" />
               </div>
               <p className="mt-4 font-bold">Primary Logomark</p>
             </div>
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="flex items-center justify-center py-16 rounded-lg bg-gray-50">
                 <LogoMonotone mode="icon" className="w-auto h-10" />
               </div>
               <p className="mt-4 font-bold">Monotone Dark</p>
             </div>
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="flex items-center justify-center py-16 rounded-lg bg-primary-900">
                 <LogoMonotone mode="icon" className="w-auto h-10 text-white" />
               </div>
@@ -299,30 +299,30 @@ const BrandAssets: NextPage<Props> = () => {
           </div>
           <div className="grid grid-cols-3 gap-8 mt-8 md:w-full lg:grid-cols-4">
             <div className="flex items-end col-span-3 overflow-hidden text-center rounded-lg shadow bg-primary-500 h-44 lg:col-span-4">
-              <div className="w-full p-1 font-bold bg-white">#5E41FE</div>
+              <div className="w-full p-1 font-bold bg-black">#5E41FE</div>
             </div>
-            <div className="flex items-end overflow-hidden text-center bg-gray-900 rounded-lg shadow h-44">
-              <div className="w-full p-1 font-bold bg-white">#111827</div>
+            <div className="flex items-end overflow-hidden text-center bg-gray-300 rounded-lg shadow h-44">
+              <div className="w-full p-1 font-bold bg-black">#111827</div>
             </div>
-            <div className="flex items-end overflow-hidden text-center bg-gray-500 rounded-lg shadow h-44">
-              <div className="w-full p-1 font-bold bg-white">#6b7280</div>
+            <div className="flex items-end overflow-hidden text-center bg-neutral-900 rounded-lg shadow h-44">
+              <div className="w-full p-1 font-bold bg-black">#6b7280</div>
             </div>
-            <div className="flex items-end col-span-1 overflow-hidden text-center bg-gray-100 rounded-lg shadow h-44">
-              <div className="w-full p-1 font-bold bg-white">#f3f4f6</div>
+            <div className="flex items-end col-span-1 overflow-hidden text-center bg-neutral-900 rounded-lg shadow h-44">
+              <div className="w-full p-1 font-bold bg-black">#f3f4f6</div>
             </div>
             <div className="flex items-end bg-[#FE33D0] rounded-lg shadow overflow-hidden text-center h-44">
-              <div className="w-full p-1 font-bold bg-white">#FE33D0</div>
+              <div className="w-full p-1 font-bold bg-black">#FE33D0</div>
             </div>
           </div>
           <div className="grid grid-cols-1 gap-8 mt-8 sm:grid-cols-3 md:w-full ">
             <div className="flex items-end overflow-hidden text-center rounded-lg shadow h-44 bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400">
-              <div className="w-full p-1 font-bold bg-white">Gradient 1</div>
+              <div className="w-full p-1 font-bold bg-black">Gradient 1</div>
             </div>
             <div className="flex items-end rounded-lg overflow-hidden shadow text-center h-44 bg-gradient-to-bl from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE]">
-              <div className="w-full p-1 font-bold bg-white">Gradient 2</div>
+              <div className="w-full p-1 font-bold bg-black">Gradient 2</div>
             </div>
             <div className="flex items-end rounded-lg overflow-hidden shadow text-center h-44 bg-gradient-to-tr from-[#553BE5] via-[#8E7AFE] to-[#1BE6FF]">
-              <div className="w-full p-1 font-bold bg-white">Gradient 3</div>
+              <div className="w-full p-1 font-bold bg-black">Gradient 3</div>
             </div>
           </div>
         </section>
@@ -359,7 +359,7 @@ const BrandAssets: NextPage<Props> = () => {
             </p>
           </div>
           <div className="block gap-8 mt-8 md:w-full md:grid md:grid-cols-2">
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="py-16 text-4xl font-bold text-center rounded-lg bg-gray-50">
                 <div className="px-4 py-2 sm:px-0">Inter SemiBold</div>
               </div>
@@ -367,7 +367,7 @@ const BrandAssets: NextPage<Props> = () => {
                 Inter SemiBold is the font used for titles & subtitles.
               </p>
             </div>
-            <div className="mt-8 bg-white rounded-lg shadow p-7 lg:mt-0">
+            <div className="mt-8 bg-black rounded-lg shadow p-7 lg:mt-0">
               <div className="py-16 text-4xl text-center rounded-lg bg-gray-50">
                 <div className="px-4 py-2 sm:px-0">Inter Regular</div>
               </div>

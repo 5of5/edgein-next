@@ -29,7 +29,7 @@ export const InputRadio: React.FC<Props> = ({
         value={value}
         checked={checked}
         onChange={onChange}
-        className={`appearance-none text-primary-500 accent-primary-500 focus:ring-0 bg-white checked:border-none ${inputClass}`}
+        className={`appearance-none text-primary-500 accent-primary-500 focus:ring-0 bg-black checked:border-none ${inputClass}`}
         {...props}
       />
       <span className={`ml-2 ${labelClass}`}>{label}</span>

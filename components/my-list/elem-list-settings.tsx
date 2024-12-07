@@ -172,13 +172,13 @@ export const ElemListSettings: FC<Props> = ({
       onClose={onCloseSettingsModal}
       showCloseIcon={true}
       placement="center"
-      panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+      panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10">
       <div className="pb-3 border-b border-gray-200">
         <h2 className="text-xl font-medium">List settings</h2>
       </div>
 
       <div className="flex flex-col pt-4 gap-y-4">
-        <div className="bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg ">
+        <div className="bg-black border border-gray-200 divide-y divide-gray-200 rounded-lg ">
           <ElemListEditSection
             heading={
               <button onClick={() => setListNameOpen(true)}>Name</button>
@@ -332,7 +332,7 @@ export const ElemListSettings: FC<Props> = ({
                       return (
                         <p
                           key={index}
-                          className="px-2 py-1 capitalize bg-gray-100 rounded-md">
+                          className="px-2 py-1 capitalize bg-neutral-900 rounded-md">
                           {item?.name}
                         </p>
                       );
@@ -392,7 +392,7 @@ export const ElemListSettings: FC<Props> = ({
           </div>
         </div>
 
-        <div className="overflow-hidden bg-white border border-gray-200 rounded-lg">
+        <div className="overflow-hidden bg-black border border-gray-200 rounded-lg">
           <button
             className="w-full p-3 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={() => {
@@ -410,7 +410,7 @@ export const ElemListSettings: FC<Props> = ({
         onClose={handleCloseDeleteModal}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-6 pb-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-6 pb-3 z-10 my-10">
         <div>
           <h2 className="text-xl font-medium">Delete this list?</h2>
         </div>
