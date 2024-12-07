@@ -36,7 +36,6 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
       investments?: { investment_round?: { company: { tags: string[] }[] } };
     };
   }[];
-<<<<<<< Updated upstream
 
   const vc_tags = orgs.reduce((tmp, org) => {
     const tags = org.vc_firm?.investments?.investment_round?.company.reduce(
@@ -44,45 +43,6 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
         return [...tmp, ...company.tags];
       },
       new Array<string>(),
-=======
-  let vc_tags: string[] = [];
-  if (orgs?.length) {
-    vc_tags = orgs?.reduce((tmp, org) => {
-      const tags = org?.vc_firm?.investments?.investment_round?.company?.reduce(
-        (tmp, company) => {
-          return [...tmp, ...company.tags];
-        },
-        new Array<string>(),
-      );
-      return [...tmp, ...(tags || [])];
-    }, new Array<string>());
-  }
-  let company_tags: string[] = [];
-  if (orgs?.length) {
-    company_tags = orgs?.reduce((tmp, org) => {
-      return [...tmp, ...(org.company?.tags || [])];
-    }, new Array<string>());
-  }
-  const tags = Array.from(
-    new Set([
-      ...(vc_tags || []), // Default to an empty array if vc_tags is undefined
-      ...(company_tags || []), // Default to an empty array if company_tags is undefined
-    ]),
-  );
-  let publisher: typeof organizations = [];
-
-  if (organizations?.length) {
-    const foundPublisher = organizations.find(org => org.type === 'publisher');
-    if (foundPublisher) {
-      publisher = [foundPublisher];
-    }
-  }
-
-  let otherOrganizations: any[] = [];
-  if (organizations?.length) {
-    otherOrganizations = organizations?.filter(
-      org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
->>>>>>> Stashed changes
     );
     return [...tmp, ...(tags || [])];
   }, new Array<string>());
@@ -219,11 +179,25 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
             {link && (
               <p className="text-xs text-gray-500">
                 {'From  '}
-                {publisher[0]?.company
-                  ? `${ROUTES.COMPANIES}/${publisher[0]?.company?.slug}`
-                  : publisher[0]?.vc_firm
-                  ? `${ROUTES.INVESTORS}/${publisher[0]?.vc_firm?.slug}`
-                  : ''}
+                {publisher ? (
+                  <ElemLink
+                    href={
+                      publisher.company
+                        ? `${ROUTES.COMPANIES}/${publisher.company?.slug}`
+                        : publisher.vc_firm
+                        ? `${ROUTES.INVESTORS}/${publisher.vc_firm?.slug}`
+                        : ''
+                    }
+                    target="_blank">
+                    {publisher.company?.name || publisher.vc_firm?.name}
+                  </ElemLink>
+                ) : (
+                  <ElemLink
+                    href={getCleanWebsiteUrl(link, true)}
+                    target="_blank">
+                    {getCleanWebsiteUrl(link, false)}
+                  </ElemLink>
+                )}
                 {' • '}
                 Powered by{' '}
                 <ElemLink

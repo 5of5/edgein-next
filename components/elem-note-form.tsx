@@ -37,7 +37,7 @@ const ElemNoteForm: React.FC<Props> = ({
 }) => {
   const { user, myGroups } = useUser();
 
-  const [notes, setNotes] = useState(selectedNote?.notes || '');
+  const [notes, setNotes] = useState(selectedNote?.notes);
 
   const groupOptions = useMemo(() => {
     const options = [
@@ -62,7 +62,7 @@ const ElemNoteForm: React.FC<Props> = ({
   const [selectedGroup, setSelectedGroup] = useState(defaultSelectedGroup);
 
   useEffect(() => {
-    setNotes(selectedNote?.notes || '');
+    setNotes(selectedNote?.notes);
     setSelectedGroup(
       groupOptions.find(item => item.id === selectedNote?.user_group_id) ||
         groupOptions.find(item => item.id === selectedNote?.audience) ||

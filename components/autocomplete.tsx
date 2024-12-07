@@ -16,17 +16,15 @@ import {
   replaceAt,
 } from '@/utils/algolia';
 
-interface Props {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  hasFocus?: boolean;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  placeholder?: string;
-  textareaClass?: string;
+export interface Props extends Partial<AutocompleteOptions<AutocompleteItem>> {
   className?: string;
+  textareaClass?: string;
+  value?: string;
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   handleSubmit?: () => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  hasFocus?: boolean;
+  placeholder?: string;
 }
 
 const searchClient = algoliasearch(

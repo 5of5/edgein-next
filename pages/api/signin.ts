@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!email || !password)
     return res.status(404).send({ message: 'Invalid request' });
 
-  // let isFirstLogin = false;
+  let isFirstLogin = false;
   // get the domain from the email
   const domain = email.split('@').pop();
   // when email does not exist in the allowed emails

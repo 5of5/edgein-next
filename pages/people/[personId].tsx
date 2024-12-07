@@ -77,26 +77,12 @@ const Person: NextPage<Props> = (props: Props) => {
     }
   }, [person, router.asPath]);
 
-<<<<<<< Updated upstream
   const getVcFirmJobs = person.investors as Investors[];
   const getCompanyJobs = person.team_members as Team_Members[];
   const mergedJobs = union(getVcFirmJobs, getCompanyJobs as any).filter(
     item => item,
   );
   const personJobs = orderBy(mergedJobs, [item => item.end_date], ['desc']);
-=======
-  const getVcFirmJobs = (person.investors || []) as Investors[];
-  const getCompanyJobs = (person.team_members || []).map(member => ({
-    ...member,
-    __typename: 'investors', // Override typename to match the Investors type
-    updated_at: null, // Provide default values for missing properties
-    vc_firm: null,
-    vc_firm_id: null,
-  })) as Investors[];
-
-  const mergedJobs = union(getVcFirmJobs, getCompanyJobs).filter(Boolean);
-  const personJobs = orderBy(mergedJobs, [item => item?.end_date], ['desc']);
->>>>>>> Stashed changes
 
   const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
   const companyTags = flatten(
