@@ -1,17 +1,204 @@
-import React, { useRef, useEffect } from 'react';
-import { ElemButton } from '@/components/elem-button';
 import Script from 'next/script';
-import { ElemLink } from '@/components/elem-link';
+import React, { useState } from 'react';
+import { ElemButton } from '@/components/elem-button';
+import {
+  IconCheck,
+  IconChevronDownMini,
+  IconArrowRight,
+} from '@/components/icons';
+import { useUser } from '@/context/user-context';
+import { FigureConnect } from '@/components/figures';
+import { Tab, Transition } from '@headlessui/react';
+import { useIntercom } from 'react-use-intercom';
+import parse from 'html-react-parser';
+import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
+import { ElemLink } from '@/components/elem-link';
 
 const Home = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const { user, loading } = useUser();
+  const router = useRouter();
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.5;
-    }
-  }, []);
+  const { show } = useIntercom();
+
+  const [tabIndex, setTabIndex] = useState(0);
+  const [selectedFeature, setSelectedFeature] = useState(0);
+
+  const logos = [
+    {
+      src: '/images/logos/akkadian.svg',
+      alt: 'Akkadian',
+    },
+    {
+      src: '/images/logos/capital6-eagle.svg',
+      alt: 'Capital6 Eagle',
+    },
+    {
+      src: '/images/logos/ankr.svg',
+      alt: 'Ankr',
+    },
+    {
+      src: '/images/logos/toa-festival.svg',
+      alt: 'TOA Festival',
+    },
+    {
+      src: '/images/logos/defy-trends.svg',
+      alt: 'DeFy Trends',
+    },
+    {
+      src: '/images/logos/4k.svg',
+      alt: '4K',
+    },
+    {
+      src: '/images/logos/wearable-technologies.svg',
+      alt: 'Wearable Technologies',
+      className: 'hidden sm:block',
+    },
+  ];
+
+  const publishersLogos = [
+    {
+      src: '/images/logos/techcrunch.svg',
+      alt: 'TechCrunch',
+      link: 'https://techcrunch.com/2023/08/04/edgein-hopes-to-be-a-faster-community-driven-crunchbase-for-web3/',
+    },
+    {
+      src: '/images/logos/killer-startups.svg',
+      alt: 'Killer Startups',
+      link: 'https://www.killerstartups.com/news/edgein-the-crunchbase-for-web3',
+    },
+    {
+      src: '/images/logos/ubergizmo.png',
+      alt: 'Ubergizmo',
+      link: 'https://www.ubergizmo.com/2023/01/edgein-affordable-web3-data-platform-with-shared-c-revenue-model/ ',
+    },
+  ];
+
+  const whyEdgein = [
+    {
+      title: 'Investor',
+      benefits: [
+        `Discover and connect with the right Founders easily with EdgeIn’s personalization features.`,
+        'Get notified of team, investment and traction data with dynamic list updates.',
+        'Get a personalized view of the entire marketplace from companies to competing investors to events and news, keeping you one step ahead.',
+      ],
+    },
+    {
+      title: 'Founder',
+      benefits: [
+        'Discover and connect with the right local and international VCs based on tags and latest investment data.',
+        'Find early alpha customers directly or track competitors with public or self created lists that are updated dynamically.',
+        'Stay up-to-date with a personalized view of the entire marketplace from companies to investors to industry news and events based on tags and location of interest.',
+      ],
+    },
+    {
+      title: 'Sales, Ecosystem, and Business Development',
+      benefits: [
+        'Find hundreds of direct leads in minutes with social and email data using tags, filters, roles, and target lists.',
+        'Communicate directly with the right targets at each company in your target lists with access to their public data.',
+        'Coming soon: Import and export lists for the latest data on the companies and people you’re tracking.',
+      ],
+    },
+    {
+      title: 'Event/Media Operator',
+      benefits: [
+        'Find and track competing events and valuable sub-events around your event including organizers, sponsors, and speakers.',
+        'Track and discover partners, sponsors and competing event organizers by tags and locations of interest.',
+        'Market directly to your sweet spot attendee on or in partnership with EdgeIn.',
+      ],
+    },
+  ];
+
+  const features = [
+    {
+      title: 'Lists',
+      content:
+        'Create your own lists for competitive research, due diligence, portfolio management and more.',
+      src: '/images/features/lists.png',
+    },
+    {
+      title: 'Filters',
+      content:
+        'Filter by location, projects, team size, investment total, and industry tags.',
+      src: '/images/features/filters.png',
+    },
+    {
+      title: 'Groups',
+      content:
+        'Create Groups with your team, friends or anyone you want to compare notes with, share insights, track leads and more.',
+      src: '/images/features/groups.png',
+    },
+    {
+      title: 'Notes',
+      content:
+        'Make notes on companies and investors you’re following. Choose to keep them private or share them in your groups.',
+      src: '/images/features/notes.png',
+    },
+    {
+      title: 'Search',
+      content:
+        'Advanced search utilizes our intelligent tagging system to interpret user intent and compare it against the tagged attributes of the items in our database.',
+      src: '/images/features/search.png',
+    },
+  ];
+
+  const features2 = [
+    {
+      title: 'Companies',
+      content:
+        'Browse recently discovered projects and trending companies or use advanced filtering to search based on your interests and investment thesis.',
+      src: '/images/features/companies.png',
+    },
+    {
+      title: 'Investors',
+      content:
+        'Search for relevant investors based on tags, find out who is currently deploying capital and react to recent deals or funds.',
+      src: '/images/features/investors.png',
+    },
+    {
+      title: 'Events',
+      content: `Discover and RSVP for the hottest events in Web3 and AI`,
+      src: '/images/features/events.png',
+    },
+    {
+      title: 'News',
+      content: 'Get personalized news from our exclusive media partners.',
+      src: '/images/features/news.png',
+    },
+    {
+      title: 'Notifications',
+      content:
+        'Get real-time notifications on companies, funds, investments, events and news.',
+      src: '/images/features/notifications.png',
+    },
+  ];
+
+  const testimonials = [
+    {
+      body: 'EdgeIn provides swift access to valuable real-time company data, allowing me to save time and stay nimble amongst evolving market conditions.',
+      author: {
+        name: 'Wyatt Khosrowshahi',
+        function: 'Investor at Castle Ventures',
+        imageUrl: '/images/people/wyatt-khosrowshahi.jpg',
+      },
+    },
+    {
+      body: 'As the Web3 and AI industries grow faster and faster, data and market knowledge need to be rebuilt in a way that fits the needs of market participants. EdgeIn provides an important platform that gives every market participant (including investors, companies, event organizers, etc) a fair opportunity and provides easily accessible tools to get and share market knowledge.',
+      author: {
+        name: 'Dinghan Luo',
+        function: 'Managing Director at Capital 6 Eagle',
+        imageUrl: '/images/people/dinghan-luo.jpg',
+      },
+    },
+    {
+      body: 'EdgeIn is a game-changer for me, providing unparalleled access to curated data for smarter investments.',
+      author: {
+        name: 'Dylan Hunzeker',
+        function: 'Investor at Palm Drive Capital',
+        imageUrl: '/images/people/dylan-hunzeker.jpg',
+      },
+    },
+  ];
 
   return (
     <>
