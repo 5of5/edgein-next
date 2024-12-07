@@ -91,6 +91,28 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const [selectedNote, setSelectedNote] = useState<Note>();
   const [showDeleteNoteConfirm, setShowDeleteNoteConfirm] = useState(false);
 
+<<<<<<< Updated upstream
+=======
+  useEffect(() => {
+    const updateHeight = () => {
+      if (data?.notes && contentDiv.current) {
+        setContentDivHeight(contentDiv.current.scrollHeight || 0);
+      }
+    };
+    updateHeight();
+  }, [data?.notes]);
+
+  const likesCount = data?.likes?.length || 0;
+  let isLikedByCurrentUser;
+  if (data?.likes?.length) {
+    isLikedByCurrentUser = (data?.likes || [])?.some(
+      item => item?.created_by_user_id === user?.id,
+    );
+  }
+  const commentsCount = data?.comments?.length || 0;
+
+  // Event Handlers
+>>>>>>> Stashed changes
   const onCloseNoteForm = () => {
     setIsOpenNoteForm(false);
     setTimeout(() => {
@@ -227,11 +249,37 @@ const ElemNoteCard: React.FC<NoteProps> = ({
     setCommentContent(event.target.value);
   };
 
+<<<<<<< Updated upstream
   const onCommentTextareaKeyDown = (
     event: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (event.key === 'Enter' && commentContent) {
       event.preventDefault();
+=======
+  const onCommentButton = () => {
+    if (!user) {
+      router.push(ROUTES.SIGN_IN);
+    } else if (!user?.person) {
+      setIsOpenLinkPersonDialog(true);
+    }
+  };
+
+  const resourceType =
+    data?.resource_type === 'vc_firms' ? 'investors' : data?.resource_type;
+  const resourceLink = resource?.slug
+    ? `/${resourceType}/${resource.slug}`
+    : '#';
+
+  const onChangeCommentTextarea = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setCommentContent(e.target.value);
+  };
+
+  const onCommentTextareaKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+>>>>>>> Stashed changes
       onCommentSubmit();
     }
   };
@@ -557,9 +605,15 @@ const ElemNoteCard: React.FC<NoteProps> = ({
       <ElemNoteForm
         isOpen={isOpenNoteForm}
         type={selectedNote ? 'edit' : 'create'}
+<<<<<<< Updated upstream
         selectedNote={selectedNote}
         resourceId={data.resource_id as number}
         resourceType={data?.resource_type as string}
+=======
+        selectedNote={selectedNote || undefined}
+        resourceId={data?.resource_id || 0}
+        resourceType={data?.resource_type || ''}
+>>>>>>> Stashed changes
         onClose={onCloseNoteForm}
         onRefetchNotes={refetch}
       />
