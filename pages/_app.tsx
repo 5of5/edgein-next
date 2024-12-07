@@ -166,7 +166,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <PopupProvider>
                   <SideBarProvider>
                     <>
-                      <TheNavbar />
                       <main className="grow selection:bg-primary-200">
                         {pageLoading ? (
                           <LoaderSpinner />

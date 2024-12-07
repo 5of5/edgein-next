@@ -12,11 +12,11 @@
   .card {
     @apply bg-black border-dark-200;
   }
-  
+
   .input {
     @apply bg-black border-dark-200 text-white;
   }
-  
+
   .button {
     @apply bg-primary-500 hover:bg-primary-600 text-white;
   }
@@ -76,6 +76,11 @@
       transparent 6px,
       transparent 12px
     );
+  }
+
+  .Unbounded-Bold {
+    font-family: 'Goldman', sans-serif;
+    font-weight: bold;
   }
 }
 
