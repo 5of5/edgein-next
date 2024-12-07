@@ -55,7 +55,10 @@ export const ElemSaveToList: FC<Props> = ({
 
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [followsByResource, setFollowsByResource] = useState([]);
+  const [followsByResource, setFollowsByResource] = useState<
+    Pick<Follows, 'list_id'>[]
+  >([]);
+
   useEffect(() => {
     if (Array.isArray(follows) && !isEqual(follows, followsByResource)) {
       setFollowsByResource(follows);

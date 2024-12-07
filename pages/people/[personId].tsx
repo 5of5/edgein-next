@@ -77,9 +77,23 @@ const Person: NextPage<Props> = (props: Props) => {
     }
   }, [person, router.asPath]);
 
-  const getVcFirmJobs = (person.investors || []) as Investors[];
-  const getCompanyJobs = (person.team_members || []) as Team_Members[];
-  const mergedJobs = union(getVcFirmJobs, getCompanyJobs).filter(Boolean);
+  const vcFirmJobs = (person.investors || []) as Investors[];
+  const companyJobs = (person.team_members || []) as Team_Members[];
+
+  const processedVcFirmJobs = vcFirmJobs.map(job => ({
+    ...job,
+    type: 'vc_firm',
+  }));
+
+  const processedCompanyJobs = companyJobs.map(job => ({
+    ...job,
+    type: 'company',
+  }));
+
+  const mergedJobs = [...processedVcFirmJobs, ...processedCompanyJobs].filter(
+    Boolean,
+  );
+
   const personJobs = orderBy(mergedJobs, [item => item?.end_date], ['desc']);
 
   const vcFirmTags = flatten(
@@ -304,8 +318,13 @@ const Person: NextPage<Props> = (props: Props) => {
                 )}
 
                 <ElemJobsList
-                  heading="Experience"
-                  jobs={personJobs}
+                  heading="VC Firm Experience"
+                  jobs={processedVcFirmJobs}
+                  resourceUrl={profileUrl}
+                />
+                <ElemJobsList
+                  heading="Company Experience"
+                  jobs={processedCompanyJobs}
                   resourceUrl={profileUrl}
                 />
 

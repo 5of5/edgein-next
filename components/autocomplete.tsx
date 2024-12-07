@@ -24,6 +24,8 @@ export interface Props extends Partial<AutocompleteOptions<AutocompleteItem>> {
   handleSubmit?: () => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   hasFocus?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
   placeholder?: string;
 }
 

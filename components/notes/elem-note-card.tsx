@@ -91,7 +91,14 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const contentDiv = useRef<HTMLDivElement>(null);
   const [contentDivHeight, setContentDivHeight] = useState(0);
   const [commentTextareaHasFocus, setCommentTextareaHasFocus] = useState(false);
-
+  useEffect(() => {
+    const updateHeight = () => {
+      if (data?.notes && contentDiv.current) {
+        setContentDivHeight(contentDiv.current.scrollHeight || 0);
+      }
+    };
+    updateHeight();
+  }, [data?.notes]);
   const likesCount = data?.likes?.length || 0;
   let isLikedByCurrentUser;
   if (data?.likes?.length) {
@@ -102,14 +109,6 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const commentsCount = data?.comments?.length || 0;
 
   // Handle content height calculation
-  useEffect(() => {
-    const updateHeight = () => {
-      if (data?.notes && contentDiv.current) {
-        setContentDivHeight(contentDiv.current.scrollHeight || 0);
-      }
-    };
-    updateHeight();
-  }, [data?.notes]);
 
   // Event Handlers
   const onCloseNoteForm = () => {
@@ -179,7 +178,9 @@ const ElemNoteCard: React.FC<NoteProps> = ({
     ? `/${resourceType}/${resource.slug}`
     : '#';
 
-  const onChangeCommentTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onChangeCommentTextarea = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     setCommentContent(e.target.value);
   };
 
@@ -445,7 +446,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
       <ElemNoteForm
         isOpen={isOpenNoteForm}
         type={selectedNote ? 'edit' : 'create'}
-        selectedNote={selectedNote}
+        selectedNote={selectedNote || undefined}
         resourceId={data?.resource_id || 0}
         resourceType={data?.resource_type || ''}
         onClose={onCloseNoteForm}

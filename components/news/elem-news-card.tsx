@@ -48,7 +48,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
       return [...tmp, ...(tags || [])];
     }, new Array<string>());
   }
-  const company_tags: string[] = [];
+  let company_tags: string[] = [];
   if (orgs?.length) {
     company_tags = orgs?.reduce((tmp, org) => {
       return [...tmp, ...(org.company?.tags || [])];
@@ -60,11 +60,12 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
       ...(company_tags || []), // Default to an empty array if company_tags is undefined
     ]),
   );
-  let publisher = [];
+  let publisher: (typeof organizations)[0] | undefined = undefined;
+
   if (organizations?.length) {
-    publisher = organizations?.find(org => org.type === 'publisher');
+    publisher = organizations.find(org => org.type === 'publisher');
   }
-  let otherOrganizations = [];
+  let otherOrganizations: any[] = [];
   if (organizations?.length) {
     otherOrganizations = organizations?.filter(
       org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
