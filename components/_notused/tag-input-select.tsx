@@ -132,7 +132,7 @@ export const TagInputSelect: React.FC<Props> = ({
         />
         {suggestionArr && <IconChevronDown className="flex-none h-5 w-5" />}
         {showDropdown && (
-          <div className="absolute top-[44px] right-0 left-0 w-full h-fit max-h-36 mb-10 overflow-y-auto divide-y divide-slate-100 rounded-lg bg-white shadow-xl ring-1 ring-black ring-opacity-5">
+          <div className="absolute top-[44px] right-0 left-0 w-full h-fit max-h-36 mb-10 overflow-y-auto divide-y divide-slate-100 rounded-lg bg-black shadow-xl ring-1 ring-black ring-opacity-5">
             {suggestionArr && suggestionArr.length > 0 ? (
               <Fragment>
                 {suggestionArr.map((suggestion, index) => (

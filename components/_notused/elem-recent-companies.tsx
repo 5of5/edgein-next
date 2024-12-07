@@ -54,7 +54,7 @@ export const ElemRecentCompanies: FC<Props> = ({
   const companies = companiesData?.companies || [];
 
   return (
-    <div className={`bg-white rounded-lg p-5 ${className}`}>
+    <div className={`bg-black rounded-lg p-5 ${className}`}>
       {heading && <h2 className="text-xl font-bold">{heading}</h2>}
       {error ? (
         <h4>Error loading companies</h4>
@@ -89,11 +89,11 @@ export const ElemRecentCompanies: FC<Props> = ({
                     href={`${ROUTES.COMPANIES}/${company.slug}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="box-border z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg border-black/10 hover:scale-102 hover:shadow">
+                    className="box-border z-0 flex flex-col w-full h-full p-5 transition-all bg-black border rounded-lg border-black/10 hover:scale-102 hover:shadow">
                     <div className="flex items-center">
                       <ElemPhoto
                         photo={company.logo}
-                        wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-white rounded-lg shadow"
+                        wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-black rounded-lg shadow"
                         imgClass="object-contain w-full h-full"
                         imgAlt={company.name}
                         placeholderClass="text-gray-300"
@@ -147,14 +147,14 @@ export const ElemRecentCompanies: FC<Props> = ({
                         resource={company}
                         resourceType={'companies'}
                       />
-                      <ElemSaveToList
+                      {/* <ElemSaveToList
                         resourceName={company.name}
                         resourceId={company.id}
                         resourceType={'companies'}
                         slug={company.slug}
                         buttonStyle="default"
                         follows={company.follows}
-                      />
+                      /> */}
                     </div>
                   </a>
                 </ElemCarouselCard>

@@ -47,7 +47,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
 
   const getActiveClass = (id: number) => {
     return `${ROUTES.GROUPS}/${id}/` === router.asPath
-      ? 'bg-gray-100 text-gray-900'
+      ? 'bg-neutral-900 text-gray-300'
       : '';
   };
 
@@ -129,14 +129,14 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
           buttonComponent={open => (
             <button
               className={`${
-                open ? 'bg-gray-100' : ''
-              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-900 rounded-md flex-1 transition-all hover:bg-gray-100`}>
+                open ? 'bg-neutral-900' : ''
+              } flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-white rounded-md flex-1 transition-all hover:bg-neutral-900`}>
               <IconSidebarGroups
                 className={`w-5 h-5 ${
-                  open ? 'text-primary-500' : 'text-gray-900'
+                  open ? 'text-primary-500' : 'text-white'
                 }`}
               />
-              <p className="text-sm font-medium text-gray-900">Groups</p>
+              <p className="text-sm font-medium text-white">Groups</p>
             </button>
           )}
         />
@@ -167,7 +167,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
               ?.map(group => {
                 const groupUrl = `${ROUTES.GROUPS}/${group.id}/`;
 
-                const groupTotalLists = group.list_user_groups.length;
+                const groupTotalLists = group.list_user_groups?.length;
                 const groupTotalNotes = group.notes.length;
 
                 const groupTooltip = (
@@ -176,7 +176,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                       <ElemLink
                         href={groupUrl}
                         className="inline-block first-letter:uppercase">
-                        <div className="inline mr-2 text-lg font-medium leading-snug text-gray-900 align-middle line-clamp-2 hover:underline">
+                        <div className="inline mr-2 text-lg font-medium leading-snug text-white align-middle line-clamp-2 hover:underline">
                           {group.name}
                         </div>
                         <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 rounded-full">
@@ -245,7 +245,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                     </div>
 
                     {group.description && (
-                      <div className="mt-3 text-sm font-normal text-gray-900 line-clamp-4">
+                      <div className="mt-3 text-sm font-normal text-white line-clamp-4">
                         {group.description}
                       </div>
                     )}
@@ -267,7 +267,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                       <div>
                         <ElemLink
                           href={`${ROUTES.GROUPS}/${group.id}/`}
-                          className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-gray-100 hover:text-gray-900 ${getActiveClass(
+                          className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm text-gray-500 rounded-md flex-1 transition-all hover:bg-neutral-900 hover:text-white ${getActiveClass(
                             group.id,
                           )}`}
                           title={group.name}>
@@ -294,7 +294,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
             {/* <li
               role="button"
               onClick={onClickCreate}
-              className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-gray-100 hover:text-gray-900">
+              className="flex items-center flex-1 py-2 pl-4 mt-1 space-x-2 text-sm font-normal text-gray-500 transition-all rounded-md hover:bg-neutral-900 hover:text-white">
               Add a new group
             </li> */}
           </ul>

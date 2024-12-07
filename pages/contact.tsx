@@ -60,7 +60,7 @@ const Contact: NextPage = () => {
             <div className="absolute -top-8 left-0 right-0 aspect-video w-10/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
             <div className="absolute -top-4 left-0 right-0 aspect-video w-11/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
 
-            <div className="rounded-2xl bg-white p-6 relative z-10">
+            <div className="rounded-2xl bg-black p-6 relative z-10">
               {formSent ? (
                 <div className="flex flex-col items-center justify-center sm:h-full">
                   <IconPaperAirplane className="mx-auto h-12 w-12 text-gray-300" />

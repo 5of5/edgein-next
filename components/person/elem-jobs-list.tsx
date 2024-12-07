@@ -69,7 +69,7 @@ export const ElemJobsList: FC<Props> = ({
             const logo = (
               <ElemPhoto
                 photo={organization?.logo}
-                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg overflow-hidden"
+                wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-black border border-gray-200 rounded-lg overflow-hidden"
                 imgClass="object-fit max-w-full max-h-full"
                 imgAlt={organization?.name}
                 placeholder="company"

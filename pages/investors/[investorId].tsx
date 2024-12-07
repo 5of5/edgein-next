@@ -190,7 +190,7 @@ const VCFirm: NextPage<Props> = props => {
                     className="flex items-center gap-2 mt-1 group">
                     <ElemPhoto
                       photo={parentOrganization?.logo}
-                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
+                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-black rounded-lg shadow group-hover:opacity-60"
                       imgClass="object-contain w-full h-full"
                       imgAlt={parentOrganization?.name}
                       placeholderClass="text-gray-300"
@@ -227,13 +227,13 @@ const VCFirm: NextPage<Props> = props => {
                   resourceType={'vc_firms'}
                   className="w-full sm:w-auto"
                 />
-                <ElemSaveToList
+                {/* <ElemSaveToList
                   resourceName={vcfirm.name}
                   resourceId={vcfirm.id}
                   resourceType={'vc_firms'}
                   slug={vcfirm.slug!}
                   follows={vcfirm.follows}
-                />
+                /> */}
                 <ElemSocialShare
                   resourceName={vcfirm.name}
                   resourceTwitterUrl={vcfirm.twitter}

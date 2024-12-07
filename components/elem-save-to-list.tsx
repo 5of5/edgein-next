@@ -55,20 +55,26 @@ export const ElemSaveToList: FC<Props> = ({
 
   const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [followsByResource, setFollowsByResource] = useState<
-    Pick<Follows, 'list_id'>[]
-  >([]);
-
+  const [followsByResource, setFollowsByResource] = useState([]);
   useEffect(() => {
-    if (!isEqual(follows, followsByResource)) {
+    if (Array.isArray(follows) && !isEqual(follows, followsByResource)) {
       setFollowsByResource(follows);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [follows]);
 
-  const isSaved = followsByResource?.some(followItem =>
-    listsData?.some(listItem => listItem.id === followItem.list_id),
-  );
+  let isSaved = false;
+
+  if (Array.isArray(followsByResource) && Array.isArray(listsData)) {
+    for (const followItem of followsByResource) {
+      for (const listItem of listsData) {
+        if (listItem.id === followItem.list_id) {
+          isSaved = true;
+          break;
+        }
+      }
+      if (isSaved) break;
+    }
+  }
 
   const savedButtonStyle = buttonStyle === 'default' ? '' : 'bg-primary-800';
 
@@ -129,38 +135,42 @@ export const ElemSaveToList: FC<Props> = ({
         if (action === 'add') {
           if (resourceType === 'companies') {
             list.follows_companies = [
-              ...list.follows_companies,
+              ...(list.follows_companies || []),
               { __typename: 'follows_companies', resource_id: resourceId },
             ];
           }
           if (resourceType === 'vc_firms') {
             list.follows_vcfirms = [
-              ...list.follows_vcfirms,
+              ...(list.follows_vcfirms || []),
               { __typename: 'follows_vc_firms', resource_id: resourceId },
             ];
           }
           if (resourceType === 'people') {
             list.follows_people = [
-              ...list.follows_people,
+              ...(list.follows_people || []),
               { __typename: 'follows_people', resource_id: resourceId },
             ];
           }
         } else {
           if (resourceType === 'companies') {
             list.follows_companies = [
-              ...list.follows_companies.filter(
+              ...(list.follows_companies || []).filter(
                 i => i.resource_id !== resourceId,
               ),
             ];
           }
           if (resourceType === 'vc_firms') {
             list.follows_vcfirms = [
-              ...list.follows_vcfirms.filter(i => i.resource_id !== resourceId),
+              ...(list.follows_vcfirms || []).filter(
+                i => i.resource_id !== resourceId,
+              ),
             ];
           }
           if (resourceType === 'people') {
             list.follows_people = [
-              ...list.follows_people.filter(i => i.resource_id !== resourceId),
+              ...(list.follows_people || []).filter(
+                i => i.resource_id !== resourceId,
+              ),
             ];
           }
         }
@@ -280,7 +290,7 @@ export const ElemSaveToList: FC<Props> = ({
         }}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-40 my-10">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-40 my-10">
         <div className="pb-3 border-b border-gray-200">
           <h2 className="text-xl font-medium">Save to List</h2>
         </div>
@@ -299,7 +309,7 @@ export const ElemSaveToList: FC<Props> = ({
                 return (
                   <li key={list.id}>
                     <InputCheckbox
-                      className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-neutral-900"
                       labelClass="grow text-sm"
                       label={getNameFromListName(list)}
                       checked={selected}
@@ -316,7 +326,7 @@ export const ElemSaveToList: FC<Props> = ({
           {!showNew && listsData.length > 0 ? (
             <ElemButton
               onClick={onClickShowCreateNew}
-              className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-gray-100">
+              className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-neutral-900">
               <IconPlus className="w-4 h-4" />
               <span className="self-start text-sm">Save to new list</span>
             </ElemButton>

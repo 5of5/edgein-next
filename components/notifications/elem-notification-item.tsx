@@ -33,7 +33,7 @@ const ElemNotificationItem: FC<Props> = ({
       <div className="flex items-center space-x-2 sm:pr-20">
         <ElemPhoto
           photo={organization?.logo}
-          wrapClass="flex items-center shrink-0 w-12 h-12 bg-white border border-gray-200 rounded-lg overflow-hidden"
+          wrapClass="flex items-center shrink-0 w-12 h-12 bg-black border border-gray-200 rounded-lg overflow-hidden"
           imgClass="object-fit max-w-full max-h-full"
           imgAlt={organization?.name}
           placeholderClass="text-gray-300 p-1"

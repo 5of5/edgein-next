@@ -23,7 +23,7 @@ const ElemLocationTag: FC<Props> = ({
       {tags.map((tag, index) => (
         <li
           key={index}
-          className="flex items-center gap-2 p-2 pl-3 bg-gray-100 rounded-md">
+          className="flex items-center gap-2 p-2 pl-3 bg-neutral-900 rounded-md">
           <span className="max-w-xs text-xs font-medium truncate">
             {tag?.Label || tag?.label}
           </span>

@@ -64,7 +64,7 @@ export const ForgotPasswordModal: FC<Props> = ({ isOpen, onClose }) => {
         showCloseIcon={true}
         placement="center"
         className="!z-[60]"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-6 pt-6 pb-3 z-50 my-10">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-6 pt-6 pb-3 z-50 my-10">
         {isMailSent ? (
           <>
             <div>

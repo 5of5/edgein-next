@@ -85,7 +85,7 @@ export const ElemOnboardingTags: FC<Props> = ({
             {tagCloud.displayedTags.map(tagItem => (
               <li
                 key={tagItem.id}
-                className={`flex items-center gap-1 bg-gray-100 px-3 py-2 rounded-full text-xs font-medium cursor-pointer border ${
+                className={`flex items-center gap-1 bg-neutral-900 px-3 py-2 rounded-full text-xs font-medium cursor-pointer border ${
                   tags.includes(tagItem.id)
                     ? 'border-primary-500 hover:border-primary-500'
                     : 'border-transparent hover:border-gray-300'

@@ -185,7 +185,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                   className="shrink-0">
                   <ElemPhoto
                     photo={comment.created_by_user?.person?.picture}
-                    wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                    wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-8"
                     imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                     imgAlt={
                       comment.created_by_user?.person?.name ||
@@ -217,7 +217,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                         onClick={() => onCommentUpdate(comment)}
                         className={`absolute z-10 right-3 bottom-0 flex items-center justify-center w-8 h-8 rounded-full  ${
                           commentContent.length > 0
-                            ? 'cursor-pointer hover:bg-gray-100'
+                            ? 'cursor-pointer hover:bg-neutral-900'
                             : 'cursor-not-allowed'
                         }`}>
                         {commentContent.length > 0 ? (
@@ -244,7 +244,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                 ) : (
                   <div>
                     <div className="flex items-center gap-2">
-                      <div className="px-3 py-2 text-sm bg-gray-100 grow rounded-xl">
+                      <div className="px-3 py-2 text-sm bg-neutral-900 grow rounded-xl">
                         <div>
                           <ElemLink
                             href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
@@ -262,7 +262,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                       <div>
                         {comment.created_by_user_id === user?.id && (
                           <Popover className="relative lg:opacity-0 lg:group-hover:opacity-100">
-                            <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full focus:outline-none hover:bg-gray-100">
+                            <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full focus:outline-none hover:bg-neutral-900">
                               <IconEllipsisVertical
                                 className="w-6 h-6 text-gray-600"
                                 title="Options"
@@ -276,7 +276,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                               leave="transition ease-in duration-150"
                               leaveFrom="opacity-100 translate-y-0"
                               leaveTo="opacity-0 translate-y-1">
-                              <Popover.Panel className="absolute right-0 z-10 block w-56 p-2 mt-2 overflow-hidden bg-white border border-gray-300 rounded-lg shadow-lg">
+                              <Popover.Panel className="absolute right-0 z-10 block w-56 p-2 mt-2 overflow-hidden bg-black border border-gray-300 rounded-lg shadow-lg">
                                 {({ close }) => (
                                   <>
                                     {/* 
@@ -285,7 +285,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                                         onEditComment(comment);
                                         close();
                                       }}
-                                      className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
+                                      className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
                                       Edit comment
                                     </button> */}
 
@@ -293,7 +293,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                                       onClick={() => {
                                         onConfirmDelete(comment);
                                       }}
-                                      className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-gray-100">
+                                      className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
                                       Delete
                                     </button>
                                   </>
@@ -329,7 +329,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
         onClose={onHideDeleteCommentConfirm}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10">
         <div>
           <h2 className="text-xl font-medium">Delete comment?</h2>
         </div>

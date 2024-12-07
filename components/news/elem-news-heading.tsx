@@ -51,12 +51,12 @@ const ElemNewsHeading: React.FC<Props> = ({
           )}
           <div className="flex items-center gap-x-2">
             {isPublisher && (
-              <div className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full">
+              <div className="shrink-0 bg-neutral-900 text-xs font-medium px-3 py-1 rounded-full">
                 Publisher
               </div>
             )}
             {isAuthor && (
-              <div className="shrink-0 bg-gray-100 text-xs font-medium px-3 py-1 rounded-full">
+              <div className="shrink-0 bg-neutral-900 text-xs font-medium px-3 py-1 rounded-full">
                 Author
               </div>
             )}

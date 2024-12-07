@@ -63,7 +63,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 
   return (
     <DashboardLayout>
-      <div className="p-5 bg-white rounded-lg shadow">
+      <div className="p-5 bg-black rounded-lg shadow">
         <div className="flex">
           <h2 className="text-xl font-bold text-dark-500">
             My Organization(s)

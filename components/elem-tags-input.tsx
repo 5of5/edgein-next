@@ -69,7 +69,7 @@ export const ElemTagsInput: FC<Props> = ({
         )}
         <input
           type="text"
-          className="flex-1 py-1 text-dark-500 text-sm relative bg-white rounded-full border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+          className="flex-1 py-1 text-dark-500 text-sm relative bg-black rounded-full border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
           placeholder={placeholder}
           value={inputValue}
           onChange={onChangeInput}

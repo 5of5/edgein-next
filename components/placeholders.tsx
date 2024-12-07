@@ -2,10 +2,10 @@ import { FC } from 'react';
 
 export const PlaceholderCompanyCard: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast p-5 bg-black border border-dark-200 rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
-        <div className="aspect-square rounded-lg bg-slate-200 w-16 h-16"></div>
-        <div className="flex-1 ml-2 h-6 max-w-full bg-slate-200 rounded"></div>
+        <div className="aspect-square rounded-lg bg-dark-200 w-16 h-16"></div>
+        <div className="flex-1 ml-2 h-6 max-w-full bg-dark-200 rounded"></div>
       </div>
       <div className="flex-1 space-y-4 py-1">
         <div className="h-2 bg-slate-200 rounded"></div>
@@ -28,7 +28,7 @@ export const PlaceholderCompanyCard: FC = () => {
 
 export const PlaceholderNote: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast px-5 py-4 bg-white rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast px-5 py-4 bg-black rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
         <div className="relative aspect-square rounded-lg bg-slate-200 w-12 h-12 mb-2">
           <div className="absolute -right-1 -bottom-1 bg-slate-300 h-7 w-7 rounded-full"></div>
@@ -53,7 +53,7 @@ export const PlaceholderNote: FC = () => {
 
 export const PlaceholderPerson: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast bg-white rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast bg-black rounded-lg md:h-full">
       <div className="flex items-center shrink-0 w-full py-2">
         <div className="aspect-square rounded-full bg-slate-200 w-10 h-10 shrink-0"></div>
         <div className="ml-2 h-3 bg-slate-200 rounded-full w-2/3"></div>
@@ -64,7 +64,7 @@ export const PlaceholderPerson: FC = () => {
 
 export const PlaceholderActivity: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast p-1 mb-6 bg-white rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast p-1 mb-6 bg-black rounded-lg md:h-full">
       <div className="flex items-center shrink-0 w-full mb-3 space-x-2">
         <div className="aspect-square rounded-full bg-slate-200 w-2 h-2"></div>
         <div className="flex-1 h-2 max-w-full bg-slate-200 rounded"></div>
@@ -78,7 +78,7 @@ export const PlaceholderActivity: FC = () => {
 
 export const PlaceholderNotification: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast p-2 bg-white rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast p-2 bg-black rounded-lg md:h-full">
       <div className="flex items-center shrink-0 w-full">
         <div className="aspect-square rounded-lg bg-slate-200 w-12 h-12"></div>
         <div className="ml-2 w-full">
@@ -104,7 +104,7 @@ export const PlaceholderTable: FC = () => {
             <th className="h-2 bg-slate-200 rounded"></th>
           </tr>
         </thead>
-        <tbody className="spacing-y-6 bg-white divide-y divide-black/10">
+        <tbody className="spacing-y-6 bg-black divide-y divide-black/10">
           <tr className="grid grid-cols-5 gap-16 items-center p-4">
             <th className="">
               <div className="flex items-center shrink-0 w-full">
@@ -201,9 +201,9 @@ export const PlaceholderTable: FC = () => {
   );
 };
 
-export const PlaceholderInvestorCard: FC = () => {
+ export const PlaceholderInvestorCard: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast p-5 bg-white border border-dark-500/10 rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast p-5 bg-black border border-dark-500/10 rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
         <div className="aspect-square rounded-lg bg-slate-200 w-16 h-16"></div>
         <div className="flex-1 ml-2 h-6 max-w-full bg-slate-200 rounded"></div>
@@ -224,7 +224,7 @@ export const PlaceholderInvestorCard: FC = () => {
 
 export const PlaceholderEventCard: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast p-5 bg-white border border-dark-500/10 rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast p-5 bg-black border border-dark-500/10 rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
         <div className="rounded-lg bg-slate-200 h-36 w-full"></div>
       </div>
@@ -247,7 +247,7 @@ export const PlaceholderEventCard: FC = () => {
 
 export const PlaceholderNewsCard: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast px-5 py-4 bg-white rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast px-5 py-4 bg-black rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
         <div className="relative aspect-square rounded-lg bg-slate-200 w-12 h-12 mb-2">
           <div className="absolute -right-1 -bottom-1 bg-slate-300 h-7 w-7 rounded-full"></div>
@@ -272,7 +272,7 @@ export const PlaceholderNewsCard: FC = () => {
 
 export const PlaceholderPersonCard: FC = () => {
   return (
-    <div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
+    <div className="flex flex-col animate-pulse-fast p-5 bg-black rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">
         <div className="aspect-square rounded-full bg-slate-200 w-12 h-12"></div>
         <div className="flex-1 ml-4 h-6 max-w-full bg-slate-200 rounded"></div>

@@ -141,7 +141,7 @@ export const ElemFilterLocation: FC<Props> = ({
                 {isLoadingPlace && <p className="text-sm">Loading...</p>}
                 {!isLoadingPlace && (
                   <Combobox.Input
-                    className="relative flex-1 px-3 py-1 text-sm bg-white border-none rounded-full outline-none text-dark-500 ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                    className="relative flex-1 px-3 py-1 text-sm bg-black border-none rounded-full outline-none text-dark-500 ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
                     displayValue={(value: Place) => value?.Label || ''}
                     placeholder={placeholder}
                     value={inputValue}
@@ -150,7 +150,7 @@ export const ElemFilterLocation: FC<Props> = ({
                 )}
               </div>
               {inputValue && (
-                <Combobox.Options className="absolute z-50 w-full mt-1 overflow-auto bg-white border divide-y divide-gray-100 rounded-md shadow-xl border-dark-500/10 max-h-60 focus:outline-none">
+                <Combobox.Options className="absolute z-50 w-full mt-1 overflow-auto bg-black border divide-y divide-gray-100 rounded-md shadow-xl border-dark-500/10 max-h-60 focus:outline-none">
                   <ComboboxResults
                     isLoading={isLoadingPlaceSuggestions}
                     name={option}

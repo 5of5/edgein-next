@@ -73,7 +73,7 @@ const Enterprise = () => {
           </div>
         </section>
 
-        <section className="bg-white border-y border-slate-200">
+        <section className="bg-black border-y border-slate-200">
           <div className="max-w-5xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
             <div className="block md:w-full md:grid md:grid-cols-2 md:gap-10">
               <div className="flex flex-col items-start lg:flex-row lg:space-x-4">

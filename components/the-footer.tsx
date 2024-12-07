@@ -55,7 +55,7 @@ export const navigation = {
 
 export const TheFooter = () => {
   return (
-    <footer className="bg-black text-white mb-14 lg:mb-0" aria-labelledby="footer-heading">
+    <footer className="bg-black mb-14 lg:mb-0" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -63,10 +63,9 @@ export const TheFooter = () => {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <ElemLink href="/">
-              <img
-                src="/edgein-logo.png"
-                alt="EdgeIn"
-                className="h-8"
+              <ElemLogo
+                mode="logo-inverted"
+                className="w-auto h-8 transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
               />
             </ElemLink>
           </div>
@@ -80,7 +79,9 @@ export const TheFooter = () => {
                 <ul role="list" className="grid grid-cols-2 gap-2 mt-4">
                   {navigation.resources.map(item => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm text-gray-400 hover:text-white hover:underline">
+                      <a
+                        href={item.href}
+                        className="text-sm text-gray-400 hover:text-white hover:underline">
                         {item.name}
                       </a>
                     </li>
@@ -94,7 +95,9 @@ export const TheFooter = () => {
                 <ul role="list" className="grid gap-2 mt-4">
                   {navigation.legal.map(item => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm text-gray-400 hover:text-white hover:underline">
+                      <a
+                        href={item.href}
+                        className="text-sm text-gray-400 hover:text-white hover:underline">
                         {item.name}
                       </a>
                     </li>

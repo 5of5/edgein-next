@@ -132,7 +132,7 @@ const Pricing = () => {
             <div className="block mt-16 md:w-full md:grid md:grid-cols-2">
               {pricing.tiers.map(tier => (
                 <div
-                  className={`relative flex flex-col bg-white shadow p-7 ${
+                  className={`relative flex flex-col bg-black shadow p-7 ${
                     tier.mostPopular
                       ? 'mt-8 rounded-lg lg:mt-0 border-2 border-primary-500'
                       : 'rounded-bl-lg rounded-tl-lg mt-14'

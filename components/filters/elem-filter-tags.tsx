@@ -25,8 +25,8 @@ export const ElemFilterTags: React.FC<Props> = ({
               onClick={() => onClick(tag, index)}
               key={index}
               className={`${
-                selectedTag === tag ? 'bg-gray-100' : ''
-              } cursor-pointer px-2 py-1 text-sm rounded transition-all hover:bg-gray-100`}>
+                selectedTag === tag ? 'bg-neutral-900' : ''
+              } cursor-pointer px-2 py-1 text-sm rounded transition-all hover:bg-neutral-900`}>
               {tag}
             </li>
           );

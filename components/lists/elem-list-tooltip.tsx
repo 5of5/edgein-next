@@ -27,7 +27,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
         <ElemLink
           href={listUrl}
           className="inline-block first-letter:uppercase">
-          <div className="inline mr-2 text-lg font-medium leading-snug text-gray-900 align-middle line-clamp-2 hover:underline">
+          <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
             {getListDisplayName(list)}
           </div>
           <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 rounded-full">
@@ -93,7 +93,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
 
       {list.description && (
         <a
-          className="mt-3 text-sm font-normal text-gray-900 line-clamp-4"
+          className="mt-3 text-sm font-normal text-gray-300 line-clamp-4"
           href={listUrl}>
           {list.description}
         </a>

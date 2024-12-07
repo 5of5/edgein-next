@@ -150,7 +150,7 @@ const ElemNoteForm: React.FC<Props> = ({
         onClose={closeAndReset}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-white rounded-lg px-4 py-3 z-10 my-10 !overflow-visible">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10 !overflow-visible">
         <div className="">
           <h2 className="text-xl font-medium">
             {type === 'edit' ? 'Edit Note' : 'Create Note'}
@@ -167,7 +167,7 @@ const ElemNoteForm: React.FC<Props> = ({
               <div className="cursor-pointer">
                 <ElemPhoto
                   photo={user?.profilePicture || user?.person?.picture}
-                  wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+                  wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-10"
                   imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                   imgAlt={user?.display_name}
                   placeholder="user"
@@ -178,7 +178,7 @@ const ElemNoteForm: React.FC<Props> = ({
           ) : (
             <ElemPhoto
               photo={user?.person?.picture}
-              wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+              wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-10"
               imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
               imgAlt={user?.display_name}
               placeholder="user"
@@ -193,7 +193,7 @@ const ElemNoteForm: React.FC<Props> = ({
               onKeyDown={onNoteTextareaKeyDown}
               placeholder="Write your note..."
               className=""
-              textareaClass="h-24 max-h-[9rem] !px-0 !py-0 !ring-0 hover:!bg-white"
+              textareaClass="h-24 max-h-[9rem] !px-0 !py-0 !ring-0 hover:!bg-black"
             />
 
             <InputSelect

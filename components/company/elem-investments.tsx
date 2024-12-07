@@ -102,7 +102,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="p-2 space-y-2 transition-all bg-white border border-gray-300 rounded-lg h-fit">
+                    className="p-2 space-y-2 transition-all bg-black border border-gray-300 rounded-lg h-fit">
                     {investment.vc_firm && (
                       <ElemLink
                         href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
@@ -148,7 +148,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="p-2 space-y-2 transition-all bg-white border border-gray-300 rounded-lg h-fit">
+                    className="p-2 space-y-2 transition-all bg-black border border-gray-300 rounded-lg h-fit">
                     {investment.vc_firm && (
                       <ElemLink
                         href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
@@ -175,7 +175,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 return (
                   <div
                     key={investment.id}
-                    className="p-2 space-y-2 transition-all bg-white border border-gray-300 rounded-lg h-fit">
+                    className="p-2 space-y-2 transition-all bg-black border border-gray-300 rounded-lg h-fit">
                     {investment.person && (
                       <ElemLink
                         href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
@@ -329,7 +329,7 @@ export const ElemInvestments: React.FC<Props> = ({
                                     <IconChevronDownMini className="w-5 h-5" />
                                   </Menu.Button>
 
-                                  <Menu.Items className="absolute left-0 z-50 flex flex-col w-56 mt-2 overflow-hidden origin-top-left bg-white divide-y divide-gray-100 rounded-lg shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                  <Menu.Items className="absolute left-0 z-50 flex flex-col w-56 mt-2 overflow-hidden origin-top-left bg-black divide-y divide-gray-100 rounded-lg shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     {column.canSort && (
                                       <Menu.Item
                                         as="button"
@@ -397,7 +397,7 @@ export const ElemInvestments: React.FC<Props> = ({
                 </thead>
                 <tbody
                   {...getTableBodyProps()}
-                  className="flex-1 bg-white divide-y divide-gray-300 md:flex-none mb-96">
+                  className="flex-1 bg-black divide-y divide-gray-300 md:flex-none mb-96">
                   {page.map(row => {
                     prepareRow(row);
                     const { key, ...restRowProps } = row.getRowProps();

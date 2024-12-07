@@ -141,7 +141,6 @@ const Group: NextPage<Props> = (props: Props) => {
   if (!user) {
     return null;
   }
-
   return (
     <>
       <NextSeo
@@ -177,7 +176,7 @@ const Group: NextPage<Props> = (props: Props) => {
               )}
             </div>
             {isPublicGroup && !isUserBelongToGroup && (
-              <div className="px-5 py-4 bg-white border border-gray-200 rounded-lg">
+              <div className="px-5 py-4 bg-black border border-gray-200 rounded-lg">
                 <div className="p-12 text-center">
                   <IconUsers
                     className="w-12 h-12 mx-auto text-gray-300"
@@ -197,7 +196,7 @@ const Group: NextPage<Props> = (props: Props) => {
               </div>
             )}
             {isPrivateGroup && !isUserBelongToGroup && (
-              <div className="px-5 py-4 bg-white border border-gray-200 rounded-lg">
+              <div className="px-5 py-4 bg-black border border-gray-200 rounded-lg">
                 <div className="p-12 text-center">
                   <IconLockClosed
                     className="w-12 h-12 mx-auto text-gray-300"

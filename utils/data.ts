@@ -14,17 +14,18 @@ export const runGraphQl = async <QueryType>(
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: `Bearer ${authToken}`,
+      'is-viewer': 'true',
+      'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`,
     };
   } else {
     headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
-      'x-hasura-role': process.env.HASURA_VIEWER ?? '',
-      'x-hasura-user-id': '0',
+      'is-viewer': 'true',
+      'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`,
     };
   }
-
+  console.log('headers.......', process.env.GRAPHQL_ENDPOINT);
   if (authToken) {
     const user = await CookieService.getUser(authToken);
     headers['x-hasura-user-id'] = user?.id?.toString() ?? '';

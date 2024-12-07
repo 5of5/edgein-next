@@ -2,6 +2,8 @@ import { FC } from 'react';
 import { useMutation } from 'react-query';
 import useToast from '@/hooks/use-toast';
 import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
+import { useRouter } from 'next/router';
+import { ROUTES } from '@/routes';
 
 type Props = {
   firstName: string;
@@ -10,6 +12,7 @@ type Props = {
 
 export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const { mutate: resend } = useMutation(
     () =>
@@ -36,6 +39,10 @@ export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
     resend();
   };
 
+  const redirectToOnboard = () => {
+    router.push('/onboarding');
+  };
+
   return (
     <div className="w-full max-w-sm mx-auto">
       <h1 className="text-2xl font-medium text-center lg:text-3xl">
@@ -58,6 +65,14 @@ export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
           className="text-xs text-gray-500 underline hover:text-gray-800"
           onClick={handleResendEmail}>
           Resend email
+        </button>
+      </div>
+      <div className="flex justify-center gap-1 mt-5">
+        <p className="text-xs text-gray-500">On board</p>
+        <button
+          className="text-xs text-gray-500 underline hover:text-gray-800"
+          onClick={redirectToOnboard}>
+          here
         </button>
       </div>
     </div>

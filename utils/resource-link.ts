@@ -1,23 +1,27 @@
 export const getParentSubOrganizations = (data: any) => {
-  const child_companies =
-    data.from_links
-      ?.filter((item: any) => item.link_type === 'child' && item.to_company)
-      ?.map((item: any) => item.to_company.id) || [];
+  const child_companies = Array.isArray(data?.from_links)
+    ? data.from_links
+        .filter((item: any) => item?.link_type === 'child' && item?.to_company)
+        .map((item: any) => item?.to_company?.id)
+    : [];
 
-  const child_vc_firms =
-    data.from_links
-      ?.filter((item: any) => item.link_type === 'child' && item.to_vc_firm)
-      ?.map((item: any) => item.to_vc_firm.id) || [];
+  const child_vc_firms = Array.isArray(data?.from_links)
+    ? data.from_links
+        .filter((item: any) => item.link_type === 'child' && item.to_vc_firm)
+        .map((item: any) => item.to_vc_firm.id)
+    : [];
 
-  const parent_company =
-    data.to_links?.find(
-      (item: any) => item.link_type === 'child' && item.from_company,
-    )?.from_company?.id || null;
+  const parent_company = Array.isArray(data?.to_links)
+    ? data.to_links.find(
+        (item: any) => item.link_type === 'child' && item.from_company,
+      )?.from_company?.id
+    : null;
 
-  const parent_vc_firm =
-    data.to_links?.find(
-      (item: any) => item.link_type === 'child' && item.from_vc_firm,
-    )?.from_vc_firm?.id || null;
+  const parent_vc_firm = Array.isArray(data?.to_links)
+    ? data.to_links.find(
+        (item: any) => item.link_type === 'child' && item.from_vc_firm,
+      )?.from_vc_firm?.id
+    : null;
 
   return {
     child_companies,

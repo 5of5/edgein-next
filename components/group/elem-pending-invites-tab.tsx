@@ -68,7 +68,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
   };
 
   return (
-    <div className="bg-white border divide-y rounded-lg border-black/10 divide-black/10">
+    <div className="bg-black border divide-y rounded-lg border-black/10 divide-black/10">
       {pendingInvites.length === 0 ? (
         <p className="px-4 py-3">No pending invites.</p>
       ) : (
@@ -93,7 +93,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
             <div className="flex items-center justify-between px-4 py-3 cursor-pointer group">
               <div className="flex items-center gap-x-2">
                 <ElemPhoto
-                  wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden rounded-full"
+                  wrapClass="w-10 h-10 aspect-square shrink-0 bg-black overflow-hidden rounded-full"
                   imgClass=" w-full h-full border border-gray-200"
                   placeholder="user"
                   placeholderClass="text-gray-300"
@@ -119,7 +119,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
                 defaultItem={null}
                 items={inviteLinks}
                 itemsShowIcons={false}
-                className="relative flex w-full text-left hover:bg-gray-100"
+                className="relative flex w-full text-left hover:bg-neutral-900"
               />
             </div>
           );

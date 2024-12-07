@@ -23,7 +23,7 @@ export const TableColumnsFilter: FC<Props> = ({
           </ElemButton>
         </Popover.Button>
 
-        <Popover.Panel className="absolute z-10 w-[calc(100vw-4rem)] max-w-sm p-3 bg-white border rounded-lg shadow-lg border-black/5">
+        <Popover.Panel className="absolute z-10 w-[calc(100vw-4rem)] max-w-sm p-3 bg-black border rounded-lg shadow-lg border-black/5">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-b-gray-200">
             <div className="text-sm font-medium">Edit columns</div>
             <button onClick={resetColumns} className="text-sm">
@@ -39,7 +39,7 @@ export const TableColumnsFilter: FC<Props> = ({
                 <li
                   key={column.id}
                   className="flex items-baseline w-full text-sm text-left">
-                  <label className="relative flex items-start gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:bg-gray-100">
+                  <label className="relative flex items-start gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md hover:bg-neutral-900">
                     <input
                       type="checkbox"
                       {...column.getToggleHiddenProps()}

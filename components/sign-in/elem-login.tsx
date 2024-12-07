@@ -116,15 +116,6 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
     }
   };
 
-  const handleContinueWithLinkedin = () => {
-    const url = `${
-      process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL
-    }/authorize?response_type=code&client_id=${
-      process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID
-    }&connection=linkedin&redirect_uri=${redirect_url()}&scope=openid%20profile%20email%20offline_access`;
-    window.location.href = url;
-  };
-
   return (
     <>
       <div className="w-full max-w-xs mx-auto">
@@ -203,19 +194,8 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
             <div className="flex-grow border-t border-black/10"></div>
           </div>
 
-          <p className="text-xs font-normal text-center">
-            Or sign in using LinkedIn.
-          </p>
-
-          <ElemButton
-            onClick={handleContinueWithLinkedin}
-            className="w-full mt-6 text-center bg-white gap-x-2 ring-1 ring-gray-300 focus:ring-1 hover:bg-gray-200">
-            <IconLinkedInAlt
-              title="LinkedIn"
-              className="h-6 w- text-[#0A66C2]"
-            />
-            Continue with LinkedIn
-          </ElemButton>
+        
+         
         </div>
       </div>
       <p className="mt-16 text-xs text-center text-gray-500">

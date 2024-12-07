@@ -44,7 +44,7 @@ export const UsageModal: React.FC<Props> = (props: Props) => {
         isOpen={props.show}
         onClose={onClose}
         showCloseIcon={true}
-        panelClass="w-full max-w-2xl bg-white rounded-lg p-8">
+        panelClass="w-full max-w-2xl bg-black rounded-lg p-8">
         <h2 className="text-xl font-medium lg:text-2xl">
           You ran out of EdgeIn page views. Sign up to keep going and access
           more than 65,000 Web3 profiles.

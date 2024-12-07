@@ -66,7 +66,7 @@ export const ElemInviteTeamMember: FC<Props> = ({
           className="flex grow items-center gap-x-2 cursor-pointer hover:opacity-75"
           onClick={handleClickInvite}>
           <ElemPhoto
-            wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden border border-gray-200 rounded-full"
+            wrapClass="w-10 h-10 aspect-square shrink-0 bg-black overflow-hidden border border-gray-200 rounded-full"
             imgClass="object-contain w-full h-full"
             photo={teamMember?.person?.picture}
             placeholder="user"

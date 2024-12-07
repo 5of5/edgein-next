@@ -33,6 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // check user has done signup or not
   const emailExist = await UserService.findOneUserByEmail(email);
+  console.log('email exists!!!!!!', emailExist);
   // if email does not exist, then redirect user for registartion
   if (!emailExist) return res.status(404).send({ nextStep: 'SIGNUP' });
   if (!emailExist.active) {
@@ -45,18 +46,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
   try {
-    const { access_token } = await authService.signIn({ email, password });
-    const userInfo = await authService.getProfile(access_token);
+    // const { access_token } = await authService.signIn({ email, password });
+    // const userInfo = await authService.getProfile(access_token);
 
-    if (userInfo && userInfo.email) {
-      if (!emailExist.is_auth0_verified) {
-        // update userInfo
-        isFirstLogin = true;
-        await UserService.updateEmailVerifiedStatus(
-          userInfo.email,
-          userInfo.email_verified === true,
-        );
-      }
+    if (emailExist && emailExist.email) {
+      // if (!emailExist.is_auth0_verified) {
+      //   // update userInfo
+      //   isFirstLogin = true;
+      //   await UserService.updateEmailVerifiedStatus(
+      //     userInfo.email,
+      //     userInfo.email_verified === true,
+      //   );
+      // }
 
       const userToken = await UserService.generateToken({
         userId: emailExist.id,

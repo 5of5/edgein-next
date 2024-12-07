@@ -32,7 +32,7 @@ export const ElemAvatarList: React.FC<Props> = ({ people, limit }) => {
                   <a href={`${ROUTES.PEOPLE}/${person?.user?.person?.slug}/`}>
                     <ElemPhoto
                       photo={person?.user.person?.picture}
-                      wrapClass="flex items-center justify-center shrink-0 bg-white overflow-hidden rounded-full w-7 h-7"
+                      wrapClass="flex items-center justify-center shrink-0 bg-black overflow-hidden rounded-full w-7 h-7"
                       imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                       imgAlt={getNameFromListMember(person)}
                       placeholder="user"
