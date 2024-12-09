@@ -227,13 +227,13 @@ const VCFirm: NextPage<Props> = props => {
                   resourceType={'vc_firms'}
                   className="w-full sm:w-auto"
                 />
-                {/* <ElemSaveToList
+                <ElemSaveToList
                   resourceName={vcfirm.name}
                   resourceId={vcfirm.id}
                   resourceType={'vc_firms'}
                   slug={vcfirm.slug!}
                   follows={vcfirm.follows}
-                /> */}
+                />
                 <ElemSocialShare
                   resourceName={vcfirm.name}
                   resourceTwitterUrl={vcfirm.twitter}

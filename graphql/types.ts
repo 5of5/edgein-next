@@ -34871,7 +34871,23 @@ export const GetNotesDocument = `
         }
       }
     }
-    
+    comments {
+      id
+      created_at
+      content
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
   }
 }
     `;

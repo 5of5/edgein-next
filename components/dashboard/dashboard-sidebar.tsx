@@ -87,7 +87,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
         </ul>
 
         <ul className={`mt-8 ${user ? 'space-y-4' : 'space-y-1'}`}>
-          {/* <ElemMyListsMenu /> */}
+          <ElemMyListsMenu />
           <ElemMyGroupsMenu />
           <ElemMyNotesMenu />
         </ul>

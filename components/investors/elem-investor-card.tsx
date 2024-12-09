@@ -165,14 +165,14 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
             </Link>
           )} */}
 
-          {/* <ElemSaveToList
+          <ElemSaveToList
             resourceName={vcFirm.name}
             resourceId={id}
             resourceType={'vc_firms'}
             slug={slug!}
             buttonStyle="default"
             follows={follows}
-          /> */}
+          />
         </div>
       </div>
     </div>

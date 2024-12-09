@@ -153,14 +153,14 @@ export const ElemRecentInvestments: FC<Props> = ({
                         resource={investor}
                         resourceType={'vc_firms'}
                       />
-                      {/* <ElemSaveToList
+                      <ElemSaveToList
                         resourceName={investor.name}
                         resourceId={investor.id}
                         resourceType={'vc_firms'}
                         slug={investor.slug!}
                         buttonStyle="default"
                         follows={investor.follows}
-                      /> */}
+                      />
                     </div>
                   </a>
                 </ElemCarouselCard>

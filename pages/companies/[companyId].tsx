@@ -294,13 +294,13 @@ const Company: NextPage<Props> = (props: Props) => {
                   resourceType={'companies'}
                   className="w-full sm:w-auto"
                 />
-                {/* <ElemSaveToList
+                <ElemSaveToList
                   resourceName={company.name}
                   resourceId={company.id}
                   resourceType={'companies'}
                   slug={company.slug!}
                   follows={company.follows}
-                /> */}
+                />
                 <ElemSocialShare
                   resourceName={company.name}
                   resourceTwitterUrl={company.twitter}
