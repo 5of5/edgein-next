@@ -181,7 +181,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
   const metaWebsiteUrl = company.website ? `${company.website} ` : '';
   const organizationLibraries =
-    company.library.length > 0 ? company.library.join(', ') : '';
+    company.library?.length > 0 ? company.library?.join(', ') : '';
 
   return (
     <>
