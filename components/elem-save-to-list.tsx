@@ -137,10 +137,12 @@ export const ElemSaveToList: FC<Props> = ({
         }
         if (action === 'add') {
           if (resourceType === 'companies') {
-            list.follows_companies = [
-              ...(list.follows_companies || []),
-              { __typename: 'follows_companies', resource_id: resourceId },
-            ];
+            list.follows_companies = Array.isArray(list.follows_companies)
+              ? [
+                  ...list.follows_companies,
+                  { __typename: 'follows_companies', resource_id: resourceId },
+                ]
+              : [{ __typename: 'follows_companies', resource_id: resourceId }];
           }
           if (resourceType === 'vc_firms') {
             list.follows_vcfirms = [
@@ -312,7 +314,7 @@ export const ElemSaveToList: FC<Props> = ({
                 return (
                   <li key={list.id}>
                     <InputCheckbox
-                      className="w-full px-4 py-3 rounded-lg bg-gray-50 hover:bg-neutral-900"
+                      className="w-full px-4 py-3 rounded-lg hover:bg-neutral-900"
                       labelClass="grow text-sm"
                       label={getNameFromListName(list)}
                       checked={selected}
@@ -329,7 +331,7 @@ export const ElemSaveToList: FC<Props> = ({
           {!showNew && listsData.length > 0 ? (
             <ElemButton
               onClick={onClickShowCreateNew}
-              className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal bg-gray-50 hover:bg-neutral-900">
+              className="w-full !justify-start gap-2 rounded-lg px-4 py-3 font-normal hover:bg-neutral-900">
               <IconPlus className="w-4 h-4" />
               <span className="self-start text-sm">Save to new list</span>
             </ElemButton>
