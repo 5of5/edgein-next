@@ -195,7 +195,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </div>
       <Script
         strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtag/js?id=G-GQ863QY6F2"
+        src="https://www.googletagmanager.com/gtag/js?id=G-CNLPCXH1W8"
       />
       <Script
         id="google-analytics"
@@ -205,7 +205,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-GQ863QY6F2');
+            gtag('config', 'G-CNLPCXH1W8');
           `,
         }}
       />
