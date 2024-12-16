@@ -33,6 +33,8 @@ import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 import { NoResults } from '@/components/companies/no-results';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import axios from 'axios';
+
 
 type Props = {
   newsCount: number;
@@ -42,6 +44,9 @@ type Props = {
 
 const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
+  const [isLoader,setIsLoader] = useState(false);
+  const [newses, setNewses] = useState()
+
   const router = useRouter();
   const { user } = useUser();
 
@@ -87,6 +92,29 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab]);
+
+
+  useEffect(() => {
+    // Fetch the news when the page index changes
+    const fetchNews = async (page: number) => {
+      setIsLoader(true);
+      try {
+        const response = await axios.get(
+          `https://cryptopanic.com/api/pro/v1/posts/?auth_token=645c4c0d45faf64fdb16af8c822bc2effd4eee62&kind=news&page=${page}`,
+        );
+        setNewses(response.data.results);
+        console.log(newses)
+        
+      } catch (error) {
+        console.error('Error fetching news:', error);
+      } finally {
+        setIsLoader(false);
+      }
+    };
+
+    fetchNews(pageIndex + 1); // Fetch news when page changes
+  }, [pageIndex]);
+
 
   useEffect(() => {
     onTrackView({
@@ -182,7 +210,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       />
       <DashboardLayout>
         <div className="relative">
-          <ElemFiltersWrap resultsTotal={news_aggregate}>
+          <ElemFiltersWrap resultsTotal={newses?.count}>
             <ElemCategories
               categories={newsTab}
               selectedCategory={selectedTab}
@@ -226,12 +254,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                 ) : news?.length != 0 ? (
                   <>
                     <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                      {news?.map(item => (
+                      {newses.results?.map(item => (
                         <ElemNewsCard key={item.id} newsPost={item} />
                       ))}
                     </div>
                     <Pagination
-                      shownItems={news?.length}
+                      shownItems={newses?.length}
                       totalItems={getTotalItems()}
                       page={pageIndex}
                       itemsPerPage={getLimit()}
