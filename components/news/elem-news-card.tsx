@@ -28,6 +28,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
 
   const { id, kind, date, link, text, source, metadata, organizations } =
     postData;
+
   const orgs = organizations as {
     company?: {
       tags: string[];
@@ -65,6 +66,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
   if (organizations?.length) {
     publisher = organizations.find(org => org.type === 'publisher');
   }
+
   let otherOrganizations: any[] = [];
   if (organizations?.length) {
     otherOrganizations = organizations?.filter(
@@ -74,7 +76,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
 
   const handleLinkClick = () => {
     onTrackView({
-      resourceId: id,
+      resourceId: newsPost?.id,
       resourceType: 'news',
       pathname: router.asPath,
     });
@@ -83,16 +85,21 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
   return (
     <div
       className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400 ${className}`}>
-      {link && (
+      {newsPost?.source?.url && (
         <div className="flex flex-col justify-between h-full">
           <div>
-            <h2 className="font-medium break-words" title={text ?? ''}>
-              <ElemLink href={link} target="_blank" onClick={handleLinkClick}>
-                {text}
+            <h2
+              className="font-medium break-words"
+              title={newsPost?.title ?? ''}>
+              <ElemLink
+                href={newsPost?.source?.url}
+                target="_blank"
+                onClick={handleLinkClick}>
+                {newsPost?.title}
               </ElemLink>
             </h2>
             <p className="mt-3 text-xs text-gray-500">
-              {formatDateShown(date)}
+              {formatDateShown(newsPost?.published_at)}
             </p>
 
             {tags?.length > 0 && (
@@ -104,17 +111,17 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
               />
             )}
 
-            {link && metadata?.image && (
+            {newsPost?.source?.url && metadata?.image && (
               <div className="mt-3 text-gray-400">
                 <ElemLink
-                  href={link}
+                  href={newsPost?.source?.url}
                   target="_blank"
                   className="block mb-2"
                   onClick={handleLinkClick}>
                   {metadata?.image && (
                     <img
                       src={metadata?.image}
-                      alt={text}
+                      alt={newsPost?.title}
                       className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
                     />
                   )}{' '}
@@ -122,9 +129,9 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
               </div>
             )}
 
-            {link ? (
+            {newsPost?.source?.url ? (
               <ElemLink
-                href={link}
+                href={newsPost?.source?.url}
                 target="_blank"
                 className={`text-sm text-gray-500 mt-4 ${
                   metadata?.image ? 'line-clamp-3' : 'line-clamp-6'
@@ -189,7 +196,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
             </div>
           </div>
           <div className="mt-4 flex flex-wrap items-center">
-            {link && (
+            {newsPost?.source?.url && (
               <p className="text-xs text-gray-500">
                 {'From  '}
                 {publisher ? (
@@ -206,20 +213,20 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   </ElemLink>
                 ) : (
                   <ElemLink
-                    href={getCleanWebsiteUrl(link, true)}
+                    href={getCleanWebsiteUrl(newsPost?.source?.url, true)}
                     target="_blank">
-                    {getCleanWebsiteUrl(link, false)}
+                    {getCleanWebsiteUrl(newsPost?.source?.url, false)}
                   </ElemLink>
                 )}
                 {' • '}
                 Powered by{' '}
                 <ElemLink
                   href={`${ROUTES.COMPANIES}/${
-                    source?.poweredby?.toLowerCase() === 'techcrunch'
+                    newsPost?.source?.title?.toLowerCase() === 'techcrunch'
                       ? 'techcrunch'
                       : 'cryptopanic'
                   }`}>
-                  {source?.poweredby || 'CryptoPanic'}
+                  {newsPost?.source?.title || 'CryptoPanic'}
                 </ElemLink>
               </p>
             )}
