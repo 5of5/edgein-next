@@ -151,16 +151,24 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           </ul>
         )}
 
-        {
-          (isNext != null && (
-            <ElemButton
-              onClick={onClickNext}
-              className={numeric ? '' : 'sm:ml-3'}
-              btn="default"
-              disabled={totalItems <= shownItemsEnd ? true : false}>
-              Next
-            </ElemButton>
-          ))}
+        {Boolean(isNext) !== false && (
+          <ElemButton
+            onClick={onClickNext}
+            className={numeric ? '' : 'sm:ml-3'}
+            btn="default"
+            disabled={totalItems <= shownItemsEnd ? true : false}>
+            Next
+          </ElemButton>
+        )}
+        {totalItems > shownItemsEnd && !isNext && (
+          <ElemButton
+            onClick={onClickNext}
+            className={numeric ? '' : 'sm:ml-3'}
+            btn="default"
+            disabled={totalItems <= shownItemsEnd ? true : false}>
+            Next
+          </ElemButton>
+        )}
       </div>
     </nav>
   );
