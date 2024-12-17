@@ -45,9 +45,10 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [isLoader, setIsLoader] = useState(false);
   const [newses, setNewses] = useState();
-
+  const [newsDetails, setNewsDetails] = useState();
   const router = useRouter();
   const { user } = useUser();
+  const {query} = router;
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -82,6 +83,17 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ],
   };
 
+  //URL change edge case
+  useEffect(() => {
+    // Check if 'page' is present and is a number greater than 10
+    const page = parseInt(query.page, 10);
+
+    if (page > 10) {
+      // Redirect to page 10 if it's above 10
+      router.push('/news/?page=10');
+    }
+  }, [query.page, router]);
+
   useEffect(() => {
     if (!initialLoad) {
       setPageIndex(0);
@@ -101,7 +113,8 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
           `https://cryptopanic.com/api/pro/v1/posts/?auth_token=645c4c0d45faf64fdb16af8c822bc2effd4eee62&kind=news&page=${page}&metadata=true&approved=true`,
         );
         setNewses(response.data.results);
-        console.log(newses);
+        setNewsDetails(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching news:', error);
       } finally {
@@ -178,19 +191,19 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ? newsCount
     : newsData?.news_aggregate?.aggregate?.count || 0;
 
-  const getTotalItems = () => {
-    if (selectedTab?.value === 'trending') {
-      return TRENDING_CATEGORY_LIMIT;
-    }
+  // const getTotalItems = () => {
+  //   if (selectedTab?.value === 'trending') {
+  //     return TRENDING_CATEGORY_LIMIT;
+  //   }
 
-    return news_aggregate;
-  };
+  //   return news_aggregate;
+  // };
 
   const onPreviousPage = () => {
     setPageIndex(pageIndex - 1);
   };
   const onNextPage = () => {
-    setPageIndex(pageIndex + 1);
+    if (newsDetails?.next !== null) setPageIndex(pageIndex + 1);
   };
 
   const pageTitle =
@@ -256,11 +269,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                     </div>
                     <Pagination
                       shownItems={newses?.length}
-                      totalItems={getTotalItems()}
+                      totalItems={parseInt(newsDetails?.count)}
                       page={pageIndex}
-                      itemsPerPage={getLimit()}
+                      itemsPerPage={20}
                       onClickPrev={onPreviousPage}
                       onClickNext={onNextPage}
+                      isNext={newsDetails?.next}
                       onClickToPage={selectedPage => setPageIndex(selectedPage)}
                     />
                   </>
