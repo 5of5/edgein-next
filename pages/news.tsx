@@ -48,7 +48,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [newsDetails, setNewsDetails] = useState();
   const router = useRouter();
   const { user } = useUser();
-  const {query} = router;
+  const { query } = router;
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -206,10 +206,10 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     if (newsDetails?.next !== null) setPageIndex(pageIndex + 1);
   };
 
-  const pageTitle =
-    selectedTab?.value === '7days'
-      ? `${user ? `${selectedLibrary} news` : 'News'} from the last 7 days`
-      : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} news`;
+  const pageTitle = `All Latest news`;
+  // selectedTab?.value === '7days'
+  //   ? `${user ? `${selectedLibrary} news` : 'News'} from the last 7 days`
+  //   : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} news`;
 
   return (
     <>
@@ -220,19 +220,19 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       <DashboardLayout>
         <div className="relative">
           <ElemFiltersWrap resultsTotal={newses?.count}>
-            <ElemCategories
+            {/* <ElemCategories
               categories={newsTab}
               selectedCategory={selectedTab}
               onChangeCategory={setSelectedTab}
-            />
+            /> */}
 
-            <div className="hidden lg:block lg:ml-auto"></div>
+            {/* <div className="hidden lg:block lg:ml-auto"></div>
             {isDisplaySelectLibrary && (
               <div>
                 <h3 className="mb-1 font-medium lg:hidden">Library</h3>
                 <ElemLibrarySelector />
               </div>
-            )}
+            )} */}
 
             {/* removed in qol-ui-fixes */}
             {/* {!selectedTab?.value && (
