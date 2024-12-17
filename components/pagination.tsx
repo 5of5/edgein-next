@@ -9,6 +9,7 @@ type Props = {
   shownItems?: number;
   totalItems: number;
   numeric?: boolean;
+  isNext?: any;
   onChangePageSize?: React.ChangeEventHandler<HTMLSelectElement>;
   onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -26,6 +27,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
   onClickPrev,
   onClickNext,
   onClickToPage,
+  isNext,
 }) => {
   // const shownItemsStart = page === 0 ? 1 : page * itemsPerPage + 1;
   const shownItemsStart = page * itemsPerPage + 1;
@@ -149,15 +151,16 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           </ul>
         )}
 
-        {totalItems > shownItemsEnd && (
-          <ElemButton
-            onClick={onClickNext}
-            className={numeric ? '' : 'sm:ml-3'}
-            btn="default"
-            disabled={totalItems <= shownItemsEnd ? true : false}>
-            Next
-          </ElemButton>
-        )}
+        {
+          (isNext != null && (
+            <ElemButton
+              onClick={onClickNext}
+              className={numeric ? '' : 'sm:ml-3'}
+              btn="default"
+              disabled={totalItems <= shownItemsEnd ? true : false}>
+              Next
+            </ElemButton>
+          ))}
       </div>
     </nav>
   );
