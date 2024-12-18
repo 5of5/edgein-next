@@ -203,46 +203,7 @@ const Home = () => {
   return (
     <>
       <section className="relative overflow-hidden isolate bg-black">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1422 800"
-          className="absolute inset-0 -z-10 h-full w-full stroke-white [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]">
-          <path fill="url(#pattern1)" d="M-711-400h2844v1600H-711z" />
-          <path fill="url(#pattern2)" d="M-711-400h2844v1600H-711z" />
-          <path fill="url(#pattern3)" d="M-711-400h2844v1600H-711z" />
-          <defs>
-            <pattern
-              id="pattern1"
-              width="260"
-              height="260"
-              fill="none"
-              patternTransform="rotate(30)"
-              patternUnits="userSpaceOnUse"
-              strokeWidth="4">
-              <path d="M32.5 0v260m65-260v260m65-260v260m65-260v260" />
-            </pattern>
-            <pattern
-              id="pattern2"
-              width="260"
-              height="260"
-              fill="none"
-              patternTransform="rotate(30)"
-              patternUnits="userSpaceOnUse"
-              strokeWidth="2.2">
-              <path d="M65 0v260M195 0v260" />
-            </pattern>
-            <pattern
-              id="pattern3"
-              width="260"
-              height="260"
-              fill="none"
-              patternTransform="rotate(115)"
-              patternUnits="userSpaceOnUse"
-              strokeWidth="1.2">
-              <path d="M32.5 0v260m65-260v260m65-260v260m65-260v260" />
-            </pattern>
-          </defs>
-        </svg>
+
 
         <div className="px-6 pt-10 pb-24 mx-auto max-w-7xl sm:pb-32 lg:flex lg:items-center lg:px-8 lg:py-16">
           <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl lg:flex-shrink-0">
