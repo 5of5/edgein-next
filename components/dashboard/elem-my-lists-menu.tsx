@@ -19,19 +19,7 @@ import { ElemListTooltip } from '../lists/elem-list-tooltip';
 type Props = {
   className?: string;
 };
-
-const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
-  const { showSidebar, setShowSidebar } = useSidebar();
-  const { listAndFollows: lists, user } = useUser();
-  const router = useRouter();
-
-  const getActiveClass = (id: number, name: string) => {
-    return `${ROUTES.LISTS}/${id}/${name}/` === router.asPath
-      ? 'bg-neutral-900 text-gray-300'
-      : 'text-gray-500';
-  };
-
-  const GET_PUBLIC_LISTS = `
+export const GET_PUBLIC_LISTS = `
   query GetPublicLists {
   lists(where: {public: {_eq: true}}) {
     id
@@ -62,26 +50,39 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   }
 }`;
 
-  const fetchGraphQL = async (query: string) => {
-    const response = await fetch(
-      'https://unique-crow-54.hasura.app/v1/graphql',
-      {
-        // Replace with your endpoint
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`, // Replace with your authentication token
-        },
-        body: JSON.stringify({ query }),
-      },
-    );
+ export const fetchGraphQL = async (
+   query: string,
+   variables: Record<string, any> = {},
+ ) => {
+   const response = await fetch(
+     'https://unique-crow-54.hasura.app/v1/graphql',
+     {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+         'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`, // Replace with your authentication token
+       },
+       body: JSON.stringify({ query,variables }),
+     },
+   );
 
-    const data = await response.json();
-    if (data.errors) {
-      throw new Error(data.errors.map((e: any) => e.message).join(', '));
-    }
+   const data = await response.json();
+   if (data.errors) {
+     throw new Error(data.errors.map((e: any) => e.message).join(', '));
+   }
 
-    return data.data;
+   return data.data;
+ };
+
+const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
+  const { showSidebar, setShowSidebar } = useSidebar();
+  const { listAndFollows: lists, user } = useUser();
+  const router = useRouter();
+
+  const getActiveClass = (id: number, name: string) => {
+    return `${ROUTES.LISTS}/${id}/${name}/` === router.asPath
+      ? 'bg-neutral-900 text-gray-300'
+      : 'text-gray-500';
   };
 
   useEffect(() => {
@@ -91,7 +92,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
         const newList = data?.lists?.filter(
           x => !['hot', 'crap', 'like'].includes(getNameFromListName(x.name)),
         );
-        console.log(newList);
+        
         setFilteredLists(newList)
         setCustomLists(newList)
       } catch (err: any) {
@@ -176,7 +177,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
   return (
     <li className={className}>
-      {user ? (
+      {/* {user ? ( */}
         <div className="relative">
           <ElemSidebarItem
             IconComponent={IconSidebarList}
@@ -184,14 +185,14 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             url={ROUTES.LISTS}
             onClick={() => setShowSidebar(false)}
           />
-          <div className="absolute right-2 top-1.5 bottom-1.5">
+          {user&&<div className="absolute right-2 top-1.5 bottom-1.5">
             <ElemButton btn="primary" size="xs" onClick={onClickCreate}>
               Create
             </ElemButton>
-          </div>
+          </div>}
         </div>
-      ) : (
-        <ElemWithSignInModal
+      {/* ) : ( */}
+        {/* <ElemWithSignInModal
           wrapperClass="w-full"
           text="Sign in to use lists for tracking and updates on interesting companies, investors, and people."
           buttonComponent={open => (
@@ -207,8 +208,8 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               <p className="text-sm font-medium text-gray-300">Lists</p>
             </button>
           )}
-        />
-      )}
+        /> */}
+      {/* )} */}
 
     
         <>
