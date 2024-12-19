@@ -10,6 +10,8 @@ export default function Document() {
           href="https://fonts.googleapis.com/css?family=Inter:400,500,600&lang=en&display=swap"
           rel="stylesheet"
         />
+        <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}`}
+     crossOrigin="anonymous"></script>
       </Head>
       <body className="bg-black text-gray-300">
         <Main />
