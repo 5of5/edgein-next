@@ -33,6 +33,7 @@ import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
 import { NoResults } from '@/components/companies/no-results';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import axios from 'axios';
 
 type Props = {
   newsCount: number;
@@ -40,10 +41,26 @@ type Props = {
   newsTab: DashboardCategory[];
 };
 
+// Add type for news post
+interface NewsPost {
+  id: string;
+  // Add other properties that exist in the API response
+}
+
+interface NewsDetails {
+  count: string;
+  next: string | null;
+  results: NewsPost[];
+}
+
 const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
+  const [isLoader, setIsLoader] = useState(false);
+  const [newses, setNewses] = useState<NewsPost[]>();
+  const [newsDetails, setNewsDetails] = useState<NewsDetails>();
   const router = useRouter();
   const { user } = useUser();
+  const { query } = router;
 
   const isDisplaySelectLibrary =
     user?.email &&
@@ -78,6 +95,17 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ],
   };
 
+  //URL change edge case
+  useEffect(() => {
+    // Check if 'page' is present and is a number greater than 10
+    const page = query.page ? parseInt(query.page.toString(), 10) : 1;
+
+    if (page > 10) {
+      // Redirect to page 10 if it's above 10
+      router.push('/news/?page=10');
+    }
+  }, [query.page, router]);
+
   useEffect(() => {
     if (!initialLoad) {
       setPageIndex(0);
@@ -87,6 +115,26 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab]);
+
+  useEffect(() => {
+    // Fetch the news when the page index changes
+    const fetchNews = async (page: number) => {
+      setIsLoader(true);
+      try {
+        const response = await axios.get<NewsDetails>(
+          `https://cryptopanic.com/api/pro/v1/posts/?auth_token=645c4c0d45faf64fdb16af8c822bc2effd4eee62&kind=news&page=${page}&metadata=true&approved=true`,
+        );
+        setNewses(response.data.results);
+        setNewsDetails(response.data);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+      } finally {
+        setIsLoader(false);
+      }
+    };
+
+    fetchNews(pageIndex + 1); // Fetch news when page changes
+  }, [pageIndex]);
 
   useEffect(() => {
     onTrackView({
@@ -154,48 +202,48 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     ? newsCount
     : newsData?.news_aggregate?.aggregate?.count || 0;
 
-  const getTotalItems = () => {
-    if (selectedTab?.value === 'trending') {
-      return TRENDING_CATEGORY_LIMIT;
-    }
+  // const getTotalItems = () => {
+  //   if (selectedTab?.value === 'trending') {
+  //     return TRENDING_CATEGORY_LIMIT;
+  //   }
 
-    return news_aggregate;
-  };
+  //   return news_aggregate;
+  // };
 
   const onPreviousPage = () => {
     setPageIndex(pageIndex - 1);
   };
   const onNextPage = () => {
-    setPageIndex(pageIndex + 1);
+    if (newsDetails?.next !== null) setPageIndex(pageIndex + 1);
   };
 
-  const pageTitle =
-    selectedTab?.value === '7days'
-      ? `${user ? `${selectedLibrary} news` : 'News'} from the last 7 days`
-      : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} news`;
+  const pageTitle = `All Latest news`;
+  // selectedTab?.value === '7days'
+  //   ? `${user ? `${selectedLibrary} news` : 'News'} from the last 7 days`
+  //   : `${selectedTab?.title || 'All'} ${user ? selectedLibrary : ''} news`;
 
   return (
     <>
       <NextSeo
-        title={`${selectedLibrary} News`}
+        title={`All Latest News`}
         description={`EdgeIn provides the latest ${selectedLibrary} news and trends. Explore industry research and reports from the frontline of ${selectedLibrary} technology news. Discover an index of the most active and influential capital in the industry.`}
       />
       <DashboardLayout>
         <div className="relative">
-          <ElemFiltersWrap resultsTotal={news_aggregate}>
-            <ElemCategories
+          <ElemFiltersWrap resultsTotal={newses?.length}>
+            {/* <ElemCategories
               categories={newsTab}
               selectedCategory={selectedTab}
               onChangeCategory={setSelectedTab}
-            />
+            /> */}
 
-            <div className="hidden lg:block lg:ml-auto"></div>
+            {/* <div className="hidden lg:block lg:ml-auto"></div>
             {isDisplaySelectLibrary && (
               <div>
                 <h3 className="mb-1 font-medium lg:hidden">Library</h3>
                 <ElemLibrarySelector />
               </div>
-            )}
+            )} */}
 
             {/* removed in qol-ui-fixes */}
             {/* {!selectedTab?.value && (
@@ -223,20 +271,21 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                       <PlaceholderNewsCard key={i} />
                     ))}
                   </div>
-                ) : news?.length != 0 ? (
+                ) : newses?.length != 0 ? (
                   <>
                     <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                      {news?.map(item => (
+                      {newses?.map((item: NewsPost) => (
                         <ElemNewsCard key={item.id} newsPost={item} />
                       ))}
                     </div>
                     <Pagination
-                      shownItems={news?.length}
-                      totalItems={getTotalItems()}
+                      shownItems={newses?.length}
+                      totalItems={parseInt(newsDetails?.count ?? '')}
                       page={pageIndex}
-                      itemsPerPage={getLimit()}
+                      itemsPerPage={20}
                       onClickPrev={onPreviousPage}
                       onClickNext={onNextPage}
+                      isNext={newsDetails?.next}
                       onClickToPage={selectedPage => setPageIndex(selectedPage)}
                     />
                   </>

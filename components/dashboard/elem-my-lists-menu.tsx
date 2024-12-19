@@ -19,6 +19,60 @@ import { ElemListTooltip } from '../lists/elem-list-tooltip';
 type Props = {
   className?: string;
 };
+export const GET_PUBLIC_LISTS = `
+  query GetPublicLists {
+  lists(where: {public: {_eq: true}}) {
+    id
+    public
+    name
+    created_by {
+      id
+      display_name
+      email
+      person {
+        id
+        slug
+        name
+      }
+    }
+        created_at
+    updated_at
+    total_no_of_resources
+    follows_companies {
+      resource_id
+    }
+    follows_vcfirms {
+      resource_id
+    }
+    follows_people {
+      resource_id
+    }
+  }
+}`;
+
+ export const fetchGraphQL = async (
+   query: string,
+   variables: Record<string, any> = {},
+ ) => {
+   const response = await fetch(
+     'https://unique-crow-54.hasura.app/v1/graphql',
+     {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+         'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`, // Replace with your authentication token
+       },
+       body: JSON.stringify({ query,variables }),
+     },
+   );
+
+   const data = await response.json();
+   if (data.errors) {
+     throw new Error(data.errors.map((e: any) => e.message).join(', '));
+   }
+
+   return data.data;
+ };
 
 const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const { showSidebar, setShowSidebar } = useSidebar();
@@ -30,6 +84,25 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       ? 'bg-neutral-900 text-gray-300'
       : 'text-gray-500';
   };
+
+  useEffect(() => {
+    const fetchPublicList = async () => {
+      try {
+        const data = await fetchGraphQL(GET_PUBLIC_LISTS);
+        const newList = data?.lists?.filter(
+          x => !['hot', 'crap', 'like'].includes(getNameFromListName(x.name)),
+        );
+        
+        setFilteredLists(newList)
+        setCustomLists(newList)
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+    if (!user) {
+      fetchPublicList();
+    }
+  }, []);
 
   const [customLists, setCustomLists] = useState(
     lists?.filter(
@@ -104,7 +177,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
 
   return (
     <li className={className}>
-      {user ? (
+      {/* {user ? ( */}
         <div className="relative">
           <ElemSidebarItem
             IconComponent={IconSidebarList}
@@ -112,14 +185,14 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             url={ROUTES.LISTS}
             onClick={() => setShowSidebar(false)}
           />
-          <div className="absolute right-2 top-1.5 bottom-1.5">
+          {user&&<div className="absolute right-2 top-1.5 bottom-1.5">
             <ElemButton btn="primary" size="xs" onClick={onClickCreate}>
               Create
             </ElemButton>
-          </div>
+          </div>}
         </div>
-      ) : (
-        <ElemWithSignInModal
+      {/* ) : ( */}
+        {/* <ElemWithSignInModal
           wrapperClass="w-full"
           text="Sign in to use lists for tracking and updates on interesting companies, investors, and people."
           buttonComponent={open => (
@@ -135,10 +208,10 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
               <p className="text-sm font-medium text-gray-300">Lists</p>
             </button>
           )}
-        />
-      )}
+        /> */}
+      {/* )} */}
 
-      {user && (
+    
         <>
           {customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
             <InputText
@@ -194,7 +267,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             )}
           </ul>
         </>
-      )}
+    
 
       <CreateListDialog
         isOpen={openCreateList}

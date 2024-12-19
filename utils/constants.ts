@@ -2260,6 +2260,10 @@ export const LISTS_TABS: ListsTabItem[] = [
   { id: 'my-lists', name: 'My Lists' },
 ];
 
+export const PUBLIC_LISTS_TABS: ListsTabItem[] = [
+  { id: 'discover', name: 'Discover' },
+];
+
 export const RESOURCE_TYPES_CONTAIN_LIBRARY = [
   'companies',
   'vc_firms',

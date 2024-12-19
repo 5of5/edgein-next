@@ -33,12 +33,14 @@ interface ResourceGroup
 type Props = {
   selectedTab: GroupsTabItem | ListsTabItem;
   resource: ResourceList | ResourceGroup;
+  isUser:Boolean;
   refetchList: () => void;
 };
 
 export const ElemListCard: FC<Props> = ({
   selectedTab,
   resource,
+  isUser,
   refetchList,
 }) => {
   const router = useRouter();
@@ -242,7 +244,7 @@ export const ElemListCard: FC<Props> = ({
           </div>
         )}
 
-        <div className="mt-4">
+        {isUser?<div className="mt-4">
           {selectedTab.id === 'discover' ? (
             <ElemButton
               onClick={handleClickJoin}
@@ -261,7 +263,7 @@ export const ElemListCard: FC<Props> = ({
               {`View ${isResourceList ? 'List' : 'Group'}`}
             </ElemButton>
           )}
-        </div>
+        </div>:<></>}
       </div>
     </div>
   );
