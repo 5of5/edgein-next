@@ -15,6 +15,7 @@ import { SIDEBAR_DEFAULT_LISTS_LIMIT } from '@/utils/constants';
 import { getNameFromListName, getListDisplayName } from '@/utils/lists';
 import { useSidebar } from '@/context/sidebar-context';
 import { ElemListTooltip } from '../lists/elem-list-tooltip';
+import { Lists } from '@/graphql/types';
 
 type Props = {
   className?: string;
@@ -50,29 +51,26 @@ export const GET_PUBLIC_LISTS = `
   }
 }`;
 
- export const fetchGraphQL = async (
-   query: string,
-   variables: Record<string, any> = {},
- ) => {
-   const response = await fetch(
-     'https://unique-crow-54.hasura.app/v1/graphql',
-     {
-       method: 'POST',
-       headers: {
-         'Content-Type': 'application/json',
-         'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`, // Replace with your authentication token
-       },
-       body: JSON.stringify({ query,variables }),
-     },
-   );
+export const fetchGraphQL = async (
+  query: string,
+  variables: Record<string, any> = {},
+) => {
+  const response = await fetch('https://unique-crow-54.hasura.app/v1/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`, // Replace with your authentication token
+    },
+    body: JSON.stringify({ query, variables }),
+  });
 
-   const data = await response.json();
-   if (data.errors) {
-     throw new Error(data.errors.map((e: any) => e.message).join(', '));
-   }
+  const data = await response.json();
+  if (data.errors) {
+    throw new Error(data.errors.map((e: any) => e.message).join(', '));
+  }
 
-   return data.data;
- };
+  return data.data;
+};
 
 const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   const { showSidebar, setShowSidebar } = useSidebar();
@@ -90,11 +88,12 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       try {
         const data = await fetchGraphQL(GET_PUBLIC_LISTS);
         const newList = data?.lists?.filter(
-          x => !['hot', 'crap', 'like'].includes(getNameFromListName(x.name)),
+          (x: Lists) =>
+            !['hot', 'crap', 'like'].includes(getNameFromListName(x)),
         );
-        
-        setFilteredLists(newList)
-        setCustomLists(newList)
+
+        setFilteredLists(newList);
+        setCustomLists(newList);
       } catch (err: any) {
         console.log(err);
       }
@@ -178,21 +177,23 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   return (
     <li className={className}>
       {/* {user ? ( */}
-        <div className="relative">
-          <ElemSidebarItem
-            IconComponent={IconSidebarList}
-            text="Lists"
-            url={ROUTES.LISTS}
-            onClick={() => setShowSidebar(false)}
-          />
-          {user&&<div className="absolute right-2 top-1.5 bottom-1.5">
+      <div className="relative">
+        <ElemSidebarItem
+          IconComponent={IconSidebarList}
+          text="Lists"
+          url={ROUTES.LISTS}
+          onClick={() => setShowSidebar(false)}
+        />
+        {user && (
+          <div className="absolute right-2 top-1.5 bottom-1.5">
             <ElemButton btn="primary" size="xs" onClick={onClickCreate}>
               Create
             </ElemButton>
-          </div>}
-        </div>
+          </div>
+        )}
+      </div>
       {/* ) : ( */}
-        {/* <ElemWithSignInModal
+      {/* <ElemWithSignInModal
           wrapperClass="w-full"
           text="Sign in to use lists for tracking and updates on interesting companies, investors, and people."
           buttonComponent={open => (
@@ -211,63 +212,61 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
         /> */}
       {/* )} */}
 
-    
-        <>
-          {customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
-            <InputText
-              type="text"
-              onChange={handleSearchTextChange}
-              value={searchText}
-              name="name"
-              autoComplete="off"
-              placeholder="Find list..."
-              className="mt-2 ring-1 ring-gray-200"
-            />
+      <>
+        {customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
+          <InputText
+            type="text"
+            onChange={handleSearchTextChange}
+            value={searchText}
+            name="name"
+            autoComplete="off"
+            placeholder="Find list..."
+            className="mt-2 ring-1 ring-gray-200"
+          />
+        )}
+
+        <ul className="mt-1 space-y-1">
+          {filteredLists
+            ?.slice(
+              0,
+              limitLists ? SIDEBAR_DEFAULT_LISTS_LIMIT : customLists.length,
+            )
+            .map(list => {
+              const listName = getNameFromListName(list);
+
+              return (
+                <li
+                  key={list.id}
+                  role="button"
+                  onClick={() => setShowSidebar(false)}>
+                  <ElemListTooltip list={list}>
+                    <ElemLink
+                      href={`${ROUTES.LISTS}/${list.id}/${
+                        listName === 'crap' ? 'sh**' : kebabCase(listName)
+                      }`}
+                      className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-neutral-900 hover:text-gray-300 ${getActiveClass(
+                        list.id,
+                        listName === 'crap' ? 'sh**' : kebabCase(listName),
+                      )} `}>
+                      <div className="break-all line-clamp-1 first-letter:uppercase">
+                        {getListDisplayName(list)}
+                      </div>
+                    </ElemLink>
+                  </ElemListTooltip>
+                </li>
+              );
+            })}
+
+          {limitLists && customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
+            <li
+              role="button"
+              onClick={onShowMoreLists}
+              className="flex items-center flex-1 py-2 pl-4 text-xs font-normal text-gray-500 transition-all hover:text-primary-500">
+              Show more
+            </li>
           )}
-
-          <ul className="mt-1 space-y-1">
-            {filteredLists
-              ?.slice(
-                0,
-                limitLists ? SIDEBAR_DEFAULT_LISTS_LIMIT : customLists.length,
-              )
-              .map(list => {
-                const listName = getNameFromListName(list);
-
-                return (
-                  <li
-                    key={list.id}
-                    role="button"
-                    onClick={() => setShowSidebar(false)}>
-                    <ElemListTooltip list={list}>
-                      <ElemLink
-                        href={`${ROUTES.LISTS}/${list.id}/${
-                          listName === 'crap' ? 'sh**' : kebabCase(listName)
-                        }`}
-                        className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-neutral-900 hover:text-gray-300 ${getActiveClass(
-                          list.id,
-                          listName === 'crap' ? 'sh**' : kebabCase(listName),
-                        )} `}>
-                        <div className="break-all line-clamp-1 first-letter:uppercase">
-                          {getListDisplayName(list)}
-                        </div>
-                      </ElemLink>
-                    </ElemListTooltip>
-                  </li>
-                );
-              })}
-
-            {limitLists && customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
-              <li
-                role="button"
-                onClick={onShowMoreLists}
-                className="flex items-center flex-1 py-2 pl-4 text-xs font-normal text-gray-500 transition-all hover:text-primary-500">
-                Show more
-              </li>
-            )}
-          </ul>
-        </>
-    
+        </ul>
+      </>
 
       <CreateListDialog
         isOpen={openCreateList}
