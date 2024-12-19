@@ -30,7 +30,7 @@ import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
 import { NextSeo } from 'next-seo';
 import { ElemFiltersWrap } from '@/components/filters/elem-filters-wrap';
-import { NewsByFilter } from '@/components/news/elem-news-by-filter';
+// import { NewsByFilter } from '@/components/news/elem-news-by-filter';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
