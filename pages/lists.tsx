@@ -20,7 +20,7 @@ import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { ListsTabType } from '@/types/common';
 import { useUser } from '@/context/user-context';
-import { LISTS_TABS } from '@/utils/constants';
+import { LISTS_TABS, PUBLIC_LISTS_TABS } from '@/utils/constants';
 import { getListsFilters } from '@/components/filters/processor';
 import CookieService from '@/utils/cookie';
 import { ElemUpgradeDialog } from '@/components/elem-upgrade-dialog';
@@ -32,11 +32,57 @@ import { ListsTable } from '@/components/lists/elem-lists-table';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { IconGroup, IconTable } from '@/components/icons';
 import { ListsNoResults } from '@/components/lists/lists-no-results';
+import { fetchGraphQL, GET_PUBLIC_LISTS } from '@/components/dashboard/elem-my-lists-menu';
 
 type Props = {
   initialListsCount: number;
   initialLists: GetListsQuery['lists'];
 };
+
+const PUBLIC_LIST = `
+  query GetPublicList($limit: Int!, $offset: Int!) {
+   lists(where: {public: {_eq: true}}, limit: $limit, offset: $offset) {
+   id
+    name
+    description
+    total_no_of_resources
+    public
+    created_at
+    updated_at
+    created_by {
+      id
+      display_name
+      email
+      person {
+        id
+        name
+        slug
+        picture
+      }
+    }
+    list_members {
+      id
+      member_type
+      user_id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          name
+          slug
+          picture
+        }
+      }
+    }
+  }
+      lists_aggregate(where: {public: {_eq: true}}) {
+    aggregate {
+      count
+    }
+  }
+}`;
 
 const LIMIT = 12;
 
@@ -47,6 +93,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   const [tableLayout, setTableLayout] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [isOpenCreateListDialog, setIsOpenCreateListDialog] = useState(false);
+  const [publicList, setPublicList] = useState();
 
   const router = useRouter();
 
@@ -67,6 +114,22 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   );
 
   const filters = getListsFilters(selectedListTab.id, user?.id || 0);
+
+  //when there is no user, hence only public list is fetched
+  const fetchPublicList = async () => {
+    try {
+      const data = await fetchGraphQL(PUBLIC_LIST, { limit: LIMIT, offset });
+      setPublicList(data);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (!user) {
+      fetchPublicList();
+    }
+  }, [page]);
 
   useEffect(() => {
     if (!initialLoad) {
@@ -106,11 +169,18 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   if (!isLoading && initialLoad) {
     setInitialLoad(false);
   }
+  console.log(publicList);
 
-  const lists = initialLoad ? initialLists : listsData?.lists;
+  const lists = initialLoad
+    ? initialLists
+    : user
+    ? listsData?.lists
+    : publicList?.lists;
   const listsAggregate = initialLoad
     ? initialListsCount
-    : listsData?.lists_aggregate?.aggregate?.count || 0;
+    : user
+    ? listsData?.lists_aggregate?.aggregate?.count
+    : publicList?.lists_aggregate?.aggregate?.count || 0;
 
   const onOpenUpgradeDialog = () => {
     setIsOpenUpgradeDialog(true);
@@ -165,25 +235,43 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
       <DashboardLayout>
         <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex lg:px-8">
           <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
-            {LISTS_TABS &&
-              LISTS_TABS.map((tab: any, index: number) =>
-                tab.disabled === true ? (
-                  <Fragment key={index}></Fragment>
-                ) : (
-                  <ElemButton
-                    key={index}
-                    onClick={() => setSelectedListTab(tab)}
-                    btn="gray"
-                    roundedFull={false}
-                    className={`py-2 rounded-lg ${
-                      selectedListTab?.id === tab.id
-                        ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                        : ''
-                    }`}>
-                    {tab.name}
-                  </ElemButton>
-                ),
-              )}
+            {LISTS_TABS && user
+              ? LISTS_TABS.map((tab: any, index: number) =>
+                  tab.disabled === true ? (
+                    <Fragment key={index}></Fragment>
+                  ) : (
+                    <ElemButton
+                      key={index}
+                      onClick={() => setSelectedListTab(tab)}
+                      btn="gray"
+                      roundedFull={false}
+                      className={`py-2 rounded-lg ${
+                        selectedListTab?.id === tab.id
+                          ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                          : ''
+                      }`}>
+                      {tab.name}
+                    </ElemButton>
+                  ),
+                )
+              : PUBLIC_LISTS_TABS.map((tab: any, index: number) =>
+                  tab.disabled === true ? (
+                    <Fragment key={index}></Fragment>
+                  ) : (
+                    <ElemButton
+                      key={index}
+                      onClick={() => setSelectedListTab(tab)}
+                      btn="gray"
+                      roundedFull={false}
+                      className={`py-2 rounded-lg ${
+                        selectedListTab?.id === tab.id
+                          ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                          : ''
+                      }`}>
+                      {tab.name}
+                    </ElemButton>
+                  ),
+                )}
           </nav>
 
           <ElemDropdown
@@ -234,6 +322,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                       selectedTab={selectedListTab}
                       resource={{ ...listItem, resourceType: 'list' }}
                       refetchList={refetch}
+                      isUser={user ? true : false}
                     />
                   );
                 })}

@@ -266,31 +266,27 @@ const MyList: NextPage<Props> = ({ list }) => {
           onCloseSettingsDialog={onCloseSettingsDialog}
         />
 
-        {!user && (
-          <div className="mx-4">
-            <div className="w-full p-12 text-center border border-gray-300 rounded-lg">
-              <div className="max-w-md mx-auto">
-                <IconCustomList
-                  className="w-12 h-12 mx-auto text-gray-300"
-                  title="Join List"
-                />
-                <h3 className="mt-2 text-lg font-medium">
-                  Sign in to access list and view updates.
-                </h3>
-                <p className="mt-1 text-gray-500">
-                  Access list, get unlimited browsing, personalized results,
-                  custom tools, and much more.
-                </p>
-                <ElemButton
-                  btn="primary"
-                  href={ROUTES.SIGN_IN}
-                  className="mt-2">
-                  Sign in for free
-                </ElemButton>
-              </div>
-            </div>
-          </div>
-        )}
+        {!user &&
+          <>
+            <CompaniesList
+              listId={theList?.id}
+              listName={listName}
+              isListAuthor={isListAuthor}
+            />
+
+            <InvestorsList
+              listId={theList?.id}
+              listName={listName}
+              isListAuthor={isListAuthor}
+            />
+
+            <PeopleList
+              listId={theList?.id}
+              listName={listName}
+              isListAuthor={isListAuthor}
+            />
+          </>
+        }
 
         {user && (!isCustomList || isFollowing || isListAuthor) && (
           <>
@@ -338,6 +334,33 @@ const MyList: NextPage<Props> = ({ list }) => {
             </div>
           </div>
         )}
+
+        {/* {!user && (
+          <div className="mx-4">
+            <div className="w-full p-12 text-center border border-gray-300 rounded-lg">
+              <div className="max-w-md mx-auto">
+                <IconCustomList
+                  className="w-12 h-12 mx-auto text-gray-300"
+                  title="Join List"
+                />
+                <h3 className="mt-2 text-lg font-medium">
+                  Sign in to access list and view updates.
+                </h3>
+                <p className="mt-1 text-gray-500">
+                  Access list, get unlimited browsing, personalized results,
+                  custom tools, and much more.
+                </p>
+                <ElemButton
+                  btn="primary"
+                  href={ROUTES.SIGN_IN}
+                  className="mt-2">
+                  Sign in for free
+                </ElemButton>
+              </div>
+            </div>
+          </div>
+        )} */}
+
         <Toaster />
       </DashboardLayout>
     </>
