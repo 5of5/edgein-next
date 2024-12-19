@@ -31,6 +31,78 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
       : 'text-gray-500';
   };
 
+  const GET_PUBLIC_LISTS = `
+  query GetPublicLists {
+  lists(where: {public: {_eq: true}}) {
+    id
+    public
+    name
+    created_by {
+      id
+      display_name
+      email
+      person {
+        id
+        slug
+        name
+      }
+    }
+        created_at
+    updated_at
+    total_no_of_resources
+    follows_companies {
+      resource_id
+    }
+    follows_vcfirms {
+      resource_id
+    }
+    follows_people {
+      resource_id
+    }
+  }
+}`;
+
+  const fetchGraphQL = async (query: string) => {
+    const response = await fetch(
+      'https://unique-crow-54.hasura.app/v1/graphql',
+      {
+        // Replace with your endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-hasura-admin-secret': `H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid`, // Replace with your authentication token
+        },
+        body: JSON.stringify({ query }),
+      },
+    );
+
+    const data = await response.json();
+    if (data.errors) {
+      throw new Error(data.errors.map((e: any) => e.message).join(', '));
+    }
+
+    return data.data;
+  };
+
+  useEffect(() => {
+    const fetchPublicList = async () => {
+      try {
+        const data = await fetchGraphQL(GET_PUBLIC_LISTS);
+        const newList = data?.lists?.filter(
+          x => !['hot', 'crap', 'like'].includes(getNameFromListName(x.name)),
+        );
+        console.log(newList);
+        setFilteredLists(newList)
+        setCustomLists(newList)
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+    if (!user) {
+      fetchPublicList();
+    }
+  }, []);
+
   const [customLists, setCustomLists] = useState(
     lists?.filter(
       list => !['hot', 'crap', 'like'].includes(getNameFromListName(list)),
@@ -138,7 +210,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
         />
       )}
 
-      {user && (
+    
         <>
           {customLists.length > SIDEBAR_DEFAULT_LISTS_LIMIT && (
             <InputText
@@ -194,7 +266,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             )}
           </ul>
         </>
-      )}
+    
 
       <CreateListDialog
         isOpen={openCreateList}
