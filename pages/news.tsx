@@ -41,11 +41,23 @@ type Props = {
   newsTab: DashboardCategory[];
 };
 
+// Add type for news post
+interface NewsPost {
+  id: string;
+  // Add other properties that exist in the API response
+}
+
+interface NewsDetails {
+  count: string;
+  next: string | null;
+  results: NewsPost[];
+}
+
 const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [isLoader, setIsLoader] = useState(false);
-  const [newses, setNewses] = useState();
-  const [newsDetails, setNewsDetails] = useState();
+  const [newses, setNewses] = useState<NewsPost[]>();
+  const [newsDetails, setNewsDetails] = useState<NewsDetails>();
   const router = useRouter();
   const { user } = useUser();
   const { query } = router;
@@ -86,7 +98,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   //URL change edge case
   useEffect(() => {
     // Check if 'page' is present and is a number greater than 10
-    const page = parseInt(query.page, 10);
+    const page = query.page ? parseInt(query.page.toString(), 10) : 1;
 
     if (page > 10) {
       // Redirect to page 10 if it's above 10
@@ -109,12 +121,11 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     const fetchNews = async (page: number) => {
       setIsLoader(true);
       try {
-        const response = await axios.get(
+        const response = await axios.get<NewsDetails>(
           `https://cryptopanic.com/api/pro/v1/posts/?auth_token=645c4c0d45faf64fdb16af8c822bc2effd4eee62&kind=news&page=${page}&metadata=true&approved=true`,
         );
         setNewses(response.data.results);
         setNewsDetails(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching news:', error);
       } finally {
@@ -219,7 +230,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
       />
       <DashboardLayout>
         <div className="relative">
-          <ElemFiltersWrap resultsTotal={newses?.count}>
+          <ElemFiltersWrap resultsTotal={newses?.length}>
             {/* <ElemCategories
               categories={newsTab}
               selectedCategory={selectedTab}
@@ -263,13 +274,13 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
                 ) : newses?.length != 0 ? (
                   <>
                     <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                      {newses?.map(item => (
+                      {newses?.map((item: NewsPost) => (
                         <ElemNewsCard key={item.id} newsPost={item} />
                       ))}
                     </div>
                     <Pagination
                       shownItems={newses?.length}
-                      totalItems={parseInt(newsDetails?.count)}
+                      totalItems={parseInt(newsDetails?.count ?? '')}
                       page={pageIndex}
                       itemsPerPage={20}
                       onClickPrev={onPreviousPage}

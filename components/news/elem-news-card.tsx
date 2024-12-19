@@ -12,9 +12,47 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
+type Organization = {
+  id?: string;
+  type?: string;
+  company?: {
+    id?: string;
+    name?: string;
+    slug?: string;
+    logo?: string;
+    tags?: string[];
+  };
+  vc_firm?: {
+    id?: string;
+    name?: string;
+    slug?: string;
+    logo?: string;
+    investments?: {
+      investment_round?: {
+        company: {
+          tags: string[];
+        }[];
+      };
+    };
+  };
+};
+
 type Props = {
   className?: string;
-  newsPost: GetNewsQuery['news'][0];
+  newsPost: {
+    id: string;
+    title?: string;
+    published_at?: string;
+    source?: {
+      url?: string;
+      title?: string;
+    };
+    metadata?: {
+      image?: string;
+      description?: string;
+    };
+    organizations?: Organization[];
+  };
 };
 
 export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
@@ -26,8 +64,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
     setPostData(newsPost);
   }, [newsPost]);
 
-  const { id, kind, date, link, text, source, metadata, organizations } =
-    postData;
+  const { metadata, organizations = [] } = postData as Props['newsPost'];
 
   const orgs = organizations as {
     company?: {
@@ -67,16 +104,16 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
     publisher = organizations.find(org => org.type === 'publisher');
   }
 
-  let otherOrganizations: any[] = [];
+  let otherOrganizations: Organization[] = [];
   if (organizations?.length) {
-    otherOrganizations = organizations?.filter(
+    otherOrganizations = organizations.filter(
       org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
     );
   }
 
   const handleLinkClick = () => {
     onTrackView({
-      resourceId: newsPost?.id,
+      resourceId: parseInt(newsPost?.id ?? '0'),
       resourceType: 'news',
       pathname: router.asPath,
     });
@@ -99,7 +136,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
               </ElemLink>
             </h2>
             <p className="mt-3 text-xs text-gray-500">
-              {formatDateShown(newsPost?.published_at)}
+              {formatDateShown(new Date(newsPost?.published_at ?? ''))}
             </p>
 
             {tags?.length > 0 && (
@@ -120,7 +157,11 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   onClick={handleLinkClick}>
                   {metadata?.image && (
                     <img
-                      src={metadata?.image === 'h'?'https://play-lh.googleusercontent.com/E1HD4Y1rp0RbbU-8kWBYodXy8nDEX8sIzrBeBb3F_Rd2IP5VblkhHWo2_oUwHTTpovE':metadata?.image}
+                      src={
+                        metadata?.image === 'h'
+                          ? 'https://play-lh.googleusercontent.com/E1HD4Y1rp0RbbU-8kWBYodXy8nDEX8sIzrBeBb3F_Rd2IP5VblkhHWo2_oUwHTTpovE'
+                          : metadata?.image
+                      }
                       alt={newsPost?.title}
                       className="rounded-lg object-cover"
                       style={{
@@ -139,20 +180,18 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
                   target="_blank"
                   className="className=block mb-2 flex justify-center"
                   onClick={handleLinkClick}>
-                  
-                    <img
-                      src={
-                        'https://play-lh.googleusercontent.com/E1HD4Y1rp0RbbU-8kWBYodXy8nDEX8sIzrBeBb3F_Rd2IP5VblkhHWo2_oUwHTTpovE'
-                      }
-                      alt={"crypto"}
-                      className="rounded-lg object-cover"
-                      style={{
-                        width: '150px',
-                        height: '150px',
-                        objectPosition: 'center',
-                      }}
-                    />
-                  
+                  <img
+                    src={
+                      'https://play-lh.googleusercontent.com/E1HD4Y1rp0RbbU-8kWBYodXy8nDEX8sIzrBeBb3F_Rd2IP5VblkhHWo2_oUwHTTpovE'
+                    }
+                    alt={'crypto'}
+                    className="rounded-lg object-cover"
+                    style={{
+                      width: '150px',
+                      height: '150px',
+                      objectPosition: 'center',
+                    }}
+                  />
                 </ElemLink>
               </div>
             )}
