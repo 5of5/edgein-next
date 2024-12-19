@@ -111,20 +111,48 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
               />
             )}
 
-            {newsPost?.source?.url && metadata?.image && (
+            {newsPost?.source?.url && metadata?.image ? (
               <div className="mt-3 text-gray-400">
                 <ElemLink
                   href={newsPost?.source?.url}
                   target="_blank"
-                  className="block mb-2"
+                  className="className=block mb-2 flex justify-center"
                   onClick={handleLinkClick}>
                   {metadata?.image && (
                     <img
-                      src={metadata?.image}
+                      src={metadata?.image === 'h'?'https://play-lh.googleusercontent.com/E1HD4Y1rp0RbbU-8kWBYodXy8nDEX8sIzrBeBb3F_Rd2IP5VblkhHWo2_oUwHTTpovE':metadata?.image}
                       alt={newsPost?.title}
-                      className="rounded-lg w-full h-auto text-sm text-gray-500 border border-gray-200 hover:opacity-75"
+                      className="rounded-lg object-cover"
+                      style={{
+                        width: '150px',
+                        height: '150px',
+                        objectPosition: 'center',
+                      }}
                     />
                   )}{' '}
+                </ElemLink>
+              </div>
+            ) : (
+              <div className="mt-3 text-gray-400">
+                <ElemLink
+                  href={newsPost?.source?.url}
+                  target="_blank"
+                  className="className=block mb-2 flex justify-center"
+                  onClick={handleLinkClick}>
+                  
+                    <img
+                      src={
+                        'https://play-lh.googleusercontent.com/E1HD4Y1rp0RbbU-8kWBYodXy8nDEX8sIzrBeBb3F_Rd2IP5VblkhHWo2_oUwHTTpovE'
+                      }
+                      alt={"crypto"}
+                      className="rounded-lg object-cover"
+                      style={{
+                        width: '150px',
+                        height: '150px',
+                        objectPosition: 'center',
+                      }}
+                    />
+                  
                 </ElemLink>
               </div>
             )}
