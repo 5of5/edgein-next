@@ -225,7 +225,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
   return (
     <>
       <NextSeo
-        title={`${selectedLibrary} News`}
+        title={`All Latest News`}
         description={`EdgeIn provides the latest ${selectedLibrary} news and trends. Explore industry research and reports from the frontline of ${selectedLibrary} technology news. Discover an index of the most active and influential capital in the industry.`}
       />
       <DashboardLayout>
