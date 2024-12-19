@@ -32,11 +32,23 @@ import { ListsTable } from '@/components/lists/elem-lists-table';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { IconGroup, IconTable } from '@/components/icons';
 import { ListsNoResults } from '@/components/lists/lists-no-results';
-import { fetchGraphQL, GET_PUBLIC_LISTS } from '@/components/dashboard/elem-my-lists-menu';
+import {
+  fetchGraphQL,
+  GET_PUBLIC_LISTS,
+} from '@/components/dashboard/elem-my-lists-menu';
 
 type Props = {
   initialListsCount: number;
   initialLists: GetListsQuery['lists'];
+};
+
+type PublicListResponse = {
+  lists: GetListsQuery['lists'];
+  lists_aggregate: {
+    aggregate: {
+      count: number;
+    };
+  };
 };
 
 const PUBLIC_LIST = `
@@ -93,7 +105,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   const [tableLayout, setTableLayout] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [isOpenCreateListDialog, setIsOpenCreateListDialog] = useState(false);
-  const [publicList, setPublicList] = useState();
+  const [publicList, setPublicList] = useState<PublicListResponse>();
 
   const router = useRouter();
 
@@ -308,14 +320,14 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
               lists={lists}
               pageNumber={page}
               shownItems={LIMIT}
-              totalItems={listsAggregate}
+              totalItems={listsAggregate || 0}
               onClickPrev={() => setPage(page - 1)}
               onClickNext={() => setPage(page + 1)}
             />
           ) : lists?.length != 0 ? (
             <>
               <div className="grid grid-cols-1 gap-8 gap-x-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                {lists?.map(listItem => {
+                {lists?.map((listItem: GetListsQuery['lists'][0]) => {
                   return (
                     <ElemListCard
                       key={listItem.id}
@@ -329,7 +341,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
               </div>
               <Pagination
                 shownItems={lists?.length}
-                totalItems={listsAggregate}
+                totalItems={listsAggregate || 0}
                 page={page}
                 itemsPerPage={LIMIT}
                 onClickPrev={() => setPage(page - 1)}

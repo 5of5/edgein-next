@@ -33,7 +33,7 @@ interface ResourceGroup
 type Props = {
   selectedTab: GroupsTabItem | ListsTabItem;
   resource: ResourceList | ResourceGroup;
-  isUser:Boolean;
+  isUser?: Boolean;
   refetchList: () => void;
 };
 
@@ -244,26 +244,30 @@ export const ElemListCard: FC<Props> = ({
           </div>
         )}
 
-        {isUser?<div className="mt-4">
-          {selectedTab.id === 'discover' ? (
-            <ElemButton
-              onClick={handleClickJoin}
-              btn="default"
-              size="sm"
-              loading={isFollowingListLoading || isJoiningGroupLoading}
-              className="block w-full transition duration-150 ease-in-out rounded-md group">
-              {`${isResourceList ? 'Follow List' : 'Join Group'}`}
-            </ElemButton>
-          ) : (
-            <ElemButton
-              href={resourceUrl}
-              btn="default"
-              size="sm"
-              className="block w-full transition duration-150 ease-in-out rounded-md group">
-              {`View ${isResourceList ? 'List' : 'Group'}`}
-            </ElemButton>
-          )}
-        </div>:<></>}
+        {isUser ? (
+          <div className="mt-4">
+            {selectedTab.id === 'discover' ? (
+              <ElemButton
+                onClick={handleClickJoin}
+                btn="default"
+                size="sm"
+                loading={isFollowingListLoading || isJoiningGroupLoading}
+                className="block w-full transition duration-150 ease-in-out rounded-md group">
+                {`${isResourceList ? 'Follow List' : 'Join Group'}`}
+              </ElemButton>
+            ) : (
+              <ElemButton
+                href={resourceUrl}
+                btn="default"
+                size="sm"
+                className="block w-full transition duration-150 ease-in-out rounded-md group">
+                {`View ${isResourceList ? 'List' : 'Group'}`}
+              </ElemButton>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-// import {
+export {}; // import {
 //   News_Bool_Exp,
 //   News_Order_By,
 //   Order_By,
