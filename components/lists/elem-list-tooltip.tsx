@@ -30,7 +30,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
           <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
             {getListDisplayName(list)}
           </div>
-          <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 rounded-full">
+          <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border  border-neutral-700 rounded-full">
             {list.public ? (
               <IconGlobeAmericas
                 title="Public"

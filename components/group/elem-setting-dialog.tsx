@@ -56,7 +56,7 @@ const ElemSettingDialog: React.FC<Props> = ({
         </div>
 
         <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-          <Tab.List className="flex pt-4 font-medium transition-all bg-black border-b border-gray-200 whitespace-nowrap gap-x-4">
+          <Tab.List className="flex pt-4 font-medium transition-all bg-black border-b  border-neutral-700 whitespace-nowrap gap-x-4">
             <Tab
               className={({ selected }) =>
                 `py-1 ${

@@ -145,7 +145,7 @@ export const ElemSocialShare: FC<Props> = ({
           })}
         </div>
 
-        <div className="relative p-3 -mx-6 -mb-3 border-t border-gray-200 bg-gray-50">
+        <div className="relative p-3 -mx-6 -mb-3 border-t  border-neutral-700 bg-gray-50">
           <div className="absolute z-10 pr-1 right-2.5 top-3.5">
             <ElemButton
               onClick={() => onCopy(pageUrl)}

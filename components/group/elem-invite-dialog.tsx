@@ -164,7 +164,7 @@ const ElemInviteDialog: React.FC<Props> = ({
       showCloseIcon={true}
       placement="center"
       panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 mt-10 mb-20 !overflow-visible">
-      <div className="pb-3 border-b border-gray-200">
+      <div className="pb-3 border-b  border-neutral-700">
         <h2 className="text-xl font-medium">
           {inviteResponse && inviteResponse.length > 0 ? (
             `Invitation details`
@@ -241,7 +241,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 
                 {query && (
                   <div className="relative">
-                    <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-black border border-gray-200 rounded-md shadow-lg mb-36 top-full max-h-60 scrollbar-hide">
+                    <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-black border  border-neutral-700 rounded-md shadow-lg mb-36 top-full max-h-60 scrollbar-hide">
                       {isLoading && query != '' ? (
                         <div className="px-4 py-2">
                           {Array.from({ length: 3 }, (_, i) => (
@@ -317,7 +317,7 @@ const ElemInviteDialog: React.FC<Props> = ({
           </>
         )}
       </div>
-      <div className="flex justify-end pt-3 mt-6 border-t border-gray-200 gap-x-2">
+      <div className="flex justify-end pt-3 mt-6 border-t  border-neutral-700 gap-x-2">
         {inviteResponse && inviteResponse.length > 0 ? (
           <ElemButton
             btn="primary"

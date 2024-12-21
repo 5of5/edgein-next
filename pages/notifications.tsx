@@ -121,7 +121,7 @@ const NotificationsPage: NextPage = () => {
       <NextSeo title={`Notifications`} />
       <DashboardLayout>
         <div className="max-w-3xl mx-auto sm:mt-7 sm:px-6 lg:px-8">
-          <div className="border border-gray-200 rounded-lg ring-2 ring-white">
+          <div className="border  border-neutral-700 rounded-lg ring-2 ring-white">
             <div className="flex items-center justify-between px-4 pt-4 mb-2">
               <h2 className="text-xl font-medium">Notifications</h2>
               {unreadNotificationsCount > 0 && (
@@ -134,7 +134,7 @@ const NotificationsPage: NextPage = () => {
               )}
             </div>
 
-            <div className="relative z-10 flex flex-col border-gray-200 divide-y divide-gray-200 border-y">
+            <div className="relative z-10 flex flex-col  border-neutral-700 divide-y divide-gray-200 border-y">
               {error && !isFetching && <h4>Error loading notifications</h4>}
 
               {!isFetching && !error && displayedNotifications.length === 0 && (

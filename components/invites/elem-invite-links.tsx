@@ -85,7 +85,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
   ];
 
   return (
-    <div className="relative p-5 bg-black border border-gray-200 rounded-lg">
+    <div className="relative p-5 bg-black border  border-neutral-700 rounded-lg">
       <h3 className="font-medium">Share your referral link</h3>
       <p className="text-sm text-gray-500">
         Copy and paste it or send it directly to your friends

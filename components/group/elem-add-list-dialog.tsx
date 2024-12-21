@@ -61,7 +61,7 @@ const ElemAddListDialog: FC<Props> = ({
         />
       </div>
 
-      <div className="flex items-center justify-end pt-3 mt-3 border-t border-gray-200 gap-x-2">
+      <div className="flex items-center justify-end pt-3 mt-3 border-t  border-neutral-700 gap-x-2">
         <ElemButton onClick={onCloseModal} roundedFull btn="default">
           Cancel
         </ElemButton>

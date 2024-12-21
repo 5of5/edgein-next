@@ -225,7 +225,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 }`}>
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
-                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-black rounded-full border border-gray-200"
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-black rounded-full border  border-neutral-700"
                   imgClass="object-fit max-w-full max-h-full rounded-full"
                   imgAlt={
                     data?.created_by_user?.person?.name ||

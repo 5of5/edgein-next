@@ -119,7 +119,7 @@ export const ElemDropdown: FC<Props> = ({
                   : 'text-primary-500';
                 const dividerClass = '';
                 // item.divider
-                //   ? 'border-b border-gray-200'
+                //   ? 'border-b  border-neutral-700'
                 //   : '';
 
                 return (

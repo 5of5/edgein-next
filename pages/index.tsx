@@ -412,7 +412,7 @@ const Home = () => {
           </div>
 
           <div className="mt-4 md:mt-0 md:col-span-7">
-            <div className="relative flex items-center overflow-hidden bg-neutral-900 border border-gray-200 rounded-xl">
+            <div className="relative flex items-center overflow-hidden bg-neutral-900 border  border-neutral-700 rounded-xl">
               <div className="">
                 {(selectedFeature === 1 || selectedFeature === 3) && (
                   <div className="absolute top-0 bottom-0 right-0 w-10 bg-gradient-to-r from-transparent to-white"></div>

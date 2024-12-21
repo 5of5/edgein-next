@@ -95,7 +95,7 @@ const ElemInviteEmails: FC<Props> = ({
             onChange={handleChangeQuery}
           />
           {query && !isDuplicatedEmail && !emailError && (
-            <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-black border border-gray-200 rounded-md shadow-md max-h-60 scrollbar-hide">
+            <Combobox.Options className="absolute z-20 w-full mt-1 overflow-scroll bg-black border  border-neutral-700 rounded-md shadow-md max-h-60 scrollbar-hide">
               {isLoading && query !== '' ? (
                 <div className="px-4 py-2">
                   {Array.from({ length: 3 }, (_, i) => (
@@ -111,7 +111,7 @@ const ElemInviteEmails: FC<Props> = ({
                     {item?.picture ? (
                       <ElemPhoto
                         wrapClass="w-10 h-10 aspect-square shrink-0"
-                        imgClass="object-cover rounded-full border border-gray-200"
+                        imgClass="object-cover rounded-full border  border-neutral-700"
                         photo={item.picture}
                         placeholder="user"
                         placeholderClass="text-gray-300"

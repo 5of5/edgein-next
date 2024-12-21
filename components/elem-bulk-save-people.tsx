@@ -159,7 +159,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
         showCloseIcon={true}
         placement="center"
         panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10">
-        <div className="pb-3 border-b border-gray-200">
+        <div className="pb-3 border-b  border-neutral-700">
           <h2 className="text-xl font-medium">{text}</h2>
         </div>
         <div className="flex flex-col pt-3 gap-y-3">

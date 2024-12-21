@@ -161,7 +161,7 @@ const VCFirm: NextPage<Props> = props => {
             <div className="col-span-3">
               <ElemPhoto
                 photo={vcfirm.logo}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden p-2 max-w-40 lg:max-w-full"
+                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border  border-neutral-700 overflow-hidden p-2 max-w-40 lg:max-w-full"
                 imgClass="object-contain w-full h-full"
                 imgAlt={vcfirm.name}
                 placeholder="company"

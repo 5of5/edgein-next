@@ -11,7 +11,7 @@ export const DashboardFooter: FC<PropsWithChildren<Props>> = ({
 }) => {
   return (
     <footer className={`px-4 sm:px-6 lg:px-8 ${className}`}>
-      <div className="justify-between py-6 my-12 border-t border-gray-200 sm:flex">
+      <div className="justify-between py-6 my-12 border-t  border-neutral-700 sm:flex">
         <div className="flex flex-wrap mb-6 mr-0 text-sm text-gray-500 gap-x-6 gap-y-2 sm:mb-0 sm:mr-3 sm:items-start">
           <p>
             Copyright &copy; {new Date().getFullYear()} EdgeIn Inc. All Rights

@@ -150,7 +150,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
   return (
     <>
-      <div className="overflow-hidden bg-black border border-gray-200 divide-y divide-gray-200 rounded-lg">
+      <div className="overflow-hidden bg-black border  border-neutral-700 divide-y divide-gray-200 rounded-lg">
         {fields.map(item => (
           <ElemSettingEditableField
             key={item.fieldName}
@@ -212,7 +212,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
       </div>
 
       {isGroupManager && (
-        <div className="mt-6 overflow-hidden bg-black border border-gray-200 divide-y divide-gray-200 rounded-lg">
+        <div className="mt-6 overflow-hidden bg-black border  border-neutral-700 divide-y divide-gray-200 rounded-lg">
           <button
             className="flex items-center w-full p-3 space-x-1 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={handleOpenDeleteModal}>
@@ -236,7 +236,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
           <span className="inline font-bold">This can&lsquo;t be undone.</span>
         </div>
 
-        <div className="flex items-center justify-end pt-3 mt-3 border-t border-gray-200 gap-x-2">
+        <div className="flex items-center justify-end pt-3 mt-3 border-t  border-neutral-700 gap-x-2">
           <ElemButton
             onClick={handleCloseDeleteModal}
             roundedFull

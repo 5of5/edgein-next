@@ -164,7 +164,7 @@ const Team: NextPage<Props> = () => {
               sortedTeam?.map(member => (
                 <div
                   key={member?.id}
-                  className="flex flex-col w-full max-w-md mx-auto overflow-hidden transition duration-300 ease-in-out bg-black border border-gray-200 rounded-lg md:h-full">
+                  className="flex flex-col w-full max-w-md mx-auto overflow-hidden transition duration-300 ease-in-out bg-black border  border-neutral-700 rounded-lg md:h-full">
                   <ElemLink
                     href={`${ROUTES.PEOPLE}/${member?.person?.slug}`}
                     className="block aspect-square">
@@ -194,7 +194,7 @@ const Team: NextPage<Props> = () => {
             {team.map((person, index) => (
               <div
                 key={index}
-                className="flex flex-col w-full max-w-md mx-auto overflow-hidden transition duration-300 ease-in-out bg-black border border-gray-200 rounded-lg md:h-full">
+                className="flex flex-col w-full max-w-md mx-auto overflow-hidden transition duration-300 ease-in-out bg-black border  border-neutral-700 rounded-lg md:h-full">
                 <div className="relative aspect-square">
                   <Image
                     src={person.image}

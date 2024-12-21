@@ -204,7 +204,7 @@ export default function Account({ userProfile }: Props) {
 
   return (
     <DashboardLayout>
-      <div className="px-4 py-3 border-gray-200">
+      <div className="px-4 py-3  border-neutral-700">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-medium">Account Settings</h2>
         </div>
@@ -403,7 +403,7 @@ export default function Account({ userProfile }: Props) {
       </div>
 
       {/* {user?.role === USER_ROLES.ADMIN && (
-        <div className="px-4 py-3 border-t border-gray-200">
+        <div className="px-4 py-3 border-t  border-neutral-700">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-xl font-medium">Admin Settings</h2>
           </div>

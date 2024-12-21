@@ -179,7 +179,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = '' }) => {
                         <div className="inline mr-2 text-lg font-medium leading-snug text-white align-middle line-clamp-2 hover:underline">
                           {group.name}
                         </div>
-                        <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 rounded-full">
+                        <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border  border-neutral-700 rounded-full">
                           {group.public ? (
                             <IconGlobeAmericas
                               title="Public"

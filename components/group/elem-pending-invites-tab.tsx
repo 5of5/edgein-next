@@ -94,7 +94,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
               <div className="flex items-center gap-x-2">
                 <ElemPhoto
                   wrapClass="w-10 h-10 aspect-square shrink-0 bg-black overflow-hidden rounded-full"
-                  imgClass=" w-full h-full border border-gray-200"
+                  imgClass=" w-full h-full border  border-neutral-700"
                   placeholder="user"
                   placeholderClass="text-gray-300"
                   imgAlt={invite.email}

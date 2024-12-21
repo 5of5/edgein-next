@@ -179,8 +179,8 @@ export const ElemInviteUser = () => {
       </div>
 
       {teamMembers.length > 0 && (
-        <div className="relative overflow-hidden bg-black border border-gray-200 rounded-lg">
-          <div className="sticky top-0 z-10 px-5 py-2 bg-black border-b border-gray-200">
+        <div className="relative overflow-hidden bg-black border  border-neutral-700 rounded-lg">
+          <div className="sticky top-0 z-10 px-5 py-2 bg-black border-b  border-neutral-700">
             <h3 className="font-medium">Invite your team</h3>
             <p className="text-sm text-gray-500">
               Invite people that are part of your team

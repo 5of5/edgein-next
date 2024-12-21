@@ -143,7 +143,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
   }
 
   return (
-    <div className="p-5 bg-black border border-gray-200 rounded-lg">
+    <div className="p-5 bg-black border  border-neutral-700 rounded-lg">
       <h3 className="font-medium">Invite from your portfolio</h3>
       <p className="text-sm text-gray-500">
         Select a company from your portfolio to invite their team
@@ -155,7 +155,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
             <Fragment key={company?.id}>
               {canSendInvestorInvitation(userById?.users, company?.id) ? (
                 <div
-                  className={`flex flex-row items-center py-2 px-3 rounded-lg border border-gray-200 hover:bg-gray-50 hover:cursor-pointer ${
+                  className={`flex flex-row items-center py-2 px-3 rounded-lg border  border-neutral-700 hover:bg-gray-50 hover:cursor-pointer ${
                     includes(selectedCompanies, company)
                       ? 'border-primary-500 bg-gray-50'
                       : ''
@@ -163,7 +163,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
                   onClick={() => handleClick(company)}>
                   <ElemPhoto
                     photo={company?.logo}
-                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-black border border-gray-200 rounded-lg overflow-hidden"
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-black border  border-neutral-700 rounded-lg overflow-hidden"
                     imgClass="object-fit max-w-full max-h-full"
                     imgAlt={company?.name}
                     placeholderClass="p-1 text-gray-300"
@@ -178,10 +178,10 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
                 </div>
               ) : (
                 <div
-                  className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border border-gray-200`}>
+                  className={`flex flex-row justify-start items-center py-2 px-3 rounded-lg border  border-neutral-700`}>
                   <ElemPhoto
                     photo={company?.logo}
-                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-black border border-gray-200 rounded-lg overflow-hidden"
+                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 bg-black border  border-neutral-700 rounded-lg overflow-hidden"
                     imgClass="object-fit max-w-full max-h-full opacity-50"
                     imgAlt={company?.name}
                     placeholderClass="p-1 text-gray-300"

@@ -57,7 +57,7 @@ export const ElemListInformation: FC<Props> = ({
         {listName}
       </h1>
 
-      <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 rounded-full">
+      <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border  border-neutral-700 rounded-full">
         {list.public ? (
           <IconGlobeAmericas
             title="Public"
@@ -72,7 +72,7 @@ export const ElemListInformation: FC<Props> = ({
   );
 
   return (
-    <div className="px-4 pb-3 mb-4 border-b border-gray-200">
+    <div className="px-4 pb-3 mb-4 border-b  border-neutral-700">
       <div className="flex flex-wrap items-start justify-between space-y-2 lg:space-y-0">
         <div className="max-w-4xl">
           {isListAuthor && isCustomList ? (

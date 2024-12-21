@@ -173,12 +173,12 @@ export const ElemListSettings: FC<Props> = ({
       showCloseIcon={true}
       placement="center"
       panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10">
-      <div className="pb-3 border-b border-gray-200">
+      <div className="pb-3 border-b  border-neutral-700">
         <h2 className="text-xl font-medium">List settings</h2>
       </div>
 
       <div className="flex flex-col pt-4 gap-y-4">
-        <div className="bg-black border border-gray-200 divide-y divide-gray-200 rounded-lg ">
+        <div className="bg-black border  border-neutral-700 divide-y divide-gray-200 rounded-lg ">
           <ElemListEditSection
             heading={
               <button onClick={() => setListNameOpen(true)}>Name</button>
@@ -392,7 +392,7 @@ export const ElemListSettings: FC<Props> = ({
           </div>
         </div>
 
-        <div className="overflow-hidden bg-black border border-gray-200 rounded-lg">
+        <div className="overflow-hidden bg-black border  border-neutral-700 rounded-lg">
           <button
             className="w-full p-3 text-rose-500 hover:bg-red-500 hover:text-white"
             onClick={() => {
@@ -421,7 +421,7 @@ export const ElemListSettings: FC<Props> = ({
           </span>
         </div>
 
-        <div className="flex items-center justify-end pt-3 mt-3 border-t border-gray-200 gap-x-2">
+        <div className="flex items-center justify-end pt-3 mt-3 border-t  border-neutral-700 gap-x-2">
           <ElemButton
             onClick={handleCloseDeleteModal}
             roundedFull

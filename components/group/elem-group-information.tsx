@@ -94,7 +94,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
           />
         )}
       </div>
-      <div className="px-4 pb-3 mb-4 border-b border-gray-200">
+      <div className="px-4 pb-3 mb-4 border-b  border-neutral-700">
         <div className="flex flex-wrap items-start justify-between space-y-2 lg:space-y-0">
           <div className="max-w-4xl">
             <div className="flex items-center space-x-2">

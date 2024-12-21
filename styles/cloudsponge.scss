@@ -9,7 +9,7 @@
     .cloudsponge-back-button,
     .cloudsponge-close-button,
     .cloudsponge-menu-button {
-      @apply text-gray-300 bg-neutral-900 border-b border-gray-200;
+      @apply text-gray-300 bg-neutral-900 border-b  border-neutral-700;
       .cloudsponge-h1 {
         @apply font-medium;
       }
@@ -23,7 +23,7 @@
     .cloudsponge-providers-list {
       @apply my-6 mx-auto;
       li a {
-        @apply font-normal rounded-lg border-solid text-gray-300 border border-gray-200 hover:bg-gray-50;
+        @apply font-normal rounded-lg border-solid text-gray-300 border  border-neutral-700 hover:bg-gray-50;
       }
     }
     .cloudsponge-dictionary a {

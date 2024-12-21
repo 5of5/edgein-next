@@ -240,7 +240,7 @@ export const Table: FC<Props> = ({
       )}
 
       <div className="relative">
-        <div className="w-full overflow-auto border-gray-200 border-y lg:border lg:rounded-lg [mask-image:linear-gradient(90deg,#000_0,#000_95%,transparent)]">
+        <div className="w-full overflow-auto  border-neutral-700 border-y lg:border lg:rounded-lg [mask-image:linear-gradient(90deg,#000_0,#000_95%,transparent)]">
           {data.length > 0 ? (
             <table
               {...getTableProps()}

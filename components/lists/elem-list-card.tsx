@@ -129,7 +129,7 @@ export const ElemListCard: FC<Props> = ({
       joinGroup();
     }
   };
-
+ border-neutral-700
   return (
     <div className="flex flex-col justify-between w-full p-4 mx-auto border border-gray-200 rounded-lg">
       <div>
@@ -137,7 +137,7 @@ export const ElemListCard: FC<Props> = ({
           href={resourceUrl}
           className="inline-block first-letter:uppercase">
           <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
-            {name}
+            {name} border-neutral-700
           </div>
           <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 text-gray-600 rounded-full">
             {resource.public ? (

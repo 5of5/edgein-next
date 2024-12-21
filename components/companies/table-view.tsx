@@ -123,7 +123,7 @@ export const TableView: FC<Props> = ({
       )}
 
       <div className="relative overflow-hidden">
-        <div className="w-full overflow-auto border-gray-200 overscroll-x-none border-y lg:border lg:rounded-lg [mask-image:linear-gradient(90deg,#000_0,#000_95%,transparent)]">
+        <div className="w-full overflow-auto  border-neutral-700 overscroll-x-none border-y lg:border lg:rounded-lg [mask-image:linear-gradient(90deg,#000_0,#000_95%,transparent)]">
           <table
             {...getTableProps()}
             className="divide-y divide-gray-200 table-auto">

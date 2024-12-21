@@ -397,7 +397,7 @@ export const InvestorsList: FC<Props> = ({
     return (
       <div className="px-4 mt-4">
         <h2 className="mb-2 font-medium">Investors</h2>
-        <div className="border border-gray-200 rounded-lg">
+        <div className="border  border-neutral-700 rounded-lg">
           <PlaceholderTable />
         </div>
       </div>

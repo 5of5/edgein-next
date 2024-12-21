@@ -41,7 +41,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
         </p>
       </div>
 
-      <div className="flex justify-center pt-3 mt-3 border-t border-gray-200">
+      <div className="flex justify-center pt-3 mt-3 border-t  border-neutral-700">
         {user ? (
           <ElemButton onClick={() => loadStripe()} btn="primary">
             Start free trial

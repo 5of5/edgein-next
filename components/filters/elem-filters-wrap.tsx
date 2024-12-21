@@ -58,7 +58,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
         showCloseIcon={false}
         panelClass="w-full my-14 bg-black">
         <div className="flex flex-col h-[calc(100vh_-_7rem)] gap-4">
-          <div className="sticky top-0 z-20 px-4 py-2 bg-black border-b border-gray-200">
+          <div className="sticky top-0 z-20 px-4 py-2 bg-black border-b  border-neutral-700">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">Filters</h2>
               <ElemButton
@@ -75,7 +75,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
           <div className="flex flex-col gap-3 px-4">{children}</div>
 
           <div className="px-4 mt-auto bg-black h-14">
-            <div className="py-2 border-t border-gray-200">
+            <div className="py-2 border-t  border-neutral-700">
               <ElemButton
                 btn="primary"
                 onClick={() => setShowMobileFilters(false)}

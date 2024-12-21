@@ -77,7 +77,7 @@ export const ElemOnboardingLocation: FC<Props> = ({
       </div>
 
       {locations.length > 0 && data && data.last7days > 0 && (
-        <div className="px-5 py-4 mt-16 w-full max-w-sm rounded-lg border border-gray-200">
+        <div className="px-5 py-4 mt-16 w-full max-w-sm rounded-lg border  border-neutral-700">
           <p className="text-gray-300 font-medium">{heading}</p>
           <p className="text-gray-500 text-xs mt-1 mb-3">In the last month</p>
           <p>

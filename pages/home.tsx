@@ -209,7 +209,7 @@ const Home: NextPage = () => {
 
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Trending 🔥</h2>
-                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl bg-black">
+                  <div className="px-6 mt-5 border  border-neutral-700 rounded-2xl bg-black">
                     <CompaniesByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -288,7 +288,7 @@ const Home: NextPage = () => {
                   <>
                     <div className="mt-16">
                       <h2 className="text-2xl font-medium">New companies ✨</h2>
-                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl bg-black">
+                      <div className="px-6 mt-5 border  border-neutral-700 rounded-2xl bg-black">
                         <CompaniesByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -328,7 +328,7 @@ const Home: NextPage = () => {
                       <h2 className="text-2xl font-medium">
                         Upcoming events 🗓️
                       </h2>
-                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
+                      <div className="px-6 mt-5 border  border-neutral-700 rounded-2xl">
                         <EventsByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -364,7 +364,7 @@ const Home: NextPage = () => {
                       <h2 className="text-2xl font-medium">
                         Recently updated 🔄
                       </h2>
-                      <div className="px-6 mt-5 border border-gray-200 rounded-2xl bg-black">
+                      <div className="px-6 mt-5 border  border-neutral-700 rounded-2xl bg-black">
                         <CompaniesByFilterInSection
                           onOpenUpgradeDialog={onOpenUpgradeDialog}
                           userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -469,7 +469,7 @@ const Home: NextPage = () => {
               <div className="flex flex-col gap-4 gap-x-8">
                 <div className="mt-9">
                   <h2 className="text-2xl font-medium">Companies 🏢</h2>
-                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
+                  <div className="px-6 mt-5 border  border-neutral-700 rounded-2xl">
                     <CompaniesByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}
@@ -529,7 +529,7 @@ const Home: NextPage = () => {
 
                 <div className="mt-16">
                   <h2 className="text-2xl font-medium">Investors 💵</h2>
-                  <div className="px-6 mt-5 border border-gray-200 rounded-2xl">
+                  <div className="px-6 mt-5 border  border-neutral-700 rounded-2xl">
                     <InvestorsByFilterInSection
                       onOpenUpgradeDialog={onOpenUpgradeDialog}
                       userCanUsePremiumFilter={userCanUsePremiumFilter}

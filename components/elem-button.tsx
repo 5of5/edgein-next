@@ -62,7 +62,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
       'text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500';
   } else if (btn === 'default') {
     btnClass =
-      'bg-black border border-gray-200 hover:bg-neutral-900 active:border-primary-500';
+      'bg-black border  border-neutral-700 hover:bg-neutral-900 active:border-primary-500';
   } else {
     btnClass = '';
   }
