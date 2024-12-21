@@ -19,20 +19,20 @@ const Privacy: NextPage<Props> = () => {
       />
       <div className="min-h-[80vh]">
         <div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-          <div className="max-w-3xl mx-auto prose">
-            <h1 className="relative mx-auto text-4xl font-bold lg:text-5xl">
+          <div className="max-w-3xl mx-auto prose prose-invert">
+            <h1 className="relative mx-auto text-4xl font-bold text-white lg:text-5xl">
               Privacy Policy
             </h1>
 
             <Tab.Group
               selectedIndex={selectedIndex}
               onChange={setSelectedIndex}>
-              <Tab.List className="flex font-semibold transition-all border-b whitespace-nowrap gap-x-4 border-black/10">
+              <Tab.List className="flex font-semibold transition-all border-b whitespace-nowrap gap-x-4 border-white/10">
                 <Tab
                   className={({ selected }) =>
                     selected
                       ? 'text-primary-500 border-b-2 border-primary-500 outline-none'
-                      : 'border-b-2 border-transparent'
+                      : 'text-gray-400 border-b-2 border-transparent'
                   }>
                   Privacy Policy
                 </Tab>
@@ -40,13 +40,13 @@ const Privacy: NextPage<Props> = () => {
                   className={({ selected }) =>
                     selected
                       ? 'text-primary-500 border-b-2 border-primary-500 outline-none'
-                      : ''
+                      : 'text-gray-400'
                   }>
                   GDPR
                 </Tab>
               </Tab.List>
               <Tab.Panels>
-                <Tab.Panel>
+                <Tab.Panel className="prose prose-invert prose-gray-400 prose-headings:text-white prose-a:text-primary-500">
                   <p>
                     We’ve updated our governing terms to remove references to{' '}
                     {theName}’s Privacy Shield Certification contained in our
@@ -55,7 +55,7 @@ const Privacy: NextPage<Props> = () => {
                     defined in our Data Use Addendum) in accordance with
                     applicable laws.{' '}
                   </p>
-                  <p>Effective Date: January 1, 2023</p>
+                  <p>Effective Date: January 1, 2024</p>
                   <p>
                     At {theName}, we know you care about how your personal
                     information is used and shared, and we take your privacy
@@ -992,7 +992,7 @@ const Privacy: NextPage<Props> = () => {
                   </p>
                 </Tab.Panel>
 
-                <Tab.Panel>
+                <Tab.Panel className="prose prose-invert prose-gray-400 prose-headings:text-white prose-a:text-primary-500">
                   <p>
                     We&rsquo;ve updated our governing terms to remove references
                     to EdgeIn.io&rsquo;s Privacy Shield Certification contained
@@ -1001,7 +1001,7 @@ const Privacy: NextPage<Props> = () => {
                     such term is defined in our Data Use Addendum) in accordance
                     with applicable laws.
                   </p>
-                  <p>Effective Date: January 1, 2023</p>
+                  <p>Effective Date: January 1, 2024</p>
                   <h2>European Residents</h2>
                   <p>
                     If you are a resident of the European Union

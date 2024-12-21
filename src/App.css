@@ -25,6 +25,23 @@ body {
 .message.assistant {
   background-color: #222;
 }
+/* Add this to your global styles or component styles */
+.company-tag {
+  @apply text-primary-500 border border-primary-500 bg-primary-50;
+}
+
+.company-tag:hover {
+  @apply border-2 border-white;
+}
+
+/* For dark mode compatibility */
+.dark .company-tag {
+  @apply text-primary-500 border border-primary-500 bg-black;
+}
+
+.dark .company-tag:hover {
+  @apply border-2 border-white text-primary-500;
+}
 
 .input-container {
   background-color: #111;

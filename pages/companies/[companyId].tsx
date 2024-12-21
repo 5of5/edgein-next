@@ -216,7 +216,7 @@ const Company: NextPage<Props> = (props: Props) => {
             <div className="col-span-3">
               <ElemPhoto
                 photo={company.logo}
-                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-gray-200 overflow-hidden p-2 max-w-40 lg:max-w-full"
+                wrapClass="flex items-center justify-center aspect-square shrink-0 rounded-lg border border-neutral-700 overflow-hidden p-2 max-w-40 lg:max-w-full"
                 imgClass="object-contain w-full h-full"
                 imgAlt={company.name}
                 placeholder="company"
@@ -238,6 +238,25 @@ const Company: NextPage<Props> = (props: Props) => {
                 )}
               </div>
 
+              <div className="flex flex-wrap items-center gap-3 mt-4">
+                <ElemReactions
+                  resource={company}
+                  resourceType={'companies'}
+                  className="w-full sm:w-auto"
+                />
+                <ElemSaveToList
+                  resourceName={company.name}
+                  resourceId={company.id}
+                  resourceType={'companies'}
+                  slug={company.slug!}
+                  follows={company.follows}
+                />
+                <ElemSocialShare
+                  resourceName={company.name}
+                  resourceTwitterUrl={company.twitter}
+                />
+              </div>
+
               <ElemTags
                 className="mt-4"
                 limit={COMPANY_PROFILE_DEFAULT_TAGS_LIMIT}
@@ -257,7 +276,7 @@ const Company: NextPage<Props> = (props: Props) => {
                     className="flex items-center gap-2 mt-1 group">
                     <ElemPhoto
                       photo={parentOrganization?.logo}
-                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border border-gray-200"
+                      wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 rounded-lg border  border-neutral-700"
                       imgClass="object-contain w-full h-full"
                       imgAlt={parentOrganization?.name}
                       placeholderClass="text-gray-300"
@@ -288,32 +307,16 @@ const Company: NextPage<Props> = (props: Props) => {
                   )}
                 </>
               )}
-              <div className="flex flex-wrap items-center gap-3 mt-4">
-                <ElemReactions
-                  resource={company}
-                  resourceType={'companies'}
-                  className="w-full sm:w-auto"
-                />
-                <ElemSaveToList
-                  resourceName={company.name}
-                  resourceId={company.id}
-                  resourceType={'companies'}
-                  slug={company.slug!}
-                  follows={company.follows}
-                />
-                <ElemSocialShare
-                  resourceName={company.name}
-                  resourceTwitterUrl={company.twitter}
-                />
-                {user?.role === USER_ROLES.ADMIN && (
+              {user?.role === USER_ROLES.ADMIN && (
+                <div className="mt-4">
                   <ElemButton
                     href={`${ROUTES.ADMIN_COMPANIES}/${company.id}`}
                     target="_blank"
                     btn="default">
                     Edit (admin)
                   </ElemButton>
-                )}
-              </div>
+                </div>
+              )}
             </div>
             <div className="col-span-3 mt-7 lg:mt-0">
               {Object.values(tokenInfo).some(i => i > 0) && (
@@ -362,7 +365,7 @@ const Company: NextPage<Props> = (props: Props) => {
                   <div className="text-xs text-center text-gray-500">
                     Token data source:{' '}
                     <a
-                      href="https://www.amberdata.io/?ref=edgeinio"
+                      href="https://mobula.io/?ref=edgeinio"
                       target="_blank"
                       rel="noreferrer"
                       className="hover:text-slate-600">

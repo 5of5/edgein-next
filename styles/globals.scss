@@ -123,6 +123,23 @@
     gap: 20px;
   }
 }
+/* Add this to your global styles or component styles */
+.company-tag {
+  @apply text-primary-500 border border-primary-500 bg-primary-50;
+}
+
+.company-tag:hover {
+  @apply border-2 border-white;
+}
+
+/* For dark mode compatibility */
+.dark .company-tag {
+  @apply text-primary-500 border border-primary-500 bg-black;
+}
+
+.dark .company-tag:hover {
+  @apply border-2 border-white text-primary-500;
+}
 
 @media screen and (max-width: 1023px) {
   .intercom-lightweight-app .intercom-lightweight-app-launcher {

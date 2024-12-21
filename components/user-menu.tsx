@@ -125,12 +125,11 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
         user?.person?.picture ? (
           <ElemButton
             btn="default"
-            className="flex items-center justify-center space-x-2 !px-1 !py-0.5">
-            <IconBars3 className="w-5 h-5 ml-1" />
+            className="flex items-center justify-center !p-0 focus:outline-none focus:ring-0 focus:border-0">
             <ElemPhoto
               photo={user?.person?.picture}
               wrapClass="flex items-center justify-center w-8 h-8 bg-black rounded-full shrink-0"
-              imgClass="object-cover max-w-full max-h-full rounded-full"
+              imgClass="object-cover w-8 h-8 rounded-full"
               imgAlt={`Signed in as ${user.display_name} | ${user.email}`}
               placeholder="user"
               placeholderClass="text-slate-400 hover:text-slate-400"
@@ -139,11 +138,10 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
         ) : (
           <ElemButton
             btn="default"
-            className="flex items-center justify-center space-x-2 !px-1 !py-0">
-            <IconBars3 className="w-5 h-5 ml-1" />
+            className="flex items-center justify-center !p-0">
             <div className="flex items-center justify-center w-8 h-8 rounded-full shrink-0">
               <IconUserCircleSolid
-                className="object-cover w-full h-full text-gray-500 rounded-full"
+                className="object-cover w-8 h-8 text-gray-500 rounded-full"
                 title={
                   user?.display_name
                     ? `Signed in as ${user.display_name} | ${user.email}`

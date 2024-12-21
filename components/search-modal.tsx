@@ -536,9 +536,9 @@ export default function SearchModal(props: any) {
           className={({ selected }) =>
             `${
               selected
-                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                ? 'border-2 border-white'
+                : 'border-0'
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('companies')}
         </Tab>
@@ -546,9 +546,9 @@ export default function SearchModal(props: any) {
           className={({ selected }) =>
             `${
               selected
-                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                ? 'border-2 border-white'
+                : 'border-0'
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('vc_firms')}
         </Tab>
@@ -556,9 +556,9 @@ export default function SearchModal(props: any) {
           className={({ selected }) =>
             `${
               selected
-                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                ? 'border-2 border-white'
+                : 'border-0'
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('people')}
         </Tab>
@@ -566,9 +566,9 @@ export default function SearchModal(props: any) {
           className={({ selected }) =>
             `${
               selected
-                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                ? 'border-2 border-white'
+                : 'border-0'
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('events')}
         </Tab>
@@ -576,9 +576,9 @@ export default function SearchModal(props: any) {
           className={({ selected }) =>
             `${
               selected
-                ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
-                : ''
-            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500 px-2.5 py-2 text-sm justify-center rounded-lg`
+                ? 'border-2 border-white'
+                : 'border-0'
+            } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('news')}
         </Tab>
@@ -645,7 +645,7 @@ export default function SearchModal(props: any) {
                         )}
                         showPrevious={false}
                         classNames={{
-                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          list: 'mb-2',
                           loadMore:
                             'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
                           disabledLoadMore: 'hidden',
@@ -669,7 +669,7 @@ export default function SearchModal(props: any) {
                         )}
                         showPrevious={false}
                         classNames={{
-                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          list: 'mb-2',
                           loadMore:
                             'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
                           disabledLoadMore: 'hidden',
@@ -693,7 +693,7 @@ export default function SearchModal(props: any) {
                         )}
                         showPrevious={false}
                         classNames={{
-                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          list: 'mb-2',
                           loadMore:
                             'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500',
                           disabledLoadMore: 'hidden',
@@ -717,7 +717,7 @@ export default function SearchModal(props: any) {
                         )}
                         showPrevious={false}
                         classNames={{
-                          list: 'mb-2 border-y border-gray-200 divide-y divide-gray-200',
+                          list: 'mb-2',
                           loadMore:
                             'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
                           disabledLoadMore: 'hidden',
@@ -735,7 +735,7 @@ export default function SearchModal(props: any) {
                         hitComponent={HitNews()}
                         showPrevious={false}
                         classNames={{
-                          list: 'my-2 border-y border-gray-100 divide-y divide-gray-100',
+                          list: 'my-2',
                           loadMore:
                             'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
                           disabledLoadMore: 'hidden',

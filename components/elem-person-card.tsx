@@ -74,7 +74,7 @@ export const ElemPersonCard: React.FC<Props> = ({
   return (
     <div>
       <div
-        className={`flex gap-2 items-start ${
+        className={`flex gap-2 items-start border border-gray-900 rounded-lg p-4 ${
           end_date ? 'opacity-60 hover:opacity-100' : ''
         }`}>
         <ElemLink href={href} className="hover:opacity-75">

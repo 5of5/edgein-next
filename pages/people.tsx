@@ -281,7 +281,7 @@ const People: NextPage<Props> = ({
             {isLoading && !initialLoad ? (
               <>
                 {tableLayout ? (
-                  <div className="overflow-auto border-t rounded-t-lg border-x border-black/10">
+                  <div className="overflow-auto border-t rounded-t-lg border-x border-gray-200">
                     <PlaceholderTable />
                   </div>
                 ) : (
