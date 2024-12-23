@@ -11,6 +11,8 @@ import { DashboardCategory, DeepPartial } from '@/types/common';
 import { useUser } from '@/context/user-context';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import ElemLibrarySelector from '@/components/elem-library-selector';
+
+import { Banner } from '@hypelab/sdk-react';
 import {
   ISO_DATE_FORMAT,
   SWITCH_LIBRARY_ALLOWED_DOMAINS,
@@ -90,6 +92,16 @@ const Home: NextPage = () => {
     setIsOpenUpgradeDialog(false);
   };
 
+
+
+    const onReady = () => {
+      console.log('Ad is ready');
+    };
+
+    const onError = () => {
+      console.log('Ad failed to load');
+    };
+
   useEffect(() => {
     onTrackView({
       pathname: router.pathname,
@@ -108,6 +120,7 @@ const Home: NextPage = () => {
         title="Home"
         description="Early-stage companies in the AI and Web3 markets require actionable intelligence and hyper-speed. Consider this your greatest asset."
       />
+
       <DashboardLayout>
         <div className="relative">
           {/* hero */}
@@ -359,7 +372,12 @@ const Home: NextPage = () => {
                         />
                       </div>
                     </div>
-
+                    <Banner
+                    
+                      placement="ec79613229"
+                      onReady={onReady}
+                      onError={onError}
+                    />
                     <div className="mt-16">
                       <h2 className="text-2xl font-medium">
                         Recently updated 🔄
