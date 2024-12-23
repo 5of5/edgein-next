@@ -59,32 +59,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const token = await CookieService.createUserToken(newUserToken);
     CookieService.setTokenCookie(res, token);
 
-    const messagePayload = {
-      attachments: [
-        {
-          color: '#2EB886',
-          title: 'You have a new submission',
-          fields: [
-            {
-              title: 'Username',
-              value: user.display_name,
-            },
-            {
-              title: 'Email',
-              value: user.email,
-            },
-          ],
-        },
-      ],
-    };
+    // const messagePayload = {
+    //   attachments: [
+    //     {
+    //       color: '#2EB886',
+    //       title: 'You have a new submission',
+    //       fields: [
+    //         {
+    //           title: 'Username',
+    //           value: user.display_name,
+    //         },
+    //         {
+    //           title: 'Email',
+    //           value: user.email,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // };
 
-    await SlackServices.sendMessage(
-      process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
-      messagePayload,
-    );
+    // await SlackServices.sendMessage(
+    //   process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
+    //   messagePayload,
+    // );
 
     return res.status(200).send(response);
   } catch (error: any) {
+    console.log(error?.response?.data);
     return res
       .status(500)
       .send({ error: 'Something went wrong. Please try again later.' });

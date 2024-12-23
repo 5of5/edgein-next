@@ -332,12 +332,12 @@ const Companies: NextPage<Props> = ({
             />
 
             <div className="hidden lg:block lg:ml-auto"></div>
-            {isDisplaySelectLibrary && (
+          
               <div>
                 <h3 className="mb-1 font-medium lg:hidden">Library</h3>
                 <ElemLibrarySelector />
               </div>
-            )}
+           
             <div>
               <h3 className="mb-1 font-medium lg:hidden">View</h3>
               <ElemDropdown

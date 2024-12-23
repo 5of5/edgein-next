@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { FC } from 'react';
 import { Team_Members, Investors } from '@/graphql/types';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
@@ -8,12 +9,16 @@ import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '../elem-button';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { IconPlus } from '@/components/icons';
+import CompanyExperienceModal from '../company-experience-modal';
+import { useAuth } from '@/hooks/use-auth';
 
 type Props = {
   className?: string;
   heading?: string;
   jobs?: Team_Members[] | Investors[];
   resourceUrl?: string;
+  personId?: string;
 };
 
 export const ElemJobsList: FC<Props> = ({
@@ -21,13 +26,29 @@ export const ElemJobsList: FC<Props> = ({
   heading,
   jobs,
   resourceUrl,
+  personId,
 }) => {
+  const { user } = useAuth();
   const { showNewMessages } = useIntercom();
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
-      <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
-
+      <CompanyExperienceModal
+        show={showSearchModal}
+        isAdmin
+        onClose={() => setShowSearchModal(false)}
+        personId={personId}
+      />
+      <div className="flex justify-between">
+        <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
+        {user?.person?.id?.toString() === personId && heading === 'Company Experience' && <ElemButton onClick={() => { setShowSearchModal(true) }} btn="gray" className="w-8 h-8 m-3 !p-0">
+          <IconPlus
+            className="w-6 h-6 text-gray-600"
+            title="Add"
+          />
+        </ElemButton>}
+      </div>
       <div className="px-4 divide-y divide-gray-300">
         {!jobs || jobs.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-4">

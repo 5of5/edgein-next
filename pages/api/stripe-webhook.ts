@@ -137,7 +137,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const session = event.data.object as Stripe.Checkout.Session;
         const metadata = session.metadata as any;
         customerId = getCustomerId(session.customer || '');
-
+        console.log(customerId);
         const userId = metadata.userId || session.client_reference_id;
         if (!userId) {
           // slack
