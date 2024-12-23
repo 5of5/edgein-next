@@ -84,7 +84,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
         new Array<string>(),
       );
       return [...tmp, ...(tags || [])];
-    }, new Array<string>()); border-neutral-700
+    }, new Array<string>());
   }
   let company_tags: string[] = [];
   if (orgs?.length) {
@@ -122,7 +122,7 @@ export const ElemNewsCard: FC<Props> = ({ className = '', newsPost }) => {
   return (
     <div
       className={`flex flex-col w-full border border-gray-200 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400 ${className}`}>
-      {newsPost?.source?.url && ( border-neutral-700
+      {newsPost?.source?.url && (
         <div className="flex flex-col justify-between h-full">
           <div>
             <h2

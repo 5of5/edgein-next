@@ -266,7 +266,7 @@ const MyList: NextPage<Props> = ({ list }) => {
           onCloseSettingsDialog={onCloseSettingsDialog}
         />
 
-        {!user &&
+        {!user && (
           <>
             <CompaniesList
               listId={theList?.id}
@@ -286,7 +286,7 @@ const MyList: NextPage<Props> = ({ list }) => {
               isListAuthor={isListAuthor}
             />
           </>
-        }
+        )}
 
         {user && (!isCustomList || isFollowing || isListAuthor) && (
           <>
@@ -316,7 +316,7 @@ const MyList: NextPage<Props> = ({ list }) => {
               <IconCustomList
                 className="w-12 h-12 mx-auto text-gray-300"
                 title="Follow List"
-              /> border-neutral-700
+              />
               <h3 className="mt-2 text-lg font-medium">
                 {isPublicList
                   ? 'Follow list to access and view updates.'
