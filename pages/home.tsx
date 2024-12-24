@@ -152,12 +152,12 @@ const Home: NextPage = () => {
             />
 
             <div className="hidden lg:block lg:ml-auto"></div>
-            {isDisplaySelectLibrary && (
+            
               <div>
                 <h3 className="mb-1 font-medium lg:hidden">Library</h3>
                 <ElemLibrarySelector />
               </div>
-            )}
+       
           </ElemFiltersWrap>
 
           {/* Location and Tags */}
