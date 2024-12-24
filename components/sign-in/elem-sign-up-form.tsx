@@ -183,11 +183,14 @@ export const ElemSignUpForm: FC<Props> = ({
               name="firstName"
               value={values.firstName}
               onChange={handleChangeValue}
-              className={`${
-                errors.firstName
-                  ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                  : 'ring-1 ring-slate-200'
-              } !rounded-2xl`}
+              className={`ring-1 ring-gray-300 text-black bg-white rounded-2xl focus:ring-blue-500 focus:border-blue-500`}
+              style={{
+                color: 'black',
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                padding: '10px 12px',
+                outline: 'none',
+              }}
             />
             {errors.firstName && (
               <div className="mt-1 text-xs text-rose-600">
@@ -201,11 +204,14 @@ export const ElemSignUpForm: FC<Props> = ({
               name="lastName"
               value={values.lastName}
               onChange={handleChangeValue}
-              className={`${
-                errors.lastName
-                  ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                  : 'ring-1 ring-slate-200'
-              } !rounded-2xl`}
+              className={`ring-1 ring-gray-300 text-black bg-white rounded-2xl focus:ring-blue-500 focus:border-blue-500`}
+              style={{
+                color: 'black',
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                padding: '10px 12px',
+                outline: 'none',
+              }}
             />
             {errors.lastName && (
               <div className="mt-1 text-xs text-rose-600">
@@ -220,11 +226,14 @@ export const ElemSignUpForm: FC<Props> = ({
               placeholder="https://www.linkedin.com/in/..."
               value={values.linkedinUrl}
               onChange={handleChangeValue}
-              className={`${
-                errors.linkedinUrl
-                  ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                  : 'ring-1 ring-slate-200'
-              } !rounded-2xl`}
+              className={`ring-1 ring-gray-300 text-black bg-white rounded-2xl focus:ring-blue-500 focus:border-blue-500`}
+              style={{
+                color: 'black',
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                padding: '10px 12px',
+                outline: 'none',
+              }}
             />
             {errors.linkedinUrl && (
               <div className="mt-1 text-xs text-rose-600">
@@ -244,11 +253,14 @@ export const ElemSignUpForm: FC<Props> = ({
               type="password"
               value={values.password}
               onChange={handleChangeValue}
-              className={`${
-                errors.password
-                  ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                  : 'ring-1 ring-slate-200'
-              } !rounded-2xl`}
+              className={`ring-1 ring-gray-300 text-black bg-white rounded-2xl focus:ring-blue-500 focus:border-blue-500`}
+              style={{
+                color: 'black',
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                padding: '10px 12px',
+                outline: 'none',
+              }}
             />
             {errors.password && (
               <div className="mt-1 text-xs text-rose-600">
@@ -263,11 +275,14 @@ export const ElemSignUpForm: FC<Props> = ({
               type="password"
               value={values.confirmPassword}
               onChange={handleChangeValue}
-              className={`${
-                errors.confirmPassword
-                  ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                  : 'ring-1 ring-slate-200'
-              } !rounded-2xl`}
+              className={`ring-1 ring-gray-300 text-black bg-white rounded-2xl focus:ring-blue-500 focus:border-blue-500`}
+              style={{
+                color: 'black',
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                padding: '10px 12px',
+                outline: 'none',
+              }}
             />
             {errors.confirmPassword && (
               <div className="mt-1 text-xs text-rose-600">

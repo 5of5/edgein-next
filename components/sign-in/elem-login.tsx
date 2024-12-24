@@ -133,17 +133,22 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
               <label>
                 <span className="text-xs font-medium">Email</span>
                 <InputText
-                  name="email"
-                  type="email"
-                  value={email}
-                  placeholder="name@company.com"
-                  onChange={event => setEmail(event?.target.value)}
-                  className={`${
-                    emailError === ''
-                      ? 'ring-1 ring-gray-200'
-                      : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
-                  } !rounded-2xl`}
-                />
+  name="email"
+  type="email"
+  value={email}
+  placeholder="name@company.com"
+  onChange={event => setEmail(event?.target.value)}
+  className={`ring-1 ring-gray-300 text-black bg-white !rounded-2xl focus:ring-blue-500 focus:border-blue-500`}
+  style={{
+    color: 'black',
+    backgroundColor: 'white',
+    border: '1px solid #ccc',
+    padding: '10px 12px',
+    outline: 'none',
+  }}
+/>
+
+
                 {emailError && (
                   <div className="mt-1 text-xs text-rose-600">{emailError}</div>
                 )}
