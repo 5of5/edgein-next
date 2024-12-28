@@ -36478,6 +36478,7 @@ export const GetUserProfileDocument = `
     use_credits_system
     last_transaction_expiration
     billing_org_id
+    claimed_for
   
     preferences
    

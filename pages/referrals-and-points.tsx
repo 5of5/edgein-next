@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemInviteLinks } from '@/components/invites/elem-invite-links';
@@ -28,17 +28,56 @@ import { CreateGroupDialog } from '@/components/group/create-group-dialog';
 import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { useIntercom } from 'react-use-intercom';
 import { numberWithCommas } from '@/utils/numbers';
+import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
+
+const MIN_COMPANIES_FOR_POINTS = 5;
+
+const UPDATE_USER_CREDITS_AND_CLAIMED_FOR = `
+    mutation UpdateUserCreditsAndClaimedFor($id: Int!, $credits: String!, $claimedFor: jsonb!) {
+      update_users(
+        where: { id: { _eq: $id } }
+        _set: { credits: $credits }
+        _append: { claimed_for: $claimedFor }
+      ) {
+        affected_rows
+        returning {
+          id
+          credits
+          claimed_for
+        }
+      }
+    }
+  `;
 
 const ReferralsAndPoints: NextPage = () => {
   const { showNewMessages } = useIntercom();
 
   const { user, refreshUser, listsQualifyForCredits, groupsQualifyForCredits } =
     useUser();
+  const { listAndFollows: lists } = useUser();
+
+  const { data: userByPK } = useGetUserProfileQuery({
+    id: user?.id ?? 0,
+  });
+
+  console.log(userByPK);
 
   const [openCreateList, setOpenCreateList] = useState(false);
   const [openCreateGroup, setOpenCreateGroup] = useState(false);
+  const [hasListWithMinCompanies, setHasListWithMinCompanies] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const flag = lists.some(
+      item =>
+        item.follows_companies &&
+        item.follows_companies.length >= MIN_COMPANIES_FOR_POINTS,
+    );
+
+    setHasListWithMinCompanies(flag);
+  }, [lists]);
 
   const {
     value: showClaimListCredits,
@@ -70,6 +109,64 @@ const ReferralsAndPoints: NextPage = () => {
     }
   };
 
+  const checkTypeOfClaim = (content: string) => {
+    const lowerCaseContent = content.toLowerCase();
+    const keywords: { [key: string]: string } = {
+      list: 'list',
+      group: 'group',
+    };
+
+    let capturedKeyword: string | null = null;
+
+    for (const key in keywords) {
+      if (Object.prototype.hasOwnProperty.call(keywords, key)) {
+        if (lowerCaseContent.includes(key)) {
+          capturedKeyword = keywords[key];
+          break;
+        }
+      }
+    }
+
+    if (capturedKeyword) {
+      return capturedKeyword;
+    } else {
+      return 'error';
+    }
+  };
+
+  const onClaim = async (typeOfClaim: string, creditAssigned: String) => {
+    const claimingFor = checkTypeOfClaim(typeOfClaim);
+
+    const credits = creditAssigned;
+    const claimedFor = [claimingFor];
+
+    if (!user?.id) {
+      console.error('User ID is not available.');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      // Make the GraphQL request using fetchGraphQL
+      const result = await fetchGraphQL(UPDATE_USER_CREDITS_AND_CLAIMED_FOR, {
+        id: user.id,
+        credits: credits,
+        claimedFor: claimedFor,
+      });
+
+      // Handle success
+      const data = result.update_users;
+      if (data?.affected_rows > 0) {
+        console.log('Successfully updated credits and claimed_for:', data);
+      } else {
+        console.error('No rows were updated');
+      }
+    } catch (err) {
+      console.error('Error during mutation:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const onOpenCreateListDialog = () => {
     setOpenCreateList(true);
   };
@@ -83,7 +180,6 @@ const ReferralsAndPoints: NextPage = () => {
   const onCloseCreateGroupDialog = () => {
     setOpenCreateGroup(false);
   };
-
   const { data: userProfile, refetch: refetchUserProfile } =
     useGetUserProfileQuery(
       {
@@ -253,21 +349,47 @@ const ReferralsAndPoints: NextPage = () => {
                 return (
                   <div
                     key={card.id}
-                    onClick={card.onClick}
-                    className="relative p-5 my-6 transition-all border rounded-lg cursor-pointer group hover:border-primary-500">
+                    onClick={hasListWithMinCompanies ? undefined : card.onClick}
+                    className={`relative p-5 my-6 transition-all border rounded-lg cursor-pointer group ${
+                      hasListWithMinCompanies ? '' : 'hover:border-primary-500'
+                    }`}>
                     <div className="flex flex-col lg:flex-row lg:items-start">
                       <div className="px-6 py-3 border-4 rounded-lg border-primary-500">
                         <div className="text-3xl font-semibold text-primary-500">
                           {card.credits}
                         </div>
                       </div>
+                      {hasListWithMinCompanies && (
+                        <div
+                          className={`absolute right-10 top-10 lg:right-2 lg:top-3 lg:bottom-1.5`}>
+                          <ElemButton
+                            btn="primary"
+                            size="sm"
+                            onClick={() =>
+                              onClaim(card?.content, card.credits.toString())
+                            }>
+                            Claim
+                          </ElemButton>
+                        </div>
+                      )}
                       <div className="block mt-2 ml-0 lg:mt-0 lg:ml-6">
-                        <h3 className="flex items-center font-medium group-hover:text-primary-500">
+                        <h3
+                          className={`flex items-center font-medium ${
+                            hasListWithMinCompanies
+                              ? ''
+                              : 'group-hover:text-primary-500'
+                          }`}>
                           {card.icon && (
                             <card.icon className="w-6 h-6 mr-1 transition-all text-primary-500 shrink-0" />
                           )}
                           {card.title}
-                          <IconChevronRight className="w-4 h-4 -ml-1 transition-all opacity-0 shrink-0 group-hover:opacity-100 group-hover:ml-0" />
+                          <IconChevronRight
+                            className={`w-4 h-4 -ml-1 transition-all opacity-0 shrink-0 ${
+                              hasListWithMinCompanies
+                                ? ''
+                                : 'group-hover:opacity-100 group-hover:ml-0'
+                            }`}
+                          />
                         </h3>
                         <p className="mt-1 text-sm text-gray-600">
                           {card.content}
