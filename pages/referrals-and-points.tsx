@@ -33,40 +33,41 @@ import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
 
 const MIN_COMPANIES_FOR_POINTS = 5;
+const MIN_MEMBERS_FOR_POINTS = 3;
 
 const UPDATE_USER_CREDITS_AND_CLAIMED_FOR = `
-    mutation UpdateUserCreditsAndClaimedFor($id: Int!, $credits: String!, $claimedFor: jsonb!) {
-      update_users(
-        where: { id: { _eq: $id } }
-        _set: { credits: $credits }
-        _append: { claimed_for: $claimedFor }
-      ) {
-        affected_rows
-        returning {
-          id
-          credits
-          claimed_for
-        }
+  mutation UpdateUserCreditsAndClaimedFor($id: Int!, $credits: String!, $claimedFor: jsonb!) {
+    update_users(
+      where: { id: { _eq: $id } }
+      _set: { credits: $credits }
+      _append: { claimed_for: $claimedFor }
+    ) {
+      affected_rows
+      returning {
+        id
+        credits
+        claimed_for
       }
     }
-  `;
+  }
+`;
 
 const ReferralsAndPoints: NextPage = () => {
   const { showNewMessages } = useIntercom();
 
   const { user, refreshUser, listsQualifyForCredits, groupsQualifyForCredits } =
     useUser();
-  const { listAndFollows: lists } = useUser();
+  const { listAndFollows: lists, myGroups:myGroups } = useUser();
 
   const { data: userByPK } = useGetUserProfileQuery({
     id: user?.id ?? 0,
   });
 
-  console.log(userByPK);
-
+  // console.log(userByPK);
   const [openCreateList, setOpenCreateList] = useState(false);
   const [openCreateGroup, setOpenCreateGroup] = useState(false);
   const [hasListWithMinCompanies, setHasListWithMinCompanies] = useState(false);
+  const [hasGroupWithMinMembers, setHasGroupWithMinMembers] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -76,8 +77,13 @@ const ReferralsAndPoints: NextPage = () => {
         item.follows_companies.length >= MIN_COMPANIES_FOR_POINTS,
     );
 
+    const groupFlag = myGroups.some(
+      item => item.user_group_members.length >= MIN_MEMBERS_FOR_POINTS,
+    );
+
     setHasListWithMinCompanies(flag);
-  }, [lists]);
+    setHasGroupWithMinMembers(groupFlag);
+  }, [lists,myGroups]);
 
   const {
     value: showClaimListCredits,
@@ -109,36 +115,13 @@ const ReferralsAndPoints: NextPage = () => {
     }
   };
 
-  const checkTypeOfClaim = (content: string) => {
-    const lowerCaseContent = content.toLowerCase();
-    const keywords: { [key: string]: string } = {
-      list: 'list',
-      group: 'group',
-    };
 
-    let capturedKeyword: string | null = null;
-
-    for (const key in keywords) {
-      if (Object.prototype.hasOwnProperty.call(keywords, key)) {
-        if (lowerCaseContent.includes(key)) {
-          capturedKeyword = keywords[key];
-          break;
-        }
-      }
-    }
-
-    if (capturedKeyword) {
-      return capturedKeyword;
-    } else {
-      return 'error';
-    }
-  };
-
-  const onClaim = async (typeOfClaim: string, creditAssigned: String) => {
-    const claimingFor = checkTypeOfClaim(typeOfClaim);
-
-    const credits = creditAssigned;
-    const claimedFor = [claimingFor];
+  const onClaim = async (typeOfClaim: string, creditAssigned: string) => {
+   
+    
+    const credits = parseInt(userByPK?.users_by_pk?.credits) + parseInt(creditAssigned);
+   
+    const claimedFor = [typeOfClaim];
 
     if (!user?.id) {
       console.error('User ID is not available.');
@@ -149,7 +132,7 @@ const ReferralsAndPoints: NextPage = () => {
       // Make the GraphQL request using fetchGraphQL
       const result = await fetchGraphQL(UPDATE_USER_CREDITS_AND_CLAIMED_FOR, {
         id: user.id,
-        credits: credits,
+        credits: credits.toString(),
         claimedFor: claimedFor,
       });
 
@@ -157,6 +140,7 @@ const ReferralsAndPoints: NextPage = () => {
       const data = result.update_users;
       if (data?.affected_rows > 0) {
         console.log('Successfully updated credits and claimed_for:', data);
+        refetchUserProfile();
       } else {
         console.error('No rows were updated');
       }
@@ -252,18 +236,26 @@ const ReferralsAndPoints: NextPage = () => {
       ? [
           {
             id: 1,
+            type: 'list',
+            isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('list'),
             credits: CREATE_LIST_CREDITS,
             onClick: onOpenCreateListDialog,
             title: 'Create list',
-            content: `Create a list with at least five organizations and immediately claim +${numberWithCommas(
-              CREATE_LIST_CREDITS,
-            )} points.`,
+            content: !hasListWithMinCompanies
+              ? `Create a list with at least five organizations and immediately claim +${numberWithCommas(
+                  CREATE_LIST_CREDITS,
+                )} points.`
+              : `You created a list with at least five organizations, claim +${numberWithCommas(
+                  CREATE_LIST_CREDITS,
+                )} points.`,
           },
         ]
       : showClaimListCredits != 'false' && listsQualifyForCredits
       ? [
           {
             id: 1,
+            type: 'list',
+            isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('list'),
             credits: numberWithCommas(CREATE_LIST_CREDITS),
             onClick: () => onRequestCredits('list'),
             icon: IconCheckBadgeSolid,
@@ -279,29 +271,38 @@ const ReferralsAndPoints: NextPage = () => {
       ? [
           {
             id: 2,
+            type: 'group',
+            isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('group'),
             credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: onOpenCreateGroupDialog,
             title: `Create Group`,
-            content: `Create a group with at least three other EdgeIn members and you immediately get another +${numberWithCommas(
-              CREATE_GROUP_CREDITS,
-            )} points.`,
+            content: !hasGroupWithMinMembers
+              ? `Create a group with at least three other EdgeIn members and you immediately get another +${numberWithCommas(
+                  CREATE_GROUP_CREDITS,
+                )} points.`
+              : `You created a group with at least three other EdgeIn members, claimed +${numberWithCommas(
+                  CREATE_GROUP_CREDITS,
+                )} points.`,
           },
         ]
       : showClaimGroupCredits != 'false' && groupsQualifyForCredits
       ? [
           {
             id: 2,
+            type: 'group',
+            isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('group'),
             credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: () => onRequestCredits('group'),
             icon: IconCheckBadgeSolid,
             title: `Claim +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`,
-            content: `You created a group with at least three other EdgeIn members, claim +${numberWithCommas(
+            content: `You created a group with at least three other EdgeIn members, claimed +${numberWithCommas(
               CREATE_GROUP_CREDITS,
             )} points.`,
           },
         ]
       : []),
   ];
+//  console.log(getPointsCards);
 
   return (
     <DashboardLayout>
@@ -350,8 +351,10 @@ const ReferralsAndPoints: NextPage = () => {
                   <div
                     key={card.id}
                     onClick={hasListWithMinCompanies ? undefined : card.onClick}
-                    className={`relative p-5 my-6 transition-all border rounded-lg cursor-pointer group ${
-                      hasListWithMinCompanies ? '' : 'hover:border-primary-500'
+                    className={`relative p-5 my-6 transition-all border rounded-lg  group ${
+                      hasListWithMinCompanies
+                        ? ''
+                        : 'hover:border-primary-500 cursor-pointer'
                     }`}>
                     <div className="flex flex-col lg:flex-row lg:items-start">
                       <div className="px-6 py-3 border-4 rounded-lg border-primary-500">
@@ -359,19 +362,31 @@ const ReferralsAndPoints: NextPage = () => {
                           {card.credits}
                         </div>
                       </div>
-                      {hasListWithMinCompanies && (
+                      {hasListWithMinCompanies &&
+                      card.type === 'list' &&
+                      !card.isClaimed ? (
                         <div
                           className={`absolute right-10 top-10 lg:right-2 lg:top-3 lg:bottom-1.5`}>
                           <ElemButton
                             btn="primary"
                             size="sm"
-                            onClick={() =>
-                              onClaim(card?.content, card.credits.toString())
-                            }>
-                            Claim
+                            onClick={() => onClaim(card?.type, '1000')}>
+                            Claim List
                           </ElemButton>
                         </div>
-                      )}
+                      ) : hasGroupWithMinMembers &&
+                        card.type === 'group' &&
+                        !card.isClaimed ? (
+                        <div
+                          className={`absolute right-10 top-10 lg:right-2 lg:top-3 lg:bottom-1.5`}>
+                          <ElemButton
+                            btn="primary"
+                            size="sm"
+                            onClick={() => onClaim(card?.type, '1000')}>
+                            Claim Group
+                          </ElemButton>
+                        </div>
+                      ) : null}
                       <div className="block mt-2 ml-0 lg:mt-0 lg:ml-6">
                         <h3
                           className={`flex items-center font-medium ${
