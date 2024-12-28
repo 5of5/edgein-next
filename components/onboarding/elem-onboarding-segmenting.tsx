@@ -45,14 +45,22 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
         {segmentChoices.map(item => (
           <li
             key={item.title}
-            className={`px-4 py-4 rounded-lg border ${
+            className={`px-4 py-4 rounded-lg border bg-white transition-transform duration-300 ${
               item.title === selectedSegment
-                ? 'border-primary-500 bg-gray-50'
-                : 'border-slate-300'
-            } shadow-sm cursor-pointer hover:bg-gray-50 md:px-6`}
+                ? 'border-primary-500 shadow-lg'
+                : 'border-slate-300 shadow-sm'
+            } cursor-pointer hover:shadow-lg hover:scale-105 hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-500 hover:text-white md:px-6`}
             onClick={() => onChangeSegment(item.title)}>
-            <p className="text-slate-900 text-sm font-medium">{item.title}</p>
-            <p className="text-slate-500 text-xs">{item.description}</p>
+            <p
+              className={`text-sm font-medium ${
+                item.title === selectedSegment ? 'text-slate-900' : 'text-black'
+              }`}
+            >
+              {item.title}
+            </p>
+            <p className="text-xs text-black">
+              {item.description}
+            </p>
           </li>
         ))}
       </ul>
@@ -73,11 +81,11 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             {onboardingExploreChoices.map(item => (
               <li
                 key={item}
-                className={`px-6 py-4 rounded-lg border ${
+                className={`px-6 py-4 rounded-lg border bg-white transition-transform duration-300 ${
                   exploreChoices.includes(item)
-                    ? 'border-primary-500 bg-gray-50'
-                    : 'border-slate-300'
-                } shadow-sm cursor-pointer hover:bg-gray-50`}
+                    ? 'border-primary-500 shadow-lg'
+                    : 'border-slate-300 shadow-sm'
+                } cursor-pointer hover:shadow-lg hover:scale-105 hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-500 hover:text-white`}
                 onClick={() => {
                   if (item === 'Something else') {
                     showNewMessages(`Hi EdgeIn, I'd like to explore `);
@@ -92,14 +100,15 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                       : [...exploreChoices, item],
                   );
                 }}>
-                <p className="text-slate-900 text-sm">{item}</p>
+                <p className="text-sm text-black">{item}</p>
               </li>
             ))}
           </ul>
+
           <ElemButton
             btn="primary"
             size="md"
-            className="max-w-sm w-full mt-8 md:mt-16"
+            className="max-w-sm w-full mt-8 md:mt-16 transition-transform duration-300 bg-gradient-to-r from-pink-400 to-red-500 hover:scale-105 hover:shadow-lg text-white font-semibold py-3 rounded-full shadow-lg hover:bg-gradient-to-r hover:from-red-400 hover:to-pink-600"
             disabled={exploreChoices.length === 0}
             onClick={onNext}>
             Next
