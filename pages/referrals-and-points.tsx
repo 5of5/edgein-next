@@ -244,7 +244,9 @@ const ReferralsAndPoints: NextPage = () => {
             isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('list'),
             credits: CREATE_LIST_CREDITS,
             onClick: onOpenCreateListDialog,
-            title: 'Create list',
+            title: userByPK?.users_by_pk?.claimed_for?.includes('list')
+              ? 'Claimed list'
+              : 'Create list',
             content: !hasListWithMinCompanies
               ? `Create a list with at least five organizations and immediately claim +${numberWithCommas(
                   CREATE_LIST_CREDITS,
@@ -263,7 +265,9 @@ const ReferralsAndPoints: NextPage = () => {
             credits: numberWithCommas(CREATE_LIST_CREDITS),
             onClick: () => onRequestCredits('list'),
             icon: IconCheckBadgeSolid,
-            title: `Claim +${numberWithCommas(CREATE_LIST_CREDITS)} Points`,
+            title: userByPK?.users_by_pk?.claimed_for?.includes('list')
+              ? 'Claimed list'
+              : 'Create list',
             content: `You created a list with at least five organizations, claim +${numberWithCommas(
               CREATE_LIST_CREDITS,
             )} points.`,
@@ -279,7 +283,9 @@ const ReferralsAndPoints: NextPage = () => {
             isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('group'),
             credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: onOpenCreateGroupDialog,
-            title: `Create Group`,
+            title: userByPK?.users_by_pk?.claimed_for?.includes('group')
+              ? `Claimed +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`
+              : `Create Group`,
             content: !hasGroupWithMinMembers
               ? `Create a group with at least three other EdgeIn members and you immediately get another +${numberWithCommas(
                   CREATE_GROUP_CREDITS,
@@ -298,7 +304,9 @@ const ReferralsAndPoints: NextPage = () => {
             credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: () => onRequestCredits('group'),
             icon: IconCheckBadgeSolid,
-            title: `Claim +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`,
+            title: userByPK?.users_by_pk?.claimed_for?.includes('group')
+              ? `Claimed +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`
+              : `Claim +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`,
             content: `You created a group with at least three other EdgeIn members, claimed +${numberWithCommas(
               CREATE_GROUP_CREDITS,
             )} points.`,
