@@ -57,7 +57,7 @@ const ReferralsAndPoints: NextPage = () => {
 
   const { user, refreshUser, listsQualifyForCredits, groupsQualifyForCredits } =
     useUser();
-  const { listAndFollows: lists, myGroups:myGroups } = useUser();
+  const { listAndFollows: lists, myGroups: myGroups } = useUser();
 
   const { data: userByPK } = useGetUserProfileQuery({
     id: user?.id ?? 0,
@@ -83,7 +83,7 @@ const ReferralsAndPoints: NextPage = () => {
 
     setHasListWithMinCompanies(flag);
     setHasGroupWithMinMembers(groupFlag);
-  }, [lists,myGroups]);
+  }, [lists, myGroups]);
 
   const {
     value: showClaimListCredits,
@@ -115,12 +115,15 @@ const ReferralsAndPoints: NextPage = () => {
     }
   };
 
-
   const onClaim = async (typeOfClaim: string, creditAssigned: string) => {
-   
-    
-    const credits = parseInt(userByPK?.users_by_pk?.credits) + parseInt(creditAssigned);
-   
+    const credits =
+      parseInt(
+        userByPK?.users_by_pk?.credits === '' ||
+          userByPK?.users_by_pk?.credits === null
+          ? 0
+          : userByPK?.users_by_pk?.credits,
+      ) + parseInt(creditAssigned);
+    console.log(credits, parseInt(creditAssigned));
     const claimedFor = [typeOfClaim];
 
     if (!user?.id) {
@@ -189,6 +192,7 @@ const ReferralsAndPoints: NextPage = () => {
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
   const numberOfCredits = userProfile?.users_by_pk?.credits || 0;
+  console.log('contributor', userProfile?.users_by_pk?.credits);
   const numberOfMonthsFromCredits = Math.ceil(
     numberOfCredits / CREDITS_PER_MONTH,
   );
@@ -302,7 +306,7 @@ const ReferralsAndPoints: NextPage = () => {
         ]
       : []),
   ];
-//  console.log(getPointsCards);
+  //  console.log(getPointsCards);
 
   return (
     <DashboardLayout>
