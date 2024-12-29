@@ -326,6 +326,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   heading="Company Experience"
                   jobs={processedCompanyJobs}
                   resourceUrl={profileUrl}
+                  personId={person?.id?.toString()}
                 />
 
                 {props.sortNews?.length > 0 && (
