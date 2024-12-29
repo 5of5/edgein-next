@@ -3,6 +3,7 @@ query GetUserProfile($id: Int!) {
     id
     credits
     use_credits_system
+    claimed_for
     last_transaction_expiration
     billing_org_id
     billing_org {
