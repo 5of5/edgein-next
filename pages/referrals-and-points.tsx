@@ -15,9 +15,15 @@ import {
 } from '@/utils/constants';
 import { ElemInviteUser } from '@/components/invites/elem-invite-user';
 import { ElemInviteInvestmentMembers } from '@/components/invites/elem-invite-investment-members';
-import { isEmpty } from 'lodash';
+import { isEmpty, set } from 'lodash';
 import { ElemButton } from '@/components/elem-button';
-import { IconCheckBadgeSolid, IconChevronRight } from '@/components/icons';
+import {
+  IconCheckBadgeSolid,
+  IconChevronRight,
+  IconEmail,
+  IconLinkedIn,
+  IconLinkedInAlt,
+} from '@/components/icons';
 import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 import { useMutation } from 'react-query';
 import axios from 'axios';
@@ -69,6 +75,7 @@ const ReferralsAndPoints: NextPage = () => {
   const [hasListWithMinCompanies, setHasListWithMinCompanies] = useState(false);
   const [hasGroupWithMinMembers, setHasGroupWithMinMembers] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('Verify Email');
 
   useEffect(() => {
     const flag = lists.some(
@@ -77,13 +84,17 @@ const ReferralsAndPoints: NextPage = () => {
         item.follows_companies.length >= MIN_COMPANIES_FOR_POINTS,
     );
 
+    setMessage(
+      userByPK?.users_by_pk?.is_verified ? 'Email Verified' : 'Verify Email',
+    );
+
     const groupFlag = myGroups.some(
       item => item.user_group_members.length >= MIN_MEMBERS_FOR_POINTS,
     );
 
     setHasListWithMinCompanies(flag);
     setHasGroupWithMinMembers(groupFlag);
-  }, [lists, myGroups]);
+  }, [lists, myGroups, userByPK]);
 
   const {
     value: showClaimListCredits,
@@ -132,17 +143,14 @@ const ReferralsAndPoints: NextPage = () => {
     }
     setIsLoading(true);
     try {
-      // Make the GraphQL request using fetchGraphQL
       const result = await fetchGraphQL(UPDATE_USER_CREDITS_AND_CLAIMED_FOR, {
         id: user.id,
         credits: credits.toString(),
         claimedFor: claimedFor,
       });
 
-      // Handle success
       const data = result.update_users;
       if (data?.affected_rows > 0) {
-        console.log('Successfully updated credits and claimed_for:', data);
         refetchUserProfile();
       } else {
         console.error('No rows were updated');
@@ -189,10 +197,50 @@ const ReferralsAndPoints: NextPage = () => {
       },
     },
   );
+  console.log(user);
+  const handleRequestOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (!userByPK?.users_by_pk?.is_verified) {
+      try {
+        const response = await fetch('/api/request-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: userProfile?.users_by_pk?.person?.email,
+            successRedirectUrl:
+              'https://7d04-116-72-249-25.ngrok-free.app/verify-success/',
+            failRedirectUrl:
+              'https://7d04-116-72-249-25.ngrok-free.app/verify-fail/',
+            // callbackUrl:
+            //   'https://d488-116-74-108-49.ngrok-free.app/referrals-and-points/',
+          }),
+        });
+
+        const data = await response.json();
+        console.log(response);
+        if (response.ok) {
+          setMessage(`OTP sent! Check your email.`);
+          if (data?.link) {
+            window.open(data.link, 'noopener,noreferrer');
+          }
+        } else {
+          setMessage(data.message || 'Failed to request OTP');
+        }
+      } catch (error: any) {
+        setMessage(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setMessage('Email already verified');
+    }
+  };
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
   const numberOfCredits = userProfile?.users_by_pk?.credits || 0;
-  console.log('contributor', userProfile?.users_by_pk?.credits);
+  //console.log('contributor', userProfile?.users_by_pk?.person?.email);
   const numberOfMonthsFromCredits = Math.ceil(
     numberOfCredits / CREDITS_PER_MONTH,
   );
@@ -235,6 +283,31 @@ const ReferralsAndPoints: NextPage = () => {
     }
   }
 
+  const verificationCards = [
+    {
+      id: 1,
+      isVerified: userByPK?.users_by_pk?.is_verified,
+      type: 'verify',
+      icon: IconEmail,
+      onClick: handleRequestOtp,
+      title: message,
+      content: userByPK?.users_by_pk?.is_verified
+        ? 'Your Email is verified, start claiming points'
+        : 'Verify your Email and start claiming points.',
+    },
+    {
+      id: 2,
+      isVerified: false,
+      type: 'verify',
+      icon: IconLinkedInAlt,
+      onClick: onOpenCreateListDialog,
+      title: 'Verify via LinkedIn',
+      content: userByPK?.users_by_pk?.is_verified
+        ? 'Your LinkedIn is verified, start claiming points'
+        : 'Verify your profile through LinkedIn and start claiming points.',
+    },
+  ];
+
   const getPointsCards = [
     ...(showClaimListCredits != 'false' && !listsQualifyForCredits
       ? [
@@ -261,6 +334,7 @@ const ReferralsAndPoints: NextPage = () => {
           {
             id: 1,
             type: 'list',
+
             isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('list'),
             credits: numberWithCommas(CREATE_LIST_CREDITS),
             onClick: () => onRequestCredits('list'),
@@ -314,7 +388,6 @@ const ReferralsAndPoints: NextPage = () => {
         ]
       : []),
   ];
-  //  console.log(getPointsCards);
 
   return (
     <DashboardLayout>
@@ -358,6 +431,34 @@ const ReferralsAndPoints: NextPage = () => {
                 </div>
               </div>
 
+              {verificationCards?.map(card => {
+                return (
+                  <div
+                    key={card.id}
+                    onClick={card.isVerified ? undefined : card.onClick}
+                    className={`relative p-5 my-6 transition-all border rounded-lg ${
+                      card.isVerified
+                        ? 'cursor-default border-gray-300'
+                        : 'cursor-pointer group hover:border-primary-500'
+                    }`}>
+                    <div className="flex flex-col lg:flex-row lg:items-start">
+                      <div className="block mt-2 ml-0 lg:mt-0 lg:ml-1">
+                        <h3 className="flex items-center mb-2 font-medium group-hover:text-primary-500">
+                          {card.icon && (
+                            <card.icon className={`w-6 h-6 mr-2 transition-all ${card.isVerified? 'text-primary-100':`text-primary-500`}  shrink-0`} />
+                          )}
+                          {card.title}
+                          <IconChevronRight className="w-4 h-4 -ml-1 transition-all opacity-0 shrink-0 group-hover:opacity-100 group-hover:ml-0" />
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-600">
+                          {card.content}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
               {getPointsCards?.map(card => {
                 return (
                   <div
@@ -382,8 +483,14 @@ const ReferralsAndPoints: NextPage = () => {
                           <ElemButton
                             btn="primary"
                             size="sm"
-                            onClick={() => onClaim(card?.type, '1000')}>
-                            Claim List
+                            onClick={e =>
+                              userByPK?.users_by_pk?.is_verified
+                                ? onClaim(card?.type, '1000')
+                                : handleRequestOtp(e)
+                            }>
+                            {userByPK?.users_by_pk?.is_verified
+                              ? 'Claim'
+                              : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : hasGroupWithMinMembers &&
@@ -394,8 +501,14 @@ const ReferralsAndPoints: NextPage = () => {
                           <ElemButton
                             btn="primary"
                             size="sm"
-                            onClick={() => onClaim(card?.type, '1000')}>
-                            Claim Group
+                            onClick={e =>
+                              userByPK?.users_by_pk?.is_verified
+                                ? onClaim(card?.type, '1000')
+                                : handleRequestOtp(e)
+                            }>
+                            {userByPK?.users_by_pk?.is_verified
+                              ? 'Claim'
+                              : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : null}
