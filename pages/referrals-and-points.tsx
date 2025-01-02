@@ -86,7 +86,9 @@ const ReferralsAndPoints: NextPage = () => {
     );
 
     setMessage(
-      userByPK?.users_by_pk?.is_verified ? 'Verified Email' : 'Verify Email',
+      userByPK?.users_by_pk?.is_verified
+        ? 'Email Is Verified!'
+        : 'Verify Email',
     );
 
     const groupFlag = myGroups.some(
@@ -291,12 +293,16 @@ const ReferralsAndPoints: NextPage = () => {
       isVerified: userByPK?.users_by_pk?.is_verified,
       type: 'verify',
       icon: userByPK?.users_by_pk?.is_verified
-        ? IconCheckBadgeSolid:IconEmail,
+        ? IconCheckBadgeSolid
+        : IconEmail,
       onClick: handleRequestOtp,
       title: message,
-      content: userByPK?.users_by_pk?.is_verified
-        ? 'Your Email is verified, start claiming points'
-        : 'Verify your Email and start claiming points.',
+      content:
+        message === 'OTP sent! Check your email.'
+          ? "Didn't receive the OTP? Click here to resend it."
+          : userByPK?.users_by_pk?.is_verified
+          ? 'Your Email is verified, start claiming points'
+          : 'Verify your Email and start claiming points.',
     },
     // {
     //   id: 2,
