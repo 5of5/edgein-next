@@ -86,7 +86,7 @@ const ReferralsAndPoints: NextPage = () => {
     );
 
     setMessage(
-      userByPK?.users_by_pk?.is_verified ? 'Email Verified' : 'Verify Email',
+      userByPK?.users_by_pk?.is_verified ? 'Verified Email' : 'Verify Email',
     );
 
     const groupFlag = myGroups.some(
@@ -290,7 +290,8 @@ const ReferralsAndPoints: NextPage = () => {
       id: 1,
       isVerified: userByPK?.users_by_pk?.is_verified,
       type: 'verify',
-      icon: IconEmail,
+      icon: userByPK?.users_by_pk?.is_verified
+        ? IconCheckBadgeSolid:IconEmail,
       onClick: handleRequestOtp,
       title: message,
       content: userByPK?.users_by_pk?.is_verified
@@ -455,6 +456,7 @@ const ReferralsAndPoints: NextPage = () => {
                               }  shrink-0`}
                             />
                           )}
+
                           {card.title}
                           <IconChevronRight className="w-4 h-4 -ml-1 transition-all opacity-0 shrink-0 group-hover:opacity-100 group-hover:ml-0" />
                         </h3>
