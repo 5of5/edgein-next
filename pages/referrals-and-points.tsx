@@ -35,6 +35,7 @@ import useLocalStorageState from '@/hooks/use-local-storage-state';
 import { useIntercom } from 'react-use-intercom';
 import { numberWithCommas } from '@/utils/numbers';
 import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
+import { useRouter } from 'next/router';
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
 
@@ -60,7 +61,7 @@ const UPDATE_USER_CREDITS_AND_CLAIMED_FOR = `
 
 const ReferralsAndPoints: NextPage = () => {
   const { showNewMessages } = useIntercom();
-
+  const router = useRouter();
   const { user, refreshUser, listsQualifyForCredits, groupsQualifyForCredits } =
     useUser();
   const { listAndFollows: lists, myGroups: myGroups } = useUser();
@@ -209,12 +210,8 @@ const ReferralsAndPoints: NextPage = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: userProfile?.users_by_pk?.person?.email,
-            successRedirectUrl:
-              'https://7d04-116-72-249-25.ngrok-free.app/verify-success/',
-            failRedirectUrl:
-              'https://7d04-116-72-249-25.ngrok-free.app/verify-fail/',
-            // callbackUrl:
-            //   'https://d488-116-74-108-49.ngrok-free.app/referrals-and-points/',
+            successRedirectUrl: 'https://www.edgein.io/verify-success/',
+            failRedirectUrl: 'https://www.edgein.io/verify-fail/',
           }),
         });
 
@@ -237,6 +234,11 @@ const ReferralsAndPoints: NextPage = () => {
       setMessage('Email already verified');
     }
   };
+
+  // const handleLinkedIn = () => {
+  //   // router.push('/api/linkedin-redirect');
+  //   console.log('clicked');
+  // };
 
   const personSlug = userProfile?.users_by_pk?.person?.slug;
   const numberOfCredits = userProfile?.users_by_pk?.credits || 0;
@@ -295,17 +297,17 @@ const ReferralsAndPoints: NextPage = () => {
         ? 'Your Email is verified, start claiming points'
         : 'Verify your Email and start claiming points.',
     },
-    {
-      id: 2,
-      isVerified: false,
-      type: 'verify',
-      icon: IconLinkedInAlt,
-      onClick: onOpenCreateListDialog,
-      title: 'Verify via LinkedIn',
-      content: userByPK?.users_by_pk?.is_verified
-        ? 'Your LinkedIn is verified, start claiming points'
-        : 'Verify your profile through LinkedIn and start claiming points.',
-    },
+    // {
+    //   id: 2,
+    //   isVerified: false,
+    //   type: 'verify',
+    //   icon: IconLinkedInAlt,
+    //   onClick: handleLinkedIn,
+    //   title: 'Verify via LinkedIn',
+    //   content: userByPK?.users_by_pk?.is_verified
+    //     ? 'Your LinkedIn is verified, start claiming points'
+    //     : 'Verify your profile through LinkedIn and start claiming points.',
+    // },
   ];
 
   const getPointsCards = [
@@ -445,7 +447,13 @@ const ReferralsAndPoints: NextPage = () => {
                       <div className="block mt-2 ml-0 lg:mt-0 lg:ml-1">
                         <h3 className="flex items-center mb-2 font-medium group-hover:text-primary-500">
                           {card.icon && (
-                            <card.icon className={`w-6 h-6 mr-2 transition-all ${card.isVerified? 'text-primary-100':`text-primary-500`}  shrink-0`} />
+                            <card.icon
+                              className={`w-6 h-6 mr-2 transition-all ${
+                                card.isVerified
+                                  ? 'text-primary-100'
+                                  : `text-primary-500`
+                              }  shrink-0`}
+                            />
                           )}
                           {card.title}
                           <IconChevronRight className="w-4 h-4 -ml-1 transition-all opacity-0 shrink-0 group-hover:opacity-100 group-hover:ml-0" />
