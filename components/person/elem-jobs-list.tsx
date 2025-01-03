@@ -12,6 +12,7 @@ import { ElemLink } from '../elem-link';
 import { IconPlus } from '@/components/icons';
 import CompanyExperienceModal from '../company-experience-modal';
 import { useAuth } from '@/hooks/use-auth';
+import AddVcFirmModal from '../add-vc-firm-modal';
 
 type Props = {
   className?: string;
@@ -30,24 +31,39 @@ export const ElemJobsList: FC<Props> = ({
 }) => {
   const { user } = useAuth();
   const { showNewMessages } = useIntercom();
-  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showCompanyModal, setShowCompanyModal] = useState(false);
+  const [showVcModal, setShowVcModal] = useState(false);
+
+  const handleAdd = () => {
+    if(heading === 'Company Experience') setShowCompanyModal(true)
+    if(heading === 'VC Firm Experience') setShowVcModal(true)
+  }
 
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
       <CompanyExperienceModal
-        show={showSearchModal}
-        isAdmin
-        onClose={() => setShowSearchModal(false)}
+        show={showCompanyModal}
+        onClose={() => setShowCompanyModal(false)}
+        personId={personId}
+      />
+      <AddVcFirmModal
+        show={showVcModal}
+        onClose={() => setShowVcModal(false)}
         personId={personId}
       />
       <div className="flex justify-between">
         <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
-        {user?.person?.id?.toString() === personId && heading === 'Company Experience' && <ElemButton onClick={() => { setShowSearchModal(true) }} btn="gray" className="w-8 h-8 m-3 !p-0">
-          <IconPlus
-            className="w-6 h-6 text-gray-600"
-            title="Add"
-          />
-        </ElemButton>}
+        {user?.person?.id?.toString() === personId && 
+          <ElemButton 
+            onClick={handleAdd} 
+            btn="gray" className="w-8 h-8 m-3 !p-0"
+          >
+            <IconPlus
+              className="w-6 h-6 text-gray-600"
+              title="Add"
+            />
+          </ElemButton>
+        }
       </div>
       <div className="px-4 divide-y divide-gray-300">
         {!jobs || jobs.length === 0 ? (
