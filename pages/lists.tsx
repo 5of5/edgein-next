@@ -277,7 +277,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                       roundedFull={false}
                       className={`py-2 rounded-lg ${
                         selectedListTab?.id === tab.id
-                          ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                          ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-500'
                           : ''
                       }`}>
                       {tab.name}
