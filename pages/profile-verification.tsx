@@ -58,8 +58,8 @@ const ProfileVerification: NextPage = () => {
   return (
     <>
       {/* Add a heading for the status above the OTP input box */}
-      <div className="min-h-screen flex items-center justify-center px-10 flex-col">
-        <div className="w-96 bg-[rgba(15,15,15,0.5)] rounded-xl p-7 border border-[#171717]">
+      <div className="min-h-screen flex items-center justify-center px-10">
+        <div className="w-96 bg-[rgba(15,15,15,0.5)] rounded-xl p-7 border border-[#171717] mb-20">
           {/* Status Heading */}
           <div className="mb-6">
             <div className="flex justify-between items-center">
