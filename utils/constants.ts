@@ -1073,6 +1073,8 @@ export const aiTags: Tag[] = [
   'Calculators - AI',
   'Sia - AI',
   'Manufacturers - AI',
+  'Generative - AI',
+  'AI & Big Data - AI',
 ].map(tag => ({ id: tag, name: tag }));
 
 export const NON_SELECTABLE_WEB_3_TAGS = [
