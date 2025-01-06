@@ -10,6 +10,7 @@ type Props = {
   arrowClass?: string;
   btn?:
     | 'primary'
+    | 'ol-tertiary'
     | 'ol-primary'
     | 'ol-white'
     | 'danger'
@@ -48,6 +49,9 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   } else if (btn === 'ol-primary') {
     btnClass =
       'text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:text-white hover:bg-primary-500 focus:outline-none focus:ring-1';
+  } else if (btn === 'ol-tertiary') {
+    btnClass =
+      'text-purple-400 bg-transparent ring-inset ring-1 ring-purple-400 hover:text-purple-200 hover:bg-purple-900 focus:outline-none focus:ring-1';
   } else if (btn === 'ol-white') {
     btnClass =
       'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-black hover:text-primary-500 focus:outline-none focus:ring-1';
