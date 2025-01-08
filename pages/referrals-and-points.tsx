@@ -205,36 +205,36 @@ const ReferralsAndPoints: NextPage = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!userByPK?.users_by_pk?.is_verified) {
-      try {
-        const response = await fetch('/api/request-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: userProfile?.users_by_pk?.person?.email,
-            successRedirectUrl: 'https://www.edgein.io/verify-success/',
-            failRedirectUrl: 'https://www.edgein.io/verify-fail/',
-          }),
-        });
+    // if (!userByPK?.users_by_pk?.is_verified) {
+    //   try {
+    //     const response = await fetch('/api/request-otp', {
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify({
+    //         email: userProfile?.users_by_pk?.person?.email,
+    //         successRedirectUrl: 'https://www.edgein.io/verify-success/',
+    //         failRedirectUrl: 'https://www.edgein.io/verify-fail/',
+    //       }),
+    //     });
 
-        const data = await response.json();
-        console.log(response);
-        if (response.ok) {
-          setMessage(`OTP sent! Check your email.`);
-          if (data?.link) {
-            window.open(data.link, 'noopener,noreferrer');
-          }
-        } else {
-          setMessage(data.message || 'Failed to request OTP');
-        }
-      } catch (error: any) {
-        setMessage(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setMessage('Email already verified');
-    }
+    //     const data = await response.json();
+    //     console.log(response);
+    //     if (response.ok) {
+    //       setMessage(`OTP sent! Check your email.`);
+    //       if (data?.link) {
+    //         window.open(data.link, 'noopener,noreferrer');
+    //       }
+    //     } else {
+    //       setMessage(data.message || 'Failed to request OTP');
+    //     }
+    //   } catch (error: any) {
+    //     setMessage(error.message);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // } else {
+    //   setMessage('Email already verified');
+    // }
   };
 
   // const handleLinkedIn = () => {
@@ -440,7 +440,7 @@ const ReferralsAndPoints: NextPage = () => {
                 </div>
               </div>
 
-              {verificationCards?.map(card => {
+              {/* {verificationCards?.map(card => {
                 return (
                   <div
                     key={card.id}
@@ -473,7 +473,7 @@ const ReferralsAndPoints: NextPage = () => {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
 
               {getPointsCards?.map(card => {
                 return (
@@ -499,14 +499,18 @@ const ReferralsAndPoints: NextPage = () => {
                           <ElemButton
                             btn="primary"
                             size="sm"
-                            onClick={e =>
-                              userByPK?.users_by_pk?.is_verified
-                                ? onClaim(card?.type, '1000')
-                                : handleRequestOtp(e)
+                            onClick={
+                              e =>
+                                // userByPK?.users_by_pk?.is_verified
+
+                                // ?
+                                onClaim(card?.type, '1000')
+                              // : handleRequestOtp(e)
                             }>
-                            {userByPK?.users_by_pk?.is_verified
-                              ? 'Claim'
-                              : 'Verify'}
+                            {/* {userByPK?.users_by_pk?.is_verified */}
+                            {/* ?  */}
+                            Claim
+                            {/* : 'Verify'} */}
                           </ElemButton>
                         </div>
                       ) : hasGroupWithMinMembers &&
@@ -517,14 +521,17 @@ const ReferralsAndPoints: NextPage = () => {
                           <ElemButton
                             btn="primary"
                             size="sm"
-                            onClick={e =>
-                              userByPK?.users_by_pk?.is_verified
-                                ? onClaim(card?.type, '1000')
-                                : handleRequestOtp(e)
+                            onClick={
+                              e =>
+                                // userByPK?.users_by_pk?.is_verified
+                                // ?
+                                onClaim(card?.type, '1000')
+                              // : handleRequestOtp(e)
                             }>
-                            {userByPK?.users_by_pk?.is_verified
-                              ? 'Claim'
-                              : 'Verify'}
+                            {/* {userByPK?.users_by_pk?.is_verified */}
+                            {/* ?  */}
+                            Claim
+                            {/* : 'Verify'} */}
                           </ElemButton>
                         </div>
                       ) : null}
