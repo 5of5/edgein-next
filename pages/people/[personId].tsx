@@ -321,6 +321,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   heading="VC Firm Experience"
                   jobs={processedVcFirmJobs}
                   resourceUrl={profileUrl}
+                  personId={person?.id?.toString()}
                 />
                 <ElemJobsList
                   heading="Company Experience"
