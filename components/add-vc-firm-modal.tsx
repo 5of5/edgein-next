@@ -71,7 +71,7 @@ export const fetchGraphQL = async (
     throw new Error(data.errors.map((e: any) => e.message).join(', '));
   }
 
-  return data.data;
+  return data.data;
 };
 
 const searchClient = algoliasearch(
