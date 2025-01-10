@@ -1,13 +1,38 @@
 import { ElemButton } from '@/components/elem-button';
-import { ElemLink } from '@/components/elem-link';
-import { ROUTES } from '@/routes';
 import { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js'
+import { useUser } from '@/context/user-context';
+import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
+
+const UPDATE_USER_VERIFICATION_STATUS = `
+  mutation UpdateUserVerificationStatus($id: Int!, $verified: Boolean!) {
+    update_users(
+      where: { id: { _eq: $id } }
+      _set: { is_verified: $verified }
+    ) {
+      affected_rows
+      returning {
+        id
+        is_verified
+      }
+    }
+  }
+`;
+
+// Create a single supabase client for interacting with your database
+const apiUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const apiKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY || '';
+const supabase = createClient(apiUrl, apiKey);
 
 const ProfileVerification: NextPage = () => {
-  const [otp, setOtp] = useState<string[]>(new Array(5).fill('')); // Initializing otp as an array of empty strings
-  const [attempts, setAttempts] = useState<number>(0);
+  const { user } = useUser();
+
+  const [otp, setOtp] = useState<string[]>(new Array(6).fill('')); // Initializing otp as an array of empty strings
+  const [attempts, setAttempts] = useState<number>(1);
   const [timer, setTimer] = useState<number>(120);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('OTP sent. Check Email!');
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -15,6 +40,72 @@ const ProfileVerification: NextPage = () => {
     }, 1000);
     return () => clearInterval(countdown);
   }, []);
+
+  const verifyUser = async () => {
+    if (!user?.id) {
+      console.error('User ID is not available.');
+      return;
+    }
+
+    try {
+      const result = await fetchGraphQL(UPDATE_USER_VERIFICATION_STATUS, {
+        id: user.id,
+        verified: true,
+      });
+
+      const data = result.update_users;
+      if (data?.affected_rows > 0) {
+        window.location.href = '/verify-success';
+      } else {
+        console.error('No rows were updated');
+      }
+    } catch (err) {
+      console.error('Error during mutation:', err);
+    }
+  };
+
+  const verifyOtp = async (e: React.FormEvent) => {
+    try {
+      setIsLoading(true);
+      const { data: {session}, error } = await supabase.auth.verifyOtp({
+        email: user?.email || '',
+        token: otp.join(''),
+        type: 'email',
+      })
+      if (error) {
+        console.error('Error sending OTP:', error.message);
+        setMessage(`Invalid otp. Attempts left: ${5 - attempts}`);
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        if (newAttempts >= 5) {
+          window.location.href = '/verify-fail';
+        }
+        setOtp(new Array(6).fill(''));
+      } else {
+        e.preventDefault();
+        console.log('OTP sent:', session);
+        verifyUser();
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+    
+  }
+
+  const resendOtp = async () => {
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email: user?.email || '',
+    })
+
+    if (error) {
+      setMessage('Failed to resend OTP');
+      console.error('Error resending OTP:', error.message);
+    } else {
+      setMessage('OTP sent. Check Email');
+      setTimer(120);
+    }
+  }
 
   const handleChange = (value: string, index: number): void => {
     if (value.length > 1) return; // Prevent multiple characters
@@ -36,19 +127,6 @@ const ProfileVerification: NextPage = () => {
     }
   };
 
-  const handleVerify = (): void => {
-    if (otp.join('') === '12345') {
-      window.location.href = '/success';
-    } else {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
-      if (newAttempts >= 5) {
-        window.location.href = '/failure';
-      }
-      setOtp(new Array(5).fill(''));
-    }
-  };
-
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -63,13 +141,13 @@ const ProfileVerification: NextPage = () => {
           {/* Status Heading */}
           <div className="mb-6">
             <div className="flex justify-between items-center">
-              <h3 className="text-sm font-medium text-gray-300">OTP sent. Check Email!</h3>
+              <h3 className="text-sm font-medium text-gray-300">{message}</h3>
               <span className="text-sm text-gray-300">
                 {timer > 0 ? (
                   `Resend in ${formatTime(timer)}`
                 ) : (
                   <button
-                    onClick={() => setTimer(120)}
+                    onClick={() => resendOtp()}
                     className="text-purple-400 hover:text-purple-300 transition-colors">
                     Resend OTP
                   </button>
@@ -100,9 +178,10 @@ const ProfileVerification: NextPage = () => {
 
             <div className="justify-self-center relative z-10">
               <ElemButton
-                onClick={handleVerify}
+                onClick={(e) => verifyOtp(e)}
                 btn="ol-tertiary"
                 arrow
+                disabled={isLoading}
                 size="md">
                 Verify
               </ElemButton>

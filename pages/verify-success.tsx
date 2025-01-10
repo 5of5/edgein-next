@@ -7,28 +7,10 @@ import { ElemLink } from '@/components/elem-link';
 import { ROUTES } from '@/routes';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { useGetUserProfileQuery } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
-import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
-import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 
 type Props = {};
-
-const UPDATE_USER_VERIFICATION_STATUS = `
-  mutation UpdateUserVerificationStatus($id: Int!, $verified: Boolean!) {
-    update_users(
-      where: { id: { _eq: $id } }
-      _set: { is_verified: $verified }
-    ) {
-      affected_rows
-      returning {
-        id
-        is_verified
-      }
-    }
-  }
-`;
 
 const VerifyFail: NextPage<Props> = () => {
   const router = useRouter();
@@ -45,18 +27,8 @@ const VerifyFail: NextPage<Props> = () => {
       }
 
       try {
-        const result = await fetchGraphQL(UPDATE_USER_VERIFICATION_STATUS, {
-          id: user.id,
-          verified: true,
-        });
-
-        const data = result.update_users;
-        if (data?.affected_rows > 0) {
-          await delay(2000);
-          router.push(ROUTES.REFERRALS_AND_POINTS);
-        } else {
-          console.error('No rows were updated');
-        }
+        await delay(2000);
+        router.push(ROUTES.REFERRALS_AND_POINTS);
       } catch (err) {
         console.error('Error during mutation:', err);
       }
