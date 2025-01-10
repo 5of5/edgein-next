@@ -916,6 +916,7 @@ export const web3Tags: Tag[] = [
   'Sia - Web3',
   'Manufacturers - Web3',
   'Lightning Network',
+  'DeSci',
 ].map(tag => ({ id: tag, name: tag }));
 
 export const aiTags: Tag[] = [
@@ -1072,6 +1073,8 @@ export const aiTags: Tag[] = [
   'Calculators - AI',
   'Sia - AI',
   'Manufacturers - AI',
+  'Generative - AI',
+  'AI & Big Data - AI',
 ].map(tag => ({ id: tag, name: tag }));
 
 export const NON_SELECTABLE_WEB_3_TAGS = [

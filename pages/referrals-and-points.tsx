@@ -526,9 +526,7 @@ const ReferralsAndPoints: NextPage = () => {
                                 ? onClaim(card?.type, '1000')
                                 : sendSupabaseOtp(e)
                             }>
-                            {userByPK?.users_by_pk?.is_verified
-                              ? 'Claim'
-                              : 'Verify'}
+                            {userByPK?.users_by_pk?.is_verified ?  'Claim' : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : hasGroupWithMinMembers &&
@@ -544,9 +542,7 @@ const ReferralsAndPoints: NextPage = () => {
                                 ? onClaim(card?.type, '1000')
                                 : sendSupabaseOtp(e)
                             }>
-                            {userByPK?.users_by_pk?.is_verified
-                              ? 'Claim'
-                              : 'Verify'}
+                            {userByPK?.users_by_pk?.is_verified ? 'Claim' : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : null}
