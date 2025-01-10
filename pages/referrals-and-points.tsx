@@ -21,8 +21,6 @@ import {
   IconCheckBadgeSolid,
   IconChevronRight,
   IconEmail,
-  IconLinkedIn,
-  IconLinkedInAlt,
 } from '@/components/icons';
 import { CREDITS_PER_MONTH } from '@/utils/userTransactions';
 import { useMutation } from 'react-query';
@@ -36,6 +34,7 @@ import { useIntercom } from 'react-use-intercom';
 import { numberWithCommas } from '@/utils/numbers';
 import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
 import { useRouter } from 'next/router';
+import { createClient } from '@supabase/supabase-js'
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
 
@@ -59,6 +58,11 @@ const UPDATE_USER_CREDITS_AND_CLAIMED_FOR = `
   }
 `;
 
+// Create a single supabase client for interacting with your database
+const apiUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const apiKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY || '';
+const supabase = createClient(apiUrl, apiKey);
+
 const ReferralsAndPoints: NextPage = () => {
   const { showNewMessages } = useIntercom();
   const router = useRouter();
@@ -70,7 +74,6 @@ const ReferralsAndPoints: NextPage = () => {
     id: user?.id ?? 0,
   });
 
-  // console.log(userByPK);
   const [openCreateList, setOpenCreateList] = useState(false);
   const [openCreateGroup, setOpenCreateGroup] = useState(false);
   const [hasListWithMinCompanies, setHasListWithMinCompanies] = useState(false);
@@ -200,11 +203,12 @@ const ReferralsAndPoints: NextPage = () => {
       },
     },
   );
-  console.log(user);
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
+     const baseUrl = window.location.origin;
+    const newTab = window.open(`${baseUrl}${"/profile-verification"}`, '_blank', 'noopener,noreferrer');
+    if (newTab) newTab.opener = null;
     // if (!userByPK?.users_by_pk?.is_verified) {
     //   try {
     //     const response = await fetch('/api/request-otp', {
@@ -295,7 +299,6 @@ const ReferralsAndPoints: NextPage = () => {
       icon: userByPK?.users_by_pk?.is_verified
         ? IconCheckBadgeSolid
         : IconEmail,
-      onClick: handleRequestOtp,
       title: message,
       content:
         message === 'OTP sent! Check your email.'
@@ -322,6 +325,7 @@ const ReferralsAndPoints: NextPage = () => {
       ? [
           {
             id: 1,
+            isClickable: hasListWithMinCompanies,
             type: 'list',
             isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('list'),
             credits: CREATE_LIST_CREDITS,
@@ -343,7 +347,7 @@ const ReferralsAndPoints: NextPage = () => {
           {
             id: 1,
             type: 'list',
-
+            isClickable: hasListWithMinCompanies,
             isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('list'),
             credits: numberWithCommas(CREATE_LIST_CREDITS),
             onClick: () => onRequestCredits('list'),
@@ -363,6 +367,7 @@ const ReferralsAndPoints: NextPage = () => {
           {
             id: 2,
             type: 'group',
+            isClickable: hasGroupWithMinMembers,
             isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('group'),
             credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: onOpenCreateGroupDialog,
@@ -383,6 +388,7 @@ const ReferralsAndPoints: NextPage = () => {
           {
             id: 2,
             type: 'group',
+            isClickable: hasGroupWithMinMembers,
             isClaimed: userByPK?.users_by_pk?.claimed_for?.includes('group'),
             credits: numberWithCommas(CREATE_GROUP_CREDITS),
             onClick: () => onRequestCredits('group'),
@@ -397,6 +403,21 @@ const ReferralsAndPoints: NextPage = () => {
         ]
       : []),
   ];
+
+  const sendSupabaseOtp = async (e: React.FormEvent) => {
+    setIsLoading(true);
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email: user?.email || '',
+    })
+    if (error) {
+      console.error('Error sending OTP:', error.message);
+    } else {
+      e.preventDefault();
+      window.open("/profile-verification", '_self');
+      console.log('OTP sent:', data);
+    }
+    setIsLoading(false);
+  }
 
   return (
     <DashboardLayout>
@@ -440,11 +461,12 @@ const ReferralsAndPoints: NextPage = () => {
                 </div>
               </div>
 
-              {/* {verificationCards?.map(card => {
+              {verificationCards?.map(card => {
                 return (
                   <div
                     key={card.id}
-                    onClick={card.isVerified ? undefined : card.onClick}
+                    style={{ pointerEvents: isLoading ? 'none' : undefined }}
+                    onClick={card.isVerified ? undefined : (e) => sendSupabaseOtp(e)}
                     className={`relative p-5 my-6 transition-all border rounded-lg ${
                       card.isVerified
                         ? 'cursor-default border-gray-300'
@@ -473,15 +495,15 @@ const ReferralsAndPoints: NextPage = () => {
                     </div>
                   </div>
                 );
-              })} */}
+              })}
 
               {getPointsCards?.map(card => {
                 return (
                   <div
                     key={card.id}
-                    onClick={hasListWithMinCompanies ? undefined : card.onClick}
+                    onClick={card?.isClickable ? undefined : card.onClick}
                     className={`relative p-5 my-6 transition-all border rounded-lg  group ${
-                      hasListWithMinCompanies
+                      card?.isClickable
                         ? ''
                         : 'hover:border-primary-500 cursor-pointer'
                     }`}>
@@ -499,18 +521,12 @@ const ReferralsAndPoints: NextPage = () => {
                           <ElemButton
                             btn="primary"
                             size="sm"
-                            onClick={
-                              e =>
-                                // userByPK?.users_by_pk?.is_verified
-
-                                // ?
-                                onClaim(card?.type, '1000')
-                              // : handleRequestOtp(e)
+                            onClick={e =>
+                              userByPK?.users_by_pk?.is_verified
+                                ? onClaim(card?.type, '1000')
+                                : sendSupabaseOtp(e)
                             }>
-                            {/* {userByPK?.users_by_pk?.is_verified */}
-                            {/* ?  */}
-                            Claim
-                            {/* : 'Verify'} */}
+                            {userByPK?.users_by_pk?.is_verified ?  'Claim' : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : hasGroupWithMinMembers &&
@@ -521,24 +537,19 @@ const ReferralsAndPoints: NextPage = () => {
                           <ElemButton
                             btn="primary"
                             size="sm"
-                            onClick={
-                              e =>
-                                // userByPK?.users_by_pk?.is_verified
-                                // ?
-                                onClaim(card?.type, '1000')
-                              // : handleRequestOtp(e)
+                            onClick={e =>
+                              userByPK?.users_by_pk?.is_verified
+                                ? onClaim(card?.type, '1000')
+                                : sendSupabaseOtp(e)
                             }>
-                            {/* {userByPK?.users_by_pk?.is_verified */}
-                            {/* ?  */}
-                            Claim
-                            {/* : 'Verify'} */}
+                            {userByPK?.users_by_pk?.is_verified ? 'Claim' : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : null}
                       <div className="block mt-2 ml-0 lg:mt-0 lg:ml-6">
                         <h3
                           className={`flex items-center font-medium ${
-                            hasListWithMinCompanies
+                            card?.isClickable
                               ? ''
                               : 'group-hover:text-primary-500'
                           }`}>
@@ -548,7 +559,7 @@ const ReferralsAndPoints: NextPage = () => {
                           {card.title}
                           <IconChevronRight
                             className={`w-4 h-4 -ml-1 transition-all opacity-0 shrink-0 ${
-                              hasListWithMinCompanies
+                              card?.isClickable
                                 ? ''
                                 : 'group-hover:opacity-100 group-hover:ml-0'
                             }`}
