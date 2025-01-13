@@ -112,7 +112,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           siteName: 'Mentibus',
           images: [
             {
-              url: 'https://edgein.io/social.jpg',
+              url: 'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1736788525/trojehurqjuohornokfe.png',
               width: 800,
               height: 600,
               alt: 'EdgeIn.io',
