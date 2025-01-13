@@ -37,7 +37,7 @@ export const navigation = {
     },
     {
       name: 'Twitter',
-      href: 'https://x.com/EdgeInio',
+      href: 'https://x.com/mentibus_xyz',
       icon: IconTwitterX,
     },
     {
