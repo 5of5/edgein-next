@@ -112,7 +112,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           siteName: 'Mentibus',
           images: [
             {
-              url: 'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1736788525/trojehurqjuohornokfe.png',
+              url: 'https://mentibus.xyz/social.png',
               width: 800,
               height: 600,
               alt: 'mentibus.xyz',
