@@ -52,7 +52,7 @@ body {
   border-top: 1px solid #333;
 }
 
-input[type="text"] {
+input[type='text'] {
   background-color: #222;
   color: #fff;
   border: 1px solid #444;
@@ -66,4 +66,4 @@ button {
 
 button:hover {
   background-color: #555;
-} 
+}

@@ -92,15 +92,13 @@ const Home: NextPage = () => {
     setIsOpenUpgradeDialog(false);
   };
 
+  const onReady = () => {
+    console.log('Ad is ready');
+  };
 
-
-    const onReady = () => {
-      console.log('Ad is ready');
-    };
-
-    const onError = () => {
-      console.log('Ad failed to load');
-    };
+  const onError = () => {
+    console.log('Ad failed to load');
+  };
 
   useEffect(() => {
     onTrackView({
@@ -152,12 +150,11 @@ const Home: NextPage = () => {
             />
 
             <div className="hidden lg:block lg:ml-auto"></div>
-            
-              <div>
-                <h3 className="mb-1 font-medium lg:hidden">Library</h3>
-                <ElemLibrarySelector />
-              </div>
-       
+
+            <div>
+              <h3 className="mb-1 font-medium lg:hidden">Library</h3>
+              <ElemLibrarySelector />
+            </div>
           </ElemFiltersWrap>
 
           {/* Location and Tags */}
@@ -373,7 +370,6 @@ const Home: NextPage = () => {
                       </div>
                     </div>
                     <Banner
-                    
                       placement="ec79613229"
                       onReady={onReady}
                       onError={onError}

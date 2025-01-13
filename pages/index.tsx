@@ -204,8 +204,6 @@ const Home = () => {
   return (
     <>
       <section className="relative overflow-hidden isolate bg-black">
-
-
         <div className="px-6 pt-10 pb-24 mx-auto max-w-7xl sm:pb-32 lg:flex lg:items-center lg:px-8 lg:py-16">
           <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl lg:flex-shrink-0">
             <h1 className="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">
@@ -355,10 +353,8 @@ const Home = () => {
         </section>
       </div> */}
 
-
       <div>
-        <SubNavbar/>
-        
+        <SubNavbar />
       </div>
 
       <section className="px-6 py-8 mx-auto max-w-7xl lg:py-16 lg:px-6 bg-black">

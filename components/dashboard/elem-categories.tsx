@@ -28,10 +28,7 @@ export const ElemCategories: FC<Props> = ({
             roundedFull={false}
             className={`
               px-4 py-2 rounded-full
-              ${selected 
-                ? 'border border-purple' 
-                : 'bg-purple/5'
-              }
+              ${selected ? 'border border-purple' : 'bg-purple/5'}
             `}>
             {category.icon && (
               <div className="w-4 h-4 shrink-0 mr-1.5">{category.icon}</div>

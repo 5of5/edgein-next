@@ -53,7 +53,7 @@ module.exports = {
         transparent: 'transparent',
         dark: {
           50: '#18181B',
-          100: '#27272A', 
+          100: '#27272A',
           200: '#3F3F46',
           300: '#52525B',
           400: '#71717A',
@@ -61,11 +61,11 @@ module.exports = {
           600: '#D4D4D8',
           700: '#E4E4E7',
           800: '#F4F4F5',
-          900: '#FAFAFA'
+          900: '#FAFAFA',
         },
         custom: {
-          dark: '#222222'
-        }
+          dark: '#222222',
+        },
       },
       padding: {
         18: '72px',

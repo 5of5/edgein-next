@@ -142,7 +142,6 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                 )}
               </div>
             )}
-           
           </div>
         </div>
 

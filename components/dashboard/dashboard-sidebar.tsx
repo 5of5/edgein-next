@@ -71,7 +71,8 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   ];
 
   return (
-    <div className={`overflow-y-auto h-full scrollbar-hide bg-gradient-to-b from-black to-[#202020] ${className}`}>
+    <div
+      className={`overflow-y-auto h-full scrollbar-hide bg-gradient-to-b from-black to-[#202020] ${className}`}>
       <nav className="px-4 pt-2 text-white pb-52">
         <ul className="pb-8 space-y-1 border-b  border-neutral-700 dark:border-gray-700">
           {exploreMenu.map(item => (

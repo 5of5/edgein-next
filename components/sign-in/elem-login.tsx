@@ -193,9 +193,6 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
           <div className="flex items-center py-8">
             <div className="flex-grow border-t border-black/10"></div>
           </div>
-
-        
-         
         </div>
       </div>
       <p className="mt-16 text-xs text-center text-gray-500">

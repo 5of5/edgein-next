@@ -43,10 +43,8 @@ export default async function handler(
     res.status(200).json({ access_token, expires_in });
   } catch (error: any) {
     console.error(error.response?.data || error.message);
-    res
-      .status(500)
-      .json({
-        error: 'Failed to exchange authorization code for access token',
-      });
+    res.status(500).json({
+      error: 'Failed to exchange authorization code for access token',
+    });
   }
 }
