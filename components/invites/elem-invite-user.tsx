@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { Disclosure } from '@headlessui/react';
 import groupBy from 'lodash/groupBy';
-import { InviteToEdgeInPayload, InviteToEdgeInResponse } from '@/types/api';
+import { InviteToMentibusPayload, InviteToMentibusResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
 import { useGetInvitedPeopleByUserIdQuery } from '@/graphql/types';
 import {
@@ -50,7 +50,7 @@ export const ElemInviteUser = () => {
     mutate: sendInvitationEmail,
     reset: resetInvitation,
     isLoading,
-  } = useMutation(async (payload: InviteToEdgeInPayload[]) => {
+  } = useMutation(async (payload: InviteToMentibusPayload[]) => {
     const res = await fetch('/api/send-invite-to-edgein-email/', {
       method: 'POST',
       headers: {
@@ -94,7 +94,7 @@ export const ElemInviteUser = () => {
                 <IconChevronRight className="w-4 h-4 -ml-1 transition-all opacity-0 shrink-0 group-hover:opacity-100 group-hover:ml-0" />
               </h3>
               <p className="mt-1 text-sm text-gray-600">
-                Invite your friends to EdgeIn, and we&apos;ll give you{' '}
+                Invite your friends to Mentibus, and we&apos;ll give you{' '}
                 {numberWithCommas(REFERRAL_CREDITS_AMOUNT)} points for every
                 friend who signs in through your referral. The more people who
                 sign in, the more points you&apos;ll get.
@@ -116,7 +116,7 @@ export const ElemInviteUser = () => {
 
               <ul className="pl-4 mt-4 list-disc list-outside">
                 {sendInvitationEmailResponse.map(
-                  (res: InviteToEdgeInResponse, index: number) => {
+                  (res: InviteToMentibusResponse, index: number) => {
                     if (res.status === 200) {
                       return (
                         <li className="text-sm text-gray-500" key={index}>

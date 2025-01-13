@@ -355,7 +355,7 @@ export const ElemInvestments: React.FC<Props> = ({
               className="mt-2"
               onClick={() =>
                 showNewMessages(
-                  `Hi EdgeIn, I'd like to request investment data on ${resourceName}`,
+                  `Hi Mentibus, I'd like to request investment data on ${resourceName}`,
                 )
               }
               btn="default">

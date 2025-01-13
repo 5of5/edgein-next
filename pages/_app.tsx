@@ -109,7 +109,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           type: 'website',
           locale: 'en_US',
           url: canonicalUrl,
-          siteName: 'EdgeIn',
+          siteName: 'Mentibus',
           images: [
             {
               url: 'https://edgein.io/social.jpg',

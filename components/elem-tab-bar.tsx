@@ -82,7 +82,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       value: 'requestMoreData',
       onClick: () =>
         showNewMessages(
-          `Hi EdgeIn, I'd like to request some more data on ${resource}`,
+          `Hi Mentibus, I'd like to request some more data on ${resource}`,
         ),
     },
     {
@@ -91,7 +91,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       value: 'reportAnError',
       onClick: () =>
         showNewMessages(
-          `Hi EdgeIn, I'd like to report an error on ${resource}`,
+          `Hi Mentibus, I'd like to report an error on ${resource}`,
         ),
     },
   ];

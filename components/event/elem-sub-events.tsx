@@ -30,7 +30,7 @@ export const ElemSubEvents: FC<Props> = ({
           <ElemButton
             onClick={() =>
               showNewMessages(
-                `Hi EdgeIn, I'd like to add my sub-event to ${eventName}. Details:`,
+                `Hi Mentibus, I'd like to add my sub-event to ${eventName}. Details:`,
               )
             }
             btn="default">
@@ -58,7 +58,7 @@ export const ElemSubEvents: FC<Props> = ({
             btn="default"
             onClick={() =>
               showNewMessages(
-                `Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`,
+                `Hi Mentibus, I'd like to add my event to ${eventName}. Details:`,
               )
             }
             className="mt-2">

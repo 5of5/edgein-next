@@ -55,7 +55,7 @@ export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
         Please check your email
       </h1>
       <p className="mt-5 text-xs font-normal text-center text-slate-500">
-        Once you verify your email address, you can start using EdgeIn.
+        Once you verify your email address, you can start using Mentibus.
       </p>
       <p className="mt-16 text-xs font-normal text-center text-slate-500">
         We&apos;ve sent you an email to{' '}

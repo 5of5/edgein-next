@@ -91,7 +91,7 @@ export const ElemCompaniesSearchInput: FC<Props> = ({
         className={`basic-multi-select border rounded-t-md rounded-b-md border-slate-300 hover:border-slate-400 transition-all placeholder:text-slate-250 focus-visible:outline-none focus:outline-none ${inputClassname}`}
         classNamePrefix="select"
         styles={customStyles}
-        placeholder="e.g Edgein"
+        placeholder="e.g Mentibus"
         filterOption={createFilter({
           ignoreAccents: false,
         })}

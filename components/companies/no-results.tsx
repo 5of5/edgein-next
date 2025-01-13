@@ -28,7 +28,7 @@ export const NoResults: FC<Props> = ({
         <ElemButton
           onClick={() =>
             showNewMessages(
-              `Hi EdgeIn, I'd like to report missing data on ${router.pathname} page`,
+              `Hi Mentibus, I'd like to report missing data on ${router.pathname} page`,
             )
           }
           btn="default"

@@ -73,7 +73,7 @@ export const ElemJobsList: FC<Props> = ({
               className="mt-2"
               onClick={() =>
                 showNewMessages(
-                  `Hi EdgeIn, I'd like to request work experience info on ${resourceUrl}`,
+                  `Hi Mentibus, I'd like to request work experience info on ${resourceUrl}`,
                 )
               }
               btn="default">

@@ -60,7 +60,7 @@ const ElemNotificationPopover: FC<Props> = ({
               <button
                 onClick={() => {
                   showNewMessages(
-                    `Hi EdgeIn, I'd like to report an error on ${organization?.name} notifications`,
+                    `Hi Mentibus, I'd like to report an error on ${organization?.name} notifications`,
                   );
                   close();
                 }}

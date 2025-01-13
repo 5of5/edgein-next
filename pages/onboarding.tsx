@@ -112,7 +112,7 @@ export default function Onboarding() {
               <div className="w-full max-h-full overflow-auto overscroll-none scrollbar-hide">
                 <div className="flex flex-col items-center justify-center px-4 py-20 sm:px-6 md:px-8">
                   <h3 className="text-lg font-medium text-gray-300">
-                    Let&apos;s personalize your EdgeIn
+                    Let&apos;s personalize your Mentibus
                   </h3>
 
                   <div className="flex items-center gap-2 mt-3">

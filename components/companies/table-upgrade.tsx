@@ -63,7 +63,7 @@ export const TableUpgrade: FC<Props> = ({
                   {title}
                 </h2>
                 <p className="text-lg text-white opacity-90">
-                  Try EdgeIn Contributor FREE for 7 days.
+                  Try Mentibus Contributor FREE for 7 days.
                 </p>
                 <div className="flex items-center mt-4 space-x-2">
                   <ElemButton onClick={onBillingClick} btn="default" arrow>

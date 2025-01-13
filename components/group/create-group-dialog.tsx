@@ -86,7 +86,7 @@ export const CreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
             label="Name"
             value={values.name}
             onChange={handleChange}
-            placeholder="e.g: EdgeIn Wizards"
+            placeholder="e.g: Mentibus Wizards"
             className={`${
               error.name
                 ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'

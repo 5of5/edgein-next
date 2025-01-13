@@ -25,7 +25,7 @@ export const InviteGroupMemberEmail = ({
     <EmailLayout>
       <Section className="px-[40px] py-[12px]">
         <Heading className="text-[18px] leading-[24px] font-normal text-left p-0 mx-0 mt-0">
-          Join <strong>{groupName}</strong> on <strong>EdgeIn</strong>.
+          Join <strong>{groupName}</strong> on <strong>Mentibus</strong>.
         </Heading>
 
         {isExistedUser ? (

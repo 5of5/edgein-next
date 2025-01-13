@@ -16,13 +16,13 @@ export const AdditionalEmailConfirmEmail = ({
     <EmailLayout>
       <Section className="px-[40px] py-[12px]">
         <Heading className="text-[#111827] text-[18px] leading-[24px] text-left m-0">
-          Verify your email on EdgeIn
+          Verify your email on Mentibus
         </Heading>
 
         <Section>
           <Text className="text-[#111827] text-[18px] leading-[24px] text-left m-0 mt-1">
             <strong>{username}</strong> has added you to additional emails on{' '}
-            <strong>EdgeIn</strong>.
+            <strong>Mentibus</strong>.
           </Text>
           <Section className="text-left mt-[32px] mb-[32px]">
             <EmailButton text="Verify your email" url={verifyUrl} />

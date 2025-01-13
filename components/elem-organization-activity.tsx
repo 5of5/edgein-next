@@ -74,7 +74,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
             <ElemButton
               onClick={() =>
                 showNewMessages(
-                  `Hi EdgeIn, I'd like to request more data on ${resourceName}`,
+                  `Hi Mentibus, I'd like to request more data on ${resourceName}`,
                 )
               }
               btn="default"

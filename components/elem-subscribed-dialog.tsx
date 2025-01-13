@@ -22,7 +22,7 @@ export const ElemSubscribedDialog: React.FC<Props> = ({ isOpen, onClose }) => {
         <div>
           <h2 className="text-xl font-medium">
             Purchase Complete!
-            <br /> Welcome to EdgeIn Contributor!
+            <br /> Welcome to Mentibus Contributor!
           </h2>
         </div>
 

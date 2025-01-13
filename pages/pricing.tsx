@@ -33,16 +33,16 @@ const Pricing = () => {
           }
         },
         description:
-          'Instant access to browse the largest community dataset in AI and Web3, exclusively on the EdgeIn platform.',
+          'Instant access to browse the largest community dataset in AI and Web3, exclusively on the Mentibus platform.',
         features: [
           'Unlimited search',
           'Access to view organization profiles and updates on investors, events, and news.',
           'Email updates of relevant news in your area based on personalization and tags.',
-          'Make data requests and updates on EdgeIn, fulfilled in <20 minutes.',
+          'Make data requests and updates on Mentibus, fulfilled in <20 minutes.',
           'Create and manage up to 5 personal lists.',
           'Create and manage 3 personal or public groups to hunt and discuss your interests.',
-          'Access the EdgeIn community telegram to request datasets and features.',
-          'See referral points for contributing data and inviting members to the community. Upgrade to access your points and help us make EdgeIn work for everyone!',
+          'Access the Mentibus community telegram to request datasets and features.',
+          'See referral points for contributing data and inviting members to the community. Upgrade to access your points and help us make Mentibus work for everyone!',
         ],
         cta: user
           ? user.billing_org?.status === 'active' || haveSubscriptionFromCredits
@@ -85,7 +85,7 @@ const Pricing = () => {
 
   const faqs = [
     {
-      question: 'Can I try EdgeIn before I purchase a paid plan?',
+      question: 'Can I try Mentibus before I purchase a paid plan?',
       answer:
         'Yes, of course! We offer a FREE trial so you can decide which features work best for your workflow.',
     },
@@ -100,7 +100,7 @@ const Pricing = () => {
     <>
       <NextSeo
         title="Pricing"
-        description="Instant access to browse the largest community dataset in AI and Web3, exclusively on the EdgeIn platform. Accessible, reliable data for the community, by the community. Choose the best plan for your data needs."
+        description="Instant access to browse the largest community dataset in AI and Web3, exclusively on the Mentibus platform. Accessible, reliable data for the community, by the community. Choose the best plan for your data needs."
       />
       <div className="relative overflow-hidden">
         <figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">

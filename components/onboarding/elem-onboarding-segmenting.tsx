@@ -37,7 +37,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
         </h1>
         <p className="mt-5 text-xs text-center text-slate-500 font-normal">
           Learning about you and your job will help us pick the most relevant
-          content for you every time you open EdgeIn.
+          content for you every time you open Mentibus.
         </p>
       </div>
 
@@ -63,7 +63,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             <div className="flex-grow border-t border-black/10"></div>
           </div>
           <h1 className="text-2xl text-center font-medium lg:text-3xl">
-            What would you like to explore on EdgeIn?
+            What would you like to explore on Mentibus?
           </h1>
           <p className="mt-5 text-xs text-center text-slate-500 font-normal">
             Select any of the following choices.
@@ -80,7 +80,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 } shadow-sm cursor-pointer`}
                 onClick={() => {
                   if (item === 'Something else') {
-                    showNewMessages(`Hi EdgeIn, I'd like to explore `);
+                    showNewMessages(`Hi Mentibus, I'd like to explore `);
                   }
                   onChangeExploreChoices(
                     exploreChoices.includes(item)

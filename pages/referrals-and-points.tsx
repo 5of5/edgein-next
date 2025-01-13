@@ -115,7 +115,7 @@ const ReferralsAndPoints: NextPage = () => {
   const onRequestCredits = (creditsType: 'list' | 'group') => {
     if (creditsType === 'list') {
       showNewMessages(
-        `Hi EdgeIn, I qualify to claim 1,000 points for creating a list with at least five organizations. (Email: ${user?.email}, id: ${user?.id})`,
+        `Hi Mentibus, I qualify to claim 1,000 points for creating a list with at least five organizations. (Email: ${user?.email}, id: ${user?.id})`,
       );
       setTimeout(() => {
         onChangeShowClaimListCredits('false');
@@ -124,7 +124,7 @@ const ReferralsAndPoints: NextPage = () => {
 
     if (creditsType === 'group') {
       showNewMessages(
-        `Hi EdgeIn, I qualify to claim 1,000 points for having a group with at least three other EdgeIn members. (Email: ${user?.email}, id: ${user?.id})`,
+        `Hi Mentibus, I qualify to claim 1,000 points for having a group with at least three other Mentibus members. (Email: ${user?.email}, id: ${user?.id})`,
       );
       setTimeout(() => {
         onChangeShowClaimGroupCredits('false');
@@ -271,8 +271,8 @@ const ReferralsAndPoints: NextPage = () => {
 
   const edgeInContributorButtonTitle = userProfile?.users_by_pk
     ?.use_credits_system
-    ? 'Cancel EdgeIn Contributor'
-    : 'Get EdgeIn Contributor';
+    ? 'Cancel Mentibus Contributor'
+    : 'Get Mentibus Contributor';
 
   let creditsLabelMessage = '';
   if (userProfile?.users_by_pk?.use_credits_system) {
@@ -375,10 +375,10 @@ const ReferralsAndPoints: NextPage = () => {
               ? `Claimed +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`
               : `Create Group`,
             content: !hasGroupWithMinMembers
-              ? `Create a group with at least three other EdgeIn members and you immediately get another +${numberWithCommas(
+              ? `Create a group with at least three other Mentibus members and you immediately get another +${numberWithCommas(
                   CREATE_GROUP_CREDITS,
                 )} points.`
-              : `You created a group with at least three other EdgeIn members, claimed +${numberWithCommas(
+              : `You created a group with at least three other Mentibus members, claimed +${numberWithCommas(
                   CREATE_GROUP_CREDITS,
                 )} points.`,
           },
@@ -396,7 +396,7 @@ const ReferralsAndPoints: NextPage = () => {
             title: userByPK?.users_by_pk?.claimed_for?.includes('group')
               ? `Claimed +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`
               : `Claim +${numberWithCommas(CREATE_GROUP_CREDITS)} Points`,
-            content: `You created a group with at least three other EdgeIn members, claimed +${numberWithCommas(
+            content: `You created a group with at least three other Mentibus members, claimed +${numberWithCommas(
               CREATE_GROUP_CREDITS,
             )} points.`,
           },
@@ -431,7 +431,7 @@ const ReferralsAndPoints: NextPage = () => {
             <div>
               <h3 className="font-medium">Welcome To Your Data Community</h3>
               <p className="mt-2 text-sm text-gray-600">
-                <strong>Why do we reward you with points on EdgeIn?</strong>{' '}
+                <strong>Why do we reward you with points on Mentibus?</strong>{' '}
                 Because we are the first data marketplace powered by our
                 community. Which means the more you are involved, the better our
                 data becomes for everyone, and the more you can earn from being

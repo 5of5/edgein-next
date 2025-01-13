@@ -19,8 +19,8 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
   const { user } = useUser();
 
   const defaultTitle = user
-    ? 'Gain access to unlimited data, lists, and groups with an EdgeIn Contributor trial.'
-    : 'Gain access to unlimited data, lists, and groups with EdgeIn Contributor.';
+    ? 'Gain access to unlimited data, lists, and groups with an Mentibus Contributor trial.'
+    : 'Gain access to unlimited data, lists, and groups with Mentibus Contributor.';
 
   return (
     <ElemModal
@@ -36,7 +36,7 @@ export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
       </div>
       <div className="mt-2 text-center text-gray-500">
         <p className="text-gray-500">
-          EdgeIn customers close deals faster thanks to real-time updates on
+          Mentibus customers close deals faster thanks to real-time updates on
           relevant companies, investors, people, and deals.
         </p>
       </div>

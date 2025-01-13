@@ -52,7 +52,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
       page: window.location.href,
       _email: {
         //from: name,
-        subject: 'Feedback - EdgeIn',
+        subject: 'Feedback - Mentibus',
         template: {
           title: false,
           footer: false,

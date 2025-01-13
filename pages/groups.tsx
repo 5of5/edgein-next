@@ -160,7 +160,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
     <>
       <NextSeo
         title="Groups: Discover, Join, Create or Manage Them"
-        description="EdgeIn groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections."
+        description="Mentibus groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections."
       />
       <DashboardLayout>
         <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex lg:px-8">

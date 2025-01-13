@@ -78,7 +78,7 @@ const Home = () => {
     {
       title: 'Investor',
       benefits: [
-        `Discover and connect with the right Founders easily with EdgeIn’s personalization features.`,
+        `Discover and connect with the right Founders easily with Mentibus’s personalization features.`,
         'Get notified of team, investment and traction data with dynamic list updates.',
         'Get a personalized view of the entire marketplace from companies to competing investors to events and news, keeping you one step ahead.',
       ],
@@ -104,7 +104,7 @@ const Home = () => {
       benefits: [
         'Find and track competing events and valuable sub-events around your event including organizers, sponsors, and speakers.',
         'Track and discover partners, sponsors and competing event organizers by tags and locations of interest.',
-        'Market directly to your sweet spot attendee on or in partnership with EdgeIn.',
+        'Market directly to your sweet spot attendee on or in partnership with Mentibus.',
       ],
     },
   ];
@@ -175,7 +175,7 @@ const Home = () => {
 
   const testimonials = [
     {
-      body: 'EdgeIn provides swift access to valuable real-time company data, allowing me to save time and stay nimble amongst evolving market conditions.',
+      body: 'Mentibus provides swift access to valuable real-time company data, allowing me to save time and stay nimble amongst evolving market conditions.',
       author: {
         name: 'Wyatt Khosrowshahi',
         function: 'Investor at Castle Ventures',
@@ -183,7 +183,7 @@ const Home = () => {
       },
     },
     {
-      body: 'As the Web3 and AI industries grow faster and faster, data and market knowledge need to be rebuilt in a way that fits the needs of market participants. EdgeIn provides an important platform that gives every market participant (including investors, companies, event organizers, etc) a fair opportunity and provides easily accessible tools to get and share market knowledge.',
+      body: 'As the Web3 and AI industries grow faster and faster, data and market knowledge need to be rebuilt in a way that fits the needs of market participants. Mentibus provides an important platform that gives every market participant (including investors, companies, event organizers, etc) a fair opportunity and provides easily accessible tools to get and share market knowledge.',
       author: {
         name: 'Dinghan Luo',
         function: 'Managing Director at Capital 6 Eagle',
@@ -191,7 +191,7 @@ const Home = () => {
       },
     },
     {
-      body: 'EdgeIn is a game-changer for me, providing unparalleled access to curated data for smarter investments.',
+      body: 'Mentibus is a game-changer for me, providing unparalleled access to curated data for smarter investments.',
       author: {
         name: 'Dylan Hunzeker',
         function: 'Investor at Palm Drive Capital',
@@ -224,7 +224,7 @@ const Home = () => {
               </ElemButton>
             </div>
             <p className="mt-4 text-gray-400">
-              <strong>EdgeIn is free to try</strong> for as long as you’d like
+              <strong>Mentibus is free to try</strong> for as long as you’d like
             </p>
           </div>
           <div className="flex max-w-2xl mx-auto mt-16 sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
@@ -250,7 +250,7 @@ const Home = () => {
         <section className="pt-16 pb-8 mx-auto max-w-7xl lg:px-6">
           <div className="px-6 text-left lg:text-center lg:px-0">
             <h2 className="pb-8 text-3xl font-bold text-white sm:text-4xl">
-              Why use EdgeIn
+              Why use Mentibus
             </h2>
           </div>
 
@@ -358,7 +358,7 @@ const Home = () => {
         <div className="md:grid md:grid-cols-12 md:gap-10">
           <div className="flex flex-col sm:space-y-4 md:col-span-5">
             <h2 className="pb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Move faster with EdgeIn tools
+              Move faster with Mentibus tools
             </h2>
             {features.map((feature: any, index: number) => {
               const { title, content } = feature;
@@ -467,7 +467,7 @@ const Home = () => {
               <ElemLink
                 href={ROUTES.COMPANIES}
                 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                See all you can accomplish with EdgeIn.
+                See all you can accomplish with Mentibus.
               </ElemLink>
             </h2>
 

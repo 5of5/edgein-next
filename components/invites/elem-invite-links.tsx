@@ -26,7 +26,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
     window.open(
       `https://telegram.me/share/url?url=${getInviteLink()}&text=${
         user.display_name
-      } has invited you to join EdgeIn. Help democratize Web3 data! Use this link for access`,
+      } has invited you to join Mentibus. Help democratize Web3 data! Use this link for access`,
       '_blank',
     );
   };
@@ -35,7 +35,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
     window.open(
       `sms:?&body=${
         user.display_name
-      } has invited you to join EdgeIn. Help democratize Web3 data! Use this link for access: ${getInviteLink()}`,
+      } has invited you to join Mentibus. Help democratize Web3 data! Use this link for access: ${getInviteLink()}`,
       '',
     );
   };
@@ -44,10 +44,10 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
     window.open(
       `mailto:?subject=${
         user.display_name
-      } has invited you to join EdgeIn.&body=Hey there! %0D%0A %0D%0A
+      } has invited you to join Mentibus.&body=Hey there! %0D%0A %0D%0A
 	      	${
             user.display_name
-          } has invited you to join EdgeIn. Help democratize Web3 data! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink()}`,
+          } has invited you to join Mentibus. Help democratize Web3 data! Mentibus combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink()}`,
       '',
     );
   };

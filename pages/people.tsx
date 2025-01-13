@@ -198,7 +198,7 @@ const People: NextPage<Props> = ({
     <>
       <NextSeo
         title={`People in the ${selectedLibrary} market`}
-        description={`Information on founders, investors, and executives for ${selectedLibrary} organizations. Use the EdgeIn Platform to explore the full profile.`}
+        description={`Information on founders, investors, and executives for ${selectedLibrary} organizations. Use the Mentibus Platform to explore the full profile.`}
       />
       <DashboardLayout>
         <div className="relative">

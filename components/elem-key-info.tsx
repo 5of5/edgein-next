@@ -274,7 +274,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   //           )
   //           .join(' ')
   //       : web3Address,
-  //     isPremium: !userProfile || edgeInContributorButtonEnabled,
+  //     isPremium: !userProfile || MentibusContributorButtonEnabled,
   //   });
   // }
 

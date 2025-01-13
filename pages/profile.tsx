@@ -543,7 +543,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
               </div>
               <div className="max-w-lg">
                 <p className="text-sm text-white opacity-80">
-                  You have not linked your account to a profile on EdgeIn.
+                  You have not linked your account to a profile on Mentibus.
                   Search your name on the site and claim profile.
                 </p>
                 <ElemButton

@@ -54,7 +54,7 @@ export const ProfileEditName: React.FC<Props> = ({}) => {
     </div>
     <div className="mt-2 text-sm text-slate-600">
       <span className="font-bold">Note:</span> If you change your
-      name on EdgeIn, you won’t be able to change it again for 60
+      name on Mentibus, you won’t be able to change it again for 60
       days.
     </div>
 

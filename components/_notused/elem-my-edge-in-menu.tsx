@@ -12,7 +12,7 @@ import { MY_EDGEIN_MENU_OPEN_KEY } from '@/utils/constants';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 
-const ElemMyEdgeInMenu = () => {
+const ElemMyMentibusMenu = () => {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -39,7 +39,7 @@ const ElemMyEdgeInMenu = () => {
                   open ? 'rotate-0' : '-rotate-90 '
                 } h-6 w-6 transform transition-all`}
               />
-              <span className="text-lg font-bold">My EdgeIn</span>
+              <span className="text-lg font-bold">My Mentibus</span>
             </Disclosure.Button>
           </div>
 
@@ -85,4 +85,4 @@ const ElemMyEdgeInMenu = () => {
   );
 };
 
-export default ElemMyEdgeInMenu;
+export default ElemMyMentibusMenu;

@@ -31,10 +31,10 @@ const LogoMonotone: React.FC<any> = ({ className, mode = 'logo' }) => {
 };
 
 const BrandAssets: NextPage<Props> = () => {
-  const downloadBrandAssets = '/brand/EdgeIn-brand-assets.zip';
-  const downloadPrimaryLogo = '/brand/EdgeIn-primary-logo.zip';
-  const downloadMonotone = '/brand/EdgeIn-monotone.zip';
-  const downloadLogomark = '/brand/EdgeIn-logomark.zip';
+  const downloadBrandAssets = '/brand/Mentibus-brand-assets.zip';
+  const downloadPrimaryLogo = '/brand/Mentibus-primary-logo.zip';
+  const downloadMonotone = '/brand/Mentibus-monotone.zip';
+  const downloadLogomark = '/brand/Mentibus-logomark.zip';
 
   return (
     <>
@@ -57,10 +57,10 @@ const BrandAssets: NextPage<Props> = () => {
         <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-32">
           <div className="max-w-2xl mx-auto text-center lg:max-w-3xl lg:px-12">
             <h1 className="text-4xl font-bold tracking-tight font-display sm:px-12 sm:text-6xl">
-              EdgeIn brand assets &amp; guidelines
+              Mentibus brand assets &amp; guidelines
             </h1>
             <p className="mt-6 text-xl leading-relaxed font-display">
-              Thanks for your interest in EdgeIn! We have a few guidelines for
+              Thanks for your interest in Mentibus! We have a few guidelines for
               using our brand resources. Please take a moment to familiarize
               yourself with them.
             </p>
@@ -82,7 +82,7 @@ const BrandAssets: NextPage<Props> = () => {
                 Brand Name
               </h2>
               <p className="text-xl leading-relaxed font-display text-slate-600">
-                “EdgeIn” is one word, spelled with a big E and big I.
+                “Mentibus” is one word, spelled with a big E and big I.
               </p>
             </div>
           </div>
@@ -113,7 +113,7 @@ const BrandAssets: NextPage<Props> = () => {
               </div>
               <p className="mt-4 font-bold">Primary Logo</p>
               <p className="mt-1 text-slate-600">
-                This is the main EdgeIn logo. It should be used in this form
+                This is the main Mentibus logo. It should be used in this form
                 whenever possible.
               </p>
             </div>
@@ -236,7 +236,7 @@ const BrandAssets: NextPage<Props> = () => {
                     <span className="font-bold">
                       In a situation where the brand is already established.
                     </span>{' '}
-                    Within our product or at an EdgeIn event. Anywhere the
+                    Within our product or at an Mentibus event. Anywhere the
                     Logomark will be instantly recognized as part of our brand.
                   </p>
                 </dt>
@@ -293,7 +293,7 @@ const BrandAssets: NextPage<Props> = () => {
             </h2>
             <p className="text-xl text-gray-500 font-display">
               While we use a lot of delightful colors, Indigo (#5E41FE) is
-              EdgeIn&rsquo;s hero color. The hex codes of our official brand
+              Mentibus&rsquo;s hero color. The hex codes of our official brand
               palette that we use as solids and gradients:
             </p>
           </div>
@@ -334,7 +334,7 @@ const BrandAssets: NextPage<Props> = () => {
             </p>
             <h2 className="mb-4 text-3xl font-bold lg:text-4xl">Typography</h2>
             <p className="text-xl text-gray-500 font-display">
-              Inter is the font used on EdgeIn marketing and product web
+              Inter is the font used on Mentibus marketing and product web
               experiences. It’s available for most world alphabets. You can find
               it{' '}
               <a

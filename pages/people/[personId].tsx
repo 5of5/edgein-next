@@ -146,8 +146,8 @@ const Person: NextPage<Props> = (props: Props) => {
         }
         description={
           person.name
-            ? `View ${person.name}’s profile on EdgeIn, the world’s leading AI & Web3 data intelligence platform. ${person.name} has ${personJobs.length} jobs listed on their profile. See the complete profile on EdgeIn and discover ${person.name}’s connections and jobs at similar companies.`
-            : 'View profile on EdgeIn, the world’s leading AI & Web3 data intelligence platform. See the complete profile on EdgeIn and discover connections and jobs at similar companies.'
+            ? `View ${person.name}’s profile on Mentibus, the world’s leading AI & Web3 data intelligence platform. ${person.name} has ${personJobs.length} jobs listed on their profile. See the complete profile on Mentibus and discover ${person.name}’s connections and jobs at similar companies.`
+            : 'View profile on Mentibus, the world’s leading AI & Web3 data intelligence platform. See the complete profile on Mentibus and discover connections and jobs at similar companies.'
         }
         openGraph={{
           images: [
@@ -237,7 +237,7 @@ const Person: NextPage<Props> = (props: Props) => {
                           btn="default"
                           onClick={() =>
                             showNewMessages(
-                              `Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`,
+                              `Hi Mentibus, I'd like to claim this profile: ${profileUrl}`,
                             )
                           }>
                           Claim profile

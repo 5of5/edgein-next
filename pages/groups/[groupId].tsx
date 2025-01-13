@@ -150,7 +150,7 @@ const Group: NextPage<Props> = (props: Props) => {
         description={
           groupData.description
             ? groupData.description
-            : 'EdgeIn groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections.'
+            : 'Mentibus groups provide a place for professionals in the same industry or with similar interests to share their insights, ask for guidance, and build valuable connections.'
         }
       />
       <DashboardLayout>

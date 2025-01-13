@@ -28,7 +28,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
     window.open(
       `https://telegram.me/share/url?url=${getInviteLink()}&text=${
         user.display_name
-      } has invited you to join EdgeIn. Help democratize web3 data! Use this link for access`,
+      } has invited you to join Mentibus. Help democratize web3 data! Use this link for access`,
       '_blank',
     );
   };
@@ -37,7 +37,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
     window.open(
       `sms:?&body=${
         user.display_name
-      } has invited you to join EdgeIn. Help democratize web3 data! Use this link for access: ${getInviteLink()}`,
+      } has invited you to join Mentibus. Help democratize web3 data! Use this link for access: ${getInviteLink()}`,
       '',
     );
   };
@@ -49,7 +49,7 @@ export const ElemInviteLinks = ({ user }: Props) => {
       } has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
 	      	${
             user.display_name
-          } has invited you to join EdgeIn. Help democratize web3 data! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink()}`,
+          } has invited you to join Mentibus. Help democratize web3 data! Mentibus combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink()}`,
       '',
     );
   };

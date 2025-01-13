@@ -45,12 +45,12 @@ const AskEdgein: NextPage = () => {
 
   return (
     <>
-      <NextSeo title="Ask EdgeIn" />
+      <NextSeo title="Ask Mentibus" />
       <div className="relative">
         <FigureBlurredBg className="top-0 left-0 right-0 -mt-10 -mb-32 -bottom-10 md:-mt-64 lg:-mt-32" />
         <div className="max-w-2xl px-4 py-12 mx-auto sm:px-6 lg:py-16 lg:px-8">
           <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-center lg:text-5xl">
-            Ask EdgeIn
+            Ask Mentibus
           </h1>
           <div className="relative mt-16">
             <FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-6  text-gray-500" />

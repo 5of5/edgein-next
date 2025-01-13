@@ -28,7 +28,7 @@ export const ElemSignUpProfile: FC<Props> = ({
         Is this you?
       </h1>
       <p className="mt-4 text-xs font-normal text-center text-slate-500">
-        We&apos;ve found a person on EdgeIn that might be you. If you confirm,
+        We&apos;ve found a person on Mentibus that might be you. If you confirm,
         you&apos;ll claim this profile.
       </p>
 

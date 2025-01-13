@@ -188,7 +188,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
               className="mt-2"
               onClick={() =>
                 showNewMessages(
-                  `Hi EdgeIn, I'd like to request team data on ${resourceName}`,
+                  `Hi Mentibus, I'd like to request team data on ${resourceName}`,
                 )
               }
               btn="default">

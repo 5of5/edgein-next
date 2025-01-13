@@ -237,7 +237,7 @@ export default function Account({ userProfile }: Props) {
               <p className="text-sm text-gray-600">
                 {user && user.auth0_linkedin_id
                   ? 'Your LinkedIn account is connected.'
-                  : 'Connect your LinkedIn account to validate your profile and contribute to EdgeIn. Our team will then review your account and enable it for contribution (this may take up to one business day).'}
+                  : 'Connect your LinkedIn account to validate your profile and contribute to Mentibus. Our team will then review your account and enable it for contribution (this may take up to one business day).'}
               </p>
             </div>
           </EditSection>
@@ -372,13 +372,13 @@ export default function Account({ userProfile }: Props) {
               <div>
                 <div className="flex items-center space-x-1">
                   <IconContributor className="w-6 h-6 text-primary-500" />
-                  <p className="text-sm text-gray-600">EdgeIn Contributor</p>
+                  <p className="text-sm text-gray-600">Mentibus Contributor</p>
                 </div>
               </div>
             ) : (
               <div className="p-5 rounded-lg shadow bg-primary-500">
                 <h2 className="text-xl font-medium text-white">
-                  Try EdgeIn Contributor FREE for 7 days
+                  Try Mentibus Contributor FREE for 7 days
                 </h2>
                 <p className="text-sm text-white opacity-80">
                   Get real-time updates on the companies, people, deals and

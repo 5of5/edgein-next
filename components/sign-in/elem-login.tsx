@@ -199,7 +199,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
         </div>
       </div>
       <p className="mt-16 text-xs text-center text-gray-500">
-        By signing in, you agree to EdgeIn&apos;s{' '}
+        By signing in, you agree to Mentibus&apos;s{' '}
         <a href="https://edgein.io/terms/" className="underline ">
           Terms of Service
         </a>{' '}

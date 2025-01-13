@@ -226,7 +226,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews, newsTab }) => {
     <>
       <NextSeo
         title={`All Latest News`}
-        description={`EdgeIn provides the latest ${selectedLibrary} news and trends. Explore industry research and reports from the frontline of ${selectedLibrary} technology news. Discover an index of the most active and influential capital in the industry.`}
+        description={`Mentibus provides the latest ${selectedLibrary} news and trends. Explore industry research and reports from the frontline of ${selectedLibrary} technology news. Discover an index of the most active and influential capital in the industry.`}
       />
       <DashboardLayout>
         <div className="relative">

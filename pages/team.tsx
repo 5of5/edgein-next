@@ -136,7 +136,7 @@ const Team: NextPage<Props> = () => {
   return (
     <>
       <NextSeo
-        title="Meet the EdgeIn Team"
+        title="Meet the Mentibus Team"
         description="Get to know the people leading data insights for the AI and Web3 community."
         openGraph={{
           images: [
@@ -144,7 +144,7 @@ const Team: NextPage<Props> = () => {
               url: 'https://edgein.io/images/og/team.jpg',
               width: 800,
               height: 600,
-              alt: 'EdgeIn Team',
+              alt: 'Mentibus Team',
               type: 'image/jpeg',
             },
           ],

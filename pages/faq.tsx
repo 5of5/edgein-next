@@ -13,84 +13,84 @@ const Faq: NextPage<Props> = ({}) => {
 
   const faqs = [
     {
-      question: `What is EdgeIn's mission?`,
+      question: `What is Mentibus's mission?`,
       answer:
-        'Our mission is create a fair and open platform that allows you to participate as a community member and owner of your own data. EdgeIn is free from centralized interference and controls, giving you the keys to your data and your network.',
+        'Our mission is create a fair and open platform that allows you to participate as a community member and owner of your own data. Mentibus is free from centralized interference and controls, giving you the keys to your data and your network.',
     },
     {
       question: 'How much does membership cost?',
-      answer: 'Nothing! Join EdgeIn for free as long as you’d like.',
+      answer: 'Nothing! Join Mentibus for free as long as you’d like.',
     },
     {
-      question: 'Why is my data listed on EdgeIn?',
+      question: 'Why is my data listed on Mentibus?',
       answer:
-        'EdgeIn is a historic record of early market data. We enable individuals and companies to access these data sets and earn rewards off of their contributions. Our team works hard to notify both individuals and companies on the platform and provide them with an opportunity to view, correct, and enrich their data through our claimed profile process.',
+        'Mentibus is a historic record of early market data. We enable individuals and companies to access these data sets and earn rewards off of their contributions. Our team works hard to notify both individuals and companies on the platform and provide them with an opportunity to view, correct, and enrich their data through our claimed profile process.',
     },
     {
       question: 'Where does my data come from?',
       answer:
-        'Data on EdgeIn comes directly from nearly 50 open, public databases, as well as a collection of partners that have sold data to EdgeIn Inc.',
+        'Data on Mentibus comes directly from nearly 50 open, public databases, as well as a collection of partners that have sold data to Mentibus Inc.',
     },
     {
-      question: `How do I edit my company's profile on EdgeIn?`,
+      question: `How do I edit my company's profile on Mentibus?`,
       answer:
-        'Currently, you cannot directly edit your company profile. However, you can suggest edits and submit new data to our team of Edgeineers who work 24/7 to validate, enrich, and correct data on EdgeIn for the community via Intercom. We will be releasing user edit functionality in the near future, so stay tuned for updates.',
+        'Currently, you cannot directly edit your company profile. However, you can suggest edits and submit new data to our team of Edgeineers who work 24/7 to validate, enrich, and correct data on Mentibus for the community via Intercom. We will be releasing user edit functionality in the near future, so stay tuned for updates.',
     },
     {
       question: 'How do I edit my personal profile?',
       answer:
-        'As with company profiles, we do not currently support direct editing of personal profiles. However, you can suggest edits and submit new data to our team of Edgeineers who work 24/7 to validate, enrich, and correct all personal data on EdgeIn for the community via Intercom. In our upcoming interactions, we will allow you to suggest and edit your personal profile.',
+        'As with company profiles, we do not currently support direct editing of personal profiles. However, you can suggest edits and submit new data to our team of Edgeineers who work 24/7 to validate, enrich, and correct all personal data on Mentibus for the community via Intercom. In our upcoming interactions, we will allow you to suggest and edit your personal profile.',
     },
     {
       question: 'What are points?',
       answer:
-        'Points are our way of validating the network. You earn points for claiming a profile and/or referring friends to EdgeIn. Points are being tracked by the system and will allow for retroactive conversion into the EdgeIn Foundation token functionality. ',
+        'Points are our way of validating the network. You earn points for claiming a profile and/or referring friends to Mentibus. Points are being tracked by the system and will allow for retroactive conversion into the Mentibus Foundation token functionality. ',
     },
     {
       question: 'What is the referral network?',
       answer:
-        'The referral network is our way of rewarding YOU for inviting your network to EdgeIn. We plan on instituting a perpetual referral link, so that we can fulfill this simple promise - each time you earn points, the friends and colleagues you invited to the network, are rewarded as well.',
+        'The referral network is our way of rewarding YOU for inviting your network to Mentibus. We plan on instituting a perpetual referral link, so that we can fulfill this simple promise - each time you earn points, the friends and colleagues you invited to the network, are rewarded as well.',
     },
     {
-      question: 'How accurate is the data on EdgeIn?',
-      answer: `Our data is mostly correct, but not perfect. We work with YOU, the community, to build out and enrich the data sets. EdgeIn's data model is unique in that we don't spend time and investor money like other platforms to ensure WE own the data; instead, our model allows for data contributors to participate in revenue and rewards as the platform grows.`,
+      question: 'How accurate is the data on Mentibus?',
+      answer: `Our data is mostly correct, but not perfect. We work with YOU, the community, to build out and enrich the data sets. Mentibus's data model is unique in that we don't spend time and investor money like other platforms to ensure WE own the data; instead, our model allows for data contributors to participate in revenue and rewards as the platform grows.`,
     },
     {
       question: 'What is the claim your profile button for?',
       answer:
-        'When you claim your profile, an EdgeIneer is immediately assigned to work with you to correct bad data and enrich your profile. This is not only useful for you as an individual, but also for partners who are contributing data to the platform.',
+        'When you claim your profile, an Mentibuseer is immediately assigned to work with you to correct bad data and enrich your profile. This is not only useful for you as an individual, but also for partners who are contributing data to the platform.',
     },
     {
       question: 'How do filters work?',
       answer:
-        'We use filters to allow you to taxonomize and build a bank of similar companies of interest. EdgeIn is working on building a personalized experience for the community based on interest. The filters are all about allowing you to connect and build a better product for the community.',
+        'We use filters to allow you to taxonomize and build a bank of similar companies of interest. Mentibus is working on building a personalized experience for the community based on interest. The filters are all about allowing you to connect and build a better product for the community.',
     },
     {
       question: 'How much data can I export on the Contributor plan?',
       answer:
-        'As much as you want. EdgeIn is intentionally priced for accessibility because we emphatically feel that the data belongs to the community - NOT just builders and hedge funds that can afford to pay $60,000+ per year for private analysts or subscriptions to Pitchbook, Nansen, and others.',
+        'As much as you want. Mentibus is intentionally priced for accessibility because we emphatically feel that the data belongs to the community - NOT just builders and hedge funds that can afford to pay $60,000+ per year for private analysts or subscriptions to Pitchbook, Nansen, and others.',
     },
     {
-      question: 'How can EdgeIn help my Web3 startup?',
-      answer: `By claiming your personal and/or company profile and working with our EdgeIneers to validate and enrich your date, you get promoted in the trending list of companies. EdgeIn has 10,000 MAU's that consist mostly of investors or other builders, which is incredible visibility for your company and brand. The platform also lists and promotes your profile directly to community members based on Tags. The more correct the Tags, the easier it is for interested investors, partners, and customers to find, validate, and contact your company.`,
+      question: 'How can Mentibus help my Web3 startup?',
+      answer: `By claiming your personal and/or company profile and working with our Mentibuseers to validate and enrich your date, you get promoted in the trending list of companies. Mentibus has 10,000 MAU's that consist mostly of investors or other builders, which is incredible visibility for your company and brand. The platform also lists and promotes your profile directly to community members based on Tags. The more correct the Tags, the easier it is for interested investors, partners, and customers to find, validate, and contact your company.`,
     },
     {
       question:
         'What is your goal with the product overall? What do you want it to be?',
-      answer: `Our goal is to serve as an open platform for accessibility to community data sets and to reward your contributions to the network itself. EdgeIn aims to be a LinkedIn, meets Facebook, meets Pitchbook, but without shareholders. The only decision makers on our platform are data and token holders. Let's build a better future together!`,
+      answer: `Our goal is to serve as an open platform for accessibility to community data sets and to reward your contributions to the network itself. Mentibus aims to be a LinkedIn, meets Facebook, meets Pitchbook, but without shareholders. The only decision makers on our platform are data and token holders. Let's build a better future together!`,
     },
     {
       question:
         'Does the contributor plan allow users to extract company URLs?',
       answer:
-        'The short answer is, yes, we do. However, this feature is limited for now and will continue to be built out in the upcoming months as EdgeIn plans to become the go-to source of data and information for the community in the future.',
+        'The short answer is, yes, we do. However, this feature is limited for now and will continue to be built out in the upcoming months as Mentibus plans to become the go-to source of data and information for the community in the future.',
     },
     {
       question: 'How can I have my company listed?',
-      answer: 'Sign up and ask an EdgeIneer below.',
+      answer: 'Sign up and ask an Mentibuseer below.',
     },
     {
-      question: 'Can I try EdgeIn Contributor plan before I purchase?',
+      question: 'Can I try Mentibus Contributor plan before I purchase?',
       answer:
         'Yes, of course! We offer a FREE trial so you can decide which features work best for your workflow.',
     },

@@ -28,7 +28,7 @@ const Contact: NextPage = () => {
       message: message,
       _email: {
         from: name,
-        subject: 'Contact - EdgeIn',
+        subject: 'Contact - Mentibus',
         template: {
           title: false,
           footer: false,
@@ -52,7 +52,7 @@ const Contact: NextPage = () => {
             Contact
           </h1>
           <div className="mt-2 text-xl text-slate-600">
-            Partner with EdgeIn, submit a profile, or simply get in touch.
+            Partner with Mentibus, submit a profile, or simply get in touch.
             <div>Our team would love to hear from you!</div>
           </div>
           <div className="mt-16 relative">

@@ -52,28 +52,28 @@ export const DashboardBanner: FC<Props> = ({ className = '' }) => {
       title: `${numberWithCommas(user.credits)} points available`,
       content: `You can use your points to get ${numberWithCommas(
         Math.floor(user.credits / REFERRAL_CREDITS_AMOUNT),
-      )} months of EdgeIn Contributor.`,
+      )} months of Mentibus Contributor.`,
       icon: IconCurrencyDollar,
     };
   } else if (isPaidUser) {
     banner = {
-      title: 'Get EdgeIn for Free',
+      title: 'Get Mentibus for Free',
       content: `Invite a friend and get ${numberWithCommas(
         REFERRAL_CREDITS_AMOUNT,
-      )} points for 1 month of EdgeIn Contributor for free.`,
+      )} points for 1 month of Mentibus Contributor for free.`,
       icon: IconGift,
     };
   } else if (isFreeUser) {
     banner = {
       title: `Get ${numberWithCommas(REFERRAL_CREDITS_AMOUNT)} points`,
       content:
-        'Share EdgeIn with your friend for 1 month of EdgeIn Contributor for free.',
+        'Share Mentibus with your friend for 1 month of Mentibus Contributor for free.',
       icon: IconCurrencyDollar,
     };
   } else {
     // Visitor
     banner = {
-      title: 'Get more from EdgeIn',
+      title: 'Get more from Mentibus',
       content:
         'Get unlimited browsing, personalized results, custom tools, and much more.',
     };
