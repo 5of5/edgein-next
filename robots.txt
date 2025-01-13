@@ -34,3 +34,5 @@ Crawl-delay: 1
 # Bingbot specific rules
 User-agent: Bingbot
 Crawl-delay: 1 
+
+# Algolia-Crawler-Verif: 0BF2F4E7FC10A6EC
