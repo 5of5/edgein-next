@@ -177,7 +177,7 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                     roundedFull={false}
                     className={`py-2 rounded-lg ${
                       selectedGroupTab?.id === tab.id
-                        ? 'border-primary-500 hover:border-primary-500 hover:bg-gray-200'
+                        ? 'border-primary-500 hover:border-primary-500 '
                         : ''
                     }`}>
                     {tab.name}

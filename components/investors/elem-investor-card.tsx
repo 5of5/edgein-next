@@ -51,7 +51,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
       <div className="flex flex-col justify-between h-full">
         <div>
           <ElemLink href={`${ROUTES.INVESTORS}/${slug}`}>
-            <div className="flex items-center w-full gap-4 shrink-0">
+            <div className="flex items-center w-full gap-4 shrink-0 bg-[linear-gradient(180deg,_#1a1a1a_0%,_#0a0a0a_100%)] p-4 rounded-lg">
               <ElemPhoto
                 photo={logo}
                 wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"

@@ -151,7 +151,7 @@ export const TableView: FC<Props> = ({
                         <th
                           key={key}
                           {...restColumnProps}
-                          className="relative px-2 py-2 text-sm font-medium text-left text-gray-600 whitespace-nowrap min-w-content bg-gray-25">
+                          className="relative px-2 py-2 text-sm font-medium text-left text-gray-600 whitespace-nowrap min-w-content">
                           <div className="flex items-center min-w-content">
                             {column.disableDropdown != true ? (
                               <ElemDropdown

@@ -81,17 +81,19 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
           <ElemLink
             href={`${ROUTES.PEOPLE}/${slug}`}
             className="flex items-center mb-4 gap-x-4">
-            <ElemPhoto
-              photo={picture}
-              wrapClass="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-black overflow-hidden border  border-neutral-700"
-              imgClass="object-fit max-w-full max-h-full"
-              imgAlt={name}
-              placeholder="user"
-              placeholderClass="text-gray-300 w-full h-full"
-            />
-            <h3 className="font-medium truncate" title={name ? name : ''}>
-              {name}
-            </h3>
+            <div className="flex items-center w-full gap-4 shrink-0 bg-[linear-gradient(180deg,_#1a1a1a_0%,_#0a0a0a_100%)] p-4 rounded-lg">
+              <ElemPhoto
+                photo={picture}
+                wrapClass="flex items-center justify-center shrink-0 w-12 aspect-square rounded-full bg-black overflow-hidden border  border-neutral-700"
+                imgClass="object-fit max-w-full max-h-full"
+                imgAlt={name}
+                placeholder="user"
+                placeholderClass="text-gray-300 w-full h-full"
+              />
+              <h3 className="font-medium truncate" title={name ? name : ''}>
+                {name}
+              </h3>
+            </div>
           </ElemLink>
           <div>
             {currentJob && (
@@ -140,14 +142,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
                 )}
               </div>
             )}
-            {personTags.length > 0 && (
-              <ElemTags
-                className="my-4"
-                limit={CARD_DEFAULT_TAGS_LIMIT}
-                resourceType={'people'}
-                tags={personTags}
-              />
-            )}
+           
           </div>
         </div>
 

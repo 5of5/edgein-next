@@ -155,7 +155,7 @@ export const ElemInviteInvestmentMembers: FC<Props> = ({ vcFirmName }) => {
             <Fragment key={company?.id}>
               {canSendInvestorInvitation(userById?.users, company?.id) ? (
                 <div
-                  className={`flex flex-row items-center py-2 px-3 rounded-lg border  border-neutral-700 hover:bg-gray-50 hover:cursor-pointer ${
+                  className={`flex flex-row items-center py-2 px-3 rounded-lg border  border-neutral-700  hover:cursor-pointer ${
                     includes(selectedCompanies, company)
                       ? 'border-primary-500 bg-gray-50'
                       : ''

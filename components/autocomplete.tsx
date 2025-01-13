@@ -129,7 +129,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
           inputElement: inputRef.current as HTMLInputElement | null,
         })}>
         <textarea
-          className={`w-full bg-black px-3 py-2 resize-none rounded-lg border-none outline-none ring-1 ring-gray-300 focus:ring-gray-300 placeholder:text-gray-500 hover:bg-gray-50 ${
+          className={`w-full bg-black px-3 py-2 resize-none rounded-lg border-none outline-none ring-1 ring-gray-300 focus:ring-gray-300 placeholder:text-gray-500  ${
             state.query.length > 280 ? 'text-base' : 'text-lg'
           } ${props.textareaClass}`}
           ref={inputRef}

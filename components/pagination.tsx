@@ -79,7 +79,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
           <select
             value={itemsPerPage}
             onChange={onChangePageSize}
-            className="inline-flex justify-center text-sm font-medium text-gray-700 bg-black border border-gray-300 rounded-full hover:bg-gray-50 active:border-primary-500 focus:ring-0 pl-2.5 pr-8 py-1.5">
+            className="inline-flex justify-center text-sm font-medium text-gray-700 bg-black border border-gray-300 rounded-full  active:border-primary-500 focus:ring-0 pl-2.5 pr-8 py-1.5">
             {itemsPerPageOptions.map(itemsPerPage => {
               return (
                 <option key={itemsPerPage} value={itemsPerPage}>

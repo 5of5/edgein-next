@@ -64,7 +64,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
       <div className="flex flex-col justify-between h-full">
         <div>
           <ElemLink href={`${ROUTES.COMPANIES}/${slug}`}>
-            <div className="flex items-center w-full gap-4 shrink-0">
+            <div className="flex items-center w-full gap-4 shrink-0 bg-[linear-gradient(180deg,_#1a1a1a_0%,_#0a0a0a_100%)] p-4 rounded-lg">
               <ElemPhoto
                 photo={logo}
                 wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
@@ -73,14 +73,26 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
                 placeholder="company"
                 placeholderClass="text-gray-300 w-full h-full m-4"
               />
-              <ElemTooltip content={name} mode="light">
-                <h3 className="text-lg font-medium truncate">{name}</h3>
-              </ElemTooltip>
-              {coin && (
-                <ElemTooltip content={`Token`} mode="light" className="">
-                  <span className="ml-1 uppercase">{coin.ticker}</span>
-                </ElemTooltip>
-              )}
+              <div className="flex flex-col flex-grow">
+                <div className="flex items-center">
+                  <ElemTooltip content={name} mode="light">
+                    <h3 className="text-lg font-medium truncate text-gray-100">{name}</h3>
+                  </ElemTooltip>
+                  {coin && (
+                    <ElemTooltip content={`Token`} mode="light" className="">
+                      <span className="ml-1 uppercase text-gray-300">{coin.ticker}</span>
+                    </ElemTooltip>
+                  )}
+                </div>
+                {tags && (
+                  <ElemTags
+                    className="mt-2"
+                    limit={CARD_DEFAULT_TAGS_LIMIT}
+                    resourceType={'companies'}
+                    tags={tags}
+                  />
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
@@ -158,14 +170,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
               </div>
             )}
 
-            {tags && (
-              <ElemTags
-                className="mt-4"
-                limit={CARD_DEFAULT_TAGS_LIMIT}
-                resourceType={'companies'}
-                tags={tags}
-              />
-            )}
+           
           </div>
         </div>
 

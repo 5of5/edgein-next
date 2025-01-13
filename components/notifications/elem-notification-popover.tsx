@@ -52,7 +52,7 @@ const ElemNotificationPopover: FC<Props> = ({
                     onMarkAsRead(notification.id);
                     close();
                   }}
-                  className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500">
+                  className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg  hover:text-primary-500">
                   <IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
                   <span className="text-sm">Mark as read</span>
                 </button>
@@ -64,7 +64,7 @@ const ElemNotificationPopover: FC<Props> = ({
                   );
                   close();
                 }}
-                className="flex items-center space-x-2 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500">
+                className="flex items-center space-x-2 w-full px-2 py-2  hover:text-primary-500">
                 <IconExclamationTriangle className="h-4 aspect-square group-hover:text-primary-500" />
                 <span className="text-sm">Report an error</span>
               </button>

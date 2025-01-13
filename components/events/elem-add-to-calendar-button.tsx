@@ -71,7 +71,7 @@ const ElemAddToCalendarButton: FC<Props> = ({ className, event }) => {
               {({ active }) => (
                 <button
                   onClick={() => handleClick(item)}
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-50 group">
+                  className="flex items-center w-full px-4 py-2  group">
                   {item.icon && (
                     <item.icon
                       className="w-5 h-5 mr-2 shrink-0"

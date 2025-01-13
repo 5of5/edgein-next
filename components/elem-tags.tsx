@@ -42,7 +42,7 @@ export const ElemTags: React.FC<Props> = ({
                   href={`/${resourceType}/?filters=${encodeURIComponent(
                     `{"${filter}":{"tags":["${tag}"]}}`,
                   )}`}>
-                  <button className="px-3 py-1 text-xs font-medium bg-neutral-900 rounded-full shrink-0 hover:bg-gray-200">
+                  <button className="px-3 py-1 text-xs font-medium bg-neutral-900 rounded-full shrink-0 ">
                     {tag}
                   </button>
                 </a>

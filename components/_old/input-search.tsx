@@ -31,7 +31,7 @@ export const InputSearch: React.FC<PropsWithChildren<Props>> = ({
           value={value}
           placeholder={placeholder}
           onChange={onChange}
-          className="w-full pl-10 pr-3 py-1.5 text-dark-500 relative bg-black rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400"
+          className="w-full pl-10 pr-3 py-1.5 text-white relative bg-neutral-900 rounded-md border-none outline-none ring-1 ring-gray-700 hover:bg-neutral-800 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-gray-500"
         />
       </label>
     </div>

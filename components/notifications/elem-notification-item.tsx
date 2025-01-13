@@ -27,7 +27,7 @@ const ElemNotificationItem: FC<Props> = ({
   return (
     <div
       onClick={() => onMarkAsRead(notification.id)}
-      className={`flex items-center justify-between px-2 sm:px-2 py-2 shrink-0 w-full overflow-hidden sm:rounded-md group-hover:bg-gray-50 ${
+      className={`flex items-center justify-between px-2 sm:px-2 py-2 shrink-0 w-full overflow-hidden sm:rounded-md group- ${
         notification.read ? 'bg-transparent' : 'bg-gray-50'
       }`}>
       <div className="flex items-center space-x-2 sm:pr-20">

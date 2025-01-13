@@ -325,7 +325,7 @@ export const ElemInvestments: React.FC<Props> = ({
                                 <Menu
                                   as="div"
                                   className="relative inline-block ml-1 text-left">
-                                  <Menu.Button className="block text-gray-500 align-middle rounded-full hover:bg-gray-200">
+                                  <Menu.Button className="block text-gray-500 align-middle rounded-full ">
                                     <IconChevronDownMini className="w-5 h-5" />
                                   </Menu.Button>
 

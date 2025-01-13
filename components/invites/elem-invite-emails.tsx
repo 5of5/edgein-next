@@ -84,7 +84,7 @@ const ElemInviteEmails: FC<Props> = ({
 
         <div>
           <Combobox.Input
-            className={`relative w-full px-3 py-2 mt-2 text-sm bg-black border-none rounded-full outline-none hover:bg-gray-50 focus:ring-gray-300 focus:outline-none placeholder:text-gray-400 ${
+            className={`relative w-full px-3 py-2 mt-2 text-sm bg-black border-none rounded-full outline-none  focus:ring-gray-300 focus:outline-none placeholder:text-gray-400 ${
               query.length > 1 && (emailError || isDuplicatedEmail)
                 ? 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                 : 'ring-1 ring-gray-300'
@@ -107,7 +107,7 @@ const ElemInviteEmails: FC<Props> = ({
                   <Combobox.Option
                     key={item.id}
                     value={item}
-                    className="flex items-center px-4 py-2 cursor-pointer gap-x-2 hover:bg-gray-50">
+                    className="flex items-center px-4 py-2 cursor-pointer gap-x-2 ">
                     {item?.picture ? (
                       <ElemPhoto
                         wrapClass="w-10 h-10 aspect-square shrink-0"
@@ -144,7 +144,7 @@ const ElemInviteEmails: FC<Props> = ({
                           name: query,
                           work_email: query,
                         }}
-                        className="px-4 py-2 cursor-pointer text-primary-500 hover:no-underline hover:bg-gray-50">
+                        className="px-4 py-2 cursor-pointer text-primary-500 hover:no-underline ">
                         Add{' '}
                         <span className="font-medium underline">{query}</span>
                       </Combobox.Option>

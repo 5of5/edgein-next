@@ -278,7 +278,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             )}
 
             <div className="max-w-6xl p-5 bg-black rounded-lg shadow-md mt-7">
-              <div className="pb-3 border-b border-gray-100">
+              <div className="pb-3 border-b border-neutral-700">
                 <h2 className="text-xl font-bold text-dark-950">Overview</h2>
               </div>
 
@@ -823,7 +823,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
             {/* Team section starts here.. */}
             <div className="max-w-6xl p-5 bg-black rounded-lg shadow-md mt-7">
-              <div className="pb-3 border-b border-gray-100">
+              <div className="pb-3 border-b border-neutral-700">
                 <h2 className="text-xl font-bold text-dark-950">Team</h2>
               </div>
 
@@ -866,7 +866,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
             {/* Funding Investments section */}
             <div className="max-w-6xl p-5 bg-black rounded-lg shadow-md mt-7">
-              <div className="pb-3 border-b border-gray-100">
+              <div className="pb-3 border-b border-neutral-700">
                 <h2 className="text-xl font-bold text-dark-950">
                   Funding Investments
                 </h2>

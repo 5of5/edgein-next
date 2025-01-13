@@ -253,7 +253,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                           <Combobox.Option
                             key={item.id}
                             value={item}
-                            className="flex items-center px-4 py-2 cursor-pointer gap-x-2 hover:bg-gray-50 hover:text-primary-500">
+                            className="flex items-center px-4 py-2 cursor-pointer gap-x-2  hover:text-primary-500">
                             {item?.person?.picture ? (
                               <ElemPhoto
                                 wrapClass="w-10 h-10 aspect-square shrink-0"
@@ -302,7 +302,7 @@ const ElemInviteDialog: React.FC<Props> = ({
                                 display_name: query,
                                 email: query,
                               }}
-                              className="py-2 underline cursor-pointer text-primary-500 hover:bg-gray-50 hover:text-dark-500">
+                              className="py-2 underline cursor-pointer text-primary-500  hover:text-dark-500">
                               Send an invitation to email address{' '}
                               <span className="font-medium">{query}</span>
                             </Combobox.Option>

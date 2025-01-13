@@ -47,12 +47,12 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             key={item.title}
             className={`px-4 py-4 rounded-lg border ${
               item.title === selectedSegment
-                ? 'border-primary-500 bg-gray-50'
-                : 'border-slate-300'
-            } shadow-sm cursor-pointer hover:bg-gray-50 md:px-6`}
+                ? 'border-white-300'
+                :  'border-neutral-700'
+            } shadow-sm cursor-pointer md:px-6`}
             onClick={() => onChangeSegment(item.title)}>
-            <p className="text-slate-900 text-sm font-medium">{item.title}</p>
-            <p className="text-slate-500 text-xs">{item.description}</p>
+            <p className="text-white text-sm font-medium">{item.title}</p>
+            <p className="text-gray text-xs">{item.description}</p>
           </li>
         ))}
       </ul>
@@ -75,9 +75,9 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 key={item}
                 className={`px-6 py-4 rounded-lg border ${
                   exploreChoices.includes(item)
-                    ? 'border-primary-500 bg-gray-50'
+                    ? 'border-white-300'
                     : 'border-slate-300'
-                } shadow-sm cursor-pointer hover:bg-gray-50`}
+                } shadow-sm cursor-pointer`}
                 onClick={() => {
                   if (item === 'Something else') {
                     showNewMessages(`Hi EdgeIn, I'd like to explore `);
