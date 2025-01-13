@@ -69,7 +69,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // Meta
   const canonicalUrl = (
-    `https://edgein.io` + (router.asPath === ROUTES.ROOT ? '' : router.asPath)
+    `https://mentibus.xyz` + (router.asPath === ROUTES.ROOT ? '' : router.asPath)
   ).split('?')[0];
 
   const [showFooter, setShowFooter] = useState(true);
@@ -102,9 +102,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <DefaultSeo
         title="Discover AI and Web3-focused data intelligence for success"
-        titleTemplate="%s – EdgeIn.io"
-        defaultTitle="EdgeIn.io"
-        description="EdgeIn is the AI & Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success. Get company funding data, find new prospects, and explore competitor insights."
+        titleTemplate="%s – Mentibus.xyz"
+        defaultTitle="Mentibus.xyz"
+        description="Mentibus is the AI & Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success. Get company funding data, find new prospects, and explore competitor insights."
         openGraph={{
           type: 'website',
           locale: 'en_US',
@@ -115,13 +115,13 @@ function MyApp({ Component, pageProps }: AppProps) {
               url: 'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1736788525/trojehurqjuohornokfe.png',
               width: 800,
               height: 600,
-              alt: 'EdgeIn.io',
+              alt: 'mentibus.xyz',
             },
           ],
         }}
         twitter={{
-          handle: '@edgeinio',
-          site: '@edgeinio',
+          handle: '@mentibus_xyz',
+          site: '@mentibus_xyz',
           cardType: 'summary_large_image',
         }}
         robotsProps={{
