@@ -221,7 +221,7 @@ const MyList: NextPage<Props> = ({ list }) => {
         openGraph={{
           images: [
             {
-              url: 'https://edgein.io/images/og/list-sharing.jpg',
+              url: 'https://edgein.io/images/og/list-sharing.png',
               width: 800,
               height: 600,
               alt: 'List',
