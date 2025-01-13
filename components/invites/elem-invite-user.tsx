@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { Disclosure } from '@headlessui/react';
 import groupBy from 'lodash/groupBy';
-import { InviteToEdgeInPayload, InviteToMentibusResponse } from '@/types/api';
+import { InviteToEdgeInPayload, InviteToEdgeInResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
 import { useGetInvitedPeopleByUserIdQuery } from '@/graphql/types';
 import {
@@ -116,7 +116,7 @@ export const ElemInviteUser = () => {
 
               <ul className="pl-4 mt-4 list-disc list-outside">
                 {sendInvitationEmailResponse.map(
-                  (res: InviteToMentibusResponse, index: number) => {
+                  (res: InviteToEdgeInResponse, index: number) => {
                     if (res.status === 200) {
                       return (
                         <li className="text-sm text-gray-500" key={index}>
