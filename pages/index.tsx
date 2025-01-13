@@ -21,7 +21,6 @@ const Home = () => {
 
   const { show } = useIntercom();
 
-  const [tabIndex, setTabIndex] = useState(0);
   const [selectedFeature, setSelectedFeature] = useState(0);
 
   const logos = [
@@ -71,41 +70,6 @@ const Home = () => {
       src: '/images/logos/ubergizmo.png',
       alt: 'Ubergizmo',
       link: 'https://www.ubergizmo.com/2023/01/edgein-affordable-web3-data-platform-with-shared-c-revenue-model/ ',
-    },
-  ];
-
-  const whyEdgein = [
-    {
-      title: 'Investor',
-      benefits: [
-        `Discover and connect with the right Founders easily with Mentibus’s personalization features.`,
-        'Get notified of team, investment and traction data with dynamic list updates.',
-        'Get a personalized view of the entire marketplace from companies to competing investors to events and news, keeping you one step ahead.',
-      ],
-    },
-    {
-      title: 'Founder',
-      benefits: [
-        'Discover and connect with the right local and international VCs based on tags and latest investment data.',
-        'Find early alpha customers directly or track competitors with public or self created lists that are updated dynamically.',
-        'Stay up-to-date with a personalized view of the entire marketplace from companies to investors to industry news and events based on tags and location of interest.',
-      ],
-    },
-    {
-      title: 'Sales, Ecosystem, and Business Development',
-      benefits: [
-        'Find hundreds of direct leads in minutes with social and email data using tags, filters, roles, and target lists.',
-        'Communicate directly with the right targets at each company in your target lists with access to their public data.',
-        'Coming soon: Import and export lists for the latest data on the companies and people you’re tracking.',
-      ],
-    },
-    {
-      title: 'Event/Media Operator',
-      benefits: [
-        'Find and track competing events and valuable sub-events around your event including organizers, sponsors, and speakers.',
-        'Track and discover partners, sponsors and competing event organizers by tags and locations of interest.',
-        'Market directly to your sweet spot attendee on or in partnership with Mentibus.',
-      ],
     },
   ];
 
@@ -217,14 +181,14 @@ const Home = () => {
             <div className="flex items-start mt-6 gap-x-6">
               <ElemButton
                 onClick={() => router.push(ROUTES.COMPANIES)}
-                btn="primary"
+               btn="ol-white"
                 arrow
                 size="md">
                 Access now
               </ElemButton>
             </div>
             <p className="mt-4 text-gray-400">
-              <strong>Mentibus is free to try</strong> for as long as you’d like
+             
             </p>
           </div>
           <div className="flex max-w-2xl mx-auto mt-16 sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
@@ -250,72 +214,10 @@ const Home = () => {
         <section className="pt-16 pb-8 mx-auto max-w-7xl lg:px-6">
           <div className="px-6 text-left lg:text-center lg:px-0">
             <h2 className="pb-8 text-3xl font-bold text-white sm:text-4xl">
-              Why use Mentibus
+              Trusted by leading companies around the world.
             </h2>
           </div>
 
-          <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
-            <Tab.List className="flex gap-4 px-6 overflow-x-scroll transition-all scrollbar-hide shrink-0 lg:justify-center">
-              {whyEdgein.map((item: any, index: number) => {
-                const { title } = item;
-                return (
-                  <Tab
-                    className={({ selected }) =>
-                      `${
-                        selected
-                          ? 'text-white bg-primary-500 border-primary-500'
-                          : ' border-gray-300 hover:border-neutral-900'
-                      }  whitespace-nowrap flex border-box rounded-4xl border px-4 py-2.5 font-medium text-sm outline-none transition-all`
-                    }
-                    key={index}>
-                    {title}
-                  </Tab>
-                );
-              })}
-            </Tab.List>
-
-            <div className="p-6 mx-4 mt-6 border border-gray-700 rounded-xl bg-neutral-900 lg:mx-0 lg:flex lg:items-center lg:gap-x-24">
-              <Tab.Panels className="w-full max-w-md mx-auto lg:mx-0">
-                {whyEdgein.map((item: any, index: number) => {
-                  const { title, benefits } = item;
-                  return (
-                    <Tab.Panel className="w-full" key={index}>
-                      <h3 className="text-xl font-medium sm:text-2xl">
-                        {title}
-                      </h3>
-                      <ul className="flex flex-col mt-4 space-y-4">
-                        {benefits.map((benefit: any, ii: number) => {
-                          return (
-                            <li className="flex items-start" key={ii}>
-                              <IconCheck className="w-6 h-6 mr-2 shrink-0 text-primary-500 " />{' '}
-                              {benefit}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                      <div className="flex items-start mt-6 gap-x-6">
-                        <ElemButton
-                          onClick={() => router.push(ROUTES.COMPANIES)}
-                          btn="primary"
-                          arrow
-                          size="md">
-                          Access now
-                        </ElemButton>
-                      </div>
-                    </Tab.Panel>
-                  );
-                })}
-              </Tab.Panels>
-
-              <FigureConnect className="w-full h-auto max-w-md mx-auto mt-8 lg:mt-0 lg:max-w-none" />
-            </div>
-          </Tab.Group>
-        </section>
-
-        <section className="px-6 pt-8 pb-16 mx-auto max-w-7xl lg:px-6 bg-black">
-          <h2 className="max-w-lg mx-auto text-lg text-center text-gray-300">
-            Trusted by leading companies around the world.
-          </h2>
           <div className="grid items-center grid-cols-4 mt-10 gap-x-8 gap-y-10 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-7 text-gray-500">
             {logos.map((organization: any, index: number) => {
               const { src, alt, className } = organization;
