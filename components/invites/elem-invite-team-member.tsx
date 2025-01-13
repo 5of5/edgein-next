@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useMutation } from 'react-query';
 import { GetTeamMemberByCompanyIdsQuery } from '@/graphql/types';
-import { InviteToMentibusPayload } from '@/types/api';
+import { InviteToEdgeInPayload } from '@/types/api';
 import { ElemButton } from '../elem-button';
 import { ElemPhoto } from '../elem-photo';
 import { ElemTooltip } from '../elem-tooltip';
@@ -22,7 +22,7 @@ export const ElemInviteTeamMember: FC<Props> = ({
     isLoading,
     isSuccess,
   } = useMutation(
-    (payload: InviteToMentibusPayload[]) =>
+    (payload: InviteToEdgeInPayload[]) =>
       fetch('/api/send-invite-to-edgein-email/', {
         method: 'POST',
         headers: {

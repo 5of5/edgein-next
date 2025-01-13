@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { Disclosure } from '@headlessui/react';
 import groupBy from 'lodash/groupBy';
-import { InviteToMentibusPayload, InviteToMentibusResponse } from '@/types/api';
+import { InviteToEdgeInPayload, InviteToMentibusResponse } from '@/types/api';
 import { useUser } from '@/context/user-context';
 import { useGetInvitedPeopleByUserIdQuery } from '@/graphql/types';
 import {
@@ -50,7 +50,7 @@ export const ElemInviteUser = () => {
     mutate: sendInvitationEmail,
     reset: resetInvitation,
     isLoading,
-  } = useMutation(async (payload: InviteToMentibusPayload[]) => {
+  } = useMutation(async (payload: InviteToEdgeInPayload[]) => {
     const res = await fetch('/api/send-invite-to-edgein-email/', {
       method: 'POST',
       headers: {
