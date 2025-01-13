@@ -91,7 +91,7 @@ export const UserMenu: FC<Props> = ({ className = '' }) => {
       id: 3,
       label: 'Blog',
       value: 'blog',
-      onClick: () => window.open('https://medium.com/@edgeinio', '_blank'),
+      onClick: () => window.open('https://medium.com/@mentibus_xyz', '_blank'),
     },
     {
       id: 4,
