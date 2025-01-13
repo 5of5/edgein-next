@@ -14,6 +14,7 @@ import parse from 'html-react-parser';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
+import SubNavbar from './sub_navbar';
 
 const Home = () => {
   const { user, loading } = useUser();
@@ -246,7 +247,7 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="bg-black">
+      {/* <div className="bg-black">
         <section className="pt-16 pb-8 mx-auto max-w-7xl lg:px-6">
           <div className="px-6 text-left lg:text-center lg:px-0">
             <h2 className="pb-8 text-3xl font-bold text-white sm:text-4xl">
@@ -352,6 +353,12 @@ const Home = () => {
             })}
           </div>
         </section>
+      </div> */}
+
+
+      <div>
+        <SubNavbar/>
+        
       </div>
 
       <section className="px-6 py-8 mx-auto max-w-7xl lg:py-16 lg:px-6 bg-black">
