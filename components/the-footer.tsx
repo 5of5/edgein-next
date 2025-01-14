@@ -19,7 +19,7 @@ export const navigation = {
     { name: 'Pricing', href: ROUTES.PRICING },
     { name: 'FAQs', href: ROUTES.FAQ },
     { name: 'Support', href: ROUTES.SUPPORT },
-    { name: 'Blog', href: 'https://medium.com/@edgeinio' },
+    { name: 'Blog', href: 'https://medium.com/@mentibus_xyz' },
     { name: 'Contact', href: ROUTES.CONTACT },
     { name: 'Press', href: 'mailto:press@edgein.io' },
     { name: 'Team', href: ROUTES.TEAM },
@@ -32,7 +32,7 @@ export const navigation = {
   social: [
     {
       name: 'Medium',
-      href: 'https://medium.com/@edgeinio',
+      href: 'https://medium.com/@mentibus_xyz',
       icon: IconMedium,
     },
     {
@@ -47,7 +47,7 @@ export const navigation = {
     },
     {
       name: 'Telegram',
-      href: 'http://t.me/edgeinofficial',
+      href: 'http://t.me/mentibus',
       icon: IconTelegram,
     },
   ],

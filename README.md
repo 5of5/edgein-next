@@ -129,7 +129,7 @@ Using a staging environment also helps improve the quality of the application. I
 
 In conclusion, staging is an essential part of the development process. It allows developers to test their applications in a safe and controlled environment, reducing the risk of potential issues when deploying to the live environment. Using a staging environment improves the quality of the application and ensures that it meets the requirements of the end-users.
 
-More information about the staging environment can be found in a [Notion documentation](https://www.notion.so/edgeinio/Staging-af8a640ce2854a199a2dc754891aa810).
+More information about the staging environment can be found in a [Notion documentation](https://www.notion.so/mentibus_xyz/Staging-af8a640ce2854a199a2dc754891aa810).
 
 ## Hasura / GraphQL
 

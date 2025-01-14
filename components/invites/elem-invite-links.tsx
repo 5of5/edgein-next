@@ -54,7 +54,7 @@ export const ElemInviteLinks: FC<Props> = ({ user }) => {
 
   const onTwitter = () => {
     window.open(
-      `https://twitter.com/intent/tweet?url=${getInviteLink()}&text=Help democratize Web3 data on @edgeinio. Sign up for free!`,
+      `https://twitter.com/intent/tweet?url=${getInviteLink()}&text=Help democratize Web3 data on @mentibus_xyz. Sign up for free!`,
       '_blank',
     );
   };
