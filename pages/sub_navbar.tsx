@@ -19,12 +19,12 @@ const SubNavbar: React.FC = () => {
   const images: ImageMap = {
     'Premium Databases': {
       header: '/images/subNavbarHeader.png', // Stored in public/images
-      content: '/images/subNavbarContent.png',
+      content: '/images/features/hero2.png',
       data: 'The Premium datasets are curated lists for high demand datasets which are not easily available such as non twitter Kols and developer data',
     },
     'AI Agent': {
       header: '/images/subNavbarHeader.png',
-      content: '/images/subNavbarContent.png',
+      content: '/images/hero3.png',
       data: 'The Premium datasets are curated lists for high demand datasets which are not easily available such as non twitter Kols and developer data',
     },
     'The Leads Engine': {

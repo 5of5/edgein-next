@@ -22,8 +22,6 @@ const Home = () => {
 
   const { show } = useIntercom();
 
-  const [selectedFeature, setSelectedFeature] = useState(0);
-
   const logos = [
     {
       src: '/images/logos/akkadian.svg',
@@ -167,23 +165,22 @@ const Home = () => {
 
   return (
     <>
-      <section className="relative overflow-hidden isolate bg-black">
-        <div className="px-6 pt-10 pb-24 mx-auto max-w-7xl sm:pb-32 lg:flex lg:items-center lg:px-8 lg:py-16">
-          <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl lg:flex-shrink-0">
-            <h1 className="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">
+      <section className="relative overflow-hidden isolate bg-black min-h-[60vh] flex items-center">
+        <div className="px-6 py-10 mx-auto max-w-7xl sm:py-16 lg:px-8">
+          <div className="max-w-2xl mx-auto text-center">
+          <h1 className="mt-10 text-4xl font-bold tracking-tight bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent [-webkit-background-clip:text] sm:text-6xl">
               Web3 business data and knowledge.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-400">
               Connect to builders from 100k Web3 organizations; Companies,
               Investors, Events, and Media to people, updated daily.
             </p>
-            <div className="flex items-start mt-6 gap-x-6">
+            <div className="flex items-center justify-center mt-6 gap-x-6">
               <ElemButton
                 onClick={() => router.push(ROUTES.COMPANIES)}
-               btn="ol-white"
-                arrow
+                btn="white"
                 size="md">
-                Access now
+                Get access now
               </ElemButton>
             </div>
             <p className="mt-4 text-gray-400">
@@ -198,11 +195,6 @@ const Home = () => {
                   aria-hidden="true">
                   <div className="relative h-[500px] w-full"></div>
                 </div>
-                <img
-                  src="/images/features/hero2.png"
-                  alt="Web3 and AI data intelligence"
-                  className="w-[60rem] rounded-lg shadow-xl shadow-primary-800/10"
-                />
               </div>
             </div>
           </div>
@@ -258,83 +250,6 @@ const Home = () => {
       <div>
         <SubNavbar />
       </div>
-
-      <section className="px-6 py-8 mx-auto max-w-7xl lg:py-16 lg:px-6 bg-black">
-        <div className="md:grid md:grid-cols-12 md:gap-10">
-          <div className="flex flex-col sm:space-y-4 md:col-span-5">
-            <h2 className="pb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Move faster with Mentibus tools
-            </h2>
-            {features.map((feature: any, index: number) => {
-              const { title, content } = feature;
-              return (
-                <div
-                  key={index}
-                  className={`px-4 py-3 border-l-[3px] rounded-r-xl ${
-                    selectedFeature === index
-                      ? 'transform border-l-primary-500 bg-neutral-900'
-                      : 'border-gray-700 bg-transparent'
-                  }`}>
-                  <button
-                    onClick={() => setSelectedFeature(index)}
-                    className={`whitespace-nowrap flex items-center w-full font-medium text-lg transition-all ${
-                      selectedFeature === index
-                        ? 'text-primary-500'
-                        : 'hover:text-primary-500'
-                    }`}>
-                    {title}
-                    <IconChevronDownMini
-                      className={`h-5 w-5 transition-all ease-in-out duration-100 ${
-                        selectedFeature === index
-                          ? 'transform text-primary-500 rotate-180'
-                          : ''
-                      }`}
-                    />
-                  </button>
-                  <Transition
-                    show={selectedFeature === index}
-                    className="overflow-hidden"
-                    enter="transition-all ease-in-out duration-100"
-                    enterFrom="transform max-h-0"
-                    enterTo="transform max-h-fit"
-                    leave="transition-all ease-in-out duration-100"
-                    leaveFrom="transform max-h-fit"
-                    leaveTo="transform max-h-0">
-                    <div className="pt-1">{parse(content)}</div>
-                  </Transition>
-                </div>
-              );
-            })}
-            <div className="flex items-center mt-6">
-              <ElemButton
-                onClick={() => router.push(ROUTES.COMPANIES)}
-                btn="primary"
-                arrow
-                size="md">
-                Access now
-              </ElemButton>
-            </div>
-          </div>
-
-          <div className="mt-4 md:mt-0 md:col-span-7">
-            <div className="relative flex items-center overflow-hidden bg-neutral-900 border  border-neutral-700 rounded-xl">
-              <div className="">
-                {(selectedFeature === 1 || selectedFeature === 3) && (
-                  <div className="absolute top-0 bottom-0 right-0 w-10 bg-gradient-to-r from-transparent to-white"></div>
-                )}
-
-                <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-b from-transparent to-white"></div>
-
-                <img
-                  src={features[selectedFeature].src}
-                  alt={features[selectedFeature].title}
-                  className="w-full"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="px-6 pb-8 mx-auto max-w-7xl lg:px-8 lg:pb-16 bg-black">
         <div className="max-w-2xl mx-auto lg:max-w-none">
