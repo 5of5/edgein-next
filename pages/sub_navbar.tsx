@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 // Define a type for the tabs and images
-type Tab = 'Premium Databases' | 'AI Agent' | 'The Leads Engine';
+type Tab = 'Premium Datasets' | 'AI Agent' | 'The Leads Engine';
 
 interface ImageMap {
   [key: string]: {
@@ -13,11 +13,11 @@ interface ImageMap {
 }
 
 const SubNavbar: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<Tab>('Premium Databases');
+  const [activeTab, setActiveTab] = useState<Tab>('Premium Datasets');
 
   // Images for each tab
   const images: ImageMap = {
-    'Premium Databases': {
+    'Premium Datasets': {
       header: '/images/subNavbarHeader.png', // Stored in public/images
       content: '/images/features/hero2.png',
       data: 'The Premium datasets are curated lists for high demand datasets which are not easily available such as non twitter Kols and developer data',
@@ -29,19 +29,19 @@ const SubNavbar: React.FC = () => {
     },
     'The Leads Engine': {
       header: '/images/subNavbarHeader.png',
-      content: '/images/subNavbarContent.png',
+      content: '/images/hero4.png',
       data: 'The Premium datasets are curated lists for high demand datasets which are not easily available such as non twitter Kols and developer data',
     },
   };
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black text-white min-h-[800px]">
       <nav className="relative bg-black text-white h-12 flex items-center justify-center px-4 sm:px-8">
-        <ul className="flex space-x-4 sm:space-x-8 relative">
+        <ul className="flex space-x-16 sm:space-x-32 relative">
           {Object.keys(images).map(tab => (
             <li
               key={tab}
-              className={`relative cursor-pointer hover:opacity-80 transition-opacity ${
+              className={`relative cursor-pointer hover:opacity-80 transition-opacity  ${
                 activeTab === tab
                   ? 'text-white' // Active tab is white
                   : 'text-gray-400' // Non-active tabs are gray
@@ -58,7 +58,7 @@ const SubNavbar: React.FC = () => {
       <div className="relative w-full max-w-screen-lg mx-auto mt-8 bg-black rounded-3xl overflow-hidden shadow-lg min-h-[500px]">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/subNavbarBody.png"
+            src="/images/yes.png"
             alt="Beneath Div Image"
             layout="fill"
             objectFit="cover"

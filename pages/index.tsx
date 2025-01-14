@@ -251,7 +251,7 @@ const Home = () => {
         <SubNavbar />
       </div>
 
-      <section className="px-6 pb-8 mx-auto max-w-7xl lg:px-8 lg:pb-16 bg-black">
+      <section className="pt-4 pb-8 mx-auto max-w-7xl lg:px-8 lg:pb-16 bg-black">
         <div className="max-w-2xl mx-auto lg:max-w-none">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {testimonials.map(testimonial => (
