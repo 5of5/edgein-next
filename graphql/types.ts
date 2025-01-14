@@ -2943,6 +2943,10 @@ export type Companies_Insert_Input = {
   white_paper: InputMaybe<Scalars['String']>;
   year_founded: InputMaybe<Scalars['String']>;
   youtube: InputMaybe<Scalars['String']>;
+  overall_score: InputMaybe<Scalars['numeric']>;
+  social_score: InputMaybe<Scalars['numeric']>;
+  development_score: InputMaybe<Scalars['numeric']>;
+  funding_score: InputMaybe<Scalars['numeric']>;
 };
 
 /** aggregate max on columns */
@@ -3361,6 +3365,10 @@ export type Companies_Set_Input = {
   white_paper: InputMaybe<Scalars['String']>;
   year_founded: InputMaybe<Scalars['String']>;
   youtube: InputMaybe<Scalars['String']>;
+  overall_score: InputMaybe<Scalars['numeric']>;
+  social_score: InputMaybe<Scalars['numeric']>;
+  development_score: InputMaybe<Scalars['numeric']>;
+  funding_score: InputMaybe<Scalars['numeric']>;
 };
 
 /** aggregate stddev on columns */

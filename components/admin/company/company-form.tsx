@@ -320,6 +320,10 @@ const CompanyForm = ({
         <TextInput className={inputClassName} source="web_domain" />
         <TextInput className={inputClassName} source="email_domain" />
         <ElemCompanyLibraryInput className={inputClassName} />
+        <NumberInput className={inputClassName} source="overall_score" />
+        <NumberInput className={inputClassName} source="social_score" />
+        <NumberInput className={inputClassName} source="development_score" />
+        <NumberInput className={inputClassName} source="funding_score" />
         <ArrayInput source="web3_address">
           <SimpleFormIterator className="simple-iterator ">
             <TextInput source="address" label="Address" />
