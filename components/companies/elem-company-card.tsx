@@ -76,11 +76,15 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
               <div className="flex flex-col flex-grow">
                 <div className="flex items-center">
                   <ElemTooltip content={name} mode="light">
-                    <h3 className="text-lg font-medium truncate text-gray-100">{name}</h3>
+                    <h3 className="text-lg font-medium truncate text-gray-100">
+                      {name}
+                    </h3>
                   </ElemTooltip>
                   {coin && (
                     <ElemTooltip content={`Token`} mode="light" className="">
-                      <span className="ml-1 uppercase text-gray-300">{coin.ticker}</span>
+                      <span className="ml-1 uppercase text-gray-300">
+                        {coin.ticker}
+                      </span>
                     </ElemTooltip>
                   )}
                 </div>
@@ -169,8 +173,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
                 </span>
               </div>
             )}
-
-           
           </div>
         </div>
 

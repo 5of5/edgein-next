@@ -1,7 +1,7 @@
 import { ElemButton } from '@/components/elem-button';
 import { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 import { useUser } from '@/context/user-context';
 import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
 
@@ -67,11 +67,14 @@ const ProfileVerification: NextPage = () => {
   const verifyOtp = async (e: React.FormEvent) => {
     try {
       setIsLoading(true);
-      const { data: {session}, error } = await supabase.auth.verifyOtp({
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.verifyOtp({
         email: user?.email || '',
         token: otp.join(''),
         type: 'email',
-      })
+      });
       if (error) {
         console.error('Error sending OTP:', error.message);
         setMessage(`Invalid otp. Attempts left: ${5 - attempts}`);
@@ -90,13 +93,12 @@ const ProfileVerification: NextPage = () => {
     } catch (error) {
       setIsLoading(false);
     }
-    
-  }
+  };
 
   const resendOtp = async () => {
     const { data, error } = await supabase.auth.signInWithOtp({
       email: user?.email || '',
-    })
+    });
 
     if (error) {
       setMessage('Failed to resend OTP');
@@ -105,7 +107,7 @@ const ProfileVerification: NextPage = () => {
       setMessage('OTP sent. Check Email');
       setTimer(120);
     }
-  }
+  };
 
   const handleChange = (value: string, index: number): void => {
     if (value.length > 1) return; // Prevent multiple characters
@@ -178,7 +180,7 @@ const ProfileVerification: NextPage = () => {
 
             <div className="justify-self-center relative z-10">
               <ElemButton
-                onClick={(e) => verifyOtp(e)}
+                onClick={e => verifyOtp(e)}
                 btn="ol-tertiary"
                 arrow
                 disabled={isLoading}

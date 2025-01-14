@@ -33,7 +33,12 @@ export const ElemLogo = (
       </g>
       <defs>
         <clipPath id="clip0_106_118">
-          <rect width="25" height="23" fill="white" transform="matrix(0 1 -1 0 23 0)" />
+          <rect
+            width="25"
+            height="23"
+            fill="white"
+            transform="matrix(0 1 -1 0 23 0)"
+          />
         </clipPath>
       </defs>
     </svg>

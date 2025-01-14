@@ -69,7 +69,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // Meta
   const canonicalUrl = (
-    `https://mentibus.xyz` + (router.asPath === ROUTES.ROOT ? '' : router.asPath)
+    `https://mentibus.xyz` +
+    (router.asPath === ROUTES.ROOT ? '' : router.asPath)
   ).split('?')[0];
 
   const [showFooter, setShowFooter] = useState(true);

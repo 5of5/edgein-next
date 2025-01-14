@@ -535,9 +535,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected
-                ? 'border-2 border-white'
-                : 'border-0'
+              selected ? 'border-2 border-white' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('companies')}
@@ -545,9 +543,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected
-                ? 'border-2 border-white'
-                : 'border-0'
+              selected ? 'border-2 border-white' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('vc_firms')}
@@ -555,9 +551,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected
-                ? 'border-2 border-white'
-                : 'border-0'
+              selected ? 'border-2 border-white' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('people')}
@@ -565,9 +559,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected
-                ? 'border-2 border-white'
-                : 'border-0'
+              selected ? 'border-2 border-white' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('events')}
@@ -575,9 +567,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected
-                ? 'border-2 border-white'
-                : 'border-0'
+              selected ? 'border-2 border-white' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('news')}

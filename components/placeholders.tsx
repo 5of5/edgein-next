@@ -201,7 +201,7 @@ export const PlaceholderTable: FC = () => {
   );
 };
 
- export const PlaceholderInvestorCard: FC = () => {
+export const PlaceholderInvestorCard: FC = () => {
   return (
     <div className="flex flex-col animate-pulse-fast p-5 bg-black border border-dark-500/10 rounded-lg md:h-full">
       <div className="flex items-center shrink-0 mb-4 w-full">

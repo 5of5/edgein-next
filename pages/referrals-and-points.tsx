@@ -34,7 +34,7 @@ import { useIntercom } from 'react-use-intercom';
 import { numberWithCommas } from '@/utils/numbers';
 import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
 import { useRouter } from 'next/router';
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
 
@@ -206,8 +206,12 @@ const ReferralsAndPoints: NextPage = () => {
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-     const baseUrl = window.location.origin;
-    const newTab = window.open(`${baseUrl}${"/profile-verification"}`, '_blank', 'noopener,noreferrer');
+    const baseUrl = window.location.origin;
+    const newTab = window.open(
+      `${baseUrl}${'/profile-verification'}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
     if (newTab) newTab.opener = null;
     // if (!userByPK?.users_by_pk?.is_verified) {
     //   try {
@@ -408,16 +412,16 @@ const ReferralsAndPoints: NextPage = () => {
     setIsLoading(true);
     const { data, error } = await supabase.auth.signInWithOtp({
       email: user?.email || '',
-    })
+    });
     if (error) {
       console.error('Error sending OTP:', error.message);
     } else {
       e.preventDefault();
-      window.open("/profile-verification", '_self');
+      window.open('/profile-verification', '_self');
       console.log('OTP sent:', data);
     }
     setIsLoading(false);
-  }
+  };
 
   return (
     <DashboardLayout>
@@ -466,7 +470,9 @@ const ReferralsAndPoints: NextPage = () => {
                   <div
                     key={card.id}
                     style={{ pointerEvents: isLoading ? 'none' : undefined }}
-                    onClick={card.isVerified ? undefined : (e) => sendSupabaseOtp(e)}
+                    onClick={
+                      card.isVerified ? undefined : e => sendSupabaseOtp(e)
+                    }
                     className={`relative p-5 my-6 transition-all border rounded-lg ${
                       card.isVerified
                         ? 'cursor-default border-gray-300'
@@ -526,7 +532,9 @@ const ReferralsAndPoints: NextPage = () => {
                                 ? onClaim(card?.type, '1000')
                                 : sendSupabaseOtp(e)
                             }>
-                            {userByPK?.users_by_pk?.is_verified ?  'Claim' : 'Verify'}
+                            {userByPK?.users_by_pk?.is_verified
+                              ? 'Claim'
+                              : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : hasGroupWithMinMembers &&
@@ -542,7 +550,9 @@ const ReferralsAndPoints: NextPage = () => {
                                 ? onClaim(card?.type, '1000')
                                 : sendSupabaseOtp(e)
                             }>
-                            {userByPK?.users_by_pk?.is_verified ? 'Claim' : 'Verify'}
+                            {userByPK?.users_by_pk?.is_verified
+                              ? 'Claim'
+                              : 'Verify'}
                           </ElemButton>
                         </div>
                       ) : null}

@@ -48,7 +48,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
             className={`px-4 py-4 rounded-lg border ${
               item.title === selectedSegment
                 ? 'border-white-300'
-                :  'border-neutral-700'
+                : 'border-neutral-700'
             } shadow-sm cursor-pointer md:px-6`}
             onClick={() => onChangeSegment(item.title)}>
             <p className="text-white text-sm font-medium">{item.title}</p>

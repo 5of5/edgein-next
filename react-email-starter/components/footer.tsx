@@ -8,8 +8,8 @@ export const EmailFooter = () => {
           Got this email by mistake? Don&apos;t worry, you can safely ignore it.
         </Text>
         <Text className="text-[#64748b] text-[12px] leading-[16px] m-0 mt-[2px]">
-          Mentibus gathers, refines, and tailors the Web3 and AI data you need to
-          get an edge.
+          Mentibus gathers, refines, and tailors the Web3 and AI data you need
+          to get an edge.
         </Text>
         <Text className="text-[#64748b] text-[12px] leading-[16px] m-0 mt-[2px]">
           <Link

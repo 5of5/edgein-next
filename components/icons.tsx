@@ -1218,7 +1218,6 @@ export const IconWhatsApp: FC<IconProps> = ({ className, title }) => {
   );
 };
 
-
 export const IconLinkedInAlt: FC<IconProps> = ({ className, title }) => {
   return (
     <svg

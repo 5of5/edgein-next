@@ -7,7 +7,12 @@ interface AdUnitProps {
   testMode?: boolean;
 }
 
-const AdUnit: React.FC<AdUnitProps> = ({ client, slot, format, testMode = false }) => {
+const AdUnit: React.FC<AdUnitProps> = ({
+  client,
+  slot,
+  format,
+  testMode = false,
+}) => {
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -23,8 +28,7 @@ const AdUnit: React.FC<AdUnitProps> = ({ client, slot, format, testMode = false 
       data-ad-client={client}
       data-ad-slot={slot}
       data-ad-format={format}
-      data-adtest={testMode ? 'on' : undefined}
-    ></ins>
+      data-adtest={testMode ? 'on' : undefined}></ins>
   );
 };
 
