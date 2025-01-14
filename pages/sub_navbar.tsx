@@ -20,17 +20,17 @@ const SubNavbar: React.FC = () => {
     'Premium Datasets': {
       header: '/images/subNavbarHeader.png', // Stored in public/images
       content: '/images/features/hero2.png',
-      data: 'The Premium datasets are curated lists for high demand datasets which are not easily available such as non twitter Kols and developer data',
+      data: 'The Premium datasets and the Mentibus database are curated lists for high demand datasets which are not easily available such as Youtube and Tiktok Kols, trading communities and developer data and much more in a structured format',
     },
     'AI Agent': {
       header: '/images/subNavbarHeader.png',
       content: '/images/hero3.png',
-      data: 'The Premium datasets are curated lists for high demand datasets which are not easily available such as non twitter Kols and developer data',
+      data: 'Our AI Agent, built on top of the Mentibus Datasets and built with Xade AI, enables you to query any Web3 data, generate analysis reports and charts, and request predictions and decision-making insights.',
     },
     'The Leads Engine': {
       header: '/images/subNavbarHeader.png',
       content: '/images/hero4.png',
-      data: 'The Premium datasets are curated lists for high demand datasets which are not easily available such as non twitter Kols and developer data',
+      data: 'Our telegram and email leads engine can help marketers conduct targeted outreach campaigns or even use it to keep their community engaged with our industry leading open rates',
     },
   };
 
