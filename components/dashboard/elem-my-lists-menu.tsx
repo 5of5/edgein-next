@@ -141,12 +141,12 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
   };
 
   const onClickCreate = () => {
-    if (
-      user?.entitlements?.listsCount &&
-      customLists.length > user.entitlements.listsCount
-    ) {
-      return onOpenUpgradeDialog();
-    }
+    // if (
+    //   user?.entitlements?.listsCount &&
+    //   customLists.length > user.entitlements.listsCount
+    // ) {
+    //   return onOpenUpgradeDialog();
+    // }
 
     return onOpenCreateListDialog();
   };
