@@ -83,7 +83,7 @@ const SubNavbar: React.FC = () => {
         </div>
         <div className="absolute top-[calc(20%+25%)] left-1/2 transform -translate-x-1/2 w-[95%] h-[80%] overflow-hidden z-0">
           <Image
-            src="/images/subNavbarContent.png"
+            src={images[activeTab].content}
             alt="Content Below Main Image"
             layout="fill"
             objectPosition="center"
