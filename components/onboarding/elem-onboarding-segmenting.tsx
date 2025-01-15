@@ -76,7 +76,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                 className={`px-6 py-4 rounded-lg border ${
                   exploreChoices.includes(item)
                     ? 'border-white-300'
-                    : 'border-slate-300'
+                    : 'border-neutral-700'
                 } shadow-sm cursor-pointer`}
                 onClick={() => {
                   if (item === 'Something else') {
@@ -92,7 +92,7 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
                       : [...exploreChoices, item],
                   );
                 }}>
-                <p className="text-slate-900 text-sm">{item}</p>
+                <p className="text-sm">{item}</p>
               </li>
             ))}
           </ul>
