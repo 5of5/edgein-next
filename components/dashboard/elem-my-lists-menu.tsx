@@ -233,7 +233,6 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
             )
             .map(list => {
               const listName = getNameFromListName(list);
-
               return (
                 <li
                   key={list.id}
@@ -243,7 +242,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     <ElemLink
                       href={`${ROUTES.LISTS}/${list.id}/${
                         listName === 'crap' ? 'sh**' : kebabCase(listName)
-                      }`}
+                      }?fl=${list?.follows_companies?.length + list?.follows_vcfirms?.length + list?.follows_people?.length}`}
                       className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-neutral-900 hover:text-gray-300 ${getActiveClass(
                         list.id,
                         listName === 'crap' ? 'sh**' : kebabCase(listName),

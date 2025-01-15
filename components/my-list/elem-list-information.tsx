@@ -37,6 +37,10 @@ export const ElemListInformation: FC<Props> = ({
 }) => {
   const { user } = useUser();
   const router = useRouter();
+  const { fl } = router?.query;
+
+  const itemsCount = Array.isArray(fl) ? fl[0] : fl || '0';
+  const totalItems = parseInt(itemsCount, 10);
 
   const isCustomList = list
     ? !['hot', 'like', 'crap'].includes(getListDisplayName(list))
@@ -117,9 +121,9 @@ export const ElemListInformation: FC<Props> = ({
             </ElemTooltip>
             &middot;
             <div>
-              {list?.total_no_of_resources}{' '}
+              {totalItems}{' '}
               {`Item${
-                list?.total_no_of_resources && list?.total_no_of_resources === 1
+                totalItems && totalItems === 1
                   ? ''
                   : 's'
               }`}

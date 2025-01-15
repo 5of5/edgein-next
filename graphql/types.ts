@@ -32820,6 +32820,13 @@ export const GetCompaniesByListIdDocument = `
       slug
     }
   }
+  follows_companies_aggregate(
+    where: {_and: [{list_id: {_eq: $list_id}}, {company: {_or: [{name: {_ilike: $query}}, {overview: {_ilike: $query}}]}}]}
+  ) {
+    aggregate {
+      count
+    }
+  }
   
 }
     `;
