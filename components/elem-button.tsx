@@ -19,6 +19,7 @@ type Props = {
     | 'gray'
     | 'default'
     | 'white'
+    | 'black-to-white'
     | '';
   roundedFull?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg' | '';
@@ -56,6 +57,10 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   } else if (btn === 'ol-white') {
     btnClass =
       'text-white bg-transparent ring-inset ring-1 ring-white hover:bg-black hover:text-primary-500 focus:outline-none focus:ring-1';
+  } else if (btn === 'black-to-white') {
+    btnClass = className =
+      'bg-white text-black border border-transparent hover:bg-black hover:text-white hover:border-white focus:outline-none focus:ring-1 focus:ring-white transition-all duration-300 ease-in-out';
+
   } else if (btn === 'white') {
     btnClass = 'text-black bg-white hover:bg-gray-100';
   } else if (btn === 'transparent') {

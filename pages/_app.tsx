@@ -8,7 +8,7 @@ import { LoaderSpinner } from '@/components/loader-spinner';
 import { TheNavbar } from '@/components/the-navbar';
 import { TheFooter } from '@/components/the-footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { UserProvider } from '@/context/user-context';
+import { UserProvider, useUser } from '@/context/user-context';
 import { PopupProvider } from '@/context/popup-context';
 import { SideBarProvider } from '@/context/sidebar-context';
 import { IntercomProvider } from 'react-use-intercom';
@@ -17,6 +17,7 @@ import { DefaultSeo } from 'next-seo';
 import Script from 'next/script';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
+const ORIGIN = "/"
 
 declare global {
   interface Window {
@@ -36,6 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   // App Page Preloader
   const router = useRouter();
   const [pageLoading, setPageLoading] = React.useState<boolean>(false);
+    
 
   //google
   React.useEffect(() => {
@@ -72,7 +74,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     `https://mentibus.xyz` +
     (router.asPath === ROUTES.ROOT ? '' : router.asPath)
   ).split('?')[0];
-
+  // const { user, unreadNotificationsCount } = useUser();
   const [showFooter, setShowFooter] = useState(true);
 
   React.useEffect(() => {
@@ -167,7 +169,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <PopupProvider>
                   <SideBarProvider>
                     <>
-                      <TheNavbar />
+                      <div className="mt-5" />
+                      {router.pathname === ORIGIN  &&<TheNavbar />}
                       <main className="grow selection:bg-primary-200">
                         {pageLoading ? (
                           <LoaderSpinner />

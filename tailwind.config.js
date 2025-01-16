@@ -34,6 +34,12 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ['Inter', ...defaultTheme.fontFamily.sans],
+      mon_book: ['mon-book', ...defaultTheme.fontFamily.sans],
+      mon_b: ['mon-b', ...defaultTheme.fontFamily.sans],
+      mon_i: ['mon-i', ...defaultTheme.fontFamily.sans],
+      mon_md: ['mon-md', ...defaultTheme.fontFamily.sans],
+      mon_sbi: ['mon-sbi', ...defaultTheme.fontFamily.sans],
+      mon_t: ['mon-t', ...defaultTheme.fontFamily.sans],
     },
     extend: {
       fontSize: {

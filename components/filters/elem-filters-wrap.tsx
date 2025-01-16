@@ -34,7 +34,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
   }, []);
   return (
     <>
-      <ElemSticky activeClass="top-14 bg-black shadow-sm">
+      <ElemSticky activeClass="top-0 bg-opacity-30 bg-black backdrop-blur-lg shadow-sm">
         <div className="px-8 py-3" role="tablist">
           {isDesktop ? (
             <div className="flex flex-wrap w-full gap-3">{children}</div>

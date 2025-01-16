@@ -16,6 +16,7 @@ import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { ElemWithSignInModal } from './elem-with-sign-in-modal';
 import { ROUTES } from '@/routes';
 import { ElemModal } from './elem-modal';
+import Image from 'next/image';
 
 type Props = {
   resourceName: string | null;
@@ -31,6 +32,7 @@ type Props = {
     | 'transparent'
     | 'gray'
     | 'default'
+    | 'black-to-white'
     | '';
   follows?: Pick<Follows, 'list_id'>[];
 };
@@ -267,13 +269,26 @@ export const ElemSaveToList: FC<Props> = ({
   return (
     <>
       {user ? (
-        <ElemButton
-          onClick={onSaveButton}
-          roundedFull={true}
-          btn={buttonStyle}
-          className={`px-2.5 shrink-0 ${isSaved ? savedButtonStyle : ''}`}>
-          {isSaved ? 'Saved' : 'Save to list'}
-        </ElemButton>
+        <div className="justify-center items-center flex">
+          <ElemButton
+            onClick={onSaveButton}
+            roundedFull={true}
+            btn={buttonStyle}
+            className={`px-2.5 shrink-0 flex items-center ${
+              isSaved ? savedButtonStyle : ''
+            }`}>
+            {!isSaved && (
+              <Image
+                src="/images/checklist.png"
+                alt="Saved"
+                width={24}
+                height={24}
+                className="shrink-0 transition-all duration-200 group-hover:invert"
+              />
+            )}
+            <span>{isSaved ? 'Saved' : 'Save to list'}</span>
+          </ElemButton>
+        </div>
       ) : (
         <ElemWithSignInModal
           text="Sign in to save this profile into a list. We'll even let you know of all the updates."

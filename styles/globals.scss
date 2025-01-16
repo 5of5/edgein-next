@@ -151,3 +151,41 @@
     bottom: 64px !important;
   }
 }
+
+@font-face {
+  font-family: 'mon-book';
+  src: url('/fonts/ppneuemontreal-book.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'mon-b';
+  src: url('/fonts/ppneuemontreal-bold.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'mon-i';
+  src: url('/fonts/ppneuemontreal-italic.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'mon-md';
+  src: url('/fonts/ppneuemontreal-medium.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'mon-sbi';
+  src: url('/fonts/ppneuemontreal-semibolditalic.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'mon-t';
+  src: url('/fonts/ppneuemontreal-thin.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
