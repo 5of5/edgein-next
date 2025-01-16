@@ -74,8 +74,9 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
 
   return (
     <div
-      className={`overflow-y-auto h-full scrollbar-hide bg-gradient-to-b from-black to-[#202020] ${className}`}>
+      className={`mt-5 h-full bg-gradient-to-b from-black to-[#202020] ${className}`}>
       <ElemLink
+        className='flex ml-5'
         href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
         >
         <ElemLogo
@@ -83,7 +84,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
           className="justify-self-center w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70"
         />
       </ElemLink>
-      <nav className="px-4 pt-10 text-white pb-52 ">
+      <nav className="overflow-y-scroll scrollbar-hide h-full px-4 pt-4 text-white pb-52 ">
         <ul className="pb-8 space-y-1 border-b  border-neutral-700 dark:border-gray-700">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>
