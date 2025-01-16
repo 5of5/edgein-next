@@ -21,6 +21,8 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
     getNameFromListName(list),
   )}`;
 
+  const totalItems = list?.follows_companies?.length + list?.follows_vcfirms?.length + list?.follows_people?.length;
+
   const tooltipContent = (
     <div className="flex-col p-2 group">
       <div>
@@ -81,11 +83,11 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
         <div>
           <ElemLink href={listUrl} className="hover:underline">
             {numberWithCommas(
-              list.total_no_of_resources ? list.total_no_of_resources : 0,
+              totalItems ? totalItems : 0,
             )}{' '}
             item
-            {list.total_no_of_resources &&
-              list.total_no_of_resources > 1 &&
+            {totalItems &&
+              totalItems > 1 &&
               's'}
           </ElemLink>
         </div>
