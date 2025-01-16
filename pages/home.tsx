@@ -190,7 +190,7 @@ const Home: NextPage = () => {
             style={{
               position: 'relative',
               justifyContent: 'center',
-            
+
               height: '100%',
               marginBottom: '5rem',
               justifySelf: 'center',
@@ -239,7 +239,7 @@ const Home: NextPage = () => {
             </div>
           </div>
 
-          <h1 className='font-mon_md ml-10 text-5xl mb-10'>Explore</h1>
+          <h1 className="font-mon_md ml-10 text-5xl mb-10">Explore</h1>
 
           <ElemSearchBox
             onClick={() => {
