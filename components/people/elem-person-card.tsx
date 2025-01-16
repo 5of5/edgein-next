@@ -201,7 +201,7 @@ export const ElemPersonCard: FC<Props> = ({ person }) => {
             resourceId={id}
             resourceType={'people'}
             slug={slug!}
-            buttonStyle="default"
+            buttonStyle="black-to-white"
             follows={follows}
           />
         </div>

@@ -170,7 +170,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
             resourceId={id}
             resourceType={'vc_firms'}
             slug={slug!}
-            buttonStyle="default"
+            buttonStyle="black-to-white"
             follows={follows}
           />
         </div>

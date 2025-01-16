@@ -29,7 +29,7 @@ export type CardType = 'full' | 'compact';
 type Props = {
   company: Companies;
   type?: CardType;
-  name: string | null | undefined;
+  name?: string | null | undefined;
 };
 
 export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
