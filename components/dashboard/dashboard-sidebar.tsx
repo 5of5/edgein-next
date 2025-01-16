@@ -14,6 +14,8 @@ import { ElemSidebarItem } from './elem-sidebar-item';
 import { DashboardBanner } from './dashboard-banner';
 import { ROUTES } from '@/routes';
 import { useSidebar } from '@/context/sidebar-context';
+import { ElemLink } from '../elem-link';
+import { ElemLogo } from '../elem-logo';
 
 const ElemMyListsMenu = dynamic(() => import('./elem-my-lists-menu'), {
   ssr: false,
@@ -39,7 +41,7 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
           {
             href: ROUTES.HOME,
             icon: IconHome,
-            title: 'Home',
+            title: 'Explore',
           },
         ]
       : []),
@@ -59,21 +61,29 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
       title: 'Events',
     },
     {
-      href: ROUTES.NEWS,
-      icon: IconNewspaper,
-      title: 'News',
-    },
-    {
       href: ROUTES.PEOPLE,
       icon: IconUserGroup,
       title: 'People',
+    },
+    {
+      href: ROUTES.NEWS,
+      icon: IconNewspaper,
+      title: 'News',
     },
   ];
 
   return (
     <div
       className={`overflow-y-auto h-full scrollbar-hide bg-gradient-to-b from-black to-[#202020] ${className}`}>
-      <nav className="px-4 pt-2 text-white pb-52">
+      <ElemLink
+        href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
+        >
+        <ElemLogo
+          mode="logo-inverted"
+          className="justify-self-center w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70"
+        />
+      </ElemLink>
+      <nav className="px-4 pt-10 text-white pb-52 ">
         <ul className="pb-8 space-y-1 border-b  border-neutral-700 dark:border-gray-700">
           {exploreMenu.map(item => (
             <li role="button" key={item.href}>

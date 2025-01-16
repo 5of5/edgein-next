@@ -2,8 +2,10 @@ import { FC } from 'react';
 
 export type IconProps = {
   className?: string;
-  strokeWidth?: number;
-  title?: string;
+  strokeWidth?: number; // Optional strokeWidth
+  title?: string; // Optional title
+  width?: number; // Optional width
+  height?: number; // Optional height
 };
 
 export const IconSpinner: FC<IconProps> = ({ className, title }) => {
@@ -724,15 +726,11 @@ export const IconCash: FC<IconProps> = ({ className, title }) => {
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       stroke="currentColor"
       strokeWidth={1.5}>
       <title>{title ? title : 'Cash'}</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
-      />
+      <path d="M17.5 11.0462C15.1839 11.9837 12.6523 12.5 10 12.5C7.34775 12.5 4.81608 11.9837 2.5 11.0462M13.3333 5.00001V3.33334C13.3333 2.41286 12.5871 1.66667 11.6667 1.66667H8.33333C7.41286 1.66667 6.66667 2.41286 6.66667 3.33334V5.00001M10 10H10.0083M4.16667 16.6667H15.8333C16.7538 16.6667 17.5 15.9205 17.5 15V6.66667C17.5 5.7462 16.7538 5.00001 15.8333 5.00001H4.16667C3.24619 5.00001 2.5 5.7462 2.5 6.66667V15C2.5 15.9205 3.24619 16.6667 4.16667 16.6667Z" />
     </svg>
   );
 };
@@ -747,15 +745,11 @@ export const IconDocumentDownload: FC<IconProps> = ({
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor">
       <title>{title ? title : 'Document Download'}</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-      />
+      <path d="M6.66667 5.83333V2.5M13.3333 5.83333V2.5M5.83333 9.16667H14.1667M4.16667 17.5H15.8333C16.7538 17.5 17.5 16.7538 17.5 15.8333V5.83333C17.5 4.91286 16.7538 4.16667 15.8333 4.16667H4.16667C3.24619 4.16667 2.5 4.91286 2.5 5.83333V15.8333C2.5 16.7538 3.24619 17.5 4.16667 17.5Z" />
     </svg>
   );
 };
@@ -1527,14 +1521,10 @@ export const IconCompanies: FC<IconProps> = ({
       fill="none"
       stroke="currentColor"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       aria-hidden="true">
       <title>{title ? title : 'Companies'}</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-      />
+      <path d="M6.66667 11.6667V14.1667M10 11.6667V14.1667M13.3333 11.6667V14.1667M2.5 17.5H17.5M2.5 8.33333H17.5M2.5 5.83333L10 2.5L17.5 5.83333M3.33333 8.33333H16.6667V17.5H3.33333V8.33333Z" />
     </svg>
   );
 };
@@ -1754,18 +1744,41 @@ export const IconChevronUp: FC<IconProps> = ({
 export const IconHome: FC<IconProps> = ({ className, title, strokeWidth }) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      strokeWidth={strokeWidth ? strokeWidth : 1.5}
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
       fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={strokeWidth ? strokeWidth : 1.5}>
-      <title>{title ? title : 'Home'}</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-      />
+      xmlns="http://www.w3.org/2000/svg">
+      <g clipPath="url(#clip0_3_3)">
+        <path
+          d="M10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39762 14.6024 1.66666 10 1.66666C5.39763 1.66666 1.66667 5.39762 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M1.66667 10H18.3333"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M10 1.66666C12.0844 3.94862 13.269 6.91003 13.3333 10C13.269 13.09 12.0844 16.0514 10 18.3333C7.9156 16.0514 6.73104 13.09 6.66667 10C6.73104 6.91003 7.9156 3.94862 10 1.66666V1.66666Z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+
+      <defs>
+        <clipPath id="clip0_3_3">
+          <rect width="20" height="20" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   );
 };
@@ -2788,16 +2801,12 @@ export const IconSidebarList: FC<IconProps> = ({
   return (
     <svg
       className={className}
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor">
       <title>{title ? title : 'Lists'}</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-      />
+      <path d="M7.5 4.16667H5.83333C4.91286 4.16667 4.16667 4.91286 4.16667 5.83333V15.8333C4.16667 16.7538 4.91286 17.5 5.83333 17.5H14.1667C15.0871 17.5 15.8333 16.7538 15.8333 15.8333V5.83333C15.8333 4.91286 15.0871 4.16667 14.1667 4.16667H12.5M7.5 4.16667C7.5 5.08714 8.24619 5.83333 9.16667 5.83333H10.8333C11.7538 5.83333 12.5 5.08714 12.5 4.16667M7.5 4.16667C7.5 3.24619 8.24619 2.5 9.16667 2.5H10.8333C11.7538 2.5 12.5 3.24619 12.5 4.16667M10 10H12.5M10 13.3333H12.5M7.5 10H7.50833M7.5 13.3333H7.50833" />
     </svg>
   );
 };
@@ -2832,16 +2841,12 @@ export const IconSidebarNotes: FC<IconProps> = ({
   return (
     <svg
       className={className}
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor">
       <title>{title ? title : 'Notes'}</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-      />
+      <path d="M5.83333 6.66668H14.1667M5.83333 10H9.16667M10 16.6667L6.66667 13.3333H4.16667C3.24619 13.3333 2.5 12.5872 2.5 11.6667V5.00001C2.5 4.07954 3.24619 3.33334 4.16667 3.33334H15.8333C16.7538 3.33334 17.5 4.07954 17.5 5.00001V11.6667C17.5 12.5872 16.7538 13.3333 15.8333 13.3333H13.3333L10 16.6667Z" />
     </svg>
   );
 };
@@ -2854,16 +2859,12 @@ export const IconUserGroup: FC<IconProps> = ({
   return (
     <svg
       className={className}
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       fill="none"
       strokeWidth={strokeWidth ? strokeWidth : 1.5}
       stroke="currentColor">
       <title>{title ? title : 'People'}</title>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-      />
+      <path d="M14.1667 11.6667V16.6667M11.6667 14.1667H16.6667M5 8.33334H6.66667C7.58714 8.33334 8.33333 7.58715 8.33333 6.66668V5.00001C8.33333 4.07954 7.58714 3.33334 6.66667 3.33334H5C4.07952 3.33334 3.33333 4.07954 3.33333 5.00001V6.66668C3.33333 7.58715 4.07952 8.33334 5 8.33334ZM13.3333 8.33334H15C15.9205 8.33334 16.6667 7.58715 16.6667 6.66668V5.00001C16.6667 4.07954 15.9205 3.33334 15 3.33334H13.3333C12.4129 3.33334 11.6667 4.07954 11.6667 5.00001V6.66668C11.6667 7.58715 12.4129 8.33334 13.3333 8.33334ZM5 16.6667H6.66667C7.58714 16.6667 8.33333 15.9205 8.33333 15V13.3333C8.33333 12.4129 7.58714 11.6667 6.66667 11.6667H5C4.07952 11.6667 3.33333 12.4129 3.33333 13.3333V15C3.33333 15.9205 4.07952 16.6667 5 16.6667Z" />
     </svg>
   );
 };

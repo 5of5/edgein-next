@@ -27,13 +27,26 @@ export const ElemCategories: FC<Props> = ({
             btn="gray"
             roundedFull={false}
             className={`
-              px-4 py-2 rounded-full
-              ${selected ? 'border border-purple' : 'bg-purple/5'}
-            `}>
-            {category.icon && (
-              <div className="w-4 h-4 shrink-0 mr-1.5">{category.icon}</div>
+    relative px-5 py-3 rounded-full 
+    ${
+      selected
+        ? 'border-none bg-gradient-to-r from-red-500 via-blue-500 to-red-500'
+        : 'border border-gray-600'
+    }
+  `}>
+            {selected && (
+              <div
+                className="absolute inset-0 rounded-full p-[1px] bg-gradient-to-r from-blue-500 via-red-500 to-blue-500"
+                aria-hidden="true">
+                <div className="w-full h-full bg-gray-900 rounded-full"></div>
+              </div>
             )}
-            {category.title}
+            <div className="relative flex items-center">
+              {category.icon && (
+                <div className="w-4 h-4 shrink-0 mr-1.5">{category.icon}</div>
+              )}
+              {category.title}
+            </div>
           </ElemButton>
         );
       })}

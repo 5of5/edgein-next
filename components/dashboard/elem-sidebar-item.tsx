@@ -21,21 +21,28 @@ export const ElemSidebarItem: FC<Props> = ({
   const isActive = url.length ? router.asPath.includes(url) : false;
 
   const component = (
-    <button
-      onClick={onClick}
-      type="submit"
-      className={`flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-300 rounded-md flex-1 transition-all hover:bg-neutral-900 ${
-        isActive ? 'bg-neutral-900' : ''
+    <div
+      className={`relative flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-300 rounded-full flex-1 transition-all ${
+        isActive
+          ? 'bg-gradient-to-r from-red-500 via-blue-500 to-red-400 p-[1px] my-3' // Gradient as border
+          :'p-[1px] px-[px] my-5'
       }`}>
-      {IconComponent && (
-        <IconComponent
-          className={`w-5 h-5 ${
-            isActive ? 'text-primary-500' : 'text-gray-300'
-          }`}
-        />
-      )}
-      <span className="text-sm break-all line-clamp-1">{text}</span>
-    </button>
+      <button
+        onClick={onClick}
+        type="submit"
+        className={`flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-300 rounded-full ${
+          isActive ? `bg-gradient-to-r from-[#222222] to-[#3a3a3a]` : ''
+        } flex-1 transition-all hover:bg-neutral-900`}>
+        {IconComponent && (
+          <IconComponent
+            className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[#838383]'}`}
+          />
+        )}
+        <span className="text-sm break-all line-clamp-1 text-[#a1a1a1]">
+          {text}
+        </span>
+      </button>
+    </div>
   );
 
   if (url.length) {

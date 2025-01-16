@@ -29,6 +29,7 @@ export type CardType = 'full' | 'compact';
 type Props = {
   company: Companies;
   type?: CardType;
+  name: string | null | undefined;
 };
 
 export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
@@ -64,33 +65,44 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
       <div className="flex flex-col justify-between h-full">
         <div>
           <ElemLink href={`${ROUTES.COMPANIES}/${slug}`}>
-            <div className="flex items-center w-full gap-4 shrink-0 bg-[linear-gradient(180deg,_#1a1a1a_0%,_#0a0a0a_100%)] p-4 rounded-lg">
-              <ElemPhoto
-                photo={logo}
-                wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
-                imgClass="object-fit max-w-full max-h-full"
-                imgAlt={name}
-                placeholder="company"
-                placeholderClass="text-gray-300 w-full h-full m-4"
-              />
-              <div className="flex flex-col flex-grow">
-                <div className="flex items-center">
+            <div className="flex items-start w-full gap-3 shrink-0 bg-[linear-gradient(180deg,_#1a1a1a_0%,_#0a0a0a_100%)] p-3 rounded-lg overflow-hidden flex-col">
+              <div className="flex items-center w-full gap-4">
+                {' '}
+                {/* Flex row for image and name */}
+                <ElemPhoto
+                  photo={logo}
+                  wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
+                  imgClass="object-fit max-w-full max-h-full"
+                  imgAlt={name}
+                  placeholder="company"
+                  placeholderClass="text-gray-300 w-full h-full m-4"
+                />
+                <div className="flex flex-col justify-center w-full">
+                  {' '}
+                  {/* Column for name and token */}
                   <ElemTooltip content={name} mode="light">
-                    <h3 className="text-lg font-medium truncate text-gray-100">
-                      {name}
+                    <h3 className="text-lg font-medium text-gray-100 max-w-full overflow-hidden whitespace-nowrap">
+                      {name && name.length > 8
+                        ? `${name.substring(0, 8)}..`
+                        : name}
                     </h3>
                   </ElemTooltip>
                   {coin && (
-                    <ElemTooltip content={`Token`} mode="light" className="">
+                    <ElemTooltip content={`Token`} mode="light">
                       <span className="ml-1 uppercase text-gray-300">
                         {coin.ticker}
                       </span>
                     </ElemTooltip>
                   )}
                 </div>
+              </div>
+
+              <div className="mt-2 w-full">
+                {' '}
+                {/* Flex column for tags */}
                 {tags && (
                   <ElemTags
-                    className="mt-2"
+                    className="overflow-hidden text-ellipsis relative z-10"
                     limit={CARD_DEFAULT_TAGS_LIMIT}
                     resourceType={'companies'}
                     tags={tags}
@@ -210,7 +222,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
             resourceId={id}
             resourceType={'companies'}
             slug={slug!}
-            buttonStyle="default"
+            buttonStyle="black-to-white"
             follows={follows}
           />
         </div>

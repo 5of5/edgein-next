@@ -110,8 +110,7 @@ export const CompaniesByFilterInSection: FC<Props> = ({
               <ElemCompanyCard
                 key={company.id}
                 company={company as Companies}
-                type={cardType}
-              />
+                type={cardType} name={undefined}              />
             ))}
           </div>
 
