@@ -37,6 +37,7 @@ export const ElemListInformation: FC<Props> = ({
 }) => {
   const { user } = useUser();
   const router = useRouter();
+  // eslint-disable-next-line no-unsafe-optional-chaining
   const { fl } = router?.query;
 
   const itemsCount = Array.isArray(fl) ? fl[0] : fl || '0';
@@ -121,12 +122,7 @@ export const ElemListInformation: FC<Props> = ({
             </ElemTooltip>
             &middot;
             <div>
-              {totalItems}{' '}
-              {`Item${
-                totalItems && totalItems === 1
-                  ? ''
-                  : 's'
-              }`}
+              {totalItems} {`Item${totalItems && totalItems === 1 ? '' : 's'}`}
             </div>
             {/* &middot;
             <ElemTooltip
