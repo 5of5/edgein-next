@@ -5,11 +5,16 @@ import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
 import { IconChatBubble, IconEmail } from '@/components/icons';
 import { useIntercom } from 'react-use-intercom';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {};
 
 const Faq: NextPage<Props> = ({}) => {
   const { show } = useIntercom();
+
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
 
   const faqs = [
     {
@@ -176,10 +181,11 @@ const Faq: NextPage<Props> = ({}) => {
                 <IconEmail className="w-6 h-6" />
                 <span>Contact us</span>
               </ElemButton>
-              <ElemButton btn="ol-primary" onClick={show} className="space-x-1">
-                <IconChatBubble className="w-6 h-6" />
-                <span>Live Chat</span>
-              </ElemButton>
+              <LiveChatWidget
+                license="18998946"
+                visibility="maximized"
+                onNewEvent={handleLiveChatEvent}
+              />
             </div>
           </div>
         </section>
