@@ -4,9 +4,14 @@ import { IconEmail, IconChatBubble } from '@/components/icons';
 import { useIntercom } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 const Support: NextPage = () => {
   const { show } = useIntercom();
+
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
 
   return (
     <>
@@ -35,13 +40,11 @@ const Support: NextPage = () => {
                     <IconEmail className="h-6 w-6" />
                     <span>Contact us</span>
                   </ElemButton>
-                  <ElemButton
-                    btn="ol-primary"
-                    onClick={show}
-                    className="space-x-1">
-                    <IconChatBubble className="h-6 w-6" />
-                    <span>Live Chat</span>
-                  </ElemButton>
+                  <LiveChatWidget
+                    license="18998946"
+                    visibility="maximized"
+                    onNewEvent={handleLiveChatEvent}
+                  />
                 </div>
               </div>
             </div>
