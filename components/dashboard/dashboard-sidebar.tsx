@@ -75,14 +75,14 @@ export const DashboardSidebar: FC<Props> = ({ className = '' }) => {
   return (
     <div
       className={`overflow-y-auto h-full scrollbar-hide bg-gradient-to-b from-black to-[#202020] ${className}`}>
-      <ElemLink
+      {/* <ElemLink
         href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
         >
         <ElemLogo
           mode="logo-inverted"
           className="justify-self-center w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70"
         />
-      </ElemLink>
+      </ElemLink> */}
       <nav className="px-4 pt-10 text-white pb-52 ">
         <ul className="pb-8 space-y-1 border-b  border-neutral-700 dark:border-gray-700">
           {exploreMenu.map(item => (
