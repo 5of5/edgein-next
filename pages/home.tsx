@@ -150,7 +150,7 @@ const Home: NextPage = () => {
 
       <DashboardLayout>
         <div className="relative justify-self-end mr-8 flex flex-row space-x-3 lg:space-x-3">
-          {user ? (
+          {/* {user ? (
             <>
               <ElemButton
                 href={ROUTES.NOTIFICATIONS}
@@ -181,8 +181,8 @@ const Home: NextPage = () => {
               className="whitespace-nowrap">
               Sign in
             </ElemButton>
-          )}
-          <UserMenu />
+          )} */}
+          {/* <UserMenu /> */}
         </div>
 
         <div className="relative">
@@ -193,6 +193,7 @@ const Home: NextPage = () => {
 
               height: '100%',
               marginBottom: '5rem',
+              marginTop:'2rem',
               justifySelf: 'center',
             }}
             className="pb-4 mt-5 justify-self-center w-full sm:w-[70%] sm:mx-auto sm:ml-8 flex justify-start sm:justify-center">
@@ -241,12 +242,12 @@ const Home: NextPage = () => {
 
           <h1 className="font-mon_md ml-10 text-5xl mb-10">Explore</h1>
 
-          <ElemSearchBox
+          {/* <ElemSearchBox
             onClick={() => {
               setShowPopup('search');
             }}
-          />
-          <div className="pb-4"></div>
+          /> */}
+          {/* <div className="pb-2"></div> */}
 
           <ElemFiltersWrap>
             <ElemCategories

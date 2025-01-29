@@ -170,7 +170,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <SideBarProvider>
                     <>
                       <div className="mt-5" />
-                      {router.pathname === ORIGIN  &&<TheNavbar />}
+                      {/* If Navbar only needed in home page */}
+                      {/* {router.pathname === ORIGIN  &&<TheNavbar />} */}
+                      <TheNavbar/>
                       <main className="grow selection:bg-primary-200">
                         {pageLoading ? (
                           <LoaderSpinner />
