@@ -33,8 +33,6 @@ export const TheNavbar: FC<Props> = ({}) => {
     if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
       setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
   useHotkeys('ctrl+k, command+k', function (event) {
@@ -54,7 +52,7 @@ export const TheNavbar: FC<Props> = ({}) => {
           code,
           redirect_uri: redirect_url(),
         }),
-      }); //.then((res) => res.json());
+      });
       if (response.status !== 200) {
         const responseText = await response.clone().json();
         if (responseText.message) {
@@ -73,12 +71,10 @@ export const TheNavbar: FC<Props> = ({}) => {
       const code = new URLSearchParams(router.asPath.split('?')[1]).get('code');
       if (code) {
         (async () => {
-          //setFinishingLogin(true);
           const res = await getAccessTokenFromCode(code);
         })();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
   useEffect(() => {
@@ -86,7 +82,6 @@ export const TheNavbar: FC<Props> = ({}) => {
       localStorage.inviteCode = router.query.invite as string;
       redirectToSignIn();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.invite, user]);
 
   const onModalClose = useCallback(() => {
@@ -98,12 +93,13 @@ export const TheNavbar: FC<Props> = ({}) => {
   };
 
   return (
-    <>
+    <> 
       <header className="sticky top-0 left-0 right-0 z-40">
         <nav
           className="flex items-center justify-between w-full px-4 mx-auto border-b border-dark-200 bg-black backdrop-blur h-14"
           aria-label="Global">
           <div className="flex items-center gap-3">
+            {/* Mobile Hamburger Menu */}
             {/* <ElemButton
               onClick={() => setShowSidebar(!showSidebar)}
               btn="default"
@@ -121,13 +117,17 @@ export const TheNavbar: FC<Props> = ({}) => {
             </ElemLink>
           </div>
 
-          <ElemSearchBox
-            onClick={() => {
-              setShowPopup('search');
-            }}
-          />
+          {/* Search Box for Desktop */}
+          <div className="hidden lg:block flex-grow">
+            <ElemSearchBox
+              onClick={() => {
+                setShowPopup('search');
+              }}
+            />
+          </div>
 
           <div className="flex items-center space-x-2 lg:space-x-3">
+            {/* Search Icon (Mobile) */}
             <ElemButton
               onClick={() => setShowPopup('search')}
               className="h-9 w-9 !p-0 sm:hidden">
@@ -136,6 +136,7 @@ export const TheNavbar: FC<Props> = ({}) => {
 
             {user ? (
               <>
+                {/* Notifications */}
                 <ElemButton
                   href={ROUTES.NOTIFICATIONS}
                   className="relative w-9 h-9 !p-0">
@@ -173,7 +174,6 @@ export const TheNavbar: FC<Props> = ({}) => {
       <TheMobileNav />
 
       <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
-
       <UsageModal show={showPopup === 'usage'} onClose={onModalClose} />
 
       <ElemModal
