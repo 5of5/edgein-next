@@ -93,7 +93,7 @@ export const TheNavbar: FC<Props> = ({}) => {
   };
 
   return (
-    <> 
+    <>
       <header className="sticky top-0 left-0 right-0 z-40">
         <nav
           className="flex items-center justify-between w-full px-4 mx-auto border-b border-dark-200 bg-black backdrop-blur h-14"
@@ -117,7 +117,7 @@ export const TheNavbar: FC<Props> = ({}) => {
             </ElemLink>
           </div>
 
-          {/* Search Box for Desktop */}
+          
           <div className="hidden lg:block flex-grow">
             <ElemSearchBox
               onClick={() => {
@@ -127,13 +127,11 @@ export const TheNavbar: FC<Props> = ({}) => {
           </div>
 
           <div className="flex items-center space-x-2 lg:space-x-3">
-            {/* Search Icon (Mobile) */}
             <ElemButton
               onClick={() => setShowPopup('search')}
               className="h-9 w-9 !p-0 sm:hidden">
               <IconSearch className="w-5 h-5" />
             </ElemButton>
-
             {user ? (
               <>
                 {/* Notifications */}
@@ -165,7 +163,6 @@ export const TheNavbar: FC<Props> = ({}) => {
                 Sign in
               </ElemButton>
             )}
-
             <UserMenu />
           </div>
         </nav>
