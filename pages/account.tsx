@@ -5,7 +5,7 @@ import { InputText } from '@/components/input-text';
 import { IconLinkedInAlt, IconContributor } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { EditSection } from '@/components/dashboard/edit-section';
-import { GetUserProfileDocument, GetUserProfileQuery } from '@/graphql/types';
+import { GetUserProfileDocument, GetUserProfileQuery, useGetBillingOrgByIdQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
 import { InputSwitch } from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
@@ -37,6 +37,11 @@ export default function Account({ userProfile }: Props) {
   const { success } = router.query;
 
   const { toast } = useToast();
+
+  const { data, error, isLoading } = useGetBillingOrgByIdQuery(
+    { id: Number(user?.billing_org_id) },
+  );
+  
 
   useEffect(() => {
     // refetch user data after success payment (premium feature)
@@ -357,7 +362,7 @@ export default function Account({ userProfile }: Props) {
             heading="Subscription"
             right={
               userProfile &&
-              (userProfile.users_by_pk?.billing_org?.status === 'active' ||
+              (data?.billing_org[0]?.status === 'active' ||
                 haveSubscriptionFromCredits) ? (
                 <ElemButton onClick={onBillingClick} btn="default" className="">
                   Manage subscription
@@ -367,7 +372,7 @@ export default function Account({ userProfile }: Props) {
               )
             }>
             {userProfile &&
-            (userProfile.users_by_pk?.billing_org?.status === 'active' ||
+            (data?.billing_org[0]?.status === 'active' ||
               haveSubscriptionFromCredits) ? (
               <div>
                 <div className="flex items-center space-x-1">

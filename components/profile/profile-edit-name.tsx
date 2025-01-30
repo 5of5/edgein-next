@@ -31,7 +31,7 @@ export const ProfileEditName: React.FC<Props> = ({}) => {
         )
       }>
       {!editName ? (
-        <p className="text-slate-600">{user?.display_name}</p>
+        <p className="text-slate-500">{user?.display_name}</p>
       ) : (
         <div className="max-w-sm">
           {/* <div>
