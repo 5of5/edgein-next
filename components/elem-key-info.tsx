@@ -38,6 +38,7 @@ import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 import { useUser } from '@/context/user-context';
 import toast, { Toaster } from 'react-hot-toast';
 import { ElemTooltip } from './elem-tooltip';
+import { useGetBillingOrgByIdQuery } from '@/graphql/types';
 
 type Attachments = Array<{
   label: string;
@@ -107,9 +108,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 }) => {
   const { user } = useUser();
 
-  const isPaidUser = user?.entitlements.viewEmails
-    ? user?.entitlements.viewEmails
-    : false;
+
 
   const isEmptyLocationJson = values(locationJson).every(isEmpty);
   let locationText = '';
@@ -118,6 +117,16 @@ export const ElemKeyInfo: React.FC<Props> = ({
   } else if (location) {
     locationText = location;
   }
+
+  const { data } = useGetBillingOrgByIdQuery({
+    id: Number(user?.billing_org_id),
+  });
+
+    // const isPaidUser = (data?.billing_org[0]?.status === 'active') || user?.entitlements.viewEmails
+    // ? user?.entitlements.viewEmails
+    // : false;
+
+    const isPaidUser = data?.billing_org[0]?.status === 'active';
 
   const infoItems: {
     icon?: React.FC<IconProps>;
