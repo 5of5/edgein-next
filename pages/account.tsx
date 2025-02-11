@@ -42,7 +42,7 @@ export default function Account({ userProfile }: Props) {
     { id: Number(user?.billing_org_id) },
   );
   
-
+ 
   useEffect(() => {
     // refetch user data after success payment (premium feature)
     if (success === 'true') {
