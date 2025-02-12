@@ -182,7 +182,7 @@ const Faq: NextPage<Props> = ({}) => {
                 <span>Contact us</span>
               </ElemButton>
               <LiveChatWidget
-                license="18998946"
+                license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
                 visibility="maximized"
                 onNewEvent={handleLiveChatEvent}
               />

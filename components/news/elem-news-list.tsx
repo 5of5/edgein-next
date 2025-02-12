@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { News } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
 import ElemNewsHeading from './elem-news-heading';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   heading?: string;
@@ -21,7 +22,16 @@ const ElemNewsList: React.FC<Props> = ({
   news,
   resourceId,
 }) => {
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
 
   const [limit, setLimit] = useState(10);
   const showMore = () => {
@@ -34,6 +44,11 @@ const ElemNewsList: React.FC<Props> = ({
 
   return (
     <section className="border border-gray-300 rounded-lg">
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <div className="flex items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">{heading ? heading : 'News'}</h2>
       </div>

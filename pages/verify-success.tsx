@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FigureBlurredCircle } from '@/components/figures';
 import Image from 'next/image';
 import { useIntercom } from 'react-use-intercom';
@@ -9,13 +9,22 @@ import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/router';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {};
 
 const VerifyFail: NextPage<Props> = () => {
   const router = useRouter();
-  const { show } = useIntercom();
+  // const { show } = useIntercom();
   const { user } = useUser();
+  const [show, setShow] = useState<boolean>(false);
+
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+  const showNewMessages = () => {
+    setShow(true);
+  }
 
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -40,6 +49,11 @@ const VerifyFail: NextPage<Props> = () => {
 
   return (
     <>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <NextSeo
         title="Verification Successful"
         description="Your profile has been successfully verified and is now ready to be
@@ -84,7 +98,7 @@ const VerifyFail: NextPage<Props> = () => {
               , or{' '}
               <button
                 className="font-bold text-primary-500 focus:outline-0"
-                onClick={show}>
+                onClick={showNewMessages}>
                 drop us a line
               </button>{' '}
               to find what you&rsquo;re looking for.

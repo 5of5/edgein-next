@@ -1,12 +1,13 @@
-import React, { CSSProperties, FC } from 'react';
+import React, { CSSProperties, FC, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { GetNotificationsForUserQuery } from '@/graphql/types';
 import {
   IconCheck,
   IconEllipsisHorizontal,
   IconExclamationTriangle,
 } from '../icons';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   popoverStyle: CSSProperties;
@@ -23,7 +24,16 @@ const ElemNotificationPopover: FC<Props> = ({
 
   const organization = company || vc_firm;
 
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
 
   return (
     <Popover
@@ -35,6 +45,12 @@ const ElemNotificationPopover: FC<Props> = ({
           title="Options"
         />
       </Popover.Button>
+
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
 
       <Transition
         enter="transition duration-100 ease-out"

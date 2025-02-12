@@ -23,7 +23,7 @@ import {
 import { ElemJobsList } from '@/components/person/elem-jobs-list';
 import { onTrackView } from '@/utils/track';
 import { useAuth } from '@/hooks/use-auth';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { IconCheckBadgeSolid } from '@/components/icons';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { ElemTags } from '@/components/elem-tags';
@@ -34,6 +34,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   person: People;
@@ -48,7 +49,17 @@ const Person: NextPage<Props> = (props: Props) => {
   const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const { user } = useAuth();
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
 
   const { personId } = router.query;
   const [person, setPerson] = useState<People>(props.person);
@@ -138,6 +149,11 @@ const Person: NextPage<Props> = (props: Props) => {
 
   return (
     <>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <NextSeo
         title={
           person.name
