@@ -197,7 +197,7 @@ const Company: NextPage<Props> = (props: Props) => {
         openGraph={{
           images: [
             {
-              url: 'https://edgein.io/social.jpg',
+              url: 'https://edgein.io/social.png',
               width: 800,
               height: 600,
               alt: 'Company profile',
