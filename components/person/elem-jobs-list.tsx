@@ -5,7 +5,7 @@ import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import { ElemPhoto } from '@/components/elem-photo';
 import { getFullAddress } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '../elem-button';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
@@ -13,6 +13,7 @@ import { IconPlus } from '@/components/icons';
 import CompanyExperienceModal from '../company-experience-modal';
 import { useAuth } from '@/hooks/use-auth';
 import AddVcFirmModal from '../add-vc-firm-modal';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   className?: string;
@@ -30,7 +31,7 @@ export const ElemJobsList: FC<Props> = ({
   personId,
 }) => {
   const { user } = useAuth();
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
   const [showCompanyModal, setShowCompanyModal] = useState(false);
   const [showVcModal, setShowVcModal] = useState(false);
 
@@ -39,8 +40,23 @@ export const ElemJobsList: FC<Props> = ({
     if (heading === 'VC Firm Experience') setShowVcModal(true);
   };
 
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
+
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <CompanyExperienceModal
         show={showCompanyModal}
         onClose={() => setShowCompanyModal(false)}

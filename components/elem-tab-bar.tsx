@@ -6,10 +6,11 @@ import {
   useEffect,
 } from 'react';
 import { IconEllipsisVertical } from '@/components/icons';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '@/components/elem-button';
 import { ElemSticky } from '@/components/elem-sticky';
 import { ElemDropdown } from './elem-dropdown';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Tabs = {
   name?: string;
@@ -69,7 +70,16 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
     }
   }, [tabs, scrollPosition]);
 
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+      console.log("LiveChatWidget.onNewEvent", event);
+    }
+  
+    const [show, setShow] = useState<boolean>(false);
+    const showNewMessages = (message: String) => {
+      console.log(message)
+      setShow(true);
+    }
 
   const resource = resourceUrl
     ? `${resourceName}: ${resourceUrl}`
@@ -100,6 +110,11 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
     <ElemSticky
       className={`flex gap-y-2 items-center ${className}`}
       activeClass="top-14 bg-black shadow-sm">
+      {show && <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />}
       <nav
         className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 mr-auto lg:flex-wrap ${tabsClassName}`}>
         {tabs &&

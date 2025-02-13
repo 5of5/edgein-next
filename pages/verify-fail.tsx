@@ -1,22 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FigureBlurredCircle } from '@/components/figures';
 import Image from 'next/image';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { usePopup } from '@/context/popup-context';
 import { ElemLink } from '@/components/elem-link';
 import { ROUTES } from '@/routes';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {};
 
 const VerifyFail: NextPage<Props> = () => {
-  const { show } = useIntercom();
+  const [show, setShow] = useState<boolean>(false);
+  // const { show } = useIntercom();
 
   const { setShowPopup } = usePopup();
 
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+  const showNewMessages = () => {
+    setShow(true);
+  }
+
   return (
     <>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <NextSeo
         title="Verification Fail"
         description="You have exhausted all OTP attempts. Please try again later.."
@@ -59,7 +73,7 @@ const VerifyFail: NextPage<Props> = () => {
               , or{' '}
               <button
                 className="font-bold text-primary-500 focus:outline-0"
-                onClick={show}>
+                onClick={showNewMessages}>
                 drop us a line
               </button>{' '}
               to find what you&rsquo;re looking for.

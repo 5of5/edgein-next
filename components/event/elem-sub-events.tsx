@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { ElemCarouselWrap } from '@/components/elem-carousel-wrap';
 import { ElemCarouselCard } from '@/components/elem-carousel-card';
 import { GetSubEventsQuery } from '@/graphql/types';
 import { ElemEventCard } from '../events/elem-event-card';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { ElemButton } from '@/components/elem-button';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   className?: string;
@@ -17,10 +18,24 @@ export const ElemSubEvents: FC<Props> = ({
   eventName,
   subEvents,
 }) => {
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+      console.log("LiveChatWidget.onNewEvent", event);
+    }
+  
+    const [show, setShow] = useState<boolean>(false);
+    const showNewMessages = (message: String) => {
+      console.log(message)
+      setShow(true);
+    }
 
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <div className="flex flex-wrap items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">
           {eventName ? `Sub-events at ${eventName}` : 'Sub-events'}

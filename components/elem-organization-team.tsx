@@ -7,10 +7,11 @@ import { ElemBulkSavePeople } from './elem-bulk-save-people';
 import { ElemButton } from './elem-button';
 import { uniq, compact, sortBy } from 'lodash';
 import { DeepPartial } from '@/types/common';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { useStateParams } from '@/hooks/use-state-params';
 import { functionChoicesTM } from '@/utils/constants';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 import {
   Order_By,
@@ -44,7 +45,17 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
   showTags = true,
   allowToSaveTeam = true,
 }) => {
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
 
   const [page, setPage] = useStateParams<number>(
     0,
@@ -166,6 +177,11 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
 
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       {heading && (
         <div className="flex items-center justify-between px-4 pt-2">
           <h2 className="text-lg font-medium">{heading}</h2>

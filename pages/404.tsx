@@ -1,22 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FigureBlurredCircle } from '@/components/figures';
 import Image from 'next/image';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { usePopup } from '@/context/popup-context';
 import { ElemLink } from '@/components/elem-link';
 import { ROUTES } from '@/routes';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {};
 
 const Custom404: NextPage<Props> = () => {
-  const { show } = useIntercom();
+  // const { show } = useIntercom();
 
   const { setShowPopup } = usePopup();
 
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = () => {
+    setShow(true);
+  }
+
   return (
     <>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <NextSeo
         title="404 Page not found"
         description="Sorry, but the page you were looking for could not be found. You can use the search bar, return to our front page, or drop us a line to find what you’re looking for."
@@ -59,7 +74,7 @@ const Custom404: NextPage<Props> = () => {
               , or{' '}
               <button
                 className="font-bold text-primary-500 focus:outline-0"
-                onClick={show}>
+                onClick={showNewMessages}>
                 drop us a line
               </button>{' '}
               to find what you&rsquo;re looking for.
