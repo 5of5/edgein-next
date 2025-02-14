@@ -1,18 +1,21 @@
-import { serialize } from "cookie";
-import crypto from "crypto"; // ✅ Import crypto
-import cors, { runMiddleware } from "../../../lib/cors";
-import applyCors from "../../../lib/cors";
+export const config = {
+  runtime: 'nodejs',
+};
+
+import { serialize } from 'cookie';
+import crypto from 'crypto'; // ✅ Import crypto
+import cors, { runMiddleware } from '../../../lib/cors';
+import applyCors from '../../../lib/cors';
 
 export default async function handler(req, res) {
-
-   if (applyCors(req, res)) return;
+  if (applyCors(req, res)) return;
 
   const {
     NEXT_PUBLIC_TWITTER_CLIENT_ID,
     NEXT_PUBLIC_TWITTER_REDIRECT_URI,
     NEXT_PUBLIC_TWITTER_SCOPES,
     NEXT_PUBLIC_TWITTER_AUTH_URL,
-    NEXT_REDIRECT_SITE
+    NEXT_REDIRECT_SITE,
   } = process.env;
 
   const state = Math.random().toString(36).substring(7); // CSRF Protection
@@ -36,9 +39,6 @@ export default async function handler(req, res) {
   )}&scope=${encodeURIComponent(
     `${NEXT_PUBLIC_TWITTER_SCOPES} offline.access`,
   )}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
-
-
-
 
   res.setHeader('Set-Cookie', [
     serialize('code_verifier', codeVerifier, {
