@@ -32,16 +32,6 @@ export default async function handler(req, res) {
     `${NEXT_PUBLIC_TWITTER_SCOPES} offline.access`,
   )}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
-  // ✅ Set CORS Headers to allow frontend to receive cookies
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', '*');
-
-  // ✅ Handle Preflight Requests
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
   // ✅ Store both `code_verifier` and `state` in secure HTTP-only cookies
   res.setHeader('Set-Cookie', [
     serialize('code_verifier', codeVerifier, {
