@@ -1,8 +1,12 @@
 import { serialize } from "cookie";
 import crypto from "crypto"; // ✅ Import crypto
 import cors, { runMiddleware } from "../../../lib/cors";
+import applyCors from "../../../lib/cors";
 
 export default async function handler(req, res) {
+
+   if (applyCors(req, res)) return;
+
   const {
     NEXT_PUBLIC_TWITTER_CLIENT_ID,
     NEXT_PUBLIC_TWITTER_REDIRECT_URI,
@@ -34,22 +38,19 @@ export default async function handler(req, res) {
   )}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
 
-    await runMiddleware(req, res, cors);
 
-  // ✅ Store both `code_verifier` and `state` in secure HTTP-only cookies
+
   res.setHeader('Set-Cookie', [
     serialize('code_verifier', codeVerifier, {
       httpOnly: true,
       secure: true,
-      // secure: process.env.NODE_ENV === 'production', //When testing, keep it commented
-      sameSite: 'None', //Since frontend is xadeAi
+      sameSite: 'None',
       path: '/',
     }),
     serialize('state', state, {
       httpOnly: true,
       secure: true,
-      sameSite: 'None', //Since frontend is xadeAi
-      // secure: process.env.NODE_ENV === 'production', //When testing, keep it commented
+      sameSite: 'None',
       path: '/',
     }),
   ]);
