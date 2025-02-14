@@ -30,11 +30,12 @@ import { useUser } from '@/context/user-context';
 import { CreateListDialog } from '@/components/my-list/create-list-dialog';
 import { CreateGroupDialog } from '@/components/group/create-group-dialog';
 import useLocalStorageState from '@/hooks/use-local-storage-state';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { numberWithCommas } from '@/utils/numbers';
 import { fetchGraphQL } from '@/components/dashboard/elem-my-lists-menu';
 import { useRouter } from 'next/router';
 import { createClient } from '@supabase/supabase-js';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 const TOGGLE_CREDITS_SYSTEM_API_URL = '/api/toggle-credits-system/';
 
@@ -64,7 +65,16 @@ const apiKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY || '';
 const supabase = createClient(apiUrl, apiKey);
 
 const ReferralsAndPoints: NextPage = () => {
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
   const router = useRouter();
   const { user, refreshUser, listsQualifyForCredits, groupsQualifyForCredits } =
     useUser();
@@ -425,6 +435,11 @@ const ReferralsAndPoints: NextPage = () => {
 
   return (
     <DashboardLayout>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <div className="px-4 py-3">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-medium">Referrals and Points</h2>

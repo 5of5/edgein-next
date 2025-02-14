@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { formatDate } from '@/utils';
 import { ElemButton } from '../elem-button';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   activities: Array<any>;
@@ -18,10 +19,23 @@ export const ElemEventActivity: React.FC<Props> = ({
   const showMoreActivity = () => {
     setActivityLimit(activityLimit + 10);
   };
-  const { show } = useIntercom();
+  // const { show } = useIntercom();
+   function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+      console.log("LiveChatWidget.onNewEvent", event);
+    }
+  
+    const [show, setShow] = useState<boolean>(false);
+    const showNewMessages = () => {
+      setShow(true);
+    }
 
   return (
     <div>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <h2 className="text-lg font-medium px-4 pt-2">Activity</h2>
 
       <div className="px-4 py-4">
@@ -179,7 +193,7 @@ export const ElemEventActivity: React.FC<Props> = ({
             <div className="text-gray-500">
               There is no recent activity for this event.
             </div>
-            <ElemButton className="mt-2" onClick={show} btn="default">
+            <ElemButton className="mt-2" onClick={showNewMessages} btn="default">
               Request data or contribute
             </ElemButton>
           </div>

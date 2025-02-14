@@ -251,7 +251,7 @@ const Event: NextPage<Props> = props => {
               alt: event.name ? event.name : 'Event',
             },
             {
-              url: 'https://edgein.io/social.jpg',
+              url: 'https://edgein.io/social.png',
               width: 800,
               height: 600,
               alt: 'Event',

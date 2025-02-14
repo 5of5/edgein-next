@@ -1,8 +1,9 @@
-import { FC, useRef, useEffect } from 'react';
+import { FC, useRef, useEffect, useState } from 'react';
 import { onboardingExploreChoices, segmentChoices } from '@/utils/constants';
 import { ElemButton } from '../elem-button';
 import { Segment } from '@/types/onboarding';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   selectedSegment?: Segment;
@@ -19,7 +20,16 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
   onChangeExploreChoices,
   onNext,
 }) => {
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
 
   const exploreChoicesRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +41,11 @@ export const ElemOnboardingSegmenting: FC<Props> = ({
 
   return (
     <>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <div className="max-w-sm">
         <h1 className="mt-4 text-2xl text-center font-medium lg:text-3xl">
           What best describes what you do?

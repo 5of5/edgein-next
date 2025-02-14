@@ -44,6 +44,7 @@ import { TheMobileNav } from '@/components/the-mobile-nav';
 import SearchModal from '@/components/search-modal';
 import { UsageModal } from '@/components/usage-modal';
 // import { NewsByFilter } from '@/components/news/elem-news-by-filter';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -52,6 +53,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   const { user, unreadNotificationsCount } = useUser();
   const { showPopup, setShowPopup } = usePopup();
+  const [show, setShow] = useState<boolean>(false);
 
   const showPersonalized = !!user;
 
@@ -122,7 +124,14 @@ const Home: NextPage = () => {
   const isSelectedTagLocation = locationTags.includes(
     selectedStatusTag?.title || '',
   );
-  const { show } = useIntercom();
+  // const { show } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const showNewMessages = () => {
+    setShow(true);
+  }
 
   useEffect(() => {
     if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
@@ -143,6 +152,11 @@ const Home: NextPage = () => {
 
   return (
     <>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <NextSeo
         title="Home"
         description="Early-stage companies in the AI and Web3 markets require actionable intelligence and hyper-speed. Consider this your greatest asset."
@@ -232,7 +246,7 @@ const Home: NextPage = () => {
                 <span className="mb-3 text-md font-mon_book text-gray-300">
                   Here’s your personalized overview of the data that is most
                   relevant to your business, updated daily. &nbsp;
-                  <span className="underline cursor-pointer" onClick={show}>
+                  <span className="underline cursor-pointer" onClick={showNewMessages}>
                     We&rsquo;d love your feedback
                   </span>
                 </span>

@@ -143,7 +143,7 @@ const VCFirm: NextPage<Props> = props => {
         openGraph={{
           images: [
             {
-              url: 'https://edgein.io/social.jpg',
+              url: 'https://edgein.io/social.png',
               width: 800,
               height: 600,
               alt: 'Investor profile',

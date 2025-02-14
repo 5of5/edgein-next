@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import {
@@ -13,9 +13,10 @@ import { Pagination } from '@/components/pagination';
 import { numberWithCommas, formatDate, convertToIntNum } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
-import { useIntercom } from 'react-use-intercom';
+// import { useIntercom } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 type Props = {
   className?: string;
@@ -30,7 +31,16 @@ export const ElemInvestments: React.FC<Props> = ({
   resourceName,
   investments,
 }) => {
-  const { showNewMessages } = useIntercom();
+  // const { showNewMessages } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message)
+    setShow(true);
+  }
 
   const columns = React.useMemo(
     () => [
@@ -266,6 +276,11 @@ export const ElemInvestments: React.FC<Props> = ({
 
   return (
     <section className={`rounded-lg border border-gray-300 ${className}`}>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       {heading && (
         <div className="flex items-center justify-between">
           <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>

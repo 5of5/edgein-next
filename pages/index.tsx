@@ -15,12 +15,21 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
 import SubNavbar from './sub_navbar';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 const Home = () => {
   const { user, loading } = useUser();
   const router = useRouter();
+  const [show, setShow] = useState<boolean>(false);
+  
+  // const { show } = useIntercom();
 
-  const { show } = useIntercom();
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
+  }
+  const showNewMessages = () => {
+    setShow(true);
+  }
 
   const logos = [
     {
@@ -165,6 +174,11 @@ const Home = () => {
 
   return (
     <>
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <section className="relative overflow-hidden isolate bg-black min-h-[60vh] flex items-center">
         <div className="px-6 py-10 mx-auto max-w-7xl sm:py-16 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
@@ -301,7 +315,7 @@ const Home = () => {
                 Access now
               </ElemButton>
               <ElemButton
-                onClick={show}
+                onClick={showNewMessages}
                 btn="ol-white"
                 size="lg"
                 className="mx-auto whitespace-nowrap w-fit sm:mx-0">
