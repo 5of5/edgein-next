@@ -33,13 +33,9 @@ export default async function handler(req, res) {
   )}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
   // ✅ Set CORS Headers to allow frontend to receive cookies
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    'https://9bad-182-48-225-63.ngrok-free.app',
-  );
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', '*');
 
   // ✅ Handle Preflight Requests
   if (req.method === 'OPTIONS') {
