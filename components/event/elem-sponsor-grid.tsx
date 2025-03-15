@@ -123,11 +123,11 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
   };
 
   return (
-    <section className="rounded-lg border border-gray-300">
+    <section className="rounded-lg border border-gray-700">
       <h2 className="text-xl font-medium px-4 pt-2">Sponsors</h2>
 
       <div className="px-4 py-4">
-        <div className="overflow-auto border border-gray-300 rounded-lg">
+        <div className="overflow-auto border border-gray-700 rounded-lg">
           <table
             {...getTableProps()}
             className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none">

@@ -21,18 +21,22 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
     getNameFromListName(list),
   )}`;
 
-  const totalItems = list?.follows_companies?.length + list?.follows_vcfirms?.length + list?.follows_people?.length;
+  const totalItems =
+    list?.follows_companies?.length +
+    list?.follows_vcfirms?.length +
+    list?.follows_people?.length;
 
   const tooltipContent = (
     <div className="flex-col p-2 group">
       <div>
         <ElemLink
           href={listUrl}
-          className="inline-block first-letter:uppercase">
+          className="inline-block first-letter:uppercase"
+        >
           <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
             {getListDisplayName(list)}
           </div>
-          <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border  border-neutral-700 rounded-full">
+          <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-300 hover:border-gray-400 text-gray-300 hover:text-gray-200 rounded-full transition-colors">
             {list.public ? (
               <IconGlobeAmericas
                 title="Public"
@@ -51,7 +55,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
 
       <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 font-normal gap-x-1 gap-y-0.5">
         <ElemTooltip content="Author" mode="dark" direction="bottom" size="lg">
-          <div className="first-letter:uppercase">
+          <div className="first-letter:uppercase" aria-label="Author">
             {list?.created_by?.person ? (
               <ElemLink
                 href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
@@ -74,21 +78,20 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
           direction="bottom"
           size="lg">
           <div>
-            <ElemLink href={listUrl} className="hover:underline">
+            <ElemLink
+              href={listUrl}
+              className="hover:underline">
               {formatDateShown(list.updated_at, `ll`)}
             </ElemLink>
           </div>
         </ElemTooltip>
         &middot;
         <div>
-          <ElemLink href={listUrl} className="hover:underline">
-            {numberWithCommas(
-              totalItems ? totalItems : 0,
-            )}{' '}
-            item
-            {totalItems &&
-              totalItems > 1 &&
-              's'}
+          <ElemLink
+            href={listUrl}
+            className="hover:underline">
+            {numberWithCommas(totalItems ? totalItems : 0)} item
+            {totalItems && totalItems > 1 && 's'}
           </ElemLink>
         </div>
       </div>
@@ -108,9 +111,11 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
       content={tooltipContent}
       direction="top-start"
       delay={350}
-      mode="light"
+      mode="dark"
       size="lg"
-      arrow={false}>
+      arrow={false}
+      className="!max-w-[24rem] [&_.MuiTooltip-tooltip]:!bg-black [&_.MuiTooltip-tooltip]:!text-white [&_.MuiTooltip-tooltip]:!border [&_.MuiTooltip-tooltip]:!border-gray-300 [&_.MuiTooltip-tooltip]:hover:!border-gray-400 [&_.MuiTooltip-tooltip]:transition-colors !important"
+    >
       <div>{children}</div>
     </ElemTooltip>
   );

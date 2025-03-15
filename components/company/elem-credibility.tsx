@@ -44,7 +44,7 @@ export const ElemCredibility: React.FC<Props> = ({
   }
 
   return (
-    <section className={`rounded-lg border border-gray-300 ${className}`}>
+    <section className={`rounded-lg border border-gray-700 ${className}`}>
       {heading && <h2 className="text-lg font-medium px-4 pt-2">{heading}</h2>}
       <div
         className={`grid gap-2 overflow-visible p-4 ${

@@ -137,7 +137,7 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
   };
 
   return (
-    <div className="flex flex-col w-full overflow-hidden transition-all duration-300 border border-gray-300 rounded-xl hover:border-gray-400">
+    <div className="flex flex-col w-full overflow-hidden transition-all duration-300 border border-gray-700 rounded-xl hover:border-gray-400">
       <ElemLink
         href={`${ROUTES.EVENTS}/${slug}`}
         className="flex w-full shrink-0">

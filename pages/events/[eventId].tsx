@@ -262,7 +262,7 @@ const Event: NextPage<Props> = props => {
       <DashboardLayout>
         <div className={`p-8 event-${event.id}`}>
           <div className="mb-4">
-            <div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">
+            <div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 border-gray-700 rounded-[20px] overflow-hidden ">
               <div
                 className="absolute top-0 bottom-0 left-0 right-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover -z-10 blur-2xl" // blur-[50px]
                 style={{
@@ -412,7 +412,7 @@ const Event: NextPage<Props> = props => {
             id="overview">
             <div className="col-span-3">
               <ElemKeyInfo
-                className="sticky top-28"
+                className="sticky top-28 border-gray-700"
                 heading="Key Info"
                 eventLink={event.link}
                 // website={event.link}
@@ -430,7 +430,7 @@ const Event: NextPage<Props> = props => {
             </div>
             <div className="grid col-span-8 mt-8 gap-y-8 lg:mt-0">
               {event.overview && (
-                <div className="border border-gray-300 rounded-lg lg:mt-0">
+                <div className="border border-gray-700 rounded-lg lg:mt-0">
                   <h2 className="px-4 pt-2 text-lg font-medium">Overview</h2>
                   <div className="px-4 py-4 text-sm text-gray-500">
                     {parse(newLineToP(event.overview))}
@@ -447,7 +447,7 @@ const Event: NextPage<Props> = props => {
                 </div>
               )}
 
-              <div className="border border-gray-300 rounded-lg">
+              <div className="border border-gray-700 rounded-lg">
                 <ElemEventActivity
                   activities={sortedActivities}
                   eventName={event.name}
@@ -459,7 +459,7 @@ const Event: NextPage<Props> = props => {
           {speakers?.length > 0 && (
             <div
               ref={speakersRef}
-              className="border border-gray-300 rounded-lg mt-7"
+              className="border border-gray-700 rounded-lg mt-7"
               id="speakers">
               <ElemSpeakerGrid people={speakers} />
             </div>

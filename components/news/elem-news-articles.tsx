@@ -9,7 +9,7 @@ import {
 } from '@/graphql/types';
 import { getQueryBySource } from '@/utils/news';
 import ElemNewsHeading from './elem-news-heading';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {
   heading?: string;
@@ -54,22 +54,24 @@ const ElemNewsArticles: React.FC<Props> = ({
     setPage(page + 1);
   };
   // const { show } = useIntercom();
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const [show, setShow] = useState<boolean>(false);
   const showNewMessages = () => {
     setShow(true);
-  }
+  };
 
   return (
-    <section className="border border-gray-300 rounded-lg">
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+    <section className="border border-gray-700 rounded-lg">
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <div className="flex items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">{heading ? heading : 'News'}</h2>
       </div>
@@ -99,7 +101,10 @@ const ElemNewsArticles: React.FC<Props> = ({
             <div className="text-gray-500 lg:text-xl">
               There is no recent news for this organization.
             </div>
-            <ElemButton onClick={showNewMessages} btn="default" className="mt-3">
+            <ElemButton
+              onClick={showNewMessages}
+              btn="default"
+              className="mt-3">
               Request data or contribute
             </ElemButton>
           </div>

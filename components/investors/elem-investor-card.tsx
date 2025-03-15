@@ -47,7 +47,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
   const isEmptyLocationJson = values(location_json).every(isEmpty);
 
   return (
-    <div className="flex flex-col w-full border border-gray-300 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
+    <div className="flex flex-col w-full border border-gray-700 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
       <div className="flex flex-col justify-between h-full">
         <div>
           <ElemLink href={`${ROUTES.INVESTORS}/${slug}`}>

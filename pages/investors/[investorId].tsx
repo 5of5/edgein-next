@@ -254,7 +254,7 @@ const VCFirm: NextPage<Props> = props => {
         </div>
 
         <ElemTabBar
-          className="px-8 py-2"
+          className="px-8 py-2 "
           tabs={tabBarItems}
           resourceName={vcfirm.name}
           resourceUrl={`https://edgein.io${router.asPath}`}
@@ -267,7 +267,7 @@ const VCFirm: NextPage<Props> = props => {
             id="overview">
             <div className="col-span-3">
               <ElemKeyInfo
-                className="sticky top-28"
+                className="sticky top-28 border-gray-700"
                 heading="Key Info"
                 website={vcfirm.website}
                 investmentsLength={sortedInvestmentRounds.length}
@@ -282,7 +282,7 @@ const VCFirm: NextPage<Props> = props => {
                 glassdoor={vcfirm.glassdoor}
               />
             </div>
-            <div className="col-span-8">
+            <div className="col-span-8 ">
               <div className="w-full mt-7 lg:mt-0">
                 <ElemOrganizationNotes
                   resourceId={vcfirm.id}
@@ -319,7 +319,7 @@ const VCFirm: NextPage<Props> = props => {
             />
           </div>
 
-          <div ref={investmentRef} className="mt-7" id="investments">
+          <div ref={investmentRef} className="mt-7 " id="investments">
             <ElemInvestments
               heading="Investments"
               resourceName={vcfirm.name || ''}

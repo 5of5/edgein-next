@@ -86,7 +86,7 @@ const ElemOrganizationNotes: FC<Props> = ({
           ))}
         </div>
       ) : (
-        <div className="px-5 py-4 border border-gray-300 rounded-lg">
+        <div className="px-5 py-4 border border-gray-700 rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center space-x-1">
               <h2 className="text-lg font-medium">
