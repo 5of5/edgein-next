@@ -34,7 +34,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
 import { ElemInviteBanner } from '@/components/invites/elem-invite-banner';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {
   person: People;
@@ -51,15 +51,15 @@ const Person: NextPage<Props> = (props: Props) => {
   const { user } = useAuth();
   // const { showNewMessages } = useIntercom();
 
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const [show, setShow] = useState<boolean>(false);
   const showNewMessages = (message: String) => {
-    console.log(message)
+    console.log(message);
     setShow(true);
-  }
+  };
 
   const { personId } = router.query;
   const [person, setPerson] = useState<People>(props.person);
@@ -149,11 +149,13 @@ const Person: NextPage<Props> = (props: Props) => {
 
   return (
     <>
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <NextSeo
         title={
           person.name
@@ -304,7 +306,7 @@ const Person: NextPage<Props> = (props: Props) => {
               id="overview">
               <div className="col-span-3">
                 <ElemKeyInfo
-                  className="sticky top-28 mb-7 lg:mb-0"
+                  className="sticky top-28 mb-7 lg:mb-0 border-gray-700"
                   heading="Key Info"
                   roles={removeSpecialCharacterFromString(person.type || '')}
                   linkedIn={person.linkedin}
@@ -325,7 +327,7 @@ const Person: NextPage<Props> = (props: Props) => {
 
               <div className="grid col-span-8 gap-y-7">
                 {person.about && (
-                  <section className="border border-gray-300 rounded-lg">
+                  <section className="border !border-gray-700 rounded-lg">
                     <h2 className="px-4 pt-2 text-lg font-medium">About</h2>
                     <p className="px-4 pb-4 text-sm text-gray-500">
                       {person.about}
@@ -338,12 +340,14 @@ const Person: NextPage<Props> = (props: Props) => {
                   jobs={processedVcFirmJobs}
                   resourceUrl={profileUrl}
                   personId={person?.id?.toString()}
+                  className="border !border-gray-700"
                 />
                 <ElemJobsList
                   heading="Company Experience"
                   jobs={processedCompanyJobs}
                   resourceUrl={profileUrl}
                   personId={person?.id?.toString()}
+                  className="border !border-gray-700"
                 />
 
                 {props.sortNews?.length > 0 && (

@@ -85,6 +85,7 @@ insert_permissions:
         - created_at
         - updated_at
         - email
+
 select_permissions:
   - role: api_viewer
     permission:

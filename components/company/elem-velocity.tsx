@@ -51,7 +51,7 @@ export const ElemVelocity: React.FC<Props> = ({
 
   return (
     <section
-      className={`flex flex-col rounded-lg border border-gray-300 ${className}`}>
+      className={`flex flex-col rounded-lg border border-gray-700 ${className}`}>
       {heading && (
         <div className="flex items-center space-x-1 px-4 pt-2">
           <h2 className="text-lg font-medium">{heading}</h2>

@@ -1,5 +1,5 @@
 import { default as TheTooltip } from '@mui/material/Tooltip';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, useMemo } from 'react';
 
 type Props = {
   className?: string;
@@ -39,12 +39,14 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
   let modeClasses = '';
   let modeArrowClasses = '';
   if (mode === 'dark') {
-    modeClasses = '!bg-gray-600/90 !text-gray-300';
-    modeArrowClasses = 'before:!text-gray-600/90';
+    modeClasses =
+      '!bg-black !text-white !border !border-gray-300 hover:!border-gray-400 transition-colors';
+    modeArrowClasses = 'before:!text-black';
   } else {
-    modeClasses = '!bg-gray-50 !text-gray-600 !border ! border-neutral-700';
+    modeClasses =
+      '!bg-black !text-gray-300 !border !border-gray-300 hover:!border-gray-400 transition-colors';
     modeArrowClasses =
-      'before:!text-gray-50 before:!border before:! border-neutral-700';
+      'before:!text-gray-50 before:border before:border-gray-300 hover:before:border-gray-400 transition-colors';
   }
 
   // Sizes

@@ -108,8 +108,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
 }) => {
   const { user } = useUser();
 
-
-
   const isEmptyLocationJson = values(locationJson).every(isEmpty);
   let locationText = '';
   if (!isEmptyLocationJson) {
@@ -122,11 +120,11 @@ export const ElemKeyInfo: React.FC<Props> = ({
     id: Number(user?.billing_org_id),
   });
 
-    // const isPaidUser = (data?.billing_org[0]?.status === 'active') || user?.entitlements.viewEmails
-    // ? user?.entitlements.viewEmails
-    // : false;
+  // const isPaidUser = (data?.billing_org[0]?.status === 'active') || user?.entitlements.viewEmails
+  // ? user?.entitlements.viewEmails
+  // : false;
 
-    const isPaidUser = data?.billing_org[0]?.status === 'active';
+  const isPaidUser = data?.billing_org[0]?.status === 'active';
 
   const infoItems: {
     icon?: React.FC<IconProps>;
@@ -406,7 +404,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   return (
     <>
-      <section className={`border border-gray-300 rounded-lg ${className}`}>
+      <section className={`border border-gray-700 rounded-lg ${className}`}>
         {heading && (
           <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
         )}
