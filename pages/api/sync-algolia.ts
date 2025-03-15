@@ -11,7 +11,7 @@ import {
 import UserService, { USER_ROLES } from '@/utils/users';
 
 const client = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
+  process.env.ALGOLIA_WRITE_APPLICATION_ID!,
   process.env.ALGOLIA_WRITE_API_KEY!,
 );
 
