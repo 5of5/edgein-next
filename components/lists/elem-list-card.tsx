@@ -131,7 +131,7 @@ export const ElemListCard: FC<Props> = ({
   };
   //  border-neutral-700
   return (
-    <div className="flex flex-col justify-between w-full p-4 mx-auto border border-gray-200 rounded-lg">
+    <div className="flex flex-col justify-between w-full p-4 mx-auto border border-neutral-700 rounded-lg">
       <div>
         <ElemLink
           href={resourceUrl}
@@ -139,7 +139,7 @@ export const ElemListCard: FC<Props> = ({
           <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
             {name}
           </div>
-          <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-200 text-gray-600 rounded-full">
+          <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-neutral-700 text-gray-600 rounded-full">
             {resource.public ? (
               <IconGlobeAmericas
                 title="Public"
