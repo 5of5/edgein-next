@@ -89,39 +89,41 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
         const data = await fetchGraphQL(GET_PUBLIC_LISTS);
         const publicLists = [
           {
-            id: "web3-investors",
-            name: "Active Web3 Investors",
-            description: "Stay up-to-date with the latest trends in Web3 investment with this dynamic list showcasing the most active investors.",
+            id: 'web3-investors',
+            name: 'Active Web3 Investors',
+            description:
+              'Stay up-to-date with the latest trends in Web3 investment with this dynamic list showcasing the most active investors.',
             public: true,
-            created_at: "2025-03-15T00:00:00Z",
-            updated_at: "2025-03-15T00:00:00Z",
+            created_at: '2025-03-15T00:00:00Z',
+            updated_at: '2025-03-15T00:00:00Z',
             created_by: {
-              display_name: "EdgeIn Team",
-              person: null
+              display_name: 'EdgeIn Team',
+              person: null,
             },
             follows_companies: Array(150).fill({ resource_id: 1 }),
             follows_vcfirms: Array(154).fill({ resource_id: 1 }),
-            follows_people: Array(50).fill({ resource_id: 1 })
+            follows_people: Array(50).fill({ resource_id: 1 }),
           },
           {
-            id: "alpha-investors",
-            name: "Alpha investors thank you",
-            description: "A curated list of investors who have provided valuable alpha and insights to the EdgeIn community.",
+            id: 'alpha-investors',
+            name: 'Alpha investors thank you',
+            description:
+              'A curated list of investors who have provided valuable alpha and insights to the EdgeIn community.',
             public: true,
-            created_at: "2025-03-15T00:00:00Z",
-            updated_at: "2025-03-15T00:00:00Z",
+            created_at: '2025-03-15T00:00:00Z',
+            updated_at: '2025-03-15T00:00:00Z',
             created_by: {
-              display_name: "EdgeIn Team",
-              person: null
+              display_name: 'EdgeIn Team',
+              person: null,
             },
             follows_companies: Array(100).fill({ resource_id: 1 }),
             follows_vcfirms: Array(150).fill({ resource_id: 1 }),
-            follows_people: Array(50).fill({ resource_id: 1 })
+            follows_people: Array(50).fill({ resource_id: 1 }),
           },
           ...(data?.lists || []).filter(
             (x: Lists) =>
               !['hot', 'crap', 'like'].includes(getNameFromListName(x)),
-          )
+          ),
         ];
 
         setFilteredLists(publicLists);
@@ -274,7 +276,11 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     <ElemLink
                       href={`${ROUTES.LISTS}/${list.id}/${
                         listName === 'crap' ? 'sh**' : kebabCase(listName)
-                      }?fl=${list?.follows_companies?.length + list?.follows_vcfirms?.length + list?.follows_people?.length}`}
+                      }?fl=${
+                        list?.follows_companies?.length +
+                        list?.follows_vcfirms?.length +
+                        list?.follows_people?.length
+                      }`}
                       className={`flex items-center space-x-2 py-2 pl-4 font-medium text-sm rounded-md flex-1 transition-all hover:bg-neutral-900 hover:text-gray-300 ${getActiveClass(
                         list.id,
                         listName === 'crap' ? 'sh**' : kebabCase(listName),

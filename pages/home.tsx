@@ -41,10 +41,9 @@ import { ElemSearchBox } from '@/components/elem-search-box';
 import { usePopup } from '@/context/popup-context';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { TheMobileNav } from '@/components/the-mobile-nav';
-import SearchModal from '@/components/search-modal';
 import { UsageModal } from '@/components/usage-modal';
 // import { NewsByFilter } from '@/components/news/elem-news-by-filter';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 const ITEMS_PER_PAGE = 4;
 const GLOBAL_TAG = 'Global';
@@ -125,13 +124,13 @@ const Home: NextPage = () => {
     selectedStatusTag?.title || '',
   );
   // const { show } = useIntercom();
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const showNewMessages = () => {
     setShow(true);
-  }
+  };
 
   useEffect(() => {
     if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
@@ -152,11 +151,13 @@ const Home: NextPage = () => {
 
   return (
     <>
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <NextSeo
         title="Home"
         description="Early-stage companies in the AI and Web3 markets require actionable intelligence and hyper-speed. Consider this your greatest asset."
@@ -207,7 +208,7 @@ const Home: NextPage = () => {
 
               height: '100%',
               marginBottom: '5rem',
-              marginTop:'2rem',
+              marginTop: '2rem',
               justifySelf: 'center',
             }}
             className="pb-4 mt-5 justify-self-center w-full sm:w-[70%] sm:mx-auto sm:ml-8 flex justify-start sm:justify-center">
@@ -246,7 +247,9 @@ const Home: NextPage = () => {
                 <span className="mb-3 text-md font-mon_book text-gray-300">
                   Here’s your personalized overview of the data that is most
                   relevant to your business, updated daily. &nbsp;
-                  <span className="underline cursor-pointer" onClick={showNewMessages}>
+                  <span
+                    className="underline cursor-pointer"
+                    onClick={showNewMessages}>
                     We&rsquo;d love your feedback
                   </span>
                 </span>
@@ -727,8 +730,6 @@ const Home: NextPage = () => {
         </div>
 
         <TheMobileNav />
-
-        <SearchModal show={showPopup === 'search'} onClose={onModalClose} />
 
         <UsageModal show={showPopup === 'usage'} onClose={onModalClose} />
       </DashboardLayout>
