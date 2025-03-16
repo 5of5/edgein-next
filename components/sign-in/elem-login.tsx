@@ -23,13 +23,16 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [unsuccessMessage, setUnsuccessMessage] = useState('');
+  console.log('email did exist:', isExistedEmail);
 
   const { isFetching: isCheckingExistedEmail, refetch: checkExistedEmail } =
     useQuery(
-      ['check-existed-email', email],
+      ['check-existed-email', email.toLowerCase()],
       async () =>
         await fetch(
-          `/api/check-existed-email/?email=${encodeURIComponent(email)}`,
+          `/api/check-existed-email/?email=${encodeURIComponent(
+            email.toLowerCase(),
+          )}`,
         ),
       {
         enabled: false,
@@ -53,7 +56,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email,
+          email: email.toLowerCase(),
           password,
         }),
       }),
