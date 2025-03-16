@@ -30,7 +30,7 @@ export const ListsNoResults: FC<Props> = ({
 
   return (
     <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-      <div className="w-full max-w-xl p-8 my-8 text-center bg-black border border-gray-300 rounded-2xl lg:text-left">
+      <div className="w-full max-w-xl p-8 my-8 text-center bg-black border  border-neutral-700 rounded-2xl lg:text-left">
         <IconSidebarList className="w-12 h-12 mx-auto text-gray-300 lg:mx-0" />
         <h1 className="mt-5 text-3xl font-medium tracking-tight font-display">
           {heading}
