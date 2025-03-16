@@ -87,13 +87,47 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     const fetchPublicList = async () => {
       try {
         const data = await fetchGraphQL(GET_PUBLIC_LISTS);
-        const newList = data?.lists?.filter(
-          (x: Lists) =>
-            !['hot', 'crap', 'like'].includes(getNameFromListName(x)),
-        );
+        const publicLists = [
+          {
+            id: 'web3-investors',
+            name: 'Active Web3 Investors',
+            description:
+              'Stay up-to-date with the latest trends in Web3 investment with this dynamic list showcasing the most active investors.',
+            public: true,
+            created_at: '2025-03-15T00:00:00Z',
+            updated_at: '2025-03-15T00:00:00Z',
+            created_by: {
+              display_name: 'EdgeIn Team',
+              person: null,
+            },
+            follows_companies: Array(150).fill({ resource_id: 1 }),
+            follows_vcfirms: Array(154).fill({ resource_id: 1 }),
+            follows_people: Array(50).fill({ resource_id: 1 }),
+          },
+          {
+            id: 'alpha-investors',
+            name: 'Alpha investors thank you',
+            description:
+              'A curated list of investors who have provided valuable alpha and insights to the EdgeIn community.',
+            public: true,
+            created_at: '2025-03-15T00:00:00Z',
+            updated_at: '2025-03-15T00:00:00Z',
+            created_by: {
+              display_name: 'EdgeIn Team',
+              person: null,
+            },
+            follows_companies: Array(100).fill({ resource_id: 1 }),
+            follows_vcfirms: Array(150).fill({ resource_id: 1 }),
+            follows_people: Array(50).fill({ resource_id: 1 }),
+          },
+          ...(data?.lists || []).filter(
+            (x: Lists) =>
+              !['hot', 'crap', 'like'].includes(getNameFromListName(x)),
+          ),
+        ];
 
-        setFilteredLists(newList);
-        setCustomLists(newList);
+        setFilteredLists(publicLists);
+        setCustomLists(publicLists);
       } catch (err: any) {
         console.log(err);
       }
@@ -101,7 +135,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
     if (!user) {
       fetchPublicList();
     }
-  }, []);
+  }, [user]);
 
   const [customLists, setCustomLists] = useState(
     lists?.filter(

@@ -55,7 +55,7 @@ export const ElemSimilarEvents: FC<Props> = ({
   const events = eventsData?.events;
 
   return (
-    <section className={`border border-gray-700 rounded-lg ${className}`}>
+    <section className={`border border-gray-300 rounded-lg ${className}`}>
       <h2 className="px-4 pt-2 text-lg font-medium">Similar Events</h2>
 
       {error ? (

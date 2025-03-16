@@ -15,21 +15,21 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '@/components/elem-link';
 import SubNavbar from './sub_navbar';
-import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
+import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
 
 const Home = () => {
   const { user, loading } = useUser();
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
-
+  
   // const { show } = useIntercom();
 
-  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
-    console.log('LiveChatWidget.onNewEvent', event);
+  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
+    console.log("LiveChatWidget.onNewEvent", event);
   }
   const showNewMessages = () => {
     setShow(true);
-  };
+  }
 
   const logos = [
     {
@@ -174,17 +174,15 @@ const Home = () => {
 
   return (
     <>
-      {show && (
-        <LiveChatWidget
-          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-          visibility="maximized"
-          onNewEvent={handleLiveChatEvent}
-        />
-      )}
+      {show && <LiveChatWidget
+        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+        visibility="maximized"
+        onNewEvent={handleLiveChatEvent}
+      />}
       <section className="relative overflow-hidden isolate bg-black min-h-[60vh] flex items-center">
         <div className="px-6 py-10 mx-auto max-w-7xl sm:py-16 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="mt-10 text-4xl font-bold tracking-tight bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent [-webkit-background-clip:text] sm:text-6xl">
+          <h1 className="mt-10 text-4xl font-bold tracking-tight bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent [-webkit-background-clip:text] sm:text-6xl">
               Web3 business data and knowledge.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-400">
@@ -199,7 +197,9 @@ const Home = () => {
                 Get access now
               </ElemButton>
             </div>
-            <p className="mt-4 text-gray-400"></p>
+            <p className="mt-4 text-gray-400">
+             
+            </p>
           </div>
           <div className="flex max-w-2xl mx-auto mt-16 sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
             <div className="flex-none max-w-3xl sm:max-w-5xl lg:max-w-none">
