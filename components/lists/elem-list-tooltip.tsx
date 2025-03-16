@@ -31,9 +31,8 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
       <div>
         <ElemLink
           href={listUrl}
-          className="inline-block first-letter:uppercase"
-        >
-          <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
+          className="inline-block first-letter:uppercase">
+          <div className="inline mr-2 text-lg font-medium leading-snug text-white align-middle line-clamp-2 hover:underline hover:text-gray-200">
             {getListDisplayName(list)}
           </div>
           <div className="leading-snug inline-flex space-x-0.5 align-middle px-2 py-0.5 text-xs border border-gray-300 hover:border-gray-400 text-gray-300 hover:text-gray-200 rounded-full transition-colors">
@@ -55,7 +54,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
 
       <div className="mt-1 flex flex-wrap items-center text-xs text-gray-500 font-normal gap-x-1 gap-y-0.5">
         <ElemTooltip content="Author" mode="dark" direction="bottom" size="lg">
-          <div className="first-letter:uppercase" aria-label="Author">
+          <div className="first-letter:uppercase">
             {list?.created_by?.person ? (
               <ElemLink
                 href={`${ROUTES.PEOPLE}/${list?.created_by?.person?.slug}`}
@@ -78,18 +77,14 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
           direction="bottom"
           size="lg">
           <div>
-            <ElemLink
-              href={listUrl}
-              className="hover:underline">
+            <ElemLink href={listUrl} className="hover:underline">
               {formatDateShown(list.updated_at, `ll`)}
             </ElemLink>
           </div>
         </ElemTooltip>
         &middot;
         <div>
-          <ElemLink
-            href={listUrl}
-            className="hover:underline">
+          <ElemLink href={listUrl} className="hover:underline">
             {numberWithCommas(totalItems ? totalItems : 0)} item
             {totalItems && totalItems > 1 && 's'}
           </ElemLink>
@@ -111,11 +106,9 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
       content={tooltipContent}
       direction="top-start"
       delay={350}
-      mode="dark"
+      mode="light"
       size="lg"
-      arrow={false}
-      className="!max-w-[24rem] [&_.MuiTooltip-tooltip]:!bg-black [&_.MuiTooltip-tooltip]:!text-white [&_.MuiTooltip-tooltip]:!border [&_.MuiTooltip-tooltip]:!border-gray-300 [&_.MuiTooltip-tooltip]:hover:!border-gray-400 [&_.MuiTooltip-tooltip]:transition-colors !important"
-    >
+      arrow={false}>
       <div>{children}</div>
     </ElemTooltip>
   );
