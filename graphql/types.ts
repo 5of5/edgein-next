@@ -30949,7 +30949,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, use_credits_system: boolean, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, linkedin: string | null, twitter_url: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, use_credits_system: boolean, credits: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
 export type UserForTokenFragment = { __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, billing_org: { __typename?: 'billing_org', customer_id: string, status: string } | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null };
 
@@ -30965,7 +30965,7 @@ export type GetUserByEmailForTokenQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null }> };
+export type GetUserByEmailForTokenQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, linkedin: string | null, twitter_url: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, credits: any | null, use_credits_system: boolean, last_transaction_expiration: any | null, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, feature_flags: any, preferences: any, active: boolean, person: { __typename?: 'people', id: number, name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -31274,6 +31274,8 @@ export const UserForTokenFragmentDoc = `
     fragment UserForToken on users {
   id
   email
+  linkedin
+  twitter_url
   role
   external_id
   is_auth0_verified

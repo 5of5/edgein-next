@@ -9,6 +9,8 @@ export type UserRole = 'user' | 'admin' | 'cms' | 'cms-readonly';
 export type User = {
   id: number;
   email: string;
+  linkedin: string;
+  twitter_url: string;
   display_name?: string | null;
   role: UserRole;
   is_auth0_verified: boolean;

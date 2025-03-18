@@ -63,6 +63,7 @@ const Person: NextPage<Props> = (props: Props) => {
 
   const { personId } = router.query;
   const [person, setPerson] = useState<People>(props.person);
+  const [showContributeModal, setShowContributeModal] = useState(false);
 
   const {
     data: personData,
@@ -146,6 +147,38 @@ const Person: NextPage<Props> = (props: Props) => {
 
   const personLibraries =
     person.library?.length > 0 ? person.library.join(', ') : '';
+
+  const handleClaimProfile = async () => {
+    if (user?.linkedin && user?.linkedin === person.linkedin) {
+      console.log('profile matches');
+    } else {
+      console.warn('Profile does not match');
+      return;
+    }
+    const response = await fetch('/api/check-claimed-profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        personId: person.id, // Ensure person.id is correctly set
+        linkedin: person.linkedin || '', // Pass linkedin if available
+      }),
+    });
+
+    if (response.ok) {
+      // Handle successful claim
+      console.log('Profile claimed successfully');
+    } else {
+      const errorData = await response.json();
+      console.error('Error claiming profile:', errorData.error);
+    }
+  };
+
+  console.log('The person of this data is which is amazing:', person.id);
+  console.log('The person data is:', personData);
+  console.log('the data of the current user is', user);
+  console.log('user profile id is:', person.user?.id);
 
   return (
     <>
@@ -253,11 +286,12 @@ const Person: NextPage<Props> = (props: Props) => {
                       {!profileIsClaimed && (
                         <ElemButton
                           btn="default"
-                          onClick={() =>
+                          onClick={() => {
                             showNewMessages(
                               `Hi Mentibus, I'd like to claim this profile: ${profileUrl}`,
-                            )
-                          }>
+                            );
+                            handleClaimProfile();
+                          }}>
                           Claim profile
                         </ElemButton>
                       )}
@@ -341,6 +375,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   resourceUrl={profileUrl}
                   personId={person?.id?.toString()}
                   className="border !border-gray-700"
+                  onRequestContribute={() => setShowContributeModal(true)} // New prop
                 />
                 <ElemJobsList
                   heading="Company Experience"
@@ -348,6 +383,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   resourceUrl={profileUrl}
                   personId={person?.id?.toString()}
                   className="border !border-gray-700"
+                  onRequestContribute={() => setShowContributeModal(true)}
                 />
 
                 {props.sortNews?.length > 0 && (

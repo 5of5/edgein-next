@@ -85,6 +85,9 @@ async function findOneUserByEmailForToken(email: string) {
     query: GetUserByEmailForTokenDocument,
     variables: { email },
   });
+
+  console.log('📡 GraphQL Response:', data.data.users[0]); // ✅ Log the response
+
   return data.data.users[0];
 }
 
@@ -272,6 +275,8 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     id: userData.id,
     intercomUserHash: hmac.digest('hex'),
     email: userData.email,
+    linkedin: userData.linkedin,
+    twitter_url: userData.twitter_url,
     role: userData.role,
     isFirstLogin,
     credits: userData.credits,
