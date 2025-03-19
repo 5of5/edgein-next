@@ -94,13 +94,13 @@ export const ElemJobsList: FC<Props> = ({
                 showNewMessages(
                   `Hi Mentibus, I'd like to request work experience info on ${resourceUrl}`,
                 );
-                
+
                 if (onRequestContribute) {
                   onRequestContribute();
                 }
               }}
               btn="default">
-              Request data or contribute
+              Contribute Data
             </ElemButton>
           </div>
         ) : (

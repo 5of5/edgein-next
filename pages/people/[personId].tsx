@@ -7,6 +7,7 @@ import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
+import { ElemFlag } from '@/components/elem-flag';
 import { runGraphQl, removeSpecialCharacterFromString } from '@/utils';
 import { USER_ROLES } from '@/utils/users';
 import { PERSON_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -239,21 +240,27 @@ const Person: NextPage<Props> = (props: Props) => {
                         )}
                       </div>
                     )}
-                    <div className="flex items-center justify-center space-x-2 lg:justify-start">
-                      <h1 className="self-end inline-block text-4xl font-medium">
-                        {person.name || ''}
-                      </h1>
+                    <div className="flex items-center justify-between w-full mt-4">
+                      <div className="flex items-center space-x-2">
+                        <h1 className="self-end inline-block text-4xl font-medium">
+                          {person.name || ''}
+                        </h1>
 
-                      {profileIsClaimed && (
-                        <ElemTooltip content="Claimed profile">
-                          <div className="cursor-pointer">
-                            <IconCheckBadgeSolid
-                              className="w-8 h-8 text-primary-500"
-                              title="Claimed profile"
-                            />
-                          </div>
-                        </ElemTooltip>
-                      )}
+                        {profileIsClaimed && (
+                          <ElemTooltip content="Claimed profile">
+                            <div className="cursor-pointer">
+                              <IconCheckBadgeSolid
+                                className="w-8 h-8 text-primary-500"
+                                title="Claimed profile"
+                              />
+                            </div>
+                          </ElemTooltip>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="ml-auto flex absolute justify-end space-x-2 right-12">
+                      <ElemFlag />
                     </div>
 
                     {personTags?.length > 0 && (
