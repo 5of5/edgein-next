@@ -8,6 +8,7 @@ import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
 import { ElemFlag } from '@/components/elem-flag';
+import { ElemModal } from '@/components/elem-modal';
 import { runGraphQl, removeSpecialCharacterFromString } from '@/utils';
 import { USER_ROLES } from '@/utils/users';
 import { PERSON_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -189,6 +190,27 @@ const Person: NextPage<Props> = (props: Props) => {
           visibility="maximized"
           onNewEvent={handleLiveChatEvent}
         />
+      )}
+
+      {showContributeModal && (
+        <ElemModal
+          showCloseIcon={true}
+          isOpen={showContributeModal}
+          onClose={() => setShowContributeModal(false)}
+          placement="center"
+          panelClass="w-full max-w-3xl shadow-2xl bg-black rounded-lg my-4">
+          {/* Content of the modal goes here */}
+          <div className="p-4">
+            <h2 className="text-lg font-medium flex justify-center">
+              Contribute Data
+            </h2>
+            <p className="text-gray-500 mt-10">
+              Please fill out the form below to contribute data to this profile.
+            </p>
+          </div>
+
+          {/* Add further modal content as needed */}
+        </ElemModal>
       )}
       <NextSeo
         title={
