@@ -204,8 +204,8 @@ const Person: NextPage<Props> = (props: Props) => {
             <h2 className="text-lg font-medium flex justify-center">
               Contribute Data
             </h2>
-            <p className="text-gray-500 mt-10">
-              Please fill out the form below to contribute data to this profile.
+            <p className="text-gray-500 mt-10 flex justify-center">
+              Coming Soon
             </p>
           </div>
 
