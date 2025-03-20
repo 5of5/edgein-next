@@ -186,14 +186,6 @@ const Home = () => {
       <section className="relative overflow-hidden isolate bg-black min-h-[60vh] flex items-center">
         <div className="px-6 py-10 mx-auto max-w-7xl sm:py-16 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <h3>
-              We are looking for contributors! Check out our open{' '}
-              <Link href={ROUTES.HIRING} passHref>
-                <span className="text-primary-500 cursor-pointer hover:underline">
-                  roles
-                </span>
-              </Link>
-            </h3>
             <h1 className="mt-10 text-4xl font-bold tracking-tight bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent [-webkit-background-clip:text] sm:text-6xl">
               Web3 business data and knowledge.
             </h1>
