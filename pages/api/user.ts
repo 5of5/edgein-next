@@ -3,6 +3,8 @@ import CookieService from '../../utils/cookie';
 import UserService from '../../utils/users';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log(' API `/api/user/` was called');
+
   let user;
   try {
     const token = CookieService.getAuthToken(req.cookies);

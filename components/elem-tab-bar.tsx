@@ -10,7 +10,7 @@ import { IconEllipsisVertical } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { ElemSticky } from '@/components/elem-sticky';
 import { ElemDropdown } from './elem-dropdown';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Tabs = {
   name?: string;
@@ -71,15 +71,15 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
   }, [tabs, scrollPosition]);
 
   // const { showNewMessages } = useIntercom();
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-      console.log("LiveChatWidget.onNewEvent", event);
-    }
-  
-    const [show, setShow] = useState<boolean>(false);
-    const showNewMessages = (message: String) => {
-      console.log(message)
-      setShow(true);
-    }
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
+  }
+
+  const [show, setShow] = useState<boolean>(false);
+  const showNewMessages = (message: String) => {
+    console.log(message);
+    setShow(true);
+  };
 
   const resource = resourceUrl
     ? `${resourceName}: ${resourceUrl}`
@@ -110,11 +110,13 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
     <ElemSticky
       className={`flex gap-y-2 items-center ${className}`}
       activeClass="top-14 bg-black shadow-sm">
-      {show && <LiveChatWidget
+      {show && (
+        <LiveChatWidget
           license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
           visibility="maximized"
           onNewEvent={handleLiveChatEvent}
-        />}
+        />
+      )}
       <nav
         className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 mr-auto lg:flex-wrap ${tabsClassName}`}>
         {tabs &&
@@ -126,7 +128,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
               roundedFull={false}
               className={`rounded-lg shrink-0 ${
                 isActiveTab === index
-                  ? 'border-primary-500 hover:border-primary-500'
+                  ? 'border-primary-500 hover:border-primary-400'
                   : ''
               }`}>
               {tab.name}
@@ -134,7 +136,12 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
           ))}
       </nav>
       {children}
-      {showDropdown && (
+      <ElemButton
+        btn="gray"
+        className="rounded-lg shrink-0 border-primary-500 hover:border-primary-400">
+        Request Data
+      </ElemButton>
+      {/* {showDropdown && (
         <ElemDropdown
           customButton={
             <ElemButton btn="gray" className="w-8 h-8 !p-0">
@@ -147,7 +154,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
           items={dropdownItems}
           itemsShowIcons={false}
         />
-      )}
+      )} */}
     </ElemSticky>
   );
 };

@@ -7,6 +7,8 @@ import { ElemKeyInfo } from '@/components/elem-key-info';
 import { ElemInvestments } from '@/components/investor/elem-investments';
 import { ElemTabBar } from '@/components/elem-tab-bar';
 import { ElemButton } from '@/components/elem-button';
+import { ElemFlag } from '@/components/elem-flag';
+import { ElemModal } from '@/components/elem-modal';
 import { runGraphQl, removeSpecialCharacterFromString } from '@/utils';
 import { USER_ROLES } from '@/utils/users';
 import { PERSON_PROFILE_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -63,6 +65,7 @@ const Person: NextPage<Props> = (props: Props) => {
 
   const { personId } = router.query;
   const [person, setPerson] = useState<People>(props.person);
+  const [showContributeModal, setShowContributeModal] = useState(false);
 
   const {
     data: personData,
@@ -147,6 +150,38 @@ const Person: NextPage<Props> = (props: Props) => {
   const personLibraries =
     person.library?.length > 0 ? person.library.join(', ') : '';
 
+  const handleClaimProfile = async () => {
+    if (user?.linkedin && user?.linkedin === person.linkedin) {
+      console.log('profile matches');
+    } else {
+      console.warn('Profile does not match');
+      return;
+    }
+    const response = await fetch('/api/check-claimed-profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        personId: person.id, // Ensure person.id is correctly set
+        linkedin: person.linkedin || '', // Pass linkedin if available
+      }),
+    });
+
+    if (response.ok) {
+      // Handle successful claim
+      console.log('Profile claimed successfully');
+    } else {
+      const errorData = await response.json();
+      console.error('Error claiming profile:', errorData.error);
+    }
+  };
+
+  console.log('The person of this data is which is amazing:', person.id);
+  console.log('The person data is:', personData);
+  console.log('the data of the current user is', user);
+  console.log('user profile id is:', person.user?.id);
+
   return (
     <>
       {show && (
@@ -155,6 +190,27 @@ const Person: NextPage<Props> = (props: Props) => {
           visibility="maximized"
           onNewEvent={handleLiveChatEvent}
         />
+      )}
+
+      {showContributeModal && (
+        <ElemModal
+          showCloseIcon={true}
+          isOpen={showContributeModal}
+          onClose={() => setShowContributeModal(false)}
+          placement="center"
+          panelClass="w-full max-w-3xl shadow-2xl bg-black rounded-lg my-4">
+          {/* Content of the modal goes here */}
+          <div className="p-4">
+            <h2 className="text-lg font-medium flex justify-center">
+              Contribute Data
+            </h2>
+            <p className="text-gray-500 mt-10">
+              Please fill out the form below to contribute data to this profile.
+            </p>
+          </div>
+
+          {/* Add further modal content as needed */}
+        </ElemModal>
       )}
       <NextSeo
         title={
@@ -206,21 +262,27 @@ const Person: NextPage<Props> = (props: Props) => {
                         )}
                       </div>
                     )}
-                    <div className="flex items-center justify-center space-x-2 lg:justify-start">
-                      <h1 className="self-end inline-block text-4xl font-medium">
-                        {person.name || ''}
-                      </h1>
+                    <div className="flex items-center justify-between w-full mt-4">
+                      <div className="flex items-center space-x-2">
+                        <h1 className="self-end inline-block text-4xl font-medium">
+                          {person.name || ''}
+                        </h1>
 
-                      {profileIsClaimed && (
-                        <ElemTooltip content="Claimed profile">
-                          <div className="cursor-pointer">
-                            <IconCheckBadgeSolid
-                              className="w-8 h-8 text-primary-500"
-                              title="Claimed profile"
-                            />
-                          </div>
-                        </ElemTooltip>
-                      )}
+                        {profileIsClaimed && (
+                          <ElemTooltip content="Claimed profile">
+                            <div className="cursor-pointer">
+                              <IconCheckBadgeSolid
+                                className="w-8 h-8 text-primary-500"
+                                title="Claimed profile"
+                              />
+                            </div>
+                          </ElemTooltip>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="ml-auto flex absolute justify-end space-x-2 right-12">
+                      <ElemFlag />
                     </div>
 
                     {personTags?.length > 0 && (
@@ -253,11 +315,12 @@ const Person: NextPage<Props> = (props: Props) => {
                       {!profileIsClaimed && (
                         <ElemButton
                           btn="default"
-                          onClick={() =>
+                          onClick={() => {
                             showNewMessages(
                               `Hi Mentibus, I'd like to claim this profile: ${profileUrl}`,
-                            )
-                          }>
+                            );
+                            handleClaimProfile();
+                          }}>
                           Claim profile
                         </ElemButton>
                       )}
@@ -341,6 +404,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   resourceUrl={profileUrl}
                   personId={person?.id?.toString()}
                   className="border !border-gray-700"
+                  onRequestContribute={() => setShowContributeModal(true)} // New prop
                 />
                 <ElemJobsList
                   heading="Company Experience"
@@ -348,6 +412,7 @@ const Person: NextPage<Props> = (props: Props) => {
                   resourceUrl={profileUrl}
                   personId={person?.id?.toString()}
                   className="border !border-gray-700"
+                  onRequestContribute={() => setShowContributeModal(true)}
                 />
 
                 {props.sortNews?.length > 0 && (

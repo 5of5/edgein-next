@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Team_Members, Investors } from '@/graphql/types';
 import { getTimeOfWork, getWorkDurationFromAndTo } from '@/utils';
 import { ElemPhoto } from '@/components/elem-photo';
+import { ElemModal } from '@/components/elem-modal';
 import { getFullAddress } from '@/utils/helpers';
 import { values, isEmpty } from 'lodash';
 // import { useIntercom } from 'react-use-intercom';
@@ -13,7 +14,7 @@ import { IconPlus } from '@/components/icons';
 import CompanyExperienceModal from '../company-experience-modal';
 import { useAuth } from '@/hooks/use-auth';
 import AddVcFirmModal from '../add-vc-firm-modal';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {
   className?: string;
@@ -21,6 +22,7 @@ type Props = {
   jobs?: Team_Members[] | Investors[];
   resourceUrl?: string;
   personId?: string;
+  onRequestContribute?: () => void;
 };
 
 export const ElemJobsList: FC<Props> = ({
@@ -29,34 +31,38 @@ export const ElemJobsList: FC<Props> = ({
   jobs,
   resourceUrl,
   personId,
+  onRequestContribute,
 }) => {
   const { user } = useAuth();
   // const { showNewMessages } = useIntercom();
   const [showCompanyModal, setShowCompanyModal] = useState(false);
   const [showVcModal, setShowVcModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleAdd = () => {
     if (heading === 'Company Experience') setShowCompanyModal(true);
     if (heading === 'VC Firm Experience') setShowVcModal(true);
   };
 
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const [show, setShow] = useState<boolean>(false);
   const showNewMessages = (message: String) => {
-    console.log(message)
+    console.log(message);
     setShow(true);
-  }
+  };
 
   return (
     <section className={`border border-gray-300 rounded-lg ${className}`}>
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <CompanyExperienceModal
         show={showCompanyModal}
         onClose={() => setShowCompanyModal(false)}
@@ -84,13 +90,17 @@ export const ElemJobsList: FC<Props> = ({
             <div className="text-gray-500">No work experience info listed.</div>
             <ElemButton
               className="mt-2"
-              onClick={() =>
+              onClick={() => {
                 showNewMessages(
                   `Hi Mentibus, I'd like to request work experience info on ${resourceUrl}`,
-                )
-              }
+                );
+
+                if (onRequestContribute) {
+                  onRequestContribute();
+                }
+              }}
               btn="default">
-              Request data or contribute
+              Contribute Data
             </ElemButton>
           </div>
         ) : (

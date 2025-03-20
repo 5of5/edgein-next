@@ -17,7 +17,7 @@ import { DefaultSeo } from 'next-seo';
 import Script from 'next/script';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
-const ORIGIN = "/"
+const ORIGIN = '/';
 
 declare global {
   interface Window {
@@ -37,7 +37,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   // App Page Preloader
   const router = useRouter();
   const [pageLoading, setPageLoading] = React.useState<boolean>(false);
-    
 
   //google
   React.useEffect(() => {
@@ -172,7 +171,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                       <div className="mt-5" />
                       {/* If Navbar only needed in home page */}
                       {/* {router.pathname === ORIGIN  &&<TheNavbar />} */}
-                      <TheNavbar/>
+                      <TheNavbar />
                       <main className="grow selection:bg-primary-200">
                         {pageLoading ? (
                           <LoaderSpinner />

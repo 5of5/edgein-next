@@ -187,6 +187,8 @@ query GetUserByEmail($email: String) {
   users(where: { email: { _eq: $email } }, limit: 1) {
     id
     email
+    linkedin
+    twitter_url
     role
     external_id
     is_auth0_verified
@@ -215,6 +217,8 @@ query GetUserById($id: Int) {
   users(where: { id: { _eq: $id } }, limit: 1) {
     id
     email
+    linkedin
+    twitter_url
     role
     external_id
     is_auth0_verified
@@ -243,6 +247,8 @@ query GetUserById($id: Int) {
 fragment UserForToken on users {
   id
   email
+  linkedin
+  twitter_url
   role
   external_id
   is_auth0_verified
@@ -469,6 +475,8 @@ query GetUserByReferenceId($reference_id: String) {
   users(where: { reference_id: { _eq: $reference_id } }, limit: 1) {
     id
     email
+    linkedin
+    twitter_url
     role
     external_id
     is_auth0_verified
@@ -526,6 +534,8 @@ query GetUserByAdditionalEmail($email: jsonb) {
   users(where: { additional_emails: { _contains: $email } }, limit: 1) {
     id
     email
+    linkedin
+    twitter_url
     role
     external_id
     is_auth0_verified
