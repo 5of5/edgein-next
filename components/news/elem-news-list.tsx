@@ -69,7 +69,7 @@ const ElemNewsList: React.FC<Props> = ({
                 )
               }
               btn="default">
-              Request data or contribute
+              Contribute Data
             </ElemButton>
           </div>
         ) : (

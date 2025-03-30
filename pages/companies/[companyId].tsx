@@ -479,9 +479,11 @@ const Company: NextPage<Props> = (props: Props) => {
           <div ref={teamRef} className="mt-7">
             <ElemOrganizationTeam
               heading="Team"
-              resourceName={company.name || ''}
-              resourceType="companies"
-              resourceId={company.id}
+              resourceName={company.name || ''} // Keep this as company.name
+              resourceType="companies" // Keep this as "companies"
+              resourceId={company.id} // Pass the company ID here
+              showTags={true} // Set to true if you want to show tags
+              allowToSaveTeam={true} // Set to true if you want to allow saving team
             />
           </div>
 

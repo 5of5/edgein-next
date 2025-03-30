@@ -97,7 +97,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
               }
               btn="default"
               className="mt-3">
-              Request data or contribute
+              Contribute Data
             </ElemButton>
           </div>
         )}
