@@ -12,7 +12,7 @@ import { ROUTES } from '@/routes';
 import { useStateParams } from '@/hooks/use-state-params';
 import { functionChoicesTM } from '@/utils/constants';
 import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
-
+import AddPeopleModal from '@/components/add-people-modal';
 import {
   Order_By,
   useGetTeamMembersQuery,
@@ -175,6 +175,8 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
     .filter(item => item.person !== null)
     .map(item => (item.person as People).id);
 
+  const [showAddPeopleModal, setShowAddPeopleModal] = useState(false);
+
   return (
     <section className={`rounded-lg border border-gray-700 ${className}`}>
       {show && (
@@ -184,6 +186,10 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
           onNewEvent={handleLiveChatEvent}
         />
       )}
+      <AddPeopleModal
+        show={showAddPeopleModal}
+        onClose={() => setShowAddPeopleModal(false)}
+      />
       {heading && (
         <div className="flex items-center justify-between px-4 pt-2">
           <h2 className="text-lg font-medium">{heading}</h2>
@@ -204,11 +210,12 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
             </div>
             <ElemButton
               className="mt-2"
-              onClick={() =>
+              onClick={() => {
                 showNewMessages(
                   `Hi Mentibus, I'd like to request team data on ${resourceName}`,
-                )
-              }
+                );
+                setShowAddPeopleModal(true);
+              }}
               btn="default">
               Contribute Data
             </ElemButton>
