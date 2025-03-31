@@ -19,6 +19,7 @@ import { Pagination } from '@/components/pagination';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { ListsTabType } from '@/types/common';
+import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
 import { LISTS_TABS, PUBLIC_LISTS_TABS } from '@/utils/constants';
 import { getListsFilters } from '@/components/filters/processor';
@@ -246,7 +247,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
       />
       <DashboardLayout>
         <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex lg:px-8">
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x w-full">
             {LISTS_TABS && user
               ? LISTS_TABS.map((tab: any, index: number) =>
                   tab.disabled === true ? (
@@ -283,7 +284,14 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                       {tab.name}
                     </ElemButton>
                   ),
-                )}
+                )}{' '}
+            <InputText
+              name="List search"
+              value=""
+              onChange={() => {}}
+              placeholder="Search lists"
+              className="!w-72 h-8 left-5"
+            />
           </nav>
 
           <ElemDropdown
