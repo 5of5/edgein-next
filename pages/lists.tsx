@@ -129,6 +129,23 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
 
   const filters = getListsFilters(selectedListTab.id, user?.id || 0);
 
+  // Add search filter to the existing filters
+  const searchFilters = searchTerm
+    ? {
+        _or: [
+          { name: { _ilike: `%${searchTerm}%` } },
+          { description: { _ilike: `%${searchTerm}%` } },
+        ],
+      }
+    : null;
+
+  // Combine filters with AND condition
+  const whereClause = searchTerm
+    ? {
+        _and: [filters, searchFilters],
+      }
+    : filters;
+
   //when there is no user, hence only public list is fetched
   const fetchPublicList = async () => {
     try {
@@ -172,10 +189,9 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
       orderBy: [
         {
           list_members_aggregate: { count: Order_By.Desc },
-          //total_no_of_resources: Order_By.DescNullsLast,
         } as Lists_Order_By,
       ],
-      where: filters as Lists_Bool_Exp,
+      where: whereClause as Lists_Bool_Exp,
     },
     { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
   );
@@ -399,7 +415,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       orderBy: [
         {
           list_members_aggregate: { count: Order_By.Desc },
-          //total_no_of_resources: Order_By.DescNullsLast,
         } as Lists_Order_By,
       ],
       where: getListsFilters(selectedTab as ListsTabType, user?.id || 0),

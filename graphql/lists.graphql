@@ -185,6 +185,105 @@ mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
   }
 }
 
+query GetList($id: Int!, $searchTerm: String) {
+  lists(
+    where: {
+      _and: [
+        { id: { _eq: $id } }
+        {
+          _or: [
+            { name: { _ilike: $searchTerm } }
+            { description: { _ilike: $searchTerm } }
+          ]
+        }
+      ]
+    }
+  ) {
+    id
+    name
+    description
+    total_no_of_resources
+    public
+    created_at
+    updated_at
+    created_by {
+      id
+      display_name
+      email
+      person {
+        id
+        name
+        slug
+        picture
+      }
+    }
+    list_members {
+      id
+      member_type
+      user_id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          name
+          slug
+          picture
+        }
+      }
+    }
+  }
+}
+
+query SearchLists($searchTerm: String!, $limit: Int, $offset: Int) {
+  lists(
+    where: {
+      _or: [
+        { name: { _ilike: $searchTerm } }
+        { description: { _ilike: $searchTerm } }
+      ]
+    }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    description
+    total_no_of_resources
+    public
+    created_at
+    updated_at
+    created_by {
+      id
+      display_name
+      email
+      person {
+        id
+        name
+        slug
+        picture
+      }
+    }
+    list_members {
+      id
+      member_type
+      user_id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          name
+          slug
+          picture
+        }
+      }
+    }
+  }
+}
+
 query GetLists(
   $limit: Int
   $offset: Int
@@ -230,45 +329,6 @@ query GetLists(
   lists_aggregate(where: $where) {
     aggregate {
       count
-    }
-  }
-}
-
-query GetList($id: Int!) {
-  lists(where: { id: { _eq: $id } }) {
-    id
-    name
-    description
-    total_no_of_resources
-    public
-    created_at
-    updated_at
-    created_by {
-      id
-      display_name
-      email
-      person {
-        id
-        name
-        slug
-        picture
-      }
-    }
-    list_members {
-      id
-      member_type
-      user_id
-      user {
-        id
-        display_name
-        email
-        person {
-          id
-          name
-          slug
-          picture
-        }
-      }
     }
   }
 }
