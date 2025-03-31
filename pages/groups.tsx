@@ -32,21 +32,28 @@ import { NextSeo } from 'next-seo';
 import { GroupsNoResults } from '@/components/groups/groups-no-results';
 import { ElemDropdown } from '@/components/elem-dropdown';
 import { GroupsTable } from '@/components/groups/elem-groups-table';
+import { InputText } from '@/components/input-text';
 
 type Props = {
   initialGroupsCount: number;
   initialGroups: GetGroupsQuery['user_groups'];
+  searchTerm?: string;
 };
 
 const LIMIT = 12;
 
-const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
+const Groups: NextPage<Props> = ({
+  initialGroupsCount,
+  initialGroups,
+  searchTerm = '',
+}) => {
   const { user, myGroups } = useUser();
   const [initialLoad, setInitialLoad] = useState(true);
 
   const [tableLayout, setTableLayout] = useState(false);
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
+  const [searchTermState, setSearchTerm] = useState(searchTerm);
 
   const router = useRouter();
 
@@ -67,6 +74,21 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
   );
 
   const filters = getGroupsFilters(selectedGroupTab.id, user?.id || 0);
+
+  const searchFilters = searchTermState
+    ? {
+        _or: [
+          { name: { _ilike: `%${searchTermState}%` } },
+          { description: { _ilike: `%${searchTermState}%` } },
+        ],
+      }
+    : null;
+
+  const whereClause = searchTermState
+    ? {
+        _and: [filters, searchFilters],
+      }
+    : filters;
 
   useEffect(() => {
     if (!initialLoad) {
@@ -92,11 +114,10 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
     {
       limit: LIMIT,
       offset,
-      where: filters as User_Groups_Bool_Exp,
+      where: whereClause as User_Groups_Bool_Exp,
       orderBy: [
         {
           user_group_members_aggregate: { count: Order_By.Desc },
-          // created_at: Order_By.Desc
         } as User_Groups_Order_By,
       ],
     },
@@ -185,6 +206,13 @@ const Groups: NextPage<Props> = ({ initialGroupsCount, initialGroups }) => {
                 ),
               )}
           </nav>
+          <InputText
+            name="Group search"
+            value={searchTermState}
+            onChange={e => setSearchTerm(e.target.value)}
+            placeholder="Search groups"
+            className="!w-72 h-8 left-5"
+          />
           <ElemDropdown
             buttonClass="mt-4 sm:mt-0"
             //panelClass="w-full"
@@ -274,17 +302,40 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const user = await CookieService.getUser(token);
 
   const selectedTab = context.query.tab || 'my-groups';
+  const searchTerm = context.query.searchTerm || '';
 
   const page =
     context.query.page !== undefined ? Number(context.query.page) - 1 : 0;
   const offset = LIMIT * page;
+
+  const filters = getGroupsFilters(selectedTab as GroupsTabType, user?.id || 0);
+
+  const searchFilters = searchTerm
+    ? {
+        _or: [
+          { name: { _ilike: `%${searchTerm}%` } },
+          { description: { _ilike: `%${searchTerm}%` } },
+        ],
+      }
+    : null;
+
+  const whereClause = searchTerm
+    ? {
+        _and: [filters, searchFilters],
+      }
+    : filters;
 
   const { data: group } = await runGraphQl<GetGroupsQuery>(
     GetGroupsDocument,
     {
       offset,
       limit: LIMIT,
-      where: getGroupsFilters(selectedTab as GroupsTabType, user?.id || 0),
+      where: whereClause as User_Groups_Bool_Exp,
+      orderBy: [
+        {
+          user_group_members_aggregate: { count: Order_By.Desc },
+        } as User_Groups_Order_By,
+      ],
     },
     context.req.cookies,
   );
@@ -293,6 +344,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     props: {
       initialGroupsCount: group?.user_groups_aggregate?.aggregate?.count || 0,
       initialGroups: group?.user_groups || [],
+      searchTerm: searchTerm as string,
     },
   };
 };
