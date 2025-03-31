@@ -107,6 +107,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [isOpenCreateListDialog, setIsOpenCreateListDialog] = useState(false);
   const [publicList, setPublicList] = useState<PublicListResponse>();
+  const [searchTerm, setSearchTerm] = useState('');
 
   const router = useRouter();
 
@@ -287,8 +288,8 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                 )}{' '}
             <InputText
               name="List search"
-              value=""
-              onChange={() => {}}
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
               placeholder="Search lists"
               className="!w-72 h-8 left-5"
             />
