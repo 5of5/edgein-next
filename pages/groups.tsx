@@ -185,7 +185,7 @@ const Groups: NextPage<Props> = ({
       />
       <DashboardLayout>
         <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex lg:px-8">
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+          <nav className="w-full flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
             {GROUPS_TABS &&
               GROUPS_TABS.map((tab: any, index: number) =>
                 tab.disabled === true ? (
@@ -205,14 +205,15 @@ const Groups: NextPage<Props> = ({
                   </ElemButton>
                 ),
               )}
+            <InputText
+              name="Group search"
+              value={searchTermState}
+              onChange={e => setSearchTerm(e.target.value)}
+              placeholder="Search groups"
+              className="!w-72 h-8 left-5"
+            />
           </nav>
-          <InputText
-            name="Group search"
-            value={searchTermState}
-            onChange={e => setSearchTerm(e.target.value)}
-            placeholder="Search groups"
-            className="!w-72 h-8 left-5"
-          />
+
           <ElemDropdown
             buttonClass="mt-4 sm:mt-0"
             //panelClass="w-full"
