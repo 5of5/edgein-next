@@ -214,7 +214,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                 showNewMessages(
                   `Hi Mentibus, I'd like to request team data on ${resourceName}`,
                 );
-                setShowAddPeopleModal(true);
+                // setShowAddPeopleModal(true);
               }}
               btn="default">
               Contribute Data
