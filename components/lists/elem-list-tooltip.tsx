@@ -31,8 +31,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
       <div>
         <ElemLink
           href={listUrl}
-          className="inline-block first-letter:uppercase"
-        >
+          className="inline-block first-letter:uppercase">
           <div className="inline mr-2 text-lg font-medium leading-snug text-gray-300 align-middle line-clamp-2 hover:underline">
             {getListDisplayName(list)}
           </div>
@@ -78,18 +77,14 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
           direction="bottom"
           size="lg">
           <div>
-            <ElemLink
-              href={listUrl}
-              className="hover:underline">
+            <ElemLink href={listUrl} className="hover:underline">
               {formatDateShown(list.updated_at, `ll`)}
             </ElemLink>
           </div>
         </ElemTooltip>
         &middot;
         <div>
-          <ElemLink
-            href={listUrl}
-            className="hover:underline">
+          <ElemLink href={listUrl} className="hover:underline">
             {numberWithCommas(totalItems ? totalItems : 0)} item
             {totalItems && totalItems > 1 && 's'}
           </ElemLink>
@@ -114,8 +109,7 @@ export const ElemListTooltip: FC<PropsWithChildren<Props>> = ({
       mode="dark"
       size="lg"
       arrow={false}
-      className="!max-w-[24rem] [&_.MuiTooltip-tooltip]:!bg-black [&_.MuiTooltip-tooltip]:!text-white [&_.MuiTooltip-tooltip]:!border [&_.MuiTooltip-tooltip]:!border-gray-300 [&_.MuiTooltip-tooltip]:hover:!border-gray-400 [&_.MuiTooltip-tooltip]:transition-colors !important"
-    >
+      className="!max-w-[24rem] [&_.MuiTooltip-tooltip]:!bg-black [&_.MuiTooltip-tooltip]:!text-white [&_.MuiTooltip-tooltip]:!border [&_.MuiTooltip-tooltip]:!border-gray-300 [&_.MuiTooltip-tooltip]:hover:!border-gray-400 [&_.MuiTooltip-tooltip]:transition-colors !important">
       <div>{children}</div>
     </ElemTooltip>
   );

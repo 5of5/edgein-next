@@ -7,7 +7,7 @@ import {
   IconEllipsisHorizontal,
   IconExclamationTriangle,
 } from '../icons';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {
   popoverStyle: CSSProperties;
@@ -25,15 +25,15 @@ const ElemNotificationPopover: FC<Props> = ({
   const organization = company || vc_firm;
 
   // const { showNewMessages } = useIntercom();
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const [show, setShow] = useState<boolean>(false);
   const showNewMessages = (message: String) => {
-    console.log(message)
+    console.log(message);
     setShow(true);
-  }
+  };
 
   return (
     <Popover
@@ -46,11 +46,13 @@ const ElemNotificationPopover: FC<Props> = ({
         />
       </Popover.Button>
 
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
 
       <Transition
         enter="transition duration-100 ease-out"

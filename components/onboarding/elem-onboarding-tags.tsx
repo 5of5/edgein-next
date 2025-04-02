@@ -4,7 +4,7 @@ import { aiTags, ONBOARDING_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
 import { getSelectableWeb3Tags } from '@/utils/helpers';
 import { ElemButton } from '../elem-button';
 import { IconCheck } from '../icons';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {
   isSubmittingOnboarding: boolean;
@@ -20,15 +20,15 @@ export const ElemOnboardingTags: FC<Props> = ({
   onNext,
 }) => {
   // const { showNewMessages } = useIntercom();
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const [show, setShow] = useState<boolean>(false);
   const showNewMessages = (message: String) => {
-    console.log(message)
+    console.log(message);
     setShow(true);
-  }
+  };
 
   const [limit, setLimit] = useState({
     web3: ONBOARDING_DEFAULT_TAGS_LIMIT,
@@ -76,11 +76,13 @@ export const ElemOnboardingTags: FC<Props> = ({
 
   return (
     <>
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <div className="max-w-sm">
         <h1 className="mt-4 text-2xl font-medium text-center lg:text-3xl">
           What do you want to see?

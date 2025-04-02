@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '@/routes';
 import { IconAnnotation, IconSearch } from '../icons';
 // import { useIntercom } from 'react-use-intercom';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {
   title?: string;
@@ -19,23 +19,25 @@ export const NoResults: FC<Props> = ({
   const router = useRouter();
   const { user } = useUser();
   // const { showNewMessages } = useIntercom();
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const [show, setShow] = useState<boolean>(false);
   const showNewMessages = (message: String) => {
-    console.log(message)
+    console.log(message);
     setShow(true);
-  }
+  };
 
   return (
     <div className="flex items-center justify-center mx-auto min-h-[40vh]">
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <div className="w-full max-w-2xl p-8 my-8 text-center bg-black border  border-neutral-700 rounded-2xl">
         <IconSearch className="w-12 h-12 mx-auto text-gray-300" />
         <h2 className="mt-5 text-3xl font-medium">{title}</h2>

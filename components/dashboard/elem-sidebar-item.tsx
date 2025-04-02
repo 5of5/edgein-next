@@ -25,7 +25,7 @@ export const ElemSidebarItem: FC<Props> = ({
       className={`relative flex w-full items-center space-x-3 p-2.5 font-medium text-sm text-gray-300 rounded-full flex-1 transition-all ${
         isActive
           ? 'bg-gradient-to-r from-red-500 via-blue-500 to-red-400 p-[1px] my-3' // Gradient as border
-          :'p-[1px] px-[px] my-5'
+          : 'p-[1px] px-[px] my-5'
       }`}>
       <button
         onClick={onClick}

@@ -4,13 +4,13 @@ import { IconEmail, IconChatBubble } from '@/components/icons';
 import { useIntercom } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 const Support: NextPage = () => {
   const { show } = useIntercom();
 
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   return (
