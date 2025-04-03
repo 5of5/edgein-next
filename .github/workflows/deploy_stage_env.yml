@@ -134,7 +134,7 @@ jobs:
 
       - name: Hasura migrate
         if: steps.changes-in-hasura.outputs.src == 'true'
-        uses: tibotiber/hasura-action@v3.0
+        uses: hasura/hasura-action@v3.0
         with:
           args: migrate apply --database-name default
         env:
@@ -145,7 +145,7 @@ jobs:
 
       - name: Hasura clear
         if: steps.changes-in-hasura.outputs.src == 'true'
-        uses: tibotiber/hasura-action@v3.0
+        uses: hasura/hasura-action@v3.0
         with:
           args: metadata clear
         env:
@@ -156,7 +156,7 @@ jobs:
 
       - name: Hasura apply
         if: steps.changes-in-hasura.outputs.src == 'true'
-        uses: tibotiber/hasura-action@v3.0
+        uses: hasura/hasura-action@v3.0
         with:
           args: metadata apply
         env:
