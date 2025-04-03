@@ -3,3 +3,4 @@ infra/db_data
 dist
 .cache
 graphql/types.ts
+bun.lock
