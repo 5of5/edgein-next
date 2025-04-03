@@ -19,6 +19,7 @@ import { Pagination } from '@/components/pagination';
 import { useStateParams } from '@/hooks/use-state-params';
 import { onTrackView } from '@/utils/track';
 import { ListsTabType } from '@/types/common';
+import { InputText } from '@/components/input-text';
 import { useUser } from '@/context/user-context';
 import { LISTS_TABS, PUBLIC_LISTS_TABS } from '@/utils/constants';
 import { getListsFilters } from '@/components/filters/processor';
@@ -106,6 +107,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [isOpenCreateListDialog, setIsOpenCreateListDialog] = useState(false);
   const [publicList, setPublicList] = useState<PublicListResponse>();
+  const [searchTerm, setSearchTerm] = useState('');
 
   const router = useRouter();
 
@@ -126,6 +128,23 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
   );
 
   const filters = getListsFilters(selectedListTab.id, user?.id || 0);
+
+  // Add search filter to the existing filters
+  const searchFilters = searchTerm
+    ? {
+        _or: [
+          { name: { _ilike: `%${searchTerm}%` } },
+          { description: { _ilike: `%${searchTerm}%` } },
+        ],
+      }
+    : null;
+
+  // Combine filters with AND condition
+  const whereClause = searchTerm
+    ? {
+        _and: [filters, searchFilters],
+      }
+    : filters;
 
   //when there is no user, hence only public list is fetched
   const fetchPublicList = async () => {
@@ -170,10 +189,9 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
       orderBy: [
         {
           list_members_aggregate: { count: Order_By.Desc },
-          //total_no_of_resources: Order_By.DescNullsLast,
         } as Lists_Order_By,
       ],
-      where: filters as Lists_Bool_Exp,
+      where: whereClause as Lists_Bool_Exp,
     },
     { enabled: Boolean(user?.id), refetchOnWindowFocus: false },
   );
@@ -246,7 +264,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
       />
       <DashboardLayout>
         <div className="items-center justify-between px-4 pt-4 pb-6 sm:px-6 sm:flex lg:px-8">
-          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x">
+          <nav className="flex space-x-2 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x w-full">
             {LISTS_TABS && user
               ? LISTS_TABS.map((tab: any, index: number) =>
                   tab.disabled === true ? (
@@ -283,7 +301,14 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
                       {tab.name}
                     </ElemButton>
                   ),
-                )}
+                )}{' '}
+            <InputText
+              name="List search"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              placeholder="Search lists"
+              className="!w-72 h-8 left-5"
+            />
           </nav>
 
           <ElemDropdown
@@ -390,7 +415,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       orderBy: [
         {
           list_members_aggregate: { count: Order_By.Desc },
-          //total_no_of_resources: Order_By.DescNullsLast,
         } as Lists_Order_By,
       ],
       where: getListsFilters(selectedTab as ListsTabType, user?.id || 0),

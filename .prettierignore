@@ -4,3 +4,4 @@ scripts/backup
 graphql/types.ts
 *.otf
 robots.txt
+bun.lock

@@ -16,17 +16,14 @@ const Pricing = () => {
   const { user } = useUser();
   const { setShowPopup } = usePopup();
 
-const { data, error, isLoading } = useGetBillingOrgByIdQuery(
-  { id: Number(user?.billing_org_id) },
-);
-
-  
+  const { data, error, isLoading } = useGetBillingOrgByIdQuery({
+    id: Number(user?.billing_org_id),
+  });
 
   const haveSubscriptionFromCredits =
     user?.use_credits_system &&
     new Date(user?.last_transaction_expiration || 0) > new Date();
 
-  
   const pricing = {
     tiers: [
       {
@@ -53,7 +50,8 @@ const { data, error, isLoading } = useGetBillingOrgByIdQuery(
           'See referral points for contributing data and inviting members to the community. Upgrade to access your points and help us make Mentibus work for everyone!',
         ],
         cta: user
-          ? data?.billing_org[0]?.status === 'active' || haveSubscriptionFromCredits
+          ? data?.billing_org[0]?.status === 'active' ||
+            haveSubscriptionFromCredits
             ? ''
             : 'Current Plan'
           : 'Access Now',
@@ -175,20 +173,22 @@ const { data, error, isLoading } = useGetBillingOrgByIdQuery(
 											</p> */}
                       <p className="mt-6">{tier.description}</p>
                       <div className="my-6">
-                        {tier.cta !== "" &&<ElemButton
-                          onClick={tier.click}
-                          className={`${
-                            tier.mostPopular
-                              ? ''
-                              : 'bg-primary-50 hover:bg-primary-100 text-primary-500'
-                          } w-full`}
-                          btn={`${tier.mostPopular ? 'primary' : ''}`}
-                          size="lg">
-                          {tier.mostPopular && (
-                            <IconContributor className="w-5 h-5 mr-1" />
-                          )}
-                          {tier.cta}
-                        </ElemButton>}
+                        {tier.cta !== '' && (
+                          <ElemButton
+                            onClick={tier.click}
+                            className={`${
+                              tier.mostPopular
+                                ? ''
+                                : 'bg-primary-50 hover:bg-primary-100 text-primary-500'
+                            } w-full`}
+                            btn={`${tier.mostPopular ? 'primary' : ''}`}
+                            size="lg">
+                            {tier.mostPopular && (
+                              <IconContributor className="w-5 h-5 mr-1" />
+                            )}
+                            {tier.cta}
+                          </ElemButton>
+                        )}
                       </div>
                       <ul role="list" className="mt-6 space-y-6">
                         {tier.features.map(feature => (

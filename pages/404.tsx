@@ -7,7 +7,7 @@ import { ElemLink } from '@/components/elem-link';
 import { ROUTES } from '@/routes';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {};
 
@@ -16,22 +16,24 @@ const Custom404: NextPage<Props> = () => {
 
   const { setShowPopup } = usePopup();
 
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const [show, setShow] = useState<boolean>(false);
   const showNewMessages = () => {
     setShow(true);
-  }
+  };
 
   return (
     <>
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <NextSeo
         title="404 Page not found"
         description="Sorry, but the page you were looking for could not be found. You can use the search bar, return to our front page, or drop us a line to find what you’re looking for."

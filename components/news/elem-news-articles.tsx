@@ -105,7 +105,7 @@ const ElemNewsArticles: React.FC<Props> = ({
               onClick={showNewMessages}
               btn="default"
               className="mt-3">
-              Request data or contribute
+              Contribute Data
             </ElemButton>
           </div>
         )}

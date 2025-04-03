@@ -1,32 +1,29 @@
-import axios from "axios";
-import { parse,serialize } from "cookie";
-import { Buffer } from "buffer";
-
+import axios from 'axios';
+import { parse, serialize } from 'cookie';
+import { Buffer } from 'buffer';
 
 export default async function handler(req, res) {
-  console.log("Incoming query:", req.query);
-  console.log("Incoming headers:", req.headers);
+  console.log('Incoming query:', req.query);
+  console.log('Incoming headers:', req.headers);
 
   const { code, state } = req.query;
-  console.log("Code =>",code)
-  const cookies = parse(req.headers.cookie || ""); // ✅ Parse cookies properly
+  console.log('Code =>', code);
+  const cookies = parse(req.headers.cookie || ''); // ✅ Parse cookies properly
 
-  console.log("Parsed Cookies:", cookies);
+  console.log('Parsed Cookies:', cookies);
 
   const codeVerifier = cookies.code_verifier;
   const storedState = cookies.state;
 
-  console.log("Stored State:", storedState);
-  console.log("Received State:", state);
-  console.log("Stored Code Verifier:", codeVerifier);
+  console.log('Stored State:', storedState);
+  console.log('Received State:', state);
+  console.log('Stored Code Verifier:', codeVerifier);
 
   // ✅ Ensure both state and code_verifier exist and match
   if (!codeVerifier || !storedState || storedState !== state) {
-    return res
-      .status(400)
-      .json({
-        error: "Invalid request: Missing or mismatched state/code_verifier",
-      });
+    return res.status(400).json({
+      error: 'Invalid request: Missing or mismatched state/code_verifier',
+    });
   }
 
   try {

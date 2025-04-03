@@ -7,7 +7,7 @@ import { ElemLink } from '@/components/elem-link';
 import { ROUTES } from '@/routes';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {};
 
@@ -17,20 +17,22 @@ const VerifyFail: NextPage<Props> = () => {
 
   const { setShowPopup } = usePopup();
 
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
   const showNewMessages = () => {
     setShow(true);
-  }
+  };
 
   return (
     <>
-      {show && <LiveChatWidget
-        license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
-        visibility="maximized"
-        onNewEvent={handleLiveChatEvent}
-      />}
+      {show && (
+        <LiveChatWidget
+          license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
+          visibility="maximized"
+          onNewEvent={handleLiveChatEvent}
+        />
+      )}
       <NextSeo
         title="Verification Fail"
         description="You have exhausted all OTP attempts. Please try again later.."

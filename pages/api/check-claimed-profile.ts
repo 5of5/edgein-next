@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const personId: number = req.body.personId;
   const linkedin: string = req.body.linkedin;
 
-  try { 
+  try {
     if (personId) {
       const isClaimedPerson = await UserService.findOneUserByPersonId(personId);
       if (isClaimedPerson) {

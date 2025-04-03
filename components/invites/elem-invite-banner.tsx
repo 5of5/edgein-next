@@ -57,8 +57,8 @@ export const ElemInviteBanner: FC<Props> = ({ className = '' }) => {
           className="text-white font-mon_book text-lg py-1"
           onClick={handleClickBanner}>
           Claim your profile, correct data, or refer a friend to get{' '}
-          <strong className="font-mon_b text-lg"> 1,500-4,500 points </strong> for
-          1-3 months of Mentibus for free{' '}
+          <strong className="font-mon_b text-lg"> 1,500-4,500 points </strong>{' '}
+          for 1-3 months of Mentibus for free{' '}
           <IconArrowRight className="inline-block w-5 h-5" title="Invite" />
         </div>
         <div className="flex justify-end flex-1">

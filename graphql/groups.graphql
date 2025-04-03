@@ -112,6 +112,86 @@ query GetGroups(
   }
 }
 
+query SearchGroups(
+  $limit: Int
+  $offset: Int
+  $searchTerm: String!
+  $orderBy: [user_groups_order_by!]
+) {
+  user_groups(
+    where: {
+      _or: [
+        { name: { _ilike: $searchTerm } }
+        { description: { _ilike: $searchTerm } }
+      ]
+    }
+    order_by: $orderBy
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    description
+    telegram
+    twitter
+    discord
+    public
+    created_by_user_id
+    created_by {
+      id
+      display_name
+      email
+      person {
+        id
+        name
+        slug
+        picture
+      }
+    }
+    notes {
+      id
+      notes
+    }
+    created_at
+    updated_at
+    user_group_members {
+      id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          picture
+        }
+      }
+    }
+    user_group_invites {
+      id
+      email
+      created_at
+      created_by_user_id
+    }
+    list_user_groups {
+      id
+      list_id
+    }
+  }
+  user_groups_aggregate(
+    where: {
+      _or: [
+        { name: { _ilike: $searchTerm } }
+        { description: { _ilike: $searchTerm } }
+      ]
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+
 query GetGroup($id: Int!) {
   user_groups(where: { id: { _eq: $id } }) {
     id

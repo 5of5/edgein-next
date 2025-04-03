@@ -117,7 +117,6 @@ export const TheNavbar: FC<Props> = ({}) => {
             </ElemLink>
           </div>
 
-          
           <div className="hidden lg:block flex-grow">
             <ElemSearchBox
               onClick={() => {

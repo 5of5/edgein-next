@@ -98,6 +98,7 @@ export const ElemJobsList: FC<Props> = ({
                 if (onRequestContribute) {
                   onRequestContribute();
                 }
+                handleAdd();
               }}
               btn="default">
               Contribute Data

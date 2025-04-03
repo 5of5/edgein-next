@@ -5,15 +5,15 @@ import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
 import { IconChatBubble, IconEmail } from '@/components/icons';
 import { useIntercom } from 'react-use-intercom';
-import { LiveChatWidget, EventHandlerPayload } from "@livechat/widget-react";
+import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {};
 
 const Faq: NextPage<Props> = ({}) => {
   const { show } = useIntercom();
 
-  function handleLiveChatEvent(event: EventHandlerPayload<"onNewEvent">) {
-    console.log("LiveChatWidget.onNewEvent", event);
+  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+    console.log('LiveChatWidget.onNewEvent', event);
   }
 
   const faqs = [
