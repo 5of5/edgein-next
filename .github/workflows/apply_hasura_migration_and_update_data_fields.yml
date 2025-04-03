@@ -4,7 +4,6 @@ on:
     branches:
       - main
   workflow_dispatch:
-    inputs:
 
 env:
   HASURA_ENDPOINT: https://graphql.edgein.dev
@@ -39,7 +38,7 @@ jobs:
         uses: falti/dotenv-action@v1.0.4
 
       - name: Hasura migrate
-        uses: hasura/hasura-action@v3.0
+        uses: hasura/graphql-engine-cli-action@v1.0.0
         with:
           args: migrate apply --database-name default
         env:
@@ -49,7 +48,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura clear
-        uses: hasura/hasura-action@v3.0
+        uses: hasura/graphql-engine-cli-action@v1.0.0
         with:
           args: metadata clear
         env:
@@ -59,7 +58,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ env.HASURA_ADMIN_SECRET }}
 
       - name: Hasura apply
-        uses: hasura/hasura-action@v3.0
+        uses: hasura/graphql-engine-cli-action@v1.0.0
         with:
           args: metadata apply
         env:
