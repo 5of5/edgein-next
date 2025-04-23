@@ -424,3 +424,95 @@ query GetCompaniesByTagsAndLocation($limit: Int, $where: companies_bool_exp!) {
     id
   }
 }
+
+query GetTeamMembersByCompanyId($companyId: Int!) {
+  team_members(where: { company_id: { _eq: $companyId } }) {
+    id
+    person {
+      id
+      slug
+      name
+      picture
+      linkedin
+      personal_email
+      work_email
+    }
+    function
+    start_date
+    end_date
+    founder
+    title
+  }
+}
+
+mutation InsertTeamMember(
+  $companyId: Int!
+  $personId: Int!
+  $function: String
+  $startDate: timestamptz
+  $endDate: timestamptz
+  $founder: Boolean
+  $title: String
+) {
+  insert_team_members_one(
+    object: {
+      company_id: $companyId
+      person_id: $personId
+      function: $function
+      start_date: $startDate
+      end_date: $endDate
+      founder: $founder
+      title: $title
+    }
+  ) {
+    id
+    person {
+      id
+      name
+      slug
+    }
+    function
+    start_date
+    end_date
+    founder
+    title
+  }
+}
+
+mutation UpdateTeamMember(
+  $teamMemberId: Int!
+  $function: String
+  $startDate: timestamptz
+  $endDate: timestamptz
+  $founder: Boolean
+  $title: String
+) {
+  update_team_members_by_pk(
+    pk_columns: { id: $teamMemberId }
+    _set: {
+      function: $function
+      start_date: $startDate
+      end_date: $endDate
+      founder: $founder
+      title: $title
+    }
+  ) {
+    id
+    person {
+      id
+      name
+      slug
+    }
+    function
+    start_date
+    end_date
+    founder
+    title
+  }
+}
+
+mutation DeleteTeamMember($teamMemberId: Int!) {
+  delete_team_members_by_pk(id: $teamMemberId) {
+    id
+  }
+}
