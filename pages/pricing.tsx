@@ -38,16 +38,16 @@ const Pricing = () => {
           }
         },
         description:
-          'Instant access to browse the largest community dataset in AI and Web3, exclusively on the Mentibus platform.',
+          'The Mentibus community plan gives you instant access to the largest decentralized dataset in Web3 and AI. Perfect for those ready to explore, contribute, and be seen.',
         features: [
-          'Unlimited search',
-          'Access to view organization profiles and updates on investors, events, and news.',
-          'Email updates of relevant news in your area based on personalization and tags.',
-          'Make data requests and updates on Mentibus, fulfilled in <20 minutes.',
+          'Unlimited intelligent search across verified people, orgs, investors, events & media.',
+          'Live organization updates and investor maps.',
+          'Personalized email digests—tailored by tags and your interests.',
+          'Data request & update concierge—fulfilled in under 20 minutes.',
           'Create and manage up to 5 personal lists.',
-          'Create and manage 3 personal or public groups to hunt and discuss your interests.',
-          'Access the Mentibus community telegram to request datasets and features.',
-          'See referral points for contributing data and inviting members to the community. Upgrade to access your points and help us make Mentibus work for everyone!',
+          'Create and manage 3 personal or public groups to build visibility around your interests.',
+          'Access our Telegram community to hunt data and request features.',
+          'Earn referral points and data contribution rewards.',
         ],
         cta: user
           ? data?.billing_org[0]?.status === 'active' ||
@@ -59,7 +59,7 @@ const Pricing = () => {
       },
       {
         title: 'Contributor',
-        price: 14,
+        price: 4,
         priceCents: 99,
         frequency: '/month',
         //predescription: "Serious Business Player",
@@ -71,13 +71,14 @@ const Pricing = () => {
           }
         },
         description:
-          'Contributors are serious Web3 builders who need connections to our community today. They help us build and pay for the fresh network/data.',
+          'Built for Web3 builders, operators, and dealmakers. Unlock premium data and supercharge your network.',
         features: [
-          'Access to public, social and email information for quick connection to other Web3 executives.',
-          'Unlimited lists.',
-          'Unlimited groups.',
-          '2X earning on referrals and data contribution.',
+          'Full access to public, social, and verified email contact data.',
+          'Unlimited lists and public groups',
+          '3X rewards on referrals and contributions',
+          'First $100 of data purchases = 100% back in Mentibus tokens ($MENTI)',
           '24/7, concierge human support for data requests, edits and prioritization.',
+          'Exclusive badge recognition inside Mentibus for top contributors.'
         ],
         cta: user
           ? data?.billing_org[0]?.status === 'active'
@@ -121,13 +122,13 @@ const Pricing = () => {
         <FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
 
         <section
-          className="px-4 py-16 sm:px-6 lg:px-8"
+          className="px-4 py-20 sm:px-6 lg:px-8"
           aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" className="sr-only">
             Pricing
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="max-w-2xl mx-auto text-center ">
+            <div className="max-w-2xl mx-auto text-center mb-16">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
                 Choose the best plan for your data needs.
               </h1>
@@ -135,13 +136,13 @@ const Pricing = () => {
                 Accessible, reliable data for the community, by the community.
               </p>
             </div>
-            <div className="block mt-16 md:w-full md:grid md:grid-cols-2">
+            <div className="block mt-8 md:w-full md:grid md:grid-cols-2 md:gap-8">
               {pricing.tiers.map(tier => (
                 <div
-                  className={`relative flex flex-col bg-black shadow p-7 ${
+                  className={`relative flex flex-col bg-black shadow p-8 ${
                     tier.mostPopular
                       ? 'mt-8 rounded-lg lg:mt-0 border-2 border-primary-500'
-                      : 'rounded-bl-lg rounded-tl-lg mt-14'
+                      : 'rounded-bl-lg rounded-tl-lg'
                   }`}
                   key={tier.title}>
                   <div className="flex-1">
@@ -158,11 +159,15 @@ const Pricing = () => {
                     ) : null}
                     <p className="flex items-baseline mt-4">
                       <span className="text-5xl font-bold tracking-tight">
-                        {tier.price === 0 ? 'Free' : '$' + tier.price}
+                        {tier.price === 0 ? 'Free' : (
+                          <>
+                            <span className="line-through text-red-500 mr-2">$14.99</span>
+                            <span>${tier.price}.{tier.priceCents}</span>
+                          </>
+                        )}
                       </span>
                       {tier.price > 0 && (
                         <span className="ml-1 text-xl font-semibold">
-                          {tier.priceCents ? '.' + tier.priceCents : ''}
                           {tier.frequency}
                         </span>
                       )}
@@ -228,9 +233,9 @@ const Pricing = () => {
 
         <section
           aria-labelledby="faq-heading"
-          className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+          className="px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
           <div className="max-w-2xl mx-auto lg:max-w-4xl">
-            <h2 id="faq-heading" className="text-4xl font-bold">
+            <h2 id="faq-heading" className="text-4xl font-bold mb-12">
               Pricing FAQs
             </h2>
             <div className="mt-8">
