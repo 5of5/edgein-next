@@ -26,7 +26,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-
 const Team: NextPage<Props> = () => {
   // const { data: companyData } = useGetCompanyBySlugQuery({
   //   slug: 'edgein' as string,
