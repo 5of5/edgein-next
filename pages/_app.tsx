@@ -15,6 +15,7 @@ import { IntercomProvider } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { DefaultSeo } from 'next-seo';
 import Script from 'next/script';
+import FirstVisitPopup from '@/components/FirstVisitPopup';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
 const ORIGIN = '/';
@@ -180,6 +181,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                         )}
                       </main>
                       {showFooter === true && <TheFooter />}
+                      <FirstVisitPopup />
                     </>
                   </SideBarProvider>
                 </PopupProvider>

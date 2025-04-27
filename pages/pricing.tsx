@@ -126,43 +126,43 @@ const Pricing = () => {
         <FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
 
         <section
-          className="px-4 py-20 sm:px-6 lg:px-8"
+          className="px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
           aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" className="sr-only">
             Pricing
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="max-w-2xl mx-auto text-center mb-16">
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            <div className="max-w-2xl mx-auto text-center mb-8 sm:mb-16">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
                 Choose the best plan for your data needs.
               </h1>
-              <p className="pt-4 text-xl">
+              <p className="pt-4 text-lg sm:text-xl">
                 Accessible, reliable data for the community, by the community.
               </p>
             </div>
-            <div className="block mt-8 md:w-full md:grid md:grid-cols-2 md:gap-8">
+            <div className="block mt-6 sm:mt-8 md:w-full md:grid md:grid-cols-2 md:gap-8">
               {pricing.tiers.map(tier => (
                 <div
-                  className={`relative flex flex-col bg-black shadow p-8 ${
+                  className={`relative flex flex-col bg-black shadow p-4 sm:p-8 ${
                     tier.mostPopular
-                      ? 'mt-8 rounded-lg lg:mt-0 border-2 border-primary-500'
+                      ? 'mt-6 sm:mt-8 rounded-lg lg:mt-0 border-2 border-primary-500'
                       : 'rounded-bl-lg rounded-tl-lg'
                   }`}
                   key={tier.title}>
                   <div className="flex-1">
                     <h3
-                      className={`inline text-3xl font-bold ${
+                      className={`inline text-2xl sm:text-3xl font-bold ${
                         tier.mostPopular ? 'text-primary-500' : ''
                       }`}>
                       {tier.title}
                     </h3>
                     {tier.mostPopular ? (
-                      <p className="absolute top-0 -translate-y-1/2 transform rounded-full bg-primary-500 py-1.5 px-4 text-sm font-semibold text-white">
+                      <p className="absolute top-0 -translate-y-1/2 transform rounded-full bg-primary-500 py-1 px-3 sm:py-1.5 sm:px-4 text-xs sm:text-sm font-semibold text-white">
                         Best Value
                       </p>
                     ) : null}
                     <p className="flex items-baseline mt-4">
-                      <span className="text-5xl font-bold tracking-tight">
+                      <span className="text-4xl sm:text-5xl font-bold tracking-tight">
                         {tier.price === 0 ? (
                           'Free'
                         ) : (
@@ -177,17 +177,17 @@ const Pricing = () => {
                         )}
                       </span>
                       {tier.price > 0 && (
-                        <span className="ml-1 text-xl font-semibold">
+                        <span className="ml-1 text-lg sm:text-xl font-semibold">
                           {tier.frequency}
                         </span>
                       )}
                     </p>
-                    <div className="text-lg text-slate-600">
+                    <div className="text-base sm:text-lg text-slate-600">
                       {/* <p className="mt-6 font-bold text-dark-500">
 												{tier.predescription}
 											</p> */}
-                      <p className="mt-6">{tier.description}</p>
-                      <div className="my-6">
+                      <p className="mt-4 sm:mt-6">{tier.description}</p>
+                      <div className="my-4 sm:my-6">
                         {tier.cta !== '' && (
                           <ElemButton
                             onClick={tier.click}
@@ -199,20 +199,24 @@ const Pricing = () => {
                             btn={`${tier.mostPopular ? 'primary' : ''}`}
                             size="lg">
                             {tier.mostPopular && (
-                              <IconContributor className="w-5 h-5 mr-1" />
+                              <IconContributor className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
                             )}
                             {tier.cta}
                           </ElemButton>
                         )}
                       </div>
-                      <ul role="list" className="mt-6 space-y-6">
+                      <ul
+                        role="list"
+                        className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
                         {tier.features.map(feature => (
                           <li key={feature} className="flex">
                             <IconCheck
-                              className="flex-shrink-0 w-6 h-6 text-green-600"
+                              className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 text-green-600"
                               aria-hidden="true"
                             />
-                            <span className="ml-3">{feature}</span>
+                            <span className="ml-3 text-sm sm:text-base">
+                              {feature}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -243,9 +247,11 @@ const Pricing = () => {
 
         <section
           aria-labelledby="faq-heading"
-          className="px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+          className="px-4 py-12 sm:py-20 sm:px-6 lg:px-8 lg:py-24">
           <div className="max-w-2xl mx-auto lg:max-w-4xl">
-            <h2 id="faq-heading" className="text-4xl font-bold mb-12">
+            <h2
+              id="faq-heading"
+              className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12">
               Pricing FAQs
             </h2>
             <div className="mt-8">
