@@ -237,6 +237,23 @@ const Person: NextPage<Props> = (props: Props) => {
             },
           ],
         }}
+        canonical={`https://mentibus.xyz/people/${person.slug}`}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: person.name,
+            url: `https://mentibus.xyz/people/${person.slug}`,
+            image: person.picture?.url,
+            sameAs: [person.linkedin, person.github, person.twitter_url].filter(
+              Boolean,
+            ),
+            worksFor: person.team_members?.[0]?.company?.name,
+          }),
+        }}
       />
       <DashboardLayout>
         <div className="relative">
@@ -377,7 +394,6 @@ const Person: NextPage<Props> = (props: Props) => {
                   web3Address={person.web3_address}
                   emails={personEmails}
                   github={person.github}
-                  twitter={person.twitter_url}
                   telegram={person.telegram}
                   discord={person.discord}
                   locationJson={

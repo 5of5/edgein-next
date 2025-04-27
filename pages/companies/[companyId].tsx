@@ -208,6 +208,29 @@ const Company: NextPage<Props> = (props: Props) => {
             },
           ],
         }}
+        canonical={`https://mentibus.xyz/companies/${company.slug}`}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: company.name,
+            url: `https://mentibus.xyz/companies/${company.slug}`,
+            logo: company.logo?.url,
+            description: company.overview,
+            sameAs: [
+              company.website,
+              company.twitter,
+              company.company_linkedin,
+              company.github,
+              company.discord,
+              company.telegram,
+              company.glassdoor,
+            ].filter(Boolean),
+          }),
+        }}
       />
 
       <DashboardLayout>
