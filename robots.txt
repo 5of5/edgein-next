@@ -4,7 +4,7 @@ User-agent: *
 Allow: /
 
 # Specify the location of your XML sitemap
-Sitemap: https://edgein.io/sitemap.xml
+Sitemap: https://mentibus.xyz/sitemap.xml
 
 # Common directories to disallow
 Disallow: /cgi-bin/

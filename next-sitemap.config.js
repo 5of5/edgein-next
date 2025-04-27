@@ -62,9 +62,9 @@ module.exports = {
     if (path === '/') changefreq = 'daily';
     else if (path.startsWith('/events/')) changefreq = 'daily';
     else if (path.startsWith('/news/')) changefreq = 'daily';
-    else if (path.startsWith('/companies/')) changefreq = 'weekly';
-    else if (path.startsWith('/investors/')) changefreq = 'weekly';
-    else if (path.startsWith('/people/')) changefreq = 'weekly';
+    else if (path.startsWith('/companies/')) changefreq = 'daily';
+    else if (path.startsWith('/investors/')) changefreq = 'daily';
+    else if (path.startsWith('/people/')) changefreq = 'daily';
     else if (path.startsWith('/lists/')) changefreq = 'weekly';
     else if (path.startsWith('/groups/')) changefreq = 'weekly';
 

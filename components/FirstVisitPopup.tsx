@@ -9,8 +9,34 @@ const translations = {
     cta: 'Claim Your Profile — Get Lists. Join Groups. Access the Data.',
     explore: 'Or explore the network.',
   },
+  zh: {
+    header: '你刚刚在数据中发现了自己。',
+    body: 'Mentibus 是 AI + Web3 的开放数据层。\n你没有请求被索引，但你已经被索引了。\n被投资者、建设者、代理人和机器看到。\n拥有它。控制它。滋养它。\n关注 @Mentibus_xyz 获取更多信息。',
+    cta: '认领你的个人资料 — 获取名单，加入群组，访问数据。',
+    explore: '或者探索整个网络。',
+  },
+  'zh-TW': {
+    header: '你剛剛在數據中發現了自己。',
+    body: 'Mentibus 是 AI + Web3 的開放數據層。\n你沒有要求被索引，但你已經被索引了。\n被投資人、建設者、代理人和機器所看見。\n擁有它。控制它。滋養它。\n關注 @Mentibus_xyz 了解更多訊息。',
+    cta: '認領你的個人資料 — 獲取名單，加入群組，存取數據。',
+    explore: '或者探索整個網路。',
+  },
+  es: {
+    header: 'Acabas de encontrarte en los datos.',
+    body: 'Mentibus es la capa de datos abierta para AI + Web3.\nNo pediste ser indexado. Simplemente lo eres.\nVisto por inversores, constructores, agentes y máquinas.\nHazlo tuyo. Contrólalo. Aliméntalo.\nSigue la señal @Mentibus_xyz',
+    cta: 'Reclama tu perfil — Obtén listas. Únete a grupos. Accede a los datos.',
+    explore: 'O explora la red.',
+  },
+  nl: {
+    header: 'Je hebt jezelf net in de data gevonden.',
+    body: 'Mentibus is de open datalaag voor AI + Web3.\nJe hebt niet gevraagd om geïndexeerd te worden. Je bent het gewoon.\nGezien door investeerders, bouwers, agenten en machines.\nBezit het. Controleer het. Voed het.\nVolg het signaal @Mentibus_xyz',
+    cta: 'Claim je profiel — Ontvang lijsten. Word lid van groepen. Toegang tot de data.',
+    explore: 'Of verken het netwerk.',
+  },
   // Add more languages as needed
 };
+
+const STORAGE_KEY = 'mentibus-popup-seen';
 
 export default function FirstVisitPopup() {
   const [isVisible, setIsVisible] = useState(false);
@@ -19,20 +45,33 @@ export default function FirstVisitPopup() {
   const t = translations[lang as keyof typeof translations] || translations.en;
 
   useEffect(() => {
-    const hasSeenPopup = localStorage.getItem('mentibus-popup-seen') === 'true';
+    // Check if localStorage is available
+    if (typeof window === 'undefined') return;
 
-    if (!hasSeenPopup) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 3000);
+    try {
+      const hasSeenPopup = localStorage.getItem(STORAGE_KEY);
 
-      return () => clearTimeout(timer);
+      if (!hasSeenPopup) {
+        const timer = setTimeout(() => {
+          setIsVisible(true);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+      }
+    } catch (error) {
+      console.error('Error accessing localStorage:', error);
+      // If localStorage fails, don't show the popup
+      return;
     }
   }, []);
 
   const handleDismiss = () => {
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+    } catch (error) {
+      console.error('Error setting localStorage:', error);
+    }
     setIsVisible(false);
-    localStorage.setItem('mentibus-popup-seen', 'true');
   };
 
   const handleClaim = () => {
@@ -72,7 +111,7 @@ export default function FirstVisitPopup() {
             {t.body}
           </div>
 
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-4">
             <button
               onClick={handleClaim}
               className="w-full bg-green-500 text-black font-bold py-2 sm:py-3 px-4 sm:px-6 rounded hover:bg-green-600 transition-colors text-sm sm:text-base">
