@@ -47,7 +47,16 @@ export async function generateXMLSiteMapPages<
     }
   };
 
-  const getChangefreq = (type: string): 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never' => {
+  const getChangefreq = (
+    type: string,
+  ):
+    | 'always'
+    | 'hourly'
+    | 'daily'
+    | 'weekly'
+    | 'monthly'
+    | 'yearly'
+    | 'never' => {
     switch (type) {
       case 'events':
         return 'weekly';

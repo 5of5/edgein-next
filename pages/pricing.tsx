@@ -78,7 +78,7 @@ const Pricing = () => {
           '3X rewards on referrals and contributions',
           'First $100 of data purchases = 100% back in Mentibus tokens ($MENTI)',
           '24/7, concierge human support for data requests, edits and prioritization.',
-          'Exclusive badge recognition inside Mentibus for top contributors.'
+          'Exclusive badge recognition inside Mentibus for top contributors.',
         ],
         cta: user
           ? data?.billing_org[0]?.status === 'active'
@@ -103,8 +103,7 @@ const Pricing = () => {
     },
     {
       question: 'Will I be charged automatically each month?',
-      answer:
-        ' Yes. Subscriptions renew monthly unless cancelled.',
+      answer: ' Yes. Subscriptions renew monthly unless cancelled.',
     },
   ];
 
@@ -164,10 +163,16 @@ const Pricing = () => {
                     ) : null}
                     <p className="flex items-baseline mt-4">
                       <span className="text-5xl font-bold tracking-tight">
-                        {tier.price === 0 ? 'Free' : (
+                        {tier.price === 0 ? (
+                          'Free'
+                        ) : (
                           <>
-                            <span className="line-through text-red-500 mr-2">$14.99</span>
-                            <span>${tier.price}.{tier.priceCents}</span>
+                            <span className="line-through text-red-500 mr-2">
+                              $14.99
+                            </span>
+                            <span>
+                              ${tier.price}.{tier.priceCents}
+                            </span>
                           </>
                         )}
                       </span>

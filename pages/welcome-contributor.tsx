@@ -39,14 +39,17 @@ const WelcomeContributor = () => {
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-12 bg-gradient-to-r from-primary-500 to-primary-400 bg-clip-text text-transparent animate-gradient">
               You&apos;re in.
             </h1>
-            
+
             <div className="space-y-8 text-lg max-w-2xl mx-auto">
               <p className="text-gray-300 leading-relaxed">
-                Your $4.99 just activated premium access, tripled your rewards, and marked your presence in the Mentibus network.
+                Your $4.99 just activated premium access, tripled your rewards,
+                and marked your presence in the Mentibus network.
               </p>
-              
+
               <div className="relative py-6">
-                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                <div
+                  className="absolute inset-0 flex items-center"
+                  aria-hidden="true">
                   <div className="w-full border-t border-gray-700" />
                 </div>
                 <div className="relative flex justify-center">
@@ -55,13 +58,15 @@ const WelcomeContributor = () => {
                   </span>
                 </div>
               </div>
-              
+
               <p className="text-gray-300 leading-relaxed">
                 We&apos;ll reach out when it&apos;s time to claim your tokens.
               </p>
-              
+
               <div className="relative py-6">
-                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                <div
+                  className="absolute inset-0 flex items-center"
+                  aria-hidden="true">
                   <div className="w-full border-t border-gray-700" />
                 </div>
                 <div className="relative flex justify-center">
@@ -77,8 +82,7 @@ const WelcomeContributor = () => {
                 onClick={() => router.push(ROUTES.HOME)}
                 btn="primary"
                 size="lg"
-                className="px-8 py-3 text-lg hover:scale-105 transition-transform duration-300 shadow-lg shadow-primary-500/20"
-              >
+                className="px-8 py-3 text-lg hover:scale-105 transition-transform duration-300 shadow-lg shadow-primary-500/20">
                 Go to Home
               </ElemButton>
             </div>

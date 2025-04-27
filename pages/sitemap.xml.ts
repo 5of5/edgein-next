@@ -48,27 +48,31 @@ const generateSitemapIndex = (counts: Record<string, number>) => {
     const numSitemaps = Math.ceil(count / URLS_PER_SITEMAP);
     return Array.from({ length: numSitemaps }, (_, i) => ({
       loc: `${baseUrl}/sitemap/${type}/${i}`,
-      lastmod: now
+      lastmod: now,
     }));
   });
 
   return `<?xml version="1.0" encoding="UTF-8"?>
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      ${sitemaps.map(sitemap => `
+      ${sitemaps
+        .map(
+          sitemap => `
         <sitemap>
           <loc>${sitemap.loc}</loc>
           <lastmod>${sitemap.lastmod}</lastmod>
         </sitemap>
-      `).join('')}
+      `,
+        )
+        .join('')}
     </sitemapindex>`;
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   try {
     const client = getClient();
-    const { data } = await client.query({ 
+    const { data } = await client.query({
       query: GET_COUNTS,
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
     });
 
     const counts = {
@@ -77,16 +81,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       people: data.people_aggregate.aggregate.count,
       events: data.events_aggregate.aggregate.count,
       lists: data.lists_aggregate.aggregate.count,
-      groups: data.user_groups_aggregate.aggregate.count
+      groups: data.user_groups_aggregate.aggregate.count,
     };
 
     const xml = generateSitemapIndex(counts);
 
     // Set caching headers
-    context.res.setHeader('Cache-Control', `public, max-age=${CACHE_DURATION}, stale-while-revalidate`);
+    context.res.setHeader(
+      'Cache-Control',
+      `public, max-age=${CACHE_DURATION}, stale-while-revalidate`,
+    );
     context.res.setHeader('Content-Type', 'text/xml');
     context.res.setHeader('Content-Encoding', 'gzip');
-    
+
     // Compress and send the XML
     const zlib = require('zlib');
     const compressed = zlib.gzipSync(xml);
@@ -104,4 +111,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function SitemapIndex() {
   return null;
-} 
+}

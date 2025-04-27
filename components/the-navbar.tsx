@@ -82,7 +82,7 @@ export const TheNavbar: FC<Props> = ({}) => {
       localStorage.inviteCode = router.query.invite as string;
       redirectToSignIn();
     }
-  }, [router.query.invite, user]);/* eslint-disable-line */
+  }, [router.query.invite, user]); /* eslint-disable-line */
 
   const onModalClose = useCallback(() => {
     setShowPopup(false);
