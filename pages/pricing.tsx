@@ -83,8 +83,8 @@ const Pricing = () => {
         cta: user
           ? data?.billing_org[0]?.status === 'active'
             ? 'Current Plan'
-            : 'Free Trial'
-          : 'Free Trial',
+            : 'Subscribe Now'
+          : 'Subscribe Now',
         mostPopular: true,
       },
     ],
@@ -92,14 +92,19 @@ const Pricing = () => {
 
   const faqs = [
     {
-      question: 'Can I try Mentibus before I purchase a paid plan?',
+      question: 'How do I try Mentibus before purchasing a paid plan?',
       answer:
-        'Yes, of course! We offer a FREE trial so you can decide which features work best for your workflow.',
+        'You can start with our Community plan for free, or test the full power of the Contributor plan with a free trial—no risk, no commitment.',
     },
     {
-      question: 'Will my monthly subscription be renewed automatically?',
+      question: 'Can I cancel anytime?',
       answer:
-        'Yes, your subscription will automatically renew each month. You can cancel anytime in your Account Settings or by contacting our team through Intercom on the site.',
+        'Yes. You&apos;re in control. Cancel your subscription anytime through Account Settings or by messaging our team via Intercom.',
+    },
+    {
+      question: 'Will I be charged automatically each month?',
+      answer:
+        ' Yes. Subscriptions renew monthly unless cancelled.',
     },
   ];
 
