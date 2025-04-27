@@ -33,7 +33,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     if (!showPopup && router.asPath.includes(ROUTES.SIGN_IN)) {
       setShowPopup(router.asPath.includes('?usage=true') ? 'usage' : false);
     }
-  }, [router.asPath]);
+  }, [router.asPath]); /* eslint-disable-line */
 
   useHotkeys('ctrl+k, command+k', function (event) {
     event.preventDefault();
@@ -75,14 +75,14 @@ export const TheNavbar: FC<Props> = ({}) => {
         })();
       }
     }
-  }, [router.asPath]);
+  }, [router.asPath]); /* eslint-disable-line */
 
   useEffect(() => {
     if (router.query.invite && !user) {
       localStorage.inviteCode = router.query.invite as string;
       redirectToSignIn();
     }
-  }, [router.query.invite, user]);
+  }, [router.query.invite, user]); /* eslint-disable-line */
 
   const onModalClose = useCallback(() => {
     setShowPopup(false);
