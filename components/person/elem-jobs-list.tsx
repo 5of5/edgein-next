@@ -75,6 +75,24 @@ export const ElemJobsList: FC<Props> = ({
       />
       <div className="flex justify-between">
         <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
+
+        <div className="flex flex-col py-2 items-end justify-end mr-10">
+          <ElemButton
+            className="mt-2"
+            onClick={() => {
+              showNewMessages(
+                `Hi Mentibus, I'd like to request work experience info on ${resourceUrl}`,
+              );
+
+              if (onRequestContribute) {
+                onRequestContribute();
+              }
+              handleAdd();
+            }}
+            btn="default">
+            Contribute Data
+          </ElemButton>
+        </div>
         {user?.person?.id?.toString() === personId && (
           <ElemButton
             onClick={handleAdd}
@@ -88,21 +106,6 @@ export const ElemJobsList: FC<Props> = ({
         {!jobs || jobs.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-4">
             <div className="text-gray-500">No work experience info listed.</div>
-            <ElemButton
-              className="mt-2"
-              onClick={() => {
-                showNewMessages(
-                  `Hi Mentibus, I'd like to request work experience info on ${resourceUrl}`,
-                );
-
-                if (onRequestContribute) {
-                  onRequestContribute();
-                }
-                handleAdd();
-              }}
-              btn="default">
-              Contribute Data
-            </ElemButton>
           </div>
         ) : (
           jobs.map((job: any, index: number) => {
