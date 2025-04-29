@@ -76,7 +76,9 @@ export type HitPeopleProps = {
     name: string;
     work_email: string;
     personal_email: string;
-    picture: string;
+    picture: {
+      url: string;
+    };
     slug: string;
     empty: boolean;
   }>;
@@ -88,14 +90,14 @@ const HitPeople = (onSelect: (personId: string) => void) =>
       <div
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          onSelect(hit.objectID); // Pass the person ID
+          onSelect(hit.objectID);
         }}
         className="flex items-center px-6 py-1 group hover:bg-neutral-900">
         <div className="flex items-center justify-center w-12 h-12 p-1 bg-black border border-neutral-700 rounded shrink-0">
-          {hit.picture ? (
+          {hit.picture?.url ? (
             <img
               className="object-contain max-w-full max-h-full"
-              src={hit.picture}
+              src={hit.picture.url}
               alt={hit.name}
             />
           ) : (
@@ -141,10 +143,10 @@ export default function AddPeopleModal(props: any) {
         name: person.name || '',
         work_email: person.work_email || '',
         personal_email: person.personal_email || '',
-        picture: person.picture || '',
+        picture: person.picture?.url || '',
       });
     }
-  }, [personDetails]);
+  }, [personDetails]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   useEffect(() => {
     setTabSelectedIndex(0);
