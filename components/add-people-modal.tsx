@@ -130,7 +130,7 @@ export default function AddPeopleModal(props: any) {
 
   const { data: personDetails } = useGetPeopleByIdQuery(
     { id: personData.person_id },
-    { enabled: Boolean(personData.person_id) }
+    { enabled: Boolean(personData.person_id) },
   );
 
   useEffect(() => {
@@ -191,7 +191,9 @@ export default function AddPeopleModal(props: any) {
     } else if (allEmpty) {
       return (
         <div className="w-full px-6 py-1 mt-5">
-          <h3 className="font-medium">No results for "{results.query}"</h3>
+          <h3 className="font-medium">
+            No results for &ldquo;{results.query}&rdquo;
+          </h3>
           <p>
             <ElemLink
               href={ROUTES.CONTACT}

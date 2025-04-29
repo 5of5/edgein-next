@@ -245,8 +245,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
                 <ElemButton
                   onClick={() => setShowAddPeopleModal(true)}
                   btn="default"
-                  size="sm"
-                >
+                  size="sm">
                   Contribute Data
                 </ElemButton>
               </div>
