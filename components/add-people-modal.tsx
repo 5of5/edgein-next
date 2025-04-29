@@ -76,9 +76,7 @@ export type HitPeopleProps = {
     name: string;
     work_email: string;
     personal_email: string;
-    picture: {
-      url: string;
-    };
+    picture: string;
     slug: string;
     empty: boolean;
   }>;
@@ -94,10 +92,10 @@ const HitPeople = (onSelect: (personId: string) => void) =>
         }}
         className="flex items-center px-6 py-1 group hover:bg-neutral-900">
         <div className="flex items-center justify-center w-12 h-12 p-1 bg-black border border-neutral-700 rounded shrink-0">
-          {hit.picture?.url ? (
+          {hit.picture ? (
             <img
               className="object-contain max-w-full max-h-full"
-              src={hit.picture.url}
+              src={hit.picture}
               alt={hit.name}
             />
           ) : (
