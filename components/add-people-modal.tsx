@@ -22,6 +22,7 @@ import { ElemModal } from './elem-modal';
 import { FormControl } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { ElemButton } from './elem-button';
+import { useGetPeopleByIdQuery } from '@/graphql/types';
 
 const INSERT_TEAM_MEMBER = `mutation InsertTeamMember(
   $person_id: Int!,
@@ -87,7 +88,7 @@ const HitPeople = (onSelect: (personId: string) => void) =>
       <div
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          onSelect(hit.objectID); // Pass the person ID
+          onSelect(hit.objectID);
         }}
         className="flex items-center px-6 py-1 group hover:bg-neutral-900">
         <div className="flex items-center justify-center w-12 h-12 p-1 bg-black border border-neutral-700 rounded shrink-0">
@@ -126,6 +127,24 @@ export default function AddPeopleModal(props: any) {
 
   const [personSelected, setPersonSelected] = useState<boolean>(false);
   const [tabSelectedIndex, setTabSelectedIndex] = useState<number>(0);
+
+  const { data: personDetails } = useGetPeopleByIdQuery(
+    { id: personData.person_id },
+    { enabled: Boolean(personData.person_id) },
+  );
+
+  useEffect(() => {
+    if (personDetails?.people?.[0]) {
+      const person = personDetails.people[0];
+      setPersonData({
+        ...personData,
+        name: person.name || '',
+        work_email: person.work_email || '',
+        personal_email: person.personal_email || '',
+        picture: person.picture?.url || '',
+      });
+    }
+  }, [personDetails]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   useEffect(() => {
     setTabSelectedIndex(0);
@@ -172,7 +191,9 @@ export default function AddPeopleModal(props: any) {
     } else if (allEmpty) {
       return (
         <div className="w-full px-6 py-1 mt-5">
-          <h3 className="font-medium">No results for “{results.query}“</h3>
+          <h3 className="font-medium">
+            No results for &ldquo;{results.query}&rdquo;
+          </h3>
           <p>
             <ElemLink
               href={ROUTES.CONTACT}

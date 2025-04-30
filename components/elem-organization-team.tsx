@@ -198,81 +198,71 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
 
       <div className="px-4 py-4">
         {isLoading || isLoadingSecondary ? (
-          <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-            {Array.from({ length: 8 }, (_, i) => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => (
               <PlaceholderPerson key={i} />
             ))}
           </div>
-        ) : members?.length === 0 ? (
-          <div className="flex flex-col items-center justify-center">
-            <div className="text-gray-500">
-              There is no team data on this organization.
-            </div>
-            <ElemButton
-              className="mt-2"
-              onClick={() => {
-                showNewMessages(
-                  `Hi Mentibus, I'd like to request team data on ${resourceName}`,
-                );
-                // setShowAddPeopleModal(true);
-              }}
-              btn="default">
-              Contribute Data
-            </ElemButton>
+        ) : error || errorSecondary ? (
+          <div className="text-center text-red-500">
+            Error loading team members
           </div>
         ) : (
           <>
-            <div className="items-start justify-between lg:flex">
-              {showTags && (
-                <div>
-                  <ElemFilterTags
-                    onClick={tag => setSelectedTag(tag)}
-                    selectedTag={selectedTag}
-                    className="mt-2"
-                    tags={getSelectableMemberTags}
+            {showTags && (
+              <div className="mb-4">
+                <ElemFilterTags
+                  tags={getSelectableMemberTags}
+                  selectedTag={selectedTag}
+                  onClick={setSelectedTag}
+                />
+              </div>
+            )}
+            {filteredMembers.length === 0 ? (
+              <div className="text-center">
+                <p className="mb-4 text-gray-400">No team members found</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {filteredMembers.map((member, index) => (
+                  <ElemPersonCard
+                    key={index}
+                    href={`${ROUTES.PEOPLE}/${member.person?.slug}`}
+                    photo={member.person?.picture}
+                    heading={member.person?.name}
+                    founder={member.founder}
+                    text={member.function}
+                    linkedin={member.person?.linkedin}
+                    personal_email={member.person?.personal_email}
+                    work_email={member.person?.work_email}
+                    end_date={member.end_date}
                   />
-                </div>
-              )}
-              {allowToSaveTeam && personIds.length > 0 && (
-                <div className="mt-2 lg:mt-0 shrink-0">
-                  <ElemBulkSavePeople
-                    text="Save team to list"
-                    personIds={personIds}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {filteredMembers?.map(teamMember => {
-                return (
-                  <React.Fragment key={teamMember.id}>
-                    {teamMember.person && (
-                      <ElemPersonCard
-                        key={teamMember.person.id}
-                        href={`${ROUTES.PEOPLE}/${teamMember.person.slug}`}
-                        photo={teamMember.person.picture}
-                        heading={teamMember.person.name}
-                        founder={teamMember.founder}
-                        text={teamMember.function}
-                        linkedin={teamMember.person.linkedin}
-                        personal_email={teamMember.person.personal_email}
-                        work_email={teamMember.person.work_email}
-                        end_date={teamMember.end_date}
-                      />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </div>
-            <Pagination
-              shownItems={members?.length}
-              totalItems={members_aggregate}
-              page={page}
-              itemsPerPage={limit}
-              onClickPrev={() => setPage(page - 1)}
-              onClickNext={() => setPage(page + 1)}
-              onClickToPage={selectedPage => setPage(selectedPage)}
-            />
+                ))}
+              </div>
+            )}
+            {allowToSaveTeam && (
+              <div className="mt-4 flex justify-center">
+                <ElemButton
+                  onClick={() => setShowAddPeopleModal(true)}
+                  btn="default"
+                  size="sm">
+                  Contribute Data
+                </ElemButton>
+              </div>
+            )}
+            {members_aggregate > limit && (
+              <div className="mt-4">
+                <Pagination
+                  shownItems={filteredMembers.length}
+                  totalItems={members_aggregate}
+                  page={page}
+                  itemsPerPage={limit}
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
+              </div>
+            )}
           </>
         )}
       </div>
