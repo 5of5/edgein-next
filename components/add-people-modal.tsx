@@ -329,6 +329,23 @@ export default function AddPeopleModal(props: any) {
                     value={personData.name}
                     onChange={e => handleChange('name', e.target.value)}
                     variant="outlined"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'white',
+                        '& fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'gray',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: 'black',
+                      },
+                    }}
                   />
                 </FormControl>
                 <FormControl variant="outlined" sx={{ width: '100%' }}>
@@ -340,6 +357,23 @@ export default function AddPeopleModal(props: any) {
                     value={personData.work_email}
                     onChange={e => handleChange('work_email', e.target.value)}
                     variant="outlined"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'white',
+                        '& fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'gray',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: 'black',
+                      },
+                    }}
                   />
                 </FormControl>
                 <FormControl variant="outlined" sx={{ width: '100%' }}>
@@ -353,6 +387,23 @@ export default function AddPeopleModal(props: any) {
                       handleChange('personal_email', e.target.value)
                     }
                     variant="outlined"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'white',
+                        '& fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'gray',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: 'black',
+                      },
+                    }}
                   />
                 </FormControl>
                 <FormControl variant="outlined" sx={{ width: '100%' }}>
@@ -364,6 +415,23 @@ export default function AddPeopleModal(props: any) {
                     value={personData.picture}
                     onChange={e => handleChange('picture', e.target.value)}
                     variant="outlined"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'white',
+                        '& fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'gray',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: 'black',
+                      },
+                    }}
                   />
                 </FormControl>
                 <ElemButton btn="primary" size="sm" className="w-[120px]">
