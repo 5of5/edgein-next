@@ -1,0 +1,38 @@
+# Global rules for all robots
+User-agent: *
+# Allow all robots to crawl all content
+Allow: /
+
+# Specify the location of your XML sitemap
+Sitemap: https://mentibus.xyz/sitemap.xml
+
+# Common directories to disallow
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /backend/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /search?
+Disallow: /*?replytocom
+Disallow: /*?s=
+Disallow: /thank-you
+Disallow: /cart
+Disallow: /checkout
+Disallow: /my-account
+
+# Prevent duplicate content issues
+Disallow: /*?sort=
+Disallow: /*?filter=
+Disallow: /*?page=
+
+# Googlebot specific rules
+User-agent: Googlebot
+Crawl-delay: 1
+
+# Bingbot specific rules
+User-agent: Bingbot
+Crawl-delay: 1 
+
+# Algolia-Crawler-Verif: 0BF2F4E7FC10A6EC
