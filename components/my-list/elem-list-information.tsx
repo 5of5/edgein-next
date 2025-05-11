@@ -169,7 +169,10 @@ export const ElemListInformation: FC<Props> = ({
                     : `${numberWithCommas(listMembers.length)} Follower`}
                 </div>
                 {canManageMembers && (
-                  <ElemButton btn="primary" size="sm" onClick={() => setOpenMembersModal(true)}>
+                  <ElemButton
+                    btn="primary"
+                    size="sm"
+                    onClick={() => setOpenMembersModal(true)}>
                     Manage Members
                   </ElemButton>
                 )}

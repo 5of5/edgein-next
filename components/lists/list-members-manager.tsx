@@ -17,10 +17,10 @@ const GET_LIST = gql`
     lists(
       where: {
         _and: [
-          { id: { _eq: $id } },
+          { id: { _eq: $id } }
           {
             _or: [
-              { name: { _ilike: $searchTerm } },
+              { name: { _ilike: $searchTerm } }
               { description: { _ilike: $searchTerm } }
             ]
           }
@@ -90,12 +90,17 @@ const UPDATE_MEMBER_ROLE = gql`
   }
 `;
 
-export const ListMembersManager: React.FC<ListMembersManagerProps> = ({ listId, open, onClose }) => {
+export const ListMembersManager: React.FC<ListMembersManagerProps> = ({
+  listId,
+  open,
+  onClose,
+}) => {
   const { user } = useUser();
   const { data, isLoading: loading, refetch } = useGetListQuery({ id: listId });
   const [internalOpen, setInternalOpen] = useState(false);
   const isDialogOpen = open !== undefined ? open : internalOpen;
-  const handleOpen = () => (open === undefined ? setInternalOpen(true) : undefined);
+  const handleOpen = () =>
+    open === undefined ? setInternalOpen(true) : undefined;
   const handleClose = () => {
     if (onClose) onClose();
     else setInternalOpen(false);
@@ -150,8 +155,9 @@ export const ListMembersManager: React.FC<ListMembersManagerProps> = ({ listId, 
     }
   };
 
-  type ListMemberType = typeof data extends { lists: { list_members: any[] }[] } ?
-    NonNullable<typeof data>['lists'][number]['list_members'][number] : any;
+  type ListMemberType = typeof data extends { lists: { list_members: any[] }[] }
+    ? NonNullable<typeof data>['lists'][number]['list_members'][number]
+    : any;
 
   if (loading) return <div>Loading...</div>;
   if (!data?.lists?.[0]) return <div>No list data found.</div>;
@@ -171,16 +177,27 @@ export const ListMembersManager: React.FC<ListMembersManagerProps> = ({ listId, 
           {members.map((member: ListMemberType) => {
             if (!member) return null;
             const isCurrentUser = member.user_id === user?.id;
-            const currentUserMember = members.find((m: ListMemberType) => m?.user_id === user?.id);
+            const currentUserMember = members.find(
+              (m: ListMemberType) => m?.user_id === user?.id,
+            );
             const isOwner = currentUserMember?.member_type === 'owner';
             const isAdmin = currentUserMember?.member_type === 'admin';
-            const canManage = isOwner || (isAdmin && member.member_type === 'follow');
+            const canManage =
+              isOwner || (isAdmin && member.member_type === 'follow');
             return (
-              <div key={member.id} className="flex items-center justify-between p-2 bg-gray-800 border border-gray-700 rounded shadow-sm">
+              <div
+                key={member.id}
+                className="flex items-center justify-between p-2 bg-gray-800 border border-gray-700 rounded shadow-sm">
                 <div className="flex items-center space-x-2">
                   <img
-                    src={member.user?.person?.picture?.url || '/default-avatar.png'}
-                    alt={member.user?.person?.name || member.user?.display_name || ''}
+                    src={
+                      member.user?.person?.picture?.url || '/default-avatar.png'
+                    }
+                    alt={
+                      member.user?.person?.name ||
+                      member.user?.display_name ||
+                      ''
+                    }
                     className="w-8 h-8 rounded-full border border-gray-700"
                   />
                   <div>
@@ -188,7 +205,8 @@ export const ListMembersManager: React.FC<ListMembersManagerProps> = ({ listId, 
                       {member.user?.person?.name || member.user?.display_name}
                     </div>
                     <div className="text-sm text-gray-400">
-                      {member.member_type.charAt(0).toUpperCase() + member.member_type.slice(1)}
+                      {member.member_type.charAt(0).toUpperCase() +
+                        member.member_type.slice(1)}
                     </div>
                   </div>
                 </div>
@@ -198,16 +216,14 @@ export const ListMembersManager: React.FC<ListMembersManagerProps> = ({ listId, 
                       <ElemButton
                         btn="primary"
                         size="sm"
-                        onClick={() => handleUpdateRole(member.id, 'admin')}
-                      >
+                        onClick={() => handleUpdateRole(member.id, 'admin')}>
                         Make Admin
                       </ElemButton>
                     ) : member.member_type === 'admin' ? (
                       <ElemButton
                         btn="gray"
                         size="sm"
-                        onClick={() => handleUpdateRole(member.id, 'follow')}
-                      >
+                        onClick={() => handleUpdateRole(member.id, 'follow')}>
                         Remove Admin
                       </ElemButton>
                     ) : null}
@@ -220,4 +236,4 @@ export const ListMembersManager: React.FC<ListMembersManagerProps> = ({ listId, 
       </div>
     </Dialog>
   );
-}; 
+};
