@@ -26,12 +26,13 @@ import { useGetPeopleByIdQuery } from '@/graphql/types';
 
 const INSERT_TEAM_MEMBER = `mutation InsertTeamMember(
   $person_id: Int!,
+  $company_id: Int!,
   $title: String,
   $start_date: date,
   $end_date: date
 ) {
   insert_team_members_one(
-    object: { person_id: $person_id, title: $title, start_date: $start_date, end_date: $end_date },
+    object: { person_id: $person_id, company_id: $company_id, title: $title, start_date: $start_date, end_date: $end_date },
     on_conflict: {
       constraint: team_members_company_id_person_id_key,
       update_columns: []
@@ -39,6 +40,7 @@ const INSERT_TEAM_MEMBER = `mutation InsertTeamMember(
   ) {
     id
     person_id
+    company_id
     title
     start_date
     end_date
@@ -49,11 +51,10 @@ export const fetchGraphQL = async (
   query: string,
   variables: Record<string, any> = {},
 ) => {
-  const response = await fetch('https://unique-crow-54.hasura.app/v1/graphql', {
+  const response = await fetch('/api/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-hasura-admin-secret': 'YOUR_ADMIN_SECRET', // Replace with your authentication token
     },
     body: JSON.stringify({ query, variables }),
   });
@@ -117,12 +118,20 @@ const HitPeople = (onSelect: (personId: string) => void) =>
     );
   };
 
-export default function AddPeopleModal(props: any) {
+export default function AddPeopleModal(props: {
+  show: boolean;
+  onClose: () => void;
+  companyId?: number;
+}) {
   const [personData, setPersonData] = useState<any>({
     name: '',
     work_email: '',
     personal_email: '',
     picture: '',
+    title: '',
+    start_date: null,
+    end_date: null,
+    currently_working: false,
   });
 
   const [personSelected, setPersonSelected] = useState<boolean>(false);
@@ -209,17 +218,26 @@ export default function AddPeopleModal(props: any) {
     return children;
   };
 
-  const handleCreateTeamMember = async () => {
+  const handleCreateTeamMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!props.companyId) {
+      console.error('Company ID is required');
+      return;
+    }
     try {
       const result = await fetchGraphQL(INSERT_TEAM_MEMBER, {
-        person_id: personData.person_id, // Ensure this is set correctly
-        title: personData.title,
-        start_date: personData.start_date,
-        end_date: personData.end_date,
+        person_id: personData.person_id,
+        company_id: props.companyId,
+        title: personData.title || null,
+        start_date: personData.start_date || null,
+        end_date: personData.currently_working
+          ? null
+          : personData.end_date || null,
       });
-      console.log(result);
+      console.log('Team member created:', result);
+      onClose();
     } catch (error) {
-      console.log(error);
+      console.error('Error creating team member:', error);
     }
   };
 
@@ -350,6 +368,108 @@ export default function AddPeopleModal(props: any) {
                 </FormControl>
                 <FormControl variant="outlined" sx={{ width: '100%' }}>
                   <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
+                    Title
+                  </label>
+                  <MuiTextField
+                    placeholder="Title"
+                    value={personData.title}
+                    onChange={e => handleChange('title', e.target.value)}
+                    variant="outlined"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'white',
+                        '& fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'gray',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: 'black',
+                      },
+                    }}
+                  />
+                </FormControl>
+                <FormControl variant="outlined" sx={{ width: '100%' }}>
+                  <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
+                    Start Date
+                  </label>
+                  <MuiTextField
+                    type="date"
+                    value={personData.start_date || ''}
+                    onChange={e => handleChange('start_date', e.target.value)}
+                    variant="outlined"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'white',
+                        '& fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'gray',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: 'black',
+                      },
+                    }}
+                  />
+                </FormControl>
+                <FormControl variant="outlined" sx={{ width: '100%' }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <input
+                      type="checkbox"
+                      checked={personData.currently_working}
+                      onChange={e =>
+                        handleChange('currently_working', e.target.checked)
+                      }
+                      className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+                    />
+                    <label className="text-white-700 font-medium text-[18px]">
+                      Currently Working
+                    </label>
+                  </div>
+                </FormControl>
+                <FormControl variant="outlined" sx={{ width: '100%' }}>
+                  <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
+                    End Date
+                  </label>
+                  <MuiTextField
+                    type="date"
+                    value={personData.end_date || ''}
+                    onChange={e => handleChange('end_date', e.target.value)}
+                    disabled={personData.currently_working}
+                    variant="outlined"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: personData.currently_working
+                          ? '#f3f4f6'
+                          : 'white',
+                        '& fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'gray',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'gray',
+                        },
+                      },
+                      '& .MuiInputBase-input': {
+                        color: 'black',
+                      },
+                    }}
+                  />
+                </FormControl>
+                <FormControl variant="outlined" sx={{ width: '100%' }}>
+                  <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
                     Work Email
                   </label>
                   <MuiTextField
@@ -434,7 +554,11 @@ export default function AddPeopleModal(props: any) {
                     }}
                   />
                 </FormControl>
-                <ElemButton btn="primary" size="sm" className="w-[120px]">
+                <ElemButton
+                  btn="primary"
+                  size="sm"
+                  className="w-[120px]"
+                  onClick={handleCreateTeamMember}>
                   Save
                 </ElemButton>
               </form>
