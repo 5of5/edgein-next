@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
   IconSettings,
   IconLockClosed,
@@ -15,6 +15,7 @@ import { ElemTooltip } from '../elem-tooltip';
 import { getListDisplayName } from '@/utils/lists';
 import { Lists } from '@/graphql/types';
 import { ElemAvatarList } from '../elem-avatar-list';
+import { ListMembersManager } from '@/components/lists/list-members-manager';
 
 type Props = {
   list: Lists;
@@ -37,6 +38,7 @@ export const ElemListInformation: FC<Props> = ({
 }) => {
   const { user } = useUser();
   const router = useRouter();
+  const [openMembersModal, setOpenMembersModal] = useState(false);
   // eslint-disable-next-line no-unsafe-optional-chaining
   const { fl } = router?.query;
 
@@ -55,6 +57,10 @@ export const ElemListInformation: FC<Props> = ({
   const listMembers = list.list_members.filter(
     member => member.user?.id != list?.created_by?.id,
   );
+  const isAdmin = list.list_members.some(
+    m => m.user_id === user?.id && m.member_type === 'admin',
+  );
+  const canManageMembers = isListAuthor || isAdmin;
 
   const listTitle = (
     <>
@@ -155,13 +161,18 @@ export const ElemListInformation: FC<Props> = ({
 
           <div className="mt-4 grow">
             {listMembers && listMembers.length > 0 && (
-              <div className="flex items-center pl-1">
-                <ElemAvatarList people={listMembers} />
+              <div className="flex items-center pl-1 gap-x-2">
+                <ElemAvatarList people={listMembers as any} />
                 <div className="ml-1 text-sm shrink-0">
                   {listMembers.length > 1
                     ? `${numberWithCommas(listMembers.length)} Followers`
                     : `${numberWithCommas(listMembers.length)} Follower`}
                 </div>
+                {canManageMembers && (
+                  <ElemButton btn="primary" size="sm" onClick={() => setOpenMembersModal(true)}>
+                    Manage Members
+                  </ElemButton>
+                )}
               </div>
             )}
           </div>
@@ -204,6 +215,13 @@ export const ElemListInformation: FC<Props> = ({
           </div>
         )}
       </div>
+      {canManageMembers && (
+        <ListMembersManager
+          listId={list.id}
+          open={openMembersModal}
+          onClose={() => setOpenMembersModal(false)}
+        />
+      )}
     </div>
   );
 };
