@@ -5,7 +5,7 @@ import { formatDate, convertToIntNum } from '@/utils';
 import { Investment_Rounds } from '@/graphql/types';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
-import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
+// import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 
 type Props = {
   heading?: string;
@@ -26,25 +26,31 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
   };
   // const { showNewMessages } = useIntercom();
 
-  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
-    console.log('LiveChatWidget.onNewEvent', event);
-  }
+  // function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+  //   console.log('LiveChatWidget.onNewEvent', event);
+  // }
 
-  const [show, setShow] = useState<boolean>(false);
+  // const [show, setShow] = useState<boolean>(false);
   const showNewMessages = (message: String) => {
     console.log(message);
-    setShow(true);
+    // setShow(true);
   };
 
   return (
     <div className="rounded-lg border border-gray-700">
-      {show && (
+      {/* {show && (
         <LiveChatWidget
           license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
           visibility="maximized"
           onNewEvent={handleLiveChatEvent}
+          customerName={resourceName || ''}
+          customerEmail=""
+          sessionVariables={{
+            resourceType,
+            resourceName: resourceName || '',
+          }}
         />
-      )}
+      )} */}
       <div className="flex items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">
           {heading ? heading : 'Activity Timeline'}

@@ -19,19 +19,33 @@ import { parseIndexName } from '@/utils/algolia';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 import { ElemModal } from './elem-modal';
-import { FormControl } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { ElemButton } from './elem-button';
 import { useGetPeopleByIdQuery } from '@/graphql/types';
+import { functionChoicesTM, seniorityChoicesTM } from '@/utils/constants';
 
 const INSERT_TEAM_MEMBER = `mutation InsertTeamMember(
   $person_id: Int!,
+  $company_id: Int!,
+  $function: String,
+  $seniority: String,
   $title: String,
   $start_date: date,
-  $end_date: date
+  $end_date: date,
+  $founder: Boolean
 ) {
   insert_team_members_one(
-    object: { person_id: $person_id, title: $title, start_date: $start_date, end_date: $end_date },
+    object: { 
+      person_id: $person_id, 
+      company_id: $company_id, 
+      function: $function,
+      seniority: $seniority,
+      title: $title, 
+      start_date: $start_date, 
+      end_date: $end_date,
+      founder: $founder
+    },
     on_conflict: {
       constraint: team_members_company_id_person_id_key,
       update_columns: []
@@ -39,9 +53,13 @@ const INSERT_TEAM_MEMBER = `mutation InsertTeamMember(
   ) {
     id
     person_id
+    company_id
+    function
+    seniority
     title
     start_date
     end_date
+    founder
   }
 }`;
 
@@ -49,11 +67,10 @@ export const fetchGraphQL = async (
   query: string,
   variables: Record<string, any> = {},
 ) => {
-  const response = await fetch('https://unique-crow-54.hasura.app/v1/graphql', {
+  const response = await fetch('/api/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-hasura-admin-secret': 'YOUR_ADMIN_SECRET', // Replace with your authentication token
     },
     body: JSON.stringify({ query, variables }),
   });
@@ -117,12 +134,23 @@ const HitPeople = (onSelect: (personId: string) => void) =>
     );
   };
 
-export default function AddPeopleModal(props: any) {
+export default function AddPeopleModal(props: {
+  show: boolean;
+  onClose: () => void;
+  companyId?: number;
+}) {
   const [personData, setPersonData] = useState<any>({
     name: '',
     work_email: '',
     personal_email: '',
     picture: '',
+    function: '',
+    seniority: '',
+    title: '',
+    start_date: null,
+    end_date: null,
+    currently_working: false,
+    founder: false,
   });
 
   const [personSelected, setPersonSelected] = useState<boolean>(false);
@@ -209,17 +237,29 @@ export default function AddPeopleModal(props: any) {
     return children;
   };
 
-  const handleCreateTeamMember = async () => {
+  const handleCreateTeamMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!props.companyId) {
+      console.error('Company ID is required');
+      return;
+    }
     try {
       const result = await fetchGraphQL(INSERT_TEAM_MEMBER, {
-        person_id: personData.person_id, // Ensure this is set correctly
-        title: personData.title,
-        start_date: personData.start_date,
-        end_date: personData.end_date,
+        person_id: personData.person_id,
+        company_id: props.companyId,
+        function: personData.function || null,
+        seniority: personData.seniority || null,
+        title: personData.title || null,
+        start_date: personData.start_date || null,
+        end_date: personData.currently_working
+          ? null
+          : personData.end_date || null,
+        founder: personData.founder || false,
       });
-      console.log(result);
+      console.log('Team member created:', result);
+      onClose();
     } catch (error) {
-      console.log(error);
+      console.error('Error creating team member:', error);
     }
   };
 
@@ -230,7 +270,7 @@ export default function AddPeopleModal(props: any) {
         onClose={onClose}
         showCloseIcon={false}
         placement="top"
-        panelClass="w-full max-w-3xl shadow-2xl bg-black rounded-lg my-4">
+        panelClass="w-full max-w-3xl shadow-2xl bg-black rounded-lg my-4 mx-4 sm:mx-auto">
         <InstantSearch
           searchClient={searchClient}
           indexName="people"
@@ -267,7 +307,7 @@ export default function AddPeopleModal(props: any) {
                 <Tab.Group
                   selectedIndex={tabSelectedIndex}
                   onChange={setTabSelectedIndex}>
-                  <Tab.List className="flex gap-2 px-6 py-1 my-2 overflow-x-scroll font-medium transition-all bg-black whitespace-nowrap">
+                  <Tab.List className="flex gap-2 px-4 sm:px-6 py-1 my-2 overflow-x-scroll font-medium transition-all bg-black whitespace-nowrap">
                     <Tab
                       className={({ selected }) =>
                         `${
@@ -287,7 +327,7 @@ export default function AddPeopleModal(props: any) {
                           classNames={{
                             list: 'mb-2',
                             loadMore:
-                              'w-[calc(100%-3rem)] font-medium h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
+                              'w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] font-medium h-9 mx-4 sm:mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50',
                             disabledLoadMore: 'hidden',
                           }}
                         />
@@ -301,15 +341,10 @@ export default function AddPeopleModal(props: any) {
           {personSelected && (
             <>
               <form
-                style={{
-                  margin: '20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '20px',
-                }}
+                className="p-4 sm:p-6 flex flex-col gap-4 sm:gap-6"
                 onSubmit={handleCreateTeamMember}>
                 <header className="relative z-10 flex justify-between items-center p-0 py-2 border-b border-gray-100">
-                  <label className="text-white-700 text-[22px]">
+                  <label className="text-white-700 text-lg sm:text-[22px]">
                     Person Information
                   </label>
                   <button
@@ -320,123 +355,276 @@ export default function AddPeopleModal(props: any) {
                     ESC
                   </button>
                 </header>
-                <FormControl variant="outlined" sx={{ width: '100%' }}>
-                  <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
-                    Name
-                  </label>
-                  <MuiTextField
-                    placeholder="Name"
-                    value={personData.name}
-                    onChange={e => handleChange('name', e.target.value)}
-                    variant="outlined"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      Name
+                    </label>
+                    <MuiTextField
+                      placeholder="Name"
+                      value={personData.name}
+                      onChange={e => handleChange('name', e.target.value)}
+                      variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: 'white',
+                          '& fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'gray',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          color: 'black',
+                        },
+                      }}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      Function
+                    </label>
+                    <Select
+                      value={personData.function}
+                      onChange={e => handleChange('function', e.target.value)}
+                      variant="outlined"
+                      sx={{
                         backgroundColor: 'white',
-                        '& fieldset': {
+                        '& .MuiOutlinedInput-notchedOutline': {
                           borderColor: 'gray',
                         },
-                        '&:hover fieldset': {
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
                           borderColor: 'gray',
                         },
-                        '&.Mui-focused fieldset': {
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                           borderColor: 'gray',
                         },
-                      },
-                      '& .MuiInputBase-input': {
-                        color: 'black',
-                      },
-                    }}
-                  />
-                </FormControl>
-                <FormControl variant="outlined" sx={{ width: '100%' }}>
-                  <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
-                    Work Email
-                  </label>
-                  <MuiTextField
-                    placeholder="Work Email"
-                    value={personData.work_email}
-                    onChange={e => handleChange('work_email', e.target.value)}
-                    variant="outlined"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
+                      }}>
+                      {functionChoicesTM.map(choice => (
+                        <MenuItem key={choice.id} value={choice.id}>
+                          {choice.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      Seniority
+                    </label>
+                    <Select
+                      value={personData.seniority}
+                      onChange={e => handleChange('seniority', e.target.value)}
+                      variant="outlined"
+                      sx={{
                         backgroundColor: 'white',
-                        '& fieldset': {
+                        '& .MuiOutlinedInput-notchedOutline': {
                           borderColor: 'gray',
                         },
-                        '&:hover fieldset': {
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
                           borderColor: 'gray',
                         },
-                        '&.Mui-focused fieldset': {
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                           borderColor: 'gray',
                         },
-                      },
-                      '& .MuiInputBase-input': {
-                        color: 'black',
-                      },
-                    }}
-                  />
-                </FormControl>
-                <FormControl variant="outlined" sx={{ width: '100%' }}>
-                  <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
-                    Personal Email
-                  </label>
-                  <MuiTextField
-                    placeholder="Personal Email"
-                    value={personData.personal_email}
-                    onChange={e =>
-                      handleChange('personal_email', e.target.value)
-                    }
-                    variant="outlined"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        backgroundColor: 'white',
-                        '& fieldset': {
-                          borderColor: 'gray',
+                      }}>
+                      {seniorityChoicesTM.map(choice => (
+                        <MenuItem key={choice.id} value={choice.id}>
+                          {choice.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      Title
+                    </label>
+                    <MuiTextField
+                      placeholder="Title"
+                      value={personData.title}
+                      onChange={e => handleChange('title', e.target.value)}
+                      variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: 'white',
+                          '& fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'gray',
+                          },
                         },
-                        '&:hover fieldset': {
-                          borderColor: 'gray',
+                        '& .MuiInputBase-input': {
+                          color: 'black',
                         },
-                        '&.Mui-focused fieldset': {
-                          borderColor: 'gray',
+                      }}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      Start Date
+                    </label>
+                    <MuiTextField
+                      type="date"
+                      value={personData.start_date || ''}
+                      onChange={e => handleChange('start_date', e.target.value)}
+                      variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: 'white',
+                          '& fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'gray',
+                          },
                         },
-                      },
-                      '& .MuiInputBase-input': {
-                        color: 'black',
-                      },
-                    }}
-                  />
-                </FormControl>
-                <FormControl variant="outlined" sx={{ width: '100%' }}>
-                  <label className="text-white-700 font-medium p-0 pb-3 text-[18px]">
-                    Picture URL
-                  </label>
-                  <MuiTextField
-                    placeholder="Picture URL"
-                    value={personData.picture}
-                    onChange={e => handleChange('picture', e.target.value)}
-                    variant="outlined"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        backgroundColor: 'white',
-                        '& fieldset': {
-                          borderColor: 'gray',
+                        '& .MuiInputBase-input': {
+                          color: 'black',
                         },
-                        '&:hover fieldset': {
-                          borderColor: 'gray',
+                      }}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      End Date
+                    </label>
+                    <MuiTextField
+                      type="date"
+                      value={personData.end_date || ''}
+                      onChange={e => handleChange('end_date', e.target.value)}
+                      disabled={personData.currently_working}
+                      variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: personData.currently_working
+                            ? '#f3f4f6'
+                            : 'white',
+                          '& fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'gray',
+                          },
                         },
-                        '&.Mui-focused fieldset': {
-                          borderColor: 'gray',
+                        '& .MuiInputBase-input': {
+                          color: 'black',
                         },
-                      },
-                      '& .MuiInputBase-input': {
-                        color: 'black',
-                      },
-                    }}
-                  />
-                </FormControl>
-                <ElemButton btn="primary" size="sm" className="w-[120px]">
-                  Save
-                </ElemButton>
+                      }}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      Work Email
+                    </label>
+                    <MuiTextField
+                      placeholder="Work Email"
+                      value={personData.work_email}
+                      onChange={e => handleChange('work_email', e.target.value)}
+                      variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: 'white',
+                          '& fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'gray',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          color: 'black',
+                        },
+                      }}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <label className="text-white-700 font-medium p-0 pb-2 sm:pb-3 text-base sm:text-[18px]">
+                      Personal Email
+                    </label>
+                    <MuiTextField
+                      placeholder="Personal Email"
+                      value={personData.personal_email}
+                      onChange={e =>
+                        handleChange('personal_email', e.target.value)
+                      }
+                      variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: 'white',
+                          '& fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'gray',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'gray',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          color: 'black',
+                        },
+                      }}
+                    />
+                  </FormControl>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-2">
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={personData.currently_working}
+                        onChange={e =>
+                          handleChange('currently_working', e.target.checked)
+                        }
+                        className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+                      />
+                      <label className="text-white-700 font-medium text-base sm:text-[18px]">
+                        Currently Working
+                      </label>
+                    </div>
+                  </FormControl>
+                  <FormControl variant="outlined" sx={{ width: '100%' }}>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={personData.founder}
+                        onChange={e =>
+                          handleChange('founder', e.target.checked)
+                        }
+                        className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+                      />
+                      <label className="text-white-700 font-medium text-base sm:text-[18px]">
+                        Founder
+                      </label>
+                    </div>
+                  </FormControl>
+                  <div className="flex justify-end">
+                    <ElemButton
+                      btn="primary"
+                      size="sm"
+                      className="w-full sm:w-[120px]"
+                      onClick={handleCreateTeamMember}>
+                      Save
+                    </ElemButton>
+                  </div>
+                </div>
               </form>
             </>
           )}
