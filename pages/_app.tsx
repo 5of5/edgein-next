@@ -16,6 +16,8 @@ import { ROUTES } from '@/routes';
 import { DefaultSeo } from 'next-seo';
 import Script from 'next/script';
 import FirstVisitPopup from '@/components/FirstVisitPopup';
+import { ApolloProvider } from '@apollo/client';
+import { getClient } from '@/lib/apollo-client';
 
 const INTERCOM_APP_ID = 'jm3hf6lp';
 const ORIGIN = '/';
@@ -161,33 +163,35 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <div className="flex flex-col min-h-[calc(100vh_-_1rem)] bg-black text-white dark">
         <QueryClientProvider client={queryClient}>
-          {pageProps.noLayout ? (
-            <Component {...pageProps} />
-          ) : (
-            <IntercomProvider appId={INTERCOM_APP_ID} autoBoot>
-              <UserProvider>
-                <PopupProvider>
-                  <SideBarProvider>
-                    <>
-                      <div className="mt-5" />
-                      {/* If Navbar only needed in home page */}
-                      {/* {router.pathname === ORIGIN  &&<TheNavbar />} */}
-                      <TheNavbar />
-                      <main className="grow selection:bg-primary-200">
-                        {pageLoading ? (
-                          <LoaderSpinner />
-                        ) : (
-                          <Component {...pageProps} />
-                        )}
-                      </main>
-                      {showFooter === true && <TheFooter />}
-                      <FirstVisitPopup />
-                    </>
-                  </SideBarProvider>
-                </PopupProvider>
-              </UserProvider>
-            </IntercomProvider>
-          )}
+          <ApolloProvider client={getClient()}>
+            {pageProps.noLayout ? (
+              <Component {...pageProps} />
+            ) : (
+              <IntercomProvider appId={INTERCOM_APP_ID} autoBoot>
+                <UserProvider>
+                  <PopupProvider>
+                    <SideBarProvider>
+                      <>
+                        <div className="mt-5" />
+                        {/* If Navbar only needed in home page */}
+                        {/* {router.pathname === ORIGIN  &&<TheNavbar />} */}
+                        <TheNavbar />
+                        <main className="grow selection:bg-primary-200">
+                          {pageLoading ? (
+                            <LoaderSpinner />
+                          ) : (
+                            <Component {...pageProps} />
+                          )}
+                        </main>
+                        {showFooter === true && <TheFooter />}
+                        <FirstVisitPopup />
+                      </>
+                    </SideBarProvider>
+                  </PopupProvider>
+                </UserProvider>
+              </IntercomProvider>
+            )}
+          </ApolloProvider>
         </QueryClientProvider>
         {/* <Script
 					id="webpushr-script"

@@ -26,6 +26,7 @@ import { ROUTES } from '@/routes';
 import { NextSeo } from 'next-seo';
 import { ElemListBreadcrumb } from '@/components/my-list/elem-list-breadcrumb';
 import { ElemListSettings } from '@/components/my-list/elem-list-settings';
+import { ListMembersManager } from '@/components/lists/list-members-manager';
 
 type Props = {
   list: Lists;
@@ -247,6 +248,12 @@ const MyList: NextPage<Props> = ({ list }) => {
           onFollowList={onFollowList}
           onOpenSettingsDialog={onOpenSettingsDialog}
         />
+
+        {(isListAuthor || isFollowing) && (
+          <div className="px-4 mb-4">
+            <ListMembersManager listId={theList.id} />
+          </div>
+        )}
 
         <ElemListSettings
           list={theList}

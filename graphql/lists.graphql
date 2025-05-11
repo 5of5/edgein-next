@@ -332,3 +332,26 @@ query GetLists(
     }
   }
 }
+
+mutation UpdateListMemberRole($id: Int!, $member_type: String!) {
+  update_list_members_by_pk(
+    pk_columns: { id: $id }
+    _set: { member_type: $member_type }
+  ) {
+    id
+    member_type
+    list_id
+    user_id
+    user {
+      id
+      display_name
+      email
+      person {
+        id
+        name
+        slug
+        picture
+      }
+    }
+  }
+}
