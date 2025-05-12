@@ -3,6 +3,9 @@ import {
   IconSettings,
   IconLockClosed,
   IconGlobeAmericas,
+  IconPlus,
+  IconUserGroup,
+  IconUser,
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { formatDateShown, numberWithCommas, toLabel } from '@/utils';
@@ -176,17 +179,21 @@ export const ElemListInformation: FC<Props> = ({
                 </div>
                 {canManageMembers && (
                   <ElemButton
-                    btn="primary"
+                    btn="default"
                     size="sm"
+                    className="gap-x-1 lg:!pl-3"
                     onClick={() => setOpenMembersModal(true)}>
+                    <IconUser className="w-5 h-5 shrink-0" />
                     Manage Members
                   </ElemButton>
                 )}
                 {canInvite && (
                   <ElemButton
-                    btn="default"
+                    btn="primary"
                     size="sm"
+                    className="gap-x-1 lg:!pl-3"
                     onClick={() => setOpenInviteModal(true)}>
+                    <IconPlus className="w-5 h-5 shrink-0" />
                     Invite
                   </ElemButton>
                 )}
