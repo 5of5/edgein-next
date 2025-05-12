@@ -16,6 +16,7 @@ import { getListDisplayName } from '@/utils/lists';
 import { Lists } from '@/graphql/types';
 import { ElemAvatarList } from '../elem-avatar-list';
 import { ListMembersManager } from '@/components/lists/list-members-manager';
+import ElemInviteListDialog from '@/components/lists/elem-invite-list-dialog';
 
 type Props = {
   list: Lists;
@@ -39,6 +40,7 @@ export const ElemListInformation: FC<Props> = ({
   const { user } = useUser();
   const router = useRouter();
   const [openMembersModal, setOpenMembersModal] = useState(false);
+  const [openInviteModal, setOpenInviteModal] = useState(false);
   // eslint-disable-next-line no-unsafe-optional-chaining
   const { fl } = router?.query;
 
@@ -60,7 +62,11 @@ export const ElemListInformation: FC<Props> = ({
   const isAdmin = list.list_members.some(
     m => m.user_id === user?.id && m.member_type === 'admin',
   );
+  const isFollower = list.list_members.some(
+    m => m.user_id === user?.id && m.member_type === 'follow',
+  );
   const canManageMembers = isListAuthor || isAdmin;
+  const canInvite = isListAuthor || isAdmin || isFollower;
 
   const listTitle = (
     <>
@@ -176,6 +182,14 @@ export const ElemListInformation: FC<Props> = ({
                     Manage Members
                   </ElemButton>
                 )}
+                {canInvite && (
+                  <ElemButton
+                    btn="default"
+                    size="sm"
+                    onClick={() => setOpenInviteModal(true)}>
+                    Invite
+                  </ElemButton>
+                )}
               </div>
             )}
           </div>
@@ -223,6 +237,14 @@ export const ElemListInformation: FC<Props> = ({
           listId={list.id}
           open={openMembersModal}
           onClose={() => setOpenMembersModal(false)}
+        />
+      )}
+      {canInvite && (
+        <ElemInviteListDialog
+          isOpen={openInviteModal}
+          listId={list.id}
+          listName={list.name}
+          onClose={() => setOpenInviteModal(false)}
         />
       )}
     </div>
