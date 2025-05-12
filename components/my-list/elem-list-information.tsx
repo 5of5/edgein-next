@@ -3,6 +3,9 @@ import {
   IconSettings,
   IconLockClosed,
   IconGlobeAmericas,
+  IconPlus,
+  IconUserGroup,
+  IconUser,
 } from '@/components/icons';
 import { ElemButton } from '@/components/elem-button';
 import { formatDateShown, numberWithCommas, toLabel } from '@/utils';
@@ -16,6 +19,7 @@ import { getListDisplayName } from '@/utils/lists';
 import { Lists } from '@/graphql/types';
 import { ElemAvatarList } from '../elem-avatar-list';
 import { ListMembersManager } from '@/components/lists/list-members-manager';
+import ElemInviteListDialog from '@/components/lists/elem-invite-list-dialog';
 
 type Props = {
   list: Lists;
@@ -39,6 +43,7 @@ export const ElemListInformation: FC<Props> = ({
   const { user } = useUser();
   const router = useRouter();
   const [openMembersModal, setOpenMembersModal] = useState(false);
+  const [openInviteModal, setOpenInviteModal] = useState(false);
   // eslint-disable-next-line no-unsafe-optional-chaining
   const { fl } = router?.query;
 
@@ -60,7 +65,11 @@ export const ElemListInformation: FC<Props> = ({
   const isAdmin = list.list_members.some(
     m => m.user_id === user?.id && m.member_type === 'admin',
   );
+  const isFollower = list.list_members.some(
+    m => m.user_id === user?.id && m.member_type === 'follow',
+  );
   const canManageMembers = isListAuthor || isAdmin;
+  const canInvite = isListAuthor || isAdmin || isFollower;
 
   const listTitle = (
     <>
@@ -170,10 +179,22 @@ export const ElemListInformation: FC<Props> = ({
                 </div>
                 {canManageMembers && (
                   <ElemButton
+                    btn="default"
+                    size="sm"
+                    className="gap-x-1 lg:!pl-3"
+                    onClick={() => setOpenMembersModal(true)}>
+                    <IconUser className="w-5 h-5 shrink-0" />
+                    Manage Members
+                  </ElemButton>
+                )}
+                {canInvite && (
+                  <ElemButton
                     btn="primary"
                     size="sm"
-                    onClick={() => setOpenMembersModal(true)}>
-                    Manage Members
+                    className="gap-x-1 lg:!pl-3"
+                    onClick={() => setOpenInviteModal(true)}>
+                    <IconPlus className="w-5 h-5 shrink-0" />
+                    Invite
                   </ElemButton>
                 )}
               </div>
@@ -223,6 +244,14 @@ export const ElemListInformation: FC<Props> = ({
           listId={list.id}
           open={openMembersModal}
           onClose={() => setOpenMembersModal(false)}
+        />
+      )}
+      {canInvite && (
+        <ElemInviteListDialog
+          isOpen={openInviteModal}
+          listId={list.id}
+          listName={list.name}
+          onClose={() => setOpenInviteModal(false)}
         />
       )}
     </div>
