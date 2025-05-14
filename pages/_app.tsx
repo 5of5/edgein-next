@@ -172,7 +172,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <PopupProvider>
                     <SideBarProvider>
                       <>
-                        <div className="mt-5" />
+                        {/* <div className="mt-5" /> */}
                         {/* If Navbar only needed in home page */}
                         {/* {router.pathname === ORIGIN  &&<TheNavbar />} */}
                         <TheNavbar />

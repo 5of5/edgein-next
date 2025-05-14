@@ -6,6 +6,7 @@ module.exports = {
   changefreq: 'daily',
   priority: 0.7,
   sitemapSize: 50000,
+  sitemapBaseFileName: 'static-sitemap',
   exclude: [
     '/api/*',
     '/admin/*',

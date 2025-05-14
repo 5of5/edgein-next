@@ -136,15 +136,20 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
   return (
     <>
       <nav
-        className={`fixed z-50 bottom-0 bg-black w-full h-14 px-0.5 shadow-up grid lg:hidden ${
+        className={`fixed z-50 bottom-0 bg-black w-full px-0.5 shadow-up grid lg:hidden ${
           user ? 'grid-cols-6' : 'grid-cols-5'
-        }`}>
+        }`}
+        style={{
+          paddingTop: '0.625rem',
+          paddingBottom: '0.625rem',
+          height: '3.5rem',
+        }}>
         {tabs.map((item, index) => (
           <ElemLink
             key={index}
             href={item?.href ? item.href : ''}
             onClick={onClose}
-            className={`flex flex-col items-center h-full text-[11px] pt-1 ${
+            className={`flex flex-col items-center justify-center h-full text-[11px] py-1 ${
               router.pathname == item?.href && navOpen === false
                 ? 'border-t-2 border-primary-500'
                 : 'border-t-2 border-transparent'
@@ -167,7 +172,7 @@ export const TheMobileNav: FC<PropsWithChildren<Props>> = () => {
 
         <a
           onClick={onToggleMenu}
-          className={`flex flex-col items-center h-full text-[11px] cursor-pointer pt-1 ${
+          className={`flex flex-col items-center justify-center h-full text-[11px] cursor-pointer py-1 ${
             navOpen
               ? 'border-t-2 border-primary-500'
               : 'border-t-2 border-transparent'
