@@ -189,7 +189,9 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
       <AddPeopleModal
         show={showAddPeopleModal}
         onClose={() => setShowAddPeopleModal(false)}
-        companyId={resourceId}
+        resourceType={resourceType}
+        companyId={resourceType === 'companies' ? resourceId : undefined}
+        vcFirmId={resourceType === 'vc_firms' ? resourceId : undefined}
       />
       {heading && (
         <div className="flex items-center justify-between px-4 pt-2">

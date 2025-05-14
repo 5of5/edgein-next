@@ -316,6 +316,8 @@ const VCFirm: NextPage<Props> = props => {
               resourceName={vcfirm.name || ''}
               resourceType="vc_firms"
               resourceId={vcfirm.id}
+              showTags={true}
+              allowToSaveTeam={true}
             />
           </div>
 
