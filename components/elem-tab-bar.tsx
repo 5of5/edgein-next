@@ -11,6 +11,8 @@ import { ElemButton } from '@/components/elem-button';
 import { ElemSticky } from '@/components/elem-sticky';
 import { ElemDropdown } from './elem-dropdown';
 import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
+import { useRouter } from 'next/router';
+import { ROUTES } from '@/routes';
 
 type Tabs = {
   name?: string;
@@ -37,6 +39,7 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
   resourceUrl = '',
   children,
 }) => {
+  const router = useRouter();
   const [isActiveTab, setActiveTab] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -138,8 +141,17 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
       {children}
       <ElemButton
         btn="gray"
-        className="rounded-lg shrink-0 border-primary-500 hover:border-primary-400">
-        Request Data
+        className="rounded-lg shrink-0 border-primary-500 hover:border-primary-400"
+        onClick={() => {
+          const companyId = router.query.companyId;
+          const isCompaniesRoute = router.pathname.startsWith('/companies/');
+          if (companyId && isCompaniesRoute) {
+            router.push(`${ROUTES.ORGANIZATIONS}/companies/${companyId}`);
+          }
+        }}>
+        {router.pathname.startsWith('/companies/')
+          ? 'Edit Data'
+          : 'Request Data'}
       </ElemButton>
       {/* {showDropdown && (
         <ElemDropdown
