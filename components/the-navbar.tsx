@@ -96,7 +96,7 @@ export const TheNavbar: FC<Props> = ({}) => {
     <>
       <header className="sticky top-0 left-0 right-0 z-40">
         <nav
-          className="flex items-center justify-between w-full px-4 mx-auto border-b border-dark-200 bg-black backdrop-blur h-14"
+          className="flex items-center py-4 justify-between w-full px-4 mx-auto border-b border-dark-200 bg-black backdrop-blur"
           aria-label="Global">
           <div className="flex items-center gap-3">
             {/* Mobile Hamburger Menu */}
