@@ -63,6 +63,44 @@ const INSERT_TEAM_MEMBER = `mutation InsertTeamMember(
   }
 }`;
 
+const INSERT_INVESTOR = `mutation InsertInvestor(
+  $person_id: Int!,
+  $vc_firm_id: Int!,
+  $function: String,
+  $seniority: String,
+  $title: String,
+  $start_date: date,
+  $end_date: date,
+  $founder: Boolean
+) {
+  insert_investors_one(
+    object: { 
+      person_id: $person_id, 
+      vc_firm_id: $vc_firm_id, 
+      function: $function,
+      seniority: $seniority,
+      title: $title, 
+      start_date: $start_date, 
+      end_date: $end_date,
+      founder: $founder
+    },
+    on_conflict: {
+      constraint: investors_vc_firm_id_person_id_key,
+      update_columns: []
+    }
+  ) {
+    id
+    person_id
+    vc_firm_id
+    function
+    seniority
+    title
+    start_date
+    end_date
+    founder
+  }
+}`;
+
 export const fetchGraphQL = async (
   query: string,
   variables: Record<string, any> = {},
@@ -138,6 +176,8 @@ export default function AddPeopleModal(props: {
   show: boolean;
   onClose: () => void;
   companyId?: number;
+  vcFirmId?: number;
+  resourceType?: 'companies' | 'vc_firms';
 }) {
   const [personData, setPersonData] = useState<any>({
     name: '',
@@ -239,27 +279,48 @@ export default function AddPeopleModal(props: {
 
   const handleCreateTeamMember = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!props.companyId) {
-      console.error('Company ID is required');
-      return;
-    }
+
     try {
-      const result = await fetchGraphQL(INSERT_TEAM_MEMBER, {
-        person_id: personData.person_id,
-        company_id: props.companyId,
-        function: personData.function || null,
-        seniority: personData.seniority || null,
-        title: personData.title || null,
-        start_date: personData.start_date || null,
-        end_date: personData.currently_working
-          ? null
-          : personData.end_date || null,
-        founder: personData.founder || false,
-      });
-      console.log('Team member created:', result);
+      if (props.resourceType === 'vc_firms' && props.vcFirmId) {
+        // Handle adding investor to VC firm
+        const result = await fetchGraphQL(INSERT_INVESTOR, {
+          person_id: personData.person_id,
+          vc_firm_id: props.vcFirmId,
+          function: personData.function || null,
+          seniority: personData.seniority || null,
+          title: personData.title || null,
+          start_date: personData.start_date || null,
+          end_date: personData.currently_working
+            ? null
+            : personData.end_date || null,
+          founder: personData.founder || false,
+        });
+        console.log('Investor created:', result);
+      } else if (props.resourceType === 'companies' && props.companyId) {
+        // Handle adding team member to company
+        const result = await fetchGraphQL(INSERT_TEAM_MEMBER, {
+          person_id: personData.person_id,
+          company_id: props.companyId,
+          function: personData.function || null,
+          seniority: personData.seniority || null,
+          title: personData.title || null,
+          start_date: personData.start_date || null,
+          end_date: personData.currently_working
+            ? null
+            : personData.end_date || null,
+          founder: personData.founder || false,
+        });
+        console.log('Team member created:', result);
+      } else {
+        console.error(
+          'Missing required parameters: resourceType, companyId or vcFirmId',
+        );
+        return;
+      }
+
       onClose();
     } catch (error) {
-      console.error('Error creating team member:', error);
+      console.error('Error creating team member/investor:', error);
     }
   };
 
