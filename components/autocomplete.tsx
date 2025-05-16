@@ -178,7 +178,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
         )}
 
         {state.isOpen &&
-          state.collections.map(({ source, items }) => {
+          state.collections?.map(({ source, items }) => {
             return (
               <div
                 key={`source-${source.sourceId}`}
@@ -192,7 +192,7 @@ export const Autocomplete: React.FC<Props> = (props: Props) => {
                   <ul
                     {...autocomplete.getListProps()}
                     className="h-full overflow-y-scroll list-none m-0 p-0 max-h-96">
-                    {items.map(item => {
+                    {items?.map(item => {
                       const itemProps = autocomplete.getItemProps({
                         item,
                         source,
