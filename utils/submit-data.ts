@@ -227,24 +227,38 @@ export const onSubmitData = (
       if (!Array.isArray(data)) {
         data = [];
       }
-      
+
       const hasError = data.find((item: any) => item.error);
       if (hasError) {
-        if (hasError.error && 
-            hasError.error[0]?.message && 
-            hasError.error[0]?.message.includes("field 'list' not found in type: 'follows'")) {
-          return { data: { ...transformInput.data, id: data[0]?.id || transformInput.id } };
+        if (
+          hasError.error &&
+          hasError.error[0]?.message &&
+          hasError.error[0]?.message.includes(
+            "field 'list' not found in type: 'follows'",
+          )
+        ) {
+          return {
+            data: {
+              ...transformInput.data,
+              id: data[0]?.id || transformInput.id,
+            },
+          };
         }
         return Promise.reject(new HttpError(hasError.error[0]?.message, 400));
       }
-      
+
       // Ensure we have a valid ID even if data[0] is undefined
       const responseId = data[0]?.id || transformInput.id;
       return { data: { ...transformInput.data, id: responseId } };
     })
     .catch(error => {
       // If the error is related to map function on undefined
-      if (error instanceof TypeError && error.message.includes("Cannot read properties of undefined (reading 'map')")) {
+      if (
+        error instanceof TypeError &&
+        error.message.includes(
+          "Cannot read properties of undefined (reading 'map')",
+        )
+      ) {
         // Return the original data with the original ID
         return { data: { ...transformInput.data, id: transformInput.id } };
       }
