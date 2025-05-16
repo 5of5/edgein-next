@@ -28,7 +28,7 @@ type Note = GetNotesQuery['notes'][0];
 type Comments = GetNotesQuery['notes'][0]['comments'];
 
 type CommentsProps = {
-  note: Note;
+  note?: Note;
   comments: Comments;
   refetch: () => void;
 };
@@ -189,12 +189,14 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                     imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
                     imgAlt={
                       comment.created_by_user?.person?.name ||
-                      note?.created_by_user?.display_name
+                      note?.created_by_user?.display_name ||
+                      ''
                     }
                     placeholder="user"
                     placeholderAlt={
                       comment.created_by_user?.person?.name ||
-                      note.created_by_user?.display_name
+                      note?.created_by_user?.display_name ||
+                      ''
                     }
                     placeholderClass="text-gray-300"
                   />
@@ -248,13 +250,13 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                         <div>
                           <ElemLink
                             href={`${ROUTES.PEOPLE}/${comment.created_by_user?.person?.slug}`}
-                            className="font-medium hover:underline">
+                            className="font-medium text-white hover:underline">
                             {comment.created_by_user?.person?.name ||
                               comment.created_by_user?.display_name}
                           </ElemLink>
                         </div>
                         <p
-                          className="break-all"
+                          className="break-all text-gray-300"
                           dangerouslySetInnerHTML={formatContent(
                             comment.content,
                           )}></p>
@@ -311,7 +313,7 @@ export const ElemNoteCardComments: React.FC<CommentsProps> = ({
                           .local()
                           .format('dddd, ll [at] hh:mma')}
                         direction="bottom">
-                        <div className="inline-block text-xs">
+                        <div className="inline-block text-xs text-gray-500">
                           {moment.utc(comment?.created_at).local().fromNow()}
                         </div>
                       </ElemTooltip>

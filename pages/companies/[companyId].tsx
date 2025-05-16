@@ -506,7 +506,7 @@ const Company: NextPage<Props> = (props: Props) => {
               resourceType="companies" // Keep this as "companies"
               resourceId={company.id} // Pass the company ID here
               showTags={true} // Set to true if you want to show tags
-              allowToSaveTeam={true} // Set to true if you want to allow saving team
+              allowToSaveTeam={true} // We'll handle the login check in the component
             />
           </div>
 

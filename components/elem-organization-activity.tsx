@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ElemButton } from './elem-button';
 import { formatDate, convertToIntNum } from '@/utils';
 // import { useIntercom } from 'react-use-intercom';
@@ -6,6 +6,14 @@ import { Investment_Rounds } from '@/graphql/types';
 import { ROUTES } from '@/routes';
 import { ElemLink } from './elem-link';
 // import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
+import { useUser } from '@/context/user-context';
+import dynamic from 'next/dynamic';
+
+// Dynamically import LiveChatWidget to avoid SSR issues
+const LiveChatWidget = dynamic(
+  () => import('@livechat/widget-react').then(mod => mod.LiveChatWidget),
+  { ssr: false },
+);
 
 type Props = {
   heading?: string;
@@ -20,25 +28,33 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
   resourceType,
   resourceInvestments,
 }) => {
+  const { user } = useUser();
   const [activityLimit, setActivityLimit] = useState(10);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [show, setShow] = useState<boolean>(false);
+
+  // Set isMounted to true when component mounts (client-side only)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const showMoreActivity = () => {
     setActivityLimit(activityLimit + 10);
   };
-  // const { showNewMessages } = useIntercom();
 
-  // function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
-  //   console.log('LiveChatWidget.onNewEvent', event);
-  // }
-
-  // const [show, setShow] = useState<boolean>(false);
   const showNewMessages = (message: String) => {
     console.log(message);
-    // setShow(true);
+    setShow(true);
   };
+
+  function handleLiveChatEvent(event: any) {
+    console.log('LiveChatWidget.onNewEvent', event);
+  }
 
   return (
     <div className="rounded-lg border border-gray-700">
-      {/* {show && (
+      {/* Only render LiveChatWidget on client-side */}
+      {isMounted && show && (
         <LiveChatWidget
           license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
           visibility="maximized"
@@ -50,7 +66,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
             resourceName: resourceName || '',
           }}
         />
-      )} */}
+      )}
       <div className="flex items-center justify-between px-4 pt-2">
         <h2 className="text-lg font-medium">
           {heading ? heading : 'Activity Timeline'}
@@ -95,16 +111,26 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
             <div className="text-gray-500">
               There is no recent activity for this organization.
             </div>
-            <ElemButton
-              onClick={() =>
-                showNewMessages(
-                  `Hi Mentibus, I'd like to request more data on ${resourceName}`,
-                )
-              }
-              btn="default"
-              className="mt-3">
-              Contribute Data
-            </ElemButton>
+            {user ? (
+              <ElemButton
+                onClick={() =>
+                  showNewMessages(
+                    `Hi Mentibus, I'd like to request more data on ${resourceName}`,
+                  )
+                }
+                btn="default"
+                className="mt-3">
+                Contribute Data
+              </ElemButton>
+            ) : (
+              <ElemButton
+                href={ROUTES.SIGN_IN}
+                btn="default"
+                className="mt-3"
+                disabled={!user}>
+                Login to Contribute Data
+              </ElemButton>
+            )}
           </div>
         )}
       </div>

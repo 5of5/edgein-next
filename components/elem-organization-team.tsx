@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlaceholderPerson } from '@/components/placeholders';
 import { ElemPersonCard } from '@/components/elem-person-card';
 import { ElemFilterTags } from '@/components/filters/elem-filter-tags';
@@ -11,8 +11,8 @@ import { DeepPartial } from '@/types/common';
 import { ROUTES } from '@/routes';
 import { useStateParams } from '@/hooks/use-state-params';
 import { functionChoicesTM } from '@/utils/constants';
-import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
 import AddPeopleModal from '@/components/add-people-modal';
+import dynamic from 'next/dynamic';
 import {
   Order_By,
   useGetTeamMembersQuery,
@@ -25,6 +25,13 @@ import {
   Investors_Order_By,
   People,
 } from '@/graphql/types';
+import { useUser } from '@/context/user-context';
+
+// Dynamically import LiveChatWidget to avoid SSR issues
+const LiveChatWidget = dynamic(
+  () => import('@livechat/widget-react').then(mod => mod.LiveChatWidget),
+  { ssr: false },
+);
 
 type Props = {
   className?: string;
@@ -45,9 +52,15 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
   showTags = true,
   allowToSaveTeam = true,
 }) => {
-  // const { showNewMessages } = useIntercom();
+  const { user } = useUser();
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+  // Set isMounted to true when component mounts (client-side only)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  function handleLiveChatEvent(event: any) {
     console.log('LiveChatWidget.onNewEvent', event);
   }
 
@@ -179,7 +192,8 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
 
   return (
     <section className={`rounded-lg border border-gray-700 ${className}`}>
-      {show && (
+      {/* Only render LiveChatWidget on client-side */}
+      {isMounted && show && (
         <LiveChatWidget
           license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
           visibility="maximized"
@@ -245,12 +259,22 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
             )}
             {allowToSaveTeam && (
               <div className="mt-4 flex justify-center">
-                <ElemButton
-                  onClick={() => setShowAddPeopleModal(true)}
-                  btn="default"
-                  size="sm">
-                  Contribute Data
-                </ElemButton>
+                {user ? (
+                  <ElemButton
+                    onClick={() => setShowAddPeopleModal(true)}
+                    btn="default"
+                    size="sm">
+                    Contribute Data
+                  </ElemButton>
+                ) : (
+                  <ElemButton
+                    href={ROUTES.SIGN_IN}
+                    btn="default"
+                    size="sm"
+                    disabled={!user}>
+                    Login to Contribute Data
+                  </ElemButton>
+                )}
               </div>
             )}
             {members_aggregate > limit && (
