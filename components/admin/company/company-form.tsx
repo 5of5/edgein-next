@@ -230,13 +230,13 @@ const CompanyForm = ({
         <FormDataConsumer>
           {({ formData }) => {
             const tagChoices: Tag[] = getTagChoicesByLibraries(
-              formData.library,
+              formData?.library || ['Web3'],
             );
             return (
               <AutocompleteArrayInput
                 className={inputClassName}
                 source="tags"
-                choices={tagChoices}
+                choices={tagChoices || []}
                 style={{ padding: 0, border: 'none' }}
               />
             );

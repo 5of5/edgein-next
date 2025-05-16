@@ -140,15 +140,19 @@ export const getSelectableWeb3Tags = () => {
 };
 
 export const getTagChoicesByLibraries = (libraries: Library[]) => {
-  if (libraries?.includes('Web3') && libraries?.includes('AI')) {
+  if (!libraries || !Array.isArray(libraries)) {
+    return web3Tags; // Default to web3Tags if libraries is undefined or not an array
+  }
+
+  if (libraries.includes('Web3') && libraries.includes('AI')) {
     return [...aiTags, ...web3Tags];
   }
 
-  if (libraries?.includes('AI')) {
+  if (libraries.includes('AI')) {
     return aiTags;
   }
 
-  if (libraries?.includes('Web3')) {
+  if (libraries.includes('Web3')) {
     return web3Tags;
   }
 

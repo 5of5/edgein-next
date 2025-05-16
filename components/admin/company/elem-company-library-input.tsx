@@ -16,12 +16,14 @@ const ElemCompanyLibraryInput = ({ className }: Props) => {
     const newLibrary: Library[] = event.target.value;
 
     const tagChoices: Tag[] = getTagChoicesByLibraries(newLibrary);
-    const mappedTagChoices: string[] = tagChoices.map(choice => choice.name);
+    const mappedTagChoices: string[] =
+      tagChoices?.map(choice => choice.name) || [];
 
-    const currentTags = getValues('tags');
+    const currentTags = getValues('tags') || [];
     setValue(
       'tags',
-      currentTags.filter((item: string) => mappedTagChoices.includes(item)),
+      currentTags?.filter((item: string) => mappedTagChoices.includes(item)) ||
+        [],
     );
   };
 

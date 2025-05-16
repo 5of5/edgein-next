@@ -465,7 +465,7 @@ export default function AddPeopleModal(props: {
                           borderColor: 'gray',
                         },
                       }}>
-                      {functionChoicesTM.map(choice => (
+                      {functionChoicesTM?.map(choice => (
                         <MenuItem key={choice.id} value={choice.id}>
                           {choice.name}
                         </MenuItem>
@@ -492,7 +492,7 @@ export default function AddPeopleModal(props: {
                           borderColor: 'gray',
                         },
                       }}>
-                      {seniorityChoicesTM.map(choice => (
+                      {seniorityChoicesTM?.map(choice => (
                         <MenuItem key={choice.id} value={choice.id}>
                           {choice.name}
                         </MenuItem>
