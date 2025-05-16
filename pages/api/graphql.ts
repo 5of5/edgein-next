@@ -7,6 +7,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     CookieService.getAuthToken(req.cookies),
   );
 
+  // If user is not authenticated, return unauthorized error
+  if (!user) {
+    return res.status(401).json({
+      errors: [{ message: 'Unauthorized. Authentication required.' }],
+    });
+  }
+
   // Set default showDraftData is true
   const isAdminHideDraftData =
     user?.role === USER_ROLES.ADMIN && user?.showDraftData === false;
@@ -18,21 +25,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //let headers: {'x-hasura-role'?: string} & { Authorization: string } |
     | { 'x-hasura-admin-secret': string };
 
-  if (!user) {
-    headers = {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
-      'x-hasura-role': process.env.HASURA_VIEWER ?? '',
-      'x-hasura-user-id': '0',
-    };
-  } else if (
-    user &&
-    (user.role === USER_ROLES.USER ||
-      req.headers['is-viewer'] === 'true' ||
-      isAdminHideDraftData)
+  if (
+    user.role === USER_ROLES.USER ||
+    req.headers['is-viewer'] === 'true' ||
+    isAdminHideDraftData
   ) {
+    // Include admin secret for authenticated users to allow data contributions
     headers = {
       Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
       'x-hasura-role': process.env.HASURA_VIEWER ?? '',
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
     };
   } else {
     headers = {
