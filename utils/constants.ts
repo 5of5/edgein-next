@@ -476,12 +476,20 @@ export const companyLayerChoices = [
 
 export const roundChoices = [
   {
+    id: 'Angel',
+    name: 'Angel',
+  },
+  {
     id: 'Pre-seed',
     name: 'Pre-seed',
   },
   {
     id: 'Seed',
     name: 'Seed',
+  },
+  {
+    id: 'Strategic',
+    name: 'Strategic',
   },
   {
     id: 'Pre-Series A',
@@ -917,6 +925,16 @@ export const web3Tags: Tag[] = [
   'Manufacturers - Web3',
   'Lightning Network',
   'DeSci',
+  // New tags added
+  'Memepad',
+  'AI Agents',
+  'Portfolio Management',
+  'Trading Strategies',
+  'Modular',
+  'Cross-Chain',
+  'Perpetuals',
+  'Monad Ecosystem',
+  'Interoperability',
 ].map(tag => ({ id: tag, name: tag }));
 
 export const aiTags: Tag[] = [
