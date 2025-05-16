@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { News } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
 import ElemNewsHeading from './elem-news-heading';
 // import { useIntercom } from 'react-use-intercom';
-import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
+import { useUser } from '@/context/user-context';
+import { ROUTES } from '@/routes';
+import dynamic from 'next/dynamic';
+
+// Dynamically import LiveChatWidget to avoid SSR issues
+const LiveChatWidget = dynamic(
+  () => import('@livechat/widget-react').then((mod) => mod.LiveChatWidget),
+  { ssr: false }
+);
 
 type Props = {
   heading?: string;
@@ -22,8 +30,15 @@ const ElemNewsList: React.FC<Props> = ({
   news,
   resourceId,
 }) => {
-  // const { showNewMessages } = useIntercom();
-  function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
+  const { user } = useUser();
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  
+  // Set isMounted to true when component mounts (client-side only)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  function handleLiveChatEvent(event: any) {
     console.log('LiveChatWidget.onNewEvent', event);
   }
 
@@ -44,7 +59,8 @@ const ElemNewsList: React.FC<Props> = ({
 
   return (
     <section className="border border-gray-700 rounded-lg">
-      {show && (
+      {/* Only render LiveChatWidget on client-side */}
+      {isMounted && show && (
         <LiveChatWidget
           license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
           visibility="maximized"
@@ -61,16 +77,26 @@ const ElemNewsList: React.FC<Props> = ({
             <div className="text-gray-500">
               There are no recent news for this organization.
             </div>
-            <ElemButton
-              className="mt-2"
-              onClick={() =>
-                showNewMessages(
-                  `Hi Mentibus, I'd like to request news on ${resource}`,
-                )
-              }
-              btn="default">
-              Contribute Data
-            </ElemButton>
+            {user ? (
+              <ElemButton
+                className="mt-2"
+                onClick={() =>
+                  showNewMessages(
+                    `Hi Mentibus, I'd like to request news on ${resource}`,
+                  )
+                }
+                btn="default">
+                Contribute Data
+              </ElemButton>
+            ) : (
+              <ElemButton
+                href={ROUTES.SIGN_IN}
+                className="mt-2"
+                btn="default"
+                disabled={!user}>
+                Login to Contribute Data
+              </ElemButton>
+            )}
           </div>
         ) : (
           <>
