@@ -18,6 +18,8 @@ import {
   IconUsers,
   IconPaperAirplane,
   IconPaperAirplaneSolid,
+  IconChevronDown,
+  IconChevronUp,
 } from '@/components/icons';
 import { GetNotesQuery } from '@/graphql/types';
 import { useUser } from '@/context/user-context';
@@ -58,8 +60,11 @@ const fetcher = async (url: string, args: any) => {
   }).then(res => res.json());
 };
 
-const formatContent = (text: string) => {
-  return renderMarkdownToHTML(replaceAtMentionsWithLinks(wrapHyperlinks(text)));
+const formatContent = (text: string): { __html: string } => {
+  const html = renderMarkdownToHTML(
+    replaceAtMentionsWithLinks(wrapHyperlinks(text)),
+  );
+  return html || { __html: '' };
 };
 
 const ElemNoteCard: React.FC<NoteProps> = ({
@@ -88,6 +93,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [showDeleteNoteConfirm, setShowDeleteNoteConfirm] = useState(false);
   const [contentShowAll, setContentShowAll] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const contentDiv = useRef<HTMLDivElement>(null);
   const [contentDivHeight, setContentDivHeight] = useState(0);
   const [commentTextareaHasFocus, setCommentTextareaHasFocus] = useState(false);
@@ -107,8 +113,6 @@ const ElemNoteCard: React.FC<NoteProps> = ({
     );
   }
   const commentsCount = data?.comments?.length || 0;
-
-  // Handle content height calculation
 
   // Event Handlers
   const onCloseNoteForm = () => {
@@ -165,11 +169,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   };
 
   const onCommentButton = () => {
-    if (!user) {
-      router.push(ROUTES.SIGN_IN);
-    } else if (!user?.person) {
-      setIsOpenLinkPersonDialog(true);
-    }
+    setShowComments(!showComments);
   };
 
   const resourceType =
@@ -194,15 +194,15 @@ const ElemNoteCard: React.FC<NoteProps> = ({
   return (
     <>
       <div
-        className={`flex flex-col border border-gray-300 rounded-lg note-${data?.id}`}>
+        className={`flex flex-col border border-neutral-700 rounded-lg bg-black shadow-sm note-${data?.id}`}>
         {/* Header */}
-        <div className="relative flex items-center px-4 py-2 space-x-3">
+        <div className="relative flex items-center px-4 py-3 space-x-3">
           <div className="relative flex-shrink-0">
             {layout === 'organizationAndAuthor' ? (
               <ElemLink href={resourceLink}>
                 <ElemPhoto
                   photo={resource?.logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-black rounded-lg border border-gray-300"
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-black rounded-lg border border-neutral-700"
                   imgClass="object-fit max-w-full max-h-full"
                   imgAlt={resource?.name}
                   placeholder="user"
@@ -211,7 +211,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
               </ElemLink>
             ) : layout === 'groupAndAuthor' ? (
               <ElemLink href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}>
-                <div className="flex items-center justify-center w-12 h-12 p-1 mb-2 bg-neutral-900 border border-gray-100 rounded-lg">
+                <div className="flex items-center justify-center w-12 h-12 p-1 mb-2 bg-neutral-900 border border-neutral-700 rounded-lg">
                   <IconSidebarGroups
                     className="w-7 h-7"
                     title={data?.user_group?.name}
@@ -225,7 +225,7 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 }`}>
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
-                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-black rounded-full border  border-neutral-700"
+                  wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-black rounded-full border border-neutral-700"
                   imgClass="object-fit max-w-full max-h-full rounded-full"
                   imgAlt={
                     data?.created_by_user?.person?.name ||
@@ -250,58 +250,85 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 className="absolute -right-1 -bottom-1">
                 <ElemPhoto
                   photo={data?.created_by_user?.person?.picture}
-                  wrapClass=""
-                  imgClass="object-fit h-7 w-7 border border-white rounded-full"
+                  wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-black rounded-full border border-neutral-700"
+                  imgClass="object-fit max-w-full max-h-full rounded-full"
                   imgAlt={
                     data?.created_by_user?.person?.name ||
-                    data?.created_by_user?.display_name
+                    data?.created_by_user?.display_name ||
+                    `User: ${data?.created_by}`
                   }
                   placeholder="user"
+                  placeholderAlt={
+                    data?.created_by_user?.person?.name ||
+                    data?.created_by_user?.display_name ||
+                    `User: ${data?.created_by}`
+                  }
                   placeholderClass="text-gray-300 bg-black p-0"
                 />
               </ElemLink>
             )}
           </div>
 
-          {/* Metadata */}
-          <div className="flex-1">
-            <h3 className="text-sm font-medium">
-              {layout === 'organizationAndAuthor' ? (
-                <ElemLink href={resourceLink}>{resource?.name}</ElemLink>
-              ) : layout === 'groupAndAuthor' ? (
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-1 text-sm font-medium">
+                {(layout === 'organizationAndAuthor' ||
+                  layout === 'groupAndAuthor') && (
+                  <>
+                    {layout === 'organizationAndAuthor' ? (
+                      <ElemLink
+                        href={resourceLink}
+                        className="text-base font-medium hover:text-primary-500 transition-colors">
+                        {resource?.name}
+                      </ElemLink>
+                    ) : (
+                      <ElemLink
+                        href={`${ROUTES.GROUPS}/${data?.user_group?.id}`}
+                        className="text-base font-medium hover:text-primary-500 transition-colors">
+                        {data?.user_group?.name}
+                      </ElemLink>
+                    )}
+                    <span className="mx-1 text-gray-500">·</span>
+                  </>
+                )}
                 <ElemLink
-                  href={`${ROUTES.GROUPS}/${data?.user_group?.id || ''}`}>
-                  {data?.user_group?.name || ''}
+                  href={`${ROUTES.PEOPLE}/${data?.created_by_user?.person?.slug}`}
+                  className="text-base font-medium hover:text-primary-500 transition-colors">
+                  {data?.created_by_user?.person?.name ||
+                    data?.created_by_user?.display_name ||
+                    `User: ${data?.created_by}`}
                 </ElemLink>
-              ) : (
-                <ElemLink
-                  href={`${ROUTES.PEOPLE}/${
-                    data?.created_by_user?.person?.slug || ''
-                  }`}>
-                  {data?.created_by_user?.person?.name || 'Author'}
-                </ElemLink>
-              )}
-            </h3>
+              </div>
+            </div>
+            <div className="flex items-center mt-0.5 text-xs text-gray-500">
+              <div>
+                {moment(data?.created_at).format('MMM D, YYYY [at] h:mma')}
+              </div>
+              <span className="mx-1">·</span>
+              <div className="flex items-center">
+                {data?.audience === 'public' ? (
+                  <IconGlobe className="w-3 h-3 mr-0.5" title="Public" />
+                ) : data?.audience === 'only_me' ? (
+                  <IconLockClosed className="w-3 h-3 mr-0.5" title="Only me" />
+                ) : data?.user_group ? (
+                  <IconUsers className="w-3 h-3 mr-0.5" title="Group" />
+                ) : null}
+                {data?.audience === 'public'
+                  ? 'Public'
+                  : data?.audience === 'only_me'
+                  ? 'Only me'
+                  : data?.user_group
+                  ? data?.user_group?.name
+                  : ''}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="px-4 py-2 grow min-h-fit">
-          <p
-            className={`break-all whitespace-pre-line text-sm text-gray-300 ${
-              !contentShowAll && 'line-clamp-5'
-            }`}
-            ref={contentDiv}
-            dangerouslySetInnerHTML={formatContent(data.notes)}></p>
-        </div>
-        <div>
-          {data?.created_by_user?.id === user?.id && (
-            <Popover className="relative z-10 transition-all">
-              <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-neutral-900 focus:outline-none">
-                <IconEllipsisVertical
-                  className="w-6 h-6 text-gray-600"
-                  title="Options"
-                />
-              </Popover.Button>
 
+          {data?.created_by === user?.id && (
+            <Popover className="relative shrink-0">
+              <Popover.Button className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-neutral-800">
+                <IconEllipsisVertical className="w-5 h-5" title="Options" />
+              </Popover.Button>
               <Transition
                 enter="transition duration-100 ease-out"
                 enterFrom="transform scale-95 opacity-0"
@@ -309,26 +336,19 @@ const ElemNoteCard: React.FC<NoteProps> = ({
                 leave="transition duration-75 ease-out"
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0">
-                <Popover.Panel className="absolute right-0 z-10 block w-56 mt-2 overflow-hidden bg-black border border-gray-300 rounded-lg shadow-lg">
-                  {({ close }) => (
-                    <>
-                      <button
-                        onClick={() => {
-                          onEditNote(data);
-                          close();
-                        }}
-                        className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
-                        Edit note
-                      </button>
-                      <button
-                        onClick={() => {
-                          onConfirmDeleteNote(data);
-                        }}
-                        className="flex items-center w-full px-4 py-2 text-sm transition-all cursor-pointer gap-x-2 hover:bg-neutral-900">
-                        Delete
-                      </button>
-                    </>
-                  )}
+                <Popover.Panel className="absolute right-0 z-10 w-48 mt-1 bg-black border border-neutral-700 rounded-lg shadow-lg">
+                  <div className="py-1">
+                    <button
+                      className="flex items-center w-full px-4 py-2 text-left hover:bg-neutral-800"
+                      onClick={() => onEditNote(data)}>
+                      Edit note
+                    </button>
+                    <button
+                      className="flex items-center w-full px-4 py-2 text-left text-red-500 hover:bg-neutral-800"
+                      onClick={() => onConfirmDeleteNote(data)}>
+                      Delete note
+                    </button>
+                  </div>
                 </Popover.Panel>
               </Transition>
             </Popover>
@@ -336,142 +356,197 @@ const ElemNoteCard: React.FC<NoteProps> = ({
         </div>
 
         {/* Content */}
-        {/* <div className="px-4 py-2">
-          <p
+        <div className="px-4 py-3">
+          <div
             ref={contentDiv}
-            className={`text-sm ${!contentShowAll ? 'line-clamp-5' : ''}`}
-            dangerouslySetInnerHTML={
-              formatContent(data?.notes)
-            }></p>
-          {contentDivHeight > 100 && !contentShowAll && (
+            className={`prose-sm prose-invert max-w-none text-gray-300 ${
+              !contentShowAll && contentDivHeight > 150 ? 'line-clamp-4' : ''
+            }`}
+            dangerouslySetInnerHTML={formatContent(data?.notes || '')}
+          />
+          {contentDivHeight > 150 && (
             <button
-              type="button"
-              className="text-blue-500 text-sm hover:underline"
-              onClick={() => setContentShowAll(true)}>
-              See more
+              className="mt-1 text-sm text-primary-500 hover:underline"
+              onClick={() => setContentShowAll(!contentShowAll)}>
+              {contentShowAll ? 'Show less' : 'Show more'}
             </button>
           )}
-        </div> */}
-
-        {/* Like/Comment counts */}
-        {(likesCount > 0 || commentsCount > 0) && (
-          <div className="flex items-center justify-between px-4 py-2">
-            <span className="text-sm text-gray-500">
-              {likesCount > 0
-                ? `${likesCount} like${likesCount > 1 ? 's' : ''}`
-                : null}
-            </span>
-            <span className="text-sm text-gray-500">
-              {commentsCount > 0
-                ? `${commentsCount} comment${commentsCount > 1 ? 's' : ''}`
-                : null}
-            </span>
-          </div>
-        )}
-
-        {/* Action buttons */}
-        <div className="flex space-x-1 border-gray-300 border-y">
-          <button
-            className={`flex flex-1 items-center justify-center px-2 py-1 shrink grow font-medium hover:bg-neutral-900 ${
-              isLikedByCurrentUser ? 'text-primary-500' : 'text-gray-500'
-            }`}
-            onClick={onLikeButton}>
-            {isLikedByCurrentUser ? (
-              <>
-                <IconThumbUpSolid className="w-5 h-5 mr-1" /> Liked
-              </>
-            ) : (
-              <>
-                <IconThumbUp className="w-5 h-5 mr-1" /> Like
-              </>
-            )}
-          </button>
-          <button
-            className="flex items-center justify-center flex-1 px-2 py-1 font-medium text-gray-500 shrink grow hover:bg-neutral-900"
-            onClick={onCommentButton}>
-            <IconAnnotation className="w-5 h-5 mr-1" title="Comment" /> Comment
-          </button>
         </div>
 
-        {/* Comments section */}
-        <ElemNoteCardComments
-          note={data}
-          comments={data?.comments || []}
-          refetch={refetch}
-        />
-
-        {/* Comment input */}
-        <div className="flex items-start px-4 py-2 space-x-2">
-          <ElemPhoto
-            photo={user?.person?.picture}
-            wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-8"
-            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-            imgAlt={user?.person?.name || user?.display_name}
-            placeholder="user"
-            placeholderAlt={user?.person?.name || user?.display_name}
-            placeholderClass="text-gray-300"
-          />
-          <div className="relative flex w-full group">
-            <Autocomplete
-              value={commentContent}
-              onChange={onChangeCommentTextarea}
-              hasFocus={commentTextareaHasFocus}
-              onFocus={() => setCommentTextareaHasFocus(true)}
-              onBlur={() => setCommentTextareaHasFocus(false)}
-              onKeyDown={onCommentTextareaKeyDown}
-              placeholder="Write a comment..."
-              textareaClass="h-9 group-focus-within:h-16 max-h-fit !text-sm transition-all focus:bg-gray-50"
-            />
-            <button
-              onClick={onCommentSubmit}
-              className={`absolute z-10 right-2 bottom-[0.3rem] flex items-center justify-center w-8 h-8 rounded-full  ${
-                commentContent.length > 0
-                  ? 'cursor-pointer hover:bg-neutral-900'
-                  : 'cursor-not-allowed'
-              }`}>
-              {commentContent.length > 0 ? (
-                <IconPaperAirplaneSolid className="w-5 h-5" title="Comment" />
-              ) : (
-                <IconPaperAirplane
-                  className="w-5 h-5 text-gray-500"
-                  title="Comment"
-                />
-              )}
-            </button>
+        {/* Footer */}
+        <div className="flex flex-col px-4 py-3 border-t border-neutral-800">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <button
+                className={`flex items-center text-sm ${
+                  isLikedByCurrentUser
+                    ? 'text-primary-500'
+                    : 'text-gray-400 hover:text-primary-500'
+                }`}
+                onClick={onLikeButton}>
+                {isLikedByCurrentUser ? (
+                  <IconThumbUpSolid className="w-4 h-4 mr-1.5" title="Unlike" />
+                ) : (
+                  <IconThumbUp className="w-4 h-4 mr-1.5" title="Like" />
+                )}
+                <span>{likesCount > 0 ? likesCount : ''}</span>
+              </button>
+              <button
+                className="flex items-center text-sm text-gray-400 hover:text-primary-500"
+                onClick={onCommentButton}>
+                <IconAnnotation className="w-4 h-4 mr-1.5" title="Comment" />
+                <span>{commentsCount > 0 ? commentsCount : ''}</span>
+                {commentsCount > 0 && (
+                  <span className="ml-1">
+                    {showComments ? (
+                      <IconChevronUp className="w-4 h-4" />
+                    ) : (
+                      <IconChevronDown className="w-4 h-4" />
+                    )}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
+
+          {/* Comments */}
+          {showComments && commentsCount > 0 && (
+            <div className="mt-3">
+              <ElemNoteCardComments
+                comments={data?.comments || []}
+                refetch={refetch}
+              />
+            </div>
+          )}
+
+          {/* Add comment */}
+          {showComments && (
+            <div className="flex items-start mt-3 space-x-2">
+              <ElemPhoto
+                photo={user?.profilePicture || user?.person?.picture}
+                wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-8"
+                imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                imgAlt={user?.display_name}
+                placeholder="user"
+                placeholderClass="text-gray-300"
+              />
+              <div className="flex-1 relative">
+                <Autocomplete
+                  value={commentContent}
+                  onChange={onChangeCommentTextarea}
+                  onKeyDown={onCommentTextareaKeyDown}
+                  onFocus={() => {
+                    if (!user) {
+                      router.push(ROUTES.SIGN_IN);
+                      return;
+                    }
+                    if (!user?.person) {
+                      setIsOpenLinkPersonDialog(true);
+                      return;
+                    }
+                    setCommentTextareaHasFocus(true);
+                  }}
+                  onBlur={() => setCommentTextareaHasFocus(false)}
+                  placeholder={
+                    !user ? 'Sign in to comment' : 'Write a comment...'
+                  }
+                  className={`w-full ${
+                    !user ? 'opacity-70 pointer-events-none' : ''
+                  }`}
+                  textareaClass={`!px-4 !py-0 !ring-0 hover:!bg-neutral-800 text-white placeholder:text-gray-400 focus:!border-primary-500 min-h-[36px] max-h-[100px] border border-neutral-700 rounded-full bg-neutral-900 flex items-center leading-[36px] align-middle ${
+                    !user ? 'cursor-not-allowed bg-neutral-800 opacity-60' : ''
+                  }`}
+                />
+                <button
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 ${
+                    commentContent.trim() && user
+                      ? 'text-primary-500 hover:text-primary-400'
+                      : 'text-gray-500'
+                  }`}
+                  onClick={onCommentSubmit}
+                  disabled={!commentContent.trim() || !user}>
+                  {commentTextareaHasFocus || commentContent ? (
+                    <IconPaperAirplaneSolid
+                      className="w-5 h-5"
+                      title="Send comment"
+                    />
+                  ) : (
+                    <IconPaperAirplane
+                      className="w-5 h-5"
+                      title="Send comment"
+                    />
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Modals */}
       <ElemNoteForm
         isOpen={isOpenNoteForm}
-        type={selectedNote ? 'edit' : 'create'}
-        selectedNote={selectedNote || undefined}
+        type="edit"
+        selectedNote={selectedNote as Note | undefined}
         resourceId={data?.resource_id || 0}
         resourceType={data?.resource_type || ''}
         onClose={onCloseNoteForm}
         onRefetchNotes={refetch}
       />
 
+      <ElemRequiredProfileDialog
+        isOpen={isOpenLinkPersonDialog}
+        title="Claim a profile."
+        content="To add a comment, search your name and claim profile."
+        onClose={() => {
+          setIsOpenLinkPersonDialog(false);
+        }}
+      />
+
       <ElemModal
         isOpen={showDeleteNoteConfirm}
         onClose={handleCloseDeleteNoteConfirm}
-        showCloseIcon>
-        <h2>Delete Note</h2>
-        <p>Are you sure you want to delete this note?</p>
-        {/* <ElemButton onClick={() => onDeleteNote()} loading={isDeletingNote}>
-          Delete
-        </ElemButton> */}
+        showCloseIcon={true}
+        placement="center"
+        panelClass="relative w-full max-w-md bg-black rounded-lg px-4 py-5 z-10 my-10 shadow-xl border border-neutral-800">
+        <div className="mb-2">
+          <h2 className="text-xl font-medium">Delete Note</h2>
+        </div>
+        <div className="my-4">
+          <p className="text-gray-400">
+            Are you sure you want to delete this note? This action cannot be
+            undone.
+          </p>
+        </div>
+        <div className="flex items-center justify-end space-x-3">
+          <ElemButton
+            onClick={handleCloseDeleteNoteConfirm}
+            btn="default"
+            className="rounded-md">
+            Cancel
+          </ElemButton>
+          <ElemButton
+            btn="danger"
+            onClick={async () => {
+              if (!selectedNote?.id) return;
+              await fetch('/api/notes/', {
+                method: 'DELETE',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: selectedNote.id }),
+              });
+              handleCloseDeleteNoteConfirm();
+              refetch();
+              toast.success('Note deleted successfully');
+            }}
+            className="rounded-md">
+            Delete
+          </ElemButton>
+        </div>
       </ElemModal>
 
-      <ElemRequiredProfileDialog
-        isOpen={isOpenLinkPersonDialog}
-        title="Claim your profile"
-        content="To comment, claim your profile."
-        onClose={() => setIsOpenLinkPersonDialog(false)}
-      />
-
-      <Toaster />
+      <Toaster position="bottom-center" />
     </>
   );
 };

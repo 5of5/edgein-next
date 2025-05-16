@@ -29,8 +29,8 @@ import { useUser } from '@/context/user-context';
 
 // Dynamically import LiveChatWidget to avoid SSR issues
 const LiveChatWidget = dynamic(
-  () => import('@livechat/widget-react').then((mod) => mod.LiveChatWidget),
-  { ssr: false }
+  () => import('@livechat/widget-react').then(mod => mod.LiveChatWidget),
+  { ssr: false },
 );
 
 type Props = {
@@ -54,7 +54,7 @@ export const ElemOrganizationTeam: React.FC<Props> = ({
 }) => {
   const { user } = useUser();
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  
+
   // Set isMounted to true when component mounts (client-side only)
   useEffect(() => {
     setIsMounted(true);

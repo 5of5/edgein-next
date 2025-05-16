@@ -150,14 +150,14 @@ const ElemNoteForm: React.FC<Props> = ({
         onClose={closeAndReset}
         showCloseIcon={true}
         placement="center"
-        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-3 z-10 my-10 !overflow-visible">
-        <div className="">
+        panelClass="relative w-full max-w-lg bg-black rounded-lg px-4 py-5 z-10 my-10 !overflow-visible shadow-xl border border-neutral-800">
+        <div className="mb-2">
           <h2 className="text-xl font-medium">
             {type === 'edit' ? 'Edit Note' : 'Create Note'}
           </h2>
         </div>
 
-        <div className="flex items-start gap-2 pt-3 my-3 border-t border-slate-200">
+        <div className="flex items-start gap-3 pt-4 my-3 border-t border-neutral-700">
           {type === 'edit' ? (
             <ElemTooltip
               content={`Last edited by ${user?.display_name} on ${moment(
@@ -192,8 +192,8 @@ const ElemNoteForm: React.FC<Props> = ({
               onChange={handleChangeNote}
               onKeyDown={onNoteTextareaKeyDown}
               placeholder="Write your note..."
-              className=""
-              textareaClass="h-24 max-h-[9rem] !px-0 !py-0 !ring-0 hover:!bg-black"
+              className="border border-neutral-700 rounded-lg bg-neutral-900 text-white"
+              textareaClass="h-24 max-h-[9rem] !px-3 !py-2 !ring-0 hover:!bg-neutral-800 text-white placeholder:text-gray-400 focus:!border-primary-500"
             />
 
             <InputSelect
@@ -203,14 +203,17 @@ const ElemNoteForm: React.FC<Props> = ({
               className={`text-primary-500 text-base w-full ${
                 selectedNote ? 'cursor-not-allowed' : ''
               }`}
-              buttonClasses="mt-2 w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit focus:!ring-1"
+              buttonClasses="mt-3 w-full font-bold !pl-1 !pr-8 !py-0 sm:w-fit focus:!ring-1"
               disabled={!!selectedNote}
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-end pt-3 border-t gap-x-2 border-slate-200">
-          <ElemButton onClick={closeAndReset} roundedFull btn="default">
+        <div className="flex items-center justify-end pt-4 border-t gap-x-3 border-neutral-700">
+          <ElemButton
+            onClick={closeAndReset}
+            btn="default"
+            className="rounded-md">
             Cancel
           </ElemButton>
 
@@ -218,7 +221,8 @@ const ElemNoteForm: React.FC<Props> = ({
             btn="primary"
             disabled={!notes || !selectedGroup}
             loading={isLoading}
-            onClick={handleSubmit}>
+            onClick={handleSubmit}
+            className="rounded-md">
             {type === 'edit' ? 'Save Note' : 'Create Note'}
           </ElemButton>
         </div>

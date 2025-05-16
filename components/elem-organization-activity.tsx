@@ -11,8 +11,8 @@ import dynamic from 'next/dynamic';
 
 // Dynamically import LiveChatWidget to avoid SSR issues
 const LiveChatWidget = dynamic(
-  () => import('@livechat/widget-react').then((mod) => mod.LiveChatWidget),
-  { ssr: false }
+  () => import('@livechat/widget-react').then(mod => mod.LiveChatWidget),
+  { ssr: false },
 );
 
 type Props = {
@@ -32,12 +32,12 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
   const [activityLimit, setActivityLimit] = useState(10);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
-  
+
   // Set isMounted to true when component mounts (client-side only)
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  
+
   const showMoreActivity = () => {
     setActivityLimit(activityLimit + 10);
   };

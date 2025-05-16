@@ -86,8 +86,8 @@ const ElemOrganizationNotes: FC<Props> = ({
           ))}
         </div>
       ) : (
-        <div className="px-5 py-4 border border-gray-700 rounded-lg">
-          <div className="flex items-center justify-between mb-2">
+        <div className="px-5 py-4 border border-neutral-800 rounded-lg bg-black shadow-sm">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-1">
               <h2 className="text-lg font-medium">
                 Notes{` ${notes.length > 0 ? '(' + notes.length + ')' : ''}`}{' '}
@@ -96,12 +96,14 @@ const ElemOrganizationNotes: FC<Props> = ({
             <ElemButton
               btn="primary"
               onClick={onOpenNoteForm}
-              className="!pl-3">
+              className="!pl-3 rounded-md">
               <IconPlus className="w-5 h-5 mr-1" />
               <span>Create note</span>
             </ElemButton>
           </div>
-          <div className="flex items-start gap-2 py-4 mt-4">
+          <div
+            className="flex items-start gap-3 py-4 px-4 mt-2 border border-neutral-700 rounded-lg bg-neutral-900 hover:bg-neutral-800 transition-colors cursor-pointer"
+            onClick={onOpenNoteForm}>
             <ElemPhoto
               photo={user?.profilePicture || user?.person?.picture}
               wrapClass="aspect-square shrink-0 bg-black overflow-hidden rounded-full w-10"
@@ -110,15 +112,13 @@ const ElemOrganizationNotes: FC<Props> = ({
               placeholder="user"
               placeholderClass="text-gray-300"
             />
-            <div
-              className="w-full px-4 py-2 text-sm text-gray-500 border border-gray-300 rounded-full cursor-pointer "
-              onClick={onOpenNoteForm}>
+            <div className="w-full py-2 text-sm text-gray-400">
               Write a few sentences about {resourceName}...
             </div>
           </div>
 
           {notes?.length > 0 && (
-            <div className="grid grid-cols-1 gap-4 mt-4">
+            <div className="grid grid-cols-1 gap-4 mt-6">
               {notes.map(note => (
                 <ElemNoteCard
                   key={note.id}
