@@ -109,10 +109,10 @@ export const TheNavbar: FC<Props> = ({}) => {
 
             <ElemLink
               href={user ? ROUTES.COMPANIES : ROUTES.ROOT}
-              className="w-auto mr-4 lg:w-64">
+              className="w-auto mr-4 lg:w-64 select-none focus:outline-none">
               <ElemLogo
                 mode="logo-inverted"
-                className="w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70"
+                className="w-auto h-6 transition-all scheme-standard sm:h-6 hover:opacity-70 select-none pointer-events-auto focus:outline-none"
               />
             </ElemLink>
           </div>
