@@ -430,7 +430,9 @@ export default function SearchModal(props: any) {
     } else if (allEmpty) {
       return (
         <div className="w-full px-6 py-1 mt-5">
-          <h3 className="font-medium">No results for “{results.query}“</h3>
+          <h3 className="font-medium">
+            No results for &ldquo;{results.query}&rdquo;
+          </h3>
           <p>
             <ElemLink
               href={ROUTES.CONTACT}
@@ -458,7 +460,7 @@ export default function SearchModal(props: any) {
       return (
         <div className="w-full px-6 py-1">
           <p>
-            No results for “{results.query}“.{' '}
+            No results for &ldquo;{results.query}&rdquo;.{' '}
             <ElemLink
               href={ROUTES.CONTACT}
               onClick={onClose}
@@ -535,7 +537,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected ? 'border-2 border-white' : 'border-0'
+              selected ? 'border-2 border-gray-600' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('companies')}
@@ -543,7 +545,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected ? 'border-2 border-white' : 'border-0'
+              selected ? 'border-2 border-gray-600' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('vc_firms')}
@@ -551,7 +553,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected ? 'border-2 border-white' : 'border-0'
+              selected ? 'border-2 border-gray-600' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('people')}
@@ -559,7 +561,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected ? 'border-2 border-white' : 'border-0'
+              selected ? 'border-2 border-gray-600' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('events')}
@@ -567,7 +569,7 @@ export default function SearchModal(props: any) {
         <Tab
           className={({ selected }) =>
             `${
-              selected ? 'border-2 border-white' : 'border-0'
+              selected ? 'border-2 border-gray-600' : 'border-0'
             } inline-flex items-center font-medium focus:outline-none focus:ring-0 transition ease-in-out duration-150 group text-gray-300 bg-neutral-900 px-2.5 py-2 text-sm justify-center rounded-lg`
           }>
           {getTabTitle('news')}
@@ -590,7 +592,7 @@ export default function SearchModal(props: any) {
           future={{
             preserveSharedStateOnUnmount: true,
           }}>
-          <header className="relative z-10 flex items-center p-0 px-4 border-b border-gray-100">
+          <header className="relative z-10 flex items-center p-0 px-4 border-b border-gray-700">
             <IconSearch className="w-6 h-6 text-gray-500" />
             <SearchBox
               className="w-full"
@@ -609,7 +611,7 @@ export default function SearchModal(props: any) {
               onClick={onClose}
               type="reset"
               arial-label="cancel"
-              className="appearance-none w-8 justify-items-end p-1 bg-black border border-gray-100 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm">
+              className="appearance-none w-8 justify-items-end p-1 bg-black border border-gray-700 rounded-md text-gray-500 font-medium text-[9px] hover:shadow-sm">
               ESC
             </button>
           </header>

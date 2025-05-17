@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useCallback } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -146,21 +146,21 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
       }
     : filters;
 
-  //when there is no user, hence only public list is fetched
-  const fetchPublicList = async () => {
+  // Replace the fetchPublicList function with a useCallback version
+  const fetchPublicList = useCallback(async () => {
     try {
       const data = await fetchGraphQL(PUBLIC_LIST, { limit: LIMIT, offset });
       setPublicList(data);
     } catch (err: any) {
       console.log(err);
     }
-  };
+  }, [offset]); // Add dependencies for offset
 
   useEffect(() => {
     if (!user) {
       fetchPublicList();
     }
-  }, [page]);
+  }, [page, user, fetchPublicList]);
 
   useEffect(() => {
     if (!initialLoad) {
@@ -174,6 +174,7 @@ const ListsPage: NextPage<Props> = ({ initialListsCount, initialLists }) => {
       properties: filters,
       pathname: router.pathname,
     });
+    // We intentionally omit dependencies to only run on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
