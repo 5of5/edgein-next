@@ -109,7 +109,7 @@ export const ElemDropdown: FC<Props> = ({
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
-          className={`z-30 bg-black border border-gray-300 rounded-lg shadow-lg min-w-56 overflow-hidden ${panelClass}`}>
+          className={`z-30 bg-black border border-gray-700 rounded-lg shadow-lg min-w-56 overflow-hidden ${panelClass}`}>
           {({ close }) => (
             <>
               {items.map((item, index) => {
@@ -125,7 +125,7 @@ export const ElemDropdown: FC<Props> = ({
                 return (
                   <Fragment key={item.id}>
                     <button
-                      className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-600 ${
+                      className={`flex items-center gap-x-2 cursor-pointer w-full text-left text-sm text-gray-300 ${
                         isActiveItem ? 'font-medium' : 'font-normal'
                       } px-4 py-2 m-0 transition-all hover:bg-neutral-900 ${dividerClass} ${
                         item.className
@@ -154,7 +154,7 @@ export const ElemDropdown: FC<Props> = ({
                       {item.Pill && item.Pill}
                     </button>
                     {item.divider && (
-                      <div className="w-full h-px my-1 bg-gray-200"></div>
+                      <div className="w-full h-px my-1 bg-gray-700"></div>
                     )}
                   </Fragment>
                 );

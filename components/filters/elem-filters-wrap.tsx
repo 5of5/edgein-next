@@ -32,9 +32,10 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
   return (
     <>
-      <ElemSticky activeClass="top-[3rem] bg-opacity-30 bg-black backdrop-blur-lg shadow-sm">
+      <div className="sticky top-[78px] z-30 bg-black/80 backdrop-blur-lg shadow-sm">
         <div className="px-8 py-3" role="tablist">
           {isDesktop ? (
             <div className="flex flex-wrap w-full gap-3">{children}</div>
@@ -49,7 +50,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
             </ElemButton>
           )}
         </div>
-      </ElemSticky>
+      </div>
 
       <ElemModal
         isOpen={showMobileFilters && !isDesktop}
@@ -58,7 +59,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
         showCloseIcon={false}
         panelClass="w-full my-14 bg-black">
         <div className="flex flex-col h-[calc(100vh_-_7rem)] gap-4">
-          <div className="sticky top-0 z-20 px-4 py-2 bg-black border-b  border-neutral-700">
+          <div className="sticky top-0 z-20 px-4 py-2 bg-black border-b border-neutral-700">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">Filters</h2>
               <ElemButton
@@ -75,7 +76,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
           <div className="flex flex-col gap-3 px-4">{children}</div>
 
           <div className="px-4 mt-auto bg-black h-14">
-            <div className="py-2 border-t  border-neutral-700">
+            <div className="py-2 border-t border-neutral-700">
               <ElemButton
                 btn="primary"
                 onClick={() => setShowMobileFilters(false)}

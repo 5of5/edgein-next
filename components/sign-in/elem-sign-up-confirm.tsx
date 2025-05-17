@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useCallback } from 'react';
 import { useMutation } from 'react-query';
 import useToast from '@/hooks/use-toast';
 import { GENERAL_ERROR_MESSAGE } from '@/utils/constants';
@@ -38,13 +38,14 @@ export const ElemSignUpConfirm: FC<Props> = ({ firstName, signUpEmail }) => {
   const handleResendEmail = () => {
     resend();
   };
+
+  const redirectToOnboard = useCallback(() => {
+    router.push('/onboarding');
+  }, [router]);
+
   useEffect(() => {
     redirectToOnboard();
-  }, []);
-
-  const redirectToOnboard = () => {
-    router.push('/onboarding');
-  };
+  }, [redirectToOnboard]);
 
   return (
     <div className="w-full max-w-sm mx-auto">

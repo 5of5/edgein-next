@@ -65,6 +65,8 @@ export const ElemSaveToList: FC<Props> = ({
     if (Array.isArray(follows) && !isEqual(follows, followsByResource)) {
       setFollowsByResource(follows);
     }
+    // This is intentional as we only want to update when follows changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [follows]);
 
   let isSaved = false;
