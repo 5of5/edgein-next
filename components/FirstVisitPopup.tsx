@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const translations = {
   en: {
@@ -79,53 +80,90 @@ export default function FirstVisitPopup() {
     router.push('/claim');
   };
 
-  if (!isVisible) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4">
-      <div className="bg-black border border-green-500 rounded-lg p-4 sm:p-8 max-w-2xl w-full mx-4 relative">
-        <button
-          onClick={handleDismiss}
-          className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-400 hover:text-white"
-          aria-label="Close">
-          <svg
-            className="w-5 h-5 sm:w-6 sm:h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="bg-black/95 border border-green-500/80 rounded-xl p-6 sm:p-8 max-w-2xl w-full mx-4 relative overflow-hidden shadow-2xl">
+            {/* Subtle gradient background effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 to-black/0 pointer-events-none"></div>
 
-        <div className="text-center space-y-4 sm:space-y-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white">
-            {t.header}
-          </h2>
-
-          <div className="text-sm sm:text-base text-gray-300 whitespace-pre-line">
-            {t.body}
-          </div>
-
-          <div className="space-y-4">
+            {/* Close button - moved to be absolutely positioned in the top-right corner with more space */}
             <button
-              onClick={handleClaim}
-              className="w-full bg-green-500 text-black font-bold py-2 sm:py-3 px-4 sm:px-6 rounded hover:bg-green-600 transition-colors text-sm sm:text-base">
-              {t.cta}
+              onClick={handleDismiss}
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 text-gray-400 hover:text-white transition-colors duration-200 p-1 rounded-full hover:bg-white/10 z-10"
+              aria-label="Close">
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
 
-            <div
-              onClick={handleDismiss}
-              className="block text-green-500 hover:text-green-400 transition-colors text-sm sm:text-base">
-              <Link href="/">{t.explore}</Link>
+            <div className="relative text-center space-y-5 sm:space-y-6 pt-5">
+              {/* Header with subtle animation - added right padding to avoid overlap with close button */}
+              <motion.h2
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-2xl sm:text-3xl font-semibold text-white tracking-tight pr-8 sm:pr-10">
+                {t.header}
+              </motion.h2>
+
+              {/* Body text */}
+              <motion.div
+                initial={{ y: -5, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-sm sm:text-base text-gray-300 whitespace-pre-line leading-relaxed">
+                {t.body}
+              </motion.div>
+
+              {/* Action buttons with staggered animation */}
+              <div className="space-y-3 pt-2">
+                <motion.button
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  onClick={handleClaim}
+                  className="w-full bg-green-500 text-black font-medium py-3 px-6 rounded-lg hover:bg-green-400 transition-all duration-200 text-sm sm:text-base shadow-lg hover:shadow-green-500/20">
+                  {t.cta}
+                </motion.button>
+
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  onClick={handleDismiss}
+                  className="block text-green-400 hover:text-green-300 transition-colors duration-200 text-sm sm:text-base py-2">
+                  <Link href="/" passHref>
+                    <span className="inline-flex items-center">
+                      {t.explore}
+                    </span>
+                  </Link>
+                </motion.div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
