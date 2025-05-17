@@ -23,6 +23,7 @@ import {
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { Card, CardContent, CardFooter, CardHeader } from '../shadcn/card';
 
 export type CardType = 'full' | 'compact';
 
@@ -61,162 +62,137 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
     status_tags && status_tags.length > 0 && status_tags.includes('Raising');
 
   return (
-    <div className="flex flex-col w-full border border-gray-700 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
-      <div className="flex flex-col justify-between h-full">
-        <div>
-          <ElemLink href={`${ROUTES.COMPANIES}/${slug}`}>
-            <div className="flex items-start w-full gap-3 shrink-0 bg-[linear-gradient(180deg,_#1a1a1a_0%,_#0a0a0a_100%)] p-3 rounded-lg overflow-hidden flex-col">
-              <div className="flex items-center w-full gap-4">
-                {' '}
-                {/* Flex row for image and name */}
-                <ElemPhoto
-                  photo={logo}
-                  wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
-                  imgClass="object-fit max-w-full max-h-full"
-                  imgAlt={name}
-                  placeholder="company"
-                  placeholderClass="text-gray-300 w-full h-full m-4"
-                />
-                <div className="flex flex-col justify-center w-full">
-                  {' '}
-                  {/* Column for name and token */}
-                  <ElemTooltip content={name} mode="light">
-                    <h3 className="text-lg font-medium text-gray-100 max-w-full overflow-hidden whitespace-nowrap">
-                      {name && name.length > 8
-                        ? `${name.substring(0, 8)}..`
-                        : name}
-                    </h3>
-                  </ElemTooltip>
-                  {coin && (
-                    <ElemTooltip content={`Token`} mode="light">
-                      <span className="ml-1 uppercase text-gray-300">
-                        {coin.ticker}
-                      </span>
-                    </ElemTooltip>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-2 w-full">
-                {' '}
-                {/* Flex column for tags */}
-                {tags && (
-                  <ElemTags
-                    className="overflow-hidden text-ellipsis relative z-10"
-                    limit={CARD_DEFAULT_TAGS_LIMIT}
-                    resourceType={'companies'}
-                    tags={tags}
-                  />
+    <Card className="flex flex-col w-full h-full border border-gray-800 bg-gradient-to-b from-gray-900 to-black hover:border-gray-600 transition-all duration-300">
+      <CardHeader className="p-4 pb-3 flex-shrink-0">
+        <ElemLink href={`${ROUTES.COMPANIES}/${slug}`} className="block">
+          <div className="flex items-center gap-3">
+            <ElemPhoto
+              photo={logo}
+              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 aspect-square bg-white rounded-lg overflow-hidden"
+              imgClass="object-fit max-w-full max-h-full"
+              imgAlt={name}
+              placeholder="company"
+              placeholderClass="text-gray-300 w-full h-full m-2"
+            />
+            <div className="flex flex-col overflow-hidden">
+              <div className="flex items-center gap-2">
+                <ElemTooltip content={name} mode="light">
+                  <h3 className="text-base font-medium text-gray-100 truncate max-w-[200px]">
+                    {name}
+                  </h3>
+                </ElemTooltip>
+                {isRaisingCompany && (
+                  <span className="px-2 py-0.5 text-xs font-medium bg-emerald-900 text-emerald-400 rounded-full">
+                    Raising
+                  </span>
                 )}
               </div>
+              {coin && (
+                <span className="text-xs uppercase text-gray-400">
+                  {coin.ticker}
+                </span>
+              )}
             </div>
-
-            <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
-              <div className="flex flex-col">
-                <span className="text-xs">Founded</span>
-                <span className="text-sm font-medium">
-                  {year_founded ?? '-'}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs">Stage</span>
-                <span className="text-sm font-medium">
-                  {investment_rounds?.[0]?.round ?? '-'}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs">Employees</span>
-                <span className="text-sm font-medium">
-                  {total_employees && total_employees > 0
-                    ? numberWithCommas(total_employees)
-                    : '-'}
-                </span>
-              </div>
-
-              <div className="flex flex-col">
-                <span className="text-xs">Rounds</span>
-                <span className="text-sm font-medium">
-                  {investment_rounds_aggregate?.aggregate?.count &&
-                  investment_rounds_aggregate?.aggregate?.count > 0
-                    ? investment_rounds_aggregate?.aggregate?.count
-                    : '-'}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs">Funding</span>
-                <span className="text-sm font-medium">
-                  {investor_amount && investor_amount > 0
-                    ? `$${convertToInternationalCurrencySystem(
-                        Number(investor_amount),
-                      )}`
-                    : '-'}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs">Latest round</span>
-                <span className="text-sm font-medium">
-                  {investment_rounds?.[0]?.round_date
-                    ? formatDate(investment_rounds?.[0]?.round_date, {
-                        month: 'short',
-                        day: '2-digit',
-                        year: 'numeric',
-                      })
-                    : '-'}
-                </span>
-              </div>
-            </div>
-
-            {type === 'full' && overview && (
-              <div className="mt-4 text-sm text-gray-500 line-clamp-3">
-                {overview}
-              </div>
-            )}
-          </ElemLink>
-
-          <div>
-            {type === 'full' && !isEmptyLocationJson && (
-              <div className="flex pt-1.5 items-center">
-                <IconLocation
-                  title={getFullAddress(location_json)}
-                  className="self-start w-3 h-3 mt-1 shrink-0"
-                />
-                <span className="ml-1 text-sm text-gray-500 break-words line-clamp-3">
-                  {getFullAddress(location_json)}
-                </span>
-              </div>
-            )}
           </div>
-        </div>
+        </ElemLink>
 
-        <div className="flex items-center justify-between mt-4 gap-x-5">
-          <ElemSocialIconGroup
-            resources={[
-              {
-                value: website,
-                title: 'Website',
-                icon: IconGlobe,
-              },
-              {
-                isPremium: true,
-                value: company_linkedin,
-                icon: IconLinkedIn,
-              },
-              {
-                value: twitter,
-                icon: IconTwitterX,
-              },
-              {
-                isPremium: true,
-                value: github,
-                icon: IconGithub,
-              },
-              {
-                value: discord,
-                icon: IconDiscord,
-              },
-            ]}
-          />
+        {tags && tags.length > 0 && (
+          <div className="mt-3">
+            <ElemTags
+              className="overflow-hidden"
+              limit={CARD_DEFAULT_TAGS_LIMIT}
+              resourceType={'companies'}
+              tags={tags}
+            />
+          </div>
+        )}
+      </CardHeader>
 
+      <CardContent className="p-4 pt-0 flex-grow min-h-0">
+        <ElemLink href={`${ROUTES.COMPANIES}/${slug}`} className="block h-full">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 mt-3">
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500">Founded</span>
+              <span className="text-sm font-medium text-gray-300">
+                {year_founded ?? '-'}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500">Stage</span>
+              <span className="text-sm font-medium text-gray-300">
+                {investment_rounds?.[0]?.round ?? '-'}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500">Employees</span>
+              <span className="text-sm font-medium text-gray-300">
+                {total_employees && total_employees > 0
+                  ? numberWithCommas(total_employees)
+                  : '-'}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500">Funding</span>
+              <span className="text-sm font-medium text-gray-300">
+                {investor_amount && investor_amount > 0
+                  ? `$${convertToInternationalCurrencySystem(
+                      Number(investor_amount),
+                    )}`
+                  : '-'}
+              </span>
+            </div>
+          </div>
+
+          {type === 'full' && overview && (
+            <div className="mt-4 text-sm text-gray-400 line-clamp-2">
+              {overview}
+            </div>
+          )}
+
+          {type === 'full' && !isEmptyLocationJson && (
+            <div className="flex items-center mt-3 text-gray-400">
+              <IconLocation
+                title={getFullAddress(location_json)}
+                className="w-3 h-3 shrink-0"
+              />
+              <span className="ml-1.5 text-xs truncate">
+                {getFullAddress(location_json)}
+              </span>
+            </div>
+          )}
+        </ElemLink>
+      </CardContent>
+
+      <CardFooter className="p-4 pt-3 border-t border-gray-800 flex-shrink-0 h-[60px] flex items-center justify-between">
+        <ElemSocialIconGroup
+          resources={[
+            {
+              value: website,
+              title: 'Website',
+              icon: IconGlobe,
+            },
+            {
+              isPremium: true,
+              value: company_linkedin,
+              icon: IconLinkedIn,
+            },
+            {
+              value: twitter,
+              icon: IconTwitterX,
+            },
+            {
+              isPremium: true,
+              value: github,
+              icon: IconGithub,
+            },
+            {
+              value: discord,
+              icon: IconDiscord,
+            },
+          ]}
+        />
+
+        <div className="inline-flex scale-90 origin-right">
           <ElemSaveToList
             resourceName={name}
             resourceId={id}
@@ -226,7 +202,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, type = 'full' }) => {
             follows={follows}
           />
         </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };

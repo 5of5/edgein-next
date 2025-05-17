@@ -18,6 +18,9 @@ import {
   IconTelegram,
   IconLocation,
   IconTicket,
+  IconCalendar,
+  IconCheck,
+  IconPlus,
 } from '@/components/icons';
 import { useUser } from '@/context/user-context';
 import { CARD_DEFAULT_TAGS_LIMIT } from '@/utils/constants';
@@ -30,6 +33,7 @@ import { ElemSocialIconGroup } from '../elem-social-icon-group';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 import { formatDateShown } from '@/utils';
+import { Card, CardContent, CardFooter, CardHeader } from '../shadcn/card';
 
 type Props = {
   event: GetEventsQuery['events'][0];
@@ -137,14 +141,12 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
   };
 
   return (
-    <div className="flex flex-col w-full overflow-hidden transition-all duration-300 border border-gray-700 rounded-xl hover:border-gray-400">
-      <ElemLink
-        href={`${ROUTES.EVENTS}/${slug}`}
-        className="flex w-full shrink-0">
-        <div className="relative z-0 flex items-center justify-center w-full overflow-hidden shrink-0 h-36">
-          <div className="absolute top-0 bottom-0 left-0 right-0 object-cover max-w-full max-h-full bg-gray-400 bg-center bg-no-repeat bg-cover -z-10 blur-2xl"></div>
+    <Card className="flex flex-col w-full h-full border border-gray-800 bg-gradient-to-b from-gray-900 to-black hover:border-gray-600 transition-all duration-300 overflow-hidden">
+      <div className="flex-shrink-0 w-full h-36 overflow-hidden relative">
+        <ElemLink href={`${ROUTES.EVENTS}/${slug}`} className="block h-full">
+          <div className="absolute inset-0 bg-gray-400 bg-center bg-no-repeat bg-cover blur-2xl -z-10"></div>
           <img
-            className="relative"
+            className="w-full h-full object-cover"
             src={eventImageUrl}
             alt={name}
             onError={e => {
@@ -154,124 +156,130 @@ export const ElemEventCard: FC<Props> = ({ event, type = 'full' }) => {
               (e.target as HTMLImageElement).onerror = null; // prevents looping
             }}
           />
-        </div>
-      </ElemLink>
+        </ElemLink>
+      </div>
 
-      <div className="flex flex-col justify-between h-full p-4">
-        <div>
-          <ElemLink
-            href={`${ROUTES.EVENTS}/${slug}`}
-            className="flex items-center">
-            <ElemTooltip content={name} mode="light">
-              <h3 className="text-lg font-medium line-clamp-3 pb-1.5">
-                {name}
-              </h3>
-            </ElemTooltip>
-          </ElemLink>
+      <CardHeader className="p-4 pb-3 flex-shrink-0">
+        <ElemLink href={`${ROUTES.EVENTS}/${slug}`} className="block">
+          <ElemTooltip content={name} mode="light">
+            <h3 className="text-base font-medium text-gray-100 line-clamp-2">
+              {name}
+            </h3>
+          </ElemTooltip>
+        </ElemLink>
 
-          <div>
-            {start_date && (
-              <ElemLink
-                href={`${ROUTES.EVENTS}/${slug}`}
-                className="text-sm text-gray-500">
+        {tags && tags.length > 0 && (
+          <div className="mt-3">
+            <ElemTags
+              className="overflow-hidden"
+              limit={CARD_DEFAULT_TAGS_LIMIT}
+              filter={'eventType'}
+              resourceType={'events'}
+              tags={tags}
+            />
+          </div>
+        )}
+      </CardHeader>
+
+      <CardContent className="p-4 pt-0 flex-grow min-h-0">
+        <div className="space-y-3">
+          {start_date && (
+            <div className="flex items-center text-gray-400">
+              <IconCalendar className="w-3 h-3 shrink-0" />
+              <span className="ml-1.5 text-xs">
                 {formatDateShown(start_date, 'MMM D, YYYY')}
-
                 {end_date && (
                   <>
                     &nbsp;&ndash;&nbsp;
                     {formatDateShown(end_date, 'MMM D, YYYY')}
                   </>
                 )}
-              </ElemLink>
-            )}
-            {type === 'full' && !isEmptyLocation && (
-              <div className="flex pt-1.5 items-center">
-                <IconLocation
-                  title={getFullAddress(location_json)}
-                  className="self-start w-3 h-3 mt-1 shrink-0"
-                />
-                <span className="ml-1 text-sm text-gray-500 break-words line-clamp-3">
-                  {getFullAddress(location_json)}
-                </span>
-              </div>
-            )}
-            {eventPrice && (
-              <div className="flex pt-1.5 items-center">
-                <IconTicket
-                  title={
-                    isEmptyLocation ? getFullAddress(location_json) : eventPrice
-                  }
-                  className="w-3 h-3 shrink-0"
-                />
-                <span className="ml-1 text-sm text-gray-500 break-words line-clamp-3">
-                  {eventPrice}
-                </span>
-              </div>
-            )}
-          </div>
-          {tags && (
-            <ElemTags
-              className="mt-4"
-              limit={CARD_DEFAULT_TAGS_LIMIT}
-              filter={'eventType'}
-              resourceType={'events'}
-              tags={tags}
-            />
+              </span>
+            </div>
+          )}
+
+          {type === 'full' && !isEmptyLocation && (
+            <div className="flex items-center text-gray-400">
+              <IconLocation
+                title={getFullAddress(location_json)}
+                className="w-3 h-3 shrink-0"
+              />
+              <span className="ml-1.5 text-xs truncate">
+                {getFullAddress(location_json)}
+              </span>
+            </div>
+          )}
+
+          {eventPrice && (
+            <div className="flex items-center text-gray-400">
+              <IconTicket className="w-3 h-3 shrink-0" />
+              <span className="ml-1.5 text-xs">{eventPrice}</span>
+            </div>
           )}
         </div>
-        <div className="flex items-center justify-between mt-4 gap-x-5">
-          <ElemSocialIconGroup
-            resources={[
-              {
-                value: link,
-                title: 'Website',
-                icon: IconGlobe,
-              },
-              {
-                value: twitter,
-                icon: IconTwitterX,
-              },
-              {
-                value: facebook,
-                icon: IconFacebook,
-              },
-              {
-                value: instagram,
-                icon: IconInstagram,
-              },
+      </CardContent>
 
-              {
-                value: discord,
-                icon: IconDiscord,
-              },
-              {
-                value: telegram,
-                icon: IconTelegram,
-              },
-            ]}
-          />
+      <CardFooter className="p-4 pt-3 border-t border-gray-800 flex-shrink-0 h-[60px] flex items-center justify-between">
+        <ElemSocialIconGroup
+          resources={[
+            {
+              value: link,
+              title: 'Website',
+              icon: IconGlobe,
+            },
+            {
+              value: twitter,
+              icon: IconTwitterX,
+            },
+            {
+              value: facebook,
+              icon: IconFacebook,
+            },
+            {
+              value: instagram,
+              icon: IconInstagram,
+            },
+            {
+              value: discord,
+              icon: IconDiscord,
+            },
+            {
+              value: telegram,
+              icon: IconTelegram,
+            },
+          ]}
+        />
 
+        <div className="inline-flex scale-90 origin-right">
           <ElemButton
-            btn="default"
-            onClick={handleClickAttend}
+            btn="white"
+            size="sm"
+            disabled={isLoadingGoingEvent}
             loading={isLoadingGoingEvent}
-            className="px-2.5">
-            {isAttended && moment(start_date).isSameOrAfter(moment(), 'day')
-              ? 'Attending'
-              : isAttended
-              ? 'Attended'
-              : 'Attend'}
+            onClick={handleClickAttend}
+            className="flex items-center gap-1.5 font-medium shadow-sm hover:shadow transition-all duration-300">
+            {isAttended ? (
+              <>
+                <IconCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Going</span>
+              </>
+            ) : (
+              <>
+                <IconPlus className="w-3.5 h-3.5" />
+                <span>Attend</span>
+              </>
+            )}
           </ElemButton>
         </div>
-      </div>
+      </CardFooter>
+
       <ElemRequiredProfileDialog
         isOpen={isOpenLinkPersonDialog}
-        title="Claim a profile."
-        content="To mark yourself as attendee, search your name and claim profile."
         onClose={onCloseLinkPersonDialog}
+        title="Claim a profile"
+        content="To mark yourself as an attendee, search your name and claim a profile."
       />
-
       <Toaster />
-    </div>
+    </Card>
   );
 };
