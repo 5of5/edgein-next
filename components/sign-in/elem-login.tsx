@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from 'react';
+import { FC, FormEvent, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from 'react-query';
 import validator from 'validator';
@@ -22,8 +22,24 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [unsuccessMessage, setUnsuccessMessage] = useState('');
-  console.log('email did exist:', isExistedEmail);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  // Validate form when inputs change
+  useEffect(() => {
+    if (!isExistedEmail) {
+      // Email-only validation (first step)
+      setIsFormValid(email.trim() !== '' && validateEmail(email) === '');
+    } else {
+      // Email and password validation (login step)
+      setIsFormValid(
+        email.trim() !== '' &&
+          validateEmail(email) === '' &&
+          password.trim() !== '',
+      );
+    }
+  }, [email, password, isExistedEmail]);
 
   const { isFetching: isCheckingExistedEmail, refetch: checkExistedEmail } =
     useQuery(
@@ -40,6 +56,13 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
           const data = await response.json();
           if (data.existed) {
             setIsExistedEmail(true);
+            // Focus on password field after email is validated
+            setTimeout(() => {
+              const passwordField = document.querySelector(
+                'input[name="password"]',
+              ) as HTMLInputElement;
+              if (passwordField) passwordField.focus();
+            }, 100);
           } else {
             onNext(email);
           }
@@ -75,11 +98,36 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
     },
   );
 
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = event?.target.value;
+    setEmail(newEmail);
+
+    // Only validate as user types if there was a previous error
+    if (emailError) {
+      setEmailError(validateEmail(newEmail));
+    }
+
+    // Clear any unsuccessful message when user starts typing again
+    if (unsuccessMessage) {
+      setUnsuccessMessage('');
+    }
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = event?.target.value;
+    setPassword(newPassword);
+
+    // Clear any unsuccessful message when user starts typing again
+    if (unsuccessMessage) {
+      setUnsuccessMessage('');
+    }
+  };
+
   const handleCheckExistedEmail = () => {
     const emailValidationError = validateEmail(email);
 
     if (emailValidationError || !email) {
-      setEmailError(emailValidationError);
+      setEmailError(emailValidationError || 'Email is required');
       return;
     }
 
@@ -87,22 +135,30 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   };
 
   const validateEmail = (value: string) => {
-    let emailError = '';
-    if (!validator.isEmail(value)) {
-      emailError = 'Enter valid email';
+    if (!value.trim()) {
+      return 'Email is required';
     }
-    return emailError;
+    if (!validator.isEmail(value)) {
+      return 'Please enter a valid email address';
+    }
+    return '';
   };
 
   const handleLogin = () => {
     const emailValidationError = validateEmail(email);
 
-    if (emailValidationError || !email || !password) {
-      setEmailError(emailValidationError);
+    if (emailValidationError || !email) {
+      setEmailError(emailValidationError || 'Email is required');
+      return;
+    }
+
+    if (!password.trim()) {
+      setPasswordError('Password is required');
       return;
     }
 
     setEmailError('');
+    setPasswordError('');
     setUnsuccessMessage('');
 
     login();
@@ -111,6 +167,18 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
+
+    // Validate form before submission
+    if (!isFormValid) {
+      if (!email.trim() || validateEmail(email) !== '') {
+        setEmailError(validateEmail(email) || 'Email is required');
+      }
+
+      if (isExistedEmail && !password.trim()) {
+        setPasswordError('Password is required');
+      }
+      return;
+    }
 
     if (isExistedEmail) {
       handleLogin();
@@ -131,7 +199,7 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
         </p>
 
         <div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="flex flex-col mt-6 space-y-4">
               <label>
                 <span className="text-xs font-medium">Email</span>
@@ -140,7 +208,12 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                   type="email"
                   value={email}
                   placeholder="name@company.com"
-                  onChange={event => setEmail(event?.target.value)}
+                  onChange={handleEmailChange}
+                  onBlur={() => {
+                    if (email.trim()) {
+                      setEmailError(validateEmail(email));
+                    }
+                  }}
                   className={`${
                     emailError === ''
                       ? 'ring-1 ring-gray-200'
@@ -148,7 +221,10 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                   } !rounded-2xl`}
                 />
                 {emailError && (
-                  <div className="mt-1 text-xs text-rose-600">{emailError}</div>
+                  <div className="mt-1 text-xs text-rose-600 flex items-center">
+                    <IconExclamationTriangle className="w-3 h-3 mr-1" />
+                    {emailError}
+                  </div>
                 )}
               </label>
 
@@ -169,24 +245,41 @@ export const ElemLogin: FC<Props> = ({ onNext }) => {
                     type="password"
                     placeholder="********"
                     value={password}
-                    onChange={event => setPassword(event?.target.value)}
-                    className={`ring-1 ring-gray-200 !rounded-2xl`}
+                    onChange={handlePasswordChange}
+                    onBlur={() => {
+                      if (isExistedEmail && !password.trim()) {
+                        setPasswordError('Password is required');
+                      } else {
+                        setPasswordError('');
+                      }
+                    }}
+                    className={`${
+                      passwordError === ''
+                        ? 'ring-1 ring-gray-200'
+                        : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
+                    } !rounded-2xl`}
                   />
+                  {passwordError && (
+                    <div className="mt-1 text-xs text-rose-600 flex items-center">
+                      <IconExclamationTriangle className="w-3 h-3 mr-1" />
+                      {passwordError}
+                    </div>
+                  )}
                 </label>
               )}
 
               {unsuccessMessage && (
-                <p className="flex items-center mt-1 text-sm font-bold text-red-500">
-                  <IconExclamationTriangle className="w-5 h-5 mr-1" />
+                <div className="flex items-center p-3 mt-1 text-sm font-medium text-rose-600 bg-rose-500/10 rounded-xl">
+                  <IconExclamationTriangle className="w-5 h-5 mr-2 text-rose-500" />
                   {unsuccessMessage}
-                </p>
+                </div>
               )}
 
               <ElemButton
                 className="w-full !mt-8"
                 btn="primary"
                 size="md"
-                disabled={!email || (isExistedEmail && !password)}
+                disabled={!isFormValid}
                 loading={isCheckingExistedEmail || isLoginLoading}>
                 {isExistedEmail ? 'Log in' : 'Continue with email'}
               </ElemButton>
