@@ -6,38 +6,43 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/shadcn/card';
+import { ArrowUpRight } from 'lucide-react';
 
 export default function Claim() {
   return (
-    <section className="relative overflow-hidden isolate bg-black min-h-[60vh] flex flex-col mt-4 sm:mt-10">
-      <div className="px-4 sm:px-6 py-4 mx-auto max-w-7xl sm:py-10 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight text-white">
+    <section className="bg-black min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-lg">
+        <div className="mb-16 text-center">
+          <h1 className="text-5xl sm:text-6xl font-bold text-white mb-4">
             Claim Your Data
           </h1>
-          <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-300">
-            Take control of your digital presence in the AI + Web3 ecosystem.
+          <p className="mt-4 text-xl text-gray-400">
+            Take control of your digital presence
           </p>
         </div>
-      </div>
-      <div className="flex justify-center mt-6 sm:mt-10 px-4 sm:px-8">
-        <Card className="bg-black-200 rounded-md w-full max-w-2xl border-neutral-600">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="text-xl sm:text-2xl font-bold text-white">
+
+        <Card className="bg-neutral-900 border-neutral-800 rounded-lg">
+          <CardHeader className="px-8 pt-8 pb-4">
+            <CardTitle className="text-2xl font-bold text-white">
               Coming Soon
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base text-gray-400">
-              We&apos;re building something special for you. Stay tuned for
-              updates.
+            <CardDescription className="text-base text-gray-400 mt-2">
+              We&apos;re building something special for you
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-4 sm:p-6">
-            <div className="text-center py-4 sm:py-8">
-              <p className="text-sm sm:text-base text-gray-300">
-                Follow @Mentibus_xyz on Twitter to be the first to know when we
-                launch.
-              </p>
-            </div>
+          <CardContent className="px-8 pb-8">
+            <p className="text-base text-gray-400">
+              Follow{' '}
+              <a
+                href="https://twitter.com/Mentibus_xyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-400 inline-flex items-center hover:underline">
+                @Mentibus_xyz
+                <ArrowUpRight className="ml-1 w-4 h-4" />
+              </a>{' '}
+              to be the first to know when we launch.
+            </p>
           </CardContent>
         </Card>
       </div>
