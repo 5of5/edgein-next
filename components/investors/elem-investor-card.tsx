@@ -19,6 +19,7 @@ import { CardType } from '../companies/elem-company-card';
 import { ElemSocialIconGroup } from '../elem-social-icon-group';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
+import { Card, CardContent, CardFooter, CardHeader } from '../shadcn/card';
 
 type Props = {
   vcFirm: Vc_Firms;
@@ -47,124 +48,115 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
   const isEmptyLocationJson = values(location_json).every(isEmpty);
 
   return (
-    <div className="flex flex-col w-full border border-gray-700 rounded-xl p-[16px] transition-all duration-300 hover:border-gray-400">
-      <div className="flex flex-col justify-between h-full">
-        <div>
-          <ElemLink href={`${ROUTES.INVESTORS}/${slug}`}>
-            <div className="flex items-center w-full gap-4 shrink-0 bg-[linear-gradient(180deg,_#1a1a1a_0%,_#0a0a0a_100%)] p-4 rounded-lg">
-              <ElemPhoto
-                photo={logo}
-                wrapClass="flex items-center justify-center shrink-0 w-20 h-20 aspect-square bg-white rounded-lg overflow-hidden"
-                imgClass="object-fit max-w-full max-h-full"
-                imgAlt={name}
-                placeholder="company"
-                placeholderClass="text-gray-300 w-full h-full m-4"
-              />
+    <Card className="flex flex-col w-full h-full border border-gray-800 bg-gradient-to-b from-gray-900 to-black hover:border-gray-600 transition-all duration-300">
+      <CardHeader className="p-4 pb-3 flex-shrink-0">
+        <ElemLink href={`${ROUTES.INVESTORS}/${slug}`} className="block">
+          <div className="flex items-center gap-3">
+            <ElemPhoto
+              photo={logo}
+              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 aspect-square bg-white rounded-lg overflow-hidden"
+              imgClass="object-fit max-w-full max-h-full"
+              imgAlt={name}
+              placeholder="company"
+              placeholderClass="text-gray-300 w-full h-full m-2"
+            />
+            <div className="flex flex-col overflow-hidden">
               <ElemTooltip content={name} mode="light">
-                <h3 className="text-lg font-medium truncate">{name}</h3>
+                <h3 className="text-base font-medium text-gray-100 truncate max-w-[200px]">
+                  {name}
+                </h3>
               </ElemTooltip>
             </div>
-
-            <div className="grid grid-cols-3 gap-2 mt-4 text-gray-500">
-              <div className="flex flex-col">
-                <span className="text-xs">Founded</span>
-                <span className="text-sm font-medium">
-                  {year_founded && year_founded !== '' ? year_founded : '-'}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs">Investments</span>
-                <span className="text-sm font-medium">
-                  {num_of_investments && num_of_investments > 0
-                    ? num_of_investments
-                    : '-'}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs">Funding</span>
-                <span className="text-sm font-medium">
-                  {investment_amount_total && investment_amount_total > 0
-                    ? `$${convertToInternationalCurrencySystem(
-                        Number(investment_amount_total),
-                      )}`
-                    : '-'}
-                </span>
-              </div>
-            </div>
-
-            {type === 'full' && overview && (
-              <div className="mt-2 text-sm text-gray-500 line-clamp-3">
-                {overview}
-              </div>
-            )}
-          </ElemLink>
-
-          <div>
-            {type === 'full' && !isEmptyLocationJson && (
-              <div className="flex pt-1.5 items-center">
-                <IconLocation
-                  title={getFullAddress(location_json)}
-                  className="self-start w-3 h-3 mt-1 shrink-0"
-                />
-                <span className="ml-1 text-sm text-gray-500 break-words line-clamp-3">
-                  {getFullAddress(location_json)}
-                </span>
-              </div>
-            )}
-
-            {tags && (
-              <ElemTags
-                className="mt-4"
-                limit={CARD_DEFAULT_TAGS_LIMIT}
-                resourceType={'investors'}
-                tags={tags}
-              />
-            )}
           </div>
-        </div>
+        </ElemLink>
 
-        <div className="flex items-center justify-between mt-4 gap-x-5">
-          <ElemSocialIconGroup
-            resources={[
-              {
-                value: website,
-                title: 'Website',
-                icon: IconGlobe,
-              },
-              {
-                isPremium: true,
-                value: linkedin,
-                icon: IconLinkedIn,
-              },
-              {
-                value: twitter,
-                icon: IconTwitterX,
-              },
-              {
-                isPremium: true,
-                value: github,
-                icon: IconGithub,
-              },
-            ]}
-          />
+        {tags && tags.length > 0 && (
+          <div className="mt-3">
+            <ElemTags
+              className="overflow-hidden"
+              limit={CARD_DEFAULT_TAGS_LIMIT}
+              resourceType={'investors'}
+              tags={tags}
+            />
+          </div>
+        )}
+      </CardHeader>
 
-          {/*
-            TO DO: add github and discord fields to vc_firms in db
-          {github && (
-            <Link href={github}>
-              <a target="_blank">
-                <IconGithub className="w-5 h-5 text-gray-600" />
-              </a>
-            </Link>
+      <CardContent className="p-4 pt-0 flex-grow min-h-0">
+        <ElemLink href={`${ROUTES.INVESTORS}/${slug}`} className="block h-full">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 mt-3">
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500">Founded</span>
+              <span className="text-sm font-medium text-gray-300">
+                {year_founded && year_founded !== '' ? year_founded : '-'}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500">Investments</span>
+              <span className="text-sm font-medium text-gray-300">
+                {num_of_investments && num_of_investments > 0
+                  ? num_of_investments
+                  : '-'}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500">Funding</span>
+              <span className="text-sm font-medium text-gray-300">
+                {investment_amount_total && investment_amount_total > 0
+                  ? `$${convertToInternationalCurrencySystem(
+                      Number(investment_amount_total),
+                    )}`
+                  : '-'}
+              </span>
+            </div>
+          </div>
+
+          {type === 'full' && overview && (
+            <div className="mt-4 text-sm text-gray-400 line-clamp-2">
+              {overview}
+            </div>
           )}
-          {discord && (
-            <Link href={discord}>
-              <a target="_blank">
-                <IconDiscord className="w-5 h-5 text-gray-600" />
-              </a>
-            </Link>
-          )} */}
 
+          {type === 'full' && !isEmptyLocationJson && (
+            <div className="flex items-center mt-3 text-gray-400">
+              <IconLocation
+                title={getFullAddress(location_json)}
+                className="w-3 h-3 shrink-0"
+              />
+              <span className="ml-1.5 text-xs truncate">
+                {getFullAddress(location_json)}
+              </span>
+            </div>
+          )}
+        </ElemLink>
+      </CardContent>
+
+      <CardFooter className="p-4 pt-3 border-t border-gray-800 flex-shrink-0 h-[60px] flex items-center justify-between">
+        <ElemSocialIconGroup
+          resources={[
+            {
+              value: website,
+              title: 'Website',
+              icon: IconGlobe,
+            },
+            {
+              isPremium: true,
+              value: linkedin,
+              icon: IconLinkedIn,
+            },
+            {
+              value: twitter,
+              icon: IconTwitterX,
+            },
+            {
+              isPremium: true,
+              value: github,
+              icon: IconGithub,
+            },
+          ]}
+        />
+
+        <div className="inline-flex scale-90 origin-right">
           <ElemSaveToList
             resourceName={vcFirm.name}
             resourceId={id}
@@ -174,7 +166,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, type = 'full' }) => {
             follows={follows}
           />
         </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
