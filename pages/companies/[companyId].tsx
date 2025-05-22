@@ -1,6 +1,21 @@
 import { useEffect, useState, MutableRefObject, useRef } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import {
+  Globe,
+  Calendar,
+  Users,
+  Briefcase,
+  Building,
+  MapPin,
+  FileText,
+  Github,
+  Twitter,
+  Linkedin,
+  Share2,
+  ExternalLink,
+  Heart,
+} from 'lucide-react';
 import { ElemPhoto } from '@/components/elem-photo';
 import { ElemCredibility } from '@/components/company/elem-credibility';
 import { ElemKeyInfo } from '@/components/elem-key-info';
@@ -295,7 +310,7 @@ const Company: NextPage<Props> = (props: Props) => {
                 <>
                   <div
                     ref={overviewDiv}
-                    className={`mt-4 text-sm text-gray-500 ${
+                    className={`mt-4 text-sm md:text-base text-gray-300 leading-relaxed ${
                       overviewMore ? '' : 'line-clamp-5'
                     }`}>
                     {parse(stripHtmlTags(company.overview))}
@@ -305,7 +320,7 @@ const Company: NextPage<Props> = (props: Props) => {
                     <ElemButton
                       onClick={() => setOverviewMore(!overviewMore)}
                       btn="transparent"
-                      className="!px-0 !py-0 inline font-normal">
+                      className="!px-0 !py-0 inline font-normal text-primary-400 hover:text-primary-300">
                       show {overviewMore ? 'less' : 'more'}
                     </ElemButton>
                   )}
@@ -323,10 +338,24 @@ const Company: NextPage<Props> = (props: Props) => {
                   resourceType={'companies'}
                   slug={company.slug!}
                   follows={company.follows}
+                  buttonStyle="gray"
+                  icon={
+                    <Heart
+                      className="w-4 h-4 mr-1 text-neutral-300"
+                      strokeWidth={1.5}
+                    />
+                  }
                 />
                 <ElemSocialShare
                   resourceName={company.name}
                   resourceTwitterUrl={company.twitter}
+                  buttonStyle="gray"
+                  icon={
+                    <Share2
+                      className="w-4 h-4 mr-1 text-neutral-300"
+                      strokeWidth={1.5}
+                    />
+                  }
                 />
                 {user?.role === USER_ROLES.ADMIN && (
                   <ElemButton
@@ -340,30 +369,32 @@ const Company: NextPage<Props> = (props: Props) => {
             </div>
             <div className="col-span-3 mt-7 lg:mt-0">
               {Object.values(tokenInfo).some(i => i > 0) && (
-                <section className="p-4 bg-black border border-gray-300 rounded-lg md:mt-0">
-                  <h2 className="font-medium">Token Info</h2>
+                <section className="p-4 bg-black border border-gray-700 rounded-lg md:mt-0">
+                  <h2 className="font-medium text-white">Token Info</h2>
                   <div className="flex flex-col my-3 space-y-3">
                     {props.metrics.map(item => {
                       let metricsClass = '';
 
                       if (item.id === 'currentPrice') {
-                        metricsClass = 'text-green-600';
+                        metricsClass = 'text-green-400';
                       } else if (item.id === 'marketCap') {
-                        metricsClass = 'text-green-600';
+                        metricsClass = 'text-green-400';
                       } else if (item.id === 'marketCapRank') {
-                        metricsClass = '';
+                        metricsClass = 'text-neutral-200';
                       } else if (item.id === 'highLow24H') {
-                        metricsClass = '';
+                        metricsClass = 'text-neutral-200';
                       } else if (item.id === 'vol24H') {
-                        metricsClass = 'text-green-600';
+                        metricsClass = 'text-green-400';
                       } else {
-                        metricsClass = '';
+                        metricsClass = 'text-neutral-200';
                       }
                       return (
                         <div
                           className="flex items-center justify-between space-x-2"
                           key={item.id}>
-                          <div className="text-sm">{item.name}</div>
+                          <div className="text-sm text-neutral-300">
+                            {item.name}
+                          </div>
                           <div
                             className={`text-sm font-medium ${metricsClass}`}>
                             {tokenInfo[item.id as keyof TokenInfo]
@@ -382,13 +413,13 @@ const Company: NextPage<Props> = (props: Props) => {
                       );
                     })}
                   </div>
-                  <div className="text-xs text-center text-gray-500">
+                  <div className="text-xs text-center text-neutral-500">
                     Token data source:{' '}
                     <a
                       href="https://mobula.io/?ref=edgeinio"
                       target="_blank"
                       rel="noreferrer"
-                      className="hover:text-slate-600">
+                      className="text-neutral-400 hover:text-neutral-300">
                       AmberData
                     </a>{' '}
                     and Coingecko
@@ -414,7 +445,7 @@ const Company: NextPage<Props> = (props: Props) => {
             id="overview">
             <div className="col-span-3">
               <ElemKeyInfo
-                className="sticky top-28"
+                className="sticky top-40"
                 heading="Key Info"
                 website={company.website}
                 totalFundingRaised={company.investor_amount}

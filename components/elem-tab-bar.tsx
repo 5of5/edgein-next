@@ -110,9 +110,12 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
   ];
 
   return (
-    <ElemSticky
-      className={`flex gap-y-2 items-center ${className}`}
-      activeClass="top-14 bg-black shadow-sm">
+    <div
+      className={`sticky top-[78px] bg-black z-[39] shadow-md border-b border-neutral-700 w-full ${className}`}
+      style={{
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+      }}>
       {show && (
         <LiveChatWidget
           license={process.env.NEXT_PUBLIC_LIVECHAT_LISCENCE || ''}
@@ -120,53 +123,58 @@ export const ElemTabBar: FC<PropsWithChildren<Props>> = ({
           onNewEvent={handleLiveChatEvent}
         />
       )}
-      <nav
-        className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 mr-auto lg:flex-wrap ${tabsClassName}`}>
-        {tabs &&
-          tabs.map((tab: Tabs, index: number) => (
-            <ElemButton
-              key={index}
-              onClick={() => onClickTab(index, tab.ref)}
-              btn="gray"
-              roundedFull={false}
-              className={`rounded-lg shrink-0 ${
-                isActiveTab === index
-                  ? 'border-primary-500 hover:border-primary-400'
-                  : ''
-              }`}>
-              {tab.name}
-            </ElemButton>
-          ))}
-      </nav>
-      {children}
-      <ElemButton
-        btn="gray"
-        className="rounded-lg shrink-0 border-primary-500 hover:border-primary-400"
-        onClick={() => {
-          const companyId = router.query.companyId;
-          const isCompaniesRoute = router.pathname.startsWith('/companies/');
-          if (companyId && isCompaniesRoute) {
-            router.push(`${ROUTES.ORGANIZATIONS}/companies/${companyId}`);
-          }
-        }}>
-        {router.pathname.startsWith('/companies/')
-          ? 'Edit Data'
-          : 'Request Data'}
-      </ElemButton>
-      {/* {showDropdown && (
-        <ElemDropdown
-          customButton={
-            <ElemButton btn="gray" className="w-8 h-8 !p-0">
-              <IconEllipsisVertical
-                className="w-6 h-6 text-gray-600"
-                title="Options"
-              />
-            </ElemButton>
-          }
-          items={dropdownItems}
-          itemsShowIcons={false}
-        />
-      )} */}
-    </ElemSticky>
+      <div className="max-w-screen-2xl w-full mx-auto px-2 py-2">
+        <div className="flex gap-y-2 items-center">
+          <nav
+            className={`flex flex-nowrap overflow-x-scroll scrollbar-hide gap-2 mr-auto lg:flex-wrap ${tabsClassName}`}>
+            {tabs &&
+              tabs.map((tab: Tabs, index: number) => (
+                <ElemButton
+                  key={index}
+                  onClick={() => onClickTab(index, tab.ref)}
+                  btn="gray"
+                  roundedFull={false}
+                  className={`rounded-lg shrink-0 ${
+                    isActiveTab === index
+                      ? 'border-primary-500 hover:border-primary-400'
+                      : ''
+                  }`}>
+                  {tab.name}
+                </ElemButton>
+              ))}
+          </nav>
+          {children}
+          <ElemButton
+            btn="gray"
+            className="rounded-lg shrink-0 border-primary-500 hover:border-primary-400"
+            onClick={() => {
+              const companyId = router.query.companyId;
+              const isCompaniesRoute =
+                router.pathname.startsWith('/companies/');
+              if (companyId && isCompaniesRoute) {
+                router.push(`${ROUTES.ORGANIZATIONS}/companies/${companyId}`);
+              }
+            }}>
+            {router.pathname.startsWith('/companies/')
+              ? 'Edit Data'
+              : 'Request Data'}
+          </ElemButton>
+          {/* {showDropdown && (
+            <ElemDropdown
+              customButton={
+                <ElemButton btn="gray" className="w-8 h-8 !p-0">
+                  <IconEllipsisVertical
+                    className="w-6 h-6 text-gray-600"
+                    title="Options"
+                  />
+                </ElemButton>
+              }
+              items={dropdownItems}
+              itemsShowIcons={false}
+            />
+          )} */}
+        </div>
+      </div>
+    </div>
   );
 };

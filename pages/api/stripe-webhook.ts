@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let event: Stripe.Event;
 
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    
+
     try {
       const signature = req.headers['stripe-signature'];
       const reqBuffer = await buffer(req);
@@ -46,7 +46,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case 'checkout.session.completed': {
           const session = event.data.object as Stripe.Checkout.Session;
           customerId = getCustomerId(session.customer || '');
-          const userId = session.metadata?.userId || session.client_reference_id;
+          const userId =
+            session.metadata?.userId || session.client_reference_id;
 
           if (!userId) {
             throw new Error(`No user ID found for customer ${customerId}`);
@@ -59,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           // Get subscription details
           const subscription = await stripe.subscriptions.retrieve(
-            session.subscription as string
+            session.subscription as string,
           );
 
           // Create or update billing org
@@ -67,16 +68,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const billingOrg = await BillingService.insertBillingOrg(
               customerId,
               subscription.status === 'active' ? 'active' : 'inactive',
-              'contributor'
+              'contributor',
             );
-            await UserService.updateBillingOrg(Number(userId), billingOrg?.id || 0);
+            await UserService.updateBillingOrg(
+              Number(userId),
+              billingOrg?.id || 0,
+            );
           } else {
-            const billingOrg = await BillingService.getBillingOrgById(user.billing_org_id);
+            const billingOrg = await BillingService.getBillingOrgById(
+              user.billing_org_id,
+            );
             if (billingOrg) {
               await BillingService.updateBillingOrgCustomerId(
                 billingOrg.id,
                 customerId,
-                subscription.status === 'active' ? 'active' : 'inactive'
+                subscription.status === 'active' ? 'active' : 'inactive',
               );
             }
           }
@@ -84,7 +90,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `✅ New premium subscription created for user ${user.id} (${user.email})`
+            `✅ New premium subscription created for user ${user.id} (${user.email})`,
           );
           break;
         }
@@ -92,23 +98,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case 'customer.subscription.created': {
           const subscription = event.data.object as Stripe.Subscription;
           customerId = getCustomerId(subscription.customer);
-          
-          const billingOrg = await BillingService.getBillingOrgByCustomerId(customerId);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
           if (!billingOrg) {
             throw new Error(`No billing org found for customer ${customerId}`);
           }
 
           // Update billing org status based on subscription status
-          const status = subscription.status === 'active' ? 'active' : 'inactive';
-          await BillingService.updateBillingOrg(
-            billingOrg.id,
-            status
-          );
+          const status =
+            subscription.status === 'active' ? 'active' : 'inactive';
+          await BillingService.updateBillingOrg(billingOrg.id, status);
 
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `🎉 New premium subscription created for customer ${customerId}, status: ${status}`
+            `🎉 New premium subscription created for customer ${customerId}, status: ${status}`,
           );
           break;
         }
@@ -116,23 +122,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case 'customer.subscription.updated': {
           const subscription = event.data.object as Stripe.Subscription;
           customerId = getCustomerId(subscription.customer);
-          
-          const billingOrg = await BillingService.getBillingOrgByCustomerId(customerId);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
           if (!billingOrg) {
             throw new Error(`No billing org found for customer ${customerId}`);
           }
 
           // Update billing org status based on subscription status
-          const status = subscription.status === 'active' ? 'active' : 'inactive';
-          await BillingService.updateBillingOrg(
-            billingOrg.id,
-            status
-          );
+          const status =
+            subscription.status === 'active' ? 'active' : 'inactive';
+          await BillingService.updateBillingOrg(billingOrg.id, status);
 
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `🔄 Premium subscription updated for customer ${customerId}, status: ${status}`
+            `🔄 Premium subscription updated for customer ${customerId}, status: ${status}`,
           );
           break;
         }
@@ -140,22 +146,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription;
           customerId = getCustomerId(subscription.customer);
-          
-          const billingOrg = await BillingService.getBillingOrgByCustomerId(customerId);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
           if (!billingOrg) {
             throw new Error(`No billing org found for customer ${customerId}`);
           }
 
           // Set status to inactive when subscription is deleted
-          await BillingService.updateBillingOrg(
-            billingOrg.id,
-            'inactive'
-          );
+          await BillingService.updateBillingOrg(billingOrg.id, 'inactive');
 
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `❌ Premium subscription canceled for customer ${customerId}`
+            `❌ Premium subscription canceled for customer ${customerId}`,
           );
           break;
         }
@@ -166,22 +171,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             throw new Error('No customer found for invoice');
           }
           customerId = getCustomerId(invoice.customer);
-          
-          const billingOrg = await BillingService.getBillingOrgByCustomerId(customerId);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
           if (!billingOrg) {
             throw new Error(`No billing org found for customer ${customerId}`);
           }
 
           // Update billing org status to active
-          await BillingService.updateBillingOrg(
-            billingOrg.id,
-            'active'
-          );
+          await BillingService.updateBillingOrg(billingOrg.id, 'active');
 
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `💰 Premium payment succeeded for customer ${customerId}, invoice ${invoice.id}`
+            `💰 Premium payment succeeded for customer ${customerId}, invoice ${invoice.id}`,
           );
           break;
         }
@@ -192,22 +196,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             throw new Error('No customer found for invoice');
           }
           customerId = getCustomerId(invoice.customer);
-          
-          const billingOrg = await BillingService.getBillingOrgByCustomerId(customerId);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
           if (!billingOrg) {
             throw new Error(`No billing org found for customer ${customerId}`);
           }
 
           // Update billing org status to inactive
-          await BillingService.updateBillingOrg(
-            billingOrg.id,
-            'inactive'
-          );
+          await BillingService.updateBillingOrg(billingOrg.id, 'inactive');
 
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `❌ Premium payment failed for customer ${customerId}, invoice ${invoice.id}`
+            `❌ Premium payment failed for customer ${customerId}, invoice ${invoice.id}`,
           );
           break;
         }
@@ -215,11 +218,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case 'customer.subscription.trial_will_end': {
           const subscription = event.data.object as Stripe.Subscription;
           customerId = getCustomerId(subscription.customer);
-          
+
           // Notify via Slack about trial ending
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `⚠️ Premium trial ending soon for customer ${customerId}, subscription ${subscription.id}`
+            `⚠️ Premium trial ending soon for customer ${customerId}, subscription ${subscription.id}`,
           );
           break;
         }
@@ -230,11 +233,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             throw new Error('No customer found for payment intent');
           }
           customerId = getCustomerId(paymentIntent.customer);
-          
+
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `💳 Premium payment intent succeeded for customer ${customerId}, amount: ${paymentIntent.amount}`
+            `💳 Premium payment intent succeeded for customer ${customerId}, amount: ${paymentIntent.amount}`,
           );
           break;
         }
@@ -245,11 +248,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             throw new Error('No customer found for payment intent');
           }
           customerId = getCustomerId(paymentIntent.customer);
-          
+
           // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `❌ Premium payment intent failed for customer ${customerId}, amount: ${paymentIntent.amount}`
+            `❌ Premium payment intent failed for customer ${customerId}, amount: ${paymentIntent.amount}`,
           );
           break;
         }
@@ -261,11 +264,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.json({ received: true });
     } catch (err: any) {
       console.error(`Webhook Error: ${err.message}`);
-      
+
       // Notify via Slack about the error
       await SlackServices.sendMessage(
         process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-        `❌ Webhook Error: ${err.message}`
+        `❌ Webhook Error: ${err.message}`,
       );
 
       res.status(400).send(`Webhook Error: ${err.message}`);

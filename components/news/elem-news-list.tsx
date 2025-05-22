@@ -68,13 +68,15 @@ const ElemNewsList: React.FC<Props> = ({
         />
       )}
       <div className="flex items-center justify-between px-4 pt-2">
-        <h2 className="text-lg font-medium">{heading ? heading : 'News'}</h2>
+        <h2 className="text-lg font-medium text-white">
+          {heading ? heading : 'News'}
+        </h2>
       </div>
 
       <div className="p-4">
         {news.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
-            <div className="text-gray-500">
+            <div className="text-neutral-500 italic">
               There are no recent news for this organization.
             </div>
             {user ? (

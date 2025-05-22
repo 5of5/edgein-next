@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import { IconSpinner } from '@/components/icons';
+import { Loader, ArrowLeft, ArrowRight } from 'lucide-react';
 import { ElemLink } from './elem-link';
 
 type Props = {
@@ -70,7 +70,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
     btnClass = 'text-white bg-rose-600 hover:bg-rose-500';
   } else if (btn === 'gray') {
     btnClass =
-      'text-gray-300 bg-neutral-900 border border-gray-100 hover:border-gray-300 active:border-primary-500';
+      'text-gray-300 bg-neutral-900 border border-neutral-700 hover:border-gray-300 active:border-primary-500';
   } else if (btn === 'default') {
     btnClass =
       'bg-black border  border-neutral-700 hover:bg-neutral-900 active:border-primary-500';
@@ -111,10 +111,18 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
       className={componentClassName + className}
       onClick={onClick}
       type="submit">
-      {loading && <IconSpinner className="w-5 h-5 mr-3 -ml-1 animate-spin" />}
-      {arrowLeft && <IconArrowLeft className={`h-3 w-4 ${arrowClass}`} />}
+      {loading && <Loader className="w-5 h-5 mr-3 -ml-1 animate-spin" />}
+      {arrowLeft && (
+        <ArrowLeft
+          className={`h-3 w-4 ${arrowClass} group-hover:-translate-x-0.5 transition-transform duration-150`}
+        />
+      )}
       {children}
-      {arrow && <IconArrow className={`h-3 w-4 ml-1 ${arrowClass}`} />}
+      {arrow && (
+        <ArrowRight
+          className={`h-3 w-4 ml-1 ${arrowClass} group-hover:translate-x-0.5 transition-transform duration-150`}
+        />
+      )}
     </button>
   );
 
@@ -127,68 +135,4 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   }
 
   return component;
-};
-
-type IconProps = {
-  className?: string;
-  title?: string;
-};
-
-const IconArrowLeft: React.FC<IconProps> = ({
-  className,
-  title = 'Arrow Left',
-}) => {
-  return (
-    <svg
-      viewBox="0 0 10 10"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}>
-      <title>{title}</title>
-      <path
-        className="transition ease-in-out duration-150 group-hover:-translate-x-0.5"
-        d="M5 1.36365L1 5.00001L5 8.63637"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        className="opacity-0 group-hover:opacity-100"
-        d="M5 5H1"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
-
-const IconArrow: React.FC<IconProps> = ({ className, title = 'Arrow' }) => {
-  return (
-    <svg
-      viewBox="0 0 10 10"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}>
-      <title>{title}</title>
-      <path
-        className="transition ease-in-out duration-150 group-hover:translate-x-0.5"
-        d="M1 1.36365L5 5.00001L1 8.63637"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        className="opacity-0 group-hover:opacity-100"
-        d="M5 5H1"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
 };

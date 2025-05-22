@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
 import { ElemPhoto } from '@/components/elem-photo';
-import { useTable, useSortBy, usePagination } from 'react-table';
 import {
-  IconEditPencil,
-  IconSortUp,
-  IconSortDown,
-  IconX,
-  IconChevronDownMini,
-} from '@/components/icons';
-import { Menu } from '@headlessui/react';
-import { Pagination } from '@/components/pagination';
-import { numberWithCommas, formatDate, convertToIntNum } from '@/utils';
+  ChevronDown,
+  ArrowUpDown,
+  Calendar,
+  DollarSign,
+  Users,
+  Tag,
+} from 'lucide-react';
+import { LucideIconWrapper } from '@/components/icons-wrapper';
+import { IconProps } from '@/components/icons';
 import { Investment_Rounds } from '@/graphql/types';
 import { ElemButton } from '../elem-button';
-// import { useIntercom } from 'react-use-intercom';
 import { ROUTES } from '@/routes';
 import { ElemLink } from '../elem-link';
 import { LiveChatWidget, EventHandlerPayload } from '@livechat/widget-react';
+import { numberWithCommas, formatDate } from '@/utils';
+
+// Wrap Lucide icons to match our IconProps interface
+const WrappedArrowUpDown = LucideIconWrapper(ArrowUpDown);
+const WrappedCalendar = LucideIconWrapper(Calendar);
+const WrappedDollarSign = LucideIconWrapper(DollarSign);
+const WrappedUsers = LucideIconWrapper(Users);
+const WrappedTag = LucideIconWrapper(Tag);
 
 type Props = {
   className?: string;
@@ -31,7 +37,6 @@ export const ElemInvestments: React.FC<Props> = ({
   resourceName,
   investments,
 }) => {
-  // const { showNewMessages } = useIntercom();
   function handleLiveChatEvent(event: EventHandlerPayload<'onNewEvent'>) {
     console.log('LiveChatWidget.onNewEvent', event);
   }
@@ -42,236 +47,26 @@ export const ElemInvestments: React.FC<Props> = ({
     setShow(true);
   };
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'Round',
-        accessor: 'round' as const,
-        Cell: (props: any) => (
-          <div>{props.value ? <>{props.value}</> : <>&mdash;</>}</div>
-        ),
-      },
-      {
-        Header: 'Amount Raised',
-        accessor: 'amount' as const,
-        Cell: (props: any) => (
-          <div>
-            {props.value ? (
-              <>Raised ${numberWithCommas(props.value)}</>
-            ) : (
-              <>&mdash;</>
-            )}
-            {props.row.original.valuation && (
-              <div>
-                {' '}
-                at ${numberWithCommas(props.row.original.valuation)} valuation
-              </div>
-            )}
-          </div>
-        ),
-        width: 200,
-      },
-      {
-        Header: 'Date',
-        accessor: 'round_date' as const,
-        Cell: (props: any) => (
-          <div>
-            {props.value ? (
-              <>
-                {formatDate(props.value, {
-                  month: 'short',
-                  day: '2-digit',
-                  year: 'numeric',
-                })}
-              </>
-            ) : (
-              <>&mdash;</>
-            )}
-          </div>
-        ),
-      },
-      {
-        Header: 'Investors',
-        accessor: 'investments' as const,
-        Cell: (props: any) => {
-          const vcsWithPartner = props.value?.filter(
-            (investment: any) => investment.person && investment.vc_firm,
-          );
-          const vcs = props.value?.filter(
-            (investment: any) => !investment.person && investment.vc_firm,
-          );
-          const angels = props.value?.filter(
-            (investment: any) => investment.person && !investment.vc_firm,
-          );
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-          return (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 !whitespace-normal">
-              {!props.value && <>&mdash;</>}
+  // Sort investments by date
+  const sortedInvestments = [...investments].sort((a, b) => {
+    const dateA = a.round_date ? new Date(a.round_date).getTime() : 0;
+    const dateB = b.round_date ? new Date(b.round_date).getTime() : 0;
+    return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+  });
 
-              {vcsWithPartner.map((investment: any) => {
-                return (
-                  <div
-                    key={investment.id}
-                    className="p-2 space-y-2 transition-all bg-black border border-gray-300 rounded-lg h-fit">
-                    {investment.vc_firm && (
-                      <ElemLink
-                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
-                        key={investment.vc_firm.id}
-                        className="flex items-center space-x-3 vcfirm hover:opacity-70">
-                        <ElemPhoto
-                          photo={investment.vc_firm.logo}
-                          wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
-                          imgClass="object-fit max-w-full max-h-full"
-                          imgAlt={investment.vc_firm.name}
-                          placeholder="company"
-                          placeholderClass="text-gray-300"
-                        />
-                        <span className="font-medium line-clamp-2">
-                          {investment.vc_firm.name}
-                        </span>
-                      </ElemLink>
-                    )}
-
-                    {investment.person && (
-                      <ElemLink
-                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
-                        key={investment.person.id}
-                        className="flex items-center space-x-3 investor">
-                        <ElemPhoto
-                          photo={investment.person.picture}
-                          wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-                          imgClass="object-cover w-12 h-12"
-                          imgAlt={investment.person.name}
-                          placeholder="user"
-                          placeholderClass="text-gray-300"
-                        />
-                        <span className="font-medium line-clamp-2">
-                          {investment.person.name}
-                        </span>
-                      </ElemLink>
-                    )}
-                  </div>
-                );
-              })}
-
-              {vcs.map((investment: any) => {
-                return (
-                  <div
-                    key={investment.id}
-                    className="p-2 space-y-2 transition-all bg-black border border-gray-300 rounded-lg h-fit">
-                    {investment.vc_firm && (
-                      <ElemLink
-                        href={`${ROUTES.INVESTORS}/${investment.vc_firm.slug}`}
-                        key={investment.vc_firm.id}
-                        className="flex items-center space-x-3 vcfirm hover:opacity-70">
-                        <ElemPhoto
-                          photo={investment.vc_firm.logo}
-                          wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-gray-300 rounded-lg overflow-hidden"
-                          imgClass="object-fit max-w-full max-h-full"
-                          imgAlt={investment.vc_firm.name}
-                          placeholder="company"
-                          placeholderClass="text-gray-300"
-                        />
-                        <span className="font-medium line-clamp-2">
-                          {investment.vc_firm.name}
-                        </span>
-                      </ElemLink>
-                    )}
-                  </div>
-                );
-              })}
-
-              {angels.map((investment: any) => {
-                return (
-                  <div
-                    key={investment.id}
-                    className="p-2 space-y-2 transition-all bg-black border border-gray-300 rounded-lg h-fit">
-                    {investment.person && (
-                      <ElemLink
-                        href={`${ROUTES.PEOPLE}/${investment.person.slug}`}
-                        key={investment.person.id}
-                        className="flex items-center space-x-3 investor hover:opacity-70">
-                        <ElemPhoto
-                          photo={investment.person.picture}
-                          wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-                          imgClass="object-cover w-12 h-12"
-                          imgAlt={investment.person.name}
-                          placeholder="user"
-                          placeholderClass="text-gray-300"
-                        />
-                        <span className="font-medium line-clamp-2">
-                          {investment.person.name}
-                        </span>
-                      </ElemLink>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        },
-        width: 650,
-        disableSortBy: true,
-      },
-    ],
-    [],
+  // Calculate pagination
+  const totalPages = Math.ceil(sortedInvestments.length / itemsPerPage);
+  const paginatedInvestments = sortedInvestments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
   );
 
-  const dataInvestments = React.useMemo(() => {
-    return investments ? investments : [{}];
-  }, [investments]);
-
-  const investmentsCount = dataInvestments.length;
-
-  const sortees = React.useMemo(
-    () => [
-      {
-        id: 'round_date',
-        desc: true,
-      },
-    ],
-    [],
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    //rows, //"rows" gets replaced with "page" for pagination
-    prepareRow,
-    page,
-    nextPage,
-    previousPage,
-    setSortBy,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      columns,
-      data: dataInvestments,
-      //autoResetPage: true, true by default
-      disableSortRemove: true,
-      autoResetSortBy: false,
-      initialState: {
-        sortBy: sortees,
-        pageSize: 50,
-      },
-    },
-    useSortBy,
-    usePagination,
-  );
-
-  const generateSortingIndicator = (column: any) => {
-    return column.isSorted ? (
-      column.isSortedDesc ? (
-        <IconSortDown className="inline-block w-5 h-5 ml-1" />
-      ) : (
-        <IconSortUp className="inline-block w-5 h-5 ml-1" />
-      )
-    ) : column.canSort ? (
-      <IconSortDown className="inline-block w-5 h-5 ml-1 text-slate-400 group-hover:text-primary-500" />
-    ) : (
-      <></>
-    );
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc');
   };
 
   return (
@@ -284,15 +79,23 @@ export const ElemInvestments: React.FC<Props> = ({
         />
       )}
       {heading && (
-        <div className="flex items-center justify-between">
-          <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
+        <div className="flex items-center justify-between px-4 pt-2">
+          <h2 className="text-lg font-medium text-white">{heading}</h2>
+          {investments.length > 0 && (
+            <button
+              onClick={toggleSortOrder}
+              className="flex items-center gap-1 text-sm text-neutral-400 hover:text-neutral-200">
+              <WrappedArrowUpDown className="w-4 h-4" />
+              Sort by date {sortOrder === 'desc' ? '(newest)' : '(oldest)'}
+            </button>
+          )}
         </div>
       )}
 
       <div className="px-4 py-4">
         {investments.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
-            <div className="text-gray-500">
+            <div className="text-neutral-500 italic">
               There is no investment data on this organization.
             </div>
             <ElemButton
@@ -308,151 +111,177 @@ export const ElemInvestments: React.FC<Props> = ({
           </div>
         ) : (
           <>
-            <div className="overflow-auto border border-gray-300 rounded-lg">
-              <table
-                {...getTableProps()}
-                className="min-w-full divide-y divide-gray-300 table-auto overscroll-x-none">
-                <thead>
-                  {headerGroups.map(headerGroup => {
-                    const { key, ...restHeaderGroupProps } =
-                      headerGroup.getHeaderGroupProps();
-                    return (
-                      <tr
-                        key={key}
-                        {...restHeaderGroupProps}
-                        className="table-row min-w-full text-gray-600 bg-gray-25">
-                        {headerGroup.headers.map((column: any) => {
-                          const { key, ...restColumnProps }: any = ({} = {
-                            ...column.getHeaderProps({
-                              style: {
-                                width: column.width,
-                                minWidth: column.minWidth,
-                                maxWidth: column.maxWidth,
-                              },
-                            }),
-                          });
+            <div className="space-y-4">
+              {paginatedInvestments.map((investment, index) => (
+                <div
+                  key={investment.id || index}
+                  className="border border-neutral-800 rounded-lg p-4 space-y-4">
+                  <div className="flex flex-wrap gap-3 justify-between">
+                    <div className="flex items-center gap-2">
+                      <WrappedTag
+                        className="w-4 h-4 text-neutral-400"
+                        strokeWidth={1.5}
+                      />
+                      <span className="text-neutral-200 font-medium">
+                        {investment.round || 'Undisclosed Round'}
+                      </span>
+                    </div>
 
-                          return (
-                            <th
-                              key={key}
-                              {...restColumnProps}
-                              className={`relative px-2 py-2 whitespace-nowrap font-medium text-sm text-left min-w-content`}>
-                              <div className="flex items-center min-w-content">
-                                {column.render('Header')}
-                                <Menu
-                                  as="div"
-                                  className="relative inline-block ml-1 text-left">
-                                  <Menu.Button className="block text-gray-500 align-middle rounded-full ">
-                                    <IconChevronDownMini className="w-5 h-5" />
-                                  </Menu.Button>
+                    <div className="flex items-center gap-2">
+                      <WrappedCalendar
+                        className="w-4 h-4 text-neutral-400"
+                        strokeWidth={1.5}
+                      />
+                      <span className="text-neutral-400 text-sm">
+                        {investment.round_date
+                          ? formatDate(investment.round_date, {
+                              month: 'short',
+                              day: '2-digit',
+                              year: 'numeric',
+                            })
+                          : 'Undisclosed Date'}
+                      </span>
+                    </div>
+                  </div>
 
-                                  <Menu.Items className="absolute left-0 z-50 flex flex-col w-56 mt-2 overflow-hidden origin-top-left bg-black divide-y divide-gray-100 rounded-lg shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                    {column.canSort && (
-                                      <Menu.Item
-                                        as="button"
-                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
-                                          column.isSorted &&
-                                          column.isSortedDesc === false
-                                            ? 'text-primary-500'
-                                            : ''
-                                        }`}
-                                        onClick={(e: any) => {
-                                          column.getHeaderProps(
-                                            setSortBy([
-                                              { id: column.id, desc: false },
-                                            ]),
-                                          );
-                                        }}>
-                                        <IconSortUp className="inline-block w-5 h-5 mr-1" />
-                                        Sort Ascending
-                                      </Menu.Item>
-                                    )}
+                  {(investment.amount || investment.valuation) && (
+                    <div className="flex items-center gap-2">
+                      <WrappedDollarSign
+                        className="w-4 h-4 text-green-400"
+                        strokeWidth={1.5}
+                      />
+                      <div className="text-neutral-200">
+                        {investment.amount && (
+                          <span className="text-green-400 font-medium">
+                            ${numberWithCommas(investment.amount)}
+                          </span>
+                        )}
+                        {investment.amount && investment.valuation && ' at '}
+                        {investment.valuation && (
+                          <>
+                            <span className="text-neutral-200">
+                              ${numberWithCommas(investment.valuation)}{' '}
+                              valuation
+                            </span>
+                          </>
+                        )}
+                        {!investment.amount &&
+                          !investment.valuation &&
+                          'Undisclosed amount'}
+                      </div>
+                    </div>
+                  )}
 
-                                    {column.canSort && (
-                                      <Menu.Item
-                                        as="button"
-                                        className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
-                                          column.isSorted &&
-                                          column.isSortedDesc === true
-                                            ? 'text-primary-500'
-                                            : ''
-                                        }`}
-                                        onClick={(e: any) => {
-                                          column.getHeaderProps(
-                                            setSortBy([
-                                              { id: column.id, desc: true },
-                                            ]),
-                                          );
-                                        }}>
-                                        <IconSortDown className="inline-block w-5 h-5 mr-1" />
-                                        Sort Descending
-                                      </Menu.Item>
-                                    )}
+                  {investment.investments &&
+                    investment.investments.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <WrappedUsers
+                            className="w-4 h-4 text-neutral-400"
+                            strokeWidth={1.5}
+                          />
+                          <span className="text-neutral-300 text-sm">
+                            Investors
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                          {investment.investments.map(inv => (
+                            <div
+                              key={inv.id}
+                              className="flex items-center gap-3 p-2 rounded-lg border border-neutral-800 bg-black/30">
+                              {inv.vc_firm && (
+                                <ElemLink
+                                  href={`${ROUTES.INVESTORS}/${inv.vc_firm.slug}`}
+                                  className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                                  <ElemPhoto
+                                    photo={inv.vc_firm.logo}
+                                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 rounded-lg overflow-hidden border border-neutral-800"
+                                    imgClass="object-contain max-w-full max-h-full"
+                                    imgAlt={inv.vc_firm.name}
+                                    placeholder="company"
+                                    placeholderClass="text-neutral-600"
+                                  />
+                                  <span className="font-medium text-sm text-neutral-200 line-clamp-2">
+                                    {inv.vc_firm.name}
+                                  </span>
+                                </ElemLink>
+                              )}
 
-                                    {column.render('Header') != 'Name' && (
-                                      <Menu.Item
-                                        as="button"
-                                        className="flex items-center w-full px-2 py-2 text-sm font-medium text-left hover:text-primary-500 hover:bg-slate-100"
-                                        onClick={(e: any) => {
-                                          column.getHeaderProps(
-                                            column.toggleHidden(),
-                                          );
-                                        }}>
-                                        <IconX className="inline-block w-5 h-5 mr-1" />
-                                        Hide Column
-                                      </Menu.Item>
-                                    )}
-                                  </Menu.Items>
-                                </Menu>
-                              </div>
-                            </th>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </thead>
-                <tbody
-                  {...getTableBodyProps()}
-                  className="flex-1 bg-black divide-y divide-gray-300 md:flex-none mb-96">
-                  {page.map(row => {
-                    prepareRow(row);
-                    const { key, ...restRowProps } = row.getRowProps();
+                              {inv.person && !inv.vc_firm && (
+                                <ElemLink
+                                  href={`${ROUTES.PEOPLE}/${inv.person.slug}`}
+                                  className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                                  <ElemPhoto
+                                    photo={inv.person.picture}
+                                    wrapClass="flex items-center justify-center shrink-0 w-10 h-10 rounded-full overflow-hidden border border-neutral-800"
+                                    imgClass="object-cover w-10 h-10"
+                                    imgAlt={inv.person.name}
+                                    placeholder="user"
+                                    placeholderClass="text-neutral-600"
+                                  />
+                                  <span className="font-medium text-sm text-neutral-200 line-clamp-2">
+                                    {inv.person.name}
+                                  </span>
+                                </ElemLink>
+                              )}
 
-                    return (
-                      <tr key={key} {...restRowProps} className="table-row">
-                        {row.cells.map(cell => {
-                          const { key, ...restCellProps } = cell.getCellProps({
-                            style: {
-                              width: cell.column.width,
-                              minWidth: cell.column.width,
-                              maxWidth: cell.column.width,
-                            },
-                          });
-
-                          return (
-                            <td
-                              key={key}
-                              {...restCellProps}
-                              className="p-2 text-sm align-top">
-                              {cell.render('Cell')}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                              {inv.person && inv.vc_firm && (
+                                <span className="text-xs text-neutral-400 ml-auto">
+                                  via {inv.vc_firm.name}
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                </div>
+              ))}
             </div>
-            <Pagination
-              shownItems={page?.length}
-              totalItems={investmentsCount}
-              page={pageIndex}
-              itemsPerPage={pageSize}
-              onClickPrev={() => previousPage()}
-              onClickNext={() => nextPage()}
-            />
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center mt-6 gap-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`px-3 py-1 rounded-md ${
+                    currentPage === 1
+                      ? 'text-neutral-600 cursor-not-allowed'
+                      : 'text-neutral-300 hover:bg-neutral-800'
+                  }`}>
+                  Previous
+                </button>
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    page => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-8 h-8 rounded-md flex items-center justify-center ${
+                          currentPage === page
+                            ? 'bg-primary-500 text-white'
+                            : 'text-neutral-300 hover:bg-neutral-800'
+                        }`}>
+                        {page}
+                      </button>
+                    ),
+                  )}
+                </div>
+                <button
+                  onClick={() =>
+                    setCurrentPage(prev => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  className={`px-3 py-1 rounded-md ${
+                    currentPage === totalPages
+                      ? 'text-neutral-600 cursor-not-allowed'
+                      : 'text-neutral-300 hover:bg-neutral-800'
+                  }`}>
+                  Next
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
