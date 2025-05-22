@@ -153,15 +153,14 @@ export const ElemInvestments: React.FC<Props> = ({
                       <div className="text-neutral-200">
                         {investment.amount && (
                           <span className="text-green-400 font-medium">
-                            ${numberWithCommas(investment.amount)}
+                            {numberWithCommas(investment.amount)}
                           </span>
                         )}
                         {investment.amount && investment.valuation && ' at '}
                         {investment.valuation && (
                           <>
                             <span className="text-neutral-200">
-                              ${numberWithCommas(investment.valuation)}{' '}
-                              valuation
+                              {numberWithCommas(investment.valuation)} valuation
                             </span>
                           </>
                         )}
