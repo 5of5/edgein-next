@@ -1,25 +1,45 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { ElemButton } from '@/components/elem-button';
-import {
-  IconTwitterX,
-  IconTelegram,
-  IconLinkedInAlt,
-  IconWhatsApp,
-} from '@/components/icons';
+import { Twitter, MessagesSquare, Linkedin, Share2, Phone } from 'lucide-react';
+import { LucideIconWrapper } from '@/components/icons-wrapper';
+import { IconProps } from '@/components/icons';
 import toast from 'react-hot-toast';
 import { getTwitterHandle } from '@/utils';
 import { ElemModal } from './elem-modal';
 import { InputText } from './input-text';
 
+// Wrap Lucide icons to match our IconProps interface
+const WrappedTwitter = LucideIconWrapper(Twitter);
+const WrappedMessagesSquare = LucideIconWrapper(MessagesSquare);
+const WrappedLinkedin = LucideIconWrapper(Linkedin);
+const WrappedShare2 = LucideIconWrapper(Share2);
+const WrappedPhone = LucideIconWrapper(Phone);
+
 type Props = {
   resourceName: string | null;
   resourceTwitterUrl: string | null;
+  buttonStyle?:
+    | 'primary'
+    | 'ol-tertiary'
+    | 'ol-primary'
+    | 'ol-white'
+    | 'danger'
+    | 'dark'
+    | 'transparent'
+    | 'gray'
+    | 'default'
+    | 'white'
+    | 'black-to-white'
+    | '';
+  icon?: ReactNode;
 };
 
 export const ElemSocialShare: FC<Props> = ({
   resourceName,
   resourceTwitterUrl,
+  buttonStyle = 'default',
+  icon,
 }) => {
   const router = useRouter();
   const pageUrl = `https://edgein.io${router.asPath}`;
@@ -81,25 +101,25 @@ export const ElemSocialShare: FC<Props> = ({
 
   const shareLinks = [
     {
-      icon: IconTwitterX,
+      icon: WrappedTwitter,
       iconClass: 'bg-black',
       text: 'X',
       href: twitterShareUrl,
     },
     {
-      icon: IconTelegram,
+      icon: WrappedMessagesSquare,
       iconClass: 'bg-[#24A0DD]',
       text: 'Telegram',
       href: telegramShareUrl,
     },
     {
-      icon: IconLinkedInAlt,
+      icon: WrappedLinkedin,
       iconClass: 'bg-linkedin',
       text: 'LinkedIn',
       href: linkedInShareUrl,
     },
     {
-      icon: IconWhatsApp,
+      icon: WrappedPhone,
       iconClass: 'bg-[#25d366]',
       text: 'WhatsApp',
       href: whatsAppShareUrl,
@@ -108,8 +128,13 @@ export const ElemSocialShare: FC<Props> = ({
 
   return (
     <>
-      <ElemButton onClick={onShareButton} btn="default" roundedFull={true}>
-        Share
+      <ElemButton
+        onClick={onShareButton}
+        btn={buttonStyle}
+        roundedFull={true}
+        className="px-2.5 flex items-center">
+        {icon || <WrappedShare2 className="w-4 h-4 mr-1" />}
+        <span>Share</span>
       </ElemButton>
 
       <ElemModal
@@ -133,11 +158,7 @@ export const ElemSocialShare: FC<Props> = ({
                 rel="noreferrer">
                 <div
                   className={`w-16 h-16 p-4 flex items-center justify-center rounded-full text-white hover:opacity-75 ${item.iconClass}`}>
-                  <item.icon
-                    className={`w-full ${
-                      item.icon === IconTelegram && '-ml-1'
-                    }`}
-                  />
+                  <item.icon className="w-5 h-5" />
                 </div>
                 <div className="mt-2 text-xs">{item.text}</div>
               </a>

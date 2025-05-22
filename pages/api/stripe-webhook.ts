@@ -5,7 +5,9 @@ import BillingService from '../../utils/billing-org';
 import { buffer } from 'micro';
 import SlackServices from '@/utils/slack';
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2022-08-01',
+});
 
 export const config = { api: { bodyParser: false } };
 
@@ -17,174 +19,264 @@ export const getCustomerId = (
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    let event: Stripe.Event = req.body;
+    let event: Stripe.Event;
 
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    // Only verify the event if you have an endpoint secret defined.
-    // Otherwise use the basic event deserialized with JSON.parse
-    if (endpointSecret && endpointSecret !== 'LEAVE-EMPTY-FOR-DEV') {
-      // Get the signature sent by Stripe
+
+    try {
       const signature = req.headers['stripe-signature'];
       const reqBuffer = await buffer(req);
 
-      try {
+      if (!endpointSecret || endpointSecret === 'LEAVE-EMPTY-FOR-DEV') {
+        if (process.env.NODE_ENV === 'production') {
+          throw new Error('Missing webhook secret in production');
+        }
+        event = JSON.parse(reqBuffer.toString());
+      } else {
         event = stripe.webhooks.constructEvent(
           reqBuffer,
-          signature,
+          signature!,
           endpointSecret,
         );
-      } catch (err: any) {
-        console.error(
-          `⚠️  Webhook signature verification failed. ${err.message}`,
-        );
-        return res.status(400).send({
-          error: `Webhook signature verification failed. ${err.message}`,
-        });
       }
-    } else if (process.env.NODE_ENV === 'production') {
-      console.error(
-        `⚠️  Webhook signature verification failed. Missing endpointSecret`,
-      );
-      return res.status(400).send({
-        error: `Webhook signature verification failed. Missing endpointSecret`,
-      });
-    } else {
-      try {
-        // event = JSON.parse(event.toString());
-      } catch (err: any) {
-        console.error(`Webhook event parse failed. ${err.message}`);
-        return res
-          .status(400)
-          .send({ error: `Webhook event parse failed. ${err.message}` });
-      }
-    }
-    let customerId: string;
-    // Handle the event
-    switch (event.type) {
-      case 'customer.subscription.updated': {
-        // update customer plan
-        const subscription = event.data.object as Stripe.Subscription;
-        customerId = getCustomerId(subscription.customer);
-        const billingOrg = await BillingService.getBillingOrgByCustomerId(
-          customerId,
-        );
-        if (!billingOrg) {
-          const customer = await stripe.customers.retrieve(customerId);
-          const user = await UserService.findOneUserByEmail(customer.email);
-          if (!user) {
-            // slack
-            await SlackServices.sendMessage(
-              process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-              `1 Subscription update to customer ${customerId} ${customer.email}, no user or billing org found, help needed!`,
-            );
-            res.status(400).send({
-              error: `Webhook no user for customer id ${customerId} ${customer.email}`,
-            });
-            return;
+
+      let customerId: string;
+
+      switch (event.type) {
+        case 'checkout.session.completed': {
+          const session = event.data.object as Stripe.Checkout.Session;
+          customerId = getCustomerId(session.customer || '');
+          const userId =
+            session.metadata?.userId || session.client_reference_id;
+
+          if (!userId) {
+            throw new Error(`No user ID found for customer ${customerId}`);
           }
+
+          const user = await UserService.findOneUserById(Number(userId));
+          if (!user) {
+            throw new Error(`No user found for ID ${userId}`);
+          }
+
+          // Get subscription details
+          const subscription = await stripe.subscriptions.retrieve(
+            session.subscription as string,
+          );
+
+          // Create or update billing org
           if (!user.billing_org_id) {
-            // create billing org
             const billingOrg = await BillingService.insertBillingOrg(
               customerId,
-              subscription.status === 'active'
-                ? 'active'
-                : subscription.status === 'canceled'
-                ? 'canceled'
-                : 'inactive',
-              'basic',
+              subscription.status === 'active' ? 'active' : 'inactive',
+              'contributor',
             );
-            // update user
-            UserService.updateBillingOrg(user.id, billingOrg?.id || 0);
-            // slack
-            await SlackServices.sendMessage(
-              process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-              `2 Subscription update to user ${user.id}, user has no billing org, no billing org found for stripe customer with email ${customer.email}, creating new billing org`,
+            await UserService.updateBillingOrg(
+              Number(userId),
+              billingOrg?.id || 0,
             );
           } else {
-            // slack
-            const userBillingOrg = await BillingService.getBillingOrgById(
+            const billingOrg = await BillingService.getBillingOrgById(
               user.billing_org_id,
             );
-            let latestSubscription: Stripe.Subscription = subscription;
-            if (subscription.status === 'canceled') {
-              const subscriptions = await stripe.subscriptions.list({
-                customer: userBillingOrg?.customer_id,
-                limit: 1,
-              });
-              latestSubscription = subscriptions.data[0];
+            if (billingOrg) {
+              await BillingService.updateBillingOrgCustomerId(
+                billingOrg.id,
+                customerId,
+                subscription.status === 'active' ? 'active' : 'inactive',
+              );
             }
-            // update billing org
-            await BillingService.updateBillingOrgCustomerId(
-              user.billing_org_id,
-              customerId,
-              subscription.status === 'active' ? 'active' : 'inactive',
-            );
-            await SlackServices.sendMessage(
-              process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-              `3 Subscription update to user ${user.id}, user has billing org (${user.billing_org_id}) attched to customer (${userBillingOrg.customer_id}), yet stripe customer does not ${customerId}, updating billing org to point to customer_id`,
-            );
           }
-          break;
-        } else {
-          await BillingService.updateBillingOrg(
-            billingOrg.id,
-            subscription.status === 'active' ? 'active' : 'inactive',
-          );
-        }
-        break;
-      }
-      case 'checkout.session.completed': {
-        const session = event.data.object as Stripe.Checkout.Session;
-        const metadata = session.metadata as any;
-        customerId = getCustomerId(session.customer || '');
-        console.log(customerId);
-        const userId = metadata.userId || session.client_reference_id;
-        if (!userId) {
-          // slack
-          await SlackServices.sendMessage(
-            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `4 Checkout session completed with no user id for customer ${customerId}. Please help`,
-          );
-          res.status(400).send({ error: `Webhook no user id` });
-        }
-        // lookup user
-        const user = await UserService.findOneUserById(userId);
 
-        if (!user.billing_org_id) {
-          // create billing org
-          const billingOrg = await BillingService.insertBillingOrg(
-            customerId,
-            'active',
-            'basic',
-          );
-          // update user
-          UserService.updateBillingOrg(userId, billingOrg?.id || 0);
-        } else {
-          // slack
+          // Notify via Slack
           await SlackServices.sendMessage(
             process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-            `5 Checkout session completed with user ${user.id} use has a preexisting billing org, potentially double paying. Please help`,
+            `✅ New premium subscription created for user ${user.id} (${user.email})`,
           );
+          break;
         }
-        break;
+
+        case 'customer.subscription.created': {
+          const subscription = event.data.object as Stripe.Subscription;
+          customerId = getCustomerId(subscription.customer);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
+          if (!billingOrg) {
+            throw new Error(`No billing org found for customer ${customerId}`);
+          }
+
+          // Update billing org status based on subscription status
+          const status =
+            subscription.status === 'active' ? 'active' : 'inactive';
+          await BillingService.updateBillingOrg(billingOrg.id, status);
+
+          // Notify via Slack
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `🎉 New premium subscription created for customer ${customerId}, status: ${status}`,
+          );
+          break;
+        }
+
+        case 'customer.subscription.updated': {
+          const subscription = event.data.object as Stripe.Subscription;
+          customerId = getCustomerId(subscription.customer);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
+          if (!billingOrg) {
+            throw new Error(`No billing org found for customer ${customerId}`);
+          }
+
+          // Update billing org status based on subscription status
+          const status =
+            subscription.status === 'active' ? 'active' : 'inactive';
+          await BillingService.updateBillingOrg(billingOrg.id, status);
+
+          // Notify via Slack
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `🔄 Premium subscription updated for customer ${customerId}, status: ${status}`,
+          );
+          break;
+        }
+
+        case 'customer.subscription.deleted': {
+          const subscription = event.data.object as Stripe.Subscription;
+          customerId = getCustomerId(subscription.customer);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
+          if (!billingOrg) {
+            throw new Error(`No billing org found for customer ${customerId}`);
+          }
+
+          // Set status to inactive when subscription is deleted
+          await BillingService.updateBillingOrg(billingOrg.id, 'inactive');
+
+          // Notify via Slack
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `❌ Premium subscription canceled for customer ${customerId}`,
+          );
+          break;
+        }
+
+        case 'invoice.payment_succeeded': {
+          const invoice = event.data.object as Stripe.Invoice;
+          if (!invoice.customer) {
+            throw new Error('No customer found for invoice');
+          }
+          customerId = getCustomerId(invoice.customer);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
+          if (!billingOrg) {
+            throw new Error(`No billing org found for customer ${customerId}`);
+          }
+
+          // Update billing org status to active
+          await BillingService.updateBillingOrg(billingOrg.id, 'active');
+
+          // Notify via Slack
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `💰 Premium payment succeeded for customer ${customerId}, invoice ${invoice.id}`,
+          );
+          break;
+        }
+
+        case 'invoice.payment_failed': {
+          const invoice = event.data.object as Stripe.Invoice;
+          if (!invoice.customer) {
+            throw new Error('No customer found for invoice');
+          }
+          customerId = getCustomerId(invoice.customer);
+
+          const billingOrg = await BillingService.getBillingOrgByCustomerId(
+            customerId,
+          );
+          if (!billingOrg) {
+            throw new Error(`No billing org found for customer ${customerId}`);
+          }
+
+          // Update billing org status to inactive
+          await BillingService.updateBillingOrg(billingOrg.id, 'inactive');
+
+          // Notify via Slack
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `❌ Premium payment failed for customer ${customerId}, invoice ${invoice.id}`,
+          );
+          break;
+        }
+
+        case 'customer.subscription.trial_will_end': {
+          const subscription = event.data.object as Stripe.Subscription;
+          customerId = getCustomerId(subscription.customer);
+
+          // Notify via Slack about trial ending
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `⚠️ Premium trial ending soon for customer ${customerId}, subscription ${subscription.id}`,
+          );
+          break;
+        }
+
+        case 'payment_intent.succeeded': {
+          const paymentIntent = event.data.object as Stripe.PaymentIntent;
+          if (!paymentIntent.customer) {
+            throw new Error('No customer found for payment intent');
+          }
+          customerId = getCustomerId(paymentIntent.customer);
+
+          // Notify via Slack
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `💳 Premium payment intent succeeded for customer ${customerId}, amount: ${paymentIntent.amount}`,
+          );
+          break;
+        }
+
+        case 'payment_intent.payment_failed': {
+          const paymentIntent = event.data.object as Stripe.PaymentIntent;
+          if (!paymentIntent.customer) {
+            throw new Error('No customer found for payment intent');
+          }
+          customerId = getCustomerId(paymentIntent.customer);
+
+          // Notify via Slack
+          await SlackServices.sendMessage(
+            process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+            `❌ Premium payment intent failed for customer ${customerId}, amount: ${paymentIntent.amount}`,
+          );
+          break;
+        }
+
+        default:
+          console.info(`Unhandled event type: ${event.type}`);
       }
-      default:
-        // slack
-        // Unexpected event type
-        console.info(`Stripe Webhook: Unhandled event type ${event.type}.`);
+
+      res.json({ received: true });
+    } catch (err: any) {
+      console.error(`Webhook Error: ${err.message}`);
+
+      // Notify via Slack about the error
+      await SlackServices.sendMessage(
+        process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+        `❌ Webhook Error: ${err.message}`,
+      );
+
+      res.status(400).send(`Webhook Error: ${err.message}`);
     }
-    // Return a 200 response to acknowledge receipt of the event
-    res.send({ success: true });
   } else {
     res.setHeader('Allow', 'POST');
     res.status(405).end('Method Not Allowed');
   }
 };
-
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// }
 
 export default handler;

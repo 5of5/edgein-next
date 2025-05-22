@@ -68,7 +68,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
         />
       )}
       <div className="flex items-center justify-between px-4 pt-2">
-        <h2 className="text-lg font-medium">
+        <h2 className="text-lg font-medium text-white">
           {heading ? heading : 'Activity Timeline'}
         </h2>
       </div>
@@ -108,7 +108,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
           </>
         ) : (
           <div className="flex flex-col items-center justify-center">
-            <div className="text-gray-500">
+            <div className="text-neutral-500 italic">
               There is no recent activity for this organization.
             </div>
             {user ? (
@@ -144,7 +144,7 @@ const renderActivity = (
 ) => {
   return resourceType === 'companies' && activity ? (
     <div className="mb-4">
-      <div className="inline leading-7 text-gray-600 text-sm">
+      <div className="inline leading-7 text-neutral-300 text-sm">
         {activity.round === 'Acquisition' ? (
           <div className="inline font-medium">Acquired by </div>
         ) : (
@@ -152,16 +152,16 @@ const renderActivity = (
             <div className="inline font-medium">
               Raised{' '}
               {activity.amount ? (
-                <div className="inline text-green-600">
+                <div className="inline text-green-400">
                   ${convertToIntNum(activity.amount)}
                 </div>
               ) : (
-                <div className="inline text-green-600">undisclosed capital</div>
+                <div className="inline text-green-400">undisclosed capital</div>
               )}{' '}
               {activity.valuation && (
                 <div className="inline">
                   at{' '}
-                  <div className="inline text-green-600">
+                  <div className="inline text-green-400">
                     ${convertToIntNum(activity.valuation)}{' '}
                   </div>
                   valuation{' '}
@@ -183,7 +183,7 @@ const renderActivity = (
                   {item.vc_firm && (
                     <ElemLink
                       href={`${ROUTES.INVESTORS}/${item.vc_firm?.slug}`}
-                      className="underline hover:no-underline">
+                      className="underline text-neutral-200 hover:text-primary-300 hover:no-underline">
                       {item.vc_firm['name']}
                     </ElemLink>
                   )}
@@ -191,7 +191,7 @@ const renderActivity = (
                   {item.person && (
                     <ElemLink
                       href={`${ROUTES.PEOPLE}/${item.person['slug']}`}
-                      className="underline hover:no-underline">
+                      className="underline text-neutral-200 hover:text-primary-300 hover:no-underline">
                       {item.person['name']}
                     </ElemLink>
                   )}
@@ -205,7 +205,7 @@ const renderActivity = (
         .
       </div>
 
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-neutral-500">
         {formatDate(activity.round_date as string, {
           month: 'short',
           day: '2-digit',
@@ -215,11 +215,11 @@ const renderActivity = (
     </div>
   ) : resourceType === 'vc_firms' && activity ? (
     <div className="mb-4">
-      <div className="inline leading-7 text-gray-600 text-sm">
+      <div className="inline leading-7 text-neutral-300 text-sm">
         {activity.company && (
           <ElemLink
             href={`${ROUTES.COMPANIES}/${activity.company['slug']}`}
-            className="underline font-medium hover:no-underline">
+            className="underline font-medium text-neutral-200 hover:text-primary-300 hover:no-underline">
             {activity.company['name']}
           </ElemLink>
         )}{' '}
@@ -230,17 +230,17 @@ const renderActivity = (
             <div className="inline font-medium">
               Raised{' '}
               {activity.amount ? (
-                <div className="inline text-green-600">
+                <div className="inline text-green-400">
                   ${convertToIntNum(activity.amount)}
                 </div>
               ) : (
-                <div className="inline text-green-600">undisclosed capital</div>
+                <div className="inline text-green-400">undisclosed capital</div>
               )}
               :{' '}
               {activity.valuation && (
                 <div className="inline">
                   at{' '}
-                  <div className="inline text-green-600">
+                  <div className="inline text-green-400">
                     ${convertToIntNum(activity.valuation)}{' '}
                   </div>
                   valuation{' '}
@@ -259,7 +259,7 @@ const renderActivity = (
               {item.vc_firm && (
                 <ElemLink
                   href={`${ROUTES.INVESTORS}/${item.vc_firm?.slug}`}
-                  className="underline hover:no-underline">
+                  className="underline text-neutral-200 hover:text-primary-300 hover:no-underline">
                   {item.vc_firm['name']}
                 </ElemLink>
               )}
@@ -268,7 +268,7 @@ const renderActivity = (
               {item.person && (
                 <ElemLink
                   href={`${ROUTES.PEOPLE}/${item.person['slug']}`}
-                  className="underline hover:no-underline">
+                  className="underline text-neutral-200 hover:text-primary-300 hover:no-underline">
                   {item.person['name']}
                 </ElemLink>
               )}
@@ -277,7 +277,7 @@ const renderActivity = (
         })}
         .
       </div>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-neutral-500">
         {formatDate(activity.round_date as string, {
           month: 'short',
           day: '2-digit',

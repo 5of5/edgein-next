@@ -5,6 +5,7 @@ import { getNameFromListName } from '@/utils/lists';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
 import { IconPlus } from '@/components/icons';
+import { Heart } from 'lucide-react';
 import { InputCheckbox } from '@/components/input-checkbox';
 import { Toaster } from 'react-hot-toast';
 import useToast from '@/hooks/use-toast';
@@ -35,6 +36,7 @@ type Props = {
     | 'black-to-white'
     | '';
   follows?: Pick<Follows, 'list_id'>[];
+  icon?: React.ReactNode;
 };
 
 type List = GetFollowsByUserQuery['list_members'][0]['list'];
@@ -44,8 +46,9 @@ export const ElemSaveToList: FC<Props> = ({
   resourceId,
   resourceType,
   slug,
-  buttonStyle = 'primary',
+  buttonStyle = 'gray',
   follows = [],
+  icon,
 }) => {
   const { user, listAndFollows, refreshProfile } = useUser();
   const { toast } = useToast();
@@ -83,7 +86,7 @@ export const ElemSaveToList: FC<Props> = ({
     }
   }
 
-  const savedButtonStyle = buttonStyle === 'default' ? '' : 'bg-primary-800';
+  const savedButtonStyle = 'border-neutral-500 bg-neutral-900';
 
   useEffect(() => {
     setListName(listName);
@@ -279,14 +282,22 @@ export const ElemSaveToList: FC<Props> = ({
             className={`px-2.5 shrink-0 flex items-center ${
               isSaved ? savedButtonStyle : ''
             }`}>
-            {!isSaved && (
-              <Image
-                src="/images/checklist.png"
-                alt="Saved"
-                width={24}
-                height={24}
-                className="shrink-0 transition-all duration-200 group-hover:invert"
+            {isSaved ? (
+              <Heart
+                className="w-4 h-4 mr-1 text-neutral-400"
+                fill="currentColor"
+                stroke="currentColor"
               />
+            ) : (
+              icon || (
+                <Image
+                  src="/images/checklist.png"
+                  alt="Saved"
+                  width={24}
+                  height={24}
+                  className="shrink-0 transition-all duration-200 group-hover:invert"
+                />
+              )
             )}
             <span>{isSaved ? 'Saved' : 'Save to list'}</span>
           </ElemButton>
@@ -298,7 +309,18 @@ export const ElemSaveToList: FC<Props> = ({
             <ElemButton
               roundedFull={true}
               btn={buttonStyle}
-              className={`px-2.5 ${open ? 'border border-primary-500' : ''}`}>
+              className={`px-2.5 flex items-center ${
+                open ? 'border border-primary-500' : ''
+              }`}>
+              {icon || (
+                <Image
+                  src="/images/checklist.png"
+                  alt="Saved"
+                  width={24}
+                  height={24}
+                  className="shrink-0 transition-all duration-200 group-hover:invert mr-1"
+                />
+              )}
               Save to list
             </ElemButton>
           )}

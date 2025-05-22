@@ -1,32 +1,35 @@
 import React, { ReactElement, useState } from 'react';
 import { values, isEmpty } from 'lodash';
+import { IconProps } from '@/components/icons';
+import { LucideIconWrapper } from '@/components/icons-wrapper';
+
+// Import Lucide icons
 import {
-  IconProps,
-  IconGlobe,
-  IconCash,
-  IconDocumentDownload,
-  IconUsers,
-  IconFlag,
-  IconStatus,
-  IconLinkedIn,
-  IconGithub,
-  IconBriefcase,
-  IconRole,
-  IconEmail,
-  IconLocation,
-  IconTwitterX,
-  IconInstagram,
-  IconTelegram,
-  IconFacebook,
-  IconDiscord,
-  IconGlassdoor,
-  IconHome,
-  IconTicket,
-  IconDocument,
-  IconContract,
-  IconLockClosed,
-  IconCopy,
-} from '@/components/icons';
+  Globe,
+  DollarSign,
+  FileDown,
+  Users,
+  Flag,
+  Activity,
+  Linkedin,
+  Github,
+  Briefcase,
+  UserCheck,
+  MapPin,
+  Twitter,
+  Instagram,
+  MessagesSquare, // for Telegram
+  Facebook,
+  MessageCircle, // for Discord
+  Newspaper, // for Glassdoor
+  Home,
+  Ticket,
+  FileText,
+  FileCode, // for Contract
+  LockIcon, // for IconLockClosed
+  Copy, // for IconCopy
+  Mail, // for IconEmail
+} from 'lucide-react';
 
 import { getTwitterHandle, removeDomainName } from '@/utils/text';
 import {
@@ -75,6 +78,32 @@ type Props = {
   venue?: string | null;
   attachments?: Attachments;
 };
+
+// Wrap Lucide icons to match our IconProps interface
+const WrappedGlobe = LucideIconWrapper(Globe);
+const WrappedDollarSign = LucideIconWrapper(DollarSign);
+const WrappedFileDown = LucideIconWrapper(FileDown);
+const WrappedUsers = LucideIconWrapper(Users);
+const WrappedFlag = LucideIconWrapper(Flag);
+const WrappedActivity = LucideIconWrapper(Activity);
+const WrappedLinkedin = LucideIconWrapper(Linkedin);
+const WrappedGithub = LucideIconWrapper(Github);
+const WrappedBriefcase = LucideIconWrapper(Briefcase);
+const WrappedUserCheck = LucideIconWrapper(UserCheck);
+const WrappedMapPin = LucideIconWrapper(MapPin);
+const WrappedTwitter = LucideIconWrapper(Twitter);
+const WrappedInstagram = LucideIconWrapper(Instagram);
+const WrappedMessagesSquare = LucideIconWrapper(MessagesSquare);
+const WrappedFacebook = LucideIconWrapper(Facebook);
+const WrappedMessageCircle = LucideIconWrapper(MessageCircle);
+const WrappedNewspaper = LucideIconWrapper(Newspaper);
+const WrappedHome = LucideIconWrapper(Home);
+const WrappedTicket = LucideIconWrapper(Ticket);
+const WrappedFileText = LucideIconWrapper(FileText);
+const WrappedFileCode = LucideIconWrapper(FileCode);
+const WrappedLock = LucideIconWrapper(LockIcon);
+const WrappedCopy = LucideIconWrapper(Copy);
+const WrappedMail = LucideIconWrapper(Mail);
 
 export const ElemKeyInfo: React.FC<Props> = ({
   className,
@@ -141,7 +170,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       .replace(/\/$/, '');
 
     infoItems.push({
-      icon: IconGlobe,
+      icon: WrappedGlobe,
       text: cleanUrl,
       link: website,
       tooltip: 'Website',
@@ -168,7 +197,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
       .replace(/\/$/, ''); //removes last forward slash
 
     infoItems.push({
-      icon: IconGlobe,
+      icon: WrappedGlobe,
       text: cleanUrl,
       link: eventLink,
     });
@@ -176,7 +205,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   if (yearFounded) {
     infoItems.push({
-      icon: IconFlag,
+      icon: WrappedFlag,
       text: yearFounded + ' Founded',
       tooltip: 'Date the organization was founded',
     });
@@ -184,7 +213,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   if (status_tags && status_tags?.length > 0) {
     infoItems.push({
-      icon: IconStatus,
+      icon: WrappedActivity,
       text: status_tags
         ?.map((tag: string) => tag)
         .join(', ')
@@ -195,7 +224,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   if (totalFundingRaised) {
     infoItems.push({
-      icon: IconCash,
+      icon: WrappedDollarSign,
       text:
         convertToInternationalCurrencySystem(Number(totalFundingRaised)) +
         ' Total Funding Raised',
@@ -205,39 +234,39 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   if (price != null) {
     infoItems.push({
-      icon: IconTicket,
+      icon: WrappedTicket,
       text: price === 0 ? 'Free' : 'Starts at $' + numberWithCommas(price),
     });
   }
   if (attendees) {
     infoItems.push({
-      icon: IconUsers,
+      icon: WrappedUsers,
       text: attendees,
     });
   }
   if (venue) {
     infoItems.push({
-      icon: IconHome,
+      icon: WrappedHome,
       text: venue,
     });
   }
   if (locationText) {
     infoItems.push({
-      icon: IconLocation,
+      icon: WrappedMapPin,
       text: locationText,
       tooltip: 'Location',
     });
   }
   if (totalEmployees) {
     infoItems.push({
-      icon: IconUsers,
+      icon: WrappedUsers,
       text: numberWithCommas(totalEmployees) + ' Employees',
       tooltip: 'Number of employees',
     });
   }
   if (whitePaper) {
     infoItems.push({
-      icon: IconDocumentDownload,
+      icon: WrappedFileDown,
       text: 'Whitepaper',
       link: whitePaper,
       tooltip: 'View Whitepaper',
@@ -245,7 +274,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (careerPage) {
     infoItems.push({
-      icon: IconBriefcase,
+      icon: WrappedBriefcase,
       text: 'Careers',
       link: careerPage,
       tooltip: 'View Careers',
@@ -253,13 +282,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (roles && roles.length > 0) {
     infoItems.push({
-      icon: IconRole,
+      icon: WrappedUserCheck,
       text: roles,
     });
   }
   if (investmentsLength && investmentsLength > 0) {
     infoItems.push({
-      icon: IconCash,
+      icon: WrappedDollarSign,
       text:
         investmentsLength === 1
           ? investmentsLength + ' Investment'
@@ -287,7 +316,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   if (linkedIn) {
     infoItems.push({
-      icon: IconLinkedIn,
+      icon: WrappedLinkedin,
       text: removeDomainName(linkedIn),
       link: linkedIn,
       tooltip: 'View on LinkedIn',
@@ -296,7 +325,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (github) {
     infoItems.push({
-      icon: IconGithub,
+      icon: WrappedGithub,
       text: removeDomainName(github),
       link: github,
       tooltip: 'View on Github',
@@ -305,7 +334,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (telegram) {
     infoItems.push({
-      icon: IconTelegram,
+      icon: WrappedMessagesSquare,
       text: 'Telegram',
       link: telegram,
       tooltip: 'View on Telegram',
@@ -314,7 +343,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (facebook) {
     infoItems.push({
-      icon: IconFacebook,
+      icon: WrappedFacebook,
       text: 'Facebook',
       tooltip: 'View on Facebook',
       link: facebook,
@@ -323,7 +352,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
   if (twitter) {
     infoItems.push({
-      icon: IconTwitterX,
+      icon: WrappedTwitter,
       text: getTwitterHandle(twitter),
       link: twitter,
       tooltip: 'View on X',
@@ -331,7 +360,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (instagram) {
     infoItems.push({
-      icon: IconInstagram,
+      icon: WrappedInstagram,
       text: 'Instagram',
       link: instagram,
       tooltip: 'View on Instagram',
@@ -339,7 +368,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (discord) {
     infoItems.push({
-      icon: IconDiscord,
+      icon: WrappedMessageCircle,
       text: 'Discord',
       link: discord,
       tooltip: 'View on Discord',
@@ -347,7 +376,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
   }
   if (glassdoor) {
     infoItems.push({
-      icon: IconGlassdoor,
+      icon: WrappedNewspaper,
       text: 'Glassdoor',
       link: glassdoor,
       tooltip: 'View on Glassdoor',
@@ -357,14 +386,14 @@ export const ElemKeyInfo: React.FC<Props> = ({
   if (attachments && attachments.length > 0) {
     attachments.forEach(item => {
       infoItems.push({
-        icon: IconDocument,
+        icon: WrappedFileText,
         text: item.label,
         link: item.url,
       });
     });
   }
 
-  const baseClasses = 'flex space-x-2 text-gray-600';
+  const baseClasses = 'flex space-x-2 text-gray-300';
 
   const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
   const [showInfo, setShowInfo] = useState<Record<string, boolean>>({});
@@ -406,7 +435,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
     <>
       <section className={`border border-gray-700 rounded-lg ${className}`}>
         {heading && (
-          <h2 className="px-4 pt-2 text-lg font-medium">{heading}</h2>
+          <h2 className="px-4 pt-2 text-lg font-medium text-white">
+            {heading}
+          </h2>
         )}
 
         <ul className="flex flex-col p-4 space-y-4 text-sm">
@@ -417,7 +448,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                   <item.icon
                     title={item.text}
                     className={`${
-                      item.link?.length ? 'text-primary-500' : ''
+                      item.link?.length ? 'text-neutral-300' : ''
                     } h-5 w-5 shrink-0`}
                   />
                 )}
@@ -429,7 +460,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
               itemInner = (
                 <a
                   key={index}
-                  className={`${baseClasses} flex-1 transition-all underline hover:no-underline`}
+                  className={`${baseClasses} flex-1 transition-all text-neutral-300 hover:text-white underline hover:no-underline`}
                   href={item.link}
                   target={item.target ? item.target : '_blank'}
                   rel="noopener noreferrer"
@@ -476,14 +507,14 @@ export const ElemKeyInfo: React.FC<Props> = ({
                             title={showInfo[item.text] ? item.text : ''}
                             className={`${
                               showInfo[item.text]
-                                ? 'text-primary-500'
+                                ? 'text-neutral-300'
                                 : 'text-gray-400'
                             } h-5 w-5 mr-2 shrink-0`}
                           />
                         )}
                         {showInfo[item.text] && item.link ? (
                           <a
-                            className="underline break-all transition-all hover:no-underline"
+                            className="underline text-neutral-300 hover:text-white break-all transition-all hover:no-underline"
                             href={item.link}
                             target={item.target ? item.target : '_blank'}
                             rel="noopener noreferrer"
@@ -491,7 +522,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
                             {item.text}
                           </a>
                         ) : showInfo[item.text] ? (
-                          <span className="min-w-0 break-all">{item.text}</span>
+                          <span className="min-w-0 text-neutral-300 break-all">
+                            {item.text}
+                          </span>
                         ) : (
                           <span className="text-gray-400">
                             &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
@@ -499,7 +532,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
                         )}
                       </div>
                       {!showInfo[item.text] && (
-                        <IconLockClosed
+                        <WrappedLock
                           className="w-4 h-4 text-gray-400 shrink-0"
                           strokeWidth={2}
                         />
@@ -516,9 +549,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
           {web3Address && web3Address.length > 0 && (
             <li
               className={`${baseClasses} flex-1 items-start justify-between cursor-pointer`}>
-              <IconContract
+              <WrappedFileCode
                 className={`${
-                  showInfo['web3address'] ? 'text-primary-500' : 'text-gray-400'
+                  showInfo['web3address'] ? 'text-neutral-300' : 'text-gray-400'
                 } h-5 w-5 shrink-0`}
                 title="Web3 Address"
               />
@@ -542,13 +575,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
                           {showInfo['web3address'] ? (
                             <div className="inline">
                               {item.network && (
-                                <div className="inline mr-1 font-medium">
+                                <div className="inline mr-1 font-medium text-neutral-300">
                                   {item.network}:
                                 </div>
                               )}
 
                               {item.address && (
-                                <div className="inline underline line-clamp-1 hover:no-underline">
+                                <div className="inline underline text-neutral-300 hover:text-white line-clamp-1 hover:no-underline">
                                   {item.address.slice(0, 7)}&#8230;
                                   {item.address?.slice(-7)}
                                 </div>
@@ -563,12 +596,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
                         <div className="ml-auto">
                           {!showInfo['web3address'] ? (
-                            <IconLockClosed
+                            <WrappedLock
                               className="w-4 h-4 text-gray-400 shrink-0"
                               strokeWidth={2}
                             />
                           ) : (
-                            <IconCopy className="w-4 h-4 text-gray-400 shrink-0" />
+                            <WrappedCopy className="w-4 h-4 text-gray-400 shrink-0" />
                           )}
                         </div>
                       </button>
@@ -594,16 +627,16 @@ export const ElemKeyInfo: React.FC<Props> = ({
                       ? () => onCopy(email)
                       : onInfoClick('email')
                   }>
-                  <IconEmail
+                  <WrappedMail
                     className={`${
-                      showInfo['email'] ? 'text-primary-500' : 'text-gray-400'
+                      showInfo['email'] ? 'text-neutral-300' : 'text-gray-400'
                     } h-5 w-5 mr-2 shrink-0`}
                   />
                   <div className="break-all">
                     {showInfo['email'] ? (
                       <span
                         // href={`mailto:${email}`}
-                        className="underline hover:no-underline">
+                        className="underline text-neutral-300 hover:text-white break-all transition-all hover:no-underline">
                         {email}
                       </span>
                     ) : (
@@ -615,12 +648,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
                   <div className="ml-auto">
                     {!showInfo['email'] ? (
-                      <IconLockClosed
+                      <WrappedLock
                         className="w-4 h-4 text-gray-400 shrink-0"
                         strokeWidth={2}
                       />
                     ) : (
-                      <IconCopy className="w-4 h-4 text-gray-400 shrink-0" />
+                      <WrappedCopy className="w-4 h-4 text-gray-400 shrink-0" />
                     )}
                   </div>
                 </button>
