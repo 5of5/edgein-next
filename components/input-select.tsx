@@ -13,6 +13,8 @@ type Props = {
   disabled?: boolean;
   multiple?: boolean;
   by?: string;
+  label?: string;
+  labelClass?: string;
 };
 
 export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
@@ -26,9 +28,18 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
   multiple = false,
   by,
   onChange,
+  label,
+  labelClass = '',
 }) => {
   return (
     <div className={className}>
+      {label && (
+        <label
+          className={`block font-medium text-sm text-gray-300 mb-1 ${labelClass}`}>
+          {label}
+        </label>
+      )}
+
       <Listbox
         value={value}
         onChange={onChange}
@@ -39,14 +50,14 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
           <>
             <div className="relative">
               <Listbox.Button
-                className={`relative w-full appearance-none border-none bg-black rounded-md pl-1.5 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-gray-300 hover:ring-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
-                  disabled ? 'bg-gray-200 cursor-not-allowed' : ''
+                className={`relative w-full px-3 py-2.5 text-sm bg-neutral-900 text-gray-300 rounded-md border border-neutral-700 outline-none flex items-center justify-between focus:border-primary-500 focus:ring focus:ring-primary-500/20 transition-colors ${buttonClasses} ${
+                  disabled ? 'opacity-50 cursor-not-allowed' : ''
                 }`}>
                 {multiple ? (
                   <div
-                    className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}>
+                    className={`min-h-[24px] flex items-center flex-wrap gap-2`}>
                     {value?.length === 0 && (
-                      <Listbox.Label className="text-sm text-gray-400">
+                      <Listbox.Label className="text-gray-500">
                         {placeholder}
                       </Listbox.Label>
                     )}
@@ -54,7 +65,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                     {value.map((item: any) => (
                       <span
                         key={item.id}
-                        className="px-2 py-1 text-sm bg-neutral-900 rounded-md">
+                        className="px-2 py-1 text-sm bg-neutral-800 text-gray-300 rounded-md">
                         {item.icon && (
                           <item.icon
                             title={item.title}
@@ -66,7 +77,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                     ))}
                   </div>
                 ) : (
-                  <div className={` ${className} truncate`}>
+                  <div className={`truncate`}>
                     <div className="flex items-center">
                       {value?.icon && (
                         <value.icon
@@ -74,12 +85,27 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                           className="w-5 h-5 mr-1 shrink-0"
                         />
                       )}
-                      <span>{value?.title ? value.title : placeholder}</span>
+                      {value?.title ? (
+                        <div className="flex flex-col">
+                          <span className="text-gray-300">{value.title}</span>
+                          {value.description &&
+                            className.includes('w-full') &&
+                            !dropdownClasses?.includes(
+                              'company-type-dropdown',
+                            ) && (
+                              <span className="text-xs text-gray-500">
+                                {value.description}
+                              </span>
+                            )}
+                        </div>
+                      ) : (
+                        <span className="text-gray-500">{placeholder}</span>
+                      )}
                     </div>
                   </div>
                 )}
 
-                <div className="absolute inset-y-0 flex items-center pointer-events-none right-2">
+                <div className="flex items-center pointer-events-none">
                   <IconPolygonDown className="w-5 h-5 text-gray-400" />
                 </div>
               </Listbox.Button>
@@ -91,7 +117,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0">
                 <Listbox.Options
-                  className={`absolute z-10 mt-1 w-full bg-black border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none ${dropdownClasses}`}>
+                  className={`absolute z-10 mt-1 w-full bg-neutral-800 border border-neutral-700 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none py-1 ${dropdownClasses}`}>
                   {options.map((option: any, index: number) => (
                     <Listbox.Option
                       key={index}
@@ -99,19 +125,25 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                       className={({ active }) =>
                         `${
                           active
-                            ? 'text-primary-500 bg-gray-50'
-                            : 'text-dark-500'
-                        }  select-none relative py-2 pl-3 pr-4 ${
-                          option.disabled
-                            ? 'cursor-not-allowed opacity-50'
-                            : 'cursor-pointer'
+                            ? 'bg-neutral-700 text-gray-100'
+                            : 'text-gray-300'
+                        } select-none relative py-3 px-4 cursor-pointer hover:bg-neutral-700 ${
+                          dropdownClasses?.includes('company-type-dropdown')
+                            ? 'border-b border-neutral-700/50 last:border-0'
+                            : ''
+                        } ${
+                          option.disabled ? 'opacity-50 cursor-not-allowed' : ''
                         }`
                       }
                       disabled={option.disabled ? option.disabled : false}>
                       {({ selected }) => (
                         <>
                           <div
-                            className={`truncate align-bottom flex`}
+                            className={`flex flex-col ${
+                              dropdownClasses?.includes('company-type-dropdown')
+                                ? 'space-y-1'
+                                : ''
+                            }`}
                             title={
                               option.title
                                 ? option.title
@@ -124,27 +156,48 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                                 title={
                                   option.title ? option.title : placeholder
                                 }
-                                className={`h-5 w-5 mr-1 shrink-0 text-gray-500 ${
-                                  selected ? 'text-primary-500' : ''
+                                className={`h-5 w-5 mr-1 shrink-0 ${
+                                  selected
+                                    ? 'text-primary-500'
+                                    : 'text-gray-400'
                                 }`}
                               />
                             )}
-                            <div>
+                            <div className="flex flex-col">
                               <div
-                                className={`truncate text-sm ${
-                                  selected ? 'font-bold' : 'font-normal'
-                                }
-																`}>
+                                className={`text-sm ${
+                                  selected
+                                    ? 'font-medium text-primary-400'
+                                    : 'font-normal'
+                                } ${
+                                  dropdownClasses?.includes(
+                                    'company-type-dropdown',
+                                  )
+                                    ? 'font-semibold text-white'
+                                    : ''
+                                }`}>
                                 {option.title ? option.title : placeholder}
                               </div>
-                              <div className="text-xs text-gray-400">
-                                {option.description ? option.description : ''}
-                              </div>
+                              {option.description &&
+                                !dropdownClasses?.includes(
+                                  'company-type-dropdown',
+                                ) && (
+                                  <div
+                                    className={`${
+                                      dropdownClasses?.includes(
+                                        'company-type-dropdown',
+                                      )
+                                        ? 'text-sm text-gray-300 mt-1'
+                                        : 'text-xs text-gray-400 mt-0.5'
+                                    }`}>
+                                    {option.description}
+                                  </div>
+                                )}
                             </div>
                           </div>
 
                           {selected && (
-                            <div className="absolute inset-y-0 right-0 z-50 flex items-center pr-4 text-primary-500">
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-500">
                               <IconCheck className="w-5 h-5" />
                             </div>
                           )}

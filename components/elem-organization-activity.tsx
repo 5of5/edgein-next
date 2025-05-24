@@ -157,7 +157,8 @@ const renderActivity = (
                 </div>
               ) : (
                 <div className="inline text-green-400">undisclosed capital</div>
-              )}{' '}
+              )}
+              :{' '}
               {activity.valuation && (
                 <div className="inline">
                   at{' '}
