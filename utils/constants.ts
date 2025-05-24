@@ -306,6 +306,110 @@ export const validateFieldsForEdit = async (
   return errors;
 };
 
+export const validateFieldsForPartialEdit = async (
+  isEdit: boolean,
+  values: any,
+  data: any,
+) => {
+  const errors: any = {};
+
+  // Only validate formats of provided fields, don't require any fields
+
+  const emailPattern =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  if (
+    values.hasOwnProperty('website') &&
+    values?.website !== '' &&
+    values?.website !== null &&
+    !urlPattern.test(values?.website)
+  ) {
+    errors.website = 'Website URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('github') &&
+    values?.github !== '' &&
+    values?.github !== null &&
+    !urlPattern.test(values?.github)
+  ) {
+    errors.github = 'Github URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('twitter') &&
+    values?.twitter !== '' &&
+    values?.twitter !== null &&
+    !urlPattern.test(values?.twitter)
+  ) {
+    errors.twitter = 'Twitter URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('company_linkedin') &&
+    values?.company_linkedin !== '' &&
+    values?.company_linkedin !== null &&
+    !urlPattern.test(values?.company_linkedin)
+  ) {
+    errors.company_linkedin = 'Linkedin URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('linkedin') &&
+    values?.linkedin !== '' &&
+    values?.linkedin !== null &&
+    !urlPattern.test(values?.linkedin)
+  ) {
+    errors.linkedin = 'Linkedin URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('discord') &&
+    values?.discord !== '' &&
+    values?.discord !== null &&
+    !urlPattern.test(values?.discord)
+  ) {
+    errors.discord = 'Discord URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('glassdoor') &&
+    values?.glassdoor !== '' &&
+    values?.glassdoor !== null &&
+    !urlPattern.test(values?.glassdoor)
+  ) {
+    errors.glassdoor = 'Glassdoor URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('white_paper') &&
+    values?.white_paper !== '' &&
+    values?.white_paper !== null &&
+    !urlPattern.test(values?.white_paper)
+  ) {
+    errors.white_paper = 'White paper URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('careers_page') &&
+    values?.careers_page !== '' &&
+    values?.careers_page !== null &&
+    !urlPattern.test(values?.careers_page)
+  ) {
+    errors.careers_page = 'Careers page URL is not valid';
+  }
+  if (
+    values.hasOwnProperty('work_email') &&
+    values?.work_email !== '' &&
+    values?.work_email !== null &&
+    !emailPattern.test(values?.work_email)
+  ) {
+    errors.work_email = 'Work Email is not valid';
+  }
+  if (
+    values.hasOwnProperty('personal_email') &&
+    values?.personal_email !== '' &&
+    values?.personal_email !== null &&
+    !emailPattern.test(values?.personal_email)
+  ) {
+    errors.personal_email = 'Personal Email is not valid';
+  }
+
+  return errors;
+};
+
 export const validateTeamMember = async (isEdit: boolean, values: any) => {
   const errors: any = {};
   if (!values?.person_id) {
@@ -446,31 +550,31 @@ export const companyStatusTags: DashboardCategory[] = [
 export const companyLayerChoices = [
   {
     id: 'Layer 0',
-    name: 'Layer 0 - Native Code',
+    name: 'Native Code',
   },
   {
     id: 'Layer 1',
-    name: 'Layer 1 - Programmable Blockchains / Networks',
+    name: 'Programmable Blockchains / Networks',
   },
   {
     id: 'Layer 2',
-    name: 'Layer 2 - Nodes / Node Providers / Data Platforms',
+    name: 'Nodes / Node Providers / Data Platforms',
   },
   {
     id: 'Layer 3',
-    name: "Layer 3 - API's / API Providers / Systems",
+    name: "API's / API Providers / Systems",
   },
   {
     id: 'Layer 4',
-    name: 'Layer 4 - Decentralized Platforms / Contract / Modeling',
+    name: 'Decentralized Platforms / Contract / Modeling',
   },
   {
     id: 'Layer 5',
-    name: 'Layer 5 - Applications',
+    name: 'Applications',
   },
   {
     id: 'Layer 6',
-    name: "Layer 6 - Interoperable Digital Assets / NFT's",
+    name: "Interoperable Digital Assets / NFT's",
   },
 ];
 

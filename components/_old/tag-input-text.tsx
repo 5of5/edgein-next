@@ -55,21 +55,21 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
       {label && (
         <label
           htmlFor={name}
-          className={`font-medium text-sm cursor-text ${labelClass}`}>
+          className={`block font-medium text-sm text-gray-300 mb-1 ${labelClass}`}>
           {label}
         </label>
       )}
-      {sublabel && <p className="mb-2 text-sm text-slate-600">{sublabel}</p>}
+      {sublabel && <p className="mb-2 text-sm text-gray-500">{sublabel}</p>}
       <div>
-        <div className="flex items-center w-full px-2 mt-1 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500">
-          <IconSearch className="flex-none w-5 h-5" />
+        <div className="flex items-center w-full px-3 py-2 rounded-md border border-neutral-700 focus-within:border-primary-500 focus-within:ring focus-within:ring-primary-500/20 bg-neutral-900 transition-colors">
+          <IconSearch className="flex-none w-5 h-5 text-gray-400" />
           <input
             value={inputValue}
             name={name}
             onChange={event => setInputValue(event.target.value)}
             type="text"
             onKeyDown={event => onEnterTag(event)}
-            className="block w-full h-10 px-3 border-none appearance-none focus:ring-0 placeholder:text-slate-400"
+            className="block w-full px-3 py-0.5 text-sm bg-transparent border-none appearance-none focus:ring-0 text-gray-300 placeholder:text-gray-500"
             placeholder={placeholder}
           />
         </div>
@@ -78,15 +78,13 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
             return (
               <div
                 key={index}
-                className="inline-flex items-center gap-1 px-2 py-1 text-sm border rounded-full bg-primary-50 border-primary-500">
-                <span className="max-w-xs font-bold truncate text-primary-500">
-                  {tag}
-                </span>
+                className="inline-flex items-center gap-1 px-2 py-1 text-sm bg-neutral-800 text-gray-300 border border-neutral-700 rounded-md">
+                <span className="max-w-xs font-medium truncate">{tag}</span>
                 <button
                   onClick={() => {
                     onRemoveTag(index);
                   }}
-                  className="text-primary-500 hover:opacity-70 focus:outline-none">
+                  className="text-gray-400 hover:text-gray-300 transition-colors focus:outline-none">
                   <IconX className="w-4 h-4" strokeWidth={3} title="close" />
                 </button>
               </div>

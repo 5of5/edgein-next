@@ -38,13 +38,13 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
       {label && (
         <label
           htmlFor={name}
-          className={`font-medium text-sm cursor-text ${labelClass}`}>
+          className={`block font-medium text-sm text-gray-300 mb-1 ${labelClass}`}>
           {label}
         </label>
       )}
 
       <input
-        className={`w-full mt-1 px-3 py-2 text-sm relative bg-neutral-900 text-white rounded-full border-none outline-none ring-1 ring-gray-700 hover:bg-neutral-800 focus:ring-gray-600 focus:outline-none placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+        className={`w-full px-3 py-2.5 text-sm bg-neutral-900 text-gray-300 rounded-md border border-neutral-700 outline-none focus:border-primary-500 focus:ring focus:ring-primary-500/20 transition-colors placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
         type={type ? type : 'text'}
         name={name}
         value={value}

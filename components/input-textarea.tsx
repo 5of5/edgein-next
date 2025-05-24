@@ -39,12 +39,12 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = forwardRef(
         {label && (
           <label
             htmlFor={name}
-            className={`font-medium text-sm cursor-text ${labelClass}`}>
+            className={`block font-medium text-sm text-gray-300 mb-1 ${labelClass}`}>
             {label}
           </label>
         )}
         <textarea
-          className={`appearance-none resize-none w-full mt-1 px-3 py-2 text-sm relative bg-black rounded-lg border-none outline-none ring-1 ring-gray-300  focus:ring-gray-300 focus:outline-none placeholder:text-gray-500 ${className}`}
+          className={`w-full px-3 py-2.5 text-sm bg-neutral-900 text-gray-300 rounded-md border border-neutral-700 outline-none resize-none focus:border-primary-500 focus:ring focus:ring-primary-500/20 transition-colors placeholder:text-gray-500 ${className}`}
           name={name}
           value={value}
           onChange={onChange}
