@@ -26,6 +26,8 @@ export const TheNavbar: FC<Props> = ({}) => {
   const router = useRouter();
   const { user, unreadNotificationsCount } = useUser();
 
+  console.log('user in navbar', user);
+
   const { showPopup, setShowPopup } = usePopup();
   const { showSidebar, setShowSidebar } = useSidebar();
 

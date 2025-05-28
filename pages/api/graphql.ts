@@ -34,21 +34,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     headers = {
       Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
       'x-hasura-role': process.env.HASURA_VIEWER ?? '',
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
+      'x-hasura-admin-secret':
+        'H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid',
     };
   } else {
     headers = {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
+      'x-hasura-admin-secret':
+        'H2qMpIzxHTQYpxhhuVoOrDvMEW3coQFLE42kiShCEJ5sHATlv7Fk12NfQIoSCjid',
     };
   }
 
   const opts = {
     method: 'POST',
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
-    headers,
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    },
   };
 
-  const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? '', opts);
+  const proxyRes = await fetch(
+    process.env.GRAPHQL_ENDPOINT ??
+      'https://unique-crow-54.hasura.app/v1/graphql',
+    opts,
+  );
 
   const json = await proxyRes.json();
   res.send(json);
