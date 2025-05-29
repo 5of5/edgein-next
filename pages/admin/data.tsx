@@ -20,7 +20,10 @@ import { USER_ROLES } from '@/utils/users';
 const AdminData = () => {
   const { user } = useAuth();
 
-  const authProvider = useAdminAuthProvider([USER_ROLES.ADMIN], user);
+  const authProvider = useAdminAuthProvider(
+    [USER_ROLES.ADMIN],
+    user || undefined,
+  );
 
   const onTransformData = useCallback(
     (adminDataProvider: DataProvider<string>) =>

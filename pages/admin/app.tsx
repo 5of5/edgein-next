@@ -183,7 +183,7 @@ const AdminApp = () => {
 
   const authProvider = useAdminAuthProvider(
     ['admin', 'cms', 'cms-readonly'],
-    user,
+    user || undefined,
   );
 
   const onTransformData = useCallback(

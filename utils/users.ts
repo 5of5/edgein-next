@@ -50,6 +50,7 @@ export const USER_ROLES: Record<Uppercase<UserRole>, UserRole> = {
 } as const;
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
+  console.log('queryForAllowedEmailCheck', email, domain);
   const data = await query<GetAllowedEmailByEmailOrDomainQuery>({
     query: GetAllowedEmailByEmailOrDomainDocument,
     variables: { email, domain },
@@ -81,12 +82,21 @@ async function findOneUserByEmail(email: string) {
 }
 
 async function findOneUserByEmailForToken(email: string) {
+  console.log('-------------------------');
+  console.log('[Server] Fetching user by email for token:', email);
+
   const data = await query<GetUserByEmailForTokenQuery>({
     query: GetUserByEmailForTokenDocument,
     variables: { email },
   });
 
-  console.log('📡 GraphQL Response:', data.data.users[0]); // ✅ Log the response
+  console.log(
+    '[Server] GraphQL Response for user lookup:',
+    data.data.users[0]
+      ? `Found user with id: ${data.data.users[0].id}`
+      : 'No user found',
+  );
+  console.log('-------------------------');
 
   return data.data.users[0];
 }

@@ -497,8 +497,12 @@ export const getStaticProps: GetStaticProps = async () => {
     revalidate: 60 * 60 * 2,
   };
 
-  if (resp.errors) {
-    console.error(resp.errors);
+  if (!resp || resp.errors) {
+    if (resp?.errors) {
+      console.error(resp.errors);
+    } else if (!resp) {
+      console.error('GraphQL response is undefined');
+    }
     return response;
   }
 
