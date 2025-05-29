@@ -1,0 +1,61 @@
+/* Admin Test Page Styles */
+.admin-test-container {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+.admin-test-container * {
+  color: inherit;
+}
+
+.admin-test-container h1,
+.admin-test-container h2,
+.admin-test-container h3,
+.admin-test-container h4,
+.admin-test-container h5,
+.admin-test-container h6,
+.admin-test-container p,
+.admin-test-container label,
+.admin-test-container td,
+.admin-test-container pre {
+  color: #000000 !important;
+}
+
+.admin-test-container pre {
+  background-color: #ffffff !important;
+  border: 1px solid #cccccc !important;
+}
+
+.admin-test-container input {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+.admin-test-container table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.admin-test-container table td {
+  border: 1px solid #cccccc;
+  padding: 8px;
+}
+
+.admin-test-container table tr:nth-child(odd) td:first-child {
+  background-color: #f2f2f2;
+}
+
+.admin-test-success {
+  color: #22c55e !important;
+}
+
+.admin-test-error {
+  color: #ef4444 !important;
+}
+
+.admin-test-container .json-display {
+  font-family: monospace;
+  white-space: pre;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}

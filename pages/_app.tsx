@@ -1,4 +1,5 @@
 import '@/styles/globals.scss';
+import '@/styles/admin-test.css';
 import React, { useState } from 'react';
 import TagManager from 'react-gtm-module';
 //import { hotjar } from 'react-hotjar';

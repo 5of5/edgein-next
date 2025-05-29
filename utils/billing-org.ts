@@ -60,10 +60,42 @@ async function updateBillingOrgCustomerId(
   return data.data.update_billing_org_by_pk;
 }
 
+// New function to update both status and plan
+async function updateBillingOrgWithPlan(
+  id: number,
+  status: string,
+  plan: string,
+) {
+  try {
+    // Direct GraphQL mutation since we don't have a generated type for this
+    const data = await mutate({
+      mutation: `
+        mutation UpdateBillingOrgWithPlan($id: Int!, $status: String!, $plan: String!) {
+          update_billing_org_by_pk(
+            pk_columns: { id: $id },
+            _set: { status: $status, plan: $plan }
+          ) {
+            id
+            status
+            plan
+            customer_id
+          }
+        }
+      `,
+      variables: { id, status, plan },
+    });
+    return data.data.update_billing_org_by_pk;
+  } catch (error) {
+    console.error('Error updating billing org with plan:', error);
+    throw error;
+  }
+}
+
 const BillingService = {
   insertBillingOrg,
   updateBillingOrg,
   updateBillingOrgCustomerId,
+  updateBillingOrgWithPlan,
   getBillingOrgByCustomerId,
   getBillingOrgById,
 };
